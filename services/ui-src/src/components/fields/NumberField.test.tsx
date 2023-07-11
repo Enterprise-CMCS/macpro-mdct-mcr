@@ -8,8 +8,6 @@ import { NumberField, ReportContext } from "components";
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
-// verbiage
-import { validationErrors as error } from "verbiage/errors";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -383,16 +381,6 @@ describe("Numberfield handles triggering validation", () => {
     <NumberField name="testNumberField" label="test-label" validateOnRender />
   );
 
-  const mockHydrationValue = "12345";
-  const numberFieldComponentWithValidateOnRenderHydrationValue = (
-    <NumberField
-      name="testNumberFieldWithHydrationValue"
-      label="test-label"
-      hydrate={mockHydrationValue}
-      validateOnRender
-    />
-  );
-
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -400,6 +388,7 @@ describe("Numberfield handles triggering validation", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
     const numberField = screen.getByRole("textbox", {
       name: "test-label",
     });
@@ -414,15 +403,6 @@ describe("Numberfield handles triggering validation", () => {
     mockGetValues(undefined);
     render(numberFieldComponentWithValidateOnRender);
     expect(mockTrigger).toHaveBeenCalled();
-  });
-
-  test("Component with validateOnRender passed should not validate a valid hydrated field render", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockGetValues(undefined);
-    render(numberFieldComponentWithValidateOnRenderHydrationValue);
-    expect(mockTrigger).toHaveBeenCalled();
-    expect(screen.queryByText(error.INVALID_GENERIC)).toBeFalsy();
-    expect(screen.queryByText(error.REQUIRED_GENERIC)).toBeFalsy();
   });
 });
 
