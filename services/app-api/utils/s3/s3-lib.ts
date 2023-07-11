@@ -84,6 +84,14 @@ export function getFieldDataKey(state: State, fieldDataId: string) {
   return `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`;
 }
 
-export function getFormTemplateKey(state: State, formTemplateId: string) {
-  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
+export function getFormTemplateKey(formTemplateId: string, state?: State) {
+  if (state) {
+    return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
+  } else {
+    return `${buckets.FORM_TEMPLATE}/${formTemplateId}.json`;
+  }
+}
+
+export function getFormTemplateKeyV2(formTemplateId: string) {
+  return `${buckets.FORM_TEMPLATE}/${formTemplateId}.json`;
 }
