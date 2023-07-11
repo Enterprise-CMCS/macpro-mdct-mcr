@@ -7,6 +7,8 @@ import {
   isEndDateAfterStartDate,
   nested,
   validNumber,
+  numberNotLessThanOne,
+  numberNotLessThanZero,
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -25,6 +27,28 @@ describe("Schemas", () => {
   ];
   const badNumberTestCases = ["abc", "N", "!@#!@%"];
 
+  const zeroTest = ["0", "0.0"];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123..00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123..,,,.123123123123",
+  ];
+
+  const negativeNumberTestCases = [
+    "-123",
+    "-123.00",
+    "-123..00",
+    "-1,230",
+    "-1,2,30",
+    "-1230",
+    "-123450123..,,,.123123123123",
+  ];
+
   const goodRatioTestCases = [
     "1:1",
     "123:123",
@@ -32,6 +56,7 @@ describe("Schemas", () => {
     "0:1",
     "1:10,000",
   ];
+
   const badRatioTestCases = [
     ":",
     ":1",
@@ -88,6 +113,34 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using number scheme", () => {
     testSchema(number(), goodNumberTestCases, true);
     testSchema(number(), badNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanOne scheme
+  test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
+    testSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testSchema(numberNotLessThanOne(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanOne scheme", () => {
+    testSchema(numberNotLessThanOne(), zeroTest, false);
+  });
+
+  test("Test negative values using numberNotLessThanOne scheme", () => {
+    testSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZero scheme
+  test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
+    testSchema(numberNotLessThanZero(), goodPositiveNumberTestCases, true);
+    testSchema(numberNotLessThanZero(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanZero scheme", () => {
+    testSchema(numberNotLessThanZero(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZero scheme", () => {
+    testSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
