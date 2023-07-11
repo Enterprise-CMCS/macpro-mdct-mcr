@@ -5,6 +5,7 @@ import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 // api
 import { deleteBanner, getBanner, writeBanner } from "utils";
+import { useStore } from "utils/state/useStore";
 
 const ADMIN_BANNER_ID = bannerId;
 
@@ -18,9 +19,8 @@ export const AdminBannerContext = createContext<AdminBannerShape>({
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
-  const [bannerData, setBannerData] = useState<AdminBannerData | undefined>(
-    undefined
-  );
+  const bannerData = useStore((state) => state.bannerData);
+  const setBannerData = useStore((state) => state.setBannerData);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
