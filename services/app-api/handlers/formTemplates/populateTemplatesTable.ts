@@ -4,12 +4,12 @@ import {
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import md5 from "md5";
 import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import {
   FormTemplate,
   isDefined,
+  ReportJson,
   ReportMetadata,
   SomeRequired,
   State,
@@ -19,6 +19,8 @@ import * as path from "path";
 import { isFulfilled } from "../../utils/types/promises";
 import { logger } from "../../utils/logging";
 import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
+import { MD5 } from "object-hash";
+
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
 
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
@@ -54,7 +56,7 @@ export async function getTemplate(bucket: string, key: string) {
   return (await s3Lib.get({
     Key: key,
     Bucket: bucket,
-  })) as string;
+  })) as ReportJson;
 }
 
 /**
@@ -66,7 +68,7 @@ export async function getTemplate(bucket: string, key: string) {
  */
 export async function processTemplate(bucket: string, key: string) {
   const formTemplate = await getTemplate(bucket, key);
-  const hash = md5(JSON.stringify(formTemplate));
+  const hash = MD5(formTemplate);
   // Make sure we only grab old form templates
   return {
     id: path.basename(key).split(".")[0],
@@ -96,7 +98,7 @@ export function getDistinctHashesForTemplates(
  *
  * @param reportType
  */
-export async function processReport(reportType: (typeof REPORT_TYPES)[number]) {
+export async function processReport(reportType: typeof REPORT_TYPES[number]) {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
   const formTemplates = await s3Lib.list({
@@ -181,7 +183,7 @@ export async function copyTemplatesToNewPrefix(
   templates: { id: string; hash: string; state: string }[]
 ) {
   const templateKeys = templates.map((t) => {
-    return { key: getFormTemplateKey(t.state as State, t.id), id: t.id };
+    return { key: getFormTemplateKey(t.id, t.state as State), id: t.id };
   });
   for (const keyId of templateKeys) {
     const newKey = `formTemplates/${keyId.id}.json`;
@@ -205,7 +207,7 @@ export async function copyTemplatesToNewPrefix(
  * @param reportType
  */
 export async function updateExistingReports(
-  reportType: (typeof REPORT_TYPES)[number]
+  reportType: typeof REPORT_TYPES[number]
 ) {
   const tableName = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
@@ -217,9 +219,9 @@ export async function updateExistingReports(
       if (report.formTemplateId) {
         const template = await getTemplate(
           reportBucket,
-          getFormTemplateKey(report.state, report.formTemplateId)
+          getFormTemplateKey(report.formTemplateId, report.state)
         );
-        const templateHash = md5(JSON.stringify(template));
+        const templateHash = MD5(template);
         const templateVersion = await getTemplateVersionByHash(
           reportType,
           templateHash
