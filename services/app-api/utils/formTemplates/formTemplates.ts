@@ -16,8 +16,7 @@ import {
   ReportRoute,
 } from "../types";
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { MD5 } from "object-hash";
-
+import { createHash } from "crypto";
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
 
 export function getNewestTemplateVersionRequest(
@@ -41,7 +40,15 @@ export async function getOrCreateFormTemplate(
 ) {
   const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
 
-  const currentTemplateHash = MD5(currentFormTemplate);
+  const formTemplateWithAdminDisabled = copyAdminDisabledStatusToForms(
+    currentFormTemplate as ReportJson
+  );
+
+  const stringifiedTemplate = JSON.stringify(formTemplateWithAdminDisabled);
+
+  const currentTemplateHash = createHash("md5")
+    .update(stringifiedTemplate)
+    .digest("hex");
 
   const mostRecentTemplateVersion = (
     await dynamodbLib.query(
@@ -50,10 +57,8 @@ export async function getOrCreateFormTemplate(
   ).Items?.[0];
 
   const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
-  if (
-    mostRecentTemplateVersion &&
-    currentTemplateHash === mostRecentTemplateVersionHash
-  ) {
+
+  if (currentTemplateHash === mostRecentTemplateVersionHash) {
     return {
       formTemplate: copyAdminDisabledStatusToForms(
         await getTemplate(
@@ -64,12 +69,13 @@ export async function getOrCreateFormTemplate(
       formTemplateVersion: mostRecentTemplateVersion,
     };
   } else {
-    const newFormTemplate = currentFormTemplate;
     const newFormTemplateId = KSUID.randomSync().string;
     try {
       await s3Lib.put({
         Key: getFormTemplateKey(newFormTemplateId),
-        Body: JSON.stringify(newFormTemplate),
+        Body: JSON.stringify(
+          copyAdminDisabledStatusToForms(currentFormTemplate as ReportJson)
+        ),
         ContentType: "application/json",
         Bucket: reportBucket,
       });
@@ -103,9 +109,7 @@ export async function getOrCreateFormTemplate(
     }
 
     return {
-      formTemplate: copyAdminDisabledStatusToForms(
-        newFormTemplate as ReportJson
-      ),
+      formTemplate: formTemplateWithAdminDisabled,
       formTemplateVersion: newFormTemplateVersionItem,
     };
   }

@@ -142,7 +142,7 @@ export const createReport = handler(async (event, _context) => {
       formTemplateId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
-      versionNumber: formTemplateVersion.versionNumber,
+      versionNumber: formTemplateVersion?.versionNumber,
     },
   };
 
@@ -161,7 +161,7 @@ export const createReport = handler(async (event, _context) => {
       ...reportMetadataParams.Item,
       fieldData: validatedFieldData,
       formTemplate,
-      formTemplateVersion: formTemplateVersion.versionNumber,
+      formTemplateVersion: formTemplateVersion?.versionNumber,
     },
   };
 });
