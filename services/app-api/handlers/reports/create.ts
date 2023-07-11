@@ -21,6 +21,11 @@ import {
 } from "../../utils/constants/constants";
 // types
 import { S3Put, StatusCodes, UserRoles } from "../../utils/types";
+import {
+  compileValidationJsonFromRoutes,
+  getOrCreateFormTemplate,
+} from "../../utils/formTemplates/formTemplates";
+import { logger } from "../../utils/logging";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -42,13 +47,9 @@ export const createReport = handler(async (event, _context) => {
 
   const state: string = event.pathParameters?.state!;
   const unvalidatedPayload = JSON.parse(event!.body!);
-  const {
-    metadata: unvalidatedMetadata,
-    fieldData: unvalidatedFieldData,
-    formTemplate,
-  } = unvalidatedPayload;
+  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
+    unvalidatedPayload;
   const reportType = unvalidatedPayload.metadata.reportType;
-  const fieldDataValidationJson = formTemplate.validationJson;
 
   // Return a 403 status if the user does not have access to this report
   if (!hasReportAccess(event, reportType)) {
@@ -61,8 +62,22 @@ export const createReport = handler(async (event, _context) => {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
+  let formTemplate, formTemplateVersion;
+
+  try {
+    ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
+      reportBucket,
+      reportType
+    ));
+  } catch (err) {
+    logger.error(err, "Error getting or creating template");
+    throw err;
+  }
+
+  const validationJson = compileValidationJsonFromRoutes(formTemplate.routes);
+
   // Return MISSING_DATA error if missing unvalidated data or validators.
-  if (!unvalidatedFieldData || !fieldDataValidationJson) {
+  if (!unvalidatedFieldData || !validationJson) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.MISSING_DATA,
@@ -76,7 +91,7 @@ export const createReport = handler(async (event, _context) => {
 
   // Validate field data
   const validatedFieldData = await validateFieldData(
-    fieldDataValidationJson,
+    validationJson,
     unvalidatedFieldData
   );
 
@@ -95,16 +110,8 @@ export const createReport = handler(async (event, _context) => {
     ContentType: "application/json",
   };
 
-  const formTemplateParams: S3Put = {
-    Bucket: reportBucket,
-    Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
-    Body: JSON.stringify(formTemplate),
-    ContentType: "application/json",
-  };
-
   try {
     await s3Lib.put(fieldDataParams);
-    await s3Lib.put(formTemplateParams);
   } catch (err) {
     return {
       status: StatusCodes.SERVER_ERROR,
@@ -135,6 +142,7 @@ export const createReport = handler(async (event, _context) => {
       formTemplateId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
+      versionNumber: formTemplateVersion.versionNumber,
     },
   };
 
@@ -153,6 +161,7 @@ export const createReport = handler(async (event, _context) => {
       ...reportMetadataParams.Item,
       fieldData: validatedFieldData,
       formTemplate,
+      formTemplateVersion: formTemplateVersion.versionNumber,
     },
   };
 });
