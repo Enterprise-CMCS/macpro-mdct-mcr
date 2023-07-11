@@ -96,7 +96,7 @@ export function getDistinctHashesForTemplates(
  *
  * @param reportType
  */
-export async function processReport(reportType: typeof REPORT_TYPES[number]) {
+export async function processReport(reportType: (typeof REPORT_TYPES)[number]) {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
   const formTemplates = await s3Lib.list({
@@ -106,6 +106,7 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
 
   const sortedTemplates = formTemplates
     .filter((t) => t.Key?.endsWith(".json"))
+    .filter((t) => t.Key?.split("/")[1].length === 2)
     .filter((t): t is S3ObjectRequired => isDefined(t.LastModified))
     .sort((a, b) => a.LastModified.getTime() - b.LastModified.getTime());
 
@@ -123,7 +124,6 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
       .filter((t): t is S3ObjectRequired => {
         return isDefined(t.Key);
       })
-      .filter((t) => t.Key.split("/")[1].length === 2)
       .map(async (template) => {
         const { id, hash, state } =
           (await processTemplate(reportBucket, template.Key)) ?? {};
@@ -134,7 +134,6 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
         };
       })
   );
-
   const templatesAndHashes = processedTemplates
     .filter(isFulfilled)
     .map((template) => template.value);
@@ -206,7 +205,7 @@ export async function copyTemplatesToNewPrefix(
  * @param reportType
  */
 export async function updateExistingReports(
-  reportType: typeof REPORT_TYPES[number]
+  reportType: (typeof REPORT_TYPES)[number]
 ) {
   const tableName = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];

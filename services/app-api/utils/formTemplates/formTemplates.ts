@@ -4,7 +4,7 @@ import dynamodbLib from "../dynamo/dynamodb-lib";
 const REPORT_TYPES = ["MCPAR", "MLR"] as const;
 
 export function getNewestTemplateVersion(
-  reportType: typeof REPORT_TYPES[number]
+  reportType: (typeof REPORT_TYPES)[number]
 ) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
