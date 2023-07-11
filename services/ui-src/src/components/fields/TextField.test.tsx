@@ -8,6 +8,8 @@ import { ReportContext, TextField } from "components";
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
 import { useUser } from "utils";
 import { ReportStatus } from "types";
+// verbiage
+import { validationErrors as error } from "verbiage/errors";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -244,7 +246,36 @@ describe("Test TextField component autosaves", () => {
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+});
 
+describe("Textfield handles triggering validation", () => {
+  const textFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <TextField
+        name="testTextField"
+        label="test-label"
+        placeholder="test-placeholder"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  const mockHydrationValue = "mock-hydration-value";
+  const textFieldHydrationWithValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <TextField
+        name="testTextField"
+        label="test-label"
+        placeholder="test-placeholder"
+        hydrate={mockHydrationValue}
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("Blanking field triggers form validation", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
@@ -256,6 +287,22 @@ describe("Test TextField component autosaves", () => {
     await userEvent.clear(textField);
     await userEvent.tab();
     expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(textFieldValidateOnRenderComponent);
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should not validate a valid hydrated field render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(textFieldHydrationWithValidateOnRenderComponent);
+    expect(mockTrigger).toHaveBeenCalled();
+    expect(screen.queryByText(error.INVALID_GENERIC)).toBeFalsy();
+    expect(screen.queryByText(error.REQUIRED_GENERIC)).toBeFalsy();
   });
 });
 

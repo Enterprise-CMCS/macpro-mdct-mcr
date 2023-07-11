@@ -1,12 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-//components
+// components
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
-import { useUser } from "utils";
+// utils
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
+import { useUser } from "utils";
 import { ReportStatus } from "types";
+// verbiage
+import { validationErrors as error } from "verbiage/errors";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -372,6 +375,54 @@ describe("Test NumberField component autosaves", () => {
     await userEvent.type(textField, "test value");
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Numberfield handles triggering validation", () => {
+  const numberFieldComponentWithValidateOnRender = (
+    <NumberField name="testNumberField" label="test-label" validateOnRender />
+  );
+
+  const mockHydrationValue = "12345";
+  const numberFieldComponentWithValidateOnRenderHydrationValue = (
+    <NumberField
+      name="testNumberFieldWithHydrationValue"
+      label="test-label"
+      hydrate={mockHydrationValue}
+      validateOnRender
+    />
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponent);
+    const numberField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
+    expect(numberField).toBeVisible();
+    await userEvent.clear(numberField);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponentWithValidateOnRender);
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should not validate a valid hydrated field render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponentWithValidateOnRenderHydrationValue);
+    expect(mockTrigger).toHaveBeenCalled();
+    expect(screen.queryByText(error.INVALID_GENERIC)).toBeFalsy();
+    expect(screen.queryByText(error.REQUIRED_GENERIC)).toBeFalsy();
   });
 });
 
