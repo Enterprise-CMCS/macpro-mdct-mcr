@@ -11,7 +11,7 @@ export interface ReportJson {
   adminDisabled?: boolean;
   routes: ReportRoute[];
   flatRoutes?: ReportRoute[];
-  validationSchema: AnyObject;
+  validationSchema?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
