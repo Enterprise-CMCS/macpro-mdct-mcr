@@ -201,6 +201,22 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+          - IndexName: IdIndex
+            KeySchema:
+              - AttributeName: reportType
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: HashIndex
+            KeySchema:
+              - AttributeName: reportType
+                KeyType: HASH
+              - AttributeName: md5Hash
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
         KeySchema:
           - AttributeName: reportType
             KeyType: HASH
@@ -213,6 +229,10 @@ resources:
             AttributeType: N
           - AttributeName: lastAltered
             AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: md5Hash
+            AttributeType: S
 
   Outputs:
     BannerTableName:
@@ -221,6 +241,8 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
+    FormTemplateTableName:
+      Value: !Ref FormTemplateTable
     McparReportTableName:
       Value: !Ref McparReportTable
     McparReportTableArn:

@@ -21,6 +21,7 @@
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^20.0.0",
     "@types/jwt-encode": "^1.0.0",
+    "@types/md5": "^2.3.2",
     "aws-lambda": "^1.0.7",
     "jest": "^27.4.7",
     "serverless-associate-waf": "^1.2.1",
@@ -42,8 +43,14 @@
     "jwt-encode": "^1.0.1",
     "kafkajs": "^2.2.3",
     "ksuid": "^3.0.0",
+    "md5": "^2.3.0",
+    "pino": "^8.14.1",
     "serverless-plugin-warmup": "^8.2.1",
     "yup": "^0.32.11"
+  },
+  "resolutions": {
+    "nwsapi": "^2.2.5",
+    "xml2js": "^0.5.0"
   },
   "jest": {
     "verbose": true,

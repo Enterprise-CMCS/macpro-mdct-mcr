@@ -68,6 +68,10 @@ export interface S3Copy {
   Key: string;
 }
 
+export interface S3List {
+  Bucket: string;
+}
+
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
@@ -163,3 +167,40 @@ export type State =
   | "WV"
   | "WI"
   | "WY";
+
+export interface FormTemplate {
+  md5Hash: string;
+  versionNumber: number;
+  id: string;
+  lastAltered: string;
+  reportType: string;
+}
+
+export function isDefined<T>(
+  possiblyUndefined: T | undefined
+): possiblyUndefined is T {
+  return typeof possiblyUndefined !== "undefined";
+}
+
+/**
+ * Use this type to create a type guard for filtering arrays of objects
+ * by the presence of certain attributes.
+ *
+ * @example
+ * interface Foo {
+ *    bar: string;
+ *    baz?: string;
+ *    buzz?: string;
+ *    bizz?: string;
+ * }
+ * type RequireBaz = SomeRequired<Foo, 'baz'>
+ * const array: Foo[] = [
+ *  { bar: 'always here' },
+ *  { bar: 'always here', baz: 'sometimes here' }
+ * ]
+ * array.filter((f): f is RequireBaz => typeof f.baz !== 'undefined' )
+ * // `array`'s type now shows bar and baz as required.
+ * array.map((f) => return f.baz)
+ */
+export type SomeRequired<T, K extends keyof T> = Required<Pick<T, K>> &
+  Omit<T, K>;

@@ -64,40 +64,6 @@ export const number = () =>
 
 export const numberOptional = () => numberSchema().notRequired().nullable();
 
-// NUMBER NOT LESS THAN ONE
-export const numberNotLessThanOne = () =>
-  string()
-    .required(error.REQUIRED_GENERIC)
-    .test({
-      test: (value) => !isWhitespaceString(value),
-      message: error.REQUIRED_GENERIC,
-    })
-    .test({
-      test: (value) => validNumberRegex.test(value!),
-      message: error.INVALID_NUMBER,
-    })
-    .test({
-      test: (value) => parseInt(value!) >= 1,
-      message: error.NUMBER_LESS_THAN_ONE,
-    });
-
-// NUMBER NOT LESS THAN ZERO
-export const numberNotLessThanZero = () =>
-  string()
-    .required(error.REQUIRED_GENERIC)
-    .test({
-      test: (value) => !isWhitespaceString(value),
-      message: error.REQUIRED_GENERIC,
-    })
-    .test({
-      test: (value) => validNumberRegex.test(value!),
-      message: error.INVALID_NUMBER,
-    })
-    .test({
-      test: (value) => parseFloat(value!) >= 0,
-      message: error.NUMBER_LESS_THAN_ZERO,
-    });
-
 const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,
@@ -118,6 +84,22 @@ export const validNumber = () =>
 
 export const validNumberOptional = () =>
   validNumberSchema().notRequired().nullable();
+
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
+  validNumber().test({
+    test: (value) => {
+      return parseFloat(value!) >= 1;
+    },
+    message: error.NUMBER_LESS_THAN_ONE,
+  });
+
+// NUMBER NOT LESS THAN ZERO
+export const numberNotLessThanZero = () =>
+  validNumber().test({
+    test: (value) => parseFloat(value!) >= 0,
+    message: error.NUMBER_LESS_THAN_ZERO,
+  });
 
 // Number - Ratio
 export const ratio = () =>

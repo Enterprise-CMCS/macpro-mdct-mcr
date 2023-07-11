@@ -27,8 +27,8 @@ custom:
   project: "mcr"
   serverlessPluginTypescript:
     tsConfigFileLocation: "./tsconfig.json"
-  stage: ${opt:stage, self:provider.stage}
-  region: ${opt:region, self:provider.region}
+  stage: ${sls:stage}
+  region: ${aws:region}
   serverlessTerminationProtection:
     stages:
       - main
@@ -40,6 +40,7 @@ custom:
   mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
   mcparReportTableStreamArn: ${env:MCPAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-main.McparReportTableStreamArn}
   mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.MlrReportTableName}
+  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplateTableName}
   mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.MlrReportTableStreamArn, cf:database-main.MlrReportTableStreamArn}
   naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
   naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
@@ -149,6 +150,7 @@ provider:
     MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
     MLR_REPORT_TABLE_NAME: ${self:custom.mlrReportTableName}
     NAAAR_REPORT_TABLE_NAME: ${self:custom.naaarReportTableName}
+    FORM_TEMPLATE_TABLE_NAME: ${self:custom.formTemplateTableName}
     TEMPLATE_BUCKET: ${self:custom.templateBucket}
     MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
     MLR_FORM_BUCKET: ${self:custom.mlrFormBucket}
@@ -164,6 +166,13 @@ functions:
     environment:
       MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
       MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
+  formTemplateTablePopulation:
+    handler: handlers/formTemplates/populateTemplatesTable.handler
+    timeout: 300
     warmup:
       default:
         enabled: false
