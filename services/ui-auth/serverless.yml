@@ -165,7 +165,7 @@ resources:
           - http://localhost:3000/
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         LogoutURLs:
-          - ${self:custom.application_endpoint_url}
+          - ${self:custom.signout_redirect_url}
           - http://localhost:3000/
         SupportedIdentityProviders:
           - Fn::If:
