@@ -158,6 +158,7 @@ export interface AutosaveField {
   value: FieldValue;
   defaultValue?: FieldValue;
   hydrationValue?: FieldValue;
+  cleanedValue?: FieldValue;
   overrideCheck?: boolean;
 }
 

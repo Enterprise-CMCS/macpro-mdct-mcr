@@ -11,6 +11,7 @@ interface FieldInfo {
   value?: FieldValue;
   defaultValue?: any;
   hydrationValue?: FieldValue;
+  cleanedValue?: FieldValue;
   overrideCheck?: boolean;
 }
 
@@ -61,6 +62,7 @@ export const getAutosaveFields = ({
   value,
   defaultValue,
   hydrationValue,
+  cleanedValue,
   overrideCheck,
 }: GetAutosaveFieldsProps): FieldInfo[] => {
   return [
@@ -70,6 +72,7 @@ export const getAutosaveFields = ({
       value,
       defaultValue,
       hydrationValue,
+      cleanedValue,
       overrideCheck,
     },
   ];
@@ -91,8 +94,14 @@ export const autosaveFieldData = async ({
       .filter((field: FieldInfo) => isFieldChanged(field))
       // determine appropriate field value to set and return as tuple
       .map(async (field: FieldInfo) => {
-        const { name, value, defaultValue, hydrationValue, overrideCheck } =
-          field;
+        const {
+          name,
+          value,
+          defaultValue,
+          hydrationValue,
+          cleanedValue,
+          overrideCheck,
+        } = field;
         let fieldValueIsValid = false;
         /*
          * This will trigger validation if and only if the field has been rendered on the page
@@ -104,7 +113,7 @@ export const autosaveFieldData = async ({
           fieldValueIsValid = true;
         }
         // if field value is valid or validity check overridden, use field value
-        if (fieldValueIsValid || overrideCheck) return [name, value];
+        if (fieldValueIsValid || overrideCheck) return [name, cleanedValue];
         // otherwise, revert field to default value
         return [name, defaultValue];
       })
