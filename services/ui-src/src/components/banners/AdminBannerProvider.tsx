@@ -19,8 +19,11 @@ export const AdminBannerContext = createContext<AdminBannerShape>({
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
+  // Zustand state management
   const bannerData = useStore((state) => state.bannerData);
-  const setBannerData = useStore((state) => state.setBannerData);
+  const setBannerData = useStore().setBannerData;
+  const clearBannerData = useStore().clearBannerData;
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
@@ -42,7 +45,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   const deleteAdminBanner = async () => {
     await deleteBanner(ADMIN_BANNER_ID);
-    setBannerData(undefined);
+    clearBannerData();
   };
 
   const writeAdminBanner = async (newBannerData: AdminBannerData) => {
