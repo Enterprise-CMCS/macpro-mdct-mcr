@@ -89,6 +89,7 @@ const completeOverlayForm = (overlayForm) => {
 const processField = (field) => {
   //only try to fill it out if it's enabled
   if (!field.props?.disabled) {
+    cy.wait(600);
     //Validation method shifts around based on field type
     const validationType = field.validation?.type
       ? field.validation?.type

@@ -20,7 +20,8 @@ import * as path from "path";
 import { isFulfilled } from "../../utils/types/promises";
 import { logger } from "../../utils/logging";
 import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
-import { MD5 } from "object-hash";
+import { createHash } from "crypto";
+import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
 
@@ -67,7 +68,9 @@ export async function getTemplate(bucket: string, key: string) {
  */
 export async function processTemplate(bucket: string, key: string) {
   const formTemplate = await getTemplate(bucket, key);
-  const hash = MD5(formTemplate);
+  const hash = createHash("md5")
+    .update(JSON.stringify(copyAdminDisabledStatusToForms(formTemplate)))
+    .digest("hex");
   // Make sure we only grab old form templates
   return {
     id: path.basename(key).split(".")[0],
@@ -218,7 +221,9 @@ export async function updateExistingReports(reportType: ReportType) {
           reportBucket,
           getFormTemplateKey(report.formTemplateId, report.state)
         );
-        const templateHash = MD5(template);
+        const templateHash = createHash("md5")
+          .update(JSON.stringify(copyAdminDisabledStatusToForms(template)))
+          .digest("hex");
         const templateVersion = await getTemplateVersionByHash(
           reportType,
           templateHash
