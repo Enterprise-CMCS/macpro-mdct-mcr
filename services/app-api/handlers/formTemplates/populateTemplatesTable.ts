@@ -11,6 +11,7 @@ import {
   isDefined,
   ReportJson,
   ReportMetadata,
+  ReportType,
   SomeRequired,
   State,
 } from "../../utils/types";
@@ -21,8 +22,6 @@ import { logger } from "../../utils/logging";
 import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
 import { MD5 } from "object-hash";
 
-const REPORT_TYPES = ["MCPAR", "MLR"] as const;
-
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
 
 /**
@@ -31,7 +30,7 @@ type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
  * @param hash hash to look for
  * @returns
  */
-export function getTemplateVersionByHash(reportType: string, hash: string) {
+export function getTemplateVersionByHash(reportType: ReportType, hash: string) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "HashIndex",
@@ -39,7 +38,7 @@ export function getTemplateVersionByHash(reportType: string, hash: string) {
     Limit: 1,
     ExpressionAttributeValues: {
       ":md5Hash": hash as AttributeValue,
-      ":reportType": reportType as AttributeValue,
+      ":reportType": reportType as unknown as AttributeValue,
     },
   };
   return dynamodbLib.query(queryParams);
@@ -98,7 +97,7 @@ export function getDistinctHashesForTemplates(
  *
  * @param reportType
  */
-export async function processReport(reportType: typeof REPORT_TYPES[number]) {
+export async function processReport(reportType: ReportType) {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
   const formTemplates = await s3Lib.list({
@@ -206,9 +205,7 @@ export async function copyTemplatesToNewPrefix(
  *
  * @param reportType
  */
-export async function updateExistingReports(
-  reportType: typeof REPORT_TYPES[number]
-) {
+export async function updateExistingReports(reportType: ReportType) {
   const tableName = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reports = (await (
@@ -253,7 +250,7 @@ export async function updateExistingReports(
  * 1. Iterate version each time.
  */
 export const handler: Handler<never, void> = async () => {
-  for (const reportType of REPORT_TYPES) {
+  for (const reportType of Object.values(ReportType)) {
     logger.info(`Processing ${reportType} reports`);
     try {
       await processReport(reportType);

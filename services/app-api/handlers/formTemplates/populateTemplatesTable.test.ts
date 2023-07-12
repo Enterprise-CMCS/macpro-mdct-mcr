@@ -9,6 +9,7 @@ import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { AWSError, Response } from "aws-sdk";
 import { ScanOutput } from "aws-sdk/clients/dynamodb";
+import { ReportType } from "../../utils/types";
 
 const templates = [
   {
@@ -118,7 +119,7 @@ describe("Test processReport", () => {
     const scanSpy = jest.spyOn(dynamodbLib, "scan");
     const querySpy = jest.spyOn(dynamodbLib, "query");
     const putSpy = jest.spyOn(dynamodbLib, "put");
-    await processReport("MLR");
+    await processReport(ReportType.MLR);
 
     expect(copySpy).toHaveBeenCalledTimes(1);
     expect(scanSpy).toHaveBeenCalledTimes(1);
@@ -133,7 +134,7 @@ describe("Test processReport", () => {
         $response: {} as Response<ScanOutput, AWSError>,
       };
     });
-    expect(processReport("MLR")).resolves.toBeDefined;
+    expect(processReport(ReportType.MLR)).resolves.toBeDefined;
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });
@@ -148,7 +149,7 @@ describe("Test AWS library failures", () => {
     });
   });
   it("processing should throw an error if any of the library functions fail", async () => {
-    expect(processReport("MLR")).rejects.toThrowError(
+    expect(processReport(ReportType.MLR)).rejects.toThrowError(
       "Simulated error from S3"
     );
   });

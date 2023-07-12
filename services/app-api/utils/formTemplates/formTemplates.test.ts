@@ -5,7 +5,7 @@ import {
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
 import { createHash } from "crypto";
-import { ReportJson } from "../types";
+import { ReportJson, ReportType } from "../types";
 import { mockDocumentClient } from "../testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
@@ -30,7 +30,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
-      "MCPAR"
+      ReportType.MCPAR
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
-      "MCPAR"
+      ReportType.MCPAR
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -89,7 +89,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
-      "MCPAR"
+      ReportType.MCPAR
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -107,7 +107,10 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
-    const result = await getOrCreateFormTemplate("local-mlr-reports", "MLR");
+    const result = await getOrCreateFormTemplate(
+      "local-mlr-reports",
+      ReportType.MLR
+    );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplate).toEqual(mlr);
@@ -134,7 +137,10 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
-    const result = await getOrCreateFormTemplate("local-mlr-reports", "MLR");
+    const result = await getOrCreateFormTemplate(
+      "local-mlr-reports",
+      ReportType.MLR
+    );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(3);
@@ -160,7 +166,10 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
-    const result = await getOrCreateFormTemplate("local-mlr-reports", "MLR");
+    const result = await getOrCreateFormTemplate(
+      "local-mlr-reports",
+      ReportType.MLR
+    );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(4);

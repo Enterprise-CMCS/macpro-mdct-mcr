@@ -166,3 +166,9 @@ export function isMLRReportMetadata(
     (report as MLRReportMetadata).previousRevisions !== undefined
   );
 }
+
+export enum ReportType {
+  MCPAR = "MCPAR",
+  MLR = "MLR",
+  NAAAR = "NAAAR",
+}

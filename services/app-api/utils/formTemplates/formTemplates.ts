@@ -14,13 +14,13 @@ import {
   ModalOverlayReportPageShape,
   ReportJson,
   ReportRoute,
+  ReportType,
 } from "../types";
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
 import { createHash } from "crypto";
-const REPORT_TYPES = ["MCPAR", "MLR"] as const;
 
 export function getNewestTemplateVersionRequest(
-  reportType: typeof REPORT_TYPES[number]
+  reportType: keyof typeof ReportType
 ): QueryInput {
   return {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
@@ -36,7 +36,7 @@ export function getNewestTemplateVersionRequest(
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
-  reportType: string
+  reportType: ReportType
 ) {
   const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
 
@@ -51,9 +51,7 @@ export async function getOrCreateFormTemplate(
     .digest("hex");
 
   const mostRecentTemplateVersion = (
-    await dynamodbLib.query(
-      getNewestTemplateVersionRequest(reportType as "MCPAR" | "MLR")
-    )
+    await dynamodbLib.query(getNewestTemplateVersionRequest(reportType))
   ).Items?.[0];
 
   const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
