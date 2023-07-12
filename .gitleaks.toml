@@ -1,5 +1,2 @@
 [allowlist]
-  files = [ '''*.test.json''']
-# Notice the difference between using 
-# regular expressions '''regexp''' 
-# and exact matches "exactMatch"
+  files = [ "*.test.json"]
