@@ -88,7 +88,7 @@ export const NumberField = ({
     // mask value and set as display value
     const formattedFieldValue = applyMask(value, mask);
     const maskedFieldValue = formattedFieldValue.maskedValue;
-    const cleanedValue = formattedFieldValue.cleanedValue;
+    const cleanedFieldValue = formattedFieldValue.cleanedValue;
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
@@ -97,10 +97,9 @@ export const NumberField = ({
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value: value,
+        value: cleanedFieldValue,
         defaultValue,
         hydrationValue,
-        cleanedValue,
       });
 
       const reportArgs = {

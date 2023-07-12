@@ -1,11 +1,4 @@
-import {
-  array,
-  boolean,
-  mixed,
-  //number as yupNumberSchema,
-  object,
-  string,
-} from "yup";
+import { array, boolean, mixed, object, string } from "yup";
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
 import {
@@ -29,16 +22,6 @@ export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
-
-/*
- * const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
- * return yupNumberSchema().transform((_value) => {
- *    return Number(value.replace(charsToReplace, ""));
- *  });
- * };
- *
- * const validNumberRegex = /^[\d.\-,]+$/;
- */
 
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
