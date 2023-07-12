@@ -86,7 +86,7 @@ export async function getOrCreateFormTemplate(
 
     // If we didn't find any form templates, start version at 1.
     const newFormTemplateVersionItem: FormTemplate = {
-      versionNumber: mostRecentTemplateVersion
+      versionNumber: mostRecentTemplateVersion?.versionNumber
         ? (mostRecentTemplateVersion.versionNumber += 1)
         : 1,
       md5Hash: currentTemplateHash,
