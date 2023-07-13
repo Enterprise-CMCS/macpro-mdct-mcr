@@ -126,9 +126,10 @@ export const NumberField = ({
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }}>
+    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField
           id={name}
