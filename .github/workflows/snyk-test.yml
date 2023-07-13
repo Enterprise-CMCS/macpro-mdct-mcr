@@ -3,6 +3,8 @@ name: Snyk Scan and Report
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ tag-epic-fix ]
   schedule:
     - cron:  '0 4 * * *'  # run every day at midnight
 
@@ -30,7 +32,7 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule'
+      if: github.event_name == 'schedule' || 'push'
       steps:
         - name: Check out repository
           uses: actions/checkout@v2
@@ -43,7 +45,7 @@ jobs:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           
         - name: use the custom github  action to parse Snyk output
-          uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.2
+          uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.3
           with:
               jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
               jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
