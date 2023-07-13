@@ -12,6 +12,7 @@ export interface ReportJson {
   routes: ReportRoute[];
   flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
+  validationJson?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
@@ -171,4 +172,13 @@ export enum ReportType {
   MCPAR = "MCPAR",
   MLR = "MLR",
   NAAAR = "NAAAR",
+}
+/**
+ * Check if unknown value is a report type
+ *
+ * @param reportType possible report type value
+ * @returns type assertion for value
+ */
+export function isReportType(reportType: unknown): reportType is ReportType {
+  return Object.values(ReportType).includes(reportType as ReportType);
 }

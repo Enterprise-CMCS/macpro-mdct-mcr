@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
 import {
   error,
   buckets,
@@ -61,7 +61,7 @@ export const fetchReport = handler(async (event, _context) => {
     // Get form template from S3
     const formTemplateParams: S3Get = {
       Bucket: reportBucket,
-      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+      Key: getFormTemplateKey(formTemplateId),
     };
 
     const formTemplate = (await s3Lib.get(formTemplateParams)) as AnyObject; // TODO: strict typing

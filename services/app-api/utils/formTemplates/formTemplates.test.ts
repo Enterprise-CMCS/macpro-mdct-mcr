@@ -1,6 +1,7 @@
 import {
   copyAdminDisabledStatusToForms,
   getOrCreateFormTemplate,
+  getValidationFromFormTemplate,
 } from "./formTemplates";
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
@@ -34,7 +35,10 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
-    expect(result.formTemplate).toEqual(mcpar);
+    expect(result.formTemplate).toEqual({
+      ...mcpar,
+      validationJson: getValidationFromFormTemplate(mcpar as ReportJson),
+    });
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMCPARFormHash);
   });
@@ -113,7 +117,10 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
-    expect(result.formTemplate).toEqual(mlr);
+    expect(result.formTemplate).toEqual({
+      ...mlr,
+      validationJson: getValidationFromFormTemplate(mlr as ReportJson),
+    });
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMLRFormHash);
   });

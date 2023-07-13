@@ -66,12 +66,16 @@ export async function getOrCreateFormTemplate(
     };
   } else {
     const newFormTemplateId = KSUID.randomSync().string;
+    const formTemplateWithValidationJson = {
+      ...currentFormTemplate,
+      validationJson: getValidationFromFormTemplate(
+        currentFormTemplate as ReportJson
+      ),
+    };
     try {
       await s3Lib.put({
         Key: getFormTemplateKey(newFormTemplateId),
-        Body: JSON.stringify(
-          copyAdminDisabledStatusToForms(currentFormTemplate as ReportJson)
-        ),
+        Body: JSON.stringify(formTemplateWithValidationJson),
         ContentType: "application/json",
         Bucket: reportBucket,
       });
@@ -105,7 +109,7 @@ export async function getOrCreateFormTemplate(
     }
 
     return {
-      formTemplate: formTemplateWithAdminDisabled,
+      formTemplate: formTemplateWithValidationJson,
       formTemplateVersion: newFormTemplateVersionItem,
     };
   }
@@ -232,4 +236,10 @@ export function isFieldElement(
   field: FormField | FormLayoutElement
 ): field is FormField {
   return !formLayoutElementTypes.includes(field.type);
+}
+
+export function getValidationFromFormTemplate(reportJson: ReportJson) {
+  return compileValidationJsonFromRoutes(
+    flattenReportRoutesArray(copyAdminDisabledStatusToForms(reportJson).routes)
+  );
 }

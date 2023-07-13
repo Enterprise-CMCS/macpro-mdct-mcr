@@ -20,11 +20,8 @@ import {
   reportBuckets,
 } from "../../utils/constants/constants";
 // types
-import { S3Put, StatusCodes, UserRoles } from "../../utils/types";
-import {
-  compileValidationJsonFromRoutes,
-  getOrCreateFormTemplate,
-} from "../../utils/formTemplates/formTemplates";
+import { isReportType, S3Put, StatusCodes, UserRoles } from "../../utils/types";
+import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/logging";
 
 export const createReport = handler(async (event, _context) => {
@@ -49,10 +46,19 @@ export const createReport = handler(async (event, _context) => {
   const unvalidatedPayload = JSON.parse(event!.body!);
   const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
     unvalidatedPayload;
-  const reportType = unvalidatedPayload.metadata.reportType;
+
+  const possibleReportType: unknown = event?.pathParameters?.reportType;
+  if (!isReportType(possibleReportType)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
+  const reportType = possibleReportType;
 
   // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, reportType)) {
+  if (!hasReportAccess(event, possibleReportType)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -74,10 +80,8 @@ export const createReport = handler(async (event, _context) => {
     throw err;
   }
 
-  const validationJson = compileValidationJsonFromRoutes(formTemplate.routes);
-
   // Return MISSING_DATA error if missing unvalidated data or validators.
-  if (!unvalidatedFieldData || !validationJson) {
+  if (!unvalidatedFieldData || !formTemplate.validationJson) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.MISSING_DATA,
@@ -87,18 +91,18 @@ export const createReport = handler(async (event, _context) => {
   // Create report and field ids.
   const reportId: string = KSUID.randomSync().string;
   const fieldDataId: string = KSUID.randomSync().string;
-  const formTemplateId: string = KSUID.randomSync().string;
+  const formTemplateId = formTemplateVersion?.id;
 
   // Validate field data
   const validatedFieldData = await validateFieldData(
-    validationJson,
+    formTemplate.validationJson,
     unvalidatedFieldData
   );
 
   // Return INVALID_DATA error if field data is not valid.
-  if (!validatedFieldData) {
+  if (!validatedFieldData || Object.keys(validatedFieldData).length === 0) {
     return {
-      status: StatusCodes.BAD_REQUEST,
+      status: StatusCodes.SERVER_ERROR,
       body: error.INVALID_DATA,
     };
   }
@@ -139,6 +143,7 @@ export const createReport = handler(async (event, _context) => {
       state,
       id: reportId,
       fieldDataId,
+      status: "Not started",
       formTemplateId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
