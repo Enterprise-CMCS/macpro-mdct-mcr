@@ -33,7 +33,7 @@ import {
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
-export const DrawerReportPage = ({ route }: Props) => {
+export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
@@ -162,6 +162,7 @@ export const DrawerReportPage = ({ route }: Props) => {
           isOpen,
           onClose,
         }}
+        validateOnRender={validateOnRender}
         data-testid="report-drawer"
       />
       <ReportPageFooter />
@@ -171,6 +172,7 @@ export const DrawerReportPage = ({ route }: Props) => {
 
 interface Props {
   route: DrawerReportPageShape;
+  validateOnRender?: boolean;
 }
 
 const sx = {

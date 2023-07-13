@@ -22,7 +22,11 @@ import { useBreakpoint, useUser } from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import { EntityProvider } from "./EntityProvider";
 
-export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
+export const ModalOverlayReportPage = ({
+  route,
+  setSidebarHidden,
+  validateOnRender,
+}: Props) => {
   const { isTablet, isMobile } = useBreakpoint();
 
   const { entityType, verbiage, modalForm, overlayForm } = route;
@@ -107,6 +111,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
             verbiage={verbiage}
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
             setSidebarHidden={setSidebarHidden}
+            validateOnRender={validateOnRender}
           />
         </EntityProvider>
       ) : (
@@ -199,6 +204,7 @@ export const ModalOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
 interface Props {
   route: ModalOverlayReportPageShape;
   setSidebarHidden: Function;
+  validateOnRender?: boolean;
 }
 
 const sx = {

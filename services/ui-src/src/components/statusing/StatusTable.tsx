@@ -146,7 +146,7 @@ const EditButton = (
       sx={sx.enterButton}
       variant="outline"
       aria-label={buttonAriaLabel}
-      onClick={() => navigate(path)}
+      onClick={() => navigate(path, { state: { validateOnRender: true } })}
     >
       {showIcon && <Image src={editIcon} alt="Edit Program" />}
       Edit

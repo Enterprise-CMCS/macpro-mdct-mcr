@@ -23,6 +23,7 @@ export const EntityDetailsOverlay = ({
   selectedEntity,
   closeEntityDetailsOverlay,
   setSidebarHidden,
+  validateOnRender,
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
@@ -138,6 +139,7 @@ export const EntityDetailsOverlay = ({
           formData={selectedEntity}
           autosave={true}
           disabled={!userIsEndUser}
+          validateOnRender={validateOnRender}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
@@ -168,6 +170,7 @@ interface Props {
   selectedEntity: EntityShape;
   closeEntityDetailsOverlay: Function;
   setSidebarHidden: Function;
+  validateOnRender?: boolean;
 }
 
 const sx = {

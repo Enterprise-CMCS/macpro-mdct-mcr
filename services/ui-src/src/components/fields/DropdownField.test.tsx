@@ -250,6 +250,30 @@ describe("Test DropdownField autosaves", () => {
   });
 });
 
+describe("Dropdown handles triggering validation", () => {
+  const dropdownComponentWithOptionsAndValidateOnRender = (
+    <DropdownField
+      name="testDropdown"
+      label="test-dropdown-label"
+      options={mockDropdownOptions}
+      validateOnRender
+    />
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Component with validateOnRender passed should validate on render", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(dropdownComponentWithOptionsAndValidateOnRender);
+    const dropdown = screen.getByLabelText("test-dropdown-label");
+    expect(dropdown.children.length).toEqual(4);
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+});
+
 describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
