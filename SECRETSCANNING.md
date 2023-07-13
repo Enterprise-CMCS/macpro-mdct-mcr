@@ -127,7 +127,7 @@ If you are knowingly committing a test secret that gitleaks will catch you can a
 
 ```
 class CustomClass:
-    discord_client_secret = 'Dummy-Secret'  #gitleaks:allow
+    discord_client_secret = Dummy-Secret  #gitleaks:allow
 ```
 
 #### [](https://github.com/gitleaks/gitleaks#gitleaksignore).gitleaksignore
