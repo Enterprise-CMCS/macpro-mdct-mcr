@@ -35,6 +35,7 @@ export const Form = ({
   onSubmit,
   onError,
   formData,
+  validateOnRender,
   autosave,
   children,
   ...props
@@ -84,6 +85,7 @@ export const Form = ({
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
       autosave,
+      validateOnRender,
     });
   };
 
@@ -109,6 +111,7 @@ interface Props {
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
   autosave?: boolean;
+  validateOnRender?: boolean;
   children?: ReactNode;
   [key: string]: any;
 }

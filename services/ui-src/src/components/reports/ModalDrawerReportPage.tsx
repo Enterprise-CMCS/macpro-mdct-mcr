@@ -31,7 +31,7 @@ import {
   ReportStatus,
 } from "types";
 
-export const ModalDrawerReportPage = ({ route }: Props) => {
+export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
@@ -232,6 +232,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             isOpen: drawerIsOpen,
             onClose: closeDrawer,
           }}
+          validateOnRender={validateOnRender}
           data-testid="report-drawer"
         />
         {reportFieldDataEntities.length > 1 && (
@@ -250,6 +251,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
 interface Props {
   route: ModalDrawerReportPageShape;
+  validateOnRender?: boolean;
 }
 
 const sx = {

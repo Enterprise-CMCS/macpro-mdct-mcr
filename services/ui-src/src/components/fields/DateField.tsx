@@ -23,6 +23,7 @@ export const DateField = ({
   sxOverride,
   nested,
   autosave,
+  validateOnRender,
   styleAsOptional,
   ...props
 }: Props) => {
@@ -39,7 +40,7 @@ export const DateField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
     } else {
       form.trigger(name);
@@ -146,6 +147,7 @@ interface Props {
   timetype?: string;
   nested?: boolean;
   autosave?: boolean;
+  validateOnRender?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
   clear?: boolean;

@@ -177,18 +177,6 @@ describe("Test DateField autosave functionality", () => {
     jest.clearAllMocks();
   });
 
-  test("Blanking field triggers form validation", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    const result = render(dateFieldAutosavingComponent);
-    const dateFieldInput = result.getByRole("textbox", {
-      name: "test-date-field",
-    });
-    await userEvent.click(dateFieldInput);
-    await userEvent.clear(dateFieldInput);
-    await userEvent.tab();
-    expect(mockTrigger).toHaveBeenCalled();
-  });
-
   test("Autosaves entered date when state user, autosave true, and field is valid", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
@@ -224,6 +212,37 @@ describe("Test DateField autosave functionality", () => {
     await userEvent.type(dateField, "07/14/2022");
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Datefield handles triggering validation", () => {
+  const dateFieldComponentWithValidateOnRender = (
+    <DateField name="testDateField" label="test-date-field" validateOnRender />
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    const result = render(dateFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
+    const dateFieldInput = result.getByRole("textbox", {
+      name: "test-date-field",
+    });
+    await userEvent.click(dateFieldInput);
+    await userEvent.clear(dateFieldInput);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(dateFieldComponentWithValidateOnRender);
+    expect(mockTrigger).toHaveBeenCalled();
   });
 });
 
