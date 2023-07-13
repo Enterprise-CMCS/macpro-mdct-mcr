@@ -13,7 +13,7 @@ export const cleanStandardNumericalInput = (value: string): CleanedValue => {
   const isValidNumber = checkStandardNumberInputAgainstRegexes(value);
   if (!isValidNumber) return { isValid: false, cleanedValue: value };
 
-  // Remove all characters except digits and decimal points.
+  // Remove all characters except digits, decimal points, and negative signs
   value = value.replace(/[^\d.-]/g, "");
 
   return {
@@ -34,7 +34,12 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   const rightSide = isValidRatio.rightSide;
   const cleanRight = cleanStandardNumericalInput(rightSide);
 
-  const cleanedValue = [cleanLeft, cleanRight].join(":");
+  if (!cleanLeft.isValid || !cleanRight.isValid)
+    return { isValid: false, cleanedValue: value };
+
+  const cleanedValue = [cleanLeft.cleanedValue, cleanRight.cleanedValue].join(
+    ":"
+  );
 
   return {
     isValid: true,

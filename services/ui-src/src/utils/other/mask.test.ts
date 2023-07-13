@@ -1,14 +1,11 @@
 import {
-  convertToCommaSeparatedString,
-  isValidCustomMask,
-  isValidNumericalString,
-  maskValue,
-  convertToCommaSeparatedRatioString,
+  convertToThousandsSeparatedString,
+  convertToThousandsSeparatedRatioString,
 } from "utils";
-import { customMaskMap } from "./mask";
+import { maskMap, applyMask } from "./mask";
 
-const commaSeparatedMaskAcceptableTestCases = [
-  { test: "0....0123", expected: "0.01" },
+const thousandsSeparatedMaskAcceptableTestCases = [
+  { test: "0....0123", expected: "0....0123" },
   { test: "000000123", expected: "123" },
   { test: "123", expected: "123" },
   { test: "123.00", expected: "123" },
@@ -20,16 +17,24 @@ const commaSeparatedMaskAcceptableTestCases = [
   { test: "1,234.00", expected: "1,234" },
   { test: "1,234", expected: "1,234" },
   { test: "1234", expected: "1,234" },
-  { test: "1,234", expected: "1,234" },
   { test: "100,000,000", expected: "100,000,000" },
   { test: "100000000", expected: "100,000,000" },
-  { test: "-1234", expected: "1,234" },
-  { test: "$$1234567890.10", expected: "1,234,567,890.1" },
-  { test: "$$$$$23453--123081", expected: "23,453,123,081" },
-  {
-    test: "Technically a wrong input that validation would pick up but would actually still work with 1 number",
-    expected: "1",
-  },
+  { test: "-1234", expected: "-1,234" },
+  { test: "123%", expected: "123" },
+  { test: "123%%", expected: "123%%" },
+  { test: "--123", expected: "--123" },
+  { test: "$$123", expected: "$$123" },
+  { test: "$123", expected: "123" },
+  { test: "1234%", expected: "1,234" },
+  { test: "1234%%", expected: "1234%%" },
+  { test: "--1234", expected: "--1234" },
+  { test: "$$1234", expected: "$$1234" },
+  { test: "$1234", expected: "1,234" },
+  { test: "$$1234567890.10", expected: "$$1234567890.10" },
+  { test: "$$$$$23453--123081", expected: "$$$$$23453--123081" },
+  { test: "!@#$%*^()_", expected: "!@#$%*^()_" },
+  { test: "abc123", expected: "abc123" },
+  { test: "123abc", expected: "123abc" },
 ];
 
 const ratioMaskAcceptableTestCases = [
@@ -37,59 +42,71 @@ const ratioMaskAcceptableTestCases = [
   { test: "1,234:1.12", expected: "1,234:1.12" },
   { test: "1234:1.12", expected: "1,234:1.12" },
   { test: "1.23:1234.1", expected: "1.23:1,234.1" },
-  { test: "1,,,234,56....1234:1", expected: "123,456.12:1" },
-  { test: "1:1,,,234,56....1234", expected: "1:123,456.12" },
+  { test: "1,,,234,56....1234:1", expected: "1,,,234,56....1234:1" },
+  { test: "1:1,,,234,56....1234", expected: "1:1,,,234,56....1234" },
   { test: "1:10,000", expected: "1:10,000" },
-  { test: "1:10,00:0", expected: "1:1,000" },
+  { test: "1:10,00:0", expected: "1:10,00:0" },
+  { test: "No colon here, m'lord", expected: "No colon here, m'lord" },
+  { test: " :1", expected: " :1" },
+  { test: "1: ", expected: "1: " },
+  { test: "1:::10,000 ", expected: "1:::10,000 " },
+  { test: "1000", expected: "1000" },
+  { test: "1,234", expected: "1,234" },
+  { test: "1234", expected: "1234" },
+  { test: ":1234", expected: ":1234" },
+  { test: "abc", expected: "abc" },
+  { test: "!@#123:123", expected: "!@#123:123" },
+  { test: "123:-123", expected: "123:-123" },
+  { test: "$123:-123", expected: "$123:-123" },
+  { test: "", expected: "" },
 ];
 
-describe("Test validCustomMask", () => {
-  test("Check if good and bad mask values return accurately", () => {
-    const commaSeparated = isValidCustomMask("comma-separated");
-    const badMask = isValidCustomMask("cherry-tree");
-    expect(commaSeparated).toBe(true);
-    expect(badMask).toBe(false);
+describe("Test mask types", () => {
+  const nullTestCases = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "000000123" },
+    { test: "123", expected: "123" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
+  const undefinedTestCases = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "123" },
+    { test: "123", expected: "123" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
+  test("Check if null passed for mask returns unmasked value", () => {
+    for (let testCase of nullTestCases) {
+      expect(applyMask(testCase.test, null).maskedValue).toEqual(
+        testCase.expected
+      );
+    }
   });
 
-  test("Check if all custom masks have validation functions", () => {
-    for (let maskFunction of Object.values(customMaskMap)) {
+  test("Check if undefined passed for mask returns unmasked value", () => {
+    for (let testCase of undefinedTestCases) {
+      expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
+    }
+  });
+
+  test("Check if all masks have masking functions", () => {
+    for (let maskFunction of Object.values(maskMap)) {
       expect(typeof maskFunction).toBe("function");
     }
   });
 });
 
-describe("Test isValidNumericalString", () => {
-  test("Check if strings with numbers are maskable", () => {
-    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
-      expect(isValidNumericalString(testCase.test)).toEqual(true);
-    }
-  });
-
-  test("Non-numerical strings are rejected", () => {
-    const testCases = ["abc", "harryhadalittlelamb"];
-    for (let testCase of testCases) {
-      expect(isValidNumericalString(testCase)).toEqual(false);
-    }
-  });
-});
-
-describe("Test convertToCommaSeparatedString", () => {
+describe("Test convertToThousandsSeparatedString", () => {
   test("Valid numerical string is correctly masked with thousands separators", () => {
-    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
-      expect(convertToCommaSeparatedString(testCase.test)).toEqual(
-        testCase.expected
-      );
-    }
-  });
-  test("Check if non number strings can fail gracefully", () => {
-    const testCases = [
-      { test: "No numbers here, m'lord", expected: "NaN" },
-      { test: "", expected: "NaN" },
-    ];
-    for (let testCase of testCases) {
-      expect(convertToCommaSeparatedString(testCase.test)).toEqual(
-        testCase.expected
-      );
+    for (let testCase of thousandsSeparatedMaskAcceptableTestCases) {
+      expect(
+        convertToThousandsSeparatedString(testCase.test).maskedValue
+      ).toEqual(testCase.expected);
     }
   });
 });
@@ -97,44 +114,9 @@ describe("Test convertToCommaSeparatedString", () => {
 describe("Test convertToCommaSeparatedRatioString", () => {
   test("Valid ratio is split and masked on each side individually", () => {
     for (let testCase of ratioMaskAcceptableTestCases) {
-      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
-        testCase.expected
-      );
-    }
-  });
-  test("Check if non number strings can fail gracefully", () => {
-    const testCases = [
-      { test: "No numbers here, m'lord", expected: ":" },
-      { test: " :1", expected: ":1" },
-      { test: "1: ", expected: "1:" },
-      { test: "1:::10,000 ", expected: "1:" },
-    ];
-    for (let testCase of testCases) {
-      expect(convertToCommaSeparatedRatioString(testCase.test)).toEqual(
-        testCase.expected
-      );
-    }
-  });
-});
-
-describe("Test maskValue accepts custom masks and returns the correct output", () => {
-  test("Check if strings with numbers are masked correctly when given the comma-separated mask", () => {
-    for (let testCase of commaSeparatedMaskAcceptableTestCases) {
-      expect(maskValue(testCase.test, "comma-separated")).toEqual(
-        testCase.expected
-      );
-    }
-  });
-
-  test("Check if strings without numbers are not masked and passed right back to the user", () => {
-    const testCases = [
-      { test: "I cant find the number!", expected: "I cant find the number!" },
-      { test: "#Ooops", expected: "#Ooops" },
-    ];
-    for (let testCase of testCases) {
-      expect(maskValue(testCase.test, "comma-separated")).toEqual(
-        testCase.expected
-      );
+      expect(
+        convertToThousandsSeparatedRatioString(testCase.test).maskedValue
+      ).toEqual(testCase.expected);
     }
   });
 });

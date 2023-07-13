@@ -1,9 +1,9 @@
 // REGEX
 
 // basic check for all possible characters -- standard number
-const validCharactersStandardNumberRegex = /^[0-9.,$%-]+$/;
+const validCharactersStandardNumberRegex = /^[0-9\s.,$%-]+$/;
 // basic check for all possible characters -- ratio
-const validCharactersRatioNumberRegex = /^[0-9.,:]+$/;
+const validCharactersRatioNumberRegex = /^[0-9.,]+$/;
 // at most 1 decimal point
 const atMost1DecimalPointRegex = /^[^.]*\.?[^.]*$/;
 // commas only exist before decimal point
@@ -40,10 +40,7 @@ export const checkStandardNumberInputAgainstRegexes = (
 export const checkRatioInputAgainstRegexes = (
   value: string
 ): { isValid: boolean; leftSide: string; rightSide: string } => {
-  if (
-    !validCharactersRatioNumberRegex.test(value) ||
-    !exactlyOneRatioCharacterRegex.test(value)
-  )
+  if (!exactlyOneRatioCharacterRegex.test(value))
     return { isValid: false, leftSide: "", rightSide: "" };
 
   // Grab the left and right side of the ratio sign
@@ -61,9 +58,9 @@ export const checkRatioInputAgainstRegexes = (
 
 export const checkLeftSideOfRatioAgainstRegexes = (value: string): boolean => {
   if (
-    validCharactersStandardNumberRegex.test(value) ||
-    atMost1DecimalPointRegex.test(value) ||
-    validCommaLocationRegex.test(value)
+    !validCharactersRatioNumberRegex.test(value) ||
+    !atMost1DecimalPointRegex.test(value) ||
+    !validCommaLocationRegex.test(value)
   )
     return false;
   return true;
@@ -71,9 +68,9 @@ export const checkLeftSideOfRatioAgainstRegexes = (value: string): boolean => {
 
 export const checkRightSideOfRatioAgainstRegexes = (value: string): boolean => {
   if (
-    validCharactersStandardNumberRegex.test(value) ||
-    atMost1DecimalPointRegex.test(value) ||
-    validCommaLocationRegex.test(value)
+    !validCharactersRatioNumberRegex.test(value) ||
+    !atMost1DecimalPointRegex.test(value) ||
+    !validCommaLocationRegex.test(value)
   )
     return false;
   return true;
