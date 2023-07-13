@@ -3,8 +3,6 @@ name: Snyk Scan and Report
 on:
   pull_request:
     branches: [ main ]
-  push:
-    branches: [ tag-epic-fix ]
   schedule:
     - cron:  '0 4 * * *'  # run every day at midnight
 
@@ -32,7 +30,7 @@ jobs:
   snyk_nightly_run:  
       name: Snyk Nightly Run (for nightly cron with JIRA)
       runs-on: ubuntu-latest
-      if: github.event_name == 'schedule' || 'push'
+      if: github.event_name == 'schedule'
       steps:
         - name: Check out repository
           uses: actions/checkout@v2
