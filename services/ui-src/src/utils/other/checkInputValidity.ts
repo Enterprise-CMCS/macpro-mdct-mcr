@@ -3,7 +3,7 @@
 // basic check for all possible characters -- standard number
 const validCharactersStandardNumberRegex = /^[0-9\s.,$%-]+$/;
 // basic check for all possible characters -- ratio
-const validCharactersRatioNumberRegex = /^[0-9.,]+$/;
+const validCharactersRatioNumberRegex = /^[0-9.,-]+$/;
 // at most 1 decimal point
 const atMost1DecimalPointRegex = /^[^.]*\.?[^.]*$/;
 // commas only exist before decimal point
@@ -48,25 +48,15 @@ export const checkRatioInputAgainstRegexes = (
 
   // Check left and right side for valid inputs
   if (
-    !checkLeftSideOfRatioAgainstRegexes(values[0]) ||
-    !checkRightSideOfRatioAgainstRegexes(values[1])
+    !checkASideOfRatioAgainstRegexes(values[0]) ||
+    !checkASideOfRatioAgainstRegexes(values[1])
   )
     return { isValid: false, leftSide: values[0], rightSide: values[1] };
 
   return { isValid: true, leftSide: values[0], rightSide: values[1] };
 };
 
-export const checkLeftSideOfRatioAgainstRegexes = (value: string): boolean => {
-  if (
-    !validCharactersRatioNumberRegex.test(value) ||
-    !atMost1DecimalPointRegex.test(value) ||
-    !validCommaLocationRegex.test(value)
-  )
-    return false;
-  return true;
-};
-
-export const checkRightSideOfRatioAgainstRegexes = (value: string): boolean => {
+export const checkASideOfRatioAgainstRegexes = (value: string): boolean => {
   if (
     !validCharactersRatioNumberRegex.test(value) ||
     !atMost1DecimalPointRegex.test(value) ||

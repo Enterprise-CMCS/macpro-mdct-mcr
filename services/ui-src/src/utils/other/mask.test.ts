@@ -5,7 +5,7 @@ import {
 import { maskMap, applyMask } from "./mask";
 
 const thousandsSeparatedMaskAcceptableTestCases = [
-  { test: "0....0123", expected: "0....0123" },
+  // valid input, masked
   { test: "000000123", expected: "123" },
   { test: "123", expected: "123" },
   { test: "123.00", expected: "123" },
@@ -21,15 +21,18 @@ const thousandsSeparatedMaskAcceptableTestCases = [
   { test: "100000000", expected: "100,000,000" },
   { test: "-1234", expected: "-1,234" },
   { test: "123%", expected: "123" },
+  { test: "$123", expected: "123" },
+  { test: "1234%", expected: "1,234" },
+  { test: "$1234", expected: "1,234" },
+
+  // invalid input, returned as is
+  { test: "0....0123", expected: "0....0123" },
   { test: "123%%", expected: "123%%" },
   { test: "--123", expected: "--123" },
   { test: "$$123", expected: "$$123" },
-  { test: "$123", expected: "123" },
-  { test: "1234%", expected: "1,234" },
   { test: "1234%%", expected: "1234%%" },
   { test: "--1234", expected: "--1234" },
   { test: "$$1234", expected: "$$1234" },
-  { test: "$1234", expected: "1,234" },
   { test: "$$1234567890.10", expected: "$$1234567890.10" },
   { test: "$$$$$23453--123081", expected: "$$$$$23453--123081" },
   { test: "!@#$%*^()_", expected: "!@#$%*^()_" },

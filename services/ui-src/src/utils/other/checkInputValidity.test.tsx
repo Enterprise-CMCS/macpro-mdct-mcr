@@ -4,6 +4,7 @@ import {
 } from "./checkInputValidity";
 
 const validateStandardNumberInputTestCases = [
+  // valid input
   { test: "123", expected: true },
   { test: "1234", expected: true },
   { test: "1,234", expected: true },
@@ -54,6 +55,8 @@ const validateStandardNumberInputTestCases = [
   { test: "-123.1%", expected: true },
   { test: "-1,234.56%", expected: true },
   { test: "-1234.561231231%", expected: true },
+
+  // invalid input
   { test: "Abc", expected: false },
   { test: "--123", expected: false },
   { test: "$$123", expected: false },
@@ -71,6 +74,7 @@ const validateStandardNumberInputTestCases = [
 ];
 
 const validateRatioNumberInputTestCases = [
+  // valid input
   { test: "123:123", expected: true },
   { test: "1234:1234", expected: true },
   { test: "1,234:1,234", expected: true },
@@ -85,6 +89,8 @@ const validateRatioNumberInputTestCases = [
   { test: "1,234.56:1234.56", expected: true },
   { test: "1234.561231231:1,234.561231231", expected: true },
   //{ test: "1.12301273198273123: 1.12301273198273123", expected: true },
+
+  // invalid input
   { test: "123::123", expected: false },
   { test: "$123:123", expected: false },
   { test: "123:123%", expected: false },
