@@ -36,18 +36,6 @@ export const UserProvider = ({ children }: Props) => {
   const [user, setUser] = useState<any>(null);
   const [showLocalLogins, setShowLocalLogins] = useState(false);
 
-  const setRedirectURL = () => {
-    if (config.STAGE === "main") {
-      return "https://test.home.idm.cms.gov/app/UserHome";
-    } else if (config.STAGE === "val") {
-      return "https://impl.home.idm.cms.gov/app/UserHome";
-    } else if (config.STAGE === "production") {
-      return "https://idm.cms.gov/app/UserHome";
-    } else {
-      return config.cognito.REDIRECT_SIGNOUT;
-    }
-  };
-
   // initialize the authentication manager that oversees timeouts
   initAuthManager();
 
@@ -59,7 +47,7 @@ export const UserProvider = ({ children }: Props) => {
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }
-    window.location.href = setRedirectURL();
+    window.location.href = config.cognito.REDIRECT_SIGNOUT;
   }, []);
 
   const checkAuthState = useCallback(async () => {
