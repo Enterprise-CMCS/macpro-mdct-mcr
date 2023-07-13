@@ -13,9 +13,9 @@ const atMost1SpecialCharacterRegex = /^([^$%]*\$[^$%]*|[^$%]*%[^$%]*|[^$%]*)$/;
 // at most 1 $ at the beginning of the input
 const validDollarSignPlacementRegex = /^[$]?[^$%]+$/;
 // at most 1 % at the end of the input
-const validPercentSignPlacementRegex = /^[^%$]+%?$/;
+const validPercentSignPlacementRegex = /^[^%$]+[%]?$/;
 // at most 1 - at the beginning of the input (but after any potential $s)
-const validNegativeSignPlacementRegex = /^[$]?[-]?[^$%-]+$/;
+const validNegativeSignPlacementRegex = /^[$]?[-]?[^$-]+[%]?$/;
 // exactly one ratio character in between other characters
 const exactlyOneRatioCharacterRegex = /^[^:]+:[^:]+$/;
 

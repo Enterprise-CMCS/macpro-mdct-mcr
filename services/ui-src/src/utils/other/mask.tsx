@@ -3,7 +3,7 @@ import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 export const maskMap = {
   "comma-separated": convertToThousandsSeparatedString,
   percentage: convertToThousandsSeparatedString,
-  ratio: convertToRatioString,
+  ratio: convertToThousandsSeparatedRatioString,
   currency: convertToThousandsSeparatedString,
 };
 
@@ -48,7 +48,7 @@ export function convertToThousandsSeparatedString(value: string): {
  * @param {String} value
  * @returns {String}
  */
-export function convertToRatioString(value: string): {
+export function convertToThousandsSeparatedRatioString(value: string): {
   maskedValue: string;
   cleanedValue: string;
 } {
