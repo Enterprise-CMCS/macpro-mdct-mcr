@@ -7,7 +7,7 @@ import {
   hasReportAccess,
   hasPermissions,
 } from "../../utils/auth/authorization";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
 import {
   validateData,
   validateFieldData,
@@ -133,7 +133,7 @@ export const updateReport = handler(async (event, context) => {
 
   const formTemplateParams = {
     Bucket: reportBucket,
-    Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+    Key: getFormTemplateKey(formTemplateId),
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
     string,
