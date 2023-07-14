@@ -27,7 +27,7 @@
           {
             "id": "contactName",
             "type": "text",
-            "services/ui-src/src/forms/mlr/index.ts services/ui-src/src/forms/mcpar/index.ts": "text",
+            "validation": "text",
             "props": {
               "label": "A. Contact name",
               "hint": "Enter the first and last name of the primary contact for this report."
