@@ -26,12 +26,6 @@ export function convertToThousandsSeparatedString(value: string): {
   // Remove all characters except 0123456789.-
   let maskedValue = cleanedValue.replace(/[^\d.-]/g, "");
 
-  // If entire value is not 0, remove all leading zeros
-  if (parseFloat(maskedValue) !== 0) {
-    // Remove all leading zeroes if value is not equal to 0
-    maskedValue = maskedValue.replace(/^0+/g, "");
-  }
-
   // Convert String to a float to begin operation
   const valueAsFloat = parseFloat(maskedValue);
 

@@ -2,7 +2,7 @@ import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 
 const cleanStandardNumericalInputTestCases = [
   // valid input, cleaned
-  { test: "000000123", expected: "000000123" },
+  { test: "000000123", expected: "123" },
   { test: "123", expected: "123" },
   { test: "123.00", expected: "123.00" },
   { test: ".05000000000000", expected: ".05000000000000" },
