@@ -38,6 +38,7 @@ export const Form = ({
   formData,
   validateOnRender,
   autosave,
+  dontReset,
   children,
   ...props
 }: Props) => {
@@ -92,7 +93,9 @@ export const Form = ({
   };
 
   useEffect(() => {
-    form?.reset();
+    if (!dontReset && !validateOnRender) {
+      form?.reset();
+    }
   }, [location?.pathname]);
 
   return (
@@ -114,10 +117,11 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  validateOnRender: boolean;
+  dontReset: boolean;
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
   autosave?: boolean;
-  validateOnRender?: boolean;
   children?: ReactNode;
   [key: string]: any;
 }
