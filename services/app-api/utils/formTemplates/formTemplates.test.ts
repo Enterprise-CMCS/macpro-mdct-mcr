@@ -1,13 +1,15 @@
 import {
+  compileValidationJsonFromRoutes,
   copyAdminDisabledStatusToForms,
+  flattenReportRoutesArray,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
 } from "./formTemplates";
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
 import { createHash } from "crypto";
-import { ReportJson, ReportType } from "../types";
-import { mockDocumentClient } from "../testing/setupJest";
+import { ModalOverlayReportPageShape, ReportJson, ReportType } from "../types";
+import { mockDocumentClient, mockReportJson } from "../testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 
@@ -181,5 +183,50 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(4);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMLRFormHash);
+  });
+});
+
+describe("Test copyAdminDisabledStatusToForms", () => {
+  it("Copies disabled status to nested forms of any kind", () => {
+    const mockAdminDisabledReportJson = {
+      ...mockReportJson,
+      adminDisabled: true,
+    };
+    const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
+
+    const testStandardPageForm = result.routes[0].form;
+    const testDrawerPageForm = result.routes[1].children![0].drawerForm!;
+    const testModalDrawerPageModalForm =
+      result.routes[1].children![1].modalForm!;
+    const testModalDrawerPageDrawerForm =
+      result.routes[1].children![1].drawerForm!;
+    const testModalOverlayPageForm = (
+      result.routes[2] as ModalOverlayReportPageShape
+    ).overlayForm!;
+
+    expect(testStandardPageForm!.adminDisabled).toBeTruthy();
+    expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
+    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
+    expect(testModalOverlayPageForm!.adminDisabled).toBeTruthy();
+  });
+});
+
+describe("Test compileValidationJsonFromRoutes", () => {
+  it("Compiles validation from forms of any kind", () => {
+    const result = compileValidationJsonFromRoutes(
+      flattenReportRoutesArray(mockReportJson.routes)
+    );
+    expect(result).toEqual({
+      accessMeasures: "objectArray",
+      program: "objectArray",
+      "mock-text-field": "text",
+      "mock-drawer-text-field": "text",
+      "mock-modal-text-field": "text",
+      "mock-modal-overlay-text-field": "text",
+      "mock-optional-text-field": "textOptional",
+      "with-label": "text",
+      "mock-nested-field": "radio",
+    });
   });
 });
