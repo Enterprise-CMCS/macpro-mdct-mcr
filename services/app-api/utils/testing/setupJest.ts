@@ -1,5 +1,9 @@
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
+import {
+  mockFlattenedReportRoutes,
+  mockReportRoutes,
+} from "./mocks/mockReport";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
@@ -54,12 +58,11 @@ jest.mock("aws-sdk", () => {
 
 export const mockReportJson = {
   name: "mock-report",
+  type: "mock",
   basePath: "/mock",
-  routes: [],
-  validationJson: {
-    text: "text",
-    number: "number",
-  },
+  routes: mockReportRoutes,
+  flatRoutes: mockFlattenedReportRoutes,
+  validationSchema: {},
 };
 
 export const mockReportKeys = {

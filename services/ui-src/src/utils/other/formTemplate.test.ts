@@ -23,7 +23,7 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawerForm!;
     const testModalOverlayPageForm = (
-      result.routes[1].children![1] as ModalOverlayReportPageShape
+      result.routes[2] as ModalOverlayReportPageShape
     ).overlayForm!;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
