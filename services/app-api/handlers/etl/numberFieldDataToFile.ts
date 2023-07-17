@@ -1,13 +1,9 @@
-/*To Do - Expand to MLR, - Need to handle LastEvaluatedKey */
-
+/*To Do - Need to handle LastEvaluatedKey */
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
 import s3Lib from "../../utils/s3/s3-lib";
 import { AnyObject, S3Get, S3Put } from "../../utils/types";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { buckets } from "../../utils/constants/constants";
-
-const TABLE_NAME = process.env.MCPAR_REPORT_TABLE_NAME!;
-const BUCKET = process.env.MCPAR_FORM_BUCKET!;
 
 type FieldData = {
   fieldId: string;
@@ -18,6 +14,19 @@ type FieldTemplate = {
   entityType?: string;
 };
 
+type S3Route = {
+  state?: string;
+  bucket: string;
+  type: string;
+};
+
+const {
+  MCPAR_REPORT_TABLE_NAME,
+  MCPAR_FORM_BUCKET,
+  MLR_REPORT_TABLE_NAME,
+  MLR_FORM_BUCKET,
+} = process.env;
+
 const fileName = "numberValues";
 const writeObject: any[] = [];
 
@@ -25,29 +34,41 @@ export const check = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  let scannedResult = await scanTable(TABLE_NAME);
+  //extract and write mcpar
+  if (MCPAR_REPORT_TABLE_NAME && MCPAR_FORM_BUCKET)
+    await extractAndWriteData(MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET);
+
+  //extract and write mlr
+  if (MLR_REPORT_TABLE_NAME && MLR_FORM_BUCKET)
+    await extractAndWriteData(MLR_REPORT_TABLE_NAME, MLR_FORM_BUCKET);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "finished write test",
+    }),
+  };
+};
+
+export const extractAndWriteData = async (table: string, bucket: string) => {
+  let scannedResult = await scanTable(table);
   let metadataResults = scannedResult.Items;
   if (metadataResults) {
     for (const metadata of metadataResults) {
-      let state = (metadata as AnyObject).state;
+      let data = metadata as AnyObject;
+      let formRoute: S3Route = {
+        state: data.state,
+        bucket: bucket,
+        type: buckets.FORM_TEMPLATE,
+      };
+      let fieldRoute: S3Route = {
+        state: data.state,
+        bucket: bucket,
+        type: buckets.FIELD_DATA,
+      };
 
-      let formTemplateId = (metadata as AnyObject).formTemplateId;
-      let formType = buckets.FORM_TEMPLATE;
-      let formTemplate = await getDataFromS3(
-        formTemplateId,
-        state,
-        BUCKET,
-        formType
-      );
-
-      let fieldDataId = (metadata as AnyObject).fieldDataId;
-      let fieldType = buckets.FIELD_DATA;
-      let fieldData = await getDataFromS3(
-        fieldDataId,
-        state,
-        BUCKET,
-        fieldType
-      );
+      let formTemplate = await getDataFromS3(data.formTemplateId, formRoute);
+      let fieldData = await getDataFromS3(data.fieldDataId, fieldRoute);
 
       let numericalData = extractNumericalData(formTemplate, fieldData);
       if (numericalData) {
@@ -56,14 +77,8 @@ export const check = async (
     }
   }
 
-  await writeDataToS3(writeObject, BUCKET, buckets.FIELD_DATA);
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "finished write test",
-    }),
-  };
+  let writeRoute: S3Route = { bucket: bucket, type: buckets.FIELD_DATA };
+  await writeDataToS3(writeObject, writeRoute);
 };
 
 export const extractNumericalData = (
@@ -113,28 +128,19 @@ function fieldValueById(fieldData: any, fieldId: string, list: any[]) {
 }
 
 //extract field data from s3 bucket
-export const getDataFromS3 = async (
-  dataId: string,
-  state: string,
-  bucket: string,
-  bucketType: string
-) => {
+export const getDataFromS3 = async (id: string, route: S3Route) => {
   const dataParams: S3Get = {
-    Bucket: bucket,
-    Key: `${bucketType}/${state}/${dataId}.json`,
+    Bucket: route.bucket,
+    Key: `${route.type}/${route.state}/${id}.json`,
   };
   return (await s3Lib.get(dataParams)) as AnyObject;
 };
 
 //load field data back to s3 bucket
-export const writeDataToS3 = async (
-  data: any,
-  bucket: string,
-  bucketType: string
-) => {
+export const writeDataToS3 = async (data: any, route: S3Route) => {
   const dataParams: S3Put = {
-    Bucket: bucket,
-    Key: `${bucketType}/${fileName}.json`,
+    Bucket: route.bucket,
+    Key: `${route.type}/${fileName}.json`,
     Body: JSON.stringify(data),
     ContentType: "application/json",
   };
