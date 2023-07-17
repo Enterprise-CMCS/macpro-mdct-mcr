@@ -69,7 +69,7 @@ const invalidFieldDataSubmissionEvent: APIGatewayProxyEvent = {
     },
     submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
-    fieldData: { ...mockReportFieldData, number: "NAN" },
+    fieldData: { ...mockReportFieldData, "mock-text-field": 123 },
   }),
 };
 

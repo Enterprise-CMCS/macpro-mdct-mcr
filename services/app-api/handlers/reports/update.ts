@@ -24,7 +24,7 @@ import {
   isComplete,
 } from "../../utils/validation/completionStatus";
 // types
-import { StatusCodes, UserRoles } from "../../utils/types";
+import { ReportJson, StatusCodes, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -135,10 +135,7 @@ export const updateReport = handler(async (event, context) => {
     Bucket: reportBucket,
     Key: getFormTemplateKey(formTemplateId),
   };
-  const formTemplate = (await s3Lib.get(formTemplateParams)) as Record<
-    string,
-    any
-  >;
+  const formTemplate = (await s3Lib.get(formTemplateParams)) as ReportJson;
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
@@ -163,9 +160,17 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
+  // Validation JSON should be there—if it's not, there's an issue.
+  if (!formTemplate.validationJson) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.MISSING_FORM_TEMPLATE,
+    };
+  }
+
   // Validate passed field data
   const validatedFieldData = await validateFieldData(
-    formTemplate?.validationJson,
+    formTemplate.validationJson,
     unvalidatedFieldData
   );
 

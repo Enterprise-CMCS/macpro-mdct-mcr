@@ -1,4 +1,5 @@
 import sign from "jwt-encode";
+import { compileValidationJsonFromRoutes } from "../formTemplates/formTemplates";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 import {
   mockFlattenedReportRoutes,
@@ -63,6 +64,7 @@ export const mockReportJson = {
   routes: mockReportRoutes,
   flatRoutes: mockFlattenedReportRoutes,
   validationSchema: {},
+  validationJson: compileValidationJsonFromRoutes(mockFlattenedReportRoutes),
 };
 
 export const mockReportKeys = {
