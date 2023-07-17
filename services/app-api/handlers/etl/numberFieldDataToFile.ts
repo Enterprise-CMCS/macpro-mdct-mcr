@@ -21,7 +21,7 @@ type FieldTemplate = {
 const fileName = "numberValues";
 const writeObject: any[] = [];
 
-export const run = async (
+export const check = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
