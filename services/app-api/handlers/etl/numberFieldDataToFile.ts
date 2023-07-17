@@ -13,7 +13,6 @@ type FieldTemplate = {
   fieldId: string;
   entityType?: string;
 };
-
 type S3Route = {
   state?: string;
   bucket: string;
@@ -34,13 +33,21 @@ export const check = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  //extract and write mcpar
-  if (MCPAR_REPORT_TABLE_NAME && MCPAR_FORM_BUCKET)
-    await extractAndWriteData(MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET);
+  //extract and store mcpar data
+  if (MCPAR_REPORT_TABLE_NAME && MCPAR_FORM_BUCKET) {
+    await extractAndStoreData(MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET);
+  }
 
-  //extract and write mlr
-  if (MLR_REPORT_TABLE_NAME && MLR_FORM_BUCKET)
-    await extractAndWriteData(MLR_REPORT_TABLE_NAME, MLR_FORM_BUCKET);
+  //extract and store mlr data
+  if (MLR_REPORT_TABLE_NAME && MLR_FORM_BUCKET) {
+    await extractAndStoreData(MLR_REPORT_TABLE_NAME, MLR_FORM_BUCKET);
+  }
+
+  let writeRoute: S3Route = {
+    bucket: MLR_FORM_BUCKET ? MLR_FORM_BUCKET : "",
+    type: buckets.FIELD_DATA,
+  };
+  await writeDataToS3(writeObject, writeRoute);
 
   return {
     statusCode: 200,
@@ -50,8 +57,12 @@ export const check = async (
   };
 };
 
-export const extractAndWriteData = async (table: string, bucket: string) => {
-  let scannedResult = await scanTable(table);
+export const extractAndStoreData = async (
+  table: string,
+  bucket: string,
+  LastEvaluatedKey?: any
+) => {
+  let scannedResult = await scanTable(table, LastEvaluatedKey);
   let metadataResults = scannedResult.Items;
   if (metadataResults) {
     for (const metadata of metadataResults) {
@@ -77,8 +88,10 @@ export const extractAndWriteData = async (table: string, bucket: string) => {
     }
   }
 
-  let writeRoute: S3Route = { bucket: bucket, type: buckets.FIELD_DATA };
-  await writeDataToS3(writeObject, writeRoute);
+  //loop function again until LastEvaluatedKey is null
+  if (scannedResult.LastEvaluatedKey) {
+    extractAndStoreData(table, bucket, scannedResult.LastEvaluatedKey);
+  }
 };
 
 export const extractNumericalData = (
@@ -155,13 +168,12 @@ export const writeDataToS3 = async (data: any, route: S3Route) => {
 };
 
 //scan dynamodb table and return data
-export const scanTable = async (TableName: string) => {
-  let ExclusiveStartKey;
+export const scanTable = async (TableName: string, LastEvaluatedKey?: any) => {
   let scanResult;
   try {
     scanResult = await dynamodbLib.scan({
       TableName,
-      ExclusiveStartKey,
+      LastEvaluatedKey,
     });
 
     if (!scanResult || !scanResult.Items) {
@@ -170,7 +182,7 @@ export const scanTable = async (TableName: string) => {
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(`Database scan failed for the table ${TableName}
-                       with ExclusiveStartKey ${ExclusiveStartKey}.
+                       with LastEvaluatedKey ${LastEvaluatedKey}.
                        Error: ${err}`);
     throw err;
   }
