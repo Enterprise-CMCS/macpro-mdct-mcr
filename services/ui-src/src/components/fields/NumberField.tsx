@@ -25,6 +25,7 @@ export const NumberField = ({
   mask,
   sxOverride,
   autosave,
+  validateOnRender,
   nested,
   styleAsOptional,
   ...props
@@ -41,7 +42,7 @@ export const NumberField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
     } else {
       form.trigger(name);
@@ -84,6 +85,7 @@ export const NumberField = ({
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
     const maskedFieldValue = applyCustomMask(value, mask);
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database
@@ -125,9 +127,10 @@ export const NumberField = ({
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }}>
+    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField
           id={name}
@@ -159,6 +162,7 @@ interface Props {
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  validateOnRender?: boolean;
   clear?: boolean;
   [key: string]: any;
 }
