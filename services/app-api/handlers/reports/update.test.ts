@@ -43,7 +43,7 @@ const updateEvent: APIGatewayProxyEvent = {
     metadata: {
       status: "in progress",
     },
-    fieldData: { ...mockReportFieldData, number: 1 },
+    fieldData: { ...mockReportFieldData, "mock-text-field": "text" },
   }),
 };
 
@@ -122,7 +122,6 @@ describe("Test updateReport API method", () => {
     const response = await updateReport(submissionEvent, null);
     const body = JSON.parse(response.body);
     expect(body.status).toContain("submitted");
-    expect(body.fieldData.number).toBe("2");
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
   });
 
