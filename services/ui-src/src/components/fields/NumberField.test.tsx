@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-//components
+// components
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
-import { useUser } from "utils";
+// utils
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
+import { useUser } from "utils";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -381,6 +382,36 @@ describe("Test NumberField component autosaves", () => {
     await userEvent.type(textField, "test value");
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Numberfield handles triggering validation", () => {
+  const numberFieldComponentWithValidateOnRender = (
+    <NumberField name="testNumberField" label="test-label" validateOnRender />
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
+    const numberField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
+    expect(numberField).toBeVisible();
+    await userEvent.clear(numberField);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponentWithValidateOnRender);
+    expect(mockTrigger).toHaveBeenCalled();
   });
 });
 

@@ -899,6 +899,30 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
   });
 });
 
+describe("ChoiceListField handles triggering validation", () => {
+  const choiceListFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ChoiceListField
+        choices={mockChoices}
+        label="Checkbox example"
+        name="checkboxField"
+        type="checkbox"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockGetValues(undefined);
+    render(choiceListFieldValidateOnRenderComponent);
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+});
+
 describe("Test ChoiceList accessibility", () => {
   beforeEach(() => {
     jest.clearAllMocks();
