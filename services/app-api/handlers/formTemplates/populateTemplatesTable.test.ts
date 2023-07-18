@@ -60,9 +60,10 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
 
 describe("Test processTemplate function", () => {
   it("should return a hash and id", async () => {
+    jest.spyOn(s3Lib, "get").mockResolvedValueOnce(mockReportJson);
     const templateResult = await processTemplate(
       "foo",
-      "MN/mockReportJson.json"
+      "formTemplates/MN/mockReportJson.json"
     );
     const expectedHash = createHash("md5")
       .update(JSON.stringify(copyAdminDisabledStatusToForms(mockReportJson)))
