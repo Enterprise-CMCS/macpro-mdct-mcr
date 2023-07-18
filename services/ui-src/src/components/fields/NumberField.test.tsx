@@ -145,11 +145,11 @@ describe("Test Masked NumberField", () => {
     await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, "-1234");
     await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234");
+    expect(numberFieldInput.value).toEqual("-1,234");
     await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, "$$1234567890.10");
     await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234,567,890.1");
+    expect(numberFieldInput.value).toEqual("$$1234567890.10");
   });
 
   test("onChangeHandler updates Currency masked field value", async () => {
@@ -205,6 +205,15 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(
       numberFieldInput,
       "123,,,4567.1234567.1234:12,3456,7.1"
+    );
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual(
+      "123,,,4567.1234567.1234:12,3456,7.1"
+    );
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(
+      numberFieldInput,
+      "123,,,4567.12345671234:12,3456,7.1"
     );
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234,567.12:1,234,567.1");
@@ -263,7 +272,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberField']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual("54,321");
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
@@ -273,7 +282,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberFieldWithHydrationValue']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockHydrationValue);
+    expect(displayValue).toEqual("12,345");
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
@@ -283,7 +292,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberFieldWithHydrationValue']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual("54,321");
   });
 
   test("should set value to default if given clear prop and clear is set to true", () => {
