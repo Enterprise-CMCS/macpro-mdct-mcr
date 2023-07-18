@@ -4,7 +4,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
   - serverless-plugin-scripts
