@@ -130,16 +130,26 @@ describe("Status Table Functionality", () => {
     expect(editButtons).toHaveLength(4);
 
     await userEvent.click(editButtons[0]);
+    const validateOnRenderProp = { state: { validateOnRender: true } };
     const expectedRoute1 = "/mock/mock-route-1";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute1);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute1,
+      validateOnRenderProp
+    );
 
     await userEvent.click(editButtons[1]);
     const expectedRoute2 = "/mock/mock-route-2a";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute2);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute2,
+      validateOnRenderProp
+    );
 
     await userEvent.click(editButtons[2]);
     const expectedRoute3 = "/mock/mock-route-2b";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute3);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute3,
+      validateOnRenderProp
+    );
   });
 
   test("should be able to navigate to a page on the form by clicking edit on mobile", async () => {
@@ -153,16 +163,26 @@ describe("Status Table Functionality", () => {
     expect(editButtons).toHaveLength(4);
 
     await userEvent.click(editButtons[0]);
+    const validateOnRenderProp = { state: { validateOnRender: true } };
     const expectedRoute1 = "/mock/mock-route-1";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute1);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute1,
+      validateOnRenderProp
+    );
 
     await userEvent.click(editButtons[1]);
     const expectedRoute2 = "/mock/mock-route-2a";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute2);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute2,
+      validateOnRenderProp
+    );
 
     await userEvent.click(editButtons[2]);
     const expectedRoute3 = "/mock/mock-route-2b";
-    expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute3);
+    expect(mockUseNavigate).toHaveBeenCalledWith(
+      expectedRoute3,
+      validateOnRenderProp
+    );
   });
 });
 
