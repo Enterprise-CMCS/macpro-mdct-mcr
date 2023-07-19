@@ -93,6 +93,7 @@ export const AppRoutes = () => {
               />
             </>
           )}
+          {/*
           <Route
             path="/mcpar/*"
             element={
@@ -103,6 +104,7 @@ export const AppRoutes = () => {
               )
             }
           />
+          */}
 
           {/* MLR ROUTES */}
           {mlrReport && (
