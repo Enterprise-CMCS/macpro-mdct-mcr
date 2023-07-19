@@ -33,15 +33,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -88,14 +79,6 @@ describe("Test DropdownField basic functionality", () => {
     render(dropdownComponentWithOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown).toBeVisible();
-  });
-
-  test("DropdownField triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("testDropdown", "");
-    render(dropdownComponentWithOptions);
-    const dropdown = screen.getByLabelText("test-dropdown-label");
-    expect(dropdown).toBeVisible();
-    expect(mockTrigger).toBeCalled();
   });
 
   test("DropdownField calls onChange function successfully", async () => {

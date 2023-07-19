@@ -1,26 +1,10 @@
-export const customMaskMap = {
-  "comma-separated": convertToCommaSeparatedString,
-  percentage: convertToCommaSeparatedString,
-  ratio: convertToCommaSeparatedRatioString,
-  currency: convertToCommaSeparatedString,
-};
+import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 
-// returns whether a given mask is a valid custom mask
-export const isValidCustomMask = (
-  maskName: string | undefined
-): maskName is keyof typeof customMaskMap => {
-  return (
-    maskName !== undefined && Object.keys(customMaskMap).includes(maskName)
-  );
-};
-
-/**
- * checks if provided string contains only numbers
- * @param {String} value
- * @returns {Boolean}
- */
-export const isValidNumericalString = (value: string): boolean => {
-  return !!value?.toString().match(/\d/);
+export const maskMap = {
+  "comma-separated": convertToThousandsSeparatedString,
+  percentage: convertToThousandsSeparatedString,
+  ratio: convertToThousandsSeparatedRatioString,
+  currency: convertToThousandsSeparatedString,
 };
 
 /**
@@ -28,25 +12,29 @@ export const isValidNumericalString = (value: string): boolean => {
  * @param {String} value
  * @returns {String}
  */
-export function convertToCommaSeparatedString(value: string): string {
-  // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.]/g, "");
-  // Remove all but the first decimal point.
-  const firstDecimalPointIndex = value.indexOf(".");
-  value = value.replace(/[.]/g, (match, index) => {
-    return index > firstDecimalPointIndex ? "" : match;
-  });
-  if (parseFloat(value) !== 0) {
-    // Remove all leading zeroes if value is not equal to 0
-    value = value.replace(/^0+/g, "");
-  }
+export function convertToThousandsSeparatedString(value: string): {
+  maskedValue: string;
+  cleanedValue: string;
+} {
+  // Check value validity, and if invalid, bypass all masking and return user-inputted value
+  const cleanedInput = cleanStandardNumericalInput(value);
+  if (!cleanedInput.isValid) return { maskedValue: value, cleanedValue: value };
+
+  // If valid, take cleaned value and continue to masking
+  let cleanedValue = cleanedInput.cleanedValue;
+
+  // Remove all characters except 0123456789.-
+  let maskedValue = cleanedValue.replace(/[^\d.-]/g, "");
+
   // Convert String to a float to begin operation
-  const valueAsFloat = parseFloat(value);
+  const valueAsFloat = parseFloat(maskedValue);
+
   // Slide any extra decimals down to 2
   const fixedDecimal = valueAsFloat.toFixed(2);
-  // Clean up the float value and add in commas to delineate thousands if needed
-  const cleanedValue = Number(fixedDecimal).toLocaleString("en");
-  return cleanedValue.toString();
+
+  // Add in commas to delineate thousands (if needed)
+  maskedValue = Number(fixedDecimal).toLocaleString("en");
+  return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
 }
 
 /**
@@ -54,51 +42,41 @@ export function convertToCommaSeparatedString(value: string): string {
  * @param {String} value
  * @returns {String}
  */
-export function convertToCommaSeparatedRatioString(value: string): string {
-  // Remove all characters except digits and decimal points.
-  value = value.replace(/[^\d.:]/g, "");
+export function convertToThousandsSeparatedRatioString(value: string): {
+  maskedValue: string;
+  cleanedValue: string;
+} {
+  // Clean value
+  const cleanedInput = cleanRatioInput(value);
+  if (!cleanedInput.isValid) return { maskedValue: value, cleanedValue: value };
 
   // Grab the left and right side of the ratio sign
-  const values = value.split(":");
-
-  // Begin creating the final output
-  let cleanedValue = "";
+  const values = cleanedInput.cleanedValue.split(":");
 
   // Create the left side of the output and make the number (if provided) pretty
-  if (values[0] != "") cleanedValue += convertToCommaSeparatedString(values[0]);
-  else cleanedValue += "";
-
-  // Put in the ratio sign in the middle of the two numbers
-  cleanedValue += ":";
+  values[0] = convertToThousandsSeparatedString(values[0]).maskedValue;
 
   // Create the right side of the output and make the number (if provided) pretty
-  if (values.length >= 2 && values[1] != "")
-    cleanedValue += convertToCommaSeparatedString(values[1]);
-  else cleanedValue += "";
+  values[1] = convertToThousandsSeparatedString(values[1]).maskedValue;
 
-  return cleanedValue;
-}
-
-/**
- * Converts string to the appropriate custom masked format
- * @param {String} value
- * @returns {String}
- */
-export function maskValue(
-  value: string,
-  mask: keyof typeof customMaskMap
-): string {
-  const selectedCustomMask = customMaskMap[mask];
-  if (isValidNumericalString(value)) {
-    return selectedCustomMask(value);
-  } else return value;
+  const maskedValue = values.join(":");
+  return { maskedValue: maskedValue, cleanedValue: cleanedInput.cleanedValue };
 }
 
 // if valid custom mask, return masked value; else return value
-export const applyCustomMask = (value: string, maskName: any): string => {
-  let formattedValue: string;
-  if (value && isValidCustomMask(maskName)) {
-    formattedValue = maskValue(value, maskName);
-  } else formattedValue = value;
-  return formattedValue.toString();
+export const applyMask = (
+  value: string,
+  maskName?: keyof typeof maskMap | null
+): {
+  maskedValue: string;
+  cleanedValue: string;
+} => {
+  // if maskName is specified as null, bypass all masking and return user-inputted value
+  if (maskName === null) return { maskedValue: value, cleanedValue: value };
+
+  // apply specified mask or default to comma-separated mask
+  const maskToApply = maskName
+    ? maskMap[maskName]
+    : convertToThousandsSeparatedString;
+  return maskToApply(value);
 };
