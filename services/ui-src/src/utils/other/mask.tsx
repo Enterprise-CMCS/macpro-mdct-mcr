@@ -33,10 +33,11 @@ export function convertToThousandsSeparatedString(
     // Convert String to a float to begin operation
     const valueAsFloat = parseFloat(maskedValue);
 
-    // Slide any extra decimals down to 2
+    // Slide any extra decimals down to number of fixedDecimalPlaces
     const fixedDecimal = valueAsFloat.toFixed(fixedDecimalPlaces);
     maskedValue = Number(fixedDecimal).toLocaleString("en", {
       minimumFractionDigits: fixedDecimalPlaces,
+      maximumFractionDigits: fixedDecimalPlaces,
     });
     return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
   }
