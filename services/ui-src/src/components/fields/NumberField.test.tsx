@@ -160,7 +160,7 @@ describe("Test Masked NumberField", () => {
     )!;
     await userEvent.type(numberFieldInput, "123");
     await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("123");
+    expect(numberFieldInput.value).toEqual("123.00");
     await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, "5.99");
     await userEvent.tab();
@@ -168,7 +168,7 @@ describe("Test Masked NumberField", () => {
     await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, "1234.00");
     await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234");
+    expect(numberFieldInput.value).toEqual("1,234.00");
   });
 
   test("onChangeHandler updates Percentage masked field value", async () => {
@@ -227,7 +227,6 @@ describe("Test Masked NumberField", () => {
 describe("Test NumberField hydration functionality", () => {
   const mockFormFieldValue = "54321";
   const mockHydrationValue = "12345";
-  const mockCommaMaskedHydrationValue = "12,345";
 
   const numberFieldComponentWithHydrationValue = (
     <NumberField
@@ -313,7 +312,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberField']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockCommaMaskedHydrationValue);
+    expect(displayValue).toEqual("12,345.00");
   });
 });
 
