@@ -28,15 +28,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -107,16 +98,6 @@ describe("Test Maskless NumberField", () => {
     expect(numberFieldInput.value).toEqual("123");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("123");
-  });
-
-  test("NumberField triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("testNumberField", "");
-    const result = render(numberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    expect(numberFieldInput).toBeVisible();
-    expect(mockTrigger).toBeCalled();
   });
 });
 

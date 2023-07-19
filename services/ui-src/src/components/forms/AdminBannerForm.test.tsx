@@ -6,6 +6,7 @@ import { AdminBannerForm } from "components";
 import { bannerId } from "../../constants";
 // utils
 import { convertDateTimeEtToUtc } from "utils";
+import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
@@ -13,10 +14,12 @@ const mockWriteAdminBannerWithError = jest.fn(() => {
 });
 
 const adminBannerFormComponent = (writeAdminBanner: Function) => (
-  <AdminBannerForm
-    writeAdminBanner={writeAdminBanner}
-    data-testid="test-form"
-  />
+  <RouterWrappedComponent>
+    <AdminBannerForm
+      writeAdminBanner={writeAdminBanner}
+      data-testid="test-form"
+    />
+  </RouterWrappedComponent>
 );
 
 const fillOutForm = async (form: any) => {

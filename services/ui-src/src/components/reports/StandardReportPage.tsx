@@ -71,7 +71,8 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
         onError={onError}
         formData={report?.fieldData}
         autosave
-        validateOnRender={validateOnRender}
+        validateOnRender={validateOnRender || false}
+        dontReset={false}
       />
       <ReportPageFooter
         submitting={submitting}
