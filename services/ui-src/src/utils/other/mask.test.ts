@@ -83,6 +83,17 @@ describe("Test mask types", () => {
     { test: "!@#", expected: "!@#" },
   ];
 
+  const currencyTestCases = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "123.00" },
+    { test: "123.00", expected: "123.00" },
+    { test: ".05000000000000", expected: "0.05" },
+    { test: "123", expected: "123.00" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
   test("Check if null passed for mask returns unmasked value", () => {
     for (let testCase of nullTestCases) {
       expect(applyMask(testCase.test, null).maskedValue).toEqual(
@@ -94,6 +105,14 @@ describe("Test mask types", () => {
   test("Check if undefined passed for mask returns unmasked value", () => {
     for (let testCase of undefinedTestCases) {
       expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
+    }
+  });
+
+  test("Check if currency passed for mask returns unmasked value", () => {
+    for (let testCase of currencyTestCases) {
+      expect(applyMask(testCase.test, "currency").maskedValue).toEqual(
+        testCase.expected
+      );
     }
   });
 
