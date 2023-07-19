@@ -22,6 +22,9 @@ export const cleanStandardNumericalInput = (value: string): CleanedValue => {
     value = value.replace(/^0+/g, "");
   }
 
+  // Remove all characters except 0123456789.-
+  value = makeStringParseableAsFloat(value);
+
   return {
     isValid: true,
     cleanedValue: value,
@@ -51,4 +54,8 @@ export const cleanRatioInput = (value: string): CleanedValue => {
     isValid: true,
     cleanedValue: cleanedValue,
   };
+};
+
+export const makeStringParseableAsFloat = (value: string): string => {
+  return value.replace(/[^\d.-]/g, "");
 };

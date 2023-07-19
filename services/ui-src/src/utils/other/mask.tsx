@@ -15,36 +15,34 @@ export const maskMap = {
 export function convertToThousandsSeparatedString(
   value: string,
   fixedDecimalPlaces?: number | undefined
-): {
-  maskedValue: string;
-  cleanedValue: string;
-} {
+): string {
   // Check value validity, and if invalid, bypass all masking and return user-inputted value
   const cleanedInput = cleanStandardNumericalInput(value);
-  if (!cleanedInput.isValid) return { maskedValue: value, cleanedValue: value };
+  if (!cleanedInput.isValid) return value;
 
   // If valid, take cleaned value and continue to masking
-  let cleanedValue = cleanedInput.cleanedValue;
-
-  // Remove all characters except 0123456789.-
-  let maskedValue = cleanedValue.replace(/[^\d.-]/g, "");
+  let maskValue = cleanedInput.cleanedValue;
 
   if (fixedDecimalPlaces) {
     // Convert String to a float to begin operation
-    const valueAsFloat = parseFloat(maskedValue);
+    const valueAsFloat = parseFloat(maskValue);
 
     // Slide any extra decimals down to number of fixedDecimalPlaces
     const fixedDecimal = valueAsFloat.toFixed(fixedDecimalPlaces);
-    maskedValue = Number(fixedDecimal).toLocaleString("en", {
+    maskValue = Number(fixedDecimal).toLocaleString("en", {
       minimumFractionDigits: fixedDecimalPlaces,
       maximumFractionDigits: fixedDecimalPlaces,
     });
-    return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
+    return maskValue.toString();
   }
 
   // Add in commas to delineate thousands (if needed)
-  maskedValue = Number(maskedValue).toLocaleString("en");
-  return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
+  maskValue = Number(maskValue).toLocaleString("en", {
+    // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
+    minimumFractionDigits: 0,
+    maximumFractionDigits: maskValue.length,
+  });
+  return maskValue.toString();
 }
 
 /**
@@ -55,43 +53,31 @@ export function convertToThousandsSeparatedString(
 export function convertToThousandsSeparatedRatioString(
   value: string,
   fixedDecimalPlaces?: number | undefined
-): {
-  maskedValue: string;
-  cleanedValue: string;
-} {
+): string {
   // Clean value
   const cleanedInput = cleanRatioInput(value);
-  if (!cleanedInput.isValid) return { maskedValue: value, cleanedValue: value };
+  if (!cleanedInput.isValid) return value;
 
   // Grab the left and right side of the ratio sign
   const values = cleanedInput.cleanedValue.split(":");
 
   // Create the left side of the output and make the number (if provided) pretty
-  values[0] = convertToThousandsSeparatedString(
-    values[0],
-    fixedDecimalPlaces
-  ).maskedValue;
+  values[0] = convertToThousandsSeparatedString(values[0], fixedDecimalPlaces);
 
   // Create the right side of the output and make the number (if provided) pretty
-  values[1] = convertToThousandsSeparatedString(
-    values[1],
-    fixedDecimalPlaces
-  ).maskedValue;
+  values[1] = convertToThousandsSeparatedString(values[1], fixedDecimalPlaces);
 
   const maskedValue = values.join(":");
-  return { maskedValue: maskedValue, cleanedValue: cleanedInput.cleanedValue };
+  return maskedValue;
 }
 
 // if valid custom mask, return masked value; else return value
 export const applyMask = (
   value: string,
   maskName?: keyof typeof maskMap | null
-): {
-  maskedValue: string;
-  cleanedValue: string;
-} => {
+): string => {
   // if maskName is specified as null, bypass all masking and return user-inputted value
-  if (maskName === null) return { maskedValue: value, cleanedValue: value };
+  if (maskName === null) return value;
 
   // apply specified mask or default to comma-separated mask
   const maskToApply = maskName

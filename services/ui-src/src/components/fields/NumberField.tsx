@@ -13,6 +13,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
+  makeStringParseableAsFloat,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -55,7 +56,7 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
+      const maskedFieldValue = applyMask(fieldValue, mask);
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -64,10 +65,7 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyMask(
-          hydrationValue,
-          mask
-        ).maskedValue;
+        const maskedHydrationValue = applyMask(hydrationValue, mask);
         setDisplayValue(maskedHydrationValue);
         form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
@@ -87,9 +85,8 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const formattedFieldValue = applyMask(value, mask);
-    const maskedFieldValue = formattedFieldValue.maskedValue;
-    const cleanedFieldValue = formattedFieldValue.cleanedValue;
+    const maskedFieldValue = applyMask(value, mask);
+    const cleanedFieldValue = makeStringParseableAsFloat(maskedFieldValue);
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
