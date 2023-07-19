@@ -12,7 +12,10 @@ export const maskMap = {
  * @param {String} value
  * @returns {String}
  */
-export function convertToThousandsSeparatedString(value: string): {
+export function convertToThousandsSeparatedString(
+  value: string,
+  fixedDecimalPlaces?: number | undefined
+): {
   maskedValue: string;
   cleanedValue: string;
 } {
@@ -26,14 +29,16 @@ export function convertToThousandsSeparatedString(value: string): {
   // Remove all characters except 0123456789.-
   let maskedValue = cleanedValue.replace(/[^\d.-]/g, "");
 
-  // Convert String to a float to begin operation
-  const valueAsFloat = parseFloat(maskedValue);
+  if (fixedDecimalPlaces) {
+    // Convert String to a float to begin operation
+    const valueAsFloat = parseFloat(maskedValue);
 
-  // Slide any extra decimals down to 2
-  const fixedDecimal = valueAsFloat.toFixed(2);
+    // Slide any extra decimals down to 2
+    maskedValue = valueAsFloat.toFixed(fixedDecimalPlaces);
+  }
 
   // Add in commas to delineate thousands (if needed)
-  maskedValue = Number(fixedDecimal).toLocaleString("en");
+  maskedValue = Number(maskedValue).toLocaleString("en");
   return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
 }
 
@@ -42,7 +47,10 @@ export function convertToThousandsSeparatedString(value: string): {
  * @param {String} value
  * @returns {String}
  */
-export function convertToThousandsSeparatedRatioString(value: string): {
+export function convertToThousandsSeparatedRatioString(
+  value: string,
+  fixedDecimalPlaces?: number | undefined
+): {
   maskedValue: string;
   cleanedValue: string;
 } {
@@ -54,10 +62,16 @@ export function convertToThousandsSeparatedRatioString(value: string): {
   const values = cleanedInput.cleanedValue.split(":");
 
   // Create the left side of the output and make the number (if provided) pretty
-  values[0] = convertToThousandsSeparatedString(values[0]).maskedValue;
+  values[0] = convertToThousandsSeparatedString(
+    values[0],
+    fixedDecimalPlaces
+  ).maskedValue;
 
   // Create the right side of the output and make the number (if provided) pretty
-  values[1] = convertToThousandsSeparatedString(values[1]).maskedValue;
+  values[1] = convertToThousandsSeparatedString(
+    values[1],
+    fixedDecimalPlaces
+  ).maskedValue;
 
   const maskedValue = values.join(":");
   return { maskedValue: maskedValue, cleanedValue: cleanedInput.cleanedValue };
@@ -78,5 +92,7 @@ export const applyMask = (
   const maskToApply = maskName
     ? maskMap[maskName]
     : convertToThousandsSeparatedString;
-  return maskToApply(value);
+
+  // if currency field, we want to round to 2 decimal places
+  return maskName === "currency" ? maskToApply(value, 2) : maskToApply(value);
 };
