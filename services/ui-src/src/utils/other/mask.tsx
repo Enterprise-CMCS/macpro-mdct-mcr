@@ -34,7 +34,11 @@ export function convertToThousandsSeparatedString(
     const valueAsFloat = parseFloat(maskedValue);
 
     // Slide any extra decimals down to 2
-    maskedValue = valueAsFloat.toFixed(fixedDecimalPlaces);
+    const fixedDecimal = valueAsFloat.toFixed(fixedDecimalPlaces);
+    maskedValue = Number(fixedDecimal).toLocaleString("en", {
+      minimumFractionDigits: fixedDecimalPlaces,
+    });
+    return { maskedValue: maskedValue.toString(), cleanedValue: cleanedValue };
   }
 
   // Add in commas to delineate thousands (if needed)
