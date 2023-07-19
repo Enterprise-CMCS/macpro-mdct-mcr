@@ -216,7 +216,7 @@ describe("Test Masked NumberField", () => {
       "123,,,4567.12345671234:12,3456,7.1"
     );
     await userEvent.tab();
-    expect(numberFieldInput.value).toEqual("1,234,567.12:1,234,567.1");
+    expect(numberFieldInput.value).toEqual("1,234,567.123:1,234,567.1");
     await userEvent.clear(numberFieldInput);
     await userEvent.type(numberFieldInput, ":");
     await userEvent.tab();
