@@ -6,9 +6,9 @@ import { ReportContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
-  applyCustomMask,
+  applyMask,
+  maskMap,
   autosaveFieldData,
-  customMaskMap,
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
@@ -25,6 +25,7 @@ export const NumberField = ({
   mask,
   sxOverride,
   autosave,
+  validateOnRender,
   nested,
   styleAsOptional,
   ...props
@@ -41,9 +42,9 @@ export const NumberField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -54,7 +55,7 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyCustomMask(fieldValue, mask);
+      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -63,7 +64,10 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+        const maskedHydrationValue = applyMask(
+          hydrationValue,
+          mask
+        ).maskedValue;
         setDisplayValue(maskedHydrationValue);
         form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
@@ -83,15 +87,18 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const maskedFieldValue = applyCustomMask(value, mask);
+    const formattedFieldValue = applyMask(value, mask);
+    const maskedFieldValue = formattedFieldValue.maskedValue;
+    const cleanedFieldValue = formattedFieldValue.cleanedValue;
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
-    // submit field data to database
+    // submit field data to database (inline validation is run prior to API call)
     if (autosave) {
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value: maskedFieldValue,
+        value: cleanedFieldValue,
         defaultValue,
         hydrationValue,
       });
@@ -125,9 +132,10 @@ export const NumberField = ({
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
 
   return (
-    <Box sx={{ ...sx, ...sxOverride }}>
+    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
       <Box sx={sx.numberFieldContainer} className={maskClass}>
         <CmsdsTextField
           id={name}
@@ -155,10 +163,11 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
-  mask?: keyof typeof customMaskMap;
+  mask?: keyof typeof maskMap | null;
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  validateOnRender?: boolean;
   clear?: boolean;
   [key: string]: any;
 }
@@ -184,7 +193,7 @@ export const SymbolOverlay = ({
   );
 };
 interface SymbolOverlayProps {
-  fieldMask?: keyof typeof customMaskMap;
+  fieldMask?: keyof typeof maskMap | null;
   nested?: boolean;
   disabled?: boolean;
 }

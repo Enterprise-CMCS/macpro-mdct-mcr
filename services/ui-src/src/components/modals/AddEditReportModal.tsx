@@ -163,6 +163,8 @@ export const AddEditReportModal = ({
         formJson={form}
         formData={selectedReport?.fieldData}
         onSubmit={writeReport}
+        validateOnRender={false}
+        dontReset={true}
       />
     </Modal>
   );

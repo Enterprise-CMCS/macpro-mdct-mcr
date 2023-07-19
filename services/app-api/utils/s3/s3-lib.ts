@@ -1,7 +1,7 @@
 import { Credentials, S3, Endpoint } from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import { buckets } from "../constants/constants";
-import { S3Copy, S3Get, S3Put, State } from "../types/other";
+import { S3Get, S3Put, State } from "../types/other";
 
 export const createS3Client = () => {
   const s3Config: S3.ClientConfiguration &
@@ -51,7 +51,7 @@ export default {
       });
     });
   },
-  copy: async (params: S3Copy) => {
+  copy: async (params: S3.CopyObjectRequest) => {
     return new Promise<void>((resolve, reject) => {
       s3Client.copyObject(params, function (err: any, result: any) {
         if (err) {
@@ -61,6 +61,21 @@ export default {
           resolve();
         }
       });
+    });
+  },
+  list: async (params: S3.ListObjectsRequest) => {
+    return new Promise<S3.ObjectList>((resolve, reject) => {
+      s3Client.listObjects(
+        params,
+        function (err: any, result: S3.ListObjectsOutput) {
+          if (err) {
+            reject(err);
+          }
+          if (result) {
+            resolve(result.Contents ?? []);
+          }
+        }
+      );
     });
   },
 };
