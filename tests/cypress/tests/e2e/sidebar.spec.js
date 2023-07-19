@@ -58,6 +58,8 @@ describe("Sidebar integration tests", () => {
       .parent()
       .should("have.class", "open");
 
+    Cypress.session.clearAllSavedSessions();
+
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
     cy.get('[name="state"]').select("District of Columbia");
