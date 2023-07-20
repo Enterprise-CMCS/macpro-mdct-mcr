@@ -195,6 +195,9 @@ export function renderEntityDetailTables(
 
 const sx = {
   root: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
     marginBottom: "1rem",
     width: "100%",
     "tr, th": {

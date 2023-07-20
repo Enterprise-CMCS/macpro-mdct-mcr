@@ -17,7 +17,11 @@ export const ExportedModalDrawerReportSection = ({
   const entityCount = entities?.length;
 
   return (
-    <Box mt="2rem" data-testid="exportedModalDrawerReportSection">
+    <Box
+      mt="2rem"
+      data-testid="exportedModalDrawerReportSection"
+      sx={sx.container}
+    >
       <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
         {`${verbiage.dashboardTitle} ${entityCount > 0 ? entityCount : ""}`}
         {!entityCount && (
@@ -50,6 +54,11 @@ export interface Props {
 }
 
 const sx = {
+  container: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
+  },
   notAnswered: {
     display: "block",
     fontSize: "md",

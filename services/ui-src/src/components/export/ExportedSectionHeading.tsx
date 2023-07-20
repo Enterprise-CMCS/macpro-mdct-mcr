@@ -20,7 +20,7 @@ export const ExportedSectionHeading = ({
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
 
   return (
-    <Box data-testid="exportedSectionHeading">
+    <Box data-testid="exportedSectionHeading" sx={sx.container}>
       <Heading as="h2" sx={sx.heading}>
         {sectionHeading}
       </Heading>
@@ -45,6 +45,11 @@ export interface Props {
 }
 
 const sx = {
+  container: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
+  },
   heading: {
     margin: "1.5rem 0",
     fontSize: "xl",
@@ -60,5 +65,9 @@ const sx = {
   },
   spreadsheet: {
     margin: "1.5rem 0",
+    "@media print": {
+      // pageBreakBefore: "avoid",
+      pageBreakAfter: "avoid",
+    },
   },
 };
