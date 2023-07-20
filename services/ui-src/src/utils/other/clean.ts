@@ -13,17 +13,14 @@ export const cleanStandardNumericalInput = (value: string): CleanedValue => {
   const isValidNumber = checkStandardNumberInputAgainstRegexes(value);
   if (!isValidNumber) return { isValid: false, cleanedValue: value };
 
-  // Remove all characters except digits, decimal points, and negative signs
-  value = value.replace(/[^\d.-]/g, "");
+  // Remove all characters except 0123456789.-
+  value = makeStringParseableAsFloat(value);
 
   // If entire value is greater than 1, or less than -1, remove all leading zeros
   const parsedFloat = parseFloat(value);
   if (parsedFloat >= 1 || parsedFloat <= -1) {
     value = value.replace(/^0+/g, "");
   }
-
-  // Remove all characters except 0123456789.-
-  value = makeStringParseableAsFloat(value);
 
   return {
     isValid: true,

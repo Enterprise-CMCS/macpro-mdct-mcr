@@ -56,7 +56,7 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyMask(fieldValue, mask);
+      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -65,7 +65,10 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyMask(hydrationValue, mask);
+        const maskedHydrationValue = applyMask(
+          hydrationValue,
+          mask
+        ).maskedValue;
         setDisplayValue(maskedHydrationValue);
         form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
@@ -85,8 +88,12 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const maskedFieldValue = applyMask(value, mask);
-    const cleanedFieldValue = makeStringParseableAsFloat(maskedFieldValue);
+    const formattedFieldValue = applyMask(value, mask);
+    const maskedFieldValue = formattedFieldValue.maskedValue;
+    // we only want to autosave a value that is valid, so we check for that before we re-clean to make database friendly
+    const cleanedFieldValue = formattedFieldValue.isValid
+      ? makeStringParseableAsFloat(maskedFieldValue)
+      : maskedFieldValue;
     form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 

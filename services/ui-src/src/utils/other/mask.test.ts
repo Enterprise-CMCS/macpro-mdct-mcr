@@ -96,19 +96,23 @@ describe("Test mask types", () => {
 
   test("Check if null passed for mask returns unmasked value", () => {
     for (let testCase of nullTestCases) {
-      expect(applyMask(testCase.test, null)).toEqual(testCase.expected);
+      expect(applyMask(testCase.test, null).maskedValue).toEqual(
+        testCase.expected
+      );
     }
   });
 
   test("Check if undefined passed for mask returns unmasked value", () => {
     for (let testCase of undefinedTestCases) {
-      expect(applyMask(testCase.test)).toEqual(testCase.expected);
+      expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
     }
   });
 
   test("Check if currency passed for mask returns unmasked value", () => {
     for (let testCase of currencyTestCases) {
-      expect(applyMask(testCase.test, "currency")).toEqual(testCase.expected);
+      expect(applyMask(testCase.test, "currency").maskedValue).toEqual(
+        testCase.expected
+      );
     }
   });
 
@@ -122,9 +126,9 @@ describe("Test mask types", () => {
 describe("Test convertToThousandsSeparatedString", () => {
   test("Valid numerical string is correctly masked with thousands separators", () => {
     for (let testCase of thousandsSeparatedMaskAcceptableTestCases) {
-      expect(convertToThousandsSeparatedString(testCase.test)).toEqual(
-        testCase.expected
-      );
+      expect(
+        convertToThousandsSeparatedString(testCase.test).maskedValue
+      ).toEqual(testCase.expected);
     }
   });
 });
@@ -132,9 +136,9 @@ describe("Test convertToThousandsSeparatedString", () => {
 describe("Test convertToCommaSeparatedRatioString", () => {
   test("Valid ratio is split and masked on each side individually", () => {
     for (let testCase of ratioMaskAcceptableTestCases) {
-      expect(convertToThousandsSeparatedRatioString(testCase.test)).toEqual(
-        testCase.expected
-      );
+      expect(
+        convertToThousandsSeparatedRatioString(testCase.test).maskedValue
+      ).toEqual(testCase.expected);
     }
   });
 });
