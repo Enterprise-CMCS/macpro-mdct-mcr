@@ -140,15 +140,11 @@ export const EntityDetailsOverlay = ({
           autosave={true}
           disabled={!userIsEndUser}
           validateOnRender={validateOnRender || false}
-          dontReset={false}
+          dontReset={true}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
-            <Button
-              onClick={() => closeOverlay()}
-              type="submit"
-              sx={sx.saveButton}
-            >
+            <Button type="submit" sx={sx.saveButton} form={form.id}>
               {submitting ? (
                 <Spinner size="md" />
               ) : report?.locked ? (
