@@ -399,6 +399,7 @@ export const mockReportMethods = {
   clearReportsByState: jest.fn(),
   setReportSelection: jest.fn(),
   isReportPage: true,
+  contextIsLoaded: true,
 };
 
 export const mockMcparReportContext = {

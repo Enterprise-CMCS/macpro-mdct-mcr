@@ -22,7 +22,7 @@ import { Fragment, useContext } from "react";
 export const AppRoutes = () => {
   const { userIsAdmin, userReports } = useUser().user ?? {};
   const mlrReport = useFlags()?.mlrReport;
-  const { report } = useContext(ReportContext);
+  const { report, contextIsLoaded } = useContext(ReportContext);
   // determine if the user has access to specific reports
   const userReportAccess = {
     MCPAR: userReports?.includes("MCPAR") || userIsAdmin,
@@ -93,18 +93,18 @@ export const AppRoutes = () => {
               />
             </>
           )}
-          {/*
           <Route
             path="/mcpar/*"
             element={
-              userReportAccess["MCPAR"] ? (
+              !contextIsLoaded ? (
+                <div className="loading-screen"></div>
+              ) : userReportAccess["MCPAR"] ? (
                 <Navigate to="/mcpar" />
               ) : (
                 <Navigate to="/" />
               )
             }
           />
-          */}
 
           {/* MLR ROUTES */}
           {mlrReport && (

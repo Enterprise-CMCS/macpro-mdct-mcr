@@ -27,6 +27,7 @@ import { reportErrors } from "verbiage/errors";
 export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
+  contextIsLoaded: false as boolean,
   archiveReport: Function,
   releaseReport: Function,
   createReport: Function,
@@ -50,6 +51,7 @@ export const ReportProvider = ({ children }: Props) => {
   const { state: userState } = useUser().user ?? {};
   const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
+  const [contextIsLoaded, setContextIsLoaded] = useState<boolean>(false);
   const [isReportPage, setIsReportPage] = useState<boolean>(false);
 
   // REPORT
@@ -67,6 +69,7 @@ export const ReportProvider = ({ children }: Props) => {
     }
 
     setReport(report);
+    setContextIsLoaded(true);
   };
 
   const fetchReport = async (reportKeys: ReportKeys) => {
@@ -193,6 +196,7 @@ export const ReportProvider = ({ children }: Props) => {
     () => ({
       // report
       report,
+      contextIsLoaded,
       archiveReport,
       releaseReport,
       fetchReport,
