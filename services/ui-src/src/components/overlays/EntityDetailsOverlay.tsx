@@ -12,7 +12,13 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { filterFormData, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -29,13 +35,8 @@ export const EntityDetailsOverlay = ({
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
   const onError = () => {};
-  const {
-    entities,
-    updateEntities,
-    setEntities,
-    setSelectedEntity,
-    setEntityType,
-  } = useContext(EntityContext);
+  const { setEntities, setSelectedEntity, setEntityType } =
+    useContext(EntityContext);
 
   useEffect(() => {
     setSelectedEntity(selectedEntity);
@@ -49,33 +50,56 @@ export const EntityDetailsOverlay = ({
     };
   }, [entityType, selectedEntity]);
 
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
+
   const onSubmit = async (enteredData: AnyObject) => {
-    setSubmitting(true);
-    const filteredFormData = filterFormData(
-      enteredData,
-      form.fields.filter(isFieldElement)
-    );
-    const newEntity = {
-      ...selectedEntity,
-      ...filteredFormData,
-    };
-    updateEntities(newEntity);
-    const reportKeys = {
-      reportType: report?.reportType,
-      state: state,
-      id: report?.id,
-    };
-    const dataToWrite = {
-      metadata: {
-        status: ReportStatus.IN_PROGRESS,
-        lastAlteredBy: full_name,
-      },
-      fieldData: {
-        program: entities,
-      },
-    };
-    await updateReport(reportKeys, dataToWrite);
-    setSubmitting(false);
+    if (userIsEndUser) {
+      setSubmitting(true);
+      const reportKeys = {
+        reportType: report?.reportType,
+        state: state,
+        id: report?.id,
+      };
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.id === selectedEntity?.id
+      );
+      const filteredFormData = filterFormData(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
+      const newEntity = {
+        ...selectedEntity,
+        ...filteredFormData,
+      };
+      let newEntities = currentEntities;
+      newEntities[selectedEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
+      setSubmitting(false);
+    }
     closeEntityDetailsOverlay();
     setSidebarHidden(false);
   };
