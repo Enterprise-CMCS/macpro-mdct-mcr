@@ -139,7 +139,8 @@ export const EntityDetailsOverlay = ({
           formData={selectedEntity}
           autosave={true}
           disabled={!userIsEndUser}
-          validateOnRender={validateOnRender}
+          validateOnRender={validateOnRender || false}
+          dontReset={false}
         />
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>

@@ -10,6 +10,7 @@ import {
   mockEmptyDrawerForm,
   mockModalDrawerReportPageVerbiage,
   mockStateUser,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 // utils
 import { useUser } from "utils";
@@ -28,13 +29,15 @@ jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const drawerComponent = (
-  <ReportDrawer
-    verbiage={mockModalDrawerReportPageVerbiage}
-    selectedEntity={mockCompletedQualityMeasuresEntity}
-    form={mockDrawerForm}
-    onSubmit={mockOnSubmit}
-    drawerDisclosure={mockDrawerDisclosure}
-  />
+  <RouterWrappedComponent>
+    <ReportDrawer
+      verbiage={mockModalDrawerReportPageVerbiage}
+      selectedEntity={mockCompletedQualityMeasuresEntity}
+      form={mockDrawerForm}
+      onSubmit={mockOnSubmit}
+      drawerDisclosure={mockDrawerDisclosure}
+    />
+  </RouterWrappedComponent>
 );
 
 describe("Test ReportDrawer rendering", () => {
