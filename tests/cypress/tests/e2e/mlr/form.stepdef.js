@@ -23,7 +23,7 @@ When("I submit a new MLR program", () => {
   traverseRoutes(template.routes);
 
   //Submit the program
-  cy.wait(5000);
+  cy.wait(500);
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
@@ -89,7 +89,6 @@ const completeOverlayForm = (overlayForm) => {
 const processField = (field) => {
   //only try to fill it out if it's enabled
   if (!field.props?.disabled) {
-    cy.wait(600);
     //Validation method shifts around based on field type
     const validationType = field.validation?.type
       ? field.validation?.type
