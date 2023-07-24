@@ -18,6 +18,7 @@ import {
 import { ReportRoute, ReportType } from "types";
 import { ScrollToTopComponent, useUser } from "utils";
 import { Fragment, useContext } from "react";
+import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
   const { userIsAdmin, userReports } = useUser().user ?? {};
@@ -97,7 +98,9 @@ export const AppRoutes = () => {
             path="/mcpar/*"
             element={
               !contextIsLoaded ? (
-                <div className="loading-screen"></div>
+                <Flex sx={sx.spinnerContainer}>
+                  <Spinner size="lg" />
+                </Flex>
               ) : userReportAccess["MCPAR"] ? (
                 <Navigate to="/mcpar" />
               ) : (
@@ -164,4 +167,23 @@ export const AppRoutes = () => {
       </AdminBannerProvider>
     </main>
   );
+};
+
+const sx = {
+  spinnerContainer: {
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    padding: "10",
+
+    ".ds-c-spinner": {
+      "&:before": {
+        borderColor: "palette.black",
+      },
+      "&:after": {
+        borderLeftColor: "palette.black",
+      },
+    },
+  },
 };
