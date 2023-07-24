@@ -113,18 +113,32 @@ export const extractNumericalData = (
 
 function iterateOverNumericFields(formTemplateRoutes: any[], list: any[]) {
   for (let route of formTemplateRoutes) {
-    for (let formType of ["form", "drawerForm", "modalForm"]) {
-      if (route[formType] && route[formType].fields) {
+    for (let formType of ["form", "drawerForm", "modalForm", "overlayForm", "choices"]) {
+      if (route[formType] && (route[formType].fields )) {
         for (let field of route[formType].fields) {
-          if (field.validation === "number") {
+          if (field.validation === "number" || field.type === "number") {
             list.push({ fieldId: field.id, entityType: route.entity });
+          }
+
+          if(field.props && field.props.choices){
+            for (let choice of field.props.choices) {
+              if(choice.children){
+                for (let child of choice.children) {
+                  if (child.validation === "number" || child.type === "number") {
+                    list.push({ fieldId: child.id, entityType: route.entity });
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
-    if (route.children) {
+
+    if(route.children)
       iterateOverNumericFields(route.children, list);
-    }
+    if(route.props)
+      iterateOverNumericFields(route.props, list);
   }
 }
 
