@@ -28,15 +28,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -68,16 +59,6 @@ describe("Test TextField component", () => {
     render(textFieldComponent);
     const textField = screen.getByText("test-label");
     expect(textField).toBeVisible();
-    jest.clearAllMocks();
-  });
-
-  test("TextField triggers validation after first render if no value given", () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockFieldIsRegistered("testTextField", "");
-    render(textFieldComponent);
-    const textField = screen.getByText("test-label");
-    expect(textField).toBeVisible();
-    expect(mockTrigger).toBeCalled();
     jest.clearAllMocks();
   });
 });

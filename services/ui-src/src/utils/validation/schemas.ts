@@ -1,13 +1,10 @@
-import {
-  array,
-  boolean,
-  mixed,
-  number as yupNumberSchema,
-  object,
-  string,
-} from "yup";
+import { array, boolean, mixed, object, string } from "yup";
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
+import {
+  checkStandardNumberInputAgainstRegexes,
+  checkRatioInputAgainstRegexes,
+} from "utils/other/checkInputValidity";
 
 // TEXT - Helpers
 const isWhitespaceString = (value?: string) => value?.trim().length === 0;
@@ -26,21 +23,6 @@ export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
 
-const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
-  return yupNumberSchema().transform((_value) => {
-    return Number(value.replace(charsToReplace, ""));
-  });
-};
-
-/**
- * We can afford to be very permissive with this regex. As long as the
- * value contains a digit, we can be confident that it ran through the
- * frontend masking logic. We also allow a single dot: if the user
- * types a dot, they are quite likely about to type a digit also.
- * We don't want to flash an angry error message before they do so.
- */
-const validNumberRegex = /^\.$|[0-9]/;
-
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
   string().test({
@@ -48,7 +30,8 @@ export const numberSchema = () =>
     test: (value) => {
       if (value) {
         const isValidStringValue = validNAValues.includes(value);
-        const isValidNumberValue = validNumberRegex.test(value);
+        const isValidNumberValue =
+          checkStandardNumberInputAgainstRegexes(value);
         return isValidStringValue || isValidNumberValue;
       } else return true;
     },
@@ -69,7 +52,7 @@ const validNumberSchema = () =>
     message: error.INVALID_NUMBER,
     test: (value) => {
       return typeof value !== "undefined"
-        ? validNumberRegex.test(value)
+        ? checkStandardNumberInputAgainstRegexes(value)
         : false;
     },
   });
@@ -112,33 +95,7 @@ export const ratio = () =>
     .test({
       message: error.INVALID_RATIO,
       test: (val) => {
-        const replaceCharsRegex = /[,.:]/g;
-        const ratio = val?.split(":");
-
-        // Double check and make sure that a ratio contains numbers on both sides
-        if (
-          !ratio ||
-          ratio.length != 2 ||
-          ratio[0].trim().length == 0 ||
-          ratio[1].trim().length == 0
-        ) {
-          return false;
-        }
-
-        // Check if the left side of the ratio is a valid number
-        const firstTest = valueCleaningNumberSchema(
-          ratio[0],
-          replaceCharsRegex
-        ).isValidSync(val);
-
-        // Check if the right side of the ratio is a valid number
-        const secondTest = valueCleaningNumberSchema(
-          ratio[1],
-          replaceCharsRegex
-        ).isValidSync(val);
-
-        // If both sides are valid numbers, return true!
-        return firstTest && secondTest;
+        return checkRatioInputAgainstRegexes(val).isValid;
       },
     });
 

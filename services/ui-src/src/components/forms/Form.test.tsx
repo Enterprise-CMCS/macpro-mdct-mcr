@@ -7,59 +7,84 @@ import {
   mockMcparReportContext,
   mockMlrReportContext,
   mockNonFieldForm,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
 const mockOnSubmit = jest.fn();
 
 const formComponent = (
-  <>
-    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
+  <RouterWrappedComponent>
+    <Form
+      id={mockForm.id}
+      formJson={mockForm}
+      onSubmit={mockOnSubmit}
+      validateOnRender={false}
+      dontReset={false}
+    />
     <button form={mockForm.id} type="submit">
       Submit
     </button>
-  </>
+  </RouterWrappedComponent>
 );
 
 const formComponentJustHeader = (
-  <>
+  <RouterWrappedComponent>
     <Form
       id={mockNonFieldForm.id}
       formJson={mockNonFieldForm}
       onSubmit={mockOnSubmit}
+      validateOnRender={false}
+      dontReset={false}
     />
     <button form={mockNonFieldForm.id} type="submit">
       Submit
     </button>
-  </>
+  </RouterWrappedComponent>
 );
 
 const mlrFormSubmitted = (
-  <ReportContext.Provider
-    value={{
-      ...mockMlrReportContext,
-      report: {
-        ...mockMlrReportContext.report,
-        status: ReportStatus.SUBMITTED,
-      },
-    }}
-  >
-    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
-  </ReportContext.Provider>
+  <RouterWrappedComponent>
+    <ReportContext.Provider
+      value={{
+        ...mockMlrReportContext,
+        report: {
+          ...mockMlrReportContext.report,
+          status: ReportStatus.SUBMITTED,
+        },
+      }}
+    >
+      <Form
+        id={mockForm.id}
+        formJson={mockForm}
+        onSubmit={mockOnSubmit}
+        validateOnRender={false}
+        dontReset={false}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
 );
 
 const mcparFormSubmitted = (
-  <ReportContext.Provider
-    value={{
-      ...mockMcparReportContext,
-      report: {
-        ...mockMcparReportContext.report,
-        status: ReportStatus.SUBMITTED,
-      },
-    }}
-  >
-    <Form id={mockForm.id} formJson={mockForm} onSubmit={mockOnSubmit} />
-  </ReportContext.Provider>
+  <RouterWrappedComponent>
+    <ReportContext.Provider
+      value={{
+        ...mockMcparReportContext,
+        report: {
+          ...mockMcparReportContext.report,
+          status: ReportStatus.SUBMITTED,
+        },
+      }}
+    >
+      <Form
+        id={mockForm.id}
+        formJson={mockForm}
+        onSubmit={mockOnSubmit}
+        validateOnRender={false}
+        dontReset={false}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
 );
 
 describe("Test Form component", () => {

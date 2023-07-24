@@ -12,6 +12,7 @@ import {
   mockMcparReportContext,
   mockReportKeys,
   mockStateUser,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
@@ -47,32 +48,36 @@ const mockUpdateCallPayload = {
 };
 
 const modalComponent = (
-  <ReportContext.Provider value={mockedReportContext}>
-    <AddEditEntityModal
-      entityType="accessMeasures"
-      verbiage={mockModalDrawerReportPageVerbiage}
-      form={mockModalForm}
-      modalDisclosure={{
-        isOpen: true,
-        onClose: mockCloseHandler,
-      }}
-    />
-  </ReportContext.Provider>
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedReportContext}>
+      <AddEditEntityModal
+        entityType="accessMeasures"
+        verbiage={mockModalDrawerReportPageVerbiage}
+        form={mockModalForm}
+        modalDisclosure={{
+          isOpen: true,
+          onClose: mockCloseHandler,
+        }}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
 );
 
 const modalComponentWithSelectedEntity = (
-  <ReportContext.Provider value={mockedReportContext}>
-    <AddEditEntityModal
-      entityType="accessMeasures"
-      selectedEntity={mockEntity}
-      verbiage={mockModalDrawerReportPageVerbiage}
-      form={mockModalForm}
-      modalDisclosure={{
-        isOpen: true,
-        onClose: mockCloseHandler,
-      }}
-    />
-  </ReportContext.Provider>
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedReportContext}>
+      <AddEditEntityModal
+        entityType="accessMeasures"
+        selectedEntity={mockEntity}
+        verbiage={mockModalDrawerReportPageVerbiage}
+        form={mockModalForm}
+        modalDisclosure={{
+          isOpen: true,
+          onClose: mockCloseHandler,
+        }}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
 );
 
 describe("Test AddEditEntityModal", () => {
