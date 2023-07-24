@@ -93,14 +93,19 @@ export const calculateCompletionStatus = async (
       return fieldIds;
     };
     // Iterate over all fields in form
-    for (var formField of nestedFormTemplate.fields || []) {
+    for (var formField of nestedFormTemplate?.fields || []) {
       if (formField.repeat) {
         // This is a repeated field, and must be handled differently
-        for (var repeatEntity of fieldData[formField.repeat]) {
-          // Iterate over each entity from the repeat section, build new value id, and validate it
-          repeatersValid &&= await areFieldsValid({
-            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
-          });
+        if (fieldData[formField.repeat] !== undefined)
+          for (var repeatEntity of fieldData[formField.repeat]) {
+            // Iterate over each entity from the repeat section, build new value id, and validate it
+            repeatersValid &&= await areFieldsValid({
+              [formField.id]:
+                dataForObject[`${formField.id}_${repeatEntity.id}`],
+            });
+          }
+        else {
+          repeatersValid = false;
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field

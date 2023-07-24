@@ -44,7 +44,7 @@ export const NumberField = ({
   useEffect(() => {
     if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);

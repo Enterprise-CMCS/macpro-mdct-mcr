@@ -42,7 +42,7 @@ export const DateField = ({
   useEffect(() => {
     if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);

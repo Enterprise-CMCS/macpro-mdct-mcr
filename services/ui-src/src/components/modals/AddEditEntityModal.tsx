@@ -123,6 +123,8 @@ export const AddEditEntityModal = ({
             ? modalDisclosure.onClose
             : writeEntity
         }
+        validateOnRender={false}
+        dontReset={true}
       />
       <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>
     </Modal>
