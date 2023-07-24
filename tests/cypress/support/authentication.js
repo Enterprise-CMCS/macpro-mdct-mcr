@@ -76,17 +76,19 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
      * This ensures reused sessions maintain these tokens
      * We expect at least three for the id, access, and refresh tokens
      */
-    cy.waitUntil(() =>
-      cy
-        .window()
-        .then(
-          (window) =>
-            Object.keys(window.localStorage).filter((key) =>
-              key.match(
-                /CognitoIdentityServiceProvider.+(refresh|access|id)Token/
-              )
-            ).length === 3
-        )
+    cy.waitUntil(
+      () =>
+        cy
+          .window()
+          .then(
+            (window) =>
+              Object.keys(window.localStorage).filter((key) =>
+                key.match(
+                  /CognitoIdentityServiceProvider.+(refresh|access|id)Token/
+                )
+              ).length === 3
+          ),
+      { timeout: 5000, errorMsg: "Unable to find refresh access token" }
     );
   });
 });
