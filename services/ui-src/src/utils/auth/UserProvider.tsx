@@ -48,7 +48,7 @@ export const UserProvider = ({ children }: Props) => {
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }
-    window.location.href = config.cognito.REDIRECT_SIGNOUT;
+    window.location.href = config.POST_SIGNOUT_REDIRECT;
   }, []);
 
   const checkAuthState = useCallback(async () => {

@@ -47,7 +47,6 @@ custom:
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
   bootstrapUsersEnabled: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/enabled, ssm:/configuration/default/cognito/bootstrapUsers/enabled, ""}
   bootstrapUsersPassword: ${ssm:/configuration/${self:custom.stage}/cognito/bootstrapUsers/password, ssm:/configuration/default/cognito/bootstrapUsers/password, ""}
-  signout_redirect_url: ${env:COGNITO_REDIRECT_SIGNOUT, ssm:/configuration/${self:custom.stage}/cognito/redirectSignout, ssm:/configuration/default/cognito/redirectSignout}
   okta_metadata_url: ${ssm:/configuration/${self:custom.stage}/okta_metadata_url, ""}
   okta_oidc_client_id: ${ssm:/configuration/${self:custom.stage}/okta_client_id, ""}
   okta_oidc_client_secret: ${ssm:/configuration/${self:custom.stage}/okta_client_secret, ""}
@@ -166,7 +165,7 @@ resources:
           - http://localhost:3000/
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         LogoutURLs:
-          - ${self:custom.signout_redirect_url}
+          - ${self:custom.application_endpoint_url}
           - http://localhost:3000/
         SupportedIdentityProviders:
           - Fn::If:
