@@ -160,8 +160,11 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Check Project A11y
-        uses: cypress-io/github-action@v4.2.0
+        uses: cypress-io/github-action@v5
         with:
           working-directory: tests/cypress
           spec: tests/accessibility/*.feature
@@ -175,6 +178,7 @@ jobs:
           CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
           RUN_PA11Y: true
+
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
         if: failure()
