@@ -22,12 +22,9 @@ jobs:
         run: ./.github/build-vars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-      - name: read .nvmrc
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: ".nvmrc"
       - uses: actions/cache@v2
         with:
           path: |
@@ -89,12 +86,9 @@ jobs:
         run: ./.github/github-lock.sh $branch_name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: read .nvmrc
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: ".nvmrc"
       - uses: actions/cache@v2
         with:
           path: |
@@ -132,12 +126,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: read .nvmrc
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: ".nvmrc"
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v4.2.0
         with:
@@ -170,12 +161,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: read .nvmrc
-        id: node_version
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.node_version.outputs.NODE_VERSION }}
+          node-version-file: ".nvmrc"
       - name: Check Project A11y
         uses: cypress-io/github-action@v4.2.0
         with:
