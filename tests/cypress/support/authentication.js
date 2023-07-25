@@ -2,6 +2,7 @@
 const cognitoEmailInputField = 'input[name="email"]';
 const cognitoPasswordInputField = 'input[name="password"]';
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
+const myAccountButton = '[aria-label="my account"';
 
 const stateUserPassword = Cypress.env("STATE_USER_PASSWORD");
 const adminUserPassword = Cypress.env("ADMIN_USER_PASSWORD");
@@ -77,7 +78,7 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
      * This ensures reused sessions maintain these tokens
      * We expect at least three for the id, access, and refresh tokens
      */
-    cy.wait(3500);
-    cy.get("h1").should("contain", "Managed Care Reporting Portal");
+    cy.wait(5000);
+    cy.get(myAccountButton).should("exist");
   });
 });

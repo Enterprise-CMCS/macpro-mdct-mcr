@@ -128,13 +128,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-
-      - run: node -v
-
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
         with:
@@ -167,9 +160,6 @@ jobs:
     if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
       - name: Check Project A11y
         uses: cypress-io/github-action@v4.2.0
         with:
