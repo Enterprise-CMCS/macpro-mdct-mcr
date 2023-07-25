@@ -7,8 +7,6 @@ const sectionLink = ".chakra-link .level-1";
 
 describe("Sidebar integration tests", () => {
   it("The sidebar can be navigated at multiple depths, references the selected items, and can be", () => {
-    cy.clearSession();
-    cy.wait(2000);
     // Sign in as a state user
     cy.authenticate("stateUser");
     cy.navigateToHomePage();
@@ -60,7 +58,6 @@ describe("Sidebar integration tests", () => {
       .parent()
       .should("have.class", "open");
 
-    cy.clearSession();
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
     cy.get('[name="state"]').select("District of Columbia");

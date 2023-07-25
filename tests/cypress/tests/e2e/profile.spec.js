@@ -10,8 +10,6 @@ afterEach(() => {
 
 describe("Profile integration tests", () => {
   it("Allows admin user to navigate to /admin", () => {
-    cy.clearSession();
-    cy.wait(2000);
     cy.authenticate("adminUser");
 
     cy.get(menuButton).click();
@@ -23,8 +21,6 @@ describe("Profile integration tests", () => {
   });
 
   it("Disallows state user to navigate to /admin (redirects to /profile)", () => {
-    cy.clearSession();
-    cy.wait(2000);
     cy.authenticate("stateUser");
 
     cy.get(menuButton).click();
