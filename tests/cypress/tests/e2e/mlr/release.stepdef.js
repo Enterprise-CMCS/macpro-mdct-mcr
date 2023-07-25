@@ -10,16 +10,19 @@ When("I create, fill, and submit a report", () => {
 
   // Create the program
   cy.visit(`/mlr`);
-  cy.findByRole("button", { name: "Add new MLR submission" }).click();
+  cy.get("button").contains("Add new MLR submission").click();
   cy.get('input[id="programName"]').type(programName);
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
