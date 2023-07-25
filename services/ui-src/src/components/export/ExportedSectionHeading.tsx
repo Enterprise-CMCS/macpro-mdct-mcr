@@ -66,7 +66,6 @@ const sx = {
   spreadsheet: {
     margin: "1.5rem 0",
     "@media print": {
-      // pageBreakBefore: "avoid",
       pageBreakAfter: "avoid",
     },
   },
