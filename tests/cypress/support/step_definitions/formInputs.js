@@ -12,8 +12,8 @@ When("these form elements are edited:/filled:", function (dataTable) {
      */
     const repeatedInput = row?.[3];
     const input = repeatedInput
-      ? cy.get(`input[name^="${row[0]}"]`, { timeout: 1000 })
-      : cy.get(`[name='${row[0]}']`, { timeout: 1000 });
+      ? cy.get(`input[name^="${row[0]}"]`)
+      : cy.get(`[name='${row[0]}']`);
     const inputType = row[1];
     const inputValue = row[2];
     switch (inputType) {
@@ -55,11 +55,8 @@ When("these form elements are prefilled and disabled:", (dataTable) => {
   dataTable.rawTable.forEach((row) => {
     switch (row[1]) {
       default:
-        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
-          "have.value",
-          row[2]
-        );
-        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should("be.disabled");
+        cy.get(`[name='${row[0]}']`).should("have.value", row[2]);
+        cy.get(`[name='${row[0]}']`).should("be.disabled");
         break;
     }
   });
@@ -70,16 +67,10 @@ When("these form elements are prefilled:", (dataTable) => {
     switch (row[1]) {
       case "radio":
       case "checkbox":
-        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
-          "be.checked",
-          row[2]
-        );
+        cy.get(`[name='${row[0]}']`).should("be.checked", row[2]);
         break;
       default:
-        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
-          "have.value",
-          row[2]
-        );
+        cy.get(`[name='${row[0]}']`).should("have.value", row[2]);
         break;
     }
   });
@@ -87,10 +78,10 @@ When("these form elements are prefilled:", (dataTable) => {
 
 When("the form is submitted", () => {
   const submitButton = "[type='submit']";
-  cy.get(submitButton, { timeout: 1000 }).focus();
-  cy.get(submitButton, { timeout: 1000 }).click();
+  cy.get(submitButton).focus();
+  cy.get(submitButton).click();
 });
 
 When("I click the {string} button", (name) => {
-  cy.findAllByRole("button", { name }, { timeout: 1000 }).last().click();
+  cy.findAllByRole("button", { name }).last().click();
 });
