@@ -100,21 +100,23 @@ When("I completely fill out a {string} form", (form) => {
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
-  cy.get("button").contains("Add managed care program").click();
-  cy.get('input[name="programName"').type(programName);
-  cy.get('input[name="reportingPeriodStartDate"]').type(
+  cy.get("button", { timeout: 1000 })
+    .contains("Add managed care program")
+    .click();
+  cy.get('input[name="programName"', { timeout: 1000 }).type(programName);
+  cy.get('input[name="reportingPeriodStartDate"]', { timeout: 1000 }).type(
     lastYear.toLocaleDateString("en-US")
   );
 
-  cy.get('input[name="reportingPeriodEndDate"]').type(
+  cy.get('input[name="reportingPeriodEndDate"]', { timeout: 1000 }).type(
     today.toLocaleDateString("en-US")
   );
-  cy.get('input[name="combinedData"').check();
-  cy.get("button[type=submit]").contains("Save").click();
+  cy.get('input[name="combinedData"', { timeout: 1000 }).check();
+  cy.get("button[type=submit]", { timeout: 2000 }).contains("Save").click();
 
   //Find our new program and open it
-  cy.get("table").within(() => {
-    cy.get("td")
+  cy.get("table", { timeout: 1000 }).within(() => {
+    cy.get("td", { timeout: 1000 })
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
@@ -129,17 +131,23 @@ When("I completely fill out a {string} form", (form) => {
 
 When("I submit the {string} form", (form) => {
   //Submit the program
-  cy.get(`button:contains("Submit ${form}")`).focus().click();
-  cy.get('[data-testid="modal-submit-button"]').focus().click();
+  cy.get(`button:contains("Submit ${form}")`, { timeout: 1000 })
+    .focus()
+    .click();
+  cy.get('[data-testid="modal-submit-button"]', { timeout: 1000 })
+    .focus()
+    .click();
 });
 
 Then("the {string} form is submittable", (form) => {
-  cy.get('div[role*="alert"]').should("not.exist");
-  cy.get(`button:contains("Submit ${form}")`).should("not.be.disabled");
+  cy.get('div[role*="alert"]', { timeout: 1000 }).should("not.exist");
+  cy.get(`button:contains("Submit ${form}")`, { timeout: 1000 }).should(
+    "not.be.disabled"
+  );
 });
 
 Then("the program is submitted", () => {
-  cy.contains("Successfully Submitted").should("be.visible");
+  cy.contains("Successfully Submitted", { timeout: 1000 }).should("be.visible");
 });
 
 When("I try to submit an incomplete {string} program", (form) => {
@@ -148,21 +156,25 @@ When("I try to submit an incomplete {string} program", (form) => {
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.visit(`/${form.toLowerCase()}`);
-  cy.findByRole("button", { name: "Add managed care program" }).click();
-  cy.findByLabelText("Program name").type(programName);
-  cy.get('input[name="reportingPeriodStartDate"]').type(
+  cy.visit(`/${form.toLowerCase()}`, { timeout: 1000 });
+  cy.findByRole(
+    "button",
+    { name: "Add managed care program" },
+    { timeout: 1000 }
+  ).click();
+  cy.findByLabelText("Program name", { timeout: 1000 }).type(programName);
+  cy.get('input[name="reportingPeriodStartDate"]', { timeout: 1000 }).type(
     lastYear.toLocaleDateString("en-US")
   );
 
-  cy.get('input[name="reportingPeriodEndDate"]').type(
+  cy.get('input[name="reportingPeriodEndDate"]', { timeout: 1000 }).type(
     today.toLocaleDateString("en-US")
   );
-  cy.findByRole("checkbox").focus().click();
-  cy.get("button[type=submit]").contains("Save").click();
+  cy.findByRole("checkbox", { timeout: 1000 }).focus().click();
+  cy.get("button[type=submit]", { timeout: 1000 }).contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
+  cy.findByText(programName, { timeout: 1000 })
     .parent()
     .find('button:contains("Edit")')
     .focus()
@@ -172,22 +184,28 @@ When("I try to submit an incomplete {string} program", (form) => {
   const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
 
-  cy.get('a[href*="review-and-submit"]').click();
+  cy.get('a[href*="review-and-submit"]', { timeout: 1000 }).click();
 });
 
 Then("there is a submission alert", () => {
-  cy.get('div[role*="alert"]').should("exist");
-  cy.contains("Your form is not ready for submission").should("be.visible");
+  cy.get('div[role*="alert"]', { timeout: 1000 }).should("exist");
+  cy.contains("Your form is not ready for submission", {
+    timeout: 1000,
+  }).should("be.visible");
 });
 
 Then("there are errors in the status", () => {
-  cy.get('img[alt="Error notification"]').should("be.visible");
+  cy.get('img[alt="Error notification"]', { timeout: 1000 }).should(
+    "be.visible"
+  );
 });
 
 Then("incomplete program cannot submit", () => {
   //Submit the program
-  cy.get('button:contains("Submit MCPAR")').should("be.disabled");
-  cy.get('div[role*="alert"]').should("exist");
+  cy.get('button:contains("Submit MCPAR")', { timeout: 1000 }).should(
+    "be.disabled"
+  );
+  cy.get('div[role*="alert"]', { timeout: 1000 }).should("exist");
 });
 
 const traverseRoutes = (routes) => {
@@ -201,19 +219,19 @@ const traverseRoute = (route) => {
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
     //validate we are on the URL we expect to be
-    cy.url().should("include", route.path);
+    cy.url({ timeout: 1000 }).should("include", route.path);
     //Validate the intro section is presented
     if (route.verbiage?.intro?.section)
-      cy.contains(route.verbiage?.intro?.section);
+      cy.contains(route.verbiage?.intro?.section, { timeout: 1000 });
     if (route.verbiage?.intro?.subsection)
-      cy.contains(route.verbiage?.intro?.subsection);
+      cy.contains(route.verbiage?.intro?.subsection, { timeout: 1000 });
 
     //Fill out the 3 different types of forms
     completeFrom(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeDrawerForm(route.drawerForm);
 
-    cy.get('button:contains("Continue")').focus().click();
+    cy.get('button:contains("Continue")', { timeout: 1000 }).focus().click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
@@ -254,46 +272,62 @@ const processField = (field) => {
       case "textarea":
         switch (validationType) {
           case "email":
-            cy.get(`[name="${field.id}"]`).type("email@fill.com");
+            cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
+              "email@fill.com"
+            );
             break;
           case "url":
-            cy.get(`[name="${field.id}"]`).type("https://fill.com");
+            cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
+              "https://fill.com"
+            );
             break;
           case "text":
             if (field.repeat) {
               //repeats don't use the exact name, but thankfully don't need to worry about similar names
-              cy.get(`[name^="${field.id}"]`).type("Text Fill");
+              cy.get(`[name^="${field.id}"]`, { timeout: 1000 }).type(
+                "Text Fill"
+              );
             } else {
-              cy.get(`[name="${field.id}"]`).type("Text Fill");
+              cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
+                "Text Fill"
+              );
             }
             break;
           default:
-            cy.get(`[name="${field.id}"]`).type("Unknown Fill");
+            cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
+              "Unknown Fill"
+            );
         }
         break;
       case "date":
-        cy.get(`[name="${field.id}"]`).type(
+        cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
           new Date().toLocaleDateString("en-US")
         );
         break;
       case "dynamic":
-        cy.get(`[name="${field.id}[0]"`).type("Dynamic Fill");
+        cy.get(`[name="${field.id}[0]"`, { timeout: 1000 }).type(
+          "Dynamic Fill"
+        );
         break;
       case "number":
         switch (validationType) {
           case "ratio":
-            cy.get(`[name="${field.id}"]`).type("1:1");
+            cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type("1:1");
             break;
           default:
-            cy.get(`[name="${field.id}"]`).type(Math.ceil(Math.random() * 100));
+            cy.get(`[name="${field.id}"]`, { timeout: 1000 }).type(
+              Math.ceil(Math.random() * 100)
+            );
         }
         break;
       case "dropdown":
-        cy.get(`[name="${field.id}"]`).select(1);
+        cy.get(`[name="${field.id}"]`, { timeout: 1000 }).select(1);
         break;
       case "radio":
       case "checkbox":
-        cy.get(`[id="${field.id}-${field.props.choices[0].id}"]`).check();
+        cy.get(`[id="${field.id}-${field.props.choices[0].id}"]`, {
+          timeout: 1000,
+        }).check();
         field.props.choices[0].children?.forEach((childField) =>
           processField(childField)
         );

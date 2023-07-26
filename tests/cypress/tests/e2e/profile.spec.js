@@ -12,23 +12,23 @@ describe("Profile integration tests", () => {
   it("Allows admin user to navigate to /admin", () => {
     cy.authenticate("adminUser");
 
-    cy.get(menuButton).click();
-    cy.get(menuOptionManageAccount).click();
-    cy.location("pathname").should("match", /profile/);
+    cy.get(menuButton, { timeout: 1000 }).click();
+    cy.get(menuOptionManageAccount, { timeout: 1000 }).click();
+    cy.location("pathname", { timeout: 1000 }).should("match", /profile/);
 
-    cy.get(adminButton).click();
-    cy.location("pathname").should("match", /admin/);
+    cy.get(adminButton, { timeout: 1000 }).click();
+    cy.location("pathname", { timeout: 1000 }).should("match", /admin/);
   });
 
   it("Disallows state user to navigate to /admin (redirects to /profile)", () => {
     cy.authenticate("stateUser");
 
-    cy.get(menuButton).click();
-    cy.get(menuOptionManageAccount).click();
-    cy.location("pathname").should("match", /profile/);
-    cy.get(adminButton).should("not.exist");
+    cy.get(menuButton, { timeout: 1000 }).click();
+    cy.get(menuOptionManageAccount, { timeout: 1000 }).click();
+    cy.location("pathname", { timeout: 1000 }).should("match", /profile/);
+    cy.get(adminButton, { timeout: 1000 }).should("not.exist");
 
-    cy.visit("/admin");
-    cy.location("pathname").should("match", /profile/);
+    cy.visit("/admin", { timeout: 1000 });
+    cy.location("pathname", { timeout: 1000 }).should("match", /profile/);
   });
 });

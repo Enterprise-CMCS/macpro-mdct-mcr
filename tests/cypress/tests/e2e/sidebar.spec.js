@@ -10,62 +10,98 @@ describe("Sidebar integration tests", () => {
     // Sign in as a state user
     cy.authenticate("stateUser");
     cy.navigateToHomePage();
-    cy.findByRole("button", { name: "Enter MCPAR online" }).click();
-    cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
+    cy.findByRole(
+      "button",
+      { name: "Enter MCPAR online" },
+      { timeout: 1000 }
+    ).click();
+    cy.findAllByRole(
+      "button",
+      { name: "Enter MCPAR online" },
+      { timeout: 1000 }
+    ).click();
 
     // Create Report & nav to it
-    cy.findByRole("button", { name: "Add managed care program" }).click();
-    cy.findByLabelText("Program name").type(
+    cy.findByRole(
+      "button",
+      { name: "Add managed care program" },
+      { timeout: 1000 }
+    ).click();
+    cy.findByLabelText("Program name", { timeout: 1000 }).type(
       "automated test - " + new Date().toISOString()
     );
-    cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
-    cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
-    cy.findByRole("checkbox").focus().click();
-    cy.get("button[type=submit]").contains("Save").click();
-    cy.findAllByRole("button", { name: "Edit" }).first().click();
+    cy.get('input[name="reportingPeriodStartDate"]', { timeout: 1000 }).type(
+      "07142023"
+    );
+    cy.get('input[name="reportingPeriodEndDate"]', { timeout: 1000 }).type(
+      "07142026"
+    );
+    cy.findByRole("checkbox", { timeout: 1000 }).focused().click();
+    cy.get("button[type=submit]", { timeout: 1000 }).contains("Save").click();
+    cy.findAllByRole("button", { name: "Edit" }, { timeout: 1000 })
+      .first()
+      .click();
 
     // Expand next section, collapse first, nav to new page.
-    cy.get(collapseButton).first().click();
-    cy.get(expandButton).first().click();
+    cy.get(collapseButton, { timeout: 1000 }).first().click();
+    cy.get(expandButton, { timeout: 1000 }).first().click();
     cy.wait(600);
 
-    cy.get(subsectionText).filter(":visible").first().parent().parent().click();
-    cy.get(subsectionText)
+    cy.get(subsectionText, { timeout: 1000 })
+      .filter(":visible")
+      .first()
+      .parent()
+      .parent()
+      .click();
+    cy.get(subsectionText, { timeout: 1000 })
       .filter(":visible")
       .first()
       .parent()
       .should("have.class", "selected");
 
     // Collapse remaining section, just check that all subsections are gone.
-    cy.get(collapseButton).first().click();
+    cy.get(collapseButton, { timeout: 1000 }).first().click();
     cy.wait(600);
-    cy.get(subsectionText).filter(":visible").should("not.exist");
+    cy.get(subsectionText, { timeout: 1000 })
+      .filter(":visible")
+      .should("not.exist");
 
-    cy.get(sectionLink).filter(":visible").first().parent().parent().click();
-    cy.get(sectionLink)
+    cy.get(sectionLink, { timeout: 1000 })
+      .filter(":visible")
+      .first()
+      .parent()
+      .parent()
+      .click();
+    cy.get(sectionLink, { timeout: 1000 })
       .filter(":visible")
       .first()
       .parent()
       .should("have.class", "selected");
 
     // Collapse and expand entire bar
-    cy.findByLabelText(expandCollapseSidebar)
+    cy.findByLabelText(expandCollapseSidebar, { timeout: 1000 })
       .click()
       .parent()
       .should("have.class", "closed");
-    cy.findByLabelText(expandCollapseSidebar)
+    cy.findByLabelText(expandCollapseSidebar, { timeout: 1000 })
       .click()
       .parent()
       .should("have.class", "open");
 
     cy.authenticate("adminUser");
     cy.navigateToHomePage();
-    cy.get('[name="state"]').select("District of Columbia");
-    cy.get('[name="report"]').first().check();
-    cy.findAllByRole("button", { name: "Go to Report Dashboard" })
+    cy.get('[name="state"]', { timeout: 1000 }).select("District of Columbia");
+    cy.get('[name="report"]', { timeout: 1000 }).first().check();
+    cy.findAllByRole(
+      "button",
+      { name: "Go to Report Dashboard" },
+      { timeout: 1000 }
+    )
       .last()
       .click();
-    cy.findAllByRole("button", { name: "Archive" }).last().click();
-    cy.contains("Unarchive").should("be.visible");
+    cy.findAllByRole("button", { name: "Archive" }, { timeout: 1000 })
+      .last()
+      .click();
+    cy.contains("Unarchive", { timeout: 1000 }).should("be.visible");
   });
 });

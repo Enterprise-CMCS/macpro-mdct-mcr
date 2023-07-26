@@ -12,29 +12,39 @@ When("these form elements are edited:/filled:", function (dataTable) {
      */
     const repeatedInput = row?.[3];
     const input = repeatedInput
-      ? cy.get(`input[name^="${row[0]}"]`)
-      : cy.get(`[name='${row[0]}']`);
+      ? cy.get(`input[name^="${row[0]}"]`, { timeout: 1000 })
+      : cy.get(`[name='${row[0]}']`, { timeout: 1000 });
     const inputType = row[1];
     const inputValue = row[2];
     switch (inputType) {
       case "singleCheckbox":
-        if (inputValue == "true") input.check().blur();
-        else input.uncheck();
+        if (inputValue == "true") {
+          input.check();
+          input.blur();
+        } else input.uncheck();
         break;
       case "radio":
-        input.check(inputValue).blur();
+        input.check(inputValue);
+        input.blur();
         break;
       case "checkbox":
-        input.check(inputValue).blur();
+        input.check(inputValue);
+        input.blur();
         break;
       case "dropdown":
-        input.select(inputValue).blur();
+        input.select(inputValue);
+        input.blur();
         break;
       case "repeated":
-        input.eq(repeatedInput).clear().type(inputValue).blur();
+        input.eq(repeatedInput);
+        input.clear();
+        input.type(inputValue);
+        input.blur();
         break;
       default:
-        input.clear().type(inputValue).blur();
+        input.clear();
+        input.type(inputValue);
+        input.blur();
         break;
     }
     if (this.delay) cy.wait(this.delay);
@@ -45,9 +55,11 @@ When("these form elements are prefilled and disabled:", (dataTable) => {
   dataTable.rawTable.forEach((row) => {
     switch (row[1]) {
       default:
-        cy.get(`[name='${row[0]}']`)
-          .should("have.value", row[2])
-          .should("be.disabled");
+        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
+          "have.value",
+          row[2]
+        );
+        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should("be.disabled");
         break;
     }
   });
@@ -58,10 +70,16 @@ When("these form elements are prefilled:", (dataTable) => {
     switch (row[1]) {
       case "radio":
       case "checkbox":
-        cy.get(`[name='${row[0]}']`).should("be.checked", row[2]);
+        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
+          "be.checked",
+          row[2]
+        );
         break;
       default:
-        cy.get(`[name='${row[0]}']`).should("have.value", row[2]);
+        cy.get(`[name='${row[0]}']`, { timeout: 1000 }).should(
+          "have.value",
+          row[2]
+        );
         break;
     }
   });
@@ -69,9 +87,10 @@ When("these form elements are prefilled:", (dataTable) => {
 
 When("the form is submitted", () => {
   const submitButton = "[type='submit']";
-  cy.get(submitButton).focus().click();
+  cy.get(submitButton, { timeout: 1000 }).focus();
+  cy.get(submitButton, { timeout: 1000 }).click();
 });
 
 When("I click the {string} button", (name) => {
-  cy.findAllByRole("button", { name }).last().click();
+  cy.findAllByRole("button", { name }, { timeout: 1000 }).last().click();
 });

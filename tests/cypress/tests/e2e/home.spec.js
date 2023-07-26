@@ -13,6 +13,8 @@ afterEach(() => {
 describe("Homepage integration tests", () => {
   it("Clicking accordion expander opens accordion", () => {
     cy.contains(templateCardAccordionVerbiage).first().click();
-    cy.get(templateCardAccordionTableRole).should("be.visible");
+    cy.get(templateCardAccordionTableRole, { timeout: 1000 }).should(
+      "be.visible"
+    );
   });
 });
