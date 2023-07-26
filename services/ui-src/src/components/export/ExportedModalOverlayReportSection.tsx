@@ -129,6 +129,9 @@ export function renderModalOverlayTableBody(
 
 const sx = {
   root: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
     marginBottom: "1rem",
     "tr, th": {
       verticalAlign: "bottom",

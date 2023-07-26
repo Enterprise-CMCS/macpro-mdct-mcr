@@ -162,6 +162,9 @@ export const sx = {
     width: "100%",
     maxWidth: "40rem",
     margin: "0 auto 0 0",
+    "@media print": {
+      margin: "5rem 0",
+    },
   },
   heading: {
     fontWeight: "300",
