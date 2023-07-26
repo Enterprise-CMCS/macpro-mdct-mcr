@@ -13,11 +13,14 @@ When("I submit a new MLR program", () => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);

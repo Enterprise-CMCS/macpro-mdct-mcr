@@ -162,12 +162,14 @@ When("I try to submit an incomplete {string} program", (form) => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
-
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
   const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
