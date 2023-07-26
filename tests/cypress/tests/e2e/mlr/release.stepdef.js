@@ -56,6 +56,16 @@ When("I unlock a report", () => {
       .focus()
       .click();
   });
+
+  cy.wait(2000);
+
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unlock")')
+      .should("be.disabled");
+  });
 });
 
 When("I archive a report", () => {
@@ -76,6 +86,16 @@ When("I archive a report", () => {
       .focus()
       .click();
   });
+
+  cy.wait(2000);
+
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unarchive")')
+      .should("be.visible");
+  });
 });
 
 Then("I cannot unlock that report", () => {
@@ -91,7 +111,7 @@ Then("I cannot unlock that report", () => {
     cy.get("td")
       .contains(programName)
       .parent()
-      .find('button:contains("Edit")')
+      .find('button:contains("Unlock")')
       .should("be.disabled");
   });
 });
@@ -101,7 +121,7 @@ Then("I cannot unlock that archived report", () => {
     cy.get("td")
       .contains(programName)
       .parent()
-      .find('button:contains("Edit")')
+      .find('button:contains("Unlock")')
       .should("be.disabled");
   });
 });
