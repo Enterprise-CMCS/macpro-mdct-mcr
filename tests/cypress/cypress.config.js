@@ -12,7 +12,6 @@ module.exports = defineConfig({
   screenshotsFolder: "screenshots",
   videosFolder: "videos",
   downloadsFolder: "downloads",
-  defaultCommandTimeout: 2000000000,
   types: ["cypress", "cypress-axe"],
   env: {
     STATE_USER_EMAIL: "cypressstateuser@test.com",
