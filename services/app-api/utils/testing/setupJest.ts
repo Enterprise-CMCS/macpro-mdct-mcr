@@ -54,7 +54,34 @@ jest.mock("aws-sdk", () => {
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
-  routes: [],
+  routes: [
+    {
+      children: [
+        {
+          form: {
+            fields: {
+              type: "number",
+              validation: "number",
+              id: "report_number",
+              props: {
+                choices: [
+                  {
+                    children: [
+                      {
+                        id: "report_percentage-otherText",
+                        type: "number",
+                        validation: "number"
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  ],
   validationJson: {
     text: "text",
     number: "number",
@@ -69,7 +96,9 @@ export const mockReportKeys = {
 
 export const mockReportFieldData = {
   text: "text-input",
+  value: 22,
   number: 0,
+  program: [{ report_number: "12", report_percentage: "34" }],
 };
 
 export const mockDynamoData = {

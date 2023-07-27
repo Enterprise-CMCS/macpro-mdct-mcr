@@ -5,15 +5,15 @@ import { AnyObject, S3Get, S3Put } from "../../utils/types";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { buckets } from "../../utils/constants/constants";
 
-type FieldData = {
+export type FieldData = {
   fieldId: string;
   value: string;
 };
-type FieldTemplate = {
+export type FieldTemplate = {
   fieldId: string;
   entityType?: string;
 };
-type S3Route = {
+export type S3Route = {
   state?: string;
   bucket: string;
   type: string;
@@ -26,6 +26,7 @@ const {
   MLR_FORM_BUCKET,
 } = process.env;
 
+//this list is used to help determine the route we want to travel
 const routeKeyList = [
   "children",
   "choices",
@@ -105,6 +106,7 @@ export const extractAndStoreData = async (
   }
 };
 
+//iterate over the formTemplate & use that information to iterate over the fieldData
 export const extractNumericalData = (
   formTemplate: AnyObject,
   fieldData: AnyObject
@@ -122,7 +124,11 @@ export const extractNumericalData = (
   return extractedFieldData;
 };
 
-function iterateOverNumericFields(formTemplateRoutes: any[], list: any[]) {
+export const iterateOverNumericFields = (
+  formTemplateRoutes: any[],
+  store: any[]
+) => {
+  //check if the key is a number (array) or an object key matching the routeKeyList
   let route: any[] = Object.entries(formTemplateRoutes).flatMap(
     ([key, value]) => {
       return routeKeyList.includes(key) || !isNaN(parseInt(key)) ? value : null;
@@ -135,28 +141,33 @@ function iterateOverNumericFields(formTemplateRoutes: any[], list: any[]) {
         (arr.validation && arr.validation === "number") ||
         (arr.type && arr.type === "number")
       )
-        list.push({ fieldId: arr.id });
+        store.push({ fieldId: arr.id });
 
       Object.keys(arr).forEach((key) => {
         if (typeof arr[key] === "object") {
-          iterateOverNumericFields(arr[key], list);
+          iterateOverNumericFields(arr[key], store);
         }
       });
     }
   }
-}
+};
 
-function fieldValueById(fieldData: any, fieldId: string, list: any[]) {
+//recusively loop through fieldData to find any that matches fieldId that validation/type were number
+export const fieldValueById = (
+  fieldData: any,
+  fieldId: string,
+  store: any[]
+) => {
   Object.keys(fieldData).forEach((key) => {
     if (key === fieldId) {
-      list.push({ [fieldId]: fieldData[key] });
+      store.push({ [fieldId]: fieldData[key] });
     } else {
       if (fieldData[key] && typeof fieldData[key] === "object") {
-        fieldValueById(fieldData[key], fieldId, list);
+        fieldValueById(fieldData[key], fieldId, store);
       }
     }
   });
-}
+};
 
 //extract field data from s3 bucket
 export const getDataFromS3 = async (id: string, route: S3Route) => {
@@ -193,10 +204,6 @@ export const scanTable = async (TableName: string, LastEvaluatedKey?: any) => {
       TableName,
       LastEvaluatedKey,
     });
-
-    if (!scanResult || !scanResult.Items) {
-      throw new Error("Scan result was undefined, or did not contain items!");
-    }
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(`Database scan failed for the table ${TableName}
