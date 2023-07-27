@@ -10,17 +10,14 @@ import {
   check,
 } from "./numberFieldDataToFile";
 //types
-import {
-  S3Route,
-  FieldData,
-} from "./numberFieldDataToFile";
+import { S3Route, FieldData } from "./numberFieldDataToFile";
 //aws
 import { APIGatewayProxyEvent, Context } from "aws-lambda";
 //testing
 import {
   mockDocumentClient,
   mockDynamoData,
-  mockReportFieldData,
+  mockReportFieldData2,
   mockReportJson2,
 } from "../../utils/testing/setupJest";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -113,13 +110,13 @@ describe("Test s3 bucket put & get", () => {
   test("Test get data from S3", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson2);
     const result = await getDataFromS3(
-      mockMetaDataResponse1.Items[0].formTemplateId,
+      "mockReportJson2",
       route
     );
 
     expect(result).toMatchObject(mockReportJson2);
   });
-})
+});
 
 describe("Test extraction of numerical data from field data", () => {
   test("Test iterating and pulling fields", () => {
@@ -130,14 +127,14 @@ describe("Test extraction of numerical data from field data", () => {
 
   test("Test find value by id", () => {
     let extractedFieldData: FieldData[] = [];
-    fieldValueById(mockReportFieldData, "report_number", extractedFieldData);
+    fieldValueById(mockReportFieldData2, "report_number", extractedFieldData);
     expect(extractedFieldData).toHaveLength(1);
   });
 
   test("Test extracting data from formTemplate & fieldData", () => {
     let numericalData = extractNumericalData(
       mockReportJson2,
-      mockReportFieldData
+      mockReportFieldData2
     );
     expect(numericalData).toHaveLength(1);
   });

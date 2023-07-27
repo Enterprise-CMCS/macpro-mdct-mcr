@@ -30,8 +30,11 @@ jest.mock("aws-sdk", () => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
         getObject: jest.fn().mockImplementation((_params, callback) => {
+          console.log(_params);
           if (_params.Key.includes("mockReportFieldData"))
             callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
+          else if (_params.Key.includes("mockReportJson2"))
+            callback(undefined, { Body: JSON.stringify(mockReportJson2) });
           else if (_params.Key.includes("mockReportJson"))
             callback(undefined, { Body: JSON.stringify(mockReportJson) });
           else callback("Invalid Test Key");
@@ -80,7 +83,7 @@ export const mockReportJson2 = {
                       {
                         id: "report_percentage-otherText",
                         type: "number",
-                        validation: "number"
+                        validation: "number",
                       },
                     ],
                   },
@@ -105,6 +108,11 @@ export const mockReportKeys = {
 };
 
 export const mockReportFieldData = {
+  text: "text-input",
+  number: 0,
+};
+
+export const mockReportFieldData2 = {
   text: "text-input",
   value: 22,
   number: 0,
