@@ -27,7 +27,7 @@ When("I create, fill, and submit a report", () => {
   //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
-  cy.wait(500);
+  cy.wait(2000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
@@ -192,7 +192,7 @@ When("I fill and re-submit that report", () => {
   cy.get('button:contains("Continue")').focus().click();
   cy.get('button:contains("Continue")').focus().click();
 
-  cy.wait(500);
+  cy.wait(2000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
