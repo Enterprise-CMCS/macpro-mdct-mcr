@@ -202,12 +202,22 @@ describe("Test ModalOverlayReportPage (mobile + tablet, adding new program repor
     render(modalOverlayReportPageComponentWithEntities);
   });
 
-  it("State user should be able to enter an existing program", async () => {
+  it("State user should be able to enter and leave an existing program", async () => {
     const enterButton = screen.getByText("Mock enter report text");
     await userEvent.click(enterButton);
+    const closeButton = await screen.findByText("Return to MLR Reporting");
     await waitFor(
       () => {
-        expect(screen.getByText("Return to MLR Reporting"));
+        expect(closeButton).toBeVisible;
+      },
+      {
+        timeout: 1000,
+      }
+    );
+    await userEvent.click(closeButton);
+    await waitFor(
+      () => {
+        expect(enterButton).toBeVisible;
       },
       {
         timeout: 1000,
