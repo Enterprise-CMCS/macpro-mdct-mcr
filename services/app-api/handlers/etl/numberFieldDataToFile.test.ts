@@ -21,7 +21,7 @@ import {
   mockDocumentClient,
   mockDynamoData,
   mockReportFieldData,
-  mockReportJson,
+  mockReportJson2,
 } from "../../utils/testing/setupJest";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 
@@ -46,7 +46,7 @@ const mockMetaDataResponse2 = {
   Items: [mockDynamoData2],
 };
 
-let mockReportJsonWithId: any = mockReportJson;
+let mockReportJsonWithId: any = mockReportJson2;
 mockReportJsonWithId.id = "123423452345435";
 
 const mockProxyEvent = {
@@ -111,20 +111,20 @@ describe("Test s3 bucket put & get", () => {
   });
 
   test("Test get data from S3", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson);
+    mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson2);
     const result = await getDataFromS3(
       mockMetaDataResponse1.Items[0].formTemplateId,
       route
     );
 
-    expect(result).toMatchObject(mockReportJson);
+    expect(result).toMatchObject(mockReportJson2);
   });
 })
 
 describe("Test extraction of numerical data from field data", () => {
   test("Test iterating and pulling fields", () => {
     let numericFields: any[] = [];
-    iterateOverNumericFields(mockReportJson.routes, numericFields);
+    iterateOverNumericFields(mockReportJson2.routes, numericFields);
     expect(numericFields).toHaveLength(2);
   });
 
@@ -136,7 +136,7 @@ describe("Test extraction of numerical data from field data", () => {
 
   test("Test extracting data from formTemplate & fieldData", () => {
     let numericalData = extractNumericalData(
-      mockReportJson,
+      mockReportJson2,
       mockReportFieldData
     );
     expect(numericalData).toHaveLength(1);

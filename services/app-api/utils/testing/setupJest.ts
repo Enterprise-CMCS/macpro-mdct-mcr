@@ -54,6 +54,16 @@ jest.mock("aws-sdk", () => {
 export const mockReportJson = {
   name: "mock-report",
   basePath: "/mock",
+  routes: [],
+  validationJson: {
+    text: "text",
+    number: "number",
+  },
+};
+
+export const mockReportJson2 = {
+  name: "mock-report",
+  basePath: "/mock",
   routes: [
     {
       children: [
