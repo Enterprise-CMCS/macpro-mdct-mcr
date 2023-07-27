@@ -42,7 +42,7 @@ Cypress.Commands.add("clearSession", () => {
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   cy.session([userType, userCredentials], () => {
     cy.visit("/");
-    cy.wait(1000);
+    cy.wait(2000);
     let credentials = {};
 
     if (userType && userCredentials) {
@@ -78,7 +78,7 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
      * This ensures reused sessions maintain these tokens
      * We expect at least three for the id, access, and refresh tokens
      */
-    cy.wait(3500);
+    cy.wait(4500);
     cy.get(myAccountButton).should("exist");
   });
 });
