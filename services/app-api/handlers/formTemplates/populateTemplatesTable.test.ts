@@ -1,7 +1,6 @@
 import {
   copyTemplatesToNewPrefix,
-  getDistinctHashesForTemplates,
-  processReport,
+  processReportTemplates,
   processTemplate,
 } from "./populateTemplatesTable";
 import s3Lib from "../../utils/s3/s3-lib";
@@ -74,23 +73,6 @@ describe("Test processTemplate function", () => {
   });
 });
 
-describe("Test getDistinctHashesForTemplates", () => {
-  it("should return a distinct list of templates", () => {
-    expect(getDistinctHashesForTemplates(templates)).toMatchObject([
-      {
-        id: "foo",
-        hash: "123",
-        state: "DC",
-      },
-      {
-        id: "buzz",
-        hash: "456",
-        state: "MN",
-      },
-    ]);
-  });
-});
-
 describe("Test copyTemplatesToNewPrefix", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -113,7 +95,7 @@ describe("Test processReport", () => {
     const querySpy = jest.spyOn(dynamodbLib, "query");
     const putSpy = jest.spyOn(dynamodbLib, "put");
     listSpy.mockResolvedValue(templates);
-    await processReport(ReportType.MLR);
+    await processReportTemplates(ReportType.MLR);
 
     expect(copySpy).toHaveBeenCalledTimes(1);
     expect(scanSpy).toHaveBeenCalledTimes(1);
@@ -127,7 +109,7 @@ describe("Test processReport", () => {
         Items: [],
       };
     });
-    expect(processReport(ReportType.MLR)).resolves.toBeDefined;
+    expect(processReportTemplates(ReportType.MLR)).resolves.toBeDefined;
   });
 });
 
@@ -140,7 +122,7 @@ describe("Test AWS library failures", () => {
     copyMock.mockImplementationOnce(() => {
       throw Error("Simulated error from S3");
     });
-    expect(processReport(ReportType.MLR)).rejects.toThrowError(
+    expect(processReportTemplates(ReportType.MLR)).rejects.toThrowError(
       "Simulated error from S3"
     );
   });

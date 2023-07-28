@@ -176,12 +176,6 @@ export interface FormTemplate {
   reportType: string;
 }
 
-export function isDefined<T>(
-  possiblyUndefined: T | undefined
-): possiblyUndefined is T {
-  return typeof possiblyUndefined !== "undefined";
-}
-
 /**
  * Use this type to create a type guard for filtering arrays of objects
  * by the presence of certain attributes.

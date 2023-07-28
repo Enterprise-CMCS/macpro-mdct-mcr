@@ -37,6 +37,20 @@ export default {
     const result = await createDbClient().scan(params).promise();
     return { ...result, Items: result?.Items as Result[] | undefined };
   },
+  /**
+   * Scan operation that continues for all results. More expensive but avoids stopping early when a index is not known.
+   */
+  scanAll: async <Result = any>(params: DynamoScan) => {
+    const items = [];
+    let complete = false;
+    while (!complete) {
+      const result = await createDbClient().scan(params).promise();
+      items.push(...((result?.Items as Result[]) ?? []));
+      params.ExclusiveStartKey = result.LastEvaluatedKey;
+      complete = result.LastEvaluatedKey === undefined;
+    }
+    return { Items: items, Count: items.length };
+  },
   put: (params: DynamoWrite) => createDbClient().put(params).promise(),
   update: (params: DynamoUpdate) => createDbClient().update(params).promise(),
   delete: (params: DynamoDelete) => createDbClient().delete(params).promise(),
