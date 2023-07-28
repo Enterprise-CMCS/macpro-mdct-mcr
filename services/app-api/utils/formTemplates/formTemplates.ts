@@ -7,6 +7,7 @@ import KSUID from "ksuid";
 import { logger } from "../logging";
 import {
   AnyObject,
+  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
@@ -19,7 +20,7 @@ import {
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
 import { createHash } from "crypto";
 
-export function getNewestTemplateVersion(reportType: ReportType) {
+export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "LastAlteredIndex",
@@ -30,28 +31,42 @@ export function getNewestTemplateVersion(reportType: ReportType) {
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
   };
-  return dynamodbLib.query(queryParams);
+  const result = await dynamodbLib.query(queryParams);
+  return result.Items?.[0];
 }
+
+const formTemplateForReportType = (reportType: ReportType) => {
+  switch (reportType) {
+    case ReportType.MCPAR:
+      return mcparForm as ReportJson;
+    case ReportType.MLR:
+      return mlrForm as ReportJson;
+    case ReportType.NAAAR:
+      throw new Error(
+        "Not Implemented: NAAAR form template JSON must be added to FormTemplateProvider"
+      );
+    default:
+      assertExhaustive(reportType);
+      throw new Error(
+        "Not Implemented: ReportType not recognized by FormTemplateProvider"
+      );
+  }
+};
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType
 ) {
-  const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
-
-  const formTemplateWithAdminDisabled = copyAdminDisabledStatusToForms(
-    currentFormTemplate as ReportJson
-  );
-
+  const currentFormTemplate = formTemplateForReportType(reportType);
+  const formTemplateWithAdminDisabled =
+    copyAdminDisabledStatusToForms(currentFormTemplate);
   const stringifiedTemplate = JSON.stringify(formTemplateWithAdminDisabled);
 
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
     .digest("hex");
 
-  const mostRecentTemplateVersion = (await getNewestTemplateVersion(reportType))
-    .Items?.[0];
-
+  const mostRecentTemplateVersion = await getNewestTemplateVersion(reportType);
   const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
 
   if (currentTemplateHash === mostRecentTemplateVersionHash) {

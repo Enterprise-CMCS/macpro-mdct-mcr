@@ -45,7 +45,8 @@ const templates = [
 ];
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  scan: () => {
+  ...jest.requireActual("../../utils/dynamo/dynamodb-lib"),
+  scanAll: () => {
     return { Items: [{ formTemplateId: "mockReportJson.json" }] };
   },
   query: () => {
@@ -54,7 +55,6 @@ jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   put: () => {
     return "success";
   },
-  ...jest.requireActual("../../utils/dynamo/dynamodb-lib"),
 }));
 
 describe("Test processTemplate function", () => {
@@ -91,14 +91,14 @@ describe("Test processReport", () => {
   it("should process a report type", async () => {
     const listSpy = jest.spyOn(s3Lib, "list");
     const copySpy = jest.spyOn(s3Lib, "copy");
-    const scanSpy = jest.spyOn(dynamodbLib, "scan");
+    const scanAllSpy = jest.spyOn(dynamodbLib, "scanAll");
     const querySpy = jest.spyOn(dynamodbLib, "query");
     const putSpy = jest.spyOn(dynamodbLib, "put");
     listSpy.mockResolvedValue(templates);
     await processReportTemplates(ReportType.MLR);
 
     expect(copySpy).toHaveBeenCalledTimes(1);
-    expect(scanSpy).toHaveBeenCalledTimes(1);
+    expect(scanAllSpy).toHaveBeenCalledTimes(1);
     expect(querySpy).toHaveBeenCalledTimes(1);
     expect(putSpy).toHaveBeenCalledTimes(2);
   });
@@ -109,7 +109,7 @@ describe("Test processReport", () => {
         Items: [],
       };
     });
-    expect(processReportTemplates(ReportType.MLR)).resolves.toBeDefined;
+    expect(processReportTemplates(ReportType.MLR)).resolves.toBeDefined();
   });
 });
 

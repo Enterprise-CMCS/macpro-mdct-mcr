@@ -11,6 +11,7 @@ export const mockDocumentClient = {
   put: { promise: jest.fn() },
   delete: { promise: jest.fn() },
   scan: { promise: jest.fn() },
+  scanAll: { promise: jest.fn() },
 };
 jest.mock("aws-sdk", () => {
   return {
@@ -22,6 +23,7 @@ jest.mock("aws-sdk", () => {
           put: () => mockDocumentClient.put,
           delete: () => mockDocumentClient.delete,
           scan: () => mockDocumentClient.scan,
+          scanAll: () => mockDocumentClient.scanAll,
         };
       }),
       Converter: {

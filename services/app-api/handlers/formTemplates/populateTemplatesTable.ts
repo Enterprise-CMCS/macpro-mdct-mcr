@@ -143,11 +143,12 @@ export async function processReportTemplates(reportType: ReportType) {
   logger.info("Writing template versions to table");
 
   try {
-    await Promise.all(
-      formTemplateDynamoEntries.map((item) =>
-        dynamodbLib.put({ Item: item, TableName: formTemplateTableName })
-      )
-    );
+    for (const dynamoEntry of formTemplateDynamoEntries) {
+      await dynamodbLib.put({
+        Item: dynamoEntry,
+        TableName: formTemplateTableName,
+      });
+    }
   } catch (err: unknown) {
     logger.info(err);
     throw err;
