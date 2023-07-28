@@ -58,7 +58,7 @@ export const createReport = handler(async (event, _context) => {
   const reportType = possibleReportType;
 
   // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, possibleReportType)) {
+  if (!hasReportAccess(event, reportType)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
