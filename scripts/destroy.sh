@@ -87,7 +87,6 @@ if [ "$CI" != "true" ]; then
 fi
 
 for i in "${bucketList[@]}"; do
-  echo $i
   set -e
 
   # Suspend bucket versioning.
@@ -123,26 +122,35 @@ for i in "${bucketList[@]}"; do
   fi
 
   # Empty the bucket
+  echo "emptying bucket: $i"
   aws s3 rm s3://$i/ --recursive
 done
-
-echo "Removing certificate from stage"
 
 restApiName=$stage-app-api
 
 restApiId=$(aws apigateway get-rest-apis | jq -r ".[] | .[] |  select(.name==\"$restApiName\") | .id|tostring")
+
+if [ "$restApiId" != "" ]; then
+  echo "Removing certificate from stage"
 
 aws apigateway update-stage \
   --rest-api-id $restApiId \
   --stage-name $stage \
   --patch-operations op=replace,path=/clientCertificateId,value="" \
   &>/dev/null
+  restApiArn="arn:aws:apigateway:us-east-1::/restapis/$restApiId/stages/$stage"
 
-echo "Removed certificate from stage"
+  echo "Disassociating web acl from api gateway"
+
+  aws wafv2 disassociate-web-acl \
+    --resource-arn $restApiArn &>/dev/null
+
+  echo "Removed certificate from stage and disassociated web acl"
+fi
 
 # Trigger a delete for each cloudformation stack
 for i in "${stackList[@]}"; do
-  echo "Triggered stack deletion for stack: $i" 
+  echo "triggering stack deletion for $i"
   aws cloudformation delete-stack --stack-name $i
 done
 
@@ -164,6 +172,13 @@ apiGatewayLogGroupName="/aws/api-gateway/app-api-$stage"
 apiGatewayLogGroupExists=($(aws logs describe-log-groups --log-group-name-prefix $apiGatewayLogGroupName | jq -r ".logGroups[] | length"))
 if [[ -n $apiGatewayLogGroupExists ]]; then
   aws logs delete-log-group --log-group-name $apiGatewayLogGroupName
+fi
+
+# Find hanging api-gateway execution logs
+apiGatewayExecutionLogRegex="^API-Gateway-Execution-Logs[^/]+\/$stage$"
+apiGatewayExecutionLogs=($(aws logs describe-log-groups --query "logGroups[*].logGroupName" --output json | jq -r --arg pattern "$apiGatewayExecutionLogRegex" '.[] | select(test($pattern))'))
+if [[ -n $apiGatewayExecutionLogs ]]; then
+  aws logs delete-log-group --log-group-name $apiGatewayExecutionLogs
 fi
 
 # Cleanup bigmac topics for branch
