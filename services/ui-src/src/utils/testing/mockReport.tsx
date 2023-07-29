@@ -380,7 +380,7 @@ export const mockMLRReportEmptyFieldData = {
   stateName: "Test State",
   versionControl: [
     {
-      key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+      key: "versionControl-test",
       value: "No, this is an initial submission",
     },
   ],
@@ -390,18 +390,18 @@ export const mockMLRReportEntityStartedFieldData = {
   ...mockMLRReportEmptyFieldData,
   program: [
     {
-      id: "63c56a0-77e7-bef-4670-a326a7addf7",
+      id: "123",
       report_planName: "test-plan",
       report_programName: "test-programName",
       report_programType: [
         {
-          key: "report_programType-G4inXZJWYFsDZYGk75cW7L",
+          key: "report_programType-123",
           value: "Comprehensive MCO",
         },
       ],
       report_eligibilityGroup: [
         {
-          key: "report_eligibilityGroup-cRi6qE4T5c6BjbGUsiiEof",
+          key: "report_eligibilityGroup-123",
           value: "All Populations",
         },
       ],
@@ -409,7 +409,7 @@ export const mockMLRReportEntityStartedFieldData = {
       report_reportingPeriodEndDate: "11/11/2011",
       report_reportingPeriodDiscrepancy: [
         {
-          key: "report_reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
+          key: "report_reportingPeriodDiscrepancy-123",
           value: "No",
         },
       ],
