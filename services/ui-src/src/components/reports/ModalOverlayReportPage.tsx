@@ -7,6 +7,7 @@ import {
   EntityDetailsOverlay,
   EntityProvider,
   EntityRow,
+  MobileEntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -27,6 +28,7 @@ import {
   filterFormData,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
+  useBreakpoint,
   useUser,
 } from "utils";
 // verbiage
@@ -41,7 +43,7 @@ export const ModalOverlayReportPage = ({
   const { entityType, verbiage, modalForm, overlayForm } = route;
 
   // Context Information
-  // const { isTablet, isMobile } = useBreakpoint();
+  const { isTablet, isMobile } = useBreakpoint();
   const { report, updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
   const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
@@ -59,7 +61,7 @@ export const ModalOverlayReportPage = ({
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
-    // if (isTablet || isMobile) return { headRow: ["", ""] };
+    if (isTablet || isMobile) return { headRow: ["", ""] };
     return { headRow: ["", verbiage.tableHeader, ""] };
   };
 
@@ -198,17 +200,29 @@ export const ModalOverlayReportPage = ({
               </>
             ) : (
               <Table sx={sx.table} content={tableHeaders()}>
-                {reportFieldDataEntities.map((entity: EntityShape) => (
-                  <EntityRow
-                    key={entity.id}
-                    entity={entity}
-                    verbiage={verbiage}
-                    locked={isLocked}
-                    openAddEditEntityModal={openAddEditEntityModal}
-                    openDeleteEntityModal={openDeleteEntityModal}
-                    openEntityDetailsOverlay={openEntityDetailsOverlay}
-                  />
-                ))}
+                {reportFieldDataEntities.map((entity: EntityShape) =>
+                  isMobile || isTablet ? (
+                    <MobileEntityRow
+                      key={entity.id}
+                      entity={entity}
+                      verbiage={verbiage}
+                      locked={isLocked}
+                      openAddEditEntityModal={openAddEditEntityModal}
+                      openDeleteEntityModal={openDeleteEntityModal}
+                      openEntityDetailsOverlay={openEntityDetailsOverlay}
+                    />
+                  ) : (
+                    <EntityRow
+                      key={entity.id}
+                      entity={entity}
+                      verbiage={verbiage}
+                      locked={isLocked}
+                      openAddEditEntityModal={openAddEditEntityModal}
+                      openDeleteEntityModal={openDeleteEntityModal}
+                      openEntityDetailsOverlay={openEntityDetailsOverlay}
+                    />
+                  )
+                )}
               </Table>
             )}
             <Button
