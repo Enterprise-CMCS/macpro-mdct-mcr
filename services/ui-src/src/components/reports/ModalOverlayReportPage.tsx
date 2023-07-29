@@ -5,54 +5,65 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityDetailsOverlay,
+  EntityProvider,
   EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
   Table,
 } from "components";
 // types
-import { EntityShape, EntityType, ModalOverlayReportPageShape } from "types";
-
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  isFieldElement,
+  ModalOverlayReportPageShape,
+  ReportStatus,
+} from "types";
 // utils
-import { useBreakpoint, useUser } from "utils";
-
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
-import { EntityProvider } from "./EntityProvider";
 
 export const ModalOverlayReportPage = ({
   route,
   setSidebarHidden,
   validateOnRender,
 }: Props) => {
-  const { isTablet, isMobile } = useBreakpoint();
-
+  // Route Information
   const { entityType, verbiage, modalForm, overlayForm } = route;
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
+
+  // Context Information
+  // const { isTablet, isMobile } = useBreakpoint();
+  const { report, updateReport } = useContext(ReportContext);
+  const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
+  const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
     undefined
   );
-  const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
-  const { report } = useContext(ReportContext);
-  const reportType = report?.reportType;
-  const reportFieldDataEntities = report?.fieldData[entityType] || [];
-  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
+    useUser().user ?? {};
+
+  // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const formIsDisabled = isAdminUserType && route.modalForm?.adminDisabled;
-  // is MLR report in a LOCKED state
-  const isLocked = report?.locked || formIsDisabled;
+  const isLocked = report?.locked || isAdminUserType;
 
-  const dashTitle = `${verbiage.dashboardTitle}${
-    verbiage.countEntitiesInTitle ? ` ${reportFieldDataEntities.length}` : ""
-  }`;
-
+  // Display Variables
+  const reportFieldDataEntities = report?.fieldData[entityType] || [];
+  const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
-    if (isTablet || isMobile) return { headRow: ["", ""] };
+    // if (isTablet || isMobile) return { headRow: ["", ""] };
     return { headRow: ["", verbiage.tableHeader, ""] };
   };
 
-  // add/edit entity modal disclosure and methods
+  // Add/edit entity modal disclosure and methods
   const {
     isOpen: addEditEntityModalIsOpen,
     onOpen: addEditEntityModalOnOpenHandler,
@@ -60,16 +71,16 @@ export const ModalOverlayReportPage = ({
   } = useDisclosure();
 
   const openAddEditEntityModal = (entity?: EntityShape) => {
-    if (entity) setSelectedEntity(entity);
+    if (entity) setCurrentEntity(entity);
     addEditEntityModalOnOpenHandler();
   };
 
   const closeAddEditEntityModal = () => {
-    setSelectedEntity(undefined);
+    setCurrentEntity(undefined);
     addEditEntityModalOnCloseHandler();
   };
 
-  // delete modal disclosure and methods
+  // Delete entity modal disclosure and methods
   const {
     isOpen: deleteEntityModalIsOpen,
     onOpen: deleteEntityModalOnOpenHandler,
@@ -77,90 +88,127 @@ export const ModalOverlayReportPage = ({
   } = useDisclosure();
 
   const openDeleteEntityModal = (entity: EntityShape) => {
-    setSelectedEntity(entity);
+    setCurrentEntity(entity);
     deleteEntityModalOnOpenHandler();
   };
 
   const closeDeleteEntityModal = () => {
-    setSelectedEntity(undefined);
+    setCurrentEntity(undefined);
     deleteEntityModalOnCloseHandler();
   };
 
-  // entity overlay disclosure and methods
-
+  // Open/Close overlay action methods
   const openEntityDetailsOverlay = (entity: EntityShape) => {
-    setSelectedEntity(entity);
+    setCurrentEntity(entity);
     setIsEntityDetailsOpen(true);
     setSidebarHidden(true);
   };
 
   const closeEntityDetailsOverlay = () => {
-    setSelectedEntity(undefined);
+    setCurrentEntity(undefined);
     setIsEntityDetailsOpen(false);
+    setSidebarHidden(false);
+  };
+
+  // Form submit methods
+  const onSubmit = async (enteredData: AnyObject) => {
+    if (userIsEndUser) {
+      setSubmitting(true);
+      const reportKeys = {
+        reportType: report?.reportType,
+        state: state,
+        id: report?.id,
+      };
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
+      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+        (entity: EntityShape) => entity.id === currentEntity?.id
+      );
+      const filteredFormData = filterFormData(
+        enteredData,
+        overlayForm!.fields.filter(isFieldElement)
+      );
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        overlayForm!.fields.filter(isFieldElement)
+      );
+      const newEntity = {
+        ...currentEntity,
+        ...filteredFormData,
+      };
+      let newEntities = currentEntities;
+      newEntities[selectedEntityIndex] = newEntity;
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
+      setSubmitting(false);
+    }
+    closeEntityDetailsOverlay();
     setSidebarHidden(false);
   };
 
   return (
     <Box>
-      {overlayForm && selectedEntity && isEntityDetailsOpen ? (
+      {overlayForm && isEntityDetailsOpen && currentEntity ? (
         <EntityProvider>
           <EntityDetailsOverlay
-            entityType={entityType as EntityType}
-            selectedEntity={selectedEntity}
-            form={overlayForm}
-            verbiage={verbiage}
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
-            setSidebarHidden={setSidebarHidden}
+            entityType={entityType as EntityType}
+            entities={report?.fieldData[entityType]}
+            form={overlayForm}
+            onSubmit={onSubmit}
+            selectedEntity={currentEntity}
+            disabled={!userIsEndUser}
+            submitting={submitting}
             validateOnRender={validateOnRender}
           />
         </EntityProvider>
       ) : (
         <Box sx={sx.content}>
-          {verbiage.intro && (
-            <ReportPageIntro
-              text={verbiage.intro}
-              accordion={
-                accordionVerbiage[reportType as keyof typeof accordionVerbiage]
-                  ?.formIntro
-              }
-              reportType={reportType}
-            />
-          )}
+          <ReportPageIntro
+            text={verbiage.intro}
+            accordion={accordionVerbiage.MLR.formIntro}
+            reportType={report?.reportType}
+          />
+
           <Box sx={sx.dashboardBox}>
             <Heading as="h3" sx={sx.dashboardTitle}>
               {dashTitle}
             </Heading>
             {reportFieldDataEntities.length === 0 ? (
               <>
-                <hr />
+                <Box sx={sx.tableSeparator} />
                 <Box sx={sx.emptyDashboard}>{verbiage.emptyDashboardText}</Box>
               </>
             ) : (
-              <Table sx={sx.header} content={tableHeaders()}>
-                {reportFieldDataEntities.map(
-                  (entity: EntityShape, entityIndex: number) =>
-                    isMobile || isTablet ? (
-                      <MobileEntityRow
-                        key={entityIndex}
-                        entity={entity}
-                        verbiage={verbiage}
-                        locked={isLocked}
-                        openAddEditEntityModal={openAddEditEntityModal}
-                        openDeleteEntityModal={openDeleteEntityModal}
-                        openEntityDetailsOverlay={openEntityDetailsOverlay}
-                      />
-                    ) : (
-                      <EntityRow
-                        key={entity.id}
-                        entity={entity}
-                        verbiage={verbiage}
-                        locked={isLocked}
-                        openAddEditEntityModal={openAddEditEntityModal}
-                        openDeleteEntityModal={openDeleteEntityModal}
-                        openEntityDetailsOverlay={openEntityDetailsOverlay}
-                      />
-                    )
-                )}
+              <Table sx={sx.table} content={tableHeaders()}>
+                {reportFieldDataEntities.map((entity: EntityShape) => (
+                  <EntityRow
+                    key={entity.id}
+                    entity={entity}
+                    verbiage={verbiage}
+                    locked={isLocked}
+                    openAddEditEntityModal={openAddEditEntityModal}
+                    openDeleteEntityModal={openDeleteEntityModal}
+                    openEntityDetailsOverlay={openEntityDetailsOverlay}
+                  />
+                ))}
               </Table>
             )}
             <Button
@@ -170,31 +218,30 @@ export const ModalOverlayReportPage = ({
             >
               {verbiage.addEntityButtonText}
             </Button>
-            {report && (
-              <>
-                <AddEditEntityModal
-                  entityType={entityType}
-                  selectedEntity={selectedEntity}
-                  verbiage={verbiage}
-                  form={modalForm}
-                  modalDisclosure={{
-                    isOpen: addEditEntityModalIsOpen,
-                    onClose: closeAddEditEntityModal,
-                  }}
-                />
-                <DeleteEntityModal
-                  entityType={entityType}
-                  selectedEntity={selectedEntity}
-                  verbiage={verbiage}
-                  modalDisclosure={{
-                    isOpen: deleteEntityModalIsOpen,
-                    onClose: closeDeleteEntityModal,
-                  }}
-                />
-              </>
-            )}
           </Box>
-          <ReportPageFooter hidePrevious={true} />
+
+          <AddEditEntityModal
+            entityType={entityType}
+            selectedEntity={currentEntity}
+            verbiage={verbiage}
+            form={modalForm}
+            modalDisclosure={{
+              isOpen: addEditEntityModalIsOpen,
+              onClose: closeAddEditEntityModal,
+            }}
+          />
+
+          <DeleteEntityModal
+            entityType={entityType}
+            selectedEntity={currentEntity}
+            verbiage={verbiage}
+            modalDisclosure={{
+              isOpen: deleteEntityModalIsOpen,
+              onClose: closeDeleteEntityModal,
+            }}
+          />
+
+          <ReportPageFooter />
         </Box>
       )}
     </Box>
@@ -225,7 +272,16 @@ const sx = {
       paddingBottom: "0",
     },
   },
-  header: {
+  emptyDashboard: {
+    paddingTop: "1rem",
+  },
+  tableSeparator: {
+    borderTop: "1px solid",
+    borderColor: "palette.gray_light",
+    paddingBottom: "1rem",
+    marginTop: "1.25rem",
+  },
+  table: {
     tableLayout: "fixed",
     br: {
       marginBottom: "0.25rem",
@@ -238,19 +294,16 @@ const sx = {
       ".tablet &, .mobile &": {
         border: "none",
       },
-      "&:nth-child(1)": {
+      "&:nth-of-type(1)": {
         width: "2.5rem",
       },
-      "&:nth-child(3)": {
+      "&:nth-of-type(3)": {
         width: "260px",
       },
     },
   },
-  emptyDashboard: {
-    paddingTop: "2rem",
-  },
   addEntityButton: {
-    marginTop: "1.5rem",
+    marginTop: "2rem",
     marginBottom: "2rem",
     ".tablet &, .mobile &": {
       wordBreak: "break-word",
