@@ -1,4 +1,5 @@
-import { ReportStatus } from "types";
+import { EntityType, ReportStatus } from "types";
+
 import {
   mockStandardReportPageJson,
   mockDrawerReportPageJson,
@@ -375,6 +376,66 @@ export const mockMLRLockedReport = {
   locked: true,
 };
 
+export const mockMLRReportEmptyFieldData = {
+  stateName: "Test State",
+  versionControl: [
+    {
+      key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+      value: "No, this is an initial submission",
+    },
+  ],
+};
+
+export const mockMLRReportEntityStartedFieldData = {
+  ...mockMLRReportEmptyFieldData,
+  program: [
+    {
+      id: "63c56a0-77e7-bef-4670-a326a7addf7",
+      report_planName: "test-plan",
+      report_programName: "test-programName",
+      report_programType: [
+        {
+          key: "report_programType-G4inXZJWYFsDZYGk75cW7L",
+          value: "Comprehensive MCO",
+        },
+      ],
+      report_eligibilityGroup: [
+        {
+          key: "report_eligibilityGroup-cRi6qE4T5c6BjbGUsiiEof",
+          value: "All Populations",
+        },
+      ],
+      report_reportingPeriodStartDate: "11/11/2011",
+      report_reportingPeriodEndDate: "11/11/2011",
+      report_reportingPeriodDiscrepancy: [
+        {
+          key: "report_reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
+          value: "No",
+        },
+      ],
+      "report_eligibilityGroup-otherText": "",
+      report_reportingPeriodDiscrepancyExplanation: "",
+    },
+  ],
+};
+
+export const mockMLRNewReport = {
+  ...mockReportKeys,
+  reportType: "MLR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: mockMLRReportEmptyFieldData,
+};
+
 export const mockReportsByState = [
   { ...mockMcparReport, id: "mock-report-id-1" },
   { ...mockMcparReport, id: "mock-report-id-2" },
@@ -382,9 +443,9 @@ export const mockReportsByState = [
 ];
 
 export const mockMlrReportsByState = [
-  { ...mockMlrReport, id: "mock-report-id-1" },
-  { ...mockMlrReport, id: "mock-report-id-2" },
-  { ...mockMlrReport, id: "mock-report-id-3" },
+  { ...mockMLRNewReport, id: "mock-report-id-1" },
+  { ...mockMLRNewReport, id: "mock-report-id-2" },
+  { ...mockMLRNewReport, id: "mock-report-id-3" },
 ];
 
 export const mockReportMethods = {
@@ -406,6 +467,32 @@ export const mockMcparReportContext = {
   reportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
+};
+
+export const mockMLRNewReportContext = {
+  ...mockReportMethods,
+  report: mockMLRNewReport,
+  reportsByState: mockMlrReportsByState,
+  errorMessage: "",
+  lastSavedTime: "4:20pm",
+};
+
+export const mockMLREntityStartedReportContext = {
+  ...mockMLRNewReportContext,
+  report: {
+    ...mockMLRNewReport,
+    fieldData: mockMLRReportEntityStartedFieldData,
+  },
+};
+
+export const mockEntityDetailsContext = {
+  selectedEntity: undefined,
+  entities: [],
+  entityType: "program" as EntityType,
+  updateEntities: jest.fn(),
+  setEntities: jest.fn(),
+  setSelectedEntity: jest.fn(),
+  setEntityType: jest.fn(),
 };
 
 export const mockMLRLockedReportContext = {
