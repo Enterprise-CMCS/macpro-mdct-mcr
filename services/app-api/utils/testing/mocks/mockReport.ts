@@ -31,7 +31,6 @@ export const mockReportJson = {
   type: "mock",
   basePath: "/mock",
   routes: mockReportRoutes,
-  flatRoutes: mockFlattenedReportRoutes,
   validationSchema: {},
 };
 

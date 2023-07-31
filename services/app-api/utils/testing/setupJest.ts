@@ -1,9 +1,6 @@
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
-import {
-  mockFlattenedReportRoutes,
-  mockReportRoutes,
-} from "./mocks/mockReport";
+import { mockReportRoutes } from "./mocks/mockReport";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
@@ -63,7 +60,6 @@ export const mockReportJson = {
   type: "mock",
   basePath: "/mock",
   routes: mockReportRoutes,
-  flatRoutes: mockFlattenedReportRoutes,
   validationSchema: {},
   validationJson: {
     "mock-number-field": "number",

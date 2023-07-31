@@ -10,7 +10,6 @@ export interface ReportJson {
   basePath: string;
   adminDisabled?: boolean;
   routes: ReportRoute[];
-  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
   validationJson?: AnyObject;
 }
