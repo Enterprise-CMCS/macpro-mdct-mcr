@@ -148,11 +148,27 @@ aws apigateway update-stage \
   echo "Removed certificate from stage and disassociated web acl"
 fi
 
+databaseStackName="database-$stage"
+
 # Trigger a delete for each cloudformation stack
 for i in "${stackList[@]}"; do
-  echo "triggering stack deletion for $i"
-  aws cloudformation delete-stack --stack-name $i
+  # database stack has a bucket that the app-api stack expects to exist while deleting
+  if [ $i == $databaseStackName ]; then
+    echo "skipping database delete until app-api is finished"
+  else
+    echo "triggering stack deletion for $i"
+    aws cloudformation delete-stack --stack-name $i
+  fi
 done
+
+# if database stack exists...
+# wait for app-api to delete and then delete database stack
+if [[ "${stackList[@]}" =~ "$databaseStackName" ]]; then
+  echo "waiting for app-api stack delete to complete before deleting database stack"
+  aws cloudformation wait stack-delete-complete --stack-name "app-api-$stage"
+  echo "triggering stack deletion for $databaseStackName"
+  aws cloudformation delete-stack --stack-name $databaseStackName
+fi
 
 # Delete Client Certificates associated with a branch
 certToDestroy=$(aws apigateway get-client-certificates | grep \"app-api-${stage}\" -B 2 |
