@@ -3,10 +3,12 @@ import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
+import s3Lib, {
+  getFieldDataKey,
+  getFormTemplateKey,
+} from "../../utils/s3/s3-lib";
 import {
   error,
-  buckets,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
@@ -16,7 +18,7 @@ import {
 } from "../../utils/validation/completionStatus";
 import { hasReportAccess } from "../../utils/auth/authorization";
 // types
-import { AnyObject, S3Get, StatusCodes } from "../../utils/types";
+import { AnyObject, isState, S3Get, StatusCodes } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -28,6 +30,13 @@ export const fetchReport = handler(async (event, _context) => {
   }
 
   const { reportType, state, id } = event.pathParameters!;
+
+  if (!isState(state)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
 
   // Return a 403 status if the user does not have access to this report
   if (!hasReportAccess(event, reportType!)) {
@@ -75,7 +84,7 @@ export const fetchReport = handler(async (event, _context) => {
     // Get field data from S3
     const fieldDataParams: S3Get = {
       Bucket: reportBucket,
-      Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+      Key: getFieldDataKey(state, fieldDataId),
     };
 
     const fieldData = (await s3Lib.get(fieldDataParams)) as AnyObject; // TODO: strict typing

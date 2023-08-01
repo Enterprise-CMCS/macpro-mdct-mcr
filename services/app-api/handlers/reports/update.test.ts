@@ -32,7 +32,7 @@ const mockedFetchReport = fetchReport as jest.MockedFunction<
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "AB", id: "testReportId" },
+  pathParameters: { reportType: "MCPAR", state: "CO", id: "testReportId" },
   body: JSON.stringify(mockMcparReport),
 };
 

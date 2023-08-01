@@ -36,7 +36,7 @@ export const mockReportJson = {
 
 export const mockReportKeys = {
   reportType: "MCPAR",
-  state: "AB",
+  state: "CO",
   id: "mock-report-id",
 };
 

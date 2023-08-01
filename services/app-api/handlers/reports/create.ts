@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
 import {
   hasReportAccess,
   hasPermissions,
@@ -15,12 +15,17 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import {
   error,
-  buckets,
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
 // types
-import { isReportType, S3Put, StatusCodes, UserRoles } from "../../utils/types";
+import {
+  isReportType,
+  isState,
+  S3Put,
+  StatusCodes,
+  UserRoles,
+} from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/logging";
 
@@ -43,6 +48,13 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const state: string = event.pathParameters?.state!;
+  if (!isState(state)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
   const unvalidatedPayload = JSON.parse(event!.body!);
   const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
     unvalidatedPayload;
@@ -109,7 +121,7 @@ export const createReport = handler(async (event, _context) => {
 
   const fieldDataParams: S3Put = {
     Bucket: reportBucket,
-    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Key: getFieldDataKey(state, fieldDataId),
     Body: JSON.stringify(validatedFieldData),
     ContentType: "application/json",
   };

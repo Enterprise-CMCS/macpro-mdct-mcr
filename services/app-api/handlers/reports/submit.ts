@@ -7,17 +7,20 @@ import {
   hasPermissions,
 } from "../../utils/auth/authorization";
 import {
-  buckets,
   error,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, {
+  getFieldDataKey,
+  getFormTemplateKey,
+} from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
 // types
 import {
   isMLRReportMetadata,
+  isState,
   MCPARReportMetadata,
   MLRReportMetadata,
   StatusCodes,
@@ -44,6 +47,13 @@ export const submitReport = handler(async (event, _context) => {
   }
 
   const { id, state, reportType } = event.pathParameters;
+
+  if (!isState(state)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
 
   // Return a 403 status if the user does not have access to this report
   if (!hasReportAccess(event, reportType!)) {
@@ -125,7 +135,7 @@ export const submitReport = handler(async (event, _context) => {
     // Get field data
     const fieldDataParams = {
       Bucket: reportBucket,
-      Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+      Key: getFieldDataKey(state, fieldDataId),
     };
 
     let existingFieldData;
@@ -151,14 +161,14 @@ export const submitReport = handler(async (event, _context) => {
 
     const updateFieldDataParams = {
       Bucket: reportBucket,
-      Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+      Key: getFieldDataKey(state, fieldDataId),
       Body: JSON.stringify(fieldData),
       ContentType: "application/json",
     };
 
     const getFormTemplateParams = {
       Bucket: reportBucket,
-      Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
+      Key: getFormTemplateKey(formTemplateId),
     };
 
     let formTemplate;

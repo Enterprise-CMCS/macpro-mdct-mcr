@@ -7,7 +7,10 @@ import {
   hasReportAccess,
   hasPermissions,
 } from "../../utils/auth/authorization";
-import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
+import s3Lib, {
+  getFieldDataKey,
+  getFormTemplateKey,
+} from "../../utils/s3/s3-lib";
 import {
   validateData,
   validateFieldData,
@@ -15,7 +18,6 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import {
   error,
-  buckets,
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
@@ -24,11 +26,20 @@ import {
   isComplete,
 } from "../../utils/validation/completionStatus";
 // types
-import { ReportJson, StatusCodes, UserRoles } from "../../utils/types";
+import { isState, ReportJson, StatusCodes, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
   if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
+  const { state } = event.pathParameters!;
+
+  if (!isState(state)) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -129,8 +140,6 @@ export const updateReport = handler(async (event, context) => {
     };
   }
 
-  const { state } = event.pathParameters!;
-
   const formTemplateParams = {
     Bucket: reportBucket,
     Key: getFormTemplateKey(formTemplateId),
@@ -140,7 +149,7 @@ export const updateReport = handler(async (event, context) => {
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
     Bucket: reportBucket,
-    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Key: getFieldDataKey(state, fieldDataId),
   };
   const existingFieldData = (await s3Lib.get(fieldDataParams)) as Record<
     string,
@@ -189,7 +198,7 @@ export const updateReport = handler(async (event, context) => {
 
   const updateFieldDataParams = {
     Bucket: reportBucket,
-    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Key: getFieldDataKey(state, fieldDataId),
     Body: JSON.stringify(fieldData),
     ContentType: "application/json",
   };

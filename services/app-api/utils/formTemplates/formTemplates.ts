@@ -83,9 +83,7 @@ export async function getOrCreateFormTemplate(
     const newFormTemplateId = KSUID.randomSync().string;
     const formTemplateWithValidationJson = {
       ...currentFormTemplate,
-      validationJson: getValidationFromFormTemplate(
-        currentFormTemplate as ReportJson
-      ),
+      validationJson: getValidationFromFormTemplate(currentFormTemplate),
     };
     try {
       await s3Lib.put({

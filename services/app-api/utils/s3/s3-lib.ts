@@ -84,18 +84,6 @@ export function getFieldDataKey(state: State, fieldDataId: string) {
   return `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`;
 }
 
-export function getFormTemplateKey(formTemplateId: string, state?: State) {
-  if (state) {
-    /*
-     * TODO: once the dust has settled from the form template refactor epic (MDCT-2600)
-     * delete this branch. Form templates are no longer state-specific.
-     */
-    return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
-  } else {
-    return `${buckets.FORM_TEMPLATE}/${formTemplateId}.json`;
-  }
-}
-
-export function getFormTemplateKeyV2(formTemplateId: string) {
+export function getFormTemplateKey(formTemplateId: string) {
   return `${buckets.FORM_TEMPLATE}/${formTemplateId}.json`;
 }

@@ -1,10 +1,11 @@
 import { Handler } from "aws-lambda";
 import {
+  buckets,
   formTemplateTableName,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
+import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import {
   FormTemplate,
@@ -28,6 +29,10 @@ const isS3ObjectRequired = (obj: S3.Object): obj is S3ObjectRequired => {
     typeof obj["LastModified"] !== "undefined"
   );
 };
+
+function getStateSpecificFormTemplateKey(formTemplateId: string, state: State) {
+  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
+}
 
 /**
  *
@@ -170,7 +175,7 @@ export async function copyTemplatesToNewPrefix(
   templates: { id: string; hash: string; state: string }[]
 ) {
   for (const t of templates) {
-    const oldKey = getFormTemplateKey(t.id, t.state as State);
+    const oldKey = getStateSpecificFormTemplateKey(t.id, t.state as State);
     const newKey = `formTemplates/${t.id}.json`;
     try {
       await s3Lib.copy({
@@ -202,7 +207,7 @@ export async function updateExistingReports(reportType: ReportType) {
       if (report.formTemplateId) {
         const template = await getTemplate(
           reportBucket,
-          getFormTemplateKey(report.formTemplateId, report.state)
+          getStateSpecificFormTemplateKey(report.formTemplateId, report.state)
         );
         const templateHash = createHash("md5")
           .update(JSON.stringify(copyAdminDisabledStatusToForms(template)))
