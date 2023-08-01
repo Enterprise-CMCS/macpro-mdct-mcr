@@ -8,9 +8,9 @@ import {
   writeDataToS3,
   scanTable,
   check,
+  S3Route,
+  FieldData,
 } from "./numberFieldDataToFile";
-//types
-import { S3Route, FieldData } from "./numberFieldDataToFile";
 //aws
 import { APIGatewayProxyEvent, Context } from "aws-lambda";
 //testing
@@ -109,10 +109,7 @@ describe("Test s3 bucket put & get", () => {
 
   test("Test get data from S3", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson2);
-    const result = await getDataFromS3(
-      "mockReportJson2",
-      route
-    );
+    const result = await getDataFromS3("mockReportJson2", route);
 
     expect(result).toMatchObject(mockReportJson2);
   });

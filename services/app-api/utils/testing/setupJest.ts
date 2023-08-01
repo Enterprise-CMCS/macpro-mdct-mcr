@@ -30,7 +30,6 @@ jest.mock("aws-sdk", () => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
         getObject: jest.fn().mockImplementation((_params, callback) => {
-          console.log(_params);
           if (_params.Key.includes("mockReportFieldData"))
             callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
           else if (_params.Key.includes("mockReportJson2"))
