@@ -6,10 +6,7 @@ import {
 import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { ReportType } from "../../utils/types";
-import {
-  mockDocumentClient,
-  mockReportJson,
-} from "../../utils/testing/setupJest";
+import { mockReportJson } from "../../utils/testing/setupJest";
 import { createHash } from "crypto";
 import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
@@ -104,12 +101,10 @@ describe("Test processReport", () => {
   });
 
   it("should handle cases where there are no reports", async () => {
-    mockDocumentClient.scan.promise.mockImplementationOnce(async () => {
-      return {
-        Items: [],
-      };
+    jest.spyOn(s3Lib, "list").mockImplementationOnce(() => {
+      return Promise.resolve([]);
     });
-    expect(processReportTemplates(ReportType.MLR)).resolves.toBeDefined();
+    await expect(processReportTemplates(ReportType.MLR)).resolves.not.toThrow();
   });
 });
 
@@ -118,11 +113,13 @@ describe("Test AWS library failures", () => {
     jest.restoreAllMocks();
   });
   it("processing should throw an error if any of the library functions fail", async () => {
-    const copyMock = jest.spyOn(s3Lib, "copy");
-    copyMock.mockImplementationOnce(() => {
+    jest.spyOn(s3Lib, "list").mockImplementationOnce(() => {
+      return Promise.resolve(templates);
+    });
+    jest.spyOn(s3Lib, "copy").mockImplementationOnce(() => {
       throw Error("Simulated error from S3");
     });
-    expect(processReportTemplates(ReportType.MLR)).rejects.toThrowError(
+    await expect(processReportTemplates(ReportType.MLR)).rejects.toThrowError(
       "Simulated error from S3"
     );
   });
