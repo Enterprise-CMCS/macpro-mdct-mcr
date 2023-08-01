@@ -71,6 +71,7 @@ export const EntityRow = ({
           </Button>
           <Button
             sx={sx.deleteButton}
+            data-testid="delete-entity"
             onClick={() => openDeleteEntityModal(entity)}
             disabled={locked || !userIsEndUser}
           >
