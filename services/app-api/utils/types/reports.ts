@@ -11,6 +11,10 @@ export interface ReportJson {
   adminDisabled?: boolean;
   routes: ReportRoute[];
   validationSchema?: AnyObject;
+  /**
+   * The validationJson property is populated at the moment any form template
+   * is stored in S3 for the first time. It will be populated from that moment on.
+   */
   validationJson?: AnyObject;
 }
 

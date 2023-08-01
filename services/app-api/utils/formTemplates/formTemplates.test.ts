@@ -2,13 +2,22 @@ import {
   compileValidationJsonFromRoutes,
   copyAdminDisabledStatusToForms,
   flattenReportRoutesArray,
+  formTemplateForReportType,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
+  isFieldElement,
+  isLayoutElement,
 } from "./formTemplates";
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
 import { createHash } from "crypto";
-import { ModalOverlayReportPageShape, ReportJson, ReportType } from "../types";
+import {
+  FormJson,
+  ModalOverlayReportPageShape,
+  ReportJson,
+  ReportRoute,
+  ReportType,
+} from "../types";
 import { mockDocumentClient, mockReportJson } from "../testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
@@ -209,6 +218,74 @@ describe("Test copyAdminDisabledStatusToForms", () => {
     expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
     expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
     expect(testModalOverlayPageForm!.adminDisabled).toBeTruthy();
+  });
+});
+
+describe("Test form contents", () => {
+  const allFormTemplates = () => {
+    const templates = [];
+    for (let reportType of Object.values(ReportType)) {
+      try {
+        const formTemplate = formTemplateForReportType(reportType);
+        templates.push(formTemplate);
+      } catch (error: any) {
+        if (!/not implemented/i.test(error.message)) {
+          throw error;
+        }
+      }
+    }
+    return templates;
+  };
+
+  const flattenRoutes = (routes: ReportRoute[]) => {
+    let flatRoutes: ReportRoute[] = [];
+    for (let route of routes) {
+      flatRoutes.push(route);
+      if (route.children) {
+        flatRoutes = flatRoutes.concat(flattenRoutes(route.children));
+      }
+    }
+    return flatRoutes;
+  };
+
+  const allFormsIn = (formTemplate: ReportJson) => {
+    const forms: FormJson[] = [];
+    for (let route of flattenRoutes(formTemplate.routes)) {
+      for (let possibleForm of Object.values(route)) {
+        // This covers route.form, route.modalForm, etc
+        if (possibleForm?.fields) {
+          forms.push(possibleForm);
+        }
+      }
+    }
+    return forms;
+  };
+
+  /*
+   * Every field is either a field (like a textbox, or a date), or not a field
+   * (like a section header). But our type guards are not particularly robust.
+   * When a new field type is added, the type guards may need to be updated.
+   * That will happen rarely enough that we will forget to do so;
+   * this test is here to remind us.
+   */
+  it("Should contain fields of known types", () => {
+    for (let formTemplate of allFormTemplates()) {
+      for (let form of allFormsIn(formTemplate)) {
+        for (let field of form.fields) {
+          const isField = isFieldElement(field);
+          const isLayout = isLayoutElement(field);
+          if (isField && isLayout) {
+            throw new Error(
+              `Field '${field.id}' of type ${field.type} has confused the field type guards! Update them.`
+            );
+          } else if (!isField && !isLayout) {
+            throw new Error(
+              `Field '${field.id}' of type ${field.type} has confused the field type guards! Update them.`
+            );
+          }
+        }
+      }
+    }
   });
 });
 
