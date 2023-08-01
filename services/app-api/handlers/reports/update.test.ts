@@ -56,7 +56,7 @@ const submissionEvent: APIGatewayProxyEvent = {
     },
     submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
-    fieldData: { ...mockReportFieldData, number: 2 },
+    fieldData: { ...mockReportFieldData, "mock-number-field": 2 },
   }),
 };
 
@@ -122,6 +122,7 @@ describe("Test updateReport API method", () => {
     const response = await updateReport(submissionEvent, null);
     const body = JSON.parse(response.body);
     expect(body.status).toContain("submitted");
+    expect(body.fieldData["mock-number-field"]).toBe("2");
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
   });
 

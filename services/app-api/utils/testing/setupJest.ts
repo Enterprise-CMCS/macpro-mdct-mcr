@@ -74,7 +74,7 @@ export const mockReportKeys = {
 
 export const mockReportFieldData = {
   text: "text-input",
-  number: 0,
+  "mock-number-field": 0,
 };
 
 export const mockDynamoData = {
