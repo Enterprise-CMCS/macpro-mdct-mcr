@@ -25,7 +25,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
   });
 });
 
-describe("Checking Environment Variable Changes", () => {
+describe("Check Environment Variable Changes", () => {
   beforeEach(() => jest.resetModules());
   test("Check if statement with S3_LOCAL_ENDPOINT undefined", () => {
     process.env = { ...process.env, S3_LOCAL_ENDPOINT: undefined };
