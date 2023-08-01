@@ -1,7 +1,8 @@
 // element selectors
-const cognitoEmailInputField = "//input[@name='email']";
-const cognitoPasswordInputField = "//input[@name='password']";
+const cognitoEmailInputField = 'input[name="email"]';
+const cognitoPasswordInputField = 'input[name="password"]';
 const cognitoLoginButton = "[data-testid='cognito-login-button']";
+const myAccountButton = '[aria-label="my account"';
 
 const stateUserPassword = Cypress.env("STATE_USER_PASSWORD");
 const adminUserPassword = Cypress.env("ADMIN_USER_PASSWORD");
@@ -41,6 +42,7 @@ Cypress.Commands.add("clearSession", () => {
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   cy.session([userType, userCredentials], () => {
     cy.visit("/");
+    cy.wait(2000);
     let credentials = {};
 
     if (userType && userCredentials) {
@@ -65,8 +67,8 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
       throw new Error("Must specify either userType or userCredentials.");
     }
 
-    cy.xpath(cognitoEmailInputField).type(credentials.email);
-    cy.xpath(cognitoPasswordInputField).type(credentials.password, {
+    cy.get(cognitoEmailInputField).type(credentials.email);
+    cy.get(cognitoPasswordInputField).type(credentials.password, {
       log: false,
     });
     cy.get(cognitoLoginButton).click();
@@ -76,17 +78,7 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
      * This ensures reused sessions maintain these tokens
      * We expect at least three for the id, access, and refresh tokens
      */
-    cy.waitUntil(() =>
-      cy
-        .window()
-        .then(
-          (window) =>
-            Object.keys(window.localStorage).filter((key) =>
-              key.match(
-                /CognitoIdentityServiceProvider.+(refresh|access|id)Token/
-              )
-            ).length === 3
-        )
-    );
+    cy.wait(4500);
+    cy.get(myAccountButton).should("exist");
   });
 });

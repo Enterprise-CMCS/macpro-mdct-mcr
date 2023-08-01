@@ -86,12 +86,10 @@ describe("Test compileValidationJsonFromRoutes", () => {
       accessMeasures: "objectArray",
       program: "objectArray",
       "mock-text-field": "text",
+      "mock-number-field": "number",
       "mock-drawer-text-field": "text",
       "mock-modal-text-field": "text",
-      "mock-modal-overlay-text-field": "text",
       "mock-optional-text-field": "textOptional",
-      "with-label": "text",
-      "mock-nested-field": "radio",
     });
   });
 });
