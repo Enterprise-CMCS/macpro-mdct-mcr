@@ -10,18 +10,14 @@ import { FormJson } from "types";
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
-export const ReportPageFooter = ({
-  submitting,
-  form,
-  hidePrevious,
-  ...props
-}: Props) => {
+export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
   const navigate = useNavigate();
   const { report } = useContext(ReportContext);
   const { previousRoute, nextRoute } = useFindRoute(
     report?.formTemplate.flatRoutes,
     report?.formTemplate.basePath
   );
+  const hidePrevious = previousRoute === "/mcpar" || previousRoute === "/mlr";
 
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
   const isAdminUserType = userIsAdmin || userIsReadOnly;
@@ -78,7 +74,6 @@ export const ReportPageFooter = ({
 interface Props {
   form?: FormJson;
   submitting?: boolean;
-  hidePrevious?: boolean;
   [key: string]: any;
 }
 
