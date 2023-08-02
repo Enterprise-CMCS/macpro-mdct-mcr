@@ -20,6 +20,7 @@ const mockedReportContext = {
   createReport: mockCreateReport,
   updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
+  isReportPage: true,
 };
 
 const modalComponent = (

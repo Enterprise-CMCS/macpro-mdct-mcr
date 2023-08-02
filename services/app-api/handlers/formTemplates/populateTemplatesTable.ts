@@ -1,27 +1,38 @@
 import { Handler } from "aws-lambda";
 import {
+  buckets,
   formTemplateTableName,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import md5 from "md5";
-import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
+import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import {
   FormTemplate,
-  isDefined,
+  ReportJson,
   ReportMetadata,
+  ReportType,
   SomeRequired,
   State,
 } from "../../utils/types";
 import { S3 } from "aws-sdk";
 import * as path from "path";
-import { isFulfilled } from "../../utils/types/promises";
 import { logger } from "../../utils/logging";
 import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
-const REPORT_TYPES = ["MCPAR", "MLR"] as const;
+import { createHash } from "crypto";
+import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
+const isS3ObjectRequired = (obj: S3.Object): obj is S3ObjectRequired => {
+  return (
+    typeof obj["Key"] !== "undefined" &&
+    typeof obj["LastModified"] !== "undefined"
+  );
+};
+
+function getStateSpecificFormTemplateKey(formTemplateId: string, state: State) {
+  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
+}
 
 /**
  *
@@ -29,7 +40,7 @@ type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
  * @param hash hash to look for
  * @returns
  */
-export function getTemplateVersionByHash(reportType: string, hash: string) {
+export function getTemplateVersionByHash(reportType: ReportType, hash: string) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "HashIndex",
@@ -37,7 +48,7 @@ export function getTemplateVersionByHash(reportType: string, hash: string) {
     Limit: 1,
     ExpressionAttributeValues: {
       ":md5Hash": hash as AttributeValue,
-      ":reportType": reportType as AttributeValue,
+      ":reportType": reportType as unknown as AttributeValue,
     },
   };
   return dynamodbLib.query(queryParams);
@@ -54,7 +65,7 @@ export async function getTemplate(bucket: string, key: string) {
   return (await s3Lib.get({
     Key: key,
     Bucket: bucket,
-  })) as string;
+  })) as ReportJson;
 }
 
 /**
@@ -66,27 +77,15 @@ export async function getTemplate(bucket: string, key: string) {
  */
 export async function processTemplate(bucket: string, key: string) {
   const formTemplate = await getTemplate(bucket, key);
-  const hash = md5(JSON.stringify(formTemplate));
+  const hash = createHash("md5")
+    .update(JSON.stringify(copyAdminDisabledStatusToForms(formTemplate)))
+    .digest("hex");
   // Make sure we only grab old form templates
   return {
-    id: path.basename(key).split(".")[0],
+    id: path.basename(key, ".json"),
     hash,
     state: key.split("/")[1],
   };
-}
-
-/**
- * Create a distinct list of hashes.
- *
- * @param templates - list of { id, hash } objects
- * @returns distinct list
- */
-export function getDistinctHashesForTemplates(
-  templates: { id: string; hash: string; state: string }[]
-) {
-  return templates.filter(
-    (e, i) => templates.findIndex((a) => a["hash"] === e["hash"]) === i
-  );
 }
 
 /**
@@ -96,21 +95,23 @@ export function getDistinctHashesForTemplates(
  *
  * @param reportType
  */
-export async function processReport(reportType: typeof REPORT_TYPES[number]) {
-  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+export async function processReportTemplates(reportType: ReportType) {
+  const formTemplateBucket = reportBuckets[reportType];
 
   const formTemplates = await s3Lib.list({
-    Bucket: reportBucket,
+    Bucket: formTemplateBucket,
     Prefix: "formTemplates",
   });
 
-  const sortedTemplates = formTemplates
-    .filter((t) => t.Key?.endsWith(".json"))
-    .filter((t): t is S3ObjectRequired => isDefined(t.LastModified))
-    .sort((a, b) => a.LastModified.getTime() - b.LastModified.getTime());
+  const sortedTemplateKeys = formTemplates
+    .filter(isS3ObjectRequired)
+    .filter((t) => t.Key.endsWith(".json"))
+    .filter((t) => t.Key.split("/")[1].length === 2) // subfolder is a state abbreviation
+    .sort((a, b) => a.LastModified.getTime() - b.LastModified.getTime())
+    .map((t) => t.Key);
 
   logger.info(
-    `Found ${sortedTemplates.length} possible form template versions.`
+    `Found ${sortedTemplateKeys.length} possible form template versions.`
   );
 
   /*
@@ -118,60 +119,52 @@ export async function processReport(reportType: typeof REPORT_TYPES[number]) {
    * This code filters out any potential undefined keys and modifies the type
    * of the object.
    */
-  const processedTemplates = await Promise.allSettled(
-    sortedTemplates
-      .filter((t): t is S3ObjectRequired => {
-        return isDefined(t.Key);
-      })
-      .filter((t) => t.Key.split("/")[1].length === 2)
-      .map(async (template) => {
-        const { id, hash, state } =
-          (await processTemplate(reportBucket, template.Key)) ?? {};
-        return {
-          id,
-          hash,
-          state,
-        };
-      })
+  const templatesAndHashes = await Promise.all(
+    sortedTemplateKeys.map(
+      async (key) => await processTemplate(formTemplateBucket, key)
+    )
   );
 
-  const templatesAndHashes = processedTemplates
-    .filter(isFulfilled)
-    .map((template) => template.value);
-
-  const distinctHashes = getDistinctHashesForTemplates(templatesAndHashes);
+  const distinctHashes = templatesAndHashes.filter(
+    (x, i, a) => i === a.findIndex((y) => y.hash === x.hash)
+  );
 
   logger.info(
     `Found ${distinctHashes.length} distinct templates after processing`
   );
 
-  const dynamodbItems: FormTemplate[] = distinctHashes.map((x, index) => {
-    return {
-      id: x.id,
-      versionNumber: index + 1,
-      lastAltered: new Date().toISOString(),
-      md5Hash: x.hash,
-      reportType,
-    };
-  });
+  const formTemplateDynamoEntries: FormTemplate[] = distinctHashes.map(
+    (x, index) => {
+      return {
+        id: x.id,
+        versionNumber: index + 1,
+        lastAltered: new Date().toISOString(),
+        md5Hash: x.hash,
+        reportType,
+      };
+    }
+  );
 
   logger.info("Writing template versions to table");
 
   try {
-    await Promise.all(
-      dynamodbItems.map((item) =>
-        dynamodbLib.put({ Item: item, TableName: formTemplateTableName })
-      )
-    );
+    for (const dynamoEntry of formTemplateDynamoEntries) {
+      await dynamodbLib.put({
+        Item: dynamoEntry,
+        TableName: formTemplateTableName,
+      });
+    }
   } catch (err: unknown) {
     logger.info(err);
     throw err;
   }
 
-  logger.info(`Wrote ${dynamodbItems.length} template versions to the table`);
+  logger.info(
+    `Wrote ${formTemplateDynamoEntries.length} template versions to the table`
+  );
 
   logger.info("Copying templates to new prefix location");
-  await copyTemplatesToNewPrefix(reportBucket, distinctHashes);
+  await copyTemplatesToNewPrefix(formTemplateBucket, distinctHashes);
 
   logger.info("Updating existing reports with new formTemplateIds");
   await updateExistingReports(reportType);
@@ -181,15 +174,13 @@ export async function copyTemplatesToNewPrefix(
   bucket: string,
   templates: { id: string; hash: string; state: string }[]
 ) {
-  const templateKeys = templates.map((t) => {
-    return { key: getFormTemplateKey(t.state as State, t.id), id: t.id };
-  });
-  for (const keyId of templateKeys) {
-    const newKey = `formTemplates/${keyId.id}.json`;
+  for (const t of templates) {
+    const oldKey = getStateSpecificFormTemplateKey(t.id, t.state as State);
+    const newKey = `formTemplates/${t.id}.json`;
     try {
       await s3Lib.copy({
         Bucket: bucket,
-        CopySource: `${bucket}/${keyId.key}`,
+        CopySource: `${bucket}/${oldKey}`,
         Key: newKey,
       });
     } catch (err) {
@@ -205,22 +196,22 @@ export async function copyTemplatesToNewPrefix(
  *
  * @param reportType
  */
-export async function updateExistingReports(
-  reportType: typeof REPORT_TYPES[number]
-) {
-  const tableName = reportTables[reportType as keyof typeof reportTables];
-  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
-  const reports = (await (
-    await dynamodbLib.scan({ TableName: tableName, reportType })
-  ).Items) as ReportMetadata[];
+export async function updateExistingReports(reportType: ReportType) {
+  const tableName = reportTables[reportType];
+  const reportBucket = reportBuckets[reportType];
+  const reports = (await dynamodbLib.scanAll({ TableName: tableName }))
+    .Items as ReportMetadata[];
+
   if (reports) {
     for (const report of reports) {
       if (report.formTemplateId) {
         const template = await getTemplate(
           reportBucket,
-          getFormTemplateKey(report.state, report.formTemplateId)
+          getStateSpecificFormTemplateKey(report.formTemplateId, report.state)
         );
-        const templateHash = md5(JSON.stringify(template));
+        const templateHash = createHash("md5")
+          .update(JSON.stringify(copyAdminDisabledStatusToForms(template)))
+          .digest("hex");
         const templateVersion = await getTemplateVersionByHash(
           reportType,
           templateHash
@@ -234,6 +225,10 @@ export async function updateExistingReports(
               formTemplateId: templateVersion.Items?.[0]?.id,
             },
           });
+        } else {
+          throw new Error(
+            `Report ${report.id} has no formTemplateId and cannot be processed.`
+          );
         }
       }
     }
@@ -252,10 +247,10 @@ export async function updateExistingReports(
  * 1. Iterate version each time.
  */
 export const handler: Handler<never, void> = async () => {
-  for (const reportType of REPORT_TYPES) {
+  for (const reportType of Object.values(ReportType)) {
     logger.info(`Processing ${reportType} reports`);
     try {
-      await processReport(reportType);
+      await processReportTemplates(reportType);
     } catch (err) {
       logger.error(err);
     }

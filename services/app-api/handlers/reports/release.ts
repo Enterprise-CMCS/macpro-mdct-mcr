@@ -131,7 +131,7 @@ export const releaseReport = handler(async (event) => {
 
   const getFormTemplateParameters: S3Get = {
     Bucket: reportBucket,
-    Key: getFormTemplateKey(metadata.state, metadata.formTemplateId),
+    Key: getFormTemplateKey(metadata.formTemplateId),
   };
 
   let fieldData: Record<string, any>;

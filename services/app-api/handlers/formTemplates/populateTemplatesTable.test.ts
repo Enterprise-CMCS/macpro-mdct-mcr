@@ -1,106 +1,78 @@
-import md5 from "md5";
 import {
   copyTemplatesToNewPrefix,
-  getDistinctHashesForTemplates,
-  processReport,
+  processReportTemplates,
   processTemplate,
 } from "./populateTemplatesTable";
 import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { AWSError, Response } from "aws-sdk";
-import { ScanOutput } from "aws-sdk/clients/dynamodb";
+import { ReportType } from "../../utils/types";
+import { mockReportJson } from "../../utils/testing/setupJest";
+import { createHash } from "crypto";
+import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
 const templates = [
   {
     id: "foo",
     hash: "123",
     state: "DC",
-    Key: "form-templates/DC/foo.json",
+    Key: "form-templates/DC/mockReportJson.json",
     LastModified: new Date(),
   },
   {
     id: "bar",
     hash: "123",
     state: "DC",
-    Key: "form-templates/DC/foo.json",
+    Key: "form-templates/DC/mockReportJson.json",
     LastModified: new Date(),
   },
   {
     id: "bar",
     hash: "123",
     state: "DC",
-    Key: "form-templates/DC/foo.json",
+    Key: "form-templates/DC/mockReportJson.json",
     LastModified: new Date(),
   },
   {
     id: "buzz",
     hash: "456",
     state: "MN",
-    Key: "form-templates/MN/foo.json",
+    Key: "form-templates/MN/mockReportJson.json",
     LastModified: new Date(),
   },
 ];
 
-jest.mock("../../utils/s3/s3-lib", () => ({
-  get: () => {
-    return JSON.stringify({ foo: "bar" });
-  },
-  copy: () => {
-    return "success";
-  },
-  list: () => {
-    return templates;
-  },
-  ...jest.requireActual("../../utils/s3/s3-lib"),
-}));
-
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
-  scan: () => {
-    return { Items: [{ formTemplateId: "foo" }] };
+  ...jest.requireActual("../../utils/dynamo/dynamodb-lib"),
+  scanAll: () => {
+    return { Items: [{ formTemplateId: "mockReportJson.json" }] };
   },
   query: () => {
-    return { Items: [{ formTemplateId: "foo", id: "bar" }] };
+    return { Items: [{ formTemplateId: "mockReportJson.json", id: "bar" }] };
   },
   put: () => {
     return "success";
   },
-  ...jest.requireActual("../../utils/dynamo/dynamodb-lib"),
 }));
 
 describe("Test processTemplate function", () => {
   it("should return a hash and id", async () => {
+    jest.spyOn(s3Lib, "get").mockResolvedValueOnce(mockReportJson);
     const templateResult = await processTemplate(
       "foo",
-      "MN/2MmcpZwwaq3i1ddd0o6Zdhjd5G1.json"
+      "formTemplates/MN/mockReportJson.json"
     );
-    const report = JSON.stringify({ foo: "bar" });
-    const expectedHash = md5(JSON.stringify(report));
+    const expectedHash = createHash("md5")
+      .update(JSON.stringify(copyAdminDisabledStatusToForms(mockReportJson)))
+      .digest("hex");
 
     expect(templateResult.hash).toEqual(expectedHash);
-    expect(templateResult.id).toEqual("2MmcpZwwaq3i1ddd0o6Zdhjd5G1");
-  });
-});
-
-describe("Test getDistinctHashesForTemplates", () => {
-  it("should return a distinct list of templates", () => {
-    expect(getDistinctHashesForTemplates(templates)).toMatchObject([
-      {
-        id: "foo",
-        hash: "123",
-        state: "DC",
-      },
-      {
-        id: "buzz",
-        hash: "456",
-        state: "MN",
-      },
-    ]);
+    expect(templateResult.id).toEqual("mockReportJson");
   });
 });
 
 describe("Test copyTemplatesToNewPrefix", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
   it("should copy n files for n templates", async () => {
     const copySpy = jest.spyOn(s3Lib, "copy");
@@ -114,41 +86,40 @@ describe("Test processReport", () => {
     jest.restoreAllMocks();
   });
   it("should process a report type", async () => {
+    const listSpy = jest.spyOn(s3Lib, "list");
     const copySpy = jest.spyOn(s3Lib, "copy");
-    const scanSpy = jest.spyOn(dynamodbLib, "scan");
+    const scanAllSpy = jest.spyOn(dynamodbLib, "scanAll");
     const querySpy = jest.spyOn(dynamodbLib, "query");
     const putSpy = jest.spyOn(dynamodbLib, "put");
-    await processReport("MLR");
+    listSpy.mockResolvedValue(templates);
+    await processReportTemplates(ReportType.MLR);
 
     expect(copySpy).toHaveBeenCalledTimes(1);
-    expect(scanSpy).toHaveBeenCalledTimes(1);
+    expect(scanAllSpy).toHaveBeenCalledTimes(1);
     expect(querySpy).toHaveBeenCalledTimes(1);
     expect(putSpy).toHaveBeenCalledTimes(2);
   });
 
   it("should handle cases where there are no reports", async () => {
-    jest.spyOn(dynamodbLib, "scan").mockImplementationOnce(async () => {
-      return {
-        Items: [],
-        $response: {} as Response<ScanOutput, AWSError>,
-      };
+    jest.spyOn(s3Lib, "list").mockImplementationOnce(() => {
+      return Promise.resolve([]);
     });
-    expect(processReport("MLR")).resolves.toBeDefined;
-    jest.resetAllMocks();
-    jest.restoreAllMocks();
+    await expect(processReportTemplates(ReportType.MLR)).resolves.not.toThrow();
   });
 });
 
 describe("Test AWS library failures", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
-    const copyMock = jest.spyOn(s3Lib, "copy");
-    copyMock.mockImplementationOnce(() => {
-      throw Error("Simulated error from S3");
-    });
   });
   it("processing should throw an error if any of the library functions fail", async () => {
-    expect(processReport("MLR")).rejects.toThrowError(
+    jest.spyOn(s3Lib, "list").mockImplementationOnce(() => {
+      return Promise.resolve(templates);
+    });
+    jest.spyOn(s3Lib, "copy").mockImplementationOnce(() => {
+      throw Error("Simulated error from S3");
+    });
+    await expect(processReportTemplates(ReportType.MLR)).rejects.toThrowError(
       "Simulated error from S3"
     );
   });

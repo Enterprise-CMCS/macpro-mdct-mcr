@@ -124,6 +124,11 @@ export const getFormTemplateFromS3 = async (
   // try {
   const formTemplateParams: S3Get = {
     Bucket: BUCKET_NAME,
+    /*
+     * WARNING: This code will no longer work.
+     * This ETL script was written prior to the form template reorganization (MDCT-2600).
+     * Form templates no longer live in state-specific directories in S3.
+     */
     Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
   };
   return (await s3Lib.get(formTemplateParams)) as AnyObject;
