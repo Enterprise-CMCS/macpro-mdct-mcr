@@ -109,3 +109,5 @@ export { MobileEntityRow } from "./tables/MobileEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
+// redirects
+export { PostLogoutRedirect } from "./PostLogoutRedirect";

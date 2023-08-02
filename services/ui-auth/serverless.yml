@@ -166,7 +166,9 @@ resources:
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
+          - ${self:custom.application_endpoint_url}postLogout
           - http://localhost:3000/
+          - http://localhost:3000/postLogout
         SupportedIdentityProviders:
           - Fn::If:
               - BackWithOktaOIDC

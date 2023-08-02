@@ -41,7 +41,7 @@ export COGNITO_USER_POOL_ID=$cognito_user_pool_id
 export COGNITO_USER_POOL_CLIENT_ID=$cognito_user_pool_client_id
 export COGNITO_USER_POOL_CLIENT_DOMAIN=$cognito_user_pool_client_domain
 export COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
-export COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/
+export COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/postLogout
 export S3_ATTACHMENTS_BUCKET_REGION=$s3_attachments_bucket_region
 export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_name
 # This is set to false, as using this script points your local react server to Amazon
