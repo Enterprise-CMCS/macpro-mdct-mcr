@@ -114,59 +114,65 @@ export const enum TemplateKeys {
   NAAAR = "templates/naaar-reporting-template.xlsx",
 }
 
-export type State =
-  | "AL"
-  | "AK"
-  | "AZ"
-  | "AR"
-  | "CA"
-  | "CO"
-  | "CT"
-  | "DE"
-  | "DC"
-  | "FL"
-  | "GA"
-  | "HI"
-  | "ID"
-  | "IL"
-  | "IN"
-  | "IA"
-  | "KS"
-  | "KY"
-  | "LA"
-  | "ME"
-  | "MD"
-  | "MA"
-  | "MI"
-  | "MN"
-  | "MS"
-  | "MO"
-  | "MT"
-  | "NE"
-  | "NV"
-  | "NH"
-  | "NJ"
-  | "NM"
-  | "NY"
-  | "NC"
-  | "ND"
-  | "OH"
-  | "OK"
-  | "OR"
-  | "PA"
-  | "PR"
-  | "RI"
-  | "SC"
-  | "SD"
-  | "TN"
-  | "TX"
-  | "UT"
-  | "VT"
-  | "VA"
-  | "WA"
-  | "WV"
-  | "WI"
-  | "WY";
+const states = [
+  "AL",
+  "AK",
+  "AZ",
+  "AR",
+  "CA",
+  "CO",
+  "CT",
+  "DE",
+  "DC",
+  "FL",
+  "GA",
+  "HI",
+  "ID",
+  "IL",
+  "IN",
+  "IA",
+  "KS",
+  "KY",
+  "LA",
+  "ME",
+  "MD",
+  "MA",
+  "MI",
+  "MN",
+  "MS",
+  "MO",
+  "MT",
+  "NE",
+  "NV",
+  "NH",
+  "NJ",
+  "NM",
+  "NY",
+  "NC",
+  "ND",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "PR",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VT",
+  "VA",
+  "WA",
+  "WV",
+  "WI",
+  "WY",
+] as const;
+export type State = typeof states[number];
+
+export const isState = (state: unknown): state is State => {
+  return states.includes(state as State);
+};
 
 export interface FormTemplate {
   md5Hash: string;
@@ -174,12 +180,6 @@ export interface FormTemplate {
   id: string;
   lastAltered: string;
   reportType: string;
-}
-
-export function isDefined<T>(
-  possiblyUndefined: T | undefined
-): possiblyUndefined is T {
-  return typeof possiblyUndefined !== "undefined";
 }
 
 /**
@@ -204,3 +204,9 @@ export function isDefined<T>(
  */
 export type SomeRequired<T, K extends keyof T> = Required<Pick<T, K>> &
   Omit<T, K>;
+
+/**
+ * Instructs Typescript to complain if it detects that this function may be reachable.
+ * Useful for the default branch of a switch statement that verifiably covers every case.
+ */
+export const assertExhaustive = (_: never): void => {};

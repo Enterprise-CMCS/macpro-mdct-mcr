@@ -30,7 +30,7 @@ const testReadEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test" },
   pathParameters: {
     reportType: "MCPAR",
-    state: "AB",
+    state: "CO",
     id: "mock-report-id",
   },
 };
@@ -38,7 +38,7 @@ const testReadEvent: APIGatewayProxyEvent = {
 const testReadEventByState: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "AB" },
+  pathParameters: { reportType: "MCPAR", state: "CO" },
 };
 
 describe("Test fetchReport API method", () => {

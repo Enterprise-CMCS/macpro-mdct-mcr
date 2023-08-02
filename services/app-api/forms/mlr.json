@@ -4,7 +4,9 @@
   "basePath": "/mlr",
   "version": "MLR_2023-02-09",
   "adminDisabled": true,
-  "entities": { "program": { "required": true } },
+  "entities": {
+    "program": { "required": true }
+  },
   "routes": [
     {
       "name": "Information for Primary Contact",
@@ -83,7 +85,7 @@
             "validation": "radio",
             "props": {
               "label": "G. Version control",
-              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
+              "hint": "Is this report an updated version of a previously submitted summary MLR report covering the same time period? <br /> Auto-populates. Note: The version control field is determined from the submission status. All new MLR reports are initial submissions.",
               "choices": [
                 {
                   "id": "cyUSrTH8mWdpqAKExLZAkz",
@@ -95,7 +97,8 @@
                       "validation": {
                         "type": "checkbox",
                         "nested": true,
-                        "parentFieldName": "versionControl"
+                        "parentFieldName": "versionControl",
+                        "parentOptionId": "cyUSrTH8mWdpqAKExLZAkz"
                       },
                       "props": {
                         "label": "H. Version control description",
@@ -131,7 +134,8 @@
                                 "validation": {
                                   "type": "text",
                                   "nested": true,
-                                  "parentFieldName": "versionControlDescription"
+                                  "parentFieldName": "versionControlDescription",
+                                  "parentOptionId": "4V3X7Mmz6VC89k9bgQUoLK"
                                 }
                               }
                             ]
@@ -149,8 +153,7 @@
               "disabled": true
             }
           }
-        ],
-        "adminDisabled": true
+        ]
       }
     },
     {
@@ -163,18 +166,18 @@
           "exportSectionHeader": "Program Reporting Information",
           "section": "MLR Reporting",
           "subsection": "Medicaid Medical Loss Ratio (MLR) & Remittances",
-          "spreadsheet": "Program Information & MLR Reporting",
+          "spreadsheet": "Program Information",
           "info": [
             {
               "type": "html",
-              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab.</b>"
+              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab. After adding program reporting information, enter the MLR for each report to add its MLR & Remittances.</b>"
             }
           ]
         },
         "exportSectionHeader": "Program Reporting Information",
         "dashboardTitle": "MLR report total count:",
         "countEntitiesInTitle": true,
-        "tableHeader": "MCO/PIHP/PAHP name <br> Program name <br> Eligibility group <br> MLR reporting period",
+        "tableHeader": "MCO/PIHP/PAHP name <br/> Program name <br/> Eligibility group <br/> MLR reporting period",
         "addEntityButtonText": "Add program reporting information",
         "editEntityButtonText": "Edit info",
         "deleteModalTitle": "Delete program reporting information for this report?",
@@ -188,6 +191,7 @@
       },
       "modalForm": {
         "id": "mlrd-modal",
+        "adminDisabled": true,
         "fields": [
           {
             "id": "report_planName",
@@ -218,7 +222,7 @@
             "validation": "text",
             "props": {
               "label": "J. Program name",
-              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
+              "hint": "Enter the name of the program(s) for this MLR report. A program is defined by a specified set of benefits and eligibility criteria that are articulated in a contract between the state and managed care plans. States providing plan-level MLR results by program should enter the individual program name in the field below. States providing plan-level MLR results across programs should list all relevant program names in the field below, separated by commas."
             }
           },
           {
@@ -272,7 +276,11 @@
                   "children": [
                     {
                       "type": "li",
-                      "props": { "style": { "fontWeight": "none" } },
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
                       "children": [
                         {
                           "type": "span",
@@ -291,7 +299,11 @@
                     },
                     {
                       "type": "li",
-                      "props": { "style": { "fontWeight": "none" } },
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
                       "children": [
                         {
                           "type": "span",
@@ -301,7 +313,11 @@
                     },
                     {
                       "type": "li",
-                      "props": { "style": { "fontWeight": "none" } },
+                      "props": {
+                        "style": {
+                          "fontWeight": "none"
+                        }
+                      },
                       "children": [
                         {
                           "type": "span",
@@ -313,8 +329,14 @@
                 }
               ],
               "choices": [
-                { "id": "cRi6qE4T5c6BjbGUsiiEof", "label": "All Populations" },
-                { "id": "UgSDECcYDJ4S39QEMmMRcq", "label": "Standalone CHIP" },
+                {
+                  "id": "cRi6qE4T5c6BjbGUsiiEof",
+                  "label": "All Populations"
+                },
+                {
+                  "id": "UgSDECcYDJ4S39QEMmMRcq",
+                  "label": "Standalone CHIP"
+                },
                 {
                   "id": "KWr7SR2JM5UYogD6xZykrN",
                   "label": "Group VIII Expansion Adult Only"
@@ -333,7 +355,7 @@
                       },
                       "props": {
                         "label": "M. Eligibility group description",
-                        "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children &lt;19 years; Aged, Blind, Disabled; Pregnant Women."
+                        "hint": "Describe the eligibility group(s). For example, a State may report separate MLRs for each eligibility group that is included in their “Comprehensive” program: Children <19 years; Aged, Blind, Disabled; Pregnant Women."
                       }
                     }
                   ]
@@ -341,14 +363,13 @@
               ]
             }
           },
-
           {
             "id": "report_reportingPeriodStartDate",
             "type": "date",
             "validation": "date",
             "props": {
               "label": "N. MLR reporting period start date",
-              "hint": "Enter the start date of the MLR reporting period. <br> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br> Note: The remittance reporting period may differ from the MLR reporting period."
+              "hint": "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period."
             }
           },
           {
@@ -387,12 +408,15 @@
                       },
                       "props": {
                         "label": "P.2 Explanation of reporting period discrepancy",
-                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
+                        "hint": "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year."
                       }
                     }
                   ]
                 },
-                { "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI", "label": "No" }
+                {
+                  "id": "2NI2UTNqhvrJLvEv8SORD7vIPRI",
+                  "label": "No"
+                }
               ]
             }
           },
@@ -406,11 +430,11 @@
               "styleAsOptional": true
             }
           }
-        ],
-        "adminDisabled": true
+        ]
       },
       "overlayForm": {
         "id": "mlrd-overlay",
+        "adminDisabled": true,
         "fields": [
           {
             "id": "mlrSection1Header",
@@ -473,7 +497,7 @@
           {
             "id": "report_mlrNumerator",
             "type": "number",
-            "validation": "number",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "1.3 MLR numerator",
               "hint": [
@@ -590,7 +614,7 @@
           {
             "id": "report_mlrDenominator",
             "type": "number",
-            "validation": "number",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "2.3 MLR denominator",
               "hint": [
@@ -624,14 +648,18 @@
           {
             "id": "mlrSection3Header",
             "type": "sectionHeader",
-            "props": { "divider": "top", "content": "3. MLR Calculation" }
+            "props": {
+              "divider": "top",
+              "content": "3. MLR Calculation"
+            }
           },
           {
             "id": "report_requiredMemberMonths",
             "type": "number",
-            "validation": "number",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "3.1 Member months",
+              "mask": "comma-separated",
               "hint": [
                 {
                   "type": "p",
@@ -731,7 +759,7 @@
           {
             "id": "report_adjustedMlrPercentage",
             "type": "number",
-            "validation": "number",
+            "validation": "numberNotLessThanOne",
             "props": {
               "label": "3.4 Adjusted MLR",
               "hint": [
@@ -779,7 +807,10 @@
           {
             "id": "mlrSection4Header",
             "type": "sectionHeader",
-            "props": { "divider": "top", "content": "4. Remittance" }
+            "props": {
+              "divider": "top",
+              "content": "4. Remittance"
+            }
           },
           {
             "id": "mlrSection4Content",
@@ -796,6 +827,10 @@
               "label": "4.1 Does the contract include a remittance/payment requirement for being below/above a specified MLR?",
               "hint": "This element indicates if a remittance to the state or a payment to a plan is required in an MCO/PIHP/PAHP contract if a minimum MLR is not met.",
               "choices": [
+                {
+                  "id": "UL4dAeyyvCFAXttxZioacR",
+                  "label": "No"
+                },
                 {
                   "id": "7FP4jcg4jK7Ssqp3cCW5vQ",
                   "label": "Yes",
@@ -828,7 +863,10 @@
                         "label": "4.3 Does the state remittance MLR calculation align with the required components and methodology outlined in 438.8(c)?",
                         "styleAsOptional": true,
                         "choices": [
-                          { "id": "PpL7niYGJMaY2fgv7R8C7g", "label": "Yes" },
+                          {
+                            "id": "PpL7niYGJMaY2fgv7R8C7g",
+                            "label": "Yes"
+                          },
                           {
                             "id": "hReMcaoqUfknjTM7dhZK3N",
                             "label": "No",
@@ -873,7 +911,7 @@
                       "id": "report_remittanceDollarAmountOwed",
                       "type": "number",
                       "validation": {
-                        "type": "number",
+                        "type": "numberNotLessThanZero",
                         "nested": true,
                         "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
                         "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
@@ -918,31 +956,21 @@
                     {
                       "id": "report_reportingPeriodStartDate",
                       "type": "date",
-                      "validation": {
-                        "type": "date",
-                        "nested": true,
-                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-                        "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-                      },
                       "props": {
                         "label": "N. MLR reporting period start date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {
                       "id": "report_reportingPeriodEndDate",
                       "type": "date",
-                      "validation": {
-                        "type": "date",
-                        "nested": true,
-                        "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-                        "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-                      },
                       "props": {
                         "label": "O. MLR reporting period end date",
                         "hint": "Auto-populates from program reporting information.",
-                        "disabled": true
+                        "disabled": true,
+                        "clear": false
                       }
                     },
                     {
@@ -956,10 +984,13 @@
                       },
                       "props": {
                         "label": "4.7 Is the remittance period the same as the MLR reporting period?",
-                        "hint": "Is the remittance period the same as the MLR reporting period reported under N and O (displayed above)? <br> The remittance period is the period of time used when determining the remittance amounts.",
+                        "hint": "Is the remittance period the same as the MLR reporting period reported under N and O (displayed above)? <br /> The remittance period is the period of time used when determining the remittance amounts.",
                         "styleAsOptional": true,
                         "choices": [
-                          { "id": "YzV3x7cp3u2sX92V3cbpDM", "label": "Yes" },
+                          {
+                            "id": "YzV3x7cp3u2sX92V3cbpDM",
+                            "label": "Yes"
+                          },
                           {
                             "id": "3dkx7LnSCiEUeibYshCBrf",
                             "label": "No",
@@ -1032,8 +1063,7 @@
                       }
                     }
                   ]
-                },
-                { "id": "UL4dAeyyvCFAXttxZioacR", "label": "No" }
+                }
               ]
             }
           }
@@ -1045,136 +1075,5 @@
       "path": "/mlr/review-and-submit",
       "pageType": "reviewSubmit"
     }
-  ],
-  "validationJson": {
-    "contactName": "text",
-    "contactPhoneNumber": "text",
-    "contactEmailAddress": "email",
-    "contactJobTitle": "text",
-    "stateName": "text",
-    "stateAgencyName": "text",
-    "versionControl": "radio",
-    "versionControlDescription": {
-      "type": "checkbox",
-      "nested": true,
-      "parentFieldName": "versionControl"
-    },
-    "versionControlDescription-otherText": {
-      "type": "text",
-      "nested": true,
-      "parentFieldName": "versionControlDescription"
-    },
-    "program": "objectArray",
-    "report_programName": "text",
-    "report_programType": "checkbox",
-    "report_eligibilityGroup": "radio",
-    "report_eligibilityGroup-otherText": {
-      "type": "text",
-      "nested": true,
-      "parentFieldName": "report_eligibilityGroup"
-    },
-    "report_planName": "text",
-    "report_reportingPeriodStartDate": {
-      "type": "date",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_reportingPeriodEndDate": {
-      "type": "date",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_reportingPeriodDiscrepancy": "radio",
-    "report_reportingPeriodDiscrepancyExplanation": {
-      "type": "text",
-      "nested": true,
-      "parentFieldName": "report_reportingPeriodDiscrepancy",
-      "parentOptionId": "2NI2TmkWrS70g3U6adRKklWSv31"
-    },
-    "report_miscellaneousNotes": "textOptional",
-    "report_incurredClaims": "numberOptional",
-    "report_healthCareQualityImprovementActivities": "numberOptional",
-    "report_mlrNumerator": "number",
-    "report_mlrNumeratorExplanation": "textOptional",
-    "report_nonClaimsCosts": "numberOptional",
-    "report_premiumRevenue": "numberOptional",
-    "report_taxesLicensingRegulatoryFees": "numberOptional",
-    "report_mlrDenominator": "number",
-    "report_mlrDenominatorExplanation": "textOptional",
-    "report_requiredMemberMonths": "number",
-    "report_unadjustedMlrPercentage": "numberOptional",
-    "report_unadjustedMlrPercentageExplanation": "textOptional",
-    "report_credibilityAdjustmentPercentage": "numberOptional",
-    "report_adjustedMlrPercentage": "number",
-    "report_adjustedMlrPercentageExplanation": "textOptional",
-    "report_contractIncludesMlrRemittanceRequirement": "radio",
-    "state_minimumMlrRequirement": {
-      "type": "numberOptional",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "state_doesStateRemittanceMlrCalculationAlign": {
-      "type": "radioOptional",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "state_remittanceMlrCalculationDeterminationMethod": {
-      "nested": true,
-      "parentFieldName": "state_doesStateRemittanceMlrCalculationAlign",
-      "type": "textOptional",
-      "parentOptionId": "hReMcaoqUfknjTM7dhZK3N"
-    },
-    "report_calculatedMlrPercentageForRemittancePurposes": {
-      "type": "numberOptional",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_remittanceDollarAmountOwed": {
-      "type": "number",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_remittanceDollarAmountDue": {
-      "type": "numberOptional",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_remittanceExplanation": {
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "type": "textOptional",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_isRemittancePeriodSameAsMlrReportingPeriod": {
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "type": "radioOptional",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    },
-    "report_remittancePeriodStartDate": {
-      "type": "dateOptional",
-      "nested": true,
-      "parentFieldName": "report_isRemittancePeriodSameAsMlrReportingPeriod",
-      "parentOptionId": "3dkx7LnSCiEUeibYshCBrf"
-    },
-    "report_remittancePeriodEndDate": {
-      "type": "dateOptional",
-      "nested": true,
-      "parentFieldName": "report_isRemittancePeriodSameAsMlrReportingPeriod",
-      "parentOptionId": "3dkx7LnSCiEUeibYshCBrf"
-    },
-    "report_stateFederalRemittanceShareDeterminationMethodologyDescription": {
-      "type": "text",
-      "nested": true,
-      "parentFieldName": "report_contractIncludesMlrRemittanceRequirement",
-      "parentOptionId": "7FP4jcg4jK7Ssqp3cCW5vQ"
-    }
-  }
+  ]
 }

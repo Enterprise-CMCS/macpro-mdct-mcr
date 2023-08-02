@@ -1,5 +1,6 @@
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
+import { mockReportRoutes } from "./mocks/mockReport";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
@@ -7,6 +8,7 @@ export const mockDocumentClient = {
   put: { promise: jest.fn() },
   delete: { promise: jest.fn() },
   scan: { promise: jest.fn() },
+  scanAll: { promise: jest.fn() },
 };
 jest.mock("aws-sdk", () => {
   return {
@@ -18,6 +20,7 @@ jest.mock("aws-sdk", () => {
           put: () => mockDocumentClient.put,
           delete: () => mockDocumentClient.delete,
           scan: () => mockDocumentClient.scan,
+          scanAll: () => mockDocumentClient.scanAll,
         };
       }),
       Converter: {
@@ -39,6 +42,7 @@ jest.mock("aws-sdk", () => {
         copyObject: jest.fn().mockImplementation((_params, callback) => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
+        listObjects: jest.fn(),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {
@@ -53,11 +57,12 @@ jest.mock("aws-sdk", () => {
 
 export const mockReportJson = {
   name: "mock-report",
+  type: "mock",
   basePath: "/mock",
-  routes: [],
+  routes: mockReportRoutes,
+  validationSchema: {},
   validationJson: {
-    text: "text",
-    number: "number",
+    "mock-number-field": "number",
   },
 };
 
@@ -69,7 +74,7 @@ export const mockReportKeys = {
 
 export const mockReportFieldData = {
   text: "text-input",
-  number: 0,
+  "mock-number-field": 0,
 };
 
 export const mockDynamoData = {
