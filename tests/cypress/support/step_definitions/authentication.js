@@ -15,13 +15,11 @@ Given("I am not logged in", () => {
 });
 
 Given("I am logged in as a(n) {userType} user", (userType) => {
-  Cypress.session.clearAllSavedSessions();
   //Create an authenticated session for the appropriate user type
   cy.authenticate(`${userType}User`);
 });
 
 When("I login as a(n) {userType} user ", (userType) => {
-  Cypress.session.clearAllSavedSessions();
   //Create an authenticated session for the appropriate user type
   cy.authenticate(`${userType}User`);
 });
