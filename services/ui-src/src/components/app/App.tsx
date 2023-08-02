@@ -11,14 +11,14 @@ import {
   Header,
   LoginCognito,
   LoginIDM,
+  MainSkipNav,
   ReportProvider,
-  SkipNav,
   Timeout,
 } from "components";
 // utils
 import {
   fireTealiumPageView,
-  isReportFormPage,
+  isApparentReportPage,
   makeMediaQueryClasses,
   useUser,
 } from "utils";
@@ -27,26 +27,25 @@ export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
-  const isReportPage = isReportFormPage(pathname);
   const isExportPage = pathname.includes("/export");
 
   // fire tealium page view on route change
   useEffect(() => {
-    fireTealiumPageView(user, window.location.href, pathname, isReportPage);
+    fireTealiumPageView(
+      user,
+      window.location.href,
+      pathname,
+      isApparentReportPage(pathname)
+    );
   }, [key]);
 
   return (
     <div id="app-wrapper" className={mqClasses}>
       {user && (
         <Flex sx={sx.appLayout}>
-          <Timeout />
-          <SkipNav
-            id="skip-nav-main"
-            href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
-            text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
-            sxOverride={sx.skipnav}
-          />
           <ReportProvider>
+            <Timeout />
+            <MainSkipNav />
             {!isExportPage && <Header handleLogout={logout} />}
             {isExportPage && <ExportedReportBanner />}
             <Container sx={sx.appContainer} data-testid="app-container">
@@ -82,9 +81,6 @@ const sx = {
   appLayout: {
     minHeight: "100vh",
     flexDirection: "column",
-  },
-  skipnav: {
-    position: "absolute",
   },
   appContainer: {
     display: "flex",

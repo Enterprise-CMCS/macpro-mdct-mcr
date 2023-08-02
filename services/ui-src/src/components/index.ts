@@ -10,6 +10,7 @@ export { ErrorAlert } from "./alerts/ErrorAlert";
 export { App } from "./app/App";
 export { AppRoutes } from "./app/AppRoutes";
 export { Error } from "./app/Error";
+export { MainSkipNav } from "./app/MainSkipNav";
 export { SkipNav } from "./app/SkipNav";
 // banners
 export {

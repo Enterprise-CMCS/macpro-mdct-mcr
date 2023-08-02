@@ -5,9 +5,13 @@ import { InstructionsAccordion, SpreadsheetWidget } from "components";
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
-export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
+export const ReportPageIntro = ({
+  text,
+  accordion,
+  reportType,
+  ...props
+}: Props) => {
   const { section, subsection, hint, info, spreadsheet } = text;
-  const { reportType } = props;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -34,6 +38,7 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
 interface Props {
   text: AnyObject;
   accordion?: AnyObject;
+  reportType?: string;
   [key: string]: any;
 }
 
