@@ -9,7 +9,7 @@
   },
   "routes": [
     {
-      "name": "Information for Primary Contact",
+      "name": "Information for Primary Kontacten",
       "path": "/mlr/information-for-primary-contact",
       "pageType": "standard",
       "verbiage": {
