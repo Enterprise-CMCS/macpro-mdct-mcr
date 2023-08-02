@@ -125,6 +125,9 @@ export interface Props {
 
 const sx = {
   root: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
     marginBottom: "1rem",
     "tr, th": {
       verticalAlign: "top",
