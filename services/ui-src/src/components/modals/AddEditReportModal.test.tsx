@@ -7,7 +7,6 @@ import { AddEditReportModal, ReportContext } from "components";
 import {
   mockMcparReport,
   mockMcparReportContext,
-  mockReportJson,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 
@@ -30,7 +29,6 @@ const modalComponent = (
         activeState="AB"
         selectedReport={undefined}
         reportType={"MCPAR"}
-        formTemplate={mockReportJson}
         modalDisclosure={{
           isOpen: true,
           onClose: mockCloseHandler,
@@ -47,7 +45,6 @@ const modalComponentWithSelectedReport = (
         activeState="AB"
         selectedReport={mockMcparReport}
         reportType={"MCPAR"}
-        formTemplate={mockReportJson}
         modalDisclosure={{
           isOpen: true,
           onClose: mockCloseHandler,
@@ -64,7 +61,6 @@ const mlrModalComponent = (
         activeState="AB"
         selectedReport={undefined}
         reportType={"MLR"}
-        formTemplate={mockReportJson}
         modalDisclosure={{
           isOpen: true,
           onClose: mockCloseHandler,
@@ -81,7 +77,6 @@ const mlrModalComponentWithSelectedReport = (
         activeState="AB"
         selectedReport={mockMcparReport}
         reportType={"MLR"}
-        formTemplate={mockReportJson}
         modalDisclosure={{
           isOpen: true,
           onClose: mockCloseHandler,
