@@ -1,8 +1,6 @@
 import {
   flattenReportRoutesArray,
   sortReportsOldestToNewest,
-  compileValidationJsonFromRoutes,
-  copyAdminDisabledStatusToForms,
   makeFieldIdList,
 } from "./reports";
 import {
@@ -12,7 +10,6 @@ import {
   mockReportRoutes,
   mockMcparReport,
   mockStandardReportPageJson,
-  mockReportJson,
   mockModalDrawerReportPageJson,
   mockDrawerReportPageJson,
   mockDrawerFormField,
@@ -52,45 +49,6 @@ describe("Test sortReportsOldestToNewest", () => {
       unsortedReports[0],
     ];
     expect(sortReportsOldestToNewest(unsortedReports)).toEqual(sortedReports);
-  });
-});
-
-describe("Test copyAdminDisabledStatusToForms", () => {
-  it("Copies disabled status to nested forms of any kind", () => {
-    const mockAdminDisabledReportJson = {
-      ...mockReportJson,
-      adminDisabled: true,
-    };
-    const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
-
-    const testStandardPageForm = result.routes[0].form;
-    const testDrawerPageForm = result.routes[1].children![0].drawerForm!;
-    const testModalDrawerPageModalForm =
-      result.routes[1].children![1].modalForm!;
-    const testModalDrawerPageDrawerForm =
-      result.routes[1].children![1].drawerForm!;
-    const testModalOverlayPageForm = result.routes[1].children![1].modalForm!;
-
-    expect(testStandardPageForm!.adminDisabled).toBeTruthy();
-    expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
-    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
-    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
-    expect(testModalOverlayPageForm!.adminDisabled).toBeTruthy();
-  });
-});
-
-describe("Test compileValidationJsonFromRoutes", () => {
-  it("Compiles validation from forms of any kind", () => {
-    const result = compileValidationJsonFromRoutes(mockFlattenedReportRoutes);
-    expect(result).toEqual({
-      accessMeasures: "objectArray",
-      program: "objectArray",
-      "mock-text-field": "text",
-      "mock-number-field": "number",
-      "mock-drawer-text-field": "text",
-      "mock-modal-text-field": "text",
-      "mock-optional-text-field": "textOptional",
-    });
   });
 });
 
