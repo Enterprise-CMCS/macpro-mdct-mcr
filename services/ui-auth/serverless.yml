@@ -74,7 +74,11 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.sesSourceEmailAddress}
-    BackWithOktaSAML: true
+    BackWithOktaSAML:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.okta_metadata_url}
     BackWithOktaOIDC: !And
       - Fn::Not:
           - !Condition BackWithOktaSAML
