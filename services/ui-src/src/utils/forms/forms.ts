@@ -31,6 +31,7 @@ export const formFieldFactory = (
     disabled?: boolean;
     nested?: boolean;
     autosave?: boolean;
+    validateOnRender?: boolean;
   }
 ) => {
   // define form field components

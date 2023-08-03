@@ -1,82 +1,153 @@
-import { EntityProvider } from "components/reports/EntityProvider";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+// components
+import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
+// utils
 import {
-  mockMlrReportContext,
+  mockAdminUser,
+  mockEntityDetailsContext,
+  mockMLRReportEntityStartedFieldData,
+  mockModalOverlayForm,
+  mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
-import form from "../../forms/mlr/mlr.json";
-import { EntityType, FormJson } from "types";
-import { render } from "@testing-library/react";
-import { axe } from "jest-axe";
-import userEvent from "@testing-library/user-event";
-import { ReportContext } from "components/reports/ReportProvider";
+import { useUser } from "utils";
+// verbiage
+import accordionVerbiage from "../../verbiage/pages/accordion";
+import overlayVerbiage from "../../verbiage/pages/overlays";
+import { EntityContext } from "components";
 
-const formJSON: FormJson = form.routes[1].overlayForm!;
-const mockClose = jest.fn();
-const mockSidebarHidden = jest.fn();
+const mockCloseEntityDetailsOverlay = jest.fn();
+const mockOnSubmit = jest.fn();
 
-const overlayProps = {
-  entityType: "program" as EntityType,
-  verbiage: {},
-  form: formJSON,
-  selectedEntity: mockMlrReportContext.report.fieldData.program[1],
-  closeEntityDetailsOverlay: mockClose,
-  setSidebarHidden: mockSidebarHidden,
-};
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
-const mockUpdate = jest.fn();
-const mockedReportContext = {
-  ...mockMlrReportContext,
-  updateReport: mockUpdate,
-};
-
-const entityDetailsOverlay = (
+const entityDetailsOverlayComponentStateUser = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
-      <EntityProvider>
-        <EntityDetailsOverlay {...overlayProps} />
-      </EntityProvider>
-    </ReportContext.Provider>
+    <EntityContext.Provider value={mockEntityDetailsContext}>
+      <EntityDetailsOverlay
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        entityType={"program"}
+        entities={[mockMLRReportEntityStartedFieldData.program[0]]}
+        form={mockModalOverlayForm}
+        onSubmit={mockOnSubmit}
+        disabled={false}
+        selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
+      />
+    </EntityContext.Provider>
   </RouterWrappedComponent>
 );
 
-describe("Test EntityDetailsOverlay", () => {
-  it("Should show a close button", async () => {
-    const { findByText } = render(entityDetailsOverlay);
-    expect(await findByText("Return to MLR Reporting")).toBeVisible();
+const entityDetailsOverlayComponentAdminUser = (
+  <RouterWrappedComponent>
+    <EntityContext.Provider value={mockEntityDetailsContext}>
+      <EntityDetailsOverlay
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        entityType={"program"}
+        entities={[mockMLRReportEntityStartedFieldData.program[0]]}
+        form={mockModalOverlayForm}
+        onSubmit={mockOnSubmit}
+        disabled={true}
+        selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
+      />
+    </EntityContext.Provider>
+  </RouterWrappedComponent>
+);
+
+describe("Test EntityDetailsOverlayV2 (empty state)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("Should invoke the close function when you click the close button.", async () => {
-    const { findByText } = render(entityDetailsOverlay);
-    const closeButton = await findByText("Return to MLR Reporting");
-    await userEvent.click(closeButton);
-    expect(mockClose).toHaveBeenCalled();
+  const user = userEvent.setup();
+  const selectedEntity = mockMLRReportEntityStartedFieldData.program[0];
+
+  it("should render the initial view for a state user", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(entityDetailsOverlayComponentStateUser);
+
+    // Close out of the Overlay it opened
+    const closeButton = screen.getByText("Return to MLR Reporting");
+    expect(closeButton).toBeVisible();
+
+    // Check if header is visible on load - H2
+    expect(
+      screen.getByText(overlayVerbiage.MLR.intro.subsection)
+    ).toBeVisible();
+
+    // Check if accordion is showing
+    const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
+    expect(screen.getByText(accordionHeader)).toBeVisible();
+
+    // Check if MLR Report For is showing the correct Entity Data
+    const reportPlanName = selectedEntity.report_planName;
+    const reportProgramName = selectedEntity.report_programName;
+    const eligibilityGroup = selectedEntity.report_eligibilityGroup[0].value;
+    const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+
+    expect(screen.getByText(reportPlanName)).toBeVisible();
+    expect(screen.getByText(reportProgramName)).toBeVisible();
+    expect(screen.getByText(eligibilityGroup)).toBeVisible();
+    expect(screen.getByText(reportingPeriod)).toBeVisible();
+
+    // Make sure footer button appears correctly
+    const saveAndReturn = screen.getByText("Save & return");
+    expect(saveAndReturn).toBeVisible();
   });
 
-  it("Should set the sidebar hidden on load", () => {
-    render(entityDetailsOverlay);
-    expect(mockSidebarHidden).toHaveBeenCalledWith(true);
+  it("should render the initial view for an admin", async () => {
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    render(entityDetailsOverlayComponentAdminUser);
+
+    // Close out of the Overlay it opened
+    const closeButton = screen.getByText("Return to MLR Reporting");
+    expect(closeButton).toBeVisible();
+
+    // Check if header is visible on load - H2
+    expect(
+      screen.getByText(overlayVerbiage.MLR.intro.subsection)
+    ).toBeVisible();
+
+    // Check if accordion is showing
+    const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
+    expect(screen.getByText(accordionHeader)).toBeVisible();
+
+    // Check if MLR Report For is showing the correct Entity Data
+    const reportPlanName = selectedEntity.report_planName;
+    const reportProgramName = selectedEntity.report_programName;
+    const eligibilityGroup = selectedEntity.report_eligibilityGroup[0].value;
+    const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+
+    expect(screen.getByText(reportPlanName)).toBeVisible();
+    expect(screen.getByText(reportProgramName)).toBeVisible();
+    expect(screen.getByText(eligibilityGroup)).toBeVisible();
+    expect(screen.getByText(reportingPeriod)).toBeVisible();
+
+    // Make sure footer button appears correctly for admins
+    const returnButton = screen.getByText("Return");
+    expect(returnButton).toBeVisible();
   });
 
-  it("Should set the sidebar visible on unmount", () => {
-    const { unmount } = render(entityDetailsOverlay);
-    unmount();
-    expect(mockSidebarHidden).toHaveBeenCalledWith(false);
+  it("should call the close overlay function when clicking Return to MLR", async () => {
+    // Set as State User
+    mockedUseUser.mockReturnValue(mockStateUser);
+    render(entityDetailsOverlayComponentStateUser);
+
+    // Close out of the Overlay it opened
+    const closeButton = screen.getByText("Return to MLR Reporting");
+    await user.click(closeButton);
+    expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });
 
-  it("Should submit entity info when clicking submit", async () => {
-    const { findByText } = render(entityDetailsOverlay);
-    const submitButton = await findByText("Save & return");
-    await userEvent.click(submitButton);
-    expect(mockSidebarHidden).toHaveBeenCalledWith(false);
-    expect(mockClose).toHaveBeenCalled();
-  });
-});
+  it("should call the close overlay function when clicking Return to MLR as an Admin", async () => {
+    // Set as State User
+    mockedUseUser.mockReturnValue(mockAdminUser);
+    render(entityDetailsOverlayComponentAdminUser);
 
-describe("Test EntityDetailsOverlay accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(entityDetailsOverlay);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    // Close out of the Overlay it opened
+    const closeButton = screen.getByText("Return to MLR Reporting");
+    await user.click(closeButton);
+    expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });
 });

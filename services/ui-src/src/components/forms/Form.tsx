@@ -1,10 +1,11 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
   SubmitErrorHandler,
   useForm,
 } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
@@ -35,7 +36,9 @@ export const Form = ({
   onSubmit,
   onError,
   formData,
+  validateOnRender,
   autosave,
+  dontReset,
   children,
   ...props
 }: Props) => {
@@ -44,6 +47,7 @@ export const Form = ({
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
+  let location = useLocation();
   const fieldInputDisabled =
     ((userIsAdmin || userIsReadOnly) && formJson.adminDisabled) ||
     (report?.status === ReportStatus.SUBMITTED &&
@@ -84,8 +88,15 @@ export const Form = ({
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
       autosave,
+      validateOnRender,
     });
   };
+
+  useEffect(() => {
+    if (!dontReset && !validateOnRender) {
+      form?.reset();
+    }
+  }, [location?.pathname]);
 
   return (
     <FormProvider {...form}>
@@ -106,6 +117,8 @@ interface Props {
   id: string;
   formJson: FormJson;
   onSubmit: Function;
+  validateOnRender: boolean;
+  dontReset: boolean;
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
   autosave?: boolean;

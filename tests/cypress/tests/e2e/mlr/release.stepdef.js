@@ -10,21 +10,24 @@ When("I create, fill, and submit a report", () => {
 
   // Create the program
   cy.visit(`/mlr`);
-  cy.findByRole("button", { name: "Add new MLR submission" }).click();
+  cy.get("button").contains("Add new MLR submission").click();
   cy.get('input[id="programName"]').type(programName);
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mlr.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
-  cy.wait(5000);
+  cy.wait(2000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
@@ -45,11 +48,24 @@ When("I unlock a report", () => {
     .focus()
     .click();
 
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Unlock")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unlock")')
+      .focus()
+      .click();
+  });
+
+  cy.wait(2000);
+
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unlock")')
+      .should("be.disabled");
+  });
 });
 
 When("I archive a report", () => {
@@ -62,12 +78,24 @@ When("I archive a report", () => {
     .focus()
     .click();
 
-  cy.findByText(programName)
-    .last()
-    .parent()
-    .find('button:contains("Archive")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Archive")')
+      .focus()
+      .click();
+  });
+
+  cy.wait(2000);
+
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unarchive")')
+      .should("be.visible");
+  });
 });
 
 Then("I cannot unlock that report", () => {
@@ -79,29 +107,35 @@ Then("I cannot unlock that report", () => {
     .find('button[type="submit"]')
     .focus()
     .click();
-
-  cy.findByText(programName)
-    .last()
-    .parent()
-    .find('button:contains("Unlock")')
-    .should("be.disabled");
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unlock")')
+      .should("be.disabled");
+  });
 });
 
 Then("I cannot unlock that archived report", () => {
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Unlock")')
-    .should("be.disabled");
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Unlock")')
+      .should("be.disabled");
+  });
 });
 
 Then("the report will have the correct content pre-filled", () => {
   cy.visit("/mlr");
-  cy.findByText(programName)
-    .last()
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
   cy.get('input[type="radio"]').first().should("be.checked");
   cy.get('input[name="stateName"]').should(
     "have.value",
@@ -130,11 +164,14 @@ When("I create, fill but don't submit a report", () => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
@@ -142,18 +179,20 @@ When("I create, fill but don't submit a report", () => {
 
 When("I fill and re-submit that report", () => {
   cy.visit(`/mlr`);
-  cy.findByText(programName)
-    .last()
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   cy.findByText("Revise state contact information").parent().click();
   cy.get('button:contains("Continue")').focus().click();
   cy.get('button:contains("Continue")').focus().click();
 
-  cy.wait(5000);
+  cy.wait(2000);
   //Submit the program
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();

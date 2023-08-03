@@ -34,15 +34,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 const CheckboxComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
     <ChoiceListField
@@ -100,22 +91,6 @@ describe("Test ChoiceListField component rendering", () => {
     render(CheckboxComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
-  });
-
-  it("ChoiceList should render a normal Radiofield and triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("radioField", []);
-    render(RadioComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByText("Choice 2")).toBeVisible();
-    expect(mockTrigger).toBeCalled();
-  });
-
-  it("ChoiceList should render a normal Checkbox and triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("checkboxField", []);
-    render(CheckboxComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByText("Choice 2")).toBeVisible();
-    expect(mockTrigger).toBeCalled();
   });
 
   it("RadioField should render nested child fields for choices with children", () => {
@@ -896,6 +871,30 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     expect(returnedValue).toStrictEqual(expectedReturn);
+  });
+});
+
+describe("ChoiceListField handles triggering validation", () => {
+  const choiceListFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ChoiceListField
+        choices={mockChoices}
+        label="Checkbox example"
+        name="checkboxField"
+        type="checkbox"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockGetValues(undefined);
+    render(choiceListFieldValidateOnRenderComponent);
+    expect(mockTrigger).toHaveBeenCalled();
   });
 });
 

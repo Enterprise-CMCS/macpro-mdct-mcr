@@ -28,15 +28,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -68,16 +59,6 @@ describe("Test TextField component", () => {
     render(textFieldComponent);
     const textField = screen.getByText("test-label");
     expect(textField).toBeVisible();
-    jest.clearAllMocks();
-  });
-
-  test("TextField triggers validation after first render if no value given", () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockFieldIsRegistered("testTextField", "");
-    render(textFieldComponent);
-    const textField = screen.getByText("test-label");
-    expect(textField).toBeVisible();
-    expect(mockTrigger).toBeCalled();
     jest.clearAllMocks();
   });
 });
@@ -244,17 +225,41 @@ describe("Test TextField component autosaves", () => {
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+});
 
+describe("Textfield handles triggering validation", () => {
+  const textFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <TextField
+        name="testTextField"
+        label="test-label"
+        placeholder="test-placeholder"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("Blanking field triggers form validation", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(textFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
     const textField = screen.getByRole("textbox", {
       name: "test-label",
     });
     expect(textField).toBeVisible();
     await userEvent.clear(textField);
     await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(textFieldValidateOnRenderComponent);
     expect(mockTrigger).toHaveBeenCalled();
   });
 });

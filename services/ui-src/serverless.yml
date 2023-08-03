@@ -43,6 +43,8 @@ custom:
   ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
   ui_cloudfront_distribution_id: ${cf:ui-${self:custom.stage}.CloudFrontDistributionId}
   application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
+  signout_redirect_url: ${env:POST_SIGNOUT_REDIRECT, ssm:/configuration/${self:custom.stage}/cognito/redirectSignout, ssm:/configuration/default/cognito/redirectSignout}
+  application_signout_url: ${self:custom.application_endpoint_url}postLogout
   s3Sync:
     - bucketName: ${self:custom.ui_s3_bucket_name}
       localDir: ./build
@@ -68,7 +70,8 @@ custom:
         export COGNITO_IDP_NAME=${self:custom.cognito_idp_name}
         export COGNITO_IDP=${self:custom.cognito_idp}
         export COGNITO_REDIRECT_SIGNIN=${self:custom.application_endpoint_url}
-        export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_endpoint_url}
+        export COGNITO_REDIRECT_SIGNOUT=${self:custom.application_signout_url}
+        export POST_SIGNOUT_REDIRECT=${self:custom.signout_redirect_url}
         export REACT_APP_LD_SDK_CLIENT=${self:custom.ldSdkClient}
         export S3_ATTACHMENTS_BUCKET_REGION=${self:custom.s3_attachments_bucket_region}
         export S3_ATTACHMENTS_BUCKET_NAME=${self:custom.s3_attachments_bucket_name}

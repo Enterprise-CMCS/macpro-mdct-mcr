@@ -4,7 +4,7 @@ frameworkVersion: "3"
 
 plugins:
   - serverless-plugin-typescript
-  - serverless-dynamodb-local
+  - serverless-dynamodb
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
   - serverless-plugin-scripts
@@ -26,7 +26,7 @@ custom:
   dotenv:
     path: ../../.env
   bannerTableName: ${self:custom.stage}-banners
-  formTemplateTableName: ${self:custom.stage}-form-templates
+  formTemplateTableName: ${self:custom.stage}-form-template-versions
   mcparReportTableName: ${self:custom.stage}-mcpar-reports
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mcpar"}
   mlrReportTableName: ${self:custom.stage}-mlr-reports
@@ -183,7 +183,7 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
-    FormTemplateTable:
+    FormTemplateVersionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.formTemplateTableName}
@@ -201,6 +201,22 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+          - IndexName: IdIndex
+            KeySchema:
+              - AttributeName: reportType
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: HashIndex
+            KeySchema:
+              - AttributeName: reportType
+                KeyType: HASH
+              - AttributeName: md5Hash
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
         KeySchema:
           - AttributeName: reportType
             KeyType: HASH
@@ -213,6 +229,10 @@ resources:
             AttributeType: N
           - AttributeName: lastAltered
             AttributeType: S
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: md5Hash
+            AttributeType: S
 
   Outputs:
     BannerTableName:
@@ -221,6 +241,8 @@ resources:
       Value: !GetAtt BannerTable.Arn
     BannerTableStreamArn:
       Value: !GetAtt BannerTable.StreamArn
+    FormTemplateTableName:
+      Value: !Ref FormTemplateVersionsTable
     McparReportTableName:
       Value: !Ref McparReportTable
     McparReportTableArn:

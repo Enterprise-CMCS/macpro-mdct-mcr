@@ -21,9 +21,6 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-// forms
-import { mcparReportJson } from "forms/mcpar";
-import { mlrReportJson } from "forms/mlr";
 // utils
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
 import {
@@ -63,13 +60,6 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
-
-  const genericReportJsonMap: any = {
-    MCPAR: mcparReportJson,
-    MLR: mlrReportJson,
-  };
-
-  const genericReportJson = genericReportJsonMap[reportType]!;
 
   const dashboardVerbiageMap: any = {
     MCPAR: mcparVerbiage,
@@ -271,7 +261,6 @@ export const DashboardPage = ({ reportType }: Props) => {
         activeState={activeState!}
         selectedReport={selectedReport!}
         reportType={reportType}
-        formTemplate={genericReportJson}
         modalDisclosure={{
           isOpen: addEditReportModalIsOpen,
           onClose: addEditReportModalOnCloseHandler,

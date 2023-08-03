@@ -10,30 +10,23 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.108",
+    "aws-dynamodb-local": "^0.0.10",
     "aws-lambda": "^1.0.7",
     "dotenv": "^16.0.3",
-    "dynamodb-localhost": "https://github.com/99x/dynamodb-localhost#db30898f8c40932c7177be7b2f1a81360d12876d",
     "fast-xml-parser": "4.2.5",
     "serverless": "^3.27.0",
-    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-dynamodb": "^0.2.42",
     "serverless-offline": "^12.0.4",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-plugin-typescript": "^2.1.4",
-    "serverless-s3-bucket-helper": "github:cmsgov/serverless-s3-bucket-helper#master",
+    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#master",
     "serverless-s3-local": "^0.7.1",
     "serverless-stack-termination-protection": "^2.0.2",
     "typescript": "^4.9.3"
   },
   "dependencies": {},
   "resolutions": {
+    "luxon": "3.3.0",
     "xml2js": "^0.5.0"
-  },
-  "overrides": {
-    "serverless-dynamodb-local": {
-      "dynamodb-localhost": "https://github.com/99x/dynamodb-localhost#db30898f8c40932c7177be7b2f1a81360d12876d"
-    }
-  },
-  "resolutions": {
-    "luxon": "3.3.0"
   }
 }

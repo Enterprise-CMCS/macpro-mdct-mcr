@@ -32,6 +32,7 @@ export const ChoiceListField = ({
   hint,
   nested,
   autosave,
+  validateOnRender,
   sxOverride,
   styleAsOptional,
   clear,
@@ -58,9 +59,9 @@ export const ChoiceListField = ({
   const hydrationValue = props?.hydrate;
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -89,7 +90,9 @@ export const ChoiceListField = ({
       } else {
         setDisplayValue(hydrationValue);
         setLastDatabaseValue(hydrationValue);
-        form.setValue(name, hydrationValue);
+        if (validateOnRender)
+          form.setValue(name, hydrationValue, { shouldValidate: true });
+        else form.setValue(name, hydrationValue);
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -293,6 +296,7 @@ interface Props {
   hint?: CustomHtmlElement[];
   nested?: boolean;
   autosave?: boolean;
+  validateOnRender?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
   clear?: boolean;
