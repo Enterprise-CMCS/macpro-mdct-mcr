@@ -27,7 +27,7 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "AB" },
+  pathParameters: { reportType: "MCPAR", state: "AL" },
 };
 
 const creationEvent: APIGatewayProxyEvent = {
