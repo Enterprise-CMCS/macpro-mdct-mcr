@@ -7,7 +7,6 @@ import KSUID from "ksuid";
 import { logger } from "../logging";
 import {
   AnyObject,
-  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
@@ -20,7 +19,7 @@ import {
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
 import { createHash } from "crypto";
 
-export async function getNewestTemplateVersion(reportType: ReportType) {
+export function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "LastAlteredIndex",
@@ -31,42 +30,28 @@ export async function getNewestTemplateVersion(reportType: ReportType) {
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
   };
-  const result = await dynamodbLib.query(queryParams);
-  return result.Items?.[0];
+  return dynamodbLib.query(queryParams);
 }
-
-export const formTemplateForReportType = (reportType: ReportType) => {
-  switch (reportType) {
-    case ReportType.MCPAR:
-      return mcparForm as ReportJson;
-    case ReportType.MLR:
-      return mlrForm as ReportJson;
-    case ReportType.NAAAR:
-      throw new Error(
-        "Not Implemented: NAAAR form template JSON must be added to FormTemplateProvider"
-      );
-    default:
-      assertExhaustive(reportType);
-      throw new Error(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
-  }
-};
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType
 ) {
-  const currentFormTemplate = formTemplateForReportType(reportType);
-  const formTemplateWithAdminDisabled =
-    copyAdminDisabledStatusToForms(currentFormTemplate);
+  const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
+
+  const formTemplateWithAdminDisabled = copyAdminDisabledStatusToForms(
+    currentFormTemplate as ReportJson
+  );
+
   const stringifiedTemplate = JSON.stringify(formTemplateWithAdminDisabled);
 
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
     .digest("hex");
 
-  const mostRecentTemplateVersion = await getNewestTemplateVersion(reportType);
+  const mostRecentTemplateVersion = (await getNewestTemplateVersion(reportType))
+    .Items?.[0];
+
   const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
 
   if (currentTemplateHash === mostRecentTemplateVersionHash) {
@@ -83,7 +68,9 @@ export async function getOrCreateFormTemplate(
     const newFormTemplateId = KSUID.randomSync().string;
     const formTemplateWithValidationJson = {
       ...currentFormTemplate,
-      validationJson: getValidationFromFormTemplate(currentFormTemplate),
+      validationJson: getValidationFromFormTemplate(
+        currentFormTemplate as ReportJson
+      ),
     };
     try {
       await s3Lib.put({
@@ -243,29 +230,20 @@ export const compileValidationJsonFromRoutes = (
   return validationSchema;
 };
 
+const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+
 export function isFieldElement(
   field: FormField | FormLayoutElement
 ): field is FormField {
-  /*
-   * This function is duplicated in ui-src/src/types/formFields.ts
-   * If you change it here, change it there!
-   */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
   return !formLayoutElementTypes.includes(field.type);
-}
-
-export function isLayoutElement(
-  field: FormField | FormLayoutElement
-): field is FormLayoutElement {
-  /*
-   * This function is duplicated in ui-src/src/types/formFields.ts
-   * If you change it here, change it there!
-   */
-  return (field as FormField).validation === undefined;
 }
 
 export function getValidationFromFormTemplate(reportJson: ReportJson) {
   return compileValidationJsonFromRoutes(
     flattenReportRoutesArray(copyAdminDisabledStatusToForms(reportJson).routes)
   );
+}
+
+export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
+  return Object.keys(getValidationFromFormTemplate(reportJson));
 }

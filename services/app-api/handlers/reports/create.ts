@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
+import s3Lib from "../../utils/s3/s3-lib";
 import {
   hasReportAccess,
   hasPermissions,
@@ -15,19 +15,21 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import {
   error,
+  buckets,
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
 // types
 import {
+  DynamoWrite,
   isReportType,
-  isState,
   S3Put,
   StatusCodes,
   UserRoles,
 } from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/logging";
+import { copyFieldDataFromSource } from "../../utils/reports";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -40,34 +42,30 @@ export const createReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
 
   // Return error if no state is passed.
-  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+  if (
+    !event.pathParameters ||
+    !hasReportPathParams(event.pathParameters, requiredParams)
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
 
-  const state: string = event.pathParameters?.state!;
-  if (!isState(state)) {
+  const { state, reportType } = event.pathParameters;
+  const unvalidatedPayload = JSON.parse(event.body!);
+  const {
+    metadata: unvalidatedMetadata,
+    fieldData: unvalidatedFieldData,
+    copySourceId,
+  } = unvalidatedPayload;
+
+  if (!isReportType(reportType)) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
     };
   }
-
-  const unvalidatedPayload = JSON.parse(event!.body!);
-  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
-    unvalidatedPayload;
-
-  const possibleReportType: unknown = event?.pathParameters?.reportType;
-  if (!isReportType(possibleReportType)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
-  }
-
-  const reportType = possibleReportType;
 
   // Return a 403 status if the user does not have access to this report
   if (!hasReportAccess(event, reportType)) {
@@ -77,7 +75,8 @@ export const createReport = handler(async (event, _context) => {
     };
   }
 
-  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+  const reportBucket: string =
+    reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   let formTemplate, formTemplateVersion;
@@ -103,7 +102,7 @@ export const createReport = handler(async (event, _context) => {
   // Create report and field ids.
   const reportId: string = KSUID.randomSync().string;
   const fieldDataId: string = KSUID.randomSync().string;
-  const formTemplateId = formTemplateVersion?.id;
+  const formTemplateId: string = formTemplateVersion?.id;
 
   // Validate field data
   const validatedFieldData = await validateFieldData(
@@ -119,10 +118,25 @@ export const createReport = handler(async (event, _context) => {
     };
   }
 
+  // If `copySourceId` parameter is passed, merge the validated field data w the source ids data.
+
+  let newFieldData;
+
+  if (copySourceId) {
+    newFieldData = await copyFieldDataFromSource(
+      reportBucket,
+      state,
+      copySourceId,
+      formTemplate,
+      validatedFieldData
+    );
+  } else {
+    newFieldData = validatedFieldData;
+  }
   const fieldDataParams: S3Put = {
     Bucket: reportBucket,
-    Key: getFieldDataKey(state, fieldDataId),
-    Body: JSON.stringify(validatedFieldData),
+    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Body: JSON.stringify(newFieldData),
     ContentType: "application/json",
   };
 
@@ -148,7 +162,7 @@ export const createReport = handler(async (event, _context) => {
   }
 
   // Create DyanmoDB record.
-  const reportMetadataParams = {
+  const reportMetadataParams: DynamoWrite = {
     TableName: reportTable,
     Item: {
       ...validatedMetadata,
