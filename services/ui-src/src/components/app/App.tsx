@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
@@ -11,14 +11,15 @@ import {
   Header,
   LoginCognito,
   LoginIDM,
+  MainSkipNav,
   ReportProvider,
-  SkipNav,
   Timeout,
+  PostLogoutRedirect,
 } from "components";
 // utils
 import {
   fireTealiumPageView,
-  isReportFormPage,
+  isApparentReportPage,
   makeMediaQueryClasses,
   useUser,
 } from "utils";
@@ -27,26 +28,25 @@ export const App = () => {
   const mqClasses = makeMediaQueryClasses();
   const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
-  const isReportPage = isReportFormPage(pathname);
   const isExportPage = pathname.includes("/export");
 
   // fire tealium page view on route change
   useEffect(() => {
-    fireTealiumPageView(user, window.location.href, pathname, isReportPage);
+    fireTealiumPageView(
+      user,
+      window.location.href,
+      pathname,
+      isApparentReportPage(pathname)
+    );
   }, [key]);
 
-  return (
-    <div id="app-wrapper" className={mqClasses}>
+  const authenticatedRoutes = (
+    <>
       {user && (
         <Flex sx={sx.appLayout}>
-          <Timeout />
-          <SkipNav
-            id="skip-nav-main"
-            href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
-            text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
-            sxOverride={sx.skipnav}
-          />
           <ReportProvider>
+            <Timeout />
+            <MainSkipNav />
             {!isExportPage && <Header handleLogout={logout} />}
             {isExportPage && <ExportedReportBanner />}
             <Container sx={sx.appContainer} data-testid="app-container">
@@ -74,6 +74,15 @@ export const App = () => {
           </Container>
         </main>
       )}
+    </>
+  );
+
+  return (
+    <div id="app-wrapper" className={mqClasses}>
+      <Routes>
+        <Route path="*" element={authenticatedRoutes} />
+        <Route path="postLogout" element={<PostLogoutRedirect />} />
+      </Routes>
     </div>
   );
 };
@@ -82,9 +91,6 @@ const sx = {
   appLayout: {
     minHeight: "100vh",
     flexDirection: "column",
-  },
-  skipnav: {
-    position: "absolute",
   },
   appContainer: {
     display: "flex",

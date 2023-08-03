@@ -14,11 +14,10 @@ import {
   AnyObject,
   isFieldElement,
   ReportStatus,
-  ReportType,
   StandardReportPageShape,
 } from "types";
 
-export const StandardReportPage = ({ route }: Props) => {
+export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useUser().user ?? {};
@@ -71,16 +70,15 @@ export const StandardReportPage = ({ route }: Props) => {
         onError={onError}
         formData={report?.fieldData}
         autosave
+        validateOnRender={validateOnRender || false}
+        dontReset={false}
       />
-      <ReportPageFooter
-        submitting={submitting}
-        form={route.form}
-        hidePrevious={report?.reportType === ReportType.MLR}
-      />
+      <ReportPageFooter submitting={submitting} form={route.form} />
     </Box>
   );
 };
 
 interface Props {
   route: StandardReportPageShape;
+  validateOnRender?: boolean;
 }

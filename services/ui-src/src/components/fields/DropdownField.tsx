@@ -30,6 +30,7 @@ export const DropdownField = ({
   hint,
   nested,
   autosave,
+  validateOnRender,
   sxOverride,
   styleAsOptional,
   ...props
@@ -72,9 +73,9 @@ export const DropdownField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -176,6 +177,7 @@ interface Props {
   options: DropdownOptions[] | string;
   nested?: boolean;
   autosave?: boolean;
+  validateOnRender?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
   [key: string]: any;

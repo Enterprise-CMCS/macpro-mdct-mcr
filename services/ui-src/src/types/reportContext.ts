@@ -54,9 +54,11 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
+  contextIsLoaded: boolean;
   reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
   lastSavedTime?: string | undefined;
+  isReportPage: boolean;
 }
 
 export enum ReportStatus {

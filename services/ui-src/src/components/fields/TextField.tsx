@@ -23,6 +23,7 @@ export const TextField = ({
   sxOverride,
   nested,
   autosave,
+  validateOnRender,
   styleAsOptional,
   ...props
 }: Props) => {
@@ -38,9 +39,9 @@ export const TextField = ({
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -142,6 +143,7 @@ interface Props {
   placeholder?: string;
   sxOverride?: AnyObject;
   nested?: boolean;
+  validateOnRender?: boolean;
   autosave?: boolean;
   styleAsOptional?: boolean;
   clear?: boolean;

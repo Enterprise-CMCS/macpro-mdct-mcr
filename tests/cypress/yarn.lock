@@ -1130,11 +1130,6 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
-"@cypress/xpath@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@cypress/xpath/-/xpath-2.0.3.tgz#9a631d12cb935ba493fd30290163bde54c3c1428"
-  integrity sha512-Seilxmws+yty5lZSbwbjEOOiEbr7O1bCxKy2FC4jwMssC22yjByb5orDfBZPLZXYfmWZafJjvZFwts4Q3CzQAg==
-
 "@cypress/xvfb@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@cypress/xvfb/-/xvfb-1.2.4.tgz#2daf42e8275b39f4aa53c14214e557bd14e7748a"
@@ -2159,11 +2154,6 @@ cypress-tags@^1.1.2:
     "@cypress/browserify-preprocessor" "^3.0.1"
     boolean-parser "0.0.2"
     through "^2.3.8"
-
-cypress-wait-until@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/cypress-wait-until/-/cypress-wait-until-1.7.2.tgz#7f534dd5a11c89b65359e7a0210f20d3dfc22107"
-  integrity sha512-uZ+M8/MqRcpf+FII/UZrU7g1qYZ4aVlHcgyVopnladyoBrpoaMJ4PKZDrdOJ05H5RHbr7s9Tid635X3E+ZLU/Q==
 
 cypress@^12.5.1:
   version "12.6.0"

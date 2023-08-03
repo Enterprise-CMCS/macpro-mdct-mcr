@@ -25,8 +25,8 @@ describe("ExportedEntityDetailsTable", () => {
 
     const expectedTextContent = [
       "N/A",
-      "mock modal overlay text field",
-      "1",
+      "mock text field",
+      "mock number field",
       "Not answered; required",
     ];
 

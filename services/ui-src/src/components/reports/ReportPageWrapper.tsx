@@ -21,6 +21,7 @@ import {
   PageTypes,
   ReportRoute,
   StandardReportPageShape,
+  AnyObject,
 } from "types";
 
 export const ReportPageWrapper = () => {
@@ -29,6 +30,7 @@ export const ReportPageWrapper = () => {
   const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const locationState = useLocation().state as AnyObject;
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -47,22 +49,36 @@ export const ReportPageWrapper = () => {
   const renderPageSection = (route: ReportRoute) => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
-        return <DrawerReportPage route={route as DrawerReportPageShape} />;
+        return (
+          <DrawerReportPage
+            route={route as DrawerReportPageShape}
+            validateOnRender={locationState?.validateOnRender}
+          />
+        );
       case PageTypes.MODAL_DRAWER:
         return (
-          <ModalDrawerReportPage route={route as ModalDrawerReportPageShape} />
+          <ModalDrawerReportPage
+            route={route as ModalDrawerReportPageShape}
+            validateOnRender={locationState?.validateOnRender}
+          />
         );
       case PageTypes.MODAL_OVERLAY:
         return (
           <ModalOverlayReportPage
             route={route as ModalOverlayReportPageShape}
             setSidebarHidden={setSidebarHidden}
+            validateOnRender={locationState?.validateOnRender}
           />
         );
       case PageTypes.REVIEW_SUBMIT:
         return <ReviewSubmitPage />;
       default:
-        return <StandardReportPage route={route as StandardReportPageShape} />;
+        return (
+          <StandardReportPage
+            route={route as StandardReportPageShape}
+            validateOnRender={locationState?.validateOnRender}
+          />
+        );
     }
   };
 
@@ -81,6 +97,12 @@ export const ReportPageWrapper = () => {
             </Flex>
           </>
         ) : (
+          /*
+           * This spinner is a fallback; it should never show.
+           * We only render ReportPageWrapper inside report routes,
+           * and we can only know report routes by looking at
+           * the currently-loaded report.
+           */
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="lg" />
           </Flex>
