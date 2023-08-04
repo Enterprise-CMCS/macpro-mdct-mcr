@@ -65,7 +65,6 @@ describe("Completion Status Tests", () => {
             },
             drawerForm: {
               id: "dedr",
-              adminDisabled: true,
               fields: undefined,
             },
           },

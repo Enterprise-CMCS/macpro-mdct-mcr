@@ -57,9 +57,7 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType
 ) {
   const currentFormTemplate = formTemplateForReportType(reportType);
-  const formTemplateWithAdminDisabled =
-    copyAdminDisabledStatusToForms(currentFormTemplate);
-  const stringifiedTemplate = JSON.stringify(formTemplateWithAdminDisabled);
+  const stringifiedTemplate = JSON.stringify(currentFormTemplate);
 
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
@@ -70,11 +68,9 @@ export async function getOrCreateFormTemplate(
 
   if (currentTemplateHash === mostRecentTemplateVersionHash) {
     return {
-      formTemplate: copyAdminDisabledStatusToForms(
-        await getTemplate(
-          reportBucket,
-          getFormTemplateKey(mostRecentTemplateVersion?.id)
-        )
+      formTemplate: await getTemplate(
+        reportBucket,
+        getFormTemplateKey(mostRecentTemplateVersion?.id)
       ),
       formTemplateVersion: mostRecentTemplateVersion,
     };
@@ -126,30 +122,6 @@ export async function getOrCreateFormTemplate(
     };
   }
 }
-
-// returns reportJson with forms that mirror the adminDisabled status of the report
-export const copyAdminDisabledStatusToForms = (
-  reportJson: ReportJson
-): ReportJson => {
-  const reportAdminDisabledStatus = !!reportJson.adminDisabled;
-  const writeAdminDisabledStatus = (routes: ReportRoute[]) => {
-    routes.forEach((route: ReportRoute) => {
-      // if children, recurse (only parent routes have children)
-      if (route.children) {
-        writeAdminDisabledStatus(route.children);
-      } else {
-        // else if form present downstream, copy adminDisabled status to form
-        if (route.form) route.form.adminDisabled = reportAdminDisabledStatus;
-        if (route.drawerForm)
-          route.drawerForm.adminDisabled = reportAdminDisabledStatus;
-        if (route.modalForm)
-          route.modalForm.adminDisabled = reportAdminDisabledStatus;
-      }
-    });
-  };
-  writeAdminDisabledStatus(reportJson.routes);
-  return reportJson;
-};
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (
@@ -265,6 +237,6 @@ export function isLayoutElement(
 
 export function getValidationFromFormTemplate(reportJson: ReportJson) {
   return compileValidationJsonFromRoutes(
-    flattenReportRoutesArray(copyAdminDisabledStatusToForms(reportJson).routes)
+    flattenReportRoutesArray(reportJson.routes)
   );
 }
