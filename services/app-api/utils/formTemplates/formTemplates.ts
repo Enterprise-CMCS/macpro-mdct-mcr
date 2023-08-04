@@ -103,7 +103,7 @@ export async function getOrCreateFormTemplate(
         : 1,
       md5Hash: currentTemplateHash,
       id: newFormTemplateId,
-      lastAltered: new Date().toString(),
+      lastAltered: new Date().toISOString(),
       reportType,
     };
 
