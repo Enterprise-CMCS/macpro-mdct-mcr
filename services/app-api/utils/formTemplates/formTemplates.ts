@@ -23,7 +23,6 @@ import { createHash } from "crypto";
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
-    IndexName: "LastAlteredIndex",
     KeyConditionExpression: `reportType = :reportType`,
     ExpressionAttributeValues: {
       ":reportType": reportType as unknown as AttributeValue,
