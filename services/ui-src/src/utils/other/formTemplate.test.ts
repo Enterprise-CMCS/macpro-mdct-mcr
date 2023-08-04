@@ -1,3 +1,4 @@
+import { ModalOverlayReportPageShape } from "types";
 import {
   mockFlattenedReportRoutes,
   mockReportJson,
@@ -21,7 +22,9 @@ describe("Test copyAdminDisabledStatusToForms", () => {
       result.routes[1].children![1].modalForm!;
     const testModalDrawerPageDrawerForm =
       result.routes[1].children![1].drawerForm!;
-    const testModalOverlayPageForm = result.routes[1].children![1].modalForm!;
+    const testModalOverlayPageForm = (
+      result.routes[2] as ModalOverlayReportPageShape
+    ).overlayForm!;
 
     expect(testStandardPageForm!.adminDisabled).toBeTruthy();
     expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
@@ -40,8 +43,8 @@ describe("Test compileValidationJsonFromRoutes", () => {
       "mock-text-field": "text",
       "mock-drawer-text-field": "text",
       "mock-modal-text-field": "text",
-      "mock-optional-text-field": "textOptional",
       "mock-number-field": "number",
+      "mock-optional-text-field": "textOptional",
     });
   });
 });
