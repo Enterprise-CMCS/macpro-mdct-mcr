@@ -9404,15 +9404,15 @@ serverless-dotenv-plugin@^3.0.0:
     dotenv "^10.0.0"
     dotenv-expand "^5.1.0"
 
-"serverless-iam-helper@github:cmsgov/serverless-iam-helper":
+"serverless-iam-helper@github:Enterprise-CMCS/serverless-iam-helper":
   version "1.0.0"
-  resolved "https://codeload.github.com/cmsgov/serverless-iam-helper/tar.gz/e51709dfbb9461c18712cc429f489504d543c4c7"
+  resolved "https://codeload.github.com/Enterprise-CMCS/serverless-iam-helper/tar.gz/ffcca526d127cf0e791f0d931d442f4131953483"
   dependencies:
     lodash "^4.17.21"
 
-"serverless-idempotency-helper@github:cmsgov/serverless-idempotency-helper":
+"serverless-idempotency-helper@github:Enterprise-CMCS/serverless-idempotency-helper":
   version "1.0.0"
-  resolved "https://codeload.github.com/cmsgov/serverless-idempotency-helper/tar.gz/22a96de1495fea2d295cadb966e503aefbc1b086"
+  resolved "https://codeload.github.com/Enterprise-CMCS/serverless-idempotency-helper/tar.gz/940e5e05836f6794cf38b5a4bdfcf38468f73f1a"
   dependencies:
     bestzip "^2.2.0"
     extract-zip "^2.0.1"
@@ -9450,9 +9450,9 @@ serverless-offline@^12.0.4:
     velocityjs "^2.0.6"
     ws "^8.11.0"
 
-serverless-online@CMSgov/serverless-online:
+"serverless-online@github:Enterprise-CMCS/macpro-serverless-online":
   version "1.0.0"
-  resolved "https://codeload.github.com/CMSgov/serverless-online/tar.gz/1f7d068721f10f13f3c1f1b8e2d4bd21be42e77d"
+  resolved "https://codeload.github.com/Enterprise-CMCS/macpro-serverless-online/tar.gz/1f7d068721f10f13f3c1f1b8e2d4bd21be42e77d"
   dependencies:
     chokidar "^3.5.2"
 
@@ -9466,9 +9466,9 @@ serverless-plugin-warmup@^8.2.1:
   resolved "https://registry.yarnpkg.com/serverless-plugin-warmup/-/serverless-plugin-warmup-8.2.1.tgz#b776a886d4390a9e7c907f0db1c4639fed913350"
   integrity sha512-bVPqK2tt3m6AVjVnjuiU/nsGtm+hukaQmVn7zx2KbKSTCwOZEkMcsqKhkKw3Y4cm/vA2Wxd+3d1lftaGKFkG/Q==
 
-"serverless-s3-bucket-helper@github:cmsgov/serverless-s3-bucket-helper#master":
+"serverless-s3-bucket-helper@github:Enterprise-CMCS/serverless-s3-bucket-helper#master":
   version "1.0.0"
-  resolved "https://codeload.github.com/cmsgov/serverless-s3-bucket-helper/tar.gz/f654af78fae84fbecafd956bd6e857dc7e79bbcc"
+  resolved "https://codeload.github.com/Enterprise-CMCS/serverless-s3-bucket-helper/tar.gz/3e519d15676de237ec8ede3ff9ae26abf3f3ef0a"
 
 serverless-s3-sync@2.0.0:
   version "2.0.0"

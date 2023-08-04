@@ -160,6 +160,13 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  numberFieldDataToFile:
+    handler: handlers/etl/numberFieldDataToFile.check
+    timeout: 300
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   formTemplateEntitiesUpdate:
     handler: handlers/etl/formTemplateEntitiesUpdate.transform
     timeout: 300
