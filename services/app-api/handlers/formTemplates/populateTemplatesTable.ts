@@ -5,7 +5,7 @@ import {
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import {
   FormTemplate,
@@ -191,6 +191,28 @@ export async function copyTemplatesToNewPrefix(
 }
 
 /**
+ * If any reports are created in between the deployment of the API
+ * and the execution of this script, those reports will not have
+ * a state-specific bucket key. So get them from the parent directory.
+ */
+async function getTemplateThatIsProbablyStateSpecific(
+  reportBucket: string,
+  report: ReportMetadata
+) {
+  try {
+    return await getTemplate(
+      reportBucket,
+      getStateSpecificFormTemplateKey(report.formTemplateId, report.state)
+    );
+  } catch {
+    return await getTemplate(
+      reportBucket,
+      getFormTemplateKey(report.formTemplateId)
+    );
+  }
+}
+
+/**
  * Update all existing reports to be mapped to a version number.
  * Also, update the formTemplateId.
  *
@@ -205,9 +227,9 @@ export async function updateExistingReports(reportType: ReportType) {
   if (reports) {
     for (const report of reports) {
       if (report.formTemplateId) {
-        const template = await getTemplate(
+        const template = await getTemplateThatIsProbablyStateSpecific(
           reportBucket,
-          getStateSpecificFormTemplateKey(report.formTemplateId, report.state)
+          report
         );
         const templateHash = createHash("md5")
           .update(JSON.stringify(copyAdminDisabledStatusToForms(template)))
