@@ -9,7 +9,7 @@
   },
   "routes": [
     {
-      "name": "Information for Erste Kontacten",
+      "name": "Data for Erste Kontactennnzzz",
       "path": "/mlr/information-for-primary-contact",
       "pageType": "standard",
       "verbiage": {
