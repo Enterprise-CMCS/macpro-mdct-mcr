@@ -7,6 +7,7 @@ import KSUID from "ksuid";
 import { logger } from "../logging";
 import {
   AnyObject,
+  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
@@ -33,11 +34,29 @@ export function getNewestTemplateVersion(reportType: ReportType) {
   return dynamodbLib.query(queryParams);
 }
 
+export const formTemplateForReportType = (reportType: ReportType) => {
+  switch (reportType) {
+    case ReportType.MCPAR:
+      return mcparForm as ReportJson;
+    case ReportType.MLR:
+      return mlrForm as ReportJson;
+    case ReportType.NAAAR:
+      throw new Error(
+        "Not Implemented: NAAAR form template JSON must be added to FormTemplateProvider"
+      );
+    default:
+      assertExhaustive(reportType);
+      throw new Error(
+        "Not Implemented: ReportType not recognized by FormTemplateProvider"
+      );
+  }
+};
+
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType
 ) {
-  const currentFormTemplate = reportType === "MCPAR" ? mcparForm : mlrForm;
+  const currentFormTemplate = formTemplateForReportType(reportType);
 
   const formTemplateWithAdminDisabled = copyAdminDisabledStatusToForms(
     currentFormTemplate as ReportJson
