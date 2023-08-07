@@ -9,7 +9,6 @@ import {
   mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { isReportFormPage } from "utils/reports/routing";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
@@ -20,10 +19,6 @@ jest.mock("utils/api/requestMethods/report", () => ({
   archiveReport: jest.fn(() => {}),
   submitReport: jest.fn(() => {}),
   releaseReport: jest.fn(() => {}),
-}));
-
-jest.mock("utils/reports/routing", () => ({
-  isReportFormPage: jest.fn(),
 }));
 
 const TestComponent = () => {
@@ -78,7 +73,6 @@ const testComponent = (
 
 describe("Test ReportProvider API methods", () => {
   beforeEach(async () => {
-    (isReportFormPage as jest.Mock).mockReturnValue(true);
     await act(async () => {
       await render(testComponent);
     });
@@ -292,18 +286,7 @@ describe("Test ReportProvider fetches when loading on report page", () => {
     localStorage.clear();
   });
 
-  test("getReport is not called on load when not on a report page", async () => {
-    (isReportFormPage as jest.Mock).mockReturnValue(false);
-    await act(async () => {
-      await render(testComponent);
-    });
-    await waitFor(() =>
-      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(0)
-    );
-  });
-
-  test("getReport is called on load for valid report path", async () => {
-    (isReportFormPage as jest.Mock).mockReturnValue(true);
+  test("getReport is called on load", async () => {
     await act(async () => {
       await render(testComponent);
     });

@@ -1,5 +1,5 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import template from "../../../../../services/ui-src/src/forms/mlr/mlr.json";
+import template from "../../../../../services/app-api/forms/mlr.json";
 
 When("I submit a new MLR program", () => {
   //Create the program
@@ -13,17 +13,20 @@ When("I submit a new MLR program", () => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
   //Submit the program
-  cy.wait(500);
+  cy.wait(2000);
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });

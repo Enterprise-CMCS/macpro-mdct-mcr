@@ -29,3 +29,7 @@ When("the element described by {string} is clicked", (selector) => {
 Then("the {string} page is loaded", (uri) => {
   cy.url().should("include", uri);
 });
+
+When("I wait {int} ms before continuing", (ms) => {
+  cy.wait(ms);
+});

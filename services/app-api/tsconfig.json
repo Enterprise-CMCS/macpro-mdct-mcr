@@ -10,6 +10,7 @@
     "target": "es5",
     "outDir": ".build",
     "lib": ["ES2018", "DOM"],
-    "rootDir": "./"
+    "rootDir": "./",
+    "resolveJsonModule": true,
   }
 }

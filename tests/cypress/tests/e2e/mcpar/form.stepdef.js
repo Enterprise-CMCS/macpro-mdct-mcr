@@ -1,5 +1,5 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import mcparTemplate from "../../../../../services/ui-src/src/forms/mcpar/mcpar.json";
+import mcparTemplate from "../../../../../services/app-api/forms/mcpar.json";
 
 const templateMap = { MCPAR: mcparTemplate };
 
@@ -100,8 +100,8 @@ When("I completely fill out a {string} form", (form) => {
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
-  cy.findByRole("button", { name: "Add managed care program" }).click();
-  cy.findByLabelText("Program name").type(programName);
+  cy.get("button").contains("Add managed care program").click();
+  cy.get('input[name="programName"').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -109,15 +109,18 @@ When("I completely fill out a {string} form", (form) => {
   cy.get('input[name="reportingPeriodEndDate"]').type(
     today.toLocaleDateString("en-US")
   );
-  cy.findByRole("checkbox").focus().click();
+  cy.get('input[name="combinedData"').check();
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
   const template = templateMap[form];
@@ -159,12 +162,14 @@ When("I try to submit an incomplete {string} program", (form) => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Edit")')
-    .focus()
-    .click();
-
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
   const template = templateMap[form];
   traverseRoutes([template.routes[0]]);

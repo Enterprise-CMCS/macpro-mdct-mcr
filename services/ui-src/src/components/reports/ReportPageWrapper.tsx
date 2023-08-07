@@ -97,6 +97,12 @@ export const ReportPageWrapper = () => {
             </Flex>
           </>
         ) : (
+          /*
+           * This spinner is a fallback; it should never show.
+           * We only render ReportPageWrapper inside report routes,
+           * and we can only know report routes by looking at
+           * the currently-loaded report.
+           */
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="lg" />
           </Flex>

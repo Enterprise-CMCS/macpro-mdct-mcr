@@ -19,7 +19,7 @@
     "serverless-offline": "^12.0.4",
     "serverless-plugin-scripts": "^1.0.2",
     "serverless-plugin-typescript": "^2.1.4",
-    "serverless-s3-bucket-helper": "github:cmsgov/serverless-s3-bucket-helper#master",
+    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#master",
     "serverless-s3-local": "^0.7.1",
     "serverless-stack-termination-protection": "^2.0.2",
     "typescript": "^4.9.3"

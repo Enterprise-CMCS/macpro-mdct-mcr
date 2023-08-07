@@ -5,10 +5,10 @@ import {
   archiveReport as archiveReportRequest,
   releaseReport as releaseReportRequest,
   submitReport as submitReportRequest,
+  flattenReportRoutesArray,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
-  isReportFormPage,
   postReport,
   putReport,
   sortReportsOldestToNewest,
@@ -27,6 +27,7 @@ import { reportErrors } from "verbiage/errors";
 export const ReportContext = createContext<ReportContextShape>({
   // report
   report: undefined as ReportShape | undefined,
+  contextIsLoaded: false as boolean,
   archiveReport: Function,
   releaseReport: Function,
   createReport: Function,
@@ -40,6 +41,7 @@ export const ReportContext = createContext<ReportContextShape>({
   clearReportSelection: Function,
   clearReportsByState: Function,
   setReportSelection: Function,
+  isReportPage: false as boolean,
   errorMessage: undefined as string | undefined,
   lastSavedTime: undefined as string | undefined,
 });
@@ -49,6 +51,8 @@ export const ReportProvider = ({ children }: Props) => {
   const { state: userState } = useUser().user ?? {};
   const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
+  const [contextIsLoaded, setContextIsLoaded] = useState<boolean>(false);
+  const [isReportPage, setIsReportPage] = useState<boolean>(false);
 
   // REPORT
 
@@ -57,10 +61,21 @@ export const ReportProvider = ({ children }: Props) => {
     ReportShape[] | undefined
   >();
 
+  const hydrateAndSetReport = (report: ReportShape | undefined) => {
+    if (report) {
+      report.formTemplate.flatRoutes = flattenReportRoutesArray(
+        report.formTemplate.routes
+      );
+    }
+
+    setReport(report);
+    setContextIsLoaded(true);
+  };
+
   const fetchReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await getReport(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
       return result;
     } catch (e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
@@ -88,7 +103,7 @@ export const ReportProvider = ({ children }: Props) => {
   ) => {
     try {
       const result = await postReport(reportType, state, report);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -99,7 +114,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       const result = await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
-      setReport(result);
+      hydrateAndSetReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -108,7 +123,7 @@ export const ReportProvider = ({ children }: Props) => {
   const updateReport = async (reportKeys: ReportKeys, report: ReportShape) => {
     try {
       const result = await putReport(reportKeys, report);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -118,7 +133,7 @@ export const ReportProvider = ({ children }: Props) => {
   const archiveReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await archiveReportRequest(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -128,7 +143,7 @@ export const ReportProvider = ({ children }: Props) => {
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       const result = await releaseReportRequest(reportKeys);
-      setReport(result);
+      hydrateAndSetReport(result);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
@@ -137,7 +152,7 @@ export const ReportProvider = ({ children }: Props) => {
   // SELECTED REPORT
 
   const clearReportSelection = () => {
-    setReport(undefined);
+    hydrateAndSetReport(undefined);
     setLastSavedTime(undefined);
     localStorage.setItem("selectedReport", "");
   };
@@ -147,7 +162,7 @@ export const ReportProvider = ({ children }: Props) => {
   };
 
   const setReportSelection = async (report: ReportShape) => {
-    setReport(report);
+    hydrateAndSetReport(report);
     localStorage.setItem("selectedReportType", report.reportType);
     localStorage.setItem("selectedReport", report.id);
     localStorage.setItem(
@@ -156,6 +171,15 @@ export const ReportProvider = ({ children }: Props) => {
     );
   };
 
+  useEffect(() => {
+    const flatRoutes = report?.formTemplate.flatRoutes ?? [];
+    const isReportPage =
+      pathname.includes("export") ||
+      flatRoutes.some((route) => route.path === pathname);
+
+    setIsReportPage(isReportPage);
+  }, [pathname, report?.formTemplate.flatRoutes]);
+
   // on first mount, if on report page, fetch report
   useEffect(() => {
     const reportType =
@@ -163,7 +187,7 @@ export const ReportProvider = ({ children }: Props) => {
     const state =
       report?.state || userState || localStorage.getItem("selectedState");
     const id = report?.id || localStorage.getItem("selectedReport");
-    if (isReportFormPage(pathname) && reportType && state && id) {
+    if (reportType && state && id) {
       fetchReport({ reportType, state, id });
     }
   }, []);
@@ -172,6 +196,7 @@ export const ReportProvider = ({ children }: Props) => {
     () => ({
       // report
       report,
+      contextIsLoaded,
       archiveReport,
       releaseReport,
       fetchReport,
@@ -185,10 +210,11 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportSelection,
       clearReportsByState,
       setReportSelection,
+      isReportPage,
       errorMessage: error,
       lastSavedTime,
     }),
-    [report, reportsByState, error, lastSavedTime]
+    [report, reportsByState, isReportPage, error, lastSavedTime]
   );
 
   return (
