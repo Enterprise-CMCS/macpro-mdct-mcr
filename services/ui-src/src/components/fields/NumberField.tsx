@@ -94,7 +94,7 @@ export const NumberField = ({
     const cleanedFieldValue = formattedFieldValue.isValid
       ? makeStringParseableAsFloat(maskedFieldValue)
       : maskedFieldValue;
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
+    form.setValue(name, cleanedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database (inline validation is run prior to API call)
