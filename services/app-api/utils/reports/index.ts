@@ -27,19 +27,12 @@ export async function copyFieldDataFromSource(
     Object.keys(sourceFieldData).forEach((key: string) => {
       // Only iterate through entities, not choice lists
       if (Array.isArray(sourceFieldData[key])) {
-        const entityData: AnyObject[] = sourceFieldData[key];
-        entityData.forEach((entity, index) => {
-          // Delete any key existing in the source data not valid in our template, or any entity key that's not a name.
-          Object.keys(entity).forEach((entityKey) => {
-            if (
-              !possibleFields.includes(entityKey) &&
-              !entityKey.includes("name") &&
-              !["key", "value"].includes(entityKey)
-            ) {
-              delete sourceFieldData[key][index][entityKey];
-            }
-          });
-        });
+        pruneEntityData(
+          sourceFieldData,
+          key,
+          sourceFieldData[key],
+          possibleFields
+        );
       } else if (!possibleFields.includes(key)) {
         delete sourceFieldData[key];
       }
@@ -49,4 +42,35 @@ export async function copyFieldDataFromSource(
   }
 
   return validatedFieldData;
+}
+function pruneEntityData(
+  sourceFieldData: AnyObject,
+  key: string,
+  entityData: AnyObject[],
+  possibleFields: string[]
+) {
+  entityData.forEach((entity, index) => {
+    // Delete any key existing in the source data not valid in our template, or any entity key that's not a name.
+    if (!possibleFields.includes(key)) {
+      delete sourceFieldData[key];
+      return;
+    }
+    Object.keys(entity).forEach((entityKey) => {
+      if (!possibleFields.includes(entityKey)) {
+        if (
+          !entityKey.includes("name") &&
+          !["key", "value"].includes(entityKey)
+        ) {
+          delete entityData[index][entityKey];
+        }
+      }
+    });
+    if (Object.keys(entity).length === 0) {
+      delete entityData[index];
+    }
+  });
+  // Delete whole key if there's nothing in it.
+  if (entityData.every((e) => e === null)) {
+    delete sourceFieldData[key];
+  }
 }
