@@ -268,3 +268,7 @@ export function getValidationFromFormTemplate(reportJson: ReportJson) {
     flattenReportRoutesArray(copyAdminDisabledStatusToForms(reportJson).routes)
   );
 }
+
+export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
+  return Object.keys(getValidationFromFormTemplate(reportJson));
+}
