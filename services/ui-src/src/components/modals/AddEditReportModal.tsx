@@ -6,7 +6,7 @@ import { Spinner } from "@chakra-ui/react";
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
-import { AnyObject, FormJson, ReportStatus, ReportType } from "types";
+import { AnyObject, FormJson, ReportStatus } from "types";
 import { States } from "../../constants";
 import {
   calculateDueDate,
@@ -14,7 +14,6 @@ import {
   convertDateUtcToEt,
   useUser,
 } from "utils";
-import { getLatestFormTemplate } from "utils/other/formTemplate";
 
 export const AddEditReportModal = ({
   activeState,
@@ -46,7 +45,6 @@ export const AddEditReportModal = ({
     const reportingPeriodEndDate = convertDateEtToUtc(
       formData["reportingPeriodEndDate"]
     );
-    const formTemplate = getLatestFormTemplate(ReportType.MCPAR);
 
     return {
       metadata: {
@@ -62,14 +60,12 @@ export const AddEditReportModal = ({
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName,
       },
-      formTemplate,
     };
   };
 
   // MLR report payload
   const prepareMlrPayload = (formData: any) => {
     const programName = formData["programName"];
-    const formTemplate = getLatestFormTemplate(ReportType.MLR);
 
     return {
       metadata: {
@@ -82,7 +78,6 @@ export const AddEditReportModal = ({
       fieldData: {
         programName,
       },
-      formTemplate,
     };
   };
 

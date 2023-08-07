@@ -1,5 +1,5 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import template from "../../../../../services/ui-src/src/forms/mlr/mlr.json";
+import template from "../../../../../services/app-api/forms/mlr.json";
 
 When("I submit a new MLR program", () => {
   //Create the program
