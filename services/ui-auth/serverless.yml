@@ -74,7 +74,14 @@ resources:
         - Fn::Equals:
             - ""
             - ${self:custom.sesSourceEmailAddress}
+    BackWithOktaSAML:
+      Fn::Not:
+        - Fn::Equals:
+            - ""
+            - ${self:custom.okta_metadata_url}
     BackWithOktaOIDC: !And
+      - Fn::Not:
+          - !Condition BackWithOktaSAML
       - Fn::Not:
           - Fn::Equals:
               - ""
@@ -87,13 +94,6 @@ resources:
           - Fn::Equals:
               - ""
               - ${self:custom.okta_oidc_issuer}
-    BackWithOktaSAML: !And
-      - Fn::Not:
-          - !Condition BackWithOktaOIDC
-      - Fn::Not:
-          - Fn::Equals:
-              - ""
-              - ${self:custom.okta_metadata_url}
   Resources:
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
@@ -166,7 +166,9 @@ resources:
         DefaultRedirectURI: ${self:custom.application_endpoint_url}
         LogoutURLs:
           - ${self:custom.application_endpoint_url}
+          - ${self:custom.application_endpoint_url}postLogout
           - http://localhost:3000/
+          - http://localhost:3000/postLogout
         SupportedIdentityProviders:
           - Fn::If:
               - BackWithOktaOIDC

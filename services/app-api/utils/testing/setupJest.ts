@@ -1,5 +1,6 @@
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
+import { mockReportRoutes } from "./mocks/mockReport";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
@@ -7,6 +8,7 @@ export const mockDocumentClient = {
   put: { promise: jest.fn() },
   delete: { promise: jest.fn() },
   scan: { promise: jest.fn() },
+  scanAll: { promise: jest.fn() },
 };
 jest.mock("aws-sdk", () => {
   return {
@@ -18,6 +20,7 @@ jest.mock("aws-sdk", () => {
           put: () => mockDocumentClient.put,
           delete: () => mockDocumentClient.delete,
           scan: () => mockDocumentClient.scan,
+          scanAll: () => mockDocumentClient.scanAll,
         };
       }),
       Converter: {
@@ -32,6 +35,8 @@ jest.mock("aws-sdk", () => {
         getObject: jest.fn().mockImplementation((_params, callback) => {
           if (_params.Key.includes("mockReportFieldData"))
             callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
+          else if (_params.Key.includes("mockReportJson2"))
+            callback(undefined, { Body: JSON.stringify(mockReportJson2) });
           else if (_params.Key.includes("mockReportJson"))
             callback(undefined, { Body: JSON.stringify(mockReportJson) });
           else callback("Invalid Test Key");
@@ -39,6 +44,7 @@ jest.mock("aws-sdk", () => {
         copyObject: jest.fn().mockImplementation((_params, callback) => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
+        listObjects: jest.fn(),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {
@@ -53,8 +59,46 @@ jest.mock("aws-sdk", () => {
 
 export const mockReportJson = {
   name: "mock-report",
+  type: "mock",
   basePath: "/mock",
-  routes: [],
+  routes: mockReportRoutes,
+  validationSchema: {},
+  validationJson: {
+    "mock-number-field": "number",
+  },
+};
+
+export const mockReportJson2 = {
+  name: "mock-report",
+  basePath: "/mock",
+  routes: [
+    {
+      children: [
+        {
+          form: {
+            fields: {
+              type: "number",
+              validation: "number",
+              id: "report_number",
+              props: {
+                choices: [
+                  {
+                    children: [
+                      {
+                        id: "report_percentage-otherText",
+                        type: "number",
+                        validation: "number",
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  ],
   validationJson: {
     text: "text",
     number: "number",
@@ -69,7 +113,14 @@ export const mockReportKeys = {
 
 export const mockReportFieldData = {
   text: "text-input",
+  "mock-number-field": 0,
+};
+
+export const mockReportFieldData2 = {
+  text: "text-input",
+  value: 22,
   number: 0,
+  program: [{ report_number: "12", report_percentage: "34" }],
 };
 
 export const mockDynamoData = {

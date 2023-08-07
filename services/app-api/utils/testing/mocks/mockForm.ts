@@ -12,8 +12,8 @@ export const mockOptionalFormField = {
   type: "text",
   validation: "textOptional",
   props: {
-    label: "mock optional field",
-    hint: "optional Details",
+    label: "Q. Miscellaneous notes",
+    hint: "Include any other notes or detail for CMS.",
     styleAsOptional: true,
   },
 };
@@ -122,7 +122,12 @@ export const mockEmptyDrawerForm = {
 
 export const mockModalOverlayForm = {
   id: "mock-modal-overlay-form-id",
-  fields: [mockFormField, mockNumberField, mockOptionalFormField],
+  fields: [
+    mockModalOverlayFormField,
+    { ...mockModalOverlayFormField, id: "with-label", props: { label: "1" } },
+    mockOptionalFormField,
+    mockNestedFormField,
+  ],
 };
 
 export const mockPlanFilledForm = {

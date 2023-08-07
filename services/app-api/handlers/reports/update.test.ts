@@ -32,7 +32,7 @@ const mockedFetchReport = fetchReport as jest.MockedFunction<
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "AB", id: "testReportId" },
+  pathParameters: { reportType: "MCPAR", state: "CO", id: "testReportId" },
   body: JSON.stringify(mockMcparReport),
 };
 
@@ -43,7 +43,7 @@ const updateEvent: APIGatewayProxyEvent = {
     metadata: {
       status: "in progress",
     },
-    fieldData: { ...mockReportFieldData, number: 1 },
+    fieldData: { ...mockReportFieldData, "mock-text-field": "text" },
   }),
 };
 
@@ -56,7 +56,7 @@ const submissionEvent: APIGatewayProxyEvent = {
     },
     submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
-    fieldData: { ...mockReportFieldData, number: 2 },
+    fieldData: { ...mockReportFieldData, "mock-number-field": 2 },
   }),
 };
 
@@ -69,7 +69,7 @@ const invalidFieldDataSubmissionEvent: APIGatewayProxyEvent = {
     },
     submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
-    fieldData: { ...mockReportFieldData, number: "NAN" },
+    fieldData: { ...mockReportFieldData, "mock-number-field": "text" },
   }),
 };
 
@@ -122,7 +122,7 @@ describe("Test updateReport API method", () => {
     const response = await updateReport(submissionEvent, null);
     const body = JSON.parse(response.body);
     expect(body.status).toContain("submitted");
-    expect(body.fieldData.number).toBe("2");
+    expect(body.fieldData["mock-number-field"]).toBe("2");
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
   });
 

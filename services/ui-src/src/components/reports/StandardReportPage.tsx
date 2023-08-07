@@ -14,7 +14,6 @@ import {
   AnyObject,
   isFieldElement,
   ReportStatus,
-  ReportType,
   StandardReportPageShape,
 } from "types";
 
@@ -74,11 +73,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
         validateOnRender={validateOnRender || false}
         dontReset={false}
       />
-      <ReportPageFooter
-        submitting={submitting}
-        form={route.form}
-        hidePrevious={report?.reportType === ReportType.MLR}
-      />
+      <ReportPageFooter submitting={submitting} form={route.form} />
     </Box>
   );
 };

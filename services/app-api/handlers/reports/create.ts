@@ -3,7 +3,7 @@ import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import s3Lib from "../../utils/s3/s3-lib";
+import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
 import {
   hasReportAccess,
   hasPermissions,
@@ -15,12 +15,19 @@ import {
 import { metadataValidationSchema } from "../../utils/validation/schemas";
 import {
   error,
-  buckets,
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
 // types
-import { S3Put, StatusCodes, UserRoles } from "../../utils/types";
+import {
+  isReportType,
+  isState,
+  S3Put,
+  StatusCodes,
+  UserRoles,
+} from "../../utils/types";
+import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
+import { logger } from "../../utils/logging";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -41,14 +48,26 @@ export const createReport = handler(async (event, _context) => {
   }
 
   const state: string = event.pathParameters?.state!;
+  if (!isState(state)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
   const unvalidatedPayload = JSON.parse(event!.body!);
-  const {
-    metadata: unvalidatedMetadata,
-    fieldData: unvalidatedFieldData,
-    formTemplate,
-  } = unvalidatedPayload;
-  const reportType = unvalidatedPayload.metadata.reportType;
-  const fieldDataValidationJson = formTemplate.validationJson;
+  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
+    unvalidatedPayload;
+
+  const possibleReportType: unknown = event?.pathParameters?.reportType;
+  if (!isReportType(possibleReportType)) {
+    return {
+      status: StatusCodes.BAD_REQUEST,
+      body: error.NO_KEY,
+    };
+  }
+
+  const reportType = possibleReportType;
 
   // Return a 403 status if the user does not have access to this report
   if (!hasReportAccess(event, reportType)) {
@@ -61,8 +80,20 @@ export const createReport = handler(async (event, _context) => {
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
+  let formTemplate, formTemplateVersion;
+
+  try {
+    ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
+      reportBucket,
+      reportType
+    ));
+  } catch (err) {
+    logger.error(err, "Error getting or creating template");
+    throw err;
+  }
+
   // Return MISSING_DATA error if missing unvalidated data or validators.
-  if (!unvalidatedFieldData || !fieldDataValidationJson) {
+  if (!unvalidatedFieldData || !formTemplate.validationJson) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.MISSING_DATA,
@@ -72,39 +103,31 @@ export const createReport = handler(async (event, _context) => {
   // Create report and field ids.
   const reportId: string = KSUID.randomSync().string;
   const fieldDataId: string = KSUID.randomSync().string;
-  const formTemplateId: string = KSUID.randomSync().string;
+  const formTemplateId = formTemplateVersion?.id;
 
   // Validate field data
   const validatedFieldData = await validateFieldData(
-    fieldDataValidationJson,
+    formTemplate.validationJson,
     unvalidatedFieldData
   );
 
   // Return INVALID_DATA error if field data is not valid.
-  if (!validatedFieldData) {
+  if (!validatedFieldData || Object.keys(validatedFieldData).length === 0) {
     return {
-      status: StatusCodes.BAD_REQUEST,
+      status: StatusCodes.SERVER_ERROR,
       body: error.INVALID_DATA,
     };
   }
 
   const fieldDataParams: S3Put = {
     Bucket: reportBucket,
-    Key: `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`,
+    Key: getFieldDataKey(state, fieldDataId),
     Body: JSON.stringify(validatedFieldData),
-    ContentType: "application/json",
-  };
-
-  const formTemplateParams: S3Put = {
-    Bucket: reportBucket,
-    Key: `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`,
-    Body: JSON.stringify(formTemplate),
     ContentType: "application/json",
   };
 
   try {
     await s3Lib.put(fieldDataParams);
-    await s3Lib.put(formTemplateParams);
   } catch (err) {
     return {
       status: StatusCodes.SERVER_ERROR,
@@ -132,9 +155,11 @@ export const createReport = handler(async (event, _context) => {
       state,
       id: reportId,
       fieldDataId,
+      status: "Not started",
       formTemplateId,
       createdAt: Date.now(),
       lastAltered: Date.now(),
+      versionNumber: formTemplateVersion?.versionNumber,
     },
   };
 
@@ -153,6 +178,7 @@ export const createReport = handler(async (event, _context) => {
       ...reportMetadataParams.Item,
       fieldData: validatedFieldData,
       formTemplate,
+      formTemplateVersion: formTemplateVersion?.versionNumber,
     },
   };
 });

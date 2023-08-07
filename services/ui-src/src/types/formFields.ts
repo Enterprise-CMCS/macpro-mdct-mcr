@@ -93,6 +93,11 @@ export interface FormField {
 export function isFieldElement(
   field: FormField | FormLayoutElement
 ): field is FormField {
+  /*
+   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
+   * If you change it here, change it there!
+   */
+  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
   return !formLayoutElementTypes.includes(field.type);
 }
 
@@ -102,11 +107,13 @@ export interface FormLayoutElement {
   props?: AnyObject;
 }
 
-const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
-
 export function isLayoutElement(
   field: FormField | FormLayoutElement
 ): field is FormLayoutElement {
+  /*
+   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
+   * If you change it here, change it there!
+   */
   return (field as FormField).validation === undefined;
 }
 
