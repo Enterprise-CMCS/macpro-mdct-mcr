@@ -8,7 +8,6 @@ import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import { ReportType } from "../../utils/types";
 import { mockReportJson } from "../../utils/testing/setupJest";
 import { createHash } from "crypto";
-import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
 const templates = [
   {
@@ -62,7 +61,7 @@ describe("Test processTemplate function", () => {
       "formTemplates/MN/mockReportJson.json"
     );
     const expectedHash = createHash("md5")
-      .update(JSON.stringify(copyAdminDisabledStatusToForms(mockReportJson)))
+      .update(JSON.stringify(mockReportJson))
       .digest("hex");
 
     expect(templateResult.hash).toEqual(expectedHash);

@@ -3,7 +3,6 @@
   "name": "MLR Report Submission Form",
   "basePath": "/mlr",
   "version": "MLR_2023-02-09",
-  "adminDisabled": true,
   "entities": {
     "program": { "required": true }
   },
@@ -191,7 +190,6 @@
       },
       "modalForm": {
         "id": "mlrd-modal",
-        "adminDisabled": true,
         "fields": [
           {
             "id": "report_planName",
@@ -434,7 +432,6 @@
       },
       "overlayForm": {
         "id": "mlrd-overlay",
-        "adminDisabled": true,
         "fields": [
           {
             "id": "mlrSection1Header",
