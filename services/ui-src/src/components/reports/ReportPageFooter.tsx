@@ -21,7 +21,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
 
   const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const formIsDisabled = !isAdminUserType || form?.editableByAdmins;
+  const formIsDisabled = isAdminUserType && !form?.editableByAdmins;
 
   return (
     <Box sx={sx.footerBox} {...props}>
