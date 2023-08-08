@@ -13,6 +13,23 @@ interface MaskedValue {
 }
 
 /**
+ * Separate numerical string with commas (if needed)
+ * @param {String} value
+ * @returns {String}
+ */
+export function addCommasToNumericalString(value: string): string {
+  if (value === undefined) return value;
+
+  const maskValue = Number(value).toLocaleString("en", {
+    // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
+    minimumFractionDigits: 0,
+    maximumFractionDigits: value.length,
+  });
+
+  return maskValue;
+}
+
+/**
  * Converts a number-like string to a comma seperated value
  * @param {String} value
  * @returns {String}
@@ -42,11 +59,7 @@ export function convertToThousandsSeparatedString(
   }
 
   // Add in commas to delineate thousands (if needed)
-  maskValue = Number(maskValue).toLocaleString("en", {
-    // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
-    minimumFractionDigits: 0,
-    maximumFractionDigits: maskValue.length,
-  });
+  maskValue = addCommasToNumericalString(maskValue);
   return { isValid: true, maskedValue: maskValue };
 }
 

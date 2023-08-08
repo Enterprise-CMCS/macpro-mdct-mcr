@@ -65,12 +65,13 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyMask(
-          hydrationValue,
-          mask
-        ).maskedValue;
+        const formattedHydrationValue = applyMask(hydrationValue, mask);
+        const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
-        form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+        const cleanedFieldValue = formattedHydrationValue.isValid
+          ? makeStringParseableAsFloat(maskedHydrationValue)
+          : maskedHydrationValue;
+        form.setValue(name, cleanedFieldValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update

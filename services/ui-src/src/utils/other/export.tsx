@@ -2,7 +2,7 @@ import { Box, Link, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
-import { eligibilityGroup } from "utils";
+import { eligibilityGroup, addCommasToNumericalString } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -229,11 +229,11 @@ export const checkLinkTypes = (formField: FormField) => {
 export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
   switch (fieldMask) {
     case "percentage":
-      return fieldResponseData + "%";
+      return addCommasToNumericalString(fieldResponseData) + "%";
     case "currency":
-      return "$" + fieldResponseData;
+      return "$" + addCommasToNumericalString(fieldResponseData);
     default:
-      return fieldResponseData;
+      return addCommasToNumericalString(fieldResponseData);
   }
 };
 
