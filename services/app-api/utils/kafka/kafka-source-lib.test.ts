@@ -1,9 +1,8 @@
 import KafkaSourceLib from "./kafka-source-lib";
-
+import { STSClient } from "@aws-sdk/client-sts";
 let tempStage: string | undefined;
 let tempNamespace: string | undefined;
 let tempBrokers: string | undefined;
-
 const mockSendBatch = jest.fn();
 const mockProducer = jest.fn().mockImplementation(() => {
   return {
@@ -19,7 +18,6 @@ jest.mock("kafkajs", () => ({
     producer: mockProducer,
   }),
 }));
-
 const stage = "testing";
 const namespace = "--mcr--test-stage--";
 const table = { sourceName: `${stage}-aTable`, topicName: "aTable-reports" };
@@ -98,7 +96,6 @@ const s3Event = {
     },
   ],
 };
-
 const s3IgnoredEvent = {
   Records: [
     {
@@ -131,13 +128,11 @@ const s3IgnoredEvent = {
     },
   ],
 };
-
 describe("Test Kafka Lib", () => {
   beforeAll(() => {
     tempStage = process.env.STAGE;
     tempNamespace = process.env.topicNamespace;
     tempBrokers = process.env.BOOTSTRAP_BROKER_STRING_TLS;
-
     process.env.STAGE = stage;
     process.env.topicNamespace = namespace;
     process.env.BOOTSTRAP_BROKER_STRING_TLS = brokerString;
@@ -150,14 +145,52 @@ describe("Test Kafka Lib", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
   test("Handles a dynamo event", async () => {
+    const mockAssumeRoleCommand = jest.fn().mockReturnValue({
+      promise: jest.fn().mockResolvedValue({
+        AssumedRoleUser: {
+          AssumedRoleId: "mockAssumedRoleId",
+          Arn: "mockRoleArn",
+        },
+        Credentials: {
+          AccessKeyId: "mockAccessKeyId",
+          SecretAccessKey: "mockSecretAccessKey",
+          SessionToken: "mockSessionToken",
+          Expiration: new Date(),
+        },
+      }),
+    });
+    const mockSTSClient = {
+      send: mockAssumeRoleCommand,
+    };
+    jest
+      .spyOn(STSClient.prototype, "send")
+      .mockReturnValue(mockSTSClient as any);
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
     expect(mockSendBatch).toBeCalledTimes(1);
   });
-
   test("Processes bucket events", async () => {
+    const mockAssumeRoleCommand = jest.fn().mockReturnValue({
+      promise: jest.fn().mockResolvedValue({
+        AssumedRoleUser: {
+          AssumedRoleId: "mockAssumedRoleId",
+          Arn: "mockRoleArn",
+        },
+        Credentials: {
+          AccessKeyId: "mockAccessKeyId",
+          SecretAccessKey: "mockSecretAccessKey",
+          SessionToken: "mockSessionToken",
+          Expiration: new Date(),
+        },
+      }),
+    });
+    const mockSTSClient = {
+      send: mockAssumeRoleCommand,
+    };
+    jest
+      .spyOn(STSClient.prototype, "send")
+      .mockReturnValue(mockSTSClient as any);
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3Event);
     expect(mockSendBatch).toBeCalledTimes(1);
@@ -168,6 +201,26 @@ describe("Test Kafka Lib", () => {
     expect(mockSendBatch).toBeCalledTimes(1);
   });
   test("Does not pass through events from unrelated tables or buckets", async () => {
+    const mockAssumeRoleCommand = jest.fn().mockReturnValue({
+      promise: jest.fn().mockResolvedValue({
+        AssumedRoleUser: {
+          AssumedRoleId: "mockAssumedRoleId",
+          Arn: "mockRoleArn",
+        },
+        Credentials: {
+          AccessKeyId: "mockAccessKeyId",
+          SecretAccessKey: "mockSecretAccessKey",
+          SessionToken: "mockSessionToken",
+          Expiration: new Date(),
+        },
+      }),
+    });
+    const mockSTSClient = {
+      send: mockAssumeRoleCommand,
+    };
+    jest
+      .spyOn(STSClient.prototype, "send")
+      .mockReturnValue(mockSTSClient as any);
     const badMaps = [{ sourceName: "bad", topicName: "bad" }];
     const sourceLib = new KafkaSourceLib(
       "mcr",
@@ -180,6 +233,26 @@ describe("Test Kafka Lib", () => {
     expect(mockSendBatch).toBeCalledTimes(0);
   });
   test("Ignores items with bad keys or missing events", async () => {
+    const mockAssumeRoleCommand = jest.fn().mockReturnValue({
+      promise: jest.fn().mockResolvedValue({
+        AssumedRoleUser: {
+          AssumedRoleId: "mockAssumedRoleId",
+          Arn: "mockRoleArn",
+        },
+        Credentials: {
+          AccessKeyId: "mockAccessKeyId",
+          SecretAccessKey: "mockSecretAccessKey",
+          SessionToken: "mockSessionToken",
+          Expiration: new Date(),
+        },
+      }),
+    });
+    const mockSTSClient = {
+      send: mockAssumeRoleCommand,
+    };
+    jest
+      .spyOn(STSClient.prototype, "send")
+      .mockReturnValue(mockSTSClient as any);
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3IgnoredEvent);
     await sourceLib.handler({});

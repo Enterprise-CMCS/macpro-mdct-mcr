@@ -3,7 +3,8 @@ import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
 import { Kafka, Producer } from "kafkajs";
 import { S3EventRecord } from "aws-lambda";
-
+import { createMechanism } from "@jm18457/kafkajs-msk-iam-authentication-mechanism";
+import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 type KafkaPayload = {
   key: string;
   value: string;
@@ -18,10 +19,8 @@ type SourceTopicMapping = {
   sourceName: string;
   topicName: string;
 };
-
 let kafka: Kafka;
 let producer: Producer;
-
 class KafkaSourceLib {
   /*
    * Event types:
@@ -35,7 +34,6 @@ class KafkaSourceLib {
    * tables = [list of table mappings];
    * buckets = [list of bucket mappings];
    */
-
   topicPrefix: string;
   version: string | null;
   tables: SourceTopicMapping[];
@@ -49,10 +47,6 @@ class KafkaSourceLib {
     tables: SourceTopicMapping[],
     buckets: SourceTopicMapping[]
   ) {
-    if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
-      throw new Error("Missing Broker Config. ");
-    }
-    // Setup vars
     this.stage = process.env.STAGE ? process.env.STAGE : "";
     this.topicNamespace = process.env.topicNamespace
       ? process.env.topicNamespace
@@ -61,42 +55,16 @@ class KafkaSourceLib {
     this.version = version;
     this.tables = tables;
     this.buckets = buckets;
-
-    const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
-    kafka = new Kafka({
-      clientId: `mcr-${this.stage}`,
-      brokers: brokerStrings!.split(","),
-      retry: {
-        initialRetryTime: 300,
-        retries: 8,
-      },
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    // Attach Events
-    producer = kafka.producer();
-    this.connected = false;
-    const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
-    signalTraps.map((type) => {
-      process.removeListener(type, producer.disconnect);
-    });
-    signalTraps.map((type) => {
-      process.once(type, producer.disconnect);
-    });
+    this.connected = true;
   }
-
   unmarshallOptions = {
     convertEmptyValues: true,
     wrapNumbers: true,
   };
-
   stringify(e: any, prettyPrint?: boolean) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
   }
-
   /**
    * Checks if a streamArn is a valid topic. Returns undefined otherwise
    * @param streamARN - DynamoDB streamARN
@@ -109,7 +77,6 @@ class KafkaSourceLib {
     }
     console.log(`Topic not found for table arn: ${streamARN}`);
   }
-
   /**
    * Checks if a bucketArn is a valid topic. Returns undefined otherwise.
    * @param bucketArn - ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
@@ -123,11 +90,9 @@ class KafkaSourceLib {
     }
     console.log(`Topic not found for bucket arn: ${bucketArn}`);
   }
-
   unmarshall(r: any) {
     return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
   }
-
   createDynamoPayload(record: any): KafkaPayload {
     const dynamodb = record.dynamodb;
     const { eventID, eventName } = record;
@@ -143,7 +108,6 @@ class KafkaSourceLib {
       headers: { eventID: eventID, eventName: eventName },
     };
   }
-
   async createS3Payload(record: S3EventRecord): Promise<KafkaPayload> {
     const { eventName, eventTime } = record;
     let entry = "";
@@ -154,7 +118,6 @@ class KafkaSourceLib {
       });
       entry = this.stringify(s3Doc);
     }
-
     return {
       key: record.s3.object.key,
       value: entry,
@@ -162,7 +125,6 @@ class KafkaSourceLib {
       headers: { eventName, eventTime },
     };
   }
-
   topic(t: string) {
     if (this.version) {
       return `${this.topicNamespace}${this.topicPrefix}.${t}.${this.version}`;
@@ -170,7 +132,6 @@ class KafkaSourceLib {
       return `${this.topicNamespace}${this.topicPrefix}.${t}`;
     }
   }
-
   async createOutboundEvents(records: any[]) {
     let outboundEvents: { [key: string]: any } = {};
     for (const record of records) {
@@ -180,7 +141,6 @@ class KafkaSourceLib {
         const s3Record = record as S3EventRecord;
         const key: string = s3Record.s3.object.key;
         topicName = this.determineS3TopicName(s3Record.s3.bucket.arn);
-
         // Filter for only the response info
         if (
           !topicName ||
@@ -198,41 +158,82 @@ class KafkaSourceLib {
         if (!topicName) continue;
         payload = this.createDynamoPayload(record);
       }
-
       //initialize configuration object keyed to topic for quick lookup
       if (!(outboundEvents[topicName] instanceof Object))
         outboundEvents[topicName] = {
           topic: topicName,
           messages: [],
         };
-
       //add messages to messages array for corresponding topic
       outboundEvents[topicName].messages.push(payload);
     }
     return outboundEvents;
   }
-
   async handler(event: any) {
+    if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
+      throw new Error("Missing Broker Config. ");
+    }
+    // Setup vars
+    const brokerStrings = process.env.BOOTSTRAP_BROKER_STRING_TLS;
+    const sasl = await getMechanism("us-east-1", process.env.bigmacRoleArn);
+    kafka = new Kafka({
+      clientId: `mcr-${this.stage}`,
+      brokers: brokerStrings!.split(","),
+      retry: {
+        initialRetryTime: 300,
+        retries: 8,
+      },
+      ssl: true,
+      sasl: sasl,
+      requestTimeout: 295000,
+    });
+    // Attach Events
+    producer = kafka.producer();
+    this.connected = false;
+    const signalTraps = ["SIGTERM", "SIGINT", "SIGUSR2", "beforeExit"];
+    signalTraps.map((type) => {
+      process.removeListener(type, producer.disconnect);
+    });
+    signalTraps.map((type) => {
+      process.once(type, producer.disconnect);
+    });
     if (!this.connected) {
+      console.log("Attempting connection...");
       await producer.connect();
       this.connected = true;
     }
-
     // Warmup events have no records.
     if (!event.Records) {
       console.log("No records to process. Exiting.");
       return;
     }
-
     // if dynamo
     const outboundEvents = await this.createOutboundEvents(event.Records);
-
     const topicMessages = Object.values(outboundEvents);
     console.log(`Batch configuration: ${this.stringify(topicMessages, true)}`);
-
     if (topicMessages.length > 0) await producer.sendBatch({ topicMessages });
     console.log(`Successfully processed ${event.Records.length} records.`);
   }
 }
-
+async function getMechanism(region: any, role: any) {
+  const sts = new STSClient({
+    region,
+  });
+  const crossAccountRoleData = await sts.send(
+    new AssumeRoleCommand({
+      RoleArn: role,
+      RoleSessionName: "LambdaSession",
+      ExternalId: "asdf",
+    })
+  );
+  return createMechanism({
+    region,
+    credentials: {
+      // authorizationIdentity: crossAccountRoleData.AssumedRoleUser?.AssumedRoleId,
+      accessKeyId: crossAccountRoleData.Credentials?.AccessKeyId!,
+      secretAccessKey: crossAccountRoleData.Credentials?.SecretAccessKey ?? "",
+      sessionToken: crossAccountRoleData.Credentials?.SessionToken,
+    },
+  });
+}
 export default KafkaSourceLib;
