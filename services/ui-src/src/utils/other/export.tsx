@@ -232,6 +232,14 @@ export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
       return addCommasToNumericalString(fieldResponseData) + "%";
     case "currency":
       return "$" + addCommasToNumericalString(fieldResponseData);
+    case "ratio": {
+      let sidesOfRatio = fieldResponseData.split(":");
+      return (
+        addCommasToNumericalString(sidesOfRatio[0]) +
+        ":" +
+        addCommasToNumericalString(sidesOfRatio[1])
+      );
+    }
     default:
       return addCommasToNumericalString(fieldResponseData);
   }

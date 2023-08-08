@@ -56,3 +56,7 @@ export const cleanRatioInput = (value: string): CleanedValue => {
 export const makeStringParseableAsFloat = (value: string): string => {
   return value.replace(/[^\d.-]/g, "");
 };
+
+export const makeStringParseableAsRatio = (value: string): string => {
+  return value.replace(/[^\d.-:]/g, "");
+};

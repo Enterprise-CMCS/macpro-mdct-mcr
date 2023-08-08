@@ -14,6 +14,7 @@ import {
   parseCustomHtml,
   useUser,
   makeStringParseableAsFloat,
+  makeStringParseableAsRatio,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -71,7 +72,9 @@ export const NumberField = ({
 
         // this value eventually gets sent to the database, so we need to make it parseable as a number again
         const cleanedFieldValue = formattedHydrationValue.isValid
-          ? makeStringParseableAsFloat(maskedHydrationValue)
+          ? mask === "ratio"
+            ? makeStringParseableAsRatio(maskedHydrationValue)
+            : makeStringParseableAsFloat(maskedHydrationValue)
           : maskedHydrationValue;
         form.setValue(name, cleanedFieldValue, { shouldValidate: true });
       }
@@ -96,7 +99,9 @@ export const NumberField = ({
 
     // this value eventually gets sent to the database, so we need to make it parseable as a number again
     const cleanedFieldValue = formattedFieldValue.isValid
-      ? makeStringParseableAsFloat(maskedFieldValue)
+      ? mask === "ratio"
+        ? makeStringParseableAsRatio(maskedFieldValue)
+        : makeStringParseableAsFloat(maskedFieldValue)
       : maskedFieldValue;
     form.setValue(name, cleanedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
