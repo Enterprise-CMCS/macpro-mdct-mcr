@@ -13,8 +13,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
-  makeStringParseableAsFloat,
-  makeStringParseableAsRatio,
+  makeStringParseableForDatabase,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -72,9 +71,7 @@ export const NumberField = ({
 
         // this value eventually gets sent to the database, so we need to make it parseable as a number again
         const cleanedFieldValue = formattedHydrationValue.isValid
-          ? mask === "ratio"
-            ? makeStringParseableAsRatio(maskedHydrationValue)
-            : makeStringParseableAsFloat(maskedHydrationValue)
+          ? makeStringParseableForDatabase(maskedHydrationValue, mask)
           : maskedHydrationValue;
         form.setValue(name, cleanedFieldValue, { shouldValidate: true });
       }
@@ -99,9 +96,7 @@ export const NumberField = ({
 
     // this value eventually gets sent to the database, so we need to make it parseable as a number again
     const cleanedFieldValue = formattedFieldValue.isValid
-      ? mask === "ratio"
-        ? makeStringParseableAsRatio(maskedFieldValue)
-        : makeStringParseableAsFloat(maskedFieldValue)
+      ? makeStringParseableForDatabase(maskedFieldValue, mask)
       : maskedFieldValue;
     form.setValue(name, cleanedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);

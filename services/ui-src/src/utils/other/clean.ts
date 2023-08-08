@@ -3,6 +3,8 @@ import {
   checkRatioInputAgainstRegexes,
 } from "./checkInputValidity";
 
+import { maskMap } from "./mask";
+
 interface CleanedValue {
   isValid: boolean;
   cleanedValue: string;
@@ -14,7 +16,7 @@ export const cleanStandardNumericalInput = (value: string): CleanedValue => {
   if (!isValidNumber) return { isValid: false, cleanedValue: value };
 
   // Remove all characters except 0123456789.-
-  value = makeStringParseableAsFloat(value);
+  value = value.replace(/[^\d.-]/g, "");
 
   // If entire value is greater than 1, or less than -1, remove all leading zeros
   const parsedFloat = parseFloat(value);
@@ -53,10 +55,15 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   };
 };
 
-export const makeStringParseableAsFloat = (value: string): string => {
-  return value.replace(/[^\d.-]/g, "");
-};
+export const makeStringParseableForDatabase = (
+  value: string,
+  maskName?: keyof typeof maskMap | null
+) => {
+  if (maskName === null) return value;
 
-export const makeStringParseableAsRatio = (value: string): string => {
-  return value.replace(/[^\d.-:]/g, "");
+  // convert to parseable ratio
+  if (maskName === "ratio") return value.replace(/[^\d.-:]/g, "");
+
+  // convert to parseable float
+  return value.replace(/[^\d.-]/g, "");
 };
