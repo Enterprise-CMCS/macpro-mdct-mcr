@@ -1,11 +1,9 @@
 name: Sync Security Hub findings and Jira issues
 
 on:
-  push
-# on:
-#   workflow_dispatch: # for testing and manual runs
-#   schedule:
-#     - cron: "25 1 * * *" # daily at 6:25 am EST
+  workflow_dispatch: # for testing and manual runs
+  schedule:
+    - cron: "25 1 * * *" # daily at 6:25 am EST
 
 permissions:
   id-token: write
