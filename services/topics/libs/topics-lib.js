@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const _ = require("lodash");
 import { ConfigResourceTypes, Kafka } from "kafkajs";
+import { STSClient, AssumeRoleCommand } from "@aws-sdk/client-sts";
 const {
   createMechanism,
 } = require("@jm18457/kafkajs-msk-iam-authentication-mechanism");
@@ -22,7 +23,8 @@ export async function createTopics(brokerString, topicNamespace, topicsConfig) {
       retries: 8,
     },
     ssl: true,
-    sasl: sasl
+    sasl: sasl,
+    requestTimeout: 295000, // 5s short of the lambda function's timeout
   });
   var admin = kafka.admin();
   const create = async () => {
@@ -111,7 +113,12 @@ export async function deleteTopics(brokerString, topicNamespace) {
   const kafka = new Kafka({
     clientId: "admin",
     brokers: brokers,
+    retry: {
+      initialRetryTime: 300,
+      retries: 8,
+    },
     ssl: true,
+    sasl: sasl,
     requestTimeout: 295000, // 5s short of the lambda function's timeout
   });
   var admin = kafka.admin();
@@ -148,7 +155,7 @@ async function getMechanism(region, role) {
       secretAccessKey: crossAccountRoleData.Credentials.SecretAccessKey,
       sessionToken: crossAccountRoleData.Credentials.SessionToken,
     },
-  })
+  });
 }
 
 
