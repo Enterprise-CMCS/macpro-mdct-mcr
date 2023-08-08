@@ -15,9 +15,6 @@ jobs:
     name: Run sync
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Check out repo
         uses: actions/checkout@v3
       - name: Configure AWS credentials
@@ -26,6 +23,9 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.2
         with:
