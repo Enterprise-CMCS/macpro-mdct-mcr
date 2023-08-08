@@ -23,12 +23,13 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.2
         with:
+          node-version: 18
           jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-host: qmacbis.atlassian.net
