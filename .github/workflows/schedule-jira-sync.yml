@@ -1,9 +1,11 @@
 name: Sync Security Hub findings and Jira issues
 
 on:
-  workflow_dispatch: # for testing and manual runs
-  schedule:
-    - cron: "25 1 * * *" # daily at 6:25 am EST
+  push
+# on:
+#   workflow_dispatch: # for testing and manual runs
+#   schedule:
+#     - cron: "25 1 * * *" # daily at 6:25 am EST
 
 permissions:
   id-token: write
@@ -13,6 +15,9 @@ jobs:
     name: Run sync
     runs-on: ubuntu-20.04
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Check out repo
         uses: actions/checkout@v3
       - name: Configure AWS credentials
