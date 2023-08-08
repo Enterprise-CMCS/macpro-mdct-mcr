@@ -11,13 +11,18 @@ const {
  * @param {*} topicsConfig - array of topics to create or update
  */
 export async function createTopics(brokerString, topicNamespace, topicsConfig) {
+  const sasl = await getMechanism("us-east-1", process.env.bigmacRoleArn);
   const topics = topicsConfig;
   const brokers = brokerString.split(",");
   const kafka = new Kafka({
     clientId: "admin",
     brokers: brokers,
+    retry: {
+      initialRetryTime: 300,
+      retries: 8,
+    },
     ssl: true,
-    sasl: createMechanism({ region: "us-east-1" }),
+    sasl: sasl
   });
   var admin = kafka.admin();
   const create = async () => {
@@ -102,6 +107,7 @@ export async function deleteTopics(brokerString, topicNamespace) {
     throw "ERROR:  The deleteTopics function only operates against topics that begin with --.";
   }
   const brokers = brokerString.split(",");
+  const sasl = await getMechanism("us-east-1", process.env.bigmacRoleArn);
   const kafka = new Kafka({
     clientId: "admin",
     brokers: brokers,
@@ -123,3 +129,26 @@ export async function deleteTopics(brokerString, topicNamespace) {
     topics: topicsToDelete,
   });
 }
+async function getMechanism(region, role) {
+  const sts = new STSClient({
+    region,
+  });
+  const crossAccountRoleData = await sts.send(
+    new AssumeRoleCommand({
+      RoleArn: role,
+      RoleSessionName: "LambdaSession",
+      ExternalId: "asdf",
+    })
+  );
+  return createMechanism({
+    region,
+    credentials: {
+      authorizationIdentity: crossAccountRoleData.AssumedRoleUser.AssumeRoleId,
+      accessKeyId: crossAccountRoleData.Credentials.AccessKeyId,
+      secretAccessKey: crossAccountRoleData.Credentials.SecretAccessKey,
+      sessionToken: crossAccountRoleData.Credentials.SessionToken,
+    },
+  })
+}
+
+
