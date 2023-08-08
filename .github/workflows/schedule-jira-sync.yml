@@ -13,16 +13,12 @@ permissions:
 jobs:
   sync:
     name: Run sync
-    runs-on: ubuntu:latest
-    # strategy:
-    #   matrix:
-    #     os: [ubuntu-latest]
-    #     node-version: [18.x]
+    runs-on: ubuntu-20.04
     steps:
-      # - name: Use Node.js ${{ matrix.node-version }}
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Check out repo
         uses: actions/checkout@v3
       - name: Configure AWS credentials
@@ -31,7 +27,7 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
       - name: Sync Security Hub and Jira
-        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.2
+        uses: Enterprise-CMCS/mac-fc-security-hub-visibility-enterprise-jira@v1.1.0
         with:
           jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
