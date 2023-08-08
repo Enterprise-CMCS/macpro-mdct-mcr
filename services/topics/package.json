@@ -15,7 +15,8 @@
     "serverless-stack-termination-protection": "^2.0.2"
   },
   "dependencies": {
-    "kafkajs": "^2.2.3",
+    "@jm18457/kafkajs-msk-iam-authentication-mechanism": "^3.1.1",
+    "kafkajs": "^2.2.4",
     "lodash": "^4.17.21"
   },
   "resolutions": {

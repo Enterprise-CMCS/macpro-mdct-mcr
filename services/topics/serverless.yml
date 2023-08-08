@@ -23,7 +23,12 @@ provider:
     role:
       path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
       permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
-
+      statements:
+        - Effect: "Allow"
+          Action:
+            - sts:AssumeRole
+          Resource:
+            - ${self:custom.bigmacRoleArn}
 custom:
   project: "mcr"
   stage: ${opt:stage, self:provider.stage}
@@ -32,7 +37,9 @@ custom:
       - main
       - val
       - production
+  #brokerString: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   brokerString: ${ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
+  bigmacRoleArn: ${ssm:/aws/reference/secretsmanager/mcr/${sls:stage}/bigmacRoleArn, ssm:/aws/reference/secretsmanager/mcr/default/bigmacRoleArn}
   vpcId: ${ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   privateSubnets:
     - ${ssm:/configuration/${self:custom.stage}/vpc/subnets/private/a/id, ssm:/configuration/default/vpc/subnets/private/a/id}
@@ -62,6 +69,7 @@ functions:
     environment:
       brokerString: ${self:custom.brokerString}
       topicNamespace: ${param:topicNamespace}
+      bigmacRoleArn: ${self:custom.bigmacRoleArn}
     vpc:
       securityGroupIds:
         - Ref: LambdaSecurityGroup
@@ -72,6 +80,7 @@ functions:
     maximumRetryAttempts: 0
     environment:
       brokerString: ${self:custom.brokerString}
+      bigmacRoleArn: ${self:custom.bigmacRoleArn}
     vpc:
       securityGroupIds:
         - Ref: LambdaSecurityGroup
