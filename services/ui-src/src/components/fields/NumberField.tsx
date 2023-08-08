@@ -68,6 +68,8 @@ export const NumberField = ({
         const formattedHydrationValue = applyMask(hydrationValue, mask);
         const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
+
+        // this value eventually gets sent to the database, so we need to make it parseable as a number again
         const cleanedFieldValue = formattedHydrationValue.isValid
           ? makeStringParseableAsFloat(maskedHydrationValue)
           : maskedHydrationValue;
@@ -91,7 +93,8 @@ export const NumberField = ({
     // mask value and set as display value
     const formattedFieldValue = applyMask(value, mask);
     const maskedFieldValue = formattedFieldValue.maskedValue;
-    // we only want to autosave a value that is valid, so we check for that before we re-clean to make database friendly
+
+    // this value eventually gets sent to the database, so we need to make it parseable as a number again
     const cleanedFieldValue = formattedFieldValue.isValid
       ? makeStringParseableAsFloat(maskedFieldValue)
       : maskedFieldValue;
