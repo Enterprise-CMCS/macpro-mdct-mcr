@@ -178,7 +178,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const submittedReports = reportsByState?.filter(
-      (item) => item.status == "Submitted"
+      (item) => item.status === "Submitted"
     );
     setSubmittedReportsByState(submittedReports);
   }, [reportsByState]);
