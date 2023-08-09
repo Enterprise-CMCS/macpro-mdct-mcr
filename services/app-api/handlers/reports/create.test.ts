@@ -1,5 +1,5 @@
 import { createReport } from "./create";
-import * as reportUtils from "../../utils/reports";
+import * as reportUtils from "../../utils/reports/reports";
 import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
