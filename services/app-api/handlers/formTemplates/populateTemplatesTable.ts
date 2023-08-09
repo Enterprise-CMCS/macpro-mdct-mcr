@@ -262,15 +262,12 @@ export async function updateExistingReports(
  * as the canonical "template".
  * 1. Iterate version each time.
  */
-export const handler: Handler<never, void> = async (evt: APIGatewayEvent) => {
-  const reportTypesFromEventBody: ReportType[] | undefined = JSON.parse(
-    evt.body!
-  )?.reportTypes;
-  logger.info(
-    `Received event body with reportTypes: ${reportTypesFromEventBody}`
-  );
+export const handler: Handler<never, void> = async (evt: any) => {
+  logger.info("EVENT:", evt);
 
-  const reportTypes = reportTypesFromEventBody ?? Object.values(ReportType);
+  const reportTypes = evt?.reportTypes ?? Object.values(ReportType);
+
+  logger.info("Performing operation for reports:", reportTypes);
   for (const reportType of reportTypes) {
     logger.info(`Processing ${reportType} reports`);
     try {
