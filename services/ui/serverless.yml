@@ -246,6 +246,7 @@ resources:
             headers['x-content-type-options'] = { value: 'nosniff' };
             headers['x-xss-protection'] = { value: '0' };
             headers['content-security-policy'] = {value: "default-src 'none'; img-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'"};
+            headers["content-security-policy"] = { value: "default-src 'self'; img-src 'self' https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov; object-src 'none'"};
             return response;
           }
         FunctionConfig:
