@@ -143,8 +143,7 @@ export const renderResponseData = (
     return renderChoiceListFieldResponse(
       formField,
       fieldResponseData,
-      widerResponseData,
-      pageType
+      widerResponseData
     );
   }
   // check for and handle link fields (email, url)
@@ -157,9 +156,7 @@ export const renderResponseData = (
 export const renderChoiceListFieldResponse = (
   formField: FormField,
   fieldResponseData: AnyObject,
-  widerResponseData: AnyObject,
-  pageType: string,
-  entityIndex?: number
+  widerResponseData: AnyObject
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
@@ -170,22 +167,30 @@ export const renderChoiceListFieldResponse = (
       );
     }
   );
-  const choicesToDisplay = selectedChoices?.map((choice: FieldChoice) => {
-    // get related "otherText" value, if present (always only a single child element here)
-    const firstChildId = choice?.children?.[0]?.id!;
-    const shouldDisplayRelatedOtherTextEntry =
-      choice.children?.[0]?.id.endsWith("-otherText");
-    const relatedOtherTextEntry =
-      pageType === "drawer"
-        ? widerResponseData[entityIndex!]?.[firstChildId]
-        : widerResponseData?.[firstChildId];
-    return (
-      <Text key={choice.id} sx={sx.fieldChoice}>
-        {choice.label}
-        {shouldDisplayRelatedOtherTextEntry && " – " + relatedOtherTextEntry}
-      </Text>
-    );
-  });
+
+  let choicesToDisplay;
+  // handle "other text" case
+  if (fieldResponseData[0].value === "Other, specify") {
+    choicesToDisplay = widerResponseData?.map((choice: FieldChoice) => {
+      // get related "otherText" value, if present (always only a single child element here)
+      const childId: string = fieldResponseData[0].key;
+      const choiceId =
+        childId.substring(0, childId.indexOf("-")) + "-otherText";
+      return (
+        <Text key={choice.id} sx={sx.fieldChoice}>
+          Other, specify - {choice[choiceId as keyof FieldChoice]}
+        </Text>
+      );
+    });
+  } else {
+    choicesToDisplay = selectedChoices?.map((choice: FieldChoice) => {
+      return (
+        <Text key={choice.id} sx={sx.fieldChoice}>
+          {choice.label}
+        </Text>
+      );
+    });
+  }
   return choicesToDisplay;
 };
 
