@@ -1,4 +1,4 @@
-import { APIGatewayEvent, Handler } from "aws-lambda";
+import { Handler } from "aws-lambda";
 import {
   formTemplateTableName,
   reportBuckets,
