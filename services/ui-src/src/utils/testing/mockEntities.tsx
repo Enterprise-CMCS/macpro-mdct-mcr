@@ -110,10 +110,10 @@ export const mockSanctionsEntity = {
   sanction_interventionTopic: [{ value: "mock-topic" }],
   sanction_planName: { label: "sanction_planName", value: "mock-plan-id-1" },
   sanction_interventionReason: "mock-reason",
-  sanction_noncomplianceInstances: "mock-instances",
-  sanction_dollarAmount: "mock-dollar-amount",
-  sanction_assessmentDate: "mock-date",
-  sanction_remediationDate: "mock-date",
+  sanction_noncomplianceInstances: "1234567",
+  sanction_dollarAmount: "1234.52",
+  sanction_assessmentDate: "01/01/2001",
+  sanction_remediationDate: "01/01/2001",
   sanction_correctiveActionPlan: [{ value: "mock-answer" }],
 };
 
@@ -126,9 +126,9 @@ export const mockUnfinishedSanctionsFormattedEntityData = {
 
 export const mockCompletedSanctionsFormattedEntityData = {
   ...mockUnfinishedSanctionsFormattedEntityData,
-  noncomplianceInstances: "mock-instances",
-  dollarAmount: "mock-dollar-amount",
-  assessmentDate: "mock-date",
-  remediationDate: "mock-date",
+  noncomplianceInstances: "1,234,567",
+  dollarAmount: "1,234.52",
+  assessmentDate: "01/01/2001",
+  remediationDate: "01/01/2001",
   correctiveActionPlan: "mock-answer",
 };

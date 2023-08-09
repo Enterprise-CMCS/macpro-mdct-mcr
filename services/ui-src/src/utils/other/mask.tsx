@@ -32,7 +32,7 @@ export function addCommasToNumericalString(value: string): string {
 /**
  * Converts a number-like string to a comma seperated value
  * @param {String} value
- * @returns {String}
+ * @returns {MaskedValue}
  */
 export function convertToThousandsSeparatedString(
   value: string,
