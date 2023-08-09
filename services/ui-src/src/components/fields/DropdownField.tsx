@@ -11,11 +11,13 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
+  convertDateUtcToEt,
 } from "utils";
 import {
   AnyObject,
   DropdownChoice,
   DropdownOptions,
+  ReportMetadataShape,
   EntityShape,
   InputChangeEvent,
   SelectedOption,
@@ -35,7 +37,8 @@ export const DropdownField = ({
   styleAsOptional,
   ...props
 }: Props) => {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport, submittedReportsByState } =
+    useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
   const { full_name, state } = useUser().user ?? {};
@@ -45,7 +48,21 @@ export const DropdownField = ({
     let dropdownOptions = [];
     if (typeof options === "string") {
       const dynamicOptionValues = report?.fieldData[options];
-      if (dynamicOptionValues) {
+      if (options === "copyEligibleReports") {
+        const dynamicOptionValues = submittedReportsByState;
+        // maybe make a new value, submittedReportsByState in ReportProvider
+        if (dynamicOptionValues) {
+          const fieldOptions = dynamicOptionValues.map(
+            (option: ReportMetadataShape) => ({
+              // check design for this
+              label:
+                option.programName + " " + convertDateUtcToEt(option.dueDate),
+              value: option.id,
+            })
+          );
+          dropdownOptions = fieldOptions;
+        }
+      } else if (dynamicOptionValues) {
         const fieldOptions = dynamicOptionValues.map((option: EntityShape) => ({
           label: option.name,
           value: option.id,

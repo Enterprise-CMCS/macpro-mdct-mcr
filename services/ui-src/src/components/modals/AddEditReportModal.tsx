@@ -38,6 +38,7 @@ export const AddEditReportModal = ({
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
+    const copySourceId = formData["copySourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
     const reportingPeriodStartDate = convertDateEtToUtc(
@@ -57,6 +58,7 @@ export const AddEditReportModal = ({
         combinedData,
         lastAlteredBy: full_name,
       },
+      copySourceId: copySourceId.value,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
