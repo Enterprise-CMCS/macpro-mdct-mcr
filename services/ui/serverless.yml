@@ -245,7 +245,7 @@ resources:
             headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};
             headers['x-content-type-options'] = { value: 'nosniff' };
             headers['x-xss-protection'] = { value: '0' };
-            headers["content-security-policy"] = { value: "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; object-src 'none'"};
+            headers["content-security-policy"] = { value: "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'"};
             return response;
           }
         FunctionConfig:
