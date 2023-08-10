@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
+    "@jm18457/kafkajs-msk-iam-authentication-mechanism": "^3.1.2",
     "fast-xml-parser": "4.2.5",
     "loader-utils": "2.0.3"
   },
