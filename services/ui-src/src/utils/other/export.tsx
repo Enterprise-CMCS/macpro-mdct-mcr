@@ -88,7 +88,7 @@ export const renderDrawerDataCell = (
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
 ) =>
-  entityResponseData?.map((entity: EntityShape) => {
+  entityResponseData?.map((entity: EntityShape, index: number) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
@@ -105,7 +105,8 @@ export const renderDrawerDataCell = (
               fieldResponseData,
               entityResponseData,
               pageType,
-              notApplicable
+              notApplicable,
+              index
             )}
           </li>
         </ul>
@@ -125,7 +126,8 @@ export const renderResponseData = (
   fieldResponseData: any,
   widerResponseData: AnyObject,
   pageType: string,
-  notApplicable?: boolean
+  notApplicable?: boolean,
+  entityIndex?: number
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
@@ -144,7 +146,8 @@ export const renderResponseData = (
       formField,
       fieldResponseData,
       widerResponseData,
-      pageType
+      pageType,
+      entityIndex!
     );
   }
   // check for and handle link fields (email, url)
@@ -159,7 +162,7 @@ export const renderChoiceListFieldResponse = (
   fieldResponseData: AnyObject,
   widerResponseData: AnyObject,
   pageType: string,
-  entityIndex?: number
+  entityIndex: number
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
@@ -177,7 +180,7 @@ export const renderChoiceListFieldResponse = (
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry =
       pageType === "drawer"
-        ? widerResponseData[entityIndex!]?.[firstChildId]
+        ? widerResponseData[entityIndex]?.[firstChildId]
         : widerResponseData?.[firstChildId];
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
