@@ -62,7 +62,7 @@ export const makeStringParseableForDatabase = (
   if (maskName === null) return value;
 
   // convert to parseable ratio
-  if (maskName === "ratio") return value.replace(/[^\d.-:]/g, "");
+  if (maskName === "ratio") return value.replace(/[^\d.:-]/g, "");
 
   // convert to parseable float
   return value.replace(/[^\d.-]/g, "");
