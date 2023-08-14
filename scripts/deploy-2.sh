@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 stage=${1:-dev}
 
