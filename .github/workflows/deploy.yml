@@ -98,11 +98,16 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: deploy
+      - name: deploy-1
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
           ./scripts/deploy.sh $STAGE_PREFIX$branch_name
+      - name: deploy-2
+        run: |
+          # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
+          # This can optionally be set as an GitHub Actions Secret
+          ./scripts/deploy-2.sh $STAGE_PREFIX$branch_name
       - id: endpoint
         run: echo ::set-output name=application_endpoint::$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
         working-directory: services

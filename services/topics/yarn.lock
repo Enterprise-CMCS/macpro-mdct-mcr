@@ -1748,7 +1748,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@jm18457/kafkajs-msk-iam-authentication-mechanism@^3.1.1":
+"@jm18457/kafkajs-msk-iam-authentication-mechanism@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@jm18457/kafkajs-msk-iam-authentication-mechanism/-/kafkajs-msk-iam-authentication-mechanism-3.1.2.tgz#04f7a57b99be920eaf2f055850e1326b52438eb3"
   integrity sha512-83mdXHMbu1HJDyldJRuJyjtI8MjfCDc10tG3uzRxuvOlgz3hJdqv5E7hYtPcLy26ceTqnRUSzw7rGwLI346bYw==
