@@ -240,3 +240,7 @@ export function getValidationFromFormTemplate(reportJson: ReportJson) {
     flattenReportRoutesArray(reportJson.routes)
   );
 }
+
+export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
+  return Object.keys(getValidationFromFormTemplate(reportJson));
+}
