@@ -56,7 +56,7 @@ export const DropdownField = ({
           (option: ReportMetadataShape) => ({
             label:
               option.programName + " " + convertDateUtcToEt(option.dueDate),
-            value: option.id,
+            value: option.fieldDataId,
           })
         );
       } else if (dynamicOptionValues) {
