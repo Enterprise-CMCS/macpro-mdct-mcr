@@ -75,7 +75,8 @@ describe("Test copyTemplatesToNewPrefix", () => {
   });
   it("should copy n files for n templates", async () => {
     const copySpy = jest.spyOn(s3Lib, "copy");
-    await copyTemplatesToNewPrefix("foo", templates);
+    const templateMetadatas = templates.map((t) => ({ key: t.Key, ...t }));
+    await copyTemplatesToNewPrefix("foo", templateMetadatas);
     expect(copySpy).toHaveBeenCalledTimes(templates.length);
   });
 });
@@ -88,15 +89,13 @@ describe("Test processReport", () => {
     const listSpy = jest.spyOn(s3Lib, "list");
     const copySpy = jest.spyOn(s3Lib, "copy");
     const scanAllSpy = jest.spyOn(dynamodbLib, "scanAll");
-    const querySpy = jest.spyOn(dynamodbLib, "query");
     const putSpy = jest.spyOn(dynamodbLib, "put");
     listSpy.mockResolvedValue(templates);
     await processReportTemplates(ReportType.MLR);
 
     expect(copySpy).toHaveBeenCalledTimes(1);
     expect(scanAllSpy).toHaveBeenCalledTimes(1);
-    expect(querySpy).toHaveBeenCalledTimes(1);
-    expect(putSpy).toHaveBeenCalledTimes(2);
+    expect(putSpy).toHaveBeenCalledTimes(1);
   });
 
   it("should handle cases where there are no reports", async () => {
