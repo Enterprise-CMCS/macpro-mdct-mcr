@@ -18,8 +18,7 @@ interface MaskedValue {
  * @returns {String}
  */
 export function addCommasToNumericalString(value: string): string {
-  if (value === undefined || value === "N/A" || value === "Data not available")
-    return value;
+  if (value === undefined) return value;
 
   const maskValue = Number(value).toLocaleString("en", {
     // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum

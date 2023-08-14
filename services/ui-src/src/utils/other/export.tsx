@@ -227,6 +227,8 @@ export const checkLinkTypes = (formField: FormField) => {
 
 // mask response data as necessary
 export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
+  if (fieldResponseData === "N/A" || fieldResponseData === "Data not available")
+    return fieldResponseData;
   switch (fieldMask) {
     case "percentage":
       return addCommasToNumericalString(fieldResponseData) + "%";
