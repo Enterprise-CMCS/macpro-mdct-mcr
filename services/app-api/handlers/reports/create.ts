@@ -29,7 +29,7 @@ import {
 } from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/logging";
-import { copyFieldDataFromSource } from "../../utils/reports";
+import { copyFieldDataFromSource } from "../../utils/reports/reports";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {

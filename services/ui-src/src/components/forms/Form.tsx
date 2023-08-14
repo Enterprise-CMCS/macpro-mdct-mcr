@@ -49,7 +49,7 @@ export const Form = ({
   const { report } = useContext(ReportContext);
   let location = useLocation();
   const fieldInputDisabled =
-    ((userIsAdmin || userIsReadOnly) && formJson.adminDisabled) ||
+    ((userIsAdmin || userIsReadOnly) && !formJson.editableByAdmins) ||
     (report?.status === ReportStatus.SUBMITTED &&
       report?.reportType === ReportType.MLR);
 

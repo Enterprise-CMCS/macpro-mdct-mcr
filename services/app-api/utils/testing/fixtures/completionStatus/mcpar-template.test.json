@@ -10,7 +10,6 @@
     "plans": { "required": true },
     "bssEntities": { "required": true }
   },
-  "adminDisabled": true,
   "routes": [
     {
       "name": "A: Program Information",
@@ -88,8 +87,7 @@
                   "disabled": true
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -136,8 +134,7 @@
                   "disabled": true
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -163,8 +160,7 @@
                   "label": "Plan name"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -207,8 +203,7 @@
                   "label": "BSS entity name"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         }
       ]
@@ -251,8 +246,7 @@
                   "mask": "comma-separated"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -344,8 +338,7 @@
                   ]
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -566,8 +559,7 @@
                   "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, what is the link(s) to the audit results? Refer to 42 CFR 438.602(e)."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         }
       ]
@@ -728,8 +720,7 @@
                   "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -890,8 +881,7 @@
                   "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting period."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -944,8 +934,7 @@
                   "hint": "Provide the state's definition of timely resolution for grievances in the managed care program.<br>Per 42 CFR §438.408(b)(1), states must establish a timeframe for timely resolution of grievances that is no longer than 90 calendar days from the day the MCO, PIHP or PAHP receives the grievance."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -991,8 +980,7 @@
                       "hint": "How does the state work with MCPs to address gaps in network adequacy?"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -1134,8 +1122,7 @@
                       ]
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               },
               "drawerForm": {
                 "id": "cam-drawer",
@@ -1370,8 +1357,7 @@
                       ]
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             }
           ]
@@ -1426,8 +1412,7 @@
                   "hint": "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities' performance?"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -1463,8 +1448,7 @@
                   ]
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         }
       ]
@@ -1533,8 +1517,7 @@
                   "mask": "percentage"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -1676,8 +1659,7 @@
                   ]
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -1739,8 +1721,7 @@
                   "mask": "percentage"
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -1914,8 +1895,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -2059,8 +2039,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -2160,8 +2139,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -2251,8 +2229,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -2396,8 +2373,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             },
             {
@@ -2557,8 +2533,7 @@
                       "mask": "comma-separated"
                     }
                   }
-                ],
-                "adminDisabled": true
+                ]
               }
             }
           ]
@@ -2809,8 +2784,7 @@
                   "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           },
           "drawerForm": {
             "id": "dqm-drawer",
@@ -2825,8 +2799,7 @@
                   "hint": "What are the measure results or values for this plan? Add free text or enter \"N/A\" if not applicable."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -2984,8 +2957,7 @@
                   "hint": "What was the reason for intervention? Add a description."
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           },
           "drawerForm": {
             "id": "ds",
@@ -3075,8 +3047,7 @@
                   ]
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         },
         {
@@ -3284,8 +3255,7 @@
                   ]
                 }
               }
-            ],
-            "adminDisabled": true
+            ]
           }
         }
       ]
@@ -3461,8 +3431,7 @@
               ]
             }
           }
-        ],
-        "adminDisabled": true
+        ]
       }
     },
     {

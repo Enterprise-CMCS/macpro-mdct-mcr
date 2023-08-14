@@ -18,6 +18,7 @@ const reportChoices = [
 
 export default {
   id: "adminDashSelector",
+  editableByAdmins: true,
   options: {
     mode: "onChange",
   },
