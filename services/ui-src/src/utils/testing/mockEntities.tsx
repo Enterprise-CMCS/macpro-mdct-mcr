@@ -127,7 +127,7 @@ export const mockUnfinishedSanctionsFormattedEntityData = {
 export const mockCompletedSanctionsFormattedEntityData = {
   ...mockUnfinishedSanctionsFormattedEntityData,
   noncomplianceInstances: "1,234,567",
-  dollarAmount: "1,234.52",
+  dollarAmount: "$1,234.52",
   assessmentDate: "01/01/2001",
   remediationDate: "01/01/2001",
   correctiveActionPlan: "mock-answer",

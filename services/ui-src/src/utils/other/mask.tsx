@@ -12,21 +12,40 @@ interface MaskedValue {
   maskedValue: string;
 }
 
-/**
- * Separate numerical string with commas (if needed)
- * @param {String} value
- * @returns {String}
- */
-export function addCommasToNumericalString(value: string): string {
-  if (value === undefined) return value;
+// mask response data as necessary
+export function maskResponseData(
+  fieldResponseData: any,
+  fieldMask?: string
+): string {
+  if (
+    fieldResponseData === undefined ||
+    fieldResponseData === "N/A" ||
+    fieldResponseData === "Data not available"
+  )
+    return fieldResponseData;
 
-  const maskValue = Number(value).toLocaleString("en", {
+  const maskValue = Number(fieldResponseData).toLocaleString("en", {
     // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
     minimumFractionDigits: 0,
-    maximumFractionDigits: value.length,
+    maximumFractionDigits: fieldResponseData.length,
   });
 
-  return maskValue;
+  switch (fieldMask) {
+    case "percentage":
+      return maskValue + "%";
+    case "currency":
+      return "$" + maskValue;
+    case "ratio": {
+      let sidesOfRatio = fieldResponseData.split(":");
+      return (
+        maskResponseData(sidesOfRatio[0], fieldMask) +
+        ":" +
+        maskResponseData(sidesOfRatio[1], fieldMask)
+      );
+    }
+    default:
+      return maskValue;
+  }
 }
 
 /**
@@ -59,7 +78,11 @@ export function convertToThousandsSeparatedString(
   }
 
   // Add in commas to delineate thousands (if needed)
-  maskValue = addCommasToNumericalString(maskValue);
+  maskValue = Number(maskValue).toLocaleString("en", {
+    // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
+    minimumFractionDigits: 0,
+    maximumFractionDigits: maskValue.length,
+  });
   return { isValid: true, maskedValue: maskValue };
 }
 

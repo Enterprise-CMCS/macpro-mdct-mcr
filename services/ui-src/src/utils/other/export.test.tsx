@@ -1,11 +1,8 @@
 // types
 import { FormField } from "types";
 // utils
-import {
-  maskResponseData,
-  parseFormFieldInfo,
-  renderResponseData,
-} from "./export";
+import { maskResponseData } from "./mask";
+import { parseFormFieldInfo, renderResponseData } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
 const emailInput: FormField = {
@@ -74,17 +71,17 @@ describe("Test parseFormFieldInfo", () => {
 
 describe("Test maskResponseData", () => {
   test("Percentage mask works correctly", () => {
-    const result = maskResponseData("percentage", "12");
+    const result = maskResponseData("12", "percentage");
     expect(result).toEqual("12%");
   });
 
   test("Currency mask works correctly", () => {
-    const result = maskResponseData("currency", "12");
+    const result = maskResponseData("12", "currency");
     expect(result).toEqual("$12");
   });
 
   test("Standard field is not masked", () => {
-    const result = maskResponseData("mock", "12");
+    const result = maskResponseData("12", "mock");
     expect(result).toEqual("12");
   });
 });

@@ -2,7 +2,7 @@ import { Box, Link, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
-import { eligibilityGroup, addCommasToNumericalString } from "utils";
+import { eligibilityGroup, maskResponseData } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -205,7 +205,7 @@ export const renderDefaultFieldResponse = (
   // check and handle fields that need a mask applied
   const fieldMask = formField.props?.mask;
   if (fieldMask)
-    return <Text>{maskResponseData(fieldMask, fieldResponseData)}</Text>;
+    return <Text>{maskResponseData(fieldResponseData, fieldMask)}</Text>;
   // render all other fields
   return <Text>{fieldResponseData}</Text>;
 };
@@ -223,28 +223,6 @@ export const checkLinkTypes = (formField: FormField) => {
     isLink: linkTypes.includes(fieldValidationType ?? ""),
     isEmail: emailTypes.includes(fieldValidationType ?? ""),
   };
-};
-
-// mask response data as necessary
-export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
-  if (fieldResponseData === "N/A" || fieldResponseData === "Data not available")
-    return fieldResponseData;
-  switch (fieldMask) {
-    case "percentage":
-      return addCommasToNumericalString(fieldResponseData) + "%";
-    case "currency":
-      return "$" + addCommasToNumericalString(fieldResponseData);
-    case "ratio": {
-      let sidesOfRatio = fieldResponseData.split(":");
-      return (
-        addCommasToNumericalString(sidesOfRatio[0]) +
-        ":" +
-        addCommasToNumericalString(sidesOfRatio[1])
-      );
-    }
-    default:
-      return addCommasToNumericalString(fieldResponseData);
-  }
 };
 
 // parse field info from field props
