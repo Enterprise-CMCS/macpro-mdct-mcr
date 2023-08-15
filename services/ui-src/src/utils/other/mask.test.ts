@@ -159,4 +159,14 @@ describe("Test maskResponseData", () => {
     const result = maskResponseData("12", "mock");
     expect(result).toEqual("12");
   });
+
+  test("Data not available doesn't get masked", () => {
+    const result = maskResponseData("Data not available", "percentage");
+    expect(result).toEqual("Data not available");
+  });
+
+  test("Ratio gets masked appropriately", () => {
+    const result = maskResponseData("1234:25", "ratio");
+    expect(result).toEqual("1,234:25");
+  });
 });

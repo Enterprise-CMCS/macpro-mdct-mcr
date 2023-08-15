@@ -38,9 +38,9 @@ export function maskResponseData(
     case "ratio": {
       let sidesOfRatio = fieldResponseData.split(":");
       return (
-        maskResponseData(sidesOfRatio[0], fieldMask) +
+        maskResponseData(sidesOfRatio[0]) +
         ":" +
-        maskResponseData(sidesOfRatio[1], fieldMask)
+        maskResponseData(sidesOfRatio[1])
       );
     }
     default:

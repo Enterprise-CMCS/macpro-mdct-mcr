@@ -42,9 +42,6 @@ export const cleanRatioInput = (value: string): CleanedValue => {
   const rightSide = isValidRatio.rightSide;
   const cleanRight = cleanStandardNumericalInput(rightSide);
 
-  if (!cleanLeft.isValid || !cleanRight.isValid)
-    return { isValid: false, cleanedValue: value };
-
   const cleanedValue = [cleanLeft.cleanedValue, cleanRight.cleanedValue].join(
     ":"
   );
