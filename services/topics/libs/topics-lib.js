@@ -157,5 +157,3 @@ async function getMechanism(region, role) {
     },
   });
 }
-
-
