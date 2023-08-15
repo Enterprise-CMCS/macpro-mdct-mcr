@@ -2,7 +2,7 @@ import { Box, Link, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
-import { eligibilityGroup } from "utils";
+import { eligibilityGroup, maskResponseData } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -208,7 +208,7 @@ export const renderDefaultFieldResponse = (
   // check and handle fields that need a mask applied
   const fieldMask = formField.props?.mask;
   if (fieldMask)
-    return <Text>{maskResponseData(fieldMask, fieldResponseData)}</Text>;
+    return <Text>{maskResponseData(fieldResponseData, fieldMask)}</Text>;
   // render all other fields
   return <Text>{fieldResponseData}</Text>;
 };
@@ -226,18 +226,6 @@ export const checkLinkTypes = (formField: FormField) => {
     isLink: linkTypes.includes(fieldValidationType ?? ""),
     isEmail: emailTypes.includes(fieldValidationType ?? ""),
   };
-};
-
-// mask response data as necessary
-export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
-  switch (fieldMask) {
-    case "percentage":
-      return fieldResponseData + "%";
-    case "currency":
-      return "$" + fieldResponseData;
-    default:
-      return fieldResponseData;
-  }
 };
 
 // parse field info from field props
