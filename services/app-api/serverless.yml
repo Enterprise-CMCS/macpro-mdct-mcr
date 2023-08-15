@@ -146,6 +146,11 @@ provider:
             - ${self:custom.mcparReportTableStreamArn}
             - ${self:custom.mlrReportTableStreamArn}
             - ${self:custom.naaarReportTableStreamArn}
+        - Effect: "Allow"
+          Action:
+            - sts:AssumeRole
+          Resource:
+            - ${self:custom.bigmacRoleArn}
   environment:
     BANNER_TABLE_NAME: ${self:custom.bannerTableName}
     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
