@@ -24,9 +24,16 @@ export function maskResponseData(
   )
     return fieldResponseData;
 
-  const maskValue = Number(fieldResponseData).toLocaleString("en", {
+  const numericValue = Number(fieldResponseData);
+
+  let minimumFractionDigits = 0;
+  if (fieldMask === "currency" && !Number.isInteger(numericValue)) {
+    minimumFractionDigits = 2;
+  }
+
+  const maskValue = numericValue.toLocaleString("en", {
     // .toLocaleString rounds to 3 decimal places by default, so we have to set a minimum and maximum
-    minimumFractionDigits: 0,
+    minimumFractionDigits,
     maximumFractionDigits: fieldResponseData.length,
   });
 

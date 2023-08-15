@@ -80,4 +80,12 @@ describe("Test renderDefaultFieldResponse", () => {
     );
     expect(textField.props.children).toBe("$1,234");
   });
+
+  test("Properly masks currency decimal data", () => {
+    const textField = renderDefaultFieldResponse(
+      { props: { mask: "currency" } } as unknown as FormField,
+      "1.10" as unknown as AnyObject
+    );
+    expect(textField.props.children).toBe("$1.10");
+  });
 });
