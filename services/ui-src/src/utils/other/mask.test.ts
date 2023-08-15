@@ -1,6 +1,7 @@
 import {
   convertToThousandsSeparatedString,
   convertToThousandsSeparatedRatioString,
+  maskResponseData,
 } from "utils";
 import { maskMap, applyMask } from "./mask";
 
@@ -140,5 +141,22 @@ describe("Test convertToCommaSeparatedRatioString", () => {
         convertToThousandsSeparatedRatioString(testCase.test).maskedValue
       ).toEqual(testCase.expected);
     }
+  });
+});
+
+describe("Test maskResponseData", () => {
+  test("Percentage mask works correctly", () => {
+    const result = maskResponseData("12", "percentage");
+    expect(result).toEqual("12%");
+  });
+
+  test("Currency mask works correctly", () => {
+    const result = maskResponseData("12", "currency");
+    expect(result).toEqual("$12");
+  });
+
+  test("Standard field is not masked", () => {
+    const result = maskResponseData("12", "mock");
+    expect(result).toEqual("12");
   });
 });
