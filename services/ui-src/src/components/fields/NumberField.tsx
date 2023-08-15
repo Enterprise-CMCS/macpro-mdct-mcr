@@ -13,6 +13,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
+  makeStringParseableForDatabase,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -64,12 +65,15 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyMask(
-          hydrationValue,
-          mask
-        ).maskedValue;
+        const formattedHydrationValue = applyMask(hydrationValue, mask);
+        const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
-        form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+
+        // this value eventually gets sent to the database, so we need to make it parseable as a number again
+        const cleanedFieldValue = formattedHydrationValue.isValid
+          ? makeStringParseableForDatabase(maskedHydrationValue, mask)
+          : maskedHydrationValue;
+        form.setValue(name, cleanedFieldValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -89,8 +93,12 @@ export const NumberField = ({
     // mask value and set as display value
     const formattedFieldValue = applyMask(value, mask);
     const maskedFieldValue = formattedFieldValue.maskedValue;
-    const cleanedFieldValue = formattedFieldValue.cleanedValue;
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
+
+    // this value eventually gets sent to the database, so we need to make it parseable as a number again
+    const cleanedFieldValue = formattedFieldValue.isValid
+      ? makeStringParseableForDatabase(maskedFieldValue, mask)
+      : maskedFieldValue;
+    form.setValue(name, cleanedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database (inline validation is run prior to API call)

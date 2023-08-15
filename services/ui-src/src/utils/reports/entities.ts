@@ -1,5 +1,6 @@
 // utils
 import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
+import { maskResponseData } from "utils";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return entity?.[label]?.[0].value !== "Other, specify"
@@ -67,8 +68,13 @@ export const getFormattedEntityData = (
           (plan: any) => plan.id === entity?.sanction_planName.value
         )?.name,
         interventionReason: entity?.sanction_interventionReason,
-        noncomplianceInstances: entity?.sanction_noncomplianceInstances,
-        dollarAmount: entity?.sanction_dollarAmount,
+        noncomplianceInstances: maskResponseData(
+          entity?.sanction_noncomplianceInstances
+        ),
+        dollarAmount: maskResponseData(
+          entity?.sanction_dollarAmount,
+          "currency"
+        ),
         assessmentDate: entity?.sanction_assessmentDate,
         remediationDate: entity?.sanction_remediationDate,
         remediationCompleted: getRadioValue(

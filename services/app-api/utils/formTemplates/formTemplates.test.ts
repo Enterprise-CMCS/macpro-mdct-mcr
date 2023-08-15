@@ -1,6 +1,5 @@
 import {
   compileValidationJsonFromRoutes,
-  copyAdminDisabledStatusToForms,
   flattenReportRoutesArray,
   formTemplateForReportType,
   getOrCreateFormTemplate,
@@ -11,23 +10,17 @@ import {
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
 import { createHash } from "crypto";
-import {
-  FormJson,
-  ModalOverlayReportPageShape,
-  ReportJson,
-  ReportRoute,
-  ReportType,
-} from "../types";
+import { FormJson, ReportJson, ReportRoute, ReportType } from "../types";
 import { mockDocumentClient, mockReportJson } from "../testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 
 const currentMLRFormHash = createHash("md5")
-  .update(JSON.stringify(copyAdminDisabledStatusToForms(mlr as ReportJson)))
+  .update(JSON.stringify(mlr))
   .digest("hex");
 
 const currentMCPARFormHash = createHash("md5")
-  .update(JSON.stringify(copyAdminDisabledStatusToForms(mcpar as ReportJson)))
+  .update(JSON.stringify(mcpar))
   .digest("hex");
 
 describe("Test getOrCreateFormTemplate MCPAR", () => {
@@ -192,32 +185,6 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(4);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMLRFormHash);
-  });
-});
-
-describe("Test copyAdminDisabledStatusToForms", () => {
-  it("Copies disabled status to nested forms of any kind", () => {
-    const mockAdminDisabledReportJson = {
-      ...mockReportJson,
-      adminDisabled: true,
-    };
-    const result = copyAdminDisabledStatusToForms(mockAdminDisabledReportJson);
-
-    const testStandardPageForm = result.routes[0].form;
-    const testDrawerPageForm = result.routes[1].children![0].drawerForm!;
-    const testModalDrawerPageModalForm =
-      result.routes[1].children![1].modalForm!;
-    const testModalDrawerPageDrawerForm =
-      result.routes[1].children![1].drawerForm!;
-    const testModalOverlayPageForm = (
-      result.routes[2] as ModalOverlayReportPageShape
-    ).overlayForm!;
-
-    expect(testStandardPageForm!.adminDisabled).toBeTruthy();
-    expect(testDrawerPageForm!.adminDisabled).toBeTruthy();
-    expect(testModalDrawerPageModalForm!.adminDisabled).toBeTruthy();
-    expect(testModalDrawerPageDrawerForm!.adminDisabled).toBeTruthy();
-    expect(testModalOverlayPageForm!.adminDisabled).toBeTruthy();
   });
 });
 

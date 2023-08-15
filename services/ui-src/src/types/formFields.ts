@@ -51,7 +51,12 @@ export interface FormJson {
   heading?: AnyObject;
   options?: AnyObject;
   validation?: AnyObject;
-  adminDisabled?: boolean;
+  /**
+   * False for most forms, including all report forms.
+   * True for the admin banner and dash selector.
+   * Only exists on the UI side; the API is protected by routes.
+   */
+  editableByAdmins?: boolean;
 }
 
 export interface DependentFieldValidation {
