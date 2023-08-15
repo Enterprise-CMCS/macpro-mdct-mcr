@@ -17,7 +17,6 @@ import {
   AnyObject,
   DropdownChoice,
   DropdownOptions,
-  ReportMetadataShape,
   EntityShape,
   InputChangeEvent,
   SelectedOption,
@@ -46,25 +45,18 @@ export const DropdownField = ({
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
-    if (typeof options === "string") {
-      const dynamicOptionValues =
-        options === "copyEligibleReports"
-          ? submittedReportsByState
-          : report?.fieldData[options];
-      if (options === "copyEligibleReports" && dynamicOptionValues) {
-        dropdownOptions = dynamicOptionValues.map(
-          (option: ReportMetadataShape) => ({
-            label:
-              option.programName + " " + convertDateUtcToEt(option.dueDate),
-            value: option.fieldDataId,
-          })
-        );
-      } else if (dynamicOptionValues) {
-        dropdownOptions = dynamicOptionValues.map((option: EntityShape) => ({
+    if (options === "copyEligibleReports") {
+      dropdownOptions =
+        submittedReportsByState?.map((option) => ({
+          label: `${option.programName} ${convertDateUtcToEt(option.dueDate)}`,
+          value: option.fieldDataId!,
+        })) ?? [];
+    } else if (typeof options === "string") {
+      dropdownOptions =
+        report?.fieldData[options]?.map((option: EntityShape) => ({
           label: option.name,
           value: option.id,
-        }));
-      }
+        })) ?? [];
     } else {
       dropdownOptions = options;
     }
