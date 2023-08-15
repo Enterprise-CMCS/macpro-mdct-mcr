@@ -1,7 +1,11 @@
 // types
-import { FormField } from "types";
+import { FormField, AnyObject } from "types";
 // utils
-import { parseFormFieldInfo, renderResponseData } from "./export";
+import {
+  parseFormFieldInfo,
+  renderResponseData,
+  renderDefaultFieldResponse,
+} from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
 const emailInput: FormField = {
@@ -65,5 +69,15 @@ describe("Test parseFormFieldInfo", () => {
     expect(result.number).toEqual(undefined);
     expect(result.label).toEqual(undefined);
     expect(result.hint).toEqual(undefined);
+  });
+});
+
+describe("Test renderDefaultFieldResponse", () => {
+  test("Properly masks field data", () => {
+    const textField = renderDefaultFieldResponse(
+      { props: { mask: "currency" } } as unknown as FormField,
+      "1234" as unknown as AnyObject
+    );
+    expect(textField.props.children).toBe("$1,234");
   });
 });
