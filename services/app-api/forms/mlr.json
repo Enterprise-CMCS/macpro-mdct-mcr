@@ -559,7 +559,8 @@
             "props": {
               "label": "3.1 Member months",
               "mask": "comma-separated",
-              "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank'> 42 CFR § 438.8(b) </a>"
+              "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank'> 42 CFR § 438.8(b) </a>",
+              "decimalPlacesToRoundTo": 0
             }
           },
           {
@@ -570,7 +571,8 @@
               "label": "3.2 Unadjusted MLR",
               "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). Entering '1' will result in 1% instead of 100%. (optional subcomponent of section 3.4 Adjusted MLR)",
               "mask": "percentage",
-              "styleAsOptional": true
+              "styleAsOptional": true,
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -591,7 +593,8 @@
               "label": "3.3 Credibility adjustment",
               "hint": "<p>Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)</p><ul><li><span>Enter 0% if no credibility adjustment is needed.</span></li><li><span>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</span></li><li><span>For fully credible plans, the credibility adjustment should be entered as 0%.</span></li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h) </a>",
               "mask": "percentage",
-              "styleAsOptional": true
+              "styleAsOptional": true,
+              "decimalPlacesToRoundTo": 1
             }
           },
           {
@@ -601,7 +604,8 @@
             "props": {
               "label": "3.4 Adjusted MLR",
               "hint": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h). </a>",
-              "mask": "percentage"
+              "mask": "percentage",
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -657,7 +661,8 @@
                       "props": {
                         "label": "4.2 What is the State minimum MLR requirement?",
                         "mask": "percentage",
-                        "styleAsOptional": true
+                        "styleAsOptional": true,
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {
@@ -714,7 +719,8 @@
                         "label": "4.5 Calculated MLR for remittance purposes",
                         "hint": "Report the calculated MLR for remittance purposes (please enter as a percentage).",
                         "mask": "percentage",
-                        "styleAsOptional": true
+                        "styleAsOptional": true,
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {

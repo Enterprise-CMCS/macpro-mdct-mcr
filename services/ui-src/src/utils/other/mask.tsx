@@ -71,7 +71,7 @@ export function convertToThousandsSeparatedString(
   // If valid, take cleaned value and continue to masking
   let maskValue = cleanedInput.cleanedValue;
 
-  if (fixedDecimalPlaces) {
+  if (fixedDecimalPlaces || fixedDecimalPlaces === 0) {
     // Convert String to a float to begin operation
     const valueAsFloat = parseFloat(maskValue);
 
@@ -128,7 +128,8 @@ export function convertToThousandsSeparatedRatioString(
 // if valid custom mask, return masked value; else return value
 export const applyMask = (
   value: string,
-  maskName?: keyof typeof maskMap | null
+  maskName?: keyof typeof maskMap | null,
+  fixedDecimalPlaces?: number | undefined
 ): MaskedValue => {
   // if maskName is specified as null, bypass all masking and return user-inputted value
   if (maskName === null) return { isValid: false, maskedValue: value };
@@ -138,6 +139,10 @@ export const applyMask = (
     ? maskMap[maskName]
     : convertToThousandsSeparatedString;
 
-  // if currency field, we want to round to 2 decimal places
-  return maskName === "currency" ? maskToApply(value, 2) : maskToApply(value);
+  // currency field defaults to 2, all other fields default to undefined
+  if (typeof fixedDecimalPlaces === "undefined" && maskName === "currency") {
+    fixedDecimalPlaces = 2;
+  }
+
+  return maskToApply(value, fixedDecimalPlaces);
 };

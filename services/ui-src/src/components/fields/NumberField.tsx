@@ -56,7 +56,11 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
+      const maskedFieldValue = applyMask(
+        fieldValue,
+        mask,
+        props?.decimalPlacesToRoundTo
+      ).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -65,7 +69,11 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const formattedHydrationValue = applyMask(hydrationValue, mask);
+        const formattedHydrationValue = applyMask(
+          hydrationValue,
+          mask,
+          props?.decimalPlacesToRoundTo
+        );
         const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
 
@@ -91,7 +99,11 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const formattedFieldValue = applyMask(value, mask);
+    const formattedFieldValue = applyMask(
+      value,
+      mask,
+      props?.decimalPlacesToRoundTo
+    );
     const maskedFieldValue = formattedFieldValue.maskedValue;
 
     // this value eventually gets sent to the database, so we need to make it parseable as a number again
