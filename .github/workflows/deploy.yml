@@ -102,14 +102,12 @@ jobs:
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
-           ulimit -Sn
-           ulimit -Hn
           ./scripts/deploy.sh $STAGE_PREFIX$branch_name
-      - name: deploy-2
-        run: |
-          # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
-          # This can optionally be set as an GitHub Actions Secret
-          ./scripts/deploy-2.sh $STAGE_PREFIX$branch_name
+      # - name: deploy-2
+      #   run: |
+      #     # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
+      #     # This can optionally be set as an GitHub Actions Secret
+      #     ./scripts/deploy-2.sh $STAGE_PREFIX$branch_name
       - id: endpoint
         run: echo ::set-output name=application_endpoint::$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
         working-directory: services
