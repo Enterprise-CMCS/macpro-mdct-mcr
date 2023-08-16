@@ -111,7 +111,7 @@ describe("Test mask types", () => {
 
   test("Check if currency passed for mask returns unmasked value", () => {
     for (let testCase of currencyTestCases) {
-      expect(applyMask(testCase.test, "currency").maskedValue).toEqual(
+      expect(applyMask(testCase.test, "currency", 2).maskedValue).toEqual(
         testCase.expected
       );
     }

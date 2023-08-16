@@ -48,7 +48,12 @@ const commaMaskedNumberFieldComponent = (
 );
 
 const currencyMaskedNumberFieldComponent = (
-  <NumberField name="testNumberField" label="" mask="currency" />
+  <NumberField
+    name="testNumberField"
+    label=""
+    mask="currency"
+    decimalPlacesToRoundTo={2}
+  />
 );
 
 const percentageMaskedNumberFieldComponent = (
@@ -233,6 +238,7 @@ describe("Test NumberField hydration functionality", () => {
       name="testNumberField"
       label=""
       mask="currency"
+      decimalPlacesToRoundTo={2}
       hydrate={mockHydrationValue}
       clear={false}
     />
