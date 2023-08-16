@@ -69,6 +69,18 @@ const dropdownComponentWithDynamicOptions = (
   </RouterWrappedComponent>
 );
 
+const dropdownComponentWithYoYCopy = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <DropdownField
+        name="testDropdown"
+        label="test-dropdown-label"
+        options={"copyEligibleReports"}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 describe("Test DropdownField basic functionality", () => {
   beforeEach(() => {
     mockedUseUser.mockReturnValue(mockStateUser);
@@ -264,5 +276,15 @@ describe("Test DropdownField accessibility", () => {
     const { container } = render(dropdownComponentWithOptions);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+});
+
+describe("Test YoY Copy options dropdown menu", () => {
+  test("Populates with reports", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(dropdownComponentWithYoYCopy);
+    const dropdown = screen.getByLabelText("test-dropdown-label");
+    expect(dropdown.children.length).toEqual(4);
   });
 });
