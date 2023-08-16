@@ -183,7 +183,7 @@ export const getEntriesToClear = (
   // Find what fields weren't directly entered by the user to send back to be cleared
   const entriesToClear = flattenedFormFields.filter((formField) => {
     return (
-      !enteredDataFieldIds.includes(formField.id) && formField?.props?.disabled
+      !enteredDataFieldIds.includes(formField.id) && !formField?.props?.disabled
     );
   });
   // Return array of field ID's
