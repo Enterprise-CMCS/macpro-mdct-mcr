@@ -63,7 +63,7 @@ const dropdownComponentWithDynamicOptions = (
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
-        options={"plans"}
+        options="plans"
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -75,7 +75,7 @@ const dropdownComponentWithYoYCopy = (
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
-        options={"copyEligibleReports"}
+        options="copyEligibleReports"
       />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -285,6 +285,8 @@ describe("Test YoY Copy options dropdown menu", () => {
     mockGetValues(undefined);
     render(dropdownComponentWithYoYCopy);
     const dropdown = screen.getByLabelText("test-dropdown-label");
-    expect(dropdown.children.length).toEqual(4);
+    expect(dropdown.children.length).toEqual(
+      mockMcparReportContext.submittedReportsByState.length + 1
+    );
   });
 });
