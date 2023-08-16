@@ -71,7 +71,7 @@ export function convertToThousandsSeparatedString(
   // If valid, take cleaned value and continue to masking
   let maskValue = cleanedInput.cleanedValue;
 
-  if (fixedDecimalPlaces) {
+  if (fixedDecimalPlaces || fixedDecimalPlaces === 0) {
     // Convert String to a float to begin operation
     const valueAsFloat = parseFloat(maskValue);
 
@@ -81,10 +81,6 @@ export function convertToThousandsSeparatedString(
       minimumFractionDigits: fixedDecimalPlaces,
       maximumFractionDigits: fixedDecimalPlaces,
     });
-    return { isValid: true, maskedValue: maskValue };
-  } else if (fixedDecimalPlaces === 0) {
-    const valueAsInt = parseInt(maskValue);
-    maskValue = Number(valueAsInt).toLocaleString("en");
     return { isValid: true, maskedValue: maskValue };
   }
 
