@@ -21,6 +21,7 @@ export const EntityDetailsOverlay = ({
   onSubmit,
   selectedEntity,
   disabled,
+  setEntering,
   submitting,
   validateOnRender,
 }: Props) => {
@@ -37,6 +38,8 @@ export const EntityDetailsOverlay = ({
       setSelectedEntity(undefined);
     };
   }, [entityType, selectedEntity]);
+
+  setEntering(false);
 
   // Display Variables
   const {
@@ -117,6 +120,7 @@ interface Props {
   onSubmit: Function;
   selectedEntity: EntityShape;
   disabled: boolean;
+  setEntering: Function;
   submitting?: boolean;
   validateOnRender?: boolean;
 }

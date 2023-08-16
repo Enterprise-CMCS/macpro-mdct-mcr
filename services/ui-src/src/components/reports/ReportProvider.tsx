@@ -132,8 +132,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const archiveReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await archiveReportRequest(reportKeys);
-      hydrateAndSetReport(result);
+      await archiveReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
