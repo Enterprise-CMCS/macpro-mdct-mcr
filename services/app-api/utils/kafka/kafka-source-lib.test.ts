@@ -154,7 +154,7 @@ describe("Test Kafka Lib", () => {
         },
         Credentials: {
           AccessKeyId: "mockAccessKeyId",
-          SecretAccessKey: "mockSecretAccessKey",
+          SecretAccessKey: "mockSecretAccessKey", //pragma: allowlist secret
           SessionToken: "mockSessionToken",
           Expiration: new Date(),
         },
@@ -179,7 +179,7 @@ describe("Test Kafka Lib", () => {
         },
         Credentials: {
           AccessKeyId: "mockAccessKeyId",
-          SecretAccessKey: "mockSecretAccessKey",
+          SecretAccessKey: "mockSecretAccessKey", //pragma: allowlist secret
           SessionToken: "mockSessionToken",
           Expiration: new Date(),
         },
@@ -209,7 +209,7 @@ describe("Test Kafka Lib", () => {
         },
         Credentials: {
           AccessKeyId: "mockAccessKeyId",
-          SecretAccessKey: "mockSecretAccessKey",
+          SecretAccessKey: "mockSecretAccessKey", //pragma: allowlist secret
           SessionToken: "mockSessionToken",
           Expiration: new Date(),
         },
@@ -241,7 +241,7 @@ describe("Test Kafka Lib", () => {
         },
         Credentials: {
           AccessKeyId: "mockAccessKeyId",
-          SecretAccessKey: "mockSecretAccessKey",
+          SecretAccessKey: "mockSecretAccessKey", //pragma: allowlist secret
           SessionToken: "mockSessionToken",
           Expiration: new Date(),
         },
