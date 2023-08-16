@@ -52,7 +52,7 @@ jobs:
           path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
 
   deploy:
-     needs: unit-tests
+    needs: unit-tests
     runs-on: ubuntu-latest
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
