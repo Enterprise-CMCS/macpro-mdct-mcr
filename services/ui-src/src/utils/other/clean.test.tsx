@@ -1,4 +1,8 @@
-import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
+import {
+  cleanStandardNumericalInput,
+  cleanRatioInput,
+  makeStringParseableForDatabase,
+} from "./clean";
 
 const cleanStandardNumericalInputTestCases = [
   // valid input, cleaned
@@ -71,11 +75,19 @@ describe("Test checkStandardNumberInputAgainstRegexes", () => {
 });
 
 describe("validateRatioNumberInputTestCases", () => {
-  test("Ratio strings are cleaned correctly", () => {
+  test("Ratio strings are cleaned appropriately", () => {
     for (let testCase of cleanRatioInputTestCases) {
       expect(cleanRatioInput(testCase.test).cleanedValue).toEqual(
         testCase.expected
       );
     }
+  });
+});
+
+describe("validateMakeStringParseableForDatabase", () => {
+  test("null mask returns value as is", () => {
+    expect(makeStringParseableForDatabase("1,234asfasda", null)).toEqual(
+      "1,234asfasda"
+    );
   });
 });

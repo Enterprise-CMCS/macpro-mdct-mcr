@@ -60,7 +60,8 @@ export const checkASideOfRatioAgainstRegexes = (value: string): boolean => {
   if (
     !validCharactersRatioNumberRegex.test(value) ||
     !atMost1DecimalPointRegex.test(value) ||
-    !validCommaLocationRegex.test(value)
+    !validCommaLocationRegex.test(value) ||
+    !validNegativeSignPlacementRegex.test(value)
   )
     return false;
   return true;

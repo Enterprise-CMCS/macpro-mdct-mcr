@@ -1,4 +1,4 @@
-import { FormJson } from "./formFields";
+import { FormJson, ModalOverlayReportPageShape } from "./formFields";
 import { AnyObject, CompletionData, CustomHtmlElement, State } from "./other";
 
 // REPORT STRUCTURE
@@ -8,10 +8,13 @@ export interface ReportJson {
   type?: string;
   name: string;
   basePath: string;
-  adminDisabled?: boolean;
   routes: ReportRoute[];
-  flatRoutes?: ReportRoute[];
-  validationSchema: AnyObject;
+  validationSchema?: AnyObject;
+  /**
+   * The validationJson property is populated at the moment any form template
+   * is stored in S3 for the first time. It will be populated from that moment on.
+   */
+  validationJson?: AnyObject;
 }
 
 export type ReportRoute = ReportRouteWithForm | ReportRouteWithoutForm;
@@ -57,15 +60,6 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   modalForm: FormJson;
   drawerForm: FormJson;
   overlayForm?: never;
-  form?: never;
-}
-
-export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
-  entityType: string;
-  verbiage: ModalOverlayReportPageVerbiage;
-  modalForm: FormJson;
-  overlayForm?: FormJson;
-  drawerForm?: never;
   form?: never;
 }
 
@@ -174,4 +168,19 @@ export function isMLRReportMetadata(
     (report as MLRReportMetadata).submissionCount !== undefined &&
     (report as MLRReportMetadata).previousRevisions !== undefined
   );
+}
+
+export enum ReportType {
+  MCPAR = "MCPAR",
+  MLR = "MLR",
+  NAAAR = "NAAAR",
+}
+/**
+ * Check if unknown value is a report type
+ *
+ * @param reportType possible report type value
+ * @returns type assertion for value
+ */
+export function isReportType(reportType: unknown): reportType is ReportType {
+  return Object.values(ReportType).includes(reportType as ReportType);
 }
