@@ -46,9 +46,14 @@ export const ReportPageWrapper = () => {
     }
   }, [report, reportId, reportState]);
 
+  const showSidebar = () => {
+    if (sidebarHidden) setSidebarHidden(false);
+  };
+
   const renderPageSection = (route: ReportRoute) => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
+        showSidebar();
         return (
           <DrawerReportPage
             route={route as DrawerReportPageShape}
@@ -56,6 +61,7 @@ export const ReportPageWrapper = () => {
           />
         );
       case PageTypes.MODAL_DRAWER:
+        showSidebar();
         return (
           <ModalDrawerReportPage
             route={route as ModalDrawerReportPageShape}
@@ -71,8 +77,10 @@ export const ReportPageWrapper = () => {
           />
         );
       case PageTypes.REVIEW_SUBMIT:
+        showSidebar();
         return <ReviewSubmitPage />;
       default:
+        showSidebar();
         return (
           <StandardReportPage
             route={route as StandardReportPageShape}
