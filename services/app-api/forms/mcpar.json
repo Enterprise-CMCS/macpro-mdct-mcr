@@ -712,7 +712,7 @@
                   "label": "C1.I.5 Program enrollment",
                   "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year.",
                   "mask": "comma-separated",
-                  "decimalPlacesToRoundTo": 0  
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -3046,8 +3046,7 @@
                 "props": {
                   "label": "D3.VIII.6 Sanction amount",
                   "hint": "Add a dollar amount. Enter N/A for sanctions that do not carry financial penalties.",
-                  "mask": "currency",
-                  "decimalPlacesToRoundTo": 2
+                  "mask": "currency"
                 }
               },
               {
