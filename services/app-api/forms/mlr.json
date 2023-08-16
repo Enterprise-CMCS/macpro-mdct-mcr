@@ -450,7 +450,7 @@
               "hint": "Enter incurred claims (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)' target='_blank'>42 CFR § 438.8(e)(2)</a>",
               "mask": "currency",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -462,7 +462,7 @@
               "hint": "Enter activities that improve health care quality (optional subcomponent of section 1.3 MLR numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(3)' target='_blank'> 42 CFR § 438.8(e)(3) </a>",
               "mask": "currency",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -473,7 +473,7 @@
               "label": "1.3 MLR numerator",
               "hint": "Enter the required MLR numerator dollar value. If the optional subcomponents are reported in 1.1-1.2, states must still report the total MLR numerator (i.e., subcomponents will not automatically sum to numerator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(1)' target='_blank'>42 CFR § 438.8(e)(1)</a>",
               "mask": "currency",
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -495,7 +495,7 @@
               "hint": "Enter the non-claims costs value. This amount is not included in the MLR numerator. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(e)(2)(v)(A)' target='_blank'>42 CFR § 438.8(e)(2)(v)(A)</a>",
               "mask": "currency",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -515,7 +515,7 @@
               "hint": "Enter premium revenue (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(2)' target='_blank'> 42 CFR § 438.8(f)(2) </a>",
               "mask": "currency",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -527,7 +527,7 @@
               "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(3)' target='_blank'> 42 CFR § 438.8(f)(3) </a>",
               "mask": "currency",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -538,7 +538,7 @@
               "label": "2.3 MLR denominator",
               "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank'> 42 CFR § 438.8(f)(1) </a>",
               "mask": "currency",
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -567,7 +567,7 @@
               "label": "3.1 Member months",
               "mask": "comma-separated",
               "hint": "Enter the required number of member months. <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(b)' target='_blank'> 42 CFR § 438.8(b) </a>",
-              "roundingTo": 0
+              "decimalPlacesToRoundTo": 0
             }
           },
           {
@@ -579,7 +579,7 @@
               "hint": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). Entering '1' will result in 1% instead of 100%. (optional subcomponent of section 3.4 Adjusted MLR)",
               "mask": "percentage",
               "styleAsOptional": true,
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -601,7 +601,7 @@
               "hint": "<p>Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)</p><ul><li><span>Enter 0% if no credibility adjustment is needed.</span></li><li><span>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</span></li><li><span>For fully credible plans, the credibility adjustment should be entered as 0%.</span></li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h) </a>",
               "mask": "percentage",
               "styleAsOptional": true,
-              "roundingTo": 1
+              "decimalPlacesToRoundTo": 1
             }
           },
           {
@@ -612,7 +612,7 @@
               "label": "3.4 Adjusted MLR",
               "hint": "Enter the required percentage. If the optional subcomponents are reported in sections 3.2 - 3.3, states must still report the total adjusted MLR value (i.e., subcomponents will not automatically calculate adjusted MLR). For information on credibility adjustments see <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h). </a>",
               "mask": "percentage",
-              "roundingTo": 2
+              "decimalPlacesToRoundTo": 2
             }
           },
           {
@@ -669,7 +669,7 @@
                         "label": "4.2 What is the State minimum MLR requirement?",
                         "mask": "percentage",
                         "styleAsOptional": true,
-                        "roundingTo": 2
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {
@@ -727,7 +727,7 @@
                         "hint": "Report the calculated MLR for remittance purposes (please enter as a percentage).",
                         "mask": "percentage",
                         "styleAsOptional": true,
-                        "roundingTo": 2
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {
@@ -743,7 +743,7 @@
                         "label": "4.6.1 Remittance dollar amount owed for MLR reporting period",
                         "hint": "Report the amount of remittances owed by this plan. Enter a zero (0) value if no remittance was owed by a plan. Enter a positive value if a remittance was collected by the state.",
                         "mask": "currency",
-                        "roundingTo": 2
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {
@@ -760,7 +760,7 @@
                         "hint": "Report the amount of the payment due to this plan as a positive value, if applicable. This payment is specific to losses reimbursed under a minimum MLR arrangement; do not report the results of other risk corridors, reinsurance or other risk mitigation arrangements. If states do not make payments to plans for losses under a minimum MLR arrangement, states may enter $0.",
                         "mask": "currency",
                         "styleAsOptional": true,
-                        "roundingTo": 2
+                        "decimalPlacesToRoundTo": 2
                       }
                     },
                     {

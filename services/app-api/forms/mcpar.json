@@ -235,7 +235,7 @@
                   "label": "B.I.1 Statewide Medicaid enrollment",
                   "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year.</br>Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
                   "mask": "comma-separated",
-                  "roundingTo": 0
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -246,7 +246,7 @@
                   "label": "B.I.2 Statewide Medicaid managed care enrollment",
                   "hint": "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year.</br>Include enrollees in all programs, and count each person only once, even if they are enrolled in more than one managed care program or more than one managed care plan.",
                   "mask": "comma-separated",
-                  "roundingTo": 0
+                  "decimalPlacesToRoundTo": 0
                 }
               }
             ]
@@ -712,7 +712,7 @@
                   "label": "C1.I.5 Program enrollment",
                   "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year.",
                   "mask": "comma-separated",
-                  "roundingTo": 0  
+                  "decimalPlacesToRoundTo": 0  
                 }
               },
               {
@@ -1499,7 +1499,7 @@
                   "label": "D1.I.1 Plan enrollment",
                   "hint": "What is the total number of individuals enrolled in each plan as of the first day of the last month of the reporting year?",
                   "mask": "comma-separated",
-                  "roundingTo": 0
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -1562,7 +1562,8 @@
                 "props": {
                   "label": "D1.II.1a Medical Loss Ratio (MLR)",
                   "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR.",
-                  "mask": "percentage"
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
                 }
               },
               {
@@ -1778,7 +1779,7 @@
                       "label": "D1.IV.1 Appeals resolved (at the plan level)",
                       "hint": "Enter the total number of appeals resolved as of the first day of the last month of the reporting year.</p>An appeal is \"resolved\" at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1789,7 +1790,7 @@
                       "label": "D1.IV.2 Active appeals",
                       "hint": "Enter the total number of appeals still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1800,7 +1801,7 @@
                       "label": "D1.IV.3 Appeals filed on behalf of LTSS users",
                       "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1811,7 +1812,7 @@
                       "label": "D1.IV.4 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed an appeal",
                       "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1822,7 +1823,7 @@
                       "label": "D1.IV.5a Standard appeals for which timely resolution was provided",
                       "hint": "Enter the total number of standard appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1833,7 +1834,7 @@
                       "label": "D1.IV.5b Expedited appeals for which timely resolution was provided",
                       "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1844,7 +1845,7 @@
                       "label": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of authorization for a service not yet rendered or limited authorization of a service.</p>(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1855,7 +1856,7 @@
                       "label": "D1.IV.6b Resolved appeals related to reduction, suspension, or termination of a previously authorized service",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's reduction, suspension, or termination of a previously authorized service.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1866,7 +1867,7 @@
                       "label": "D1.IV.6c Resolved appeals related to payment denial",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial, in whole or in part, of payment for a service that was already rendered.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1877,7 +1878,7 @@
                       "label": "D1.IV.6d Resolved appeals related to service timeliness",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to provide services in a timely manner (as defined by the state).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1888,7 +1889,7 @@
                       "label": "D1.IV.6e Resolved appeals related to lack of timely plan response to an appeal or grievance",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1899,7 +1900,7 @@
                       "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee's right to request out-of-network care",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1910,7 +1911,7 @@
                       "label": "D1.IV.6g Resolved appeals related to denial of an enrollee's request to dispute financial liability",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to dispute a financial liability.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -1965,7 +1966,7 @@
                       "label": "D1.IV.7a Resolved appeals related to general inpatient services",
                       "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.</p><p>Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter \"N/A\".</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1976,7 +1977,7 @@
                       "label": "D1.IV.7b Resolved appeals related to general outpatient services",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1987,7 +1988,7 @@
                       "label": "D1.IV.7c Resolved appeals related to inpatient behavioral health services",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover inpatient behavioral health services, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -1998,7 +1999,7 @@
                       "label": "D1.IV.7d Resolved appeals related to outpatient behavioral health services",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover outpatient behavioral health services, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2009,7 +2010,7 @@
                       "label": "D1.IV.7e Resolved appeals related to covered outpatient prescription drugs",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover outpatient prescription drugs, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2020,7 +2021,7 @@
                       "label": "D1.IV.7f Resolved appeals related to skilled nursing facility (SNF) services",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover skilled nursing services, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2031,7 +2032,7 @@
                       "label": "D1.IV.7g Resolved appeals related to long-term services and supports (LTSS)",
                       "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter \"N/A\".</p><p(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2042,7 +2043,7 @@
                       "label": "D1.IV.7h Resolved appeals related to dental services",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover dental services, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2053,7 +2054,7 @@
                       "label": "D1.IV.7i Resolved appeals related to non-emergency medical transportation (NEMT)",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover NEMT, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2064,7 +2065,7 @@
                       "label": "D1.IV.7j Resolved appeals related to other service types",
                       "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -2115,7 +2116,7 @@
                       "label": "D1.IV.8a State Fair Hearing requests",
                       "hint": "Enter the total number of requests for a State Fair Hearing filed during the reporting year by plan that issued the adverse benefit determination.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2126,7 +2127,7 @@
                       "label": "D1.IV.8b State Fair Hearings resulting in a favorable decision for the enrollee",
                       "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were partially or fully favorable to the enrollee.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2137,7 +2138,7 @@
                       "label": "D1.IV.8c State Fair Hearings resulting in an adverse decision for the enrollee",
                       "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were adverse for the enrollee.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2148,7 +2149,7 @@
                       "label": "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",
                       "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) prior to reaching a decision.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2159,7 +2160,7 @@
                       "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
                       "hint": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2170,7 +2171,7 @@
                       "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
                       "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -2221,7 +2222,7 @@
                       "label": "D1.IV.10 Grievances resolved",
                       "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year.</p><p>A grievance is \"resolved\" when it has reached completion and been closed by the plan.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2232,7 +2233,7 @@
                       "label": "D1.IV.11 Active grievances",
                       "hint": "Enter the total number of grievances still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2243,7 +2244,7 @@
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
                       "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2254,7 +2255,7 @@
                       "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
                       "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been \"related\" to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter \"N/A\" in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter \"N/A\" in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2265,7 +2266,7 @@
                       "label": "D1.IV.14 Number of grievances for which timely resolution was provided",
                       "hint": "<p>Enter the number of grievances for which timely resolution was provided by plan during the reporting period.</p><p>See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -2326,7 +2327,7 @@
                       "label": "D1.IV.15a Resolved grievances related to general inpatient services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2337,7 +2338,7 @@
                       "label": "D1.IV.15b Resolved grievances related to general outpatient services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2348,7 +2349,7 @@
                       "label": "D1.IV.15c Resolved grievances related to inpatient behavioral health services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2359,7 +2360,7 @@
                       "label": "D1.IV.15d Resolved grievances related to outpatient behavioral health services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2370,7 +2371,7 @@
                       "label": "D1.IV.15e Resolved grievances related to coverage of outpatient prescription drugs",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2381,7 +2382,7 @@
                       "label": "D1.IV.15f Resolved grievances related to skilled nursing facility (SNF) services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2392,7 +2393,7 @@
                       "label": "D1.IV.15g Resolved grievances related to long-term services and supports (LTSS)",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2403,7 +2404,7 @@
                       "label": "D1.IV.15h Resolved grievances related to dental services",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2414,7 +2415,7 @@
                       "label": "D1.IV.15i Resolved grievances related to non-emergency medical transportation (NEMT)",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2425,7 +2426,7 @@
                       "label": "D1.IV.15j Resolved grievances related to other service types",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i, enter \"N/A\".",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -2486,7 +2487,7 @@
                       "label": "D1.IV.16a Resolved grievances related to plan or provider customer service",
                       "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.</p><p>Customer service grievances include complaints about interactions with the plan's Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2497,7 +2498,7 @@
                       "label": "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
                       "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.</p><p>Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2508,7 +2509,7 @@
                       "label": "D1.IV.16c Resolved grievances related to access to care/services from plan or provider",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.</p><p>Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2519,7 +2520,7 @@
                       "label": "D1.IV.16d Resolved grievances related to quality of care",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.</p><p>Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2530,7 +2531,7 @@
                       "label": "D1.IV.16e Resolved grievances related to plan communications",
                       "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.</p><p>Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee's access to or the accessibility of enrollee materials or plan communications.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2541,7 +2542,7 @@
                       "label": "D1.IV.16f Resolved grievances related to payment or billing issues",
                       "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason related to payment or billing issues.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2552,7 +2553,7 @@
                       "label": "D1.IV.16g Resolved grievances related to suspected fraud",
                       "hint": "Enter the total number of grievances resolved during the reporting year that were related to suspected fraud.</p><p>Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2563,7 +2564,7 @@
                       "label": "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
                       "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to abuse, neglect or exploitation.</p><p>Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2574,7 +2575,7 @@
                       "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a service authorization or appeal (including requests to expedite or extend appeals)",
                       "hint": "Enter the total number of grievances resolved during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2585,7 +2586,7 @@
                       "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
                       "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to the plan's denial of an enrollee's request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
@@ -2596,7 +2597,7 @@
                       "label": "D1.IV.16k Resolved grievances filed for other reasons",
                       "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason other than the reasons listed above.",
                       "mask": "comma-separated",
-                      "roundingTo": 0
+                      "decimalPlacesToRoundTo": 0
                     }
                   }
                 ]
@@ -3046,7 +3047,7 @@
                   "label": "D3.VIII.6 Sanction amount",
                   "hint": "Add a dollar amount. Enter N/A for sanctions that do not carry financial penalties.",
                   "mask": "currency",
-                  "roundingTo": 2
+                  "decimalPlacesToRoundTo": 2
                 }
               },
               {
@@ -3166,7 +3167,7 @@
                   "label": "D1.X.2 Count of opened program integrity investigations",
                   "hint": "How many program integrity investigations have been opened by the plan in the past year?",
                   "mask": "comma-separated",
-                  "roundingTo": 0
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -3187,7 +3188,7 @@
                   "label": "D1.X.4 Count of resolved program integrity investigations",
                   "hint": "How many program integrity investigations have been resolved by the plan in the past year?",
                   "mask": "comma-separated",
-                  "roundingTo": 0
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -3224,7 +3225,7 @@
                             "label": "D1.X.7 Count of program integrity referrals to the state",
                             "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made.",
                             "mask": "comma-separated",
-                            "roundingTo": 0
+                            "decimalPlacesToRoundTo": 0
                           }
                         }
                       ]
@@ -3245,7 +3246,7 @@
                             "label": "D1.X.7 Count of program integrity referrals to the state",
                             "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of unduplicated referrals",
                             "mask": "comma-separated",
-                            "roundingTo": 0
+                            "decimalPlacesToRoundTo": 0
                           }
                         }
                       ]
@@ -3266,7 +3267,7 @@
                             "label": "D1.X.7 Count of program integrity referrals to the state",
                             "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made to the SMA and the MFCU in aggregate.",
                             "mask": "comma-separated",
-                            "roundingTo": 0
+                            "decimalPlacesToRoundTo": 0
                           }
                         }
                       ]

@@ -82,6 +82,10 @@ export function convertToThousandsSeparatedString(
       maximumFractionDigits: fixedDecimalPlaces,
     });
     return { isValid: true, maskedValue: maskValue };
+  } else if (fixedDecimalPlaces === 0) {
+    const valueAsInt = parseInt(maskValue);
+    maskValue = Number(valueAsInt).toLocaleString("en");
+    return { isValid: true, maskedValue: maskValue };
   }
 
   // Add in commas to delineate thousands (if needed)
@@ -128,7 +132,8 @@ export function convertToThousandsSeparatedRatioString(
 // if valid custom mask, return masked value; else return value
 export const applyMask = (
   value: string,
-  maskName?: keyof typeof maskMap | null
+  maskName?: keyof typeof maskMap | null,
+  fixedDecimalPlaces?: number | undefined
 ): MaskedValue => {
   // if maskName is specified as null, bypass all masking and return user-inputted value
   if (maskName === null) return { isValid: false, maskedValue: value };
@@ -138,6 +143,5 @@ export const applyMask = (
     ? maskMap[maskName]
     : convertToThousandsSeparatedString;
 
-  // if currency field, we want to round to 2 decimal places
-  return maskName === "currency" ? maskToApply(value, 2) : maskToApply(value);
+  return maskToApply(value, fixedDecimalPlaces);
 };
