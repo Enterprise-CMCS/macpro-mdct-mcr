@@ -13,46 +13,46 @@ permissions:
   actions: read
 
 jobs:
-  # unit-tests:
-  #   name: Unit Tests
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: set variable values
-  #       run: ./.github/build-vars.sh set_values
-  #       env:
-  #         CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version-file: ".nvmrc"
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: |
-  #           **/node_modules
-  #           ~/.cache/Cypress
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-  #     - name: set path
-  #       run: |
-  #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-  #     - name: run unit tests
-  #       run: ./scripts/test-unit.sh
-  #     - name: publish test coverage to code climate
-  #       if: env.CODE_CLIMATE_ID != ''
-  #       uses: paambaati/codeclimate-action@v2.7.5
-  #       env:
-  #         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
-  #       with:
-  #         coverageLocations: |
-  #           ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
-  #     - name: Store unit test results
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: unit_test_results
-  #         path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: set variable values
+        run: ./.github/build-vars.sh set_values
+        env:
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to code climate
+        if: env.CODE_CLIMATE_ID != ''
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        with:
+          coverageLocations: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+      - name: Store unit test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit_test_results
+          path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
 
   deploy:
-    # needs: unit-tests
+     needs: unit-tests
     runs-on: ubuntu-latest
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
@@ -98,16 +98,11 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: deploy-1
+      - name: deploy
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
           ./scripts/deploy.sh $STAGE_PREFIX$branch_name
-      # - name: deploy-2
-      #   run: |
-      #     # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
-      #     # This can optionally be set as an GitHub Actions Secret
-      #     ./scripts/deploy-2.sh $STAGE_PREFIX$branch_name
       - id: endpoint
         run: echo ::set-output name=application_endpoint::$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
         working-directory: services
