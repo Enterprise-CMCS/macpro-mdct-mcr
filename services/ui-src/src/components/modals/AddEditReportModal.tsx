@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 // components
 import { Form, Modal, ReportContext } from "components";
-import { Spinner } from "@cmsgov/design-system";
+import { Spinner } from "@chakra-ui/react";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
-import { AnyObject, FormJson, ReportJson, ReportStatus } from "types";
+import { AnyObject, FormJson, ReportStatus, ReportType } from "types";
 import { States } from "../../constants";
 import {
   calculateDueDate,
@@ -14,11 +14,11 @@ import {
   convertDateUtcToEt,
   useUser,
 } from "utils";
+import { getLatestFormTemplate } from "utils/other/formTemplate";
 
 export const AddEditReportModal = ({
   activeState,
   selectedReport,
-  formTemplate,
   reportType,
   modalDisclosure,
 }: Props) => {
@@ -46,6 +46,7 @@ export const AddEditReportModal = ({
     const reportingPeriodEndDate = convertDateEtToUtc(
       formData["reportingPeriodEndDate"]
     );
+    const formTemplate = getLatestFormTemplate(ReportType.MCPAR);
 
     return {
       metadata: {
@@ -68,6 +69,8 @@ export const AddEditReportModal = ({
   // MLR report payload
   const prepareMlrPayload = (formData: any) => {
     const programName = formData["programName"];
+    const formTemplate = getLatestFormTemplate(ReportType.MLR);
+
     return {
       metadata: {
         programName: programName,
@@ -100,13 +103,15 @@ export const AddEditReportModal = ({
         state: activeState,
         id: selectedReport.id,
       };
-
       // edit existing report
       await updateReport(reportKeys, {
         ...dataToWrite,
         metadata: {
           ...dataToWrite.metadata,
-          status: ReportStatus.IN_PROGRESS,
+          locked: undefined,
+          status: reportType !== "MLR" ? ReportStatus.IN_PROGRESS : undefined,
+          submissionCount: undefined,
+          previousRevisions: undefined,
         },
       });
     } else {
@@ -134,7 +139,6 @@ export const AddEditReportModal = ({
                 ]
               : undefined,
         },
-        formTemplate,
       });
     }
     await fetchReportsByState(reportType, activeState);
@@ -149,7 +153,7 @@ export const AddEditReportModal = ({
       modalDisclosure={modalDisclosure}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
-        actionButtonText: submitting ? <Spinner size="small" /> : "Save",
+        actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
       }}
     >
@@ -159,6 +163,8 @@ export const AddEditReportModal = ({
         formJson={form}
         formData={selectedReport?.fieldData}
         onSubmit={writeReport}
+        validateOnRender={false}
+        dontReset={true}
       />
     </Modal>
   );
@@ -166,7 +172,6 @@ export const AddEditReportModal = ({
 
 interface Props {
   activeState: string;
-  formTemplate: ReportJson;
   reportType: string;
   selectedReport?: AnyObject;
   modalDisclosure: {

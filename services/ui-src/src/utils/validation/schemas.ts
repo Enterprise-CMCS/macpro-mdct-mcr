@@ -1,13 +1,10 @@
-import {
-  array,
-  boolean,
-  mixed,
-  number as numberSchema,
-  object,
-  string,
-} from "yup";
+import { array, boolean, mixed, object, string } from "yup";
 import { validationErrors as error } from "verbiage/errors";
 import { Choice } from "types";
+import {
+  checkStandardNumberInputAgainstRegexes,
+  checkRatioInputAgainstRegexes,
+} from "utils/other/checkInputValidity";
 
 // TEXT - Helpers
 const isWhitespaceString = (value?: string) => value?.trim().length === 0;
@@ -26,33 +23,66 @@ export const textOptional = () => string().typeError(error.INVALID_GENERIC);
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];
 
-const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
-  return numberSchema().transform((_value) => {
-    return Number(value.replace(charsToReplace, ""));
-  });
-};
-
 // NUMBER - Number or Valid Strings
+export const numberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER_OR_NA,
+    test: (value) => {
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isValidNumberValue =
+          checkStandardNumberInputAgainstRegexes(value);
+        return isValidStringValue || isValidNumberValue;
+      } else return true;
+    },
+  });
+
 export const number = () =>
-  string()
+  numberSchema()
     .required(error.REQUIRED_GENERIC)
-    .test({
-      message: error.INVALID_NUMBER_OR_NA,
-      test: (value) => {
-        const validNumberRegex = /[0-9,.]/;
-        if (value) {
-          const isValidStringValue = validNAValues.includes(value);
-          const isValidNumberValue = validNumberRegex.test(value);
-          return isValidStringValue || isValidNumberValue;
-        } else return true;
-      },
-    })
     .test({
       test: (value) => !isWhitespaceString(value),
       message: error.REQUIRED_GENERIC,
     });
 
-export const numberOptional = () => number().notRequired();
+export const numberOptional = () => numberSchema().notRequired().nullable();
+
+const validNumberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER,
+    test: (value) => {
+      return typeof value !== "undefined"
+        ? checkStandardNumberInputAgainstRegexes(value)
+        : false;
+    },
+  });
+
+export const validNumber = () =>
+  validNumberSchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberOptional = () =>
+  validNumberSchema().notRequired().nullable();
+
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
+  validNumber().test({
+    test: (value) => {
+      return parseFloat(value!) >= 1;
+    },
+    message: error.NUMBER_LESS_THAN_ONE,
+  });
+
+// NUMBER NOT LESS THAN ZERO
+export const numberNotLessThanZero = () =>
+  validNumber().test({
+    test: (value) => parseFloat(value!) >= 0,
+    message: error.NUMBER_LESS_THAN_ZERO,
+  });
 
 // Number - Ratio
 export const ratio = () =>
@@ -65,33 +95,7 @@ export const ratio = () =>
     .test({
       message: error.INVALID_RATIO,
       test: (val) => {
-        const replaceCharsRegex = /[,.:]/g;
-        const ratio = val?.split(":");
-
-        // Double check and make sure that a ratio contains numbers on both sides
-        if (
-          !ratio ||
-          ratio.length != 2 ||
-          ratio[0].trim().length == 0 ||
-          ratio[1].trim().length == 0
-        ) {
-          return false;
-        }
-
-        // Check if the left side of the ratio is a valid number
-        const firstTest = valueCleaningNumberSchema(
-          ratio[0],
-          replaceCharsRegex
-        ).isValidSync(val);
-
-        // Check if the right side of the ratio is a valid number
-        const secondTest = valueCleaningNumberSchema(
-          ratio[1],
-          replaceCharsRegex
-        ).isValidSync(val);
-
-        // If both sides are valid numbers, return true!
-        return firstTest && secondTest;
+        return checkRatioInputAgainstRegexes(val).isValid;
       },
     });
 
@@ -115,10 +119,14 @@ export const date = () =>
 
 export const dateOptional = () =>
   string()
-    .typeError(error.INVALID_GENERIC)
+    .nullable()
     .test({
       message: error.INVALID_DATE,
-      test: (value) => dateFormatRegex.test(value!),
+      test: (value) =>
+        value === null ||
+        value === undefined ||
+        isWhitespaceString(value) ||
+        dateFormatRegex.test(value),
     });
 
 export const endDate = (startDateField: string) =>
@@ -147,12 +155,12 @@ export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => boolean();
 
 // RADIO
+export const radioSchema = () =>
+  array().of(object({ key: text(), value: text() }));
 export const radio = () =>
-  array()
-    .min(1, error.REQUIRED_GENERIC)
-    .of(object({ key: text(), value: text() }))
-    .required(error.REQUIRED_GENERIC);
-export const radioOptional = () => radio().notRequired();
+  radioSchema().min(1, error.REQUIRED_GENERIC).required(error.REQUIRED_GENERIC);
+export const radioOptional = () =>
+  radioSchema().min(0, error.REQUIRED_GENERIC).notRequired().nullable();
 
 // DYNAMIC
 export const dynamic = () =>
@@ -176,15 +184,15 @@ export const nested = (
   const fieldTypeMap = {
     array: array(),
     string: string(),
-    date: date(),
     object: object(),
+    date: date(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
   return baseSchema.when(parentFieldName, {
     is: (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key === parentOptionId),
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
     then: () => fieldSchema(), // returns standard field schema (required)
     otherwise: () => baseSchema, // returns not-required Yup base schema
   });

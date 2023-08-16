@@ -4,10 +4,11 @@ import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserRoles } from "../types/types";
+import { UserRoles } from "../types";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
+  "custom:reports": string;
 }
 
 const loadCognitoValues = async () => {
@@ -91,4 +92,32 @@ export const hasPermissions = (
   }
 
   return isAllowed;
+};
+
+export const hasReportAccess = (
+  event: APIGatewayProxyEvent,
+  reportType: string
+) => {
+  let hasAccess = false;
+  // decode the idToken
+  if (event?.headers["x-api-key"]) {
+    const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
+    const idmUserRoles = decoded["custom:cms_roles"];
+    const isStateUser = idmUserRoles
+      ?.split(",")
+      .find((role) => role === "mdctmcr-state-user") as UserRoles;
+
+    // check report access for state users only
+    if (!isStateUser) {
+      return true;
+    }
+    const reports = decoded["custom:reports"];
+    const allowedReports = reports
+      ?.split(",")
+      .find((report: string) => report.includes(reportType)) as string;
+    if (allowedReports) {
+      hasAccess = true;
+    }
+  }
+  return hasAccess;
 };

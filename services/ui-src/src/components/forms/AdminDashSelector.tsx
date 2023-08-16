@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { Form } from "components";
+import { Form, ReportContext } from "components";
 // types
 import { AnyObject, FormJson, InputChangeEvent } from "types";
 // form
@@ -12,11 +12,11 @@ import formJson from "forms/adminDashSelector/adminDashSelector";
 import { useUser } from "utils";
 
 export const AdminDashSelector = ({ verbiage }: Props) => {
+  const { reportsByState, clearReportsByState } = useContext(ReportContext);
   const navigate = useNavigate();
   const [reportSelected, setReportSelected] = useState<boolean>(false);
 
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
+  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
 
   // create radio options
   const reportChoices = [
@@ -41,6 +41,12 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   // add validation to formJson
   const form: FormJson = formJson;
 
+  useEffect(() => {
+    if (reportsByState) {
+      clearReportsByState();
+    }
+  }, []);
+
   const onChange = (event: InputChangeEvent) => {
     if (event.target.name === "report") {
       setReportSelected(true);
@@ -52,7 +58,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
     selectedReport = selectedReport.replace("report-", "").toLowerCase();
     localStorage.setItem("selectedReportType", selectedReport);
 
-    if (userIsAdmin || userIsApprover || userIsHelpDeskUser) {
+    if (userIsAdmin || userIsReadOnly) {
       const selectedState = formData["state"].value;
       localStorage.setItem("selectedState", selectedState);
     }
@@ -70,6 +76,8 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
         formJson={form}
         onSubmit={onSubmit}
         onChange={onChange}
+        validateOnRender={false}
+        dontReset={false}
       />
       <Flex sx={sx.navigationButton}>
         <Button type="submit" form={formJson.id} isDisabled={!reportSelected}>

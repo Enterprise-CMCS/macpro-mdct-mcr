@@ -1,24 +1,30 @@
 import handler from "../handler-lib";
+import KSUID from "ksuid";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-import {
-  DynamoGet,
-  DynamoWrite,
-  isMLRReportMetadata,
-  MLRReportMetadata,
-  S3Get,
-  S3Put,
-  StatusCodes,
-  UserRoles,
-} from "../../utils/types/types";
 import {
   error,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
-import KSUID from "ksuid";
-import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
+import s3Lib, {
+  getFieldDataKey,
+  getFormTemplateKey,
+} from "../../utils/s3/s3-lib";
+// types
+import {
+  DynamoGet,
+  DynamoWrite,
+  FormJson,
+  isMLRReportMetadata,
+  MLRReportMetadata,
+  S3Get,
+  S3Put,
+  StatusCodes,
+  UserRoles,
+} from "../../utils/types";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 /**
  * Locked MLR reports can be released by admins.
@@ -33,7 +39,7 @@ import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
  */
 export const releaseReport = handler(async (event) => {
   // Return a 403 status if the user is not an admin.
-  if (!hasPermissions(event, [UserRoles.ADMIN])) {
+  if (!hasPermissions(event, [UserRoles.ADMIN, UserRoles.APPROVER])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -116,13 +122,57 @@ export const releaseReport = handler(async (event) => {
     ? metadata.previousRevisions.concat([metadata.fieldDataId])
     : [metadata.fieldDataId];
 
+  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
+
+  const getFieldDataParameters: S3Get = {
+    Bucket: reportBucket,
+    Key: getFieldDataKey(metadata.state, metadata.fieldDataId),
+  };
+
+  const getFormTemplateParameters: S3Get = {
+    Bucket: reportBucket,
+    Key: getFormTemplateKey(metadata.state, metadata.formTemplateId),
+  };
+
+  let fieldData: Record<string, any>;
+  let formTemplate: FormJson;
+  try {
+    fieldData = (await s3Lib.get(getFieldDataParameters)) as Record<
+      string,
+      any
+    >;
+    formTemplate = (await s3Lib.get(getFormTemplateParameters)) as FormJson;
+  } catch (err) {
+    return {
+      status: StatusCodes.SERVER_ERROR,
+      body: error.DYNAMO_UPDATE_ERROR,
+    };
+  }
+
+  const updatedFieldData = {
+    ...fieldData,
+    versionControl: [
+      {
+        // pragma: allowlist nextline secret
+        key: "versionControl-cyUSrTH8mWdpqAKExLZAkz",
+        value: "Yes, this is a resubmission",
+      },
+    ],
+    versionControlDescription: null,
+    "versionControlDescription-otherText": null,
+  };
+
   const newReportMetadata: MLRReportMetadata = {
     ...metadata,
     fieldDataId: newFieldDataId,
     locked: false,
     previousRevisions,
     status: "In progress",
-    submissionCount: (metadata.submissionCount += 1),
+    completionStatus: await calculateCompletionStatus(
+      updatedFieldData,
+      formTemplate
+    ),
+    isComplete: false,
   };
 
   const putReportMetadataParams: DynamoWrite = {
@@ -140,30 +190,11 @@ export const releaseReport = handler(async (event) => {
   }
 
   // Copy the original field data to a new location.
-  const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
-
-  const getObjectParameters: S3Get = {
-    Bucket: reportBucket,
-    Key: getFieldDataKey(metadata.state, metadata.fieldDataId),
-  };
-
   try {
-    const fieldData = (await s3Lib.get(getObjectParameters)) as Record<
-      string,
-      any
-    >;
-
     const putObjectParameters: S3Put = {
       Bucket: reportBucket,
       Body: JSON.stringify({
-        ...fieldData,
-        versionControl: [
-          {
-            // pragma: allowlist nextline secret
-            key: "versionControl-cyUSrTH8mWdpqAKExLZAkz",
-            value: "Yes, this is a resubmission",
-          },
-        ],
+        ...updatedFieldData,
       }),
       ContentType: "application/json",
       Key: getFieldDataKey(metadata.state, newFieldDataId),

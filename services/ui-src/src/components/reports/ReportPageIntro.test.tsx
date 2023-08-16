@@ -1,27 +1,16 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
+// components
 import { ReportPageIntro } from "components";
+// utils
+import { mockVerbiageIntro } from "utils/testing/setupJest";
 
-const mockText = {
-  section: "mock section",
-  subsection: "mock subsection",
-  spreadsheet: "mock item",
-  info: [
-    {
-      type: "html",
-      content: "mock html",
-    },
-  ],
-};
-
-const reportPageComponent = (
-  <ReportPageIntro text={mockText} data-testid="report-page-intro" />
-);
+const reportPageComponent = <ReportPageIntro text={mockVerbiageIntro} />;
 
 describe("Test ReportPageIntro", () => {
   test("Check that ReportPageIntro renders", () => {
-    const { getByTestId } = render(reportPageComponent);
-    expect(getByTestId("report-page-intro")).toBeVisible();
+    render(reportPageComponent);
+    expect(screen.getByText(mockVerbiageIntro.section)).toBeVisible();
   });
 });
 

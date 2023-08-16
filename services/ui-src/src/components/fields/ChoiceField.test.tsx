@@ -23,12 +23,7 @@ const mockGetValues = (returnValue: any) =>
   }));
 
 const ChoiceFieldComponent = (
-  <ChoiceField
-    name="checkbox_choice"
-    label="Checkbox A"
-    hint="checkbox a"
-    data-testid="test-checkbox-field"
-  />
+  <ChoiceField name="checkbox_choice" label="Checkbox A" hint="checkbox a" />
 );
 
 describe("Test ChoiceField component", () => {
@@ -56,7 +51,6 @@ describe("Test ChoiceField hydration functionality", () => {
       label="Checkbox B"
       hint="checkbox b"
       hydrate={mockHydrationValue}
-      data-testid="test-text-field-with-hydration-value"
     />
   );
 

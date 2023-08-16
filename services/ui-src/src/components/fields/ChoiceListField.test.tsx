@@ -3,7 +3,11 @@ import { axe } from "jest-axe";
 //components
 import { useFormContext } from "react-hook-form";
 import { ChoiceListField, ReportContext } from "components";
-import { mockMcparReportContext } from "utils/testing/setupJest";
+import {
+  mockChoices,
+  mockChoiceWithChild,
+  mockMcparReportContext,
+} from "utils/testing/setupJest";
 import { Choice, ReportStatus } from "types";
 import { getNestedChildFields } from "./ChoiceListField";
 
@@ -29,115 +33,6 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
-
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
-const mockChoices = [
-  {
-    id: "Choice 1",
-    name: "Choice 1",
-    label: "Choice 1",
-    value: "Choice 1",
-    checked: false,
-  },
-  {
-    id: "Choice 2",
-    name: "Choice 2",
-    label: "Choice 2",
-    value: "Choice 2",
-    checked: false,
-  },
-];
-
-const mockNestedChoices = [
-  {
-    id: "Choice 4",
-    name: "Choice 4",
-    label: "Choice 4",
-    value: "Choice 4",
-    checked: false,
-  },
-  {
-    id: "Choice 5",
-    name: "Choice 5",
-    label: "Choice 5",
-    value: "Choice 5",
-    checked: false,
-  },
-];
-
-const mockNestedCheckboxChoices = [
-  {
-    id: "Choice 6",
-    name: "Choice 6",
-    label: "Choice 6",
-    value: "Choice 6",
-    checked: false,
-  },
-  {
-    id: "Choice 7",
-    name: "Choice 7",
-    label: "Choice 7",
-    value: "Choice 7",
-    checked: false,
-  },
-];
-
-const mockDropdownOptions = [
-  {
-    label: "Option 1",
-    value: "test-dropdown-1",
-  },
-  {
-    label: "Option 2",
-    value: "test-dropdown-2",
-  },
-];
-
-const mockNestedChildren = [
-  {
-    id: "Choice 3-otherText",
-    name: "Choice 3-otherText",
-    type: "text",
-  },
-  {
-    id: "test-nested-child-radio",
-    type: "radio",
-    props: {
-      choices: [...mockNestedChoices],
-    },
-  },
-  {
-    id: "test-nested-child-checkbox",
-    type: "checkbox",
-    props: {
-      choices: [...mockNestedCheckboxChoices],
-    },
-  },
-  {
-    id: "test-nest-child-dropdown",
-    type: "dropdown",
-    props: {
-      options: [...mockDropdownOptions],
-    },
-  },
-];
-
-const mockChoiceWithChild = {
-  id: "Choice 3",
-  name: "Choice 3",
-  label: "Choice 3",
-  value: "Choice 3",
-  checked: false,
-  children: mockNestedChildren,
-};
 
 const CheckboxComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
@@ -198,22 +93,6 @@ describe("Test ChoiceListField component rendering", () => {
     expect(screen.getByText("Choice 2")).toBeVisible();
   });
 
-  it("ChoiceList should render a normal Radiofield and triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("radioField", []);
-    render(RadioComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByText("Choice 2")).toBeVisible();
-    expect(mockTrigger).toBeCalled();
-  });
-
-  it("ChoiceList should render a normal Checkbox and triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("checkboxField", []);
-    render(CheckboxComponent);
-    expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByText("Choice 2")).toBeVisible();
-    expect(mockTrigger).toBeCalled();
-  });
-
   it("RadioField should render nested child fields for choices with children", () => {
     // Render Initial State and choices
     render(RadioComponentWithNestedChildren);
@@ -253,6 +132,20 @@ describe("Test Choicelist Hydration", () => {
         type="checkbox"
         hydrate={[{ key: "Choice 1", value: "Choice 1" }]}
         autosave
+      />
+    </ReportContext.Provider>
+  );
+
+  const CheckboxHydrationClearComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ChoiceListField
+        choices={mockChoices}
+        label="Checkbox Hydration Example"
+        name=""
+        type="checkbox"
+        hydrate={[{ key: "Choice 1", value: "Choice 1" }]}
+        autosave
+        clear={true}
       />
     </ReportContext.Provider>
   );
@@ -307,6 +200,23 @@ describe("Test Choicelist Hydration", () => {
     // Confirm hydration successfully made the first value checked
     expect(firstCheckbox).not.toBeChecked();
     expect(secondCheckbox).toBeChecked();
+  });
+
+  test("Checkbox Choicelist correctly clearing nested checkbox values if clear prop is set to true", () => {
+    /*
+     * Set the mock of form.GetValues to return nothing to represent that a user hasn't made any updates
+     * and the form should be updated based purely on the hydration values
+     */
+    mockGetValues(undefined);
+
+    // Create the Checkbox Component
+    const wrapper = render(CheckboxHydrationClearComponent);
+    const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+    const secondCheckbox = wrapper.getByRole("checkbox", { name: "Choice 2" });
+
+    // Confirm hydration successfully made the first value checked
+    expect(firstCheckbox).not.toBeChecked();
+    expect(secondCheckbox).not.toBeChecked();
   });
 
   // Repeat above tests for RadioField to ensure nothing changes
@@ -961,6 +871,30 @@ describe("Test getNestedChildFieldsOfUncheckedParent function", () => {
       },
     ];
     expect(returnedValue).toStrictEqual(expectedReturn);
+  });
+});
+
+describe("ChoiceListField handles triggering validation", () => {
+  const choiceListFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ChoiceListField
+        choices={mockChoices}
+        label="Checkbox example"
+        name="checkboxField"
+        type="checkbox"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockGetValues(undefined);
+    render(choiceListFieldValidateOnRenderComponent);
+    expect(mockTrigger).toHaveBeenCalled();
   });
 });
 

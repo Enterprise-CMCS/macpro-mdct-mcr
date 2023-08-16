@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 // components
 import { UsaBanner } from "@cmsgov/design-system";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { isReportFormPage, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
@@ -22,8 +22,7 @@ import closeIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  const { pathname } = useLocation();
-  const { lastSavedTime, report } = useContext(ReportContext);
+  const { lastSavedTime, report, isReportPage } = useContext(ReportContext);
 
   const saveStatusText = "Last saved " + lastSavedTime;
 
@@ -44,7 +43,6 @@ export const Header = ({ handleLogout }: Props) => {
                 to="/help"
                 variant="unstyled"
                 aria-label="Get Help"
-                data-testid="header-help-button"
               >
                 <MenuOption
                   icon={getHelpIcon}
@@ -59,7 +57,7 @@ export const Header = ({ handleLogout }: Props) => {
           </Flex>
         </Container>
       </Flex>
-      {isReportFormPage(pathname) && (
+      {isReportPage && (
         <Flex sx={sx.subnavBar}>
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
@@ -94,9 +92,7 @@ export const Header = ({ handleLogout }: Props) => {
                   tabIndex={-1}
                 >
                   {!isMobile ? (
-                    <Button variant="outline" data-testid="leave-form-button">
-                      Leave form
-                    </Button>
+                    <Button variant="outline">Leave form</Button>
                   ) : (
                     <Image src={closeIcon} alt="Close" sx={sx.closeIcon} />
                   )}

@@ -12,7 +12,7 @@ export const Error = () => {
   const { preLinkText, helpDeskEmail, postLinkText } = emailText;
 
   return (
-    <PageTemplate data-testid="error-view" sxOverride={sx.layout}>
+    <PageTemplate sxOverride={sx.layout}>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" sx={sx.headerText}>

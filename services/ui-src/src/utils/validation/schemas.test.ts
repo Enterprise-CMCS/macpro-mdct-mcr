@@ -1,18 +1,48 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { number, ratio } from "./schemas";
+import {
+  dateOptional,
+  number,
+  ratio,
+  validNumber,
+  numberNotLessThanOne,
+  numberNotLessThanZero,
+} from "./schemas";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [
     "123",
     "123.00",
-    "123..00",
+    "123.00",
     "1,230",
     "1,2,30",
     "1230",
-    "123450123..,,,.123123123123",
+    "123450123,,,.123123123123",
     "N/A",
     "Data not available",
   ];
+
+  const goodPositiveNumberTestCases = [
+    "123",
+    "123.00",
+    "123.00",
+    "1,230",
+    "1,2,30",
+    "1230",
+    "123450123,,,.123123123123",
+  ];
+
+  const negativeNumberTestCases = [
+    "-123",
+    "-123.00",
+    "-123.00",
+    "-1,230",
+    "-1,2,30",
+    "-1230",
+    "-123450123,,,.123123123123",
+  ];
+
+  const zeroTest = ["0", "0.0"];
+
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 
   const goodRatioTestCases = [
@@ -36,9 +66,51 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
+  const goodDateOptionalTestCases = [
+    "",
+    null,
+    undefined,
+    "01/01/2023",
+    "05/15/2023",
+  ];
+
+  const badDateOptionalTestCases = [
+    1,
+    "Hello!",
+    "1/1/2",
+    "0/0/99",
+    "0/01/2023",
+  ];
+
+  const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
+
+  const badValidNumberTestCases = ["N/A", "number", "foo"];
+
   const testNumberSchema = (
     schemaToUse: MixedSchema,
     testCases: Array<string>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  const testDateOptional = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | null | undefined | number>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  const testValidNumber = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | number>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -55,5 +127,47 @@ describe("Schemas", () => {
   test("Evaluate Number Schema using ratio scheme", () => {
     testNumberSchema(ratio(), goodRatioTestCases, true);
     testNumberSchema(ratio(), badRatioTestCases, false);
+  });
+
+  // testing numberNotLessThanOne scheme
+  test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+  });
+
+  test("Test negative values using numberNotLessThanOne scheme", () => {
+    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZero scheme
+  test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+  });
+
+  test("Test zero values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZero scheme", () => {
+    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+  });
+
+  test("Test dateOptional schema", () => {
+    testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
+    testDateOptional(dateOptional(), badDateOptionalTestCases, false);
+  });
+
+  test("Test validNumber schema", () => {
+    testValidNumber(validNumber(), goodValidNumberTestCases, true);
+    testValidNumber(validNumber(), badValidNumberTestCases, false);
   });
 });

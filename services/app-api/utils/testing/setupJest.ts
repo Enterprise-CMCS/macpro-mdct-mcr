@@ -1,5 +1,5 @@
 import sign from "jwt-encode";
-import { MCPARReportMetadata, MLRReportMetadata } from "../types/types";
+import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 
 export const mockDocumentClient = {
   get: { promise: jest.fn() },
@@ -32,6 +32,8 @@ jest.mock("aws-sdk", () => {
         getObject: jest.fn().mockImplementation((_params, callback) => {
           if (_params.Key.includes("mockReportFieldData"))
             callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
+          else if (_params.Key.includes("mockReportJson2"))
+            callback(undefined, { Body: JSON.stringify(mockReportJson2) });
           else if (_params.Key.includes("mockReportJson"))
             callback(undefined, { Body: JSON.stringify(mockReportJson) });
           else callback("Invalid Test Key");
@@ -61,6 +63,43 @@ export const mockReportJson = {
   },
 };
 
+export const mockReportJson2 = {
+  name: "mock-report",
+  basePath: "/mock",
+  routes: [
+    {
+      children: [
+        {
+          form: {
+            fields: {
+              type: "number",
+              validation: "number",
+              id: "report_number",
+              props: {
+                choices: [
+                  {
+                    children: [
+                      {
+                        id: "report_percentage-otherText",
+                        type: "number",
+                        validation: "number",
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      ],
+    },
+  ],
+  validationJson: {
+    text: "text",
+    number: "number",
+  },
+};
+
 export const mockReportKeys = {
   reportType: "MCPAR",
   state: "AK" as const,
@@ -70,6 +109,13 @@ export const mockReportKeys = {
 export const mockReportFieldData = {
   text: "text-input",
   number: 0,
+};
+
+export const mockReportFieldData2 = {
+  text: "text-input",
+  value: 22,
+  number: 0,
+  program: [{ report_number: "12", report_percentage: "34" }],
 };
 
 export const mockDynamoData = {
@@ -157,6 +203,7 @@ export const mockApiKey = sign(
     "custom:cms_roles": "mdctmcr-state-user",
     given_name: "Thelonious",
     "custom:cms_state": "MN",
+    "custom:reports": "MCPAR,MLR,NAAAR",
     family_name: "States",
     email: "stateuser@test.com",
   },

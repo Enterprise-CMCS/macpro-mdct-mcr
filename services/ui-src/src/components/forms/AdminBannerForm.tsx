@@ -1,7 +1,6 @@
 import { useState } from "react";
 // components
-import { Button, Flex } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // utils
 import { bannerId } from "../../constants";
@@ -46,12 +45,19 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   return (
     <>
       <ErrorAlert error={error} sxOverride={sx.errorAlert} />
-      <Form id={form.id} formJson={form} onSubmit={onSubmit} {...props}>
+      <Form
+        id={form.id}
+        formJson={form}
+        onSubmit={onSubmit}
+        validateOnRender={false}
+        dontReset={false}
+        {...props}
+      >
         <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
-          {submitting ? <Spinner size="small" /> : "Replace Current Banner"}
+          {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
         </Button>
       </Flex>
     </>

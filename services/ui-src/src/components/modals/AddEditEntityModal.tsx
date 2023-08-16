@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
-import { Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Text, Spinner } from "@chakra-ui/react";
 // utils
 import {
   AnyObject,
@@ -12,7 +11,13 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-import { filterFormData, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 
 export const AddEditEntityModal = ({
   entityType,
@@ -22,7 +27,7 @@ export const AddEditEntityModal = ({
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name } = useUser().user ?? {};
+  const { full_name, userIsEndUser } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const writeEntity = async (enteredData: any) => {
@@ -42,13 +47,17 @@ export const AddEditEntityModal = ({
       },
       fieldData: {},
     };
-    const currentEntities = report?.fieldData?.[entityType] || [];
+    const currentEntities = [...(report?.fieldData?.[entityType] || [])];
     const filteredFormData = filterFormData(
       enteredData,
       form.fields.filter(isFieldElement)
     );
     if (selectedEntity?.id) {
       // if existing entity selected, edit
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
       const selectedEntityIndex = currentEntities.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
@@ -59,14 +68,25 @@ export const AddEditEntityModal = ({
         ...currentEntities[selectedEntityIndex],
         ...filteredFormData,
       };
+
+      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        updatedEntities[selectedEntityIndex],
+        entriesToClear
+      );
+
       dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const shouldSave = entityWasUpdated(
+        report?.fieldData?.[entityType][selectedEntityIndex],
+        updatedEntities[selectedEntityIndex]
+      );
+      if (shouldSave) await updateReport(reportKeys, dataToWrite);
     } else {
       // create new entity
       dataToWrite.fieldData = {
         [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
       };
+      await updateReport(reportKeys, dataToWrite);
     }
-    await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
     modalDisclosure.onClose();
   };
@@ -83,7 +103,14 @@ export const AddEditEntityModal = ({
         subheading: verbiage.addEditModalHint
           ? verbiage.addEditModalHint
           : undefined,
-        actionButtonText: submitting ? <Spinner size="small" /> : "Save",
+        actionButtonText: submitting ? (
+          <Spinner size="md" />
+        ) : report?.locked ? (
+          "Close"
+        ) : (
+          "Save"
+        ),
+        closeButtonText: "Cancel",
       }}
     >
       <Form
@@ -91,7 +118,13 @@ export const AddEditEntityModal = ({
         id={form.id}
         formJson={form}
         formData={selectedEntity}
-        onSubmit={writeEntity}
+        onSubmit={
+          report?.locked || !userIsEndUser
+            ? modalDisclosure.onClose
+            : writeEntity
+        }
+        validateOnRender={false}
+        dontReset={true}
       />
       <Text sx={sx.bottomModalMessage}>{verbiage.addEditModalMessage}</Text>
     </Modal>

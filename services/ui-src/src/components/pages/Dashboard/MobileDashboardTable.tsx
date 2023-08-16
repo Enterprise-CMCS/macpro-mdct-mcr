@@ -1,11 +1,11 @@
 // components
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
-import { AnyObject, ReportMetadataShape } from "types";
+import { AnyObject, ReportMetadataShape, ReportType } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
+import { getStatus } from "./DashboardTable";
 
 export const MobileDashboardTable = ({
   reportsByState,
@@ -30,7 +30,7 @@ export const MobileDashboardTable = ({
             {reportType === "MCPAR" ? "Program name" : "Submission name"}
           </Text>
           <Flex alignContent="flex-start">
-            {isStateLevelUser && (
+            {isStateLevelUser && !report?.locked && (
               <Box sx={sxOverride.editReport}>
                 <button onClick={() => openAddEditReportModal(report)}>
                   <Image
@@ -55,14 +55,20 @@ export const MobileDashboardTable = ({
         </Box>
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
-          <Text>{report?.archived ? "Archived" : report?.status}</Text>
+          <Text>
+            {getStatus(
+              reportType as ReportType,
+              report.status,
+              report.archived,
+              report.submissionCount
+            )}
+          </Text>
         </Box>
         {reportType === "MLR" && (
           <Box sx={sx.labelGroup}>
             <Text sx={sx.label}>
               {report.submissionCount === 0 ? 1 : report.submissionCount}
             </Text>
-            <Text>placeholder</Text>
           </Box>
         )}
         <Flex alignContent="flex-start" gap={2}>
@@ -73,9 +79,11 @@ export const MobileDashboardTable = ({
               isDisabled={report?.archived}
             >
               {entering && reportId == report.id ? (
-                <Spinner size="small" />
+                <Spinner size="md" />
+              ) : isStateLevelUser && !report?.locked ? (
+                "Edit"
               ) : (
-                "Enter"
+                "View"
               )}
             </Button>
           </Box>
@@ -159,11 +167,7 @@ const AdminReleaseButton = ({
       sx={sxOverride.adminActionButton}
       onClick={() => releaseReport!(report)}
     >
-      {releasing && reportId === report.id ? (
-        <Spinner size="small" />
-      ) : (
-        "Unlock"
-      )}
+      {releasing && reportId === report.id ? <Spinner size="md" /> : "Unlock"}
     </Button>
   );
 };
@@ -182,7 +186,7 @@ const AdminArchiveButton = ({
       onClick={() => archiveReport!(report)}
     >
       {archiving && reportId === report.id ? (
-        <Spinner size="small" />
+        <Spinner size="md" />
       ) : report?.archived ? (
         "Unarchive"
       ) : (

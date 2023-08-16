@@ -4,6 +4,8 @@ import { axe } from "jest-axe";
 import { HelpPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+// verbiage
+import verbiage from "verbiage/pages/help";
 
 const helpView = (
   <RouterWrappedComponent>
@@ -17,7 +19,7 @@ describe("Test HelpPage", () => {
   });
 
   test("Check that HelpPage renders", () => {
-    expect(screen.getByTestId("help-view")).toBeVisible();
+    expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
 });
 

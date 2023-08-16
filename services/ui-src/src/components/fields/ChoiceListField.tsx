@@ -32,6 +32,7 @@ export const ChoiceListField = ({
   hint,
   nested,
   autosave,
+  validateOnRender,
   sxOverride,
   styleAsOptional,
   clear,
@@ -45,20 +46,22 @@ export const ChoiceListField = ({
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-  const { full_name, state, userIsAdmin } = useUser().user ?? {};
+  const { full_name, state, userIsAdmin, userIsReadOnly } =
+    useUser().user ?? {};
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
-  const shouldDisableChildFields = userIsAdmin && !!props?.disabled;
+  const shouldDisableChildFields =
+    ((userIsAdmin || userIsReadOnly) && !!props?.disabled) || report?.locked;
 
   // set initial display value to form state field value or hydration value
   const hydrationValue = props?.hydrate;
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -87,7 +90,9 @@ export const ChoiceListField = ({
       } else {
         setDisplayValue(hydrationValue);
         setLastDatabaseValue(hydrationValue);
-        form.setValue(name, hydrationValue);
+        if (validateOnRender)
+          form.setValue(name, hydrationValue, { shouldValidate: true });
+        else form.setValue(name, hydrationValue);
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -130,6 +135,15 @@ export const ChoiceListField = ({
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
+            case "date":
+              if (child.props?.disabled) {
+                break;
+              } else {
+                child.props = { ...child.props, clear: true };
+                form.setValue(child.id, "");
+                form.unregister(child.id);
+                break;
+              }
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
@@ -204,9 +218,24 @@ export const ChoiceListField = ({
           hydrationValue,
         });
 
+        const choicesWithNestedEnabledFields = choices.map((choice) => {
+          if (choice.children) {
+            return {
+              ...choice,
+              children: choice.children.filter(
+                (child) => !child.props?.disabled
+              ),
+            };
+          }
+          return choice;
+        });
+
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(choices, lastDatabaseValue),
+          ...getNestedChildFields(
+            choicesWithNestedEnabledFields,
+            lastDatabaseValue
+          ),
         ];
         const reportArgs = {
           id: report?.id,
@@ -267,6 +296,7 @@ interface Props {
   hint?: CustomHtmlElement[];
   nested?: boolean;
   autosave?: boolean;
+  validateOnRender?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
   clear?: boolean;
@@ -277,6 +307,9 @@ const sx = {
   // checkboxes
   ".ds-c-choice[type='checkbox']:checked::after": {
     boxSizing: "content-box",
+  },
+  ".ds-c-choice[type='checkbox']:checked:disabled::before": {
+    boxShadow: "inset 0 0 4em 1em #A6A6A6;",
   },
 };
 

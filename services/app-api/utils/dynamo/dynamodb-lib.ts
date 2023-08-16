@@ -6,7 +6,7 @@ import {
   DynamoUpdate,
   DynamoGet,
   DynamoScan,
-} from "../types/types";
+} from "../types/other";
 
 export function createDbClient() {
   const dynamoConfig: DynamoDB.DocumentClient.DocumentClientOptions &
@@ -17,8 +17,8 @@ export function createDbClient() {
   if (endpoint) {
     dynamoConfig.endpoint = endpoint;
     dynamoConfig.credentials = new Credentials({
-      accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-      secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
+      accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
+      secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
     });
   } else {
     dynamoConfig["region"] = "us-east-1";

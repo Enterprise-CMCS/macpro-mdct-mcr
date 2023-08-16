@@ -15,7 +15,14 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, parseCustomHtml, useUser } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  parseCustomHtml,
+  setClearedEntriesToDefaultValue,
+  useUser,
+} from "utils";
 import {
   AnyObject,
   EntityShape,
@@ -26,12 +33,11 @@ import {
 } from "types";
 import completedIcon from "assets/icons/icon_check_circle.png";
 
-export const DrawerReportPage = ({ route }: Props) => {
+export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   // make state
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
@@ -46,7 +52,7 @@ export const DrawerReportPage = ({ route }: Props) => {
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
@@ -61,22 +67,36 @@ export const DrawerReportPage = ({ route }: Props) => {
         enteredData,
         drawerForm.fields.filter(isFieldElement)
       );
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
+      const shouldSave = entityWasUpdated(
+        entities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     onClose();
@@ -115,7 +135,7 @@ export const DrawerReportPage = ({ route }: Props) => {
     });
   };
   return (
-    <Box data-testid="drawer-report-page">
+    <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Heading as="h3" sx={sx.dashboardTitle}>
         {verbiage.dashboardTitle}
@@ -142,6 +162,7 @@ export const DrawerReportPage = ({ route }: Props) => {
           isOpen,
           onClose,
         }}
+        validateOnRender={validateOnRender}
         data-testid="report-drawer"
       />
       <ReportPageFooter />
@@ -151,6 +172,7 @@ export const DrawerReportPage = ({ route }: Props) => {
 
 interface Props {
   route: DrawerReportPageShape;
+  validateOnRender?: boolean;
 }
 
 const sx = {

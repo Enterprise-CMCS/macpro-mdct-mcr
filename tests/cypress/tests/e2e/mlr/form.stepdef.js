@@ -13,16 +13,20 @@ When("I submit a new MLR program", () => {
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
-  cy.findByText(programName)
-    .parent()
-    .find('button:contains("Enter")')
-    .focus()
-    .click();
+  cy.get("table").within(() => {
+    cy.get("td")
+      .contains(programName)
+      .parent()
+      .find('button:contains("Edit")')
+      .focus()
+      .click();
+  });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
   traverseRoutes(template.routes);
 
   //Submit the program
+  cy.wait(2000);
   cy.get('button:contains("Submit MLR")').focus().click();
   cy.get('[data-testid="modal-submit-button"]').focus().click();
 });
@@ -50,7 +54,7 @@ const traverseRoute = (route) => {
     //Fill out form
     completeFrom(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
-
+    completeOverlayForm(route.overlayForm);
     // Continue to next route
     cy.get('button:contains("Continue")').focus().click();
   }
@@ -72,6 +76,15 @@ const completeModalForm = (modalForm, buttonText) => {
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`).focus().click();
     completeFrom(modalForm);
+    cy.get('button:contains("Save")').focus().click();
+  }
+};
+
+const completeOverlayForm = (overlayForm) => {
+  //open the modal, then fill out the form and save it
+  if (overlayForm) {
+    cy.get(`button:contains("Enter")`).focus().click();
+    completeFrom(overlayForm);
     cy.get('button:contains("Save")').focus().click();
   }
 };

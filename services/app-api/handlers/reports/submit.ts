@@ -1,6 +1,11 @@
 import { bool } from "aws-sdk/clients/signer";
 import jwtDecode from "jwt-decode";
-import { hasPermissions } from "../../utils/auth/authorization";
+import handler from "../handler-lib";
+// utils
+import {
+  hasReportAccess,
+  hasPermissions,
+} from "../../utils/auth/authorization";
 import {
   buckets,
   error,
@@ -10,14 +15,14 @@ import {
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
+// types
 import {
   isMLRReportMetadata,
   MCPARReportMetadata,
   MLRReportMetadata,
   StatusCodes,
   UserRoles,
-} from "../../utils/types/types";
-import handler from "../handler-lib";
+} from "../../utils/types";
 
 export const submitReport = handler(async (event, _context) => {
   if (
@@ -39,6 +44,14 @@ export const submitReport = handler(async (event, _context) => {
   }
 
   const { id, state, reportType } = event.pathParameters;
+
+  // Return a 403 status if the user does not have access to this report
+  if (!hasReportAccess(event, reportType!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
@@ -72,7 +85,7 @@ export const submitReport = handler(async (event, _context) => {
       };
     }
 
-    if (!isComplete && reportMetadata.reportType === "MCPAR") {
+    if (!isComplete) {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.REPORT_INCOMPLETE,

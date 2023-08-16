@@ -4,6 +4,7 @@ import { axe } from "jest-axe";
 import { CheckboxField } from "components";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
+import { mockChoices } from "utils/testing/setupJest";
 
 const mockTrigger = jest.fn();
 const mockSetValue = jest.fn();
@@ -26,18 +27,12 @@ const mockGetValues = (returnValue: any) =>
   }));
 
 const CheckboxFieldComponent = (
-  <div data-testid="test-checkbox-list">
-    <CheckboxField
-      choices={[
-        { id: "Choice 1", name: "Choice 1", label: "Choice 1", value: "A" },
-        { id: "Choice 2", name: "Choice 2", label: "Choice 2", value: "B" },
-        { id: "Choice 3", name: "Choice 3", label: "Choice 3", value: "C" },
-      ]}
-      label="Checkbox example"
-      name="checkbox_choices"
-      type="checkbox"
-    />
-  </div>
+  <CheckboxField
+    choices={mockChoices}
+    label="Checkbox example"
+    name="checkbox_choices"
+    type="checkbox"
+  />
 );
 
 describe("Test CheckboxField component", () => {
@@ -45,7 +40,6 @@ describe("Test CheckboxField component", () => {
     mockGetValues(undefined);
     render(CheckboxFieldComponent);
     expect(screen.getByText("Choice 1")).toBeVisible();
-    expect(screen.getByTestId("test-checkbox-list")).toBeVisible();
   });
 
   test("CheckboxField allows checking checkbox choices", async () => {
@@ -55,7 +49,7 @@ describe("Test CheckboxField component", () => {
     await userEvent.click(firstCheckbox);
     expect(mockSetValue).toHaveBeenCalledWith(
       "checkbox_choices",
-      [{ key: "Choice 1", value: "A" }],
+      [{ key: "Choice 1", value: "Choice 1" }],
       {
         shouldValidate: true,
       }

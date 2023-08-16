@@ -8,6 +8,7 @@ import { ReportContext, DashboardPage } from "components";
 import {
   mockAdminUser,
   mockHelpDeskUser,
+  mockInternalUser,
   mockStateApprover,
   mockStateRep,
   mockNoUser,
@@ -15,10 +16,15 @@ import {
   mockMcparReportContext,
   RouterWrappedComponent,
   mockMcparReport,
+  mockDashboardReportContext,
+  mockReportContextNoReports,
+  mockReportContextWithError,
+  mockDashboardLockedReportContext,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -40,27 +46,6 @@ jest.mock("react-router-dom", () => ({
     pathname: "/mcpar",
   })),
 }));
-
-const mockReportContextNoReports = {
-  ...mockMcparReportContext,
-  reportsByState: undefined,
-};
-
-const mockReportContextWithError = {
-  ...mockMcparReportContext,
-  errorMessage: "test error",
-};
-
-const mockDashboardReportContext = {
-  ...mockMcparReportContext,
-  reportsByState: [
-    {
-      ...mockMcparReport,
-      formTemplate: undefined,
-      fieldData: undefined,
-    },
-  ],
-};
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
@@ -94,6 +79,14 @@ const dashboardViewWithError = (
   </RouterWrappedComponent>
 );
 
+const dashboardViewWithLockedReport = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockDashboardLockedReportContext}>
+      <DashboardPage reportType="MLR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 describe("Test Report Dashboard view (with reports, desktop view)", () => {
   beforeEach(async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
@@ -101,26 +94,39 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    await act(async () => {
-      await render(dashboardViewWithReports);
-    });
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("Check that MCPAR Dashboard view renders", () => {
+  test("Check that MCPAR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByTestId("desktop-table")).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
     expect(
       screen.queryByText(mcparVerbiage.body.empty)
     ).not.toBeInTheDocument();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report row fetches the field data, then navigates to report", async () => {
+  test("Check that MLR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(mlrDashboardViewWithReports);
+    });
+    expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
+    expect(screen.getByText("testProgram")).toBeVisible();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+  });
+
+  test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
-    const enterReportButton = screen.getAllByText("Enter")[0];
+    const enterReportButton = screen.getAllByText("Edit")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(1);
@@ -129,6 +135,9 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
@@ -136,10 +145,21 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Edit Report' icon opens the AddEditProgramModal", async () => {
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
     const addReportButton = screen.getAllByAltText("Edit Report")[0];
     expect(addReportButton).toBeVisible();
     await userEvent.click(addReportButton);
     await expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
+  });
+
+  test("Unable to edit a report if it is locked", async () => {
+    await act(async () => {
+      await render(dashboardViewWithLockedReport);
+    });
+    const addReportButtons = screen.queryAllByAltText("Edit Report");
+    expect(addReportButtons).toHaveLength(0);
   });
 });
 
@@ -167,9 +187,9 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     ).not.toBeInTheDocument();
   });
 
-  test("Clicking 'Enter' button on a report navigates to first page of report", async () => {
+  test("Clicking 'Edit' button on a report navigates to first page of report", async () => {
     mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
-    const enterReportButton = screen.getAllByText("Enter")[0];
+    const enterReportButton = screen.getAllByText("Edit")[0];
     expect(enterReportButton).toBeVisible();
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
@@ -220,6 +240,14 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
 
   test("Help desk user cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -279,6 +307,14 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
 
   test("Help desk user cannot archive reports", async () => {
     mockedUseUser.mockReturnValue(mockHelpDeskUser);
+    await act(async () => {
+      await render(dashboardViewWithReports);
+    });
+    expect(screen.queryByAltText("Archive")).toBeNull();
+  });
+
+  test("Internal user cannot archive reports", async () => {
+    mockedUseUser.mockReturnValue(mockInternalUser);
     await act(async () => {
       await render(dashboardViewWithReports);
     });

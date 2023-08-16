@@ -17,7 +17,7 @@ export const ExportedReportFieldRow = ({
   const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
-  const formFieldInfo = parseFormFieldInfo(formField?.props!);
+  const formFieldInfo = parseFormFieldInfo(formField?.props);
 
   // guard against double-rendering "otherText" response
   const isOtherTextEntry = formField.id.endsWith("-otherText");
@@ -28,23 +28,27 @@ export const ExportedReportFieldRow = ({
       {/* number column/cell */}
       {!isDynamicField && (
         <Td sx={sx.numberColumn}>
-          <Text sx={sx.fieldNumber}>{formFieldInfo.number || "N/A"}</Text>
+          <Text sx={sx.fieldNumber}>
+            {formFieldInfo?.number?.replace(".", "") || "N/A"}
+          </Text>
         </Td>
       )}
 
       {/* label column/cell */}
       <Td sx={sx.labelColumn}>
-        {formFieldInfo.label || formFieldInfo.hint ? (
+        {formFieldInfo?.label || formFieldInfo?.hint ? (
           <Box>
             {formFieldInfo.label && (
               <Text sx={sx.fieldLabel}>
                 {!isDynamicField
-                  ? formFieldInfo.label
+                  ? formFieldInfo?.label
                   : formField?.props?.label}
               </Text>
             )}
-            {showHintText && formFieldInfo.hint && (
-              <Box sx={sx.fieldHint}>{parseCustomHtml(formFieldInfo.hint)}</Box>
+            {showHintText && formFieldInfo?.hint && (
+              <Box sx={sx.fieldHint}>
+                {parseCustomHtml(formFieldInfo?.hint)}
+              </Box>
             )}
           </Box>
         ) : (
@@ -82,7 +86,7 @@ const sx = {
     paddingLeft: 0,
   },
   fieldNumber: {
-    fontSize: "md",
+    fontSize: "sm",
     fontWeight: "bold",
   },
   labelColumn: {
@@ -95,7 +99,7 @@ const sx = {
     },
   },
   fieldLabel: {
-    fontSize: "md",
+    fontSize: "sm",
     fontWeight: "bold",
     marginBottom: "0.5rem",
   },

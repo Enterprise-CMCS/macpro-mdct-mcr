@@ -32,6 +32,7 @@ export interface ReportShape extends ReportMetadataShape {
   formTemplate: ReportJson;
   fieldData: AnyObject;
   completionStatus?: CompletionData;
+  isComplete?: boolean;
 }
 
 export interface CompletionData {
@@ -47,14 +48,17 @@ export interface ReportContextMethods {
   createReport: Function;
   updateReport: Function;
   clearReportSelection: Function;
+  clearReportsByState: Function;
   setReportSelection: Function;
 }
 
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
+  contextIsLoaded: boolean;
   reportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
   lastSavedTime?: string | undefined;
+  isReportPage: boolean;
 }
 
 export enum ReportStatus {

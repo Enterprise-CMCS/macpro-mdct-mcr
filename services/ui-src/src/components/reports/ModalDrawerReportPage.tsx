@@ -16,6 +16,9 @@ import {
   getFormattedEntityData,
   createRepeatedFields,
   useUser,
+  entityWasUpdated,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
 } from "utils";
 // types
 import {
@@ -28,9 +31,8 @@ import {
   ReportStatus,
 } from "types";
 
-export const ModalDrawerReportPage = ({ route }: Props) => {
-  const { full_name, state, userIsStateUser, userIsStateRep } =
-    useUser().user ?? {};
+export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -105,18 +107,22 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
-    if (userIsStateUser || userIsStateRep) {
+    if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
         state: state,
         id: report?.id,
       };
-      const currentEntities = reportFieldDataEntities;
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
       const filteredFormData = filterFormData(
+        enteredData,
+        drawerForm.fields.filter(isFieldElement)
+      );
+      const entriesToClear = getEntriesToClear(
         enteredData,
         drawerForm.fields.filter(isFieldElement)
       );
@@ -126,16 +132,26 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
       };
       let newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
-      const dataToWrite = {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: full_name,
-        },
-        fieldData: {
-          [entityType]: newEntities,
-        },
-      };
-      await updateReport(reportKeys, dataToWrite);
+      newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        newEntities[selectedEntityIndex],
+        entriesToClear
+      );
+      const shouldSave = entityWasUpdated(
+        reportFieldDataEntities[selectedEntityIndex],
+        newEntity
+      );
+      if (shouldSave) {
+        const dataToWrite = {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: full_name,
+          },
+          fieldData: {
+            [entityType]: newEntities,
+          },
+        };
+        await updateReport(reportKeys, dataToWrite);
+      }
       setSubmitting(false);
     }
     closeDrawer();
@@ -146,7 +162,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
   }`;
 
   return (
-    <Box data-testid="modal-drawer-report-page">
+    <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         <Button
@@ -216,6 +232,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
             isOpen: drawerIsOpen,
             onClose: closeDrawer,
           }}
+          validateOnRender={validateOnRender}
           data-testid="report-drawer"
         />
         {reportFieldDataEntities.length > 1 && (
@@ -234,6 +251,7 @@ export const ModalDrawerReportPage = ({ route }: Props) => {
 
 interface Props {
   route: ModalDrawerReportPageShape;
+  validateOnRender?: boolean;
 }
 
 const sx = {

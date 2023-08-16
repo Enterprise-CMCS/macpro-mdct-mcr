@@ -1,11 +1,16 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { SpreadsheetWidget } from "components";
+// types
+import { ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
-import { ReportPageVerbiage } from "types";
 
-export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
+export const ExportedSectionHeading = ({
+  heading,
+  reportType,
+  verbiage,
+}: Props) => {
   const sectionHeading = verbiage?.intro?.exportSectionHeader
     ? verbiage?.intro?.exportSectionHeader
     : verbiage?.intro?.subsection || heading;
@@ -15,14 +20,18 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
 
   return (
-    <Box data-testid="exportedSectionHeading">
+    <Box data-testid="exportedSectionHeading" sx={sx.container}>
       <Heading as="h2" sx={sx.heading}>
         {sectionHeading}
       </Heading>
       {sectionInfo && <Box sx={sx.info}>{parseCustomHtml(sectionInfo)}</Box>}
       {sectionSpreadsheet && (
         <Box sx={sx.spreadsheet}>
-          <SpreadsheetWidget description={sectionSpreadsheet} alt="" />
+          <SpreadsheetWidget
+            description={sectionSpreadsheet}
+            alt=""
+            reportType={reportType}
+          />
         </Box>
       )}
     </Box>
@@ -31,10 +40,16 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
 
 export interface Props {
   heading: string;
+  reportType?: string;
   verbiage?: ReportPageVerbiage;
 }
 
 const sx = {
+  container: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
+  },
   heading: {
     margin: "1.5rem 0",
     fontSize: "xl",
@@ -50,5 +65,8 @@ const sx = {
   },
   spreadsheet: {
     margin: "1.5rem 0",
+    "@media print": {
+      pageBreakAfter: "avoid",
+    },
   },
 };

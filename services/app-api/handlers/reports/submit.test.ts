@@ -1,7 +1,7 @@
 import { submitReport } from "./submit";
 import { APIGatewayProxyEvent } from "aws-lambda";
+// utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import { error } from "../../utils/constants/constants";
 import {
   mockApiKey,
@@ -10,10 +10,13 @@ import {
   mockDynamoDataCompleted,
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
+// types
+import { StatusCodes } from "../../utils/types/other";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
+  hasReportAccess: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -32,6 +35,12 @@ const testSubmitEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test submitReport API method", () => {
+  test("Test report submission by a state user without access to a report type throws 403 error", async () => {
+    const res = await submitReport(testSubmitEvent, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
   test("Test Report not found in DynamoDB", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
     const res = await submitReport(testSubmitEvent, null);

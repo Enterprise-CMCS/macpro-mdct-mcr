@@ -1,79 +1,83 @@
 // components
-import { Button, Image, Td, Tr } from "@chakra-ui/react";
-// utils
+import { Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { EntityStatusIcon } from "components";
+// types
 import { AnyObject, EntityShape } from "types";
+// utils
+import { eligibilityGroup, renderHtml, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const EntityRow = ({
   entity,
   verbiage,
+  locked,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
 }: Props) => {
-  const { programName, planName } = entity;
+  const { report_programName, report_planName } = entity;
+  const { report } = useContext(ReportContext);
+  const { userIsEndUser } = useUser().user ?? {};
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
-  const reportingPeriod = `${entity.reportingPeriodStartDate} to ${entity.reportingPeriodEndDate}`;
-  const eligibilityGroup = () => {
-    if (entity["eligibilityGroup-otherText"]) {
-      return entity["eligibilityGroup-otherText"];
-    }
-    return entity.eligibilityGroup[0].value;
-  };
+  const entityComplete = useMemo(() => {
+    return report ? getMlrEntityStatus(report, entity) : false;
+  }, [report]);
 
   const programInfo = [
-    programName,
-    eligibilityGroup(),
+    report_planName,
+    report_programName,
+    eligibilityGroup(entity),
     reportingPeriod,
-    planName,
   ];
 
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <Image src={unfinishedIcon} alt="warning icon" boxSize="xl" />
+        <EntityStatusIcon entity={entity as EntityShape} />
       </Td>
       <Td sx={sx.programInfo}>
         <ul>
           {programInfo.map((field, index) => (
-            <li key={index}>{field}</li>
+            <li key={index}>{renderHtml(field)}</li>
           ))}
         </ul>
+        {!entityComplete && report?.reportType === "MLR" && (
+          <Text sx={sx.errorText}>
+            Select “Enter MLR” to complete this report.
+          </Text>
+        )}
       </Td>
-      <Td sx={sx.actionButtons}>
-        {openAddEditEntityModal && (
+      <Td>
+        <Flex sx={sx.actionContainer}>
           <Button
-            variant="none"
             sx={sx.editButton}
+            variant="none"
             onClick={() => openAddEditEntityModal(entity)}
           >
             {verbiage.editEntityButtonText}
           </Button>
-        )}
-      </Td>
-      <Td>
-        {openEntityDetailsOverlay && (
           <Button
+            sx={sx.enterButton}
             onClick={() => openEntityDetailsOverlay(entity)}
             variant="outline"
             size="sm"
-            sx={sx.enterButton}
           >
             {verbiage.enterReportText}
           </Button>
-        )}
-      </Td>
-      <Td>
-        {openDeleteEntityModal && (
           <Button
             sx={sx.deleteButton}
+            data-testid="delete-entity"
             onClick={() => openDeleteEntityModal(entity)}
+            disabled={locked || !userIsEndUser}
           >
             <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
           </Button>
-        )}
+        </Flex>
       </Td>
     </Tr>
   );
@@ -82,9 +86,10 @@ export const EntityRow = ({
 interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
-  openAddEditEntityModal?: Function;
-  openDeleteEntityModal?: Function;
-  openEntityDetailsOverlay?: Function;
+  locked?: boolean;
+  openAddEditEntityModal: Function;
+  openDeleteEntityModal: Function;
+  openEntityDetailsOverlay: Function;
   [key: string]: any;
 }
 
@@ -92,18 +97,18 @@ const sx = {
   content: {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
-    button: {
-      marginLeft: "1rem",
-    },
     td: {
       borderColor: "palette.gray_light",
+      paddingRight: 0,
     },
   },
   statusIcon: {
-    paddingLeft: "1rem",
-    img: {
-      maxWidth: "fit-content",
-    },
+    maxWidth: "fit-content",
+  },
+  errorText: {
+    color: "palette.error_dark",
+    fontSize: "0.75rem",
+    marginBottom: "0.75rem",
   },
   programInfo: {
     maxWidth: "18.75rem",
@@ -112,32 +117,38 @@ const sx = {
       listStyleType: "none",
       li: {
         wordWrap: "break-word",
-        paddingTop: "0.25rem",
-        paddingBottom: "0.25rem",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
         whiteSpace: "break-spaces",
-        "&:last-of-type": {
+        "&:first-of-type": {
           fontWeight: "bold",
           fontSize: "md",
         },
       },
     },
   },
-  actionButtons: {
-    whiteSpace: "nowrap",
+  actionContainer: {
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
   editButton: {
+    padding: 0,
     fontWeight: "normal",
     textDecoration: "underline",
     color: "palette.primary",
   },
   enterButton: {
+    padding: 0,
     fontWeight: "normal",
     width: "6.5rem",
   },
   deleteButton: {
-    background: "none",
-    padding: "0",
-    "&:hover": {
+    height: "1.875rem",
+    width: "1.875rem",
+    minWidth: "1.875rem",
+    padding: 0,
+    background: "white",
+    "&:hover, &:hover:disabled": {
       background: "white",
     },
   },

@@ -6,11 +6,7 @@ import { createEmailLink } from "utils/other/email";
 import verbiage from "verbiage/pages/help";
 
 const emailCardComponent = (
-  <EmailCard
-    verbiage={verbiage.cards.helpdesk}
-    icon="settings"
-    cardprops={{ "data-testid": "email-card" }}
-  />
+  <EmailCard verbiage={verbiage.cards.helpdesk} icon="settings" />
 );
 
 describe("Test EmailCard", () => {
@@ -19,7 +15,10 @@ describe("Test EmailCard", () => {
   });
 
   test("EmailCard is visible", () => {
-    expect(screen.getByTestId("email-card")).toBeVisible();
+    expect(
+      screen.getByText(verbiage.cards.helpdesk.email.address)
+    ).toBeVisible();
+    expect(screen.getByAltText("settings icon")).toBeVisible();
   });
 
   test("Email links are created correctly", () => {

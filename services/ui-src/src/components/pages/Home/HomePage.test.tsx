@@ -4,6 +4,8 @@ import { axe } from "jest-axe";
 import { HomePage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+// verbiage
+import verbiage from "verbiage/pages/home";
 
 const homeView = (
   <RouterWrappedComponent>
@@ -17,7 +19,7 @@ describe("Test HomePage", () => {
   });
 
   test("Check that HomePage renders", () => {
-    expect(screen.getByTestId("home-view")).toBeVisible();
+    expect(screen.getByText(verbiage.cards.MCPAR.title)).toBeVisible();
   });
 });
 

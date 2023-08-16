@@ -22,6 +22,8 @@ Feature: Header
 
         When the element described by "[aria-label='my account']" is clicked
         And the element described by "[data-testid='header-menu-option-log-out']" is clicked
+        And I wait 3000 ms before continuing
+        And I visit "/"
         Then the "/" page is loaded
         And the following element states are validated:
             | [data-testid='cognito-login-button'] | be.visible |

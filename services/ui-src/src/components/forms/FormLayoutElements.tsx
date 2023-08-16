@@ -30,7 +30,10 @@ interface SectionHeaderProps {
 }
 
 export const SectionContent = ({ content }: SectionContentProps) => {
-  return <Text>{content}</Text>;
+  const sx = {
+    paddingTop: "0.5rem",
+  };
+  return <Text sx={sx}>{content}</Text>;
 };
 
 interface SectionContentProps {

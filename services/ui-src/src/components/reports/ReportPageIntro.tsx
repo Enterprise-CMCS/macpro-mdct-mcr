@@ -1,12 +1,17 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { FormIntroAccordion, SpreadsheetWidget } from "components";
+import { InstructionsAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
 import { AnyObject } from "types";
 
-export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
-  const { section, subsection, info, spreadsheet } = text;
+export const ReportPageIntro = ({
+  text,
+  accordion,
+  reportType,
+  ...props
+}: Props) => {
+  const { section, subsection, hint, info, spreadsheet } = text;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -15,10 +20,14 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {accordion && <FormIntroAccordion verbiage={accordion} />}
+      {hint && <Box sx={sx.hintTextBox}>{hint}</Box>}
+      {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
-          <SpreadsheetWidget description={spreadsheet} />
+          <SpreadsheetWidget
+            description={spreadsheet}
+            reportType={reportType}
+          />
         </Box>
       )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
@@ -29,6 +38,7 @@ export const ReportPageIntro = ({ text, accordion, ...props }: Props) => {
 interface Props {
   text: AnyObject;
   accordion?: AnyObject;
+  reportType?: string;
   [key: string]: any;
 }
 
@@ -43,6 +53,10 @@ const sx = {
   subsectionHeading: {
     fontWeight: "normal",
     fontSize: "4xl",
+  },
+  hintTextBox: {
+    color: "#5B616B",
+    paddingTop: "1.5rem",
   },
   spreadsheetWidgetBox: {
     marginTop: "2rem",
@@ -64,7 +78,7 @@ const sx = {
       },
     },
     b: {
-      color: "palette.success_darker",
+      color: "palette.base",
     },
   },
 };

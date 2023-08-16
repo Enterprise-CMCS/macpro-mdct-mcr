@@ -16,9 +16,9 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
+import { useUser } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import { useUser } from "utils";
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
@@ -301,7 +301,7 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
     it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
       mockLDFlags.set({ pdfExport: true });
       render(McparReviewSubmitPage_Submitted);
-      const printButton = screen.getByText("Review PDF");
+      const printButton = screen.getByRole("link");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");

@@ -1,7 +1,6 @@
 import { MouseEventHandler } from "react";
 // Components
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
-import { Spinner } from "@cmsgov/design-system";
+import { Box, Button, Flex, Text, Spinner } from "@chakra-ui/react";
 import { Drawer, Form } from "components";
 // utils
 import { useUser } from "utils";
@@ -24,13 +23,13 @@ export const ReportDrawer = ({
   onSubmit,
   submitting,
   drawerDisclosure,
+  validateOnRender,
   ...props
 }: Props) => {
-  // determine if fields should be disabled (based on admin roles)
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
-  const isAdminTypeUser = userIsAdmin || userIsApprover || userIsHelpDeskUser;
-  const buttonText = isAdminTypeUser ? closeText : saveAndCloseText;
+  // determine if fields should be disabled (based on admin and read-only roles)
+  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const buttonText =
+    userIsAdmin || userIsReadOnly ? closeText : saveAndCloseText;
   const formFieldsExist = form.fields.length;
   return (
     <Drawer
@@ -45,13 +44,15 @@ export const ReportDrawer = ({
           formJson={form}
           onSubmit={onSubmit}
           formData={selectedEntity}
+          validateOnRender={validateOnRender || false}
+          dontReset={true}
         />
       ) : (
         <Text sx={sx.noFormMessage}>{verbiage.drawerNoFormMessage}</Text>
       )}
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
-          {!isAdminTypeUser && (
+          {(!userIsAdmin || !userIsReadOnly) && (
             <Button
               variant="outline"
               onClick={drawerDisclosure.onClose as MouseEventHandler}
@@ -65,7 +66,7 @@ export const ReportDrawer = ({
             sx={sx.saveButton}
             disabled={!formFieldsExist}
           >
-            {submitting ? <Spinner size="small" /> : buttonText}
+            {submitting ? <Spinner size="md" /> : buttonText}
           </Button>
         </Flex>
       </Box>
@@ -90,6 +91,7 @@ interface Props {
     isOpen: boolean;
     onClose: Function;
   };
+  validateOnRender?: boolean;
 }
 
 const sx = {

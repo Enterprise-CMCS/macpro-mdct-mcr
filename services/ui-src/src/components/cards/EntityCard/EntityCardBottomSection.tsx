@@ -83,7 +83,7 @@ export const EntityCardBottomSection = ({
               !formattedEntityData?.noncomplianceInstances ||
               !formattedEntityData?.dollarAmount ||
               !formattedEntityData?.assessmentDate ||
-              !formattedEntityData?.remediationDate ||
+              !formattedEntityData?.remediationCompleted ||
               !formattedEntityData?.correctiveActionPlan
                 ? "error"
                 : ""
@@ -130,7 +130,9 @@ export const EntityCardBottomSection = ({
                 </Text>
                 <Text sx={sx.subtext}>
                   {formattedEntityData?.remediationDate ||
-                    (printVersion && notAnswered)}
+                  formattedEntityData?.remediationCompleted
+                    ? `${formattedEntityData?.remediationCompleted} ${formattedEntityData?.remediationDate}`
+                    : printVersion && notAnswered}
                 </Text>
               </Box>
             </Flex>

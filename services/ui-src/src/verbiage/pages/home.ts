@@ -1,6 +1,6 @@
 export default {
   intro: {
-    header: "Online Managed Care Reporting Portal",
+    header: "Managed Care Reporting Portal",
     body: {
       preLinkText:
         "Get started by adding all the Medicaid managed care programs for your state. Learn more about this ",
@@ -40,22 +40,22 @@ export default {
       },
     },
     MLR: {
-      title: "Medical Loss Ratio (MLR)",
+      title: "Medical Loss Ratio (MLR) Report",
       body: {
         available:
-          "The MLR online form is now available. All states submitting rate certification packages on or after October 1, 2022 are required to complete the form. Further, it should be submitted as additional documentation when the annual rate certification is submitted.",
+          "The MLR online form is now available. All states submitting annual base rate certifications on or after October 1, 2022 are required to use the online form to submit their summary MLR reports. The MLR online form should be completed when the annual base rate certification is submitted. The Excel Workbook is available as a reference to collect responses for the online form, and is not required.",
 
         unavailable:
           "The requirement for states to submit this information to CMS began for rating periods starting on or after July 1, 2017. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, it should be submitted as additional documentation when the annual rate certification is submitted.",
       },
-      downloadText: "Download MLR Template",
+      downloadText: "Download MLR Excel Reference",
       link: {
         text: "Enter MLR online",
         route: "mlr/",
       },
       accordion: {
         buttonLabel: "When is the MLR due?",
-        text: "This report is required to be submitted annually at the same time the annual rate certification is submitted.",
+        text: "This report must be submitted at the same time the annual base rate certification is submitted.",
       },
     },
     NAAAR: {

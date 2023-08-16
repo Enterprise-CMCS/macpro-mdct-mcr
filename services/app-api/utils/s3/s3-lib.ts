@@ -1,7 +1,7 @@
 import { Credentials, S3, Endpoint } from "aws-sdk";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import { buckets } from "../constants/constants";
-import { S3Copy, S3Get, S3Put, State } from "../types/types";
+import { S3Get, S3Put, State } from "../types/other";
 
 export const createS3Client = () => {
   const s3Config: S3.ClientConfiguration &
@@ -51,7 +51,7 @@ export default {
       });
     });
   },
-  copy: async (params: S3Copy) => {
+  copy: async (params: S3.CopyObjectRequest) => {
     return new Promise<void>((resolve, reject) => {
       s3Client.copyObject(params, function (err: any, result: any) {
         if (err) {
@@ -63,8 +63,27 @@ export default {
       });
     });
   },
+  list: async (params: S3.ListObjectsRequest) => {
+    return new Promise<S3.ObjectList>((resolve, reject) => {
+      s3Client.listObjects(
+        params,
+        function (err: any, result: S3.ListObjectsOutput) {
+          if (err) {
+            reject(err);
+          }
+          if (result) {
+            resolve(result.Contents ?? []);
+          }
+        }
+      );
+    });
+  },
 };
 
 export function getFieldDataKey(state: State, fieldDataId: string) {
   return `${buckets.FIELD_DATA}/${state}/${fieldDataId}.json`;
+}
+
+export function getFormTemplateKey(state: State, formTemplateId: string) {
+  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
 }

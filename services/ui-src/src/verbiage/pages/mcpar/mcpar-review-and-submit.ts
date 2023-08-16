@@ -2,6 +2,7 @@ export default {
   print: {
     printPageUrl: "/mcpar/export",
     printButtonText: "Review PDF",
+    downloadButtonText: "Download PDF",
   },
   review: {
     intro: {

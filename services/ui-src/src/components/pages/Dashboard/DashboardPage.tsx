@@ -9,20 +9,18 @@ import {
   Image,
   Link,
   Text,
+  Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
   AddEditReportModal,
+  DashboardTable,
+  InstructionsAccordion,
   ErrorAlert,
+  MobileDashboardTable,
   PageTemplate,
   ReportContext,
 } from "components";
-import { DashboardTable } from "./DashboardTable";
-import { MobileDashboardTable } from "./MobileDashboardTable";
-import { Spinner } from "@cmsgov/design-system";
-// forms
-import { mcparReportJson } from "forms/mcpar";
-import { mlrReportJson } from "forms/mlr";
 // utils
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
 import {
@@ -34,6 +32,7 @@ import {
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
+import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -49,12 +48,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
-  const {
-    state: userState,
-    userIsStateUser,
-    userIsStateRep,
-    userIsAdmin,
-  } = useUser().user ?? {};
+  const { state: userState, userIsEndUser, userIsAdmin } = useUser().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined
@@ -66,13 +60,6 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
-
-  const genericReportJsonMap: any = {
-    MCPAR: mcparReportJson,
-    MLR: mlrReportJson,
-  };
-
-  const genericReportJson = genericReportJsonMap[reportType]!;
 
   const dashboardVerbiageMap: any = {
     MCPAR: mcparVerbiage,
@@ -116,10 +103,10 @@ export const DashboardPage = ({ reportType }: Props) => {
     const selectedReport: ReportShape = await fetchReport(reportKeys);
     // set active report to selected report
     setReportSelection(selectedReport);
-    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
-    navigate(firstReportPagePath);
     setReportId(undefined);
     setEntering(false);
+    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
+    navigate(firstReportPagePath);
   };
 
   const openAddEditReportModal = (report?: ReportShape) => {
@@ -204,6 +191,15 @@ export const DashboardPage = ({ reportType }: Props) => {
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
         </Heading>
+        {reportType === "MLR" && (
+          <InstructionsAccordion
+            verbiage={
+              userIsEndUser
+                ? accordion.MLR.stateUserDashboard
+                : accordion.MLR.adminDashboard
+            }
+          />
+        )}
         {parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
@@ -220,7 +216,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
-              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsEndUser!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
             />
@@ -237,7 +233,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
-              isStateLevelUser={userIsStateUser! || userIsStateRep!}
+              isStateLevelUser={userIsEndUser!}
               isAdmin={userIsAdmin!}
               sxOverride={sxChildStyles}
             />
@@ -245,7 +241,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         ) : (
           !errorMessage && (
             <Flex sx={sx.spinnerContainer}>
-              <Spinner size="big" />
+              <Spinner size="md" />
             </Flex>
           )
         )}
@@ -253,7 +249,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           <Text sx={sx.emptyTableContainer}>{body.empty}</Text>
         )}
         {/* only show add report button to state users */}
-        {(userIsStateUser || userIsStateRep) && (
+        {userIsEndUser && (
           <Box sx={sx.callToActionContainer}>
             <Button type="submit" onClick={() => openAddEditReportModal()}>
               {body.callToAction}
@@ -265,7 +261,6 @@ export const DashboardPage = ({ reportType }: Props) => {
         activeState={activeState!}
         selectedReport={selectedReport!}
         reportType={reportType}
-        formTemplate={genericReportJson}
         modalDisclosure={{
           isOpen: addEditReportModalIsOpen,
           onClose: addEditReportModalOnCloseHandler,

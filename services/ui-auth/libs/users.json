@@ -25,6 +25,56 @@
     ]
   },
   {
+    "username": "uat-adminuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat-adminuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Tyler"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Endicott"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
+    "username": "uat2-adminuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat2-adminuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Fred"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Flintstone"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
     "username": "borep@test.com",
     "attributes": [
       {
@@ -71,6 +121,31 @@
       {
         "Name": "custom:cms_roles",
         "Value": "mdctmcr-help-desk"
+      }
+    ]
+  },
+  {
+    "username": "internaluser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "internaluser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Inside"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Cat"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-internal-user"
       }
     ]
   },
@@ -158,6 +233,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MN"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -187,6 +266,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -216,6 +299,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "AL"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -245,6 +332,76 @@
       {
         "Name": "custom:cms_state",
         "Value": "WY"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
+      }
+    ]
+  },
+  {
+    "username": "uat-stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat-stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Johnny"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Utah"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "CA"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
+      }
+    ]
+  },
+  {
+    "username": "uat2-stateuser@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "uat2-stateuser@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Barney"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Rubble"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "MI"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -299,6 +456,10 @@
       {
         "Name": "custom:cms_state",
         "Value": "DC"
+      },
+      {
+        "Name": "custom:reports",
+        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   }

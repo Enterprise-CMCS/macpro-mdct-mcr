@@ -1,15 +1,15 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
-import { Box, Heading, Text, Tr, Td, Center } from "@chakra-ui/react";
+import { Box, Center, Heading, Text, Tr, Td, Spinner } from "@chakra-ui/react";
 import {
+  ExportedReportMetadataTable,
   ExportedReportWrapper,
   ExportedSectionHeading,
   ReportContext,
   Table,
 } from "components";
-import { Spinner } from "@cmsgov/design-system";
-// utils
+// types
 import {
   PageTypes,
   ReportRoute,
@@ -17,12 +17,11 @@ import {
   ReportShape,
   ReportType,
 } from "types";
-
+// utils
+import { assertExhaustive } from "utils/other/typing";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-import { assertExhaustive } from "utils/other/typing";
-import { ExportedReportMetadataTable } from "components/export/ExportedReportMetadataTable";
 
 export const ExportedReportPage = () => {
   const { report } = useContext(ReportContext);
@@ -43,7 +42,7 @@ export const ExportedReportPage = () => {
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
 
   return (
-    <Box data-testid="exportedReportPage" sx={sx.container}>
+    <Box sx={sx.container}>
       {(report && routesToRender && (
         <Box sx={sx.innerContainer}>
           {/* pdf metadata */}
@@ -83,11 +82,11 @@ export const ExportedReportPage = () => {
             </Table>
           )}
           {/* report sections */}
-          {renderReportSections(report.formTemplate.routes)}
+          {renderReportSections(report.formTemplate.routes, report.reportType)}
         </Box>
       )) || (
         <Center>
-          <Spinner size="big" />
+          <Spinner size="lg" />
         </Center>
       )}
     </Box>
@@ -102,8 +101,8 @@ export const reportTitle = (
   switch (reportType) {
     case ReportType.MCPAR:
       return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
-    case ReportType.MLR:
     case ReportType.NAAAR:
+    case ReportType.MLR:
       return `${report.fieldData.stateName}: ${reportPage.heading}`;
     default:
       assertExhaustive(reportType);
@@ -113,7 +112,10 @@ export const reportTitle = (
   }
 };
 
-export const renderReportSections = (reportRoutes: ReportRoute[]) => {
+export const renderReportSections = (
+  reportRoutes: ReportRoute[],
+  reportType: string
+) => {
   // recursively render sections
   const renderSection = (section: ReportRoute) => {
     const childSections = section?.children;
@@ -126,6 +128,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
           <Box>
             <ExportedSectionHeading
               heading={section.verbiage?.intro?.subsection || section.name}
+              reportType={reportType}
               verbiage={section.verbiage || undefined}
             />
             <ExportedReportWrapper section={section as ReportRouteWithForm} />
@@ -159,6 +162,9 @@ export const sx = {
     width: "100%",
     maxWidth: "40rem",
     margin: "0 auto 0 0",
+    "@media print": {
+      margin: "5rem 0",
+    },
   },
   heading: {
     fontWeight: "300",

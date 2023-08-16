@@ -1,78 +1,14 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import { ReportContext } from "components";
 import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
 import { axe } from "jest-axe";
 import { ReportShape, ReportType } from "types";
-
-const mockMcparContext = {
-  report: {
-    reportType: "MCPAR",
-    dueDate: 1712505600000,
-    lastAltered: 1712505600000,
-    lastAlteredBy: "Name",
-    status: "In Progress",
-    programName: "test",
-    formTemplate: {
-      routes: [
-        {
-          path: "test",
-          name: "test",
-          pageType: "test",
-        },
-      ],
-    },
-    fieldData: {
-      stateName: "test",
-    },
-  },
-};
-
-const mockMcparContextCombinedData = {
-  report: {
-    reportType: "MCPAR",
-    dueDate: 1712505600000,
-    lastAltered: 1712505600000,
-    lastAlteredBy: "Name",
-    status: "In Progress",
-    programName: "test",
-    combinedData: true,
-    formTemplate: {
-      routes: [
-        {
-          path: "test",
-          name: "test",
-          pageType: "test",
-        },
-      ],
-    },
-    fieldData: {
-      stateName: "test",
-    },
-  },
-};
-
-const mockMlrContext = {
-  report: {
-    reportType: "MLR",
-    dueDate: 1712505600000,
-    lastAltered: 1712505600000,
-    lastAlteredBy: "Name",
-    status: "In Progress",
-    programName: "test",
-    formTemplate: {
-      routes: [
-        {
-          path: "test",
-          name: "test",
-          pageType: "test",
-        },
-      ],
-    },
-    fieldData: {
-      stateName: "TestState",
-    },
-  },
-};
+import {
+  mockStandardReportPageJson,
+  mockMcparReportCombinedDataContext,
+  mockMcparReportContext,
+  mockMlrReportContext,
+} from "utils/testing/setupJest";
 
 const exportedReportPage = (context: any) => (
   <ReportContext.Provider value={context}>
@@ -81,28 +17,35 @@ const exportedReportPage = (context: any) => (
 );
 
 describe("Test ExportedReportPage Functionality", () => {
-  test("Is the export page visible", async () => {
-    const { getByTestId } = render(exportedReportPage(mockMcparContext));
-    const page = getByTestId("exportedReportPage");
-    expect(page).toBeVisible();
-    const results = await axe(page);
-    expect(results).toHaveNoViolations();
+  test("Is the export page visible for MCPAR Reports", async () => {
+    mockMcparReportContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const page = render(exportedReportPage(mockMcparReportContext));
+    const title = page.getByText(
+      "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
+    );
+    expect(title).toBeVisible();
   });
 
-  test("Is the export page visible w/Combined Data", async () => {
-    const { getByTestId } = render(
-      exportedReportPage(mockMcparContextCombinedData)
+  test("Is the export page visible for MCPAR reports w/Combined Data", async () => {
+    mockMcparReportCombinedDataContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const page = render(exportedReportPage(mockMcparReportCombinedDataContext));
+    const title = page.getByText(
+      "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
     );
-    const page = getByTestId("exportedReportPage");
-    expect(page).toBeVisible();
-    const results = await axe(page);
-    expect(results).toHaveNoViolations();
+    expect(title).toBeVisible();
   });
 
   test("Does the export page have the correct title for MLR reports", () => {
-    const page = render(exportedReportPage(mockMlrContext));
+    mockMlrReportContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const page = render(exportedReportPage(mockMlrReportContext));
     const title = page.getByText(
-      "TestState: Medicaid Medical Loss Ratio (MLR) & Remittance Calculations"
+      "TestState: Medicaid Medical Loss Ratio (MLR) & Remittances"
     );
     expect(title).toBeVisible();
   });
@@ -114,5 +57,41 @@ describe("ExportedReportPage fails gracefully when appropriate", () => {
     expect(() => reportTitle(unknownReportType, {}, {} as ReportShape)).toThrow(
       Error
     );
+  });
+});
+
+describe("Test Exported Report Page View accessibility", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("Should not have basic accessibility issues for MCPAR Reports", async () => {
+    mockMcparReportContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const { container } = render(exportedReportPage(mockMcparReportContext));
+    await act(async () => {
+      expect(await axe(container)).toHaveNoViolations();
+    });
+  });
+
+  it("Should not have basic accessibility issues for MCPAR Reports w/ CombinedData", async () => {
+    mockMcparReportCombinedDataContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const { container } = render(exportedReportPage(mockMcparReportContext));
+    await act(async () => {
+      expect(await axe(container)).toHaveNoViolations();
+    });
+  });
+
+  it("Should not have basic accessibility issues for MLR Reports", async () => {
+    mockMlrReportContext.report.formTemplate.routes = [
+      mockStandardReportPageJson,
+    ];
+    const { container } = render(exportedReportPage(mockMlrReportContext));
+    await act(async () => {
+      expect(await axe(container)).toHaveNoViolations();
+    });
   });
 });

@@ -35,24 +35,6 @@ const mockReportContextWithoutEntities = {
   report: undefined,
 };
 
-const mockReportWithCompletedEntityContext = {
-  ...mockMcparReportContext,
-  report: {
-    ...mockMcparReportContext.report,
-    fieldData: {
-      ...mockMcparReportContext.report.fieldData,
-      plans: [
-        {
-          id: 123,
-          name: "example-plan1",
-          "mock-drawer-text-field": "example-explanation",
-        },
-        { id: 456, name: "example-plan2" },
-      ],
-    },
-  },
-};
-
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
@@ -71,7 +53,7 @@ const drawerReportPageWithoutEntities = (
 
 const drawerReportPageWithCompletedEntity = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportWithCompletedEntityContext}>
+    <ReportContext.Provider value={mockMcparReportContext}>
       <DrawerReportPage route={mockDrawerReportPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -84,7 +66,9 @@ describe("Test DrawerReportPage without entities", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("should not have any way to open the side drawer", () => {
@@ -104,7 +88,9 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("should render the view", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
@@ -172,6 +158,36 @@ describe("Test DrawerReportPage with entities", () => {
     await userEvent.click(saveAndCloseButton);
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+
+  it("Submit sidedrawer doesn't save if no change was made by State User", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    const visibleEntityText =
+      mockMcparReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+
+  it("Submit sidedrawer doesn't save if no change was made by State Rep", async () => {
+    mockedUseUser.mockReturnValue(mockStateRep);
+    const visibleEntityText =
+      mockMcparReportContext.report.fieldData.plans[0].name;
+    expect(screen.getByText(visibleEntityText)).toBeVisible();
+    const launchDrawerButton = screen.getAllByText("Enter")[0];
+    await userEvent.click(launchDrawerButton);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    const textField = await screen.getByLabelText("mock drawer text field");
+    expect(textField).toBeVisible();
+    const saveAndCloseButton = screen.getByText(saveAndCloseText);
+    await userEvent.click(saveAndCloseButton);
+    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe("Test DrawerReportPage with completed entity", () => {
@@ -181,7 +197,9 @@ describe("Test DrawerReportPage with completed entity", () => {
   });
 
   it("should render the view", () => {
-    expect(screen.getByTestId("drawer-report-page")).toBeVisible();
+    expect(
+      screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
+    ).toBeVisible();
   });
 
   it("should show the completed state on one entity", () => {

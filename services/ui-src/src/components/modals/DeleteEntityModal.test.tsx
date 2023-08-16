@@ -9,6 +9,7 @@ import {
   mockMcparReport,
   mockMcparReportContext,
   mockReportKeys,
+  mockAccessMeasuresEntity,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 
@@ -17,18 +18,13 @@ jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 const mockUpdateReport = jest.fn();
 const mockCloseHandler = jest.fn();
 
-const mockEntity = {
-  id: "mock-id-1",
-  "mock-modal-text-field": "mock input 1",
-};
-
 const mockedReportContext = {
   ...mockMcparReportContext,
   updateReport: mockUpdateReport,
   report: {
     ...mockMcparReport,
     fieldData: {
-      accessMeasures: [mockEntity],
+      accessMeasures: [mockAccessMeasuresEntity],
     },
   },
 };
@@ -62,7 +58,7 @@ const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteEntityModal
       entityType="accessMeasures"
-      selectedEntity={mockEntity}
+      selectedEntity={mockAccessMeasuresEntity}
       verbiage={mockModalDrawerReportPageVerbiage}
       modalDisclosure={{
         isOpen: true,

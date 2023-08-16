@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-//components
+// components
 import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
-import { useUser } from "utils";
+// utils
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
+import { useUser } from "utils";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -25,15 +26,6 @@ const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
-  }));
-
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
   }));
 
 jest.mock("utils/auth/useUser");
@@ -107,16 +99,6 @@ describe("Test Maskless NumberField", () => {
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("123");
   });
-
-  test("NumberField triggers validation after first render if no value given", () => {
-    mockFieldIsRegistered("testNumberField", "");
-    const result = render(numberFieldComponent);
-    const numberFieldInput: HTMLInputElement = result.container.querySelector(
-      "[name='testNumberField']"
-    )!;
-    expect(numberFieldInput).toBeVisible();
-    expect(mockTrigger).toBeCalled();
-  });
 });
 
 describe("Test Masked NumberField", () => {
@@ -141,6 +123,14 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(numberFieldInput, "12055.99");
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("12,055.99");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "-1234");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("-1,234");
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(numberFieldInput, "$$1234567890.10");
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual("$$1234567890.10");
   });
 
   test("onChangeHandler updates Currency masked field value", async () => {
@@ -196,6 +186,15 @@ describe("Test Masked NumberField", () => {
     await userEvent.type(
       numberFieldInput,
       "123,,,4567.1234567.1234:12,3456,7.1"
+    );
+    await userEvent.tab();
+    expect(numberFieldInput.value).toEqual(
+      "123,,,4567.1234567.1234:12,3456,7.1"
+    );
+    await userEvent.clear(numberFieldInput);
+    await userEvent.type(
+      numberFieldInput,
+      "123,,,4567.12345671234:12,3456,7.1"
     );
     await userEvent.tab();
     expect(numberFieldInput.value).toEqual("1,234,567.12:1,234,567.1");
@@ -254,7 +253,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberField']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual("54,321");
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
@@ -264,7 +263,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberFieldWithHydrationValue']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockHydrationValue);
+    expect(displayValue).toEqual("12,345");
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
@@ -274,7 +273,7 @@ describe("Test NumberField hydration functionality", () => {
       "[name='testNumberFieldWithHydrationValue']"
     )!;
     const displayValue = numberField.value;
-    expect(displayValue).toEqual(mockFormFieldValue);
+    expect(displayValue).toEqual("54,321");
   });
 
   test("should set value to default if given clear prop and clear is set to true", () => {
@@ -364,6 +363,36 @@ describe("Test NumberField component autosaves", () => {
     await userEvent.type(textField, "test value");
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe("Numberfield handles triggering validation", () => {
+  const numberFieldComponentWithValidateOnRender = (
+    <NumberField name="testNumberField" label="test-label" validateOnRender />
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  test("Blanking field triggers form validation", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
+    const numberField = screen.getByRole("textbox", {
+      name: "test-label",
+    });
+    expect(numberField).toBeVisible();
+    await userEvent.clear(numberField);
+    await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(numberFieldComponentWithValidateOnRender);
+    expect(mockTrigger).toHaveBeenCalled();
   });
 });
 

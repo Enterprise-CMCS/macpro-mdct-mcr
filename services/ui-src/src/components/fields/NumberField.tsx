@@ -2,44 +2,49 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext, TextField } from "components";
+import { ReportContext } from "components";
+import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
-  applyCustomMask,
+  applyMask,
+  maskMap,
   autosaveFieldData,
-  customMaskMap,
   getAutosaveFields,
+  labelTextWithOptional,
+  parseCustomHtml,
   useUser,
-  validCmsdsMask,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
-import { TextFieldMask as ValidCmsdsMask } from "@cmsgov/design-system/dist/types/TextField/TextField";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const NumberField = ({
   name,
   label,
+  hint,
   placeholder,
   mask,
   sxOverride,
   autosave,
+  validateOnRender,
+  nested,
+  styleAsOptional,
   ...props
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
+  const { full_name, state } = useUser().user ?? {};
+  const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-  // get form context
-  const form = useFormContext();
-  const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
 
+  // get form context and register field
+  const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
 
   useEffect(() => {
-    if (!fieldIsRegistered) {
+    if (!fieldIsRegistered && !validateOnRender) {
       form.register(name);
-    } else {
+    } else if (validateOnRender) {
       form.trigger(name);
     }
   }, []);
@@ -50,7 +55,7 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyCustomMask(fieldValue, mask);
+      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -59,7 +64,10 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyCustomMask(hydrationValue, mask);
+        const maskedHydrationValue = applyMask(
+          hydrationValue,
+          mask
+        ).maskedValue;
         setDisplayValue(maskedHydrationValue);
         form.setValue(name, maskedHydrationValue, { shouldValidate: true });
       }
@@ -79,15 +87,18 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const maskedFieldValue = applyCustomMask(value, mask);
+    const formattedFieldValue = applyMask(value, mask);
+    const maskedFieldValue = formattedFieldValue.maskedValue;
+    const cleanedFieldValue = formattedFieldValue.cleanedValue;
+    form.setValue(name, maskedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
-    // submit field data to database
+    // submit field data to database (inline validation is run prior to API call)
     if (autosave) {
       const fields = getAutosaveFields({
         name,
         type: "number",
-        value,
+        value: cleanedFieldValue,
         defaultValue,
         hydrationValue,
       });
@@ -114,36 +125,35 @@ export const NumberField = ({
     }
   };
 
+  // prepare error message, hint, and classes
+  const formErrorState = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.message;
+  const parsedHint = hint && parseCustomHtml(hint);
+  const maskClass = mask || "";
+  const labelText =
+    label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
+
   return (
-    <Box sx={{ ...sx, ...sxOverride }}>
-      <Box sx={sx.numberFieldContainer}>
-        <TextField
+    <Box sx={{ ...sx, ...sxOverride }} className={`${nestedChildClasses}`}>
+      <Box sx={sx.numberFieldContainer} className={maskClass}>
+        <CmsdsTextField
           id={name}
           name={name}
-          label={label || ""}
+          label={labelText || ""}
+          hint={parsedHint}
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          mask={validCmsdsMask(mask)}
           value={displayValue}
+          errorMessage={errorMessage}
           {...props}
         />
-        {mask === "percentage" &&
-          (props.nested ? (
-            <Box
-              className={props.disabled ? "disabled" : undefined}
-              sx={sx.nestedPercentage}
-            >
-              {" % "}
-            </Box>
-          ) : (
-            <Box
-              className={props.disabled ? "disabled" : undefined}
-              sx={sx.percentage}
-            >
-              {" % "}
-            </Box>
-          ))}
+        <SymbolOverlay
+          fieldMask={mask}
+          nested={nested}
+          disabled={props?.disabled}
+        />
       </Box>
     </Box>
   );
@@ -153,42 +163,76 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
-  mask?: ValidCmsdsMask | keyof typeof customMaskMap;
+  mask?: keyof typeof maskMap | null;
   nested?: boolean;
   sxOverride?: AnyObject;
   autosave?: boolean;
+  validateOnRender?: boolean;
   clear?: boolean;
   [key: string]: any;
+}
+
+export const SymbolOverlay = ({
+  fieldMask,
+  nested,
+  disabled,
+}: SymbolOverlayProps) => {
+  const symbolMap = { percentage: "%", currency: "$" };
+  const symbol = fieldMask
+    ? symbolMap[fieldMask as keyof typeof symbolMap]
+    : undefined;
+  const disabledClass = disabled ? "disabled" : "";
+  const nestedClass = nested ? "nested" : "";
+  return symbol ? (
+    <Box
+      className={`${disabledClass} ${nestedClass} `}
+      sx={sx.symbolOverlay}
+    >{` ${symbol} `}</Box>
+  ) : (
+    <></>
+  );
+};
+interface SymbolOverlayProps {
+  fieldMask?: keyof typeof maskMap | null;
+  nested?: boolean;
+  disabled?: boolean;
 }
 
 const sx = {
   ".ds-c-field": {
     maxWidth: "15rem",
-    paddingRight: "1.75rem",
+    paddingLeft: ".5rem",
+    paddingRight: ".5rem",
   },
   numberFieldContainer: {
     position: "relative",
-  },
-  percentage: {
-    position: "absolute",
-    bottom: "11px",
-    left: "213px",
-    paddingTop: "1px",
-    fontSize: "lg",
-    fontWeight: "700",
-    "&.disabled": {
-      color: "palette.gray_light",
+    "&.currency": {
+      ".ds-c-field": {
+        paddingLeft: "1.5rem",
+      },
+    },
+    "&.percentage": {
+      ".ds-c-field": {
+        paddingRight: "1.75rem",
+      },
     },
   },
-  nestedPercentage: {
+  symbolOverlay: {
     position: "absolute",
-    bottom: "15px",
-    left: "245px",
     paddingTop: "1px",
     fontSize: "lg",
     fontWeight: "700",
-    "&.disabled": {
-      color: "palette.gray_light",
+    "&.nested": {
+      bottom: "15px",
+      left: "245px",
+    },
+    ".percentage &": {
+      bottom: "11px",
+      left: "213px",
+    },
+    ".currency &": {
+      bottom: "11px",
+      left: "10px",
     },
   },
 };

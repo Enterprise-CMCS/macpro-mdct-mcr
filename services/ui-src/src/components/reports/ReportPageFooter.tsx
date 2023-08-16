@@ -17,25 +17,27 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
     report?.formTemplate.flatRoutes,
     report?.formTemplate.basePath
   );
+  const hidePrevious = previousRoute === "/mcpar" || previousRoute === "/mlr";
 
-  const { userIsAdmin, userIsApprover, userIsHelpDeskUser } =
-    useUser().user ?? {};
-  const isAdminUserType = userIsAdmin || userIsApprover || userIsHelpDeskUser;
+  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const isAdminUserType = userIsAdmin || userIsReadOnly;
   const formIsDisabled = isAdminUserType && form?.adminDisabled;
 
   return (
     <Box sx={sx.footerBox} {...props}>
       <Box>
-        <Flex sx={sx.buttonFlex}>
-          <Button
-            onClick={() => navigate(previousRoute)}
-            variant="outline"
-            leftIcon={
-              <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
-            }
-          >
-            Previous
-          </Button>
+        <Flex sx={hidePrevious ? sx.floatButtonRight : sx.buttonFlex}>
+          {!hidePrevious && (
+            <Button
+              onClick={() => navigate(previousRoute)}
+              variant="outline"
+              leftIcon={
+                <Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />
+              }
+            >
+              Previous
+            </Button>
+          )}
           {!form?.id || formIsDisabled ? (
             <Button
               onClick={() => navigate(nextRoute)}
@@ -64,7 +66,6 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
             </Button>
           )}
         </Flex>
-        {/* TODO: Add Prince Print Button */}
       </Box>
     </Box>
   );
@@ -79,10 +80,13 @@ interface Props {
 const sx = {
   footerBox: {
     marginTop: "3.5rem",
-    borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
     justifyContent: "space-between",
+    marginY: "1.5rem",
+  },
+  floatButtonRight: {
+    justifyContent: "right",
     marginY: "1.5rem",
   },
   arrowIcon: {

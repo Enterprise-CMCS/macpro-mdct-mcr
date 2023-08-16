@@ -4,16 +4,16 @@ export default {
     notApplicable: "Not applicable",
   },
   reportBanner: {
-    intro: "Click below to export or print MLR Report shown here",
+    intro: "Click below to export or print MLR Submission shown here",
     pdfButton: "Download PDF",
   },
   metadata: {
     author: "CMS",
-    subject: "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+    subject: "Medicaid Medical Loss Ratio (MLR) & Remittances",
     language: "English",
   },
   reportPage: {
-    heading: "Medicaid Medical Loss Ratio (MLR) & Remittance Calculations",
+    heading: "Medicaid Medical Loss Ratio (MLR) & Remittances",
     metadataTableHeaders: {
       submissionName: "Submission name",
       lastEdited: "Last edited",
@@ -30,9 +30,12 @@ export default {
     status: "Status",
     index: "#",
     submissionInformation:
-      "I., K. & L., N. & O., M. <br /> Program name <br/> Eligibility group & description <br/> MLR reporting period dates <br/> MCO, PIHP, or PAHP name",
-    programType: "J. Program type",
+      "I., J. & L., N. & O., M. <br/> MCO, PIHP, or PAHP name <br /> Program name <br/> Eligibility group & description <br/> MLR reporting period dates",
+    programType: "K. Program type",
     discrepancyExplanation: "P. Reporting period discrepancy explanation",
     notes: "Q. Misc notes (optional)",
+  },
+  intro: {
+    exportSectionHeader: "Medicaid Medical Loss Ratio (MLR) & Remittances",
   },
 };

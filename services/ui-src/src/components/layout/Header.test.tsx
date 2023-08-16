@@ -43,16 +43,11 @@ describe("Test Header", () => {
   });
 
   test("Help button is visible", () => {
-    expect(screen.getByTestId("header-help-button")).toBeVisible();
+    expect(screen.getByAltText("Help")).toBeVisible();
   });
 
   test("Menu button is visible", () => {
-    expect(screen.getByTestId("header-menu-dropdown-button")).toBeVisible();
-  });
-
-  test("Subnav is visible on report screens; navigates to dashboard", async () => {
-    const leaveFormButton = screen.getByTestId("leave-form-button");
-    expect(leaveFormButton).toBeVisible();
+    expect(screen.getByAltText("Arrow down")).toBeVisible();
   });
 });
 
@@ -61,6 +56,11 @@ describe("Report Context", () => {
     render(reportComponent);
     expect(screen.getByText("Program: testProgram")).toBeVisible();
     expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
+  });
+
+  test("Subnav is visible on report screens; navigates to dashboard", async () => {
+    render(reportComponent);
+    expect(screen.getByText("Leave form")).toBeVisible();
   });
 });
 

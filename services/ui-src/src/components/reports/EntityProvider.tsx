@@ -52,10 +52,10 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
       (x) => x.id === selectedEntity?.id
     );
     if (currentEntities && selectedEntityIndex > -1) {
-      const newEntity = Object.assign(
-        currentEntities[selectedEntityIndex],
-        updateData
-      );
+      const newEntity = {
+        ...currentEntities[selectedEntityIndex],
+        ...updateData,
+      };
       currentEntities[selectedEntityIndex] = newEntity;
     }
     return currentEntities;

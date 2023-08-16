@@ -1,19 +1,22 @@
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import handler from "../handler-lib";
+// utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib from "../../utils/s3/s3-lib";
-import { AnyObject, S3Get, StatusCodes } from "../../utils/types/types";
 import {
   error,
   buckets,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+import { hasReportAccess } from "../../utils/auth/authorization";
+// types
+import { AnyObject, S3Get, StatusCodes } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -25,6 +28,14 @@ export const fetchReport = handler(async (event, _context) => {
   }
 
   const { reportType, state, id } = event.pathParameters!;
+
+  // Return a 403 status if the user does not have access to this report
+  if (!hasReportAccess(event, reportType!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
@@ -119,6 +130,15 @@ export const fetchReportsByState = handler(async (event, _context) => {
   }
 
   const reportType = event.pathParameters?.reportType;
+
+  // Return a 403 status if the user does not have access to this report
+  if (!hasReportAccess(event, reportType!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
+
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   const queryParams: DynamoFetchParams = {

@@ -1,12 +1,14 @@
+// types
 import {
-  CompletionData,
   AnyObject,
-  ReportRoute,
+  CompletionData,
   FormJson,
-  Choice,
   FieldChoice,
+  Choice,
   FormField,
-} from "../types/types";
+  ReportRoute,
+} from "../types";
+// utils
 import { validateFieldData } from "./completionValidation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
@@ -91,14 +93,19 @@ export const calculateCompletionStatus = async (
       return fieldIds;
     };
     // Iterate over all fields in form
-    for (var formField of nestedFormTemplate.fields || []) {
+    for (var formField of nestedFormTemplate?.fields || []) {
       if (formField.repeat) {
         // This is a repeated field, and must be handled differently
-        for (var repeatEntity of fieldData[formField.repeat]) {
-          // Iterate over each entity from the repeat section, build new value id, and validate it
-          repeatersValid &&= await areFieldsValid({
-            [formField.id]: dataForObject[`${formField.id}_${repeatEntity.id}`],
-          });
+        if (fieldData[formField.repeat] !== undefined)
+          for (var repeatEntity of fieldData[formField.repeat]) {
+            // Iterate over each entity from the repeat section, build new value id, and validate it
+            repeatersValid &&= await areFieldsValid({
+              [formField.id]:
+                dataForObject[`${formField.id}_${repeatEntity.id}`],
+            });
+          }
+        else {
+          repeatersValid = false;
         }
       } else {
         // Key: Form Field ID, Value: Report Data for field
@@ -130,7 +137,7 @@ export const calculateCompletionStatus = async (
     //value for holding combined result
     var areAllFormsComplete = true;
     for (var nestedFormTemplate of nestedFormTemplates) {
-      if (fieldData[entityType]) {
+      if (fieldData[entityType] && fieldData[entityType].length > 0) {
         // iterate over each entity (eg access measure)
         for (var dataForEntity of fieldData[entityType]) {
           // get completion status for entity, using the correct form template
@@ -175,6 +182,15 @@ export const calculateCompletionStatus = async (
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm, route.modalForm],
+            route.entityType
+          ),
+        };
+        break;
+      case "modalOverlay":
+        if (!route.modalForm || !route.overlayForm) break;
+        routeCompletion = {
+          [route.path]: await calculateEntityCompletion(
+            [route.modalForm, route.overlayForm],
             route.entityType
           ),
         };

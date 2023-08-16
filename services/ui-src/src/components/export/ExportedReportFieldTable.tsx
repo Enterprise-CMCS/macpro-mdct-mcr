@@ -39,10 +39,8 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     ? twoColumnHeaderItems
     : threeColumnHeaderItems;
 
-  // The hint text is hidden for MLR page 1 (Point of Contact)
   const reportType = report?.reportType as ReportType;
-  const hideHintText =
-    reportType === ReportType.MLR && section.form?.id === "apoc";
+  const hideHintText = reportType === ReportType.MLR;
 
   return (
     <Table
@@ -149,6 +147,9 @@ export interface Props {
 
 const sx = {
   root: {
+    "@media print": {
+      pageBreakInside: "avoid",
+    },
     marginBottom: "1rem",
     "tr, th": {
       verticalAlign: "top",

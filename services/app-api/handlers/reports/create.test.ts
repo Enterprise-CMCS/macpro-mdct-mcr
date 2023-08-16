@@ -1,13 +1,16 @@
 import { createReport } from "./create";
 import { APIGatewayProxyEvent } from "aws-lambda";
+// utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { StatusCodes } from "../../utils/types/types";
 import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+// types
+import { StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
+  hasReportAccess: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({
@@ -44,6 +47,13 @@ describe("Test createReport API method", () => {
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
+  test("Test report creation by a state user without access to a report type throws 403 error", async () => {
+    const res = await createReport(creationEvent, null);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
   test("Test Successful Run of report creation", async () => {
     const res = await createReport(creationEvent, null);
 
@@ -56,6 +66,18 @@ describe("Test createReport API method", () => {
     expect(body.formTemplateId).not.toEqual(
       mockMcparReport.metadata.formTemplateId
     );
+    expect(body.fieldData.number).toBe(
+      mockMcparReport.fieldData.number.toString()
+    );
+    expect(body.fieldData.text).toBe(mockMcparReport.fieldData.text);
+
+    expect(body.formTemplate.name).toBe("mock-report");
+    expect(body.formTemplate.basePath).toBe("/mock");
+    expect(body.formTemplate.routes).toHaveLength(0);
+    expect(body.formTemplate.validationJson).toMatchObject({
+      text: "text",
+      number: "number",
+    });
   });
 
   test("Test attempted report creation with invalid data fails", async () => {

@@ -5,6 +5,8 @@ export const completionSchemaMap: any = {
   textOptional: schema.textOptional(),
   number: schema.number(),
   numberOptional: schema.numberOptional(),
+  numberNotLessThanOne: schema.numberNotLessThanOne(),
+  numberNotLessThanZero: schema.numberNotLessThanZero(),
   ratio: schema.ratio(),
   email: schema.email(),
   emailOptional: schema.emailOptional(),
@@ -20,4 +22,6 @@ export const completionSchemaMap: any = {
   radioOptional: schema.radioOptional(),
   dynamic: schema.dynamic(),
   dynamicOptional: schema.dynamicOptional(),
+  validNumber: schema.validNumber(),
+  validNumberOptional: schema.validNumberOptional(),
 };

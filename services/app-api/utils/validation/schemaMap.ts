@@ -9,13 +9,19 @@ import {
 } from "yup";
 
 const error = {
+  REQUIRED_GENERIC: "A response is required",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
+  NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
+  INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number or "N/A"',
   INVALID_RATIO: "Response must be a valid ratio",
 };
+
+const isWhitespaceString = (value?: string) => value?.trim().length === 0;
 
 // TEXT
 export const text = (): StringSchema => string();
@@ -30,12 +36,15 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   });
 };
 
+/** This regex must be at least as permissive as the one in ui-src */
+const validNumberRegex = /^\.$|[0-9]/;
+
 // NUMBER - Number or Valid Strings
+
 export const number = () =>
   string().test({
     message: error.INVALID_NUMBER_OR_NA,
     test: (value) => {
-      const validNumberRegex = /[0-9,.]/;
       if (value) {
         const isValidStringValue = validNAValues.includes(value);
         const isValidNumberValue = validNumberRegex.test(value);
@@ -43,7 +52,55 @@ export const number = () =>
       } else return true;
     },
   });
+
+// NUMBER NOT LESS THAN ONE
+export const numberNotLessThanOne = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => validNumberRegex.test(value!),
+      message: error.INVALID_NUMBER,
+    })
+    .test({
+      test: (value) => parseInt(value!) >= 1,
+      message: error.NUMBER_LESS_THAN_ONE,
+    });
+
+// NUMBER NOT LESS THAN ZERO
+export const numberNotLessThanZero = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => validNumberRegex.test(value!),
+      message: error.INVALID_NUMBER,
+    })
+    .test({
+      test: (value) => parseFloat(value!) >= 0,
+      message: error.NUMBER_LESS_THAN_ZERO,
+    });
+
 export const numberOptional = () => number();
+
+const validNumberSchema = () =>
+  string().test({
+    message: error.INVALID_NUMBER,
+    test: (value) => {
+      return typeof value !== "undefined"
+        ? validNumberRegex.test(value)
+        : false;
+    },
+  });
+
+export const validNumber = () =>
+  validNumberSchema()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => !isWhitespaceString(value),
+      message: error.REQUIRED_GENERIC,
+    });
+
+export const validNumberOptional = () =>
+  validNumberSchema().notRequired().nullable();
 
 // Number - Ratio
 export const ratio = () =>
@@ -184,6 +241,7 @@ export const schemaMap: any = {
   email: email(),
   emailOptional: emailOptional(),
   number: number(),
+  numberNotLessThanOne: numberNotLessThanOne(),
   numberOptional: numberOptional(),
   objectArray: objectArray(),
   radio: radio(),

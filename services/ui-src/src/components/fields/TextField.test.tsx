@@ -28,15 +28,6 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-const mockFieldIsRegistered = (fieldName: string, returnValue: any) =>
-  mockUseFormContext.mockImplementation((): any => ({
-    ...mockRhfMethods,
-    getValues: jest
-      .fn()
-      .mockReturnValueOnce({ [`${fieldName}`]: returnValue })
-      .mockReturnValue(returnValue),
-  }));
-
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
@@ -46,7 +37,6 @@ const textFieldComponent = (
       name="testTextField"
       label="test-label"
       placeholder="test-placeholder"
-      data-testid="test-text-field"
     />
   </ReportContext.Provider>
 );
@@ -57,7 +47,6 @@ const textFieldAutosavingComponent = (
       name="testTextField"
       label="test-label"
       placeholder="test-placeholder"
-      data-testid="test-text-field-autosave"
       autosave
     />
   </ReportContext.Provider>
@@ -68,18 +57,8 @@ describe("Test TextField component", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues("");
     render(textFieldComponent);
-    const textField = screen.getByTestId("test-text-field");
+    const textField = screen.getByText("test-label");
     expect(textField).toBeVisible();
-    jest.clearAllMocks();
-  });
-
-  test("TextField triggers validation after first render if no value given", () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
-    mockFieldIsRegistered("testTextField", "");
-    render(textFieldComponent);
-    const textField = screen.getByTestId("test-text-field");
-    expect(textField).toBeVisible();
-    expect(mockTrigger).toBeCalled();
     jest.clearAllMocks();
   });
 });
@@ -99,7 +78,6 @@ describe("Test TextField hydration functionality", () => {
       label="test-label"
       placeholder="test-placeholder"
       hydrate={mockHydrationValue}
-      data-testid="test-text-field-with-hydration-value"
     />
   );
 
@@ -109,7 +87,6 @@ describe("Test TextField hydration functionality", () => {
       label="test-label"
       placeholder="test-placeholder"
       hydrate={mockHydrationValue}
-      data-testid="test-text-field-with-hydration-value"
       clear
     />
   );
@@ -120,35 +97,36 @@ describe("Test TextField hydration functionality", () => {
       label="test-label"
       placeholder="test-placeholder"
       hydrate={mockHydrationValue}
-      data-testid="test-text-field-with-hydration-value"
       clear={false}
     />
   );
 
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
-    render(textFieldComponent);
-    const textField: HTMLInputElement = screen.getByTestId("test-text-field");
+    const result = render(textFieldComponent);
+    const textField: HTMLInputElement = result.container.querySelector(
+      "[name='testTextField']"
+    )!;
     const displayValue = textField.value;
     expect(displayValue).toEqual(mockFormFieldValue);
   });
 
   test("If only hydrationValue exists, displayValue is set to it", () => {
     mockGetValues(undefined);
-    render(textFieldComponentWithHydrationValue);
-    const textField: HTMLInputElement = screen.getByTestId(
-      "test-text-field-with-hydration-value"
-    );
+    const result = render(textFieldComponentWithHydrationValue);
+    const textField: HTMLInputElement = result.container.querySelector(
+      "[name='testTextFieldWithHydrationValue']"
+    )!;
     const displayValue = textField.value;
     expect(displayValue).toEqual(mockHydrationValue);
   });
 
   test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
     mockGetValues(mockFormFieldValue);
-    render(textFieldComponentWithHydrationValue);
-    const textField: HTMLInputElement = screen.getByTestId(
-      "test-text-field-with-hydration-value"
-    );
+    const result = render(textFieldComponentWithHydrationValue);
+    const textField: HTMLInputElement = result.container.querySelector(
+      "[name='testTextFieldWithHydrationValue']"
+    )!;
     const displayValue = textField.value;
     expect(displayValue).toEqual(mockFormFieldValue);
   });
@@ -247,17 +225,41 @@ describe("Test TextField component autosaves", () => {
     await userEvent.tab();
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
   });
+});
 
+describe("Textfield handles triggering validation", () => {
+  const textFieldValidateOnRenderComponent = (
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <TextField
+        name="testTextField"
+        label="test-label"
+        placeholder="test-placeholder"
+        validateOnRender
+      />
+    </ReportContext.Provider>
+  );
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   test("Blanking field triggers form validation", async () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(textFieldComponent);
+    expect(mockTrigger).not.toHaveBeenCalled();
     const textField = screen.getByRole("textbox", {
       name: "test-label",
     });
     expect(textField).toBeVisible();
     await userEvent.clear(textField);
     await userEvent.tab();
+    expect(mockTrigger).toHaveBeenCalled();
+  });
+
+  test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(textFieldValidateOnRenderComponent);
     expect(mockTrigger).toHaveBeenCalled();
   });
 });
