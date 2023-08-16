@@ -33,6 +33,7 @@ const entityDetailsOverlayComponentStateUser = (
         form={mockModalOverlayForm}
         onSubmit={mockOnSubmit}
         disabled={false}
+        setEntering={jest.fn()}
         selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
       />
     </EntityContext.Provider>
@@ -49,6 +50,7 @@ const entityDetailsOverlayComponentAdminUser = (
         form={mockModalOverlayForm}
         onSubmit={mockOnSubmit}
         disabled={true}
+        setEntering={jest.fn()}
         selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
       />
     </EntityContext.Provider>

@@ -1,5 +1,14 @@
 // components
-import { Box, Button, Image, Text, Td, Tr, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Image,
+  Text,
+  Td,
+  Tr,
+  Flex,
+  Spinner,
+} from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
@@ -15,6 +24,7 @@ export const MobileEntityRow = ({
   entity,
   verbiage,
   locked,
+  entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
@@ -72,7 +82,7 @@ export const MobileEntityRow = ({
             size="sm"
             sx={sx.enterButton}
           >
-            {enterReportText}
+            {entering ? <Spinner size="md" /> : enterReportText}
           </Button>
 
           <Button
@@ -92,6 +102,7 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
+  entering: boolean;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openEntityDetailsOverlay: Function;
