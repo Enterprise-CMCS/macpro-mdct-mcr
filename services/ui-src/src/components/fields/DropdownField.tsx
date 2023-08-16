@@ -11,6 +11,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
+  convertDateUtcToEt,
 } from "utils";
 import {
   AnyObject,
@@ -35,7 +36,8 @@ export const DropdownField = ({
   styleAsOptional,
   ...props
 }: Props) => {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport, submittedReportsByState } =
+    useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
   const { full_name, state } = useUser().user ?? {};
@@ -43,18 +45,22 @@ export const DropdownField = ({
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
-    if (typeof options === "string") {
-      const dynamicOptionValues = report?.fieldData[options];
-      if (dynamicOptionValues) {
-        const fieldOptions = dynamicOptionValues.map((option: EntityShape) => ({
+    if (options === "copyEligibleReports") {
+      dropdownOptions =
+        submittedReportsByState?.map((option) => ({
+          label: `${option.programName} ${convertDateUtcToEt(option.dueDate)}`,
+          value: option.fieldDataId!,
+        })) ?? [];
+    } else if (typeof options === "string") {
+      dropdownOptions =
+        report?.fieldData[options]?.map((option: EntityShape) => ({
           label: option.name,
           value: option.id,
-        }));
-        dropdownOptions = fieldOptions;
-      }
+        })) ?? [];
     } else {
       dropdownOptions = options;
     }
+
     if (dropdownOptions[0]?.value !== "") {
       dropdownOptions.splice(0, 0, {
         label: dropdownDefaultOptionText,

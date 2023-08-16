@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
+import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
 import { AnyObject, FormJson, ReportStatus } from "types";
@@ -25,9 +27,10 @@ export const AddEditReportModal = ({
     useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const yoyCopyFlag = useFlags()?.yoyCopy;
 
   const modalFormJsonMap: any = {
-    MCPAR: mcparFormJson,
+    MCPAR: yoyCopyFlag ? mcparFormJson : mcparFormJsonWithoutYoY,
     MLR: mlrFormJson,
   };
 
@@ -37,6 +40,7 @@ export const AddEditReportModal = ({
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
+    const copySourceId = formData["copySourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
     const reportingPeriodStartDate = convertDateEtToUtc(
@@ -55,6 +59,7 @@ export const AddEditReportModal = ({
         combinedData,
         lastAlteredBy: full_name,
       },
+      copySourceId: copySourceId?.value,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
