@@ -49,6 +49,7 @@ export const ModalOverlayReportPage = ({
   const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
     undefined
   );
+  const [entering, setEntering] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
     useUser().user ?? {};
@@ -101,6 +102,7 @@ export const ModalOverlayReportPage = ({
 
   // Open/Close overlay action methods
   const openEntityDetailsOverlay = (entity: EntityShape) => {
+    setEntering(true);
     setCurrentEntity(entity);
     setIsEntityDetailsOpen(true);
     setSidebarHidden(true);
@@ -177,6 +179,7 @@ export const ModalOverlayReportPage = ({
             onSubmit={onSubmit}
             selectedEntity={currentEntity}
             disabled={!userIsEndUser}
+            setEntering={setEntering}
             submitting={submitting}
             validateOnRender={validateOnRender}
           />
@@ -207,6 +210,7 @@ export const ModalOverlayReportPage = ({
                       entity={entity}
                       verbiage={verbiage}
                       locked={isLocked}
+                      entering={entering}
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openEntityDetailsOverlay={openEntityDetailsOverlay}
@@ -217,6 +221,7 @@ export const ModalOverlayReportPage = ({
                       entity={entity}
                       verbiage={verbiage}
                       locked={isLocked}
+                      entering={entering}
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openEntityDetailsOverlay={openEntityDetailsOverlay}

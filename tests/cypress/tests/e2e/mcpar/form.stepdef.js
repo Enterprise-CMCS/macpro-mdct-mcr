@@ -1,5 +1,5 @@
 import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import mcparTemplate from "../../../../../services/ui-src/src/forms/mcpar/mcpar.json";
+import mcparTemplate from "../../../../../services/app-api/forms/mcpar.json";
 
 const templateMap = { MCPAR: mcparTemplate };
 

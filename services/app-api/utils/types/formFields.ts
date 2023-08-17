@@ -41,7 +41,6 @@ export interface FormJson {
   fields: FormField[];
   options?: AnyObject;
   validation?: AnyObject;
-  adminDisabled?: boolean;
 }
 
 export interface DependentFieldValidation {

@@ -186,7 +186,7 @@ functions:
     maximumRetryAttempts: 0
   formTemplateTablePopulation:
     handler: handlers/formTemplates/populateTemplatesTable.handler
-    timeout: 300
+    timeout: 900
     warmup:
       default:
         enabled: false

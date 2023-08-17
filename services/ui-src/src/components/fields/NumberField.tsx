@@ -13,6 +13,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useUser,
+  makeStringParseableForDatabase,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -55,7 +56,11 @@ export const NumberField = ({
     // if form state has value for field, set as display value
     const fieldValue = form.getValues(name);
     if (fieldValue) {
-      const maskedFieldValue = applyMask(fieldValue, mask).maskedValue;
+      const maskedFieldValue = applyMask(
+        fieldValue,
+        mask,
+        props?.decimalPlacesToRoundTo
+      ).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
     // else set hydrationValue or defaultValue display value
@@ -64,12 +69,19 @@ export const NumberField = ({
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {
-        const maskedHydrationValue = applyMask(
+        const formattedHydrationValue = applyMask(
           hydrationValue,
-          mask
-        ).maskedValue;
+          mask,
+          props?.decimalPlacesToRoundTo
+        );
+        const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
-        form.setValue(name, maskedHydrationValue, { shouldValidate: true });
+
+        // this value eventually gets sent to the database, so we need to make it parseable as a number again
+        const cleanedFieldValue = formattedHydrationValue.isValid
+          ? makeStringParseableForDatabase(maskedHydrationValue, mask)
+          : maskedHydrationValue;
+        form.setValue(name, cleanedFieldValue, { shouldValidate: true });
       }
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
@@ -87,10 +99,18 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const formattedFieldValue = applyMask(value, mask);
+    const formattedFieldValue = applyMask(
+      value,
+      mask,
+      props?.decimalPlacesToRoundTo
+    );
     const maskedFieldValue = formattedFieldValue.maskedValue;
-    const cleanedFieldValue = formattedFieldValue.cleanedValue;
-    form.setValue(name, maskedFieldValue, { shouldValidate: true });
+
+    // this value eventually gets sent to the database, so we need to make it parseable as a number again
+    const cleanedFieldValue = formattedFieldValue.isValid
+      ? makeStringParseableForDatabase(maskedFieldValue, mask)
+      : maskedFieldValue;
+    form.setValue(name, cleanedFieldValue, { shouldValidate: true });
     setDisplayValue(maskedFieldValue);
 
     // submit field data to database (inline validation is run prior to API call)

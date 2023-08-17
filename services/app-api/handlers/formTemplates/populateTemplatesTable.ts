@@ -1,11 +1,10 @@
 import { Handler } from "aws-lambda";
 import {
-  buckets,
   formTemplateTableName,
   reportBuckets,
   reportTables,
 } from "../../utils/constants/constants";
-import s3Lib, { getFormTemplateKey } from "../../utils/s3/s3-lib";
+import s3Lib from "../../utils/s3/s3-lib";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import {
   FormTemplate,
@@ -13,14 +12,12 @@ import {
   ReportMetadata,
   ReportType,
   SomeRequired,
-  State,
 } from "../../utils/types";
 import { S3 } from "aws-sdk";
 import * as path from "path";
 import { logger } from "../../utils/logging";
 import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
 import { createHash } from "crypto";
-import { copyAdminDisabledStatusToForms } from "../../utils/formTemplates/formTemplates";
 
 type S3ObjectRequired = SomeRequired<S3.Object, "Key" | "LastModified">;
 const isS3ObjectRequired = (obj: S3.Object): obj is S3ObjectRequired => {
@@ -30,9 +27,12 @@ const isS3ObjectRequired = (obj: S3.Object): obj is S3ObjectRequired => {
   );
 };
 
-function getStateSpecificFormTemplateKey(formTemplateId: string, state: State) {
-  return `${buckets.FORM_TEMPLATE}/${state}/${formTemplateId}.json`;
-}
+type FormTemplateMetaData = {
+  id: string;
+  state?: string;
+  key: string;
+  hash: string;
+};
 
 /**
  *
@@ -75,14 +75,18 @@ export async function getTemplate(bucket: string, key: string) {
  * @param key s3 key
  * @returns
  */
-export async function processTemplate(bucket: string, key: string) {
+export async function processTemplate(
+  bucket: string,
+  key: string
+): Promise<FormTemplateMetaData> {
   const formTemplate = await getTemplate(bucket, key);
   const hash = createHash("md5")
-    .update(JSON.stringify(copyAdminDisabledStatusToForms(formTemplate)))
+    .update(JSON.stringify(formTemplate))
     .digest("hex");
-  // Make sure we only grab old form templates
+
   return {
     id: path.basename(key, ".json"),
+    key,
     hash,
     state: key.split("/")[1],
   };
@@ -106,7 +110,7 @@ export async function processReportTemplates(reportType: ReportType) {
   const sortedTemplateKeys = formTemplates
     .filter(isS3ObjectRequired)
     .filter((t) => t.Key.endsWith(".json"))
-    .filter((t) => t.Key.split("/")[1].length === 2) // subfolder is a state abbreviation
+    .filter((t) => !t.Key.includes("/undefined/")) // Include form templates in the root AND in state-specific folders, but not the weird "undefined" folder
     .sort((a, b) => a.LastModified.getTime() - b.LastModified.getTime())
     .map((t) => t.Key);
 
@@ -123,6 +127,10 @@ export async function processReportTemplates(reportType: ReportType) {
     sortedTemplateKeys.map(
       async (key) => await processTemplate(formTemplateBucket, key)
     )
+  );
+
+  const formTemplateHashCache = new Map<string, string>(
+    templatesAndHashes.map((t) => [t.id, t.hash])
   );
 
   const distinctHashes = templatesAndHashes.filter(
@@ -143,6 +151,10 @@ export async function processReportTemplates(reportType: ReportType) {
         reportType,
       };
     }
+  );
+
+  const formTemplateVersionCache = new Map<string, FormTemplate>(
+    formTemplateDynamoEntries.map((x) => [x.md5Hash, x])
   );
 
   logger.info("Writing template versions to table");
@@ -167,15 +179,19 @@ export async function processReportTemplates(reportType: ReportType) {
   await copyTemplatesToNewPrefix(formTemplateBucket, distinctHashes);
 
   logger.info("Updating existing reports with new formTemplateIds");
-  await updateExistingReports(reportType);
+  await updateExistingReports(
+    reportType,
+    formTemplateHashCache,
+    formTemplateVersionCache
+  );
 }
 
 export async function copyTemplatesToNewPrefix(
   bucket: string,
-  templates: { id: string; hash: string; state: string }[]
+  templates: FormTemplateMetaData[]
 ) {
   for (const t of templates) {
-    const oldKey = getStateSpecificFormTemplateKey(t.id, t.state as State);
+    const oldKey = t.key;
     const newKey = `formTemplates/${t.id}.json`;
     try {
       await s3Lib.copy({
@@ -191,60 +207,38 @@ export async function copyTemplatesToNewPrefix(
 }
 
 /**
- * If any reports are created in between the deployment of the API
- * and the execution of this script, those reports will not have
- * a state-specific bucket key. So get them from the parent directory.
- */
-async function getTemplateThatIsProbablyStateSpecific(
-  reportBucket: string,
-  report: ReportMetadata
-) {
-  try {
-    return await getTemplate(
-      reportBucket,
-      getStateSpecificFormTemplateKey(report.formTemplateId, report.state)
-    );
-  } catch {
-    return await getTemplate(
-      reportBucket,
-      getFormTemplateKey(report.formTemplateId)
-    );
-  }
-}
-
-/**
  * Update all existing reports to be mapped to a version number.
  * Also, update the formTemplateId.
  *
  * @param reportType
  */
-export async function updateExistingReports(reportType: ReportType) {
+export async function updateExistingReports(
+  reportType: ReportType,
+  formTemplateHashCache: Map<string, string>,
+  formTemplateVersionCache: Map<string, FormTemplate>
+) {
   const tableName = reportTables[reportType];
-  const reportBucket = reportBuckets[reportType];
   const reports = (await dynamodbLib.scanAll({ TableName: tableName }))
     .Items as ReportMetadata[];
 
   if (reports) {
     for (const report of reports) {
       if (report.formTemplateId) {
-        const template = await getTemplateThatIsProbablyStateSpecific(
-          reportBucket,
-          report
-        );
-        const templateHash = createHash("md5")
-          .update(JSON.stringify(copyAdminDisabledStatusToForms(template)))
-          .digest("hex");
-        const templateVersion = await getTemplateVersionByHash(
-          reportType,
-          templateHash
-        );
+        const templateHash = formTemplateHashCache.get(report.formTemplateId);
+        if (!templateHash) {
+          logger.info(
+            `Skipping report ${report.id}; its form template hash was never computed (form template ID ${report.formTemplateId}, state ${report.state})`
+          );
+          continue;
+        }
+        const templateVersion = formTemplateVersionCache.get(templateHash);
         if (templateVersion) {
           await dynamodbLib.put({
             TableName: tableName,
             Item: {
               ...report,
-              versionNumber: templateVersion.Items?.[0]?.versionNumber,
-              formTemplateId: templateVersion.Items?.[0]?.id,
+              versionNumber: templateVersion.versionNumber,
+              formTemplateId: templateVersion.id,
             },
           });
         } else {
@@ -268,8 +262,13 @@ export async function updateExistingReports(reportType: ReportType) {
  * as the canonical "template".
  * 1. Iterate version each time.
  */
-export const handler: Handler<never, void> = async () => {
-  for (const reportType of Object.values(ReportType)) {
+export const handler: Handler<never, void> = async (evt: any) => {
+  logger.info("EVENT:", evt);
+
+  const reportTypes = evt?.reportTypes ?? Object.values(ReportType);
+
+  logger.info("Performing operation for reports:", reportTypes);
+  for (const reportType of reportTypes) {
     logger.info(`Processing ${reportType} reports`);
     try {
       await processReportTemplates(reportType);

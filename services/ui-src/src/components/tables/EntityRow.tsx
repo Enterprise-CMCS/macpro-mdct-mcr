@@ -1,5 +1,5 @@
 // components
-import { Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
+import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
@@ -15,6 +15,7 @@ export const EntityRow = ({
   entity,
   verbiage,
   locked,
+  entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openEntityDetailsOverlay,
@@ -67,7 +68,7 @@ export const EntityRow = ({
             variant="outline"
             size="sm"
           >
-            {verbiage.enterReportText}
+            {entering ? <Spinner size="md" /> : verbiage.enterReportText}
           </Button>
           <Button
             sx={sx.deleteButton}
@@ -87,6 +88,7 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
+  entering: boolean;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
   openEntityDetailsOverlay: Function;

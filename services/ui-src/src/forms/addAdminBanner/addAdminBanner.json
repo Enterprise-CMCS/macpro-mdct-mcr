@@ -1,5 +1,6 @@
 {
   "id": "addAdminBanner",
+  "editableByAdmins": true,
   "options": {
     "mode": "onChange"
   },

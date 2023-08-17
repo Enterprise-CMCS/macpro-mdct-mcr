@@ -1,10 +1,10 @@
 // types
-import { FormField } from "types";
+import { FormField, AnyObject } from "types";
 // utils
 import {
-  maskResponseData,
   parseFormFieldInfo,
   renderResponseData,
+  renderDefaultFieldResponse,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
@@ -72,19 +72,20 @@ describe("Test parseFormFieldInfo", () => {
   });
 });
 
-describe("Test maskResponseData", () => {
-  test("Percentage mask works correctly", () => {
-    const result = maskResponseData("percentage", "12");
-    expect(result).toEqual("12%");
+describe("Test renderDefaultFieldResponse", () => {
+  test("Properly masks field data", () => {
+    const textField = renderDefaultFieldResponse(
+      { props: { mask: "currency" } } as unknown as FormField,
+      "1234" as unknown as AnyObject
+    );
+    expect(textField.props.children).toBe("$1,234");
   });
 
-  test("Currency mask works correctly", () => {
-    const result = maskResponseData("currency", "12");
-    expect(result).toEqual("$12");
-  });
-
-  test("Standard field is not masked", () => {
-    const result = maskResponseData("mock", "12");
-    expect(result).toEqual("12");
+  test("Properly masks currency decimal data", () => {
+    const textField = renderDefaultFieldResponse(
+      { props: { mask: "currency" } } as unknown as FormField,
+      "1.10" as unknown as AnyObject
+    );
+    expect(textField.props.children).toBe("$1.10");
   });
 });

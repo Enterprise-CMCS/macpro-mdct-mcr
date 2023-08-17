@@ -1,4 +1,5 @@
 import { createReport } from "./create";
+import * as reportUtils from "../../utils/reports/reports";
 import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -8,8 +9,9 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 // types
-import { StatusCodes } from "../../utils/types";
+import { AnyObject, StatusCodes } from "../../utils/types";
 import * as authFunctions from "../../utils/auth/authorization";
+import s3Lib from "../../utils/s3/s3-lib";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -25,13 +27,15 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "CO" },
+  pathParameters: { reportType: "MCPAR", state: "AL" },
 };
 
 const creationEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    fieldData: { stateName: "Alabama" },
+    fieldData: {
+      stateName: "Alabama",
+    },
     metadata: {
       reportType: "MCPAR",
       programName: "testProgram",
@@ -55,6 +59,14 @@ const creationEventWithNoFieldData: APIGatewayProxyEvent = {
 const creationEventWithInvalidData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({ fieldData: { number: "NAN" } }),
+};
+
+const creationEventWithCopySource: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    fieldData: { stateName: "Alabama" },
+    copySourceId: "mockReportFieldData",
+  }),
 };
 
 mockDocumentClient.query.promise.mockReturnValue({
@@ -128,5 +140,40 @@ describe("Test createReport API method", () => {
 
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.NO_KEY);
+  });
+
+  test("Test report with copySourceId", async () => {
+    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+      stateName: "Alabama",
+      plans: [{ plan_activeAppeals: "1", name: "name" }],
+    });
+    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const res = await createReport(creationEventWithCopySource, null);
+    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(copyFieldDataSpy).toBeCalled();
+    expect(body.fieldDataId).not.toEqual("mockReportFieldData");
+    expect(body.fieldData.plans).toBeDefined();
+    body.fieldData.plans.forEach((p: AnyObject) => {
+      expect(p).toEqual({
+        name: "name",
+        plan_activeAppeals: "1",
+      });
+    });
+  });
+
+  test("Test invalid fields removed when creating report with copySourceId", async () => {
+    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+      stateName: "Alabama",
+      plan: [{ id: "foo", entityField: "bar", name: "name" }],
+    });
+    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const res = await createReport(creationEventWithCopySource, null);
+    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(copyFieldDataSpy).toBeCalled();
+    expect(body.fieldDataId).not.toEqual("mockReportFieldData");
+    expect(body.fieldData).toEqual({ stateName: "Alabama" });
+    expect(body.fieldData.entity).toBeUndefined();
   });
 });

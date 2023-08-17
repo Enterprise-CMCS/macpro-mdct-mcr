@@ -2,7 +2,7 @@ import { Box, Link, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
-import { eligibilityGroup } from "utils";
+import { eligibilityGroup, maskResponseData } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -88,7 +88,7 @@ export const renderDrawerDataCell = (
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
 ) =>
-  entityResponseData?.map((entity: EntityShape) => {
+  entityResponseData?.map((entity: EntityShape, index: number) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
@@ -105,7 +105,8 @@ export const renderDrawerDataCell = (
               fieldResponseData,
               entityResponseData,
               pageType,
-              notApplicable
+              notApplicable,
+              index
             )}
           </li>
         </ul>
@@ -125,7 +126,8 @@ export const renderResponseData = (
   fieldResponseData: any,
   widerResponseData: AnyObject,
   pageType: string,
-  notApplicable?: boolean
+  notApplicable?: boolean,
+  entityIndex?: number
 ) => {
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
@@ -144,7 +146,8 @@ export const renderResponseData = (
       formField,
       fieldResponseData,
       widerResponseData,
-      pageType
+      pageType,
+      entityIndex!
     );
   }
   // check for and handle link fields (email, url)
@@ -159,7 +162,7 @@ export const renderChoiceListFieldResponse = (
   fieldResponseData: AnyObject,
   widerResponseData: AnyObject,
   pageType: string,
-  entityIndex?: number
+  entityIndex: number
 ) => {
   // filter potential choices to just those that are selected
   const potentialFieldChoices = formField.props?.choices;
@@ -177,7 +180,7 @@ export const renderChoiceListFieldResponse = (
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry =
       pageType === "drawer"
-        ? widerResponseData[entityIndex!]?.[firstChildId]
+        ? widerResponseData[entityIndex]?.[firstChildId]
         : widerResponseData?.[firstChildId];
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
@@ -205,7 +208,7 @@ export const renderDefaultFieldResponse = (
   // check and handle fields that need a mask applied
   const fieldMask = formField.props?.mask;
   if (fieldMask)
-    return <Text>{maskResponseData(fieldMask, fieldResponseData)}</Text>;
+    return <Text>{maskResponseData(fieldResponseData, fieldMask)}</Text>;
   // render all other fields
   return <Text>{fieldResponseData}</Text>;
 };
@@ -223,18 +226,6 @@ export const checkLinkTypes = (formField: FormField) => {
     isLink: linkTypes.includes(fieldValidationType ?? ""),
     isEmail: emailTypes.includes(fieldValidationType ?? ""),
   };
-};
-
-// mask response data as necessary
-export const maskResponseData = (fieldMask: string, fieldResponseData: any) => {
-  switch (fieldMask) {
-    case "percentage":
-      return fieldResponseData + "%";
-    case "currency":
-      return "$" + fieldResponseData;
-    default:
-      return fieldResponseData;
-  }
 };
 
 // parse field info from field props
