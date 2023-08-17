@@ -161,6 +161,20 @@ export const AppRoutes = () => {
                   />
                 </>
               )}
+              <Route
+                path="/mlr/*"
+                element={
+                  !contextIsLoaded ? (
+                    <Flex sx={sx.spinnerContainer}>
+                      <Spinner size="lg" />
+                    </Flex>
+                  ) : userReportAccess["MLR"] ? (
+                    <Navigate to="/mlr" />
+                  ) : (
+                    <Navigate to="/" />
+                  )
+                }
+              />
             </Fragment>
           )}
         </Routes>
