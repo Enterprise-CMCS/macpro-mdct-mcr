@@ -70,6 +70,7 @@ describe("Test mask types", () => {
     { test: "0....0123", expected: "0....0123" },
     { test: "000000123", expected: "000000123" },
     { test: "123", expected: "123" },
+    { test: "123456", expected: "123456" },
     { test: "", expected: "" },
     { test: "abc", expected: "abc" },
     { test: "!@#", expected: "!@#" },
@@ -79,6 +80,7 @@ describe("Test mask types", () => {
     { test: "0....0123", expected: "0....0123" },
     { test: "000000123", expected: "123" },
     { test: "123", expected: "123" },
+    { test: "123456", expected: "123,456" },
     { test: "", expected: "" },
     { test: "abc", expected: "abc" },
     { test: "!@#", expected: "!@#" },
@@ -95,6 +97,17 @@ describe("Test mask types", () => {
     { test: "!@#", expected: "!@#" },
   ];
 
+  const currencyTestCasesToInteger = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "123" },
+    { test: "123.00", expected: "123" },
+    { test: ".05000000000000", expected: "0" },
+    { test: "123", expected: "123" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
   test("Check if null passed for mask returns unmasked value", () => {
     for (let testCase of nullTestCases) {
       expect(applyMask(testCase.test, null).maskedValue).toEqual(
@@ -103,15 +116,23 @@ describe("Test mask types", () => {
     }
   });
 
-  test("Check if undefined passed for mask returns unmasked value", () => {
+  test("Check if undefined passed for mask returns thousands-separated value", () => {
     for (let testCase of undefinedTestCases) {
       expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
     }
   });
 
-  test("Check if currency passed for mask returns unmasked value", () => {
+  test("Check if currency passed for mask returns unmasked value rounded to 2 places", () => {
     for (let testCase of currencyTestCases) {
       expect(applyMask(testCase.test, "currency").maskedValue).toEqual(
+        testCase.expected
+      );
+    }
+  });
+
+  test("Check if currency passed for mask returns unmasked value with specified number of rounding places", () => {
+    for (let testCase of currencyTestCasesToInteger) {
+      expect(applyMask(testCase.test, "currency", 0).maskedValue).toEqual(
         testCase.expected
       );
     }
