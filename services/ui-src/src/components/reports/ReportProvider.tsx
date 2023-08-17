@@ -36,6 +36,7 @@ export const ReportContext = createContext<ReportContextShape>({
   submitReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
+  submittedReportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,
@@ -58,6 +59,10 @@ export const ReportProvider = ({ children }: Props) => {
 
   const [report, setReport] = useState<ReportShape | undefined>();
   const [reportsByState, setReportsByState] = useState<
+    ReportShape[] | undefined
+  >();
+
+  const [submittedReportsByState, setSubmittedReportsByState] = useState<
     ReportShape[] | undefined
   >();
 
@@ -132,8 +137,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const archiveReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await archiveReportRequest(reportKeys);
-      hydrateAndSetReport(result);
+      await archiveReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
@@ -172,6 +176,13 @@ export const ReportProvider = ({ children }: Props) => {
   };
 
   useEffect(() => {
+    const submittedReports = reportsByState?.filter(
+      (item) => item.status === "Submitted"
+    );
+    setSubmittedReportsByState(submittedReports);
+  }, [reportsByState]);
+
+  useEffect(() => {
     const flatRoutes = report?.formTemplate.flatRoutes ?? [];
     const isReportPage =
       pathname.includes("export") ||
@@ -205,6 +216,7 @@ export const ReportProvider = ({ children }: Props) => {
       submitReport,
       // reports by state
       reportsByState,
+      submittedReportsByState,
       fetchReportsByState,
       // selected report
       clearReportSelection,
@@ -214,7 +226,14 @@ export const ReportProvider = ({ children }: Props) => {
       errorMessage: error,
       lastSavedTime,
     }),
-    [report, reportsByState, isReportPage, error, lastSavedTime]
+    [
+      report,
+      reportsByState,
+      submittedReportsByState,
+      isReportPage,
+      error,
+      lastSavedTime,
+    ]
   );
 
   return (

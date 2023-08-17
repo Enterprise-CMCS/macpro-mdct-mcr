@@ -106,7 +106,6 @@ export const EntityCardBottomSection = ({
                   {`${printVersion ? "D3.VIII.6 " : ""}Sanction amount`}
                 </Text>
                 <Text sx={sx.subtext}>
-                  ${" "}
                   {formattedEntityData?.dollarAmount ||
                     (printVersion && notAnswered)}
                 </Text>

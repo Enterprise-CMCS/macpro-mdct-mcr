@@ -29,7 +29,7 @@ const testSubmitEvent: APIGatewayProxyEvent = {
   headers: { "cognito-identity-id": "test", "x-api-key": mockApiKey },
   pathParameters: {
     id: "testReportId",
-    state: "AB",
+    state: "CO",
     reportType: "mock-type",
   },
 };

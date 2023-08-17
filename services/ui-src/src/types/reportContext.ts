@@ -26,6 +26,7 @@ export interface ReportMetadataShape extends ReportKeys {
   submittedOnDate?: number;
   archived?: boolean;
   locked?: boolean;
+  fieldDataId?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {
@@ -56,6 +57,7 @@ export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   contextIsLoaded: boolean;
   reportsByState: ReportMetadataShape[] | undefined;
+  submittedReportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
   lastSavedTime?: string | undefined;
   isReportPage: boolean;

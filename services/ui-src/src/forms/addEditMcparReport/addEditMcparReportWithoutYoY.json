@@ -17,15 +17,6 @@
       }
     },
     {
-      "id": "copySourceId",
-      "type": "dropdown",
-      "props": {
-        "label": "Select which report you'd like to copy",
-        "hint": "if a large amount of your data is the same as a previous report, you could prefill your new report with exisiting data.",
-        "options": "copyEligibleReports"
-      }
-    },
-    {
       "id": "reportingPeriodStartDate",
       "type": "date",
       "validation": "date",

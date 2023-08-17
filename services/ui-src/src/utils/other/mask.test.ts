@@ -1,6 +1,7 @@
 import {
   convertToThousandsSeparatedString,
   convertToThousandsSeparatedRatioString,
+  maskResponseData,
 } from "utils";
 import { maskMap, applyMask } from "./mask";
 
@@ -69,6 +70,7 @@ describe("Test mask types", () => {
     { test: "0....0123", expected: "0....0123" },
     { test: "000000123", expected: "000000123" },
     { test: "123", expected: "123" },
+    { test: "123456", expected: "123456" },
     { test: "", expected: "" },
     { test: "abc", expected: "abc" },
     { test: "!@#", expected: "!@#" },
@@ -77,6 +79,29 @@ describe("Test mask types", () => {
   const undefinedTestCases = [
     { test: "0....0123", expected: "0....0123" },
     { test: "000000123", expected: "123" },
+    { test: "123", expected: "123" },
+    { test: "123456", expected: "123,456" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
+  const currencyTestCases = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "123.00" },
+    { test: "123.00", expected: "123.00" },
+    { test: ".05000000000000", expected: "0.05" },
+    { test: "123", expected: "123.00" },
+    { test: "", expected: "" },
+    { test: "abc", expected: "abc" },
+    { test: "!@#", expected: "!@#" },
+  ];
+
+  const currencyTestCasesToInteger = [
+    { test: "0....0123", expected: "0....0123" },
+    { test: "000000123", expected: "123" },
+    { test: "123.00", expected: "123" },
+    { test: ".05000000000000", expected: "0" },
     { test: "123", expected: "123" },
     { test: "", expected: "" },
     { test: "abc", expected: "abc" },
@@ -91,9 +116,25 @@ describe("Test mask types", () => {
     }
   });
 
-  test("Check if undefined passed for mask returns unmasked value", () => {
+  test("Check if undefined passed for mask returns thousands-separated value", () => {
     for (let testCase of undefinedTestCases) {
       expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
+    }
+  });
+
+  test("Check if currency passed for mask returns unmasked value rounded to 2 places", () => {
+    for (let testCase of currencyTestCases) {
+      expect(applyMask(testCase.test, "currency").maskedValue).toEqual(
+        testCase.expected
+      );
+    }
+  });
+
+  test("Check if currency passed for mask returns unmasked value with specified number of rounding places", () => {
+    for (let testCase of currencyTestCasesToInteger) {
+      expect(applyMask(testCase.test, "currency", 0).maskedValue).toEqual(
+        testCase.expected
+      );
     }
   });
 
@@ -121,5 +162,32 @@ describe("Test convertToCommaSeparatedRatioString", () => {
         convertToThousandsSeparatedRatioString(testCase.test).maskedValue
       ).toEqual(testCase.expected);
     }
+  });
+});
+
+describe("Test maskResponseData", () => {
+  test("Percentage mask works correctly", () => {
+    const result = maskResponseData("12", "percentage");
+    expect(result).toEqual("12%");
+  });
+
+  test("Currency mask works correctly", () => {
+    const result = maskResponseData("12", "currency");
+    expect(result).toEqual("$12");
+  });
+
+  test("Standard field is not masked", () => {
+    const result = maskResponseData("12", "mock");
+    expect(result).toEqual("12");
+  });
+
+  test("Data not available doesn't get masked", () => {
+    const result = maskResponseData("Data not available", "percentage");
+    expect(result).toEqual("Data not available");
+  });
+
+  test("Ratio gets masked appropriately", () => {
+    const result = maskResponseData("1234:25", "ratio");
+    expect(result).toEqual("1,234:25");
   });
 });

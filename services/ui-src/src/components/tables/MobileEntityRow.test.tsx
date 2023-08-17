@@ -17,6 +17,7 @@ import { useUser } from "utils";
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
+const mockEntering = false;
 
 jest.mock("utils/auth/useUser");
 const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
@@ -44,6 +45,7 @@ const incompleteRowComponent = (
             report_mlrNumerator: null,
           }}
           verbiage={mockVerbiageIntro}
+          entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
           openEntityDetailsOverlay={mockOpenDrawer}
@@ -60,6 +62,7 @@ const completeRowComponent = (
         <MobileEntityRow
           entity={mockMlrReportContext.report.fieldData.program[1]}
           verbiage={mockVerbiageIntro}
+          entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
           openEntityDetailsOverlay={mockOpenDrawer}
