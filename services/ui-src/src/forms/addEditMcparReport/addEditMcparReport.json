@@ -4,7 +4,7 @@
     "mode": "onChange"
   },
   "heading": {
-    "add": "Add a Program",
+    "add": "Add / Copy a Program",
     "edit": "Edit Program"
   },
   "fields": [
