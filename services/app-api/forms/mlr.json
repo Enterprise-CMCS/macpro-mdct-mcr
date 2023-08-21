@@ -668,6 +668,7 @@
                     {
                       "id": "state_doesStateRemittanceMlrCalculationAlign",
                       "type": "radio",
+                      "styleAsOptional": true,
                       "validation": {
                         "type": "radioOptional",
                         "nested": true,
