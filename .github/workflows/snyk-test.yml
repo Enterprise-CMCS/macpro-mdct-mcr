@@ -52,6 +52,6 @@ jobs:
           jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280", "customfield_14154" : [{"id": "16958", "value": "MCR"}]  }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
-          assign-jira-ticket-to: "620e936fa715c6006914c7d2" # pragma: allowlist secret (Jira user ID for Rehman)
+          assign-jira-ticket-to: "6268ac54d364ae006809a489" # pragma: allowlist secret (Jira user ID for Rehman)
           scan-output-path: "snyk_output.txt"
           scan-type: "snyk"
