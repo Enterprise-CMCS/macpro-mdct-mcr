@@ -21,7 +21,7 @@ import {
   InputChangeEvent,
   SelectedOption,
 } from "types";
-import { dropdownDefaultOptionText } from "../../constants";
+import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const DropdownField = ({
@@ -69,10 +69,22 @@ export const DropdownField = ({
     }
     return dropdownOptions;
   };
+
+  const isDropdownDisabled = (options: DropdownOptions[] | string) => {
+    if (options === "copyEligibleReports" && formattedOptions.length <= 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const formattedOptions = formatOptions(options);
-  const defaultValue = formattedOptions[0];
+  const defaultValue = isDropdownDisabled(options)
+    ? dropdownNoReports
+    : formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
+  const isDisabled = isDropdownDisabled(options);
 
   // get form context and register field
   const form = useFormContext();
@@ -165,6 +177,7 @@ export const DropdownField = ({
         id={name}
         label={labelText || ""}
         options={formattedOptions}
+        disabled={isDisabled}
         hint={parsedHint}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
@@ -186,5 +199,6 @@ interface Props {
   validateOnRender?: boolean;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
+  disabled?: boolean;
   [key: string]: any;
 }
