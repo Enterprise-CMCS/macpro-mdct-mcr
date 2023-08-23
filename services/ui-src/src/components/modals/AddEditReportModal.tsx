@@ -58,8 +58,8 @@ export const AddEditReportModal = ({
         dueDate,
         combinedData,
         lastAlteredBy: full_name,
+        copySourceId: copySourceId?.value,
       },
-      copySourceId: copySourceId?.value,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
