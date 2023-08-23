@@ -3,7 +3,7 @@ name: Sync Security Hub findings and Jira issues
 on:
   workflow_dispatch: # for testing and manual runs
   schedule:
-    - cron: "25 1 * * *" # daily at 6:25 am EST
+    - cron: "0 6 * * *" # daily at 0600 UTC
 
 permissions:
   id-token: write
