@@ -46,11 +46,20 @@ export const DropdownField = ({
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
     if (options === "copyEligibleReports") {
-      dropdownOptions =
-        submittedReportsByState?.map((option) => ({
-          label: `${option.programName} ${convertDateUtcToEt(option.dueDate)}`,
-          value: option.fieldDataId!,
-        })) ?? [];
+      if (submittedReportsByState?.length == 0) {
+        dropdownOptions.push({
+          label: dropdownNoReports,
+          value: "",
+        });
+      } else {
+        dropdownOptions =
+          submittedReportsByState?.map((option) => ({
+            label: `${option.programName} ${convertDateUtcToEt(
+              option.dueDate
+            )}`,
+            value: option.fieldDataId!,
+          })) ?? [];
+      }
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
@@ -79,9 +88,7 @@ export const DropdownField = ({
   };
 
   const formattedOptions = formatOptions(options);
-  const defaultValue = isDropdownDisabled(options)
-    ? dropdownNoReports
-    : formattedOptions[0];
+  const defaultValue = formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
   const isDisabled = isDropdownDisabled(options);
