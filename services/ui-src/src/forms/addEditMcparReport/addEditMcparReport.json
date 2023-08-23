@@ -21,8 +21,7 @@
       "type": "dropdown",
       "props": {
         "label": "If you want to copy an existing report, select one (optional)",
-        "options": "copyEligibleReports",
-        "disabled": false
+        "options": "copyEligibleReports"
       }
     },
     {

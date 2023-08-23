@@ -133,6 +133,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         submittedBy: report.submittedBy,
         submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
+        copySourceId: report.copySourceId,
       };
     }
     setSelectedReport(formData);
