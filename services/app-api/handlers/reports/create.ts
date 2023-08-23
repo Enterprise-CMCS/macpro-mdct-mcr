@@ -60,11 +60,8 @@ export const createReport = handler(async (event, _context) => {
     };
   }
   const unvalidatedPayload = JSON.parse(event.body!);
-  const {
-    metadata: unvalidatedMetadata,
-    fieldData: unvalidatedFieldData,
-    copySourceId,
-  } = unvalidatedPayload;
+  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
+    unvalidatedPayload;
 
   if (!isReportType(reportType)) {
     return {
@@ -127,11 +124,11 @@ export const createReport = handler(async (event, _context) => {
 
   let newFieldData;
 
-  if (copySourceId) {
+  if (unvalidatedMetadata.copySourceId) {
     newFieldData = await copyFieldDataFromSource(
       reportBucket,
       state,
-      copySourceId,
+      unvalidatedMetadata.copySourceId,
       formTemplate,
       validatedFieldData
     );
