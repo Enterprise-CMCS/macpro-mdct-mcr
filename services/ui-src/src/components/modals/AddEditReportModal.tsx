@@ -175,7 +175,7 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
-  return form ? (
+  return (
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
@@ -196,8 +196,6 @@ export const AddEditReportModal = ({
         dontReset={true}
       />
     </Modal>
-  ) : (
-    <></>
   );
 };
 
