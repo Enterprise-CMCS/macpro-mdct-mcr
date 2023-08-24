@@ -80,7 +80,7 @@ export const DropdownField = ({
   };
 
   const formattedOptions = formatOptions(options);
-  const defaultValue = formattedOptions[0];
+  const defaultValue = props?.hydrate || formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
 

@@ -114,6 +114,15 @@ export const DashboardPage = ({ reportType }: Props) => {
     let submittedOnDate = undefined;
     // Check and pre-fill the form if the user is editing an existing program
     if (report) {
+      let copySourceReport = reportsByState?.find(
+        (item) => item.fieldDataId == report.copySourceId
+      );
+      let copySourceObject = {
+        label: `${copySourceReport?.programName} ${convertDateUtcToEt(
+          report.reportingPeriodEndDate
+        )}`,
+        value: copySourceReport?.fieldDataId!,
+      };
       if (report.submittedOnDate) {
         submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
@@ -127,13 +136,13 @@ export const DashboardPage = ({ reportType }: Props) => {
             report.reportingPeriodStartDate
           ),
           combinedData: report.combinedData,
+          copySourceId: copySourceObject,
         },
         state: report.state,
         id: report.id,
         submittedBy: report.submittedBy,
         submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
-        copySourceId: report.copySourceId,
       };
     }
     setSelectedReport(formData);
