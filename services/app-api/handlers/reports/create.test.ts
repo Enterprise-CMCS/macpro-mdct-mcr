@@ -65,7 +65,7 @@ const creationEventWithCopySource: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     fieldData: { stateName: "Alabama" },
-    copySourceId: "mockReportFieldData",
+    metadata: { copySourceId: "mockReportFieldData" },
   }),
 };
 
