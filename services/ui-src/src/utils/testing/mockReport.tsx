@@ -472,6 +472,14 @@ export const mockMcparReportContext = {
   lastSavedTime: "1:58 PM",
 };
 
+export const mockMcparReportContextNoSubmittedReports = {
+  ...mockReportMethods,
+  report: mockMcparReport,
+  reportsByState: mockReportsByState,
+  submittedReportsByState: [],
+  errorMessage: "",
+  lastSavedTime: "1:58 PM",
+};
 export const mockMLRNewReportContext = {
   ...mockReportMethods,
   report: mockMLRNewReport,
