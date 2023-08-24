@@ -1,6 +1,6 @@
 //lambda functions
 import {
-  extractAndStoreData,
+  extractAllNumericFieldValues,
   extractNumericalData,
   iterateOverNumericFields,
   fieldValueById,
@@ -139,7 +139,7 @@ describe("Test extraction of numerical data from field data", () => {
   test("Test extract and storing of data", async () => {
     mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
     //not sure how to check functions with no returns
-    await extractAndStoreData("local-mcpar-reports", "bucket");
+    await extractAllNumericFieldValues("local-mcpar-reports", "bucket");
   });
 
   test("Test lambda", async () => {

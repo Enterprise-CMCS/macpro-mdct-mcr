@@ -1,4 +1,5 @@
 import { Credentials, DynamoDB } from "aws-sdk";
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
 import {
   DynamoWrite,
@@ -50,6 +51,21 @@ export default {
       complete = result.LastEvaluatedKey === undefined;
     }
     return { Items: items, Count: items.length };
+  },
+  scanIterator: async function* (
+    params: Omit<DocumentClient.ScanInput, "ExclusiveStartKey">
+  ) {
+    let ExclusiveStartKey: DocumentClient.Key | undefined;
+
+    do {
+      let results = await createDbClient()
+        .scan({ ...params, ExclusiveStartKey })
+        .promise();
+      if (results?.Items) {
+        yield* results.Items;
+      }
+      ExclusiveStartKey = results?.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
   },
   put: (params: DynamoWrite) => createDbClient().put(params).promise(),
   update: (params: DynamoUpdate) => createDbClient().update(params).promise(),

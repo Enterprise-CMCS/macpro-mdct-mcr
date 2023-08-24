@@ -7,10 +7,11 @@
     "sourceMap": true,
     "strict": true,
     "allowJs": true,
-    "target": "es5",
+    "target": "ES2022",
     "outDir": ".build",
-    "lib": ["ES2018", "DOM"],
+    "lib": ["ES2022"],
     "rootDir": "./",
     "resolveJsonModule": true,
+    "moduleResolution": "node16"
   }
 }

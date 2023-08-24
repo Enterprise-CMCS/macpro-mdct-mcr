@@ -1,65 +1,57 @@
-/*To Do - Need to handle LastEvaluatedKey */
+/* eslint-disable no-console */
 import { Context, APIGatewayProxyResult, APIGatewayEvent } from "aws-lambda";
-import s3Lib from "../../utils/s3/s3-lib";
-import { AnyObject, S3Get, S3Put } from "../../utils/types";
+import s3Lib, {
+  getFieldDataKey,
+  getFormTemplateKey,
+} from "../../utils/s3/s3-lib";
+import {
+  AnyObject,
+  FormField,
+  FormJson,
+  ReportJson,
+  ReportMetadata,
+  ReportRoute,
+  ReportType,
+} from "../../utils/types";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
-import { buckets } from "../../utils/constants/constants";
+import {
+  formTemplateTableName,
+  reportBuckets,
+  reportTables,
+} from "../../utils/constants/constants";
 
-export type FieldData = {
+type FieldData = {
   fieldId: string;
   value: string;
 };
-export type FieldTemplate = {
+
+type FieldTemplate = {
   fieldId: string;
   entityType?: string;
 };
-export type S3Route = {
-  state?: string;
-  bucket: string;
-  type: string;
-};
-
-const {
-  MCPAR_REPORT_TABLE_NAME,
-  MCPAR_FORM_BUCKET,
-  MLR_REPORT_TABLE_NAME,
-  MLR_FORM_BUCKET,
-} = process.env;
-
-//this list is used to help determine the route we want to travel
-const routeKeyList = [
-  "children",
-  "choices",
-  "fields",
-  "form",
-  "drawerForm",
-  "modalForm",
-  "overlayForm",
-  "props",
-];
-
-const fileName = "numberValues";
-const writeObject: any[] = [];
 
 export const check = async (
   _event: APIGatewayEvent,
   _context: Context
 ): Promise<APIGatewayProxyResult> => {
-  //extract and store mcpar data
-  if (MCPAR_REPORT_TABLE_NAME && MCPAR_FORM_BUCKET) {
-    await extractAndStoreData(MCPAR_REPORT_TABLE_NAME, MCPAR_FORM_BUCKET);
+  const results: { [key in ReportType]?: FieldData[] } = {};
+
+  try {
+    for (const reportType of Object.values(ReportType)) {
+      results[reportType] = await extractAllNumericFieldValues(reportType);
+    }
+  } catch (err: any) {
+    console.error(err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: err.message,
+      }),
+    };
   }
 
-  //extract and store mlr data
-  if (MLR_REPORT_TABLE_NAME && MLR_FORM_BUCKET) {
-    await extractAndStoreData(MLR_REPORT_TABLE_NAME, MLR_FORM_BUCKET);
-  }
-
-  let writeRoute: S3Route = {
-    bucket: MLR_FORM_BUCKET ? MLR_FORM_BUCKET : "",
-    type: buckets.FIELD_DATA,
-  };
-  await writeDataToS3(writeObject, writeRoute);
+  console.log(JSON.stringify(results));
+  //await writeStoredDataToS3(results);
 
   return {
     statusCode: 200,
@@ -69,147 +61,214 @@ export const check = async (
   };
 };
 
-export const extractAndStoreData = async (
-  table: string,
-  bucket: string,
-  LastEvaluatedKey?: any
-) => {
-  let scannedResult = await scanTable(table, LastEvaluatedKey);
-  let metadataResults = scannedResult.Items;
-  if (metadataResults) {
-    for (const metadata of metadataResults) {
-      let data = metadata as AnyObject;
-      let formRoute: S3Route = {
-        state: data.state,
-        bucket: bucket,
-        type: buckets.FORM_TEMPLATE,
-      };
-      let fieldRoute: S3Route = {
-        state: data.state,
-        bucket: bucket,
-        type: buckets.FIELD_DATA,
-      };
-
-      let formTemplate = await getDataFromS3(data.formTemplateId, formRoute);
-      let fieldData = await getDataFromS3(data.fieldDataId, fieldRoute);
-
-      let numericalData = extractNumericalData(formTemplate, fieldData);
-      if (numericalData) {
-        writeObject.push(numericalData);
-      }
-    }
-  }
-
-  //loop function again until LastEvaluatedKey is null
-  if (scannedResult.LastEvaluatedKey) {
-    extractAndStoreData(table, bucket, scannedResult.LastEvaluatedKey);
-  }
-};
-
-//iterate over the formTemplate & use that information to iterate over the fieldData
-export const extractNumericalData = (
-  formTemplate: AnyObject,
-  fieldData: AnyObject
-) => {
-  let numericFields: FieldTemplate[] = [];
-  iterateOverNumericFields(formTemplate.routes, numericFields);
-
-  let extractedFieldData: FieldData[] = [];
-
-  numericFields.forEach((item) => {
-    let fieldId = item.fieldId;
-    fieldValueById(fieldData, fieldId, extractedFieldData);
-  });
-
-  return extractedFieldData;
-};
-
-export const iterateOverNumericFields = (
-  formTemplateRoutes: any[],
-  store: any[]
-) => {
-  //check if the key is a number (array) or an object key matching the routeKeyList
-  let route: any[] = Object.entries(formTemplateRoutes).flatMap(
-    ([key, value]) => {
-      return routeKeyList.includes(key) || !isNaN(parseInt(key)) ? value : null;
-    }
+export const extractAllNumericFieldValues = async (reportType: ReportType) => {
+  const startTime = performance.now();
+  const formTemplateLookup = await getAllTemplatesForReportType(reportType);
+  const fieldListLookup = makeFieldListLookup(formTemplateLookup);
+  const preprocessingDoneTime = performance.now();
+  console.log(
+    "Time spent processing form templates:",
+    preprocessingDoneTime - startTime
   );
 
-  for (let arr of route) {
-    if (arr != null) {
-      if (
-        (arr.validation && arr.validation === "number") ||
-        (arr.type && arr.type === "number")
-      )
-        store.push({ fieldId: arr.id });
+  let totalReportFetchTime = 0;
+  let totalReportProcessTime = 0;
+  let reportCount = 0;
 
-      Object.keys(arr).forEach((key) => {
-        if (typeof arr[key] === "object") {
-          iterateOverNumericFields(arr[key], store);
-        }
-      });
+  let extractedData: FieldData[] = [];
+  for await (const metadata of iterateAllReportsOfType(reportType)) {
+    const reportStartTime = performance.now();
+    const reportData = await getReportData(metadata);
+    const reportFetchedTime = performance.now();
+    totalReportFetchTime += reportFetchedTime - reportStartTime;
+    const numericFieldList = fieldListLookup.get(metadata.formTemplateId);
+
+    if (!numericFieldList) {
+      throw new Error(
+        `Form template not found for report ${JSON.stringify(metadata)}`
+      );
     }
+
+    extractedData = extractedData.concat([
+      ...getValuesFromReport(reportData, numericFieldList),
+    ]);
+    const reportDoneTime = performance.now();
+    totalReportProcessTime += reportDoneTime - reportFetchedTime;
+
+    reportCount += 1;
+    console.log(
+      "Average time to fetch, process:",
+      (totalReportFetchTime / reportCount).toFixed(1),
+      (totalReportProcessTime / reportCount).toFixed(1)
+    );
   }
+
+  return extractedData;
 };
 
-//recusively loop through fieldData to find any that matches fieldId that validation/type were number
-export const fieldValueById = (
-  fieldData: any,
-  fieldId: string,
-  store: any[]
-) => {
-  Object.keys(fieldData).forEach((key) => {
-    if (key === fieldId) {
-      store.push({ [fieldId]: fieldData[key] });
+const getValuesFromReport = function* (
+  reportData: AnyObject,
+  fields: FieldTemplate[]
+) {
+  for (let { fieldId, entityType } of fields) {
+    if (entityType && reportData[entityType]) {
+      for (let entity of reportData[entityType]) {
+        if (entity[fieldId]) {
+          yield {
+            fieldId,
+            value: entity[fieldId] as string,
+          };
+        }
+      }
     } else {
-      if (fieldData[key] && typeof fieldData[key] === "object") {
-        fieldValueById(fieldData[key], fieldId, store);
+      if (reportData[fieldId]) {
+        yield {
+          fieldId,
+          value: reportData[fieldId] as string,
+        };
       }
     }
-  });
+  }
 };
 
-//extract field data from s3 bucket
-export const getDataFromS3 = async (id: string, route: S3Route) => {
-  const dataParams: S3Get = {
-    Bucket: route.bucket,
-    Key: `${route.type}/${route.state}/${id}.json`,
+const getNumericFieldIdsFromTemplate = (formTemplate: ReportJson) => {
+  const iterateRoutes = function* (
+    routes: ReportRoute[]
+  ): Generator<ReportRoute, void, undefined> {
+    for (let route of routes) {
+      yield route;
+      if (route.children) {
+        yield* iterateRoutes(route.children);
+      }
+    }
   };
-  return (await s3Lib.get(dataParams)) as AnyObject;
+
+  const isFormJson = (routeProperty: any): routeProperty is FormJson => {
+    // Routes can have form, modalForm, drawerForm... but all forms have fields. Use that.
+    return routeProperty?.fields;
+  };
+
+  const iterateForms = function* (formTemplate: ReportJson) {
+    for (let route of iterateRoutes(formTemplate.routes)) {
+      for (let possibleForm of Object.values(route)) {
+        if (isFormJson(possibleForm)) {
+          yield {
+            form: possibleForm,
+            entityType: route.entityType,
+          };
+        }
+      }
+    }
+  };
+
+  const iterateFieldsInArray = function* (
+    formFields: FormField[]
+  ): Generator<FormField, void, undefined> {
+    for (let field of formFields) {
+      if (field.choices) {
+        for (let choice of field.choices) {
+          if (choice.children) {
+            yield* iterateFieldsInArray(choice.children);
+          }
+        }
+      }
+      if (field.props && field.props.choices) {
+        for (let choice of field.props.choices) {
+          if (choice.children) {
+            yield* iterateFieldsInArray(choice.children);
+          }
+        }
+      }
+      yield field;
+    }
+  };
+
+  const iterateNumericFieldsInForm = function* (formTemplate: ReportJson) {
+    for (let { form, entityType } of iterateForms(formTemplate)) {
+      for (let field of iterateFieldsInArray(form.fields)) {
+        /*
+         * We're keying off of field type exclusively, because field validation
+         * is a lot more complicated: it may be "number", "numberOptional",
+         * "numberNotLessThanZero", { "type": "numberNotLessThanOne" }, and so on.
+         * But every field in MCPAR and MLR with number-like validation
+         * has type exactly "number" (as of 2023-08-23, anyway).
+         */
+        if (field.type === "number") {
+          yield {
+            fieldId: field.id,
+            entityType,
+          };
+        }
+      }
+    }
+  };
+
+  return [...iterateNumericFieldsInForm(formTemplate)];
 };
 
-//load field data back to s3 bucket
-export const writeDataToS3 = async (data: any, route: S3Route) => {
-  const dataParams: S3Put = {
-    Bucket: route.bucket,
-    Key: `${route.type}/${fileName}.json`,
+const getAllTemplatesForReportType = async (reportType: ReportType) => {
+  const templates = new Map<string, ReportJson>();
+  // TODO maybe this deserves to be a query instead? OMG do queries paginate? what a nightmare.
+  const iterator = dynamodbLib.scanIterator({
+    TableName: formTemplateTableName,
+    FilterExpression: `reportType = :reportType`,
+    ExpressionAttributeValues: {
+      ":reportType": reportType,
+    },
+  });
+
+  const Bucket = reportBuckets[reportType];
+  for await (const templateMetadata of iterator) {
+    const template = await s3Lib.get({
+      Bucket,
+      Key: getFormTemplateKey(templateMetadata.id),
+    });
+
+    templates.set(templateMetadata.id, template as ReportJson);
+  }
+
+  return templates;
+};
+
+const makeFieldListLookup = (templates: Map<string, ReportJson>) => {
+  return new Map(
+    [...templates].map(([formTemplateId, formTemplate]) => [
+      formTemplateId,
+      getNumericFieldIdsFromTemplate(formTemplate),
+    ])
+  );
+};
+
+const iterateAllReportsOfType = async function* (reportType: ReportType) {
+  const TableName = reportTables[reportType];
+  for await (let reportMetadata of dynamodbLib.scanIterator({ TableName })) {
+    yield reportMetadata as ReportMetadata;
+  }
+};
+
+const getReportData = async (report: ReportMetadata) => {
+  return (await s3Lib.get({
+    Bucket: reportBuckets[report.reportType as ReportType],
+    Key: getFieldDataKey(report.state, report.fieldDataId),
+  })) as AnyObject;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const writeStoredDataToS3 = async (
+  data: { [key in ReportType]?: FieldData[] }
+) => {
+  await s3Lib.put({
+    Bucket: reportBuckets["MLR"],
+    Key: "fieldData/numberValues.json",
     Body: JSON.stringify(data),
     ContentType: "application/json",
-  };
-  const result = await s3Lib.put(dataParams);
-  // eslint-disable-next-line no-console
-  console.log("Updated form template ", {
-    key: dataParams.Key,
-    result,
   });
-
-  return result;
 };
 
-//scan dynamodb table and return data
-export const scanTable = async (TableName: string, LastEvaluatedKey?: any) => {
-  let scanResult;
-  try {
-    scanResult = await dynamodbLib.scan({
-      TableName,
-      LastEvaluatedKey,
-    });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(`Database scan failed for the table ${TableName}
-                       with LastEvaluatedKey ${LastEvaluatedKey}.
-                       Error: ${err}`);
-    throw err;
-  }
-  return scanResult;
+const main = async () => {
+  console.log("Extract started at", new Date());
+  await check(null!, null!);
+  console.log("Extract finished at", new Date());
 };
+
+main();
