@@ -39,25 +39,29 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
   const yoyCopyFlag = useFlags()?.yoyCopy;
 
+  // get correct form
   const modalFormJsonMap: any = {
     MCPAR: yoyCopyFlag ? mcparFormJson : mcparFormJsonWithoutYoY,
     MLR: mlrFormJson,
   };
-
   const modalFormJson = modalFormJsonMap[reportType]!;
-  let form: FormJson = { ...modalFormJson };
+  const [form, setForm] = useState<FormJson>(modalFormJson);
 
   useEffect(() => {
-    let tempForm: FormJson = { ...modalFormJson };
-    const yoyCopyFieldIndex = tempForm.fields.findIndex(
+    // check if yoy copy field exists in form
+    const yoyCopyFieldIndex = form.fields.findIndex(
       (field: FormField | FormLayoutElement) => field.id === "copySourceId"
     );
     if (yoyCopyFieldIndex > -1) {
+      // if not creating new report || no reports eligible for copy
       if (selectedReport?.id || !submittedReportsByState?.length) {
+        // make deep copy of baseline form, disable yoy copy field, and use copied form
+        let tempForm: FormJson = JSON.parse(JSON.stringify(modalFormJson));
         tempForm.fields[yoyCopyFieldIndex].props!.disabled = true;
-        form = tempForm;
+        setForm(tempForm);
       } else {
-        form = modalFormJson;
+        // use the original baseline form
+        setForm(modalFormJson);
       }
     }
   }, [selectedReport, submittedReportsByState]);
@@ -171,7 +175,7 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
-  return (
+  return form ? (
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
@@ -192,6 +196,8 @@ export const AddEditReportModal = ({
         dontReset={true}
       />
     </Modal>
+  ) : (
+    <></>
   );
 };
 
