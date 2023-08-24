@@ -14,7 +14,9 @@ describe("Sidebar integration tests", () => {
     cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
 
     // Create Report & nav to it
-    cy.findByRole("button", { name: "Add managed care program" }).click();
+    cy.findByRole("button", {
+      name: "Add / copy managed care program",
+    }).click();
     cy.findByLabelText("Program name").type(
       "automated test - " + new Date().toISOString()
     );

@@ -8,7 +8,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
             And I click the "Enter MCPAR online" button
 
         Scenario Outline: State users can create programs
-            When I click the "Add managed care program" button
+            When I click the "Add / copy managed care program" button
             And these form elements are filled:
                 | programName              | text           | <title>        |
                 | reportingPeriodStartDate | text           | <startDate>    |
