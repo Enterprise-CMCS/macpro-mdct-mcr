@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -31,6 +32,7 @@ import {
 } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
+import mcparVerbiageWithoutYoY from "verbiage/pages/mcpar/mcpar-dashboard-without-yoy";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 import accordion from "verbiage/pages/accordion";
 // assets
@@ -60,9 +62,10 @@ export const DashboardPage = ({ reportType }: Props) => {
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
   );
+  const yoyCopyFlag = useFlags()?.yoyCopy;
 
   const dashboardVerbiageMap: any = {
-    MCPAR: mcparVerbiage,
+    MCPAR: yoyCopyFlag ? mcparVerbiage : mcparVerbiageWithoutYoY,
     MLR: mlrVerbiage,
   };
 
