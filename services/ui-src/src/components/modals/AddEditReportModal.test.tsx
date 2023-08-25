@@ -8,6 +8,7 @@ import {
   mockMcparReport,
   mockMcparReportContext,
   RouterWrappedComponent,
+  mockLDFlags,
 } from "utils/testing/setupJest";
 
 const mockCreateReport = jest.fn();
@@ -133,8 +134,13 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   };
 
   test("Adding a new report", async () => {
+    mockLDFlags.setDefault({ yoyCopy: true });
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-report-form");
+    const header = screen.getByRole("heading", { level: 1 });
+    expect(header.textContent).toEqual("Add / Copy a Program");
+    const copySourceId = form.querySelector("[name='copySourceId']")!;
+    expect(copySourceId).toHaveProperty("disabled", false);
     await fillForm(form);
     await expect(mockCreateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
@@ -142,8 +148,11 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   });
 
   test("Editing an existing report", async () => {
+    mockLDFlags.setDefault({ yoyCopy: true });
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
+    const copySourceId = form.querySelector("[name='copySourceId']")!;
+    expect(copySourceId).toHaveProperty("disabled", true);
     await fillForm(form);
     await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
