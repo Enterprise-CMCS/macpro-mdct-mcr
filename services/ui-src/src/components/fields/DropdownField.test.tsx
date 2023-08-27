@@ -304,12 +304,14 @@ describe("Test YoY Copy options dropdown menu", () => {
   });
 });
 
-describe("If there are no submitted reports to copy, dropdown default value should say 'No reports in system'", () => {
+describe("If there are no submitted reports to copy, dropdown default value should say 'No reports eligible for copy'", () => {
   test("Populates with reports", () => {
     mockedUseUser.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(dropdownComponentWithYoYCopyNoSubmittedReports);
     const dropdown = screen.getByLabelText("test-dropdown-label");
-    expect(dropdown.children[0].textContent).toEqual("No reports in system");
+    expect(dropdown.children[0].textContent).toEqual(
+      "No reports eligible for copy"
+    );
   });
 });
