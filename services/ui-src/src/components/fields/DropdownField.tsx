@@ -36,7 +36,7 @@ export const DropdownField = ({
   styleAsOptional,
   ...props
 }: Props) => {
-  const { report, updateReport, submittedReportsByState } =
+  const { report, updateReport, copyEligibleReportsByState } =
     useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
@@ -46,14 +46,14 @@ export const DropdownField = ({
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
     if (options === "copyEligibleReports") {
-      if (submittedReportsByState?.length == 0) {
+      if (copyEligibleReportsByState?.length == 0) {
         dropdownOptions.push({
           label: dropdownNoReports,
           value: "",
         });
       } else {
         dropdownOptions =
-          submittedReportsByState?.map((option) => ({
+          copyEligibleReportsByState?.map((option) => ({
             label: `${option.programName} ${convertDateUtcToEt(
               option.dueDate
             )}`,

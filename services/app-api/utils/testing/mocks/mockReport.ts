@@ -404,7 +404,7 @@ export const mockMcparReportContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  submittedReportsByState: mockReportsByState,
+  copyEligibleReportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };
@@ -429,7 +429,7 @@ export const mockMlrReportContext = {
   ...mockReportMethods,
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
-  submittedReportsByState: mockMlrReportsByState,
+  copyEligibleReportsByState: mockMlrReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };

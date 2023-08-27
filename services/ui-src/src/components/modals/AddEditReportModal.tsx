@@ -33,7 +33,7 @@ export const AddEditReportModal = ({
     createReport,
     fetchReportsByState,
     updateReport,
-    submittedReportsByState,
+    copyEligibleReportsByState,
   } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -54,7 +54,7 @@ export const AddEditReportModal = ({
     );
     if (yoyCopyFieldIndex > -1) {
       // if not creating new report || no reports eligible for copy
-      if (selectedReport?.id || !submittedReportsByState?.length) {
+      if (selectedReport?.id || !copyEligibleReportsByState?.length) {
         // make deep copy of baseline form, disable yoy copy field, and use copied form
         let tempForm: FormJson = JSON.parse(JSON.stringify(modalFormJson));
         tempForm.fields[yoyCopyFieldIndex].props!.disabled = true;
@@ -64,7 +64,7 @@ export const AddEditReportModal = ({
         setForm(modalFormJson);
       }
     }
-  }, [selectedReport, submittedReportsByState]);
+  }, [selectedReport, copyEligibleReportsByState]);
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {

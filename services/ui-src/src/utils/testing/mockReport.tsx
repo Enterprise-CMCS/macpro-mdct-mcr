@@ -467,7 +467,7 @@ export const mockMcparReportContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  submittedReportsByState: mockReportsByState,
+  copyEligibleReportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };
@@ -476,7 +476,7 @@ export const mockMcparReportContextNoSubmittedReports = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  submittedReportsByState: [],
+  copyEligibleReportsByState: [],
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };
@@ -484,7 +484,7 @@ export const mockMLRNewReportContext = {
   ...mockReportMethods,
   report: mockMLRNewReport,
   reportsByState: mockMlrReportsByState,
-  submittedReportsByState: mockMlrReportsByState,
+  copyEligibleReportsByState: mockMlrReportsByState,
   errorMessage: "",
   lastSavedTime: "4:20pm",
 };
@@ -511,7 +511,7 @@ export const mockMLRLockedReportContext = {
   ...mockReportMethods,
   report: mockMLRLockedReport,
   reportsByState: mockReportsByState,
-  submittedReportsByState: mockReportsByState,
+  copyEligibleReportsByState: mockReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };
@@ -528,7 +528,7 @@ export const mockMlrReportContext = {
   ...mockReportMethods,
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
-  submittedReportsByState: mockMlrReportsByState,
+  copyEligibleReportsByState: mockMlrReportsByState,
   errorMessage: "",
   lastSavedTime: "1:58 PM",
 };

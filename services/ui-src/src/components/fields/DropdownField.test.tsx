@@ -299,7 +299,7 @@ describe("Test YoY Copy options dropdown menu", () => {
     render(dropdownComponentWithYoYCopy);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown.children.length).toEqual(
-      mockMcparReportContext.submittedReportsByState.length + 1
+      mockMcparReportContext.copyEligibleReportsByState.length + 1
     );
   });
 });
