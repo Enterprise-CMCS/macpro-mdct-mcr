@@ -120,12 +120,14 @@ export const DashboardPage = ({ reportType }: Props) => {
       let copySourceReport = reportsByState?.find(
         (item) => item.fieldDataId == report.copyFieldDataSourceId
       );
-      let copySourceObject = {
-        label: `${copySourceReport?.programName} ${convertDateUtcToEt(
-          report.reportingPeriodEndDate
-        )}`,
-        value: copySourceReport?.fieldDataId!,
-      };
+      const copySourceObject = copySourceReport
+        ? {
+            label: `${copySourceReport?.programName} ${convertDateUtcToEt(
+              report.reportingPeriodEndDate
+            )}`,
+            value: copySourceReport?.fieldDataId!,
+          }
+        : undefined;
       if (report.submittedOnDate) {
         submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
