@@ -27,7 +27,7 @@ export interface ReportMetadataShape extends ReportKeys {
   archived?: boolean;
   locked?: boolean;
   fieldDataId?: string;
-  copySourceId?: string;
+  copyFieldDataSourceId?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

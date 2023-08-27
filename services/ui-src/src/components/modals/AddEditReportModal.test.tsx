@@ -139,8 +139,10 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     const form = result.getByTestId("add-edit-report-form");
     const header = screen.getByRole("heading", { level: 1 });
     expect(header.textContent).toEqual("Add / Copy a Program");
-    const copySourceId = form.querySelector("[name='copySourceId']")!;
-    expect(copySourceId).toHaveProperty("disabled", false);
+    const copyFieldDataSourceId = form.querySelector(
+      "[name='copyFieldDataSourceId']"
+    )!;
+    expect(copyFieldDataSourceId).toHaveProperty("disabled", false);
     await fillForm(form);
     await expect(mockCreateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
@@ -151,8 +153,10 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     mockLDFlags.setDefault({ yoyCopy: true });
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
-    const copySourceId = form.querySelector("[name='copySourceId']")!;
-    expect(copySourceId).toHaveProperty("disabled", true);
+    const copyFieldDataSourceId = form.querySelector(
+      "[name='copyFieldDataSourceId']"
+    )!;
+    expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
     await fillForm(form);
     await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);

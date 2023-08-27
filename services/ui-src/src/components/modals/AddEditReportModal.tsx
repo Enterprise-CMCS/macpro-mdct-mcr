@@ -50,7 +50,8 @@ export const AddEditReportModal = ({
   useEffect(() => {
     // check if yoy copy field exists in form
     const yoyCopyFieldIndex = form.fields.findIndex(
-      (field: FormField | FormLayoutElement) => field.id === "copySourceId"
+      (field: FormField | FormLayoutElement) =>
+        field.id === "copyFieldDataSourceId"
     );
     if (yoyCopyFieldIndex > -1) {
       // if not creating new report || no reports eligible for copy
@@ -69,7 +70,7 @@ export const AddEditReportModal = ({
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
-    const copySourceId = formData["copySourceId"];
+    const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
     const reportingPeriodStartDate = convertDateEtToUtc(
@@ -87,7 +88,7 @@ export const AddEditReportModal = ({
         dueDate,
         combinedData,
         lastAlteredBy: full_name,
-        copySourceId: copySourceId?.value,
+        copyFieldDataSourceId: copyFieldDataSourceId?.value,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

@@ -120,15 +120,15 @@ export const createReport = handler(async (event, _context) => {
     };
   }
 
-  // If the `copySourceId` parameter is passed, merge the validated field data with the source ids data.
+  // If the `copyFieldDataSourceId` parameter is passed, merge the validated field data with the source ids data.
 
   let newFieldData;
 
-  if (unvalidatedMetadata.copySourceId) {
+  if (unvalidatedMetadata.copyFieldDataSourceId) {
     newFieldData = await copyFieldDataFromSource(
       reportBucket,
       state,
-      unvalidatedMetadata.copySourceId,
+      unvalidatedMetadata.copyFieldDataSourceId,
       formTemplate,
       validatedFieldData
     );

@@ -65,7 +65,7 @@ const creationEventWithCopySource: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
     fieldData: { stateName: "Alabama" },
-    metadata: { copySourceId: "mockReportFieldData" },
+    metadata: { copyFieldDataSourceId: "mockReportFieldData" },
   }),
 };
 
@@ -142,7 +142,7 @@ describe("Test createReport API method", () => {
     expect(res.body).toContain(error.NO_KEY);
   });
 
-  test("Test report with copySourceId", async () => {
+  test("Test report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ plan_activeAppeals: "1", name: "name" }],
@@ -162,7 +162,7 @@ describe("Test createReport API method", () => {
     });
   });
 
-  test("Test invalid fields removed when creating report with copySourceId", async () => {
+  test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plan: [{ id: "foo", entityField: "bar", name: "name" }],

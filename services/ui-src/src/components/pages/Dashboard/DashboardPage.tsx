@@ -118,7 +118,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     // Check and pre-fill the form if the user is editing an existing program
     if (report) {
       let copySourceReport = reportsByState?.find(
-        (item) => item.fieldDataId == report.copySourceId
+        (item) => item.fieldDataId == report.copyFieldDataSourceId
       );
       let copySourceObject = {
         label: `${copySourceReport?.programName} ${convertDateUtcToEt(
@@ -139,7 +139,7 @@ export const DashboardPage = ({ reportType }: Props) => {
             report.reportingPeriodStartDate
           ),
           combinedData: report.combinedData,
-          copySourceId: copySourceObject,
+          copyFieldDataSourceId: copySourceObject,
         },
         state: report.state,
         id: report.id,
