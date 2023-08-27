@@ -24,6 +24,7 @@ export interface ReportMetadataShape extends ReportKeys {
   submitterEmail?: string;
   submittedOnDate?: number;
   archived?: boolean;
+  fieldDataId: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

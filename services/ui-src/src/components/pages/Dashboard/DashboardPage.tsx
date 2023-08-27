@@ -120,7 +120,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       let copySourceReport = reportsByState?.find(
         (item) => item.fieldDataId == report.copyFieldDataSourceId
       );
-      const copySourceObject = copySourceReport
+      const copyFieldDataSourceId = copySourceReport
         ? {
             label: `${copySourceReport?.programName} ${convertDateUtcToEt(
               report.reportingPeriodEndDate
@@ -141,7 +141,7 @@ export const DashboardPage = ({ reportType }: Props) => {
             report.reportingPeriodStartDate
           ),
           combinedData: report.combinedData,
-          copyFieldDataSourceId: copySourceObject,
+          copyFieldDataSourceId,
         },
         state: report.state,
         id: report.id,

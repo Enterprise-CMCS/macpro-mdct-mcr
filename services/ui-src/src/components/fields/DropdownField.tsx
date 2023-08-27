@@ -20,6 +20,7 @@ import {
   EntityShape,
   InputChangeEvent,
   SelectedOption,
+  ReportMetadataShape,
 } from "types";
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -53,11 +54,11 @@ export const DropdownField = ({
         });
       } else {
         dropdownOptions =
-          copyEligibleReportsByState?.map((option) => ({
-            label: `${option.programName} ${convertDateUtcToEt(
-              option.dueDate
+          copyEligibleReportsByState?.map((report: ReportMetadataShape) => ({
+            label: `${report.programName} ${convertDateUtcToEt(
+              report.dueDate
             )}`,
-            value: option.fieldDataId!,
+            value: report.fieldDataId,
           })) ?? [];
       }
     } else if (typeof options === "string") {
