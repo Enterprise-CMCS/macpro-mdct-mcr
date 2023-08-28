@@ -42,7 +42,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: use the custom github  action to parse Snyk output
-        uses: Enterprise-CMCS/macfc-security-scan-report@v1.0.4
+        uses: Enterprise-CMCS/macfc-security-scan-report@v2.6.0
         with:
           jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
           jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
@@ -52,6 +52,6 @@ jobs:
           jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280", "customfield_14154" : [{"id": "16958", "value": "MCR"}]  }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
-          assign-jira-ticket-to: "6268ac54d364ae006809a489" # pragma: allowlist secret (Jira user ID for Rehman)
+          assign-jira-ticket-to: ${{ secrets.ACCOUNT_ID_REHMAN }}
           scan-output-path: "snyk_output.txt"
           scan-type: "snyk"
