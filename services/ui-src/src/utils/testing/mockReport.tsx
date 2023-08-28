@@ -304,6 +304,7 @@ export const mockMcparReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
+  fieldDataId: "mockFieldDataId",
   completionStatus: {
     "/mock/mock-route-1": true,
     "/mock/mock-route-2": {
@@ -330,6 +331,7 @@ export const mockMcparReportCombinedData = {
   combinedData: true,
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
+  fieldDataId: "mockFieldDataId",
   completionStatus: {
     "/mock/mock-route-1": true,
     "/mock/mock-route-2": {
@@ -356,6 +358,7 @@ export const mockMlrReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
+  fieldDataId: "mockFieldDataId",
 };
 
 export const mockMLRLockedReport = {
@@ -373,6 +376,7 @@ export const mockMLRLockedReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
+  fieldDataId: "mockFieldDataId",
   locked: true,
 };
 
@@ -434,6 +438,7 @@ export const mockMLRNewReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockMLRReportEmptyFieldData,
+  fieldDataId: "mockFieldDataId",
 };
 
 export const mockReportsByState = [
