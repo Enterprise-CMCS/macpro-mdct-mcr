@@ -167,6 +167,13 @@ functions:
       default:
         enabled: false
     maximumRetryAttempts: 0
+  numberFieldCleanup:
+    handler: handlers/etl/numberFieldCleanup.cleanupNumericData
+    timeout: 300
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   formTemplateEntitiesUpdate:
     handler: handlers/etl/formTemplateEntitiesUpdate.transform
     timeout: 300

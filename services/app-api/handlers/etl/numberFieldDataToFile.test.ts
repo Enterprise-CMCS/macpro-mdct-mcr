@@ -156,6 +156,9 @@ describe("Numeric data export", () => {
   it("should extract all malformed numeric data", async () => {
     const result = await doExport();
 
+    // eslint-disable-next-line no-console
+    console.log(JSON.stringify(result, undefined, "  "));
+
     expect(result.length).toBe(1);
     expect(result[0].report.id).toBe("report1");
 
