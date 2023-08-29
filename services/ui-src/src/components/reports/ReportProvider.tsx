@@ -36,7 +36,7 @@ export const ReportContext = createContext<ReportContextShape>({
   submitReport: Function,
   // reports by state
   reportsByState: undefined as ReportMetadataShape[] | undefined,
-  submittedReportsByState: undefined as ReportMetadataShape[] | undefined,
+  copyEligibleReportsByState: undefined as ReportMetadataShape[] | undefined,
   fetchReportsByState: Function,
   // selected report
   clearReportSelection: Function,
@@ -62,7 +62,7 @@ export const ReportProvider = ({ children }: Props) => {
     ReportShape[] | undefined
   >();
 
-  const [submittedReportsByState, setSubmittedReportsByState] = useState<
+  const [copyEligibleReportsByState, setCopyEligibleReportsByState] = useState<
     ReportShape[] | undefined
   >();
 
@@ -177,9 +177,9 @@ export const ReportProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const submittedReports = reportsByState?.filter(
-      (item) => item.status === "Submitted"
+      (item) => item.status === "Submitted" && !item.archived
     );
-    setSubmittedReportsByState(submittedReports);
+    setCopyEligibleReportsByState(submittedReports);
   }, [reportsByState]);
 
   useEffect(() => {
@@ -216,7 +216,7 @@ export const ReportProvider = ({ children }: Props) => {
       submitReport,
       // reports by state
       reportsByState,
-      submittedReportsByState,
+      copyEligibleReportsByState,
       fetchReportsByState,
       // selected report
       clearReportSelection,
@@ -229,7 +229,7 @@ export const ReportProvider = ({ children }: Props) => {
     [
       report,
       reportsByState,
-      submittedReportsByState,
+      copyEligibleReportsByState,
       isReportPage,
       error,
       lastSavedTime,

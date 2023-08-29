@@ -24,6 +24,7 @@ export interface ReportMetadataShape extends ReportKeys {
   submitterEmail?: string;
   submittedOnDate?: number;
   archived?: boolean;
+  fieldDataId: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {
@@ -44,7 +45,7 @@ export interface ReportContextMethods {
 export interface ReportContextShape extends ReportContextMethods {
   report: ReportShape | undefined;
   reportsByState: ReportMetadataShape[] | undefined;
-  submittedReportsByState: ReportMetadataShape[] | undefined;
+  copyEligibleReportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
   lastSavedTime?: string | undefined;
 }

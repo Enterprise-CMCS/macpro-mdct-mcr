@@ -20,8 +20,9 @@ import {
   EntityShape,
   InputChangeEvent,
   SelectedOption,
+  ReportMetadataShape,
 } from "types";
-import { dropdownDefaultOptionText } from "../../constants";
+import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const DropdownField = ({
@@ -36,7 +37,7 @@ export const DropdownField = ({
   styleAsOptional,
   ...props
 }: Props) => {
-  const { report, updateReport, submittedReportsByState } =
+  const { report, updateReport, copyEligibleReportsByState } =
     useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
@@ -46,11 +47,20 @@ export const DropdownField = ({
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
     if (options === "copyEligibleReports") {
-      dropdownOptions =
-        submittedReportsByState?.map((option) => ({
-          label: `${option.programName} ${convertDateUtcToEt(option.dueDate)}`,
-          value: option.fieldDataId!,
-        })) ?? [];
+      if (copyEligibleReportsByState?.length == 0) {
+        dropdownOptions.push({
+          label: dropdownNoReports,
+          value: "",
+        });
+      } else {
+        dropdownOptions =
+          copyEligibleReportsByState?.map((report: ReportMetadataShape) => ({
+            label: `${report.programName} ${convertDateUtcToEt(
+              report.dueDate
+            )}`,
+            value: report.fieldDataId,
+          })) ?? [];
+      }
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
@@ -69,8 +79,9 @@ export const DropdownField = ({
     }
     return dropdownOptions;
   };
+
   const formattedOptions = formatOptions(options);
-  const defaultValue = formattedOptions[0];
+  const defaultValue = props?.hydrate || formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);
 
