@@ -1,150 +1,184 @@
-//lambda functions
-import {
-  extractAllNumericFieldValues,
-  extractNumericalData,
-  iterateOverNumericFields,
-  fieldValueById,
-  getDataFromS3,
-  writeDataToS3,
-  scanTable,
-  check,
-  S3Route,
-  FieldData,
-} from "./numberFieldDataToFile";
-//aws
-import { APIGatewayProxyEvent, Context } from "aws-lambda";
-//testing
-import {
-  mockDocumentClient,
-  mockDynamoData,
-  mockReportFieldData2,
-  mockReportJson2,
-} from "../../utils/testing/setupJest";
-import { proxyEvent } from "../../utils/testing/proxyEvent";
+import { doExport } from "./numberFieldDataToFile";
 
-//mock data
-let mockDynamoDataWithUUID = mockDynamoData;
-mockDynamoDataWithUUID.state = "AK";
-mockDynamoDataWithUUID.id = "1234123452345";
-
-const mockMetaDataResponse1 = {
-  LastEvaluatedKey: {
-    id: mockDynamoDataWithUUID.id,
-    state: mockDynamoDataWithUUID.state,
+jest.mock("../../utils/constants/constants", () => ({
+  ...jest.requireActual("../../utils/constants/constants"),
+  formTemplateTableName: "local-form-template-versions",
+  reportTables: {
+    MCPAR: "local-mcpar-reports",
+    MLR: "local-mlr-reports",
+    NAAAR: "local-naaar-reports",
   },
-  Items: [mockDynamoDataWithUUID],
-};
+  reportBuckets: {
+    MCPAR: "database-local-mcpar",
+  },
+}));
 
-let mockDynamoData2 = mockDynamoData;
-mockDynamoData2.state = "AK";
-mockDynamoData2.id = "34234234534";
-
-const mockMetaDataResponse2 = {
-  Items: [mockDynamoData2],
-};
-
-let mockReportJsonWithId: any = mockReportJson2;
-mockReportJsonWithId.id = "123423452345435";
-
-const mockProxyEvent = {
-  ...proxyEvent,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MCPAR", state: "AB" },
-};
-
-const mockEvent: APIGatewayProxyEvent = {
-  ...mockProxyEvent,
-  body: "",
-};
-
-const mockContext: Context = {
-  awsRequestId: "1234567890",
-  callbackWaitsForEmptyEventLoop: true,
-  clientContext: undefined,
-  functionName: "app-api-local-numberFieldDataToFile",
-  functionVersion: "$LATEST",
-  identity: undefined,
-  invokedFunctionArn: "",
-  logGroupName: "",
-  logStreamName: "",
-  memoryLimitInMB: "1024",
-  getRemainingTimeInMillis: () => 123,
-  done: () => {},
-  fail: () => {},
-  succeed: () => {},
-};
-
-let route: S3Route = {
-  state: "MN",
-  bucket: "bucket",
-  type: "type",
-};
-
-describe("Test database scan", () => {
-  test("Test retrieval of metadata", async () => {
-    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse1);
-    let results = await scanTable("local-mcpar-reports", true);
-    expect(results.Items).toHaveLength(1);
-  });
-
-  test("Test metadata error", async () => {
-    mockDocumentClient.scan.promise.mockRejectedValue(null);
-    expect.assertions(1);
-    try {
-      await scanTable("local-mcpar-reports", true);
-    } catch (e) {
-      expect(e).toEqual(null);
+jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
+  scanIterator: jest.fn().mockImplementation((params) => {
+    switch (params.TableName) {
+      case "local-form-template-versions":
+        return [
+          {
+            reportType: "MCPAR",
+            id: "template1",
+          },
+        ];
+      case "local-mcpar-reports":
+        return [
+          {
+            id: "report1",
+            reportType: "MCPAR",
+            state: "CO",
+            formTemplateId: "template1",
+            fieldDataId: "data1",
+          },
+        ];
+      case "local-mlr-reports":
+      case "local-naaar-reports":
+        return [];
+      default:
+        throw new Error(
+          `Cannot scan table '${params.TableName}': it has not been mocked`
+        );
     }
-  });
-});
+  }),
+}));
 
-describe("Test s3 bucket put & get", () => {
-  test("Test write updated form template to S3", async () => {
-    try {
-      await writeDataToS3(mockReportJsonWithId, route);
-    } catch (e) {
-      expect(e).toBeFalsy();
+jest.mock("../../utils/s3/s3-lib", () => ({
+  ...jest.requireActual("../../utils/s3/s3-lib"),
+  get: jest.fn().mockImplementation((params) => {
+    switch (params.Key) {
+      case "formTemplates/template1.json":
+        return mockFormTemplate;
+      case "fieldData/CO/data1.json":
+        return mockReport;
+      default:
+        throw new Error(
+          `Cannot get object '${params.Key}': it has not been mocked`
+        );
     }
-  });
+  }),
+}));
 
-  test("Test get data from S3", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce(mockReportJson2);
-    const result = await getDataFromS3("mockReportJson2", route);
+const mockFormTemplate = {
+  routes: [
+    {
+      children: [
+        {
+          form: {
+            fields: [
+              {
+                id: "q0",
+                type: "number",
+              },
+              {
+                id: "q1",
+                type: "number",
+              },
+              {
+                id: "q2",
+                type: "choosy-list",
+                choices: [
+                  {
+                    children: [
+                      {
+                        id: "q3",
+                        type: "number",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          entityType: "foos",
+          modalForm: {
+            fields: [
+              {
+                id: "q4",
+                type: "proppy-list",
+                props: {
+                  choices: [
+                    {
+                      children: [
+                        {
+                          id: "q5",
+                          type: "number",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ],
+};
 
-    expect(result).toMatchObject(mockReportJson2);
-  });
-});
+const mockReport = {
+  q0: "123.4", // good
+  q1: "$1000", // fixable
+  q3: "N/A", // good
+  foos: [
+    {
+      q5: "i ate 5 eggs", // bad
+    },
+    {
+      q5: "5 :1", // fixable
+    },
+    {
+      q5: "5%", // fixable
+    },
+    {
+      q5: " 5 ", // fixable
+    },
+    {
+      q5: "5,555", // fixable
+    },
+    {
+      q5: ".5", // fixable
+    },
+    {
+      q5: "", // good
+    },
+    {
+      q5: "5,0000", // bad
+    },
+  ],
+};
 
-describe("Test extraction of numerical data from field data", () => {
-  test("Test iterating and pulling fields", () => {
-    let numericFields: any[] = [];
-    iterateOverNumericFields(mockReportJson2.routes, numericFields);
-    expect(numericFields).toHaveLength(2);
-  });
+describe("Numeric data export", () => {
+  it("should extract all malformed numeric data", async () => {
+    const result = await doExport();
 
-  test("Test find value by id", () => {
-    let extractedFieldData: FieldData[] = [];
-    fieldValueById(mockReportFieldData2, "report_number", extractedFieldData);
-    expect(extractedFieldData).toHaveLength(1);
-  });
+    expect(result.length).toBe(1);
+    expect(result[0].report.id).toBe("report1");
 
-  test("Test extracting data from formTemplate & fieldData", () => {
-    let numericalData = extractNumericalData(
-      mockReportJson2,
-      mockReportFieldData2
-    );
-    expect(numericalData).toHaveLength(1);
-  });
+    const problemFields = result[0].fields;
+    const expectedFields = [
+      { value: "$1000", level: "fixable", index: 0, entityType: undefined },
+      { value: "i ate 5 eggs", level: "bad", index: 0, entityType: "foos" },
+      { value: "5 :1", level: "fixable", index: 1, entityType: "foos" },
+      { value: "5%", level: "fixable", index: 2, entityType: "foos" },
+      { value: " 5 ", level: "fixable", index: 3, entityType: "foos" },
+      { value: "5,555", level: "fixable", index: 4, entityType: "foos" },
+      { value: ".5", level: "fixable", index: 5, entityType: "foos" },
+      // Note the missing index 6 here; that value does not need fixing
+      { value: "5,0000", level: "bad", index: 7, entityType: "foos" },
+    ];
 
-  test("Test extract and storing of data", async () => {
-    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
-    //not sure how to check functions with no returns
-    await extractAllNumericFieldValues("local-mcpar-reports", "bucket");
-  });
-
-  test("Test lambda", async () => {
-    mockDocumentClient.scan.promise.mockReturnValueOnce(mockMetaDataResponse2);
-    let results = await check(mockEvent, mockContext);
-    expect(results.statusCode).toBe(200);
+    for (let i = 0; i < expectedFields.length; i += 1) {
+      const expected = expectedFields[i];
+      const actual = problemFields[i];
+      expect(actual.value).toBe(expected.value);
+      expect(actual.level).toBe(expected.level);
+      expect(actual.index).toBe(expected.index);
+      expect(actual.entityType).toBe(expected.entityType);
+    }
   });
 });
