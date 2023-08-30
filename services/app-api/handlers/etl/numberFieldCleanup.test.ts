@@ -1,5 +1,5 @@
 import s3Lib from "../../utils/s3/s3-lib";
-import { doCleanup } from "./numberFieldCleanup";
+import { cleanupNumericData } from "./numberFieldCleanup";
 import { ExtractResult } from "./numberFieldValueCategorization";
 
 jest.mock("../../utils/constants/constants", () => ({
@@ -133,7 +133,7 @@ describe("Numeric data cleanup", () => {
   });
 
   it("should clean up all data flagged by the export", async () => {
-    await doCleanup(mockExtractResult);
+    await cleanupNumericData(mockExtractResult);
 
     expect(s3PutSpy).toBeCalledTimes(1);
 
@@ -148,7 +148,7 @@ describe("Numeric data cleanup", () => {
   });
 
   it("should not get or put reports with no fixable issues", async () => {
-    await doCleanup([]);
+    await cleanupNumericData([]);
 
     expect(s3GetSpy).not.toBeCalled();
     expect(s3PutSpy).not.toBeCalled();

@@ -1,4 +1,4 @@
-import { doExport } from "./numberFieldDataToFile";
+import { exportNumericData } from "./numberFieldDataToFile";
 
 jest.mock("../../utils/constants/constants", () => ({
   ...jest.requireActual("../../utils/constants/constants"),
@@ -154,10 +154,8 @@ const mockReport = {
 
 describe("Numeric data export", () => {
   it("should extract all malformed numeric data", async () => {
-    const result = await doExport();
-
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(result, undefined, "  "));
+    const response = await exportNumericData();
+    const result = JSON.parse(response.body);
 
     expect(result.length).toBe(1);
     expect(result[0].report.id).toBe("report1");

@@ -39,19 +39,10 @@ export default {
     return { ...result, Items: result?.Items as Result[] | undefined };
   },
   /**
-   * Scan operation that continues for all results. More expensive but avoids stopping early when a index is not known.
+   * Scan operation that continues for all results.
+   * Returns an AsyncGenerator so each result can be processed immediately,
+   * even if more batches of results are pending
    */
-  scanAll: async <Result = any>(params: DynamoScan) => {
-    const items = [];
-    let complete = false;
-    while (!complete) {
-      const result = await createDbClient().scan(params).promise();
-      items.push(...((result?.Items as Result[]) ?? []));
-      params.ExclusiveStartKey = result.LastEvaluatedKey;
-      complete = result.LastEvaluatedKey === undefined;
-    }
-    return { Items: items, Count: items.length };
-  },
   scanIterator: async function* (
     params: Omit<DocumentClient.ScanInput, "ExclusiveStartKey">
   ) {

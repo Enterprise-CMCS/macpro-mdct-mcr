@@ -60,13 +60,11 @@ import {
  */
 export const exportNumericData = async (): Promise<APIGatewayProxyResult> => {
   try {
-    await doExport();
+    const results = await doExport();
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        message: "Export complete",
-      }),
+      body: JSON.stringify(results),
     };
   } catch (err: any) {
     console.error(err);
