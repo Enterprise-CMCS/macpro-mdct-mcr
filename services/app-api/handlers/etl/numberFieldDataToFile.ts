@@ -92,7 +92,7 @@ export async function doExport() {
     console.log(
       `Processing formTemplateId ${formTemplate.id} - ${performance.now()}`
     );
-    const fieldList = getNumericFieldIdsFromTemplate(formTemplate);
+    const fieldList = [...iterateNumericFieldsInForm(formTemplate)];
     numericFieldsByFormTemplate.set(formTemplate.id!, fieldList);
   }
 
@@ -171,71 +171,75 @@ const getAllFormTemplates = async function* () {
 };
 
 /**
- * Given a form template, find all of the fields with type: "number"
+ * Given an array of report routes, iterate through them and all of their children
  */
-const getNumericFieldIdsFromTemplate = (formTemplate: ReportJson) => {
-  const iterateRoutesIn = function* (
-    routes: ReportRoute[]
-  ): Generator<ReportRoute, void, undefined> {
-    for (let route of routes) {
-      yield route;
-      if (route.children) {
-        yield* iterateRoutesIn(route.children);
-      }
+const iterateRoutesIn = function* (
+  routes: ReportRoute[]
+): Generator<ReportRoute, void, undefined> {
+  for (let route of routes) {
+    yield route;
+    if (route.children) {
+      yield* iterateRoutesIn(route.children);
     }
-  };
+  }
+};
 
-  const iterateFormsIn = (route: ReportRoute) => {
-    return Object.values(route).filter(
-      (val: any): val is FormJson => val.fields
-    );
-  };
+/**
+ * Given a report route, iterate through all of its forms
+ */
+const iterateFormsIn = (route: ReportRoute) => {
+  // This filter catches form, modalForm, drawerForm, and overlayForm
+  return Object.values(route).filter((val: any): val is FormJson => val.fields);
+};
 
-  const iterateFieldsIn = function* (
-    formFields: FormField[]
-  ): Generator<FormField, void, undefined> {
-    for (let field of formFields) {
-      yield field;
-      if (field.choices) {
-        for (let choice of field.choices) {
-          if (choice.children) {
-            yield* iterateFieldsIn(choice.children);
-          }
-        }
-      }
-      if (field.props && field.props.choices) {
-        for (let choice of field.props.choices) {
-          if (choice.children) {
-            yield* iterateFieldsIn(choice.children);
-          }
+/**
+ * Given an array of form fields, iterate through them and all of their children
+ */
+const iterateFieldsIn = function* (
+  formFields: FormField[]
+): Generator<FormField, void, undefined> {
+  for (let field of formFields) {
+    yield field;
+    if (field.choices) {
+      for (let choice of field.choices) {
+        if (choice.children) {
+          yield* iterateFieldsIn(choice.children);
         }
       }
     }
-  };
-
-  const iterateNumericFieldsInForm = function* (formTemplate: ReportJson) {
-    for (let route of iterateRoutesIn(formTemplate.routes)) {
-      for (let form of iterateFormsIn(route)) {
-        for (let field of iterateFieldsIn(form.fields)) {
-          /*
-           * We're keying off of field type exclusively, because field validation
-           * is a lot more complicated: it may be "number", "numberOptional",
-           * "numberNotLessThanZero", { "type": "numberNotLessThanOne" }, and so on.
-           * But every field in MCPAR and MLR with number-like validation
-           * has type exactly "number" (as of 2023-08-23, anyway).
-           */
-          if (field.type === "number") {
-            yield {
-              entityType: route.entityType,
-              fieldId: field.id,
-            };
-          }
+    if (field.props && field.props.choices) {
+      for (let choice of field.props.choices) {
+        if (choice.children) {
+          yield* iterateFieldsIn(choice.children);
         }
       }
     }
-  };
+  }
+};
 
-  return [...iterateNumericFieldsInForm(formTemplate)];
+/**
+ * Given a form template, iterate through all of the fields with type: "number"
+ */
+const iterateNumericFieldsInForm = function* (formTemplate: ReportJson) {
+  for (let route of iterateRoutesIn(formTemplate.routes)) {
+    for (let form of iterateFormsIn(route)) {
+      for (let field of iterateFieldsIn(form.fields)) {
+        /*
+         * We're keying off of field type exclusively, because field validation
+         * is a lot more complicated: it may be "number", "numberOptional",
+         * "numberNotLessThanZero", { "type": "numberNotLessThanOne" }, and so on.
+         * But every field in MCPAR and MLR with number-like validation
+         * has type exactly "number" (as of 2023-08-23, anyway).
+         */
+        if (field.type === "number") {
+          yield {
+            entityType: route.entityType,
+            fieldId: field.id,
+          };
+        }
+      }
+    }
+  }
 };
 
 /**
