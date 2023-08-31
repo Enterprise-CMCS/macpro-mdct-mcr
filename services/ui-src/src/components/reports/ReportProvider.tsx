@@ -146,8 +146,7 @@ export const ReportProvider = ({ children }: Props) => {
 
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
-      const result = await releaseReportRequest(reportKeys);
-      hydrateAndSetReport(result);
+      await releaseReportRequest(reportKeys);
     } catch (e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
