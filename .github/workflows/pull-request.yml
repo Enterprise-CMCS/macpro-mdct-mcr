@@ -11,7 +11,7 @@ jobs:
       - uses: pre-commit/action@v2.0.2
       - uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version-file: ".nvmrc"
       - name: run unit tests
         run: ./scripts/test-unit.sh
   assignAuthor:

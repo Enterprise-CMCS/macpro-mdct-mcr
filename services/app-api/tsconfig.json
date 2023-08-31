@@ -7,10 +7,17 @@
     "sourceMap": true,
     "strict": true,
     "allowJs": true,
-    "target": "es5",
+    "target": "ES5",
     "outDir": ".build",
-    "lib": ["ES2018", "DOM"],
+    "lib": ["ES2022"],
     "rootDir": "./",
     "resolveJsonModule": true,
+    // The CommonJS module system avoids issues with the types of date-fns-tz.
+    "module": "CommonJS",
+    // downlevelIteration allows us to use generators (sync and async) despite
+    // the ancient ES5 target. We should set the target to ES2022 for Node 18,
+    // but doing so causes problems with Kafka (`Kafka is not a constructor`).
+    // Once we address that issue, we can remove the downlevelIteration flag.
+    "downlevelIteration": true,
   }
 }
