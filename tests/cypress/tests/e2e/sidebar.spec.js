@@ -24,7 +24,9 @@ describe("Sidebar integration tests", () => {
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
     cy.findByRole("checkbox").focused().click();
     cy.get("button[type=submit]").contains("Save").click();
-    cy.findAllByRole("button", { name: "Edit" }).first().click();
+    cy.wait(2000);
+    cy.findAllByRole("button", { name: "Edit" }).first().click(); // Timeout
+    cy.wait(2000);
 
     // Expand next section, collapse first, nav to new page.
     cy.get(collapseButton).first().click();
