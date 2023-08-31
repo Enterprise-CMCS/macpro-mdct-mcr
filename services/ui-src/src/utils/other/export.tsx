@@ -272,13 +272,12 @@ const sx = {
     verticalAlign: "top",
     marginBottom: "1rem",
     ul: {
-      marginTop: "0.25rem",
       listStyle: "none",
       ".entityResponse": {
         paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
-          fontSize: "md",
+          fontSize: "sm",
         },
       },
       p: {
