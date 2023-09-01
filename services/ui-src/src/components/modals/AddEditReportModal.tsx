@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
@@ -8,7 +8,13 @@ import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
-import { AnyObject, FormJson, ReportStatus } from "types";
+import {
+  AnyObject,
+  FormField,
+  FormJson,
+  FormLayoutElement,
+  ReportStatus,
+} from "types";
 import { States } from "../../constants";
 import {
   calculateDueDate,
@@ -23,24 +29,48 @@ export const AddEditReportModal = ({
   reportType,
   modalDisclosure,
 }: Props) => {
-  const { createReport, fetchReportsByState, updateReport } =
-    useContext(ReportContext);
+  const {
+    createReport,
+    fetchReportsByState,
+    updateReport,
+    copyEligibleReportsByState,
+  } = useContext(ReportContext);
   const { full_name } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
   const yoyCopyFlag = useFlags()?.yoyCopy;
 
+  // get correct form
   const modalFormJsonMap: any = {
     MCPAR: yoyCopyFlag ? mcparFormJson : mcparFormJsonWithoutYoY,
     MLR: mlrFormJson,
   };
-
   const modalFormJson = modalFormJsonMap[reportType]!;
-  const form: FormJson = modalFormJson;
+  const [form, setForm] = useState<FormJson>(modalFormJson);
+
+  useEffect(() => {
+    // check if yoy copy field exists in form
+    const yoyCopyFieldIndex = form.fields.findIndex(
+      (field: FormField | FormLayoutElement) =>
+        field.id === "copyFieldDataSourceId"
+    );
+    if (yoyCopyFieldIndex > -1) {
+      // if not creating new report || no reports eligible for copy
+      if (selectedReport?.id || !copyEligibleReportsByState?.length) {
+        // make deep copy of baseline form, disable yoy copy field, and use copied form
+        let tempForm: FormJson = JSON.parse(JSON.stringify(modalFormJson));
+        tempForm.fields[yoyCopyFieldIndex].props!.disabled = true;
+        setForm(tempForm);
+      } else {
+        // use the original baseline form
+        setForm(modalFormJson);
+      }
+    }
+  }, [selectedReport, copyEligibleReportsByState]);
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName = formData["programName"];
-    const copySourceId = formData["copySourceId"];
+    const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
     const reportingPeriodStartDate = convertDateEtToUtc(
@@ -58,8 +88,8 @@ export const AddEditReportModal = ({
         dueDate,
         combinedData,
         lastAlteredBy: full_name,
+        copyFieldDataSourceId: copyFieldDataSourceId?.value,
       },
-      copySourceId: copySourceId?.value,
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),

@@ -41,6 +41,9 @@ export function maskResponseData(
     case "percentage":
       return maskValue + "%";
     case "currency":
+      if (numericValue < 0) {
+        return "-$" + maskValue.substring(1);
+      }
       return "$" + maskValue;
     case "ratio": {
       let sidesOfRatio = fieldResponseData.split(":");

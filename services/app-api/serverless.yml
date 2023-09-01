@@ -161,7 +161,14 @@ provider:
 
 functions:
   numberFieldDataToFile:
-    handler: handlers/etl/numberFieldDataToFile.check
+    handler: handlers/etl/numberFieldDataToFile.exportNumericData
+    timeout: 300
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
+  numberFieldCleanup:
+    handler: handlers/etl/numberFieldCleanup.cleanupNumericData
     timeout: 300
     warmup:
       default:

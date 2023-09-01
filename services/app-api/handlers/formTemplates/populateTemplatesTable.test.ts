@@ -42,8 +42,8 @@ const templates = [
 
 jest.mock("../../utils/dynamo/dynamodb-lib", () => ({
   ...jest.requireActual("../../utils/dynamo/dynamodb-lib"),
-  scanAll: () => {
-    return { Items: [{ formTemplateId: "mockReportJson.json" }] };
+  scanIterator: () => {
+    return [{ formTemplateId: "mockReportJson.json" }];
   },
   query: () => {
     return { Items: [{ formTemplateId: "mockReportJson.json", id: "bar" }] };
@@ -88,7 +88,7 @@ describe("Test processReport", () => {
   it("should process a report type", async () => {
     const listSpy = jest.spyOn(s3Lib, "list");
     const copySpy = jest.spyOn(s3Lib, "copy");
-    const scanAllSpy = jest.spyOn(dynamodbLib, "scanAll");
+    const scanAllSpy = jest.spyOn(dynamodbLib, "scanIterator");
     const putSpy = jest.spyOn(dynamodbLib, "put");
     listSpy.mockResolvedValue(templates);
     await processReportTemplates(ReportType.MLR);

@@ -20,6 +20,7 @@ import {
   mockReportContextNoReports,
   mockReportContextWithError,
   mockDashboardLockedReportContext,
+  mockLDFlags,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -135,6 +136,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
+    mockLDFlags.set({ yoyCopy: true });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -194,13 +196,6 @@ describe("Test Dashboard view (with reports, mobile view)", () => {
     await userEvent.click(enterReportButton);
     expect(mockUseNavigate).toBeCalledTimes(1);
     expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
-  });
-
-  test("Clicking 'Add a Program' button opens the AddEditProgramModal", async () => {
-    const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
-    expect(addReportButton).toBeVisible();
-    await userEvent.click(addReportButton);
-    await expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
   });
 
   test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {

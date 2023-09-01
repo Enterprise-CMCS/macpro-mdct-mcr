@@ -3,6 +3,29 @@ import { DynamoDB } from "aws-sdk";
 
 const mockPromiseCall = jest.fn();
 
+const mockScan = jest
+  .fn()
+  .mockImplementation(
+    async (params: { TableName: string; ExclusiveStartKey: any }) => {
+      if (params.TableName !== "testTable") {
+        throw new Error(
+          `TableName ${params.TableName} was not defined in the mock!`
+        );
+      }
+      if (typeof params.ExclusiveStartKey === "undefined") {
+        return { Items: ["zero", "one", "two"], LastEvaluatedKey: 2 };
+      } else if (params.ExclusiveStartKey === 2) {
+        return { Items: ["three"], LastEvaluatedKey: 3 };
+      } else if (params.ExclusiveStartKey === 3) {
+        return { Items: ["four", "five"], LastEvaluatedKey: undefined };
+      } else {
+        throw new Error(
+          `ExclusiveStartKey ${params.ExclusiveStartKey} was not defined in the mock!`
+        );
+      }
+    }
+  );
+
 jest.mock("aws-sdk", () => ({
   __esModule: true,
   DynamoDB: {
@@ -11,7 +34,7 @@ jest.mock("aws-sdk", () => ({
         get: (_x: any) => ({ promise: mockPromiseCall }),
         put: (_x: any) => ({ promise: mockPromiseCall }),
         query: (_x: any) => ({ promise: mockPromiseCall }),
-        scan: (_x: any) => ({ promise: mockPromiseCall }),
+        scan: (x: any) => ({ promise: async () => mockScan(x) }),
         update: (_x: any) => ({ promise: mockPromiseCall }),
         delete: (_x: any) => ({ promise: mockPromiseCall }),
       };
@@ -53,7 +76,8 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
       ExpressionAttributeValues: {},
     });
 
-    expect(mockPromiseCall).toHaveBeenCalledTimes(6);
+    expect(mockPromiseCall).toHaveBeenCalledTimes(5);
+    expect(mockScan).toHaveBeenCalledTimes(1);
   });
 
   describe("Checking Environment Variable Changes", () => {
@@ -80,5 +104,23 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
         },
       });
     });
+  });
+});
+
+describe("Dynamo lib scanTable", () => {
+  it("should iterate through multiple scan batches if needed", async () => {
+    const scanTableResults: any[] = [];
+    for await (let item of dynamoLib.scanIterator({ TableName: "testTable" })) {
+      scanTableResults.push(item);
+    }
+
+    expect(scanTableResults).toEqual([
+      "zero",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+    ]);
   });
 });

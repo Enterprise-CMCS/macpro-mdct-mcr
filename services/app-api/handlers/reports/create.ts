@@ -60,11 +60,8 @@ export const createReport = handler(async (event, _context) => {
     };
   }
   const unvalidatedPayload = JSON.parse(event.body!);
-  const {
-    metadata: unvalidatedMetadata,
-    fieldData: unvalidatedFieldData,
-    copySourceId,
-  } = unvalidatedPayload;
+  const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
+    unvalidatedPayload;
 
   if (!isReportType(reportType)) {
     return {
@@ -123,15 +120,15 @@ export const createReport = handler(async (event, _context) => {
     };
   }
 
-  // If the `copySourceId` parameter is passed, merge the validated field data with the source ids data.
+  // If the `copyFieldDataSourceId` parameter is passed, merge the validated field data with the source ids data.
 
   let newFieldData;
 
-  if (copySourceId) {
+  if (unvalidatedMetadata.copyFieldDataSourceId) {
     newFieldData = await copyFieldDataFromSource(
       reportBucket,
       state,
-      copySourceId,
+      unvalidatedMetadata.copyFieldDataSourceId,
       formTemplate,
       validatedFieldData
     );

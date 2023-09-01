@@ -5,7 +5,7 @@ Then("there is the active program with {string}", (category) => {
 });
 
 Then("there is no way to create a program", () => {
-  cy.contains("Add managed care program").should("not.exist");
+  cy.contains("Add / copy managed care program").should("not.exist");
 });
 
 Then("the program is archived", () => {
