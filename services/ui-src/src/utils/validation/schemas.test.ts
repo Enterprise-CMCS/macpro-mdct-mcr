@@ -6,6 +6,8 @@ import {
   validNumber,
   numberNotLessThanOne,
   numberNotLessThanZero,
+  text,
+  textOptional,
 } from "./schemas";
 
 describe("Schemas", () => {
@@ -86,6 +88,10 @@ describe("Schemas", () => {
 
   const badValidNumberTestCases = ["N/A", "number", "foo"];
 
+  const goodRequiredTextTestCases = ["a", " a ", ".", "string"];
+  const goodOptionalTextTestCases = ["", ...goodRequiredTextTestCases];
+  const badRequiredTextTestCases = ["", "   ", undefined];
+
   const testNumberSchema = (
     schemaToUse: MixedSchema,
     testCases: Array<string>,
@@ -111,6 +117,17 @@ describe("Schemas", () => {
   const testValidNumber = (
     schemaToUse: MixedSchema,
     testCases: Array<string | number>,
+    expectedReturn: boolean
+  ) => {
+    for (let testCase of testCases) {
+      let test = schemaToUse.isValidSync(testCase);
+      expect(test).toEqual(expectedReturn);
+    }
+  };
+
+  const testText = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | undefined>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
@@ -169,5 +186,15 @@ describe("Schemas", () => {
   test("Test validNumber schema", () => {
     testValidNumber(validNumber(), goodValidNumberTestCases, true);
     testValidNumber(validNumber(), badValidNumberTestCases, false);
+  });
+
+  test("Test text schema", () => {
+    testText(text(), goodRequiredTextTestCases, true);
+    testText(text(), badRequiredTextTestCases, false);
+  });
+
+  test("Test textOptional schema", () => {
+    testText(textOptional(), goodOptionalTextTestCases, true);
+    testText(textOptional(), ["   "], false);
   });
 });
