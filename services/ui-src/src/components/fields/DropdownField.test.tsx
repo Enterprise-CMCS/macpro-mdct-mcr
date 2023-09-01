@@ -8,6 +8,7 @@ import { DropdownField, ReportContext } from "components";
 import {
   mockDropdownOptions,
   mockMcparReportContext,
+  mockMcparReportContextNoSubmittedReports,
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -72,6 +73,18 @@ const dropdownComponentWithDynamicOptions = (
 const dropdownComponentWithYoYCopy = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
+      <DropdownField
+        name="testDropdown"
+        label="test-dropdown-label"
+        options="copyEligibleReports"
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const dropdownComponentWithYoYCopyNoSubmittedReports = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockMcparReportContextNoSubmittedReports}>
       <DropdownField
         name="testDropdown"
         label="test-dropdown-label"
@@ -286,7 +299,19 @@ describe("Test YoY Copy options dropdown menu", () => {
     render(dropdownComponentWithYoYCopy);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown.children.length).toEqual(
-      mockMcparReportContext.submittedReportsByState.length + 1
+      mockMcparReportContext.copyEligibleReportsByState.length + 1
+    );
+  });
+});
+
+describe("If there are no submitted reports to copy, dropdown default value should say 'No reports eligible for copy'", () => {
+  test("Populates with reports", () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
+    mockGetValues(undefined);
+    render(dropdownComponentWithYoYCopyNoSubmittedReports);
+    const dropdown = screen.getByLabelText("test-dropdown-label");
+    expect(dropdown.children[0].textContent).toEqual(
+      "No reports eligible for copy"
     );
   });
 });

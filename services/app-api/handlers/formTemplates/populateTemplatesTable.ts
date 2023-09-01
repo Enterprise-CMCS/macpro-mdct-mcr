@@ -218,34 +218,33 @@ export async function updateExistingReports(
   formTemplateVersionCache: Map<string, FormTemplate>
 ) {
   const tableName = reportTables[reportType];
-  const reports = (await dynamodbLib.scanAll({ TableName: tableName }))
-    .Items as ReportMetadata[];
+  const reportIterator = dynamodbLib.scanIterator({ TableName: tableName });
+  const isReportMetadata = (r: any): r is ReportMetadata =>
+    r.id && r.state && r.formTemplateId;
 
-  if (reports) {
-    for (const report of reports) {
-      if (report.formTemplateId) {
-        const templateHash = formTemplateHashCache.get(report.formTemplateId);
-        if (!templateHash) {
-          logger.info(
-            `Skipping report ${report.id}; its form template hash was never computed (form template ID ${report.formTemplateId}, state ${report.state})`
-          );
-          continue;
-        }
-        const templateVersion = formTemplateVersionCache.get(templateHash);
-        if (templateVersion) {
-          await dynamodbLib.put({
-            TableName: tableName,
-            Item: {
-              ...report,
-              versionNumber: templateVersion.versionNumber,
-              formTemplateId: templateVersion.id,
-            },
-          });
-        } else {
-          throw new Error(
-            `Report ${report.id} has no formTemplateId and cannot be processed.`
-          );
-        }
+  for await (const report of reportIterator) {
+    if (isReportMetadata(report)) {
+      const templateHash = formTemplateHashCache.get(report.formTemplateId);
+      if (!templateHash) {
+        logger.info(
+          `Skipping report ${report.id}; its form template hash was never computed (form template ID ${report.formTemplateId}, state ${report.state})`
+        );
+        continue;
+      }
+      const templateVersion = formTemplateVersionCache.get(templateHash);
+      if (templateVersion) {
+        await dynamodbLib.put({
+          TableName: tableName,
+          Item: {
+            ...report,
+            versionNumber: templateVersion.versionNumber,
+            formTemplateId: templateVersion.id,
+          },
+        });
+      } else {
+        throw new Error(
+          `Report ${report.id} has no formTemplateId and cannot be processed.`
+        );
       }
     }
   }

@@ -14,7 +14,9 @@ describe("Sidebar integration tests", () => {
     cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
 
     // Create Report & nav to it
-    cy.findByRole("button", { name: "Add managed care program" }).click();
+    cy.findByRole("button", {
+      name: "Add / copy managed care program",
+    }).click();
     cy.findByLabelText("Program name").type(
       "automated test - " + new Date().toISOString()
     );
@@ -22,7 +24,9 @@ describe("Sidebar integration tests", () => {
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
     cy.findByRole("checkbox").focused().click();
     cy.get("button[type=submit]").contains("Save").click();
-    cy.findAllByRole("button", { name: "Edit" }).first().click();
+    cy.wait(2000);
+    cy.findAllByRole("button", { name: "Edit" }).first().click(); // Timeout
+    cy.wait(2000);
 
     // Expand next section, collapse first, nav to new page.
     cy.get(collapseButton).first().click();

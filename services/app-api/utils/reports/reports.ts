@@ -6,20 +6,20 @@ import { AnyObject, State } from "../types";
  *
  * @param reportBucket bucket name
  * @param state state
- * @param copySourceId fieldDataId of source report
+ * @param copyFieldDataSourceId fieldDataId of source report
  * @param formTemplate form template json object
  * @param validatedFieldData validated field data from request
  */
 export async function copyFieldDataFromSource(
   reportBucket: string,
   state: string | undefined,
-  copySourceId: any,
+  copyFieldDataSourceId: any,
   formTemplate: any,
   validatedFieldData: AnyObject
 ) {
   const sourceFieldData = (await s3Lib.get({
     Bucket: reportBucket,
-    Key: getFieldDataKey(state as State, copySourceId),
+    Key: getFieldDataKey(state as State, copyFieldDataSourceId),
   })) as AnyObject;
 
   if (sourceFieldData) {

@@ -43,7 +43,7 @@ export default {
       title: "Medical Loss Ratio (MLR) Report",
       body: {
         available:
-          "The MLR online form is now available. All states submitting annual base rate certifications on or after October 1, 2022 are required to use the online form to submit their summary MLR reports. The MLR online form should be completed when the annual base rate certification is submitted. The Excel Workbook is available as a reference to collect responses for the online form, and is not required.",
+          "The MLR online form is now available for states to submit MLR reports to CMS when their annual base rate certifications are submitted. The Excel-based MLR reporting template is available as a reference to collect information for the online form, and does not need to be separately submitted to CMS.",
 
         unavailable:
           "The requirement for states to submit this information to CMS began for rating periods starting on or after July 1, 2017. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, it should be submitted as additional documentation when the annual rate certification is submitted.",

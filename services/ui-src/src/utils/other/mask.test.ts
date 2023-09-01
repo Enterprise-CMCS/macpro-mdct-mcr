@@ -171,9 +171,14 @@ describe("Test maskResponseData", () => {
     expect(result).toEqual("12%");
   });
 
-  test("Currency mask works correctly", () => {
+  test("Currency mask works correctly on positive number", () => {
     const result = maskResponseData("12", "currency");
     expect(result).toEqual("$12");
+  });
+
+  test("Currency mask works correctly on negative number", () => {
+    const result = maskResponseData("-12", "currency");
+    expect(result).toEqual("-$12");
   });
 
   test("Standard field is not masked", () => {
