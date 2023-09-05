@@ -405,6 +405,7 @@ const sxChildStyles = {
     fontSize: "md",
     fontWeight: "bold",
     width: "13rem",
+    maxWidth: "13rem",
     ".tablet &, .mobile &": {
       width: "100%",
     },
