@@ -96,6 +96,15 @@ export const Categories = {
   instantiate() {
     return [
       {
+        name: "empty",
+        level: "good",
+        count: 0,
+        values: [],
+        matcher: (value: string | undefined) => {
+          return !value;
+        },
+      },
+      {
         name: "plain number",
         level: "good",
         count: 0,

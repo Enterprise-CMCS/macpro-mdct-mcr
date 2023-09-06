@@ -137,6 +137,8 @@ describe("Numeric data cleanup", () => {
 
     expect(s3PutSpy).toBeCalledTimes(1);
 
+    expect(s3PutSpy.mock.calls[0][0].Key).toBe("fieldData/CO/data1.json");
+
     const cleanedReportData = JSON.parse(s3PutSpy.mock.calls[0][0].Body);
     expect(cleanedReportData.q1).toBe("1000");
     expect(cleanedReportData.foos[0].q5).toBe("i ate 5 eggs"); // not fixable
