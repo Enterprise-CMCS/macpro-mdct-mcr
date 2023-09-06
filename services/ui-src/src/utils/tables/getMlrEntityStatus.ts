@@ -15,8 +15,8 @@ export const getMlrEntityStatus = (
   );
 
   /*
-   * Split the formValidation into 2 groups. 1 for fields that rely øn whether
-   * they show or not from a parent choice, and another that don't have any children
+   * Split the formValidation into 2 groups. 1 for fields that rely on whether
+   * they show or not from a parent choice, and another that aren't themselves a child
    */
   const parentFormElements = Object.fromEntries(
     Object.entries(reportFormValidation).filter(
@@ -37,7 +37,7 @@ export const getMlrEntityStatus = (
   const modalForm = reportRoute?.modalForm;
 
   /*
-   * Filter the children fields so that only ones that the user has the ability to see
+   * Filter the child fields so that only ones that the user has the ability to see
    * are up against validation. If the parent hasn't been checked, then we
    * don't want to validate its child fields because the user doesn't have
    * the ability to see them, and they aren't required for their original choice.
