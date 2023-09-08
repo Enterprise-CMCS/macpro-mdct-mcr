@@ -57,7 +57,7 @@ export const bucketTopics = {
 export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;
 
 // Form item ids we should not copy over.
-export const MCPARFieldIDBlacklist = {
+export const MCPARFieldIDBlocklist = {
   matchString: [
     "contactName",
     "contactEmailAddress",

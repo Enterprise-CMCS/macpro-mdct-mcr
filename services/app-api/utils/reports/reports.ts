@@ -1,4 +1,4 @@
-import { MCPARFieldIDBlacklist } from "../constants/constants";
+import { MCPARFieldIDBlocklist } from "../constants/constants";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import { AnyObject, ReportType, State } from "../types";
@@ -29,7 +29,7 @@ export async function copyFieldDataFromSource(
     Object.keys(sourceFieldData).forEach((key: string) => {
       // Only iterate through entities, not choice lists
       if (
-        MCPARFieldIDBlacklist.wildcard.some((x) =>
+        MCPARFieldIDBlocklist.wildcard.some((x) =>
           key.toLowerCase().includes(x)
         )
       ) {
@@ -40,13 +40,12 @@ export async function copyFieldDataFromSource(
           sourceFieldData,
           key,
           sourceFieldData[key],
-          possibleFields,
-          reportType
+          possibleFields
         );
       } else {
         if (
           !possibleFields.includes(key) ||
-          MCPARFieldIDBlacklist.matchString.includes(key)
+          MCPARFieldIDBlocklist.matchString.includes(key)
         ) {
           delete sourceFieldData[key];
         }
@@ -69,8 +68,8 @@ function pruneEntityData(
       if (
         !["key", "value", "name", "id"].includes(entityKey) &&
         (!possibleFields.includes(entityKey) ||
-          MCPARFieldIDBlacklist.matchString.includes(entityKey) ||
-          MCPARFieldIDBlacklist.wildcard.some((x) =>
+          MCPARFieldIDBlocklist.matchString.includes(entityKey) ||
+          MCPARFieldIDBlocklist.wildcard.some((x) =>
             entityKey.toLowerCase().includes(x)
           ))
       ) {
