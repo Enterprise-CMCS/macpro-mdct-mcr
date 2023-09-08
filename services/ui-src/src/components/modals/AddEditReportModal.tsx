@@ -183,9 +183,7 @@ export const AddEditReportModal = ({
       modalDisclosure={modalDisclosure}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
-        subheading: selectedReport?.id
-          ? form.heading?.edit
-          : form.heading?.subheading,
+        subheading: selectedReport?.id ? "" : form.heading?.subheading,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
       }}
