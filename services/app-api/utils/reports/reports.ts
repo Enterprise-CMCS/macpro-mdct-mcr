@@ -62,6 +62,15 @@ function pruneEntityData(
   possibleFields: string[]
 ) {
   entityData.forEach((entity, index) => {
+    // TODO: there has to be a better way to write this
+    if (
+      entity.key?.includes(
+        "state_excludedEntityIdentifiedInFederalDatabaseCheck"
+      ) ||
+      entity.key?.includes("program_prohibitedAffiliationDisclosure")
+    ) {
+      delete entityData[index];
+    }
     // Delete any key existing in the source data not valid in our template, or any entity key that's not a name.
     Object.keys(entity).forEach((entityKey) => {
       // Entities have "name" and "id" keys that are not accounted for in the form JSON. This carveout ensures we never remove them.
