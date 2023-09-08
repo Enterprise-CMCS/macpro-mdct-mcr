@@ -1,6 +1,7 @@
+import { MCPARFieldIDBlacklist } from "../constants/constants";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
-import { AnyObject, State } from "../types";
+import { AnyObject, ReportType, State } from "../types";
 
 /**
  *
@@ -15,32 +16,44 @@ export async function copyFieldDataFromSource(
   state: string | undefined,
   copyFieldDataSourceId: any,
   formTemplate: any,
-  validatedFieldData: AnyObject
+  validatedFieldData: AnyObject,
+  reportType: ReportType
 ) {
   const sourceFieldData = (await s3Lib.get({
     Bucket: reportBucket,
     Key: getFieldDataKey(state as State, copyFieldDataSourceId),
   })) as AnyObject;
 
-  if (sourceFieldData) {
+  if (sourceFieldData && reportType === ReportType.MCPAR) {
     const possibleFields = getPossibleFieldsFromFormTemplate(formTemplate);
     Object.keys(sourceFieldData).forEach((key: string) => {
       // Only iterate through entities, not choice lists
+      if (
+        MCPARFieldIDBlacklist.wildcard.some((x) =>
+          key.toLowerCase().includes(x)
+        )
+      ) {
+        delete sourceFieldData[key];
+      }
       if (Array.isArray(sourceFieldData[key])) {
         pruneEntityData(
           sourceFieldData,
           key,
           sourceFieldData[key],
-          possibleFields
+          possibleFields,
+          reportType
         );
-      } else if (!possibleFields.includes(key)) {
-        delete sourceFieldData[key];
+      } else {
+        if (
+          !possibleFields.includes(key) ||
+          MCPARFieldIDBlacklist.matchString.includes(key)
+        ) {
+          delete sourceFieldData[key];
+        }
       }
     });
-
     Object.assign(validatedFieldData, sourceFieldData);
   }
-
   return validatedFieldData;
 }
 function pruneEntityData(
@@ -51,18 +64,17 @@ function pruneEntityData(
 ) {
   entityData.forEach((entity, index) => {
     // Delete any key existing in the source data not valid in our template, or any entity key that's not a name.
-    if (!possibleFields.includes(key)) {
-      delete sourceFieldData[key];
-      return;
-    }
     Object.keys(entity).forEach((entityKey) => {
-      if (!possibleFields.includes(entityKey)) {
-        if (
-          !entityKey.includes("name") &&
-          !["key", "value"].includes(entityKey)
-        ) {
-          delete entityData[index][entityKey];
-        }
+      // Entities have "name" and "id" keys that are not accounted for in the form JSON. This carveout ensures we never remove them.
+      if (
+        !["key", "value", "name", "id"].includes(entityKey) &&
+        (!possibleFields.includes(entityKey) ||
+          MCPARFieldIDBlacklist.matchString.includes(entityKey) ||
+          MCPARFieldIDBlacklist.wildcard.some((x) =>
+            entityKey.toLowerCase().includes(x)
+          ))
+      ) {
+        delete entityData[index][entityKey];
       }
     });
     if (Object.keys(entity).length === 0) {

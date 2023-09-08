@@ -9,7 +9,7 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 // types
-import { AnyObject, StatusCodes } from "../../utils/types";
+import { EntityShape, StatusCodes } from "../../utils/types";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 
@@ -145,7 +145,7 @@ describe("Test createReport API method", () => {
   test("Test report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
-      plans: [{ plan_activeAppeals: "1", name: "name" }],
+      plans: [{ qualityMeasure_nqfNumber: "1", name: "name" }],
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
@@ -154,10 +154,10 @@ describe("Test createReport API method", () => {
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData.plans).toBeDefined();
-    body.fieldData.plans.forEach((p: AnyObject) => {
+    body.fieldData.plans.forEach((p: EntityShape) => {
       expect(p).toEqual({
         name: "name",
-        plan_activeAppeals: "1",
+        qualityMeasure_nqfNumber: "1",
       });
     });
   });
@@ -165,7 +165,7 @@ describe("Test createReport API method", () => {
   test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
-      plan: [{ id: "foo", entityField: "bar", name: "name" }],
+      plans: [{ id: "foo", entityField: "bar", name: "name" }],
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
@@ -173,7 +173,28 @@ describe("Test createReport API method", () => {
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
-    expect(body.fieldData).toEqual({ stateName: "Alabama" });
-    expect(body.fieldData.entity).toBeUndefined();
+    expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
+    expect(body.fieldData.plans).toBeDefined();
+    body.fieldData.plans.forEach((p: EntityShape) => {
+      expect(p).toEqual({
+        id: "foo",
+        name: "name",
+      });
+    });
+  });
+
+  test("Test entire entity gets removed if it has no valid fields", async () => {
+    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+      stateName: "Alabama",
+      plans: [{ entityField: "bar", appeals_foo: "1" }],
+    });
+    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const res = await createReport(creationEventWithCopySource, null);
+    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(copyFieldDataSpy).toBeCalled();
+    expect(body.fieldDataId).not.toEqual("mockReportFieldData");
+    expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
+    expect(body.fieldData.plans).toBeUndefined();
   });
 });
