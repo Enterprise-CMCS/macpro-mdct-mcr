@@ -27,28 +27,25 @@ export async function copyFieldDataFromSource(
   if (sourceFieldData && reportType === ReportType.MCPAR) {
     const possibleFields = getPossibleFieldsFromFormTemplate(formTemplate);
     Object.keys(sourceFieldData).forEach((key: string) => {
-      // Only iterate through entities, not choice lists
       if (
         MCPARFieldIDBlocklist.wildcard.some((x) =>
           key.toLowerCase().includes(x)
         )
       ) {
         delete sourceFieldData[key];
-      }
-      if (Array.isArray(sourceFieldData[key])) {
+      } else if (Array.isArray(sourceFieldData[key])) {
+        // Only iterate through entities, not choice lists
         pruneEntityData(
           sourceFieldData,
           key,
           sourceFieldData[key],
           possibleFields
         );
-      } else {
-        if (
-          !possibleFields.includes(key) ||
-          MCPARFieldIDBlocklist.matchString.includes(key)
-        ) {
-          delete sourceFieldData[key];
-        }
+      } else if (
+        !possibleFields.includes(key) ||
+        MCPARFieldIDBlocklist.matchString.includes(key)
+      ) {
+        delete sourceFieldData[key];
       }
     });
     Object.assign(validatedFieldData, sourceFieldData);
