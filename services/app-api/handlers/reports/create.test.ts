@@ -9,7 +9,7 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 // types
-import { EntityShape, StatusCodes } from "../../utils/types";
+import { StatusCodes } from "../../utils/types";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 
@@ -215,11 +215,10 @@ describe("Test createReport API method", () => {
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData.plans).toBeDefined();
-    body.fieldData.plans.forEach((p: EntityShape) => {
-      expect(p).toEqual({
-        name: "name",
-        qualityMeasure_nqfNumber: "1",
-      });
+    expect(body.fieldData.plans.length).toBe(1);
+    expect(body.fieldData.plans[0]).toEqual({
+      name: "name",
+      qualityMeasure_nqfNumber: "1",
     });
   });
 
@@ -236,12 +235,8 @@ describe("Test createReport API method", () => {
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
     expect(body.fieldData.plans).toBeDefined();
-    body.fieldData.plans.forEach((p: EntityShape) => {
-      expect(p).toEqual({
-        id: "foo",
-        name: "name",
-      });
-    });
+    expect(body.fieldData.plans.length).toBe(1);
+    expect(body.fieldData.plans[0]).toEqual({ id: "foo", name: "name" });
   });
 
   test("Test entire entity gets removed if it has no valid fields", async () => {
