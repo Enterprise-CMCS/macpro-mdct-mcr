@@ -6,6 +6,11 @@ import {
   mockModalDrawerReportPageJson,
   mockModalOverlayReportPageJson,
   mockReviewSubmitPageJson,
+  mockFormField,
+  mockModalFormField,
+  mockNestedReportFormField,
+  mockNumberField,
+  mockOptionalFormField,
 } from "./mockForm";
 
 export const mockReportRoutes = [
@@ -439,6 +444,44 @@ export const mockMLRNewReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMLRReportEmptyFieldData,
   fieldDataId: "mockFieldDataId",
+};
+
+export const mockMlrModalOverlayReport = {
+  ...mockMlrReport,
+  formTemplate: {
+    ...mockMlrReport.formTemplate,
+    routes: [
+      mockStandardReportPageJson,
+      {
+        ...mockModalOverlayReportPageJson,
+        modalForm: {
+          ...mockModalOverlayReportPageJson.modalForm,
+          fields: [{ ...mockModalFormField, id: "report_modal-text-field" }],
+        },
+        overlayForm: {
+          ...mockModalOverlayReportPageJson.overlayForm,
+          fields: [
+            { ...mockFormField, id: "report_text-field" },
+            { ...mockNumberField, id: "report_number-field" },
+            { ...mockOptionalFormField, id: "report_optional-text-field" },
+            { ...mockNestedReportFormField, id: "report_nested-field" },
+          ],
+        },
+      },
+    ],
+    validationJson: {
+      "report_modal-text-field": "text",
+      "report_optional-text-field": "textOptional",
+      "report_text-field": "text",
+      "report_number-field": "number",
+      "report_nested-field": "radio",
+      "report_nested-text-field": {
+        type: "text",
+        nested: true,
+        parentFieldName: "report_nested-field",
+      },
+    },
+  },
 };
 
 export const mockReportsByState = [
