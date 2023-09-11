@@ -5,6 +5,7 @@
   },
   "heading": {
     "add": "Add / Copy a Program",
+    "subheading": "Add a new program to start a blank report or copy an existing report. Copying a program’s MCPAR will retain the structure of your program, including plans, BSS entities, quality & assurance measures, and access measures, but allow you to enter updated responses for the new reporting period, saving you time. You can still edit these details within.",
     "edit": "Edit Program"
   },
   "fields": [
