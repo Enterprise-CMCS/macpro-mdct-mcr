@@ -69,6 +69,67 @@ const creationEventWithCopySource: APIGatewayProxyEvent = {
   }),
 };
 
+const mockBssEntities = [
+  {
+    id: "61b33e6-c168-cf5-015c-47d46ca20dd",
+    name: "Dynamic Fill",
+    bssEntity_entityType: [
+      {
+        key: "bssEntity_entityType-b8RT4wLcoU2yb0QgswyAfQ",
+        value: "State Government Entity",
+      },
+    ],
+    bssEntity_entityRole: [
+      {
+        key: "bss_key",
+        value: "Enrollment Broker/Choice Counseling",
+      },
+    ],
+    "bssEntity_entityType-otherText": "",
+    "bssEntity_entityRole-otherText": "",
+  },
+];
+const mockSanctions = [
+  {
+    id: "35210f-e322-bba2-d38b-16103d5eba2",
+    sanction_interventionType: [
+      {
+        key: "sanction_key",
+        value: "Civil monetary penalty",
+      },
+    ],
+    sanction_interventionTopic: [
+      {
+        key: "sanction_interventionTopic-x6Cwd4oSrki6De4SnpjrMQ",
+        value: "Discrimination",
+      },
+    ],
+    sanction_planName: {
+      label: "sanction_planName",
+      value: "1e15658-1e01-0531-a8d8-4a620e845c31",
+    },
+    sanction_interventionReason: "Text Fill",
+    "sanction_interventionType-otherText": "",
+    "sanction_interventionTopic-otherText": "",
+    sanction_noncomplianceInstances: "10",
+    sanction_dollarAmount: "44",
+    sanction_assessmentDate: "02/17/2023",
+    sanction_remediationCompleted: [
+      {
+        key: "sanction_key",
+        value: "Yes",
+      },
+    ],
+    sanction_correctiveActionPlan: [
+      {
+        key: "sanction_key",
+        value: "Yes",
+      },
+    ],
+    sanction_remediationDate: "02/17/2023",
+  },
+];
+
 mockDocumentClient.query.promise.mockReturnValue({
   Items: [],
 });
@@ -187,6 +248,9 @@ describe("Test createReport API method", () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ entityField: "bar", appeals_foo: "1" }],
+      state_statewideMedicaidEnrollment: "43",
+      bssEntities: mockBssEntities,
+      sanctions: mockSanctions,
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
@@ -196,5 +260,8 @@ describe("Test createReport API method", () => {
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
     expect(body.fieldData.plans).toBeUndefined();
+    expect(body.fieldData.sanctions).toBeUndefined();
+    expect(body.fieldData.state_statewideMedicaidEnrollment).toBeUndefined();
+    expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
   });
 });
