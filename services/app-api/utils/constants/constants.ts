@@ -58,7 +58,6 @@ export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;
 
 export const McparFieldsToCopy = {
   root: [
-    "programName",
     "state_encounterDataValidationEntity",
     "state_encounterDataValidationSystemHipaaCompliance",
     "state_encounterDataValidationEntity-otherText",
