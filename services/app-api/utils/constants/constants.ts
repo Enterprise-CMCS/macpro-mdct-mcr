@@ -143,7 +143,6 @@ export const McparFieldsToCopy = {
     "qualityMeasure_set",
     "qualityMeasure_set-otherText",
     "qualityMeasure_description",
-    "qualityMeasure_plan_measureResults",
   ],
   bssEntities: [
     "id",
