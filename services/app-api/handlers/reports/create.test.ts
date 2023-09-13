@@ -206,7 +206,7 @@ describe("Test createReport API method", () => {
   test("Test report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
-      plans: [{ qualityMeasure_nqfNumber: "1", name: "name" }],
+      plans: [{ plan_programIntegrityReferralPath: "1", name: "name" }],
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
@@ -218,7 +218,7 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.plans.length).toBe(1);
     expect(body.fieldData.plans[0]).toEqual({
       name: "name",
-      qualityMeasure_nqfNumber: "1",
+      plan_programIntegrityReferralPath: "1",
     });
   });
 

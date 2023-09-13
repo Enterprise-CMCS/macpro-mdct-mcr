@@ -1,4 +1,4 @@
-import { MCPARFieldIDBlocklist } from "../constants/constants";
+import { McparFieldsToCopy } from "../constants/constants";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import { AnyObject, ReportType, State } from "../types";
@@ -19,75 +19,66 @@ export async function copyFieldDataFromSource(
   validatedFieldData: AnyObject,
   reportType: ReportType
 ) {
+  // Year-over-year copy is currently only supported for MCPAR
+  if (reportType !== ReportType.MCPAR) {
+    return validatedFieldData;
+  }
+
   const sourceFieldData = (await s3Lib.get({
     Bucket: reportBucket,
     Key: getFieldDataKey(state as State, copyFieldDataSourceId),
   })) as AnyObject;
 
-  if (sourceFieldData && reportType === ReportType.MCPAR) {
-    const possibleFields = getPossibleFieldsFromFormTemplate(formTemplate);
-    Object.keys(sourceFieldData).forEach((key: string) => {
-      if (
-        MCPARFieldIDBlocklist.wildcard.some((x) =>
-          key.toLowerCase().includes(x)
-        )
-      ) {
-        delete sourceFieldData[key];
-      } else if (Array.isArray(sourceFieldData[key])) {
-        // Only iterate through entities, not choice lists
-        pruneEntityData(
-          sourceFieldData,
-          key,
-          sourceFieldData[key],
-          possibleFields
-        );
-      } else if (
-        !possibleFields.includes(key) ||
-        MCPARFieldIDBlocklist.matchString.includes(key)
-      ) {
-        delete sourceFieldData[key];
-      }
-    });
-    Object.assign(validatedFieldData, sourceFieldData);
+  // If we couldn't find the data to copy, we will quietly do nothing
+  if (!sourceFieldData) {
+    return validatedFieldData;
   }
+
+  // All fields in the current form template are valid. Additionally, entities have IDs and names that should be copied.
+  const allowableFieldIds = getPossibleFieldsFromFormTemplate(
+    formTemplate
+  ).concat("id", "name");
+  const rootFieldsToCopy = new Set(
+    McparFieldsToCopy.root.filter((f) => allowableFieldIds.includes(f))
+  );
+
+  for (const [rootKey, rootValue] of Object.entries(sourceFieldData)) {
+    if (rootFieldsToCopy.has(rootKey)) {
+      // If this is a root field, copy it directly
+      validatedFieldData[rootKey] = rootValue;
+    } else if (isEntity(rootKey)) {
+      // If this is an entity array, copy each entity
+      const entityFieldsToCopy = new Set(
+        McparFieldsToCopy[rootKey].filter((f) => allowableFieldIds.includes(f))
+      );
+      const copiedEntities = (rootValue as AnyObject[])
+        .map((entity) => copyEntityData(entity, entityFieldsToCopy))
+        .filter(nonEmptyObject);
+      if (copiedEntities.length > 0) {
+        // Don't copy empty arrays
+        validatedFieldData[rootKey] = copiedEntities;
+      }
+    }
+  }
+
   return validatedFieldData;
 }
-function pruneEntityData(
-  sourceFieldData: AnyObject,
-  key: string,
-  entityData: AnyObject[],
-  possibleFields: string[]
+
+function copyEntityData(
+  entityData: AnyObject,
+  entityFieldsToCopy: Set<string>
 ) {
-  entityData.forEach((entity, index) => {
-    // TODO: there has to be a better way to write this
-    if (
-      entity.key?.includes(
-        "state_excludedEntityIdentifiedInFederalDatabaseCheck"
-      ) ||
-      entity.key?.includes("program_prohibitedAffiliationDisclosure")
-    ) {
-      delete entityData[index];
-    }
-    // Delete any key existing in the source data not valid in our template, or any entity key that's not a name.
-    Object.keys(entity).forEach((entityKey) => {
-      // Entities have "name" and "id" keys that are not accounted for in the form JSON. This carveout ensures we never remove them.
-      if (
-        !["key", "value", "name", "id"].includes(entityKey) &&
-        (!possibleFields.includes(entityKey) ||
-          MCPARFieldIDBlocklist.matchString.includes(entityKey) ||
-          MCPARFieldIDBlocklist.wildcard.some((x) =>
-            entityKey.toLowerCase().includes(x)
-          ))
-      ) {
-        delete entityData[index][entityKey];
-      }
-    });
-    if (Object.keys(entity).length === 0) {
-      delete entityData[index];
-    }
-  });
-  // Delete whole key if there's nothing in it.
-  if (entityData.every((e) => e === null)) {
-    delete sourceFieldData[key];
-  }
+  const sourceEntries = Object.entries(entityData);
+  const copyableEntries = sourceEntries.filter(([key, _]) =>
+    entityFieldsToCopy.has(key)
+  );
+  return Object.fromEntries(copyableEntries);
+}
+
+function isEntity(rootKey: string): rootKey is keyof typeof McparFieldsToCopy {
+  return rootKey !== "root" && Object.keys(McparFieldsToCopy).includes(rootKey);
+}
+
+function nonEmptyObject(obj: AnyObject) {
+  return Object.keys(obj).length > 0;
 }
