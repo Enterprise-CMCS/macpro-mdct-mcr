@@ -101,7 +101,6 @@ export const McparFieldsToCopy = {
   ],
   accessMeasures: [
     "id",
-    "name", // TODO do access measures have names? Delete this line if not.
     "accessMeasure_generalCategory",
     "accessMeasure_standardDescription",
     "accessMeasure_standardType",
@@ -133,7 +132,6 @@ export const McparFieldsToCopy = {
   ],
   qualityMeasures: [
     "id",
-    "name", // TODO do quality measures have names? Delete this line if not.
     "qualityMeasure_domain",
     "qualityMeasure_domain-otherText",
     "qualityMeasure_name",
