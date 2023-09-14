@@ -206,7 +206,9 @@ describe("Test createReport API method", () => {
   test("Test report with copyFieldDataSourceId", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
+      programName: "Old Program",
       plans: [{ plan_programIntegrityReferralPath: "1", name: "name" }],
+      bssEntities: mockBssEntities,
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
@@ -220,6 +222,8 @@ describe("Test createReport API method", () => {
       name: "name",
       plan_programIntegrityReferralPath: "1",
     });
+    expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
+    expect(body.fieldData.programName).toEqual("New Program");
   });
 
   test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
@@ -242,10 +246,9 @@ describe("Test createReport API method", () => {
   test("Test entire entity gets removed if it has no valid fields", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
-      programName: "Old Program",
       plans: [{ entityField: "bar", appeals_foo: "1" }],
       state_statewideMedicaidEnrollment: "43",
-      bssEntities: mockBssEntities,
+      state_statewideMedicaidManagedCareEnrollment: "34",
       sanctions: mockSanctions,
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
@@ -258,7 +261,8 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.plans).toBeUndefined();
     expect(body.fieldData.sanctions).toBeUndefined();
     expect(body.fieldData.state_statewideMedicaidEnrollment).toBeUndefined();
-    expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
-    expect(body.fieldData.programName).toEqual("New Program");
+    expect(
+      body.fieldData.state_statewideMedicaidManagedCareEnrollment
+    ).toBeUndefined();
   });
 });
