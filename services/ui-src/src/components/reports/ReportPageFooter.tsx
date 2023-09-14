@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // utils
-import { useFindRoute, useUser } from "utils";
+import { parseCustomHtml, useFindRoute, useUser } from "utils";
 import { FormJson } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
@@ -67,6 +67,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           )}
         </Flex>
       </Box>
+      {props.praDisclosure && <Box>{parseCustomHtml(props.praDisclosure)}</Box>}
     </Box>
   );
 };

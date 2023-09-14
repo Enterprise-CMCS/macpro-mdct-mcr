@@ -112,6 +112,7 @@ export interface ReportPageVerbiage {
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;
   };
+  praDisclosure?: CustomHtmlElement[];
 }
 
 export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
