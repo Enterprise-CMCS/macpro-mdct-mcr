@@ -64,7 +64,7 @@ const creationEventWithInvalidData: APIGatewayProxyEvent = {
 const creationEventWithCopySource: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
-    fieldData: { stateName: "Alabama" },
+    fieldData: { stateName: "Alabama", programName: "New Program" },
     metadata: { copyFieldDataSourceId: "mockReportFieldData" },
   }),
 };
@@ -242,6 +242,7 @@ describe("Test createReport API method", () => {
   test("Test entire entity gets removed if it has no valid fields", async () => {
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
+      programName: "Old Program",
       plans: [{ entityField: "bar", appeals_foo: "1" }],
       state_statewideMedicaidEnrollment: "43",
       bssEntities: mockBssEntities,
@@ -258,5 +259,6 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.sanctions).toBeUndefined();
     expect(body.fieldData.state_statewideMedicaidEnrollment).toBeUndefined();
     expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
+    expect(body.fieldData.programName).toEqual("New Program");
   });
 });
