@@ -78,6 +78,8 @@ export const ReviewSubmitPage = () => {
     }
     await fetchReport(reportKeys);
     setSubmitting(false);
+    // scroll to top of page
+    window.scrollTo(0, 0);
     onClose();
   };
 

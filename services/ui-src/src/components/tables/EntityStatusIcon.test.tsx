@@ -4,7 +4,10 @@ import { axe } from "jest-axe";
 import { ReportContext } from "components/reports/ReportProvider";
 import { EntityStatusIcon } from "./EntityStatusIcon";
 // utils
-import { mockMlrReportContext } from "utils/testing/setupJest";
+import {
+  mockMlrModalOverlayReport,
+  mockMlrReportContext,
+} from "utils/testing/setupJest";
 
 const entityStatusIconComponent = (
   <ReportContext.Provider value={mockMlrReportContext}>
@@ -77,31 +80,21 @@ const entityStatusIconComponentIncompleteNested = (
     value={{
       ...mockMlrReportContext,
       report: {
-        ...mockMlrReportContext.report,
-        formTemplate: {
-          ...mockMlrReportContext.report.formTemplate,
-          validationJson: {
-            report_numberField: {
-              type: "number",
-              nested: true,
-              parentFieldName: "parentField",
-              parentOptionId: "No",
-            },
-          },
-        },
+        ...mockMlrModalOverlayReport,
       },
     }}
   >
     <EntityStatusIcon
       entity={{
-        ...mockMlrReportContext.report.fieldData.program[0],
-        parentField: [
-          {
-            key: "parentField-No",
-            value: "No",
-          },
+        id: "1",
+        "report_modal-text-field": "1",
+        "report_optional-text-field": "2",
+        "report_text-field": "3",
+        "report_number-field": 4,
+        "report_nested-field": [
+          { key: "report_nested-field", value: "option 3" },
         ],
-        report_numberField: null,
+        "report_nested-text-field": null,
       }}
     ></EntityStatusIcon>
   </ReportContext.Provider>
