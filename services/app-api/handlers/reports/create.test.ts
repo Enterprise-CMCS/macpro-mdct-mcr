@@ -29,6 +29,11 @@ const mockProxyEvent = {
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "MCPAR", state: "AL" },
 };
+const mockMlrProxyEvent = {
+  ...proxyEvent,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { reportType: "MLR", state: "AL" },
+};
 
 const creationEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
@@ -66,6 +71,16 @@ const creationEventWithCopySource: APIGatewayProxyEvent = {
   body: JSON.stringify({
     fieldData: { stateName: "Alabama", programName: "New Program" },
     metadata: { copyFieldDataSourceId: "mockReportFieldData" },
+  }),
+};
+
+const creationEventMlr: APIGatewayProxyEvent = {
+  ...mockMlrProxyEvent,
+  body: JSON.stringify({
+    fieldData: { stateName: "Alabama" },
+    metadata: {
+      reportType: "MCPAR",
+    },
   }),
 };
 
@@ -224,6 +239,13 @@ describe("Test createReport API method", () => {
     });
     expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
     expect(body.fieldData.programName).toEqual("New Program");
+  });
+
+  test("Test that copyfieldDataSpy doesnt get called for non-MCPAR report", async () => {
+    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const res = await createReport(creationEventMlr, null);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(copyFieldDataSpy).not.toBeCalled();
   });
 
   test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
