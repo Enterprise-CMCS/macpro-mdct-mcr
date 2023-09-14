@@ -29,10 +29,10 @@ const mockProxyEvent = {
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "MCPAR", state: "AL" },
 };
-const mockMlrProxyEvent = {
+const mockInvalidStateProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "MLR", state: "AL" },
+  pathParameters: { reportType: "MCPAR", state: "ALZ" },
 };
 
 const creationEvent: APIGatewayProxyEvent = {
@@ -74,10 +74,10 @@ const creationEventWithCopySource: APIGatewayProxyEvent = {
   }),
 };
 
-const creationEventMlr: APIGatewayProxyEvent = {
-  ...mockMlrProxyEvent,
+const creationEventInvalidState: APIGatewayProxyEvent = {
+  ...mockInvalidStateProxyEvent,
   body: JSON.stringify({
-    fieldData: { stateName: "Alabama" },
+    fieldData: { stateName: "Alabizama" },
     metadata: {
       reportType: "MCPAR",
     },
@@ -241,10 +241,10 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.programName).toEqual("New Program");
   });
 
-  test("Test that copyfieldDataSpy doesnt get called for non-MCPAR report", async () => {
+  test("Test that a non-existent state returns a bad request", async () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
-    const res = await createReport(creationEventMlr, null);
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    const res = await createReport(creationEventInvalidState, null);
+    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
 
