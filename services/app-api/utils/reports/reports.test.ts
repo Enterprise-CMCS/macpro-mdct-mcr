@@ -8,9 +8,9 @@ describe("Test copyFieldDataFromSource", () => {
       "Minnesota",
       "mockReportJson",
       mockReportJson,
-      { stateName: "Alabama" },
+      { stateName: "Minnesota" },
       ReportType.MLR
     );
-    expect(res).toEqual({ stateName: "Alabama" });
+    expect(res).toEqual({ stateName: "Minnesota" });
   });
 });
