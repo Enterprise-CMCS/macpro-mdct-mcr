@@ -130,7 +130,8 @@ export const createReport = handler(async (event, _context) => {
       state,
       unvalidatedMetadata.copyFieldDataSourceId,
       formTemplate,
-      validatedFieldData
+      validatedFieldData,
+      reportType
     );
   } else {
     newFieldData = validatedFieldData;
