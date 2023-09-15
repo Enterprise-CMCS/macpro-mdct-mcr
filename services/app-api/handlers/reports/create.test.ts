@@ -182,7 +182,7 @@ describe("Test createReport API method", () => {
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
-  test("Test successful run of report creation", async () => {
+  test("Test successful run of report creation, not copied", async () => {
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
@@ -197,6 +197,15 @@ describe("Test createReport API method", () => {
     expect(body.formTemplate.validationJson).toMatchObject({
       stateName: "text",
     });
+    expect(body.fieldData.plans).toBeUndefined();
+    expect(body.fieldData.sanctions).toBeUndefined();
+    expect(body.fieldData.state_statewideMedicaidEnrollment).toBeUndefined();
+    expect(
+      body.fieldData.state_statewideMedicaidManagedCareEnrollment
+    ).toBeUndefined();
+    expect(body.fieldData.bssEntities).toBeUndefined();
+    expect(body.fieldData.programName).toBeUndefined();
+    expect(body.fieldData.plans).toBeUndefined();
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
