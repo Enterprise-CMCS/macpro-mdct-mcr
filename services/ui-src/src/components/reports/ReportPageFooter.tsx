@@ -67,7 +67,9 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           )}
         </Flex>
       </Box>
-      {props.praDisclosure && <Box>{parseCustomHtml(props.praDisclosure)}</Box>}
+      {props.praDisclosure && (
+        <Box sx={sx.praStatement}>{parseCustomHtml(props.praDisclosure)}</Box>
+      )}
     </Box>
   );
 };
@@ -95,5 +97,9 @@ const sx = {
   },
   button: {
     width: "8.25rem",
+  },
+  praStatement: {
+    fontSize: "0.875rem",
+    paddingTop: "2rem",
   },
 };
