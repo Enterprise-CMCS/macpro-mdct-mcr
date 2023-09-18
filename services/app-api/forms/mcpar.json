@@ -2625,6 +2625,7 @@
             "dashboardTitle": "Quality & performance measure total count:",
             "countEntitiesInTitle": true,
             "addEntityButtonText": "Add quality & performance measure",
+            "unfinishedMeasureMessage": "Add the Measure Reporting Period for this quality and performance measure by editing the measure.",
             "editEntityButtonText": "Edit measure",
             "addEditModalAddTitle": "Add a quality & performance measure",
             "addEditModalEditTitle": "Edit quality & performance measure",

@@ -104,7 +104,13 @@ export const EntityCardTopSection = ({
                   ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
                   : "Measure Reporting Period"}
               </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
+              {formattedEntityData.reportingPeriod ? (
+                <Text sx={sx.subtext}>
+                  {formattedEntityData.reportingPeriod}
+                </Text>
+              ) : (
+                <Text sx={sx.unfinishedMessage}>No Answer</Text>
+              )}
             </GridItem>
           </Grid>
           <Text sx={sx.subtitle}>
@@ -144,5 +150,9 @@ const sx = {
   subtext: {
     marginTop: "0.25rem",
     fontSize: "sm",
+  },
+  unfinishedMessage: {
+    fontSize: "xs",
+    color: "palette.error_dark",
   },
 };

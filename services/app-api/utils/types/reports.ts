@@ -94,6 +94,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
 export interface ModalDrawerReportPageVerbiage
   extends DrawerReportPageVerbiage {
   addEntityButtonText: string;
+  unfinishedMeasureMessage: string;
   editEntityButtonText: string;
   addEditModalAddTitle: string;
   addEditModalEditTitle: string;
