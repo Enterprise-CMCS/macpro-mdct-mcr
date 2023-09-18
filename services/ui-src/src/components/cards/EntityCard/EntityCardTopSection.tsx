@@ -109,7 +109,7 @@ export const EntityCardTopSection = ({
                   {formattedEntityData.reportingPeriod}
                 </Text>
               ) : (
-                <Text sx={sx.unfinishedMessage}>No Answer</Text>
+                <Text sx={sx.unfinishedMessage}>Not Answered</Text>
               )}
             </GridItem>
           </Grid>
