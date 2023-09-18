@@ -13,7 +13,7 @@ export default {
     template: {
       body: "For support on the MCPAR, MLR and NAAAR reports, including questions about policy:",
       email: {
-        address: "ManagedCareTA@mathematica-mpr.com",
+        address: "ManagedCareTA@cms.hhs.gov",
       },
     },
   },

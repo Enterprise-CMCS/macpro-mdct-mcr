@@ -82,6 +82,33 @@ export const mockNestedFormField = {
   },
 };
 
+export const mockNestedField = {
+  id: "report_nested-text-field",
+  type: "text",
+  validation: "text",
+  props: {
+    label: "mock text field",
+  },
+};
+
+export const mockNestedReportFormField = {
+  id: "mock-nested-field",
+  type: "radio",
+  validation: "radio",
+  props: {
+    label: "mock radio field",
+    choices: [
+      { id: "option1uuid", label: "option 1" },
+      { id: "option2uuid", label: "option 2" },
+      {
+        id: "option3uuid",
+        label: "option 3",
+        children: [mockNestedField],
+      },
+    ],
+  },
+};
+
 export const mockPlanField = {
   id: "plans",
   type: "dynamic",

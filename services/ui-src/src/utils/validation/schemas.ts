@@ -7,7 +7,11 @@ import {
 } from "utils/other/checkInputValidity";
 
 // TEXT - Helpers
+const stringHasLength = (value?: string) => value?.length != 0;
 const isWhitespaceString = (value?: string) => value?.trim().length === 0;
+// valid if string is empty or not whitespace only
+const isValidString = (value?: string) =>
+  !(stringHasLength(value) && isWhitespaceString(value));
 
 // TEXT
 export const text = () =>
@@ -15,10 +19,16 @@ export const text = () =>
     .typeError(error.INVALID_GENERIC)
     .required(error.REQUIRED_GENERIC)
     .test({
-      test: (value) => !isWhitespaceString(value),
+      test: (value) => isValidString(value),
       message: error.REQUIRED_GENERIC,
     });
-export const textOptional = () => string().typeError(error.INVALID_GENERIC);
+export const textOptional = () =>
+  string()
+    .typeError(error.INVALID_GENERIC)
+    .test({
+      test: (value) => isValidString(value),
+      message: error.INVALID_GENERIC,
+    });
 
 // NUMBER - Helpers
 const validNAValues = ["N/A", "Data not available"];

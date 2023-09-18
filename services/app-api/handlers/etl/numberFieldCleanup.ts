@@ -119,7 +119,7 @@ const putReport = async (
 ) => {
   await s3Lib.put({
     Bucket: reportBuckets[reportMetadata.reportType as ReportType],
-    Key: getFieldDataKey(reportMetadata.state, reportMetadata.id),
+    Key: getFieldDataKey(reportMetadata.state, reportMetadata.fieldDataId),
     Body: JSON.stringify(reportData),
     ContentType: "application/json",
   });
