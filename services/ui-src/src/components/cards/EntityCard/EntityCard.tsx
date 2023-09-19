@@ -115,11 +115,12 @@ export const EntityCard = ({
         />
         {openAddEditEntityModal && (
           <>
-            {!formattedEntityData.reportingPeriod && (
-              <Text sx={sx.missingReportingPeriodMessage}>
-                {verbiage.missingReportingPeriodMessage}
-              </Text>
-            )}
+            {entityType == "qualityMeasures" &&
+              !formattedEntityData.reportingPeriod && (
+                <Text sx={sx.missingReportingPeriodMessage}>
+                  {verbiage.missingReportingPeriodMessage}
+                </Text>
+              )}
             <Button
               variant="outline"
               size="sm"
