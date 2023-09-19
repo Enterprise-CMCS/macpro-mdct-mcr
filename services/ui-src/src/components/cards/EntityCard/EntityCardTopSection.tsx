@@ -109,7 +109,12 @@ export const EntityCardTopSection = ({
                   {formattedEntityData.reportingPeriod}
                 </Text>
               ) : (
-                <Text sx={sx.unfinishedMessage}>Not answered</Text>
+                <Text
+                  sx={sx.unfinishedMessage}
+                  className={printVersion ? "pdf-color" : ""}
+                >
+                  Not answered
+                </Text>
               )}
             </GridItem>
           </Grid>
@@ -154,5 +159,8 @@ const sx = {
   unfinishedMessage: {
     fontSize: "xs",
     color: "palette.error_dark",
+    "&.pdf-color": {
+      color: "palette.error_darker",
+    },
   },
 };
