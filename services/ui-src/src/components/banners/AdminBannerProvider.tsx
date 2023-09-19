@@ -32,10 +32,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
       setBannerData(newBannerData);
     } catch (e: any) {
       setIsLoading(false);
-      // 404 expected when no current banner exists
-      if (!e.toString().includes("404")) {
-        setError(bannerErrors.GET_BANNER_FAILED);
-      }
+      setError(bannerErrors.GET_BANNER_FAILED);
     }
     setIsLoading(false);
   };
