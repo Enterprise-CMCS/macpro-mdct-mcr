@@ -216,7 +216,7 @@ export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
   addEntityButtonText: "Mock add entity button text",
-  unfinishedMeasureMessage: "Mock measure unfinished message",
+  missingReportingPeriodMessage: "Mock measure unfinished message",
   editEntityButtonText: "Mock edit entity button text",
   addEditModalAddTitle: "Mock add/edit entity modal add title",
   addEditModalEditTitle: "Mock add/edit entity modal edit title",

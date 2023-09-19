@@ -116,8 +116,8 @@ export const EntityCard = ({
         {openAddEditEntityModal && (
           <>
             {!formattedEntityData.reportingPeriod ? (
-              <Text sx={sx.unfinishedMeasureMessage}>
-                {verbiage.unfinishedMeasureMessage}
+              <Text sx={sx.missingReportingPeriodMessage}>
+                {verbiage.missingReportingPeriodMessage}
               </Text>
             ) : null}
             <Button
@@ -246,7 +246,7 @@ const sx = {
       filter: svgFilters.primary_darker,
     },
   },
-  unfinishedMeasureMessage: {
+  missingReportingPeriodMessage: {
     marginTop: "1rem",
     fontSize: "xs",
     color: "palette.error_dark",
