@@ -27,10 +27,10 @@ const testEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchBanner API method", () => {
-  test("Test Report not found Fetch", async () => {
+  test("Test Successful empty Banner Fetch", async () => {
     mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
     const res = await fetchBanner(testEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
   });
 
   test("Test Successful Banner Fetch", async () => {
@@ -51,7 +51,7 @@ describe("Test fetchBanner API method", () => {
     };
     const res = await fetchBanner(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.NO_KEY);
   });
 
@@ -62,7 +62,7 @@ describe("Test fetchBanner API method", () => {
     };
     const res = await fetchBanner(noKeyEvent, null);
 
-    expect(res.statusCode).toBe(500);
+    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.NO_KEY);
   });
 });

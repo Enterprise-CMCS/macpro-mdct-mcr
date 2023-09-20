@@ -73,7 +73,11 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
         validateOnRender={validateOnRender || false}
         dontReset={false}
       />
-      <ReportPageFooter submitting={submitting} form={route.form} />
+      <ReportPageFooter
+        submitting={submitting}
+        form={route.form}
+        praDisclosure={route.verbiage.praDisclosure}
+      />
     </Box>
   );
 };
