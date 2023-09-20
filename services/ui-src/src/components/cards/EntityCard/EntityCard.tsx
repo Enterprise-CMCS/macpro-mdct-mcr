@@ -115,7 +115,7 @@ export const EntityCard = ({
         />
         {openAddEditEntityModal && (
           <>
-            {entityType == "qualityMeasures" &&
+            {entityType == ModalDrawerEntityTypes.QUALITY_MEASURES &&
               !formattedEntityData.reportingPeriod && (
                 <Text sx={sx.missingReportingPeriodMessage}>
                   {verbiage.missingReportingPeriodMessage}
