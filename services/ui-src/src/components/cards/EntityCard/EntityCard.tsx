@@ -114,15 +114,23 @@ export const EntityCard = ({
           printVersion={!!printVersion}
         />
         {openAddEditEntityModal && (
-          <Button
-            variant="outline"
-            size="sm"
-            sx={sx.editButton}
-            leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
-            {verbiage.editEntityButtonText}
-          </Button>
+          <>
+            {entityType == ModalDrawerEntityTypes.QUALITY_MEASURES &&
+              !formattedEntityData.reportingPeriod && (
+                <Text sx={sx.missingReportingPeriodMessage}>
+                  {verbiage.missingReportingPeriodMessage}
+                </Text>
+              )}
+            <Button
+              variant="outline"
+              size="sm"
+              sx={sx.editButton}
+              leftIcon={<Image src={editIcon} alt="edit icon" height="1rem" />}
+              onClick={() => openAddEditEntityModal(entity)}
+            >
+              {verbiage.editEntityButtonText}
+            </Button>
+          </>
         )}
         {entityStarted || entityCompleted || printVersion ? (
           <EntityCardBottomSection
@@ -238,6 +246,11 @@ const sx = {
     _hover: {
       filter: svgFilters.primary_darker,
     },
+  },
+  missingReportingPeriodMessage: {
+    marginTop: "1rem",
+    fontSize: "xs",
+    color: "palette.error_dark",
   },
   unfinishedMessage: {
     fontSize: "xs",

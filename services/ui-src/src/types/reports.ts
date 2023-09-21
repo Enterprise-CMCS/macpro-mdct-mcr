@@ -112,6 +112,7 @@ export interface ReportPageVerbiage {
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;
   };
+  praDisclosure?: CustomHtmlElement[];
 }
 
 export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
@@ -125,6 +126,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
 export interface ModalDrawerReportPageVerbiage
   extends DrawerReportPageVerbiage {
   addEntityButtonText: string;
+  missingReportingPeriodMessage: string;
   editEntityButtonText: string;
   addEditModalAddTitle: string;
   addEditModalEditTitle: string;
