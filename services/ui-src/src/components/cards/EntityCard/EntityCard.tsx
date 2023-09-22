@@ -31,6 +31,11 @@ export const EntityCard = ({
   const { report } = useContext(ReportContext);
   let entityStarted = false;
   let entityCompleted = false;
+  const qualityMeasureReportingPeriod =
+    entityType == ModalDrawerEntityTypes.QUALITY_MEASURES
+      ? formattedEntityData.reportingPeriod
+      : true;
+
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const entitiesCount = `${entityIndex + 1} / ${
@@ -69,7 +74,11 @@ export const EntityCard = ({
         )}
         {!printVersion ? (
           <Image
-            src={entityCompleted ? completedIcon : unfinishedIcon}
+            src={
+              entityCompleted && qualityMeasureReportingPeriod
+                ? completedIcon
+                : unfinishedIcon
+            }
             alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
             sx={sx.statusIcon}
           />
@@ -83,11 +92,15 @@ export const EntityCard = ({
             data-testid="print-status-indicator"
           >
             <Image
-              src={entityCompleted ? completedIcon : unfinishedIcon}
+              src={
+                entityCompleted && qualityMeasureReportingPeriod
+                  ? completedIcon
+                  : unfinishedIcon
+              }
               alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
               sx={sx.printVersionIcon}
             />
-            {entityCompleted ? (
+            {entityCompleted && qualityMeasureReportingPeriod ? (
               <Text className="completed-text">Complete</Text>
             ) : (
               <Text className="error-text">Error</Text>
