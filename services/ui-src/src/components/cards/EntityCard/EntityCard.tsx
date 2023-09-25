@@ -64,6 +64,8 @@ export const EntityCard = ({
     default:
       break;
   }
+  const entityDetailsAndReportingPeriodComplete =
+    entityCompleted && reportingPeriodCompletedOrOptional;
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox} className={printVersion ? "print-version" : ""}>
@@ -75,7 +77,7 @@ export const EntityCard = ({
         {!printVersion ? (
           <Image
             src={
-              entityCompleted && reportingPeriodCompletedOrOptional
+              entityDetailsAndReportingPeriodComplete
                 ? completedIcon
                 : unfinishedIcon
             }
@@ -93,14 +95,14 @@ export const EntityCard = ({
           >
             <Image
               src={
-                entityCompleted && reportingPeriodCompletedOrOptional
+                entityDetailsAndReportingPeriodComplete
                   ? completedIcon
                   : unfinishedIcon
               }
               alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
               sx={sx.printVersionIcon}
             />
-            {entityCompleted && reportingPeriodCompletedOrOptional ? (
+            {entityDetailsAndReportingPeriodComplete ? (
               <Text className="completed-text">Complete</Text>
             ) : (
               <Text className="error-text">Error</Text>
