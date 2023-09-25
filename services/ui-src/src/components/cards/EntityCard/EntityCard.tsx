@@ -31,7 +31,7 @@ export const EntityCard = ({
   const { report } = useContext(ReportContext);
   let entityStarted = false;
   let entityCompleted = false;
-  const qualityMeasureReportingPeriod =
+  const reportingPeriodCompletedOrOptional =
     entityType == ModalDrawerEntityTypes.QUALITY_MEASURES
       ? formattedEntityData.reportingPeriod
       : true;
@@ -75,7 +75,7 @@ export const EntityCard = ({
         {!printVersion ? (
           <Image
             src={
-              entityCompleted && qualityMeasureReportingPeriod
+              entityCompleted && reportingPeriodCompletedOrOptional
                 ? completedIcon
                 : unfinishedIcon
             }
@@ -93,14 +93,14 @@ export const EntityCard = ({
           >
             <Image
               src={
-                entityCompleted && qualityMeasureReportingPeriod
+                entityCompleted && reportingPeriodCompletedOrOptional
                   ? completedIcon
                   : unfinishedIcon
               }
               alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
               sx={sx.printVersionIcon}
             />
-            {entityCompleted && qualityMeasureReportingPeriod ? (
+            {entityCompleted && reportingPeriodCompletedOrOptional ? (
               <Text className="completed-text">Complete</Text>
             ) : (
               <Text className="error-text">Error</Text>
