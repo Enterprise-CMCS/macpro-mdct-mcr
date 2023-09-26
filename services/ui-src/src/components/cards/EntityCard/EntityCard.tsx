@@ -81,13 +81,17 @@ export const EntityCard = ({
                 ? completedIcon
                 : unfinishedIcon
             }
-            alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+            alt={`entity is ${
+              entityDetailsAndReportingPeriodComplete
+                ? "complete"
+                : "incomplete"
+            }`}
             sx={sx.statusIcon}
           />
         ) : (
           <Box
             className={
-              entityCompleted
+              entityDetailsAndReportingPeriodComplete
                 ? "print-version-icon-div-complete"
                 : "print-version-icon-div-incomplete"
             }
@@ -99,7 +103,11 @@ export const EntityCard = ({
                   ? completedIcon
                   : unfinishedIcon
               }
-              alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+              alt={`entity is ${
+                entityDetailsAndReportingPeriodComplete
+                  ? "complete"
+                  : "incomplete"
+              }`}
               sx={sx.printVersionIcon}
             />
             {entityDetailsAndReportingPeriodComplete ? (
