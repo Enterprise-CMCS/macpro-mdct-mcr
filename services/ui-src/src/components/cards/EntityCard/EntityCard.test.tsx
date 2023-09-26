@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityCard, EntityCardBottomSection } from "components";
+import { EntityCard, EntityCardBottomSection, ReportContext } from "components";
 import {
   mockModalDrawerReportPageJson,
   mockAccessMeasuresEntity,
@@ -13,11 +13,16 @@ import {
   mockCompletedSanctionsFormattedEntityData,
   mockQualityMeasuresEntity,
   mockUnfinishedQualityMeasuresFormattedEntityData,
-  mockHalfCompletedQualityMeasuresEntity,
-  mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
   mockCompletedQualityMeasuresFormattedEntityData,
+  mockQualityMeasuresEntityMissingReportingPeriodAndDetails,
+  mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails,
+  mockQualityMeasuresEntityMissingReportingPeriod,
+  mockQualityMeasuresFormattedEntityDataMissingReportingPeriod,
+  mockQualityMeasuresEntityMissingDetails,
+  mockQualityMeasuresFormattedEntityDataMissingDetails,
 } from "utils/testing/setupJest";
+import { ReportContextShape } from "types";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
@@ -195,45 +200,140 @@ describe("Test Uncompleted Print Version EntityCard", () => {
   });
 });
 
+describe("Test EntityCard status indicators for AccessMeasures", () => {
+  test("Correct indicators for unfinished access measure", () => {
+    render(UnfinishedAccessMeasuresEntityCardComponent);
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    // Access measures do not have reporting periods, so their metadata is always complete
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    // This message shows for entities with partial details; this entity isn't even started
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeTruthy();
+
+    // There are no details yet, so they cannot be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeFalsy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeTruthy();
+  });
+
+  test("Correct indicators for completed access measure", () => {
+    render(AccessMeasuresEntityCardComponent);
+
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    // The details are complete but they can still be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeTruthy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeFalsy();
+  });
+});
+
 // QUALITY MEASURES
 
+const mockReportWithTwoPlans = {
+  report: { fieldData: { plans: { length: 2 } } },
+} as unknown as ReportContextShape;
+
 const UnstartedQualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockQualityMeasuresEntity}
-    entityIndex={0}
-    entityType="qualityMeasures"
-    formattedEntityData={mockUnfinishedQualityMeasuresFormattedEntityData}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-  />
+  <ReportContext.Provider value={mockReportWithTwoPlans}>
+    <EntityCard
+      entity={mockQualityMeasuresEntity}
+      entityIndex={0}
+      entityType="qualityMeasures"
+      formattedEntityData={mockUnfinishedQualityMeasuresFormattedEntityData}
+      verbiage={mockModalDrawerReportPageJson.verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openDeleteEntityModal={openDeleteEntityModal}
+      openDrawer={mockOpenDrawer}
+    />
+  </ReportContext.Provider>
 );
 
-const HalfCompletedQualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockHalfCompletedQualityMeasuresEntity}
-    entityIndex={0}
-    entityType="qualityMeasures"
-    formattedEntityData={mockHalfCompletedQualityMeasuresFormattedEntityData}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-  />
+const QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails = (
+  <ReportContext.Provider value={mockReportWithTwoPlans}>
+    <EntityCard
+      entity={mockQualityMeasuresEntityMissingReportingPeriodAndDetails}
+      entityIndex={0}
+      entityType="qualityMeasures"
+      formattedEntityData={
+        mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails
+      }
+      verbiage={mockModalDrawerReportPageJson.verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openDeleteEntityModal={openDeleteEntityModal}
+      openDrawer={mockOpenDrawer}
+    />
+  </ReportContext.Provider>
+);
+
+const QualityMeasuresEntityCardComponentMissingReportingPeriod = (
+  <ReportContext.Provider value={mockReportWithTwoPlans}>
+    <EntityCard
+      entity={mockQualityMeasuresEntityMissingReportingPeriod}
+      entityIndex={0}
+      entityType="qualityMeasures"
+      formattedEntityData={
+        mockQualityMeasuresFormattedEntityDataMissingReportingPeriod
+      }
+      verbiage={mockModalDrawerReportPageJson.verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openDeleteEntityModal={openDeleteEntityModal}
+      openDrawer={mockOpenDrawer}
+    />
+  </ReportContext.Provider>
+);
+
+const QualityMeasuresEntityCardComponentMissingDetails = (
+  <ReportContext.Provider value={mockReportWithTwoPlans}>
+    <EntityCard
+      entity={mockQualityMeasuresEntityMissingDetails}
+      entityIndex={0}
+      entityType="qualityMeasures"
+      formattedEntityData={mockQualityMeasuresFormattedEntityDataMissingDetails}
+      verbiage={mockModalDrawerReportPageJson.verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openDeleteEntityModal={openDeleteEntityModal}
+      openDrawer={mockOpenDrawer}
+    />
+  </ReportContext.Provider>
 );
 
 const CompletedQualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockCompletedQualityMeasuresEntity}
-    entityIndex={0}
-    entityType="qualityMeasures"
-    formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
-  />
+  <ReportContext.Provider value={mockReportWithTwoPlans}>
+    <EntityCard
+      entity={mockCompletedQualityMeasuresEntity}
+      entityIndex={0}
+      entityType="qualityMeasures"
+      formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
+      verbiage={mockModalDrawerReportPageJson.verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openDeleteEntityModal={openDeleteEntityModal}
+      openDrawer={mockOpenDrawer}
+    />
+  </ReportContext.Provider>
 );
 
 describe("Test Unstarted QualityMeasures EntityCard", () => {
@@ -262,9 +362,9 @@ describe("Test Unstarted QualityMeasures EntityCard", () => {
   });
 });
 
-describe("Test half-completed QualityMeasures EntityCard", () => {
+describe("Test QualityMeasures EntityCard with missing details", () => {
   beforeEach(() => {
-    render(HalfCompletedQualityMeasuresEntityCardComponent);
+    render(QualityMeasuresEntityCardComponentMissingDetails);
   });
 
   afterEach(() => {
@@ -314,6 +414,120 @@ describe("Test completed QualityMeasures EntityCard", () => {
   });
 });
 
+describe("Test EntityCard status indicators for QualityMeasures", () => {
+  test("Correct indicators for quality measure which has not been started", () => {
+    render(UnstartedQualityMeasuresEntityCardComponent);
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    // This quality measure was just created from scratch, so it has a reporting period
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    // This message shows for entities with partial details; this entity isn't even started
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeTruthy();
+
+    // There are no details yet, so they cannot be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeFalsy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeTruthy();
+  });
+
+  test("Correct indicators for quality measure without reporting period", () => {
+    render(QualityMeasuresEntityCardComponentMissingReportingPeriod);
+
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeTruthy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    // The details are complete but they can still be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeTruthy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeFalsy();
+  });
+
+  test("Correct indicators for quality measure with neither reporting period nor details", () => {
+    render(QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails);
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeTruthy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeTruthy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeFalsy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeTruthy();
+  });
+
+  test("Correct indicators for quality measures without details", () => {
+    render(QualityMeasuresEntityCardComponentMissingDetails);
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeTruthy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeFalsy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeTruthy();
+  });
+
+  test("Correct indicators for quality measure which is complete", () => {
+    render(CompletedQualityMeasuresEntityCardComponent);
+    expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeTruthy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeFalsy();
+  });
+});
+
 describe("Test QualityMeasures EntityCard accessibility", () => {
   it("Unstarted QualityMeasures EntityCard should not have basic accessibility issues", async () => {
     const { container } = render(UnstartedQualityMeasuresEntityCardComponent);
@@ -323,7 +537,7 @@ describe("Test QualityMeasures EntityCard accessibility", () => {
 
   it("Half-completed QualityMeasures EntityCard should not have basic accessibility issues", async () => {
     const { container } = render(
-      HalfCompletedQualityMeasuresEntityCardComponent
+      QualityMeasuresEntityCardComponentMissingDetails
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -419,6 +633,57 @@ describe("Test Unfinished Sanctions EntityCard", () => {
     const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(mockOpenDrawer).toBeCalledTimes(1);
+  });
+});
+
+describe("Test EntityCard status indicators for Sanctions", () => {
+  test("Correct indicators for unfinished sanction card", () => {
+    render(UnfinishedSanctionsEntityCardComponent);
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+    // Sanctions do not have reporting periods, so their metadata is always complete
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    // This message shows for entities with partial details; this entity isn't even started
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeTruthy();
+
+    // There are no details yet, so they cannot be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeFalsy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeTruthy();
+  });
+
+  test("Correct indicators for completed sanction", () => {
+    render(SanctionsEntityCardComponent);
+
+    // status icon alt text should indicate incompleteness
+    expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing reporting period message")
+    ).toBeFalsy();
+
+    expect(
+      screen.queryByText("Mock entity missing response message")
+    ).toBeFalsy();
+    expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
+
+    // The details are complete but they can still be EDITed
+    expect(
+      screen.queryByText("Mock edit entity details button text")
+    ).toBeTruthy();
+    expect(
+      screen.queryByText("Mock enter entity details button text")
+    ).toBeFalsy();
   });
 });
 
