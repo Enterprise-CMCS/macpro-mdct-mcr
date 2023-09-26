@@ -77,12 +77,44 @@ export const mockUnfinishedQualityMeasuresFormattedEntityData = {
   ],
 };
 
-export const mockHalfCompletedQualityMeasuresEntity = {
+export const mockQualityMeasuresEntityMissingReportingPeriodAndDetails = {
+  ...mockQualityMeasuresEntity,
+  qualityMeasure_reportingPeriod: undefined,
+  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+};
+
+export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails =
+  {
+    ...mockUnfinishedQualityMeasuresFormattedEntityData,
+    reportingPeriod: undefined,
+    perPlanResponses: [
+      { name: "mock-plan-name-1", response: "mock-response-1" },
+      { name: "mock-plan-name-2", response: undefined },
+    ],
+  };
+
+export const mockQualityMeasuresEntityMissingReportingPeriod = {
+  ...mockQualityMeasuresEntity,
+  qualityMeasure_reportingPeriod: undefined,
+  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+  "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
+};
+
+export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriod = {
+  ...mockUnfinishedQualityMeasuresFormattedEntityData,
+  reportingPeriod: undefined,
+  perPlanResponses: [
+    { name: "mock-plan-name-1", response: "mock-response-1" },
+    { name: "mock-plan-name-2", response: "mock-response-2" },
+  ],
+};
+
+export const mockQualityMeasuresEntityMissingDetails = {
   ...mockQualityMeasuresEntity,
   "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
 };
 
-export const mockHalfCompletedQualityMeasuresFormattedEntityData = {
+export const mockQualityMeasuresFormattedEntityDataMissingDetails = {
   ...mockUnfinishedQualityMeasuresFormattedEntityData,
   perPlanResponses: [
     { name: "mock-plan-name-1", response: "mock-response-1" },
