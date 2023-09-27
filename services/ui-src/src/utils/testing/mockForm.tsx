@@ -237,7 +237,7 @@ export const mockNestedReportPageJson = {
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
-  missingReportingPeriodMessage: "Mock measure unfinished message",
+  missingReportingPeriodMessage: "Mock entity missing reporting period message",
   addEntityButtonText: "Mock add entity button text",
   editEntityButtonText: "Mock edit entity button text",
   addEditModalAddTitle: "Mock add/edit entity modal add title",
@@ -247,6 +247,7 @@ export const mockModalDrawerReportPageVerbiage = {
   deleteModalTitle: "Mock delete modal title",
   deleteModalConfirmButtonText: "Mock delete modal confirm button text",
   deleteModalWarning: "Mock delete modal warning",
+  entityMissingResponseMessage: "Mock entity missing response message",
   entityUnfinishedMessage: "Mock entity unfinished messsage",
   enterEntityDetailsButtonText: "Mock enter entity details button text",
   editEntityDetailsButtonText: "Mock edit entity details button text",

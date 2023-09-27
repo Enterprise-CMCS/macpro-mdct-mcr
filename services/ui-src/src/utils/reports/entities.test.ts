@@ -7,11 +7,11 @@ import {
   mockCompletedSanctionsFormattedEntityData,
   mockQualityMeasuresEntity,
   mockUnfinishedQualityMeasuresFormattedEntityData,
-  mockHalfCompletedQualityMeasuresEntity,
-  mockHalfCompletedQualityMeasuresFormattedEntityData,
   mockCompletedQualityMeasuresEntity,
   mockCompletedQualityMeasuresFormattedEntityData,
   mockReportFieldData,
+  mockQualityMeasuresEntityMissingDetails,
+  mockQualityMeasuresFormattedEntityDataMissingDetails,
 } from "utils/testing/setupJest";
 
 describe("Test getFormattedEntityData", () => {
@@ -37,11 +37,11 @@ describe("Test getFormattedEntityData", () => {
   it("Returns correct data for quality measures with some completed measures", () => {
     const entityData = getFormattedEntityData(
       ModalDrawerEntityTypes.QUALITY_MEASURES,
-      mockHalfCompletedQualityMeasuresEntity,
+      mockQualityMeasuresEntityMissingDetails,
       mockReportFieldData
     );
     expect(entityData).toEqual(
-      mockHalfCompletedQualityMeasuresFormattedEntityData
+      mockQualityMeasuresFormattedEntityDataMissingDetails
     );
   });
 

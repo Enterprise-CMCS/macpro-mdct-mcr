@@ -31,6 +31,11 @@ export const EntityCard = ({
   const { report } = useContext(ReportContext);
   let entityStarted = false;
   let entityCompleted = false;
+  const reportingPeriodCompletedOrOptional =
+    entityType == ModalDrawerEntityTypes.QUALITY_MEASURES
+      ? formattedEntityData.reportingPeriod
+      : true;
+
   // get index and length of entities
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const entitiesCount = `${entityIndex + 1} / ${
@@ -59,6 +64,8 @@ export const EntityCard = ({
     default:
       break;
   }
+  const entityDetailsAndReportingPeriodComplete =
+    entityCompleted && reportingPeriodCompletedOrOptional;
   return (
     <Card {...props} marginTop="2rem" data-testid="entityCard">
       <Box sx={sx.contentBox} className={printVersion ? "print-version" : ""}>
@@ -69,25 +76,41 @@ export const EntityCard = ({
         )}
         {!printVersion ? (
           <Image
-            src={entityCompleted ? completedIcon : unfinishedIcon}
-            alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+            src={
+              entityDetailsAndReportingPeriodComplete
+                ? completedIcon
+                : unfinishedIcon
+            }
+            alt={`entity is ${
+              entityDetailsAndReportingPeriodComplete
+                ? "complete"
+                : "incomplete"
+            }`}
             sx={sx.statusIcon}
           />
         ) : (
           <Box
             className={
-              entityCompleted
+              entityDetailsAndReportingPeriodComplete
                 ? "print-version-icon-div-complete"
                 : "print-version-icon-div-incomplete"
             }
             data-testid="print-status-indicator"
           >
             <Image
-              src={entityCompleted ? completedIcon : unfinishedIcon}
-              alt={`entity is ${entityCompleted ? "complete" : "incomplete"}`}
+              src={
+                entityDetailsAndReportingPeriodComplete
+                  ? completedIcon
+                  : unfinishedIcon
+              }
+              alt={`entity is ${
+                entityDetailsAndReportingPeriodComplete
+                  ? "complete"
+                  : "incomplete"
+              }`}
               sx={sx.printVersionIcon}
             />
-            {entityCompleted ? (
+            {entityDetailsAndReportingPeriodComplete ? (
               <Text className="completed-text">Complete</Text>
             ) : (
               <Text className="error-text">Error</Text>
