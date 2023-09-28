@@ -1,9 +1,6 @@
 name: Sync Security Hub findings and Jira issues
 
 on:
-  push:
-    branches:
-      - autoassign
   workflow_dispatch: # for testing and manual runs
   schedule:
     - cron: "0 6 * * *" # daily at 0600 UTC
@@ -22,7 +19,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.5
