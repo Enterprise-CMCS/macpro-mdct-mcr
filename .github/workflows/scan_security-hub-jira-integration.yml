@@ -1,6 +1,9 @@
 name: Sync Security Hub findings and Jira issues
 
 on:
+  push:
+    branches:
+      - autoassign
   workflow_dispatch: # for testing and manual runs
   schedule:
     - cron: "0 6 * * *" # daily at 0600 UTC
