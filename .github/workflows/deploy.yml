@@ -7,6 +7,9 @@ on:
       - "dependabot/**"
       - "!skipci*"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
 permissions:
   id-token: write
   contents: read
@@ -25,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             **/node_modules
@@ -38,7 +41,7 @@ jobs:
         run: ./scripts/test-unit.sh
       - name: publish test coverage to code climate
         if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v2.7.5
+        uses: paambaati/codeclimate-action@v5
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
         with:
@@ -46,7 +49,7 @@ jobs:
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: Store unit test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: unit_test_results
           path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
@@ -78,18 +81,14 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
       - name: Configure AWS credentials for GitHub Actions
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - name: lock this branch to prevent concurrent builds
-        run: ./.github/github-lock.sh $branch_name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
             **/node_modules
@@ -146,7 +145,7 @@ jobs:
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
 
       - name: Upload screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-screenshots
@@ -180,7 +179,7 @@ jobs:
           RUN_PA11Y: true
 
       - name: Upload screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-screenshots
