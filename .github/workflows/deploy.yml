@@ -103,7 +103,11 @@ jobs:
           # This can optionally be set as an GitHub Actions Secret
           ./scripts/deploy.sh $STAGE_PREFIX$branch_name
       - id: endpoint
-        run: echo "application_endpoint=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name) >> $GITHUB_OUTPUT
+        run: |
+          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
+          echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
+          echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
         working-directory: services
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
