@@ -14,7 +14,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -29,7 +29,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -44,7 +44,7 @@ export default {
           props: {
             href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Learn more about the Medical Loss Ratio report.",
           },
         },
         {
@@ -74,7 +74,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -89,7 +89,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -104,7 +104,7 @@ export default {
           props: {
             href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Learn more about the Medical Loss Ratio report.",
           },
         },
         {
@@ -131,7 +131,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -146,7 +146,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(l)",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
@@ -174,7 +174,7 @@ export default {
           props: {
             href: "https://www.medicaid.gov/federal-policy-guidance/downloads/cib073117.pdf",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "Link opens in new tab",
           },
         },
         {
