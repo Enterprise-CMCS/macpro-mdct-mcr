@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Dependabotbot Gather Metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1.3.0
+        uses: dependabot/fetch-metadata@v1
       - name: Approve a PR
         run: gh pr review --approve "$PR_URL"
         env:
