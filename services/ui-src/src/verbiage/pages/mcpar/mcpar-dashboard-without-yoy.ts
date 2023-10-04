@@ -18,7 +18,7 @@ export default {
         props: {
           href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#AMCPR",
           target: "_blank",
-          "aria-label": "Learn more (link opens in new tab).",
+          "aria-description": "Link opens in new tab",
         },
       },
     ],

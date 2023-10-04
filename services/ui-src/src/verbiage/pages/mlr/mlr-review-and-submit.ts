@@ -21,7 +21,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            "aria-label": "Link opens in new tab",
+            "aria-description": "Link opens in new tab",
           },
         },
         {
