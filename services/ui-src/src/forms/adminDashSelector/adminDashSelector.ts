@@ -30,7 +30,7 @@ export default {
       props: {
         hint: "Select state to view reports:",
         options: dropdownOptions,
-        "aria-description":
+        ariaLabel:
           "List of states, including District of Columbia and Puerto Rico",
       },
     },
@@ -41,7 +41,7 @@ export default {
       props: {
         hint: "Select a report:",
         choices: reportChoices,
-        "aria-description": "Choices of report type",
+        ariaLabel: "Choices of report type",
       },
     },
   ],
