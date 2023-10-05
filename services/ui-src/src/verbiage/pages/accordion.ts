@@ -14,7 +14,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            "aria-label": "42 CFR § 438.74. Link opens in new tab.",
+            "aria-label": "42 CFR § 438.74 (link opens in new tab)",
           },
         },
         {
@@ -29,7 +29,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            "aria-label": "42 CFR § 438.8(k). Link opens in new tab.",
+            "aria-label": "42 CFR § 438.8(k) (link opens in new tab)",
           },
         },
         {
@@ -45,7 +45,7 @@ export default {
             href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR",
             target: "_blank",
             "aria-label":
-              "Learn more about the Medical Loss Ratio report. Link opens in new tab.",
+              "Learn more about the Medical Loss Ratio report (link opens in new tab)",
           },
         },
         {
@@ -75,7 +75,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            "aria-label": "42 CFR § 438.74. Link opens in new tab.",
+            "aria-label": "42 CFR § 438.74 (link opens in new tab)",
           },
         },
         {
@@ -90,7 +90,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            "aria-label": "42 CFR § 438.8(k). Link opens in new tab.",
+            "aria-label": "42 CFR § 438.8(k) (link opens in new tab)",
           },
         },
         {
@@ -106,7 +106,7 @@ export default {
             href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#MLR",
             target: "_blank",
             "aria-label":
-              "Learn more about the Medical Loss Ratio report. Link opens in new tab.",
+              "Learn more about the Medical Loss Ratio report (link opens in new tab)",
           },
         },
         {
@@ -133,7 +133,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(k)",
             target: "_blank",
-            "aria-label": "42 CFR § 438.8(k). Link opens in new tab.",
+            "aria-label": "42 CFR § 438.8(k) (link opens in new tab)",
           },
         },
         {
@@ -148,7 +148,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(l)",
             target: "_blank",
-            "aria-label": "42 CFR § 438.8(l). Link opens in new tab.",
+            "aria-label": "42 CFR § 438.8(l) (link opens in new tab)",
           },
         },
         {
@@ -177,7 +177,7 @@ export default {
             href: "https://www.medicaid.gov/federal-policy-guidance/downloads/cib073117.pdf",
             target: "_blank",
             "aria-label":
-              "CMCS Informational Bulletin dated July 31, 2017. Link opens in new tab.",
+              "CMCS Informational Bulletin dated July 31, 2017 (link opens in new tab)",
           },
         },
         {
