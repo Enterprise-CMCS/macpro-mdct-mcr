@@ -27,13 +27,13 @@ export default {
     table: {
       caption: "MCPAR Programs",
       headRow: [
-        "",
+        { hiddenName: "Edit report name and details" },
         "Program name",
         "Due date",
         "Last edited",
         "Edited by",
         "Status",
-        "",
+        { hiddenName: "Actions" },
       ],
     },
     empty:
