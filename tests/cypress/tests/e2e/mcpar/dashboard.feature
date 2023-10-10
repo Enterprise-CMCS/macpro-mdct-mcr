@@ -14,13 +14,14 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
                 | reportingPeriodStartDate | text           | <startDate>    |
                 | reportingPeriodEndDate   | text           | <endDate>      |
                 | combinedData             | singleCheckbox | <combinedData> |
+                | programIsPCCM            | radio          | <programIsPCCM>|
             And I click the "Save" button
             Then there is the active program with "<title>"
 
             Examples: #New Program Data
-                | title          | startDate  | endDate    | combinedData |
-                | Test Program   | 07/11/2022 | 11/07/2026 | true         |
-                | Test Program 2 | 01012022   | 12212024   | false        |
+                | title          | startDate  | endDate    | combinedData | programIsPCCM |
+                | Test Program   | 07/11/2022 | 11/07/2026 | true         | No            |
+                | Test Program 2 | 01012022   | 12212024   | false        | No            |
 
         Scenario Outline: State users can Edit programs
             Given I click the "Edit Report" button
@@ -29,6 +30,7 @@ Feature: MCPAR Dashboard Page - Program Creation/Editing/Archiving
                 | reportingPeriodStartDate | text           | 01/01/2022     |
                 | reportingPeriodEndDate   | text           | 12/21/2024     |
                 | combinedData             | singleCheckbox | false          |
+                | programIsPCCM            | radio          | No             |
 
             When these form elements are edited:
                 | programName              | text           | <title>        |

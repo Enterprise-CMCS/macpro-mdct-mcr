@@ -79,6 +79,7 @@ export const AddEditReportModal = ({
     const reportingPeriodEndDate = convertDateEtToUtc(
       formData["reportingPeriodEndDate"]
     );
+    const programIsPCCM = formData["programIsPCCM"];
 
     return {
       metadata: {
@@ -89,6 +90,7 @@ export const AddEditReportModal = ({
         combinedData,
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
+        programIsPCCM,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

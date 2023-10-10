@@ -110,6 +110,7 @@ When("I completely fill out a {string} form", (form) => {
     today.toLocaleDateString("en-US")
   );
   cy.get('input[name="combinedData"').check();
+  cy.get('input[name="programIsPCCM"').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it

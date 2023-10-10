@@ -28,6 +28,7 @@ export interface ReportMetadataShape extends ReportKeys {
   locked?: boolean;
   fieldDataId: string;
   copyFieldDataSourceId?: string;
+  programIsPCCM?: AnyObject[];
 }
 
 export interface ReportShape extends ReportMetadataShape {

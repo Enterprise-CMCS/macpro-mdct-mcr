@@ -152,6 +152,12 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   reportingPeriodEndDate: 168515200000,
   dueDate: 168515200000,
   combinedData: false,
+  programIsPCCM: [
+    {
+      value: "No",
+      key: "programIsPCCM-no_programIsNotPCCM",
+    },
+  ],
   lastAlteredBy: "Thelonious States",
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
@@ -225,6 +231,12 @@ export const mockMcparReport = {
     reportingPeriodEndDate: 168515200000,
     dueDate: 168515200000,
     combinedData: false,
+    programIsPCCM: [
+      {
+        value: "No",
+        key: "programIsPCCM-no_programIsNotPCCM",
+      },
+    ],
     lastAlteredBy: "Thelonious States",
     fieldDataId: "mockReportFieldData",
     formTemplateId: "mockReportJson",

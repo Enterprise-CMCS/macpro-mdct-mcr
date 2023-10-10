@@ -151,6 +151,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   reportingPeriodEndDate: number;
   dueDate: number;
   combinedData: boolean;
+  programIsPCCM: AnyObject[];
 }
 
 /**
