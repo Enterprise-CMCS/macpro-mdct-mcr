@@ -9,6 +9,7 @@ Feature: Autosave
             | programName              | text | Autosave Test |
             | reportingPeriodStartDate | text | 07/11/2022    |
             | reportingPeriodEndDate   | text | 11/07/2026    |
+            | programIsPCCM            | radio| No            |
         And I click the "Save" button
         Then there is an "Autosave Test" program
 

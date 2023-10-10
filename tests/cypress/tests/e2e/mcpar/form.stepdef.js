@@ -160,6 +160,7 @@ When("I try to submit an incomplete {string} program", (form) => {
     today.toLocaleDateString("en-US")
   );
   cy.findByRole("checkbox").focus().click();
+  cy.get('input[name="programIsPCCM"').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
