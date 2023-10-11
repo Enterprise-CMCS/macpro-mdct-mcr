@@ -31,6 +31,9 @@ export default {
         },
       ],
     },
+    table: {
+      headRow: ["Section", "Status", { hiddenName: "Actions" }],
+    },
     modal: {
       structure: {
         heading: "Are you sure you want to submit MLR?",

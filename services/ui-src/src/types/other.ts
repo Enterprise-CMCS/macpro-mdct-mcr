@@ -42,9 +42,13 @@ export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
 export type { IconType } from "react-icons";
 
+export interface ScreenReaderOnlyHeaderName {
+  hiddenName: string;
+}
+
 export interface TableContentShape {
   caption?: string;
-  headRow?: string[];
+  headRow?: Array<string | ScreenReaderOnlyHeaderName>;
   bodyRows?: string[][];
 }
 
