@@ -18,7 +18,7 @@ export default {
         props: {
           href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#AMCPR",
           target: "_blank",
-          "aria-label": "Learn more (link opens in new tab).",
+          "aria-label": "Learn more (link opens in new tab)",
         },
       },
     ],
@@ -27,13 +27,13 @@ export default {
     table: {
       caption: "MCPAR Programs",
       headRow: [
-        "",
+        { hiddenName: "Edit report name and details" },
         "Program name",
         "Due date",
         "Last edited",
         "Edited by",
         "Status",
-        "",
+        { hiddenName: "Actions" },
       ],
     },
     empty:

@@ -13,7 +13,11 @@ import {
 // utils
 import { sanitizeAndParseHtml } from "utils";
 // types
-import { AnyObject, TableContentShape } from "types";
+import {
+  AnyObject,
+  ScreenReaderOnlyHeaderName,
+  TableContentShape,
+} from "types";
 
 export const Table = ({
   content,
@@ -37,15 +41,26 @@ export const Table = ({
         <Thead>
           {/* Head Row */}
           <Tr>
-            {content.headRow.map((headerCell: string, index: number) => (
-              <Th
-                key={index}
-                scope="col"
-                sx={{ ...sx.tableHeader, ...sxOverride }}
-              >
-                {sanitizeAndParseHtml(headerCell)}
-              </Th>
-            ))}
+            {content.headRow.map(
+              (
+                headerCell: string | ScreenReaderOnlyHeaderName,
+                index: number
+              ) => (
+                <Th
+                  key={index}
+                  scope="col"
+                  sx={{ ...sx.tableHeader, ...sxOverride }}
+                >
+                  {typeof headerCell === "object" ? (
+                    <VisuallyHidden>
+                      {sanitizeAndParseHtml(headerCell.hiddenName)}
+                    </VisuallyHidden>
+                  ) : (
+                    sanitizeAndParseHtml(headerCell)
+                  )}
+                </Th>
+              )
+            )}
           </Tr>
         </Thead>
       )}

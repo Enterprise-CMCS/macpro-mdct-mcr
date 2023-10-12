@@ -17,13 +17,13 @@ export default {
     table: {
       caption: "MLR Submissions",
       headRow: [
-        "",
+        { hiddenName: "Edit report name" },
         "Submission name",
         "Last edited",
         "Edited by",
         "Status",
         "#",
-        "",
+        { hiddenName: "Actions" },
       ],
     },
     empty:
