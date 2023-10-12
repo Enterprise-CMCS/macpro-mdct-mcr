@@ -55,7 +55,7 @@ export const EntityCard = ({
       const validPerPlanResponses = perPlanResponses?.filter(
         (el: any) => el.response
       );
-      entityStarted = validPerPlanResponses?.length;
+      entityStarted = !!validPerPlanResponses?.length;
       entityCompleted =
         entityStarted &&
         validPerPlanResponses?.length === report?.fieldData?.plans?.length;

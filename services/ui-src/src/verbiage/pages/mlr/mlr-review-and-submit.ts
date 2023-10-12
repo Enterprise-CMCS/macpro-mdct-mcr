@@ -21,7 +21,7 @@ export default {
           props: {
             href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
             target: "_blank",
-            ariaLabel: "Link opens in new tab",
+            "aria-label": "42 CFR § 438.74 (link opens in new tab)",
           },
         },
         {
@@ -30,6 +30,9 @@ export default {
           content: ".",
         },
       ],
+    },
+    table: {
+      headRow: ["Section", "Status", { hiddenName: "Actions" }],
     },
     modal: {
       structure: {
