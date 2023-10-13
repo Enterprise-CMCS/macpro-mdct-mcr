@@ -24,7 +24,7 @@
     "flat": "^5.0.2",
     "json2csv": "^5.0.6",
     "jsonwebtoken": "9.0.0",
-    "luxon": "3.3.0",
+    "luxon": "3.4.3",
     "uuid": "^7.0.3"
   },
   "resolutions": {
