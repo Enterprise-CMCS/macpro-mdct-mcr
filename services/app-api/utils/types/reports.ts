@@ -1,4 +1,4 @@
-import { FormJson, ModalOverlayReportPageShape } from "./formFields";
+import { Choice, FormJson, ModalOverlayReportPageShape } from "./formFields";
 import { AnyObject, CompletionData, CustomHtmlElement, State } from "./other";
 
 // REPORT STRUCTURE
@@ -151,7 +151,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   reportingPeriodEndDate: number;
   dueDate: number;
   combinedData: boolean;
-  programIsPCCM: AnyObject[];
+  programIsPCCM: Choice[];
 }
 
 /**
