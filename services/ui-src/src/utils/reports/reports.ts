@@ -2,6 +2,7 @@ import {
   AnyObject,
   FieldChoice,
   FormField,
+  ReportJson,
   ReportShape,
   ReportRoute,
   isFieldElement,
@@ -29,6 +30,111 @@ export const flattenReportRoutesArray = (
   };
   mapRoutesToArray(reportJson);
   return routesArray;
+};
+
+// saving
+// Section A: Program Information
+//  Point of Contact
+//  Reporting Period
+//  Add Plans
+// Section B: State-Level Indicators
+//  Program Characteristics and Enrollment
+// Section C: Program-Level Indicators
+//  Program Characteristics
+// Section D: Plan-Level Indicators
+//  Program Characteristics and Enrollment
+//  Sanctions
+// Review and Submit
+
+// entities to keep
+// plans
+// sanctions
+
+const routesToInclude = {
+  sectionA: ["Point of Contact", "Reporting Period", "Add Plans"],
+  sectionB: ["I: Program Characteristics"],
+  sectionC: ["I: Program Characteristics"],
+  sectionD: ["I: Program Characteristics", "VIII: Sanctions"],
+};
+const entitiesToInclude = ["plans", "sanctions"];
+
+export const generatePCCMTemplate = (reportTemplate: any) => {
+  let filteredEntities: any = {};
+
+  for (const key of entitiesToInclude) {
+    if (reportTemplate.entities[key]) {
+      filteredEntities[key] = reportTemplate.entities[key];
+    }
+  }
+
+  // Section A
+  const indexOfSectionA = reportTemplate.routes.findIndex((route: any) =>
+    route.name.includes("A:")
+  );
+  const filteredSectionAChildren: any = [];
+  for (const route of routesToInclude.sectionA) {
+    const indexOfSubSection = reportTemplate.routes[
+      indexOfSectionA
+    ].children.findIndex((subSection: any) => subSection.name === route);
+    filteredSectionAChildren.push(
+      reportTemplate.routes[indexOfSectionA].children[indexOfSubSection]
+    );
+  }
+  reportTemplate.routes[indexOfSectionA].children = filteredSectionAChildren;
+
+  // Section B
+  const indexOfSectionB = reportTemplate.routes.findIndex((route: any) =>
+    route.name.includes("B:")
+  );
+  const filteredSectionBChildren: any = [];
+  for (const route of routesToInclude.sectionB) {
+    const indexOfSubSection = reportTemplate.routes[
+      indexOfSectionB
+    ].children.findIndex((subSection: any) => subSection.name === route);
+    filteredSectionBChildren.push(
+      reportTemplate.routes[indexOfSectionB].children[indexOfSubSection]
+    );
+  }
+  reportTemplate.routes[indexOfSectionB].children = filteredSectionBChildren;
+
+  // Section C
+  const indexOfSectionC = reportTemplate.routes.findIndex((route: any) =>
+    route.name.includes("C:")
+  );
+  const filteredSectionCChildren: any = [];
+  for (const route of routesToInclude.sectionC) {
+    const indexOfSubSection = reportTemplate.routes[
+      indexOfSectionC
+    ].children.findIndex((subSection: any) => subSection.name === route);
+    filteredSectionCChildren.push(
+      reportTemplate.routes[indexOfSectionC].children[indexOfSubSection]
+    );
+  }
+  reportTemplate.routes[indexOfSectionC].children = filteredSectionCChildren;
+
+  // Section D
+  const indexOfSectionD = reportTemplate.routes.findIndex((route: any) =>
+    route.name.includes("D:")
+  );
+  const filteredSectionDChildren: any = [];
+  for (const route of routesToInclude.sectionD) {
+    const indexOfSubSection = reportTemplate.routes[
+      indexOfSectionD
+    ].children.findIndex((subSection: any) => subSection.name === route);
+    filteredSectionDChildren.push(
+      reportTemplate.routes[indexOfSectionD].children[indexOfSubSection]
+    );
+  }
+  reportTemplate.routes[indexOfSectionD].children = filteredSectionDChildren;
+
+  // Section E
+  const indexOfSectionE = reportTemplate.routes.findIndex((route: any) =>
+    route.name.includes("E:")
+  );
+  delete reportTemplate.routes[indexOfSectionE];
+
+  reportTemplate.entities = filteredEntities;
+  return reportTemplate;
 };
 
 // returns validation schema object for array of fields

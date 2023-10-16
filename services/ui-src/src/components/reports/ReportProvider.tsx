@@ -6,6 +6,7 @@ import {
   releaseReport as releaseReportRequest,
   submitReport as submitReportRequest,
   flattenReportRoutesArray,
+  generatePCCMTemplate,
   getLocalHourMinuteTime,
   getReport,
   getReportsByState,
@@ -68,6 +69,9 @@ export const ReportProvider = ({ children }: Props) => {
 
   const hydrateAndSetReport = (report: ReportShape | undefined) => {
     if (report) {
+      if (report?.programIsPCCM?.[0]?.value === "Yes") {
+        report.formTemplate = generatePCCMTemplate(report.formTemplate);
+      }
       report.formTemplate.flatRoutes = flattenReportRoutesArray(
         report.formTemplate.routes
       );
