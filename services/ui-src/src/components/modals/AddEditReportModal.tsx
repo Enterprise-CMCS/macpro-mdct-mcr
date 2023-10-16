@@ -48,23 +48,32 @@ export const AddEditReportModal = ({
   const [form, setForm] = useState<FormJson>(modalFormJson);
 
   useEffect(() => {
+    // make deep copy of baseline form for customization
+    let customizedModalForm: FormJson = JSON.parse(
+      JSON.stringify(modalFormJson)
+    );
     // check if yoy copy field exists in form
     const yoyCopyFieldIndex = form.fields.findIndex(
       (field: FormField | FormLayoutElement) =>
         field.id === "copyFieldDataSourceId"
     );
-    if (yoyCopyFieldIndex > -1) {
-      // if not creating new report || no reports eligible for copy
-      if (selectedReport?.id || !copyEligibleReportsByState?.length) {
-        // make deep copy of baseline form, disable yoy copy field, and use copied form
-        let tempForm: FormJson = JSON.parse(JSON.stringify(modalFormJson));
-        tempForm.fields[yoyCopyFieldIndex].props!.disabled = true;
-        setForm(tempForm);
-      } else {
-        // use the original baseline form
-        setForm(modalFormJson);
-      }
+    // if yoyCopyField is in form && (not creating new report || no reports eligible for copy)
+    if (
+      yoyCopyFieldIndex > -1 &&
+      (selectedReport?.id || !copyEligibleReportsByState?.length)
+    ) {
+      customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;
     }
+    // check if program is PCCM field exists in form
+    const programIsPCCMFieldIndex = form.fields.findIndex(
+      (field: FormField | FormLayoutElement) => field.id === "programIsPCCM"
+    );
+    // if programIsPCCMField is in form && not creating new report
+    if (programIsPCCMFieldIndex > -1 && selectedReport?.id) {
+      customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
+        true;
+    }
+    setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
   // MCPAR report payload
