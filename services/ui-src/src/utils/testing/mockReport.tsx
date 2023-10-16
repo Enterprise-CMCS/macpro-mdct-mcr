@@ -309,8 +309,8 @@ export const mockMcparReport = {
   combinedData: false,
   programIsPCCM: [
     {
-      value: "No",
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
     },
   ],
   submittedOnDate: Date.now(),
@@ -342,8 +342,8 @@ export const mockMcparReportCombinedData = {
   combinedData: true,
   programIsPCCM: [
     {
-      value: "No",
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
     },
   ],
   submittedOnDate: Date.now(),

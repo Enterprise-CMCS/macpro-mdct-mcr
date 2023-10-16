@@ -154,8 +154,8 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   combinedData: false,
   programIsPCCM: [
     {
-      value: "No",
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
     },
   ],
   lastAlteredBy: "Thelonious States",
@@ -233,8 +233,8 @@ export const mockMcparReport = {
     combinedData: false,
     programIsPCCM: [
       {
-        value: "No",
         key: "programIsPCCM-no_programIsNotPCCM",
+        value: "No",
       },
     ],
     lastAlteredBy: "Thelonious States",
