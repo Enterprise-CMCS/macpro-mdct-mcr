@@ -31,45 +31,6 @@ export const flattenReportRoutesArray = (
   return routesArray;
 };
 
-const routesToInclude = {
-  "A: Program Information": [
-    "Point of Contact",
-    "Reporting Period",
-    "Add Plans",
-  ],
-  "B: State-Level Indicators": ["I: Program Characteristics"],
-  "C: Program-Level Indicators": ["I: Program Characteristics"],
-  "D: Plan-Level Indicators": ["I: Program Characteristics", "VIII: Sanctions"],
-  "Review & Submit": [],
-} as { [key: string]: string[] };
-
-const entitiesToInclude = ["plans", "sanctions"];
-
-export const generatePCCMTemplate = (reportTemplate: any) => {
-  // remove top level sections not in include list
-  reportTemplate.routes = reportTemplate.routes.filter(
-    (route: ReportRoute) => !!routesToInclude[route.name]
-  );
-
-  // only include listed subsections
-  for (let route of reportTemplate.routes) {
-    if (route?.children) {
-      route.children = route.children.filter((childRoute: ReportRoute) =>
-        routesToInclude[route.name].includes(childRoute.name)
-      );
-    }
-  }
-
-  // Any entity not in the allow list must be removed.
-  for (let entityType of Object.keys(reportTemplate.entities)) {
-    if (!entitiesToInclude.includes(entityType)) {
-      delete reportTemplate.entities[entityType];
-    }
-  }
-
-  return reportTemplate;
-};
-
 // returns validation schema object for array of fields
 export const compileValidationJsonFromFields = (
   fieldArray: FormField[],

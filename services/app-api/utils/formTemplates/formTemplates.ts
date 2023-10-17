@@ -12,6 +12,7 @@ import {
   FormField,
   FormLayoutElement,
   FormTemplate,
+  MCPARReportMetadata,
   ModalOverlayReportPageShape,
   ReportJson,
   ReportRoute,
@@ -54,9 +55,14 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
-  reportType: ReportType
+  reportType: ReportType,
+  metadata: MCPARReportMetadata
 ) {
-  const currentFormTemplate = formTemplateForReportType(reportType);
+  let currentFormTemplate = formTemplateForReportType(reportType);
+  // if program is PCCM generate shortened template
+  if (metadata?.programIsPCCM?.[0]?.value === "Yes") {
+    currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
+  }
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
 
   const currentTemplateHash = createHash("md5")
@@ -244,3 +250,42 @@ export function getValidationFromFormTemplate(reportJson: ReportJson) {
 export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
   return Object.keys(getValidationFromFormTemplate(reportJson));
 }
+
+const routesToIncludeInPCCM = {
+  "A: Program Information": [
+    "Point of Contact",
+    "Reporting Period",
+    "Add Plans",
+  ],
+  "B: State-Level Indicators": ["I: Program Characteristics"],
+  "C: Program-Level Indicators": ["I: Program Characteristics"],
+  "D: Plan-Level Indicators": ["I: Program Characteristics", "VIII: Sanctions"],
+  "Review & Submit": [],
+} as { [key: string]: string[] };
+
+const entitiesToIncludeInPCCM = ["plans", "sanctions"];
+
+export const generatePCCMTemplate = (reportTemplate: any) => {
+  // remove top level sections not in include list
+  reportTemplate.routes = reportTemplate.routes.filter(
+    (route: ReportRoute) => !!routesToIncludeInPCCM[route.name]
+  );
+
+  // only include listed subsections
+  for (let route of reportTemplate.routes) {
+    if (route?.children) {
+      route.children = route.children.filter((childRoute: ReportRoute) =>
+        routesToIncludeInPCCM[route.name].includes(childRoute.name)
+      );
+    }
+  }
+
+  // Any entity not in the allow list must be removed.
+  for (let entityType of Object.keys(reportTemplate.entities)) {
+    if (!entitiesToIncludeInPCCM.includes(entityType)) {
+      delete reportTemplate.entities[entityType];
+    }
+  }
+
+  return reportTemplate;
+};

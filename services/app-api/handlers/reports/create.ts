@@ -86,7 +86,8 @@ export const createReport = handler(async (event, _context) => {
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
-      reportType
+      reportType,
+      unvalidatedMetadata
     ));
   } catch (err) {
     logger.error(err, "Error getting or creating template");
