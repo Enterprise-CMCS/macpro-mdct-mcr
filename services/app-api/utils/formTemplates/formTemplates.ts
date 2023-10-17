@@ -12,7 +12,6 @@ import {
   FormField,
   FormLayoutElement,
   FormTemplate,
-  MCPARReportMetadata,
   ModalOverlayReportPageShape,
   ReportJson,
   ReportRoute,
@@ -30,6 +29,24 @@ export async function getNewestTemplateVersion(reportType: ReportType) {
     },
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
+  };
+  const result = await dynamodbLib.query(queryParams);
+  return result.Items?.[0];
+}
+
+export async function getTemplateVersionByHash(
+  reportType: ReportType,
+  hash: string
+) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "HashIndex",
+    KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
+    Limit: 1,
+    ExpressionAttributeValues: {
+      ":md5Hash": hash as AttributeValue,
+      ":reportType": reportType as unknown as AttributeValue,
+    },
   };
   const result = await dynamodbLib.query(queryParams);
   return result.Items?.[0];
@@ -56,11 +73,10 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  metadata: MCPARReportMetadata
+  isProgramPCCM: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
-  // if program is PCCM generate shortened template
-  if (metadata?.programIsPCCM?.[0]?.value === "Yes") {
+  if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -69,16 +85,18 @@ export async function getOrCreateFormTemplate(
     .update(stringifiedTemplate)
     .digest("hex");
 
-  const mostRecentTemplateVersion = await getNewestTemplateVersion(reportType);
-  const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
+  const matchingTemplateMetadata = await getTemplateVersionByHash(
+    reportType,
+    currentTemplateHash
+  );
 
-  if (currentTemplateHash === mostRecentTemplateVersionHash) {
+  if (matchingTemplateMetadata) {
     return {
       formTemplate: await getTemplate(
         reportBucket,
-        getFormTemplateKey(mostRecentTemplateVersion?.id)
+        getFormTemplateKey(matchingTemplateMetadata?.id)
       ),
-      formTemplateVersion: mostRecentTemplateVersion,
+      formTemplateVersion: matchingTemplateMetadata,
     };
   } else {
     const newFormTemplateId = KSUID.randomSync().string;
@@ -98,10 +116,12 @@ export async function getOrCreateFormTemplate(
       throw err;
     }
 
+    const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
+
     // If we didn't find any form templates, start version at 1.
     const newFormTemplateVersionItem: FormTemplate = {
-      versionNumber: mostRecentTemplateVersion?.versionNumber
-        ? (mostRecentTemplateVersion.versionNumber += 1)
+      versionNumber: newestTemplateMetadata?.versionNumber
+        ? (newestTemplateMetadata.versionNumber += 1)
         : 1,
       md5Hash: currentTemplateHash,
       id: newFormTemplateId,
@@ -265,7 +285,8 @@ const routesToIncludeInPCCM = {
 
 const entitiesToIncludeInPCCM = ["plans", "sanctions"];
 
-export const generatePCCMTemplate = (reportTemplate: any) => {
+export const generatePCCMTemplate = (originalReportTemplate: any) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
   // remove top level sections not in include list
   reportTemplate.routes = reportTemplate.routes.filter(
     (route: ReportRoute) => !!routesToIncludeInPCCM[route.name]
