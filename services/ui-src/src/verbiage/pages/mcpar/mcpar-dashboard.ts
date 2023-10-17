@@ -38,6 +38,6 @@ export default {
     },
     empty:
       "For this report, a managed care program is defined by a set of distinct benefits and eligibility criteria articulated in a contract between states and the state’s managed care plans",
-    callToAction: "Add / copy managed care program",
+    callToAction: "Add / copy a MCPAR",
   },
 };
