@@ -239,7 +239,7 @@
                 "validation": "number",
                 "props": {
                   "label": "B.I.1 Statewide Medicaid enrollment",
-                  "hint": "Enter the total number of individuals enrolled in Medicaid as of the first day of the last month of the reporting year.</br>Include all FFS and managed care enrollees, and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
+                  "hint": "Enter the average number of individuals enrolled in Medicaid per month during the reporting year (i.e., average member months).</br>Include all FFS and managed care enrollees and count each person only once, regardless of the delivery system(s) in which they are enrolled.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -250,7 +250,7 @@
                 "validation": "number",
                 "props": {
                   "label": "B.I.2 Statewide Medicaid managed care enrollment",
-                  "hint": "Enter the total, unduplicated number of individuals enrolled in any type of Medicaid managed care as of the first day of the last month of the reporting year.</br>Include enrollees in all programs, and count each person only once, even if they are enrolled in more than one managed care program or more than one managed care plan.",
+                  "hint": "Enter the average number of individuals enrolled in any type of Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all managed care programs and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -716,7 +716,7 @@
                 "validation": "number",
                 "props": {
                   "label": "C1.I.5 Program enrollment",
-                  "hint": "Enter the total number of individuals enrolled in the managed care program as of the first day of the last month of the reporting year.",
+                  "hint": "Enter the average number of individuals enrolled in this managed care program per month during the reporting year (i.e., average member months).",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -1503,7 +1503,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.I.1 Plan enrollment",
-                  "hint": "What is the total number of individuals enrolled in each plan as of the first day of the last month of the reporting year?",
+                  "hint": "Enter the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months).",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -1783,7 +1783,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1 Appeals resolved (at the plan level)",
-                      "hint": "Enter the total number of appeals resolved as of the first day of the last month of the reporting year.</p>An appeal is \"resolved\" at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.",
+                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is \"resolved\" at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -1794,7 +1794,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.2 Active appeals",
-                      "hint": "Enter the total number of appeals still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
+                      "hint": "Enter the total number of appeals still pending or in process (not yet resolved) as of the end of the reporting year.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2120,7 +2120,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.8a State Fair Hearing requests",
-                      "hint": "Enter the total number of requests for a State Fair Hearing filed during the reporting year by plan that issued the adverse benefit determination.",
+                      "hint": "Enter the total number of State Fair Hearing requests filed during the reporting year with the plan that issued an adverse benefit determination.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2153,7 +2153,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",
-                      "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) prior to reaching a decision.",
+                      "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) during the reporting year prior to reaching a decision.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2237,7 +2237,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.11 Active grievances",
-                      "hint": "Enter the total number of grievances still pending or in process (not yet resolved) as of the first day of the last month of the reporting year.",
+                      "hint": "Enter the total number of grievances still pending or in process (not yet resolved) as of the end of the reporting year.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2546,7 +2546,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16f Resolved grievances related to payment or billing issues",
-                      "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason related to payment or billing issues.",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed for a reason related to payment or billing issues.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2557,7 +2557,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16g Resolved grievances related to suspected fraud",
-                      "hint": "Enter the total number of grievances resolved during the reporting year that were related to suspected fraud.</p><p>Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to suspected fraud.</p><p>Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2568,7 +2568,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
-                      "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to abuse, neglect or exploitation.</p><p>Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to abuse, neglect or exploitation.</p><p>Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2579,7 +2579,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a service authorization or appeal (including requests to expedite or extend appeals)",
-                      "hint": "Enter the total number of grievances resolved during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2590,7 +2590,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
-                      "hint": "<p>Enter the total number of grievances resolved during the reporting year that were related to the plan's denial of an enrollee's request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2601,7 +2601,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16k Resolved grievances filed for other reasons",
-                      "hint": "Enter the total number of grievances resolved during the reporting period that were filed for a reason other than the reasons listed above.",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed for a reason other than the reasons listed above.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3171,7 +3171,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.X.2 Count of opened program integrity investigations",
-                  "hint": "How many program integrity investigations have been opened by the plan in the past year?",
+                  "hint": "How many program integrity investigations were opened by the plan during the reporting year?",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -3192,7 +3192,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.X.4 Count of resolved program integrity investigations",
-                  "hint": "How many program integrity investigations have been resolved by the plan in the past year?",
+                  "hint": "How many program integrity investigations were resolved by the plan during the reporting year?",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -3229,7 +3229,7 @@
                           },
                           "props": {
                             "label": "D1.X.7 Count of program integrity referrals to the state",
-                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made.",
+                            "hint": "Enter the total number of program integrity referrals made during the reporting year.",
                             "mask": "comma-separated",
                             "decimalPlacesToRoundTo": 0
                           }
@@ -3250,7 +3250,7 @@
                           },
                           "props": {
                             "label": "D1.X.7 Count of program integrity referrals to the state",
-                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of unduplicated referrals",
+                            "hint": "Enter the total number of program integrity referrals made during the reporting year.",
                             "mask": "comma-separated",
                             "decimalPlacesToRoundTo": 0
                           }
@@ -3271,7 +3271,7 @@
                           },
                           "props": {
                             "label": "D1.X.7 Count of program integrity referrals to the state",
-                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made to the SMA and the MFCU in aggregate.",
+                            "hint": "Enter the total number of program integrity referrals made during the reporting year.",
                             "mask": "comma-separated",
                             "decimalPlacesToRoundTo": 0
                           }
@@ -3297,7 +3297,7 @@
                 "validation": "text",
                 "props": {
                   "label": "D1.X.9 Plan overpayment reporting to the state",
-                  "hint": "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, for example, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 438.8(f)(2).</li></ul>"
+                  "hint": "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, at minimum, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 42 CFR 438.8(f)(2).</li></ul>"
                 }
               },
               {
