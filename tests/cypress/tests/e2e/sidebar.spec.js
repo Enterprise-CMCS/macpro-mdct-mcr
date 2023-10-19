@@ -15,9 +15,9 @@ describe("Sidebar integration tests", () => {
 
     // Create Report & nav to it
     cy.findByRole("button", {
-      name: "Add / copy managed care program",
+      name: "Add / copy a MCPAR",
     }).click();
-    cy.findByLabelText("Program name").type(
+    cy.findByLabelText("Program name (for new MCPAR)").type(
       "automated test - " + new Date().toISOString()
     );
     cy.get('input[name="reportingPeriodStartDate"]').type("07142023");

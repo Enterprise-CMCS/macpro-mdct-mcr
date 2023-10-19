@@ -4,7 +4,7 @@ Feature: Autosave
         Given I am logged in as a state user
         And I am on "/mcpar"
 
-        When I click the "Add / copy managed care program" button
+        When I click the "Add / copy a MCPAR" button
         And these form elements are filled:
             | programName              | text | Autosave Test |
             | reportingPeriodStartDate | text | 07/11/2022    |

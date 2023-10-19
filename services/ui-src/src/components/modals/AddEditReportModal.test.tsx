@@ -138,7 +138,7 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     const result = await render(modalComponent);
     const form = result.getByTestId("add-edit-report-form");
     const header = screen.getByRole("heading", { level: 1 });
-    expect(header.textContent).toEqual("Add / Copy a Program");
+    expect(header.textContent).toEqual("Add / Copy a MCPAR");
     const copyFieldDataSourceId = form.querySelector(
       "[name='copyFieldDataSourceId']"
     )!;
