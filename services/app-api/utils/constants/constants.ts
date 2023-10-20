@@ -126,8 +126,6 @@ export const McparFieldsToCopy = {
     "plan_medicalLossRatioReportingPeriodEndDate",
     "program_encounterDataSubmissionTimelinessStandardDefinition",
     "plan_programIntegrityReferralPath",
-    "plan_smaMfcuConcurrentProgramIntegrityReferrals",
-    "plan_smaMfcuAggregateProgramIntegrityReferrals",
     "plan_beneficiaryCircumstanceChangeReportingFrequency",
   ],
   qualityMeasures: [
