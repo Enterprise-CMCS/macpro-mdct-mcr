@@ -100,7 +100,7 @@ When("I completely fill out a {string} form", (form) => {
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
-  cy.get("button").contains("Add / copy managed care program").click();
+  cy.get("button").contains("Add / copy a MCPAR").click();
   cy.get('input[name="programName"').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
@@ -149,8 +149,8 @@ When("I try to submit an incomplete {string} program", (form) => {
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
-  cy.findByRole("button", { name: "Add / copy managed care program" }).click();
-  cy.findByLabelText("Program name").type(programName);
+  cy.findByRole("button", { name: "Add / copy a MCPAR" }).click();
+  cy.findByLabelText("Program name (for new MCPAR)").type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
