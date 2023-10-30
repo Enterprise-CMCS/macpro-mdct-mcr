@@ -23,6 +23,7 @@ describe("Sidebar integration tests", () => {
     cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
     cy.findByRole("checkbox").focused().click();
+    cy.get('input[name="programIsPCCM"').check("No");
     cy.get("button[type=submit]").contains("Save").click();
     cy.wait(2000);
     cy.findAllByRole("button", { name: "Edit" }).first().click(); // Timeout

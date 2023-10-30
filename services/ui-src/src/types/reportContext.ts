@@ -1,6 +1,6 @@
 // REPORT PROVIDER/CONTEXT
 
-import { AnyObject, ReportJson } from "types";
+import { AnyObject, Choice, ReportJson } from "types";
 
 export interface ReportKeys {
   reportType: string;
@@ -28,6 +28,7 @@ export interface ReportMetadataShape extends ReportKeys {
   locked?: boolean;
   fieldDataId: string;
   copyFieldDataSourceId?: string;
+  programIsPCCM?: Choice[];
 }
 
 export interface ReportShape extends ReportMetadataShape {

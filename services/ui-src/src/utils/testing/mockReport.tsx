@@ -307,6 +307,12 @@ export const mockMcparReport = {
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
   combinedData: false,
+  programIsPCCM: [
+    {
+      key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
   fieldDataId: "mockFieldDataId",
@@ -334,6 +340,12 @@ export const mockMcparReportCombinedData = {
   lastAltered: 162515200000,
   lastAlteredBy: "Thelonious States",
   combinedData: true,
+  programIsPCCM: [
+    {
+      key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
   fieldDataId: "mockFieldDataId",
