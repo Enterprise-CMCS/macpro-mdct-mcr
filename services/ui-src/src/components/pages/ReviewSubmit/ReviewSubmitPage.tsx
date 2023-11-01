@@ -1,6 +1,5 @@
 import { MouseEventHandler, useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -156,7 +155,6 @@ const ReadyToSubmit = ({
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
-  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer} data-testid="ready-view">
@@ -174,7 +172,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        {pdfExport && <PrintButton reviewVerbiage={reviewVerbiage} />}
+        <PrintButton reviewVerbiage={reviewVerbiage} />
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -255,7 +253,6 @@ export const SuccessMessage = ({
     submittedBy,
     stateName
   );
-  const pdfExport = useFlags()?.pdfExport;
 
   return (
     <Flex sx={sx.contentContainer}>
@@ -275,11 +272,9 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfoHeader}>{intro.additionalInfoHeader}</Text>
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
-      {pdfExport && (
-        <Box sx={sx.infoTextBox}>
-          <PrintButton reviewVerbiage={reviewVerbiage} />
-        </Box>
-      )}
+      <Box sx={sx.infoTextBox}>
+        <PrintButton reviewVerbiage={reviewVerbiage} />
+      </Box>
     </Flex>
   );
 };
