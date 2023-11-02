@@ -5,7 +5,6 @@ import { Table } from "components";
 import {
   AnyObject,
   ReportMetadataShape,
-  ReportType,
   TableContentShape,
 } from "types";
 import { convertDateUtcToEt } from "utils";
@@ -52,7 +51,6 @@ export const DashboardTable = ({
         {/* Report Status */}
         <Td>
           {getStatus(
-            reportType as ReportType,
             report.status,
             report.archived,
             report.submissionCount
@@ -124,7 +122,6 @@ interface DashboardTableProps {
 }
 
 export const getStatus = (
-  reportType: ReportType,
   status: string,
   archived?: boolean,
   submissionCount?: number

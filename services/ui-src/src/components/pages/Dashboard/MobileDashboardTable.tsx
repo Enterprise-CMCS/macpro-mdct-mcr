@@ -1,7 +1,7 @@
 // components
 import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
-import { AnyObject, ReportMetadataShape, ReportType } from "types";
+import { AnyObject, ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -57,7 +57,6 @@ export const MobileDashboardTable = ({
           <Text sx={sx.label}>Status</Text>
           <Text>
             {getStatus(
-              reportType as ReportType,
               report.status,
               report.archived,
               report.submissionCount
