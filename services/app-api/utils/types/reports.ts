@@ -134,13 +134,13 @@ export interface ReportMetadata {
   status: string;
   isComplete: boolean;
   completionStatus?: CompletionData;
+  submissionCount: number;
 }
 
 export interface MLRReportMetadata extends ReportMetadata {
   locked: boolean;
   reportType: "MLR";
   submissionName: string;
-  submissionCount: number;
   previousRevisions: string[];
 }
 

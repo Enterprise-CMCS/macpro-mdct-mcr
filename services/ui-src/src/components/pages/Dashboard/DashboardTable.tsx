@@ -132,14 +132,12 @@ export const getStatus = (
   if (archived) {
     return `Archived`;
   }
-  if (reportType === "MLR") {
-    if (
-      submissionCount &&
-      submissionCount >= 1 &&
-      !status.includes("Submitted")
-    ) {
-      return `In revision`;
-    }
+  if (
+    submissionCount &&
+    submissionCount >= 1 &&
+    !status.includes("Submitted")
+  ) {
+    return `In revision`;
   }
   return status;
 };
