@@ -64,13 +64,11 @@ export const MobileDashboardTable = ({
             )}
           </Text>
         </Box>
-        {reportType === "MLR" && (
-          <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>
-              {report.submissionCount === 0 ? 1 : report.submissionCount}
-            </Text>
-          </Box>
-        )}
+        <Box sx={sx.labelGroup}>
+          <Text sx={sx.label}>
+            {report.submissionCount === 0 ? 1 : report.submissionCount}
+          </Text>
+        </Box>
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sxOverride.editReportButtonCell}>
             <Button
@@ -90,15 +88,13 @@ export const MobileDashboardTable = ({
           <Box sx={sxOverride.adminActionCell}>
             {isAdmin && (
               <>
-                {reportType === "MLR" && (
-                  <AdminReleaseButton
-                    report={report}
-                    reportId={reportId}
-                    releaseReport={releaseReport}
-                    releasing={releasing}
-                    sxOverride={sxOverride}
-                  />
-                )}
+                <AdminReleaseButton
+                  report={report}
+                  reportId={reportId}
+                  releaseReport={releaseReport}
+                  releasing={releasing}
+                  sxOverride={sxOverride}
+                />
                 <AdminArchiveButton
                   report={report}
                   reportId={reportId}

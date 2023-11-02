@@ -58,8 +58,8 @@ export const DashboardTable = ({
             report.submissionCount
           )}
         </Td>
-        {/* MLR-ONLY: Submission count */}
-        {reportType === "MLR" && isAdmin && (
+        {/* ADMIN ONLY: Submission count */}
+        {isAdmin && (
           <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
         )}
         {/* Action Buttons */}
@@ -81,16 +81,14 @@ export const DashboardTable = ({
         </Td>
         {isAdmin && (
           <>
-            {reportType === "MLR" && (
-              <AdminReleaseButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                releaseReport={releaseReport}
-                releasing={releasing}
-                sxOverride={sxOverride}
-              />
-            )}
+            <AdminReleaseButton
+              report={report}
+              reportType={reportType}
+              reportId={reportId}
+              releaseReport={releaseReport}
+              releasing={releasing}
+              sxOverride={sxOverride}
+            />
             <AdminArchiveButton
               report={report}
               reportType={reportType}
