@@ -150,6 +150,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMCPARFormHash);
   });
 });
+
 describe("Test getOrCreateFormTemplate MLR", () => {
   beforeEach(() => {
     jest.restoreAllMocks();

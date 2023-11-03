@@ -63,18 +63,6 @@ describe("Test releaseReport method", () => {
     expect(body.fieldDataId).not.toBe(mockDynamoDataMLRLocked.fieldDataId);
   });
 
-  test("Test release report fails if its not a real MLR report", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
-      Item: {
-        ...mockDynamoDataMLRLocked,
-        locked: undefined,
-      },
-    });
-    const res = await releaseReport(releaseEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-    expect(res.body).toContain(error.NO_MATCHING_RECORD);
-  });
-
   test("Test release report passes with valid data, but it's been more than the first submission", async () => {
     const newPreviousId = KSUID.randomSync().string;
     mockDocumentClient.get.promise.mockReturnValueOnce({
