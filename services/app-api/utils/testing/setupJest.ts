@@ -171,6 +171,8 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   submittedBy: "",
   submittedOnDate: "",
   submissionCount: 0,
+  locked: false,
+  previousRevisions: [],
 };
 
 export const mockDynamoDataMLRComplete: MLRReportMetadata = {

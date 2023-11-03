@@ -134,14 +134,14 @@ export interface ReportMetadata {
   status: string;
   isComplete: boolean;
   completionStatus?: CompletionData;
-  submissionCount: number;
+  previousRevisions: string[];
 }
 
 export interface MLRReportMetadata extends ReportMetadata {
-  locked: boolean;
   reportType: "MLR";
   submissionName: string;
-  previousRevisions: string[];
+  submissionCount: number;
+  locked: boolean;
 }
 
 export interface MCPARReportMetadata extends ReportMetadata {
@@ -152,6 +152,8 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  submissionCount: number;
+  locked: boolean;
 }
 
 export enum ReportType {

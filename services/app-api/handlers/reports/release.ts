@@ -17,7 +17,7 @@ import {
   DynamoGet,
   DynamoWrite,
   FormJson,
-  MLRReportMetadata,
+  ReportMetadata,
   S3Get,
   S3Put,
   StatusCodes,
@@ -27,7 +27,7 @@ import { calculateCompletionStatus } from "../../utils/validation/completionStat
 import { AnyObject } from "yup/lib/types";
 
 /**
- * Locked MLR reports can be released by admins.
+ * Locked reports can be released by admins.
  *
  * When reports are released:
  *
@@ -156,17 +156,24 @@ export const releaseReport = handler(async (event) => {
     "versionControlDescription-otherText": null,
   };
 
-  const newReportMetadata: MLRReportMetadata = {
+  const newReportMetadata: ReportMetadata = {
     ...metadata,
+    id: metadata.id,
+    formTemplateId: metadata.formTemplateId,
     fieldDataId: newFieldDataId,
-    locked: false,
-    previousRevisions,
     status: "In progress",
+    lastAltered: metadata.lastAltered,
+    lastAlteredBy: metadata.lastAlteredBy,
+    reportType: metadata.reportType,
+    createdAt: metadata.createdAt,
+    state: metadata.state,
     completionStatus: await calculateCompletionStatus(
       updatedFieldData,
       formTemplate
     ),
     isComplete: false,
+    archived: isArchived,
+    previousRevisions,
   };
 
   const putReportMetadataParams: DynamoWrite = {
