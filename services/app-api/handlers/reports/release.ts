@@ -18,6 +18,7 @@ import {
   DynamoWrite,
   FormJson,
   ReportMetadata,
+  ReportType,
   S3Get,
   S3Put,
   StatusCodes,
@@ -171,7 +172,7 @@ export const releaseReport = handler(async (event) => {
       updatedFieldData,
       formTemplate
     ),
-    isComplete: false,
+    isComplete: reportType === ReportType.MLR ? false : true,
     archived: isArchived,
     previousRevisions,
   };
