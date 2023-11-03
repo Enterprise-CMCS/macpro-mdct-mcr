@@ -42,7 +42,6 @@ describe("Test releaseReport method", () => {
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(true)
-      .mockReturnValueOnce(true)
       .mockReturnValueOnce(false);
   });
   afterEach(() => {
