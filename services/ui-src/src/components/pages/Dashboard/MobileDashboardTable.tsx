@@ -56,11 +56,7 @@ export const MobileDashboardTable = ({
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
           <Text>
-            {getStatus(
-              report.status,
-              report.archived,
-              report.submissionCount
-            )}
+            {getStatus(report.status, report.archived, report.submissionCount)}
           </Text>
         </Box>
         <Box sx={sx.labelGroup}>

@@ -2,11 +2,7 @@
 import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
 // utils
-import {
-  AnyObject,
-  ReportMetadataShape,
-  TableContentShape,
-} from "types";
+import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -50,11 +46,7 @@ export const DashboardTable = ({
         <Td>{report?.lastAlteredBy || "-"}</Td>
         {/* Report Status */}
         <Td>
-          {getStatus(
-            report.status,
-            report.archived,
-            report.submissionCount
-          )}
+          {getStatus(report.status, report.archived, report.submissionCount)}
         </Td>
         {/* ADMIN ONLY: Submission count */}
         {isAdmin && (
