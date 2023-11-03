@@ -25,8 +25,7 @@ export default {
         },
         {
           type: "span",
-          content:
-            ".",
+          content: ".",
         },
       ],
     },
