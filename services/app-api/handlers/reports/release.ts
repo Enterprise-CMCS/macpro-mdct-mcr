@@ -172,6 +172,7 @@ export const releaseReport = handler(async (event) => {
       updatedFieldData,
       formTemplate
     ),
+    locked: false,
     isComplete: reportType === ReportType.MLR ? false : true,
     archived: isArchived,
     previousRevisions,
