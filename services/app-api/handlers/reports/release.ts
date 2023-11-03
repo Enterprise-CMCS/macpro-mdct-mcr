@@ -175,6 +175,7 @@ export const releaseReport = handler(async (event) => {
     locked: false,
     isComplete: reportType === ReportType.MLR ? false : true,
     archived: isArchived,
+    submissionCount: metadata.submissionCount,
     previousRevisions,
   };
 
