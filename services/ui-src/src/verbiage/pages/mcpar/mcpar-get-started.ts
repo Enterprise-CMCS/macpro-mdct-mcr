@@ -49,7 +49,7 @@ export default {
       {
         sectionNumber: 3,
         header: "Submit the MCPAR report to CMS",
-        body: "Double check that everything in your MCPAR Report is accurate. You will be able to make edits if necessary and resubmit. Once you are ready, hit Review & Submit.",
+        body: "Double check that everything in your MCPAR Report is accurate. You won’t be able to make edits after submitting, unless you send a request to CMS to unlock your report. After compliance review, a CMS representative will contact you if there are corrections to be made. Once you are ready, hit “Review & Submit”.",
         img: {
           alt: "Image of the side navigation with review and submit selected",
         },
