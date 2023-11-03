@@ -25,7 +25,6 @@ import {
   UserRoles,
 } from "../../utils/types";
 import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
-import { AnyObject } from "yup/lib/types";
 
 /**
  * Locked reports can be released by admins.
@@ -86,7 +85,7 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
-  const metadata: AnyObject = reportMetadata.Item;
+  const metadata = reportMetadata.Item as ReportMetadata;
 
   // check if report is locked
   const isLocked = metadata.locked;
@@ -159,20 +158,13 @@ export const releaseReport = handler(async (event) => {
 
   const newReportMetadata: ReportMetadata = {
     ...metadata,
-    id: metadata.id,
-    formTemplateId: metadata.formTemplateId,
     fieldDataId: newFieldDataId,
     status: "In progress",
-    lastAltered: metadata.lastAltered,
-    lastAlteredBy: metadata.lastAlteredBy,
-    reportType: metadata.reportType,
-    createdAt: metadata.createdAt,
-    state: metadata.state,
+    locked: false,
     completionStatus: await calculateCompletionStatus(
       updatedFieldData,
       formTemplate
     ),
-    locked: false,
     isComplete: reportType === ReportType.MLR ? false : true,
     archived: isArchived,
     submissionCount: metadata.submissionCount,
