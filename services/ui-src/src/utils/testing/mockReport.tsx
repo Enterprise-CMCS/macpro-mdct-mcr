@@ -382,7 +382,7 @@ export const mockMlrReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
   fieldDataId: "mockFieldDataId",
-  locked: false,
+  locked: true,
   submissionCount: 0,
   previousRevisions: [],
 };
@@ -622,6 +622,17 @@ export const mockDashboardReportContext = {
   reportsByState: [
     {
       ...mockMcparReport,
+      formTemplate: undefined,
+      fieldData: undefined,
+    },
+  ],
+};
+
+export const mockMlrDashboardReportContext = {
+  ...mockMlrReportContext,
+  reportsByState: [
+    {
+      ...mockMlrReport,
       formTemplate: undefined,
       fieldData: undefined,
     },
