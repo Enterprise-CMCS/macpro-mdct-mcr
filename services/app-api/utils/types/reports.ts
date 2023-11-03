@@ -120,7 +120,6 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
 // REPORT METADATA
 
 export interface ReportMetadata {
-  archived: boolean;
   reportType: string;
   submittedBy?: string;
   createdAt: number;
@@ -137,6 +136,7 @@ export interface ReportMetadata {
   previousRevisions: string[];
   submissionCount: number;
   locked: boolean;
+  archived?: boolean;
 }
 
 export interface MLRReportMetadata extends ReportMetadata {
