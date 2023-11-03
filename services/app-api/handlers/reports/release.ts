@@ -17,7 +17,6 @@ import {
   DynamoGet,
   DynamoWrite,
   FormJson,
-  isMLRReportMetadata,
   MLRReportMetadata,
   S3Get,
   S3Put,
@@ -25,6 +24,7 @@ import {
   UserRoles,
 } from "../../utils/types";
 import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import { AnyObject } from "yup/lib/types";
 
 /**
  * Locked MLR reports can be released by admins.
@@ -85,16 +85,9 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
-  const metadata = reportMetadata.Item;
+  const metadata: AnyObject = reportMetadata.Item;
 
-  // Non MLR reports cannot be released.
-  if (!isMLRReportMetadata(metadata)) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
-  }
-
+  // check if report is locked
   const isLocked = metadata.locked;
 
   // Report is not locked.
@@ -107,6 +100,7 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
+  // check if report is archived
   const isArchived = metadata.archived;
 
   if (isArchived) {

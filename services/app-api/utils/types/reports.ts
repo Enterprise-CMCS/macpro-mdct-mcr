@@ -154,24 +154,6 @@ export interface MCPARReportMetadata extends ReportMetadata {
   programIsPCCM: Choice[];
 }
 
-/**
- * Type guard to perform run-time checks on report types.
- *
- * Use this function on data retrieved from Dynamo allow your data to be safely typed.
- * @param report any report type
- * @returns
- */
-export function isMLRReportMetadata(
-  report: unknown
-): report is MLRReportMetadata {
-  return (
-    (report as MLRReportMetadata).reportType === "MLR" &&
-    (report as MLRReportMetadata).locked !== undefined &&
-    (report as MLRReportMetadata).submissionCount !== undefined &&
-    (report as MLRReportMetadata).previousRevisions !== undefined
-  );
-}
-
 export enum ReportType {
   MCPAR = "MCPAR",
   MLR = "MLR",
