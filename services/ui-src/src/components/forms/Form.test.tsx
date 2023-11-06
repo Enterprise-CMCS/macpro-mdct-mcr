@@ -131,10 +131,10 @@ describe("Test Form component", () => {
     });
   });
 
-  test("MCPAR forms should NOT be disabled after being submitted", async () => {
+  test("MCPAR forms should be disabled after being submitted", async () => {
     const { container } = render(mcparFormSubmitted);
     await container.querySelectorAll("input").forEach((x) => {
-      expect(x).not.toBeDisabled();
+      expect(x).toBeDisabled();
     });
   });
 });

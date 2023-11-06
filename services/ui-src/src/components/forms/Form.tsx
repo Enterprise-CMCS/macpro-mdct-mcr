@@ -26,7 +26,6 @@ import {
   isFieldElement,
   FormLayoutElement,
   ReportStatus,
-  ReportType,
 } from "types";
 import { ReportContext } from "components/reports/ReportProvider";
 
@@ -50,8 +49,7 @@ export const Form = ({
   let location = useLocation();
   const fieldInputDisabled =
     ((userIsAdmin || userIsReadOnly) && !formJson.editableByAdmins) ||
-    (report?.status === ReportStatus.SUBMITTED &&
-      report?.reportType === ReportType.MLR);
+    report?.status === ReportStatus.SUBMITTED;
 
   // create validation schema
   const formValidationJson = compileValidationJsonFromFields(
