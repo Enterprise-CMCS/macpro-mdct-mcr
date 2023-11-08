@@ -8,8 +8,7 @@ import {
   mockChoiceWithChild,
   mockMcparReportContext,
 } from "utils/testing/setupJest";
-import { Choice, ReportStatus } from "types";
-import { getNestedChildFields } from "./ChoiceListField";
+import { ReportStatus } from "types";
 
 //
 const mockTrigger = jest.fn().mockReturnValue(true);
