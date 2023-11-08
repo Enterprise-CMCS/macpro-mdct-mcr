@@ -40,8 +40,6 @@ export const ChoiceListField = ({
 }: Props) => {
   const defaultValue: Choice[] = [];
   const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
-  const [lastDatabaseValue, setLastDatabaseValue] =
-    useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
@@ -71,7 +69,6 @@ export const ChoiceListField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastDatabaseValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
@@ -89,7 +86,6 @@ export const ChoiceListField = ({
         form.setValue(name, defaultValue);
       } else {
         setDisplayValue(hydrationValue);
-        setLastDatabaseValue(hydrationValue);
         if (validateOnRender)
           form.setValue(name, hydrationValue, { shouldValidate: true });
         else form.setValue(name, hydrationValue);
@@ -232,10 +228,7 @@ export const ChoiceListField = ({
 
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(
-            choicesWithNestedEnabledFields,
-            lastDatabaseValue
-          ),
+          ...getNestedChildFields(choicesWithNestedEnabledFields),
         ];
         const reportArgs = {
           id: report?.id,
@@ -314,8 +307,7 @@ const sx = {
 };
 
 export const getNestedChildFields = (
-  choices: FieldChoice[],
-  lastDatabaseValue: Choice[]
+  choices: FieldChoice[]
 ): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
@@ -347,9 +339,7 @@ export const getNestedChildFields = (
 
   choices.forEach((choice: FieldChoice) => {
     // if choice is not selected and there are children
-    const isParentChoiceChecked = (id: string) =>
-      lastDatabaseValue?.some((autosave) => autosave.key === id);
-    if (choice.children && isParentChoiceChecked(choice.id)) {
+    if (choice.children && !choice.checked) {
       compileNestedFields(choice.children);
     }
   });
