@@ -5,13 +5,15 @@ import {
   formFieldFactory,
   hydrateFormFields,
   initializeChoiceListFields,
+  resetClearProp,
   setClearedEntriesToDefaultValue,
   sortFormErrors,
 } from "./forms";
 // types
-import { isEntityType } from "types";
+import { FormField, isEntityType } from "types";
 // utils
 import {
+  mockDateField,
   mockDrawerFormField,
   mockFormField,
   mockNestedFormField,
@@ -381,5 +383,34 @@ describe("Test setClearedEntriesToDefaultValue", () => {
       ...mockSanctionsEntity,
       sanction_remediationDate: "",
     });
+  });
+});
+
+describe("Test resetClearProp", () => {
+  it("should reset clear for choicelist fields and its nested children", async () => {
+    const fields: FormField[] = [mockNestedFormField];
+    resetClearProp(fields);
+    expect(fields[0].props!.clear).toBe(false);
+    for (let choice of fields[0].props!.choices) {
+      expect(choice.props!.clear).toBe(false);
+    }
+  });
+
+  it("should reset clear for text fields", async () => {
+    const fields: FormField[] = [mockFormField];
+    resetClearProp(fields);
+    expect(fields[0].props?.clear).toBe(false);
+  });
+
+  it("should reset clear for number fields", async () => {
+    const fields: FormField[] = [mockNumberField];
+    resetClearProp(fields);
+    expect(fields[0].props?.clear).toBe(false);
+  });
+
+  it("should reset clear for date fields", async () => {
+    const fields: FormField[] = [mockDateField];
+    resetClearProp(fields);
+    expect(fields[0].props?.clear).toBe(false);
   });
 });
