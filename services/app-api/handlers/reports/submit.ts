@@ -19,7 +19,6 @@ import s3Lib, {
 import { convertDateUtcToEt } from "../../utils/time/time";
 // types
 import {
-  isMLRReportMetadata,
   isState,
   MCPARReportMetadata,
   MLRReportMetadata,
@@ -109,14 +108,13 @@ export const submitReport = handler(async (event, _context) => {
 
     const date = Date.now();
     const fullName = `${jwt.given_name} ${jwt.family_name}`;
-    const isMLR = isMLRReportMetadata(reportMetadata);
     const newItem = {
       ...reportMetadata,
       submittedBy: fullName,
       submittedOnDate: date,
       status: "Submitted",
-      locked: isMLR ? true : undefined,
-      submissionCount: isMLR ? reportMetadata.submissionCount + 1 : undefined,
+      locked: true,
+      submissionCount: reportMetadata.submissionCount + 1,
     };
 
     const submitReportParams = {

@@ -21,6 +21,8 @@ import {
   mockReportContextWithError,
   mockDashboardLockedReportContext,
   mockLDFlags,
+  mockMlrReportContext,
+  mockMlrDashboardReportContext,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useUser } from "utils";
 // verbiage
@@ -58,7 +60,7 @@ const dashboardViewWithReports = (
 
 const mlrDashboardViewWithReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockDashboardReportContext}>
+    <ReportContext.Provider value={mockMlrDashboardReportContext}>
       <DashboardPage reportType="MLR" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -360,11 +362,12 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
     });
     const releaseProgramButton = screen.getAllByText("Unlock")[0];
     expect(releaseProgramButton).toBeVisible();
+    expect(releaseProgramButton).toBeEnabled();
     await userEvent.click(releaseProgramButton);
-    await expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
+    await expect(mockMlrReportContext.releaseReport).toHaveBeenCalledTimes(1);
     // once for render, once for release
     await expect(
-      mockMcparReportContext.fetchReportsByState
+      mockMlrReportContext.fetchReportsByState
     ).toHaveBeenCalledTimes(2);
   });
 
