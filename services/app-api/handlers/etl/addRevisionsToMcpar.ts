@@ -28,18 +28,19 @@ export const addRevisionsHandler = async (): Promise<APIGatewayProxyResult> => {
 const addRevisionsToExistingMcparReports = async () => {
   const TableName = reportTables[ReportType.MCPAR];
   for await (const reportMetadata of dynamodbLib.scanIterator({ TableName })) {
-    if (reportMetadata.previousRevisions === undefined) {
-      const wasSubmitted = reportMetadata.status === ReportStatus.SUBMITTED;
-
-      // TODO should we change lastAltered?
-      reportMetadata.previousRevisions = [];
-      reportMetadata.submissionCount = wasSubmitted ? 1 : 0;
-      reportMetadata.locked = wasSubmitted ? true : false;
-
-      await dynamodbLib.put({
-        TableName,
-        Item: reportMetadata,
-      });
+    if (reportMetadata.previousRevisions !== undefined) {
+      continue;
     }
+
+    const wasSubmitted = reportMetadata.status === ReportStatus.SUBMITTED;
+
+    reportMetadata.previousRevisions = [];
+    reportMetadata.submissionCount = wasSubmitted ? 1 : 0;
+    reportMetadata.locked = wasSubmitted ? true : false;
+
+    await dynamodbLib.put({
+      TableName,
+      Item: reportMetadata,
+    });
   }
 };

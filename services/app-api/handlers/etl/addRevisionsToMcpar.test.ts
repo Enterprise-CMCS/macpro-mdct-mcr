@@ -66,9 +66,11 @@ describe("addRevisionsHandler", () => {
   });
 
   test("should return 500 if dynamo errors", async () => {
-    (dynamodbLib.scanIterator as jest.Mock).mockRejectedValue(
-      new Error("no DB for you")
-    );
+    jest.spyOn(console, "error").mockImplementationOnce(() => undefined);
+
+    (dynamodbLib.scanIterator as jest.Mock).mockImplementationOnce(() => {
+      throw new Error("no DB for you");
+    });
 
     const result = await addRevisionsHandler();
 
