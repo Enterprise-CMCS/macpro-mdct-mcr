@@ -3,8 +3,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // utils
-import { UserContext, UserProvider } from "utils";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { UserContext, UserProvider, useStore } from "utils";
+import {
+  mockBannerStore,
+  mockStateUserStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
 import { UserRoles } from "types/users";
 
 const mockAuthPayload = {
@@ -31,6 +35,9 @@ jest.mock("aws-amplify", () => ({
   },
 }));
 
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
 // COMPONENTS
 
 const TestComponent = () => {
@@ -48,7 +55,7 @@ const TestComponent = () => {
       </button>
       User Test
       <p data-testid="show-local-logins">
-        {context.showLocalLogins
+        {mockedUseStore().showLocalLogins
           ? "showLocalLogins is true"
           : "showLocalLogins is false"}
       </p>
@@ -88,6 +95,9 @@ const breakCheckAuthState = async () => {
 describe("Test UserProvider", () => {
   beforeEach(async () => {
     await act(async () => {
+      mockedUseStore
+        .mockReturnValue(mockBannerStore)
+        .mockReturnValue(mockStateUserStore);
       render(testComponent);
     });
   });
@@ -137,6 +147,7 @@ describe("Test UserProvider with production path", () => {
     await setWindowOrigin("mdctmcr.cms.gov");
     await breakCheckAuthState();
     await act(async () => {
+      mockedUseStore.mockReturnValue(mockStateUserStore);
       await render(testComponent);
     });
     expect(window.location.origin).toContain("mdctmcr.cms.gov");
@@ -159,6 +170,7 @@ describe("Test UserProvider with non-production path", () => {
     await setWindowOrigin("wherever");
     await breakCheckAuthState();
     await act(async () => {
+      mockedUseStore.mockReturnValue(mockStateUserStore);
       await render(testComponent);
     });
     expect(window.location.origin).toContain("wherever");
@@ -178,6 +190,7 @@ describe("Test UserProvider error handling", () => {
     });
 
     await act(async () => {
+      mockedUseStore.mockReturnValue(mockStateUserStore);
       render(testComponent);
     });
     await act(async () => {

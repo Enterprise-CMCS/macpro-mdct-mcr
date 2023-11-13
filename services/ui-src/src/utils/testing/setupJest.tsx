@@ -72,3 +72,5 @@ export * from "./mockReport";
 export * from "./mockRouter";
 // USERS
 export * from "./mockUsers";
+// STATE MANAGEMENT
+export * from "./mockZustand";

@@ -18,6 +18,8 @@ export * from "./reports/reports";
 export * from "./reports/routing";
 // statusing
 export * from "./statusing/getRouteStatus";
+// state management
+export * from "./state/useStore";
 // tracking
 export * from "./tracking/tealium";
 // validation
