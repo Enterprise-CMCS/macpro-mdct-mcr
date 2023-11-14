@@ -72,7 +72,7 @@ async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
 
   try {
     const response = await s3.send(getObject);
-    await response.Body.transformToWebStream().pipe(writeStream);
+    await response.Body.transformToWebStream().pipeTo(writeStream);
     utils.generateSystemMessage(
       `Finished downloading new object ${s3ObjectKey}`
     );

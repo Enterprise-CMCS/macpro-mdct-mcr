@@ -96,7 +96,9 @@ async function downloadAVDefinitions() {
 
         try {
           const response = await S3.send(getObject);
-          await response.Body.transformToWebStream().pipe(localFileWriteStream);
+          await response.Body.transformToWebStream().pipeTo(
+            localFileWriteStream
+          );
           utils.generateSystemMessage(
             `Finished download ${filenameToDownload}`
           );
