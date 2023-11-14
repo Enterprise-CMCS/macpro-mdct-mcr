@@ -2,7 +2,7 @@
 
 const {
   S3Client,
-  DeleteObjectCommand,
+  DeleteObjectsCommand,
   GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
@@ -133,7 +133,7 @@ async function uploadAVDefinitions() {
 
   // If there are any s3 Definition files in the s3 bucket, delete them.
   if (s3DefinitionFileFullKeys.length != 0) {
-    const deleteObject = new DeleteObjectCommand({
+    const deleteObject = new DeleteObjectsCommand({
       Bucket: constants.CLAMAV_BUCKET_NAME,
       Delete: {
         Objects: s3DefinitionFileFullKeys.map((k) => {
