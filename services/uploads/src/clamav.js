@@ -77,37 +77,41 @@ async function downloadAVDefinitions() {
     .map((fullPath) => path.basename(fullPath));
 
   // download each file in the bucket.
-  const downloadPromises = definitionFileKeys.map((filenameToDownload) => {
-    return async () => {
-      let destinationFile = path.join("/tmp/", filenameToDownload);
+  const downloadPromises = await definitionFileKeys.map(
+    (filenameToDownload) => {
+      return async () => {
+        let destinationFile = path.join("/tmp/", filenameToDownload);
 
-      utils.generateSystemMessage(
-        `Downloading ${filenameToDownload} from S3 to ${destinationFile}`
-      );
-
-      let localFileWriteStream = fs.createWriteStream(destinationFile);
-
-      let options = {
-        Bucket: constants.CLAMAV_BUCKET_NAME,
-        Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
-      };
-      const getObject = new GetObjectCommand(options);
-
-      try {
-        const response = await S3.send(getObject);
-        await response.Body.transformToWebStream().pipe(localFileWriteStream);
-        utils.generateSystemMessage(`Finished download ${filenameToDownload}`);
-      } catch (err) {
         utils.generateSystemMessage(
-          `Error downloading definition file ${filenameToDownload}`
+          `Downloading ${filenameToDownload} from S3 to ${destinationFile}`
         );
-        console.log(err);
-        throw err;
-      }
-    };
-  });
 
-  return await downloadPromises();
+        let localFileWriteStream = fs.createWriteStream(destinationFile);
+
+        let options = {
+          Bucket: constants.CLAMAV_BUCKET_NAME,
+          Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
+        };
+        const getObject = new GetObjectCommand(options);
+
+        try {
+          const response = await S3.send(getObject);
+          await response.Body.transformToWebStream().pipe(localFileWriteStream);
+          utils.generateSystemMessage(
+            `Finished download ${filenameToDownload}`
+          );
+        } catch (err) {
+          utils.generateSystemMessage(
+            `Error downloading definition file ${filenameToDownload}`
+          );
+          console.log(err);
+          throw err;
+        }
+      };
+    }
+  );
+
+  return downloadPromises;
 }
 
 /**
