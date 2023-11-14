@@ -71,25 +71,22 @@ function updateAVDefinitonsWithFreshclam() {
 async function downloadAVDefinitions() {
   // list all the files in that bucket
   utils.generateSystemMessage("Downloading Definitions");
-  const allFileKeys = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
+  try {
+    const allFileKeys = await listBucketFiles(constants.CLAMAV_BUCKET_NAME);
 
-  const definitionFileKeys = allFileKeys
-    .filter((key) => key.startsWith(constants.PATH_TO_AV_DEFINITIONS))
-    .map((fullPath) => path.basename(fullPath));
+    const definitionFileKeys = allFileKeys
+      .filter((key) => key.startsWith(constants.PATH_TO_AV_DEFINITIONS))
+      .map((fullPath) => path.basename(fullPath));
 
-  // download each file in the bucket.
-  const downloadPromises = await definitionFileKeys.map(
-    (filenameToDownload) => {
-      return async () => {
-        let destinationFile = path.join("/tmp/", filenameToDownload);
-
+    // download each file in the bucket.
+    const downloadPromises = definitionFileKeys.map(
+      async (filenameToDownload) => {
+        const destinationFile = path.join("/tmp/", filenameToDownload);
         utils.generateSystemMessage(
           `Downloading ${filenameToDownload} from S3 to ${destinationFile}`
         );
 
-        let localFileWriteStream = fs.createWriteStream(destinationFile);
-
-        let options = {
+        const options = {
           Bucket: constants.CLAMAV_BUCKET_NAME,
           Key: `${constants.PATH_TO_AV_DEFINITIONS}/${filenameToDownload}`,
         };
@@ -98,7 +95,11 @@ async function downloadAVDefinitions() {
         try {
           const response = await S3.send(getObject);
           const readStream = response.Body.transformToWebStream();
-          return await pipeline(readStream, localFileWriteStream);
+          const writeStream = fs.createWriteStream(destinationFile);
+          await pipeline(readStream, writeStream);
+          utils.generateSystemMessage(
+            `Finished download ${filenameToDownload}`
+          );
         } catch (err) {
           utils.generateSystemMessage(
             `Error downloading definition file ${filenameToDownload}`
@@ -106,11 +107,12 @@ async function downloadAVDefinitions() {
           console.log(err);
           throw err;
         }
-      };
-    }
-  );
-
-  return downloadPromises;
+      }
+    );
+    await Promise.all(downloadPromises);
+  } catch (err) {
+    console.error(`Error in downloadAVDefinitions: ${err.message}`);
+  }
 }
 
 /**
@@ -187,7 +189,7 @@ async function uploadAVDefinitions() {
     });
   });
 
-  return await Promise.all(uploadPromises);
+  await Promise.all(uploadPromises);
 }
 
 /**
@@ -203,7 +205,7 @@ async function uploadAVDefinitions() {
  */
 function scanLocalFile(pathToFile) {
   try {
-    let avResult = child_process.spawnSync(constants.PATH_TO_CLAMAV, [
+    let avResult = child_process.execSync(constants.PATH_TO_CLAMAV, [
       "--stdout",
       "-v",
       "-a",

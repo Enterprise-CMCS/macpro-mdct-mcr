@@ -74,7 +74,10 @@ async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
   try {
     const response = await s3.send(getObject);
     const readStream = response.Body.transformToWebStream();
-    return await pipeline(readStream, writeStream);
+    await pipeline(readStream, writeStream);
+    utils.generateSystemMessage(
+      `Finished downloading new object ${s3ObjectKey}`
+    );
   } catch (err) {
     utils.generateSystemMessage(`Error downloading new object ${s3ObjectKey}`);
     throw err;
