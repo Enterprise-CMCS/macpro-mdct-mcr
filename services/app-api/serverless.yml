@@ -160,6 +160,13 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  addRevisionsToMcpar:
+    handler: handlers/etl/addRevisionsToMcpar.addRevisionsHandler
+    timeout: 300
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   numberFieldDataToFile:
     handler: handlers/etl/numberFieldDataToFile.exportNumericData
     timeout: 300

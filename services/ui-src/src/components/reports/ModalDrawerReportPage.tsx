@@ -19,6 +19,7 @@ import {
   entityWasUpdated,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
+  resetClearProp,
 } from "utils";
 // types
 import {
@@ -69,6 +70,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const closeAddEditEntityModal = () => {
     setSelectedEntity(undefined);
+    resetClearProp(modalForm.fields);
     addEditEntityModalOnCloseHandler();
   };
 
@@ -103,6 +105,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const closeDrawer = () => {
     setSelectedEntity(undefined);
+    resetClearProp(drawerForm.fields);
     drawerOnCloseHandler();
   };
 
