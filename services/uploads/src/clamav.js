@@ -78,7 +78,7 @@ async function downloadAVDefinitions() {
 
   // download each file in the bucket.
   const downloadPromises = definitionFileKeys.map((filenameToDownload) => {
-    return new Promise((resolve, reject) => {
+    return async () => {
       let destinationFile = path.join("/tmp/", filenameToDownload);
 
       utils.generateSystemMessage(
@@ -93,27 +93,21 @@ async function downloadAVDefinitions() {
       };
       const getObject = new GetObjectCommand(options);
 
-      let s3ReadStream = S3.send(getObject)
-        .createReadStream()
-        .on("end", function () {
-          utils.generateSystemMessage(
-            `Finished download ${filenameToDownload}`
-          );
-          resolve();
-        })
-        .on("error", function (err) {
-          utils.generateSystemMessage(
-            `Error downloading definition file ${filenameToDownload}`
-          );
-          console.log(err);
-          reject();
-        });
-
-      s3ReadStream.pipe(localFileWriteStream);
-    });
+      try {
+        const response = await S3.send(getObject);
+        await response.Body.transformToWebStream().pipe(localFileWriteStream);
+        utils.generateSystemMessage(`Finished download ${filenameToDownload}`);
+      } catch (err) {
+        utils.generateSystemMessage(
+          `Error downloading definition file ${filenameToDownload}`
+        );
+        console.log(err);
+        throw err;
+      }
+    };
   });
 
-  return await Promise.all(downloadPromises);
+  return await downloadPromises();
 }
 
 /**

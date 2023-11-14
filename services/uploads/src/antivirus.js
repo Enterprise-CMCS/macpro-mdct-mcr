@@ -52,7 +52,7 @@ function pathFromObjectKey(s3ObjectKey) {
   return `${downloadDir}/${path.basename(sanitizedFilename)}`;
 }
 
-function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
+async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
   if (!fs.existsSync(downloadDir)) {
     fs.mkdirSync(downloadDir);
   }
@@ -70,21 +70,16 @@ function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
   };
   const getObject = new GetObjectCommand(options);
 
-  return new Promise((resolve, reject) => {
-    s3.send(getObject)
-      .createReadStream()
-      .on("end", function () {
-        utils.generateSystemMessage(
-          `Finished downloading new object ${s3ObjectKey}`
-        );
-        resolve();
-      })
-      .on("error", function (err) {
-        console.log(err); // eslint-disable-line no-console
-        reject();
-      })
-      .pipe(writeStream);
-  });
+  try {
+    const response = await s3.send(getObject);
+    await response.Body.transformToWebStream().pipe(writeStream);
+    utils.generateSystemMessage(
+      `Finished downloading new object ${s3ObjectKey}`
+    );
+  } catch (err) {
+    utils.generateSystemMessage(`Error downloading new object ${s3ObjectKey}`);
+    throw err;
+  }
 }
 
 async function lambdaHandleEvent(event, _context) {
