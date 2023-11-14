@@ -2,11 +2,16 @@
  * Lambda function that will be perform the scan and tag the file accordingly.
  */
 
-const AWS = require("aws-sdk");
+const {
+  S3Client,
+  GetObjectCommand,
+  HeadObjectCommand,
+  PutObjectTaggingCommand,
+} = require("@aws-sdk/client-s3");
 const path = require("path");
 const fs = require("fs");
 const clamav = require("./clamav");
-const s3 = new AWS.S3();
+const s3 = new S3Client();
 const utils = require("./utils");
 const constants = require("./constants");
 
@@ -17,7 +22,8 @@ const constants = require("./constants");
  * @return {int} Length of S3 object in bytes.
  */
 async function sizeOf(key, bucket) {
-  let res = await s3.headObject({ Key: key, Bucket: bucket }).promise();
+  const getObjectHead = new HeadObjectCommand({ Key: key, Bucket: bucket });
+  const res = await s3.send(getObjectHead);
   return res.ContentLength;
 }
 
@@ -62,9 +68,10 @@ function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
     Bucket: s3ObjectBucket,
     Key: s3ObjectKey,
   };
+  const getObject = new GetObjectCommand(options);
 
   return new Promise((resolve, reject) => {
-    s3.getObject(options)
+    s3.send(getObject)
       .createReadStream()
       .on("end", function () {
         utils.generateSystemMessage(
@@ -121,9 +128,10 @@ async function lambdaHandleEvent(event, _context) {
     Key: s3ObjectKey,
     Tagging: utils.generateTagSet(virusScanStatus),
   };
+  const tagObject = new PutObjectTaggingCommand(taggingParams);
 
   try {
-    await s3.putObjectTagging(taggingParams).promise();
+    await s3.send(tagObject);
     utils.generateSystemMessage("Tagging successful");
   } catch (err) {
     console.log(err); // eslint-disable-line no-console
@@ -147,9 +155,10 @@ async function scanS3Object(s3ObjectKey, s3ObjectBucket) {
     Key: s3ObjectKey,
     Tagging: utils.generateTagSet(virusScanStatus),
   };
+  const tagObject = new PutObjectTaggingCommand(taggingParams);
 
   try {
-    await s3.putObjectTagging(taggingParams).promise();
+    await s3.send(tagObject);
     utils.generateSystemMessage("Tagging successful");
   } catch (err) {
     console.log(err); // eslint-disable-line no-console
