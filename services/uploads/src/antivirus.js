@@ -14,6 +14,7 @@ const clamav = require("./clamav");
 const s3 = new S3Client();
 const utils = require("./utils");
 const constants = require("./constants");
+const { pipeline } = require("stream/promises");
 
 /**
  * Retrieve the file size of S3 object without downloading.
@@ -72,10 +73,8 @@ async function downloadFileFromS3(s3ObjectKey, s3ObjectBucket) {
 
   try {
     const response = await s3.send(getObject);
-    await response.Body.transformToWebStream().pipeTo(writeStream);
-    utils.generateSystemMessage(
-      `Finished downloading new object ${s3ObjectKey}`
-    );
+    const readStream = response.Body.transformToWebStream();
+    return await pipeline(readStream, writeStream);
   } catch (err) {
     utils.generateSystemMessage(`Error downloading new object ${s3ObjectKey}`);
     throw err;

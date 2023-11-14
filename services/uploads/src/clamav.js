@@ -12,6 +12,7 @@ const child_process = require("child_process");
 const path = require("path");
 const constants = require("./constants");
 const utils = require("./utils");
+const { pipeline } = require("stream/promises");
 
 const S3 = new S3Client();
 
@@ -96,12 +97,8 @@ async function downloadAVDefinitions() {
 
         try {
           const response = await S3.send(getObject);
-          await response.Body.transformToWebStream().pipeTo(
-            localFileWriteStream
-          );
-          utils.generateSystemMessage(
-            `Finished download ${filenameToDownload}`
-          );
+          const readStream = response.Body.transformToWebStream();
+          return await pipeline(readStream, localFileWriteStream);
         } catch (err) {
           utils.generateSystemMessage(
             `Error downloading definition file ${filenameToDownload}`
