@@ -27,6 +27,15 @@ export const mockNumberField = {
   },
 };
 
+export const mockDateField = {
+  id: "mock-date-field",
+  type: "date",
+  validation: "date",
+  props: {
+    label: "mock date field",
+  },
+};
+
 export const mockRepeatedFormField = {
   id: "mock-text-field",
   type: "text",
