@@ -205,7 +205,7 @@ async function uploadAVDefinitions() {
  */
 function scanLocalFile(pathToFile) {
   try {
-    let avResult = child_process.execSync(constants.PATH_TO_CLAMAV, [
+    let avResult = child_process.spawnSync(constants.PATH_TO_CLAMAV, [
       "--stdout",
       "-v",
       "-a",
