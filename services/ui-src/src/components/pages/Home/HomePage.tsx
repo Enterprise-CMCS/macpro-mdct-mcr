@@ -7,14 +7,14 @@ import {
   TemplateCard,
 } from "components";
 // utils
-import { useStore, useUser } from "utils";
+import { useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
   // state management
   const { bannerData, bannerActive } = useStore();
-  const { userIsEndUser, userReports } = useUser().user ?? {};
+  const { userIsEndUser, userReports } = useStore().user ?? {};
 
   const showBanner = !!bannerData?.key && bannerActive;
   const { intro, cards } = verbiage;
