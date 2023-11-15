@@ -31,7 +31,7 @@ jobs:
   snyk_nightly_run:
     name: Snyk Nightly Run (for nightly cron with JIRA)
     runs-on: ubuntu-latest
-    if: github.event_name == 'jira-ent-update'
+    if: github.event_name == 'push'
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
