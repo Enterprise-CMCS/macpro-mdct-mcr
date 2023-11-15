@@ -58,11 +58,8 @@ export const AdminPage = () => {
 
   const deleteBanner = async () => {
     setBannerDeleting(true);
-    try {
-      await deleteAdminBanner();
-    } catch (error: any) {
-      setBannerErrorMessage(bannerErrors.DELETE_BANNER_FAILED);
-    }
+    await deleteAdminBanner();
+    setBannerErrorMessage(bannerErrors.DELETE_BANNER_FAILED);
     setBannerDeleting(false);
   };
 
