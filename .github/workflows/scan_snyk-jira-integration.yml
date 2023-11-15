@@ -3,8 +3,10 @@ name: Snyk Scan and Report
 on:
   pull_request:
     branches: [main]
-  schedule:
-    - cron: "0 6 * * *" # daily at 0600 UTC
+  push:
+    branches: [jira-ent-update]
+  # schedule:
+  #   - cron: "0 6 * * *" # daily at 0600 UTC
 
 permissions:
   id-token: write
@@ -29,7 +31,7 @@ jobs:
   snyk_nightly_run:
     name: Snyk Nightly Run (for nightly cron with JIRA)
     runs-on: ubuntu-latest
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'push'
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -44,15 +46,15 @@ jobs:
       - name: use the custom github  action to parse Snyk output
         uses: Enterprise-CMCS/macfc-security-scan-report@v2.7.0
         with:
-          jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
-          jira-host: "qmacbis.atlassian.net"
-          jira-project-key: "MDCT"
+          jira-username: ${{ secrets.JIRA_TEMP_USERNAME }}
+          jira-token: ${{ secrets.JIRA_TEMP_USER_TOKEN }}
+          jira-host: "jiraent.cms.gov"
+          jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280", "customfield_14154" : [{"id": "16958", "value": "MCR"}]  }'
+          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280" }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
-          is_jira_enterprise: false
-          assign-jira-ticket-to: ${{ secrets.ACCOUNT_ID_REHMAN }}
+          is_jira_enterprise: true
+          assign-jira-ticket-to: "KX6Z"
           scan-output-path: "snyk_output.txt"
           scan-type: "snyk"
