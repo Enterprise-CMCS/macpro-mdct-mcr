@@ -27,7 +27,7 @@ describe("addPccmHandler", () => {
         programIsPCCM: [
           {
             value: "Yes",
-            key: "programIsPCCM-no_programIsNotPCCM",
+            key: "programIsPCCM-yes_programIsPCCM",
           },
         ],
       },
