@@ -44,14 +44,14 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: use the custom github  action to parse Snyk output
-        uses: Enterprise-CMCS/macfc-security-scan-report@v2.7.0
+        uses: Enterprise-CMCS/macfc-security-scan-report@v2.7.4
         with:
           jira-username: ${{ secrets.JIRA_TEMP_USERNAME }}
           jira-token: ${{ secrets.JIRA_TEMP_USER_TOKEN }}
           jira-host: "jiraent.cms.gov"
           jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-fields:: '{ "customfield_10100": "CMDCT-2280" }'
+          jira-custom-field-key-value:: '{ "customfield_10100": "CMDCT-2280" }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
           is_jira_enterprise: true
