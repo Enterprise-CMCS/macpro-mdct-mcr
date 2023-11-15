@@ -51,7 +51,7 @@ jobs:
           jira-host: "jiraent.cms.gov"
           jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-field-key-value:: '{ "customfield_10100": "CMDCT-2280" }'
+          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280" }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
           is_jira_enterprise: true
