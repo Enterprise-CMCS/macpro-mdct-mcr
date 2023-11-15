@@ -23,12 +23,11 @@ jobs:
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.5
         with:
-          jira-token: ${{ secrets.JIRA_TEMP_USER_TOKEN }}
-          jira-username: ${{ secrets.JIRA_TEMP_USERNAME }}
+          jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
+          jira-username: ${{ secrets.JIRA_ENT_USERNAME }}
           jira-host: jiraent.cms.gov
           jira-project-key: CMDCT
           jira-custom-fields: '{ "customfield_10100": "CMDCT-2280" }'
           jira-ignore-statuses: Done, Closed, Canceled
-          # jira-custom-fields: '{ "customfield_14154" : [{"id": "16958", "value": "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
           assign-jira-ticket-to: "KX6Z"
