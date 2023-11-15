@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
 import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
-import { initAuthManager, useUser } from "utils";
+import { initAuthManager, useStore } from "utils";
 //components
 import { Timeout } from "components";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
@@ -21,15 +21,15 @@ const mockUser = {
   logout: mockLogout,
 };
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const spy = jest.spyOn(global, "setTimeout");
 
 describe("Test Timeout Modal", () => {
   beforeEach(async () => {
     jest.useFakeTimers();
-    mockedUseUser.mockReturnValue(mockUser);
+    mockedUseStore.mockReturnValue(mockUser);
     initAuthManager();
     await render(timeoutComponent);
   });
@@ -88,7 +88,7 @@ describe("Test Timeout Modal", () => {
 describe("Test Timeout Modal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     initAuthManager();
-    mockedUseUser.mockReturnValue(mockUser);
+    mockedUseStore.mockReturnValue(mockUser);
     const { container } = render(timeoutComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

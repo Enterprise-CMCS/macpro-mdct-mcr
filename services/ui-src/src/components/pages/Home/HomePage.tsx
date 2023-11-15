@@ -9,13 +9,13 @@ import {
   TemplateCard,
 } from "components";
 // utils
-import { checkDateRangeStatus, useUser } from "utils";
+import { checkDateRangeStatus, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
   const { bannerData } = useContext(AdminBannerContext);
-  const { userIsEndUser, userReports } = useUser().user ?? {};
+  const { userIsEndUser, userReports } = useStore().user ?? {};
   const [isBannerActive, setIsBannerActive] = useState(false);
 
   useEffect(() => {

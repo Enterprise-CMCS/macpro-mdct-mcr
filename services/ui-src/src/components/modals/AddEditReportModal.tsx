@@ -20,7 +20,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
-  useUser,
+  useStore,
 } from "utils";
 
 export const AddEditReportModal = ({
@@ -35,7 +35,7 @@ export const AddEditReportModal = ({
     updateReport,
     copyEligibleReportsByState,
   } = useContext(ReportContext);
-  const { full_name } = useUser().user ?? {};
+  const { full_name } = useStore().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
   const yoyCopyFlag = useFlags()?.yoyCopy;
 

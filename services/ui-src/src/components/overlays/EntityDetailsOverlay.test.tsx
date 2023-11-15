@@ -11,7 +11,7 @@ import {
   mockStateUser,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils";
+import { useStore } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
@@ -20,8 +20,8 @@ import { EntityContext } from "components";
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const entityDetailsOverlayComponentStateUser = (
   <RouterWrappedComponent>
@@ -66,7 +66,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
   const selectedEntity = mockMLRReportEntityStartedFieldData.program[0];
 
   it("should render the initial view for a state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     render(entityDetailsOverlayComponentStateUser);
 
     // Close out of the Overlay it opened
@@ -99,7 +99,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
   });
 
   it("should render the initial view for an admin", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockedUseStore.mockReturnValue(mockAdminUser);
     render(entityDetailsOverlayComponentAdminUser);
 
     // Close out of the Overlay it opened
@@ -133,7 +133,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
 
   it("should call the close overlay function when clicking Return to MLR", async () => {
     // Set as State User
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     render(entityDetailsOverlayComponentStateUser);
 
     // Close out of the Overlay it opened
@@ -144,7 +144,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
 
   it("should call the close overlay function when clicking Return to MLR as an Admin", async () => {
     // Set as State User
-    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockedUseStore.mockReturnValue(mockAdminUser);
     render(entityDetailsOverlayComponentAdminUser);
 
     // Close out of the Overlay it opened

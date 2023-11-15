@@ -1,10 +1,10 @@
 // utils
-import { useUser } from "utils";
+import { useStore } from "utils";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
 
 export const LoginIDM = () => {
-  const { loginWithIDM } = useUser();
+  const { loginWithIDM } = useStore();
 
   return (
     <Box sx={sx.root}>

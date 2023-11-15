@@ -9,14 +9,14 @@ import { AnyObject, FormJson, InputChangeEvent } from "types";
 // form
 import formJson from "forms/adminDashSelector/adminDashSelector";
 // utils
-import { useUser } from "utils";
+import { useStore } from "utils";
 
 export const AdminDashSelector = ({ verbiage }: Props) => {
   const { reportsByState, clearReportsByState } = useContext(ReportContext);
   const navigate = useNavigate();
   const [reportSelected, setReportSelected] = useState<boolean>(false);
 
-  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
 
   // create radio options
   const reportChoices = [

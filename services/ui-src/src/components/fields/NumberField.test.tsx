@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { NumberField, ReportContext } from "components";
 // utils
 import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
-import { useUser } from "utils";
+import { useStore } from "utils";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -28,8 +28,8 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const numberFieldComponent = (
   <NumberField
@@ -73,7 +73,7 @@ const numberFieldAutosavingComponent = (
 
 describe("Test Maskless NumberField", () => {
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -106,7 +106,7 @@ describe("Test Masked NumberField", () => {
     mockGetValues(undefined);
   });
   test("onChangeHandler updates comma masked field value", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     const result = render(commaMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -134,7 +134,7 @@ describe("Test Masked NumberField", () => {
   });
 
   test("onChangeHandler updates Currency masked field value", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     const result = render(currencyMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -153,7 +153,7 @@ describe("Test Masked NumberField", () => {
   });
 
   test("onChangeHandler updates Percentage masked field value", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     const result = render(percentageMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -173,7 +173,7 @@ describe("Test Masked NumberField", () => {
   });
 
   test("onChangeHandler updates ratio field value", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     const result = render(ratioMaskedNumberFieldComponent);
     const numberFieldInput: HTMLInputElement = result.container.querySelector(
       "[name='testNumberField']"
@@ -239,7 +239,7 @@ describe("Test NumberField hydration functionality", () => {
   );
 
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -302,7 +302,7 @@ describe("Test NumberField component autosaves", () => {
     jest.clearAllMocks();
   });
   test("NumberField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(numberFieldAutosavingComponent);
@@ -328,7 +328,7 @@ describe("Test NumberField component autosaves", () => {
   });
 
   test("NumberField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(numberFieldAutosavingComponent);
@@ -354,7 +354,7 @@ describe("Test NumberField component autosaves", () => {
   });
 
   test("NumberField does not autosave if autosave is false", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponent);
     const textField = screen.getByRole("textbox", { name: "test-label" });
@@ -374,7 +374,7 @@ describe("Numberfield handles triggering validation", () => {
     jest.clearAllMocks();
   });
   test("Blanking field triggers form validation", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponent);
     expect(mockTrigger).not.toHaveBeenCalled();
@@ -388,7 +388,7 @@ describe("Numberfield handles triggering validation", () => {
   });
 
   test("Component with validateOnRender passed should validate on render", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUser);
     mockGetValues(undefined);
     render(numberFieldComponentWithValidateOnRender);
     expect(mockTrigger).toHaveBeenCalled();
