@@ -160,6 +160,13 @@ provider:
     PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
+  addPccmToPastMcpar:
+    handler: handlers/etl/addPccmToPastMcpar.addPccmHandler
+    timeout: 300
+    warmup:
+      default:
+        enabled: false
+    maximumRetryAttempts: 0
   addRevisionsToMcpar:
     handler: handlers/etl/addRevisionsToMcpar.addRevisionsHandler
     timeout: 300
