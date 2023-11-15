@@ -22,7 +22,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-          role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.5
@@ -31,7 +31,7 @@ jobs:
           jira-username: ${{ secrets.JIRA_TEMP_USERNAME }}
           jira-host: jiraent.cms.gov
           jira-project-key: CMDCT
-          jira-epic-key: CMDCT-2280
+          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280" }'
           jira-ignore-statuses: Done, Closed, Canceled
           # jira-custom-fields: '{ "customfield_14154" : [{"id": "16958", "value": "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
