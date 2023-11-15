@@ -19,5 +19,3 @@ export interface AdminBannerMethods {
   writeAdminBanner: Function;
   deleteAdminBanner: Function;
 }
-
-export interface AdminBannerShape extends AdminBannerMethods {}

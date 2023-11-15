@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
-import { AdminBannerData, AdminBannerShape } from "types/banners";
+import { AdminBannerData, AdminBannerMethods } from "types/banners";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 // api
@@ -14,7 +14,7 @@ import {
 
 const ADMIN_BANNER_ID = bannerId;
 
-export const AdminBannerContext = createContext<AdminBannerShape>({
+export const AdminBannerContext = createContext<AdminBannerMethods>({
   fetchAdminBanner: Function,
   writeAdminBanner: Function,
   deleteAdminBanner: Function,
@@ -44,10 +44,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
       setBannerErrorMessage("");
     } catch (e: any) {
       setBannerLoading(false);
-      // 404 expected when no current banner exists
-      if (!e.toString().includes("404")) {
-        setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
-      }
+      setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
     }
     setBannerLoading(false);
   };
