@@ -10,7 +10,7 @@ import {
   mockMlrReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
+import { useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 // types
@@ -18,8 +18,8 @@ import { ReportContextShape } from "types";
 
 // MOCKS
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const adminDashSelectorView = (
   context: ReportContextShape = mockMlrReportContext
@@ -37,7 +37,7 @@ mockLDFlags.setDefault({ mlrReport: true });
 
 describe("Test AdminDashSelector view", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockAdminUser);
+    mockedUseUser.mockReturnValue(mockAdminUser);
   });
 
   test("Check that AdminDashSelector view renders", () => {
@@ -65,7 +65,7 @@ describe("Test AdminDashSelector view", () => {
 
 describe("Test mlrReport feature flag functionality", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockAdminUser);
+    mockedUseUser.mockReturnValue(mockAdminUser);
   });
   test("if mlrReport flag is true, MLR radio choice should be visible", async () => {
     mockLDFlags.set({ mlrReport: true });

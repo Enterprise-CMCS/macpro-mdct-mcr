@@ -13,7 +13,7 @@ import {
   ModalOverlayReportPage,
 } from "components";
 // utils
-import { useStore } from "utils";
+import { useUser } from "utils";
 import {
   ModalDrawerReportPageShape,
   ModalOverlayReportPageShape,
@@ -25,7 +25,7 @@ import {
 } from "types";
 
 export const ReportPageWrapper = () => {
-  const { state } = useStore().user ?? {};
+  const { state } = useUser().user ?? {};
   const { report } = useContext(ReportContext);
   const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();

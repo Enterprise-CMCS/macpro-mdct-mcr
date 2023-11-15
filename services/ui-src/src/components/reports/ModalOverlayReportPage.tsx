@@ -29,7 +29,7 @@ import {
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
   useBreakpoint,
-  useStore,
+  useUser,
   resetClearProp,
 } from "utils";
 // verbiage
@@ -53,7 +53,7 @@ export const ModalOverlayReportPage = ({
   const [entering, setEntering] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
-    useStore().user ?? {};
+    useUser().user ?? {};
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;

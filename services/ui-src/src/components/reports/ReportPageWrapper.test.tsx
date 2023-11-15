@@ -24,7 +24,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils", () => ({
   ...jest.requireActual("utils"),
-  useStore: () => mockStateUser,
+  useUser: () => mockStateUser,
 }));
 
 const mockLocations = {

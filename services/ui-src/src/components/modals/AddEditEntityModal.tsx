@@ -16,7 +16,7 @@ import {
   filterFormData,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
-  useStore,
+  useUser,
 } from "utils";
 
 export const AddEditEntityModal = ({
@@ -27,7 +27,7 @@ export const AddEditEntityModal = ({
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, userIsEndUser } = useStore().user ?? {};
+  const { full_name, userIsEndUser } = useUser().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const writeEntity = async (enteredData: any) => {

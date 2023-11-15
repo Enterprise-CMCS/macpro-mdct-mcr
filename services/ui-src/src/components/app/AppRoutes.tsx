@@ -16,15 +16,14 @@ import {
 } from "components";
 // utils
 import { ReportRoute, ReportType } from "types";
-import { ScrollToTopComponent, useStore } from "utils";
+import { ScrollToTopComponent, useUser } from "utils";
 import { Fragment, useContext } from "react";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
-  const { userIsAdmin, userReports } = useStore().user ?? {};
+  const { userIsAdmin, userReports } = useUser().user ?? {};
   const mlrReport = useFlags()?.mlrReport;
   const { report, contextIsLoaded } = useContext(ReportContext);
-
   // determine if the user has access to specific reports
   const userReportAccess = {
     MCPAR: userReports?.includes("MCPAR") || userIsAdmin,

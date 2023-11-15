@@ -14,7 +14,7 @@ import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
 import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
-import { parseCustomHtml, useStore, utcDateToReadableDate } from "utils";
+import { parseCustomHtml, useUser, utcDateToReadableDate } from "utils";
 // verbiage
 import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
@@ -33,7 +33,7 @@ export const ReviewSubmitPage = () => {
     useState<boolean>(false);
 
   // get user information
-  const { state, userIsEndUser } = useStore().user ?? {};
+  const { state, userIsEndUser } = useUser().user ?? {};
 
   // get report type, state, and id from context or storage
   const reportType =

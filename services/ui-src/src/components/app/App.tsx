@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 // components
@@ -21,15 +21,12 @@ import {
   fireTealiumPageView,
   isApparentReportPage,
   makeMediaQueryClasses,
-  UserContext,
-  useStore,
+  useUser,
 } from "utils";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
-  const context = useContext(UserContext);
-  const { logout } = context;
-  const { user, showLocalLogins } = useStore();
+  const { logout, user, showLocalLogins } = useUser();
   const { pathname, key } = useLocation();
   const isExportPage = pathname.includes("/export");
 

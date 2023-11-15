@@ -10,7 +10,7 @@ import {
   labelTextWithOptional,
   checkDateCompleteness,
   parseCustomHtml,
-  useStore,
+  useUser,
   getAutosaveFields,
 } from "utils";
 import { ReportContext } from "components";
@@ -29,7 +29,7 @@ export const DateField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const { full_name, state } = useStore().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
 
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =

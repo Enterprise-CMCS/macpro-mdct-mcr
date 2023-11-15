@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 //components
 import { AddEditEntityModal, ReportContext } from "components";
-import { useStore } from "utils";
+import { useUser } from "utils";
 import {
   mockModalDrawerReportPageVerbiage,
   mockModalForm,
@@ -17,8 +17,8 @@ import {
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const mockUpdateReport = jest.fn();
 const mockCloseHandler = jest.fn();
@@ -82,7 +82,7 @@ const modalComponentWithSelectedEntity = (
 
 describe("Test AddEditEntityModal", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(modalComponent);
     });
@@ -112,7 +112,7 @@ describe("Test AddEditEntityModal", () => {
 
 describe("Test AddEditEntityModal functionality", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
   });
   afterEach(() => {
     // reset payload to baseline with only mockEntity

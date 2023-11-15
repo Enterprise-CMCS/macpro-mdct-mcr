@@ -11,7 +11,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { FormJson } from "types";
-import { useStore } from "utils";
+import { useUser } from "utils";
 
 const mockUseNavigate = jest.fn();
 const mockRoutes = {
@@ -28,8 +28,8 @@ jest.mock("utils", () => ({
   useFindRoute: () => mockRoutes,
 }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const reportPageComponent = (
   <RouterWrappedComponent>
@@ -41,7 +41,7 @@ const reportPageComponent = (
 
 describe("Test ReportPageFooter without form", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
   });
 
   afterEach(() => {
@@ -85,21 +85,21 @@ describe("Test ReportPageFooter continue button within form", () => {
   );
 
   test("should be a submit button on non-admin forms for non-admin users", () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     const result = render(footerWithStandardForm);
     const continueButton = result.getByText("Continue");
     expect(continueButton).toHaveAttribute("type", "submit");
   });
 
   test("should be a submit button on admin forms for admin users", () => {
-    mockedUseStore.mockReturnValue(mockAdminUser);
+    mockedUseUser.mockReturnValue(mockAdminUser);
     const result = render(footerWithAdminForm);
     const continueButton = result.getByText("Continue");
     expect(continueButton).toHaveAttribute("type", "submit");
   });
 
   test("should not be a submit button on non-admin forms for admin users", () => {
-    mockedUseStore.mockReturnValue(mockAdminUser);
+    mockedUseUser.mockReturnValue(mockAdminUser);
     const result = render(footerWithStandardForm);
     const continueButton = result.getByText("Continue");
     expect(continueButton).not.toHaveAttribute("type", "submit");

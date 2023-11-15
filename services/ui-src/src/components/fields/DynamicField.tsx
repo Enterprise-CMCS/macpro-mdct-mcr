@@ -17,13 +17,13 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
-import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
+import { autosaveFieldData, getAutosaveFields, useUser } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityContext } from "components/reports/EntityProvider";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
-  const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);

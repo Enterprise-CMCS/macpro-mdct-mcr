@@ -14,16 +14,16 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
-import { useStore } from "utils";
+import { useUser } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 describe("MCPAR Review and Submit Page Functionality", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -48,7 +48,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
-      mockedUseStore.mockReturnValue(mockAdminUser);
+      mockedUseUser.mockReturnValue(mockAdminUser);
       render(McparReviewSubmitPage_NotStarted);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -92,7 +92,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
-      mockedUseStore.mockReturnValue(mockAdminUser);
+      mockedUseUser.mockReturnValue(mockAdminUser);
       render(McparReviewSubmitPage_Unfilled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -207,7 +207,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users see form is filled but can not submit the form", () => {
-      mockedUseStore.mockReturnValue(mockAdminUser);
+      mockedUseUser.mockReturnValue(mockAdminUser);
       render(McparReviewSubmitPage_Filled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;

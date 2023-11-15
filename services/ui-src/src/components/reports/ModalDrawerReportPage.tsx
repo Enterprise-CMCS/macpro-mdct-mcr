@@ -15,7 +15,7 @@ import {
   filterFormData,
   getFormattedEntityData,
   createRepeatedFields,
-  useStore,
+  useUser,
   entityWasUpdated,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
@@ -33,7 +33,7 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
-  const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { full_name, state, userIsEndUser } = useUser().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);

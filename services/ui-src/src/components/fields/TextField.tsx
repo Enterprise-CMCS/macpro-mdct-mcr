@@ -10,7 +10,7 @@ import {
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
-  useStore,
+  useUser,
 } from "utils";
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 import { EntityContext } from "components/reports/EntityProvider";
@@ -29,7 +29,7 @@ export const TextField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
-  const { full_name, state } = useStore().user ?? {};
+  const { full_name, state } = useUser().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, selectedEntity, updateEntities } =
     useContext(EntityContext);

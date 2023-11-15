@@ -12,15 +12,15 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
-import { useStore } from "utils";
+import { useUser } from "utils";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
 const mockEntering = false;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>
@@ -74,14 +74,14 @@ const completeRowComponent = (
 
 describe("Test EntityRow", () => {
   test("It should render an error if an entity is incomplete", async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     const { findByText } = render(incompleteRowComponent);
     expect(
       await findByText("Select “Enter MLR” to complete this report.")
     ).toBeVisible();
   });
   test("It should NOT render an error if an entity is complete", async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     const { queryByText } = render(completeRowComponent);
     expect(queryByText("Select “Enter MLR” to complete this report.")).toBe(
       null
@@ -89,7 +89,7 @@ describe("Test EntityRow", () => {
   });
 
   test("Clicking Edit button opens the AddEditEntityModal", async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(completeRowComponent);
     });
@@ -100,7 +100,7 @@ describe("Test EntityRow", () => {
   });
 
   test("Clicking Enter Details button opens the Drawer", async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(completeRowComponent);
     });
@@ -111,7 +111,7 @@ describe("Test EntityRow", () => {
   });
 
   test("Clicking Delete button opens the DeleteEntityModal", async () => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(completeRowComponent);
     });

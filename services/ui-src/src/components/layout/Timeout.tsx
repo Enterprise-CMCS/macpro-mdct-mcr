@@ -14,13 +14,13 @@ import {
   calculateRemainingSeconds,
   refreshCredentials,
   updateTimeout,
-  useStore,
+  useUser,
 } from "utils";
 import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
 import moment from "moment";
 
 export const Timeout = () => {
-  const { logout } = useStore();
+  const { logout } = useUser();
   const [timeLeft, setTimeLeft] = useState((IDLE_WINDOW - PROMPT_AT) / 1000);
   const [showTimeout, setShowTimeout] = useState(false);
   const [timeoutPromptId, setTimeoutPromptId] = useState<number>();

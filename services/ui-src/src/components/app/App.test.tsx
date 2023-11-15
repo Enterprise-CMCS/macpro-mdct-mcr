@@ -3,17 +3,16 @@ import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
 import {
+  mockStateUser,
+  mockNoUser,
   RouterWrappedComponent,
-  mockUseStore,
-  mockNoUserStore,
 } from "utils/testing/setupJest";
-import { UserProvider, useStore } from "utils";
+import { useUser, UserProvider } from "utils";
 //components
 import { App } from "components";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockUseStore);
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const appComponent = (
   <RouterWrappedComponent>
@@ -25,6 +24,7 @@ const appComponent = (
 
 describe("Test App", () => {
   test("App is visible", async () => {
+    mockedUseUser.mockReturnValue(mockStateUser);
     await act(async () => {
       await render(appComponent);
     });
@@ -32,7 +32,7 @@ describe("Test App", () => {
   });
 
   test("App renders local logins if there is no user", async () => {
-    mockedUseStore.mockReturnValue(mockNoUserStore);
+    mockedUseUser.mockReturnValue(mockNoUser);
     await act(async () => {
       await render(appComponent);
     });

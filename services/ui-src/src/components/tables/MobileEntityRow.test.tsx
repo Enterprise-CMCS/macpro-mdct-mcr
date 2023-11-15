@@ -12,15 +12,15 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
-import { useStore } from "utils";
+import { useUser } from "utils";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
 const mockEntering = false;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+jest.mock("utils/auth/useUser");
+const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>
@@ -74,7 +74,7 @@ const completeRowComponent = (
 
 describe("Test MobileEntityRow", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUser);
+    mockedUseUser.mockReturnValue(mockStateUser);
   });
   afterEach(() => {
     jest.clearAllMocks();
