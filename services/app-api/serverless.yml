@@ -6,7 +6,7 @@ frameworkVersion: "3"
 package:
   individually: true
   patterns:
-    - node_modules/aws-sdk/**
+    - node_modules/**
 
 plugins:
   - serverless-plugin-typescript
@@ -19,6 +19,7 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-api-client-certificate
   - serverless-offline
+  - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
   - serverless-plugin-include-dependencies
 
 s3BucketHelper:

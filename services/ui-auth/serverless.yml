@@ -6,7 +6,7 @@ frameworkVersion: "3"
 package:
   individually: true
   patterns:
-    - node_modules/aws-sdk/**
+    - node_modules/**
 
 provider:
   name: aws
@@ -29,6 +29,7 @@ plugins:
   - serverless-idempotency-helper
   - serverless-iam-helper
   - serverless-s3-bucket-helper
+  - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
   - serverless-plugin-include-dependencies
 
 s3BucketHelper:
