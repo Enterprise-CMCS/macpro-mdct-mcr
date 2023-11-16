@@ -1,10 +1,11 @@
-// utils
-import { useStore } from "utils";
+import { useContext } from "react";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
+// utils
+import { UserContext } from "utils";
 
 export const LoginIDM = () => {
-  const { loginWithIDM } = useStore();
+  const { loginWithIDM } = useContext(UserContext);
 
   return (
     <Box sx={sx.root}>
