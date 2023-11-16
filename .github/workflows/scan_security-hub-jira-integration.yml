@@ -28,6 +28,6 @@ jobs:
           jira-host: jiraent.cms.gov
           jira-project-key: CMDCT
           jira-ignore-statuses: Done, Closed, Canceled
-          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40105", "value": "MFP"}] }'
+          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40104", "value": "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
           assign-jira-ticket-to: "MWTW"
