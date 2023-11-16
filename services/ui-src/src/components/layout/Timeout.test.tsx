@@ -2,24 +2,39 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
-import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
-import { initAuthManager, useStore } from "utils";
+import {
+  mockStateUserStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
+import { initAuthManager, UserContext, useStore } from "utils";
 //components
 import { Timeout } from "components";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 
-const timeoutComponent = (
-  <RouterWrappedComponent>
-    <Timeout />
-  </RouterWrappedComponent>
-);
-
 const mockLogout = jest.fn();
+const mockLoginWithIDM = jest.fn();
+const mockUpdateTimeout = jest.fn();
+const mockGetExpiration = jest.fn();
 
 const mockUser = {
-  ...mockStateUser,
-  logout: mockLogout,
+  ...mockStateUserStore,
 };
+
+const mockUserContext = {
+  user: undefined,
+  logout: mockLogout,
+  loginWithIDM: mockLoginWithIDM,
+  updateTimeout: mockUpdateTimeout,
+  getExpiration: mockGetExpiration,
+};
+
+const timeoutComponent = (
+  <RouterWrappedComponent>
+    <UserContext.Provider value={mockUserContext}>
+      <Timeout />
+    </UserContext.Provider>
+  </RouterWrappedComponent>
+);
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
