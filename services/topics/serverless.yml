@@ -4,6 +4,8 @@ frameworkVersion: "3"
 
 package:
   individually: true
+  patterns:
+    - node_modules/**
 
 plugins:
   - serverless-plugin-scripts
@@ -14,6 +16,8 @@ plugins:
   - "@stratiformdigital/serverless-idempotency-helper"
   - "@stratiformdigital/serverless-online"
   - "@stratiformdigital/serverless-s3-security-helper"
+  - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
+  - serverless-plugin-include-dependencies
 
 provider:
   name: aws
