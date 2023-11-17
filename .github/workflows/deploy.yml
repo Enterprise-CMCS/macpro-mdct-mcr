@@ -60,9 +60,9 @@ jobs:
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
-      - name: set branch_name
+      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
-          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
+          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]] || [[ "$GITHUB_REF" =~ ^refs/remotes/origin/snyk-upgrade-* ]] || [[ "$GITHUB_REF" =~ ^refs/remotes/origin/snyk-fix-* ]]; then
             echo "branch_name=`echo ${GITHUB_REF#refs/heads/} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
           else
             echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV

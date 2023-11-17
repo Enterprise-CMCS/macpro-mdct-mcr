@@ -1,4 +1,4 @@
-name: Snyk Scan and Report
+name: Scan and Open Jira Tickets (Snyk)
 
 on:
   pull_request:
@@ -14,7 +14,6 @@ jobs:
     name: Snyk Run (for PR and push)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -42,17 +41,17 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: use the custom github  action to parse Snyk output
-        uses: Enterprise-CMCS/macfc-security-scan-report@v2.7.0
+        uses: Enterprise-CMCS/macfc-security-scan-report@v2.7.4
         with:
-          jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
-          jira-host: "qmacbis.atlassian.net"
-          jira-project-key: "MDCT"
+          jira-username: "mdct_github_service_account"
+          jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
+          jira-host: "jiraent.cms.gov"
+          jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-field-key-value: '{ "customfield_10007" : "MDCT-2280", "customfield_14154" : [{"id": "16958", "value": "MCR"}]  }'
+          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40104", "value": "MCR"}] }'
           jira-labels: "MCR,snyk"
           jira-title-prefix: "[MCR] - Snyk :"
-          is_jira_enterprise: false
-          assign-jira-ticket-to: ${{ secrets.ACCOUNT_ID_REHMAN }}
+          is_jira_enterprise: true
+          assign-jira-ticket-to: "MWTW"
           scan-output-path: "snyk_output.txt"
           scan-type: "snyk"
