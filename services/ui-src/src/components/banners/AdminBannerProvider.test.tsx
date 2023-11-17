@@ -91,7 +91,9 @@ describe("Test AdminBannerProvider deleteAdminBanner method", () => {
     });
     expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
     expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
-    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(1));
+
+    // 1 call on render + 1 call on button click
+    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
   });
 });
 
