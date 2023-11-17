@@ -33,6 +33,7 @@ export default {
         "Last edited",
         "Edited by",
         "Status",
+        "#",
         { hiddenName: "Actions" },
       ],
     },

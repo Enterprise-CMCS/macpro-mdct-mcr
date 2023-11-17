@@ -30,6 +30,7 @@ import {
   setClearedEntriesToDefaultValue,
   useBreakpoint,
   useUser,
+  resetClearProp,
 } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
@@ -80,6 +81,7 @@ export const ModalOverlayReportPage = ({
 
   const closeAddEditEntityModal = () => {
     setCurrentEntity(undefined);
+    resetClearProp(modalForm.fields);
     addEditEntityModalOnCloseHandler();
   };
 

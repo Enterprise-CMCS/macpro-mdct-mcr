@@ -100,6 +100,9 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         programIsPCCM,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
@@ -167,7 +170,7 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
-          submissionCount: reportType === "MLR" ? 0 : undefined,
+          submissionCount: 0,
           // All new MLR reports are NOT resubmissions by definition.
           versionControl:
             reportType === "MLR"

@@ -325,6 +325,9 @@ export const mockMcparReport = {
     },
   },
   isComplete: false,
+  locked: false,
+  submissionCount: 0,
+  previousRevisions: [],
 };
 
 export const mockMcparReportCombinedData = {
@@ -358,6 +361,9 @@ export const mockMcparReportCombinedData = {
     },
   },
   isComplete: false,
+  locked: false,
+  submissionCount: 0,
+  previousRevisions: [],
 };
 
 export const mockMlrReport = {
@@ -376,6 +382,9 @@ export const mockMlrReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
   fieldDataId: "mockFieldDataId",
+  locked: true,
+  submissionCount: 0,
+  previousRevisions: [],
 };
 
 export const mockMLRLockedReport = {
@@ -395,6 +404,8 @@ export const mockMLRLockedReport = {
   fieldData: mockMlrReportFieldData,
   fieldDataId: "mockFieldDataId",
   locked: true,
+  submissionCount: 0,
+  previousRevisions: [],
 };
 
 export const mockMLRReportEmptyFieldData = {
@@ -456,6 +467,9 @@ export const mockMLRNewReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMLRReportEmptyFieldData,
   fieldDataId: "mockFieldDataId",
+  locked: false,
+  submissionCount: 0,
+  previousRevisions: [],
 };
 
 export const mockMlrModalOverlayReport = {
@@ -608,6 +622,17 @@ export const mockDashboardReportContext = {
   reportsByState: [
     {
       ...mockMcparReport,
+      formTemplate: undefined,
+      fieldData: undefined,
+    },
+  ],
+};
+
+export const mockMlrDashboardReportContext = {
+  ...mockMlrReportContext,
+  reportsByState: [
+    {
+      ...mockMlrReport,
       formTemplate: undefined,
       fieldData: undefined,
     },

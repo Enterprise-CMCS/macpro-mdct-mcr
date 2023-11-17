@@ -60,7 +60,9 @@ describe("Test submitReport API method", () => {
     expect(body.status).toStrictEqual("Submitted");
     expect(body.submittedBy).toStrictEqual("Thelonious States");
     expect(body.submittedOnDate).toBeTruthy();
-    expect(body.locked).toBe(undefined);
+    // new functionality for MCPAR
+    expect(body.locked).toBe(true);
+    expect(body.submissionCount).toBe(1);
   });
 
   test("Test MLR reports get locked and have submission count updated.", async () => {

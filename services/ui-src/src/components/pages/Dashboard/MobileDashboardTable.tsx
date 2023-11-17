@@ -1,7 +1,7 @@
 // components
 import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
-import { AnyObject, ReportMetadataShape, ReportType } from "types";
+import { AnyObject, ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -56,21 +56,14 @@ export const MobileDashboardTable = ({
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>Status</Text>
           <Text>
-            {getStatus(
-              reportType as ReportType,
-              report.status,
-              report.archived,
-              report.submissionCount
-            )}
+            {getStatus(report.status, report.archived, report.submissionCount)}
           </Text>
         </Box>
-        {reportType === "MLR" && (
-          <Box sx={sx.labelGroup}>
-            <Text sx={sx.label}>
-              {report.submissionCount === 0 ? 1 : report.submissionCount}
-            </Text>
-          </Box>
-        )}
+        <Box sx={sx.labelGroup}>
+          <Text sx={sx.label}>
+            {report.submissionCount === 0 ? 1 : report.submissionCount}
+          </Text>
+        </Box>
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sxOverride.editReportButtonCell}>
             <Button
@@ -90,15 +83,13 @@ export const MobileDashboardTable = ({
           <Box sx={sxOverride.adminActionCell}>
             {isAdmin && (
               <>
-                {reportType === "MLR" && (
-                  <AdminReleaseButton
-                    report={report}
-                    reportId={reportId}
-                    releaseReport={releaseReport}
-                    releasing={releasing}
-                    sxOverride={sxOverride}
-                  />
-                )}
+                <AdminReleaseButton
+                  report={report}
+                  reportId={reportId}
+                  releaseReport={releaseReport}
+                  releasing={releasing}
+                  sxOverride={sxOverride}
+                />
                 <AdminArchiveButton
                   report={report}
                   reportId={reportId}
