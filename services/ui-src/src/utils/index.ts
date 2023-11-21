@@ -36,3 +36,5 @@ export * from "./other/useBreakpoint";
 export * from "./other/rendering";
 export * from "./other/parsing";
 export * from "./other/typing";
+// state management (zustand)
+export * from "./state/useStore";

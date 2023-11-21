@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useContext, MouseEventHandler } from "react";
 // components
 import {
   Box,
@@ -17,50 +17,25 @@ import {
   PageTemplate,
 } from "components";
 // utils
-import { checkDateRangeStatus, convertDateUtcToEt } from "utils";
-import { bannerErrors } from "verbiage/errors";
+import { convertDateUtcToEt, useStore } from "utils";
 import verbiage from "verbiage/pages/admin";
 
 export const AdminPage = () => {
+  const { deleteAdminBanner, writeAdminBanner } =
+    useContext(AdminBannerContext);
+
+  // state management
   const {
     bannerData,
-    deleteAdminBanner,
-    writeAdminBanner,
-    isLoading,
-    errorMessage,
-  } = useContext(AdminBannerContext);
-  const [error, setError] = useState<string | undefined>(errorMessage);
-  const [deleting, setDeleting] = useState<boolean>(false);
-  const [isBannerActive, setIsBannerActive] = useState<boolean>(false);
-
-  useEffect(() => {
-    let bannerActivity = false;
-    if (bannerData) {
-      bannerActivity = checkDateRangeStatus(
-        bannerData.startDate,
-        bannerData.endDate
-      );
-    }
-    setIsBannerActive(bannerActivity);
-  }, [bannerData]);
-
-  useEffect(() => {
-    setError(errorMessage);
-  }, [errorMessage]);
-
-  const deleteBanner = async () => {
-    setDeleting(true);
-    try {
-      await deleteAdminBanner();
-    } catch (error: any) {
-      setError(bannerErrors.DELETE_BANNER_FAILED);
-    }
-    setDeleting(false);
-  };
+    bannerActive,
+    bannerLoading,
+    bannerErrorMessage,
+    bannerDeleting,
+  } = useStore();
 
   return (
     <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
-      <ErrorAlert error={error} sxOverride={sx.errorAlert} />
+      <ErrorAlert error={bannerErrorMessage} sxOverride={sx.errorAlert} />
       <Box sx={sx.introTextBox}>
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           {verbiage.intro.header}
@@ -69,7 +44,7 @@ export const AdminPage = () => {
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner</Text>
-        {isLoading ? (
+        {bannerLoading ? (
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="md" />
           </Flex>
@@ -81,8 +56,8 @@ export const AdminPage = () => {
                   <Flex sx={sx.currentBannerInfo}>
                     <Text sx={sx.currentBannerStatus}>
                       Status:{" "}
-                      <span className={isBannerActive ? "active" : "inactive"}>
-                        {isBannerActive ? "Active" : "Inactive"}
+                      <span className={bannerActive ? "active" : "inactive"}>
+                        {bannerActive ? "Active" : "Inactive"}
                       </span>
                     </Text>
                     <Text sx={sx.currentBannerDate}>
@@ -99,9 +74,9 @@ export const AdminPage = () => {
                     <Button
                       variant="danger"
                       sx={sx.deleteBannerButton}
-                      onClick={deleteBanner}
+                      onClick={deleteAdminBanner as MouseEventHandler}
                     >
-                      {deleting ? (
+                      {bannerDeleting ? (
                         <Spinner size="md" />
                       ) : (
                         "Delete Current Banner"
@@ -111,7 +86,7 @@ export const AdminPage = () => {
                 </>
               )}
             </Collapse>
-            {!bannerData && <Text>There is no current banner</Text>}
+            {!bannerData?.key && <Text>There is no current banner</Text>}
           </>
         )}
       </Box>
