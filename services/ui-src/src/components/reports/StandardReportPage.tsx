@@ -9,7 +9,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, useFindRoute, useUser } from "utils";
+import { filterFormData, useFindRoute, useStore } from "utils";
 import {
   AnyObject,
   isFieldElement,
@@ -20,7 +20,7 @@ import {
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state } = useUser().user ?? {};
+  const { full_name, state } = useStore().user ?? {};
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
     report!.formTemplate.flatRoutes!,

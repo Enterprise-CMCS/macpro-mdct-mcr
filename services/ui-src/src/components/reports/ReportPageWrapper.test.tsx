@@ -11,9 +11,10 @@ import {
   mockModalOverlayReportPageWithOverlayJson,
   mockReportJson,
   mockStandardReportPageJson,
-  mockStateUser,
+  mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
 
 const mockUseNavigate = jest.fn();
 const mockUseLocation = jest.fn();
@@ -22,10 +23,8 @@ jest.mock("react-router-dom", () => ({
   useLocation: () => mockUseLocation(),
 }));
 
-jest.mock("utils", () => ({
-  ...jest.requireActual("utils"),
-  useUser: () => mockStateUser,
-}));
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockLocations = {
   standard: { pathname: mockReportJson.flatRoutes[0].path },
@@ -61,6 +60,10 @@ const ReportPageWrapper_WithoutReport = (
 );
 
 describe("Test ReportPageWrapper view", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
+
   test("ReportPageWrapper StandardFormSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapperComponent);
@@ -105,6 +108,10 @@ describe("Test ReportPageWrapper view", () => {
 });
 
 describe("Test ReportPageWrapper functionality", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
+
   afterEach(() => jest.clearAllMocks());
 
   test("ReportPageWrapper navigates to dashboard if no report", () => {
@@ -137,6 +144,10 @@ describe("Test ReportPageWrapper functionality", () => {
 });
 
 describe("Test ReportPageWrapper accessibility", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
+
   test("Standard page should not have basic accessibility issues", async () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     const { container } = render(ReportPageWrapperComponent);

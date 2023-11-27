@@ -8,13 +8,13 @@ import {
   TemplateCard,
 } from "components";
 // utils
-import { checkDateRangeStatus, useStore, useUser } from "utils";
+import { checkDateRangeStatus, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
-  const { userIsEndUser, userReports } = useUser().user ?? {};
+  const { userIsEndUser, userReports } = useStore().user ?? {};
 
   useEffect(() => {
     let bannerActivity = false;
