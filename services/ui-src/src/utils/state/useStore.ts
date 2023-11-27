@@ -1,9 +1,26 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 // types
-import { AdminBannerData, AdminBannerState } from "types";
+import {
+  AdminBannerData,
+  AdminBannerState,
+  MCRUser,
+  McrUserState,
+} from "types";
 
 // USER STORE
+const userStore = (set: Function) => ({
+  // initial state
+  user: undefined,
+  // show local logins
+  showLocalLogins: undefined,
+  // actions
+  setUser: (newUser?: MCRUser) =>
+    set(() => ({ user: newUser }), false, { type: "setUser" }),
+  // toggle show local logins (dev only)
+  setShowLocalLogins: () =>
+    set(() => ({ showLocalLogins: true }), false, { type: "showLocalLogins" }),
+});
 
 // ADMIN BANNER STORE
 const bannerStore = (set: Function) => ({
@@ -39,7 +56,8 @@ const bannerStore = (set: Function) => ({
 export const useStore = create(
   // persist and devtools are being used for debugging state
   persist(
-    devtools<AdminBannerState>((set) => ({
+    devtools<McrUserState & AdminBannerState>((set) => ({
+      ...userStore(set),
       ...bannerStore(set),
     })),
     {
