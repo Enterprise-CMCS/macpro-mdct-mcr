@@ -10,9 +10,9 @@ export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
   return (
     <Accordion allowToggle={true} allowMultiple={true} {...props}>
       {accordionItems.map((item: AnyObject, index: number) => (
-        <AccordionItem key={index} label={item.header} sx={sx.item}>
+        <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox}>
-            <Text>{parseCustomHtml(item.body)}</Text>
+            <Text>{parseCustomHtml(item.answer)}</Text>
           </Box>
         </AccordionItem>
       ))}

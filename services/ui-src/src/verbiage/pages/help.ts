@@ -19,8 +19,8 @@ export default {
   },
   accordionItems: [
     {
-      header: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",
-      body: [
+      question: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",
+      answer: [
         {
           type: "text",
           as: "span",
