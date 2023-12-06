@@ -89,7 +89,7 @@ export default {
                 {
                   type: "html",
                   content:
-                    "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E <span style='color:#bf1aba;'>will be pre-selected</span>.</span><br></br>",
+                    "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
                 },
               ],
             },
