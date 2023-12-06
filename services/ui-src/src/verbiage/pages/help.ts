@@ -25,7 +25,7 @@ export default {
           type: "text",
           as: "span",
           content:
-            "States are only required to report certain sections of the MCPAR for Primary Care Case Management Entities (PCCM-Es). These include Program Information, Enrollment and Service Expansions as well and Sanctions (see  and ",
+            "States are only required to report certain sections of the MCPAR for Primary Care Case Management Entities (PCCM-Es). These include Program Information, Enrollment and Service Expansions as well as Sanctions (see ",
         },
         {
           type: "externalLink",
@@ -43,7 +43,7 @@ export default {
         },
         {
           type: "externalLink",
-          content: "(viii))",
+          content: "(viii)",
           props: {
             href: "https://www.ecfr.gov/current/title-42/part-438/section-438.66#p-438.66(e)(2)(viii)",
             target: "_blank",
@@ -53,7 +53,7 @@ export default {
         {
           type: "text",
           as: "span",
-          content: ".",
+          content: ").",
         },
         {
           type: "html",
