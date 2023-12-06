@@ -1,8 +1,10 @@
 // components
 import { Accordion, Box, Text } from "@chakra-ui/react";
 import { AccordionItem } from "components";
-// utils
+// types
 import { AnyObject } from "types";
+// utils
+import { parseCustomHtml } from "utils";
 
 export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
   return (
@@ -10,7 +12,7 @@ export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
       {accordionItems.map((item: AnyObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox}>
-            <Text>{item.answer}</Text>
+            <Text>{parseCustomHtml(item.answer)}</Text>
           </Box>
         </AccordionItem>
       ))}

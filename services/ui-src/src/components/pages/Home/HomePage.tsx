@@ -1,22 +1,20 @@
-import { useContext, useState, useEffect } from "react";
+import { useEffect } from "react";
 // components
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
-  AdminBannerContext,
   AdminDashSelector,
   Banner,
   PageTemplate,
   TemplateCard,
 } from "components";
 // utils
-import { checkDateRangeStatus, useUser } from "utils";
+import { checkDateRangeStatus, useStore, useUser } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
 export const HomePage = () => {
-  const { bannerData } = useContext(AdminBannerContext);
+  const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser, userReports } = useUser().user ?? {};
-  const [isBannerActive, setIsBannerActive] = useState(false);
 
   useEffect(() => {
     let bannerActivity = false;
@@ -26,10 +24,10 @@ export const HomePage = () => {
         bannerData.endDate
       );
     }
-    setIsBannerActive(bannerActivity);
+    setBannerActive(bannerActivity);
   }, [bannerData]);
 
-  const showBanner = !!bannerData?.key && isBannerActive;
+  const showBanner = !!bannerData?.key && bannerActive;
   const { intro, cards } = verbiage;
 
   return (

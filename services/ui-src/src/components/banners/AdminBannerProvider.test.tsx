@@ -5,6 +5,7 @@ import { act } from "react-dom/test-utils";
 // components
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
 // utils
+import { useStore } from "utils";
 import { mockBannerData } from "utils/testing/setupJest";
 import { bannerErrors } from "verbiage/errors";
 
@@ -27,7 +28,6 @@ const TestComponent = () => {
       <button onClick={() => context.deleteAdminBanner(mockBannerData.key)}>
         Delete
       </button>
-      {context.errorMessage && <p>{context.errorMessage}</p>}
     </div>
   );
 };
@@ -70,7 +70,9 @@ describe("Test AdminBannerProvider fetchAdminBanner method", () => {
     await act(async () => {
       await render(testComponent);
     });
-    expect(screen.queryByText(bannerErrors.GET_BANNER_FAILED)).toBeVisible();
+    expect(useStore.getState().bannerErrorMessage).toBe(
+      bannerErrors.GET_BANNER_FAILED
+    );
   });
 });
 
@@ -89,7 +91,9 @@ describe("Test AdminBannerProvider deleteAdminBanner method", () => {
     });
     expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
     expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
-    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(1));
+
+    // 1 call on render + 1 call on button click
+    await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
   });
 });
 

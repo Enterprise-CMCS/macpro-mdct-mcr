@@ -4,7 +4,7 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { eligibilityGroup, renderHtml, useUser } from "utils";
+import { eligibilityGroup, useUser } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { useContext, useMemo } from "react";
@@ -44,7 +44,7 @@ export const EntityRow = ({
       <Td sx={sx.programInfo}>
         <ul>
           {programInfo.map((field, index) => (
-            <li key={index}>{renderHtml(field)}</li>
+            <li key={index}>{field}</li>
           ))}
         </ul>
         {!entityComplete && report?.reportType === "MLR" && (
