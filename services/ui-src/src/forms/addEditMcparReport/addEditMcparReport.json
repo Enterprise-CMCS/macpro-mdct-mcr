@@ -63,6 +63,7 @@
       "validation": "radio",
       "props": {
         "label": "Is your program a Primary Care Case Management (PCCM) entity?",
+        "hint": "If you designate the managed care program as a Primary Care Case Management Entity (PCCM-E), you are not required to complete the entire MCPAR Report. Please <a href='/help'>visit the “Get Help”</a> section for more information on how to complete the PCCM-E specific form.",
         "choices": [
           {
             "id": "yes_programIsPCCM",
