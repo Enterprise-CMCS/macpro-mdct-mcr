@@ -2,34 +2,49 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // utils
-import { mockStateUser, RouterWrappedComponent } from "utils/testing/setupJest";
-import { initAuthManager, useUser } from "utils";
+import {
+  mockStateUserStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
+import { initAuthManager, useStore, UserContext } from "utils";
 //components
 import { Timeout } from "components";
 import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 
+const mockLogout = jest.fn();
+const mockLoginWithIDM = jest.fn();
+const mockUpdateTimeout = jest.fn();
+const mockGetExpiration = jest.fn();
+
+const mockUser = {
+  ...mockStateUserStore,
+};
+
+const mockUserContext = {
+  user: undefined,
+  logout: mockLogout,
+  loginWithIDM: mockLoginWithIDM,
+  updateTimeout: mockUpdateTimeout,
+  getExpiration: mockGetExpiration,
+};
+
 const timeoutComponent = (
   <RouterWrappedComponent>
-    <Timeout />
+    <UserContext.Provider value={mockUserContext}>
+      <Timeout />
+    </UserContext.Provider>
   </RouterWrappedComponent>
 );
 
-const mockLogout = jest.fn();
-
-const mockUser = {
-  ...mockStateUser,
-  logout: mockLogout,
-};
-
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const spy = jest.spyOn(global, "setTimeout");
 
 describe("Test Timeout Modal", () => {
   beforeEach(async () => {
     jest.useFakeTimers();
-    mockedUseUser.mockReturnValue(mockUser);
+    mockedUseStore.mockReturnValue(mockUser);
     initAuthManager();
     await render(timeoutComponent);
   });
@@ -88,7 +103,7 @@ describe("Test Timeout Modal", () => {
 describe("Test Timeout Modal accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     initAuthManager();
-    mockedUseUser.mockReturnValue(mockUser);
+    mockedUseStore.mockReturnValue(mockUser);
     const { container } = render(timeoutComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

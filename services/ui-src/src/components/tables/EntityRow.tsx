@@ -4,7 +4,7 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import { eligibilityGroup, useUser } from "utils";
+import { eligibilityGroup, useStore } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { useContext, useMemo } from "react";
@@ -22,7 +22,7 @@ export const EntityRow = ({
 }: Props) => {
   const { report_programName, report_planName } = entity;
   const { report } = useContext(ReportContext);
-  const { userIsEndUser } = useUser().user ?? {};
+  const { userIsEndUser } = useStore().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const entityComplete = useMemo(() => {

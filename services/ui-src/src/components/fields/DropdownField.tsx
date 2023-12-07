@@ -10,7 +10,7 @@ import {
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
-  useUser,
+  useStore,
   convertDateUtcToEt,
 } from "utils";
 import {
@@ -41,7 +41,7 @@ export const DropdownField = ({
     useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-  const { full_name, state } = useUser().user ?? {};
+  const { full_name, state } = useStore().user ?? {};
 
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {

@@ -21,7 +21,7 @@ import {
   getEntriesToClear,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
-  useUser,
+  useStore,
 } from "utils";
 import {
   AnyObject,
@@ -37,7 +37,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name, state, userIsEndUser } = useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useStore().user ?? {};
   // make state
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined

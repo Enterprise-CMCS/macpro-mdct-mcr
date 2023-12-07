@@ -11,7 +11,7 @@ import {
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
-  useUser,
+  useStore,
 } from "utils";
 import {
   AnyObject,
@@ -45,7 +45,7 @@ export const ChoiceListField = ({
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
   const { full_name, state, userIsAdmin, userIsReadOnly } =
-    useUser().user ?? {};
+    useStore().user ?? {};
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();

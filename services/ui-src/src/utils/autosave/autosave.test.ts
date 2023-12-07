@@ -1,4 +1,4 @@
-import { mockStateUser } from "utils/testing/setupJest";
+import { mockStateUserStore } from "utils/testing/setupJest";
 import {
   autosaveFieldData,
   EntityContextShape,
@@ -18,8 +18,8 @@ const report = {
   updateReport: jest.fn().mockResolvedValue(true),
 };
 const user = {
-  userName: mockStateUser.user?.email,
-  state: mockStateUser.user?.state,
+  userName: mockStateUserStore.user?.email,
+  state: mockStateUserStore.user?.state,
 };
 
 const fields = [
