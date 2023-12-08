@@ -3,6 +3,8 @@ export const bannerId = "admin-banner-id";
 
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
+export const VAL_HOST_DOMAIN = "mdctmcrval.cms.gov";
+export const DEV_HOST_DOMAIN = "mdctmcrdev.cms.gov";
 
 // FIELDS
 export const dropdownDefaultOptionText = "- Select an option -";

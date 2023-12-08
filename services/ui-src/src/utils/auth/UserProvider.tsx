@@ -12,6 +12,11 @@ import config from "config";
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
 // types
 import { MCRUser, UserContextShape, UserRoles } from "types/users";
+import {
+  DEV_HOST_DOMAIN,
+  PRODUCTION_HOST_DOMAIN,
+  VAL_HOST_DOMAIN,
+} from "../../constants";
 
 export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
@@ -30,7 +35,12 @@ const authenticateWithIDM = async () => {
 
 export const UserProvider = ({ children }: Props) => {
   const location = useLocation();
-  const idmLoginOnly = window.location.hostname.includes(".cms.gov");
+  const idmExclusiveDomains = [
+    PRODUCTION_HOST_DOMAIN,
+    VAL_HOST_DOMAIN,
+    DEV_HOST_DOMAIN,
+  ];
+  const idmLoginOnly = idmExclusiveDomains.includes(window.location.hostname);
 
   // state management
   const { user, showLocalLogins, setUser, setShowLocalLogins } = useStore();
