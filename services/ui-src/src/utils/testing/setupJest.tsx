@@ -70,7 +70,5 @@ export * from "./mockLaunchDarkly";
 export * from "./mockReport";
 // ROUTER
 export * from "./mockRouter";
-// USERS
-export * from "./mockUsers";
 // STATE MANAGEMENT (ZUSTAND)
 export * from "./mockZustand";

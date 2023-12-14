@@ -4,7 +4,7 @@ import { Modal, ReportContext } from "components";
 import { useContext, useState } from "react";
 // types
 import { AnyObject, EntityShape, ReportStatus } from "types";
-import { useUser } from "utils";
+import { useStore } from "utils";
 
 export const DeleteEntityModal = ({
   entityType,
@@ -13,7 +13,7 @@ export const DeleteEntityModal = ({
   modalDisclosure,
 }: Props) => {
   const { report, updateReport } = useContext(ReportContext);
-  const { full_name } = useUser().user ?? {};
+  const { full_name } = useStore().user ?? {};
   const [deleting, setDeleting] = useState<boolean>(false);
 
   const deleteProgramHandler = async () => {

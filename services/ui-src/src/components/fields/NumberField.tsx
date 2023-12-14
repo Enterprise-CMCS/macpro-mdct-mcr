@@ -12,7 +12,7 @@ import {
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
-  useUser,
+  useStore,
   makeStringParseableForDatabase,
 } from "utils";
 import { InputChangeEvent, AnyObject } from "types";
@@ -33,7 +33,7 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
-  const { full_name, state } = useUser().user ?? {};
+  const { full_name, state } = useStore().user ?? {};
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);

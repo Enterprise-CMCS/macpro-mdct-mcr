@@ -82,3 +82,15 @@ function isEntity(rootKey: string): rootKey is keyof typeof McparFieldsToCopy {
 function nonEmptyObject(obj: AnyObject) {
   return Object.keys(obj).length > 0;
 }
+
+export function makePCCMModifications(fieldData: any) {
+  // Section C.I, Question C1.I.3 Program type; select PCCM option
+  fieldData.program_type = [
+    {
+      key: "program_type-atiwcA9QUE2eoTchV2ZLtw", // pragma: allowlist secret
+      value: "Primary Care Case Management (PCCM) Entity",
+    },
+  ];
+
+  return fieldData;
+}

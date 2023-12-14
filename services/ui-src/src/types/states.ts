@@ -1,4 +1,14 @@
-import { AdminBannerData } from "types";
+import { AdminBannerData, MCRUser } from "types";
+
+// initial user state
+export interface McrUserState {
+  // INITIAL STATE
+  user?: MCRUser;
+  showLocalLogins: boolean | undefined;
+  // ACTIONS
+  setUser: (newUser?: MCRUser) => void;
+  setShowLocalLogins: (showLocalLogins: boolean) => void;
+}
 
 // initial admin banner state
 export interface AdminBannerState {
