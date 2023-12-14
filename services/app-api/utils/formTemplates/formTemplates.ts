@@ -308,5 +308,27 @@ export const generatePCCMTemplate = (originalReportTemplate: any) => {
     }
   }
 
+  // make additional form modifications as necessary
+  makePCCMTemplateModifications(reportTemplate);
+
   return reportTemplate;
+};
+
+const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
+  // Find Section C.I
+  const sectionC = reportTemplate.routes.find(
+    (route: ReportRoute) => route.name === "C: Program-Level Indicators"
+  );
+
+  if (sectionC) {
+    // Find Question C1.I.3 Program type in Section C.I
+    const questionC1I3 = sectionC.children?.[0].form?.fields?.find(
+      (field) => field.id === "program_type"
+    );
+
+    if (questionC1I3) {
+      // Disable the field
+      questionC1I3.props!.disabled = true;
+    }
+  }
 };
