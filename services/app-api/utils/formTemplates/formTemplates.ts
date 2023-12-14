@@ -308,5 +308,18 @@ export const generatePCCMTemplate = (originalReportTemplate: any) => {
     }
   }
 
+  // make additional form modifications as necessary
+  makePCCMTemplateModifications(reportTemplate);
+
   return reportTemplate;
+};
+
+const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
+  // Find Question C1.I.3 Program type in Section C.I and disable it
+  const programTypeQuestion =
+    reportTemplate.routes[2].children![0].form!.fields[3];
+  if (programTypeQuestion.id !== "program_type") {
+    throw new Error("Update PCCM logic!");
+  }
+  programTypeQuestion.props!.disabled = true;
 };

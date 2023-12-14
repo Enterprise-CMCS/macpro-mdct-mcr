@@ -24,6 +24,8 @@ jest.mock("../../utils/debugging/debug-lib", () => ({
   flush: jest.fn(),
 }));
 
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
@@ -57,6 +59,33 @@ const creationEvent: APIGatewayProxyEvent = {
       lastAlteredBy: "Thelonious States",
       fieldDataId: "mockReportFieldData",
       formTemplateId: "mockReportJson",
+    },
+  }),
+};
+
+const createPccmEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    fieldData: {
+      stateName: "Alabama",
+    },
+    metadata: {
+      reportType: "MCPAR",
+      programName: "testProgram",
+      status: "Not started",
+      reportingPeriodStartDate: 162515200000,
+      reportingPeriodEndDate: 168515200000,
+      dueDate: 168515200000,
+      combinedData: false,
+      lastAlteredBy: "Thelonious States",
+      fieldDataId: "mockReportFieldData",
+      formTemplateId: "mockReportJson",
+      programIsPCCM: [
+        {
+          value: "Yes",
+          key: "programIsPCCM-yes_programIsPCCM",
+        },
+      ],
     },
   }),
 };
@@ -204,6 +233,37 @@ describe("Test createReport API method", () => {
       body.fieldData.state_statewideMedicaidManagedCareEnrollment
     ).toBeUndefined();
     expect(body.fieldData.bssEntities).toBeUndefined();
+    expect(body.fieldData.programName).toBeUndefined();
+    expect(body.fieldData.plans).toBeUndefined();
+  });
+
+  test("Test successful run of PCCM report creation, not copied", async () => {
+    const res = await createReport(createPccmEvent, null);
+
+    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(body.status).toContain("Not started");
+    expect(body.fieldDataId).toBeDefined;
+    expect(body.formTemplateId).toBeDefined;
+    expect(body.formTemplateId).not.toEqual(
+      mockMcparReport.metadata.formTemplateId
+    );
+    expect(body.programIsPCCM).toEqual([
+      {
+        value: "Yes",
+        key: "programIsPCCM-yes_programIsPCCM",
+      },
+    ]);
+    expect(body.fieldData.stateName).toBe("Alabama");
+    expect(body.formTemplate.validationJson).toMatchObject({
+      stateName: "text",
+    });
+    expect(body.fieldData.plans).toBeUndefined();
+    expect(body.fieldData.sanctions).toBeUndefined();
+    expect(body.fieldData.state_statewideMedicaidEnrollment).toBeUndefined();
+    expect(
+      body.fieldData.state_statewideMedicaidManagedCareEnrollment
+    ).toBeUndefined();
     expect(body.fieldData.programName).toBeUndefined();
     expect(body.fieldData.plans).toBeUndefined();
   });
