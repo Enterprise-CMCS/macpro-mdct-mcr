@@ -316,5 +316,10 @@ export const generatePCCMTemplate = (originalReportTemplate: any) => {
 
 const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   // Find Question C1.I.3 Program type in Section C.I and disable it
-  reportTemplate.routes[2].children![0].form!.fields[3].props!.disabled = true;
+  const programTypeQuestion =
+    reportTemplate.routes[2].children![0].form!.fields[3];
+  if (programTypeQuestion.id !== "program_type") {
+    throw new Error("Update PCCM logic!");
+  }
+  programTypeQuestion.props!.disabled = true;
 };
