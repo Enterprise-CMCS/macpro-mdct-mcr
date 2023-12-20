@@ -14,7 +14,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.7.0",
+    "@chakra-ui/react": "^2.8.2",
     "@cmsgov/design-system": "^3.8.0",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
