@@ -40,7 +40,7 @@
     "react-router-dom": "6.0.2",
     "react-scripts": "^5.0.0",
     "react-uuid": "^1.0.3",
-    "sass": "^1.37.5",
+    "sass": "^1.69.5",
     "yup": "^0.32.11",
     "zustand": "^4.4.6"
   },
