@@ -7,11 +7,11 @@ import { TemplateCard } from "components";
 // utils
 import {
   mockLDFlags,
-  mockStateUser,
-  mockStateUserNoReports,
+  mockStateUserStore,
+  mockStateUserStoreNoReports,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useUser } from "utils";
+import { useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -23,8 +23,8 @@ jest.mock("utils/other/useBreakpoint", () => ({
   })),
 }));
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockUseNavigate = jest.fn();
 
@@ -79,7 +79,7 @@ describe("Test MCPAR TemplateCard", () => {
   });
 
   test("MCPAR TemplateCard navigates to next route on link click", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const templateCardLink = screen.getByText(mcparTemplateVerbiage.link.text)!;
     await userEvent.click(templateCardLink);
     const expectedRoute = mcparTemplateVerbiage.link.route;
@@ -87,7 +87,7 @@ describe("Test MCPAR TemplateCard", () => {
   });
 
   test("'Enter MCPAR' button is disabled for user with no access to this report", async () => {
-    mockedUseUser.mockReturnValue(mockStateUserNoReports);
+    mockedUseStore.mockReturnValue(mockStateUserStoreNoReports);
     const templateCardLink = screen.getByText(mcparTemplateVerbiage.link.text)!;
     expect(templateCardLink).toBeDisabled;
   });

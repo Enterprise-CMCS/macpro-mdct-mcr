@@ -1,4 +1,4 @@
-import { FormJson, ModalOverlayReportPageShape } from "./formFields";
+import { Choice, FormJson, ModalOverlayReportPageShape } from "./formFields";
 import { AnyObject, CompletionData, CustomHtmlElement, State } from "./other";
 
 // REPORT STRUCTURE
@@ -120,7 +120,6 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
 // REPORT METADATA
 
 export interface ReportMetadata {
-  archived: boolean;
   reportType: string;
   submittedBy?: string;
   createdAt: number;
@@ -134,14 +133,15 @@ export interface ReportMetadata {
   status: string;
   isComplete: boolean;
   completionStatus?: CompletionData;
+  previousRevisions: string[];
+  submissionCount: number;
+  locked: boolean;
+  archived?: boolean;
 }
 
 export interface MLRReportMetadata extends ReportMetadata {
-  locked: boolean;
   reportType: "MLR";
   submissionName: string;
-  submissionCount: number;
-  previousRevisions: string[];
 }
 
 export interface MCPARReportMetadata extends ReportMetadata {
@@ -151,24 +151,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   reportingPeriodEndDate: number;
   dueDate: number;
   combinedData: boolean;
-}
-
-/**
- * Type guard to perform run-time checks on report types.
- *
- * Use this function on data retrieved from Dynamo allow your data to be safely typed.
- * @param report any report type
- * @returns
- */
-export function isMLRReportMetadata(
-  report: unknown
-): report is MLRReportMetadata {
-  return (
-    (report as MLRReportMetadata).reportType === "MLR" &&
-    (report as MLRReportMetadata).locked !== undefined &&
-    (report as MLRReportMetadata).submissionCount !== undefined &&
-    (report as MLRReportMetadata).previousRevisions !== undefined
-  );
+  programIsPCCM: Choice[];
 }
 
 export enum ReportType {

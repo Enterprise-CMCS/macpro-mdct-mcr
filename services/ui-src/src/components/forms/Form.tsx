@@ -17,7 +17,7 @@ import {
   hydrateFormFields,
   mapValidationTypesToSchema,
   sortFormErrors,
-  useUser,
+  useStore,
 } from "utils";
 import {
   AnyObject,
@@ -26,7 +26,6 @@ import {
   isFieldElement,
   FormLayoutElement,
   ReportStatus,
-  ReportType,
 } from "types";
 import { ReportContext } from "components/reports/ReportProvider";
 
@@ -45,13 +44,12 @@ export const Form = ({
   const { fields, options } = formJson;
 
   // determine if fields should be disabled (based on admin roles )
-  const { userIsAdmin, userIsReadOnly } = useUser().user ?? {};
+  const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
   const { report } = useContext(ReportContext);
   let location = useLocation();
   const fieldInputDisabled =
     ((userIsAdmin || userIsReadOnly) && !formJson.editableByAdmins) ||
-    (report?.status === ReportStatus.SUBMITTED &&
-      report?.reportType === ReportType.MLR);
+    report?.status === ReportStatus.SUBMITTED;
 
   // create validation schema
   const formValidationJson = compileValidationJsonFromFields(

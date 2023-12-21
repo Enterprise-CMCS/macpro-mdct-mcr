@@ -17,8 +17,8 @@ import {
   DynamoGet,
   DynamoWrite,
   FormJson,
-  isMLRReportMetadata,
-  MLRReportMetadata,
+  ReportMetadata,
+  ReportType,
   S3Get,
   S3Put,
   StatusCodes,
@@ -27,7 +27,7 @@ import {
 import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 /**
- * Locked MLR reports can be released by admins.
+ * Locked reports can be released by admins.
  *
  * When reports are released:
  *
@@ -85,16 +85,9 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
-  const metadata = reportMetadata.Item;
+  const metadata = reportMetadata.Item as ReportMetadata;
 
-  // Non MLR reports cannot be released.
-  if (!isMLRReportMetadata(metadata)) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
-  }
-
+  // check if report is locked
   const isLocked = metadata.locked;
 
   // Report is not locked.
@@ -107,6 +100,7 @@ export const releaseReport = handler(async (event) => {
     };
   }
 
+  // check if report is archived
   const isArchived = metadata.archived;
 
   if (isArchived) {
@@ -162,17 +156,19 @@ export const releaseReport = handler(async (event) => {
     "versionControlDescription-otherText": null,
   };
 
-  const newReportMetadata: MLRReportMetadata = {
+  const newReportMetadata: ReportMetadata = {
     ...metadata,
     fieldDataId: newFieldDataId,
-    locked: false,
-    previousRevisions,
     status: "In progress",
+    locked: false,
     completionStatus: await calculateCompletionStatus(
       updatedFieldData,
       formTemplate
     ),
-    isComplete: false,
+    isComplete: reportType === ReportType.MLR ? false : true,
+    archived: isArchived,
+    submissionCount: metadata.submissionCount,
+    previousRevisions,
   };
 
   const putReportMetadataParams: DynamoWrite = {

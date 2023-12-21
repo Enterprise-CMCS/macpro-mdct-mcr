@@ -5,19 +5,30 @@ import { axe } from "jest-axe";
 //components
 import { AddEditReportModal, ReportContext } from "components";
 import {
+  mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
+  mockMlrReport,
+  mockMlrReportContext,
   RouterWrappedComponent,
-  mockLDFlags,
 } from "utils/testing/setupJest";
+import { convertDateUtcToEt } from "utils";
 
 const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
 const mockFetchReportsByState = jest.fn();
 const mockCloseHandler = jest.fn();
 
-const mockedReportContext = {
+const mockedMcparReportContext = {
   ...mockMcparReportContext,
+  createReport: mockCreateReport,
+  updateReport: mockUpdateReport,
+  fetchReportsByState: mockFetchReportsByState,
+  isReportPage: true,
+};
+
+const mockedMlrReportContext = {
+  ...mockMlrReportContext,
   createReport: mockCreateReport,
   updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
@@ -26,7 +37,7 @@ const mockedReportContext = {
 
 const modalComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockedMcparReportContext}>
       <AddEditReportModal
         activeState="AB"
         selectedReport={undefined}
@@ -40,12 +51,28 @@ const modalComponent = (
   </RouterWrappedComponent>
 );
 
+// a similar assignment is performed in DashboardPage and is needed here to make sure the modal form hydrates
+const mockSelectedMcparReport = {
+  ...mockMcparReport,
+  fieldData: {
+    programName: mockMcparReport.programName,
+    reportingPeriodEndDate: convertDateUtcToEt(
+      mockMcparReport.reportingPeriodEndDate
+    ),
+    reportingPeriodStartDate: convertDateUtcToEt(
+      mockMcparReport.reportingPeriodStartDate
+    ),
+    combinedData: mockMcparReport.combinedData,
+    programIsPCCM: mockMcparReport?.programIsPCCM,
+  },
+};
+
 const modalComponentWithSelectedReport = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockedMcparReportContext}>
       <AddEditReportModal
         activeState="AB"
-        selectedReport={mockMcparReport}
+        selectedReport={mockSelectedMcparReport}
         reportType={"MCPAR"}
         modalDisclosure={{
           isOpen: true,
@@ -58,7 +85,7 @@ const modalComponentWithSelectedReport = (
 
 const mlrModalComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockedMlrReportContext}>
       <AddEditReportModal
         activeState="AB"
         selectedReport={undefined}
@@ -74,10 +101,10 @@ const mlrModalComponent = (
 
 const mlrModalComponentWithSelectedReport = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={mockedMlrReportContext}>
       <AddEditReportModal
         activeState="AB"
-        selectedReport={mockMcparReport}
+        selectedReport={mockMlrReport}
         reportType={"MLR"}
         modalDisclosure={{
           isOpen: true,
@@ -129,6 +156,10 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     await userEvent.type(startDateField, "1/1/2022");
     const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
     await userEvent.type(endDateField, "12/31/2022");
+    const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+    if (!isPccmNo.disabled) {
+      await userEvent.click(isPccmNo);
+    }
     const submitButton = screen.getByRole("button", { name: "Save" });
     await userEvent.click(submitButton);
   };
@@ -149,14 +180,43 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  test("Editing an existing report", async () => {
+  test("Edit modal hydrates with report info and disables fields", async () => {
     mockLDFlags.setDefault({ yoyCopy: true });
     const result = await render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
     const copyFieldDataSourceId = form.querySelector(
       "[name='copyFieldDataSourceId']"
     )!;
+    const programIsPCCMField = form.querySelectorAll("[name='programIsPCCM']")!;
+    // yoy copy and pccm fields are disabled
     expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+    expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
+    expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
+    // hydrated values are in the modal
+    const programNameField = form.querySelector("[name='programName']")!;
+    const startDateField = form.querySelector(
+      "[name='reportingPeriodStartDate']"
+    )!;
+    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
+    expect(programNameField).toHaveProperty(
+      "value",
+      mockMcparReport.programName
+    );
+    expect(startDateField).toHaveProperty(
+      "value",
+      convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
+    );
+    expect(endDateField).toHaveProperty(
+      "value",
+      convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
+    );
+    userEvent.click(screen.getByText("Cancel"));
+  });
+
+  test("Editing an existing report", async () => {
+    mockLDFlags.setDefault({ yoyCopy: true });
+    const result = await render(modalComponentWithSelectedReport);
+    const form = result.getByTestId("add-edit-report-form");
     await fillForm(form);
     await expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     await expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);

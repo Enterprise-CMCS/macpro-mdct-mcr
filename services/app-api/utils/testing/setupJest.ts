@@ -152,6 +152,12 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   reportingPeriodEndDate: 168515200000,
   dueDate: 168515200000,
   combinedData: false,
+  programIsPCCM: [
+    {
+      key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
   lastAlteredBy: "Thelonious States",
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
@@ -164,6 +170,9 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   archived: false,
   submittedBy: "",
   submittedOnDate: "",
+  submissionCount: 0,
+  locked: false,
+  previousRevisions: [],
 };
 
 export const mockDynamoDataMLRComplete: MLRReportMetadata = {
@@ -225,6 +234,12 @@ export const mockMcparReport = {
     reportingPeriodEndDate: 168515200000,
     dueDate: 168515200000,
     combinedData: false,
+    programIsPCCM: [
+      {
+        key: "programIsPCCM-no_programIsNotPCCM",
+        value: "No",
+      },
+    ],
     lastAlteredBy: "Thelonious States",
     fieldDataId: "mockReportFieldData",
     formTemplateId: "mockReportJson",

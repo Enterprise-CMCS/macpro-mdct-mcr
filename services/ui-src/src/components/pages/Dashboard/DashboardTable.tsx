@@ -2,12 +2,7 @@
 import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
 // utils
-import {
-  AnyObject,
-  ReportMetadataShape,
-  ReportType,
-  TableContentShape,
-} from "types";
+import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -51,15 +46,10 @@ export const DashboardTable = ({
         <Td>{report?.lastAlteredBy || "-"}</Td>
         {/* Report Status */}
         <Td>
-          {getStatus(
-            reportType as ReportType,
-            report.status,
-            report.archived,
-            report.submissionCount
-          )}
+          {getStatus(report.status, report.archived, report.submissionCount)}
         </Td>
-        {/* MLR-ONLY: Submission count */}
-        {reportType === "MLR" && isAdmin && (
+        {/* ADMIN ONLY: Submission count */}
+        {isAdmin && (
           <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
         )}
         {/* Action Buttons */}
@@ -81,16 +71,14 @@ export const DashboardTable = ({
         </Td>
         {isAdmin && (
           <>
-            {reportType === "MLR" && (
-              <AdminReleaseButton
-                report={report}
-                reportType={reportType}
-                reportId={reportId}
-                releaseReport={releaseReport}
-                releasing={releasing}
-                sxOverride={sxOverride}
-              />
-            )}
+            <AdminReleaseButton
+              report={report}
+              reportType={reportType}
+              reportId={reportId}
+              releaseReport={releaseReport}
+              releasing={releasing}
+              sxOverride={sxOverride}
+            />
             <AdminArchiveButton
               report={report}
               reportType={reportType}
@@ -126,7 +114,6 @@ interface DashboardTableProps {
 }
 
 export const getStatus = (
-  reportType: ReportType,
   status: string,
   archived?: boolean,
   submissionCount?: number
@@ -134,14 +121,12 @@ export const getStatus = (
   if (archived) {
     return `Archived`;
   }
-  if (reportType === "MLR") {
-    if (
-      submissionCount &&
-      submissionCount >= 1 &&
-      !status.includes("Submitted")
-    ) {
-      return `In revision`;
-    }
+  if (
+    submissionCount &&
+    submissionCount >= 1 &&
+    !status.includes("Submitted")
+  ) {
+    return `In revision`;
   }
   return status;
 };

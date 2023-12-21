@@ -7,27 +7,23 @@ import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 import { ReportStatus } from "types";
 // utils
 import {
-  mockAdminUser,
-  mockLDFlags,
+  mockAdminUserStore,
   mockMcparReport,
   mockMcparReportContext,
-  mockMlrReportContext,
-  mockStateUser,
+  mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
-import { useUser } from "utils";
+import { useStore } from "utils";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
-
-mockLDFlags.setDefault({ pdfExport: false });
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 describe("MCPAR Review and Submit Page Functionality", () => {
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -52,7 +48,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
-      mockedUseUser.mockReturnValue(mockAdminUser);
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_NotStarted);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -96,7 +92,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
-      mockedUseUser.mockReturnValue(mockAdminUser);
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_Unfilled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -211,7 +207,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users see form is filled but can not submit the form", () => {
-      mockedUseUser.mockReturnValue(mockAdminUser);
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_Filled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -245,38 +241,13 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
     </RouterWrappedComponent>
   );
 
-  const MlrReviewSubmitPage_InProgress = (
-    <RouterWrappedComponent>
-      <ReportContext.Provider value={mockMlrReportContext}>
-        <ReviewSubmitPage />
-      </ReportContext.Provider>
-    </RouterWrappedComponent>
-  );
-
   describe("When loading an in-progress report", () => {
-    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
-      mockLDFlags.set({ pdfExport: true });
+    it("Review PDF button should be visible and correctly formed", async () => {
       render(McparReviewSubmitPage_InProgress);
       const printButton = screen.getByText("Review PDF");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");
-    });
-
-    it("if pdfExport flag is true and type is MLR, Review PDF button should be visible and correctly formed", async () => {
-      mockLDFlags.set({ pdfExport: true });
-      render(MlrReviewSubmitPage_InProgress);
-      const printButton = screen.getByText("Review PDF");
-      expect(printButton).toBeVisible();
-      expect(printButton.getAttribute("href")).toEqual("/mlr/export");
-      expect(printButton.getAttribute("target")).toEqual("_blank");
-    });
-
-    it("if pdfExport flag is false, Review PDF button should not render", async () => {
-      mockLDFlags.set({ pdfExport: false });
-      render(McparReviewSubmitPage_InProgress);
-      const printButton = screen.queryByText("Review PDF");
-      expect(printButton).not.toBeInTheDocument();
     });
   });
 
@@ -298,20 +269,12 @@ describe("MCPAR Review and Submit Page - Launch Darkly", () => {
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
-    it("if pdfExport flag is true, Review PDF button should be visible and correctly formed", async () => {
-      mockLDFlags.set({ pdfExport: true });
+    it("Review PDF button should be visible and correctly formed", async () => {
       render(McparReviewSubmitPage_Submitted);
       const printButton = screen.getByRole("link");
       expect(printButton).toBeVisible();
       expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
       expect(printButton.getAttribute("target")).toEqual("_blank");
-    });
-
-    it("if pdfExport flag is false, Review PDF button should not render", async () => {
-      mockLDFlags.set({ pdfExport: false });
-      render(McparReviewSubmitPage_Submitted);
-      const printButton = screen.queryByText("Review PDF");
-      expect(printButton).not.toBeInTheDocument();
     });
   });
 });

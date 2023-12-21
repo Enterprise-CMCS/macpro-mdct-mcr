@@ -15,10 +15,11 @@ import {
   filterFormData,
   getFormattedEntityData,
   createRepeatedFields,
-  useUser,
+  useStore,
   entityWasUpdated,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
+  resetClearProp,
 } from "utils";
 // types
 import {
@@ -32,7 +33,7 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
-  const { full_name, state, userIsEndUser } = useUser().user ?? {};
+  const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -69,6 +70,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const closeAddEditEntityModal = () => {
     setSelectedEntity(undefined);
+    resetClearProp(modalForm.fields);
     addEditEntityModalOnCloseHandler();
   };
 
@@ -103,6 +105,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const closeDrawer = () => {
     setSelectedEntity(undefined);
+    resetClearProp(drawerForm.fields);
     drawerOnCloseHandler();
   };
 

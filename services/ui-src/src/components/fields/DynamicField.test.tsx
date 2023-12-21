@@ -6,21 +6,21 @@ import { FormProvider, useForm } from "react-hook-form";
 //components
 import { DynamicField, ReportContext } from "components";
 // utils
-import { useUser } from "utils";
+import { useStore } from "utils";
 import {
   mockReportKeys,
   mockMcparReport,
   mockMcparReportContext,
   mockSanctionsEntity,
-  mockStateUser,
+  mockStateUserStore,
   mockQualityMeasuresEntity,
-  mockAdminUser,
-  mockStateRep,
+  mockAdminUserStore,
+  mockStateRepStore,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -106,7 +106,7 @@ const dynamicFieldComponent = (hydrationValue?: any) => (
 
 describe("Test DynamicField component", () => {
   beforeEach(async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dynamicFieldComponent());
     });
@@ -231,7 +231,7 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
   });
 
   it("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
@@ -243,11 +243,11 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
     await userEvent.click(deleteButton);
 
     expect(mockUpdateReport).toHaveBeenCalledWith(
-      { ...mockReportKeys, state: mockStateUser.user?.state },
+      { ...mockReportKeys, state: mockStateUserStore.user?.state },
       {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateUser.user?.full_name,
+          lastAlteredBy: mockStateUserStore.user?.full_name,
         },
         fieldData: {
           plans: [
@@ -283,7 +283,7 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
   });
 
   it("Deletes entity and associated sanctions and quality measure responses if state rep", async () => {
-    mockedUseUser.mockReturnValue(mockStateRep);
+    mockedUseStore.mockReturnValue(mockStateRepStore);
     render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
@@ -295,11 +295,11 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
     await userEvent.click(deleteButton);
 
     expect(mockUpdateReport).toHaveBeenCalledWith(
-      { ...mockReportKeys, state: mockStateRep.user?.state },
+      { ...mockReportKeys, state: mockStateRepStore.user?.state },
       {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateRep.user?.full_name,
+          lastAlteredBy: mockStateRepStore.user?.full_name,
         },
         fieldData: {
           plans: [
@@ -335,7 +335,7 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
   });
 
   test("Admin users can't delete plans", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
@@ -361,7 +361,7 @@ describe("Test typing into DynamicField component", () => {
 describe("Test DynamicField Autosave Functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
   });
 
   test("Autosaves when state user", async () => {

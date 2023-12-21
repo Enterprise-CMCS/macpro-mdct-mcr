@@ -1,4 +1,4 @@
-name: Sync Security Hub findings and Jira issues
+name: Scan and Open Jira Tickets (AWS Security Hub)
 
 on:
   workflow_dispatch: # for testing and manual runs
@@ -20,16 +20,14 @@ jobs:
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
-
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.5
         with:
-          jira-token: ${{ secrets.JIRA_SERVICE_USER_TOKEN }}
-          jira-username: ${{ secrets.JIRA_SERVICE_USERNAME }}
-          jira-host: qmacbis.atlassian.net
-          jira-project-key: MDCT
-          jira-epic-key: MDCT-2280
+          jira-username: "mdct_github_service_account"
+          jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
+          jira-host: jiraent.cms.gov
+          jira-project-key: CMDCT
           jira-ignore-statuses: Done, Closed, Canceled
-          jira-custom-fields: '{ "customfield_14154" : [{"id": "16958", "value": "MCR"}] }'
+          jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40104", "value": "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
-          assign-jira-ticket-to: ${{ secrets.ACCOUNT_ID_REHMAN }}
+          assign-jira-ticket-to: "MWTW"

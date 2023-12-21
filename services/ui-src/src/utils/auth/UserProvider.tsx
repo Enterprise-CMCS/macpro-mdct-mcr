@@ -4,13 +4,12 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useState,
 } from "react";
 import { useLocation } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import config from "config";
 // utils
-import { initAuthManager, updateTimeout, getExpiration } from "utils";
+import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
 import { MCRUser, UserContextShape, UserRoles } from "types/users";
@@ -34,15 +33,15 @@ export const UserProvider = ({ children }: Props) => {
   const location = useLocation();
   const isProduction = window.location.origin.includes(PRODUCTION_HOST_DOMAIN);
 
-  const [user, setUser] = useState<any>(null);
-  const [showLocalLogins, setShowLocalLogins] = useState(false);
+  // state management
+  const { user, showLocalLogins, setUser, setShowLocalLogins } = useStore();
 
   // initialize the authentication manager that oversees timeouts
   initAuthManager();
 
   const logout = useCallback(async () => {
     try {
-      setUser(null);
+      setUser(undefined);
       await Auth.signOut();
       localStorage.clear();
     } catch (error) {
@@ -107,24 +106,6 @@ export const UserProvider = ({ children }: Props) => {
       }
     }
   }, [isProduction, location]);
-
-  // single run configuration
-  useEffect(() => {
-    Auth.configure({
-      mandatorySignIn: true,
-      region: config.cognito.REGION,
-      userPoolId: config.cognito.USER_POOL_ID,
-      identityPoolId: config.cognito.IDENTITY_POOL_ID,
-      userPoolWebClientId: config.cognito.APP_CLIENT_ID,
-      oauth: {
-        domain: config.cognito.APP_CLIENT_DOMAIN,
-        redirectSignIn: config.cognito.REDIRECT_SIGNIN,
-        redirectSignOut: config.cognito.REDIRECT_SIGNOUT,
-        scope: ["email", "openid", "profile"],
-        responseType: "code",
-      },
-    });
-  }, []);
 
   // rerender on auth state change, checking router location
   useEffect(() => {

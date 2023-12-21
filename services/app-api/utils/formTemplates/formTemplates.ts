@@ -34,6 +34,24 @@ export async function getNewestTemplateVersion(reportType: ReportType) {
   return result.Items?.[0];
 }
 
+export async function getTemplateVersionByHash(
+  reportType: ReportType,
+  hash: string
+) {
+  const queryParams: QueryInput = {
+    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    IndexName: "HashIndex",
+    KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
+    Limit: 1,
+    ExpressionAttributeValues: {
+      ":md5Hash": hash as AttributeValue,
+      ":reportType": reportType as unknown as AttributeValue,
+    },
+  };
+  const result = await dynamodbLib.query(queryParams);
+  return result.Items?.[0];
+}
+
 export const formTemplateForReportType = (reportType: ReportType) => {
   switch (reportType) {
     case ReportType.MCPAR:
@@ -54,25 +72,31 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 
 export async function getOrCreateFormTemplate(
   reportBucket: string,
-  reportType: ReportType
+  reportType: ReportType,
+  isProgramPCCM: boolean
 ) {
-  const currentFormTemplate = formTemplateForReportType(reportType);
+  let currentFormTemplate = formTemplateForReportType(reportType);
+  if (isProgramPCCM) {
+    currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
+  }
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
 
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
     .digest("hex");
 
-  const mostRecentTemplateVersion = await getNewestTemplateVersion(reportType);
-  const mostRecentTemplateVersionHash = mostRecentTemplateVersion?.md5Hash;
+  const matchingTemplateMetadata = await getTemplateVersionByHash(
+    reportType,
+    currentTemplateHash
+  );
 
-  if (currentTemplateHash === mostRecentTemplateVersionHash) {
+  if (matchingTemplateMetadata) {
     return {
       formTemplate: await getTemplate(
         reportBucket,
-        getFormTemplateKey(mostRecentTemplateVersion?.id)
+        getFormTemplateKey(matchingTemplateMetadata?.id)
       ),
-      formTemplateVersion: mostRecentTemplateVersion,
+      formTemplateVersion: matchingTemplateMetadata,
     };
   } else {
     const newFormTemplateId = KSUID.randomSync().string;
@@ -92,10 +116,12 @@ export async function getOrCreateFormTemplate(
       throw err;
     }
 
+    const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
+
     // If we didn't find any form templates, start version at 1.
     const newFormTemplateVersionItem: FormTemplate = {
-      versionNumber: mostRecentTemplateVersion?.versionNumber
-        ? (mostRecentTemplateVersion.versionNumber += 1)
+      versionNumber: newestTemplateMetadata?.versionNumber
+        ? (newestTemplateMetadata.versionNumber += 1)
         : 1,
       md5Hash: currentTemplateHash,
       id: newFormTemplateId,
@@ -244,3 +270,56 @@ export function getValidationFromFormTemplate(reportJson: ReportJson) {
 export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
   return Object.keys(getValidationFromFormTemplate(reportJson));
 }
+
+const routesToIncludeInPCCM = {
+  "A: Program Information": [
+    "Point of Contact",
+    "Reporting Period",
+    "Add Plans",
+  ],
+  "B: State-Level Indicators": ["I: Program Characteristics"],
+  "C: Program-Level Indicators": ["I: Program Characteristics"],
+  "D: Plan-Level Indicators": ["I: Program Characteristics", "VIII: Sanctions"],
+  "Review & Submit": [],
+} as { [key: string]: string[] };
+
+const entitiesToIncludeInPCCM = ["plans", "sanctions"];
+
+export const generatePCCMTemplate = (originalReportTemplate: any) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
+  // remove top level sections not in include list
+  reportTemplate.routes = reportTemplate.routes.filter(
+    (route: ReportRoute) => !!routesToIncludeInPCCM[route.name]
+  );
+
+  // only include listed subsections
+  for (let route of reportTemplate.routes) {
+    if (route?.children) {
+      route.children = route.children.filter((childRoute: ReportRoute) =>
+        routesToIncludeInPCCM[route.name].includes(childRoute.name)
+      );
+    }
+  }
+
+  // Any entity not in the allow list must be removed.
+  for (let entityType of Object.keys(reportTemplate.entities)) {
+    if (!entitiesToIncludeInPCCM.includes(entityType)) {
+      delete reportTemplate.entities[entityType];
+    }
+  }
+
+  // make additional form modifications as necessary
+  makePCCMTemplateModifications(reportTemplate);
+
+  return reportTemplate;
+};
+
+const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
+  // Find Question C1.I.3 Program type in Section C.I and disable it
+  const programTypeQuestion =
+    reportTemplate.routes[2].children![0].form!.fields[3];
+  if (programTypeQuestion.id !== "program_type") {
+    throw new Error("Update PCCM logic!");
+  }
+  programTypeQuestion.props!.disabled = true;
+};

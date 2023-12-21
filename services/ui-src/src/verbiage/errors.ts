@@ -4,6 +4,7 @@ export const bannerErrors = {
     "Current banner could not be replaced. Please contact support.",
   DELETE_BANNER_FAILED:
     "Current banner could not be deleted. Please contact support.",
+  CREATE_BANNER_FAILED: "Could not create a banner. Please contact support.",
 };
 
 export const validationErrors = {

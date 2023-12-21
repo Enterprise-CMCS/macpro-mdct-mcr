@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
@@ -11,7 +11,7 @@ import {
   getAutosaveFields,
   labelTextWithOptional,
   parseCustomHtml,
-  useUser,
+  useStore,
 } from "utils";
 import {
   AnyObject,
@@ -40,14 +40,12 @@ export const ChoiceListField = ({
 }: Props) => {
   const defaultValue: Choice[] = [];
   const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
-  const [lastDatabaseValue, setLastDatabaseValue] =
-    useState<Choice[]>(defaultValue);
 
   const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
   const { full_name, state, userIsAdmin, userIsReadOnly } =
-    useUser().user ?? {};
+    useStore().user ?? {};
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();
@@ -71,7 +69,6 @@ export const ChoiceListField = ({
     const fieldValue = form.getValues(name);
     if (fieldValue) {
       setDisplayValue(fieldValue);
-      setLastDatabaseValue(fieldValue);
     }
     // else if hydration value exists, set as display value
     else if (hydrationValue) {
@@ -89,7 +86,6 @@ export const ChoiceListField = ({
         form.setValue(name, defaultValue);
       } else {
         setDisplayValue(hydrationValue);
-        setLastDatabaseValue(hydrationValue);
         if (validateOnRender)
           form.setValue(name, hydrationValue, { shouldValidate: true });
         else form.setValue(name, hydrationValue);
@@ -232,10 +228,7 @@ export const ChoiceListField = ({
 
         const combinedFields = [
           ...fields,
-          ...getNestedChildFields(
-            choicesWithNestedEnabledFields,
-            lastDatabaseValue
-          ),
+          ...getNestedChildFields(choicesWithNestedEnabledFields, form),
         ];
         const reportArgs = {
           id: report?.id,
@@ -315,7 +308,7 @@ const sx = {
 
 export const getNestedChildFields = (
   choices: FieldChoice[],
-  lastDatabaseValue: Choice[]
+  form: UseFormReturn<FieldValues, any>
 ): AutosaveField[] => {
   // set up nested field compilation
   const nestedFields: any = [];
@@ -329,7 +322,7 @@ export const getNestedChildFields = (
       const fieldInfo = getAutosaveFields({
         name: field.id,
         type: field.type,
-        value: fieldDefaultValue,
+        value: form.getValues(field.id) || fieldDefaultValue,
         overrideCheck: true,
         defaultValue: undefined,
         hydrationValue: undefined,
@@ -346,10 +339,8 @@ export const getNestedChildFields = (
   };
 
   choices.forEach((choice: FieldChoice) => {
-    // if choice is not selected and there are children
-    const isParentChoiceChecked = (id: string) =>
-      lastDatabaseValue?.some((autosave) => autosave.key === id);
-    if (choice.children && isParentChoiceChecked(choice.id)) {
+    // if choice has children
+    if (choice.children) {
       compileNestedFields(choice.children);
     }
   });

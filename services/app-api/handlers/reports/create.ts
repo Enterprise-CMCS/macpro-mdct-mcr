@@ -29,7 +29,10 @@ import {
 } from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/logging";
-import { copyFieldDataFromSource } from "../../utils/reports/reports";
+import {
+  copyFieldDataFromSource,
+  makePCCMModifications,
+} from "../../utils/reports/reports";
 
 export const createReport = handler(async (event, _context) => {
   if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
@@ -83,10 +86,14 @@ export const createReport = handler(async (event, _context) => {
 
   let formTemplate, formTemplateVersion;
 
+  const isProgramPCCM =
+    unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
+
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
-      reportType
+      reportType,
+      isProgramPCCM
     ));
   } catch (err) {
     logger.error(err, "Error getting or creating template");
@@ -136,6 +143,12 @@ export const createReport = handler(async (event, _context) => {
   } else {
     newFieldData = validatedFieldData;
   }
+
+  // make necessary modifications for PCCM
+  if (isProgramPCCM) {
+    newFieldData = makePCCMModifications(newFieldData);
+  }
+
   const fieldDataParams: S3Put = {
     Bucket: reportBucket,
     Key: getFieldDataKey(state, fieldDataId),

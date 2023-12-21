@@ -20,7 +20,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
-  useUser,
+  useStore,
 } from "utils";
 
 export const AddEditReportModal = ({
@@ -35,7 +35,7 @@ export const AddEditReportModal = ({
     updateReport,
     copyEligibleReportsByState,
   } = useContext(ReportContext);
-  const { full_name } = useUser().user ?? {};
+  const { full_name } = useStore().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
   const yoyCopyFlag = useFlags()?.yoyCopy;
 
@@ -48,23 +48,32 @@ export const AddEditReportModal = ({
   const [form, setForm] = useState<FormJson>(modalFormJson);
 
   useEffect(() => {
+    // make deep copy of baseline form for customization
+    let customizedModalForm: FormJson = JSON.parse(
+      JSON.stringify(modalFormJson)
+    );
     // check if yoy copy field exists in form
     const yoyCopyFieldIndex = form.fields.findIndex(
       (field: FormField | FormLayoutElement) =>
         field.id === "copyFieldDataSourceId"
     );
-    if (yoyCopyFieldIndex > -1) {
-      // if not creating new report || no reports eligible for copy
-      if (selectedReport?.id || !copyEligibleReportsByState?.length) {
-        // make deep copy of baseline form, disable yoy copy field, and use copied form
-        let tempForm: FormJson = JSON.parse(JSON.stringify(modalFormJson));
-        tempForm.fields[yoyCopyFieldIndex].props!.disabled = true;
-        setForm(tempForm);
-      } else {
-        // use the original baseline form
-        setForm(modalFormJson);
-      }
+    // if yoyCopyField is in form && (not creating new report || no reports eligible for copy)
+    if (
+      yoyCopyFieldIndex > -1 &&
+      (selectedReport?.id || !copyEligibleReportsByState?.length)
+    ) {
+      customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;
     }
+    // check if program is PCCM field exists in form
+    const programIsPCCMFieldIndex = form.fields.findIndex(
+      (field: FormField | FormLayoutElement) => field.id === "programIsPCCM"
+    );
+    // if programIsPCCMField is in form && not creating new report
+    if (programIsPCCMFieldIndex > -1 && selectedReport?.id) {
+      customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
+        true;
+    }
+    setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
   // MCPAR report payload
@@ -79,6 +88,7 @@ export const AddEditReportModal = ({
     const reportingPeriodEndDate = convertDateEtToUtc(
       formData["reportingPeriodEndDate"]
     );
+    const programIsPCCM = formData["programIsPCCM"];
 
     return {
       metadata: {
@@ -89,6 +99,10 @@ export const AddEditReportModal = ({
         combinedData,
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
+        programIsPCCM,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
@@ -156,7 +170,7 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
-          submissionCount: reportType === "MLR" ? 0 : undefined,
+          submissionCount: 0,
           // All new MLR reports are NOT resubmissions by definition.
           versionControl:
             reportType === "MLR"

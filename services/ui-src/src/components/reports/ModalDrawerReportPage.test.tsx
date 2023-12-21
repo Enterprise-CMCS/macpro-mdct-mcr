@@ -4,14 +4,14 @@ import { axe } from "jest-axe";
 // components
 import { ReportContext, ModalDrawerReportPage } from "components";
 // utils
-import { useUser } from "utils";
+import { useStore } from "utils";
 import {
   mockModalDrawerReportPageJson,
   mockRepeatedFormField,
   mockMcparReportContext,
-  mockStateUser,
+  mockStateUserStore,
   RouterWrappedComponent,
-  mockStateRep,
+  mockStateRepStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -24,8 +24,8 @@ jest.mock("react-router-dom", () => ({
   })),
 }));
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -59,7 +59,7 @@ const modalDrawerReportPageComponentWithoutEntities = (
 
 describe("Test ModalDrawerReportPage without entities", () => {
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalDrawerReportPageComponentWithoutEntities);
   });
 
@@ -78,12 +78,12 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   it("ModalDrawerReportPage should render the view", () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     expect(screen.getByText(addEntityButtonText)).toBeVisible();
   });
 
   it("ModalDrawerReportPage Modal opens correctly", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const addEntityButton = screen.getByText(addEntityButtonText);
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -95,7 +95,7 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const addEntityButton = screen.getByText(addEntityButtonText);
     const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
@@ -110,14 +110,14 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
   it("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -130,7 +130,7 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -140,7 +140,7 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer doesn't autosave if no change was made by State Rep", async () => {
-    mockedUseUser.mockReturnValue(mockStateRep);
+    mockedUseStore.mockReturnValue(mockStateRepStore);
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -171,7 +171,7 @@ describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => 
     jest.clearAllMocks();
   });
   it("Should repeat fields if there are repeated fields in the form", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalDrawerReportPageComponentWithRepeatedFieldForm);
 
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);

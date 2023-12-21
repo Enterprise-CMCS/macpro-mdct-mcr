@@ -29,7 +29,8 @@ import {
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
   useBreakpoint,
-  useUser,
+  useStore,
+  resetClearProp,
 } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
@@ -52,7 +53,7 @@ export const ModalOverlayReportPage = ({
   const [entering, setEntering] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
-    useUser().user ?? {};
+    useStore().user ?? {};
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
@@ -80,6 +81,7 @@ export const ModalOverlayReportPage = ({
 
   const closeAddEditEntityModal = () => {
     setCurrentEntity(undefined);
+    resetClearProp(modalForm.fields);
     addEditEntityModalOnCloseHandler();
   };
 
