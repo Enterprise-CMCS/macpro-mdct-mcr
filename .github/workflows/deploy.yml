@@ -62,8 +62,11 @@ jobs:
     steps:
       - name: set branch_name
         run: |
-          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
-            echo "branch_name=`echo ${GITHUB_REF#refs/heads/} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
+          echo "GITHUB_REF=${GITHUB_REF}"        
+          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then
+            echo "branch_name=`echo ${GITHUB_REF##*/*-} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
+          elif [[ "$GITHUB_REF" =~ ^refs/.*/snyk-* ]]; then
+            echo "branch_name=`echo ${GITHUB_REF##*/*-} | head -c 10 | sed 's/^/s/'`" >> $GITHUB_ENV
           else
             echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           fi
