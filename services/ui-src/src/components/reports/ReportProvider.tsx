@@ -12,7 +12,7 @@ import {
   postReport,
   putReport,
   sortReportsOldestToNewest,
-  useUser,
+  useStore,
 } from "utils";
 import {
   ReportKeys,
@@ -49,7 +49,7 @@ export const ReportContext = createContext<ReportContextShape>({
 
 export const ReportProvider = ({ children }: Props) => {
   const { pathname } = useLocation();
-  const { state: userState } = useUser().user ?? {};
+  const { state: userState } = useStore().user ?? {};
   const [lastSavedTime, setLastSavedTime] = useState<string>();
   const [error, setError] = useState<string>();
   const [contextIsLoaded, setContextIsLoaded] = useState<boolean>(false);

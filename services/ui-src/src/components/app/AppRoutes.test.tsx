@@ -5,18 +5,19 @@ import { createMemoryHistory } from "history";
 // components
 import { AppRoutes } from "components";
 // utils
-import { useUser, UserProvider } from "utils";
+import { UserProvider, useStore } from "utils";
 import {
-  mockAdminUser,
+  mockAdminUserStore,
+  mockBannerStore,
   mockLDFlags,
-  mockStateUser,
-  mockStateUserNoReports,
+  mockStateUserStore,
+  mockStateUserStoreNoReports,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 mockLDFlags.setDefault({ mlrReport: true });
 
@@ -34,7 +35,10 @@ const tempScroll = window.HTMLElement.prototype.scrollIntoView;
 describe("Test AppRoutes for admin-specific routes", () => {
   beforeEach(async () => {
     window.HTMLElement.prototype.scrollIntoView = function () {};
-    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
@@ -52,7 +56,10 @@ describe("Test AppRoutes for admin-specific routes", () => {
 
 describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
@@ -68,7 +75,10 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
 
 describe("Test AppRoutes for non-admin-specific routes", () => {
   beforeEach(async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/admin");
     await act(async () => {
@@ -84,7 +94,10 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
 
 describe("Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/obviously-fake-route");
     await act(async () => {
@@ -100,7 +113,10 @@ describe("Test AppRoutes 404 handling", () => {
 describe("Test AppRoutes for MCPAR report-specific routes", () => {
   beforeEach(async () => {
     window.HTMLElement.prototype.scrollIntoView = function () {};
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/mcpar");
     await act(async () => {
@@ -119,7 +135,10 @@ describe("Test AppRoutes for MCPAR report-specific routes", () => {
 describe("Test AppRoutes for state users without report-specific access", () => {
   beforeEach(async () => {
     window.HTMLElement.prototype.scrollIntoView = function () {};
-    mockedUseUser.mockReturnValue(mockStateUserNoReports);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStoreNoReports,
+      ...mockBannerStore,
+    });
     history = createMemoryHistory();
     history.push("/mlr");
     await act(async () => {

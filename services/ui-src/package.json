@@ -41,7 +41,8 @@
     "react-scripts": "^5.0.0",
     "react-uuid": "^1.0.3",
     "sass": "^1.37.5",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.38.0",

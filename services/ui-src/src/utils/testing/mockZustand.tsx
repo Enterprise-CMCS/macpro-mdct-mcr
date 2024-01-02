@@ -1,35 +1,17 @@
-// USERS
+import { mockBannerData } from "./setupJest";
+// types
+import { AdminBannerState, McrUserState, UserRoles } from "types";
 
-import { UserContextShape, UserRoles } from "types";
+// USER STATES / STORE
 
-export const mockNoUser: UserContextShape = {
+export const mockNoUserStore: McrUserState = {
   user: undefined,
   showLocalLogins: true,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockStateUser: UserContextShape = {
-  user: {
-    userRole: UserRoles.STATE_USER,
-    email: "stateuser@test.com",
-    given_name: "Thelonious",
-    family_name: "States",
-    full_name: "Thelonious States",
-    state: "MN",
-    userIsEndUser: true,
-    userReports: ["MCPAR", "MLR", "NAAAR"],
-  },
-  showLocalLogins: true,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
-};
-
-export const mockStateUserNoReports: UserContextShape = {
+export const mockStateUserStoreNoReports: McrUserState = {
   user: {
     userRole: UserRoles.STATE_USER,
     email: "stateuser@test.com",
@@ -41,13 +23,27 @@ export const mockStateUserNoReports: UserContextShape = {
     userReports: [""],
   },
   showLocalLogins: true,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockStateRep: UserContextShape = {
+export const mockStateUserStore: McrUserState = {
+  user: {
+    userRole: UserRoles.STATE_USER,
+    email: "stateuser@test.com",
+    given_name: "Thelonious",
+    family_name: "States",
+    full_name: "Thelonious States",
+    state: "MN",
+    userReports: ["MCPAR", "MLR", "NAAAR"],
+    userIsEndUser: true,
+  },
+  showLocalLogins: true,
+  setUser: () => {},
+  setShowLocalLogins: () => {},
+};
+
+export const mockStateRepStore: McrUserState = {
   user: {
     userRole: UserRoles.STATE_REP,
     email: "staterep@test.com",
@@ -58,13 +54,11 @@ export const mockStateRep: UserContextShape = {
     userIsEndUser: true,
   },
   showLocalLogins: true,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockStateApprover: UserContextShape = {
+export const mockStateApproverStore: McrUserState = {
   user: {
     userRole: UserRoles.APPROVER,
     email: "stateapprover@test.com",
@@ -75,13 +69,11 @@ export const mockStateApprover: UserContextShape = {
     userIsAdmin: true,
   },
   showLocalLogins: true,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockHelpDeskUser: UserContextShape = {
+export const mockHelpDeskUserStore: McrUserState = {
   user: {
     userRole: UserRoles.HELP_DESK,
     email: "helpdeskuser@test.com",
@@ -92,13 +84,11 @@ export const mockHelpDeskUser: UserContextShape = {
     userIsReadOnly: true,
   },
   showLocalLogins: false,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockInternalUser: UserContextShape = {
+export const mockInternalUserStore: McrUserState = {
   user: {
     userRole: UserRoles.INTERNAL,
     email: "internaluser@test.com",
@@ -109,13 +99,11 @@ export const mockInternalUser: UserContextShape = {
     userIsReadOnly: true,
   },
   showLocalLogins: false,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
 };
 
-export const mockAdminUser: UserContextShape = {
+export const mockAdminUserStore: McrUserState = {
   user: {
     userRole: UserRoles.ADMIN,
     email: "adminuser@test.com",
@@ -126,8 +114,29 @@ export const mockAdminUser: UserContextShape = {
     userIsAdmin: true,
   },
   showLocalLogins: false,
-  logout: async () => {},
-  loginWithIDM: () => {},
-  updateTimeout: async () => {},
-  getExpiration: () => {},
+  setUser: () => {},
+  setShowLocalLogins: () => {},
+};
+
+//  BANNER STATES / STORE
+
+export const mockBannerStore: AdminBannerState = {
+  bannerData: mockBannerData,
+  bannerActive: false,
+  bannerLoading: false,
+  bannerErrorMessage: "",
+  bannerDeleting: false,
+  setBannerData: () => {},
+  clearAdminBanner: () => {},
+  setBannerActive: () => {},
+  setBannerLoading: () => {},
+  setBannerErrorMessage: () => {},
+  setBannerDeleting: () => {},
+};
+
+// BOUND STORE
+
+export const mockUseStore: McrUserState & AdminBannerState = {
+  ...mockStateUserStore,
+  ...mockBannerStore,
 };

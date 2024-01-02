@@ -5,8 +5,11 @@ import { axe } from "jest-axe";
 import { useFormContext } from "react-hook-form";
 import { ReportContext, TextField } from "components";
 // utils
-import { mockMcparReportContext, mockStateUser } from "utils/testing/setupJest";
-import { useUser } from "utils";
+import {
+  mockMcparReportContext,
+  mockStateUserStore,
+} from "utils/testing/setupJest";
+import { useStore } from "utils";
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -28,8 +31,8 @@ const mockGetValues = (returnValue: any) =>
     getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const textFieldComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
@@ -54,7 +57,7 @@ const textFieldAutosavingComponent = (
 
 describe("Test TextField component", () => {
   test("TextField is visible", () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues("");
     render(textFieldComponent);
     const textField = screen.getByText("test-label");
@@ -65,7 +68,7 @@ describe("Test TextField component", () => {
 
 describe("Test TextField hydration functionality", () => {
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -158,7 +161,7 @@ describe("Test TextField component autosaves", () => {
     jest.clearAllMocks();
   });
   test("TextField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
@@ -172,13 +175,13 @@ describe("Test TextField component autosaves", () => {
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
         reportType: mockMcparReportContext.report.reportType,
-        state: mockStateUser.user?.state,
+        state: mockStateUserStore.user?.state,
         id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateUser.user?.full_name,
+          lastAlteredBy: mockStateUserStore.user?.full_name,
         },
         fieldData: { testTextField: "test value" },
       }
@@ -186,7 +189,7 @@ describe("Test TextField component autosaves", () => {
   });
 
   test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
@@ -200,13 +203,13 @@ describe("Test TextField component autosaves", () => {
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
       {
         reportType: mockMcparReportContext.report.reportType,
-        state: mockStateUser.user?.state,
+        state: mockStateUserStore.user?.state,
         id: mockMcparReportContext.report.id,
       },
       {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateUser.user?.full_name,
+          lastAlteredBy: mockStateUserStore.user?.full_name,
         },
         fieldData: { testTextField: "" },
       }
@@ -214,7 +217,7 @@ describe("Test TextField component autosaves", () => {
   });
 
   test("TextField does not autosave when not autosave not set to true", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldComponent);
     const textField = screen.getByRole("textbox", {
@@ -243,7 +246,7 @@ describe("Textfield handles triggering validation", () => {
     jest.clearAllMocks();
   });
   test("Blanking field triggers form validation", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldComponent);
     expect(mockTrigger).not.toHaveBeenCalled();
@@ -257,7 +260,7 @@ describe("Textfield handles triggering validation", () => {
   });
 
   test("Component with validateOnRender passed should validate on initial render", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldValidateOnRenderComponent);
     expect(mockTrigger).toHaveBeenCalled();
@@ -266,7 +269,7 @@ describe("Textfield handles triggering validation", () => {
 
 describe("Test TextField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     const { container } = render(textFieldComponent);
     const results = await axe(container);

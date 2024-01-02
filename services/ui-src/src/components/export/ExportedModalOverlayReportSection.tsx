@@ -5,7 +5,7 @@ import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
 import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, renderHtml } from "utils";
+import { assertExhaustive, getEntityDetailsMLR } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
@@ -86,7 +86,7 @@ export function renderModalOverlayTableBody(
               <Text sx={sx.entityList}>
                 {entity.report_planName ?? "Not entered"} <br />
                 {report_programName} <br />
-                {renderHtml(mlrEligibilityGroup)} <br />
+                {mlrEligibilityGroup} <br />
                 {reportingPeriod}
               </Text>
             </Td>

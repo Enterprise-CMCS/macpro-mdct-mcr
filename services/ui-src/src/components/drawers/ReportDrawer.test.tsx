@@ -4,16 +4,16 @@ import { axe } from "jest-axe";
 //components
 import { ReportDrawer } from "components";
 import {
-  mockAdminUser,
+  mockAdminUserStore,
   mockCompletedQualityMeasuresEntity,
   mockDrawerForm,
   mockEmptyDrawerForm,
   mockModalDrawerReportPageVerbiage,
-  mockStateUser,
+  mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 // utils
-import { useUser } from "utils";
+import { useStore } from "utils";
 // constants
 import { closeText, saveAndCloseText } from "../../constants";
 
@@ -25,8 +25,8 @@ const mockDrawerDisclosure = {
   onClose: mockOnClose,
 };
 
-jest.mock("utils/auth/useUser");
-const mockedUseUser = useUser as jest.MockedFunction<typeof useUser>;
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const drawerComponent = (
   <RouterWrappedComponent>
@@ -45,13 +45,13 @@ describe("Test ReportDrawer rendering", () => {
     jest.clearAllMocks();
   });
   it("Should render save text for state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(drawerComponent);
     expect(screen.getByText(saveAndCloseText)).toBeVisible();
   });
 
   it("Should not render save text for admin user", async () => {
-    mockedUseUser.mockReturnValue(mockAdminUser);
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(drawerComponent);
     expect(screen.queryByText(saveAndCloseText)).not.toBeInTheDocument();
   });
@@ -72,7 +72,7 @@ describe("Test ReportDrawerWithoutFormFields rendering", () => {
     jest.clearAllMocks();
   });
   it("Should render save text for state user", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(drawerComponentWithoutFormFields);
     expect(
       screen.getByText(mockModalDrawerReportPageVerbiage.drawerNoFormMessage)
@@ -82,7 +82,7 @@ describe("Test ReportDrawerWithoutFormFields rendering", () => {
 
 describe("Test ReportDrawer fill form and close", () => {
   beforeEach(() => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(drawerComponent);
   });
   afterEach(() => {
@@ -116,7 +116,7 @@ describe("Test ReportDrawer fill form and close", () => {
 
 describe("Test ReportDrawer accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseUser.mockReturnValue(mockStateUser);
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const { container } = render(drawerComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

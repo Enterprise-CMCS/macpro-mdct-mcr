@@ -28,7 +28,7 @@ import {
   convertDateUtcToEt,
   parseCustomHtml,
   useBreakpoint,
-  useUser,
+  useStore,
 } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
@@ -50,7 +50,11 @@ export const DashboardPage = ({ reportType }: Props) => {
     releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
-  const { state: userState, userIsEndUser, userIsAdmin } = useUser().user ?? {};
+  const {
+    state: userState,
+    userIsEndUser,
+    userIsAdmin,
+  } = useStore().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined

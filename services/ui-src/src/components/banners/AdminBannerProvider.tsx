@@ -1,51 +1,84 @@
-import { useState, createContext, ReactNode, useMemo, useEffect } from "react";
+import { createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
-import { AdminBannerData, AdminBannerShape } from "types/banners";
+import { AdminBannerData, AdminBannerMethods } from "types/banners";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 // api
-import { deleteBanner, getBanner, writeBanner } from "utils";
+import {
+  deleteBanner,
+  getBanner,
+  writeBanner,
+  useStore,
+  checkDateRangeStatus,
+} from "utils";
 
 const ADMIN_BANNER_ID = bannerId;
 
-export const AdminBannerContext = createContext<AdminBannerShape>({
-  bannerData: undefined as AdminBannerData | undefined,
+export const AdminBannerContext = createContext<AdminBannerMethods>({
   fetchAdminBanner: Function,
   writeAdminBanner: Function,
   deleteAdminBanner: Function,
-  isLoading: false as boolean,
-  errorMessage: undefined,
 });
 
 export const AdminBannerProvider = ({ children }: Props) => {
-  const [bannerData, setBannerData] = useState<AdminBannerData | undefined>(
-    undefined
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
+  // state management
+  const {
+    bannerData,
+    setBannerData,
+    bannerActive,
+    setBannerActive,
+    bannerLoading,
+    setBannerLoading,
+    bannerErrorMessage,
+    setBannerErrorMessage,
+    bannerDeleting,
+    setBannerDeleting,
+  } = useStore();
 
   const fetchAdminBanner = async () => {
-    setIsLoading(true);
+    setBannerLoading(true);
     try {
       const currentBanner = await getBanner(ADMIN_BANNER_ID);
       const newBannerData = currentBanner?.Item || {};
       setBannerData(newBannerData);
-    } catch (e: any) {
-      setIsLoading(false);
-      setError(bannerErrors.GET_BANNER_FAILED);
+      setBannerErrorMessage("");
+    } catch (error: any) {
+      setBannerLoading(false);
+      setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
     }
-    setIsLoading(false);
+    setBannerLoading(false);
   };
 
   const deleteAdminBanner = async () => {
-    await deleteBanner(ADMIN_BANNER_ID);
-    setBannerData(undefined);
+    setBannerDeleting(true);
+    try {
+      await deleteBanner(ADMIN_BANNER_ID);
+      await fetchAdminBanner();
+    } catch (error: any) {
+      setBannerErrorMessage(bannerErrors.DELETE_BANNER_FAILED);
+    }
+    setBannerDeleting(false);
   };
 
   const writeAdminBanner = async (newBannerData: AdminBannerData) => {
-    await writeBanner(newBannerData);
-    setBannerData(newBannerData);
+    try {
+      await writeBanner(newBannerData);
+    } catch (error: any) {
+      setBannerErrorMessage(bannerErrors.CREATE_BANNER_FAILED);
+    }
+    await fetchAdminBanner();
   };
+
+  useEffect(() => {
+    let bannerActivity = false;
+    if (bannerData) {
+      bannerActivity = checkDateRangeStatus(
+        bannerData.startDate,
+        bannerData.endDate
+      );
+    }
+    setBannerActive(bannerActivity);
+  }, [bannerData]);
 
   useEffect(() => {
     fetchAdminBanner();
@@ -53,14 +86,33 @@ export const AdminBannerProvider = ({ children }: Props) => {
 
   const providerValue = useMemo(
     () => ({
+      // banner data
       bannerData,
+      setBannerData,
+      // banner is showing
+      bannerActive,
+      setBannerActive,
+      // banner is loading
+      bannerLoading,
+      setBannerLoading,
+      // banner error state
+      bannerErrorMessage,
+      setBannerErrorMessage,
+      // banner deleting state
+      bannerDeleting,
+      setBannerDeleting,
+      // banner API calls
       fetchAdminBanner,
       writeAdminBanner,
       deleteAdminBanner,
-      isLoading: isLoading,
-      errorMessage: error,
     }),
-    [bannerData, isLoading, error]
+    [
+      bannerData,
+      bannerActive,
+      bannerLoading,
+      bannerErrorMessage,
+      bannerDeleting,
+    ]
   );
 
   return (
