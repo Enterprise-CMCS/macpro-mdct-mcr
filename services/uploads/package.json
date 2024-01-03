@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "fast-xml-parser": "4.2.5",
-    "flat": "^5.0.2",
+    "flat": "^6.0.1",
     "json2csv": "^5.0.6",
     "jsonwebtoken": "9.0.0",
     "luxon": "3.3.0",
