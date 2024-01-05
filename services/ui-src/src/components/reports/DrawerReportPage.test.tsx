@@ -10,7 +10,6 @@ import {
   mockDrawerReportPageJson,
   mockNoUserStore,
   mockMcparReportContext,
-  mockStateRepStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -119,22 +118,6 @@ describe("Test DrawerReportPage with entities", () => {
     expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
   });
 
-  it("Submit sidedrawer opens and saves for state rep user", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
-    const visibleEntityText =
-      mockMcparReportContext.report.fieldData.plans[0].name;
-    expect(screen.getByText(visibleEntityText)).toBeVisible();
-    const launchDrawerButton = screen.getAllByText("Enter")[0];
-    await userEvent.click(launchDrawerButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock drawer text field");
-    expect(textField).toBeVisible();
-    await userEvent.type(textField, "test");
-    const saveAndCloseButton = screen.getByText(saveAndCloseText);
-    await userEvent.click(saveAndCloseButton);
-    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
-  });
-
   it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
     const visibleEntityText =
@@ -161,21 +144,6 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("Submit sidedrawer doesn't save if no change was made by State User", async () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
-    const visibleEntityText =
-      mockMcparReportContext.report.fieldData.plans[0].name;
-    expect(screen.getByText(visibleEntityText)).toBeVisible();
-    const launchDrawerButton = screen.getAllByText("Enter")[0];
-    await userEvent.click(launchDrawerButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock drawer text field");
-    expect(textField).toBeVisible();
-    const saveAndCloseButton = screen.getByText(saveAndCloseText);
-    await userEvent.click(saveAndCloseButton);
-    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
-  });
-
-  it("Submit sidedrawer doesn't save if no change was made by State Rep", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();

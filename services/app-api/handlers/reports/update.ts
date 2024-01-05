@@ -92,7 +92,7 @@ export const updateReport = handler(async (event, context) => {
   }
 
   // Ensure user has correct permissions to update a report.
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
