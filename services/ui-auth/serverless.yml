@@ -135,7 +135,7 @@ resources:
             StringAttributeConstraints:
               MinLength: 0
               MaxLength: 256
-          - Name: reports
+          - Name: reports # this attribute is being deprecated
             AttributeDataType: String
             Mutable: true
             Required: false
