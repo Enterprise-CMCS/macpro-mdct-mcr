@@ -224,7 +224,6 @@ resources:
           family_name: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname
           custom:cms_roles: cmsRoles
           custom:cms_state: state
-          custom:reports: reports
         IdpIdentifiers:
           - IdpIdentifier
         ProviderDetails:
