@@ -4,10 +4,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
-import {
-  hasReportAccess,
-  hasPermissions,
-} from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   validateData,
   validateFieldData,
@@ -70,14 +67,6 @@ export const createReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
-    };
-  }
-
-  // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
     };
   }
 
