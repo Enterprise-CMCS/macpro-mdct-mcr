@@ -15,7 +15,6 @@ import { StatusCodes } from "../../utils/types";
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
-  hasReportAccess: jest.fn().mockReturnValue(true),
 }));
 const mockAuthUtil = require("../../utils/auth/authorization");
 
@@ -90,22 +89,12 @@ describe("Test updateReport and archiveReport unauthorized calls", () => {
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
-
-  test("Test report update with no proper report access throws 403 error", async () => {
-    // fail report access check
-    mockAuthUtil.hasReportAccess.mockReturnValue(false);
-    const res = await updateReport(updateEvent, null);
-
-    expect(res.statusCode).toBe(403);
-    expect(res.body).toContain(error.UNAUTHORIZED);
-  });
 });
 
 describe("Test updateReport API method", () => {
   beforeAll(() => {
     // pass state auth check
     mockAuthUtil.hasPermissions.mockReturnValue(true);
-    mockAuthUtil.hasReportAccess.mockReturnValue(true);
   });
   afterEach(() => {
     jest.clearAllMocks();

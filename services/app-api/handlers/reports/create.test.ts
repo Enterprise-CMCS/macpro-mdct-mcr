@@ -16,7 +16,6 @@ import s3Lib from "../../utils/s3/s3-lib";
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
-  hasReportAccess: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("../../utils/debugging/debug-lib", () => ({

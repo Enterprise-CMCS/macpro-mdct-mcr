@@ -21,17 +21,11 @@ import { Fragment, useContext } from "react";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
-  const { userIsAdmin, userReports } = useStore().user ?? {};
+  const { userIsAdmin } = useStore().user ?? {};
   const { report, contextIsLoaded } = useContext(ReportContext);
 
   // LaunchDarkly
   const mlrReport = useFlags()?.mlrReport;
-
-  // determine if the user has access to specific reports
-  const userReportAccess = {
-    MCPAR: userReports?.includes("MCPAR") || userIsAdmin,
-    MLR: userReports?.includes("MLR") || userIsAdmin,
-  };
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -48,25 +42,10 @@ export const AppRoutes = () => {
           <Route path="*" element={<NotFoundPage />} />
 
           {/* MCPAR ROUTES */}
-          <Route
-            path="/mcpar"
-            element={
-              userReportAccess["MCPAR"] ? (
-                <DashboardPage reportType="MCPAR" />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
-          />
+          <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
           <Route
             path="/mcpar/get-started"
-            element={
-              userReportAccess["MCPAR"] ? (
-                <ReportGetStartedPage reportType="MCPAR" />
-              ) : (
-                <Navigate to="/" />
-              )
-            }
+            element={<ReportGetStartedPage reportType="MCPAR" />}
           />
           {report?.reportType === ReportType.MCPAR && (
             <>
@@ -75,26 +54,11 @@ export const AppRoutes = () => {
                   <Route
                     key={route.path}
                     path={route.path}
-                    element={
-                      userReportAccess["MCPAR"] ? (
-                        <ReportPageWrapper />
-                      ) : (
-                        <Navigate to="/" />
-                      )
-                    }
+                    element={<ReportPageWrapper />}
                   />
                 )
               )}
-              <Route
-                path="/mcpar/export"
-                element={
-                  userReportAccess["MCPAR"] ? (
-                    <ExportedReportPage />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
+              <Route path="/mcpar/export" element={<ExportedReportPage />} />
             </>
           )}
           <Route
@@ -104,10 +68,8 @@ export const AppRoutes = () => {
                 <Flex sx={sx.spinnerContainer}>
                   <Spinner size="lg" />
                 </Flex>
-              ) : userReportAccess["MCPAR"] ? (
-                <Navigate to="/mcpar" />
               ) : (
-                <Navigate to="/" />
+                <Navigate to="/mcpar" />
               )
             }
           />
@@ -115,25 +77,10 @@ export const AppRoutes = () => {
           {/* MLR ROUTES */}
           {mlrReport && (
             <Fragment>
-              <Route
-                path="/mlr"
-                element={
-                  userReportAccess["MLR"] ? (
-                    <DashboardPage reportType="MLR" />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
-              />
+              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
               <Route
                 path="/mlr/get-started"
-                element={
-                  userReportAccess["MLR"] ? (
-                    <ReportGetStartedPage reportType="MLR" />
-                  ) : (
-                    <Navigate to="/" />
-                  )
-                }
+                element={<ReportGetStartedPage reportType="MLR" />}
               />
               {report?.reportType === ReportType.MLR && (
                 <>
@@ -142,26 +89,11 @@ export const AppRoutes = () => {
                       <Route
                         key={route.path}
                         path={route.path}
-                        element={
-                          userReportAccess["MLR"] ? (
-                            <ReportPageWrapper />
-                          ) : (
-                            <Navigate to="/" />
-                          )
-                        }
+                        element={<ReportPageWrapper />}
                       />
                     )
                   )}
-                  <Route
-                    path="/mlr/export"
-                    element={
-                      userReportAccess["MLR"] ? (
-                        <ExportedReportPage />
-                      ) : (
-                        <Navigate to="/" />
-                      )
-                    }
-                  />
+                  <Route path="/mlr/export" element={<ExportedReportPage />} />
                 </>
               )}
               <Route
@@ -171,10 +103,8 @@ export const AppRoutes = () => {
                     <Flex sx={sx.spinnerContainer}>
                       <Spinner size="lg" />
                     </Flex>
-                  ) : userReportAccess["MLR"] ? (
-                    <Navigate to="/mlr" />
                   ) : (
-                    <Navigate to="/" />
+                    <Navigate to="/mlr" />
                   )
                 }
               />

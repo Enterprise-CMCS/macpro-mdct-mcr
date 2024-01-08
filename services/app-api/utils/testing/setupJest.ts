@@ -217,7 +217,6 @@ export const mockApiKey = sign(
     "custom:cms_roles": "mdctmcr-state-user",
     given_name: "Thelonious",
     "custom:cms_state": "MN",
-    "custom:reports": "MCPAR,MLR,NAAAR",
     family_name: "States",
     email: "stateuser@test.com",
   },

@@ -15,7 +15,6 @@ import {
   mockStateUserStore,
   mockQualityMeasuresEntity,
   mockAdminUserStore,
-  mockStateRepStore,
 } from "utils/testing/setupJest";
 import { ReportStatus } from "types";
 
@@ -248,58 +247,6 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
         metadata: {
           status: ReportStatus.IN_PROGRESS,
           lastAlteredBy: mockStateUserStore.user?.full_name,
-        },
-        fieldData: {
-          plans: [
-            {
-              id: "mock-plan-id-2",
-              name: "mock-plan-2",
-            },
-          ],
-          sanctions: [
-            {
-              ...mockSanctionsEntity,
-              sanction_planName: {
-                label: "sanction_planName",
-                value: "mock-plan-id-2",
-              },
-            },
-          ],
-          qualityMeasures: [
-            {
-              ...mockQualityMeasuresEntity,
-              "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                "mock-response-2",
-            },
-            {
-              ...mockQualityMeasuresEntity,
-              "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                "mock-response-2",
-            },
-          ],
-        },
-      }
-    );
-  });
-
-  it("Deletes entity and associated sanctions and quality measure responses if state rep", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
-    render(dynamicFieldComponent(mockHydrationPlans));
-    await act(async () => {
-      await render(dynamicFieldComponent(mockHydrationPlans));
-    });
-    // delete mock-plan-1
-    const removeButton = screen.queryAllByTestId("removeButton")[0];
-    await userEvent.click(removeButton);
-    const deleteButton = screen.getByText("Yes, delete plan");
-    await userEvent.click(deleteButton);
-
-    expect(mockUpdateReport).toHaveBeenCalledWith(
-      { ...mockReportKeys, state: mockStateRepStore.user?.state },
-      {
-        metadata: {
-          status: ReportStatus.IN_PROGRESS,
-          lastAlteredBy: mockStateRepStore.user?.full_name,
         },
         fieldData: {
           plans: [
