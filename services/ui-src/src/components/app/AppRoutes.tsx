@@ -27,7 +27,11 @@ export const AppRoutes = () => {
   // LaunchDarkly
   const mlrReport = useFlags()?.mlrReport;
 
-  // verify whether a user has the required roles / access to MCPAR, MLR, NAAAR reports
+  /*
+   * Verifying whether a user has the required roles / access to MCR reports
+   * NOTE: It is possible for a user to be authorized via IDM, but not have an end-user (state) role OR an admin-type role
+   * due to their role type being deprecated, for example, such as with the STATE REP role.
+   */
   const userHasAccess = userIsAdmin || userIsEndUser;
 
   return (
