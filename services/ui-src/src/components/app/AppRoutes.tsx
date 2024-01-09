@@ -27,6 +27,7 @@ export const AppRoutes = () => {
   // LaunchDarkly
   const mlrReport = useFlags()?.mlrReport;
 
+  // verify whether a user has the required roles / access to MCPAR, MLR, NAAAR reports
   const userHasAccess = userIsAdmin || userIsEndUser;
 
   return (
