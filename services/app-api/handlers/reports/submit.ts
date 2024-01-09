@@ -2,10 +2,7 @@ import { bool } from "aws-sdk/clients/signer";
 import jwtDecode from "jwt-decode";
 import handler from "../handler-lib";
 // utils
-import {
-  hasReportAccess,
-  hasPermissions,
-} from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   error,
   reportBuckets,
@@ -38,7 +35,7 @@ export const submitReport = handler(async (event, _context) => {
     };
   }
 
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER])) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -51,14 +48,6 @@ export const submitReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
-    };
-  }
-
-  // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, reportType!)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
     };
   }
 

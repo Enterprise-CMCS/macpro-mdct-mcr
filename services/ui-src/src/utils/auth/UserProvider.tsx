@@ -66,17 +66,6 @@ export const UserProvider = ({ children }: Props) => {
       const cms_role = payload["custom:cms_roles"] as string;
       const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
 
-      // "custom:reports" is an string of concatenated reports this user has access to
-      const reports = payload["custom:reports"] as string | undefined;
-      /**
-       * if a user is a State User, they could only have access to a subset of report types
-       * that will be returned as a custom IDM attribute "custom:reports"
-       * otherwise, other user types have access to all 3 report types
-       */
-      const userReports = !reports
-        ? ["MCPAR", "MLR", "NAAAR"]
-        : reports.split(",");
-
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
       const userCheck = {
@@ -84,8 +73,7 @@ export const UserProvider = ({ children }: Props) => {
           userRole === UserRoles.ADMIN || userRole === UserRoles.APPROVER,
         userIsReadOnly:
           userRole === UserRoles.HELP_DESK || userRole === UserRoles.INTERNAL,
-        userIsEndUser:
-          userRole === UserRoles.STATE_REP || userRole === UserRoles.STATE_USER,
+        userIsEndUser: userRole === UserRoles.STATE_USER,
       };
       const currentUser: MCRUser = {
         email,
@@ -94,7 +82,6 @@ export const UserProvider = ({ children }: Props) => {
         full_name,
         userRole,
         state,
-        userReports,
         ...userCheck,
       };
       setUser(currentUser);
