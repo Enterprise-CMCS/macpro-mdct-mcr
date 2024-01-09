@@ -21,11 +21,18 @@ import { Fragment, useContext } from "react";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
-  const { userIsAdmin } = useStore().user ?? {};
+  const { userIsAdmin, userIsEndUser } = useStore().user ?? {};
   const { report, contextIsLoaded } = useContext(ReportContext);
 
   // LaunchDarkly
   const mlrReport = useFlags()?.mlrReport;
+
+  /*
+   * Verifying whether a user has the required roles / access to MCR reports
+   * NOTE: It is possible for a user to be authorized via IDM, but not have an end-user (state) role OR an admin-type role
+   * due to their role type being deprecated, for example, such as with the STATE REP role.
+   */
+  const userHasAccess = userIsAdmin || userIsEndUser;
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -41,48 +48,20 @@ export const AppRoutes = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
 
-          {/* MCPAR ROUTES */}
-          <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
-          <Route
-            path="/mcpar/get-started"
-            element={<ReportGetStartedPage reportType="MCPAR" />}
-          />
-          {report?.reportType === ReportType.MCPAR && (
+          {!userHasAccess ? (
+            <Navigate to="/" />
+          ) : (
             <>
-              {(report.formTemplate.flatRoutes ?? []).map(
-                (route: ReportRoute) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<ReportPageWrapper />}
-                  />
-                )
-              )}
-              <Route path="/mcpar/export" element={<ExportedReportPage />} />
-            </>
-          )}
-          <Route
-            path="/mcpar/*"
-            element={
-              !contextIsLoaded ? (
-                <Flex sx={sx.spinnerContainer}>
-                  <Spinner size="lg" />
-                </Flex>
-              ) : (
-                <Navigate to="/mcpar" />
-              )
-            }
-          />
-
-          {/* MLR ROUTES */}
-          {mlrReport && (
-            <Fragment>
-              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+              {/* MCPAR ROUTES */}
               <Route
-                path="/mlr/get-started"
-                element={<ReportGetStartedPage reportType="MLR" />}
+                path="/mcpar"
+                element={<DashboardPage reportType="MCPAR" />}
               />
-              {report?.reportType === ReportType.MLR && (
+              <Route
+                path="/mcpar/get-started"
+                element={<ReportGetStartedPage reportType="MCPAR" />}
+              />
+              {report?.reportType === ReportType.MCPAR && (
                 <>
                   {(report.formTemplate.flatRoutes ?? []).map(
                     (route: ReportRoute) => (
@@ -93,22 +72,68 @@ export const AppRoutes = () => {
                       />
                     )
                   )}
-                  <Route path="/mlr/export" element={<ExportedReportPage />} />
+                  <Route
+                    path="/mcpar/export"
+                    element={<ExportedReportPage />}
+                  />
                 </>
               )}
               <Route
-                path="/mlr/*"
+                path="/mcpar/*"
                 element={
                   !contextIsLoaded ? (
                     <Flex sx={sx.spinnerContainer}>
                       <Spinner size="lg" />
                     </Flex>
                   ) : (
-                    <Navigate to="/mlr" />
+                    <Navigate to="/mcpar" />
                   )
                 }
               />
-            </Fragment>
+
+              {/* MLR ROUTES */}
+              {mlrReport && (
+                <Fragment>
+                  <Route
+                    path="/mlr"
+                    element={<DashboardPage reportType="MLR" />}
+                  />
+                  <Route
+                    path="/mlr/get-started"
+                    element={<ReportGetStartedPage reportType="MLR" />}
+                  />
+                  {report?.reportType === ReportType.MLR && (
+                    <>
+                      {(report.formTemplate.flatRoutes ?? []).map(
+                        (route: ReportRoute) => (
+                          <Route
+                            key={route.path}
+                            path={route.path}
+                            element={<ReportPageWrapper />}
+                          />
+                        )
+                      )}
+                      <Route
+                        path="/mlr/export"
+                        element={<ExportedReportPage />}
+                      />
+                    </>
+                  )}
+                  <Route
+                    path="/mlr/*"
+                    element={
+                      !contextIsLoaded ? (
+                        <Flex sx={sx.spinnerContainer}>
+                          <Spinner size="lg" />
+                        </Flex>
+                      ) : (
+                        <Navigate to="/mlr" />
+                      )
+                    }
+                  />
+                </Fragment>
+              )}
+            </>
           )}
         </Routes>
       </AdminBannerProvider>
