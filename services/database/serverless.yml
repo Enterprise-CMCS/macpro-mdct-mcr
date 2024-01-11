@@ -3,11 +3,9 @@ service: database
 frameworkVersion: "3"
 
 plugins:
-  - serverless-plugin-typescript
   - serverless-dynamodb
   - serverless-stack-termination-protection
   - serverless-s3-bucket-helper
-  - serverless-plugin-scripts
   - serverless-offline
 
 s3BucketHelper:
@@ -33,15 +31,6 @@ custom:
   mlrFormBucket: ${env:MLR_FORM_BUCKET, "${self:service}-${self:custom.stage}-mlr"}
   naaarReportTableName: ${self:custom.stage}-naaar-reports
   naaarFormBucket: ${env:NAAAR_FORM_BUCKET, "${self:service}-${self:custom.stage}-naaar"}
-  dataTransformEnabled: ${env:DATATRANSFORM_ENABLED,ssm:/configuration/${self:custom.stage}/enableTransformScript, ssm:/configuration/default/enableTransformScript, "false"}
-  dataTransformUpdateEnabled: ${env.DATATRANSFORM_UPDATED_ENABLED:,ssm:/configuration/${self:custom.stage}/executeDataUpdateInTransformScript, ssm:/configuration/default/executeDataUpdateInTransformScript, "false"}
-  scripts:
-    hooks:
-      deploy:finalize: |
-        if [ ${self:custom.dataTransformEnabled} = "true" ];
-        then
-          serverless invoke --stage ${self:custom.stage} --function dataTransform
-        fi
   dynamodb:
     stages:
       - local
@@ -54,37 +43,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
-  iam:
-    role:
-      path: ${env:IAM_PATH, ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
-      permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
-      statements:
-        - Effect: "Allow"
-          Action:
-            - dynamodb:DescribeTable
-            - dynamodb:Query
-            - dynamodb:Scan
-            - dynamodb:GetItem
-            - dynamodb:PutItem
-            - dynamodb:UpdateItem
-            - dynamodb:DeleteItem
-          Resource: "*"
-        - Effect: "Allow"
-          Action:
-            - "s3:GetObject"
-            - "s3:ListBucket"
-            - "s3:PutObject"
-          Resource:
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
-            - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
-functions:
-  dataTransform:
-    handler: handlers/dataTransform/dataTransform.handler
-    timeout: 120
-    environment:
-      DYNAMO_PREFIX: ${self:custom.stage}
-      DATA_TRANSFORM_UPDATE_ENABLED: ${self:custom.dataTransformUpdateEnabled}
+
 resources:
   Resources:
     BannerTable:
