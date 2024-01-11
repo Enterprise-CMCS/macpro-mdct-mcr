@@ -56,7 +56,7 @@
     "serverless-plugin-warmup": "^8.2.1",
     "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#master",
     "serverless-s3-sync": "2.0.0",
-    "serverless-stack-termination-protection": "^1.0.4",
+    "serverless-stack-termination-protection": "^2.0.2",
     "typescript": "^4.6.3",
     "util": "^0.12.4",
     "yargs": "^16.1.1"
