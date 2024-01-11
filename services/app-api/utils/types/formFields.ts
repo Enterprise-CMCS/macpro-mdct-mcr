@@ -3,19 +3,6 @@ import { ModalOverlayReportPageVerbiage, ReportPageShapeBase } from "./reports";
 
 // FORM & FIELD STRUCTURE
 
-export declare type EntityType =
-  | "plans"
-  | "bssEntities"
-  | "accessMeasures"
-  | "qualityMeasures"
-  | "sanctions";
-
-export enum ModalDrawerEntityTypes {
-  ACCESS_MEASURES = "accessMeasures",
-  QUALITY_MEASURES = "qualityMeasures",
-  SANCTIONS = "sanctions",
-}
-
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: ModalOverlayReportPageVerbiage;
@@ -23,11 +10,6 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   overlayForm?: FormJson;
   drawerForm?: never;
   form?: never;
-}
-
-export interface EntityShape {
-  id: string;
-  [key: string]: any;
 }
 
 export interface FormLayoutElement {
@@ -79,11 +61,6 @@ export interface FormField {
   repeat?: string;
 }
 
-export interface DropdownOptions {
-  label: string;
-  value: string;
-}
-
 export interface FieldChoice {
   id: string;
   name: string;
@@ -94,26 +71,7 @@ export interface FieldChoice {
   checkedChildren?: any;
 }
 
-export interface ChoiceFieldProps {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}
 export interface Choice {
   key: string; // choice.name
   value: string; // choice.value
-}
-
-export interface DropdownChoice {
-  label: string;
-  value: string;
-}
-
-export enum PageTypes {
-  STANDARD = "standard",
-  DRAWER = "drawer",
-  MODAL_DRAWER = "modalDrawer",
-  REVIEW_SUBMIT = "reviewSubmit",
 }

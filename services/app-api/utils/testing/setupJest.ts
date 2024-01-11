@@ -44,7 +44,6 @@ jest.mock("aws-sdk", () => {
         copyObject: jest.fn().mockImplementation((_params, callback) => {
           callback(undefined, { ETag: '"mockedEtag"' });
         }),
-        listObjects: jest.fn(),
       };
     }),
     Credentials: jest.fn().mockImplementation(() => {
@@ -114,13 +113,6 @@ export const mockReportKeys = {
 export const mockReportFieldData = {
   text: "text-input",
   "mock-number-field": 0,
-};
-
-export const mockReportFieldData2 = {
-  text: "text-input",
-  value: 22,
-  number: 0,
-  program: [{ report_number: "12", report_percentage: "34" }],
 };
 
 export const mockDynamoData = {

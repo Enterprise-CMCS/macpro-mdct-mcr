@@ -36,13 +36,6 @@ export interface DynamoScan {
   [key: string]: any;
 }
 
-export const enum RequestMethods {
-  POST = "POST",
-  GET = "GET",
-  PUT = "PUT",
-  DELETE = "DELETE",
-}
-
 export const enum StatusCodes {
   SUCCESS = 200,
   CREATED = 201,
@@ -62,37 +55,8 @@ export interface S3Get {
   Key: string;
 }
 
-export interface S3Copy {
-  Bucket: string;
-  CopySource: string;
-  Key: string;
-}
-
 export interface CompletionData {
   [key: string]: boolean | CompletionData;
-}
-
-// ALERTS
-
-export enum AlertTypes {
-  ERROR = "error",
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-}
-
-// TIME
-
-export interface DateShape {
-  year: number;
-  month: number;
-  day: number;
-}
-
-export interface TimeShape {
-  hour: number;
-  minute: number;
-  second: number;
 }
 
 // OTHER
@@ -177,29 +141,6 @@ export interface FormTemplate {
   lastAltered: string;
   reportType: string;
 }
-
-/**
- * Use this type to create a type guard for filtering arrays of objects
- * by the presence of certain attributes.
- *
- * @example
- * interface Foo {
- *    bar: string;
- *    baz?: string;
- *    buzz?: string;
- *    bizz?: string;
- * }
- * type RequireBaz = SomeRequired<Foo, 'baz'>
- * const array: Foo[] = [
- *  { bar: 'always here' },
- *  { bar: 'always here', baz: 'sometimes here' }
- * ]
- * array.filter((f): f is RequireBaz => typeof f.baz !== 'undefined' )
- * // `array`'s type now shows bar and baz as required.
- * array.map((f) => return f.baz)
- */
-export type SomeRequired<T, K extends keyof T> = Required<Pick<T, K>> &
-  Omit<T, K>;
 
 /**
  * Instructs Typescript to complain if it detects that this function may be reachable.
