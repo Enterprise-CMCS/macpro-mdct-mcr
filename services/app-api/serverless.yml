@@ -160,51 +160,6 @@ provider:
     STAGE: ${self:custom.stage}
 
 functions:
-  addPccmToPastMcpar:
-    handler: handlers/etl/addPccmToPastMcpar.addPccmHandler
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  addRevisionsToMcpar:
-    handler: handlers/etl/addRevisionsToMcpar.addRevisionsHandler
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  numberFieldDataToFile:
-    handler: handlers/etl/numberFieldDataToFile.exportNumericData
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  numberFieldCleanup:
-    handler: handlers/etl/numberFieldCleanup.cleanupNumericData
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  formTemplateEntitiesUpdate:
-    handler: handlers/etl/formTemplateEntitiesUpdate.transform
-    timeout: 300
-    environment:
-      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  formTemplateTablePopulation:
-    handler: handlers/formTemplates/populateTemplatesTable.handler
-    timeout: 900
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
