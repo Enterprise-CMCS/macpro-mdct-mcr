@@ -9530,10 +9530,10 @@ serverless-s3-sync@2.0.0:
     mime "^2.4.4"
     minimatch "^3.0.4"
 
-serverless-stack-termination-protection@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz#e0430108cfc8f4d72a63138ef5781c6fe9707868"
-  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
+serverless-stack-termination-protection@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-2.0.2.tgz#f56d61e745fd346daf3b49612a4751f63a84b97e"
+  integrity sha512-pPUVJmH5if8A12KVSTMqNjo7u8rfW0/vJO+UFp19lvkY0t8jfoO3R3DySwTDVcB+jzaCrU/NyEHPtbiDLVjSSw==
 
 serverless-webpack@^5.6.1:
   version "5.11.0"
