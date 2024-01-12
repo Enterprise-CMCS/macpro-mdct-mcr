@@ -1,4 +1,3 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import * as debug from "../utils/debugging/debug-lib";
 import { isAuthorized } from "../utils/auth/authorization";
@@ -9,7 +8,7 @@ import {
 import { error } from "../utils/constants/constants";
 import { sanitizeObject } from "../utils/sanitize/sanitize";
 // types
-import { StatusCodes } from "../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../utils/types";
 
 type LambdaFunction = (
   event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars

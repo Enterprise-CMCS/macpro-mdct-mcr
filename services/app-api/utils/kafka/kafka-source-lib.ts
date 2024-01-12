@@ -2,7 +2,7 @@
 import AWS from "aws-sdk";
 import s3Lib from "../s3/s3-lib";
 import { Kafka, Producer } from "kafkajs";
-import { S3EventRecord } from "aws-lambda";
+import { S3EventRecord } from "../types";
 
 type KafkaPayload = {
   key: string;

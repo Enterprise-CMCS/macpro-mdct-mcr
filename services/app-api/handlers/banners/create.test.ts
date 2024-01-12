@@ -1,7 +1,6 @@
 import { createBanner } from "./create";
-import { APIGatewayProxyEvent } from "aws-lambda";
 // types
-import { StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 // utils
 import { error } from "../../utils/constants/constants";
 import { proxyEvent } from "../../utils/testing/proxyEvent";

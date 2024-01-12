@@ -1,6 +1,7 @@
 import util from "util";
 import AWS from "aws-sdk";
-import { APIGatewayProxyEvent } from "aws-lambda";
+// types
+import { APIGatewayProxyEvent } from "../../utils/types";
 
 let logs: { date: Date; string: string }[] = [];
 

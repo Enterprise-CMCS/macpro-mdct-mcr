@@ -1,6 +1,5 @@
 import { createReport } from "./create";
 import * as reportUtils from "../../utils/reports/reports";
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
@@ -9,7 +8,7 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 // types
-import { StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
 

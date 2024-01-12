@@ -1,5 +1,4 @@
 import { submitReport } from "./submit";
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
@@ -11,7 +10,7 @@ import {
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
 // types
-import { StatusCodes } from "../../utils/types/other";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),

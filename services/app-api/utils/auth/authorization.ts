@@ -1,7 +1,8 @@
 import { SSM } from "aws-sdk";
-import { APIGatewayProxyEvent } from "aws-lambda";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+// types
+import { APIGatewayProxyEvent } from "../../utils/types";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserRoles } from "../types";
