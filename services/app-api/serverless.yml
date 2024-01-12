@@ -53,8 +53,6 @@ custom:
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
   mlrFormBucket: ${env:MLR_FORM_BUCKET, cf:database-${self:custom.stage}.MlrFormBucketName}
   naaarFormBucket: ${env:NAAAR_FORM_BUCKET, cf:database-${self:custom.stage}.NaaarFormBucketName}
-  princeApiHost: ${env:PRINCE_API_HOST, ssm:/${self:custom.stage}/prince_api_host, ssm:/default/prince_api_host}
-  princeApiPath: ${env:PRINCE_API_PATH, ssm:/${self:custom.stage}/prince_api_path, ssm:/default/prince_api_path}
   bootstrapBrokerStringTls: ${env:BROKER_STRINGS, ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   vpcId: ${env:VPC_ID, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   privateSubnets:
@@ -160,55 +158,8 @@ provider:
     MLR_FORM_BUCKET: ${self:custom.mlrFormBucket}
     NAAAR_FORM_BUCKET: ${self:custom.naaarFormBucket}
     STAGE: ${self:custom.stage}
-    PRINCE_API_HOST: ${self:custom.princeApiHost}
-    PRINCE_API_PATH: ${self:custom.princeApiPath}
 
 functions:
-  addPccmToPastMcpar:
-    handler: handlers/etl/addPccmToPastMcpar.addPccmHandler
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  addRevisionsToMcpar:
-    handler: handlers/etl/addRevisionsToMcpar.addRevisionsHandler
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  numberFieldDataToFile:
-    handler: handlers/etl/numberFieldDataToFile.exportNumericData
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  numberFieldCleanup:
-    handler: handlers/etl/numberFieldCleanup.cleanupNumericData
-    timeout: 300
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  formTemplateEntitiesUpdate:
-    handler: handlers/etl/formTemplateEntitiesUpdate.transform
-    timeout: 300
-    environment:
-      MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-      MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
-  formTemplateTablePopulation:
-    handler: handlers/formTemplates/populateTemplatesTable.handler
-    timeout: 900
-    warmup:
-      default:
-        enabled: false
-    maximumRetryAttempts: 0
   fetchBanner:
     handler: handlers/banners/fetch.fetchBanner
     events:
@@ -357,15 +308,6 @@ functions:
             parameters:
               paths:
                 templateName: true
-  printPdf:
-    handler: handlers/print/printPdf.printPdf
-    timeout: 30
-    events:
-      - http:
-          path: print_pdf
-          method: post
-          cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, ""}
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
