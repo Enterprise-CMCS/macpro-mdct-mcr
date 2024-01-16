@@ -1,11 +1,9 @@
-import { SSM } from "aws-sdk";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 // types
-import { APIGatewayProxyEvent } from "../../utils/types";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserRoles } from "../types";
+import { APIGatewayProxyEvent, UserRoles } from "../types";
+import { logger } from "../debugging/debug-lib";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
@@ -21,29 +19,21 @@ const loadCognitoValues = async () => {
       userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
     };
   } else {
-    const ssm = new SSM();
+    const ssmClient = new SSMClient({ logger });
     const stage = process.env.STAGE!;
-    const userPoolIdParamName = "/" + stage + "/ui-auth/cognito_user_pool_id";
-    const userPoolClientIdParamName =
-      "/" + stage + "/ui-auth/cognito_user_pool_client_id";
-    const userPoolIdParams = {
-      Name: userPoolIdParamName,
+    const getParam = async (identifier: string) => {
+      const command = new GetParameterCommand({
+        Name: `/${stage}/ui-auth/${identifier}`,
+      });
+      const result = await ssmClient.send(command);
+      return result.Parameter?.Value;
     };
-    const userPoolClientIdParams = {
-      Name: userPoolClientIdParamName,
-    };
-    const userPoolId = await ssm.getParameter(userPoolIdParams).promise();
-    const userPoolClientId = await ssm
-      .getParameter(userPoolClientIdParams)
-      .promise();
-    if (userPoolId?.Parameter?.Value && userPoolClientId?.Parameter?.Value) {
-      process.env["COGNITO_USER_POOL_ID"] = userPoolId.Parameter.Value;
-      process.env["COGNITO_USER_POOL_CLIENT_ID"] =
-        userPoolClientId.Parameter.Value;
-      return {
-        userPoolId: userPoolId.Parameter.Value,
-        userPoolClientId: userPoolClientId.Parameter.Value,
-      };
+    const userPoolId = await getParam("cognito_user_pool_id");
+    const userPoolClientId = await getParam("cognito_user_pool_client_id");
+    if (userPoolId && userPoolClientId) {
+      process.env["COGNITO_USER_POOL_ID"] = userPoolId;
+      process.env["COGNITO_USER_POOL_CLIENT_ID"] = userPoolClientId;
+      return { userPoolId, userPoolClientId };
     } else {
       throw new Error("cannot load cognito values");
     }
@@ -79,7 +69,7 @@ export const hasPermissions = (
 ) => {
   let isAllowed = false;
   // decode the idToken
-  if (event?.headers["x-api-key"]) {
+  if (event?.headers?.["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
     const idmUserRoles = decoded["custom:cms_roles"];
     const mcrUserRole = idmUserRoles

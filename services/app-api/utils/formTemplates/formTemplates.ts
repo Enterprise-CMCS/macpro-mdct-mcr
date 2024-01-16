@@ -1,4 +1,4 @@
-import { AttributeValue, QueryInput } from "aws-sdk/clients/dynamodb";
+import { QueryCommandInput } from "@aws-sdk/lib-dynamodb";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 import mlrForm from "../../forms/mlr.json";
 import mcparForm from "../../forms/mcpar.json";
@@ -21,11 +21,11 @@ import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable
 import { createHash } from "crypto";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
-  const queryParams: QueryInput = {
+  const queryParams: QueryCommandInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     KeyConditionExpression: `reportType = :reportType`,
     ExpressionAttributeValues: {
-      ":reportType": reportType as unknown as AttributeValue,
+      ":reportType": reportType,
     },
     Limit: 1,
     ScanIndexForward: false, // true = ascending, false = descending
@@ -38,14 +38,14 @@ export async function getTemplateVersionByHash(
   reportType: ReportType,
   hash: string
 ) {
-  const queryParams: QueryInput = {
+  const queryParams: QueryCommandInput = {
     TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
     IndexName: "HashIndex",
     KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
     Limit: 1,
     ExpressionAttributeValues: {
-      ":md5Hash": hash as AttributeValue,
-      ":reportType": reportType as unknown as AttributeValue,
+      ":md5Hash": hash,
+      ":reportType": reportType,
     },
   };
   const result = await dynamodbLib.query(queryParams);

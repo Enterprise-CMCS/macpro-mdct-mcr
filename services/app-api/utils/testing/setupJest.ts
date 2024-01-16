@@ -19,8 +19,6 @@ jest.mock("aws-sdk", () => {
           query: () => mockDocumentClient.query,
           put: () => mockDocumentClient.put,
           delete: () => mockDocumentClient.delete,
-          scan: () => mockDocumentClient.scan,
-          scanAll: () => mockDocumentClient.scanAll,
         };
       }),
       Converter: {

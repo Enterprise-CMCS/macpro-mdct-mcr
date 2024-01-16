@@ -1,64 +1,46 @@
-import { Credentials, DynamoDB } from "aws-sdk";
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { ServiceConfigurationOptions } from "aws-sdk/lib/service";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
-  DynamoWrite,
-  DynamoDelete,
-  DynamoUpdate,
-  DynamoGet,
-  DynamoScan,
-} from "../types/other";
+  GetCommand,
+  GetCommandInput,
+  DeleteCommand,
+  DeleteCommandInput,
+  DynamoDBDocumentClient,
+  QueryCommand,
+  QueryCommandInput,
+  PutCommand,
+  PutCommandInput,
+} from "@aws-sdk/lib-dynamodb";
+import { logger } from "../debugging/debug-lib";
 
-export function createDbClient() {
-  const dynamoConfig: DynamoDB.DocumentClient.DocumentClientOptions &
-    ServiceConfigurationOptions &
-    DynamoDB.ClientApiVersions = {};
+const localConfig = {
+  endpoint: process.env.DYNAMODB_URL,
+  region: "localhost",
+  credentials: {
+    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
+    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
+  },
+  logger,
+};
 
-  const endpoint = process.env.DYNAMODB_URL;
-  if (endpoint) {
-    dynamoConfig.endpoint = endpoint;
-    dynamoConfig.credentials = new Credentials({
-      accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-      secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-    });
-  } else {
-    dynamoConfig["region"] = "us-east-1";
-  }
+const awsConfig = {
+  region: "us-east-1",
+  logger,
+};
 
-  return new DynamoDB.DocumentClient(dynamoConfig);
-}
+export const getConfig = () => {
+  return process.env.DYNAMODB_URL ? localConfig : awsConfig;
+};
+
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
 
 export default {
-  get: async <Result>(params: DynamoGet) => {
-    const result = await createDbClient().get(params).promise();
-    return { ...result, Item: result?.Item as Result | undefined };
+  get: async (params: GetCommandInput) => {
+    return await client.send(new GetCommand(params));
   },
-  query: (params: any) => createDbClient().query(params).promise(),
-  scan: async <Result>(params: DynamoScan) => {
-    const result = await createDbClient().scan(params).promise();
-    return { ...result, Items: result?.Items as Result[] | undefined };
-  },
-  /**
-   * Scan operation that continues for all results.
-   * Returns an AsyncGenerator so each result can be processed immediately,
-   * even if more batches of results are pending
-   */
-  scanIterator: async function* (
-    params: Omit<DocumentClient.ScanInput, "ExclusiveStartKey">
-  ) {
-    let ExclusiveStartKey: DocumentClient.Key | undefined;
-
-    do {
-      let results = await createDbClient()
-        .scan({ ...params, ExclusiveStartKey })
-        .promise();
-      if (results?.Items) {
-        yield* results.Items;
-      }
-      ExclusiveStartKey = results?.LastEvaluatedKey;
-    } while (ExclusiveStartKey);
-  },
-  put: (params: DynamoWrite) => createDbClient().put(params).promise(),
-  update: (params: DynamoUpdate) => createDbClient().update(params).promise(),
-  delete: (params: DynamoDelete) => createDbClient().delete(params).promise(),
+  query: async (params: QueryCommandInput) =>
+    await client.send(new QueryCommand(params)),
+  put: async (params: PutCommandInput) =>
+    await client.send(new PutCommand(params)),
+  delete: async (params: DeleteCommandInput) =>
+    await client.send(new DeleteCommand(params)),
 };

@@ -1,6 +1,8 @@
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { mockClient } from "aws-sdk-client-mock";
 import { proxyEvent } from "../testing/proxyEvent";
 import { hasPermissions, isAuthorized } from "./authorization";
-import { UserRoles } from "../types/users";
+import { UserRoles } from "../types";
 
 const mockVerifier = jest.fn();
 
@@ -13,16 +15,17 @@ jest.mock("aws-jwt-verify", () => ({
   },
 }));
 
-const mockGetParameter = jest.fn();
-
-jest.mock("aws-sdk", () => {
-  const mockSSMInstance = {
-    getParameter: (_x: any) => ({ promise: mockGetParameter }),
-  };
-  const mockSSM = jest.fn(() => mockSSMInstance);
-
-  return { SSM: mockSSM };
-});
+const ssmClientMock = mockClient(SSMClient);
+const mockSsmResponse = {
+  Parameter: {
+    Name: "NAME",
+    Type: "SecureString",
+    Value: "VALUE",
+    Version: 1,
+    LastModifiedDate: 1546551668.495,
+    ARN: "arn:aws:ssm:ap-southeast-2:123:NAME",
+  },
+};
 
 const noApiKeyEvent = { ...proxyEvent };
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
@@ -64,14 +67,37 @@ describe("Test authorization with api key and ssm parameters", () => {
     jest.clearAllMocks();
   });
   test("throws error when api key is passed and ssm parameters do not exist", async () => {
-    await expect(isAuthorized(apiKeyEvent)).rejects.toThrow(
-      "cannot load cognito values"
-    );
+    const mockGetSsmParameter = jest.fn().mockImplementation(() => {
+      throw new Error("failed in test");
+    });
+    ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
+    await expect(isAuthorized(apiKeyEvent)).rejects.toThrow("failed in test");
   });
   test("is authorized when api key is passed and ssm parameters exist", async () => {
-    mockGetParameter.mockReturnValue({ Parameter: { Value: "VALUE" } });
+    const mockGetSsmParameter = jest
+      .fn()
+      .mockResolvedValue({ Parameter: { Value: "VALUE" } });
+    ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
     const authStatus = await isAuthorized(apiKeyEvent);
     expect(authStatus).toBeTruthy();
+  });
+
+  test("authorization should reach out to SSM when missing cognito info", async () => {
+    delete process.env["COGNITO_USER_POOL_ID"];
+    delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
+    const mockGetSsmParameter = jest.fn().mockResolvedValue(mockSsmResponse);
+    ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
+
+    await isAuthorized(apiKeyEvent);
+    expect(mockGetSsmParameter).toHaveBeenCalled();
+  });
+
+  test("authorization should throw error if no values exist in SSM or env", async () => {
+    delete process.env["COGNITO_USER_POOL_ID"];
+    delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
+    ssmClientMock.on(GetParameterCommand).resolves({});
+
+    await expect(isAuthorized(apiKeyEvent)).rejects.toThrow(Error);
   });
 });
 
