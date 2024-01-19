@@ -14,11 +14,6 @@ jest.mock("../../utils/auth/authorization", () => ({
 
 const mockAuthUtil = require("../../utils/auth/authorization");
 
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
 jest.mock("./fetch");
 const mockedFetchReport = fetchReport as jest.MockedFunction<
   typeof fetchReport

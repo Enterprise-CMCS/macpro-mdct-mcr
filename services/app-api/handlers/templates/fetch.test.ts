@@ -9,11 +9,6 @@ jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: { templateName: "test" },

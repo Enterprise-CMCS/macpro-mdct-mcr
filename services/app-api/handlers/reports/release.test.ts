@@ -21,11 +21,6 @@ jest.mock("../../utils/auth/authorization", () => ({
 
 const mockAuthUtil = require("../../utils/auth/authorization");
 
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },

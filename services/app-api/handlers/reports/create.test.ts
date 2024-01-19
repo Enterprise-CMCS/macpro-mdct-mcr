@@ -18,11 +18,6 @@ jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
-
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 const mockProxyEvent = {
