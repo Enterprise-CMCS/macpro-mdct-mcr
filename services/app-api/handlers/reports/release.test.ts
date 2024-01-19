@@ -1,15 +1,18 @@
 import { releaseReport } from "./release";
 import KSUID from "ksuid";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
-  mockDocumentClient,
   mockDynamoDataMLRLocked,
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -36,6 +39,7 @@ const releaseEvent: APIGatewayProxyEvent = {
 
 describe("Test releaseReport method", () => {
   beforeEach(() => {
+    dynamoClientMock.reset();
     // fail state and pass admin auth checks
     mockAuthUtil.hasPermissions
       .mockReturnValueOnce(true)
@@ -48,7 +52,7 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report passes with valid data", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
     const res = await releaseReport(releaseEvent, null);
@@ -63,7 +67,7 @@ describe("Test releaseReport method", () => {
 
   test("Test release report passes with valid data, but it's been more than the first submission", async () => {
     const newPreviousId = KSUID.randomSync().string;
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: {
         ...mockDynamoDataMLRLocked,
         previousRevisions: [newPreviousId],
@@ -84,7 +88,7 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report with no existing record throws 404", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: undefined,
     });
     const res = await releaseReport(releaseEvent, null);
@@ -93,7 +97,7 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report without admin permissions throws 403", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
     const res = await releaseReport(releaseEvent, null);

@@ -4,7 +4,7 @@ import mlrForm from "../../forms/mlr.json";
 import mcparForm from "../../forms/mcpar.json";
 import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
-import { logger } from "../logging";
+import { logger } from "../debugging/debug-lib";
 import {
   AnyObject,
   assertExhaustive,

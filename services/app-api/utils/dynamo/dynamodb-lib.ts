@@ -10,6 +10,7 @@ import {
   PutCommand,
   PutCommandInput,
 } from "@aws-sdk/lib-dynamodb";
+import { AnyObject } from "yup/lib/types";
 import { logger } from "../debugging/debug-lib";
 
 const localConfig = {
@@ -39,6 +40,20 @@ export default {
   },
   query: async (params: QueryCommandInput) =>
     await client.send(new QueryCommand(params)),
+  queryAll: async (params: Omit<QueryCommandInput, "ExclusiveStartKey">) => {
+    let items: AnyObject[] = [];
+    let ExclusiveStartKey: Record<string, any> | undefined;
+
+    do {
+      const command = new QueryCommand({ ...params, ExclusiveStartKey });
+      const result = await client.send(command);
+      items = items.concat(result.Items ?? []);
+      ExclusiveStartKey = result.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+
+    // unused
+    return items;
+  },
   put: async (params: PutCommandInput) =>
     await client.send(new PutCommand(params)),
   delete: async (params: DeleteCommandInput) =>

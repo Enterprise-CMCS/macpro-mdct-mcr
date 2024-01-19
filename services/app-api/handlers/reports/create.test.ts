@@ -1,16 +1,17 @@
 import { createReport } from "./create";
-import * as reportUtils from "../../utils/reports/reports";
+import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
+import * as reportUtils from "../../utils/reports/reports";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import {
-  mockDocumentClient,
-  mockMcparReport,
-} from "../../utils/testing/setupJest";
+import { mockMcparReport } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
-// types
-import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
+// types
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -187,13 +188,14 @@ const mockSanctions = [
   },
 ];
 
-mockDocumentClient.query.promise.mockReturnValue({
+dynamoClientMock.on(QueryCommand).resolves({
   Items: [],
 });
 
 describe("Test createReport API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
+    dynamoClientMock.reset();
   });
   test("Test unauthorized report creation throws 403 error", async () => {
     jest.spyOn(authFunctions, "isAuthorized").mockResolvedValueOnce(false);

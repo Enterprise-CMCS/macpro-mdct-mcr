@@ -1,9 +1,14 @@
 import { fetchReport, fetchReportsByState } from "./fetch";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
 import {
-  mockDocumentClient,
   mockDynamoData,
   mockReportJson,
   mockReportFieldData,
@@ -11,6 +16,8 @@ import {
 } from "../../utils/testing/setupJest";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
@@ -39,14 +46,20 @@ const testReadEventByState: APIGatewayProxyEvent = {
 };
 
 describe("Test fetchReport API method", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    dynamoClientMock.reset();
+  });
   test("Test Report not found in DynamoDB", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: undefined,
+    });
     const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
   });
 
   test("Test Report Form not found in S3", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: { ...mockDynamoData, formTemplateId: "badId" },
     });
     const res = await fetchReport(testReadEvent, "null");
@@ -54,7 +67,7 @@ describe("Test fetchReport API method", () => {
   });
 
   test("Test Field Data not found in S3", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: { ...mockDynamoData, fieldDataId: null },
     });
     const res = await fetchReport(testReadEvent, "badId");
@@ -62,7 +75,7 @@ describe("Test fetchReport API method", () => {
   });
 
   test("Test Successful Report Fetch w/ Incomplete Report", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoData,
     });
     const res = await fetchReport(testReadEvent, null);
@@ -79,7 +92,7 @@ describe("Test fetchReport API method", () => {
   });
 
   test("Test Successful Report Fetch w/ Complete Report", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataCompleted,
     });
     const res = await fetchReport(testReadEvent, null);
@@ -117,8 +130,12 @@ describe("Test fetchReport API method", () => {
 });
 
 describe("Test fetchReportsByState API method", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    dynamoClientMock.reset();
+  });
   test("Test successful call", async () => {
-    mockDocumentClient.query.promise.mockReturnValueOnce({
+    dynamoClientMock.on(QueryCommand).resolves({
       Items: [mockDynamoData],
     });
     const res = await fetchReportsByState(testReadEventByState, null);

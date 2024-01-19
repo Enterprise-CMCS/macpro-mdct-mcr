@@ -1,16 +1,19 @@
 import { submitReport } from "./submit";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
 import {
   mockApiKey,
-  mockDocumentClient,
   mockDynamoData,
   mockDynamoDataCompleted,
   mockDynamoDataMLRComplete,
 } from "../../utils/testing/setupJest";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
@@ -33,14 +36,20 @@ const testSubmitEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test submitReport API method", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    dynamoClientMock.reset();
+  });
   test("Test Report not found in DynamoDB", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({ Item: undefined });
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: undefined,
+    });
     const res = await submitReport(testSubmitEvent, null);
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
   });
 
   test("Test Successful Report Submittal", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataCompleted,
     });
     const res = await submitReport(testSubmitEvent, null);
@@ -58,7 +67,7 @@ describe("Test submitReport API method", () => {
   });
 
   test("Test MLR reports get locked and have submission count updated.", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: {
         ...mockDynamoDataMLRComplete,
         reportType: "MLR",
@@ -78,7 +87,7 @@ describe("Test submitReport API method", () => {
   });
 
   test("Test report submittal fails if incomplete.", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoData,
     });
     const res = await submitReport(testSubmitEvent, null);

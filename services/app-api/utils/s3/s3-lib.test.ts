@@ -40,7 +40,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
     const mockPut = jest.fn();
     s3ClientMock.on(PutObjectCommand).callsFake(mockPut);
 
-    await s3Lib.put({ Bucket: "b", Key: "k" });
+    await s3Lib.put({ Bucket: "b", Key: "k", Body: "body" });
 
     expect(mockPut).toHaveBeenCalled();
   });

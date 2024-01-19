@@ -5,12 +5,6 @@ import { error } from "../../utils/constants/constants";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
-jest.mock("aws-sdk", () => ({
-  S3: jest.fn().mockImplementation(() => ({
-    getSignedUrl: jest.fn().mockReturnValue("s3://fakeurl.bucket.here"),
-  })),
-}));
-
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
 }));

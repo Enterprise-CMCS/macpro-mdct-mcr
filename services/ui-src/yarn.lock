@@ -1698,7 +1698,7 @@
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-1.0.0-rc.10.tgz#729127fbfac5da1a3368ffe6ec2e90acc9ad69c3"
   integrity sha512-9gwhYnkTNuYZ+etCtM4T8gjpZ0SWSXbzQxY34UjSS+dt3C/UnbX0J22tMahp/9Z1yCa9pihtXrkD+nO2xn7nVQ==
 
-"@aws-sdk/types@^3.1.0", "@aws-sdk/types@^3.38.0":
+"@aws-sdk/types@^3.1.0":
   version "3.78.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.78.0.tgz#51dc80b2142ee20821fb9f476bdca6e541021443"
   integrity sha512-I9PTlVNSbwhIgMfmDM5as1tqRIkVZunjVmfogb2WVVPp4CaX0Ll01S0FSMSLL9k6tcQLXqh45pFRjrxCl9WKdQ==
@@ -12586,14 +12586,13 @@ serverless-cloudfront-invalidate@^1.5.0:
     proxy-agent "^4.0.1"
     randomstring "^1.1.5"
 
-serverless-s3-sync@^1.14.4:
-  version "1.17.3"
-  resolved "https://registry.yarnpkg.com/serverless-s3-sync/-/serverless-s3-sync-1.17.3.tgz#cf7913dde5f38c215c21dbf7466370974003cf7a"
-  integrity sha512-lnet9qqu8Uh3N8lyywxWt+0eljsfiX4xVDDMLkE2ggWBGEupM4B4xBonsI1GfWgPVpd4EJOTeyFOEWUAWpINeA==
+serverless-s3-sync@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/serverless-s3-sync/-/serverless-s3-sync-3.2.0.tgz#3005566ad85a4c825fb0ef882e7cb0b0d3443ba6"
+  integrity sha512-V7rUA/5oU1fxvaX7zM+ZeNEyZ/aGWRtuUpmGX4HVgbQgcfyrAvf0/MZ68qu9KqUdbqSy7//sMa63KQjSo7XXiA==
   dependencies:
     "@auth0/s3" "^1.0.0"
     bluebird "^3.5.4"
-    chalk "^2.4.2"
     mime "^2.4.4"
     minimatch "^3.0.4"
 

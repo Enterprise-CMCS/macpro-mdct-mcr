@@ -1,13 +1,14 @@
 import {
   S3Client,
-  PutObjectRequest,
   PutObjectCommand,
-  GetObjectRequest,
+  PutObjectCommandInput,
+  GetObjectCommandInput,
   GetObjectCommand,
+  GetObjectRequest,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { logger } from "../debugging/debug-lib";
-import { buckets } from "../constants/constants";
+import { buckets, error } from "../constants/constants";
 import { State } from "../types/other";
 
 const localConfig = {
@@ -32,11 +33,21 @@ export const getConfig = () => {
 const client = new S3Client(getConfig());
 
 export default {
-  // TODO: figure this out (not like Body from formTemplates.ts)
-  put: async (params: PutObjectRequest) =>
+  put: async (params: PutObjectCommandInput) =>
     await client.send(new PutObjectCommand(params)),
-  get: async (params: GetObjectRequest) =>
-    await client.send(new GetObjectCommand(params)),
+  get: async (params: GetObjectCommandInput) => {
+    try {
+      const response = await client.send(new GetObjectCommand(params));
+      const stringBody = await response.Body?.transformToString();
+      if (stringBody) {
+        return JSON.parse(stringBody);
+      } else {
+        throw new Error();
+      }
+    } catch {
+      throw new Error(error.S3_OBJECT_GET_ERROR);
+    }
+  },
   getSignedDownloadUrl: async (params: GetObjectRequest, forcedAws = false) => {
     let myClient = forcedAws ? new S3Client(awsConfig) : client;
     return await getSignedUrl(myClient, new GetObjectCommand(params), {

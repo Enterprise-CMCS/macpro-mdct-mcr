@@ -25,7 +25,7 @@ import {
   UserRoles,
 } from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
-import { logger } from "../../utils/logging";
+import { logger } from "../../utils/debugging/debug-lib";
 import {
   copyFieldDataFromSource,
   makePCCMModifications,

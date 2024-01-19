@@ -45,7 +45,6 @@
     "zustand": "^4.4.6"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.38.0",
     "@babel/core": "^7.13.16",
     "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@babel/preset-env": "^7.13.15",
@@ -74,7 +73,7 @@
     "postinstall-postinstall": "^2.1.0",
     "react-helmet": "^6.1.0",
     "serverless-cloudfront-invalidate": "^1.5.0",
-    "serverless-s3-sync": "^1.14.4",
+    "serverless-s3-sync": "^3.2.0",
     "typescript": "^4.6.3"
   },
   "resolutions": {
