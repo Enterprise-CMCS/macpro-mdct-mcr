@@ -2,8 +2,12 @@ import { fetchReport } from "./fetch";
 import { archiveReport } from "./archive";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { mockMcparReport } from "../../utils/testing/setupJest";
+import {
+  mockDynamoPutCommandOutput,
+  mockMcparReport,
+} from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
@@ -47,6 +51,8 @@ describe("Test archiveReport method", () => {
   });
 
   test("Test archive report passes with valid data", async () => {
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    dynamoPutSpy.mockResolvedValue(mockDynamoPutCommandOutput);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -57,6 +63,7 @@ describe("Test archiveReport method", () => {
     });
     const res: any = await archiveReport(archiveEvent, null);
     const body = JSON.parse(res.body);
+    expect(dynamoPutSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.archived).toBe(true);
   });

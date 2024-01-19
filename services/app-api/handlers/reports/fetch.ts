@@ -136,7 +136,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
     },
   };
 
-  const reportsByState = dynamoDb.queryAll(queryParams);
+  const reportsByState = await dynamoDb.queryAll(queryParams);
 
   return {
     status: StatusCodes.SUCCESS,

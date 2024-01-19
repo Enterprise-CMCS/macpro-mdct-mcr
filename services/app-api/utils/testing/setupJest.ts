@@ -10,6 +10,10 @@ export const mockS3PutObjectCommandOutput = {
   VersionId: "some version id",
 };
 
+export const mockDynamoPutCommandOutput = {
+  $metadata: { attempts: 1 },
+};
+
 export const mockReportJson = {
   name: "mock-report",
   type: "mock",

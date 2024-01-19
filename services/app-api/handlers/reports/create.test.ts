@@ -4,7 +4,10 @@ import { mockClient } from "aws-sdk-client-mock";
 // utils
 import * as reportUtils from "../../utils/reports/reports";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { mockMcparReport } from "../../utils/testing/setupJest";
+import {
+  mockMcparReport,
+  mockS3PutObjectCommandOutput,
+} from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
@@ -183,10 +186,6 @@ const mockSanctions = [
   },
 ];
 
-dynamoClientMock.on(QueryCommand).resolves({
-  Items: [],
-});
-
 describe("Test createReport API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
@@ -207,6 +206,11 @@ describe("Test createReport API method", () => {
   });
 
   test("Test successful run of report creation, not copied", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
@@ -230,9 +234,15 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.bssEntities).toBeUndefined();
     expect(body.fieldData.programName).toBeUndefined();
     expect(body.fieldData.plans).toBeUndefined();
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test successful run of PCCM report creation, not copied", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(createPccmEvent, null);
 
     const body = JSON.parse(res.body);
@@ -261,18 +271,31 @@ describe("Test createReport API method", () => {
     ).toBeUndefined();
     expect(body.fieldData.programName).toBeUndefined();
     expect(body.fieldData.plans).toBeUndefined();
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.INVALID_DATA);
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test attempted report creation without field data throws 400 error", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithNoFieldData, null);
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.MISSING_DATA);
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test reportKey not provided throws 400 error", async () => {
@@ -298,6 +321,11 @@ describe("Test createReport API method", () => {
   });
 
   test("Test report with copyFieldDataSourceId", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       programName: "Old Program",
@@ -318,6 +346,7 @@ describe("Test createReport API method", () => {
     });
     expect(body.fieldData.bssEntities).toEqual(mockBssEntities);
     expect(body.fieldData.programName).toEqual("New Program");
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test that a non-existent state returns a 400", async () => {
@@ -335,6 +364,11 @@ describe("Test createReport API method", () => {
   });
 
   test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ id: "foo", entityField: "bar", name: "name" }],
@@ -349,9 +383,15 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.plans).toBeDefined();
     expect(body.fieldData.plans.length).toBe(1);
     expect(body.fieldData.plans[0]).toEqual({ id: "foo", name: "name" });
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 
   test("Test entire entity gets removed if it has no valid fields", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ entityField: "bar", appeals_foo: "1" }],
@@ -372,5 +412,6 @@ describe("Test createReport API method", () => {
     expect(
       body.fieldData.state_statewideMedicaidManagedCareEnrollment
     ).toBeUndefined();
+    expect(s3PutSpy).toHaveBeenCalled();
   });
 });

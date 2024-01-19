@@ -9,6 +9,10 @@ jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
 }));
 
+jest.mock("../../utils/s3/s3-lib", () => ({
+  getSignedDownloadUrl: jest.fn().mockReturnValue("s3://fakeurl.bucket.here"),
+}));
+
 const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   pathParameters: { templateName: "test" },

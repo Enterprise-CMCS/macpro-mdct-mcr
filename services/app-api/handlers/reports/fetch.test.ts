@@ -1,9 +1,5 @@
 import { fetchReport, fetchReportsByState } from "./fetch";
-import {
-  DynamoDBDocumentClient,
-  GetCommand,
-  QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -14,6 +10,8 @@ import {
   mockReportFieldData,
   mockDynamoDataCompleted,
 } from "../../utils/testing/setupJest";
+import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
@@ -70,6 +68,10 @@ describe("Test fetchReport API method", () => {
   });
 
   test("Test Successful Report Fetch w/ Incomplete Report", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
     dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoData,
     });
@@ -84,9 +86,14 @@ describe("Test fetchReport API method", () => {
     expect(body.isComplete).toStrictEqual(false);
     expect(body.fieldData).toStrictEqual(mockReportFieldData);
     expect(body.formTemplate).toStrictEqual(mockReportJson);
+    expect(s3GetSpy).toHaveBeenCalledTimes(2);
   });
 
   test("Test Successful Report Fetch w/ Complete Report", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
     dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataCompleted,
     });
@@ -101,6 +108,7 @@ describe("Test fetchReport API method", () => {
     expect(body.isComplete).toStrictEqual(true);
     expect(body.fieldData).toStrictEqual(mockReportFieldData);
     expect(body.formTemplate).toStrictEqual(mockReportJson);
+    expect(s3GetSpy).toHaveBeenCalledTimes(2);
   });
 
   test("Test reportKeys not provided throws 400 error", async () => {
@@ -130,9 +138,8 @@ describe("Test fetchReportsByState API method", () => {
     dynamoClientMock.reset();
   });
   test("Test successful call", async () => {
-    dynamoClientMock.on(QueryCommand).resolves({
-      Items: [mockDynamoData],
-    });
+    const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
+    dynamoQueryAllSpy.mockResolvedValue([mockDynamoData]);
     const res = await fetchReportsByState(testReadEventByState, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
