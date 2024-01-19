@@ -1,6 +1,14 @@
+import { ServerSideEncryption } from "@aws-sdk/client-s3";
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 import { mockReportRoutes } from "./mocks/mockReport";
+
+export const mockS3PutObjectCommandOutput = {
+  $metadata: { attempts: 1 },
+  ETag: "some etag value",
+  ServerSideEncryption: ServerSideEncryption.AES256,
+  VersionId: "some version id",
+};
 
 export const mockReportJson = {
   name: "mock-report",

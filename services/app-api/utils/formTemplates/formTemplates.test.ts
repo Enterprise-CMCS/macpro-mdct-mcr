@@ -16,7 +16,10 @@ import dynamodbLib from "../dynamo/dynamodb-lib";
 import mlr from "../../forms/mlr.json";
 import mcpar from "../../forms/mcpar.json";
 // utils
-import { mockReportJson } from "../testing/setupJest";
+import {
+  mockReportJson,
+  mockS3PutObjectCommandOutput,
+} from "../testing/setupJest";
 // types
 import { FormJson, ReportJson, ReportRoute, ReportType } from "../types";
 import { createHash } from "crypto";
@@ -59,6 +62,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
@@ -87,6 +91,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
@@ -103,6 +108,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
   });
 
   it("should return the right form and formTemplateVersion if it matches the most recent form", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy.mockResolvedValue(mlr);
     // mocked once for search by hash
     dynamoClientMock.on(QueryCommand).resolvesOnce({
       Items: [
@@ -123,6 +130,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
+    expect(s3GetSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(3);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMCPARFormHash);
   });
@@ -153,6 +161,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
@@ -181,6 +190,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
       .resolvesOnce({ Items: [] });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
@@ -197,6 +207,8 @@ describe("Test getOrCreateFormTemplate MLR", () => {
   });
 
   it("should return the right form and formTemplateVersion if it matches the most recent form", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy.mockResolvedValue(mlr);
     // mocked once for search by hash
     dynamoClientMock.on(QueryCommand).resolvesOnce({
       Items: [
@@ -217,6 +229,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
+    expect(s3GetSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(3);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMLRFormHash);
   });
@@ -247,6 +260,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
       });
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
