@@ -1,9 +1,13 @@
 import { createBanner } from "./create";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 // utils
 import { error } from "../../utils/constants/constants";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
@@ -32,10 +36,13 @@ describe("Test createBanner API method", () => {
   });
 
   test("Test Successful Run of Banner Creation", async () => {
+    const mockPut = jest.fn();
+    dynamoClientMock.on(PutCommand).callsFake(mockPut);
     const res = await createBanner(testEvent, null);
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
+    expect(mockPut).toHaveBeenCalled();
   });
 
   test("Test invalid data causes failure", async () => {

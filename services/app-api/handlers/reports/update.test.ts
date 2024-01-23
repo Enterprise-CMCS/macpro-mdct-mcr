@@ -1,15 +1,22 @@
 import { fetchReport } from "./fetch";
 import { updateReport } from "./update";
+import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
   mockDynamoData,
   mockMcparReport,
   mockReportFieldData,
+  mockReportJson,
+  mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -94,6 +101,17 @@ describe("Test updateReport API method", () => {
     jest.clearAllMocks();
   });
   test("Test report update submission succeeds", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
+    const mockPut = jest.fn();
+    dynamoClientMock.on(PutCommand).callsFake(mockPut);
+    // fetch mock
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -102,14 +120,27 @@ describe("Test updateReport API method", () => {
       },
       body: JSON.stringify(mockDynamoData),
     });
+
     const response = await updateReport(submissionEvent, null);
     const body = JSON.parse(response.body);
     expect(body.status).toContain("submitted");
     expect(body.fieldData["mock-number-field"]).toBe("2");
     expect(response.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(mockPut).toHaveBeenCalled();
   });
 
   test("Test report update with invalid fieldData fails", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
+    const mockPut = jest.fn();
+    dynamoClientMock.on(PutCommand).callsFake(mockPut);
+    // fetch mock
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -118,6 +149,7 @@ describe("Test updateReport API method", () => {
       },
       body: JSON.stringify(mockDynamoData),
     });
+
     const response = await updateReport(invalidFieldDataSubmissionEvent, null);
     expect(response.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(response.body).toContain(error.INVALID_DATA);

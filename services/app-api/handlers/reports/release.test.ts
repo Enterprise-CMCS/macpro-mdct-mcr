@@ -7,8 +7,12 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
   mockDynamoDataMLRLocked,
   mockDynamoDataMLRComplete,
+  mockReportJson,
+  mockReportFieldData,
+  mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
@@ -47,9 +51,18 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report passes with valid data", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
     dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
+
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -58,9 +71,19 @@ describe("Test releaseReport method", () => {
       mockDynamoDataMLRLocked.fieldDataId,
     ]);
     expect(body.fieldDataId).not.toBe(mockDynamoDataMLRLocked.fieldDataId);
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(s3GetSpy).toHaveBeenCalledTimes(2);
   });
 
   test("Test release report passes with valid data, but it's been more than the first submission", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
     const newPreviousId = KSUID.randomSync().string;
     dynamoClientMock.on(GetCommand).resolves({
       Item: {
@@ -69,6 +92,7 @@ describe("Test releaseReport method", () => {
         submissionCount: 1,
       },
     });
+
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);

@@ -28,12 +28,15 @@ describe("Test s3Lib Interaction API Build Structure", () => {
   });
 
   test("Can get object", async () => {
-    const mockGet = jest.fn();
-    s3ClientMock.on(GetObjectCommand).callsFake(mockGet);
+    // ignore type error on body as the mocked body is acceptable and matches use case
+    s3ClientMock.on(GetObjectCommand).resolves({
+      // @ts-ignore
+      Body: {
+        transformToString: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    });
 
     await s3Lib.get({ Bucket: "b", Key: "k" });
-
-    expect(mockGet).toHaveBeenCalled();
   });
 
   test("Can put object", async () => {

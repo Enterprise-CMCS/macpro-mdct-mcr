@@ -9,7 +9,11 @@ import {
   mockDynamoData,
   mockDynamoDataCompleted,
   mockDynamoDataMLRComplete,
+  mockReportFieldData,
+  mockReportJson,
+  mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
@@ -44,9 +48,18 @@ describe("Test submitReport API method", () => {
   });
 
   test("Test Successful Report Submittal", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
     dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataCompleted,
     });
+
     const res = await submitReport(testSubmitEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
@@ -62,12 +75,21 @@ describe("Test submitReport API method", () => {
   });
 
   test("Test MLR reports get locked and have submission count updated.", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
     dynamoClientMock.on(GetCommand).resolves({
       Item: {
         ...mockDynamoDataMLRComplete,
         reportType: "MLR",
       },
     });
+
     const res = await submitReport(testSubmitEvent, null);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     const body = JSON.parse(res.body);
