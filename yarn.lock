@@ -5901,9 +5901,9 @@ flatted@^3.1.0:
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
 follow-redirects@^1.14.0:
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.2.tgz#b460864144ba63f2681096f274c4e57026da2c13"
-  integrity sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==
+  version "1.15.4"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.4.tgz#cdc7d308bf6493126b17ea2191ea0ccf3e535adf"
+  integrity sha512-Cr4D/5wlrb0z9dgERpUL3LrmPKVDsETIJhaCMeDfuFYcqa5bldGV6wBsAN6X/vxlXQtFBMrXdXxdL8CbDTGniw==
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -9530,10 +9530,10 @@ serverless-s3-sync@2.0.0:
     mime "^2.4.4"
     minimatch "^3.0.4"
 
-serverless-stack-termination-protection@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-1.0.4.tgz#e0430108cfc8f4d72a63138ef5781c6fe9707868"
-  integrity sha512-2uOF6/t90VXpWq8ZbWgEXMiYXA+9ZKsgm8or5jJLQYnm0Sbu2z7/EK2/ACwH4uaErFOdprI0tO9H8STdKK4TFQ==
+serverless-stack-termination-protection@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/serverless-stack-termination-protection/-/serverless-stack-termination-protection-2.0.2.tgz#f56d61e745fd346daf3b49612a4751f63a84b97e"
+  integrity sha512-pPUVJmH5if8A12KVSTMqNjo7u8rfW0/vJO+UFp19lvkY0t8jfoO3R3DySwTDVcB+jzaCrU/NyEHPtbiDLVjSSw==
 
 serverless-webpack@^5.6.1:
   version "5.11.0"

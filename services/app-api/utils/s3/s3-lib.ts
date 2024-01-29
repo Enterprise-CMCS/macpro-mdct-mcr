@@ -63,34 +63,6 @@ export default {
       });
     });
   },
-  list: async (params: S3.ListObjectsV2Request) => {
-    let continuationToken: S3.Token | undefined;
-    const s3Objects: S3.ObjectList = [];
-
-    do {
-      const response = await new Promise<S3.ListObjectsV2Output>(
-        (resolve, reject) => {
-          s3Client.listObjectsV2(
-            { ...params, ContinuationToken: continuationToken },
-            function (err: any, result: S3.ListObjectsV2Output) {
-              if (err) {
-                reject(err);
-              }
-              if (result) {
-                resolve(result);
-              }
-            }
-          );
-        }
-      );
-      if (response.Contents) {
-        s3Objects.push(...response.Contents);
-      }
-      continuationToken = response.NextContinuationToken;
-    } while (continuationToken);
-
-    return s3Objects;
-  },
 };
 
 export function getFieldDataKey(state: State, fieldDataId: string) {

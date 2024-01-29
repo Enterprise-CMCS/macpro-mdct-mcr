@@ -17,14 +17,6 @@ export const ApiProvider = ({ children }: Props) => {
         region: config.apiGateway.REGION,
       },
     ];
-    if (config.DEV_API_URL) {
-      // Add dev endpoint for pdf printing access locally
-      endpoints.push({
-        name: "mcrDev",
-        endpoint: config.DEV_API_URL,
-        region: "us-east-1",
-      });
-    }
     API.configure({
       endpoints: endpoints,
     });

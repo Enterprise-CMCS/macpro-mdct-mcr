@@ -1,4 +1,3 @@
-import { bool } from "aws-sdk/clients/signer";
 import jwtDecode from "jwt-decode";
 import handler from "../handler-lib";
 // utils
@@ -92,7 +91,7 @@ export const submitReport = handler(async (event, _context) => {
 
     const jwt = jwtDecode(event.headers["x-api-key"]!) as Record<
       string,
-      string | bool
+      string | boolean
     >;
 
     const date = Date.now();

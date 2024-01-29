@@ -18,25 +18,6 @@ export const mockOptionalFormField = {
   },
 };
 
-export const mockNumberField = {
-  id: "mock-number-field",
-  type: "number",
-  validation: "number",
-  props: {
-    label: "mock number field",
-  },
-};
-
-export const mockRepeatedFormField = {
-  id: "mock-text-field",
-  type: "text",
-  validation: "text",
-  repeat: "plans",
-  props: {
-    label: "mock text field",
-  },
-};
-
 export const mockModalFormField = {
   id: "mock-modal-text-field",
   type: "text",
@@ -115,11 +96,6 @@ export const mockDrawerForm = {
   fields: [mockDrawerFormField],
 };
 
-export const mockEmptyDrawerForm = {
-  id: "mock-drawer-form-id",
-  fields: [],
-};
-
 export const mockModalOverlayForm = {
   id: "mock-modal-overlay-form-id",
   fields: [
@@ -130,11 +106,6 @@ export const mockModalOverlayForm = {
   ],
 };
 
-export const mockPlanFilledForm = {
-  id: "mock-form-id",
-  fields: [mockPlanField],
-};
-
 export const mockNestedForm = {
   id: "mock-nested-form-id",
   fields: [mockNestedFormField],
@@ -143,13 +114,6 @@ export const mockNestedForm = {
 export const mockDynamicForm = {
   id: "mock-dynamic-form-id",
   fields: [mockPlanField],
-};
-
-export const mockLinksForm = {};
-
-export const mockNonFieldForm = {
-  id: "mock-non-form-id",
-  fields: [mockSectionHeaderField],
 };
 
 export const mockVerbiageIntro = {
@@ -176,16 +140,6 @@ export const mockStandardReportPageJson = {
   form: mockForm,
 };
 
-export const mockDynamicReportPageJson = {
-  name: "mock-route-1",
-  path: "/mock/mock-route-1",
-  pageType: "standard",
-  verbiage: {
-    intro: mockVerbiageIntro,
-  },
-  form: mockDynamicForm,
-};
-
 export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
@@ -197,19 +151,6 @@ export const mockDrawerReportPageJson = {
     drawerTitle: "Mock drawer title",
   },
   drawerForm: mockDrawerForm,
-};
-
-export const mockNestedReportPageJson = {
-  name: "mock-route-2a",
-  path: "/mock/mock-route-2a",
-  pageType: "drawer",
-  entityType: "plans",
-  verbiage: {
-    intro: mockVerbiageIntro,
-    dashboardTitle: "Mock dashboard title",
-    drawerTitle: "Mock drawer title",
-  },
-  drawerForm: mockNestedForm,
 };
 
 export const mockModalDrawerReportPageVerbiage = {
@@ -258,16 +199,6 @@ export const mockModalDrawerReportPageJson = {
 };
 
 export const mockModalOverlayReportPageJson = {
-  name: "mock-route-2c",
-  path: "/mock/mock-route-2c",
-  pageType: "modalOverlay",
-  entityType: "program",
-  verbiage: mockModalOverlayReportPageVerbiage,
-  modalForm: mockModalOverlayForm,
-  overlayForm: mockModalOverlayForm,
-};
-
-export const mockModalOverlayReportPageWithOverlayJson = {
   name: "mock-route-2c",
   path: "/mock/mock-route-2c",
   pageType: "modalOverlay",
