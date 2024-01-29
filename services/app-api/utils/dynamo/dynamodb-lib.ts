@@ -10,8 +10,10 @@ import {
   PutCommand,
   PutCommandInput,
 } from "@aws-sdk/lib-dynamodb";
-import { AnyObject } from "yup/lib/types";
+// utils
 import { logger } from "../debugging/debug-lib";
+// types
+import { AnyObject } from "../types";
 
 const localConfig = {
   endpoint: process.env.DYNAMODB_URL,
@@ -51,7 +53,6 @@ export default {
       ExclusiveStartKey = result.LastEvaluatedKey;
     } while (ExclusiveStartKey);
 
-    // unused
     return items;
   },
   put: async (params: PutCommandInput) =>

@@ -48,9 +48,8 @@ export default {
       throw new Error(error.S3_OBJECT_GET_ERROR);
     }
   },
-  getSignedDownloadUrl: async (params: GetObjectRequest, forcedAws = false) => {
-    let myClient = forcedAws ? new S3Client(awsConfig) : client;
-    return await getSignedUrl(myClient, new GetObjectCommand(params), {
+  getSignedDownloadUrl: async (params: GetObjectRequest) => {
+    return await getSignedUrl(client, new GetObjectCommand(params), {
       expiresIn: 3600,
     });
   },

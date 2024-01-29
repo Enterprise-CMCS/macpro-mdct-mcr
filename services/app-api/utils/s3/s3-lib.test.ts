@@ -1,6 +1,7 @@
 import s3Lib, { getConfig } from "./s3-lib";
 import {
   GetObjectCommand,
+  GetObjectCommandOutput,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
@@ -28,15 +29,15 @@ describe("Test s3Lib Interaction API Build Structure", () => {
   });
 
   test("Can get object", async () => {
-    // ignore type error on body as the mocked body is acceptable and matches use case
     s3ClientMock.on(GetObjectCommand).resolves({
-      // @ts-ignore
       Body: {
         transformToString: () => Promise.resolve(`{"json":"blob"}`),
       },
-    });
+    } as GetObjectCommandOutput);
 
-    await s3Lib.get({ Bucket: "b", Key: "k" });
+    const result = await s3Lib.get({ Bucket: "b", Key: "k" });
+
+    expect(result).toEqual({ json: "blob" });
   });
 
   test("Can put object", async () => {
@@ -57,32 +58,17 @@ describe("Test s3Lib Interaction API Build Structure", () => {
     const [_client, command] = (getSignedUrl as jest.Mock).mock.calls[0];
     expect(command).toBeInstanceOf(GetObjectCommand);
   });
-
-  test("Gives live AWS download URLs if requested", async () => {
-    process.env.S3_LOCAL_ENDPOINT = "mock endpoint";
-    expect(getConfig()).toHaveProperty("region", "localhost");
-
-    const url = await s3Lib.getSignedDownloadUrl(
-      { Bucket: "b", Key: "k" },
-      true
-    );
-
-    expect(url).toBe("mock signed url");
-    const [client, command] = (getSignedUrl as jest.Mock).mock.calls[0];
-    expect(await client.config.region()).toBe("us-east-1");
-    expect(command).toBeInstanceOf(GetObjectCommand);
-  });
 });
 
 describe("Checking Environment Variable Changes", () => {
   beforeEach(() => jest.resetModules());
-  test("Check if statement with S3_LOCAL_ENDPOINT undefined", () => {
+  test("Check if statement with S3_LOCAL_ENDPOINT set", () => {
     process.env.S3_LOCAL_ENDPOINT = "mock endpoint";
     const config = getConfig();
     expect(config).toHaveProperty("region", "localhost");
   });
 
-  test("Check if statement with S3_LOCAL_ENDPOINT set", () => {
+  test("Check if statement with S3_LOCAL_ENDPOINT undefined", () => {
     delete process.env.S3_LOCAL_ENDPOINT;
     const config = getConfig();
     expect(config).toHaveProperty("region", "us-east-1");

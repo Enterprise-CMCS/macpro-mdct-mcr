@@ -70,13 +70,13 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
 });
 
 describe("Checking Environment Variable Changes", () => {
-  test("Check if statement with DYNAMODB_URL undefined", () => {
+  test("Check if statement with DYNAMODB_URL set", () => {
     process.env.DYNAMODB_URL = "mock url";
     const config = getConfig();
     expect(config).toHaveProperty("region", "localhost");
   });
 
-  test("Check if statement with DYNAMODB_URL set", () => {
+  test("Check if statement with DYNAMODB_URL undefined", () => {
     delete process.env.DYNAMODB_URL;
     const config = getConfig();
     expect(config).toHaveProperty("region", "us-east-1");
