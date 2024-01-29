@@ -64,7 +64,12 @@ export const UserProvider = ({ children }: Props) => {
 
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to MCR
       const cms_role = payload["custom:cms_roles"] as string;
-      const userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
+      let userRole = cms_role.split(",").find((r) => r.includes("mdctmcr"));
+
+      // consolidate "STATE_REP" role into "STATE_USER" role
+      if (userRole === UserRoles.STATE_REP) {
+        userRole = UserRoles.STATE_USER;
+      }
 
       const state = payload["custom:cms_state"] as string | undefined;
       const full_name = [given_name, " ", family_name].join("");
