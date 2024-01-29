@@ -59,6 +59,83 @@ export interface CompletionData {
   [key: string]: boolean | CompletionData;
 }
 
+/**
+ * Abridged copy of the type used by `aws-lambda@1.0.7` (from `@types/aws-lambda@8.10.88`)
+ * We only this package for these types, and we use only a subset of the
+ * properties. Since `aws-lambda` depends on `aws-sdk` (that is, SDK v2),
+ * we can save ourselves a big dependency with this small redundancy.
+ */
+
+export interface APIGatewayProxyEventPathParameters {
+  [name: string]: string | undefined;
+}
+
+export interface APIGatewayProxyEvent {
+  body: string | null;
+  headers: Record<string, string | undefined>;
+  multiValueHeaders: Record<string, string | undefined>;
+  httpMethod: string;
+  isBase64Encoded: boolean;
+  path: string;
+  pathParameters: Record<string, string | undefined> | null;
+  queryStringParameters: Record<string, string | undefined> | null;
+  multiValueQueryStringParameters: Record<string, string | undefined> | null;
+  stageVariables: Record<string, string | undefined> | null;
+  /** The context is complicated, and we don't (as of 2023) use it at all. */
+  requestContext: any;
+  resource: string;
+}
+
+/**
+ * S3Create event
+ * https://docs.aws.amazon.com/AmazonS3/latest/dev/notification-content-structure.html
+ */
+
+export interface S3EventRecordGlacierRestoreEventData {
+  lifecycleRestorationExpiryTime: string;
+  lifecycleRestoreStorageClass: string;
+}
+export interface S3EventRecordGlacierEventData {
+  restoreEventData: S3EventRecordGlacierRestoreEventData;
+}
+
+export interface S3EventRecord {
+  eventVersion: string;
+  eventSource: string;
+  awsRegion: string;
+  eventTime: string;
+  eventName: string;
+  userIdentity: {
+    principalId: string;
+  };
+  requestParameters: {
+    sourceIPAddress: string;
+  };
+  responseElements: {
+    "x-amz-request-id": string;
+    "x-amz-id-2": string;
+  };
+  s3: {
+    s3SchemaVersion: string;
+    configurationId: string;
+    bucket: {
+      name: string;
+      ownerIdentity: {
+        principalId: string;
+      };
+      arn: string;
+    };
+    object: {
+      key: string;
+      size: number;
+      eTag: string;
+      versionId?: string | undefined;
+      sequencer: string;
+    };
+  };
+  glacierEventData?: S3EventRecordGlacierEventData | undefined;
+}
+
 // OTHER
 
 export interface CustomHtmlElement {

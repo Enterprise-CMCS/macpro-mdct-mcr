@@ -22,11 +22,26 @@ async function myHandler(_event, _context, _callback) {
       UserAttributes: users[i].attributes,
     };
 
-    await cognitolib.createUser(poolData);
-    //userCreate must set a temp password first, calling setPassword to set the password configured in SSM for consistent dev login
-    await cognitolib.setPassword(passwordData);
-    //if user exists and attributes are updated in this file updateUserAttributes is needed to update the attributes
-    await cognitolib.updateUserAttributes(attributeData);
+    try {
+      // This may error if the user already exists
+      await cognitolib.createUser(poolData);
+    } catch {
+      /* swallow this exception and continue */
+    }
+
+    try {
+      //userCreate must set a temp password first, calling setPassword to set the password configured in SSM for consistent dev login
+      await cognitolib.setPassword(passwordData);
+    } catch {
+      /* swallow this exception and continue */
+    }
+
+    try {
+      //if user exists and attributes are updated in this file updateUserAttributes is needed to update the attributes
+      await cognitolib.updateUserAttributes(attributeData);
+    } catch {
+      /* swallow this exception and continue */
+    }
   }
 }
 

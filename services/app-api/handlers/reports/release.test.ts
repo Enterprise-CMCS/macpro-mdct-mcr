@@ -1,16 +1,22 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
 import { releaseReport } from "./release";
 import KSUID from "ksuid";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
-  mockDocumentClient,
   mockDynamoDataMLRLocked,
   mockDynamoDataMLRComplete,
+  mockReportJson,
+  mockReportFieldData,
+  mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
-import { StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -18,11 +24,6 @@ jest.mock("../../utils/auth/authorization", () => ({
 }));
 
 const mockAuthUtil = require("../../utils/auth/authorization");
-
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
 
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -37,6 +38,7 @@ const releaseEvent: APIGatewayProxyEvent = {
 
 describe("Test releaseReport method", () => {
   beforeEach(() => {
+    dynamoClientMock.reset();
     // fail state and pass admin auth checks
     mockAuthUtil.hasPermissions
       .mockReturnValueOnce(true)
@@ -49,9 +51,18 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report passes with valid data", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
+
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -60,17 +71,28 @@ describe("Test releaseReport method", () => {
       mockDynamoDataMLRLocked.fieldDataId,
     ]);
     expect(body.fieldDataId).not.toBe(mockDynamoDataMLRLocked.fieldDataId);
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(s3GetSpy).toHaveBeenCalledTimes(2);
   });
 
   test("Test release report passes with valid data, but it's been more than the first submission", async () => {
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    // dynamodb mocks
     const newPreviousId = KSUID.randomSync().string;
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: {
         ...mockDynamoDataMLRLocked,
         previousRevisions: [newPreviousId],
         submissionCount: 1,
       },
     });
+
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body);
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
@@ -85,7 +107,7 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report with no existing record throws 404", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: undefined,
     });
     const res = await releaseReport(releaseEvent, null);
@@ -94,7 +116,7 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report without admin permissions throws 403", async () => {
-    mockDocumentClient.get.promise.mockReturnValueOnce({
+    dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
     const res = await releaseReport(releaseEvent, null);
