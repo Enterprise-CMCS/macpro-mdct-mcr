@@ -420,7 +420,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.5 State overpayment reporting monitoring",
-                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment pieces (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
+                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment topics (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
                 }
               },
               {
@@ -1760,6 +1760,12 @@
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
+                "drawerInfo": [
+                  {
+                    "type": "p",
+                    "content": "Special Instructions: For MCOs that exclusively serve dually eligible members as applicable integrated plans (defined at 42 CFR 422.561), the MCO should not report Medicare-related appeals in the counts. Medicare-related appeals are those where Medicare is the primary payer."
+                  }
+                ],
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -1841,6 +1847,21 @@
                       "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Header",
+                    "type": "sectionHeader",
+                    "props": {
+                      "divider": "top",
+                      "content": "Number of appeals due to the following reasons resolved during the reporting period:"
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Instructions",
+                    "type": "sectionContent",
+                    "props": {
+                      "content": "The seven reasons for an appeal are mutually exclusive. Each appeal has one reason, and questions D1.IV.6a-g should sum to D1.IV.1."
                     }
                   },
                   {
