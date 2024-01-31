@@ -13,6 +13,7 @@ import s3Lib, {
   getFormTemplateKey,
 } from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 // types
 import {
   isState,
@@ -23,21 +24,14 @@ import {
 } from "../../utils/types";
 
 export const submitReport = handler(async (event, _context) => {
+  const requiredParams = ["id", "reportType", "state"];
   if (
-    !event.pathParameters?.id ||
-    !event.pathParameters?.state ||
-    !event.pathParameters.reportType
+    !event.pathParameters ||
+    !hasReportPathParams(event.pathParameters, requiredParams)
   ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
-    };
-  }
-
-  if (!hasPermissions(event, [UserRoles.STATE_USER])) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
     };
   }
 
@@ -47,6 +41,12 @@ export const submitReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
+    };
+  }
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
     };
   }
 

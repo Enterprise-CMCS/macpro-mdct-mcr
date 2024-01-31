@@ -27,7 +27,10 @@ import { isState, ReportJson, StatusCodes, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
-  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+  if (
+    !event.pathParameters ||
+    !hasReportPathParams(event.pathParameters!, requiredParams)
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -89,7 +92,7 @@ export const updateReport = handler(async (event, context) => {
   }
 
   // Ensure user has correct permissions to update a report.
-  if (!hasPermissions(event, [UserRoles.STATE_USER])) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
