@@ -7,6 +7,7 @@ import { logger } from "../debugging/debug-lib";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
+  "custom:cms_state": string | undefined;
 }
 
 const loadCognitoValues = async () => {
@@ -65,13 +66,15 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
 
 export const hasPermissions = (
   event: APIGatewayProxyEvent,
-  allowedRoles: UserRoles[]
+  allowedRoles: UserRoles[],
+  state?: string
 ) => {
   let isAllowed = false;
   // decode the idToken
   if (event?.headers?.["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
     const idmUserRoles = decoded["custom:cms_roles"];
+    const idmUserState = decoded["custom:cms_state"];
     let mcrUserRole = idmUserRoles
       ?.split(",")
       .find((role) => role.includes("mdctmcr")) as UserRoles;
@@ -81,8 +84,14 @@ export const hasPermissions = (
       mcrUserRole = UserRoles.STATE_USER;
     }
 
-    if (allowedRoles.includes(mcrUserRole)) {
-      isAllowed = true;
+    if (state) {
+      if (allowedRoles.includes(mcrUserRole) && idmUserState?.includes(state)) {
+        isAllowed = true;
+      }
+    } else {
+      if (allowedRoles.includes(mcrUserRole)) {
+        isAllowed = true;
+      }
     }
   }
 

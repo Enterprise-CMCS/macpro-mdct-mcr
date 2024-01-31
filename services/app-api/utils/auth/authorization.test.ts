@@ -148,3 +148,32 @@ describe("Check deprectated state rep role coalesces to state user", () => {
     expect(hasPermissions(noApiKeyEvent, [UserRoles.STATE_USER])).toBeFalsy();
   });
 });
+
+describe("Check state user permissions", () => {
+  test("has permissions should pass when role and state match expected role and state", () => {
+    mockedDecode.mockReturnValue({
+      "custom:cms_roles": UserRoles.STATE_USER,
+      "custom:cms_state": "AL",
+    });
+    expect(
+      hasPermissions(apiKeyEvent, [UserRoles.STATE_USER], "AL")
+    ).toBeTruthy();
+  });
+  test("has permissions should fail if state is expected but not in role", () => {
+    mockedDecode.mockReturnValue({
+      "custom:cms_roles": UserRoles.STATE_USER,
+    });
+    expect(
+      hasPermissions(apiKeyEvent, [UserRoles.STATE_USER], "AL")
+    ).toBeFalsy();
+  });
+  test("has permissions should fail if requested state does not match role", () => {
+    mockedDecode.mockReturnValue({
+      "custom:cms_roles": UserRoles.STATE_USER,
+      "custom:cms_state": "TX",
+    });
+    expect(
+      hasPermissions(apiKeyEvent, [UserRoles.STATE_USER], "AL")
+    ).toBeFalsy();
+  });
+});
