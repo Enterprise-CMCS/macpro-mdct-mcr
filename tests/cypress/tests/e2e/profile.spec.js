@@ -4,10 +4,6 @@ const menuOptionManageAccount =
   '[data-testid="header-menu-option-manage-account"]';
 const adminButton = 'button:contains("Banner Editor")';
 
-afterEach(() => {
-  cy.navigateToHomePage();
-});
-
 describe("Profile integration tests", () => {
   it("Allows admin user to navigate to /admin", () => {
     cy.authenticate("adminUser");
