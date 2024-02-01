@@ -221,7 +221,7 @@ describe("Test state user permission control", () => {
 
 describe("Test failing state user permission control", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
   test("Test fetchReport request unauthorized when both permission checks fail", async () => {
     // fail both state user with state and other roles checks
