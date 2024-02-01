@@ -82,6 +82,9 @@
     "moduleDirectories": [
       "node_modules"
     ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.build/"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/utils/testing/setupJest.ts"
     ]
