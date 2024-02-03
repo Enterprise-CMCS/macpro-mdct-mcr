@@ -42,7 +42,7 @@ const testReadEventByState: APIGatewayProxyEvent = {
 
 describe("Test fetchReport API method", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     dynamoClientMock.reset();
     mockAuthUtil.hasPermissions.mockReturnValueOnce(true);
   });
@@ -137,7 +137,7 @@ describe("Test fetchReport API method", () => {
 
 describe("Test fetchReportsByState API method", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     dynamoClientMock.reset();
     mockAuthUtil.hasPermissions.mockReturnValueOnce(true);
   });
@@ -174,7 +174,7 @@ describe("Test fetchReportsByState API method", () => {
 
 describe("Test state user permission control", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     dynamoClientMock.reset();
   });
 
@@ -221,7 +221,7 @@ describe("Test state user permission control", () => {
 
 describe("Test failing state user permission control", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   test("Test fetchReport request unauthorized when both permission checks fail", async () => {
     // fail both state user with state and other roles checks
