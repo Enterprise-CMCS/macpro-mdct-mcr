@@ -16,34 +16,9 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
-import { hasPermissions } from "../../utils/auth/authorization";
+import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
 // types
-import {
-  AnyObject,
-  APIGatewayProxyEvent,
-  isState,
-  S3Get,
-  StatusCodes,
-  UserRoles,
-} from "../../utils/types";
-
-const isAuthorizedToFetchState = (
-  event: APIGatewayProxyEvent,
-  state: string
-) => {
-  let isAuthorized = false;
-  // check permissions for state user and matching state
-  isAuthorized = hasPermissions(event, [UserRoles.STATE_USER], state);
-  // if not, check all other roles which don't have a state assignment
-  if (!isAuthorized) {
-    const nonStateUserRoles = Object.values(UserRoles).filter(
-      (role) => role !== UserRoles.STATE_USER
-    );
-    isAuthorized = hasPermissions(event, nonStateUserRoles);
-  }
-
-  return isAuthorized;
-};
+import { AnyObject, isState, S3Get, StatusCodes } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
