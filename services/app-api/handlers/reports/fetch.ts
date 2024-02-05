@@ -16,6 +16,7 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
 // types
 import { AnyObject, isState, S3Get, StatusCodes } from "../../utils/types";
 
@@ -34,6 +35,12 @@ export const fetchReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
+    };
+  }
+  if (!isAuthorizedToFetchState(event, state)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
     };
   }
 
@@ -121,7 +128,14 @@ export const fetchReportsByState = handler(async (event, _context) => {
     };
   }
 
-  const reportType = event.pathParameters?.reportType;
+  const { reportType, state } = event.pathParameters!;
+
+  if (!isAuthorizedToFetchState(event, state!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
@@ -129,7 +143,7 @@ export const fetchReportsByState = handler(async (event, _context) => {
     TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters?.state!,
+      ":state": state,
     },
     ExpressionAttributeNames: {
       "#state": "state",

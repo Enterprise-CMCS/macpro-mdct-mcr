@@ -39,18 +39,12 @@ const archiveEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test archiveReport method", () => {
-  beforeEach(() => {
-    // fail state and pass admin auth checks
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(false);
-  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("Test archive report passes with valid data", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
     const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
     dynamoPutSpy.mockResolvedValue(mockDynamoPutCommandOutput);
     mockedFetchReport.mockResolvedValue({
@@ -69,6 +63,7 @@ describe("Test archiveReport method", () => {
   });
 
   test("Test archive report with no existing record throws 404", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -83,6 +78,7 @@ describe("Test archiveReport method", () => {
   });
 
   test("Test archive report without admin permissions throws 403", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(false);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {

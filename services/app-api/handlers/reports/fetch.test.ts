@@ -19,8 +19,10 @@ const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+  isAuthorizedToFetchState: jest.fn(() => {}),
 }));
+
+const mockAuthUtil = require("../../utils/auth/authorization");
 
 const testReadEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -42,6 +44,7 @@ describe("Test fetchReport API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
   });
   test("Test Report not found in DynamoDB", async () => {
     dynamoClientMock.on(GetCommand).resolves({
@@ -136,6 +139,7 @@ describe("Test fetchReportsByState API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
   });
   test("Test successful call", async () => {
     const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
@@ -165,5 +169,23 @@ describe("Test fetchReportsByState API method", () => {
     const res = await fetchReportsByState(noKeyEvent, null);
     expect(res.statusCode).toBe(400);
     expect(res.body).toContain(error.NO_KEY);
+  });
+});
+
+describe("Test failing state user permission control", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(false);
+  });
+  test("Test fetchReport request unauthorized when both permission checks fail", async () => {
+    const res = await fetchReport(testReadEvent, null);
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test fetchReportsByState request unauthorized when both permission checks fail", async () => {
+    const res = await fetchReportsByState(testReadEventByState, null);
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 });
