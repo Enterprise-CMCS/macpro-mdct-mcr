@@ -84,16 +84,27 @@ export const hasPermissions = (
       mcrUserRole = UserRoles.STATE_USER;
     }
 
-    if (state) {
-      if (allowedRoles.includes(mcrUserRole) && idmUserState?.includes(state)) {
-        isAllowed = true;
-      }
-    } else {
-      if (allowedRoles.includes(mcrUserRole)) {
-        isAllowed = true;
-      }
-    }
+    isAllowed =
+      allowedRoles.includes(mcrUserRole) &&
+      (!state || idmUserState?.includes(state))!;
   }
 
   return isAllowed;
+};
+
+export const isAuthorizedToFetchState = (
+  event: APIGatewayProxyEvent,
+  state: string
+) => {
+  // If this is a state user for the matching state, authorize them.
+  if (hasPermissions(event, [UserRoles.STATE_USER], state)) {
+    return true;
+  }
+
+  const nonStateUserRoles = Object.values(UserRoles).filter(
+    (role) => role !== UserRoles.STATE_USER
+  );
+
+  // If they are any other user type, they don't need to belong to this state.
+  return hasPermissions(event, nonStateUserRoles);
 };

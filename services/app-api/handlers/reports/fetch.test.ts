@@ -19,7 +19,7 @@ const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn(() => {}),
+  isAuthorizedToFetchState: jest.fn(() => {}),
 }));
 
 const mockAuthUtil = require("../../utils/auth/authorization");
@@ -44,7 +44,7 @@ describe("Test fetchReport API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
-    mockAuthUtil.hasPermissions.mockReturnValueOnce(true);
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
   });
   test("Test Report not found in DynamoDB", async () => {
     dynamoClientMock.on(GetCommand).resolves({
@@ -139,7 +139,7 @@ describe("Test fetchReportsByState API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
-    mockAuthUtil.hasPermissions.mockReturnValueOnce(true);
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
   });
   test("Test successful call", async () => {
     const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
@@ -172,74 +172,18 @@ describe("Test fetchReportsByState API method", () => {
   });
 });
 
-describe("Test state user permission control", () => {
-  beforeEach(() => {
-    jest.restoreAllMocks();
-    dynamoClientMock.reset();
-  });
-
-  test("Test Successful Report Fetch w/ Complete Report as non state user", async () => {
-    // first permission check is for state user with matching state, second for all other roles
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
-    s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: mockDynamoDataCompleted,
-    });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body.lastAlteredBy).toContain("Thelonious States");
-    expect(body.programName).toContain("testProgram");
-    expect(body.completionStatus).toMatchObject({
-      "step-one": true,
-    });
-    expect(body.isComplete).toStrictEqual(true);
-    expect(body.fieldData).toStrictEqual(mockReportFieldData);
-    expect(body.formTemplate).toStrictEqual(mockReportJson);
-    expect(s3GetSpy).toHaveBeenCalledTimes(2);
-  });
-
-  test("Test successful fetchReportsByState call as non state user", async () => {
-    // first permission check is for state user with matching state, second for all other roles
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
-    const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
-    dynamoQueryAllSpy.mockResolvedValue([mockDynamoData]);
-    const res = await fetchReportsByState(testReadEventByState, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body[0].lastAlteredBy).toContain("Thelonious States");
-    expect(body[0].programName).toContain("testProgram");
-  });
-});
-
 describe("Test failing state user permission control", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(false);
   });
   test("Test fetchReport request unauthorized when both permission checks fail", async () => {
-    // fail both state user with state and other roles checks
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false);
-
     const res = await fetchReport(testReadEvent, null);
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test fetchReportsByState request unauthorized when both permission checks fail", async () => {
-    // fail both state user with state and other roles checks
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false);
-
     const res = await fetchReportsByState(testReadEventByState, null);
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
