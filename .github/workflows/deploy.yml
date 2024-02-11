@@ -21,6 +21,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: 'Setup jq'
+        uses: dcarbone/install-jq-action@v2.1.0
+        with:
+          version: '${{ inputs.version }}'
+          force: '${{ inputs.force }}'
+      - name: 'Check jq'
+        # language=sh
+        run: |
+          which jq
+          jq --version
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
