@@ -148,7 +148,7 @@ jobs:
           IPSET_NAME=${{ steps.gen-ip-set-name.outputs.STAGE_GH_IPSET_NAME }}
           IPSET=$(jq '.IPSets | map(select(.Name == "'${IPSET_NAME}'")) | .[]' <<< ${AWS_IP_SET_INFO})
           [ -z "$IPSET" ] && echo "IP Set with name ${IPSET_NAME} was not located.  Exiting..." && exit 1
-          echo "IP Set metadata:  ${IPSET}
+          echo "IP Set metadata:  ${IPSET}"
           #Get Values from the IP SET
           IPSET_ID=$(jq -r '.Id' <<< ${IPSET})
           echo "IPSET_ARN=$IPSET_ARN" >> $GITHUB_OUTPUT
