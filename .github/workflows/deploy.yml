@@ -154,12 +154,12 @@ jobs:
       #     echo "IPSET_ARN=$IPSET_ARN" >> $GITHUB_OUTPUT
       #     echo "IPSET_NAME=$IPSET_NAME" >> $GITHUB_OUTPUT
       #     echo "IPSET_ID=$IPSET_ID" >> $GITHUB_OUTPUT
-      - name: Update IP Set
-        id: update-ip-set
-        run: ./.github/waf-controller.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
-        env:
-          AWS_RETRY_MODE: adaptive
-          AWS_MAX_ATTEMPTS: 10
+      # - name: Update IP Set
+      #   id: update-ip-set
+      #   run: ./.github/waf-controller.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
+      #   env:
+      #     AWS_RETRY_MODE: adaptive
+      #     AWS_MAX_ATTEMPTS: 10
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         if: env.SLACK_WEBHOOK_URL != '' && contains(fromJson('["main", "val", "production"]'), env.branch_name) && failure ()
