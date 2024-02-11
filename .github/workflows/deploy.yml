@@ -206,6 +206,7 @@ jobs:
       - name: Generate IP Set Name
         id: gen-ip-set-name
         run: |
+          #!/bin/bash
           STAGE_GH_IPSET_NAME=$STAGE_PREFIX$branch_name-gh-ipset
           echo "Github IP Set name:  $STAGE_GH_IPSET_NAME"
           echo "STAGE_GH_IPSET_NAME=$STAGE_GH_IPSET_NAME" >> $GITHUB_OUTPUT
