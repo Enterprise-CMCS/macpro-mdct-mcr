@@ -192,6 +192,14 @@ jobs:
           role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
       
+      - name: set branch specific variable names
+        id: set_names
+        run: ./.github/build_vars.sh set_names
+
+      - name: set variable values
+        id: set_values
+        run: ./.github/build_vars.sh set_values
+      
       - name: Get Github Actions CIDR Blocks
         id: get-gha-cidrs
         shell: bash
