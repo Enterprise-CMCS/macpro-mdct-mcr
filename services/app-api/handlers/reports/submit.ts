@@ -1,11 +1,7 @@
-import { bool } from "aws-sdk/clients/signer";
 import jwtDecode from "jwt-decode";
 import handler from "../handler-lib";
 // utils
-import {
-  hasReportAccess,
-  hasPermissions,
-} from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   error,
   reportBuckets,
@@ -17,6 +13,7 @@ import s3Lib, {
   getFormTemplateKey,
 } from "../../utils/s3/s3-lib";
 import { convertDateUtcToEt } from "../../utils/time/time";
+import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 // types
 import {
   isState,
@@ -27,21 +24,14 @@ import {
 } from "../../utils/types";
 
 export const submitReport = handler(async (event, _context) => {
+  const requiredParams = ["id", "reportType", "state"];
   if (
-    !event.pathParameters?.id ||
-    !event.pathParameters?.state ||
-    !event.pathParameters.reportType
+    !event.pathParameters ||
+    !hasReportPathParams(event.pathParameters, requiredParams)
   ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
-    };
-  }
-
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
     };
   }
 
@@ -53,9 +43,7 @@ export const submitReport = handler(async (event, _context) => {
       body: error.NO_KEY,
     };
   }
-
-  // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, reportType!)) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -103,7 +91,7 @@ export const submitReport = handler(async (event, _context) => {
 
     const jwt = jwtDecode(event.headers["x-api-key"]!) as Record<
       string,
-      string | bool
+      string | boolean
     >;
 
     const date = Date.now();

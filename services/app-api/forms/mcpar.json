@@ -420,7 +420,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.5 State overpayment reporting monitoring",
-                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment pieces (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
+                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment topics (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
                 }
               },
               {
@@ -1760,6 +1760,12 @@
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
+                "drawerInfo": [
+                  {
+                    "type": "p",
+                    "content": "Special Instructions: For MCOs that exclusively serve dually eligible members as applicable integrated plans (defined at 42 CFR 422.561), the MCO should not report Medicare-related appeals in the counts. Medicare-related appeals are those where Medicare is the primary payer."
+                  }
+                ],
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -1816,7 +1822,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.4 Number of critical incidents filed during the reporting year by (or on behalf of) an LTSS user who previously filed an appeal",
-                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -1838,9 +1844,24 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.5b Expedited appeals for which timely resolution was provided",
-                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
+                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Header",
+                    "type": "sectionHeader",
+                    "props": {
+                      "divider": "top",
+                      "content": "Number of appeals due to the following reasons resolved during the reporting period:"
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Instructions",
+                    "type": "sectionContent",
+                    "props": {
+                      "content": "The seven reasons for an appeal are mutually exclusive. Each appeal has one reason, and questions D1.IV.6a-g should sum to D1.IV.1."
                     }
                   },
                   {
@@ -2069,7 +2090,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7j Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter \"N/A\".",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }

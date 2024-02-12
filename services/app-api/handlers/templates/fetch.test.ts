@@ -1,24 +1,16 @@
 import { fetchTemplate } from "./fetch";
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
 // types
-import { StatusCodes } from "../../utils/types";
-
-jest.mock("aws-sdk", () => ({
-  S3: jest.fn().mockImplementation(() => ({
-    getSignedUrl: jest.fn().mockReturnValue("s3://fakeurl.bucket.here"),
-  })),
-}));
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
+jest.mock("../../utils/s3/s3-lib", () => ({
+  getSignedDownloadUrl: jest.fn().mockReturnValue("s3://fakeurl.bucket.here"),
 }));
 
 const testEvent: APIGatewayProxyEvent = {

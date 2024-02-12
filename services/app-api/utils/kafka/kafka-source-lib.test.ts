@@ -1,4 +1,5 @@
 import KafkaSourceLib from "./kafka-source-lib";
+import s3Lib from "../s3/s3-lib";
 
 let tempStage: string | undefined;
 let tempNamespace: string | undefined;
@@ -158,8 +159,11 @@ describe("Test Kafka Lib", () => {
   });
 
   test("Processes bucket events", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy.mockResolvedValue("response object");
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3Event);
+    expect(s3GetSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
   test("Handles events without versions", async () => {

@@ -4,10 +4,7 @@ import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
 import s3Lib, { getFieldDataKey } from "../../utils/s3/s3-lib";
-import {
-  hasReportAccess,
-  hasPermissions,
-} from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import {
   validateData,
   validateFieldData,
@@ -28,23 +25,15 @@ import {
   UserRoles,
 } from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
-import { logger } from "../../utils/logging";
+import { logger } from "../../utils/debugging/debug-lib";
 import {
   copyFieldDataFromSource,
   makePCCMModifications,
 } from "../../utils/reports/reports";
 
 export const createReport = handler(async (event, _context) => {
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
-  }
-
   const requiredParams = ["reportType", "state"];
-
-  // Return error if no state is passed.
+  // Return bad request if missing required parameters
   if (
     !event.pathParameters ||
     !hasReportPathParams(event.pathParameters, requiredParams)
@@ -62,6 +51,12 @@ export const createReport = handler(async (event, _context) => {
       body: error.NO_KEY,
     };
   }
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
   const unvalidatedPayload = JSON.parse(event.body!);
   const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
     unvalidatedPayload;
@@ -70,14 +65,6 @@ export const createReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
-    };
-  }
-
-  // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, reportType)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
     };
   }
 

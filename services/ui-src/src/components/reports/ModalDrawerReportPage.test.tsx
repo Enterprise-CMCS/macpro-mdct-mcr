@@ -9,9 +9,9 @@ import {
   mockModalDrawerReportPageJson,
   mockRepeatedFormField,
   mockMcparReportContext,
+  mockStateRepStore,
   mockStateUserStore,
   RouterWrappedComponent,
-  mockStateRepStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";

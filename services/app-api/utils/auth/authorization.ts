@@ -1,14 +1,13 @@
-import { SSM } from "aws-sdk";
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserRoles } from "../types";
+// types
+import { APIGatewayProxyEvent, UserRoles } from "../types";
+import { logger } from "../debugging/debug-lib";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
-  "custom:reports": string;
+  "custom:cms_state": string | undefined;
 }
 
 const loadCognitoValues = async () => {
@@ -21,29 +20,21 @@ const loadCognitoValues = async () => {
       userPoolClientId: process.env.COGNITO_USER_POOL_CLIENT_ID,
     };
   } else {
-    const ssm = new SSM();
+    const ssmClient = new SSMClient({ logger });
     const stage = process.env.STAGE!;
-    const userPoolIdParamName = "/" + stage + "/ui-auth/cognito_user_pool_id";
-    const userPoolClientIdParamName =
-      "/" + stage + "/ui-auth/cognito_user_pool_client_id";
-    const userPoolIdParams = {
-      Name: userPoolIdParamName,
+    const getParam = async (identifier: string) => {
+      const command = new GetParameterCommand({
+        Name: `/${stage}/ui-auth/${identifier}`,
+      });
+      const result = await ssmClient.send(command);
+      return result.Parameter?.Value;
     };
-    const userPoolClientIdParams = {
-      Name: userPoolClientIdParamName,
-    };
-    const userPoolId = await ssm.getParameter(userPoolIdParams).promise();
-    const userPoolClientId = await ssm
-      .getParameter(userPoolClientIdParams)
-      .promise();
-    if (userPoolId?.Parameter?.Value && userPoolClientId?.Parameter?.Value) {
-      process.env["COGNITO_USER_POOL_ID"] = userPoolId.Parameter.Value;
-      process.env["COGNITO_USER_POOL_CLIENT_ID"] =
-        userPoolClientId.Parameter.Value;
-      return {
-        userPoolId: userPoolId.Parameter.Value,
-        userPoolClientId: userPoolClientId.Parameter.Value,
-      };
+    const userPoolId = await getParam("cognito_user_pool_id");
+    const userPoolClientId = await getParam("cognito_user_pool_client_id");
+    if (userPoolId && userPoolClientId) {
+      process.env["COGNITO_USER_POOL_ID"] = userPoolId;
+      process.env["COGNITO_USER_POOL_CLIENT_ID"] = userPoolClientId;
+      return { userPoolId, userPoolClientId };
     } else {
       throw new Error("cannot load cognito values");
     }
@@ -75,49 +66,45 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
 
 export const hasPermissions = (
   event: APIGatewayProxyEvent,
-  allowedRoles: UserRoles[]
+  allowedRoles: UserRoles[],
+  state?: string
 ) => {
   let isAllowed = false;
   // decode the idToken
-  if (event?.headers["x-api-key"]) {
+  if (event?.headers?.["x-api-key"]) {
     const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
     const idmUserRoles = decoded["custom:cms_roles"];
-    const mcrUserRole = idmUserRoles
+    const idmUserState = decoded["custom:cms_state"];
+    let mcrUserRole = idmUserRoles
       ?.split(",")
       .find((role) => role.includes("mdctmcr")) as UserRoles;
 
-    if (allowedRoles.includes(mcrUserRole)) {
-      isAllowed = true;
+    // consolidate "STATE_REP" role into "STATE_USER" role
+    if (mcrUserRole === UserRoles.STATE_REP) {
+      mcrUserRole = UserRoles.STATE_USER;
     }
+
+    isAllowed =
+      allowedRoles.includes(mcrUserRole) &&
+      (!state || idmUserState?.includes(state))!;
   }
 
   return isAllowed;
 };
 
-export const hasReportAccess = (
+export const isAuthorizedToFetchState = (
   event: APIGatewayProxyEvent,
-  reportType: string
+  state: string
 ) => {
-  let hasAccess = false;
-  // decode the idToken
-  if (event?.headers["x-api-key"]) {
-    const decoded = jwt_decode(event.headers["x-api-key"]) as DecodedToken;
-    const idmUserRoles = decoded["custom:cms_roles"];
-    const isStateUser = idmUserRoles
-      ?.split(",")
-      .find((role) => role === "mdctmcr-state-user") as UserRoles;
-
-    // check report access for state users only
-    if (!isStateUser) {
-      return true;
-    }
-    const reports = decoded["custom:reports"];
-    const allowedReports = reports
-      ?.split(",")
-      .find((report: string) => report.includes(reportType)) as string;
-    if (allowedReports) {
-      hasAccess = true;
-    }
+  // If this is a state user for the matching state, authorize them.
+  if (hasPermissions(event, [UserRoles.STATE_USER], state)) {
+    return true;
   }
-  return hasAccess;
+
+  const nonStateUserRoles = Object.values(UserRoles).filter(
+    (role) => role !== UserRoles.STATE_USER
+  );
+
+  // If they are any other user type, they don't need to belong to this state.
+  return hasPermissions(event, nonStateUserRoles);
 };

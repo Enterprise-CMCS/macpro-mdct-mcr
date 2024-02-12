@@ -11,22 +11,6 @@ export const mockNoUserStore: McrUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockStateUserStoreNoReports: McrUserState = {
-  user: {
-    userRole: UserRoles.STATE_USER,
-    email: "stateuser@test.com",
-    given_name: "Thelonious",
-    family_name: "States",
-    full_name: "Thelonious States",
-    state: "MN",
-    userIsEndUser: true,
-    userReports: [""],
-  },
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
 export const mockStateUserStore: McrUserState = {
   user: {
     userRole: UserRoles.STATE_USER,
@@ -35,7 +19,6 @@ export const mockStateUserStore: McrUserState = {
     family_name: "States",
     full_name: "Thelonious States",
     state: "MN",
-    userReports: ["MCPAR", "MLR", "NAAAR"],
     userIsEndUser: true,
   },
   showLocalLogins: true,

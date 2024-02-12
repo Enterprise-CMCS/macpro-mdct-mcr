@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import AWS from "aws-sdk";
+import { unmarshall } from "@aws-sdk/util-dynamodb";
 import s3Lib from "../s3/s3-lib";
 import { Kafka, Producer } from "kafkajs";
-import { S3EventRecord } from "aws-lambda";
+import { S3EventRecord } from "../types";
 
 type KafkaPayload = {
   key: string;
@@ -125,7 +125,7 @@ class KafkaSourceLib {
   }
 
   unmarshall(r: any) {
-    return AWS.DynamoDB.Converter.unmarshall(r, this.unmarshallOptions);
+    return unmarshall(r, this.unmarshallOptions);
   }
 
   createDynamoPayload(record: any): KafkaPayload {

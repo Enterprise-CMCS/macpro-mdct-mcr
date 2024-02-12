@@ -1,126 +1,84 @@
-import dynamoLib, { createDbClient } from "./dynamodb-lib";
-import { DynamoDB } from "aws-sdk";
+import dynamoLib, { getConfig } from "./dynamodb-lib";
+import {
+  GetCommand,
+  DeleteCommand,
+  DynamoDBDocumentClient,
+  QueryCommand,
+  QueryCommandInput,
+} from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 
-const mockPromiseCall = jest.fn();
-
-const mockScan = jest
-  .fn()
-  .mockImplementation(
-    async (params: { TableName: string; ExclusiveStartKey: any }) => {
-      if (params.TableName !== "testTable") {
-        throw new Error(
-          `TableName ${params.TableName} was not defined in the mock!`
-        );
-      }
-      if (typeof params.ExclusiveStartKey === "undefined") {
-        return { Items: ["zero", "one", "two"], LastEvaluatedKey: 2 };
-      } else if (params.ExclusiveStartKey === 2) {
-        return { Items: ["three"], LastEvaluatedKey: 3 };
-      } else if (params.ExclusiveStartKey === 3) {
-        return { Items: ["four", "five"], LastEvaluatedKey: undefined };
-      } else {
-        throw new Error(
-          `ExclusiveStartKey ${params.ExclusiveStartKey} was not defined in the mock!`
-        );
-      }
-    }
-  );
-
-jest.mock("aws-sdk", () => ({
-  __esModule: true,
-  DynamoDB: {
-    DocumentClient: jest.fn().mockImplementation((_config) => {
-      return {
-        get: (_x: any) => ({ promise: mockPromiseCall }),
-        put: (_x: any) => ({ promise: mockPromiseCall }),
-        query: (_x: any) => ({ promise: mockPromiseCall }),
-        scan: (x: any) => ({ promise: async () => mockScan(x) }),
-        update: (_x: any) => ({ promise: mockPromiseCall }),
-        delete: (_x: any) => ({ promise: mockPromiseCall }),
-      };
-    }),
-  },
-  Credentials: jest.fn().mockImplementation(() => {
-    return {
-      accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-      secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
-    };
-  }),
-}));
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 describe("Test DynamoDB Interaction API Build Structure", () => {
-  test("API structure should be callable", () => {
-    const testKeyTable = {
-      Key: { key: "testKey" },
-      TableName: "testTable",
-    };
-    const testItem = {
-      key: "dynamoKey",
-      createdAt: Date.now(),
-      lastAltered: Date.now(),
-      lastAlteredBy: `event.headers["cognito-identity-id"]`,
-      data: {},
-    };
-    dynamoLib.query(true);
-    dynamoLib.get(testKeyTable);
-    dynamoLib.delete(testKeyTable);
-    dynamoLib.put({ TableName: "testTable", Item: testItem });
-    dynamoLib.scan({
-      ...testKeyTable,
-      ExpressionAttributeNames: {},
-      ExpressionAttributeValues: {},
-    });
-    dynamoLib.update({
-      ...testKeyTable,
-      ExpressionAttributeNames: {},
-      ExpressionAttributeValues: {},
-    });
-
-    expect(mockPromiseCall).toHaveBeenCalledTimes(5);
-    expect(mockScan).toHaveBeenCalledTimes(1);
+  let originalUrl: string | undefined;
+  beforeAll(() => {
+    originalUrl = process.env.DYNAMODB_URL;
   });
-
-  describe("Checking Environment Variable Changes", () => {
-    test("Check if statement with DYNAMODB_URL undefined", () => {
-      process.env = { ...process.env, DYNAMODB_URL: undefined };
-      jest.resetModules();
-
-      createDbClient();
-      expect(DynamoDB.DocumentClient).toHaveBeenCalledWith({
-        region: "us-east-1",
-      });
+  afterAll(() => {
+    process.env.DYNAMODB_URL = originalUrl;
+  });
+  beforeEach(() => {
+    dynamoClientMock.reset();
+  });
+  test("Can query", async () => {
+    const mockItem = { foo: "bar" };
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [mockItem],
     });
+    const foos = await dynamoLib.query({ TableName: "foos" });
 
-    test("Check if statement with DYNAMODB_URL set", () => {
-      process.env = { ...process.env, DYNAMODB_URL: "endpoint" };
-      jest.resetModules();
+    expect(foos.Items?.[0]).toBe(mockItem);
+  });
+  test("Can query all", async () => {
+    const mockKey = {};
+    const mockItem1 = { foo: "bar" };
+    const mockItem2 = { foo: "baz" };
+    const extraCall = jest.fn();
+    dynamoClientMock
+      .on(QueryCommand)
+      .resolvesOnce({ Items: [mockItem1], LastEvaluatedKey: mockKey })
+      .callsFakeOnce((command: QueryCommandInput) => {
+        expect(command.ExclusiveStartKey).toBe(mockKey);
+        return Promise.resolve({ Items: [mockItem2] });
+      })
+      .callsFake(extraCall);
 
-      createDbClient();
-      expect(DynamoDB.DocumentClient).toHaveBeenCalledWith({
-        endpoint: "endpoint",
-        credentials: {
-          accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-          secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
-        },
-      });
-    });
+    const result = await dynamoLib.queryAll({ TableName: "foos" });
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toBe(mockItem1);
+    expect(result[1]).toBe(mockItem2);
+    expect(extraCall).not.toHaveBeenCalled();
+  });
+  test("Can delete", async () => {
+    const mockDelete = jest.fn();
+    dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
+
+    await dynamoLib.delete({ TableName: "foos", Key: { id: "fid" } });
+
+    expect(mockDelete).toHaveBeenCalled();
+  });
+  test("Can get", async () => {
+    const mockGet = jest.fn();
+    dynamoClientMock.on(GetCommand).callsFake(mockGet);
+
+    await dynamoLib.get({ TableName: "foos", Key: { id: "foo1" } });
+
+    expect(mockGet).toHaveBeenCalled();
   });
 });
 
-describe("Dynamo lib scanTable", () => {
-  it("should iterate through multiple scan batches if needed", async () => {
-    const scanTableResults: any[] = [];
-    for await (let item of dynamoLib.scanIterator({ TableName: "testTable" })) {
-      scanTableResults.push(item);
-    }
+describe("Checking Environment Variable Changes", () => {
+  test("Check if statement with DYNAMODB_URL set", () => {
+    process.env.DYNAMODB_URL = "mock url";
+    const config = getConfig();
+    expect(config).toHaveProperty("region", "localhost");
+  });
 
-    expect(scanTableResults).toEqual([
-      "zero",
-      "one",
-      "two",
-      "three",
-      "four",
-      "five",
-    ]);
+  test("Check if statement with DYNAMODB_URL undefined", () => {
+    delete process.env.DYNAMODB_URL;
+    const config = getConfig();
+    expect(config).toHaveProperty("region", "us-east-1");
   });
 });

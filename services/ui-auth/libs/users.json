@@ -150,35 +150,6 @@
     ]
   },
   {
-    "username": "staterep@test.com",
-    "attributes": [
-      {
-        "Name": "email",
-        "Value": "staterep@test.com"
-      },
-      {
-        "Name": "given_name",
-        "Value": "Robert"
-      },
-      {
-        "Name": "family_name",
-        "Value": "States"
-      },
-      {
-        "Name": "email_verified",
-        "Value": "true"
-      },
-      {
-        "Name": "custom:cms_roles",
-        "Value": "mdctmcr-state-rep"
-      },
-      {
-        "Name": "custom:cms_state",
-        "Value": "MA"
-      }
-    ]
-  },
-  {
     "username": "stateapprover@test.com",
     "attributes": [
       {
@@ -233,10 +204,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "MN"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -266,10 +233,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "MA"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -299,10 +262,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "AL"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -332,10 +291,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "WY"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -365,10 +320,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "CA"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -398,10 +349,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "MI"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   },
@@ -456,10 +403,6 @@
       {
         "Name": "custom:cms_state",
         "Value": "DC"
-      },
-      {
-        "Name": "custom:reports",
-        "Value": "MCPAR,MLR,NAAAR"
       }
     ]
   }

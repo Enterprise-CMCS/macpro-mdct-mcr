@@ -1,19 +1,17 @@
 import { deleteBanner } from "./delete";
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { DeleteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
 // types
-import { StatusCodes } from "../../utils/types/other";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+
+const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValueOnce(false).mockReturnValue(true),
-}));
-
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -31,10 +29,13 @@ describe("Test deleteBanner API method", () => {
   });
 
   test("Test Successful Banner Deletion", async () => {
+    const mockDelete = jest.fn();
+    dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
     const res = await deleteBanner(testEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("testKey");
+    expect(mockDelete).toHaveBeenCalled();
   });
 
   test("Test bannerKey not provided throws 500 error", async () => {

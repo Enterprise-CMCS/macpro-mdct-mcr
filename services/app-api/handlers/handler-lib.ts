@@ -1,6 +1,5 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
-import * as debug from "../utils/debugging/debug-lib";
+import * as logger from "../utils/debugging/debug-lib";
 import { isAuthorized } from "../utils/auth/authorization";
 import {
   internalServerError,
@@ -9,7 +8,7 @@ import {
 import { error } from "../utils/constants/constants";
 import { sanitizeObject } from "../utils/sanitize/sanitize";
 // types
-import { StatusCodes } from "../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../utils/types";
 
 type LambdaFunction = (
   event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars
@@ -19,7 +18,12 @@ type LambdaFunction = (
 export default function handler(lambda: LambdaFunction) {
   return async function (event: APIGatewayProxyEvent, context: any) {
     // Start debugger
-    debug.init(event, context);
+    logger.init();
+    logger.debug("API event: %O", {
+      body: event.body,
+      pathParameters: event.pathParameters,
+      queryStringParameters: event.queryStringParameters,
+    });
 
     if (await isAuthorized(event)) {
       try {
@@ -32,10 +36,12 @@ export default function handler(lambda: LambdaFunction) {
         return buildResponse(status, body);
       } catch (error: any) {
         // Print debug messages
-        debug.flush(error);
+        logger.error("Error: %O", error);
 
         const body = { error: error.message };
         return internalServerError(body);
+      } finally {
+        logger.flush();
       }
     } else {
       const body = { error: error.UNAUTHORIZED };

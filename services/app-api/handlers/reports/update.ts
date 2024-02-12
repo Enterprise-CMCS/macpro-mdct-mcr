@@ -3,10 +3,7 @@ import { fetchReport } from "./fetch";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
-import {
-  hasReportAccess,
-  hasPermissions,
-} from "../../utils/auth/authorization";
+import { hasPermissions } from "../../utils/auth/authorization";
 import s3Lib, {
   getFieldDataKey,
   getFormTemplateKey,
@@ -30,7 +27,10 @@ import { isState, ReportJson, StatusCodes, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
-  if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
+  if (
+    !event.pathParameters ||
+    !hasReportPathParams(event.pathParameters!, requiredParams)
+  ) {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
@@ -92,7 +92,7 @@ export const updateReport = handler(async (event, context) => {
   }
 
   // Ensure user has correct permissions to update a report.
-  if (!hasPermissions(event, [UserRoles.STATE_USER, UserRoles.STATE_REP])) {
+  if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
     return {
       status: StatusCodes.UNAUTHORIZED,
       body: error.UNAUTHORIZED,
@@ -121,14 +121,6 @@ export const updateReport = handler(async (event, context) => {
   }
 
   const { formTemplateId, fieldDataId, reportType } = currentReport;
-
-  // Return a 403 status if the user does not have access to this report
-  if (!hasReportAccess(event, reportType!)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
-  }
 
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
   const reportTable = reportTables[reportType as keyof typeof reportTables];
