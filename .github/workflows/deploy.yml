@@ -205,11 +205,15 @@ jobs:
       
       - name: set branch specific variable names
         id: set_names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
 
       - name: set variable values
         id: set_values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
       
       - name: Get Github Actions CIDR Blocks
         id: get-gha-cidrs
