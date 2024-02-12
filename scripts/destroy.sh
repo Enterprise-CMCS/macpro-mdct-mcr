@@ -47,6 +47,16 @@ set -e
 # Find cloudformation stacks associated with stage
 stackList=($(aws cloudformation describe-stacks | jq -r ".Stacks[] | select(.Tags[] | select(.Key==\"STAGE\") | select(.Value==\"$stage\")) | .StackName"))
 
+if [ ${#stackList[@]} -eq 0 ]; then
+    echo """
+      ---------------------------------------------------------------------------------------------
+      ERROR: No stacks were identified for destruction
+      ---------------------------------------------------------------------------------------------
+      Please verify the stage name:  $stage
+    """
+    exit 1
+fi
+
 # Find buckets attached to any of the stages, so we can empty them before removal.
 bucketList=()
 set +e

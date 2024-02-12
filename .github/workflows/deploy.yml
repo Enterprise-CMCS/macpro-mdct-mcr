@@ -20,7 +20,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: set variable values
         run: ./.github/build-vars.sh set_values
         env:
@@ -60,17 +60,12 @@ jobs:
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
+      - uses: actions/checkout@v4
       - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
-          echo "GITHUB_REF=${GITHUB_REF}"        
-          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-          elif [[ "$GITHUB_REF" =~ ^refs/.*/snyk-* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | head -c 10 | sed 's/^/s/'`" >> $GITHUB_ENV
-          else
-            echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          fi
-      - uses: actions/checkout@v3
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
         run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
       - name: set branch specific variable names
@@ -132,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
@@ -167,7 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Check Project A11y
         uses: cypress-io/github-action@v5
