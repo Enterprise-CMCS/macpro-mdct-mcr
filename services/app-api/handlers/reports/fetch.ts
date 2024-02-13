@@ -1,4 +1,4 @@
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
+import { QueryCommandInput } from "@aws-sdk/lib-dynamodb";
 import handler from "../handler-lib";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
@@ -16,6 +16,7 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
 // types
 import { AnyObject, isState, S3Get, StatusCodes } from "../../utils/types";
 
@@ -34,6 +35,12 @@ export const fetchReport = handler(async (event, _context) => {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.NO_KEY,
+    };
+  }
+  if (!isAuthorizedToFetchState(event, state)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
     };
   }
 
@@ -111,14 +118,6 @@ export const fetchReport = handler(async (event, _context) => {
   }
 });
 
-interface DynamoFetchParams {
-  TableName: string;
-  KeyConditionExpression: string;
-  ExpressionAttributeValues: Record<string, string>;
-  ExpressionAttributeNames: Record<string, string>;
-  ExclusiveStartKey?: DocumentClient.Key;
-}
-
 export const fetchReportsByState = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
 
@@ -129,45 +128,32 @@ export const fetchReportsByState = handler(async (event, _context) => {
     };
   }
 
-  const reportType = event.pathParameters?.reportType;
+  const { reportType, state } = event.pathParameters!;
+
+  if (!isAuthorizedToFetchState(event, state!)) {
+    return {
+      status: StatusCodes.UNAUTHORIZED,
+      body: error.UNAUTHORIZED,
+    };
+  }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
-  const queryParams: DynamoFetchParams = {
+  const queryParams: QueryCommandInput = {
     TableName: reportTable,
     KeyConditionExpression: "#state = :state",
     ExpressionAttributeValues: {
-      ":state": event.pathParameters?.state!,
+      ":state": state,
     },
     ExpressionAttributeNames: {
       "#state": "state",
     },
   };
 
-  let startingKey;
-  let existingItems = [];
-  let results;
-
-  const queryTable = async (startingKey?: DocumentClient.Key) => {
-    queryParams.ExclusiveStartKey = startingKey;
-    let results = await dynamoDb.query(queryParams);
-    if (results.LastEvaluatedKey) {
-      startingKey = results.LastEvaluatedKey;
-      return [startingKey, results];
-    } else {
-      return [null, results];
-    }
-  };
-
-  // Looping to perform complete scan of tables due to 1 mb limit per iteration
-  do {
-    [startingKey, results] = await queryTable(startingKey);
-    const items: AnyObject[] = results?.Items;
-    existingItems.push(...items);
-  } while (startingKey);
+  const reportsByState = await dynamoDb.queryAll(queryParams);
 
   return {
     status: StatusCodes.SUCCESS,
-    body: existingItems,
+    body: reportsByState,
   };
 });

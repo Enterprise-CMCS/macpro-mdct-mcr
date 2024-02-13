@@ -1,7 +1,7 @@
-import { S3 } from "aws-sdk";
 import handler from "../handler-lib";
 // utils
 import { error } from "../../utils/constants/constants";
+import s3Lib from "../../utils/s3/s3-lib";
 // types
 import { StatusCodes, TemplateKeys } from "../../utils/types";
 
@@ -20,12 +20,11 @@ export const fetchTemplate = handler(async (event, _context) => {
     throw new Error(error.INVALID_TEMPLATE_NAME);
   }
   // get the signed URL string
-  const s3 = new S3();
   const params = {
     Bucket: process.env.TEMPLATE_BUCKET!,
     Expires: 60,
     Key: key,
   };
-  const url = s3.getSignedUrl("getObject", params);
+  const url = s3Lib.getSignedDownloadUrl(params);
   return { status: StatusCodes.SUCCESS, body: url };
 });

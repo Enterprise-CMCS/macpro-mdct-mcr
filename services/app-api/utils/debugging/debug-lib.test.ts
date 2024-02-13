@@ -1,115 +1,73 @@
-import { proxyEvent } from "../testing/proxyEvent";
-import debug, { clearLogs, flush, init } from "./debug-lib";
+/* eslint-disable no-console */
+import {
+  trace,
+  debug,
+  info,
+  warn,
+  error,
+  flush,
+  init,
+  logger,
+} from "./debug-lib";
 
-jest.mock("aws-sdk", () => ({
-  __esModule: true,
-  default: {
-    config: {
-      logger: { log: undefined },
-    },
-  },
+jest.mock("./debug-lib", () => ({
+  ...jest.requireActual("./debug-lib"),
 }));
 
-//mock and suppress console calls
-const mockedConsoleError = jest.fn();
-const mockedConsoleDebug = jest.fn();
-(global as any).console = {
-  error: mockedConsoleError,
-  debug: mockedConsoleDebug,
-};
+jest.spyOn(console, "trace").mockImplementation();
+jest.spyOn(console, "debug").mockImplementation();
+jest.spyOn(console, "info").mockImplementation();
+jest.spyOn(console, "warn").mockImplementation();
+jest.spyOn(console, "error").mockImplementation();
 
 describe("Debug Library Functions", () => {
-  afterEach(() => {
-    clearLogs();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.resetModules();
   });
 
-  describe("Init Function", () => {
-    test("logs should have a length of one", () => {
-      const logs = init({ ...proxyEvent }, null);
-
-      expect(logs.length).toBe(1);
-      expect(logs[0].string.length).toBeGreaterThan(0);
-    });
-
-    test("logs should be overridden on init", () => {
-      const event = { ...proxyEvent };
-
-      debug(event);
-      debug(event);
-      debug(event);
-      const log1 = debug(event);
-
-      const log2 = init(event, null);
-
-      expect(log1.length).toBe(4);
-      expect(log2.length).toBe(1);
-    });
+  test("Flush should write all logs in the buffer", () => {
+    debug("test message");
+    expect(console.debug).not.toHaveBeenCalled();
+    flush();
+    expect(console.debug).toHaveBeenCalledTimes(1);
+    flush();
+    expect(console.debug).toHaveBeenCalledTimes(1);
   });
 
-  describe("Flush function", () => {
-    test("flush should only call error by default", () => {
-      const error = new Error("test error");
-      flush(error);
-
-      expect(mockedConsoleError).toBeCalled();
-      expect(mockedConsoleDebug).not.toBeCalled();
-      expect(mockedConsoleError).toBeCalledWith(error);
-    });
-
-    test("flush should call debug for every log and error once", () => {
-      const event = { ...proxyEvent };
-      const error = new Error("test error");
-
-      debug(event);
-      debug(event);
-      debug(event);
-      debug(event);
-      flush(error);
-
-      expect(mockedConsoleError).toBeCalled();
-      expect(mockedConsoleError).toBeCalledWith(error);
-
-      expect(mockedConsoleDebug).toBeCalledTimes(4);
-    });
+  test("Init should ensure an empty buffer", () => {
+    expect(init).toBe(flush);
   });
 
-  describe("Debug Function", () => {
-    test("logs should have a new object", () => {
-      const logs = debug({ body: "test" });
+  test("Each log level should forward its messages to console", () => {
+    trace("test");
+    debug("test");
+    info("test");
+    warn("test");
+    error("test");
 
-      expect(logs.length).toBe(1);
-    });
+    flush();
 
-    test("logs should have event structured object", () => {
-      const event = { ...proxyEvent };
-      debug(event);
-      debug(event);
-      debug(event);
-      const logs = debug(event);
-
-      expect(logs.length).toBe(4);
-      expect(logs[0].string.length).toBeGreaterThan(0);
-    });
+    expect(console.trace).toHaveBeenCalled();
+    expect(console.debug).toHaveBeenCalled();
+    expect(console.info).toHaveBeenCalled();
+    expect(console.warn).toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalled();
   });
 
-  describe("clearLogs Function", () => {
-    test("logs should be empty", () => {
-      debug("test");
-      debug("test");
-      debug("test");
-      debug("test");
-      const logs = clearLogs();
+  test("AWS-compatible logger should have necessary functions", () => {
+    expect(logger.debug).toBeDefined();
+    expect(logger.info).toBeDefined();
+    expect(logger.warn).toBeDefined();
+    expect(logger.error).toBeDefined();
+  });
 
-      expect(logs.length).toBe(0);
-    });
+  test("Logger supports printf-style string formatting", () => {
+    debug("%s %d %O", "hello", 2, { person: "you" });
+    flush();
 
-    test("only logs after clear should be seen", () => {
-      debug("test");
-      clearLogs();
-
-      debug("test");
-      const logs = debug("test");
-      expect(logs.length).toBe(2);
-    });
+    const [date, message] = (console.debug as jest.Mock).mock.calls[0];
+    expect(date).toBeInstanceOf(Date);
+    expect(message).toBe(`hello 2 { person: 'you' }`);
   });
 });
