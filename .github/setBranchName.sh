@@ -11,7 +11,7 @@ case ${GITHUB_REFNAME} in
     echo ${GITHUB_REFNAME} | md5sum | head -c 10 | sed 's/^/x/'
     ;;
   $([[ "$GITHUB_REFNAME" =~ ^snyk-* ]] && echo ${GITHUB_REFNAME}))
-    echo ${GITHUB_REFNAME} | head -c 10 | sed 's/^/s/'
+    echo ${GITHUB_REFNAME##*-} | head -c 10 | sed 's/^/s/'
     ;;
   *)
     echo ${GITHUB_REFNAME}
