@@ -54,16 +54,17 @@ custom:
             SampledRequestsEnabled: true
             CloudWatchMetricsEnabled: true
             MetricName: ${self:service}-${self:custom.stage}-webacl-vpn-only
-          OrStatement:
-            - Statement:
-              IPSetReferenceStatement:
-                ARN: ${self:custom.vpnIpSetArn}
-            - Statement:
-              IPSetReferenceStatement:
-                ARN: !GetAtt GitHubIPSet.Arn
-            - Statement:
-              IPSetReferenceStatement:
-                ARN: ${self:custom.vpnIpv6SetArn}
+          Statement:
+            OrStatement:
+              - Statement:
+                IPSetReferenceStatement:
+                  ARN: ${self:custom.vpnIpSetArn}
+              - Statement:
+                IPSetReferenceStatement:
+                  ARN: !GetAtt GitHubIPSet.Arn
+              - Statement:
+                IPSetReferenceStatement:
+                  ARN: ${self:custom.vpnIpv6SetArn}
       # - enable: ${param:restrictToVpn}
       #   rule:
       #     Name: github-only
