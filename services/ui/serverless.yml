@@ -56,14 +56,12 @@ custom:
             MetricName: ${self:service}-${self:custom.stage}-webacl-vpn-only
           Statement:
             OrStatement:
-              - Statement:
-                  IPSetReferenceStatement:
+              Statements:
+                - IPSetReferenceStatement:
                     ARN: ${self:custom.vpnIpSetArn}
-              - Statement:
-                  IPSetReferenceStatement:
+                - IPSetReferenceStatement:
                     ARN: !GetAtt GitHubIPSet.Arn
-              - Statement:
-                  IPSetReferenceStatement:
+                - IPSetReferenceStatement:
                     ARN: ${self:custom.vpnIpv6SetArn}
       # - enable: ${param:restrictToVpn}
       #   rule:
