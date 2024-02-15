@@ -57,14 +57,14 @@ custom:
           Statement:
             OrStatement:
               - Statement:
-                IPSetReferenceStatement:
-                  ARN: ${self:custom.vpnIpSetArn}
+                  IPSetReferenceStatement:
+                    ARN: ${self:custom.vpnIpSetArn}
               - Statement:
-                IPSetReferenceStatement:
-                  ARN: !GetAtt GitHubIPSet.Arn
+                  IPSetReferenceStatement:
+                    ARN: !GetAtt GitHubIPSet.Arn
               - Statement:
-                IPSetReferenceStatement:
-                  ARN: ${self:custom.vpnIpv6SetArn}
+                  IPSetReferenceStatement:
+                    ARN: ${self:custom.vpnIpv6SetArn}
       # - enable: ${param:restrictToVpn}
       #   rule:
       #     Name: github-only
