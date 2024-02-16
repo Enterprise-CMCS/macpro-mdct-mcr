@@ -8,7 +8,7 @@ on:
       - "!skipci*"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref_name }}
 
 permissions:
   id-token: write
@@ -20,7 +20,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Setup jq'
         uses: dcarbone/install-jq-action@v2.1.0
         with:
@@ -70,17 +70,11 @@ jobs:
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
+      - uses: actions/checkout@v4
       - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
-          echo "GITHUB_REF=${GITHUB_REF}"        
-          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-          elif [[ "$GITHUB_REF" =~ ^refs/.*/snyk-* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | head -c 10 | sed 's/^/s/'`" >> $GITHUB_ENV
-          else
-            echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          fi
-      - uses: actions/checkout@v3
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
         run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
       - name: set branch specific variable names
@@ -142,11 +136,11 @@ jobs:
   e2e-test:
     name: E2E Integration Tests
     needs: deploy
-    if: ${{ github.ref != 'refs/heads/production' }}
+    if: ${{ github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
@@ -252,11 +246,11 @@ jobs:
   a11y-tests:
     name: E2E A11y Tests
     needs: deploy
-    if: ${{ github.ref != 'refs/heads/production' }}
+    if: ${{ github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Check Project A11y
         uses: cypress-io/github-action@v5
