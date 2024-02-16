@@ -16,7 +16,7 @@ export const SpreadsheetWidget = ({
         <Flex sx={sx.iconContainer}>
           <Image
             src={greenSpreadsheetIcon}
-            alt={alt ? "Excel Workbook Icon" : undefined}
+            alt={alt ? alt : undefined}
             sx={sx.icon}
           />
         </Flex>

@@ -26,6 +26,7 @@ export const ReportPageIntro = ({
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget
             description={spreadsheet}
+            alt={"Excel Workbook Icon"}
             reportType={reportType}
           />
         </Box>

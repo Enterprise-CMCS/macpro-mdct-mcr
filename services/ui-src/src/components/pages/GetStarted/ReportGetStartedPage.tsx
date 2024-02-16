@@ -75,6 +75,7 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
               <Box>
                 <SpreadsheetWidget
                   description={section2.spreadsheet!}
+                  alt={"Excel Workbook Icon"}
                   reportType={reportType}
                 />
                 <Text sx={sx.additionalInfo}>{section2.additionalInfo}</Text>
