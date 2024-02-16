@@ -17,6 +17,7 @@ export const SpreadsheetWidget = ({
           <Image
             src={greenSpreadsheetIcon}
             alt={alt ? alt : undefined}
+            role={!alt ? "none" : "img"}
             sx={sx.icon}
           />
         </Flex>
