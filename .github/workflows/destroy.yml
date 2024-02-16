@@ -1,6 +1,12 @@
 name: Destroy
 
-on: delete
+on: 
+  delete:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Name of the environment to destroy:"
+        required: true
 
 permissions:
   id-token: write
@@ -14,17 +20,23 @@ jobs:
     # This conditional is a backup mechanism to help prevent mistakes from becoming disasters.
     # This is a list of branch names that are commonly used for protected branches/environments.
     # Add/remove names from this list as appropriate.
-    if: github.event.ref_type == 'branch' && !contains(fromJson('["main", "val", "production"]'), github.event.ref)
+    if: |
+      (
+        github.event.ref_type == 'branch' &&
+        (!startsWith(github.event.ref, 'skipci')) &&
+        (!contains(fromJson('["main", "val", "production"]'), github.event.ref))
+      ) ||
+      (
+        inputs.environment != '' &&
+        (!contains(fromJson('["main", "val", "production"]'), inputs.environment))
+      )    
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: set branch_name
         run: |
-          if [[ "${{ github.event.ref }}" =~ ^dependabot/.* ]]; then # Dependabot builds very long branch names.  This is a switch to make it shorter.
-            echo "branch_name=`echo ${{ github.event.ref }} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-          else
-            echo "branch_name=${{ github.event.ref }}" >> $GITHUB_ENV
-          fi
-      - uses: actions/checkout@v3
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: set branch specific variable names
         run: ./.github/build-vars.sh set_names
       - name: set variable values

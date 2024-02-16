@@ -8,7 +8,6 @@ import { TemplateCard } from "components";
 import {
   mockLDFlags,
   mockStateUserStore,
-  mockStateUserStoreNoReports,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
@@ -84,12 +83,6 @@ describe("Test MCPAR TemplateCard", () => {
     await userEvent.click(templateCardLink);
     const expectedRoute = mcparTemplateVerbiage.link.route;
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
-  });
-
-  test("'Enter MCPAR' button is disabled for user with no access to this report", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStoreNoReports);
-    const templateCardLink = screen.getByText(mcparTemplateVerbiage.link.text)!;
-    expect(templateCardLink).toBeDisabled;
   });
 });
 

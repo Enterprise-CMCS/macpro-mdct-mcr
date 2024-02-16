@@ -370,7 +370,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.1 Payment risks between the state and plans",
-                  "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities."
+                  "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities. If no PI activities were performed, enter 'No PI activities were performed during the reporting period' as your response. 'N/A' is not an acceptable response."
                 }
               },
               {
@@ -420,7 +420,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.5 State overpayment reporting monitoring",
-                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment pieces (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
+                  "hint": "Describe how the state monitors plan performance in reporting overpayments to the state, e.g. does the state track compliance with this requirement and/or timeliness of reporting?</br>The regulations at 438.604(a)(7), 608(a)(2) and 608(a)(3) require plan reporting to the state on various overpayment topics (whether annually or promptly). This indicator is asking the state how it monitors that reporting."
                 }
               },
               {
@@ -565,7 +565,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.10 Periodic audits",
-                  "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, what is the link(s) to the audit results? Refer to 42 CFR 438.602(e)."
+                  "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, provide the link(s) to the audit results. Refer to 42 CFR 438.602(e). If no audits were conducted, please enter 'No such audits were conducted during the reporting year' as your response. 'N/A' is not an acceptable response."
                 }
               }
             ]
@@ -602,8 +602,8 @@
               },
               {
                 "id": "program_contractDate",
-                "type": "date",
-                "validation": "date",
+                "type": "text",
+                "validation": "text",
                 "props": {
                   "hint": "Enter the date of the contract between the state and plans participating in the managed care program."
                 }
@@ -727,7 +727,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.6 Changes to enrollment or benefits",
-                  "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year."
+                  "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year. If there were no major changes, please enter 'There were no major changes to the population or benefits during the reporting year' as your response. 'N/A' is not an acceptable response."
                 }
               }
             ]
@@ -888,7 +888,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.III.6 Barriers to collecting/validating encounter data",
-                  "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting period."
+                  "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting year. If there were no barriers, please enter 'The state did not experience any barriers to collecting or validating encounter data during the reporting year' as your response. 'N/A' is not an acceptable response."
                 }
               }
             ]
@@ -978,7 +978,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting standards."
+                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter 'No challenges were encountered' as your response. 'N/A' is not an acceptable response."
                     }
                   },
                   {
@@ -1392,7 +1392,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IX.1 BSS website",
-                  "hint": "List the website(s) and/or email address that beneficiaries use to seek assistance from the BSS through electronic means. Separate entries with commas."
+                  "hint": "List the website(s) and/or email address(es) that beneficiaries use to seek assistance from the BSS through electronic means. Separate entries with commas."
                 }
               },
               {
@@ -1567,7 +1567,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.II.1a Medical Loss Ratio (MLR)",
-                  "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR.",
+                  "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR. Write MLR as a percentage: for example, write 92% rather than 0.92.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -1719,7 +1719,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
-                  "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting period) met state requirements for timely submission?</br>If the state has not yet received any encounter data file submissions for the entire contract period when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting period.",
+                  "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting year) met state requirements for timely submission? If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               },
@@ -1729,7 +1729,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.III.3 Share of encounter data submissions that were HIPAA compliant",
-                  "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting period) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting period.",
+                  "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting year) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               }
@@ -1760,6 +1760,12 @@
                 },
                 "dashboardTitle": "Report on appeals for each plan",
                 "drawerTitle": "Report on appeals for",
+                "drawerInfo": [
+                  {
+                    "type": "p",
+                    "content": "Special Instructions: For MCOs that exclusively serve dually eligible members as applicable integrated plans (defined at 42 CFR 422.561), the MCO should not report Medicare-related appeals in the counts. Medicare-related appeals are those where Medicare is the primary payer."
+                  }
+                ],
                 "missingEntityMessage": [
                   {
                     "type": "span",
@@ -1815,8 +1821,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.4 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed an appeal",
-                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "label": "D1.IV.4 Number of critical incidents filed during the reporting year by (or on behalf of) an LTSS user who previously filed an appeal",
+                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -1827,7 +1833,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.5a Standard appeals for which timely resolution was provided",
-                      "hint": "Enter the total number of standard appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
+                      "hint": "Enter the total number of standard appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -1838,9 +1844,24 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.5b Expedited appeals for which timely resolution was provided",
-                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan during the reporting period.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
+                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Header",
+                    "type": "sectionHeader",
+                    "props": {
+                      "divider": "top",
+                      "content": "Number of appeals due to the following reasons resolved during the reporting period:"
+                    }
+                  },
+                  {
+                    "id": "D1.IV.6Instructions",
+                    "type": "sectionContent",
+                    "props": {
+                      "content": "The seven reasons for an appeal are mutually exclusive. Each appeal has one reason, and questions D1.IV.6a-g should sum to D1.IV.1."
                     }
                   },
                   {
@@ -2069,7 +2090,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7j Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter \"N/A\".",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2259,7 +2280,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
-                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting period by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been \"related\" to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter \"N/A\" in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter \"N/A\" in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
+                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been \"related\" to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter \"N/A\" in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter \"N/A\" in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2270,7 +2291,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.14 Number of grievances for which timely resolution was provided",
-                      "hint": "<p>Enter the number of grievances for which timely resolution was provided by plan during the reporting period.</p><p>See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.</p>",
+                      "hint": "<p>Enter the number of grievances for which timely resolution was provided by plan during the reporting year.</p><p>See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2430,7 +2451,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15j Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter \"N/A\".",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3182,7 +3203,7 @@
                 "validation": "ratio",
                 "props": {
                   "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year per 1,000 beneficiaries enrolled in the plan on the first day of the last month of the reporting year?",
+                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
                   "mask": "ratio"
                 }
               },
@@ -3203,7 +3224,7 @@
                 "validation": "ratio",
                 "props": {
                   "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year per 1,000 beneficiaries enrolled in the plan at the beginning of the reporting year?",
+                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
                   "mask": "ratio"
                 }
               },
@@ -3287,7 +3308,7 @@
                 "validation": "ratio",
                 "props": {
                   "label": "D1.X.8 Ratio of program integrity referral to the state",
-                  "hint": "What is the ratio of program integrity referral listed in the previous indicator made to the state in the past year per 1,000 beneficiaries, using the plan's total enrollment as of the first day of the last month of the reporting year (reported in indicator D1.I.1) as the denominator.",
+                  "hint": "What is the ratio of program integrity referrals listed in indicator D1.X.7 made to the state during the reporting year to the number of enrollees? For number of enrollees, use the average number of individuals enrolled in the plan per month during the reporting year (reported in indicator D1.I.1). Express this as a ratio per 1,000 beneficiaries.",
                   "mask": "ratio"
                 }
               },
@@ -3331,6 +3352,10 @@
                     {
                       "id": "erownxjo30SA9PI9VdATTA",
                       "label": "Quarterly"
+                    },
+                    {
+                      "id": "2gx74mMf7Ou0BRI5Kyp2Ih",
+                      "label": "Promptly when plan receives information about the change"
                     }
                   ]
                 }
@@ -3393,7 +3418,7 @@
             "validation": "checkbox",
             "props": {
               "label": "E.IX.1 BSS entity type",
-              "hint": "What type of entity was contracted to perform each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
+              "hint": "What type of entity performed each BSS activity? Check all that apply. Refer to 42 CFR 438.71(b).",
               "choices": [
                 {
                   "id": "b8RT4wLcoU2yb0QgswyAfQ",

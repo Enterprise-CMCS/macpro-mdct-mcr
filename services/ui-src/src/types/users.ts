@@ -5,8 +5,9 @@ export enum UserRoles {
   HELP_DESK = "mdctmcr-help-desk", // "MDCT MCR Help Desk"
   INTERNAL = "mdctmcr-internal-user", // "MDCT MCR Internal User"
   APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
-  STATE_REP = "mdctmcr-state-rep", // "MDCT MCR State Representative"
   STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
+  // old roles
+  STATE_REP = "mdctmcr-state-rep", // removed Jan 2024 (consolidated to STATE_USER)
 }
 
 export interface MCRUser {
@@ -16,7 +17,6 @@ export interface MCRUser {
   full_name: string;
   state?: string;
   userRole?: string;
-  userReports?: string[] | undefined;
   userIsAdmin?: boolean;
   userIsReadOnly?: boolean;
   userIsEndUser?: boolean;

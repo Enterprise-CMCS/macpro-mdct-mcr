@@ -1,57 +1,29 @@
-var {
-  CognitoIdentityProvider: CognitoIdentityServiceProvider,
-} = require("@aws-sdk/client-cognito-identity-provider");
-const COGNITO_CLIENT = new CognitoIdentityServiceProvider({
+import {
+  CognitoIdentityProviderClient,
+  AdminCreateUserCommand,
+  AdminSetUserPasswordCommand,
+  AdminUpdateUserAttributesCommand,
+} from "@aws-sdk/client-cognito-identity-provider";
+
+const COGNITO_CLIENT = new CognitoIdentityProviderClient({
   apiVersion: "2016-04-19",
   region: "us-east-1",
+  logger: {
+    debug: console.debug, // eslint-disable-line no-console
+    info: console.info, // eslint-disable-line no-console
+    warn: console.warn, // eslint-disable-line no-console
+    error: console.error, // eslint-disable-line no-console
+  },
 });
 
 export async function createUser(params) {
-  await new Promise((resolve, _reject) => {
-    COGNITO_CLIENT.adminCreateUser(params, function (err, _data) {
-      var response;
-      if (err) {
-        console.log("FAILED ", err, err.stack); // eslint-disable-line no-console
-        response = { statusCode: 500, body: { message: "FAILED", error: err } };
-        resolve(response); //if user already exists, we still continue and ignore
-      } else {
-        response = { statusCode: 200, body: { message: "SUCCESS" } };
-        resolve(response);
-      }
-    });
-  });
+  await COGNITO_CLIENT.send(new AdminCreateUserCommand(params));
 }
 
 export async function setPassword(params) {
-  await new Promise((resolve, reject) => {
-    COGNITO_CLIENT.adminSetUserPassword(params, function (err, _data) {
-      if (err) {
-        console.log("FAILED to update password", err, err.stack); // eslint-disable-line no-console
-        var response = {
-          statusCode: 500,
-          body: { message: "FAILED", error: err },
-        };
-        reject(response);
-      } else {
-        resolve();
-      }
-    });
-  });
+  await COGNITO_CLIENT.send(new AdminSetUserPasswordCommand(params));
 }
 
 export async function updateUserAttributes(params) {
-  await new Promise((resolve, reject) => {
-    COGNITO_CLIENT.adminUpdateUserAttributes(params, function (err, _data) {
-      if (err) {
-        console.log("FAILED to update user attributes", err, err.stack); // eslint-disable-line no-console
-        var response = {
-          statusCode: 500,
-          body: { message: "FAILED", error: err },
-        };
-        reject(response);
-      } else {
-        resolve();
-      }
-    });
-  });
+  await COGNITO_CLIENT.send(new AdminUpdateUserAttributesCommand(params));
 }

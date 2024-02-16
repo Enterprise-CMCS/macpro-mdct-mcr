@@ -11,7 +11,6 @@ import {
   mockBannerStore,
   mockLDFlags,
   mockStateUserStore,
-  mockStateUserStoreNoReports,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
@@ -129,28 +128,5 @@ describe("Test AppRoutes for MCPAR report-specific routes", () => {
   test("/mcpar is visible for state user with access", async () => {
     const currentPath = history.location.pathname;
     expect(currentPath).toEqual("/mcpar");
-  });
-});
-
-describe("Test AppRoutes for state users without report-specific access", () => {
-  beforeEach(async () => {
-    window.HTMLElement.prototype.scrollIntoView = function () {};
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStoreNoReports,
-      ...mockBannerStore,
-    });
-    history = createMemoryHistory();
-    history.push("/mlr");
-    await act(async () => {
-      mockLDFlags.set({ mlrReport: true });
-      await render(appRoutesComponent(history));
-    });
-  });
-  afterEach(async () => {
-    window.HTMLElement.prototype.scrollIntoView = tempScroll;
-  });
-  test("/mlr is not visible for state user without access", async () => {
-    const currentPath = history.location.pathname;
-    expect(currentPath).toEqual("/");
   });
 });

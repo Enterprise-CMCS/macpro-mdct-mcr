@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventPathParameters } from "aws-lambda";
+import { APIGatewayProxyEventPathParameters } from "../types";
 
 export const hasReportPathParams = (
   eventParams: APIGatewayProxyEventPathParameters,

@@ -1,61 +1,18 @@
+import { ServerSideEncryption } from "@aws-sdk/client-s3";
 import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 import { mockReportRoutes } from "./mocks/mockReport";
 
-export const mockDocumentClient = {
-  get: { promise: jest.fn() },
-  query: { promise: jest.fn() },
-  put: { promise: jest.fn() },
-  delete: { promise: jest.fn() },
-  scan: { promise: jest.fn() },
-  scanAll: { promise: jest.fn() },
+export const mockS3PutObjectCommandOutput = {
+  $metadata: { attempts: 1 },
+  ETag: "some etag value",
+  ServerSideEncryption: ServerSideEncryption.AES256,
+  VersionId: "some version id",
 };
-jest.mock("aws-sdk", () => {
-  return {
-    DynamoDB: {
-      DocumentClient: jest.fn().mockImplementation(() => {
-        return {
-          get: () => mockDocumentClient.get,
-          query: () => mockDocumentClient.query,
-          put: () => mockDocumentClient.put,
-          delete: () => mockDocumentClient.delete,
-          scan: () => mockDocumentClient.scan,
-          scanAll: () => mockDocumentClient.scanAll,
-        };
-      }),
-      Converter: {
-        unmarshall: (s: any) => s,
-      },
-    },
-    S3: jest.fn().mockImplementation((_config) => {
-      return {
-        putObject: jest.fn((_params: any, callback: any) => {
-          callback(undefined, { ETag: '"mockedEtag"' });
-        }),
-        getObject: jest.fn().mockImplementation((_params, callback) => {
-          if (_params.Key.includes("mockReportFieldData"))
-            callback(undefined, { Body: JSON.stringify(mockReportFieldData) });
-          else if (_params.Key.includes("mockReportJson2"))
-            callback(undefined, { Body: JSON.stringify(mockReportJson2) });
-          else if (_params.Key.includes("mockReportJson"))
-            callback(undefined, { Body: JSON.stringify(mockReportJson) });
-          else callback("Invalid Test Key");
-        }),
-        copyObject: jest.fn().mockImplementation((_params, callback) => {
-          callback(undefined, { ETag: '"mockedEtag"' });
-        }),
-        listObjects: jest.fn(),
-      };
-    }),
-    Credentials: jest.fn().mockImplementation(() => {
-      return {
-        accessKeyId: "LOCAL_FAKE_KEY", // pragma: allowlist secret
-        secretAccessKey: "LOCAL_FAKE_SECRET", // pragma: allowlist secret
-      };
-    }),
-    Endpoint: jest.fn().mockImplementation(() => "endPoint"),
-  };
-});
+
+export const mockDynamoPutCommandOutput = {
+  $metadata: { attempts: 1 },
+};
 
 export const mockReportJson = {
   name: "mock-report",
@@ -68,43 +25,6 @@ export const mockReportJson = {
   },
 };
 
-export const mockReportJson2 = {
-  name: "mock-report",
-  basePath: "/mock",
-  routes: [
-    {
-      children: [
-        {
-          form: {
-            fields: {
-              type: "number",
-              validation: "number",
-              id: "report_number",
-              props: {
-                choices: [
-                  {
-                    children: [
-                      {
-                        id: "report_percentage-otherText",
-                        type: "number",
-                        validation: "number",
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          },
-        },
-      ],
-    },
-  ],
-  validationJson: {
-    text: "text",
-    number: "number",
-  },
-};
-
 export const mockReportKeys = {
   reportType: "MCPAR",
   state: "AK" as const,
@@ -114,13 +34,6 @@ export const mockReportKeys = {
 export const mockReportFieldData = {
   text: "text-input",
   "mock-number-field": 0,
-};
-
-export const mockReportFieldData2 = {
-  text: "text-input",
-  value: 22,
-  number: 0,
-  program: [{ report_number: "12", report_percentage: "34" }],
 };
 
 export const mockDynamoData = {
@@ -217,7 +130,6 @@ export const mockApiKey = sign(
     "custom:cms_roles": "mdctmcr-state-user",
     given_name: "Thelonious",
     "custom:cms_state": "MN",
-    "custom:reports": "MCPAR,MLR,NAAAR",
     family_name: "States",
     email: "stateuser@test.com",
   },

@@ -1,12 +1,15 @@
 import { fetchReport } from "./fetch";
 import { archiveReport } from "./archive";
-import { APIGatewayProxyEvent } from "aws-lambda";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
-import { mockMcparReport } from "../../utils/testing/setupJest";
+import {
+  mockDynamoPutCommandOutput,
+  mockMcparReport,
+} from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
+import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 // types
-import { StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
   isAuthorized: jest.fn().mockResolvedValue(true),
@@ -14,11 +17,6 @@ jest.mock("../../utils/auth/authorization", () => ({
 }));
 
 const mockAuthUtil = require("../../utils/auth/authorization");
-
-jest.mock("../../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  flush: jest.fn(),
-}));
 
 jest.mock("./fetch");
 const mockedFetchReport = fetchReport as jest.MockedFunction<
@@ -41,18 +39,14 @@ const archiveEvent: APIGatewayProxyEvent = {
 };
 
 describe("Test archiveReport method", () => {
-  beforeEach(() => {
-    // fail state and pass admin auth checks
-    mockAuthUtil.hasPermissions
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(false);
-  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("Test archive report passes with valid data", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    dynamoPutSpy.mockResolvedValue(mockDynamoPutCommandOutput);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -63,11 +57,13 @@ describe("Test archiveReport method", () => {
     });
     const res: any = await archiveReport(archiveEvent, null);
     const body = JSON.parse(res.body);
+    expect(dynamoPutSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.archived).toBe(true);
   });
 
   test("Test archive report with no existing record throws 404", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {
@@ -82,6 +78,7 @@ describe("Test archiveReport method", () => {
   });
 
   test("Test archive report without admin permissions throws 403", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(false);
     mockedFetchReport.mockResolvedValue({
       statusCode: 200,
       headers: {

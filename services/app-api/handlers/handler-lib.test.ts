@@ -2,16 +2,16 @@ import handlerLib from "./handler-lib";
 // utils
 import { proxyEvent } from "../utils/testing/proxyEvent";
 import { isAuthorized } from "../utils/auth/authorization";
-import { flush } from "../utils/debugging/debug-lib";
+import * as logger from "../utils/debugging/debug-lib";
 
 jest.mock("../utils/debugging/debug-lib", () => ({
-  __esModule: true,
   init: jest.fn(),
+  debug: jest.fn(),
+  error: jest.fn(),
   flush: jest.fn(),
 }));
 
 jest.mock("../utils/auth/authorization", () => ({
-  __esModule: true,
   isAuthorized: jest.fn(),
 }));
 
@@ -25,6 +25,16 @@ describe("Test Lambda Handler Lib", () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain("test");
+    expect(logger.init).toHaveBeenCalled();
+    expect(logger.debug).toHaveBeenCalledWith(
+      "API event: %O",
+      expect.objectContaining({
+        body: proxyEvent.body,
+        pathParameters: proxyEvent.pathParameters,
+        queryStringParameters: proxyEvent.queryStringParameters,
+      })
+    );
+    expect(logger.flush).toHaveBeenCalled();
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
   });
 
@@ -53,7 +63,9 @@ describe("Test Lambda Handler Lib", () => {
     (isAuthorized as jest.Mock).mockReturnValue(true);
     const res = await handler(proxyEvent, null);
 
-    expect(flush).toHaveBeenCalledWith(err);
+    expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);
+    expect(logger.error).toHaveBeenCalledWith("Error: %O", err);
+    expect(logger.flush).toHaveBeenCalled();
     expect(res.statusCode).toBe(500);
     expect(res.body).toStrictEqual(JSON.stringify({ error: "Test Error" }));
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);

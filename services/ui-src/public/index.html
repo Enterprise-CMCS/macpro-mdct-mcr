@@ -22,13 +22,12 @@
     />
     <!-- Tealium Analytics Tag Manager -->
     <script>
-      var nodeEnv = window._env_.STAGE;
       var tealiumEnvMap = {
-        val: "qa",
-        production: "prod",
+        "mdctmcr.cms.gov": "production",
+        "mdctmcrval.cms.gov": "qa",
       };
-      var tealiumEnv = tealiumEnvMap[nodeEnv] || "dev";
-      var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
+      var tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
+      var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-general/${tealiumEnv}/utag.sync.js`;
       document.write(`<script src="${tealiumUrl}" async><\/script>`);
     </script>
   </head>
@@ -40,7 +39,7 @@
     </script>
     <script>
       (function (t, e, a, l, i, u, m) {
-        t = "cmsgov/cms-mdctmcr";
+        t = "cmsgov/cms-general";
         e = tealiumEnv;
         a = "/" + t + "/" + e + "/utag.js";
         l = "//tags.tiqcdn.com/utag" + a;

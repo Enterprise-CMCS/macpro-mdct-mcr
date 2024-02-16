@@ -10,7 +10,6 @@ import {
   mockHelpDeskUserStore,
   mockInternalUserStore,
   mockStateApproverStore,
-  mockStateRepStore,
   mockNoUserStore,
   mockStateUserStore,
   mockMcparReportContext,
@@ -266,14 +265,6 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
     });
     expect(screen.queryByAltText("Archive")).toBeNull();
   });
-
-  test("State rep cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
-    await act(async () => {
-      await render(dashboardViewWithReports);
-    });
-    expect(screen.queryByAltText("Archive")).toBeNull();
-  });
 });
 
 describe("Test Dashboard report archiving privileges (mobile)", () => {
@@ -328,14 +319,6 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
 
   test("State user cannot archive reports", async () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
-    await act(async () => {
-      await render(dashboardViewWithReports);
-    });
-    expect(screen.queryByAltText("Archive")).toBeNull();
-  });
-
-  test("State rep cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
     await act(async () => {
       await render(dashboardViewWithReports);
     });
