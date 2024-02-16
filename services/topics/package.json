@@ -13,7 +13,7 @@
     "serverless-plugin-include-dependencies": "^5.1.0"
   },
   "dependencies": {
-    "kafkajs": "^2.2.3",
+    "kafkajs": "^2.2.4",
     "lodash": "^4.17.21"
   },
   "resolutions": {
