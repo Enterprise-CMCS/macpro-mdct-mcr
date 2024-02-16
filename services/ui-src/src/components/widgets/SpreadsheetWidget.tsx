@@ -6,7 +6,7 @@ import greenSpreadsheetIcon from "../../assets/icons/icon_spreadsheet_green.png"
 
 export const SpreadsheetWidget = ({
   description,
-  alt,
+  isPdf,
   reportType,
   ...props
 }: Props) => {
@@ -16,8 +16,8 @@ export const SpreadsheetWidget = ({
         <Flex sx={sx.iconContainer}>
           <Image
             src={greenSpreadsheetIcon}
-            alt={alt ? alt : undefined}
-            role={!alt ? "none" : "img"}
+            alt={!isPdf ? "Excel Workbook Icon" : undefined}
+            role={isPdf ? "none" : "img"}
             sx={sx.icon}
           />
         </Flex>
@@ -36,7 +36,7 @@ export const SpreadsheetWidget = ({
 
 interface Props {
   description: string;
-  alt?: string;
+  isPdf?: boolean;
   reportType?: string;
   [key: string]: any;
 }
