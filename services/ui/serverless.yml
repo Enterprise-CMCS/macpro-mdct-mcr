@@ -63,19 +63,6 @@ custom:
                     ARN: !GetAtt GitHubIPSet.Arn
                 - IPSetReferenceStatement:
                     ARN: ${self:custom.vpnIpv6SetArn}
-      # - enable: ${param:restrictToVpn}
-      #   rule:
-      #     Name: github-only
-      #     Priority: 1
-      #     Action:
-      #       Allow: {}
-      #     VisibilityConfig:
-      #       SampledRequestsEnabled: true
-      #       CloudWatchMetricsEnabled: true
-      #       MetricName: ${self:service}-${self:custom.stage}-tmp-gh-runner
-      #     Statement:
-      #       IPSetReferenceStatement:
-      #         ARN: !GetAtt GitHubIPSet.Arn
       - enable: ${param:restrictToVpn}
         rule:
           Name: block-all-other-traffic
