@@ -16,7 +16,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Snyk and Run Snyk test
         run: |
@@ -31,7 +31,7 @@ jobs:
     if: github.event_name == 'schedule'
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Snyk and Run Snyk test
         run: |
