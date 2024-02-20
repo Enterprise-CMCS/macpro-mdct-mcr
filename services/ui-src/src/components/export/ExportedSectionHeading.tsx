@@ -24,7 +24,11 @@ export const ExportedSectionHeading = ({
       <Heading as="h2" sx={sx.heading}>
         {sectionHeading}
       </Heading>
-      {sectionInfo && <Box sx={sx.info}>{parseCustomHtml(sectionInfo)}</Box>}
+      {sectionInfo && (
+        <Box sx={sx.info}>
+          <p>{parseCustomHtml(sectionInfo)}</p>
+        </Box>
+      )}
       {sectionSpreadsheet && (
         <Box sx={sx.spreadsheet}>
           <SpreadsheetWidget
