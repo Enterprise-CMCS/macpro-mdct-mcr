@@ -1,5 +1,5 @@
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { SpreadsheetWidget } from "components";
 // types
 import { ReportPageVerbiage } from "types";
@@ -26,7 +26,7 @@ export const ExportedSectionHeading = ({
       </Heading>
       {sectionInfo && (
         <Box sx={sx.info}>
-          <p>{parseCustomHtml(sectionInfo)}</p>
+          <Text>{parseCustomHtml(sectionInfo)}</Text>
         </Box>
       )}
       {sectionSpreadsheet && (
