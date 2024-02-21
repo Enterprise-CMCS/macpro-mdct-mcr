@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Tr, Td, Text } from "@chakra-ui/react";
+import { Box, Tr, Td, Text, Th } from "@chakra-ui/react";
 import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
@@ -27,11 +27,11 @@ export const ExportedReportFieldRow = ({
     <Tr data-testid="exportRow">
       {/* number column/cell */}
       {!isDynamicField && (
-        <Td sx={sx.numberColumn}>
+        <Th sx={sx.numberColumn}>
           <Text sx={sx.fieldNumber}>
             {formFieldInfo?.number?.replace(".", "") || "N/A"}
           </Text>
-        </Td>
+        </Th>
       )}
 
       {/* label column/cell */}
@@ -83,11 +83,13 @@ export interface Props {
 const sx = {
   numberColumn: {
     width: "5.5rem",
-    paddingLeft: 0,
+    paddingTop: "0.5rem",
   },
   fieldNumber: {
     fontSize: "sm",
     fontWeight: "bold",
+    textTransform: "none",
+    paddingLeft: "0.5rem",
   },
   labelColumn: {
     width: "14rem",
