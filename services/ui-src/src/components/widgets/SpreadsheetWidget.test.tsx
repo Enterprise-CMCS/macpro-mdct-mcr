@@ -4,7 +4,7 @@ import { axe } from "jest-axe";
 import { SpreadsheetWidget } from "components";
 
 const SpreadsheetWidgetComponent = (
-  <SpreadsheetWidget description="mock-description" />
+  <SpreadsheetWidget description="mock-description" alt={"mock-alt-text"} />
 );
 
 describe("Test SpreadsheetWidget with all props", () => {

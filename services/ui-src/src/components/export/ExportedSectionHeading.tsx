@@ -29,7 +29,7 @@ export const ExportedSectionHeading = ({
         <Box sx={sx.spreadsheet}>
           <SpreadsheetWidget
             description={sectionSpreadsheet}
-            alt=""
+            isPdf={true}
             reportType={reportType}
           />
         </Box>
