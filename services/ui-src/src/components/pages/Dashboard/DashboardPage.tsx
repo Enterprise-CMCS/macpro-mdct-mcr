@@ -54,6 +54,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     state: userState,
     userIsEndUser,
     userIsAdmin,
+    userIsReadOnly,
   } = useStore().user ?? {};
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
@@ -76,11 +77,11 @@ export const DashboardPage = ({ reportType }: Props) => {
   const dashboardVerbiage = dashboardVerbiageMap[reportType]!;
   const { intro, body } = dashboardVerbiage;
 
-  // if an admin has selected a state, retrieve it from local storage
-  const adminSelectedState = localStorage.getItem("selectedState") || undefined;
+  // if an admin or a read-only user has selected a state, retrieve it from local storage
+  const selectedState = localStorage.getItem("selectedState") || undefined;
 
-  // if a user is an admin type, use the selected state, otherwise use their assigned state
-  const activeState = userIsAdmin ? adminSelectedState : userState;
+  // if a user is an admin or a read-only type, use the selected state, otherwise use their assigned state
+  const activeState = userIsAdmin || userIsReadOnly ? selectedState : userState;
 
   useEffect(() => {
     // if no activeState, go to homepage
@@ -178,7 +179,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       setArchiving(true);
       const reportKeys = {
         reportType: reportType,
-        state: adminSelectedState,
+        state: selectedState,
         id: report.id,
       };
       await archiveReport(reportKeys);
@@ -194,7 +195,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       setReleasing(true);
       const reportKeys = {
         reportType: reportType,
-        state: adminSelectedState,
+        state: selectedState,
         id: report.id,
       };
       await releaseReport!(reportKeys);
