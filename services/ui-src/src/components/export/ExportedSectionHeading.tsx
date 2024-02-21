@@ -26,7 +26,11 @@ export const ExportedSectionHeading = ({
       </Heading>
       {sectionInfo && (
         <Box sx={sx.info}>
-          <Text>{parseCustomHtml(sectionInfo)}</Text>
+          <Text>
+            {typeof sectionInfo === "string"
+              ? sectionInfo
+              : parseCustomHtml(sectionInfo)}
+          </Text>
         </Box>
       )}
       {sectionSpreadsheet && (
