@@ -97,7 +97,7 @@ params:
   main:
     restrictToVpn: false
   default:
-    restrictToVpn: true
+    restrictToVpn: false
 
 resources:
   Conditions:
