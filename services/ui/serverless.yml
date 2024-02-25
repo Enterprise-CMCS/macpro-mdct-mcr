@@ -90,15 +90,6 @@ custom:
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
           --region ${self:provider.region}
-# params:
-#   production:
-#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
-#   val:
-#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
-#   main:
-#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
-#   default:
-#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
 
 resources:
   Conditions:
