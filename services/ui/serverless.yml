@@ -38,13 +38,14 @@ custom:
   cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
   vpnIpSetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpSetArn, ssm:/configuration/default/vpnIpSetArn, ""}
   vpnIpv6SetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpv6SetArn, ssm:/configuration/default/vpnIpv6SetArn, ""}
+  enableVpn: ${ssm:/configuration/${self:custom.stage}/enableVpn, ssm:/configuration/default/enableVpn, ""}
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
   wafExcludeRules:
     wafScope: CLOUDFRONT
   wafPlugin:
     name: ${self:service}-${self:custom.stage}-webacl-waf
     rules:
-      - enable: ${param:restrictToVpn}
+      - enable: ${self:custom.enableVpn}
         rule:
           Name: vpn-only
           Priority: 0
@@ -63,7 +64,7 @@ custom:
                     ARN: !GetAtt GitHubIPSet.Arn
                 - IPSetReferenceStatement:
                     ARN: ${self:custom.vpnIpv6SetArn}
-      - enable: ${param:restrictToVpn}
+      - enable: ${self:custom.enableVpn}
         rule:
           Name: block-all-other-traffic
           Priority: 3
@@ -89,15 +90,15 @@ custom:
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
           --region ${self:provider.region}
-params:
-  production:
-    restrictToVpn: false
-  val:
-    restrictToVpn: false
-  main:
-    restrictToVpn: false
-  default:
-    restrictToVpn: false
+# params:
+#   production:
+#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
+#   val:
+#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
+#   main:
+#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
+#   default:
+#     restrictToVpn: ${self:custom.vpnIpv6SetArn}
 
 resources:
   Conditions:
