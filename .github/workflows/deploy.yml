@@ -148,16 +148,10 @@ jobs:
           role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
 
-      - name: set branch_name
+      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
-          echo "GITHUB_REF=${GITHUB_REF}"
-          if [[ "$GITHUB_REF" =~ ^refs/heads/dependabot/.* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | md5sum | head -c 10 | sed 's/^/x/'`" >> $GITHUB_ENV
-          elif [[ "$GITHUB_REF" =~ ^refs/.*/snyk-* ]]; then
-            echo "branch_name=`echo ${GITHUB_REF##*/*-} | head -c 10 | sed 's/^/s/'`" >> $GITHUB_ENV
-          else
-            echo "branch_name=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          fi
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       
       - name: set branch specific variable names
         id: set_names
