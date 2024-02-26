@@ -20,7 +20,6 @@ export const fetchTemplate = handler(async (event, _context) => {
     throw new Error(error.INVALID_TEMPLATE_NAME);
   }
   // get the signed URL string
-
   const params = {
     Bucket: process.env.TEMPLATE_BUCKET!,
     Expires: 60,
