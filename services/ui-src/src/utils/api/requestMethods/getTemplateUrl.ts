@@ -9,6 +9,6 @@ export async function getSignedTemplateUrl(templateName: string) {
 
   const response = await API.get("mcr", `/templates/${templateName}`, request);
   console.log("response", response);
-  console.log("response.body", response.body);
+  console.log("response.body", response?.body);
   return response;
 }
