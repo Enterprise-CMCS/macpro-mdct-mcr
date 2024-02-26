@@ -34,7 +34,7 @@ export const fetchTemplate = handler(async (event, _context) => {
     Expires: 60,
     Key: key,
   };
-  const url = s3Lib.getSignedDownloadUrl(params);
+  const url = await s3Lib.getSignedDownloadUrl(params);
   // eslint-disable-next-line no-console
   console.log("url", url);
   return { status: StatusCodes.SUCCESS, body: url };
