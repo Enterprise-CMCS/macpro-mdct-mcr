@@ -17,6 +17,7 @@ plugins:
   - serverless-stack-termination-protection
   - serverless-iam-helper
   - serverless-s3-bucket-helper
+  - "@enterprise-cmcs/serverless-waf-plugin"
 
 s3BucketHelper:
   loggingConfiguration:
@@ -35,17 +36,68 @@ custom:
   route53DomainName: ${ssm:/configuration/${self:custom.stage}/route53/domainName, ""}
   cloudfrontCertificateArn: ${ssm:/configuration/${self:custom.stage}/cloudfront/certificateArn, ssm:/configuration/default/cloudfront/certificateArn, ""}
   cloudfrontDomainName: ${ssm:/configuration/${self:custom.stage}/cloudfront/domainName, ""}
-  webAclName: ${self:service}-${self:custom.stage}-webacl
+  vpnIpSetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpSetArn, ssm:/configuration/default/vpnIpSetArn, ""}
+  vpnIpv6SetArn: ${ssm:/configuration/${self:custom.stage}/vpnIpv6SetArn, ssm:/configuration/default/vpnIpv6SetArn, ""}
   firehoseStreamName: aws-waf-logs-${self:service}-${self:custom.stage}-firehose
+  wafExcludeRules:
+    wafScope: CLOUDFRONT
+  wafPlugin:
+    name: ${self:service}-${self:custom.stage}-webacl-waf
+    rules:
+      - enable: ${param:restrictToVpn}
+        rule:
+          Name: vpn-only
+          Priority: 0
+          Action:
+            Allow: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: ${self:service}-${self:custom.stage}-webacl-vpn-only
+          Statement:
+            OrStatement:
+              Statements:
+                - IPSetReferenceStatement:
+                    ARN: ${self:custom.vpnIpSetArn}
+                - IPSetReferenceStatement:
+                    ARN: !GetAtt GitHubIPSet.Arn
+                - IPSetReferenceStatement:
+                    ARN: ${self:custom.vpnIpv6SetArn}
+      - enable: ${param:restrictToVpn}
+        rule:
+          Name: block-all-other-traffic
+          Priority: 3
+          Action:
+            Block:
+              CustomResponse:
+                ResponseCode: 403
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: ${self:service}-${self:custom.stage}-block-traffic
+          Statement:
+            NotStatement:
+              Statement:
+                IPSetReferenceStatement:
+                  ARN: ${self:custom.vpnIpSetArn}
   scripts:
     hooks:
       # Associate the WAF ACL with the Firehose Delivery Stream
       deploy:finalize: |
-        wafAclArn=`aws wafv2 list-web-acls --scope CLOUDFRONT | jq -r '.WebACLs | .[] | select(.Name=="${self:custom.webAclName}") | .ARN'`
+        wafAclArn=`aws wafv2 list-web-acls --scope CLOUDFRONT | jq -r '.WebACLs | .[] | select(.Name=="${self:custom.wafPlugin.name}") | .ARN'`
         firehoseStreamArn=`aws firehose describe-delivery-stream --delivery-stream-name ${self:custom.firehoseStreamName} | jq -r '.DeliveryStreamDescription.DeliveryStreamARN'`
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
           --region ${self:provider.region}
+params:
+  production:
+    restrictToVpn: false
+  val:
+    restrictToVpn: false
+  main:
+    restrictToVpn: false
+  default:
+    restrictToVpn: false
 
 resources:
   Conditions:
@@ -70,6 +122,13 @@ resources:
                 - ""
                 - ${self:custom.cloudfrontDomainName}
   Resources:
+    GitHubIPSet:
+      Type: AWS::WAFv2::IPSet
+      Properties:
+        Name: ${self:custom.stage}-gh-ipset
+        Scope: CLOUDFRONT
+        IPAddressVersion: IPV4
+        Addresses: []
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -142,35 +201,6 @@ resources:
                 Bool:
                   aws:SecureTransport: false
         Bucket: !Ref LoggingBucket
-    CloudFrontWebAcl:
-      Type: AWS::WAFv2::WebACL
-      Properties:
-        Name: ${self:custom.webAclName}
-        DefaultAction:
-          Block: {}
-        Rules:
-          - Action:
-              Allow: {}
-            Name: ${self:custom.webAclName}-allow-usa-plus-territories
-            Priority: 0
-            Statement:
-              GeoMatchStatement:
-                CountryCodes:
-                  - GU # Guam
-                  - PR # Puerto Rico
-                  - US # USA
-                  - UM # US Minor Outlying Islands
-                  - VI # US Virgin Islands
-                  - MP # Northern Mariana Islands
-            VisibilityConfig:
-              SampledRequestsEnabled: true
-              CloudWatchMetricsEnabled: true
-              MetricName: WafWebAcl
-        Scope: CLOUDFRONT
-        VisibilityConfig:
-          CloudWatchMetricsEnabled: true
-          SampledRequestsEnabled: true
-          MetricName: ${self:custom.stage}-webacl
     CloudFrontOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -219,7 +249,7 @@ resources:
             - ErrorCode: 403
               ResponseCode: 200
               ResponsePagePath: /index.html
-          WebACLId: !GetAtt CloudFrontWebAcl.Arn
+          WebACLId: !GetAtt WafPluginAcl.Arn
           Logging:
             Bucket: !Sub "${LoggingBucket}.s3.amazonaws.com"
             Prefix: AWSLogs/CLOUDFRONT/${self:custom.stage}/
