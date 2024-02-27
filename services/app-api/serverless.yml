@@ -13,6 +13,7 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-plugin-warmup
   - serverless-associate-waf
+  - "@enterprise-cmcs/serverless-waf-plugin"
   - serverless-stack-termination-protection
   - serverless-idempotency-helper
   - serverless-iam-helper
@@ -33,6 +34,8 @@ custom:
     tsConfigFileLocation: "./tsconfig.json"
   stage: ${sls:stage}
   region: ${aws:region}
+  wafPlugin:
+    name: ${self:service}-${self:custom.stage}-webacl-waf
   serverlessTerminationProtection:
     stages:
       - main
@@ -49,7 +52,7 @@ custom:
   naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
   naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
   templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  webAclName: ${self:service}-${self:custom.stage}-webacl
+  webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
   mlrFormBucket: ${env:MLR_FORM_BUCKET, cf:database-${self:custom.stage}.MlrFormBucketName}
   naaarFormBucket: ${env:NAAAR_FORM_BUCKET, cf:database-${self:custom.stage}.NaaarFormBucketName}
@@ -429,35 +432,6 @@ resources:
       Properties:
         GroupDescription: Security Group for streaming functions.  Egress all is set by default.
         VpcId: ${self:custom.vpcId}
-    ApiGwWebAcl:
-      Type: AWS::WAFv2::WebACL
-      Properties:
-        Name: ${self:custom.webAclName}
-        DefaultAction:
-          Block: {}
-        Rules:
-          - Action:
-              Allow: {}
-            Name: ${self:custom.webAclName}-allow-usa-plus-territories
-            Priority: 0
-            Statement:
-              GeoMatchStatement:
-                CountryCodes:
-                  - GU # Guam
-                  - PR # Puerto Rico
-                  - US # USA
-                  - UM # US Minor Outlying Islands
-                  - VI # US Virgin Islands
-                  - MP # Northern Mariana Islands
-            VisibilityConfig:
-              SampledRequestsEnabled: true
-              CloudWatchMetricsEnabled: true
-              MetricName: WafWebAcl
-        Scope: REGIONAL
-        VisibilityConfig:
-          CloudWatchMetricsEnabled: true
-          SampledRequestsEnabled: true
-          MetricName: ${self:custom.stage}-webacl
   Outputs:
     ApiGatewayRestApiName:
       Value: !Ref ApiGatewayRestApi
