@@ -13,7 +13,8 @@ export const ExportedSectionHeading = ({
 }: Props) => {
   const sectionHeading = verbiage?.intro?.exportSectionHeader
     ? verbiage?.intro?.exportSectionHeader
-    : verbiage?.intro?.subsection || heading;
+    : verbiage?.intro?.section;
+  const sectionSubHeader = verbiage?.intro?.subsection || heading;
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
@@ -21,9 +22,16 @@ export const ExportedSectionHeading = ({
 
   return (
     <Box data-testid="exportedSectionHeading" sx={sx.container}>
-      <Heading as="h2" sx={sx.heading}>
-        {sectionHeading}
-      </Heading>
+      {sectionHeading ? (
+        <Heading as="h2" sx={sx.heading.h2}>
+          {sectionHeading}
+        </Heading>
+      ) : null}
+      {sectionSubHeader ? (
+        <Heading as="h3" sx={sx.heading.h3}>
+          {sectionSubHeader}
+        </Heading>
+      ) : null}
       {sectionInfo && (
         <Box sx={sx.info}>
           <Text>
@@ -59,9 +67,15 @@ const sx = {
     },
   },
   heading: {
-    margin: "1.5rem 0",
-    fontSize: "xl",
     fontWeight: "bold",
+    h2: {
+      fontSize: "xl",
+      margin: "1.5rem 0",
+    },
+    h3: {
+      fontSize: "lg",
+      margin: "1.5rem 0",
+    },
   },
   info: {
     p: {
