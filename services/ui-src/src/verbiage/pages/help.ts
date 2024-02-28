@@ -11,12 +11,17 @@ export default {
       },
     },
     template: {
-      body: "For support on the MCPAR, MLR and NAAAR reports, including questions about policy:",
+      body: "For support on the MCPAR and NAAAR reports, including questions about policy:",
       email: {
         address: "ManagedCareTA@cms.hhs.gov",
       },
     },
-  },
+    template: {
+      body: "For support on the MLR report, including questions about policy:",
+      email: {
+        address: "DMCPMLR@cms.hhs.gov",
+      },
+    }, 
   accordionItems: [
     {
       question: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",
