@@ -190,6 +190,7 @@ jobs:
           #!/bin/bash
           # Fetch AWS IP set ARNs using AWS CLI and store them in a variable
           AWS_IP_SET_INFO=$(aws wafv2 list-ip-sets --scope=CLOUDFRONT)
+          echo "Outputting AWS IP Set Info:  ${AWS_IP_SET_INFO}"
           # Store the IP set ARNs in an output variable using GITHUB_OUTPUT
           IPSET_NAME=${{ steps.gen-ip-set-name.outputs.STAGE_GH_IPSET_NAME }}
           IPSET=$(jq '.IPSets | map(select(.Name == "'${IPSET_NAME}'")) | .[]' <<< ${AWS_IP_SET_INFO})
