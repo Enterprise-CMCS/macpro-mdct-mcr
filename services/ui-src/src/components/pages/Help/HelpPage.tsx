@@ -2,6 +2,7 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
 import verbiage from "verbiage/pages/help";
+import { AnyObject } from "types";
 
 export const HelpPage = () => {
   const { intro, cards, accordionItems } = verbiage;
@@ -14,16 +15,14 @@ export const HelpPage = () => {
         <Text>{intro.body}</Text>
       </Box>
       <Box sx={sx.emailCardBox}>
-        <EmailCard
-          verbiage={cards.helpdesk}
-          icon="settings"
-          cardprops={sx.card}
-        />
-        <EmailCard
-          verbiage={cards.template}
-          icon="spreadsheet"
-          cardprops={sx.card}
-        />
+        {cards.map((item: AnyObject, index: number) => (
+          <EmailCard
+            key={index}
+            verbiage={item}
+            icon={item.icon}
+            cardprops={sx.card}
+          />
+        ))}
       </Box>
       {accordionItems.length > 0 && (
         <Box sx={sx.faqAccordionBox}>
