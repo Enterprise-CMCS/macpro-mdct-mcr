@@ -176,10 +176,17 @@ jobs:
 
       - name: set variable values
         id: set_values
-        run: ./.github/build_vars.sh set_values
+        run: ./.github/build-vars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+
+      - name: output account id
+        id: output_account_id
+        run: |
+          #!/bin/bash
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "Current Account ID: ${AWS_ACCOUNT_ID}"
       
       - name: Get Github Actions CIDR Blocks
         id: get-gha-cidrs
