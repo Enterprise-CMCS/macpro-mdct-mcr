@@ -172,7 +172,7 @@ jobs:
 
       - name: set branch specific variable names
         id: set_names
-        run: ./.github/build_vars.sh set_names
+        run: ./.github/build-vars.sh set_names
 
       - name: set variable values
         id: set_values
