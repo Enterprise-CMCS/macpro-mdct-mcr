@@ -4,7 +4,7 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // form
-import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
+import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport";
 import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 // utils
@@ -13,9 +13,11 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
+  InputChangeEvent,
   ReportStatus,
+  ReportType,
 } from "types";
-import { States } from "../../constants";
+import { ProgramList, States } from "../../constants";
 import {
   calculateDueDate,
   convertDateEtToUtc,
@@ -37,6 +39,8 @@ export const AddEditReportModal = ({
   } = useContext(ReportContext);
   const { full_name } = useStore().user ?? {};
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isOtherProgramName, setIsOtherProgramName] = useState<boolean>(false);
+
   const yoyCopyFlag = useFlags()?.yoyCopy;
 
   // get correct form
@@ -76,9 +80,35 @@ export const AddEditReportModal = ({
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
+  // handle program name selection from MCPAR Program List
+  const onChange = (event: InputChangeEvent) => {
+    if (reportType === ReportType.MCPAR) {
+      // make deep copy of baseline form for customization
+      let customizedModalForm: FormJson = JSON.parse(
+        JSON.stringify(modalFormJson)
+      );
+
+      // user selects "Other" for the program name
+      if (
+        event.target.name === "programName" &&
+        event.target.value === ProgramList.OTHER
+      ) {
+        setIsOtherProgramName(true);
+        customizedModalForm.fields[1].props! = {
+          hidden: false,
+          label: "Specify a new program name",
+        };
+        setForm(customizedModalForm);
+        // TODO: reset form if not selecting "OTHER"
+      }
+    }
+  };
+
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const programName = isOtherProgramName
+      ? formData["programName-otherText"]
+      : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -208,6 +238,7 @@ export const AddEditReportModal = ({
         formJson={form}
         formData={selectedReport?.fieldData}
         onSubmit={writeReport}
+        onChange={onChange}
         validateOnRender={false}
         dontReset={true}
       />
