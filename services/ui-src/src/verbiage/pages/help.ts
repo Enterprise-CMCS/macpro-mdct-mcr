@@ -3,20 +3,29 @@ export default {
     header: "How can we help you?",
     body: "Question or feedback? Please email us and we will respond as soon as possible. You can also review our frequently asked questions below.",
   },
-  cards: {
-    helpdesk: {
+  cards: [
+    {
+      icon: "settings",
       body: "For technical support and login issues: ",
       email: {
         address: "mdct_help@cms.hhs.gov",
       },
     },
-    template: {
-      body: "For support on the MCPAR, MLR and NAAAR reports, including questions about policy:",
+    {
+      icon: "spreadsheet",
+      body: "For support on the MCPAR and NAAAR reports, including questions about policy:",
       email: {
         address: "ManagedCareTA@cms.hhs.gov",
       },
     },
-  },
+    {
+      icon: "spreadsheet",
+      body: "For support on the MLR report, including questions about policy:",
+      email: {
+        address: "DMCPMLR@cms.hhs.gov",
+      },
+    },
+  ],
   accordionItems: [
     {
       question: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",

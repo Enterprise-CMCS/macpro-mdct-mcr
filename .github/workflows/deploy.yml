@@ -141,18 +141,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Configure AWS credentials for GitHub Actions
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
 
-      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
+      - name: set branch_name
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-      
+
       - name: set branch specific variable names
         id: set_names
         run: ./.github/build-vars.sh set_names
@@ -164,6 +158,19 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
+
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+
+      - name: output account id
+        id: output_account_id
+        run: |
+          #!/bin/bash
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "Current Account ID: ${AWS_ACCOUNT_ID}"
       
       - name: Get Github Actions CIDR Blocks
         id: get-gha-cidrs
@@ -190,6 +197,7 @@ jobs:
           #!/bin/bash
           # Fetch AWS IP set ARNs using AWS CLI and store them in a variable
           AWS_IP_SET_INFO=$(aws wafv2 list-ip-sets --scope=CLOUDFRONT)
+          echo "Outputting AWS IP Set Info:  ${AWS_IP_SET_INFO}"
           # Store the IP set ARNs in an output variable using GITHUB_OUTPUT
           IPSET_NAME=${{ steps.gen-ip-set-name.outputs.STAGE_GH_IPSET_NAME }}
           IPSET=$(jq '.IPSets | map(select(.Name == "'${IPSET_NAME}'")) | .[]' <<< ${AWS_IP_SET_INFO})
