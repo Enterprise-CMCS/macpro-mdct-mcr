@@ -2,17 +2,23 @@
 import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // utils
 import { AnyObject, ModalDrawerEntityTypes } from "types";
+import { useLocation } from "react-router-dom";
 
 export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
   printVersion,
 }: Props) => {
+  const { pathname } = useLocation();
+
   switch (entityType) {
     case ModalDrawerEntityTypes.ACCESS_MEASURES:
       return (
         <>
-          <Heading as="h4" sx={sx.heading}>
+          <Heading
+            as={pathname === "/mcpar/export" ? "p" : "h4"}
+            sx={sx.heading}
+          >
             {`${printVersion ? "C2.V.1 General category: " : ""}${
               formattedEntityData.category
             }`}
@@ -32,7 +38,10 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.SANCTIONS:
       return (
         <>
-          <Heading as="h4" sx={sx.heading}>
+          <Heading
+            as={pathname === "/mcpar/export" ? "p" : "h4"}
+            sx={sx.heading}
+          >
             {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
               formattedEntityData.interventionType
             }`}
@@ -64,7 +73,10 @@ export const EntityCardTopSection = ({
     case ModalDrawerEntityTypes.QUALITY_MEASURES:
       return (
         <>
-          <Heading as="h4" sx={sx.heading}>
+          <Heading
+            as={pathname === "/mcpar/export" ? "p" : "h4"}
+            sx={sx.heading}
+          >
             {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
               formattedEntityData.name
             }`}
