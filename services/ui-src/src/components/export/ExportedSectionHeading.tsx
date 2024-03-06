@@ -71,7 +71,7 @@ const sx = {
   heading: {
     fontWeight: "bold",
     h2: {
-      fontSize: "xl",
+      fontSize: "2xl",
       margin: "1.5rem 0",
     },
     h3: {
