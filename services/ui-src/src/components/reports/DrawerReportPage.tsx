@@ -61,7 +61,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
       const selectedEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.name === selectedEntity?.name
+        (entity: EntityShape) => entity.id === selectedEntity?.id
       );
       const filteredFormData = filterFormData(
         enteredData,
