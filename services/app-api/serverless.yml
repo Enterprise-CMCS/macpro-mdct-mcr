@@ -36,6 +36,9 @@ custom:
   region: ${aws:region}
   wafPlugin:
     name: ${self:service}-${self:custom.stage}-webacl-waf
+  wafExcludeRules:
+    awsCommon:
+      - "SizeRestrictions_BODY"
   serverlessTerminationProtection:
     stages:
       - main
