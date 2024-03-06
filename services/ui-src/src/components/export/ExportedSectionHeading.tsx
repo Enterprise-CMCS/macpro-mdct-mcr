@@ -11,46 +11,48 @@ export const ExportedSectionHeading = ({
   reportType,
   verbiage,
 }: Props) => {
-  const sectionHeading = verbiage?.intro?.exportSectionHeader
-    ? verbiage?.intro?.exportSectionHeader
-    : verbiage?.intro?.section;
   const sectionSubHeader = verbiage?.intro?.subsection || heading;
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
+  const sectionInfoHeader: any =
+    verbiage?.intro?.info && verbiage?.intro?.info[0];
+  const sectionIntroType = sectionInfoHeader && sectionInfoHeader.type;
+  const sectionIntroContent = sectionInfoHeader && sectionInfoHeader.content;
 
   return (
-    <Box data-testid="exportedSectionHeading" sx={sx.container}>
-      {sectionHeading ? (
-        <Heading as="h2" sx={sx.heading.h2}>
-          {sectionHeading}
-        </Heading>
-      ) : null}
+    <>
       {sectionSubHeader ? (
         <Heading as="h3" sx={sx.heading.h3}>
-          {sectionSubHeader}
+          {sectionIntroType === "heading" &&
+          sectionIntroContent !== "Appeals Overview" &&
+          sectionIntroContent !== "Network Adequacy"
+            ? ""
+            : sectionSubHeader}
         </Heading>
       ) : null}
-      {sectionInfo && (
-        <Box sx={sx.info}>
-          <Text>
-            {typeof sectionInfo === "string"
-              ? sectionInfo
-              : parseCustomHtml(sectionInfo)}
-          </Text>
-        </Box>
-      )}
-      {sectionSpreadsheet && (
-        <Box sx={sx.spreadsheet}>
-          <SpreadsheetWidget
-            description={sectionSpreadsheet}
-            isPdf={true}
-            reportType={reportType}
-          />
-        </Box>
-      )}
-    </Box>
+      <Box data-testid="exportedSectionHeading" sx={sx.container}>
+        {sectionInfo && (
+          <Box sx={sx.info}>
+            <Text>
+              {typeof sectionInfo === "string"
+                ? sectionInfo
+                : parseCustomHtml(sectionInfo)}
+            </Text>
+          </Box>
+        )}
+        {sectionSpreadsheet && (
+          <Box sx={sx.spreadsheet}>
+            <SpreadsheetWidget
+              description={sectionSpreadsheet}
+              isPdf={true}
+              reportType={reportType}
+            />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 
@@ -73,8 +75,11 @@ const sx = {
       margin: "1.5rem 0",
     },
     h3: {
-      fontSize: "lg",
+      fontSize: "xl",
       margin: "1.5rem 0",
+    },
+    h4: {
+      fontSize: "lg",
     },
   },
   info: {
@@ -82,6 +87,9 @@ const sx = {
       margin: "1.5rem 0",
     },
     h3: {
+      fontSize: "xl",
+    },
+    h4: {
       fontSize: "lg",
     },
   },
