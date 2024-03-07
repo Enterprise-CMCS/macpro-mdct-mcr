@@ -302,6 +302,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - deploy
+      - register-runner
       - a11y-tests
       - e2e-test
     env:
