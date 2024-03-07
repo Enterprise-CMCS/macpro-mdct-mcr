@@ -26,12 +26,12 @@ describe("Test EntityCardTopSection renders", () => {
   beforeEach(() => {
     window.location.pathname === "/mcpar/export";
   });
-  test("EntityStepCardTopSection renders correctly", () => {
+  test("EntityCardTopSection renders correctly", () => {
     render(entityCardTopSectionComponent);
     expect(screen.getByText("fdsfds")).toBeVisible();
   });
 
-  test("EntityStepCardTopSection header renders p tag wrapper in report", () => {
+  test("EntityStepCardTopSection header renders p tag wrapper in PDF report", () => {
     window.history.pushState(
       {},
       "",

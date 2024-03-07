@@ -16,20 +16,25 @@ export const ExportedSectionHeading = ({
     ? null
     : verbiage?.intro?.info;
   const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
-  const sectionInfoHeader: any =
-    verbiage?.intro?.info && verbiage?.intro?.info[0];
-  const sectionIntroType = sectionInfoHeader && sectionInfoHeader.type;
-  const sectionIntroContent = sectionInfoHeader && sectionInfoHeader.content;
+
+  const introHeaderRender = () => {
+    const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
+    const introType = infoHeader && infoHeader.type;
+    const introContent = infoHeader && infoHeader.content;
+
+    const hideSectionIntroHeader =
+      introType === "heading" &&
+      introContent !== "Appeals Overview" &&
+      introContent !== "Network Adequacy";
+
+    return !hideSectionIntroHeader && sectionSubHeader;
+  };
 
   return (
     <>
       {sectionSubHeader ? (
         <Heading as="h3" sx={sx.heading.h3}>
-          {sectionIntroType === "heading" &&
-          sectionIntroContent !== "Appeals Overview" &&
-          sectionIntroContent !== "Network Adequacy"
-            ? ""
-            : sectionSubHeader}
+          {introHeaderRender()}
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
