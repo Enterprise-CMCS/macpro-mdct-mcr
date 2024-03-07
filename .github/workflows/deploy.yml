@@ -262,7 +262,9 @@ jobs:
 
   a11y-tests:
     name: E2E A11y Tests
-    needs: deploy
+    needs: 
+      - deploy
+      - register-runner
     if: ${{ github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
