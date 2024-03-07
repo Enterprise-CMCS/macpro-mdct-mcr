@@ -224,7 +224,9 @@ jobs:
 
   e2e-test:
     name: E2E Integration Tests
-    needs: deploy
+    needs: 
+      - deploy
+      - register-runner
     if: ${{ github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
