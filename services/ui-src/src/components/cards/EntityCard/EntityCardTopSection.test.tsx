@@ -31,7 +31,7 @@ describe("Test EntityCardTopSection renders", () => {
     expect(screen.getByText("fdsfds")).toBeVisible();
   });
 
-  test("EntityStepCardTopSection header renders p tag wrapper in PDF report", () => {
+  test("EntityCardTopSection header renders p tag wrapper in PDF report", () => {
     window.history.pushState(
       {},
       "",
@@ -44,7 +44,7 @@ describe("Test EntityCardTopSection renders", () => {
     );
   });
 
-  test("EntityStepCardTopSection header renders h4 tag wrapper in report", () => {
+  test("EntityCardTopSection header renders h4 tag wrapper in report", () => {
     window.history.pushState({}, "", new URL(window.location.origin));
     const { container } = render(entityCardTopSectionComponent);
     const h4Tag = container.querySelector("h4");
