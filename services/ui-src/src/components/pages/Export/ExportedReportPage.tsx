@@ -143,9 +143,9 @@ export const renderReportSections = (
       section?.pageType !== PageTypes.REVIEW_SUBMIT && (
         <Box key={section.path} mt="5rem">
           {/*  render top-level section headings */}
-          {/* <Heading as="h2" sx={sx.sectionHeading}>
+          <Heading as="h2" sx={sx.sectionHeading}>
             {`Section ${section.name}`}
-          </Heading> */}
+          </Heading>
           {renderSection(section)}
         </Box>
       )
