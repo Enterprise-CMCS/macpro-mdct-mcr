@@ -300,8 +300,6 @@ jobs:
     if: ${{ github.ref != 'refs/heads/waf-fix-refactor' && github.ref != 'refs/heads/main' && github.ref != 'refs/heads/val' && github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     needs:
-      - deploy
-      - register-runner
       - a11y-tests
       - e2e-test
     env:
