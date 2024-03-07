@@ -17,6 +17,8 @@ export * from "./reports/reports";
 export * from "./reports/routing";
 // statusing
 export * from "./statusing/getRouteStatus";
+// tables
+export * from "./tables/getMlrEntityStatus";
 // tracking
 export * from "./tracking/tealium";
 // validation

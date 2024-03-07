@@ -1,11 +1,14 @@
-import { useContext } from "react";
 // components
 import { Box, Tr, Td, Text, Th } from "@chakra-ui/react";
-import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
 // utils
-import { parseFormFieldInfo, parseCustomHtml, renderDataCell } from "utils";
+import {
+  parseFormFieldInfo,
+  parseCustomHtml,
+  renderDataCell,
+  useStore,
+} from "utils";
 
 export const ExportedReportFieldRow = ({
   formField,
@@ -14,7 +17,7 @@ export const ExportedReportFieldRow = ({
   parentFieldCheckedChoiceIds,
   showHintText = true,
 }: Props) => {
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props);
