@@ -226,7 +226,7 @@ jobs:
     needs: 
       - deploy
       - register-runner
-    if: ${{ github.ref_name != 'production' }}
+    if: ${{ github.ref_name != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -264,7 +264,7 @@ jobs:
     needs: 
       - deploy
       - register-runner
-    if: ${{ github.ref_name != 'production' }}
+    if: ${{ github.ref_name != 'refs/heads/production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
