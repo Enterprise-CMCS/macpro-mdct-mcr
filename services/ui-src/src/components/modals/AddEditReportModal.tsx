@@ -84,9 +84,7 @@ export const AddEditReportModal = ({
   const onChange = (event: InputChangeEvent) => {
     if (reportType === ReportType.MCPAR) {
       // make deep copy of baseline form for customization
-      let customizedModalForm: FormJson = JSON.parse(
-        JSON.stringify(modalFormJson)
-      );
+      let customizedModalForm: FormJson = modalFormJson;
 
       // user selects "Other" for the program name
       if (
