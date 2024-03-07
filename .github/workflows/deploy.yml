@@ -316,7 +316,7 @@ jobs:
           aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
       - name: cleanup-ip-list
         id: reset-ip-set
-        run: ./.github/waf-controller.sh set ${{ needs.e2e-test.outputs.ipset_name }} ${{ needs.e2e-test.outputs.ipset_id }} '[]'
+        run: ./.github/waf-controller.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
         env:
           AWS_RETRY_MODE: adaptive
           AWS_MAX_ATTEMPTS: 10
