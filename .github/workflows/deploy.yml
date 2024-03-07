@@ -130,14 +130,14 @@ jobs:
       application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
       BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
       BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
-      # ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
-      # ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }}
 
-  e2e-test:
-    name: E2E Integration Tests
-    needs: deploy
-    if: ${{ github.ref_name != 'production' }}
+  register-runner:
+    name: Register GitHub Runner
+    if: ${{ github.ref != 'refs/heads/production' }}
     runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -165,13 +165,14 @@ jobs:
           role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
 
+      # ensure running against correct account
       - name: output account id
         id: output_account_id
         run: |
           #!/bin/bash
           AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           echo "Current Account ID: ${AWS_ACCOUNT_ID}"
-      
+
       - name: Get Github Actions CIDR Blocks
         id: get-gha-cidrs
         shell: bash
@@ -191,7 +192,7 @@ jobs:
           echo "Github IP Set name:  $STAGE_GH_IPSET_NAME"
           echo "STAGE_GH_IPSET_NAME=$STAGE_GH_IPSET_NAME" >> $GITHUB_OUTPUT
 
-      - name: Fetch AWS IP set Metadata
+      - name: Fetch AWS IP Set Metadata
         id: fetch-ip-set-info
         run: |
           #!/bin/bash
@@ -215,6 +216,20 @@ jobs:
         env:
           AWS_RETRY_MODE: adaptive
           AWS_MAX_ATTEMPTS: 10
+
+    outputs:
+      ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
+      ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} 
+
+
+  e2e-test:
+    name: E2E Integration Tests
+    needs: deploy
+    if: ${{ github.ref_name != 'production' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v5
@@ -241,9 +256,7 @@ jobs:
           path: |
             tests/cypress/screenshots/
             tests/cypress/videos/
-    outputs:
-      ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
-      ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} 
+
 
   a11y-tests:
     name: E2E A11y Tests
@@ -290,7 +303,7 @@ jobs:
     env:
       SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
