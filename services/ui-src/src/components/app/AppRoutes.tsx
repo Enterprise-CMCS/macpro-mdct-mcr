@@ -21,7 +21,8 @@ import { Fragment, useContext } from "react";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
-  const { user: userIsAdmin, report } = useStore();
+  const { userIsAdmin } = useStore().user ?? {};
+  const { report } = useStore();
   const { contextIsLoaded } = useContext(ReportContext);
 
   // LaunchDarkly
