@@ -226,7 +226,7 @@ jobs:
     needs: 
       - deploy
       - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'waf-fix-refactor' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -264,7 +264,7 @@ jobs:
     needs: 
       - deploy
       - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'waf-fix-refactor' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
