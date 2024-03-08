@@ -1,4 +1,5 @@
 import { EntityType, ReportStatus } from "types";
+import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
 import {
   mockStandardReportPageJson,
@@ -218,6 +219,34 @@ export const mockReportFieldData = {
         },
       ],
       "accessMeasure_standardType-otherText": "",
+    },
+  ],
+  sanctions: [
+    {
+      ...mockSanctionsEntity,
+      sanction_planName: {
+        label: "sanction_planName",
+        value: "mock-plan-id-1",
+      },
+    },
+    {
+      ...mockSanctionsEntity,
+      sanction_planName: {
+        label: "sanction_planName",
+        value: "mock-plan-id-2",
+      },
+    },
+  ],
+  qualityMeasures: [
+    {
+      ...mockQualityMeasuresEntity,
+      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
+    },
+    {
+      ...mockQualityMeasuresEntity,
+      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
     },
   ],
 };

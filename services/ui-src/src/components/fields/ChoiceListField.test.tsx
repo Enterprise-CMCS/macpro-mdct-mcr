@@ -1,16 +1,25 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { axe } from "jest-axe";
-//components
 import { useFormContext } from "react-hook-form";
+// components
 import { ChoiceListField, ReportContext } from "components";
+// utils
 import {
   mockChoices,
   mockChoiceWithChild,
   mockMcparReportContext,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
+// types
 import { ReportStatus } from "types";
 
-//
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMcparReportStore,
+});
+
 const mockTrigger = jest.fn().mockReturnValue(true);
 const mockSetValue = jest.fn();
 const mockRhfMethods = {
@@ -34,47 +43,39 @@ const mockGetValues = (returnValue: any) =>
   }));
 
 const CheckboxComponent = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <ChoiceListField
-      choices={mockChoices}
-      label="Checkbox example"
-      name="checkboxField"
-      type="checkbox"
-    />
-  </ReportContext.Provider>
+  <ChoiceListField
+    choices={mockChoices}
+    label="Checkbox example"
+    name="checkboxField"
+    type="checkbox"
+  />
 );
 
 const CheckboxComponentWithNestedChildren = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <ChoiceListField
-      choices={[...mockChoices, mockChoiceWithChild]}
-      label="Radio example"
-      name="checkboxFieldWithNestedChildren"
-      type="checkbox"
-    />
-  </ReportContext.Provider>
+  <ChoiceListField
+    choices={[...mockChoices, mockChoiceWithChild]}
+    label="Radio example"
+    name="checkboxFieldWithNestedChildren"
+    type="checkbox"
+  />
 );
 
 const RadioComponentWithNestedChildren = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <ChoiceListField
-      choices={[...mockChoices, mockChoiceWithChild]}
-      label="Radio example"
-      name="radioFieldWithNestedChildren"
-      type="radio"
-    />
-  </ReportContext.Provider>
+  <ChoiceListField
+    choices={[...mockChoices, mockChoiceWithChild]}
+    label="Radio example"
+    name="radioFieldWithNestedChildren"
+    type="radio"
+  />
 );
 
 const RadioComponent = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <ChoiceListField
-      choices={mockChoices}
-      label="Radio example"
-      name="radioField"
-      type="radio"
-    />
-  </ReportContext.Provider>
+  <ChoiceListField
+    choices={mockChoices}
+    label="Radio example"
+    name="radioField"
+    type="radio"
+  />
 );
 
 describe("Test ChoiceListField component rendering", () => {
@@ -726,15 +727,13 @@ describe("Test Choicelist onChangeHandler", () => {
 
 describe("ChoiceListField handles triggering validation", () => {
   const choiceListFieldValidateOnRenderComponent = (
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <ChoiceListField
-        choices={mockChoices}
-        label="Checkbox example"
-        name="checkboxField"
-        type="checkbox"
-        validateOnRender
-      />
-    </ReportContext.Provider>
+    <ChoiceListField
+      choices={mockChoices}
+      label="Checkbox example"
+      name="checkboxField"
+      type="checkbox"
+      validateOnRender
+    />
   );
 
   afterEach(() => {

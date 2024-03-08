@@ -8,11 +8,12 @@ import { DropdownField, ReportContext } from "components";
 import {
   mockDropdownOptions,
   mockMcparReportContext,
-  mockMcparReportContextNoSubmittedReports,
+  mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+// types
 import { ReportStatus } from "types";
 
 const mockTrigger = jest.fn();
@@ -36,6 +37,10 @@ const mockGetValues = (returnValue: any) =>
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
 
 const dropdownComponentWithOptions = (
   <DropdownField
@@ -60,13 +65,11 @@ const dropdownComponentWithOptionsAndAutosave = (
 
 const dropdownComponentWithDynamicOptions = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <DropdownField
-        name="testDropdown"
-        label="test-dropdown-label"
-        options="plans"
-      />
-    </ReportContext.Provider>
+    <DropdownField
+      name="testDropdown"
+      label="test-dropdown-label"
+      options="plans"
+    />
   </RouterWrappedComponent>
 );
 
@@ -84,21 +87,15 @@ const dropdownComponentWithYoYCopy = (
 
 const dropdownComponentWithYoYCopyNoSubmittedReports = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContextNoSubmittedReports}>
-      <DropdownField
-        name="testDropdown"
-        label="test-dropdown-label"
-        options="copyEligibleReports"
-      />
-    </ReportContext.Provider>
+    <DropdownField
+      name="testDropdown"
+      label="test-dropdown-label"
+      options="copyEligibleReports"
+    />
   </RouterWrappedComponent>
 );
 
 describe("Test DropdownField basic functionality", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
-
   test("Dropdown renders", () => {
     mockGetValues(undefined);
     render(dropdownComponentWithOptions);
@@ -124,7 +121,6 @@ describe("Test DropdownField basic functionality", () => {
 
 describe("Test DropdownField dynamic options functionality", () => {
   test("Dropdown renders dynamic options", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(dropdownComponentWithDynamicOptions);
     const dropdown = screen.getByLabelText("test-dropdown-label");
@@ -143,10 +139,6 @@ describe("Test DropdownField hydration functionality", () => {
       options={mockDropdownOptions}
     />
   );
-
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
 
   test("If only formFieldValue exists, displayValue is set to it", () => {
     mockGetValues(mockFormFieldValue);
@@ -185,7 +177,6 @@ describe("Test DropdownField autosaves", () => {
   });
 
   test("Autosaves selected value when stateuser, autosave true, and field is valid", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
@@ -215,7 +206,6 @@ describe("Test DropdownField autosaves", () => {
   });
 
   test("Autosaves default value when stateuser, autosave true, and field invalid", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndAutosave);
@@ -245,7 +235,6 @@ describe("Test DropdownField autosaves", () => {
   });
 
   test("Does not autosave if autosave is false", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(dropdownComponentWithOptions);
     const dropDown = screen.getByLabelText("test-dropdown-label");
@@ -273,7 +262,6 @@ describe("Dropdown handles triggering validation", () => {
   });
 
   test("Component with validateOnRender passed should validate on render", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(dropdownComponentWithOptionsAndValidateOnRender);
     const dropdown = screen.getByLabelText("test-dropdown-label");
@@ -284,7 +272,6 @@ describe("Dropdown handles triggering validation", () => {
 
 describe("Test DropdownField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     const { container } = render(dropdownComponentWithOptions);
     const results = await axe(container);
@@ -294,7 +281,6 @@ describe("Test DropdownField accessibility", () => {
 
 describe("Test YoY Copy options dropdown menu", () => {
   test("Populates with reports", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(dropdownComponentWithYoYCopy);
     const dropdown = screen.getByLabelText("test-dropdown-label");
@@ -306,7 +292,6 @@ describe("Test YoY Copy options dropdown menu", () => {
 
 describe("If there are no submitted reports to copy, dropdown default value should say 'No reports eligible for copy'", () => {
   test("Populates with reports", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(dropdownComponentWithYoYCopyNoSubmittedReports);
     const dropdown = screen.getByLabelText("test-dropdown-label");

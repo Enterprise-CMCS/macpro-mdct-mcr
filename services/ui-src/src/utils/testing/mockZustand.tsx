@@ -1,4 +1,9 @@
-import { mockBannerData, mockMcparReport, mockMlrReport } from "./setupJest";
+import {
+  mockBannerData,
+  mockMcparReport,
+  mockMlrReport,
+  mockReportsByState,
+} from "./setupJest";
 // types
 import {
   AdminBannerState,
@@ -126,7 +131,7 @@ export const mockBannerStore: AdminBannerState = {
 export const mockMcparReportStore: McrReportState = {
   report: mockMcparReport,
   reportsByState: [mockMcparReport, mockMlrReport],
-  copyEligibleReportsByState: [],
+  copyEligibleReportsByState: mockReportsByState,
   lastSavedTime: "1:58 PM",
   setReport: () => {},
   setReportsByState: () => {},
