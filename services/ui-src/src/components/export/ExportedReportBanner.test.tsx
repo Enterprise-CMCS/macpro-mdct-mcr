@@ -1,31 +1,21 @@
 import { render, screen } from "@testing-library/react";
-import { ReportContext } from "components";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
+// utils
+import { useStore } from "utils";
+import {
+  mockMcparReportStore,
+  mockMlrReportStore,
+} from "utils/testing/setupJest";
 // components
 import { ExportedReportBanner } from "./ExportedReportBanner";
 
 let mockPrint: any;
 
-const mcparContext = {
-  report: {
-    reportType: "MCPAR",
-  },
-};
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-const mlrContext = {
-  report: {
-    reportType: "MLR",
-  },
-};
-
-const bannerWithContext = (context: any) => {
-  return (
-    <ReportContext.Provider value={context}>
-      <ExportedReportBanner />
-    </ReportContext.Provider>
-  );
-};
+const reportBanner = <ExportedReportBanner />;
 
 describe("ExportedReportBanner", () => {
   // temporarily mock window.print for the testing environment
@@ -38,25 +28,37 @@ describe("ExportedReportBanner", () => {
   });
 
   test("Is ExportedReportBanner present", async () => {
-    render(bannerWithContext(mcparContext));
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+    });
+    render(reportBanner);
     const banner = screen.getByTestId("exportedReportBanner");
     expect(banner).toBeVisible();
   });
 
   test("Does MCPAR export banner have MCPAR-specific verbiage", async () => {
-    render(bannerWithContext(mcparContext));
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+    });
+    render(reportBanner);
     const introText = screen.getByText(/MCPAR/);
     expect(introText).toBeVisible();
   });
 
   test("Does MLR export banner have MLR-specific verbiage", async () => {
-    render(bannerWithContext(mlrContext));
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+    render(reportBanner);
     const introText = screen.getByText(/MLR/);
     expect(introText).toBeVisible();
   });
 
   test("Download PDF button should be visible", async () => {
-    render(bannerWithContext(mcparContext));
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+    render(reportBanner);
     const printButton = screen.getByText("Download PDF");
     expect(printButton).toBeVisible();
     await userEvent.click(printButton);
@@ -65,7 +67,10 @@ describe("ExportedReportBanner", () => {
 
 describe("Test ExportedReportBanner accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    const { container } = render(bannerWithContext(mcparContext));
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+    const { container } = render(reportBanner);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
