@@ -8,11 +8,14 @@ import {
   mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
+  mockMcparReportStore,
   mockMlrReport,
   mockMlrReportContext,
+  mockMlrReportStore,
+  mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { convertDateUtcToEt } from "utils";
+import { convertDateUtcToEt, useStore } from "utils";
 
 const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
@@ -34,6 +37,9 @@ const mockedMlrReportContext = {
   fetchReportsByState: mockFetchReportsByState,
   isReportPage: true,
 };
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const modalComponent = (
   <RouterWrappedComponent>
@@ -143,6 +149,12 @@ describe("Test AddEditProgramModal", () => {
 });
 
 describe("Test AddEditReportModal functionality for MCPAR", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -225,6 +237,12 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
 });
 
 describe("Test AddEditReportModal functionality for MLR", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMlrReportStore,
+    });
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
