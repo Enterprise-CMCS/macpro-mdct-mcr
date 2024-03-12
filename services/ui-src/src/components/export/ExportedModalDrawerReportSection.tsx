@@ -1,6 +1,6 @@
 import { useContext } from "react";
 // components
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { EntityCard, ReportContext } from "components";
 // utils
 import { getFormattedEntityData } from "utils";
@@ -22,14 +22,14 @@ export const ExportedModalDrawerReportSection = ({
       data-testid="exportedModalDrawerReportSection"
       sx={sx.container}
     >
-      <Heading as="h3" sx={sx.dashboardTitle} data-testid="headerCount">
+      <Text as="p" sx={sx.dashboardTitle} data-testid="headerCount">
         {`${verbiage.dashboardTitle} ${entityCount > 0 ? entityCount : ""}`}
         {!entityCount && (
           <Text as="span" sx={sx.notAnswered} data-testid="entityMessage">
             {emptyEntityMessage[entityType as keyof typeof emptyEntityMessage]}
           </Text>
         )}
-      </Heading>
+      </Text>
       {entities?.map((entity: EntityShape, entityIndex: number) => (
         <EntityCard
           key={entity.id}
@@ -70,6 +70,5 @@ const sx = {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
   },
 };

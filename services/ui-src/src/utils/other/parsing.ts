@@ -45,6 +45,7 @@ export const parseCustomHtml = (element: CustomHtmlElement[] | string) => {
         as,
         ...props,
       };
+
       if (type === "html") {
         // sanitize and parse html
         content = sanitizeAndParseHtml(content);
