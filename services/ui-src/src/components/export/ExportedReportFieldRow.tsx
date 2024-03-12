@@ -57,7 +57,7 @@ export const ExportedReportFieldRow = ({
       </Td>
 
       {/* data column/cell */}
-      <Td>
+      <Td sx={sx.dataColumn}>
         {reportData &&
           isFieldElement(formField) &&
           renderDataCell(
@@ -108,5 +108,8 @@ const sx = {
   fieldHint: {
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  dataColumn: {
+    maxWidth: "20rem",
   },
 };
