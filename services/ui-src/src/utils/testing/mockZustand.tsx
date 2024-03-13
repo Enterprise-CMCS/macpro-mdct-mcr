@@ -36,21 +36,6 @@ export const mockStateUserStore: McrUserState = {
   setShowLocalLogins: () => {},
 };
 
-export const mockStateRepStore: McrUserState = {
-  user: {
-    userRole: UserRoles.STATE_REP,
-    email: "staterep@test.com",
-    given_name: "Robert",
-    family_name: "States",
-    full_name: "Robert States",
-    state: "MA",
-    userIsEndUser: true,
-  },
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
 export const mockStateApproverStore: McrUserState = {
   user: {
     userRole: UserRoles.APPROVER,
