@@ -36,14 +36,21 @@ export const UserProvider = ({ children }: Props) => {
   // state management
   const { user, showLocalLogins, setUser, setShowLocalLogins } = useStore();
 
+  // Clear selectedReport from localStorage when logging out of report.
+  const clearSelectedReportCache = () => {
+    const selectReportCacheExists = localStorage.getItem("selectedReportType");
+    selectReportCacheExists && localStorage.removeItem("selectedReportType");
+  };
+
   // initialize the authentication manager that oversees timeouts
   initAuthManager();
 
   const logout = useCallback(async () => {
     try {
       setUser(undefined);
-      localStorage.clear();
+      clearSelectedReportCache();
       await Auth.signOut();
+      localStorage.clear();
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }
