@@ -42,8 +42,8 @@ export const UserProvider = ({ children }: Props) => {
   const logout = useCallback(async () => {
     try {
       setUser(undefined);
-      await Auth.signOut();
       localStorage.clear();
+      await Auth.signOut();
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }
