@@ -13,10 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'mdct-github-service-account' }}
     steps:
-      - name: Snyk Gather Metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1
-      - name: Approve a PR
+      - name: Auto-approve Snyk PR
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
