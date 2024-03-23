@@ -24,7 +24,7 @@
     "date-fns": "^2.26.0",
     "date-fns-tz": "^1.2.2",
     "dompurify": "^2.3.10",
-    "fast-xml-parser": "4.2.7",
+    "fast-xml-parser": "4.3.0",
     "framer-motion": "^4",
     "html-react-parser": "^3.0.1",
     "launchdarkly-react-client-sdk": "^3.0.1",
