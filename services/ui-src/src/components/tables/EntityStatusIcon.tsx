@@ -1,18 +1,18 @@
+import { useMemo } from "react";
 // components
 import { Box, Image, Text } from "@chakra-ui/react";
-// utils
+// types
 import { EntityShape } from "types";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
-import { useContext, useMemo } from "react";
-import { ReportContext } from "components/reports/ReportProvider";
-import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
+// utils
+import { getMlrEntityStatus, useStore } from "utils";
 
 export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
 
   const entityComplete = useMemo(() => {
     return report ? getMlrEntityStatus(report, entity) : false;

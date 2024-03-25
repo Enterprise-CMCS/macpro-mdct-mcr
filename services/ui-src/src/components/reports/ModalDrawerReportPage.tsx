@@ -33,7 +33,9 @@ import {
 } from "types";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
+  // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { report } = useStore();
   const { entityType, verbiage, modalForm, drawerForm: drawerFormJson } = route;
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -41,7 +43,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     undefined
   );
 
-  const { report, updateReport } = useContext(ReportContext);
+  const { updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
   // create drawerForm from json with repeated fields

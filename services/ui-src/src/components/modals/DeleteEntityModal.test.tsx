@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // components
@@ -11,7 +12,6 @@ import {
   mockReportKeys,
   mockAccessMeasuresEntity,
 } from "utils/testing/setupJest";
-import userEvent from "@testing-library/user-event";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 

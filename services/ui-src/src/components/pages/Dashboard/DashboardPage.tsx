@@ -22,8 +22,9 @@ import {
   PageTemplate,
   ReportContext,
 } from "components";
-// utils
+// types
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
+// utils
 import {
   convertDateUtcToEt,
   parseCustomHtml,
@@ -43,19 +44,22 @@ export const DashboardPage = ({ reportType }: Props) => {
     errorMessage,
     fetchReportsByState,
     fetchReport,
-    reportsByState,
     clearReportSelection,
     setReportSelection,
     archiveReport,
     releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
+
+  // state management
   const {
     state: userState,
     userIsEndUser,
     userIsAdmin,
     userIsReadOnly,
   } = useStore().user ?? {};
+  const { reportsByState } = useStore();
+
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
     ReportMetadataShape[] | undefined

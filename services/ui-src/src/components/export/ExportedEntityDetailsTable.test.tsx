@@ -1,20 +1,27 @@
 import { render } from "@testing-library/react";
-import { ReportContext } from "components/reports/ReportProvider";
 import { axe } from "jest-axe";
+// utils
 import {
   mockMlrReportContext,
+  mockMlrReportStore,
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
-import { ExportedEntityDetailsTable } from "./ExportedEntityDetailsTable";
+import { useStore } from "utils";
+// components
+import { ExportedEntityDetailsTable } from "components";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMlrReportStore,
+});
 
 const exportedEntityDetailsTableComponent = () => (
-  <ReportContext.Provider value={mockMlrReportContext}>
-    <ExportedEntityDetailsTable
-      fields={mockModalOverlayReportPageWithOverlayJson.overlayForm.fields}
-      entity={mockMlrReportContext.report.fieldData.program[0]}
-      data-testid="exportedEntityDetailsTable"
-    ></ExportedEntityDetailsTable>
-  </ReportContext.Provider>
+  <ExportedEntityDetailsTable
+    fields={mockModalOverlayReportPageWithOverlayJson.overlayForm.fields}
+    entity={mockMlrReportContext.report.fieldData.program[0]}
+    data-testid="exportedEntityDetailsTable"
+  ></ExportedEntityDetailsTable>
 );
 describe("ExportedEntityDetailsTable", () => {
   it("renders successfully", async () => {

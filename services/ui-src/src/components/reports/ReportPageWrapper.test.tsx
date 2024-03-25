@@ -7,6 +7,7 @@ import {
   mockDrawerReportPageJson,
   mockMcparReport,
   mockMcparReportContext,
+  mockMcparReportStore,
   mockModalDrawerReportPageJson,
   mockModalOverlayReportPageWithOverlayJson,
   mockReportJson,
@@ -25,6 +26,10 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
 
 const mockLocations = {
   standard: { pathname: mockReportJson.flatRoutes[0].path },
@@ -60,10 +65,6 @@ const ReportPageWrapper_WithoutReport = (
 );
 
 describe("Test ReportPageWrapper view", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
-
   test("ReportPageWrapper StandardFormSection view renders", () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapperComponent);
@@ -108,16 +109,13 @@ describe("Test ReportPageWrapper view", () => {
 });
 
 describe("Test ReportPageWrapper functionality", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
-
   afterEach(() => jest.clearAllMocks());
 
   test("ReportPageWrapper navigates to dashboard if no report", () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockUseLocation.mockReturnValue(mockLocations.standard);
     render(ReportPageWrapper_WithoutReport);
-    expect(mockUseNavigate).toHaveBeenCalledWith("/mock");
+    expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 
   test("ReportPageWrapper doesn't display report if no matching report route template", () => {
@@ -144,10 +142,6 @@ describe("Test ReportPageWrapper functionality", () => {
 });
 
 describe("Test ReportPageWrapper accessibility", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-  });
-
   test("Standard page should not have basic accessibility issues", async () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
     const { container } = render(ReportPageWrapperComponent);

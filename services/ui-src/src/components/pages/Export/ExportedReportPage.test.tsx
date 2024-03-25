@@ -1,27 +1,33 @@
 import { act, render } from "@testing-library/react";
-import { ReportContext } from "components";
 import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
 import { axe } from "jest-axe";
+// types
 import { ReportShape, ReportType } from "types";
+// utils
 import {
   mockStandardReportPageJson,
   mockMcparReportCombinedDataContext,
-  mockMcparReportContext,
-  mockMlrReportContext,
+  mockStateUserStore,
+  mockMcparReportStore,
+  mockMlrReportStore,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
 
-const exportedReportPage = (context: any) => (
-  <ReportContext.Provider value={context}>
-    <ExportedReportPage />
-  </ReportContext.Provider>
-);
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
+
+const exportedReportPage = <ExportedReportPage />;
 
 describe("Test ExportedReportPage Functionality", () => {
   test("Is the export page visible for MCPAR Reports", async () => {
-    mockMcparReportContext.report.formTemplate.routes = [
+    mockMcparReportStore.report!.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const page = render(exportedReportPage(mockMcparReportContext));
+    const page = render(exportedReportPage);
     const title = page.getByText(
       "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
     );
@@ -32,7 +38,7 @@ describe("Test ExportedReportPage Functionality", () => {
     mockMcparReportCombinedDataContext.report.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const page = render(exportedReportPage(mockMcparReportCombinedDataContext));
+    const page = render(exportedReportPage);
     const title = page.getByText(
       "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
     );
@@ -40,10 +46,14 @@ describe("Test ExportedReportPage Functionality", () => {
   });
 
   test("Does the export page have the correct title for MLR reports", () => {
-    mockMlrReportContext.report.formTemplate.routes = [
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMlrReportStore,
+    });
+    mockMlrReportStore.report!.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const page = render(exportedReportPage(mockMlrReportContext));
+    const page = render(exportedReportPage);
     const title = page.getByText(
       "TestState: Medicaid Medical Loss Ratio (MLR) & Remittances"
     );
@@ -66,30 +76,30 @@ describe("Test Exported Report Page View accessibility", () => {
   });
 
   it("Should not have basic accessibility issues for MCPAR Reports", async () => {
-    mockMcparReportContext.report.formTemplate.routes = [
+    mockMcparReportStore.report!.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const { container } = render(exportedReportPage(mockMcparReportContext));
+    const { container } = render(exportedReportPage);
     await act(async () => {
       expect(await axe(container)).toHaveNoViolations();
     });
   });
 
   it("Should not have basic accessibility issues for MCPAR Reports w/ CombinedData", async () => {
-    mockMcparReportCombinedDataContext.report.formTemplate.routes = [
+    mockMcparReportStore.report!.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const { container } = render(exportedReportPage(mockMcparReportContext));
+    const { container } = render(exportedReportPage);
     await act(async () => {
       expect(await axe(container)).toHaveNoViolations();
     });
   });
 
   it("Should not have basic accessibility issues for MLR Reports", async () => {
-    mockMlrReportContext.report.formTemplate.routes = [
+    mockMlrReportStore.report!.formTemplate.routes = [
       mockStandardReportPageJson,
     ];
-    const { container } = render(exportedReportPage(mockMlrReportContext));
+    const { container } = render(exportedReportPage);
     await act(async () => {
       expect(await axe(container)).toHaveNoViolations();
     });

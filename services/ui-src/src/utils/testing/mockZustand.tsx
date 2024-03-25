@@ -1,6 +1,16 @@
-import { mockBannerData } from "./setupJest";
+import {
+  mockBannerData,
+  mockMcparReport,
+  mockMlrReport,
+  mockReportsByState,
+} from "./setupJest";
 // types
-import { AdminBannerState, McrUserState, UserRoles } from "types";
+import {
+  AdminBannerState,
+  McrReportState,
+  McrUserState,
+  UserRoles,
+} from "types";
 
 // USER STATES / STORE
 
@@ -19,21 +29,6 @@ export const mockStateUserStore: McrUserState = {
     family_name: "States",
     full_name: "Thelonious States",
     state: "MN",
-    userIsEndUser: true,
-  },
-  showLocalLogins: true,
-  setUser: () => {},
-  setShowLocalLogins: () => {},
-};
-
-export const mockStateRepStore: McrUserState = {
-  user: {
-    userRole: UserRoles.STATE_REP,
-    email: "staterep@test.com",
-    given_name: "Robert",
-    family_name: "States",
-    full_name: "Robert States",
-    state: "MA",
     userIsEndUser: true,
   },
   showLocalLogins: true,
@@ -117,9 +112,49 @@ export const mockBannerStore: AdminBannerState = {
   setBannerDeleting: () => {},
 };
 
+// REPORT STATES / STORE
+export const mockMcparReportStore: McrReportState = {
+  report: mockMcparReport,
+  reportsByState: [mockMcparReport, mockMlrReport],
+  copyEligibleReportsByState: mockReportsByState,
+  lastSavedTime: "1:58 PM",
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
+export const mockMlrReportStore: McrReportState = {
+  report: mockMlrReport,
+  reportsByState: [mockMcparReport, mockMlrReport],
+  copyEligibleReportsByState: [],
+  lastSavedTime: "1:58 PM",
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
+export const mockEmptyReportStore: McrReportState = {
+  report: undefined,
+  reportsByState: undefined,
+  copyEligibleReportsByState: undefined,
+  lastSavedTime: undefined,
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
 // BOUND STORE
 
-export const mockUseStore: McrUserState & AdminBannerState = {
+export const mockUseStore: McrUserState & AdminBannerState & McrReportState = {
   ...mockStateUserStore,
   ...mockBannerStore,
+  ...mockMcparReportStore,
+  ...mockMlrReport,
+  ...mockEmptyReportStore,
 };

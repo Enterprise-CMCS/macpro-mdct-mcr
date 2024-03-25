@@ -1,26 +1,35 @@
 import { render, screen } from "@testing-library/react";
-import { ReportContext } from "components/reports/ReportProvider";
 import { axe } from "jest-axe";
+// types
 import { ModalOverlayReportPageShape, ReportType } from "types";
+// utils
 import {
   mockMlrReportContext,
+  mockMlrReportStore,
   mockModalOverlayReportPageJson,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
+// components
 import {
   ExportedModalOverlayReportSection,
   renderModalOverlayTableBody,
 } from "./ExportedModalOverlayReportSection";
+// verbiage
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
 
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
 
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMlrReportStore,
+});
+
 const exportedModalOverlayReportSectionComponent = (
-  <ReportContext.Provider value={mockReportContext}>
-    <ExportedModalOverlayReportSection
-      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
-    />
-  </ReportContext.Provider>
+  <ExportedModalOverlayReportSection
+    section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+  />
 );
 
 const mlrTableHeader = Object.values(
@@ -115,11 +124,9 @@ const mockMlrProgramOther = {
 };
 
 const exportedModalOverlayReportSectionComponentOther = (
-  <ReportContext.Provider value={mockReportContextOther}>
-    <ExportedModalOverlayReportSection
-      section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
-    />
-  </ReportContext.Provider>
+  <ExportedModalOverlayReportSection
+    section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+  />
 );
 
 describe("Test ExportedModalOverlayReportSection", () => {

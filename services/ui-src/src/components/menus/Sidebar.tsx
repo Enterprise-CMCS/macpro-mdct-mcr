@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
 import {
@@ -10,9 +10,9 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { ReportContext, SkipNav } from "components";
+import { SkipNav } from "components";
 // utils
-import { useBreakpoint } from "utils";
+import { useBreakpoint, useStore } from "utils";
 // assets
 import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
 import arrowUpIcon from "assets/icons/icon_arrow_up_gray.png";
@@ -30,7 +30,7 @@ interface SidebarProps {
 export const Sidebar = ({ isHidden }: SidebarProps) => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   const reportJson = report?.formTemplate;
 
   return (

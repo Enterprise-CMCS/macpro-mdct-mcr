@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
-import { ReportContext } from "components";
+import { ReportContext, EntityContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // utils
 import {
@@ -15,8 +15,8 @@ import {
   useStore,
   makeStringParseableForDatabase,
 } from "utils";
+// types
 import { InputChangeEvent, AnyObject } from "types";
-import { EntityContext } from "components/reports/EntityProvider";
 
 export const NumberField = ({
   name,
@@ -33,8 +33,11 @@ export const NumberField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
+  // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useStore();
+
+  const { updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
 

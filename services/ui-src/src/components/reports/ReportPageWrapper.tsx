@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // components
 import { Flex, Spinner } from "@chakra-ui/react";
 import {
-  ReportContext,
   ReviewSubmitPage,
   ModalDrawerReportPage,
   DrawerReportPage,
@@ -25,8 +24,7 @@ import {
 } from "types";
 
 export const ReportPageWrapper = () => {
-  const { state } = useStore().user ?? {};
-  const { report } = useContext(ReportContext);
+  const { user: state, report } = useStore();
   const [sidebarHidden, setSidebarHidden] = useState<boolean>(false);
   const navigate = useNavigate();
   const { pathname } = useLocation();

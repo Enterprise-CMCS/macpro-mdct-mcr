@@ -15,11 +15,17 @@ import {
   mockStateUserStore,
   mockQualityMeasuresEntity,
   mockAdminUserStore,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
+// types
 import { ReportStatus } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -40,44 +46,7 @@ const mockUpdateReport = jest.fn();
 const mockedReportContext = {
   ...mockMcparReportContext,
   updateReport: mockUpdateReport,
-  report: {
-    ...mockMcparReport,
-    fieldData: {
-      plans: mockHydrationPlans,
-      sanctions: [
-        {
-          ...mockSanctionsEntity,
-          sanction_planName: {
-            label: "sanction_planName",
-            value: "mock-plan-id-1",
-          },
-        },
-        {
-          ...mockSanctionsEntity,
-          sanction_planName: {
-            label: "sanction_planName",
-            value: "mock-plan-id-2",
-          },
-        },
-      ],
-      qualityMeasures: [
-        {
-          ...mockQualityMeasuresEntity,
-          "qualityMeasure_plan_measureResults_mock-plan-id-1":
-            "mock-response-1",
-          "qualityMeasure_plan_measureResults_mock-plan-id-2":
-            "mock-response-2",
-        },
-        {
-          ...mockQualityMeasuresEntity,
-          "qualityMeasure_plan_measureResults_mock-plan-id-1":
-            "mock-response-1",
-          "qualityMeasure_plan_measureResults_mock-plan-id-2":
-            "mock-response-2",
-        },
-      ],
-    },
-  },
+  report: mockMcparReport,
 };
 
 const MockForm = (props: any) => {
@@ -105,7 +74,6 @@ const dynamicFieldComponent = (hydrationValue?: any) => (
 
 describe("Test DynamicField component", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dynamicFieldComponent());
     });
@@ -230,8 +198,6 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
   });
 
   it("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
     });
@@ -308,7 +274,6 @@ describe("Test typing into DynamicField component", () => {
 describe("Test DynamicField Autosave Functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedUseStore.mockReturnValue(mockStateUserStore);
   });
 
   test("Autosaves when state user", async () => {

@@ -1,9 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { ExportedReportFieldRow } from "./ExportedReportFieldRow";
-import { mockMcparReportContext } from "utils/testing/setupJest";
-import { ReportContext } from "components";
+// components
+import { ExportedReportFieldRow } from "components";
 import { Table } from "@chakra-ui/react";
+// utils
+import { mockMcparReportStore } from "utils/testing/setupJest";
+import { useStore } from "utils";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMcparReportStore,
+});
 
 const field = {
   id: "test",
@@ -25,47 +33,39 @@ const fieldWithLabel = {
 };
 
 const exportRow = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <Table>
-      <tbody>
-        <ExportedReportFieldRow formField={field} pageType="drawer" />
-      </tbody>
-    </Table>
-  </ReportContext.Provider>
+  <Table>
+    <tbody>
+      <ExportedReportFieldRow formField={field} pageType="drawer" />
+    </tbody>
+  </Table>
 );
 
 const otherTextRow = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <Table>
-      <tbody>
-        <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
-      </tbody>
-    </Table>
-  </ReportContext.Provider>
+  <Table>
+    <tbody>
+      <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
+    </tbody>
+  </Table>
 );
 
 const dynamicRow = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <Table>
-      <tbody>
-        <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
-      </tbody>
-    </Table>
-  </ReportContext.Provider>
+  <Table>
+    <tbody>
+      <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
+    </tbody>
+  </Table>
 );
 
 const noHintRow = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <Table>
-      <tbody>
-        <ExportedReportFieldRow
-          formField={field}
-          pageType="drawer"
-          showHintText={false}
-        />
-      </tbody>
-    </Table>
-  </ReportContext.Provider>
+  <Table>
+    <tbody>
+      <ExportedReportFieldRow
+        formField={field}
+        pageType="drawer"
+        showHintText={false}
+      />
+    </tbody>
+  </Table>
 );
 
 describe("ExportedReportFieldRow", () => {

@@ -22,6 +22,7 @@ import {
   mockLDFlags,
   mockMlrReportContext,
   mockMlrDashboardReportContext,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
@@ -32,6 +33,10 @@ window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
 
 jest.mock("utils/other/useBreakpoint");
 const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
@@ -91,7 +96,6 @@ const dashboardViewWithLockedReport = (
 
 describe("Test Report Dashboard view (with reports, desktop view)", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockUseBreakpoint.mockReturnValue({
       isMobile: false,
     });
@@ -168,7 +172,6 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
 
 describe("Test Dashboard view (with reports, mobile view)", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockUseBreakpoint.mockReturnValue({
       isMobile: true,
     });
@@ -355,7 +358,6 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
   });
 
   test("State user cannot release reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
@@ -391,7 +393,6 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
   });
 
   test("State user cannot release reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
@@ -435,7 +436,6 @@ describe("Test Dashboard with error", () => {
       isMobile: false,
       isTablet: false,
     });
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dashboardViewWithError);
     });

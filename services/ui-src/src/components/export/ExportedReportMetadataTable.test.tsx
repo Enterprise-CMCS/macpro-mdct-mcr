@@ -1,12 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, ExportedReportMetadataTable } from "components";
-// utils
+import {
+  ExportedReportMetadataTable,
+  bodyRowContent,
+  headerRowLabels,
+} from "./ExportedReportMetadataTable";
+// types
 import { ReportShape, ReportStatus, ReportType } from "types";
+// verbaige
 import mcparExportVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrExportVerbiage from "../../verbiage/pages/mlr/mlr-export";
-import { bodyRowContent, headerRowLabels } from "./ExportedReportMetadataTable";
+// utils
+import { useStore } from "utils";
+import {
+  mockMcparReportStore,
+  mockMlrReportStore,
+} from "utils/testing/setupJest";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMcparReportStore,
+});
 
 const mockMcparContext = {
   report: {
@@ -34,12 +50,10 @@ const mockMlrContext = {
 
 const metadataTableWithContext = (context: any) => {
   return (
-    <ReportContext.Provider value={context}>
-      <ExportedReportMetadataTable
-        reportType={context.reportType}
-        verbiage={context.verbiage}
-      />
-    </ReportContext.Provider>
+    <ExportedReportMetadataTable
+      reportType={context.reportType}
+      verbiage={context.verbiage}
+    />
   );
 };
 
@@ -83,15 +97,29 @@ describe("ExportedReportMetadataTable displays the correct content", () => {
 
   it("Should show the correct data for MCPAR", () => {
     render(metadataTableWithContext(mockMcparContext));
-    const cellTexts = ["04/07/2024", "04/05/2024", "Mock editor", "Submitted"];
+    const cellTexts = [
+      "05/05/1975",
+      "02/24/1975",
+      "Thelonious States",
+      "Not started",
+    ];
     for (let cellText of cellTexts) {
       const cell = screen.getByText(cellText);
       expect(cell).toBeVisible();
     }
   });
+
   it("Should show the correct data for MLR", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
     render(metadataTableWithContext(mockMlrContext));
-    const cellTexts = ["Mock submit", "04/05/2024", "Mock editor", "Submitted"];
+    const cellTexts = [
+      "testProgram",
+      "02/24/1975",
+      "Thelonious States",
+      "Not started",
+    ];
     for (let cellText of cellTexts) {
       const cell = screen.getByText(cellText);
       expect(cell).toBeVisible();

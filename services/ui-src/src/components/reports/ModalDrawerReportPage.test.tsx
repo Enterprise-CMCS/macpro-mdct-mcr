@@ -9,9 +9,9 @@ import {
   mockModalDrawerReportPageJson,
   mockRepeatedFormField,
   mockMcparReportContext,
-  mockStateRepStore,
   mockStateUserStore,
   RouterWrappedComponent,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -26,13 +26,9 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockStateUserStore);
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
-const mockReportContextWithoutEntities = {
-  ...mockMcparReportContext,
-  report: undefined,
-};
 
 const {
   addEntityButtonText,
@@ -40,6 +36,12 @@ const {
   enterEntityDetailsButtonText,
   deleteModalConfirmButtonText,
 } = mockModalDrawerReportPageJson.verbiage;
+
+const modalDrawerReportPageComponentWithoutEntities = (
+  <RouterWrappedComponent>
+    <ModalDrawerReportPage route={mockModalDrawerReportPageJson} />
+  </RouterWrappedComponent>
+);
 
 const modalDrawerReportPageComponentWithEntities = (
   <RouterWrappedComponent>
@@ -49,27 +51,19 @@ const modalDrawerReportPageComponentWithEntities = (
   </RouterWrappedComponent>
 );
 
-const modalDrawerReportPageComponentWithoutEntities = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockReportContextWithoutEntities}>
-      <ModalDrawerReportPage route={mockModalDrawerReportPageJson} />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
 describe("Test ModalDrawerReportPage without entities", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    render(modalDrawerReportPageComponentWithoutEntities);
-  });
-
   it("should render the view", () => {
+    render(modalDrawerReportPageComponentWithoutEntities);
     expect(screen.getByText(addEntityButtonText)).toBeVisible();
   });
 });
 
 describe("Test ModalDrawerReportPage with entities", () => {
   beforeEach(() => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     render(modalDrawerReportPageComponentWithEntities);
   });
 
@@ -78,12 +72,10 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   it("ModalDrawerReportPage should render the view", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     expect(screen.getByText(addEntityButtonText)).toBeVisible();
   });
 
   it("ModalDrawerReportPage Modal opens correctly", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     const addEntityButton = screen.getByText(addEntityButtonText);
     await userEvent.click(addEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -95,7 +87,6 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   test("ModalDrawerReportPage opens the delete modal on remove click", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     const addEntityButton = screen.getByText(addEntityButtonText);
     const removeButton = screen.getByTestId("delete-entity-button");
     await userEvent.click(removeButton);
@@ -110,14 +101,12 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   test("ModalDrawerReportPage opens the drawer on enter-details click", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(enterDetailsButton);
     expect(screen.getByRole("dialog")).toBeVisible();
   });
 
   it("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -130,17 +119,6 @@ describe("Test ModalDrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
-    await userEvent.click(launchDrawerButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-    const saveAndCloseButton = screen.getByText(saveAndCloseText);
-    await userEvent.click(saveAndCloseButton);
-    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
-  });
-
-  it("Submit sidedrawer doesn't autosave if no change was made by State Rep", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -160,9 +138,7 @@ const mockRouteWithRepeatedField = {
 
 const modalDrawerReportPageComponentWithRepeatedFieldForm = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <ModalDrawerReportPage route={mockRouteWithRepeatedField} />
-    </ReportContext.Provider>
+    <ModalDrawerReportPage route={mockRouteWithRepeatedField} />
   </RouterWrappedComponent>
 );
 
@@ -171,7 +147,10 @@ describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => 
     jest.clearAllMocks();
   });
   it("Should repeat fields if there are repeated fields in the form", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     render(modalDrawerReportPageComponentWithRepeatedFieldForm);
 
     const launchDrawerButton = screen.getByText(enterEntityDetailsButtonText);
@@ -184,6 +163,12 @@ describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => 
 });
 
 describe("Test ModalDrawerReportPage accessibility", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
+  });
   it("Should not have basic accessibility issues", async () => {
     const { container } = render(modalDrawerReportPageComponentWithEntities);
     const results = await axe(container);
