@@ -1,4 +1,3 @@
-# Adapted from https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
 name: Snyk auto-merge
 on:
   pull_request:
@@ -9,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  dependabot:
+  snyk:
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'mdct-github-service-account' }}
     steps:
@@ -19,7 +18,6 @@ jobs:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Enable auto-merge for Snyk PRs
-        if: ${{ steps.metadata.outputs.update-type != 'version-update:semver-major'}}
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
