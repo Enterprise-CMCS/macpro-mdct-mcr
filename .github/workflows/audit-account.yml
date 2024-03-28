@@ -1,0 +1,54 @@
+name: Audit Account
+
+on:
+  schedule:
+    - cron: "0 16 * * 1" # Every Monday at 1600 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.ref }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4  
+      - name: set variable values
+        run: ./.github/build_vars.sh set_values
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - name: Collect resources from account
+        run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
+      - name: List active resources created by CI pipeline
+        run: pushd .github && ./audit-account.sh ci_active resources.json
+      - name: List orphaned resources created by CI pipeline
+        run: pushd .github && ./audit-account.sh ci_inactive resources.json
+      - name: List resources created by Cloudformation but not from CI pipeline
+        run: pushd .github && ./audit-account.sh cf_other resources.json
+      - name: List untagged resources
+        run: pushd .github && ./audit-account.sh untagged resources.json            
+      - name: Create reports dir
+        run: pushd .github && mkdir -p reports
+      - name: Assemble CSV files
+        run: |
+          pushd .github
+          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh ci_active resources.json)" > reports/ci_active.csv
+          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh ci_inactive resources.json)" > reports/ci_inactive.csv
+          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh cf_other resources.json)" > reports/cf_other.csv
+          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh untagged resources.json)" > reports/untagged.csv
+      - name: Upload reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: resource-reports
+          path: .github/reports/
+          retention-days: 14
