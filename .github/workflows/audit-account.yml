@@ -41,11 +41,21 @@ jobs:
         run: pushd .github && mkdir -p reports
       - name: Assemble CSV files
         run: |
+          #!/bin/bash
           pushd .github
-          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh ci_active resources.json)" > reports/ci_active.csv
-          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh ci_inactive resources.json)" > reports/ci_inactive.csv
-          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh cf_other resources.json)" > reports/cf_other.csv
-          jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "$(./audit-account.sh untagged resources.json)" > reports/untagged.csv
+          echo "Reports with no entries will be omitted"
+          CI_ACTIVE="$(./audit-account.sh ci_active resources.json)"
+          [[ $(jq -r 'length' <<< "${CI_ACTIVE}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_ACTIVE}" > reports/ci_active.csv
+          CI_INACTIVE="$(./audit-account.sh ci_inactive resources.json)"
+          [[ $(jq -r 'length' <<< "${CI_INACTIVE}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_INACTIVE}" > reports/ci_inactive.csv
+          CF_OTHER="$(./audit-account.sh cf_other resources.json)"
+          [[ $(jq -r 'length' <<< "${CF_OTHER}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CF_OTHER}" > reports/cf_other.csv
+          UNTAGGED="$(./audit-account.sh untagged resources.json)"
+          [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv
       - name: Upload reports
         uses: actions/upload-artifact@v3
         with:
