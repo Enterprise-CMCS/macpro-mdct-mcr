@@ -4,8 +4,6 @@ on:
   schedule:
     - cron: "0 16 * * 1" # Every Monday at 1600 UTC
   workflow_dispatch:
-  #REMOVE BEFORE MERGING
-  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.ref }}
