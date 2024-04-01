@@ -82,7 +82,7 @@ export const ExportedReportPage = () => {
             </Table>
           )}
           {/* report sections */}
-          {renderReportSections(report.formTemplate.routes, report.reportType)}
+          {renderReportSections(report.formTemplate.routes)}
         </Box>
       )) || (
         <Center>
@@ -112,10 +112,7 @@ export const reportTitle = (
   }
 };
 
-export const renderReportSections = (
-  reportRoutes: ReportRoute[],
-  reportType: string
-) => {
+export const renderReportSections = (reportRoutes: ReportRoute[]) => {
   // recursively render sections
   const renderSection = (section: ReportRoute) => {
     const childSections = section?.children;
@@ -128,7 +125,6 @@ export const renderReportSections = (
           <Box>
             <ExportedSectionHeading
               heading={section.verbiage?.intro?.subsection || section.name}
-              reportType={reportType}
               verbiage={section.verbiage || undefined}
             />
             <ExportedReportWrapper section={section as ReportRouteWithForm} />
