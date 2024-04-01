@@ -12,18 +12,32 @@ CMDCT-
 <!-- Step-by-step instructions on how to test, if necessary -->
 
 
-### Important updates
+### Notes
 <!-- Changed dependencies, .env files, configs, etc. -->
 <!-- Instructions for local dev, e.g. requires new installs in directories -->
 
 
 ---
-### Author checklist
+### Pre-review checklist
 <!-- Complete the following steps before opening for review -->
 
 - [ ] I have performed a self-review of my code
 - [ ] I have added [thorough](https://shorturl.at/aejkF) tests, if necessary
 - [ ] I have updated relevant documentation, if necessary
+
+---
+### Pre-merge checklist
+<!-- Complete the following steps before merging -->
+
+#### Review
+- [ ] Design: This work has been reviewed and approved by design, if necessary
+- [ ] Product: This work has been reviewed and approved by product owner, if necessary
+
+#### Security
+_If either of the following are true, notify the team's ISSO (Information System Security Officer)._
+
+- [ ] These changes are significant enough to require an update to the SIA.
+- [ ] These changes are significant enough to require a penetration test.
 ---
 
 <!-- If deploying to val or prod, click 'Preview' and select template -->
