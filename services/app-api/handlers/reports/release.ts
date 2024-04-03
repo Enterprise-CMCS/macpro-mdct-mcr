@@ -1,5 +1,10 @@
 import handler from "../handler-lib";
 import KSUID from "ksuid";
+import { GetCommandInput, PutCommandInput } from "@aws-sdk/lib-dynamodb";
+import {
+  GetObjectCommandInput,
+  PutObjectCommandInput,
+} from "@aws-sdk/client-s3";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import {
@@ -12,19 +17,15 @@ import s3Lib, {
   getFieldDataKey,
   getFormTemplateKey,
 } from "../../utils/s3/s3-lib";
+import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 // types
 import {
-  DynamoGet,
-  DynamoWrite,
   FormJson,
   ReportMetadata,
   ReportType,
-  S3Get,
-  S3Put,
   StatusCodes,
   UserRoles,
 } from "../../utils/types";
-import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
 
 /**
  * Locked reports can be released by admins.
@@ -62,7 +63,7 @@ export const releaseReport = handler(async (event) => {
   const reportTable = reportTables[reportType as keyof typeof reportTables];
   // Get report metadata
 
-  const reportMetadataParams: DynamoGet = {
+  const reportMetadataParams: GetCommandInput = {
     Key: { id, state },
     TableName: reportTable,
   };
@@ -118,12 +119,12 @@ export const releaseReport = handler(async (event) => {
 
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];
 
-  const getFieldDataParameters: S3Get = {
+  const getFieldDataParameters: GetObjectCommandInput = {
     Bucket: reportBucket,
     Key: getFieldDataKey(metadata.state, metadata.fieldDataId),
   };
 
-  const getFormTemplateParameters: S3Get = {
+  const getFormTemplateParameters: GetObjectCommandInput = {
     Bucket: reportBucket,
     Key: getFormTemplateKey(metadata.formTemplateId),
   };
@@ -171,7 +172,7 @@ export const releaseReport = handler(async (event) => {
     previousRevisions,
   };
 
-  const putReportMetadataParams: DynamoWrite = {
+  const putReportMetadataParams: PutCommandInput = {
     TableName: reportTable,
     Item: newReportMetadata,
   };
@@ -187,7 +188,7 @@ export const releaseReport = handler(async (event) => {
 
   // Copy the original field data to a new location.
   try {
-    const putObjectParameters: S3Put = {
+    const putObjectParameters: PutObjectCommandInput = {
       Bucket: reportBucket,
       Body: JSON.stringify({
         ...updatedFieldData,
