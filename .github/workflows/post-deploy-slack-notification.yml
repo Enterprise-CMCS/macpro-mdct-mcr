@@ -3,7 +3,7 @@ name: Post Deploy
 on:
   workflow_run:
     workflows: [Deploy]
-    branches: [main, val, production]
+    branches: [slack-changes, main, val, production]
     types: [completed]
 
 jobs:
