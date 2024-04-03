@@ -10,6 +10,7 @@ jobs:
   on-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref_name == 'slack-changes' || github.ref_name == 'main' || github.ref_name == 'val' || github.ref_name == 'production') }}
     steps:
       - run: echo 'The triggering workflow passed'
   on-failure:
@@ -17,3 +18,9 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo 'The triggering workflow failed'
+
+    #   todo
+    # comment out branches so post deploy runs on all branches 
+    # make step for on failure that has a conditional for failure and branches of main, val, prod
+    # make step for failure for snyk branches 
+    # make step for success and branch production 
