@@ -1,10 +1,6 @@
 name: Post Deploy
 
 on:
-  push:
-    branches:
-      - "*"
-      - "!skipci*"
   workflow_run:
     workflows: [Deploy]
     types: [completed]
