@@ -14,7 +14,7 @@ jobs:
   notify_on_failure:
     # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.ref_name == 'main' || github.ref_name == 'val' || github.ref_name == 'production') }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/val' || github.ref == 'refs/heads/production') }}
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -29,6 +29,8 @@ jobs:
     #only check branch names that begin with snyk-
     if: startsWith(github.ref, 'refs/heads/snyk-') && ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
+      - name: Debug
+        run: echo "Ref is ${{ github.ref }}"
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -38,7 +40,7 @@ jobs:
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
   notify_on_prod_release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref_name == 'production') }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/production') }}
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
