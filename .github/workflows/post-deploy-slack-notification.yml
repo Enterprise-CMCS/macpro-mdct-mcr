@@ -32,7 +32,7 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: A Synk auto merge has failed unit tests in ${{ github.repository }}. See Actions URL above to debug."
+          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}. See Actions URL above to debug."
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
 
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
