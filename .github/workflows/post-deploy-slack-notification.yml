@@ -6,13 +6,53 @@ on:
     types: [completed]
 
 jobs:
-  on-success:
+
+  notify_on_success:
+    # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/val' || github.ref == 'refs/heads/production') }}
     steps:
-      - run: echo 'The triggering workflow passed'
-  on-failure:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":rocket: The latest MCR Build Has Passed"
+          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+  notify_on_failure:
+    # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/val' || github.ref == 'refs/heads/production') }}
     steps:
-      - run: echo 'The triggering workflow failed'
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":boom: The latest MCR Build Has Failed"
+          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Notify the integrations channel only when a Snyk auto merge fails
+  notify_failed_snyk_auto_merge:
+    runs-on: ubuntu-latest
+    #only check branch names that begin with snyk-
+    if: startsWith(github.ref, 'refs/heads/snyk-') && ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Debug
+        run: echo "Ref is ${{ github.ref }}"
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}. See Actions URL above to debug."
+          SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
+
+  # Sends a slack message to the mdct-prod-releases channel in CMS slack
+  notify_on_prod_release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/production') }}
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":rocket: MCR has successfully released to production."
+          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+          SLACK_WEBHOOK: ${{ secrets.PROD_RELEASE_SLACK_WEBHOOK }}
