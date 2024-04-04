@@ -281,6 +281,22 @@ Dropdown and dynamic fields are not currently supported as nested child fields. 
 
 **Dynamo macpar-reports vs macpar-form in S3 Storage** - When a user creates a form, it is stored in Dynamo and tracks user information such as when the program was last edited and by whom, date submitted’ report period start and end date, program name, report type, the state, id, and status. The file in the S3 bucket is the entire form of user inputted data, and this is a pattern that is unique to this project. S3 is mainly used for attachments, data for virus scans on attachments, mathematica integration. We decided to store the programs in S3 because these data can get so large that we can’t reliably store it all in Dynamo, nor search through them without the app breaking.
 
+## Slack Webhooks:
+
+This repository uses 3 webhooks to publish to  3 different channels all in CMS Slack.
+
+- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-mcr-alerts` channel. Alerts published there are for deploy or test failures to the `main`, `val`, or `production` branches.
+
+- INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `proj-cms-mdct-integrations channel`
+
+- PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of MCR to production.
+
+    - Webhooks are created by CMS tickets, populated into GitHub Secrets
+
+## GitHub Actions Secret Management:
+- Secrets are added to GitHub secrets by GitHub Admins 
+- Upon editing and adding new secrets Admins should also update the encypted `/github/secret-list` SSM parameter in the MCR AWS Production Account.
+
 ## Copyright and license
 
 [![License](https://img.shields.io/badge/License-CC0--1.0--Universal-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0/legalcode)

@@ -3,15 +3,18 @@ name: Post Deploy
 on:
   push:
     branches:
-      - slack-changes
+      - "*"
+      - "!skipci*"
   workflow_run:
     workflows: [Deploy]
     types: [completed]
 
 jobs:
+
   notify_on_failure:
+    # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref_name == 'slack-changes' || github.ref_name == 'main' || github.ref_name == 'val' || github.ref_name == 'production') }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.ref_name == 'main' || github.ref_name == 'val' || github.ref_name == 'production') }}
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -20,8 +23,26 @@ jobs:
           SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
-    #   todo
-    # comment out branches so post deploy runs on all branches 
-    # make step for on failure that has a conditional for failure and branches of main, val, prod
-    # make step for failure for snyk branches 
-    # make step for success and branch production 
+  # Notify the integrations channel only when a Snyk auto merge fails
+  notify_failed_snyk_auto_merge:
+    runs-on: ubuntu-latest
+    #only check branch names that begin with snyk-
+    if: startsWith(github.ref, 'refs/heads/snyk-') && ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":boom: A Synk auto merge has failed unit tests in ${{ github.repository }}. See Actions URL above to debug."
+          SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
+
+  # Sends a slack message to the mdct-prod-releases channel in CMS slack
+  notify_on_prod_release:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref_name == 'production') }}
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: ":rocket: MCR has successfully released to production."
+          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+          SLACK_WEBHOOK: ${{ secrets.PROD_RELEASE_SLACK_WEBHOOK }}
