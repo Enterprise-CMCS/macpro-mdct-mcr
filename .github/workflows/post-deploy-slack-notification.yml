@@ -3,7 +3,6 @@ name: Post Deploy
 on:
   workflow_run:
     workflows: [Deploy]
-    branches: [main, val, production]
     types: [completed]
 
 jobs:
