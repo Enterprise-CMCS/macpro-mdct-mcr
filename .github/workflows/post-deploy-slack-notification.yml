@@ -6,19 +6,6 @@ on:
     types: [completed]
 
 jobs:
-
-  notify_on_success:
-    # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/val' || github.ref == 'refs/heads/production') }}
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_TITLE: ":rocket: The latest MCR Build Has Passed"
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
   notify_on_failure:
     # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
@@ -35,7 +22,7 @@ jobs:
   notify_failed_snyk_auto_merge:
     runs-on: ubuntu-latest
     #only check branch names that begin with snyk-
-    if: startsWith(github.ref, 'refs/heads/snyk-') && ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && (startsWith(github.ref, 'refs/heads/snyk-')) }}
     steps:
       - name: Debug
         run: echo "Ref is ${{ github.ref }}"
