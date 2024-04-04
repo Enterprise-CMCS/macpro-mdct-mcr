@@ -1,6 +1,9 @@
 name: Post Deploy
 
 on:
+  push:
+    branches:
+      - slack-changes
   workflow_run:
     workflows: [Deploy]
     types: [completed]
