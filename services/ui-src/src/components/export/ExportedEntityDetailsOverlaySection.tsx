@@ -38,14 +38,12 @@ export const ExportedEntityDetailsOverlaySection = ({
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
         heading={exportVerbiageMap[report?.reportType as ReportType]}
-        reportType={report?.reportType}
         verbiage={{
           ...section.verbiage,
           intro: {
             ...section.verbiage.intro,
             info: undefined,
             exportSectionHeader: undefined,
-            spreadsheet: "MLR Reporting",
           },
         }}
       />
