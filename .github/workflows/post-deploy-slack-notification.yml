@@ -4,6 +4,11 @@ on:
   workflow_run:
     workflows: [Deploy]
     types: [completed]
+    branches:
+      - 'main'
+      - 'val'
+      - 'production'
+      - 'snyk-**'
 
 jobs:
   notify_on_failure:
@@ -14,8 +19,7 @@ jobs:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: The latest MCR Build Has Failed"
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
+          SLACK_TITLE: ":boom: The latest MCR Build on branch '${{ github.event.workflow_run.head_branch }}' has Failed"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   # Notify the integrations channel only when a Snyk auto merge fails
@@ -26,6 +30,8 @@ jobs:
     steps:
       - name: Debug
         run: echo "Ref is ${{ github.ref }}"
+      - name: Debug 2
+        run: echo "head branch is ${{ github.event.workflow_run.head_branch }}"
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -41,5 +47,4 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_TITLE: ":rocket: MCR has successfully released to production."
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
           SLACK_WEBHOOK: ${{ secrets.PROD_RELEASE_SLACK_WEBHOOK }}
