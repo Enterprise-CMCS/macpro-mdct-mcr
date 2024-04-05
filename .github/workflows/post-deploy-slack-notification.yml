@@ -14,7 +14,7 @@ jobs:
   notify_on_failure:
     # Sends alert to macpro-mdct-mcr-alerts channel in CMS slack when any integration environment fails to deploy or run tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/val' || github.ref == 'refs/heads/production') }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'val' || github.event.workflow_run.head_branch == 'production') }}
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -26,7 +26,7 @@ jobs:
   notify_failed_snyk_auto_merge:
     runs-on: ubuntu-latest
     #only check branch names that begin with snyk-
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && startsWith(github.ref, 'refs/heads/snyk-') }}
+    if: ${{ github.event.workflow_run.conclusion == 'failure' && startsWith(github.event.workflow_run.head_branch, 'snyk-') }}
     steps:
       - name: Debug
         run: echo "Ref is ${{ github.ref }}"
@@ -39,7 +39,7 @@ jobs:
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
   notify_on_prod_release:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/production') }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'production') }}
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
