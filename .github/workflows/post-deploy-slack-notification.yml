@@ -30,8 +30,6 @@ jobs:
     steps:
       - name: Debug
         run: echo "Ref is ${{ github.ref }}"
-      - name: Debug 2
-        run: echo "head branch is ${{ github.event.workflow_run.head_branch }}"
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
