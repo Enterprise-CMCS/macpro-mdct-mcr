@@ -98,6 +98,8 @@ params:
     restrictToVpn: false
   default:
     restrictToVpn: false
+  ipv6-testing:
+    restrictToVpn: true
 
 resources:
   Conditions:
