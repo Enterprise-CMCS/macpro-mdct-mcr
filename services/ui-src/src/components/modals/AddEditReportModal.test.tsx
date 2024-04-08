@@ -123,6 +123,10 @@ const mlrModalComponentWithSelectedReport = (
 
 describe("Test AddEditProgramModal", () => {
   beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(modalComponent);
     });
