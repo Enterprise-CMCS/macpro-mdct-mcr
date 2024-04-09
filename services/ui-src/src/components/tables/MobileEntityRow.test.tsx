@@ -22,6 +22,7 @@ const mockEntering = false;
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+// TODO: bring in an incomplete Entity row for MLR (once EntityProvider is migrated)
 const incompleteRowComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMlrReportContext}>
@@ -66,12 +67,15 @@ describe("Test MobileEntityRow", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+
+  // TODO: this test will be brought back in once the EntityProvider is migrated to Zustand
   test.skip("It should render an error if an entity is incomplete", async () => {
     const { findByText } = render(incompleteRowComponent);
     expect(
       await findByText("Select “Enter MLR” to complete this report.")
     ).toBeVisible();
   });
+
   test("It should NOT render an error if an entity is complete", async () => {
     const { queryByText } = render(completeRowComponent);
     expect(queryByText("Select “Enter MLR” to complete this report.")).toBe(
