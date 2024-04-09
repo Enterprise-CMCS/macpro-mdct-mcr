@@ -1,6 +1,7 @@
 import {
   mockBannerData,
   mockMcparReport,
+  mockMLRLockedReport,
   mockMlrReport,
   mockReportsByState,
 } from "./setupJest";
@@ -128,6 +129,18 @@ export const mockMcparReportStore: McrReportState = {
 export const mockMlrReportStore: McrReportState = {
   report: mockMlrReport,
   reportsByState: [mockMcparReport, mockMlrReport],
+  copyEligibleReportsByState: [],
+  lastSavedTime: "1:58 PM",
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
+export const mockMlrLockedReportStore: McrReportState = {
+  report: mockMLRLockedReport,
+  reportsByState: [mockMLRLockedReport],
   copyEligibleReportsByState: [],
   lastSavedTime: "1:58 PM",
   setReport: () => {},

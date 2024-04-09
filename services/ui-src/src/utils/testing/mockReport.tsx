@@ -665,6 +665,9 @@ export const mockMlrDashboardReportContext = {
       formTemplate: undefined,
       fieldData: undefined,
     },
+    {
+      ...mockMLRLockedReport,
+    },
   ],
 };
 
