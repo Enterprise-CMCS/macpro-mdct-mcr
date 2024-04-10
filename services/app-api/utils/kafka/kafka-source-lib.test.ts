@@ -166,11 +166,13 @@ describe("Test Kafka Lib", () => {
     expect(s3GetSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
+
   test("Handles events without versions", async () => {
     const sourceLib = new KafkaSourceLib("mcr", null, [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
     expect(mockSendBatch).toBeCalledTimes(1);
   });
+
   test("Does not pass through events from unrelated tables or buckets", async () => {
     const badMaps = [{ sourceName: "bad", topicName: "bad" }];
     const sourceLib = new KafkaSourceLib(
@@ -183,10 +185,31 @@ describe("Test Kafka Lib", () => {
     await sourceLib.handler(dynamoEvent);
     expect(mockSendBatch).toBeCalledTimes(0);
   });
+
   test("Ignores items with bad keys or missing events", async () => {
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3IgnoredEvent);
     await sourceLib.handler({});
     expect(mockSendBatch).toBeCalledTimes(0);
+  });
+
+  test("Handles dynamo events with no OldImage", async () => {
+    const dynamoInsertEvent = {
+      Records: [
+        {
+          eventSourceARN: `/${table.sourceName}/`,
+          dynamodb: {
+            eventID: "event-id",
+            eventName: "event-name",
+            NewImage: { foo: { "S": "bar" } },
+            OldImage: undefined,
+            Keys: { foo: { "S": "bar" } },
+          },
+        },
+      ],
+    };
+    const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
+    await sourceLib.handler(dynamoInsertEvent);
+    expect(mockSendBatch).toBeCalled();
   });
 });
