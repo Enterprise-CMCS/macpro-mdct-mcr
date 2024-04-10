@@ -14,8 +14,8 @@ const mockProducer = jest.fn().mockImplementation(() => {
     sendBatch: mockSendBatch,
   };
 });
+
 jest.mock("kafkajs", () => ({
-  __esModule: true,
   Kafka: () => ({
     producer: mockProducer,
   }),
@@ -198,18 +198,34 @@ describe("Test Kafka Lib", () => {
       Records: [
         {
           eventSourceARN: `/${table.sourceName}/`,
+          eventID: "test-event-id",
+          eventName: "INSERT",
           dynamodb: {
-            eventID: "event-id",
-            eventName: "event-name",
-            NewImage: { foo: { "S": "bar" } },
-            OldImage: undefined,
             Keys: { foo: { "S": "bar" } },
+            NewImage: { foo: { "S": "bar" } },
+            StreamViewType: "NEW_AND_OLD_IMAGES",
           },
         },
       ],
     };
-    const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
+    const sourceLib = new KafkaSourceLib("mcr", "v0", [table], []);
     await sourceLib.handler(dynamoInsertEvent);
-    expect(mockSendBatch).toBeCalled();
+    expect(mockSendBatch).toBeCalledWith({
+      topicMessages: [
+        {
+          messages: [
+            expect.objectContaining({
+              headers: {
+                eventID: "test-event-id",
+                eventName: "INSERT",
+              },
+              key: "bar",
+              value: `{"NewImage":{"foo":"bar"},"OldImage":{},"Keys":{"foo":"bar"}}`
+            }),
+          ],
+          topic: "--mcr--test-stage--mcr.aTable-reports.v0",
+        },
+      ],
+    });
   });
 });
