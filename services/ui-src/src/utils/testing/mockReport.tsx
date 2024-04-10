@@ -411,7 +411,7 @@ export const mockMlrReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
   fieldDataId: "mockFieldDataId",
-  locked: true,
+  locked: false,
   submissionCount: 0,
   previousRevisions: [],
 };
