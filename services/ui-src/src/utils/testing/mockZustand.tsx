@@ -116,7 +116,7 @@ export const mockBannerStore: AdminBannerState = {
 // REPORT STATES / STORE
 export const mockMcparReportStore: McrReportState = {
   report: mockMcparReport,
-  reportsByState: [mockMcparReport, mockMlrReport],
+  reportsByState: [mockMcparReport],
   copyEligibleReportsByState: mockReportsByState,
   lastSavedTime: "1:58 PM",
   setReport: () => {},
@@ -128,7 +128,7 @@ export const mockMcparReportStore: McrReportState = {
 
 export const mockMlrReportStore: McrReportState = {
   report: mockMlrReport,
-  reportsByState: [mockMcparReport, mockMlrReport],
+  reportsByState: [mockMlrReport],
   copyEligibleReportsByState: [],
   lastSavedTime: "1:58 PM",
   setReport: () => {},
