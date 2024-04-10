@@ -1,4 +1,4 @@
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
@@ -150,9 +150,6 @@ export const renderResponseData = (
       entityIndex!
     );
   }
-  // check for and handle link fields (email, url)
-  const { isLink, isEmail } = checkLinkTypes(formField);
-  if (isLink) return renderLinkFieldResponse(fieldResponseData, isEmail);
   // handle all other field types
   return renderDefaultFieldResponse(formField, fieldResponseData);
 };
@@ -191,15 +188,6 @@ export const renderChoiceListFieldResponse = (
   });
   return choicesToDisplay;
 };
-
-export const renderLinkFieldResponse = (
-  fieldResponseData: AnyObject,
-  isEmail: boolean
-) => (
-  <Link href={(isEmail ? "mailto:" : "") + fieldResponseData} target="_blank">
-    {fieldResponseData}
-  </Link>
-);
 
 export const renderDefaultFieldResponse = (
   formField: FormField,
