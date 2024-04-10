@@ -1,12 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ReportContext, ExportedSectionHeading } from "components";
+import { ExportedSectionHeading } from "components";
 // utils
-import {
-  mockMcparReportContext,
-  mockVerbiageIntro,
-} from "utils/testing/setupJest";
+import { mockVerbiageIntro } from "utils/testing/setupJest";
 
 const mockSectionHeading = {
   heading: "mock-heading",
@@ -17,9 +14,7 @@ const mockSectionHeading = {
 const { heading, verbiage } = mockSectionHeading;
 
 const exportedReportSectionHeadingComponent = (
-  <ReportContext.Provider value={mockMcparReportContext}>
-    <ExportedSectionHeading heading={heading} verbiage={verbiage} />
-  </ReportContext.Provider>
+  <ExportedSectionHeading heading={heading} verbiage={verbiage} />
 );
 
 describe("ExportedSectionHeading renders", () => {

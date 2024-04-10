@@ -1,21 +1,15 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { SpreadsheetWidget } from "components";
 // types
 import { ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 
-export const ExportedSectionHeading = ({
-  heading,
-  reportType,
-  verbiage,
-}: Props) => {
+export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionSubHeader = verbiage?.intro?.subsection || heading;
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
-  const sectionSpreadsheet = verbiage?.intro?.spreadsheet;
 
   const introHeaderRender = () => {
     const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
@@ -47,15 +41,6 @@ export const ExportedSectionHeading = ({
             </Text>
           </Box>
         )}
-        {sectionSpreadsheet && (
-          <Box sx={sx.spreadsheet}>
-            <SpreadsheetWidget
-              description={sectionSpreadsheet}
-              isPdf={true}
-              reportType={reportType}
-            />
-          </Box>
-        )}
       </Box>
     </>
   );
@@ -63,7 +48,6 @@ export const ExportedSectionHeading = ({
 
 export interface Props {
   heading: string;
-  reportType?: string;
   verbiage?: ReportPageVerbiage;
 }
 
@@ -96,12 +80,6 @@ const sx = {
     },
     h4: {
       fontSize: "lg",
-    },
-  },
-  spreadsheet: {
-    margin: "1.5rem 0",
-    "@media print": {
-      pageBreakAfter: "avoid",
     },
   },
 };
