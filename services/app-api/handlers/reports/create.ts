@@ -1,5 +1,7 @@
-import KSUID from "ksuid";
 import handler from "../handler-lib";
+import KSUID from "ksuid";
+import { PutObjectCommandInput } from "@aws-sdk/client-s3";
+import { PutCommandInput } from "@aws-sdk/lib-dynamodb";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
@@ -15,21 +17,19 @@ import {
   reportTables,
   reportBuckets,
 } from "../../utils/constants/constants";
-// types
-import {
-  DynamoWrite,
-  isReportType,
-  isState,
-  S3Put,
-  StatusCodes,
-  UserRoles,
-} from "../../utils/types";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
 import { logger } from "../../utils/debugging/debug-lib";
 import {
   copyFieldDataFromSource,
   makePCCMModifications,
 } from "../../utils/reports/reports";
+// types
+import {
+  isReportType,
+  isState,
+  StatusCodes,
+  UserRoles,
+} from "../../utils/types";
 
 export const createReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
@@ -136,7 +136,7 @@ export const createReport = handler(async (event, _context) => {
     newFieldData = makePCCMModifications(newFieldData);
   }
 
-  const fieldDataParams: S3Put = {
+  const fieldDataParams: PutObjectCommandInput = {
     Bucket: reportBucket,
     Key: getFieldDataKey(state, fieldDataId),
     Body: JSON.stringify(newFieldData),
@@ -165,7 +165,7 @@ export const createReport = handler(async (event, _context) => {
   }
 
   // Create DyanmoDB record.
-  const reportMetadataParams: DynamoWrite = {
+  const reportMetadataParams: PutCommandInput = {
     TableName: reportTable,
     Item: {
       ...validatedMetadata,

@@ -1,5 +1,6 @@
-import { QueryCommandInput } from "@aws-sdk/lib-dynamodb";
 import handler from "../handler-lib";
+import { QueryCommandInput } from "@aws-sdk/lib-dynamodb";
+import { GetObjectCommandInput } from "@aws-sdk/client-s3";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasReportPathParams } from "../../utils/dynamo/hasReportPathParams";
@@ -18,7 +19,7 @@ import {
 } from "../../utils/validation/completionStatus";
 import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
 // types
-import { AnyObject, isState, S3Get, StatusCodes } from "../../utils/types";
+import { AnyObject, isState, StatusCodes } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -66,7 +67,7 @@ export const fetchReport = handler(async (event, _context) => {
     const { formTemplateId, fieldDataId } = reportMetadata;
 
     // Get form template from S3
-    const formTemplateParams: S3Get = {
+    const formTemplateParams: GetObjectCommandInput = {
       Bucket: reportBucket,
       Key: getFormTemplateKey(formTemplateId),
     };
@@ -80,7 +81,7 @@ export const fetchReport = handler(async (event, _context) => {
     }
 
     // Get field data from S3
-    const fieldDataParams: S3Get = {
+    const fieldDataParams: GetObjectCommandInput = {
       Bucket: reportBucket,
       Key: getFieldDataKey(state, fieldDataId),
     };
