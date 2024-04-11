@@ -201,8 +201,8 @@ describe("Test Kafka Lib", () => {
           eventID: "test-event-id",
           eventName: "INSERT",
           dynamodb: {
-            Keys: { foo: { "S": "bar" } },
-            NewImage: { foo: { "S": "bar" } },
+            Keys: { foo: { S: "bar" } },
+            NewImage: { foo: { S: "bar" } },
             StreamViewType: "NEW_AND_OLD_IMAGES",
           },
         },
@@ -220,7 +220,7 @@ describe("Test Kafka Lib", () => {
                 eventName: "INSERT",
               },
               key: "bar",
-              value: `{"NewImage":{"foo":"bar"},"OldImage":{},"Keys":{"foo":"bar"}}`
+              value: `{"NewImage":{"foo":"bar"},"OldImage":{},"Keys":{"foo":"bar"}}`,
             }),
           ],
           topic: "--mcr--test-stage--mcr.aTable-reports.v0",
