@@ -288,6 +288,10 @@ describe("Test DynamicField Autosave Functionality", () => {
   });
 
   test("DynamicField handles blanked fields after it was filled out", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;
