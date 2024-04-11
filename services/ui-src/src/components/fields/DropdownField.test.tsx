@@ -293,6 +293,14 @@ describe("Test YoY Copy options dropdown menu", () => {
 describe("If there are no submitted reports to copy, dropdown default value should say 'No reports eligible for copy'", () => {
   test("Populates with reports", () => {
     mockGetValues(undefined);
+    const mockNoCopyEligibleStore = {
+      ...mockMcparReportStore,
+      copyEligibleReportsByState: [],
+    };
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockNoCopyEligibleStore,
+    });
     render(dropdownComponentWithYoYCopyNoSubmittedReports);
     const dropdown = screen.getByLabelText("test-dropdown-label");
     expect(dropdown.children[0].textContent).toEqual(
