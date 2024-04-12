@@ -22,7 +22,6 @@ const mockEntering = false;
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-// TODO: bring in an incomplete Entity row for MLR (once EntityProvider is migrated)
 const incompleteRowComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMlrReportContext}>
@@ -64,7 +63,7 @@ describe("Test EntityRow", () => {
   beforeEach(() => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
   });
-  // TODO: this test will be brought back in once the EntityProvider is migrated to Zustand
+
   test.skip("It should render an error if an entity is incomplete", async () => {
     const { findByText } = render(incompleteRowComponent);
     expect(

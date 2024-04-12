@@ -104,7 +104,6 @@ const entityStatusIconComponentOptionalNested = (
   </ReportContext.Provider>
 );
 
-// TODO: update these tests upon EntityProvider migration
 describe("EntityStatusIcon functionality tests", () => {
   test("should show a success icon if all required data is entered", () => {
     const { container } = render(entityStatusIconComponent);

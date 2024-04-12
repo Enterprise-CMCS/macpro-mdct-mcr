@@ -114,7 +114,6 @@ describe("Test AddEditEntityModal", () => {
   });
 });
 
-// TODO: update these tests after EntityProvider migration
 describe.skip("Test AddEditEntityModal functionality", () => {
   afterEach(() => {
     // reset payload to baseline with only mockEntity
