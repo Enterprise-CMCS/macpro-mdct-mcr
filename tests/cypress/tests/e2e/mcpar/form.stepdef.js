@@ -176,6 +176,14 @@ When("I try to submit an incomplete {string} program", (form) => {
   const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
 
+  /*
+   * Give template.routes[1] a second to load.
+   *
+   * traverseRoutes ends by clicking Continue. If that load does not complete
+   * before we click Review and Submit, the pages may load out of order.
+   * That would leave us on the wrong page and the test would fail.
+   */
+  cy.wait(1000);
   cy.get('a[href*="review-and-submit"]').click();
 });
 
