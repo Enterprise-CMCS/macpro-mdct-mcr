@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { ReportContext } from "components";
+import { ReportContext, EntityContext } from "components";
 // utils
 import {
   autosaveFieldData,
@@ -12,8 +12,8 @@ import {
   parseCustomHtml,
   useStore,
 } from "utils";
+// types
 import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
-import { EntityContext } from "components/reports/EntityProvider";
 
 export const TextField = ({
   name,
@@ -29,8 +29,12 @@ export const TextField = ({
 }: Props) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState<string>(defaultValue);
+
+  // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useStore();
+
+  const { updateReport } = useContext(ReportContext);
   const { entities, entityType, selectedEntity, updateEntities } =
     useContext(EntityContext);
 

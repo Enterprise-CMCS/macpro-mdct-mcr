@@ -1,16 +1,15 @@
 // components
-import { ReportContext, Table } from "components";
-import { useContext } from "react";
-// utils
+import { Table } from "components";
+// types
 import { ReportShape, ReportType } from "types";
-import { convertDateUtcToEt } from "utils";
-import { assertExhaustive } from "utils/other/typing";
+// utils
+import { assertExhaustive, convertDateUtcToEt, useStore } from "utils";
 
 export const ExportedReportMetadataTable = ({
   reportType,
   verbiage,
 }: Props) => {
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   return (
     <Table
       data-testid="exportedReportMetadataTable"
