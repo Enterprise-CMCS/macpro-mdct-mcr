@@ -48,10 +48,15 @@ jobs:
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: Store unit test results
-        uses: actions/upload-artifact@v3
+        #if: failure()
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: unit_test_results
-          path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14
 
   deploy:
     needs: unit-tests
@@ -226,15 +231,16 @@ jobs:
           CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
           CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
-
       - name: Upload screenshots
-        uses: actions/upload-artifact@v3
-        if: failure()
+        uses: actions/upload-artifact@v4
+        #if: failure()
+        if: always()
         with:
-          name: cypress-screenshots
+          name: cypress-test-results
           path: |
-            tests/cypress/screenshots/
-            tests/cypress/videos/
+            ${{github.workspace}}/tests/screenshots/
+            ${{github.workspace}}/tests/videos/
+          retention-days: 14
 
 
   a11y-tests:
@@ -263,15 +269,16 @@ jobs:
           CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
           RUN_PA11Y: true
-
       - name: Upload screenshots
-        uses: actions/upload-artifact@v3
-        if: failure()
+        uses: actions/upload-artifact@v4
+        #if: failure()
+        if: always()        
         with:
-          name: cypress-screenshots
+          name: a11y-test-results
           path: |
-            tests/cypress/screenshots/
-            tests/cypress/videos/
+            ${{github.workspace}}/tests/screenshots/
+            ${{github.workspace}}/tests/videos/
+          retention-days: 14
   
   cleanup:
     name: Delist GHA Runner CIDR Blocks
