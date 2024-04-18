@@ -4,9 +4,45 @@ on:
   pull_request:
     types: [opened, reopened, ready_for_review]
 
+permissions:
+  id-token: write
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
+  endpoint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: set branch_name # Some integrations (Snyk) build very long branch names. This is a switch to make long branch names shorter.
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.event.pull_request.head.ref }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+      - name: set branch specific variable names
+        run: ./.github/build-vars.sh set_names
+      - name: set variable values
+        run: ./.github/build-vars.sh set_values
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+      - name: get endpoint
+        id: getendpoint
+        run:  |
+          application_endpoint_url=$(aws cloudformation describe-stacks --stack-name ui-${{ env.branch_name }} --output text --query "Stacks[0].Outputs[?OutputKey=='ApplicationEndpointUrl'].OutputValue")
+          echo "application_endpoint_url=$application_endpoint_url" >> $GITHUB_OUTPUT
+          
+    outputs:
+      application_endpoint_url: ${{ steps.getendpoint.outputs.application_endpoint_url }}
+
   notify_integrations_channel:
     runs-on: ubuntu-latest
+    needs:
+      - endpoint
     # avoiding notifications for automated Snyk Pull Requests and draft pull requests 
     if: github.actor != 'mdct-github-service-account' && !github.event.pull_request.draft
     steps:
@@ -14,6 +50,6 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_TITLE: ":github: A new pull request has been created in ${{ github.repository }} by ${{ github.event.pull_request.user.login }}"
-          SLACK_MESSAGE: "${{ github.event.pull_request.html_url }}"
+          SLACK_MESSAGE: "${{ github.event.pull_request.html_url }} \n Cloudfront URL: ${{ needs.endpoint.outputs.application_endpoint_url }}"
           MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
