@@ -238,8 +238,8 @@ jobs:
         with:
           name: cypress-test-results
           path: |
-            ${{github.workspace}}/tests/screenshots/
-            ${{github.workspace}}/tests/videos/
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
           retention-days: 14
 
 
@@ -276,8 +276,8 @@ jobs:
         with:
           name: a11y-test-results
           path: |
-            ${{github.workspace}}/tests/screenshots/
-            ${{github.workspace}}/tests/videos/
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
           retention-days: 14
   
   cleanup:
