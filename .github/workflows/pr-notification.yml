@@ -32,8 +32,13 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - name: get endpoint
         id: getendpoint
-        run:  |
+        run: |
+          set +e
           application_endpoint_url=$(aws cloudformation describe-stacks --stack-name ui-${{ env.branch_name }} --output text --query "Stacks[0].Outputs[?OutputKey=='ApplicationEndpointUrl'].OutputValue")
+          set -e
+          if [[ -z $application_endpoint_url || ! $application_endpoint_url == http* ]]; then
+              application_endpoint_url="endpoint not found"
+          fi
           echo "application_endpoint_url=$application_endpoint_url" >> $GITHUB_OUTPUT
           
     outputs:
