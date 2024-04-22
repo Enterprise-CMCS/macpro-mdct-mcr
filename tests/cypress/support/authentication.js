@@ -40,6 +40,7 @@ Cypress.Commands.add("clearSession", () => {
 });
 
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
+  Cypress.session.clearAllSavedSessions();
   cy.session([userType, userCredentials], () => {
     cy.visit("/");
     cy.wait(2000);
