@@ -7,7 +7,7 @@ import { Spinner } from "@chakra-ui/react";
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
-// utils
+// types
 import {
   AnyObject,
   FormField,
@@ -15,13 +15,14 @@ import {
   FormLayoutElement,
   ReportStatus,
 } from "types";
-import { States } from "../../constants";
+// utils
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
   useStore,
 } from "utils";
+import { States } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -29,13 +30,13 @@ export const AddEditReportModal = ({
   reportType,
   modalDisclosure,
 }: Props) => {
-  const {
-    createReport,
-    fetchReportsByState,
-    updateReport,
-    copyEligibleReportsByState,
-  } = useContext(ReportContext);
+  const { createReport, fetchReportsByState, updateReport } =
+    useContext(ReportContext);
+
+  // state management
   const { full_name } = useStore().user ?? {};
+  const { copyEligibleReportsByState } = useStore();
+
   const [submitting, setSubmitting] = useState<boolean>(false);
   const yoyCopyFlag = useFlags()?.yoyCopy;
 

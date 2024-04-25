@@ -30,8 +30,6 @@ jobs:
     #only check branch names that begin with snyk-
     if: ${{ github.event.workflow_run.conclusion == 'failure' && startsWith(github.event.workflow_run.head_branch, 'snyk-') }}
     steps:
-      - name: Debug
-        run: echo "Ref is ${{ github.ref }}"
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:

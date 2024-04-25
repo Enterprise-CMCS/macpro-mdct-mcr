@@ -1,15 +1,15 @@
 import { render } from "@testing-library/react";
-import { ReportContext } from "components/reports/ReportProvider";
 import { axe } from "jest-axe";
+// types
+import { ModalOverlayReportPageShape, ReportType } from "types";
+// utils
+import { useStore } from "utils";
 import {
-  ModalOverlayReportPageShape,
-  ReportContextShape,
-  ReportType,
-} from "types";
-import {
+  mockMlrReportStore,
   mockMlrReportContext,
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
+// components
 import {
   ExportedEntityDetailsOverlaySection,
   getEntityTableComponents,
@@ -18,16 +18,19 @@ import {
 } from "./ExportedEntityDetailsOverlaySection";
 
 const exportedEntityDetailsOverlaySectionComponent = (
-  context: ReportContextShape = mockMlrReportContext,
   content: ModalOverlayReportPageShape = mockModalOverlayReportPageWithOverlayJson
 ) => (
-  <ReportContext.Provider value={context}>
-    <ExportedEntityDetailsOverlaySection
-      data-testid="exportedEntityDetailsOverlaySection"
-      section={content}
-    />
-  </ReportContext.Provider>
+  <ExportedEntityDetailsOverlaySection
+    data-testid="exportedEntityDetailsOverlaySection"
+    section={content}
+  />
 );
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMlrReportStore,
+});
 
 describe("ExportedEntityDetailsOverlaySection", () => {
   test("ExportedEntityDetailsOverlaySection is visible", async () => {

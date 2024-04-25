@@ -23,6 +23,7 @@ import {
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
+// types
 import {
   AnyObject,
   EntityShape,
@@ -31,13 +32,18 @@ import {
   FormField,
   isFieldElement,
 } from "types";
+// assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { report, updateReport } = useContext(ReportContext);
+  const { updateReport } = useContext(ReportContext);
+
+  // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { report } = useStore();
+
   // make state
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
