@@ -34,7 +34,7 @@
     "@aws-sdk/client-dynamodb": "^3.490.0",
     "@aws-sdk/client-s3": "^3.490.0",
     "@aws-sdk/client-ssm": "^3.490.0",
-    "@aws-sdk/lib-dynamodb": "^3.490.0",
+    "@aws-sdk/lib-dynamodb": "^3.540.0",
     "@aws-sdk/s3-request-presigner": "^3.490.0",
     "@aws-sdk/util-dynamodb": "^3.540.0",
     "aws-jwt-verify": "^3.1.0",
@@ -46,7 +46,7 @@
     "jwt-encode": "^1.0.1",
     "kafkajs": "^2.2.3",
     "ksuid": "^3.0.0",
-    "serverless-plugin-warmup": "^8.2.1",
+    "serverless-plugin-warmup": "8.2.1",
     "yup": "^0.32.11"
   },
   "resolutions": {
