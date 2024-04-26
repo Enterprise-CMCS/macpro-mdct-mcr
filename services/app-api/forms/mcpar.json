@@ -8,7 +8,8 @@
     "accessMeasures": { "required": true },
     "qualityMeasures": { "required": true },
     "plans": { "required": true },
-    "bssEntities": { "required": true }
+    "bssEntities": { "required": true },
+    "ilos": { "required": false }
   },
   "routes": [
     {
@@ -212,6 +213,91 @@
               }
             ]
           }
+        },
+        {
+          "name": "Add In Lieu of Services",
+          "path": "/mcpar/program-information/add-in-lieu-of-services",
+          "children": [
+            {
+              "name": "In Lieu of Services and Settings Offered",
+              "path": "/mcpar/program-information/add-in-lieu-of-services/in-lieu-of-services-and-settings-offered",
+              "pageType": "standard",
+              "verbiage": {
+                "intro": {
+                  "section": "Section A: Program Information",
+                  "subsection": "In Lieu of Services and Settings Offered",
+                  "spreadsheet": "A_Program_Info"
+                }
+              },
+              "form": {
+                "id": "ailosaso",
+                "fields": [
+                  {
+                    "id": "ilos_ilosAvailable",
+                    "type": "radio",
+                    "validation": "radio",
+                    "props": {
+                      "label": "Are In Lieu of Services and Settings (ILOS) available in this managed care program?",
+                      "hint": "Do not include short-term IMD stays. Access <a href='https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html' target='_blank'>guidance on In Lieu of Services on Medicaid.gov</a>.",
+                      "choices": [
+                        {
+                          "id": "HtYqmPCqwMs07azhwEDiIPXG",
+                          "label": "No"
+                        },
+                        {
+                          "id": "FhbMzuRnGqdmGMUbXaNgwEkH",
+                          "label": "Yes"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Add In Lieu of Services",
+              "path": "/mcpar/program-information/add-in-lieu-of-services/add-in-lieu-of-services",
+              "pageType": "standard",
+              "verbiage": {
+                "intro": {
+                  "section": "Section A: Program Information",
+                  "subsection": "In Lieu of Services and Settings Offered",
+                  "info": "Enter the name of each In Lieu of Service and Setting (ILOS) offered under the managed care program, as approved in the managed care plan contract(s).",
+                  "spreadsheet": "A_Program_Info",
+                  "noResponseMessage": [
+                    {
+                      "type": "span",
+                      "content": "You indicated in the previous section that ILOS is not applicable to this program or did not yet respond. To change this, "
+                    },
+                    {
+                      "type": "internalLink",
+                      "content": "go to In Lieu of Services and Settings Offered",
+                      "props": {
+                        "to": "/mcpar/program-information/add-in-lieu-of-services/in-lieu-of-services-and-settings-offered"
+                      }
+                    },
+                    {
+                      "type": "span",
+                      "content": "."
+                    }
+                  ]
+                }
+              },
+              "form": {
+                "id": "aailos",
+                "fields": [
+                  {
+                    "id": "ilos",
+                    "type": "dynamic",
+                    "validation": "dynamic",
+                    "props": {
+                      "label": "ILOS name"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     },

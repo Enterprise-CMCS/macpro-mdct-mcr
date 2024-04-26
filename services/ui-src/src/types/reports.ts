@@ -110,6 +110,7 @@ export interface ReportPageVerbiage {
     subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
+    noResponseMessage?: CustomHtmlElement[];
     exportSectionHeader?: string;
   };
   praDisclosure?: CustomHtmlElement[];

@@ -9,7 +9,7 @@ import {
   ReportPageIntro,
 } from "components";
 // utils
-import { filterFormData, useFindRoute, useStore } from "utils";
+import { filterFormData, parseCustomHtml, useFindRoute, useStore } from "utils";
 // types
 import {
   AnyObject,
@@ -24,6 +24,14 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   // state management
   const { full_name, state } = useStore().user ?? {};
   const { report } = useStore();
+
+  // check if ILOS is complete and is available in this MCPAR
+  const ilosIsAvailable = () => {
+    if (report?.fieldData && report?.fieldData.ilos_ilosAvailable) {
+      return report?.fieldData.ilos_ilosAvailable[0].value === "Yes";
+    }
+    return;
+  };
 
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
@@ -67,16 +75,23 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
           reportType={report?.reportType}
         />
       )}
-      <Form
-        id={route.form.id}
-        formJson={route.form}
-        onSubmit={onSubmit}
-        onError={onError}
-        formData={report?.fieldData}
-        autosave
-        validateOnRender={validateOnRender || false}
-        dontReset={false}
-      />
+      {/* ILOS */}
+      {route.form.id === "aailos" && !ilosIsAvailable() ? (
+        <Box sx={sx.noResponseMessage}>
+          {parseCustomHtml(route.verbiage.intro.noResponseMessage || "")}
+        </Box>
+      ) : (
+        <Form
+          id={route.form.id}
+          formJson={route.form}
+          onSubmit={onSubmit}
+          onError={onError}
+          formData={report?.fieldData}
+          autosave
+          validateOnRender={validateOnRender || false}
+          dontReset={false}
+        />
+      )}
       <ReportPageFooter
         submitting={submitting}
         form={route.form}
@@ -90,3 +105,17 @@ interface Props {
   route: StandardReportPageShape;
   validateOnRender?: boolean;
 }
+
+const sx = {
+  noResponseMessage: {
+    paddingTop: "1rem",
+    fontWeight: "bold",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
+  },
+};

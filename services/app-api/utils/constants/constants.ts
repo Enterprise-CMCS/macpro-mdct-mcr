@@ -149,5 +149,7 @@ export const McparFieldsToCopy = {
     "bssEntity_entityRole",
     "bssEntity_entityRole-otherText",
   ],
+  // todo: add here the ilos entities
+
   // sanctions are never copied from year to year.
 };

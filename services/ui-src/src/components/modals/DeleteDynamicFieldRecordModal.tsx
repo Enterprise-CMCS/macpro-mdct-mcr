@@ -15,6 +15,7 @@ export const DeleteDynamicFieldRecordModal = ({
   const fieldTypeMap: any = {
     plans: "plan",
     bssEntities: "BSS entity",
+    ilos: "ILOS",
   };
 
   const entityName = fieldTypeMap[entityType];
