@@ -289,7 +289,7 @@
                   {
                     "id": "ilos",
                     "type": "dynamic",
-                    "validation": "dynamic",
+                    "validation": "dynamicOptional",
                     "props": {
                       "label": "ILOS name"
                     }
