@@ -57,7 +57,7 @@ jobs:
           [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0] 
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv
       - name: Upload reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: resource-reports
           path: .github/reports/
