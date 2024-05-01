@@ -67,6 +67,7 @@ export const renderOverlayEntityDataCell = (
   const notApplicable =
     parentFieldCheckedChoiceIds &&
     !parentFieldCheckedChoiceIds?.includes(entity.id);
+
   return (
     <Box>
       <Text>
@@ -136,7 +137,7 @@ export const renderResponseData = (
     : fieldResponseData;
   const missingEntryVerbiage = notApplicable
     ? verbiage.missingEntry.notApplicable
-    : verbiage.missingEntry.noResponse;
+    : `${verbiage.missingEntry.noResponse}, optional`;
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
   if (!hasResponse)
     return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
@@ -282,7 +283,7 @@ const sx = {
     fontWeight: "bold",
   },
   noResponse: {
-    color: "palette.error_darker",
+    color: "palette.base",
   },
   notApplicable: {
     color: "palette.gray_medium",
