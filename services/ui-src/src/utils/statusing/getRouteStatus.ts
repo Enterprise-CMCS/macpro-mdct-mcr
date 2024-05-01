@@ -39,6 +39,27 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
   // Flatten the completion status to get the pages under each section
   const flattenedStatus = flatten(report.completionStatus, {});
 
+  // check if the user has selected there are ILOS available
+  const checkForIlos = (path: string, status: boolean) => {
+    switch (path) {
+      case "/mcpar/program-information/add-in-lieu-of-services/add-in-lieu-of-services":
+        return !getIlosStatus(report) ? status : true;
+    }
+    return status;
+  };
+
+  // check if the user has selected "Yes" for available ILOS and if these entities have been added
+  const getIlosStatus = (report: ReportShape) => {
+    const fieldData = report?.fieldData;
+    if (
+      fieldData["ilos_ilosAvailable"] &&
+      fieldData["ilos_ilosAvailable"][0].value === "Yes"
+    ) {
+      return fieldData["ilos"].length > 0;
+    }
+    return fieldData["ilos_ilosAvailable"][0].value === "No";
+  };
+
   /**
    * Recursively goes through every route and its child to find out the completion of
    * each page in a report and returns the entire forms progress
@@ -61,7 +82,7 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
         const routeProgress: ReportPageProgress = {
           name: route.name,
           path: route.path,
-          status: flattenedStatus[route.path],
+          status: checkForIlos(route.path, flattenedStatus[route.path]),
         };
         overallReportProgress.push(routeProgress);
       }

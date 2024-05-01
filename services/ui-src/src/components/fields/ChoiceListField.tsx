@@ -162,6 +162,10 @@ export const ChoiceListField = ({
     choice.checked = !!checkedState;
   };
 
+  const clearIlosEntries = () => {
+    // TODO: Clear ILOS entries somehow if the user selects NO after having entered ILOS
+  };
+
   // update field values
   const onChangeHandler = (event: InputChangeEvent) => {
     const clickedOption = { key: event.target.id, value: event.target.value };
@@ -171,6 +175,7 @@ export const ChoiceListField = ({
 
     // handle radio
     if (type === "radio") {
+      clearIlosEntries();
       let everyOtherOption = choices.filter(
         (choice) => choice.id != clickedOption.key
       );
