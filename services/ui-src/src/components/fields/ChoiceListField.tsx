@@ -169,14 +169,17 @@ export const ChoiceListField = ({
       state: state,
       id: report?.id,
     };
-    delete report?.fieldData.ilos;
+    const updatedFieldData = {
+      ...report?.fieldData,
+      ilos: undefined,
+    };
     const updatedPayload = {
       ...report,
       metadata: {
         lastAlteredBy: report?.lastAlteredBy,
         status: report?.status,
       },
-      fieldData: report?.fieldData,
+      fieldData: updatedFieldData,
     };
 
     await updateReport(reportKeys, updatedPayload);
