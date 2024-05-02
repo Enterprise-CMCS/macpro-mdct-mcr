@@ -55,7 +55,7 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
       fieldData["ilos_ilosAvailable"] &&
       fieldData["ilos_ilosAvailable"][0].value === "Yes"
     ) {
-      return fieldData["ilos"].length > 0;
+      return fieldData["ilos"]?.length > 0;
     }
     return (
       fieldData["ilos_ilosAvailable"] &&
