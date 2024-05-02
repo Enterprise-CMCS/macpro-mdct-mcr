@@ -162,8 +162,24 @@ export const ChoiceListField = ({
     choice.checked = !!checkedState;
   };
 
-  const clearIlosEntries = () => {
-    // TODO: Clear ILOS entries somehow if the user selects NO after having entered ILOS
+  // clear ILOS entries when the user selects "No"
+  const clearIlosEntries = async () => {
+    const reportKeys = {
+      reportType: report?.reportType,
+      state: state,
+      id: report?.id,
+    };
+    delete report?.fieldData.ilos;
+    const updatedPayload = {
+      ...report,
+      metadata: {
+        lastAlteredBy: report?.lastAlteredBy,
+        status: report?.status,
+      },
+      fieldData: report?.fieldData,
+    };
+
+    await updateReport(reportKeys, updatedPayload);
   };
 
   // update field values
@@ -175,7 +191,13 @@ export const ChoiceListField = ({
 
     // handle radio
     if (type === "radio") {
-      clearIlosEntries();
+      // handle ILOS selection
+      if (
+        event.target.id.startsWith("ilos_ilosAvailable-") &&
+        event.target.value === "No"
+      ) {
+        clearIlosEntries();
+      }
       let everyOtherOption = choices.filter(
         (choice) => choice.id != clickedOption.key
       );
