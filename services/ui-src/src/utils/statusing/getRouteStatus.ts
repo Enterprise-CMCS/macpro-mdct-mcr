@@ -57,7 +57,10 @@ export const getRouteStatus = (report: ReportShape): ReportPageProgress[] => {
     ) {
       return fieldData["ilos"].length > 0;
     }
-    return fieldData["ilos_ilosAvailable"][0].value === "No";
+    return (
+      fieldData["ilos_ilosAvailable"] &&
+      fieldData["ilos_ilosAvailable"][0].value === "No"
+    );
   };
 
   /**
