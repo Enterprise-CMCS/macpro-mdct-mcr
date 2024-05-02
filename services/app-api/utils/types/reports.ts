@@ -80,7 +80,7 @@ export interface ReportPageVerbiage {
     subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
-    noResponseMessage: CustomHtmlElement[];
+    noResponseMessage?: CustomHtmlElement[];
   };
 }
 
