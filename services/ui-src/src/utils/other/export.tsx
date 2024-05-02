@@ -138,7 +138,9 @@ export const renderResponseData = (
   const missingEntryVerbiage = notApplicable
     ? verbiage.missingEntry.notApplicable
     : `${verbiage.missingEntry.noResponse}, optional`;
-  const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
+  const missingEntryStyle = notApplicable
+    ? sx.notApplicable
+    : sx.noResponseOptional;
   if (!hasResponse)
     return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
   // chandle choice list fields (checkbox, radio)
@@ -283,9 +285,12 @@ const sx = {
     fontWeight: "bold",
   },
   noResponse: {
-    color: "palette.base",
+    color: "palette.error_darker",
   },
   notApplicable: {
     color: "palette.gray_medium",
+  },
+  noResponseOptional: {
+    color: "palette.base",
   },
 };
