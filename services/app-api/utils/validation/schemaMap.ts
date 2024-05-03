@@ -196,7 +196,7 @@ export const radioOptional = () => radio();
 
 // DYNAMIC
 export const dynamic = () => array().min(0).of(mixed());
-export const dynamicOptional = () => dynamic();
+export const dynamicOptional = () => dynamic().notRequired();
 
 // NESTED
 export const nested = (
