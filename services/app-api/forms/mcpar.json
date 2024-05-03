@@ -225,11 +225,11 @@
               "info": [
                 {
                   "type": "html",
-                  "content": "<b>If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered under the managed care program, as approved in the managed care plan contract(s).</b> <br/><br/>"
+                  "content": "<b>If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered under the managed care program, as approved in the managed care plan contract(s).</b> <br/>"
                 },
                 {
                   "type": "span",
-                  "content": "Do not include short-term IMD stays. Access "
+                  "content": "<br/>Do not include short-term IMD stays. Access "
                 },
                 {
                   "type": "externalLink",
