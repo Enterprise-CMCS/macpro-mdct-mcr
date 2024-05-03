@@ -67,7 +67,6 @@ export const renderOverlayEntityDataCell = (
   const notApplicable =
     parentFieldCheckedChoiceIds &&
     !parentFieldCheckedChoiceIds?.includes(entity.id);
-
   return (
     <Box>
       <Text>
@@ -137,12 +136,23 @@ export const renderResponseData = (
     : fieldResponseData;
   const missingEntryVerbiage = notApplicable
     ? verbiage.missingEntry.notApplicable
-    : `${verbiage.missingEntry.noResponse}, optional`;
-  const missingEntryStyle = notApplicable
-    ? sx.notApplicable
-    : sx.noResponseOptional;
-  if (!hasResponse)
+    : verbiage.missingEntry.noResponse;
+
+  const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
+
+  if (!hasResponse && !isChoiceListField) {
     return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
+    // need to explicitly make this else if conditional so
+  }
+
+  if (!hasResponse && isChoiceListField) {
+    return (
+      <Text
+        sx={sx.noResponseOptional}
+      >{`${verbiage.missingEntry.noResponse}, optional`}</Text>
+    );
+  }
+
   // chandle choice list fields (checkbox, radio)
   if (isChoiceListField) {
     return renderChoiceListFieldResponse(
@@ -287,10 +297,10 @@ const sx = {
   noResponse: {
     color: "palette.error_darker",
   },
-  notApplicable: {
-    color: "palette.gray_medium",
-  },
   noResponseOptional: {
     color: "palette.base",
+  },
+  notApplicable: {
+    color: "palette.gray_medium",
   },
 };
