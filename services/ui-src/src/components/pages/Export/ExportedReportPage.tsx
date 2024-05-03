@@ -120,7 +120,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
         {childSections?.map((child: ReportRoute) => renderSection(child))}
         {/* if section does not have children and has content to render, render it */}
         {!childSections && (
-          <Box>
+          <Box pb={"3.5rem"}>
             <ExportedSectionHeading
               heading={section.verbiage?.intro?.subsection || section.name}
               verbiage={section.verbiage || undefined}
