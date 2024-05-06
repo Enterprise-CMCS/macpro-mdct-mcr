@@ -8,7 +8,8 @@
     "accessMeasures": { "required": true },
     "qualityMeasures": { "required": true },
     "plans": { "required": true },
-    "bssEntities": { "required": true }
+    "bssEntities": { "required": true },
+    "ilos": { "required": false }
   },
   "routes": [
     {
@@ -208,6 +209,50 @@
                 "validation": "dynamic",
                 "props": {
                   "label": "BSS entity name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add In Lieu of Services",
+          "path": "/mcpar/program-information/add-in-lieu-of-services",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "In Lieu of Services and Settings Offered",
+              "info": [
+                {
+                  "type": "span",
+                  "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered, as approved in the managed care plan contract(s). Do not include short-term IMD stays. <b>You are required to complete this section if ILOS are available.</b> Do not include short-term IMD stays. Access "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "guidance on In Lieu of Services on Medicaid.gov",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html",
+                    "target": "_blank",
+                    "aria-label": "guidance on In Lieu of Services on Medicaid.gov (link opens in new tab)."
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "."
+                }
+              ],
+              "spreadsheet": "A_Program_Info"
+            }
+          },
+          "form": {
+            "id": "aailos",
+            "fields": [
+              {
+                "id": "ilos",
+                "type": "dynamic",
+                "validation": "dynamicOptional",
+                "props": {
+                  "label": "ILOS name"
                 }
               }
             ]
