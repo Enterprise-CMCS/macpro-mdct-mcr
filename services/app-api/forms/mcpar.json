@@ -9,7 +9,7 @@
     "qualityMeasures": { "required": true },
     "plans": { "required": true },
     "bssEntities": { "required": true },
-    "ilos": { " required": false }
+    "ilos": { "required": false }
   },
   "routes": [
     {
