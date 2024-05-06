@@ -3642,33 +3642,7 @@
                     },
                     {
                       "id": "wQOpexgX5QHj0xssJSqtzKF4",
-                      "label": "Yes, at least 1 ILOS is offered by this plan",
-                      "children": [
-                        {
-                          "id": "BZX2jt2OG0Y9SZCtWDbTJvB9",
-                          "type": "checkbox",
-                          "validation": {
-                            "type": "checkbox",
-                            "nested": true,
-                            "parentFieldName": "wQOpexgX5QHj0xssJSqtzKF4"
-                          },
-                          "props": {
-                            "label": "D4.XI.2 ILOS utilization by plan",
-                            "hint": "Select all the ILOS that were offered by this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrollees that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period, but there was no utilization, select the ILOS and enter \"0\"."
-                          },
-                          "children": [
-                            {
-                              "id": "plan_ilosUtilization",
-                              "type": "text",
-                              "repeat": "ilos",
-                              "validation": {
-                                "type": "text",
-                                "nested": true
-                              }
-                            }
-                          ]
-                        }
-                      ]
+                      "label": "Yes, at least 1 ILOS is offered by this plan"
                     }
                   ]
                 }
