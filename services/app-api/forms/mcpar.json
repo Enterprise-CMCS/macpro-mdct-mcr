@@ -224,7 +224,7 @@
               "subsection": "In Lieu of Services and Settings Offered",
               "info": [
                 {
-                  "type": "p",
+                  "type": "span",
                   "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered, as approved in the managed care plan contract(s). Do not include short-term IMD stays. <b>You are required to complete this section if ILOS are available.</b> Do not include short-term IMD stays. Access "
                 },
                 {
