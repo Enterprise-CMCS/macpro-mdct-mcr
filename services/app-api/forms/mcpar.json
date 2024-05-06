@@ -215,7 +215,7 @@
           }
         },
         {
-          "name": "Add In Lieu of Services (optional)",
+          "name": "Add In Lieu of Services",
           "path": "/mcpar/program-information/add-in-lieu-of-services",
           "pageType": "standard",
           "verbiage": {
@@ -224,12 +224,8 @@
               "subsection": "In Lieu of Services and Settings Offered",
               "info": [
                 {
-                  "type": "html",
-                  "content": "<b>If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered under the managed care program, as approved in the managed care plan contract(s).</b> <br/>"
-                },
-                {
-                  "type": "span",
-                  "content": "<br/>Do not include short-term IMD stays. Access "
+                  "type": "p",
+                  "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered, as approved in the managed care plan contract(s). Do not include short-term IMD stays. <b>You are required to complete this section if ILOS are available.</b> Do not include short-term IMD stays. Access "
                 },
                 {
                   "type": "externalLink",
@@ -3590,59 +3586,6 @@
                     {
                       "id": "2gx74mMf7Ou0BRI5Kyp2Ih",
                       "label": "Promptly when plan receives information about the change"
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "name": "XI: ILOS",
-          "path": "/mcpar/plan-level-indicators/ilos",
-          "pageType": "drawer",
-          "entityType": "ilos",
-          "verbiage": {
-            "intro": {
-              "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic XI. ILOS",
-              "spreadsheet": "D4_Plan_ILOS"
-            },
-            "dashboardTitle": "Report ILOS utilization for each managed care plan during the contract rating period",
-            "info": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, report ILOS utilization for each plan during the contract rating period. Select \"Enter\" for each plan listed below to indicate whether or not ILOS was offered by the plan, select which ILOS the plan offered, and enter data on utilization for each ILOS offered.",
-            "drawerTitle": "",
-            "missingEntityMessage": [
-              {
-                "type": "span",
-                "content": "This program is missing ILOS. You won’t be able to complete this section until you’ve added all the ILOS offered under the program. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add In Lieu of Services",
-                "props": {
-                  "to": "/mcpar/program-information/add-in-lieu-of-services"
-                }
-              }
-            ]
-          },
-          "drawerForm": {
-            "id": "dilos",
-            "fields": [
-              {
-                "id": "plan_ilosOfferedByPlan",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "D4.XI.1 ILOS offered by plan",
-                  "hint": "Indicate whether this plan offered ILOS to their enrollees.",
-                  "choices": [
-                    {
-                      "id": "FlryiigyFX6WzoXGO44i9I4X",
-                      "label": "No"
-                    },
-                    {
-                      "id": "wQOpexgX5QHj0xssJSqtzKF4",
-                      "label": "Yes, at least 1 ILOS is offered by this plan"
                     }
                   ]
                 }
