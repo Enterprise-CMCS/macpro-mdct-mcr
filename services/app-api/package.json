@@ -46,7 +46,6 @@
     "jwt-encode": "^1.0.1",
     "kafkajs": "^2.2.3",
     "ksuid": "^3.0.0",
-    "serverless-plugin-warmup": "8.2.1",
     "yup": "^0.32.11"
   },
   "resolutions": {
