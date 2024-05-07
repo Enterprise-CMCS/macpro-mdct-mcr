@@ -3417,20 +3417,20 @@
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic XI. ILOS",
-              "spreadsheet": "D4_Plan_ILOS"
+              "spreadsheet": "D4_Plan_ILOS",
+              "info": [
+                {
+                  "type": "span",
+                  "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, report ILOS utilization for each plan during the contract rating period. Select \"Enter\" for each plan listed below to indicate whether or not ILOS were offered by the plan, select which ILOS the plan offered, and enter data on utilization for each ILOS offered."
+                }
+              ]
             },
             "dashboardTitle": "Report ILOS utilization for each managed care plan during the contract rating period.",
             "drawerTitle": "",
-            "drawerInfo": [
-              {
-                "type": "span",
-                "content": "Complete all fields and select the Save & close button to save this section."
-              }
-            ],
             "missingEntityMessage": [
               {
                 "type": "span",
-                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that serrve enrollees in the program. "
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that serve enrollees in the program. "
               },
               {
                 "type": "internalLink",
@@ -3438,6 +3438,10 @@
                 "props": {
                   "to": "/mcpar/program-information/add-plans"
                 }
+              },
+              {
+                "type": "span",
+                "content": "."
               }
             ],
             "missingIlosMessage": [
@@ -3451,6 +3455,10 @@
                 "props": {
                   "to": "/mcpar/program-information/add-in-lieu-of-services"
                 }
+              },
+              {
+                "type": "span",
+                "content": "."
               }
             ],
             "missingPlansAndIlosMessage": [
@@ -3523,7 +3531,15 @@
                           },
                           "props": {
                             "label": "D4.XI.2 ILOS utilization by plan",
-                            "hint": "Select all the ILOS that were offered bt this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\"."
+                            "hint": "Select all the ILOS that were offered bt this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\".",
+                            "choices": [
+                              {
+                                "id": "plan_ilosUtilizationByPlan-otherText",
+                                "type": "text",
+                                "validation": "text",
+                                "repeat": "ilos"
+                              }
+                            ]
                           }
                         }
                       ]
