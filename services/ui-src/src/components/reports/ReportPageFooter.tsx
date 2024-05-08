@@ -3,12 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
 // utils
 import { parseCustomHtml, useFindRoute, useStore } from "utils";
-import { FormJson } from "types";
+import { CustomHtmlElement, FormJson } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
-export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
+export const ReportPageFooter = ({
+  submitting,
+  form,
+  praDisclosure,
+  ...props
+}: Props) => {
   const navigate = useNavigate();
   const { report } = useStore();
   const { previousRoute, nextRoute } = useFindRoute(
@@ -65,8 +70,8 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           )}
         </Flex>
       </Box>
-      {props.praDisclosure && (
-        <Box sx={sx.praStatement}>{parseCustomHtml(props.praDisclosure)}</Box>
+      {praDisclosure && (
+        <Box sx={sx.praStatement}>{parseCustomHtml(praDisclosure)}</Box>
       )}
     </Box>
   );
@@ -75,6 +80,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
 interface Props {
   form?: FormJson;
   submitting?: boolean;
+  praDisclosure?: CustomHtmlElement[];
   [key: string]: any;
 }
 
