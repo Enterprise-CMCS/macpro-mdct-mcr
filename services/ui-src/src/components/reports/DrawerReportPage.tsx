@@ -52,6 +52,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
 
+  // check if there are ILOS
+  const ilos = report?.fieldData?.["ilos"];
+  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
+
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
@@ -109,7 +113,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
-    return entities.map((entity) => {
+    return entities?.map((entity) => {
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
@@ -133,6 +137,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             sx={sx.enterButton}
             onClick={() => openRowDrawer(entity)}
             variant="outline"
+            disabled={reportingOnIlos && !ilos?.length}
           >
             {isEntityCompleted ? "Edit" : "Enter"}
           </Button>
@@ -143,16 +148,30 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   return (
     <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
-      <Heading as="h3" sx={sx.dashboardTitle}>
-        {verbiage.dashboardTitle}
-      </Heading>
+      {/* if there are no ILOS but there are plans added, display this message */}
+      {!ilos?.length && entities?.length ? (
+        <Box sx={sx.missingIlos}>
+          {parseCustomHtml(verbiage.missingIlosMessage || "")}
+        </Box>
+      ) : (
+        <></>
+      )}
       <Box>
-        {entities?.length ? (
-          entityRows(entities)
-        ) : (
+        <Heading as="h3" sx={sx.dashboardTitle}>
+          {verbiage.dashboardTitle}
+        </Heading>
+        {reportingOnIlos && !entities?.length && !ilos?.length ? (
+          // if there are no plans and no ILOS added, display this message
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
+          </Box>
+        ) : !entities?.length ? (
+          // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
+        ) : (
+          entityRows(entities)
         )}
       </Box>
       <ReportDrawer
@@ -206,6 +225,10 @@ const sx = {
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+  },
+  missingIlos: {
+    fontWeight: "bold",
+    marginBottom: "2rem",
   },
   missingEntityMessage: {
     paddingTop: "1rem",

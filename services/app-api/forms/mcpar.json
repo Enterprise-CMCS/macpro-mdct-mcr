@@ -3463,12 +3463,12 @@
             ],
             "missingPlansAndIlosMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans and ILOS. <p>If ILOS are available to this program, you won't be able to complete this section until you've:"
+                "type": "p",
+                "content": "This program is missing plans and ILOS. <br/>If ILOS are available to this program, you won't be able to complete this section until you've: <br/>"
               },
               {
-                "type": "ol",
-                "content": "<li>added all the managed care plans that serve enrollees in the program by going to "
+                "type": "span",
+                "content": "1. added all the managed care plans that serve enrollees in the program by going to: "
               },
               {
                 "type": "internalLink",
@@ -3478,12 +3478,8 @@
                 }
               },
               {
-                "type": "ol",
-                "content": "and</li>"
-              },
-              {
-                "type": "ol",
-                "content": "<li>added all the names of approved ILOS in the program. "
+                "type": "span",
+                "content": "<br/>2. added all the names of approved ILOS in the program: "
               },
               {
                 "type": "internalLink",
@@ -3493,12 +3489,8 @@
                 }
               },
               {
-                "type": "ol",
-                "content": "</li>"
-              },
-              {
-                "type": "span",
-                "content": "If ILOS are not available to this program, proceed to the next section."
+                "type": "p",
+                "content": "<br/>If ILOS are not available to this program, proceed to the next section."
               }
             ]
           },
