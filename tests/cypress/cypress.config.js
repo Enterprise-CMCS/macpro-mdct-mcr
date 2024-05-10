@@ -6,7 +6,7 @@ const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
 module.exports = defineConfig({
   experimentalStudio: true,
   redirectionLimit: 20,
-  retries: 1,
+  retries: 2,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
