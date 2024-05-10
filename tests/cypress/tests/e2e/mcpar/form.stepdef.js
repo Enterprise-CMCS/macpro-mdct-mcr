@@ -101,7 +101,7 @@ When("I completely fill out a {string} form", (form) => {
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"').type(programName);
+  cy.get('input[name="programName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -109,8 +109,8 @@ When("I completely fill out a {string} form", (form) => {
   cy.get('input[name="reportingPeriodEndDate"]').type(
     today.toLocaleDateString("en-US")
   );
-  cy.get('input[name="combinedData"').check();
-  cy.get('input[name="programIsPCCM"').check("No");
+  cy.get('input[name="combinedData"]').check();
+  cy.get('input[name="programIsPCCM"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -150,8 +150,8 @@ When("I try to submit an incomplete {string} program", (form) => {
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
   cy.visit(`/${form.toLowerCase()}`);
-  cy.findByRole("button", { name: "Add / copy a MCPAR" }).click();
-  cy.findByLabelText("Program name (for new MCPAR)").type(programName);
+  cy.get("button").contains("Add / copy a MCPAR").click();
+  cy.get('input[name="programName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -159,8 +159,8 @@ When("I try to submit an incomplete {string} program", (form) => {
   cy.get('input[name="reportingPeriodEndDate"]').type(
     today.toLocaleDateString("en-US")
   );
-  cy.findByRole("checkbox").focus().click();
-  cy.get('input[name="programIsPCCM"').check("No");
+  cy.get('input[name="combinedData"]').check();
+  cy.get('input[name="programIsPCCM"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -281,7 +281,7 @@ const processField = (field) => {
         );
         break;
       case "dynamic":
-        cy.get(`[name="${field.id}[0]"`).type("Dynamic Fill");
+        cy.get(`[name="${field.id}[0]"]`).type("Dynamic Fill");
         break;
       case "number":
         switch (validationType) {
