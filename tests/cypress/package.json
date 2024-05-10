@@ -28,5 +28,8 @@
       "tests/[filepath].stepdef.js",
       "tests/[filepath]/**/*.stepdef.js"
     ]
+  },
+  "dependencies": {
+    "cypress-tags": "^1.1.2"
   }
 }
