@@ -176,6 +176,8 @@ When("I try to submit an incomplete {string} program", (form) => {
   const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
 
+  //Finish loading the form route before moving to review and submit
+  cy.wait(1000);
   cy.get('a[href*="review-and-submit"]').click();
 });
 
