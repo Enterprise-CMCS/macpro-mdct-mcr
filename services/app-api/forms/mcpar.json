@@ -3519,19 +3519,13 @@
                           "validation": {
                             "type": "checkbox",
                             "nested": true,
-                            "parentFieldName": "plan_ilosOfferedByPlan"
+                            "parentFieldName": "plan_ilosOfferedByPlan",
+                            "parentOptionId": "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU"
                           },
                           "props": {
                             "label": "D4.XI.2 ILOS utilization by plan",
                             "hint": "Select all the ILOS that were offered bt this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\".",
-                            "choices": [
-                              {
-                                "id": "plan_ilosUtilizationByPlan-otherText",
-                                "type": "text",
-                                "validation": "text",
-                                "repeat": "ilos"
-                              }
-                            ]
+                            "choices": []
                           }
                         }
                       ]
