@@ -1,46 +1,44 @@
 import template from "../../../../services/app-api/forms/mlr.json";
 
-let programName;
-
 describe("MLR E2E Form Submission", () => {
+  const programName = `automated test - ${new Date().toISOString()}`;
   beforeEach(() => {
     Cypress.session.clearAllSavedSessions();
   });
   it("Submit a complete report as a state user", () => {
-    programName = "automated test - " + new Date().toISOString();
     cy.authenticate("stateUser");
 
-    fillOutMLR();
+    fillOutMLR(programName);
     submitMLR();
 
     cy.contains("Successfully Submitted").should("be.visible");
   });
   it("unlock as admin", () => {
     cy.authenticate("adminUser");
-    unlockMLR();
+    unlockMLR(programName);
   });
 
   it("verify expected fields are filled", () => {
     cy.authenticate("stateUser");
-    verifyFormIsFilledFromLastSubmission();
+    verifyFormIsFilledFromLastSubmission(programName);
   });
 
   it("admin can archive but then cannot unlock", () => {
     cy.authenticate("adminUser");
-    archiveReport();
-    verifyCannotUnlockReport();
+    archiveReport(programName);
+    verifyCannotUnlockReport(programName);
   });
 });
 
 describe("test unlock with incomplete reports", () => {
+  const programName = `automated test - ${new Date().toISOString()}`;
   beforeEach(() => {
     Cypress.session.clearAllSavedSessions();
   });
   it("A report cannot be unlocked if it is unfinished", () => {
-    programName = "automated test - " + new Date().toISOString();
     cy.authenticate("stateUser");
 
-    fillOutMLR();
+    fillOutMLR(programName);
     // skip submit step
     cy.contains("Successfully Submitted").should("not.exist");
   });
@@ -51,11 +49,11 @@ describe("test unlock with incomplete reports", () => {
     cy.get('select[id="state"').focus().select("District of Columbia");
     cy.get('input[id="report-MLR"]').focus().click();
     cy.get('button:contains("Go to Report Dashboard")').click();
-    verifyCannotUnlockReport();
+    verifyCannotUnlockReport(programName);
   });
 });
 
-function unlockMLR() {
+function unlockMLR(programName) {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
   cy.get('input[id="report-MLR"]').focus().click();
@@ -81,7 +79,7 @@ function unlockMLR() {
   });
 }
 
-function archiveReport() {
+function archiveReport(programName) {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
   cy.get('input[id="report-MLR"]').focus().click();
@@ -97,7 +95,7 @@ function archiveReport() {
   });
 }
 
-function verifyCannotUnlockReport() {
+function verifyCannotUnlockReport(programName) {
   cy.get("table").within(() => {
     cy.get("td")
       .contains(programName)
@@ -107,7 +105,7 @@ function verifyCannotUnlockReport() {
   });
 }
 
-function verifyFormIsFilledFromLastSubmission() {
+function verifyFormIsFilledFromLastSubmission(programName) {
   cy.visit("/mlr");
   cy.get("table").within(() => {
     cy.get("td")
@@ -127,12 +125,8 @@ function verifyFormIsFilledFromLastSubmission() {
   });
 }
 
-function fillOutMLR() {
+function fillOutMLR(programName) {
   //Create the program
-  const today = new Date();
-  const lastYear = new Date();
-  lastYear.setFullYear(today.getFullYear() - 1);
-  const programName = "automated test - " + today.toISOString();
   cy.visit(`/mlr`);
   cy.get('button:contains("Add new MLR submission")').click();
   cy.get('input[id="programName"]').type(programName);
@@ -228,16 +222,13 @@ const processField = (field) => {
           case "url":
             cy.get(`[name="${field.id}"]`).type("https://fill.com");
             break;
-          case "text":
+          default:
             if (field.repeat) {
               //repeats don't use the exact name, but thankfully don't need to worry about similar names
               cy.get(`[name^="${field.id}"]`).type("Text Fill");
             } else {
               cy.get(`[name="${field.id}"]`).type("Text Fill");
             }
-            break;
-          default:
-            cy.get(`[name="${field.id}"]`).type("Unknown Fill");
         }
         break;
       case "date":

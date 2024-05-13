@@ -176,16 +176,13 @@ const processField = (field) => {
           case "url":
             cy.get(`[name="${field.id}"]`).type("https://fill.com");
             break;
-          case "text":
+          default:
             if (field.repeat) {
               //repeats don't use the exact name, but thankfully don't need to worry about similar names
               cy.get(`[name^="${field.id}"]`).type("Text Fill");
             } else {
               cy.get(`[name="${field.id}"]`).type("Text Fill");
             }
-            break;
-          default:
-            cy.get(`[name="${field.id}"]`).type("Unknown Fill");
         }
         break;
       case "date":
