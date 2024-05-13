@@ -219,8 +219,10 @@ jobs:
         with:
           working-directory: tests/cypress
           spec: |
-            tests/e2e/*.spec.js
-            tests/e2e/**/*.feature
+            e2e/*.cy.js
+            e2e/admin/*.cy.js
+            e2e/mcpar/*.cy.js
+            e2e/mlr/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
@@ -256,7 +258,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: tests/cypress
-          spec: tests/accessibility/*.feature
+          spec: e2e/accessibility/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
