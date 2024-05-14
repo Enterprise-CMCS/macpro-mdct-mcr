@@ -272,7 +272,7 @@ export const generateIlosFields = (
 ) => {
   const availableIlos = report?.fieldData?.ilos;
   if (availableIlos && pathname.endsWith("ilos")) {
-    const updatedChoiceList = updateFieldChoicesByID(
+    const updatedChoiceList = updateIlosFieldChoices(
       fields,
       "plan_ilosOfferedByPlan",
       availableIlos
@@ -282,10 +282,10 @@ export const generateIlosFields = (
   return fields;
 };
 
-export const updateFieldChoicesByID = (
+export const updateIlosFieldChoices = (
   formFields: (FormField | FormLayoutElement)[],
   id: string,
-  fields: AnyObject[]
+  availableIlos: AnyObject[]
 ) => {
   return formFields.map((field) => {
     const updatedChoices: AnyObject[] = [];
@@ -300,7 +300,7 @@ export const updateFieldChoicesByID = (
                   type: "checkbox",
                   props: {
                     ...choice.children[0].props,
-                    choices: [...fields],
+                    choices: [...availableIlos],
                   },
                   validation: {
                     ...choice.children[0].validation,
