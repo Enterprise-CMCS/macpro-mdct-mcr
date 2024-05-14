@@ -282,43 +282,6 @@ export const generateIlosFields = (
   return fields;
 };
 
-export const updateIlosFields = (
-  formFields: (FormField | FormLayoutElement)[],
-  id: string,
-  availableIlos: AnyObject[]
-) => {
-  const updatedIlosFormFields = formFields.map((field) => {
-    return field.props?.choices.map((choice: AnyObject) => {
-      const ilosFields = availableIlos.map((ilos: AnyObject) => {
-        return {
-          id: ilos.id,
-          type: "number",
-          validation: "number",
-          props: {
-            label: ilos.name,
-            decimalPlacesToRoundTo: 0,
-          },
-        };
-      });
-      return (choice.id = id
-        ? {
-            ...choice,
-            children: [...ilosFields],
-          }
-        : { ...choice });
-    });
-  });
-  return (formFields = [
-    {
-      ...formFields[0],
-      props: {
-        ...formFields[0].props,
-        choices: [...updatedIlosFormFields[0]],
-      },
-    },
-  ]);
-};
-
 export const updateFieldChoicesByID = (
   formFields: (FormField | FormLayoutElement)[],
   id: string,
