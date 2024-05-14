@@ -3524,7 +3524,7 @@
                           },
                           "props": {
                             "label": "D4.XI.2 ILOS utilization by plan",
-                            "hint": "Select all the ILOS that were offered bt this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\".",
+                            "hint": "For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\". If no ILOS were offered by this plan during the contract rating period, enter \"N/A\".",
                             "choices": []
                           }
                         }

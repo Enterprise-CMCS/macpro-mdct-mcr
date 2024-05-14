@@ -17,6 +17,7 @@ import {
   hydrateFormFields,
   mapValidationTypesToSchema,
   sortFormErrors,
+  generateIlosFields,
   useStore,
 } from "utils";
 // types
@@ -83,7 +84,11 @@ export const Form = ({
 
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
-    const fieldsToRender = hydrateFormFields(fields, formData);
+    const fieldsToRender = hydrateFormFields(
+      generateIlosFields(report!, fields, location.pathname),
+      formData
+    );
+
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
       autosave,

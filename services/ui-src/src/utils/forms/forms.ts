@@ -18,6 +18,7 @@ import {
   FormField,
   FormLayoutElement,
   isFieldElement,
+  ReportShape,
 } from "types";
 import {
   SectionContent,
@@ -89,7 +90,6 @@ export const hydrateFormFields = (
     const fieldHydrationValue = formData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
-
   return formFields;
 };
 
@@ -261,5 +261,101 @@ export const resetClearProp = (fields: (FormField | FormLayoutElement)[]) => {
         field.props = { ...field.props, clear: false };
         break;
     }
+  });
+};
+
+// if there are available ILOS, update the nested checkboxes to reflect each one
+export const generateIlosFields = (
+  report: ReportShape,
+  fields: (FormField | FormLayoutElement)[],
+  pathname: string
+) => {
+  const availableIlos = report?.fieldData?.ilos;
+  if (availableIlos && pathname.endsWith("ilos")) {
+    const updatedChoiceList = updateFieldChoicesByID(
+      fields,
+      "plan_ilosOfferedByPlan",
+      availableIlos
+    );
+    return updatedChoiceList;
+  }
+  return fields;
+};
+
+export const updateIlosFields = (
+  formFields: (FormField | FormLayoutElement)[],
+  id: string,
+  availableIlos: AnyObject[]
+) => {
+  const updatedIlosFormFields = formFields.map((field) => {
+    return field.props?.choices.map((choice: AnyObject) => {
+      const ilosFields = availableIlos.map((ilos: AnyObject) => {
+        return {
+          id: ilos.id,
+          type: "number",
+          validation: "number",
+          props: {
+            label: ilos.name,
+            decimalPlacesToRoundTo: 0,
+          },
+        };
+      });
+      return (choice.id = id
+        ? {
+            ...choice,
+            children: [...ilosFields],
+          }
+        : { ...choice });
+    });
+  });
+  return (formFields = [
+    {
+      ...formFields[0],
+      props: {
+        ...formFields[0].props,
+        choices: [...updatedIlosFormFields[0]],
+      },
+    },
+  ]);
+};
+
+export const updateFieldChoicesByID = (
+  formFields: (FormField | FormLayoutElement)[],
+  id: string,
+  fields: AnyObject[]
+) => {
+  return formFields.map((field) => {
+    const updatedChoices: AnyObject[] = [];
+    field.props?.choices.map((choice: AnyObject) => {
+      updatedChoices.push(
+        choice.children
+          ? {
+              ...choice,
+              children: [
+                {
+                  id: "plan_ilosUtilizationByPlan",
+                  type: "checkbox",
+                  props: {
+                    ...choice.children[0].props,
+                    choices: [...fields],
+                  },
+                  validation: {
+                    ...choice.children[0].validation,
+                  },
+                },
+              ],
+            }
+          : { ...choice }
+      );
+    });
+    return field.id === id
+      ? {
+          ...field,
+          props: {
+            ...field.props,
+            choices: [...updatedChoices],
+          },
+        }
+      : { ...field };
   });
 };
