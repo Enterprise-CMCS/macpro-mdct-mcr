@@ -18,24 +18,11 @@
 `cypress.config.js` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
 
 ## Writing tests
-
-There are two primary syntaxes for writing tests for Cypress.
-
 - JavaScript
-  - uses extension `*.spec.js` located in `tests` directory
-- Gherkin (Cucumber)
-  - uses extension `*.feature` located in `tests` directory
-  - requires suitable JavaScript step definitions be created
-    - General use steps go in `support/step_definitions` directory
-    - Feature specific steps go in same directory as your feature, with filename of `<feature>.stepdef.js`
-      - eg `tests\e2e\admin\admin.feature` and `tests\e2e\admin\admin.stepdef.js`
-  - VS Code plugins available, [Cucumber (Gherkin) Full Support](https://marketplace.visualstudio.com/items?itemName=alexkrechik.cucumberautocomplete) recommended
+  - uses extension `*.cy.js` located in `e2e` directory
 
 Relevant Documentation
-- [Cypress Documentation](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests#What-you-ll-learn)
-- [Cucumber Preprocessor Documentation](https://github.com/badeball/cypress-cucumber-preprocessor/blob/master/docs/readme.md)
-- [Gherkin Documentation](https://cucumber.io/docs/gherkin/reference/)
-- [Step Definitions Documentation](https://cucumber.io/docs/cucumber/step-definitions/?lang=javascript)
+- [Cypress Documentation](https://docs.cypress.io/)
 
 ## Running tests
 
