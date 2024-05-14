@@ -1,4 +1,3 @@
-import "cypress-file-upload";
 import "@cypress-audit/pa11y/commands";
 
 const breakpoints = {
@@ -7,19 +6,12 @@ const breakpoints = {
   desktop: [1200, 1200],
 };
 
-export const checkCurrentRouteAccessibility = () => {
-  Object.keys(breakpoints).forEach((deviceSize) => {
-    const size = breakpoints[deviceSize];
-    it(
-      `Has no basic accessibility issues on ${deviceSize}`,
-      { retries: 0 },
-      () => {
-        cy.viewport(...size);
-        cy.runAccessibilityTests();
-      }
-    );
-  });
-};
+Cypress.Commands.add("testPageAccessibility", () => {
+  for (let size of Object.values(breakpoints)) {
+    cy.viewport(...size);
+    cy.runAccessibilityTests();
+  }
+});
 
 // ***** ACCESSIBILITY COMMANDS *****
 
