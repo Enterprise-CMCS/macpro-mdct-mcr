@@ -18,7 +18,6 @@ import {
   FormField,
   FormLayoutElement,
   isFieldElement,
-  ReportShape,
 } from "types";
 import {
   SectionContent,
@@ -261,64 +260,5 @@ export const resetClearProp = (fields: (FormField | FormLayoutElement)[]) => {
         field.props = { ...field.props, clear: false };
         break;
     }
-  });
-};
-
-// if there are available ILOS, update the nested checkboxes to reflect each one
-export const generateIlosFields = (
-  report: ReportShape,
-  fields: (FormField | FormLayoutElement)[],
-  pathname: string
-) => {
-  const availableIlos = report?.fieldData?.ilos;
-  if (availableIlos && pathname.endsWith("ilos")) {
-    const updatedChoiceList = updateIlosFieldChoices(
-      fields,
-      "plan_ilosOfferedByPlan",
-      availableIlos
-    );
-    return updatedChoiceList;
-  }
-  return fields;
-};
-
-export const updateIlosFieldChoices = (
-  formFields: (FormField | FormLayoutElement)[],
-  id: string,
-  availableIlos: AnyObject[]
-) => {
-  return formFields.map((field) => {
-    const updatedChoices: AnyObject[] = [];
-    field.props?.choices.map((choice: AnyObject) => {
-      updatedChoices.push(
-        choice.children
-          ? {
-              ...choice,
-              children: [
-                {
-                  id: "plan_ilosUtilizationByPlan",
-                  type: "checkbox",
-                  props: {
-                    ...choice.children[0].props,
-                    choices: [...availableIlos],
-                  },
-                  validation: {
-                    ...choice.children[0].validation,
-                  },
-                },
-              ],
-            }
-          : { ...choice }
-      );
-    });
-    return field.id === id
-      ? {
-          ...field,
-          props: {
-            ...field.props,
-            choices: [...updatedChoices],
-          },
-        }
-      : { ...field };
   });
 };

@@ -18,6 +18,7 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  generateIlosFields,
   getEntriesToClear,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
@@ -56,6 +57,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const ilos = report?.fieldData?.["ilos"];
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
 
+  // generate ILOS fields (if applicable)
+  const form =
+    ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
@@ -75,11 +80,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
       const filteredFormData = filterFormData(
         enteredData,
-        drawerForm.fields.filter(isFieldElement)
+        form.fields.filter(isFieldElement)
       );
       const entriesToClear = getEntriesToClear(
         enteredData,
-        drawerForm.fields.filter(isFieldElement)
+        form.fields.filter(isFieldElement)
       );
       const newEntity = {
         ...selectedEntity,
@@ -118,7 +123,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
        */
-      const isEntityCompleted = drawerForm.fields
+      const isEntityCompleted = form.fields
         ?.filter(isFieldElement)
         .every((field: FormField) => field.id in entity);
       return (
@@ -145,6 +150,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+
   return (
     <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
@@ -180,7 +186,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={drawerForm}
+        form={form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
