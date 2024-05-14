@@ -22,11 +22,12 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
+    "@enterprise-cmcs/serverless-waf-plugin": "^1.3.2",
     "fast-xml-parser": "4.3.3",
-    "loader-utils": "2.0.3",
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.3.2"
+    "loader-utils": "2.0.3"
   },
   "devDependencies": {
+    "@serverless/compose": "^1.3.0",
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
     "@types/node": "^20.12.7",
@@ -49,11 +50,8 @@
     "serverless-cloudfront-invalidate": "^1.11.0",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",
-    "serverless-idempotency-helper": "github:Enterprise-CMCS/serverless-idempotency-helper",
     "serverless-offline": "^13.5.0",
-    "serverless-online": "github:Enterprise-CMCS/macpro-serverless-online",
     "serverless-plugin-scripts": "^1.0.2",
-    "serverless-plugin-warmup": "^8.2.1",
     "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#master",
     "serverless-s3-sync": "^3.2.0",
     "serverless-stack-termination-protection": "^2.0.2",
