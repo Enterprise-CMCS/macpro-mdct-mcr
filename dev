@@ -34,11 +34,11 @@ if ! which serverless > /dev/null ; then
     yarn install -g serverless
 fi
 
-# # check if 1password cli is installed
-# if ! which op > /dev/null ; then
-#     echo "The MDCT team uses 1Password to store and retrive development credentials. If you do not have a 1Password account please request one."
-#     exit 1
-# fi
+# check if 1password cli is installed
+if ! which op > /dev/null ; then
+    echo "The MDCT team uses 1Password to store and retrive development credentials. If you do not have a 1Password account please request one."
+    exit 1
+fi
 
 # have to ensure that yarn install is up to date.
 # we use .yarn_install as a marker for the last time `yarn install` was run. Rerun the command when yarn.lock is updated
@@ -47,11 +47,11 @@ if [ "yarn.lock" -nt ".yarn_install" ]; then
     touch .yarn_install
 fi
 
-# #inject secrets to .env
-# op inject -i .env.tpl -o .env -f
+#inject secrets to .env
+op inject -i .env.tpl -o .env -f
 
-# #inject secrets to .env
-# op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f
+#inject secrets to .env
+op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f
 
 # build and run dev.ts
 # tsc is configured to build what we expect in tsconfig.json
