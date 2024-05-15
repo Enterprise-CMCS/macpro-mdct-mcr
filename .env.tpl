@@ -23,7 +23,7 @@ SKIP_PREFLIGHT_CHECK=true
 TEMPLATE_BUCKET=local-uploads
 URL=http://localhost/3000
 LOGGING_BUCKET=op://mdct_devs/mcr_secrets/LOGGING_BUCKET
-WARMUP_SCHEDULE=60 minutes
+WARMUP_SCHEDULE=60
 WARMUP_CONCURRENCY=5
 
 
@@ -39,6 +39,6 @@ NAAAR_REPORT_TABLE_STREAM_ARN=local-nonsense
 
 #needed for e2e tests
 CYPRESS_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_EMAIL
-CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret
+CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret 
 CYPRESS_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
 CYPRESS_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret

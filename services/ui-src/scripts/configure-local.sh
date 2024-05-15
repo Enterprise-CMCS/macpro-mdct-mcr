@@ -44,6 +44,10 @@ export COGNITO_REDIRECT_SIGNIN=http://localhost:3000/
 export COGNITO_REDIRECT_SIGNOUT=http://localhost:3000/postLogout
 export S3_ATTACHMENTS_BUCKET_REGION=$s3_attachments_bucket_region
 export S3_ATTACHMENTS_BUCKET_NAME=$s3_attachements_bucket_name
+export CYPRESS_ADMIN_USER_EMAIL=$cypress_admin_user_email
+export CYPRESS_ADMIN_USER_PASSWORD=$cypress_admin_user_password
+export CYPRESS_STATE_USER_EMAIL=$cypress_state_user_email
+export CYPRESS_STATE_USER_PASSWORD=$cypress_state_user_password
 # This is set to false, as using this script points your local react server to Amazon
 export LOCAL_LOGIN=false
 ./configure-env.sh
