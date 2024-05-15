@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd ../../ && ./dev local && cd -",
     "cypress": "cypress open",
+    "start": "cd ../../ && ./dev local && cd -",
     "test": "concurrently --kill-others \"yarn start\" \"yarn cypress\"",
     "test:ci": "cypress install && cypress run --browser chrome --headless"
   },
