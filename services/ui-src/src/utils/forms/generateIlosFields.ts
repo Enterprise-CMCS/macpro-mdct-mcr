@@ -1,8 +1,30 @@
-import { AnyObject, FormJson } from "types";
+import { AnyObject, FormField, FormJson, FormLayoutElement } from "types";
 
 export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
   const fields = form.fields[0];
+  return {
+    ...form,
+    fields: [
+      {
+        ...form.fields[0],
+        props: {
+          ...form.fields[0].props,
+          choices: [
+            ...updatedIlosChoiceList(
+              fields.props?.choices,
+              availableIlos(ilos, fields)
+            ),
+          ],
+        },
+      },
+    ],
+  };
+};
 
+const availableIlos = (
+  ilos: AnyObject[],
+  fields: FormField | FormLayoutElement
+) => {
   const updatedIlosChoices: AnyObject[] = [];
   ilos.forEach((item) => {
     updatedIlosChoices.push({
@@ -25,9 +47,15 @@ export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
       ],
     });
   });
+  return updatedIlosChoices;
+};
 
+const updatedIlosChoiceList = (
+  choices: AnyObject[],
+  ilosChoices: AnyObject[]
+) => {
   const updatedChoiceList: AnyObject[] = [];
-  fields.props?.choices.map((choice: AnyObject) => {
+  choices.map((choice: AnyObject) => {
     updatedChoiceList.push(
       choice.children
         ? {
@@ -37,7 +65,7 @@ export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
                 ...choice.children[0],
                 props: {
                   ...choice.children[0].props,
-                  choices: [...updatedIlosChoices],
+                  choices: [...ilosChoices],
                 },
               },
             ],
@@ -45,17 +73,5 @@ export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
         : { ...choice }
     );
   });
-
-  return {
-    ...form,
-    fields: [
-      {
-        ...form.fields[0],
-        props: {
-          ...form.fields[0].props,
-          choices: [...updatedChoiceList],
-        },
-      },
-    ],
-  };
+  return updatedChoiceList;
 };
