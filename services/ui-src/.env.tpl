@@ -15,3 +15,7 @@ STAGE=local
 REACT_APP_LD_SDK_CLIENT=op://mdct_devs/mcr_secrets/REACT_APP_LD_SDK_CLIENT
 # Enable the below line to use the dev api when printing PDFs from PRINCE
 DEV_API_URL=op://mdct_devs/mcr_secrets/DEV_API_URL
+CYPRESS_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_EMAIL
+CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret 
+CYPRESS_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
+CYPRESS_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
