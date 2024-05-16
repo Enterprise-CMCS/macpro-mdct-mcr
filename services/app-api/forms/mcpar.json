@@ -3468,7 +3468,7 @@
               },
               {
                 "type": "span",
-                "content": "1. added all the managed care plans that serve enrollees in the program by going to: "
+                "content": "<br/>1. added all the managed care plans that serve enrollees in the program by going to: "
               },
               {
                 "type": "internalLink",
@@ -3479,7 +3479,11 @@
               },
               {
                 "type": "span",
-                "content": "<br/>2. added all the names of approved ILOS in the program: "
+                "content": " and"
+              },
+              {
+                "type": "span",
+                "content": "<br/><br/>2. added all the names of approved ILOS in the program: "
               },
               {
                 "type": "internalLink",
