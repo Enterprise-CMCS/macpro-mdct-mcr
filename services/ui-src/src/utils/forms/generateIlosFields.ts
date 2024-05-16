@@ -1,4 +1,4 @@
-import { AnyObject, FormField, FormJson, FormLayoutElement } from "types";
+import { AnyObject, FormJson } from "types";
 
 export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
   const fields = form.fields[0];
@@ -12,7 +12,7 @@ export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
           choices: [
             ...updatedIlosChoiceList(
               fields.props?.choices,
-              availableIlos(ilos, fields)
+              availableIlos(ilos)
             ),
           ],
         },
@@ -21,10 +21,7 @@ export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
   };
 };
 
-const availableIlos = (
-  ilos: AnyObject[],
-  fields: FormField | FormLayoutElement
-) => {
+const availableIlos = (ilos: AnyObject[]) => {
   const updatedIlosChoices: AnyObject[] = [];
   ilos.forEach((item) => {
     updatedIlosChoices.push({
@@ -33,12 +30,12 @@ const availableIlos = (
       checked: false,
       children: [
         {
-          id: `${fields.id}-otherText`,
+          id: `plan_ilosUtilizationOfferedByPlan-otherText-${item.id}`,
           type: "number",
           validation: {
             type: "number",
             nested: true,
-            parentFieldName: fields.id,
+            parentFieldName: "plan_ilosUtilizationOfferedByPlan",
           },
           props: {
             decimalPlacesToRoundTo: 0,
