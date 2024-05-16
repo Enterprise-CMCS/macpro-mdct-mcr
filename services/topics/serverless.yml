@@ -13,7 +13,6 @@ plugins:
   - serverless-stack-termination-protection
   - serverless-bundle
   - "@stratiformdigital/serverless-iam-helper"
-  - "@stratiformdigital/serverless-idempotency-helper"
   - "@stratiformdigital/serverless-online"
   - "@stratiformdigital/serverless-s3-security-helper"
   - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies

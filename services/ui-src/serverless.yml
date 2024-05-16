@@ -27,22 +27,22 @@ custom:
       - main
       - val
       - production
-  api_region: ${cf:app-api-${self:custom.stage}.Region}
-  api_url: ${cf:app-api-${self:custom.stage}.ApiGatewayRestApiUrl}
+  api_region: ${param:ApiRegion}
+  api_url: ${param:ApiGatewayRestApiUrl}
   application_endpoint: ${env:APPLICATION_ENDPOINT, ssm:/${self:custom.stage}/ui/application_endpoint, ssm:/default/ui/application_endpoint}
-  cognito_region: ${cf:ui-auth-${self:custom.stage}.Region}
-  cognito_identity_pool_id: ${cf:ui-auth-${self:custom.stage}.IdentityPoolId}
-  cognito_user_pool_id: ${cf:ui-auth-${self:custom.stage}.UserPoolId}
-  cognito_user_pool_client_id: ${cf:ui-auth-${self:custom.stage}.UserPoolClientId}
-  cognito_user_pool_client_domain: ${cf:ui-auth-${self:custom.stage}.UserPoolClientDomain}
+  cognito_region: ${param:CognitoRegion}
+  cognito_identity_pool_id: ${param:IdentityPoolId}
+  cognito_user_pool_id: ${param:UserPoolId}
+  cognito_user_pool_client_id: ${param:UserPoolClientId}
+  cognito_user_pool_client_domain: ${param:UserPoolClientDomain}
   cognito_idp_name: ${env:COGNITO_IDP_NAME, ssm:/${self:custom.stage}/ui-auth/cognito_idp_name, ssm:/default/ui-auth/cognito_idp_name}
-  cognito_idp: ${cf:ui-auth-${self:custom.stage}.IdentityProvider}
+  cognito_idp: ${param:IdentityProvider}
   ldSdkClient: ${env:REACT_APP_LD_SDK_CLIENT, ssm:/${self:custom.stage}/launchdarkly/client, ssm:/default/launchdarkly/client}
-  s3_attachments_bucket_region: ${cf:uploads-${self:custom.stage}.Region}
-  s3_attachments_bucket_name: ${cf:uploads-${self:custom.stage}.AttachmentsBucketName}
-  ui_s3_bucket_name: ${cf:ui-${self:custom.stage}.S3BucketName}
-  ui_cloudfront_distribution_id: ${cf:ui-${self:custom.stage}.CloudFrontDistributionId}
-  application_endpoint_url: ${cf:ui-${self:custom.stage}.ApplicationEndpointUrl}
+  s3_attachments_bucket_region: ${param:AttachmentsBucketRegion}
+  s3_attachments_bucket_name: ${param:AttachmentsBucketName}
+  ui_s3_bucket_name: ${param:S3BucketName}
+  ui_cloudfront_distribution_id: ${param:CloudFrontDistributionId}
+  application_endpoint_url: ${param:ApplicationEndpointUrl}
   signout_redirect_url: ${env:POST_SIGNOUT_REDIRECT, ssm:/configuration/${self:custom.stage}/cognito/redirectSignout, ssm:/configuration/default/cognito/redirectSignout}
   application_signout_url: ${self:custom.application_endpoint_url}postLogout
   s3Sync:
