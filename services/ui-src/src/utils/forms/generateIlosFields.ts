@@ -30,12 +30,13 @@ const availableIlos = (ilos: AnyObject[]) => {
       checked: false,
       children: [
         {
-          id: `plan_ilosUtilizationOfferedByPlan-otherText-${item.id}`,
+          id: `plan_ilosUtilizationByPlan-otherText-${item.id}`,
           type: "number",
           validation: {
             type: "number",
             nested: true,
-            parentFieldName: "plan_ilosUtilizationOfferedByPlan",
+            parentFieldName: "plan_ilosUtilizationByPlan",
+            parentOptionId: item.id,
           },
           props: {
             decimalPlacesToRoundTo: 0,
