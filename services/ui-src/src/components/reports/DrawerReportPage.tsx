@@ -118,6 +118,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
+    const disabled = reportingOnIlos && !ilos?.length;
     return entities?.map((entity) => {
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
@@ -139,10 +140,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {entity.name}
           </Heading>
           <Button
-            sx={sx.enterButton}
+            sx={disabled ? sx.disabledButton : sx.enterButton}
             onClick={() => openRowDrawer(entity)}
             variant="outline"
-            disabled={reportingOnIlos && !ilos?.length}
+            disabled={disabled}
           >
             {isEntityCompleted ? "Edit" : "Enter"}
           </Button>
@@ -235,6 +236,13 @@ const sx = {
   missingIlos: {
     fontWeight: "bold",
     marginBottom: "2rem",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
   },
   missingEntityMessage: {
     paddingTop: "1rem",
@@ -252,5 +260,17 @@ const sx = {
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+  },
+  disabledButton: {
+    width: "4.25rem",
+    height: "1.75rem",
+    fontSize: "md",
+    fontWeight: "normal",
+    color: "palette.gray_lighter",
+    borderColor: "palette.gray_lighter",
+    "&:hover": {
+      color: "palette.gray_lighter",
+      borderColor: "palette.gray_lighter",
+    },
   },
 };
