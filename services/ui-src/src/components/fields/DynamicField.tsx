@@ -142,32 +142,33 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       );
 
       // delete ILOS data from corresponding plans
-      const filteredPlans = report?.fieldData.plans?.map(
-        (entity: EntityShape) => {
-          let newEntity = { ...entity };
-          const planHasIlos =
-            entity["plan_ilosOfferedByPlan"]?.[0]?.value.startsWith("Yes");
+      const filteredPlans =
+        name === "plans"
+          ? filteredEntities
+          : report?.fieldData.plans?.map((entity: EntityShape) => {
+              let newEntity = { ...entity };
+              const planHasIlos =
+                entity["plan_ilosOfferedByPlan"]?.[0]?.value.startsWith("Yes");
 
-          if (name === "ilos" && planHasIlos) {
-            const ilosUtilizationByPlan = [
-              ...newEntity["plan_ilosUtilizationByPlan"],
-            ];
-            const filteredUtilizationByPlan = ilosUtilizationByPlan?.filter(
-              (ilos) => {
-                return selectedRecord.id !== ilos.key;
+              if (name === "ilos" && planHasIlos) {
+                const ilosUtilizationByPlan = [
+                  ...newEntity["plan_ilosUtilizationByPlan"],
+                ];
+                const filteredUtilizationByPlan = ilosUtilizationByPlan?.filter(
+                  (ilos) => {
+                    return selectedRecord.id !== ilos.key;
+                  }
+                );
+                newEntity = {
+                  ...newEntity,
+                  plan_ilosUtilizationByPlan: filteredUtilizationByPlan,
+                };
+                delete newEntity[
+                  `plan_ilosUtilizationByPlan-otherText_${selectedRecord.id}`
+                ];
               }
-            );
-            newEntity = {
-              ...newEntity,
-              plan_ilosUtilizationByPlan: filteredUtilizationByPlan,
-            };
-            delete newEntity[
-              `plan_ilosUtilizationByPlan-otherText_${selectedRecord.id}`
-            ];
-          }
-          return newEntity;
-        }
-      );
+              return newEntity;
+            });
 
       const dataToWrite = {
         metadata: {
