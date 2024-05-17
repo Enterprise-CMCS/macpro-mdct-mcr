@@ -1,8 +1,6 @@
 const { defineConfig } = require("cypress");
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
-
-// Load environment variables from .env file
-require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 module.exports = defineConfig({
   experimentalStudio: true,
