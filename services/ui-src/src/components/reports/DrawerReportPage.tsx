@@ -55,7 +55,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there are ILOS
   const ilos = report?.fieldData?.["ilos"];
-  const hasIlos = ilos.length;
+  const hasIlos = ilos?.length;
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
 
   // generate ILOS fields (if applicable)
