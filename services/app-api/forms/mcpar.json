@@ -3429,72 +3429,101 @@
             "drawerTitle": "",
             "missingEntityMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
-              },
-              {
-                "type": "span",
-                "content": "."
+                "type": "p",
+                "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. ",
+                "children": [
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
               }
             ],
             "missingIlosMessage": [
               {
-                "type": "span",
-                "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add ILOS",
-                "props": {
-                  "to": "/mcpar/program-information/add-in-lieu-of-services"
-                }
-              },
-              {
-                "type": "span",
-                "content": "."
+                "type": "p",
+                "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. ",
+                "children": [
+                  {
+                    "type": "internalLink",
+                    "content": "Add ILOS",
+                    "props": {
+                      "to": "/mcpar/program-information/add-in-lieu-of-services"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
               }
             ],
             "missingPlansAndIlosMessage": [
               {
                 "type": "p",
-                "content": "This program is missing plans and ILOS. <br/>If ILOS are available to this program, you won't be able to complete this section until you've: <br/>"
-              },
-              {
-                "type": "span",
-                "content": "<br/>1. added all the managed care plans that serve enrollees in the program by going to: "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
-              },
-              {
-                "type": "span",
-                "content": " and"
-              },
-              {
-                "type": "span",
-                "content": "<br/><br/>2. added all the names of approved ILOS in the program: "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add ILOS",
-                "props": {
-                  "to": "/mcpar/program-information/add-in-lieu-of-services"
-                }
+                "content": "This program is missing plans and ILOS."
               },
               {
                 "type": "p",
-                "content": "<br/>If ILOS are not available to this program, proceed to the next section."
+                "content": "If ILOS are available to this program, you won't be able to complete this section until you've:",
+                "children": [
+                  {
+                    "type": "ol",
+                    "children": [
+                      {
+                        "type": "li",
+                        "children": [
+                          {
+                            "type": "html",
+                            "content": "added all the managed care plans that serve enrollees in the program by going to: "
+                          },
+                          {
+                            "type": "internalLink",
+                            "content": "Add Plans",
+                            "props": {
+                              "to": "/mcpar/program-information/add-plans"
+                            }
+                          },
+                          {
+                            "type": "html",
+                            "content": " and"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "li",
+                        "children": [
+                          {
+                            "type": "html",
+                            "content": "added all the names of approved ILOS in the program: "
+                          },
+                          {
+                            "type": "internalLink",
+                            "content": "Add ILOS",
+                            "props": {
+                              "to": "/mcpar/program-information/add-in-lieu-of-services"
+                            }
+                          },
+                          {
+                            "type": "html",
+                            "content": "."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "content": "If ILOS are not available to this program, proceed to the next section."
               }
             ]
           },
