@@ -146,7 +146,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         (entity: EntityShape) => {
           let newEntity = { ...entity };
           const planHasIlos =
-            entity["plan_ilosOfferedByPlan"][0]?.value.startsWith("Yes");
+            entity["plan_ilosOfferedByPlan"]?.[0]?.value.startsWith("Yes");
 
           if (name === "ilos" && planHasIlos) {
             const ilosUtilizationByPlan = [
