@@ -121,13 +121,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const entityRows = (entities: EntityShape[]) => {
     const disabled = reportingOnIlos && !hasIlos;
     return entities?.map((entity) => {
+      const calculateEntityCompletion = () => {
+        return form.fields
+          ?.filter(isFieldElement)
+          .every((field: FormField) => field.id in entity);
+      };
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
+       * If reporting on ILOS per plans, check that there are ILOS available.
        */
-      const isEntityCompleted = form.fields
-        ?.filter(isFieldElement)
-        .every((field: FormField) => field.id in entity);
+      const isEntityCompleted = reportingOnIlos
+        ? calculateEntityCompletion() &&
+          entity["plan_ilosUtilizationByPlan"].length > 0
+        : calculateEntityCompletion();
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
@@ -254,6 +261,9 @@ const sx = {
       "&:hover": {
         color: "palette.primary_darker",
       },
+    },
+    ol: {
+      paddingLeft: "1rem",
     },
   },
   enterButton: {

@@ -3430,8 +3430,11 @@
             "missingEntityMessage": [
               {
                 "type": "p",
-                "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. ",
                 "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. "
+                  },
                   {
                     "type": "internalLink",
                     "content": "Add Plans",
@@ -3449,8 +3452,11 @@
             "missingIlosMessage": [
               {
                 "type": "p",
-                "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. ",
                 "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. "
+                  },
                   {
                     "type": "internalLink",
                     "content": "Add ILOS",
@@ -3472,8 +3478,11 @@
               },
               {
                 "type": "p",
-                "content": "If ILOS are available to this program, you won't be able to complete this section until you've:",
                 "children": [
+                  {
+                    "type": "html",
+                    "content": "If ILOS are available to this program, you won't be able to complete this section until you've:"
+                  },
                   {
                     "type": "ol",
                     "children": [
