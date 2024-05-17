@@ -195,6 +195,24 @@ export const mockReportFieldData = {
     {
       id: "mock-plan-id-2",
       name: "mock-plan-name-2",
+      plan_ilosOfferedByPlan: [
+        {
+          key: "mock-radio",
+          value: "Yes",
+        },
+      ],
+      plan_ilosUtilizationByPlan: [
+        {
+          key: "mock-ilos-id-1",
+          value: "mock-ilos-name-1",
+        },
+      ],
+    },
+  ],
+  ilos: [
+    {
+      id: "mock-ilos-id-1",
+      name: "mock-ilos-name-1",
     },
   ],
   text: "text-input",
