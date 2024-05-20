@@ -42,6 +42,14 @@ const mockHydrationPlans = [
     name: "mock-plan-2",
   },
 ];
+
+const mockHydrationIlos = [
+  {
+    id: "mock-ilos-id-1",
+    name: "mock-ilos-1",
+  },
+];
+
 const mockUpdateReport = jest.fn();
 const mockedReportContext = {
   ...mockMcparReportContext,
@@ -70,6 +78,29 @@ const MockForm = (props: any) => {
 
 const dynamicFieldComponent = (hydrationValue?: any) => (
   <MockForm hydrationValue={hydrationValue} />
+);
+
+const MockIlosForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name="ilos"
+            label="test-label"
+            hydrate={props.hydrationValue}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
+const dynamicIlosFieldComponent = (hydrationValue?: any) => (
+  <MockIlosForm hydrationValue={hydrationValue} />
 );
 
 describe("Test DynamicField component", () => {
@@ -242,6 +273,52 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
                 "mock-response-2",
             },
           ],
+        },
+      }
+    );
+  });
+
+  it("Deletes ILOS entity and associated fields from the associated plan if state user", async () => {
+    await act(async () => {
+      await render(dynamicIlosFieldComponent(mockHydrationIlos));
+    });
+    // delete mock-ilos-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    const deleteButton = screen.getByText("Yes, delete ILOS");
+    await userEvent.click(deleteButton);
+
+    expect(mockUpdateReport).toHaveBeenCalledWith(
+      { ...mockReportKeys, state: mockStateUserStore.user?.state },
+      {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUserStore.user?.full_name,
+        },
+        fieldData: {
+          ilos: [],
+          plans: [
+            {
+              id: "mock-plan-id-1",
+              "mock-drawer-text-field": "example-explanation",
+              name: "mock-plan-name-1",
+            },
+            {
+              id: "mock-plan-id-2",
+              name: "mock-plan-name-2",
+              plan_ilosOfferedByPlan: [
+                {
+                  key: "mock-radio",
+                  value: "Yes",
+                },
+              ],
+              plan_ilosUtilizationByPlan: [],
+            },
+          ],
+          qualityMeasures: [
+            ...mockMcparReportStore.report!.fieldData.qualityMeasures,
+          ],
+          sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
         },
       }
     );

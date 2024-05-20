@@ -89,7 +89,6 @@ export const hydrateFormFields = (
     const fieldHydrationValue = formData?.[field.id];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
-
   return formFields;
 };
 
