@@ -91,7 +91,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // LaunchDarkly
-  const ilos = useFlags().ilos;
+  const ilos = useFlags()?.ilos;
 
   useEffect(() => {
     if (pathname.includes(section.path)) {
@@ -102,9 +102,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   const { name, path, children } = section;
   const ilosRoute =
     path.endsWith("add-in-lieu-of-services") || path.endsWith("ilos");
-  return ilosRoute && !ilos ? (
-    <></>
-  ) : (
+  return ilosRoute && !ilos ? null : (
     <React.Fragment key={path}>
       {children ? (
         <Box

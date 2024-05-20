@@ -32,7 +32,7 @@ export const ReportPageWrapper = () => {
   const locationState = useLocation().state as AnyObject;
 
   // LaunchDarkly
-  const ilos = useFlags().ilos;
+  const ilos = useFlags()?.ilos;
 
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
@@ -59,9 +59,7 @@ export const ReportPageWrapper = () => {
     switch (route.pageType) {
       case PageTypes.DRAWER:
         showSidebar();
-        return ilosRoute && !ilos ? (
-          <></>
-        ) : (
+        return ilosRoute && !ilos ? null : (
           <DrawerReportPage
             route={route as DrawerReportPageShape}
             validateOnRender={locationState?.validateOnRender}
@@ -89,9 +87,7 @@ export const ReportPageWrapper = () => {
         return <ReviewSubmitPage />;
       default:
         showSidebar();
-        return ilosRoute && !ilos ? (
-          <></>
-        ) : (
+        return ilosRoute && !ilos ? null : (
           <StandardReportPage
             route={route as StandardReportPageShape}
             validateOnRender={locationState?.validateOnRender}
