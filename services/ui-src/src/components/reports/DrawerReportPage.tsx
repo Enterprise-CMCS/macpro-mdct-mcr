@@ -130,9 +130,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       // if reporting on ILOS, verify that there its questions are completed
       let isIlosCompleted = false;
       if (reportingOnIlos) {
-        isIlosCompleted = entity["plan_ilosOfferedByPlan"][0]?.value.startsWith(
-          "Yes"
-        )
+        isIlosCompleted = entity[
+          "plan_ilosOfferedByPlan"
+        ]?.[0]?.value.startsWith("Yes")
           ? ["plan_ilosUtilizationByPlan"].length > 0
           : entity["plan_ilosOfferedByPlan"][0];
       }
