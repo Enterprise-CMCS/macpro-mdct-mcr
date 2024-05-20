@@ -133,8 +133,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         isIlosCompleted = entity[
           "plan_ilosOfferedByPlan"
         ]?.[0]?.value.startsWith("Yes")
-          ? ["plan_ilosUtilizationByPlan"].length > 0
-          : entity["plan_ilosOfferedByPlan"][0];
+          ? ["plan_ilosUtilizationByPlan"]?.length > 0
+          : entity["plan_ilosOfferedByPlan"]?.[0];
       }
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
