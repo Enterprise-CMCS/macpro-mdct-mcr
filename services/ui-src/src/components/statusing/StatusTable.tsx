@@ -1,22 +1,26 @@
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
-import { ReportContext, Table } from "components";
+import { Table } from "components";
 // types
 import { ReportPageProgress, ReportType } from "types";
 // utils
-import { getRouteStatus, useBreakpoint } from "utils";
+import {
+  assertExhaustive,
+  getRouteStatus,
+  useBreakpoint,
+  useStore,
+} from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 // assets
 import editIcon from "assets/icons/icon_edit.png";
 import errorIcon from "assets/icons/icon_error_circle_bright.png";
 import successIcon from "assets/icons/icon_check_circle.png";
-import { assertExhaustive } from "utils/other/typing";
 
 export const StatusTable = () => {
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   const { review } = verbiage;
   const rowDepth = 1;
   return report ? (
@@ -97,7 +101,7 @@ const TableRow = ({ page, depth }: RowProps) => {
   const { isMobile } = useBreakpoint();
   const { name, path, children, status } = page;
   const buttonAriaLabel = `Edit  ${name}`;
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   return (
     <Tr>
       {depth == 1 ? (

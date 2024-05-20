@@ -15,11 +15,17 @@ import {
   mockStateUserStore,
   mockQualityMeasuresEntity,
   mockAdminUserStore,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
+// types
 import { ReportStatus } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockMcparReportStore,
+});
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -36,48 +42,19 @@ const mockHydrationPlans = [
     name: "mock-plan-2",
   },
 ];
+
+const mockHydrationIlos = [
+  {
+    id: "mock-ilos-id-1",
+    name: "mock-ilos-1",
+  },
+];
+
 const mockUpdateReport = jest.fn();
 const mockedReportContext = {
   ...mockMcparReportContext,
   updateReport: mockUpdateReport,
-  report: {
-    ...mockMcparReport,
-    fieldData: {
-      plans: mockHydrationPlans,
-      sanctions: [
-        {
-          ...mockSanctionsEntity,
-          sanction_planName: {
-            label: "sanction_planName",
-            value: "mock-plan-id-1",
-          },
-        },
-        {
-          ...mockSanctionsEntity,
-          sanction_planName: {
-            label: "sanction_planName",
-            value: "mock-plan-id-2",
-          },
-        },
-      ],
-      qualityMeasures: [
-        {
-          ...mockQualityMeasuresEntity,
-          "qualityMeasure_plan_measureResults_mock-plan-id-1":
-            "mock-response-1",
-          "qualityMeasure_plan_measureResults_mock-plan-id-2":
-            "mock-response-2",
-        },
-        {
-          ...mockQualityMeasuresEntity,
-          "qualityMeasure_plan_measureResults_mock-plan-id-1":
-            "mock-response-1",
-          "qualityMeasure_plan_measureResults_mock-plan-id-2":
-            "mock-response-2",
-        },
-      ],
-    },
-  },
+  report: mockMcparReport,
 };
 
 const MockForm = (props: any) => {
@@ -103,9 +80,31 @@ const dynamicFieldComponent = (hydrationValue?: any) => (
   <MockForm hydrationValue={hydrationValue} />
 );
 
+const MockIlosForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name="ilos"
+            label="test-label"
+            hydrate={props.hydrationValue}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
+const dynamicIlosFieldComponent = (hydrationValue?: any) => (
+  <MockIlosForm hydrationValue={hydrationValue} />
+);
+
 describe("Test DynamicField component", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dynamicFieldComponent());
     });
@@ -230,8 +229,6 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
   });
 
   it("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    render(dynamicFieldComponent(mockHydrationPlans));
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlans));
     });
@@ -281,6 +278,52 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
     );
   });
 
+  it("Deletes ILOS entity and associated fields from the associated plan if state user", async () => {
+    await act(async () => {
+      await render(dynamicIlosFieldComponent(mockHydrationIlos));
+    });
+    // delete mock-ilos-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    const deleteButton = screen.getByText("Yes, delete ILOS");
+    await userEvent.click(deleteButton);
+
+    expect(mockUpdateReport).toHaveBeenCalledWith(
+      { ...mockReportKeys, state: mockStateUserStore.user?.state },
+      {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: mockStateUserStore.user?.full_name,
+        },
+        fieldData: {
+          ilos: [],
+          plans: [
+            {
+              id: "mock-plan-id-1",
+              "mock-drawer-text-field": "example-explanation",
+              name: "mock-plan-name-1",
+            },
+            {
+              id: "mock-plan-id-2",
+              name: "mock-plan-name-2",
+              plan_ilosOfferedByPlan: [
+                {
+                  key: "mock-radio",
+                  value: "Yes",
+                },
+              ],
+              plan_ilosUtilizationByPlan: [],
+            },
+          ],
+          qualityMeasures: [
+            ...mockMcparReportStore.report!.fieldData.qualityMeasures,
+          ],
+          sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
+        },
+      }
+    );
+  });
+
   test("Admin users can't delete plans", async () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(dynamicFieldComponent(mockHydrationPlans));
@@ -308,7 +351,6 @@ describe("Test typing into DynamicField component", () => {
 describe("Test DynamicField Autosave Functionality", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedUseStore.mockReturnValue(mockStateUserStore);
   });
 
   test("Autosaves when state user", async () => {
@@ -323,6 +365,10 @@ describe("Test DynamicField Autosave Functionality", () => {
   });
 
   test("DynamicField handles blanked fields after it was filled out", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     const result = render(dynamicFieldComponent());
     const firstDynamicField: HTMLInputElement =
       result.container.querySelector("[name='plans[0]']")!;

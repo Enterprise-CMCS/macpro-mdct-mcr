@@ -24,10 +24,10 @@ jobs:
         run: ./.github/build-vars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             **/node_modules
@@ -40,7 +40,7 @@ jobs:
         run: ./scripts/test-unit.sh
       - name: publish test coverage to code climate
         if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v5
+        uses: paambaati/codeclimate-action@v6
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
         with:
@@ -48,10 +48,14 @@ jobs:
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
       - name: Store unit test results
-        uses: actions/upload-artifact@v3
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          name: unit_test_results
-          path: ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          name: unit-test-results
+          path: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+          retention-days: 14
 
   deploy:
     needs: unit-tests
@@ -80,10 +84,10 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             **/node_modules
@@ -211,12 +215,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Cypress Tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: tests/cypress
           spec: |
-            tests/e2e/*.spec.js
-            tests/e2e/**/*.feature
+            e2e/*.cy.js
+            e2e/admin/*.cy.js
+            e2e/mcpar/*.cy.js
+            e2e/mlr/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
@@ -226,15 +232,15 @@ jobs:
           CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
           CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
-
       - name: Upload screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-test-results
           path: |
-            tests/cypress/screenshots/
-            tests/cypress/videos/
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
+          retention-days: 14
 
 
   a11y-tests:
@@ -249,10 +255,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Project A11y
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: tests/cypress
-          spec: tests/accessibility/*.feature
+          spec: e2e/accessibility/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
@@ -263,15 +269,15 @@ jobs:
           CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
           RUN_PA11Y: true
-
       - name: Upload screenshots
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: a11y-test-results
           path: |
-            tests/cypress/screenshots/
-            tests/cypress/videos/
+            ${{github.workspace}}/tests/cypress/screenshots/
+            ${{github.workspace}}/tests/cypress/videos/
+          retention-days: 14
   
   cleanup:
     name: Delist GHA Runner CIDR Blocks
