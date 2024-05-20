@@ -1,22 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-// utils
 import {
-  mockMcparReportStore,
-  mockStateUserStore,
+  mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
-// components
-import { Sidebar } from "components";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
+import { axe } from "jest-axe";
+//components
+import { ReportContext, Sidebar } from "components";
 
 jest.mock("utils/reports/routing", () => ({
   isReportFormPage: jest.fn(() => true),
@@ -24,13 +14,17 @@ jest.mock("utils/reports/routing", () => ({
 
 const sidebarComponent = (
   <RouterWrappedComponent>
-    <Sidebar isHidden={false} />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <Sidebar isHidden={false} />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 const sidebarComponentHidden = (
   <RouterWrappedComponent>
-    <Sidebar isHidden={true} />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <Sidebar isHidden={true} />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -41,7 +35,7 @@ describe("Test Sidebar", () => {
 
   test("Sidebar menu is visible", () => {
     expect(
-      screen.getByText(mockMcparReportStore.report!.formTemplate.name)
+      screen.getByText(mockMcparReportContext.report.formTemplate.name)
     ).toBeVisible();
   });
 
@@ -76,7 +70,7 @@ describe("Test Sidebar isHidden property", () => {
   test("If isHidden is true, Sidebar is invisible", () => {
     render(sidebarComponentHidden);
     expect(
-      screen.getByText(mockMcparReportStore.report!.formTemplate.name)
+      screen.getByText(mockMcparReportContext.report.formTemplate.name)
     ).not.toBeVisible();
   });
 });

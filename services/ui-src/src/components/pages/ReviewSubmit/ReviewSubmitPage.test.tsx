@@ -10,7 +10,6 @@ import {
   mockAdminUserStore,
   mockMcparReport,
   mockMcparReportContext,
-  mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -21,123 +20,24 @@ import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
-
-// context mocks
-const mockUnfilledReport = {
-  ...mockMcparReport,
-  status: ReportStatus.IN_PROGRESS,
-};
-
-const mockedReportContext_Unfilled = {
-  ...mockMcparReportContext,
-  report: mockUnfilledReport,
-};
-
-const mockFilledReport = {
-  ...mockMcparReport,
-  status: ReportStatus.IN_PROGRESS,
-  isComplete: true,
-  completionStatus: {
-    "/mock/mock-route-1": true,
-    "/mock/mock-route-2": {
-      "/mock/mock-route-2a": true,
-      "/mock/mock-route-2b": true,
-    },
-  },
-};
-
-const mockedReportContext_Filled = {
-  ...mockMcparReportContext,
-  report: mockFilledReport,
-};
-
-const mockSubmittedReport = {
-  ...mockMcparReport,
-  status: ReportStatus.SUBMITTED,
-};
-
-const mockedReportContext_Submitted = {
-  ...mockMcparReportContext,
-  report: mockSubmittedReport,
-};
-
-const mockInProgressReport = {
-  ...mockMcparReport,
-  status: ReportStatus.IN_PROGRESS,
-};
-
-const mockedReportContext_InProgress = {
-  ...mockMcparReportContext,
-  report: mockInProgressReport,
-};
-
-// store mocks
-
-const mockFilledMcparReportStore = {
-  ...mockMcparReportStore,
-  report: {
-    ...(mockMcparReportStore.report = mockFilledReport),
-  },
-};
-
-const mockSubmittedMcparReportStore = {
-  ...mockMcparReportStore,
-  report: {
-    ...(mockMcparReportStore.report = mockSubmittedReport),
-  },
-};
-
-// components
-const McparReviewSubmitPage_NotStarted = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Unfilled = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Unfilled}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Filled = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Filled}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Submitted = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Submitted}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_InProgress = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_InProgress}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
 
 describe("MCPAR Review and Submit Page Functionality", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe("User has not started filling out the form", () => {
+    const McparReviewSubmitPage_NotStarted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockMcparReportContext}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
     test("Show alert message if status is NOT_STARTED and is not able to be submitted", () => {
       render(McparReviewSubmitPage_NotStarted);
       const { alertBox } = reviewVerbiage;
@@ -148,6 +48,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_NotStarted);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -158,6 +59,24 @@ describe("MCPAR Review and Submit Page Functionality", () => {
   });
 
   describe("User has errors on the form", () => {
+    const mockUnfilledReport = {
+      ...mockMcparReport,
+      status: ReportStatus.IN_PROGRESS,
+    };
+
+    const mockedReportContext_Unfilled = {
+      ...mockMcparReportContext,
+      report: mockUnfilledReport,
+    };
+
+    const McparReviewSubmitPage_Unfilled = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Unfilled}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
     test("Show alert message that form has not been filled out and is not able to be submitted", () => {
       render(McparReviewSubmitPage_Unfilled);
       const { alertBox } = reviewVerbiage;
@@ -173,6 +92,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users get same experience and can't submit form", () => {
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_Unfilled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -188,11 +108,51 @@ describe("MCPAR Review and Submit Page Functionality", () => {
   });
 
   describe("User has filled out the form correctly", () => {
+    const mockFilledReport = {
+      ...mockMcparReport,
+      status: ReportStatus.IN_PROGRESS,
+      isComplete: true,
+      completionStatus: {
+        "/mock/mock-route-1": true,
+        "/mock/mock-route-2": {
+          "/mock/mock-route-2a": true,
+          "/mock/mock-route-2b": true,
+        },
+      },
+    };
+
+    const mockedReportContext_Filled = {
+      ...mockMcparReportContext,
+      report: mockFilledReport,
+    };
+
+    const McparReviewSubmitPage_Filled = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Filled}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    const mockSubmittedReport = {
+      ...mockMcparReport,
+      status: ReportStatus.SUBMITTED,
+    };
+
+    const mockedReportContext_Submitted = {
+      ...mockMcparReportContext,
+      report: mockSubmittedReport,
+    };
+
+    const McparReviewSubmitPage_Submitted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Submitted}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
     test("Show no alert message or errors and the submit button is enabled", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockFilledMcparReportStore,
-      });
       render(McparReviewSubmitPage_Filled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -206,10 +166,6 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Show no alert message or errors and the submit button is enabled", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockFilledMcparReportStore,
-      });
       render(McparReviewSubmitPage_Filled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -223,10 +179,6 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("McparReviewSubmitPage shows modal on submit button click", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockFilledMcparReportStore,
-      });
       render(McparReviewSubmitPage_Filled);
       const { review } = reviewVerbiage;
       const { modal, pageLink } = review;
@@ -237,10 +189,6 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("McparReviewSubmitPage updates report status on submit confirmation", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockFilledMcparReportStore,
-      });
       render(McparReviewSubmitPage_Filled);
       const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
       await userEvent.click(reviewSubmitButton);
@@ -252,10 +200,6 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("McparReviewSubmitPage renders success state when report status is 'submitted'", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockSubmittedMcparReportStore,
-      });
       render(McparReviewSubmitPage_Submitted);
       const { submitted } = reviewVerbiage;
       const { intro } = submitted;
@@ -263,10 +207,7 @@ describe("MCPAR Review and Submit Page Functionality", () => {
     });
 
     test("Admin users see form is filled but can not submit the form", () => {
-      mockedUseStore.mockReturnValue({
-        ...mockAdminUserStore,
-        ...mockFilledMcparReportStore,
-      });
+      mockedUseStore.mockReturnValue(mockAdminUserStore);
       render(McparReviewSubmitPage_Filled);
       const { alertBox } = reviewVerbiage;
       const { title, description } = alertBox;
@@ -281,7 +222,25 @@ describe("MCPAR Review and Submit Page Functionality", () => {
   });
 });
 
-describe("MCPAR Review and Submit Page - LaunchDarkly", () => {
+describe("MCPAR Review and Submit Page - Launch Darkly", () => {
+  const mockInProgressReport = {
+    ...mockMcparReport,
+    status: ReportStatus.IN_PROGRESS,
+  };
+
+  const mockedReportContext_InProgress = {
+    ...mockMcparReportContext,
+    report: mockInProgressReport,
+  };
+
+  const McparReviewSubmitPage_InProgress = (
+    <RouterWrappedComponent>
+      <ReportContext.Provider value={mockedReportContext_InProgress}>
+        <ReviewSubmitPage />
+      </ReportContext.Provider>
+    </RouterWrappedComponent>
+  );
+
   describe("When loading an in-progress report", () => {
     it("Review PDF button should be visible and correctly formed", async () => {
       render(McparReviewSubmitPage_InProgress);
@@ -293,11 +252,24 @@ describe("MCPAR Review and Submit Page - LaunchDarkly", () => {
   });
 
   describe("When loading a successfully submitted report", () => {
+    const mockSubmittedReport = {
+      ...mockMcparReport,
+      status: ReportStatus.SUBMITTED,
+    };
+
+    const mockedReportContext_Submitted = {
+      ...mockMcparReportContext,
+      report: mockSubmittedReport,
+    };
+
+    const McparReviewSubmitPage_Submitted = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockedReportContext_Submitted}>
+          <ReviewSubmitPage />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
     it("Review PDF button should be visible and correctly formed", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockSubmittedMcparReportStore,
-      });
       render(McparReviewSubmitPage_Submitted);
       const printButton = screen.getByRole("link");
       expect(printButton).toBeVisible();

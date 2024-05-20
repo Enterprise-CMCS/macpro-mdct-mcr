@@ -24,7 +24,20 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const incompleteRowComponent = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMlrReportContext}>
+    <ReportContext.Provider
+      value={{
+        ...mockMlrReportContext,
+        report: {
+          ...mockMlrReportContext.report,
+          formTemplate: {
+            ...mockMlrReportContext.report.formTemplate,
+            validationJson: {
+              report_mlrNumerator: "number",
+            },
+          },
+        },
+      }}
+    >
       <Table content={{}}>
         <MobileEntityRow
           entity={{
@@ -66,14 +79,12 @@ describe("Test MobileEntityRow", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  test.skip("It should render an error if an entity is incomplete", async () => {
+  test("It should render an error if an entity is incomplete", async () => {
     const { findByText } = render(incompleteRowComponent);
     expect(
       await findByText("Select “Enter MLR” to complete this report.")
     ).toBeVisible();
   });
-
   test("It should NOT render an error if an entity is complete", async () => {
     const { queryByText } = render(completeRowComponent);
     expect(queryByText("Select “Enter MLR” to complete this report.")).toBe(

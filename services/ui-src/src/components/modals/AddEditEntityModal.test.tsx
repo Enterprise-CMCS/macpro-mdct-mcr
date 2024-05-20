@@ -13,17 +13,12 @@ import {
   mockReportKeys,
   mockStateUserStore,
   RouterWrappedComponent,
-  mockMcparReportStore,
 } from "utils/testing/setupJest";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
 
 const mockUpdateReport = jest.fn();
 const mockCloseHandler = jest.fn();
@@ -45,7 +40,7 @@ const mockedReportContext = {
 };
 
 const mockUpdateCallPayload = {
-  fieldData: mockMcparReportStore.report!.fieldData,
+  fieldData: mockedReportContext.report.fieldData,
   metadata: {
     lastAlteredBy: "Thelonious States",
     status: "In progress",
@@ -87,6 +82,7 @@ const modalComponentWithSelectedEntity = (
 
 describe("Test AddEditEntityModal", () => {
   beforeEach(async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(modalComponent);
     });
@@ -114,7 +110,10 @@ describe("Test AddEditEntityModal", () => {
   });
 });
 
-describe.skip("Test AddEditEntityModal functionality", () => {
+describe("Test AddEditEntityModal functionality", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
   afterEach(() => {
     // reset payload to baseline with only mockEntity
     mockUpdateCallPayload.fieldData.accessMeasures = [mockEntity];
@@ -148,10 +147,10 @@ describe.skip("Test AddEditEntityModal functionality", () => {
       "mock-modal-text-field": "mock input 2",
     });
 
-    await expect(mockUpdateReport).toHaveBeenCalledWith({
-      ...mockReportKeys,
-      ...mockUpdateCallPayload,
-    });
+    await expect(mockUpdateReport).toHaveBeenCalledWith(
+      mockReportKeys,
+      mockUpdateCallPayload
+    );
     await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 

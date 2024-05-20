@@ -1,5 +1,7 @@
+import { useContext } from "react";
 // components
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
+import { ReportContext } from "components";
 // types
 import { FormField, FormLayoutElement, isFieldElement } from "types";
 // utils
@@ -7,7 +9,6 @@ import {
   parseFormFieldInfo,
   parseCustomHtml,
   renderOverlayEntityDataCell,
-  useStore,
 } from "utils";
 
 export const ExportedEntityDetailsTableRow = ({
@@ -18,7 +19,7 @@ export const ExportedEntityDetailsTableRow = ({
   entityId,
   optional,
 }: Props) => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const reportData = report?.fieldData;
   const isDynamicField = formField.type === "dynamic";
   const formFieldInfo = parseFormFieldInfo(formField?.props!);

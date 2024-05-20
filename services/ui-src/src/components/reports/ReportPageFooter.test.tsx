@@ -2,16 +2,15 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportPageFooter } from "components";
-// types
-import { FormJson } from "types";
+import { ReportContext, ReportPageFooter } from "components";
 // utils
 import {
   mockAdminUserStore,
-  mockMcparReportStore,
+  mockMcparReportContext,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { FormJson } from "types";
 import { useStore } from "utils";
 
 const mockUseNavigate = jest.fn();
@@ -31,18 +30,20 @@ jest.mock("utils", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
 
 const reportPageComponent = (
   <RouterWrappedComponent>
-    <ReportPageFooter data-testid="report-page-footer" />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <ReportPageFooter data-testid="report-page-footer" />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 describe("Test ReportPageFooter without form", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });

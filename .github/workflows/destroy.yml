@@ -33,9 +33,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc" 
       - name: set branch_name
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
@@ -57,5 +54,4 @@ jobs:
         run: ./.github/github-lock.sh $branch_name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Destroy
-        run: ./run destroy --stage $STAGE_PREFIX$branch_name --verify false
+      - run: ./scripts/destroy.sh $STAGE_PREFIX$branch_name

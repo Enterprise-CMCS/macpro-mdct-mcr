@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 // components
 import {
   Box,
@@ -14,14 +13,12 @@ import { EntityStatusIcon } from "components";
 // types
 import { AnyObject, EntityShape } from "types";
 // utils
-import {
-  eligibilityGroup,
-  getMlrEntityStatus,
-  parseCustomHtml,
-  useStore,
-} from "utils";
+import { eligibilityGroup, parseCustomHtml, useStore } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { useContext, useMemo } from "react";
+import { ReportContext } from "components/reports/ReportProvider";
+import { getMlrEntityStatus } from "utils/tables/getMlrEntityStatus";
 
 export const MobileEntityRow = ({
   entity,
@@ -33,7 +30,7 @@ export const MobileEntityRow = ({
   openEntityDetailsOverlay,
 }: Props) => {
   const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const { report_programName, report_planName } = entity;

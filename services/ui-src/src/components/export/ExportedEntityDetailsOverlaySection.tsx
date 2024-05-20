@@ -1,7 +1,11 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import uuid from "react-uuid";
 // components
-import { ExportedSectionHeading, ExportedEntityDetailsTable } from "components";
+import {
+  ExportedSectionHeading,
+  ExportedEntityDetailsTable,
+  ReportContext,
+} from "components";
 import { Box, Heading } from "@chakra-ui/react";
 // types
 import {
@@ -12,7 +16,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
+import { assertExhaustive, getEntityDetailsMLR } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
@@ -27,7 +31,7 @@ export const ExportedEntityDetailsOverlaySection = ({
   section,
   ...props
 }: ExportedEntityDetailsOverlaySectionProps) => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const entityType = section.entityType;
 
   return (

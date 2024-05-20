@@ -121,8 +121,6 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
   missingEntityMessage?: CustomHtmlElement[];
-  missingIlosMessage?: CustomHtmlElement[];
-  missingPlansAndIlosMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage

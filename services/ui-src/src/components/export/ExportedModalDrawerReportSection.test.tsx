@@ -1,26 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // components
-import { ExportedModalDrawerReportSection } from "components";
+import { ReportContext, ExportedModalDrawerReportSection } from "components";
 // utils
 import {
   mockModalDrawerReportPageJson,
-  mockEmptyReportStore,
-  mockMcparReportStore,
+  mockMcparReport,
+  mockMcparReportContext,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
 // types
-import { ModalDrawerReportPageShape } from "types";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockMcparReportStore,
-});
+import { ModalDrawerReportPageShape, ReportContextShape } from "types";
 
 const exportedReportSectionComponent = (
+  context: ReportContextShape = mockMcparReportContext,
   content: ModalDrawerReportPageShape = mockModalDrawerReportPageJson
-) => <ExportedModalDrawerReportSection section={content} />;
+) => (
+  <ReportContext.Provider value={context}>
+    <ExportedModalDrawerReportSection section={content} />
+  </ReportContext.Provider>
+);
 
 describe("ExportedModalDrawerReportSection renders", () => {
   test("ExportedModalDrawerReportSection renders", () => {
@@ -32,13 +30,13 @@ describe("ExportedModalDrawerReportSection renders", () => {
 
 describe("ExportedModalDrawerReportSection displays correct verbiage if no entities are present", () => {
   test("Correct message is shown if entityType is accessMeasures", () => {
-    mockedUseStore.mockReturnValue({
-      ...mockEmptyReportStore,
-    });
     render(
       exportedReportSectionComponent({
-        ...mockModalDrawerReportPageJson,
-        entityType: "accessMeasures",
+        ...mockMcparReportContext,
+        report: {
+          ...mockMcparReport,
+          fieldData: {},
+        },
       })
     );
     const entityMessage = screen.getByText("0 - No access measures entered");
@@ -47,7 +45,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
 
   test("Correct message is shown if entityType is qualityMeasures", () => {
     render(
-      exportedReportSectionComponent({
+      exportedReportSectionComponent(mockMcparReportContext, {
         ...mockModalDrawerReportPageJson,
         entityType: "qualityMeasures",
       })
@@ -60,7 +58,7 @@ describe("ExportedModalDrawerReportSection displays correct verbiage if no entit
 
   test("Correct message is shown if entityType is sanctions", () => {
     render(
-      exportedReportSectionComponent({
+      exportedReportSectionComponent(mockMcparReportContext, {
         ...mockModalDrawerReportPageJson,
         entityType: "sanctions",
       })

@@ -11,17 +11,12 @@ import {
   mockBannerStore,
   mockLDFlags,
   mockStateUserStore,
-  mockMcparReportStore,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockBannerStore,
-  ...mockMcparReportStore,
-});
 
 mockLDFlags.setDefault({ mlrReport: true });
 
@@ -77,6 +72,25 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
+describe("Test AppRoutes for non-admin-specific routes", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
+    history = createMemoryHistory();
+    history.push("/admin");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+  });
+
+  test("/admin not visible for state user; redirects to /profile", async () => {
+    const currentPath = history.location.pathname;
+    expect(currentPath).toEqual("/profile");
+  });
+});
+
 describe("Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue({
@@ -92,5 +106,27 @@ describe("Test AppRoutes 404 handling", () => {
 
   test("not-found routes redirect to 404", () => {
     expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
+  });
+});
+
+describe("Test AppRoutes for MCPAR report-specific routes", () => {
+  beforeEach(async () => {
+    window.HTMLElement.prototype.scrollIntoView = function () {};
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
+    history = createMemoryHistory();
+    history.push("/mcpar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+  });
+  afterEach(async () => {
+    window.HTMLElement.prototype.scrollIntoView = tempScroll;
+  });
+  test("/mcpar is visible for state user with access", async () => {
+    const currentPath = history.location.pathname;
+    expect(currentPath).toEqual("/mcpar");
   });
 });

@@ -1,26 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// utils
 import {
   mockDrawerReportPageJson,
   mockFormField,
   mockNestedFormField,
   mockMcparReportContext,
   mockStandardReportPageJson,
-  mockMlrReportStore,
-  mockMcparReportStore,
+  mockMlrReportContext,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
-// components
-import { ExportedReportFieldTable } from "components";
-// types
+import { ReportContext } from "components";
+import { ExportedReportFieldTable } from "./ExportedReportFieldTable";
 import { DrawerReportPageShape } from "types";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockMcparReportStore,
-});
 
 // Contexts
 const reportJsonFields = [{ ...mockNestedFormField, id: "parent" }];
@@ -47,17 +37,9 @@ mockDrawerContext.report.fieldData = {
     {
       id: "123",
       name: "example-plan1",
-      plan_ilosUtilizationByPlan: [],
-      plan_ilosOfferedByPlan: [],
       ...fieldData,
     },
-    {
-      id: "456",
-      name: "example-plan2",
-      plan_ilosUtilizationByPlan: [],
-      plan_ilosOfferedByPlan: [],
-      ...fieldData,
-    },
+    { id: "456", name: "example-plan2", ...fieldData },
   ],
 };
 
@@ -113,20 +95,34 @@ const hintJson = {
 };
 
 const exportedStandardTableComponent = (
-  <ExportedReportFieldTable section={mockStandardPageJson} />
+  <ReportContext.Provider value={mockStandardContext}>
+    <ExportedReportFieldTable section={mockStandardPageJson} />
+  </ReportContext.Provider>
 );
 const exportedDrawerTableComponent = (
-  <ExportedReportFieldTable
-    section={mockDrawerPageJson as DrawerReportPageShape}
-  />
+  <ReportContext.Provider value={mockDrawerContext}>
+    <ExportedReportFieldTable
+      section={mockDrawerPageJson as DrawerReportPageShape}
+    />
+  </ReportContext.Provider>
 );
 const emptyTableComponent = (
-  <ExportedReportFieldTable section={mockEmptyPageJson} />
+  <ReportContext.Provider value={mockDrawerContext}>
+    <ExportedReportFieldTable section={mockEmptyPageJson} />
+  </ReportContext.Provider>
 );
 
-const noHintComponent = <ExportedReportFieldTable section={noHintJson} />;
+const noHintComponent = (
+  <ReportContext.Provider value={mockMlrReportContext}>
+    <ExportedReportFieldTable section={noHintJson} />
+  </ReportContext.Provider>
+);
 
-const hintComponent = <ExportedReportFieldTable section={hintJson} />;
+const hintComponent = (
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <ExportedReportFieldTable section={hintJson} />
+  </ReportContext.Provider>
+);
 
 describe("ExportedReportFieldRow", () => {
   test("Is present", async () => {
@@ -154,9 +150,6 @@ describe("ExportedReportFieldRow", () => {
   });
 
   test("hides the hint text within MLR reports", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockMlrReportStore,
-    });
     render(noHintComponent);
     const hint = screen.queryByText(/Mock Hint Text/);
     expect(hint).not.toBeInTheDocument();

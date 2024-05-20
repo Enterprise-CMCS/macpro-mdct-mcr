@@ -1,17 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import userEvent from "@testing-library/user-event";
 // components
-import { StatusTable, StatusIcon } from "./StatusTable";
+import { ReportContext, StatusTable } from "components";
 // types
-import { ReportType } from "types";
+import { ReportStatus, ReportType } from "types";
 // utils
 import {
-  mockMcparReportStore,
-  mockStateUserStore,
+  mockMcparReport,
+  mockMcparReportContext,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { makeMediaQueryClasses, useBreakpoint, useStore } from "utils";
+import { makeMediaQueryClasses, useBreakpoint } from "utils";
+import userEvent from "@testing-library/user-event";
+import { StatusIcon } from "./StatusTable";
 
 const mockUseNavigate = jest.fn();
 
@@ -27,37 +28,48 @@ const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
   typeof makeMediaQueryClasses
 >;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
+const mockInProgressReport = {
+  ...mockMcparReport,
+  status: ReportStatus.IN_PROGRESS,
+};
 
-const McparReviewSubmitPage = (
+const mockedReportContext_InProgress = {
+  ...mockMcparReportContext,
+  report: mockInProgressReport,
+};
+
+const McparReviewSubmitPage_InProgress = (
   <RouterWrappedComponent>
-    <StatusTable />
+    <ReportContext.Provider value={mockedReportContext_InProgress}>
+      <StatusTable />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const mockedReportContext_NoReport = {
+  ...mockMcparReportContext,
+  report: undefined,
+};
+
+const McparReviewSubmitPage_EmptyReportContext = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedReportContext_NoReport}>
+      <StatusTable />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 describe("Status Table Functionality", () => {
-  beforeEach(async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMcparReportStore,
-    });
-  });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("should not display anything if not given a report", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockUseBreakpoint.mockReturnValue({
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_EmptyReportContext);
     expect(screen.queryByText("Section")).not.toBeInTheDocument();
     expect(screen.queryByText("Status")).not.toBeInTheDocument();
   });
@@ -67,7 +79,7 @@ describe("Status Table Functionality", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_InProgress);
     expect(screen.getByText("Section")).toBeVisible();
     expect(screen.getByText("Status")).toBeVisible();
   });
@@ -77,7 +89,7 @@ describe("Status Table Functionality", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_InProgress);
     const unfilledPageErrorImg = document.querySelectorAll(
       "img[alt='Error notification']"
     );
@@ -90,7 +102,7 @@ describe("Status Table Functionality", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_InProgress);
     expect(screen.getByText("mock-route-1")).toBeVisible();
 
     expect(screen.getByText("mock-route-2")).toBeVisible();
@@ -112,7 +124,7 @@ describe("Status Table Functionality", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_InProgress);
     // Name value is the img's alt tag + the text inside the button
     const editButtons = screen.getAllByRole("button");
     expect(editButtons).toHaveLength(4);
@@ -145,7 +157,7 @@ describe("Status Table Functionality", () => {
       isMobile: true,
     });
     mockMakeMediaQueryClasses.mockReturnValue("mobile");
-    render(McparReviewSubmitPage);
+    render(McparReviewSubmitPage_InProgress);
     // Name value is the img's alt tag + the text inside the button
     const editButtons = screen.getAllByRole("button");
     expect(editButtons).toHaveLength(4);
@@ -191,7 +203,7 @@ describe("Status Table Accessibility", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    const { container } = render(McparReviewSubmitPage);
+    const { container } = render(McparReviewSubmitPage_InProgress);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

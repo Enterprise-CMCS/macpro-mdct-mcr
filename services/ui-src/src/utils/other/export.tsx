@@ -137,22 +137,9 @@ export const renderResponseData = (
   const missingEntryVerbiage = notApplicable
     ? verbiage.missingEntry.notApplicable
     : verbiage.missingEntry.noResponse;
-
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
-
-  if (!hasResponse && !isChoiceListField) {
+  if (!hasResponse)
     return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
-    // need to explicitly make this else if conditional so
-  }
-
-  if (!hasResponse && isChoiceListField) {
-    return (
-      <Text
-        sx={sx.noResponseOptional}
-      >{`${verbiage.missingEntry.noResponse}, optional`}</Text>
-    );
-  }
-
   // chandle choice list fields (checkbox, radio)
   if (isChoiceListField) {
     return renderChoiceListFieldResponse(
@@ -296,9 +283,6 @@ const sx = {
   },
   noResponse: {
     color: "palette.error_darker",
-  },
-  noResponseOptional: {
-    color: "palette.base",
   },
   notApplicable: {
     color: "palette.gray_medium",

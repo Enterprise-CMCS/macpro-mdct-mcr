@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
 // components
 import { Text } from "@chakra-ui/react";
 import { Modal, ReportContext } from "components";
+import { useContext, useState } from "react";
 // types
 import { AnyObject, EntityShape, ReportStatus } from "types";
-// utils
 import { useStore } from "utils";
 
 export const DeleteEntityModal = ({
@@ -13,12 +12,8 @@ export const DeleteEntityModal = ({
   verbiage,
   modalDisclosure,
 }: Props) => {
-  const { updateReport } = useContext(ReportContext);
-
-  // state management
+  const { report, updateReport } = useContext(ReportContext);
   const { full_name } = useStore().user ?? {};
-  const { report } = useStore();
-
   const [deleting, setDeleting] = useState<boolean>(false);
 
   const deleteProgramHandler = async () => {

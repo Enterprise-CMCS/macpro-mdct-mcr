@@ -6,5 +6,4 @@
 import "cypress-axe";
 import "./accessibility";
 import "./authentication";
-
-export { fillFormField, verifyElementsArePrefilled } from "./form/formInputs";
+import "@testing-library/cypress/add-commands";

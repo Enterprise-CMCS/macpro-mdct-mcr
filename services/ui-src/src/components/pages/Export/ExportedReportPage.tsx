@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Helmet } from "react-helmet";
 // components
 import { Box, Center, Heading, Text, Tr, Td, Spinner } from "@chakra-ui/react";
@@ -5,6 +6,7 @@ import {
   ExportedReportMetadataTable,
   ExportedReportWrapper,
   ExportedSectionHeading,
+  ReportContext,
   Table,
 } from "components";
 // types
@@ -16,13 +18,13 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, useStore } from "utils";
+import { assertExhaustive } from "utils/other/typing";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 
 export const ExportedReportPage = () => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const routesToRender = report?.formTemplate.routes.filter(
     (route: ReportRoute) => route
   );
@@ -120,7 +122,7 @@ export const renderReportSections = (reportRoutes: ReportRoute[]) => {
         {childSections?.map((child: ReportRoute) => renderSection(child))}
         {/* if section does not have children and has content to render, render it */}
         {!childSections && (
-          <Box pb={"3.5rem"}>
+          <Box>
             <ExportedSectionHeading
               heading={section.verbiage?.intro?.subsection || section.name}
               verbiage={section.verbiage || undefined}

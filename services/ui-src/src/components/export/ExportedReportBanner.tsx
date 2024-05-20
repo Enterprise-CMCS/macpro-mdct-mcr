@@ -5,13 +5,12 @@ import { Box, Button, Image, Text } from "@chakra-ui/react";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-// utils
-import { useStore } from "utils";
-// types
+import { useContext } from "react";
+import { ReportContext } from "components";
 import { ReportType } from "types";
 
 export const ExportedReportBanner = () => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
 

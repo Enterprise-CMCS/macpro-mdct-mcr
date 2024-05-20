@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { axe } from "jest-axe";
 // components
@@ -11,19 +10,10 @@ import {
   mockMcparReportContext,
   mockReportKeys,
   mockAccessMeasuresEntity,
-  mockStateUserStore,
-  mockMcparReportStore,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
 
 const mockUpdateReport = jest.fn();
 const mockCloseHandler = jest.fn();
@@ -42,7 +32,7 @@ const mockedReportContext = {
 const mockUpdateCallBaseline = {
   fieldData: mockedReportContext.report.fieldData,
   metadata: {
-    lastAlteredBy: "Thelonious States",
+    lastAlteredBy: undefined,
     status: "In progress",
   },
 };
@@ -59,16 +49,9 @@ const mockBadReportContext = {
 const mockBadUpdateCallBaseline = {
   fieldData: mockBadReportContext.report.fieldData,
   metadata: {
-    lastAlteredBy: "Thelonious States",
+    lastAlteredBy: undefined,
     status: "In progress",
   },
-};
-
-const mockDeletedEntityStore = {
-  ...mockMcparReportStore,
-  ...(mockMcparReportStore.report!.fieldData = {
-    accessMeasures: [],
-  }),
 };
 
 const modalComponent = (
@@ -122,11 +105,6 @@ describe("Test DeleteEntityModal functionality", () => {
   });
 
   test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
-    });
-
     render(modalComponent);
 
     const submitButton = screen.getByText(deleteModalConfirmButtonText);
@@ -143,11 +121,6 @@ describe("Test DeleteEntityModal functionality", () => {
   });
 
   test("DeleteEntityModal delete handles empty fielddata", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
-    });
-
     render(modalComponent);
 
     const submitButton = screen.getByText(deleteModalConfirmButtonText);

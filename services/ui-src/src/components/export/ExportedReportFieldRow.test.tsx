@@ -1,17 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// components
-import { ExportedReportFieldRow } from "components";
+import { ExportedReportFieldRow } from "./ExportedReportFieldRow";
+import { mockMcparReportContext } from "utils/testing/setupJest";
+import { ReportContext } from "components";
 import { Table } from "@chakra-ui/react";
-// utils
-import { mockMcparReportStore } from "utils/testing/setupJest";
-import { useStore } from "utils";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockMcparReportStore,
-});
 
 const field = {
   id: "test",
@@ -33,39 +25,47 @@ const fieldWithLabel = {
 };
 
 const exportRow = (
-  <Table>
-    <tbody>
-      <ExportedReportFieldRow formField={field} pageType="drawer" />
-    </tbody>
-  </Table>
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <Table>
+      <tbody>
+        <ExportedReportFieldRow formField={field} pageType="drawer" />
+      </tbody>
+    </Table>
+  </ReportContext.Provider>
 );
 
 const otherTextRow = (
-  <Table>
-    <tbody>
-      <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
-    </tbody>
-  </Table>
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <Table>
+      <tbody>
+        <ExportedReportFieldRow formField={otherTextField} pageType="drawer" />
+      </tbody>
+    </Table>
+  </ReportContext.Provider>
 );
 
 const dynamicRow = (
-  <Table>
-    <tbody>
-      <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
-    </tbody>
-  </Table>
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <Table>
+      <tbody>
+        <ExportedReportFieldRow formField={fieldWithLabel} pageType="drawer" />
+      </tbody>
+    </Table>
+  </ReportContext.Provider>
 );
 
 const noHintRow = (
-  <Table>
-    <tbody>
-      <ExportedReportFieldRow
-        formField={field}
-        pageType="drawer"
-        showHintText={false}
-      />
-    </tbody>
-  </Table>
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <Table>
+      <tbody>
+        <ExportedReportFieldRow
+          formField={field}
+          pageType="drawer"
+          showHintText={false}
+        />
+      </tbody>
+    </Table>
+  </ReportContext.Provider>
 );
 
 describe("ExportedReportFieldRow", () => {

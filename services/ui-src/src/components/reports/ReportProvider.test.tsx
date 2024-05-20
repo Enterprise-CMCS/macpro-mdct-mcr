@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
-// utils
 import {
   mockReportKeys,
   mockMcparReport,

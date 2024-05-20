@@ -1,48 +1,107 @@
-import mcparTemplate from "../../../../services/app-api/forms/mcpar.json";
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
+import mcparTemplate from "../../../../../services/app-api/forms/mcpar.json";
 
 const templateMap = { MCPAR: mcparTemplate };
 
-describe("MCPAR E2E Form Submission", () => {
-  it("A state user can fully create a form and submit it", () => {
-    cy.authenticate("stateUser");
-
-    fillOutMCPAR();
-
-    //no errors; submit enabled
-    cy.get('div[role*="alert"]').should("not.exist");
-    cy.get(`button:contains("Submit MCPAR")`).should("not.be.disabled");
-
-    //Submit the program
-    cy.get(`button:contains("Submit MCPAR")`).focus().click();
-    cy.get('[data-testid="modal-submit-button"]').focus().click();
-
-    cy.contains("Successfully Submitted").should("be.visible");
-  });
-
-  it("A state user cannot submit an incomplete form", () => {
-    cy.authenticate("stateUser");
-
-    fillOutPartialMCPAR();
-
-    // there is a submission alert
-    cy.get('div[role*="alert"]').should("exist");
-    cy.contains("Your form is not ready for submission").should("be.visible");
-    cy.get('img[alt="Error notification"]').should("be.visible");
-
-    //Submit the program
-    cy.get('button:contains("Submit MCPAR")').should("be.disabled");
-  });
+Then("there is an active program", () => {
+  cy.contains("Test Program", { matchCase: true }).should("be.visible");
 });
 
-function fillOutMCPAR() {
+Then(
+  "the access measure {string}, {string}, and {string} is created",
+  (category, description, type) => {
+    cy.contains(category, { matchCase: true }).should("be.visible");
+    cy.contains(description, { matchCase: true }).should("be.visible");
+    cy.contains(type, { matchCase: true }).should("be.visible");
+  }
+);
+
+Then("there are {string} {string}", (numberOfMeasures, type) => {
+  switch (type) {
+    case "access measures":
+      cy.contains(`Access measure total count: ${numberOfMeasures}`);
+      break;
+    case "quality measures":
+      cy.contains(
+        `Quality & performance measure total count: ${numberOfMeasures}`
+      );
+      break;
+    case "sanctions":
+      cy.contains(`Sanction total count: ${numberOfMeasures}`);
+      break;
+    default:
+      break;
+  }
+});
+
+Then(
+  "the access measure is completed with {string}, {string}, {string}, {string}, and {string}",
+  (type, region, population, method, frequency) => {
+    cy.contains(type, { matchCase: true }).should("be.visible");
+    cy.contains(region, { matchCase: true }).should("be.visible");
+    cy.contains(population, { matchCase: true }).should("be.visible");
+    cy.contains(method, { matchCase: true }).should("be.visible");
+    cy.contains(frequency, { matchCase: true }).should("be.visible");
+  }
+);
+
+Then("there are 2 plans", () => {
+  cy.contains("First Plan").should("be.visible");
+  cy.contains("Second Plan").should("be.visible");
+});
+
+Then("I have completed {string} drawer reports", (numberOfReports) => {
+  cy.findAllByAltText("Entity is complete").should(
+    "have.length",
+    parseInt(numberOfReports)
+  );
+});
+
+Then("I have completed a drawer report", () => {
+  cy.findByAltText("Entity is complete").should("be.visible");
+});
+
+Then(
+  "the quality measure is completed with {string} and {string}",
+  (resultOne, resultTwo) => {
+    cy.contains(resultOne, { matchCase: true }).should("be.visible");
+    cy.contains(resultTwo, { matchCase: true }).should("be.visible");
+  }
+);
+
+Then("the sanction {string} and {string} is created", (type, plan) => {
+  cy.contains(type).should("be.visible");
+  cy.contains(plan).should("be.visible");
+});
+
+Then(
+  "the sanction is completed with {string}, {string}, {string}, {string}, and {string}",
+  (instances, amount, dateAssessed, remedDate, actionPlan) => {
+    cy.contains(instances, { matchCase: true }).should("be.visible");
+    cy.contains(amount, { matchCase: true }).should("be.visible");
+    cy.contains(dateAssessed, { matchCase: true }).should("be.visible");
+    cy.contains(remedDate, { matchCase: true }).should("be.visible");
+    cy.contains(actionPlan, { matchCase: true }).should("be.visible");
+  }
+);
+
+Then("the program is archived", () => {
+  cy.contains("Unarchive").should("be.visible");
+});
+
+Then("the page shows {string}", (text) => {
+  cy.contains(text).should("be.visible");
+});
+
+When("I completely fill out a {string} form", (form) => {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.visit("/mcpar");
+  cy.visit(`/${form.toLowerCase()}`);
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"]').type(programName);
+  cy.get('input[name="programName"').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -50,8 +109,8 @@ function fillOutMCPAR() {
   cy.get('input[name="reportingPeriodEndDate"]').type(
     today.toLocaleDateString("en-US")
   );
-  cy.get('input[name="combinedData"]').check();
-  cy.get('input[name="programIsPCCM"]').check("No");
+  cy.get('input[name="combinedData"').check();
+  cy.get('input[name="programIsPCCM"').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -65,19 +124,34 @@ function fillOutMCPAR() {
   });
 
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
+  const template = templateMap[form];
   traverseRoutes(template.routes);
-}
+});
 
-function fillOutPartialMCPAR() {
+When("I submit the {string} form", (form) => {
+  //Submit the program
+  cy.get(`button:contains("Submit ${form}")`).focus().click();
+  cy.get('[data-testid="modal-submit-button"]').focus().click();
+});
+
+Then("the {string} form is submittable", (form) => {
+  cy.get('div[role*="alert"]').should("not.exist");
+  cy.get(`button:contains("Submit ${form}")`).should("not.be.disabled");
+});
+
+Then("the program is submitted", () => {
+  cy.contains("Successfully Submitted").should("be.visible");
+});
+
+When("I try to submit an incomplete {string} program", (form) => {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.visit("/mcpar");
-  cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"]').type(programName);
+  cy.visit(`/${form.toLowerCase()}`);
+  cy.findByRole("button", { name: "Add / copy a MCPAR" }).click();
+  cy.findByLabelText("Program name (for new MCPAR)").type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -85,8 +159,8 @@ function fillOutPartialMCPAR() {
   cy.get('input[name="reportingPeriodEndDate"]').type(
     today.toLocaleDateString("en-US")
   );
-  cy.get('input[name="combinedData"]').check();
-  cy.get('input[name="programIsPCCM"]').check("No");
+  cy.findByRole("checkbox").focus().click();
+  cy.get('input[name="programIsPCCM"').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -99,13 +173,26 @@ function fillOutPartialMCPAR() {
       .click();
   });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
+  const template = templateMap[form];
   traverseRoutes([template.routes[0]]);
 
-  //Finish loading the form route before moving to review and submit
-  cy.wait(1000);
   cy.get('a[href*="review-and-submit"]').click();
-}
+});
+
+Then("there is a submission alert", () => {
+  cy.get('div[role*="alert"]').should("exist");
+  cy.contains("Your form is not ready for submission").should("be.visible");
+});
+
+Then("there are errors in the status", () => {
+  cy.get('img[alt="Error notification"]').should("be.visible");
+});
+
+Then("incomplete program cannot submit", () => {
+  //Submit the program
+  cy.get('button:contains("Submit MCPAR")').should("be.disabled");
+  cy.get('div[role*="alert"]').should("exist");
+});
 
 const traverseRoutes = (routes) => {
   //iterate over each route
@@ -176,13 +263,16 @@ const processField = (field) => {
           case "url":
             cy.get(`[name="${field.id}"]`).type("https://fill.com");
             break;
-          default:
+          case "text":
             if (field.repeat) {
               //repeats don't use the exact name, but thankfully don't need to worry about similar names
               cy.get(`[name^="${field.id}"]`).type("Text Fill");
             } else {
               cy.get(`[name="${field.id}"]`).type("Text Fill");
             }
+            break;
+          default:
+            cy.get(`[name="${field.id}"]`).type("Unknown Fill");
         }
         break;
       case "date":
@@ -191,7 +281,7 @@ const processField = (field) => {
         );
         break;
       case "dynamic":
-        cy.get(`[name="${field.id}[0]"]`).type("Dynamic Fill");
+        cy.get(`[name="${field.id}[0]"`).type("Dynamic Fill");
         break;
       case "number":
         switch (validationType) {

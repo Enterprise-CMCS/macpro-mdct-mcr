@@ -1,10 +1,11 @@
+import { useContext } from "react";
 // components
-import { EntityStatusIcon, Table } from "components";
+import { EntityStatusIcon, ReportContext, Table } from "components";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
 import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
+import { assertExhaustive, getEntityDetailsMLR } from "utils";
 // verbiage
 import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
@@ -19,7 +20,7 @@ const exportVerbiageMap: { [key in ReportType]: any } = {
 };
 
 export const ExportedModalOverlayReportSection = ({ section }: Props) => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const entityType = section.entityType;
 
   const verbiage = exportVerbiageMap[report?.reportType as ReportType];

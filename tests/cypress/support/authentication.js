@@ -35,9 +35,11 @@ Cypress.Commands.add("navigateToHomePage", () => {
   if (cy.location("pathname") !== "/") cy.visit("/");
 });
 
+Cypress.Commands.add("clearSession", () => {
+  cy.session([], () => {});
+});
+
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
-  //Defeats the purpose of sessions, but does improve performance when switching between users
-  Cypress.session.clearAllSavedSessions();
   cy.session([userType, userCredentials], () => {
     cy.visit("/");
     cy.wait(2000);

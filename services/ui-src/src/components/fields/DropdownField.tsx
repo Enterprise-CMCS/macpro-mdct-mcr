@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 // components
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { ReportContext, EntityContext } from "components";
+import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
@@ -13,7 +13,6 @@ import {
   useStore,
   convertDateUtcToEt,
 } from "utils";
-// types
 import {
   AnyObject,
   DropdownChoice,
@@ -24,6 +23,7 @@ import {
   ReportMetadataShape,
 } from "types";
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const DropdownField = ({
   name,
@@ -37,13 +37,11 @@ export const DropdownField = ({
   styleAsOptional,
   ...props
 }: Props) => {
-  const { updateReport } = useContext(ReportContext);
+  const { report, updateReport, copyEligibleReportsByState } =
+    useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-
-  // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report, copyEligibleReportsByState } = useStore();
 
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {

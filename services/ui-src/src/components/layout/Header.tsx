@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Menu, MenuOption, ReportContext } from "components";
 // utils
-import { useBreakpoint, useStore } from "utils";
+import { useBreakpoint } from "utils";
 // assets
 import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
@@ -22,10 +22,7 @@ import closeIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const Header = ({ handleLogout }: Props) => {
   const { isMobile } = useBreakpoint();
-  const { isReportPage } = useContext(ReportContext);
-
-  // state management
-  const { lastSavedTime, report } = useStore();
+  const { lastSavedTime, report, isReportPage } = useContext(ReportContext);
 
   const saveStatusText = "Last saved " + lastSavedTime;
 

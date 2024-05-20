@@ -3,7 +3,7 @@ import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
-import { ReportContext, EntityContext } from "components";
+import { ReportContext } from "components";
 // utils
 import {
   autosaveFieldData,
@@ -13,7 +13,6 @@ import {
   parseCustomHtml,
   useStore,
 } from "utils";
-// types
 import {
   AnyObject,
   AutosaveField,
@@ -23,6 +22,7 @@ import {
   FormField,
   InputChangeEvent,
 } from "types";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const ChoiceListField = ({
   name,
@@ -41,15 +41,11 @@ export const ChoiceListField = ({
   const defaultValue: Choice[] = [];
   const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
 
-  const { updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
-
-  // state management
   const { full_name, state, userIsAdmin, userIsReadOnly } =
     useStore().user ?? {};
-  const { report } = useStore();
-
   // get form context and register field
   const form = useFormContext();
   const fieldIsRegistered = name in form.getValues();

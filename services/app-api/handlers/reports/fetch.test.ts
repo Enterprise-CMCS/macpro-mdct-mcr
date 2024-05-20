@@ -171,3 +171,21 @@ describe("Test fetchReportsByState API method", () => {
     expect(res.body).toContain(error.NO_KEY);
   });
 });
+
+describe("Test failing state user permission control", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(false);
+  });
+  test("Test fetchReport request unauthorized when both permission checks fail", async () => {
+    const res = await fetchReport(testReadEvent, null);
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test fetchReportsByState request unauthorized when both permission checks fail", async () => {
+    const res = await fetchReportsByState(testReadEventByState, null);
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+});

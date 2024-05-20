@@ -5,60 +5,47 @@ import { axe } from "jest-axe";
 import {
   EntityProvider,
   ModalOverlayReportPage,
-  ReportProvider,
+  ReportContext,
 } from "components";
 // utils
 import {
   RouterWrappedComponent,
+  mockMLRNewReportContext,
   mockModalOverlayReportPageWithOverlayJson,
   mockMLREntityStartedReportContext,
   mockStateUserStore,
   mockAdminUserStore,
-  mockMlrReportStore,
-  mockMLRReportEntityStartedFieldData,
-  mockEmptyReportStore,
 } from "utils/testing/setupJest";
-import { UserProvider, useStore } from "utils";
+import { useStore } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-const mockMlrEntityStartedStore = {
-  ...mockMlrReportStore,
-  report: {
-    ...mockMlrReportStore.report,
-    fieldData: mockMLRReportEntityStartedFieldData,
-  },
-};
 
 const mockSetSidebarHidden = jest.fn();
 
 const modalOverlayReportPageInitialComponent = (
   <RouterWrappedComponent>
-    <UserProvider>
-      <ReportProvider>
-        <ModalOverlayReportPage
-          route={mockModalOverlayReportPageWithOverlayJson}
-          setSidebarHidden={mockSetSidebarHidden}
-        />
-      </ReportProvider>
-    </UserProvider>
+    <ReportContext.Provider value={mockMLRNewReportContext}>
+      <ModalOverlayReportPage
+        route={mockModalOverlayReportPageWithOverlayJson}
+        setSidebarHidden={mockSetSidebarHidden}
+      />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 const modalOverlayReportPageEntityAddedComponent = (
   <RouterWrappedComponent>
-    <UserProvider>
-      <ReportProvider>
-        <EntityProvider>
-          <ModalOverlayReportPage
-            route={mockModalOverlayReportPageWithOverlayJson}
-            setSidebarHidden={mockSetSidebarHidden}
-          />
-        </EntityProvider>
-      </ReportProvider>
-    </UserProvider>
+    <ReportContext.Provider value={mockMLREntityStartedReportContext}>
+      <EntityProvider>
+        <ModalOverlayReportPage
+          route={mockModalOverlayReportPageWithOverlayJson}
+          setSidebarHidden={mockSetSidebarHidden}
+        />
+      </EntityProvider>
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -70,10 +57,8 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
   const verbiage = mockModalOverlayReportPageWithOverlayJson.verbiage;
 
   it("should render the initial view for a State user", () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockEmptyReportStore,
-    });
+    // Set as State User
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageInitialComponent);
 
     // Check if header is visible on load - H1
@@ -103,10 +88,8 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
   });
 
   it("should open the add/edit modal for a State User", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMlrEntityStartedStore,
-    });
+    // Set as State User
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageInitialComponent);
 
     const user = userEvent.setup();
@@ -122,11 +105,8 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
   });
 
   it("should render the initial view for a Admin user", () => {
-    // Set as Admin User
-    mockedUseStore.mockReturnValue({
-      ...mockAdminUserStore,
-      ...mockEmptyReportStore,
-    });
+    // Set as State User
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(modalOverlayReportPageInitialComponent);
 
     // Check if header is visible on load - H1
@@ -163,15 +143,13 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
 describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMlrEntityStartedStore,
-    });
   });
 
   const verbiage = mockModalOverlayReportPageWithOverlayJson.verbiage;
 
   it("should render the initial view for a State user", () => {
+    // Set as State User
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     // Check if header is visible on load - H1
@@ -207,18 +185,20 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   });
 
   it("should open the edit modal", async () => {
+    // Setup as a State User
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     const user = userEvent.setup();
 
     // Get the Edit button and click it
-    const editEntityButton = screen.getAllByText(verbiage.editEntityButtonText);
-    await user.click(editEntityButton[0]);
+    const editEntityButton = screen.getByText(verbiage.editEntityButtonText);
+    await user.click(editEntityButton);
     expect(screen.getByRole("dialog")).toBeVisible();
 
     // Close out of the modal it created
-    const closeButton = screen.getAllByText("Close");
-    await user.click(closeButton[0]);
+    const closeButton = screen.getByText("Close");
+    await user.click(closeButton);
 
     // And make sure they can still add entities
     const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
@@ -226,6 +206,8 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   });
 
   it("should open and close the delete modal as a State user", async () => {
+    //Setup as a state user
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     const user = userEvent.setup();
@@ -263,10 +245,8 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   });
 
   it("should be unable to click the delete button as an Admin", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockAdminUserStore,
-      ...mockMlrEntityStartedStore,
-    });
+    //Setup as a state user
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     // Verify the entity exists
@@ -284,6 +264,8 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   });
 
   it("should open and close the overlay page as a State user", async () => {
+    //Setup as a state user
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     const user = userEvent.setup();
@@ -309,11 +291,8 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
   it("should submit the form when a State user opens an entity and adds information", async () => {
     window.HTMLElement.prototype.scrollIntoView = function () {};
 
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMlrEntityStartedStore,
-    });
-
+    //Setup as a state user
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     const user = userEvent.setup();
@@ -341,16 +320,19 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     const saveAndCloseButton = screen.getByText("Save & return");
     await userEvent.click(saveAndCloseButton);
 
+    // Will be 3 times! Twice for autosave and once for clicking the button
+    expect(
+      mockMLREntityStartedReportContext.updateReport
+    ).toHaveBeenCalledTimes(3);
+
     // And make sure we're back on the first page!
     expect(mockSetSidebarHidden).toBeCalledWith(false);
     expect(screen.getByText(dashboardTitle)).toBeVisible();
   });
 
   it("should be able to open an entity by not submit as an admin", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockAdminUserStore,
-      ...mockMlrEntityStartedStore,
-    });
+    //Setup as a state user
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(modalOverlayReportPageEntityAddedComponent);
 
     const user = userEvent.setup();
@@ -379,12 +361,14 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 
 describe("Test ModalOverlayReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const { container } = render(modalOverlayReportPageInitialComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
   it("Should not have basic accessibility issues", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     const { container } = render(modalOverlayReportPageEntityAddedComponent);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

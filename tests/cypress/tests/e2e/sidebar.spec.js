@@ -10,21 +10,23 @@ describe("Sidebar integration tests", () => {
     // Sign in as a state user
     cy.authenticate("stateUser");
     cy.navigateToHomePage();
-    cy.get('button:contains("Enter MCPAR online")').click();
-    cy.get('button:contains("Enter MCPAR online")').click();
+    cy.findByRole("button", { name: "Enter MCPAR online" }).click();
+    cy.findAllByRole("button", { name: "Enter MCPAR online" }).click();
 
     // Create Report & nav to it
-    cy.get('button:contains("Add / copy a MCPAR")').click();
-    cy.get('input[name="programName"]').type(
+    cy.findByRole("button", {
+      name: "Add / copy a MCPAR",
+    }).click();
+    cy.findByLabelText("Program name (for new MCPAR)").type(
       "automated test - " + new Date().toISOString()
     );
     cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
-    cy.get('[name="combinedData"]').focused().click();
+    cy.findByRole("checkbox").focused().click();
     cy.get('input[name="programIsPCCM"').check("No");
     cy.get("button[type=submit]").contains("Save").click();
     cy.wait(2000);
-    cy.get('button:contains("Edit")').first().click();
+    cy.findAllByRole("button", { name: "Edit" }).first().click(); // Timeout
     cy.wait(2000);
 
     // Expand next section, collapse first, nav to new page.
@@ -52,13 +54,23 @@ describe("Sidebar integration tests", () => {
       .should("have.class", "selected");
 
     // Collapse and expand entire bar
-    cy.get(`[aria-label="${expandCollapseSidebar}"]`)
+    cy.findByLabelText(expandCollapseSidebar)
       .click()
       .parent()
       .should("have.class", "closed");
-    cy.get(`[aria-label="${expandCollapseSidebar}"]`)
+    cy.findByLabelText(expandCollapseSidebar)
       .click()
       .parent()
       .should("have.class", "open");
+
+    cy.authenticate("adminUser");
+    cy.navigateToHomePage();
+    cy.get('[name="state"]').select("District of Columbia");
+    cy.get('[name="report"]').first().check();
+    cy.findAllByRole("button", { name: "Go to Report Dashboard" })
+      .last()
+      .click();
+    cy.findAllByRole("button", { name: "Archive" }).last().click();
+    cy.contains("Unarchive").should("be.visible");
   });
 });

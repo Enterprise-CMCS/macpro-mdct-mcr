@@ -2,21 +2,12 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 // utils
 import {
-  mockMcparReportContext,
-  mockMcparReportStore,
-  mockStateUserStore,
   RouterWrappedComponent,
+  mockMcparReportContext,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
-// components
-import { Header, ReportContext, ReportPageWrapper } from "components";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
+//components
+import { Header } from "components";
+import { ReportContext, ReportPageWrapper } from "../";
 
 const headerComponent = (
   <RouterWrappedComponent>
@@ -61,15 +52,14 @@ describe("Test Header", () => {
 });
 
 describe("Report Context", () => {
-  beforeEach(() => {
-    render(reportComponent);
-  });
   test("Report Data is visible", () => {
+    render(reportComponent);
     expect(screen.getByText("Program: testProgram")).toBeVisible();
     expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
   });
 
   test("Subnav is visible on report screens; navigates to dashboard", async () => {
+    render(reportComponent);
     expect(screen.getByText("Leave form")).toBeVisible();
   });
 });

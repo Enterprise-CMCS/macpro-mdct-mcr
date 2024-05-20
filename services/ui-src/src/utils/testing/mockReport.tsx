@@ -1,5 +1,4 @@
 import { EntityType, ReportStatus } from "types";
-import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
 import {
   mockStandardReportPageJson,
@@ -195,24 +194,6 @@ export const mockReportFieldData = {
     {
       id: "mock-plan-id-2",
       name: "mock-plan-name-2",
-      plan_ilosOfferedByPlan: [
-        {
-          key: "mock-radio",
-          value: "Yes",
-        },
-      ],
-      plan_ilosUtilizationByPlan: [
-        {
-          key: "mock-ilos-id-1",
-          value: "mock-ilos-name-1",
-        },
-      ],
-    },
-  ],
-  ilos: [
-    {
-      id: "mock-ilos-id-1",
-      name: "mock-ilos-name-1",
     },
   ],
   text: "text-input",
@@ -237,34 +218,6 @@ export const mockReportFieldData = {
         },
       ],
       "accessMeasure_standardType-otherText": "",
-    },
-  ],
-  sanctions: [
-    {
-      ...mockSanctionsEntity,
-      sanction_planName: {
-        label: "sanction_planName",
-        value: "mock-plan-id-1",
-      },
-    },
-    {
-      ...mockSanctionsEntity,
-      sanction_planName: {
-        label: "sanction_planName",
-        value: "mock-plan-id-2",
-      },
-    },
-  ],
-  qualityMeasures: [
-    {
-      ...mockQualityMeasuresEntity,
-      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
-    },
-    {
-      ...mockQualityMeasuresEntity,
-      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
     },
   ],
 };
@@ -429,7 +382,7 @@ export const mockMlrReport = {
   submittedOnDate: Date.now(),
   fieldData: mockMlrReportFieldData,
   fieldDataId: "mockFieldDataId",
-  locked: false,
+  locked: true,
   submissionCount: 0,
   previousRevisions: [],
 };
@@ -682,9 +635,6 @@ export const mockMlrDashboardReportContext = {
       ...mockMlrReport,
       formTemplate: undefined,
       fieldData: undefined,
-    },
-    {
-      ...mockMLRLockedReport,
     },
   ],
 };

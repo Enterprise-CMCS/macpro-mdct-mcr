@@ -1,8 +1,9 @@
+import { useContext } from "react";
 // components
 import { Box, Text } from "@chakra-ui/react";
-import { EntityCard } from "components";
+import { EntityCard, ReportContext } from "components";
 // utils
-import { getFormattedEntityData, useStore } from "utils";
+import { getFormattedEntityData } from "utils";
 import { EntityShape, ModalDrawerReportPageShape } from "types";
 // verbiage
 import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
@@ -10,7 +11,7 @@ import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 export const ExportedModalDrawerReportSection = ({
   section: { entityType, verbiage },
 }: Props) => {
-  const { report } = useStore();
+  const { report } = useContext(ReportContext);
   const { emptyEntityMessage } = exportVerbiage;
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;

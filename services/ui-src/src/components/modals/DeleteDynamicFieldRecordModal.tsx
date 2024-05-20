@@ -15,10 +15,8 @@ export const DeleteDynamicFieldRecordModal = ({
   const fieldTypeMap: any = {
     plans: "plan",
     bssEntities: "BSS entity",
-    ilos: "In Lieu of Services",
   };
 
-  const isIlos = entityType === "ilos";
   const entityName = fieldTypeMap[entityType];
 
   const deleteProgramHandler = async () => {
@@ -35,14 +33,14 @@ export const DeleteDynamicFieldRecordModal = ({
       submitting={deleting}
       content={{
         heading: `Delete ${entityName}`,
-        actionButtonText: `Yes, delete ${isIlos ? "ILOS" : entityName}`,
+        actionButtonText: `Yes, delete ${entityName}`,
         closeButtonText: "Cancel",
       }}
     >
       <Text data-testid="delete-program-modal-text">
-        {isIlos
-          ? "You will lose all information entered for this ILOS throughout the report. Are you sure you want to proceed?"
-          : `Are you sure you want to delete this ${entityName}? Once deleted it will also remove any additional information related to the ${entityName} throughout the report.`}
+        Are you sure you want to delete this {entityName}? Once deleted it will
+        also remove any additional information related to the {entityName}{" "}
+        throughout the report.
       </Text>
     </Modal>
   );

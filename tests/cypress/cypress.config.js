@@ -1,10 +1,12 @@
 const { defineConfig } = require("cypress");
+const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
+const browserify = require("@badeball/cypress-cucumber-preprocessor/browserify");
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
 
 module.exports = defineConfig({
   experimentalStudio: true,
   redirectionLimit: 20,
-  retries: 2,
+  retries: 1,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
@@ -18,9 +20,13 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://127.0.0.1:3000/",
     testIsolation: false,
-    specPattern: ["e2e/**/*.cy.js"],
+    specPattern: ["tests/**/*.spec.js", "tests/**/*.feature"],
     supportFile: "support/index.js",
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async setupNodeEvents(on, config) {
+      await preprocessor.addCucumberPreprocessorPlugin(on, config);
+      on("file:preprocessor", browserify.default(config));
+
       on("task", {
         log(message) {
           // eslint-disable-next-line no-console

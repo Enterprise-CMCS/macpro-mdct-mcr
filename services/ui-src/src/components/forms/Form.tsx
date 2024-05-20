@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -19,7 +19,6 @@ import {
   sortFormErrors,
   useStore,
 } from "utils";
-// types
 import {
   AnyObject,
   FormJson,
@@ -28,6 +27,7 @@ import {
   FormLayoutElement,
   ReportStatus,
 } from "types";
+import { ReportContext } from "components/reports/ReportProvider";
 
 export const Form = ({
   id,
@@ -45,8 +45,7 @@ export const Form = ({
 
   // determine if fields should be disabled (based on admin roles )
   const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
-  const { report } = useStore();
-
+  const { report } = useContext(ReportContext);
   let location = useLocation();
   const fieldInputDisabled =
     ((userIsAdmin || userIsReadOnly) && !formJson.editableByAdmins) ||
@@ -84,7 +83,6 @@ export const Form = ({
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
-
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,
       autosave,

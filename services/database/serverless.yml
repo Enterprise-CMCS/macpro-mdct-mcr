@@ -40,7 +40,7 @@ custom:
       migrate: true
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs14.x
   region: us-east-1
 
 resources:

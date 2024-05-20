@@ -3,7 +3,7 @@ import uuid from "react-uuid";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Text, Spinner } from "@chakra-ui/react";
-// types
+// utils
 import {
   AnyObject,
   EntityShape,
@@ -11,7 +11,6 @@ import {
   isFieldElement,
   ReportStatus,
 } from "types";
-// utils
 import {
   entityWasUpdated,
   filterFormData,
@@ -27,12 +26,8 @@ export const AddEditEntityModal = ({
   selectedEntity,
   modalDisclosure,
 }: Props) => {
-  const { updateReport } = useContext(ReportContext);
-
-  // state management
+  const { report, updateReport } = useContext(ReportContext);
   const { full_name, userIsEndUser } = useStore().user ?? {};
-  const { report } = useStore();
-
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const writeEntity = async (enteredData: any) => {

@@ -7,19 +7,9 @@ import { ReportContext, StandardReportPage } from "components";
 import {
   mockForm,
   mockMcparReportContext,
-  mockMcparReportStore,
   mockStandardReportPageJson,
-  mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { useStore } from "utils";
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
 
 const standardPageSectionComponent = (
   <RouterWrappedComponent>

@@ -10,7 +10,6 @@ import {
 } from "components";
 // utils
 import { filterFormData, useFindRoute, useStore } from "utils";
-// types
 import {
   AnyObject,
   isFieldElement,
@@ -20,11 +19,8 @@ import {
 
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const { updateReport } = useContext(ReportContext);
-  // state management
+  const { report, updateReport } = useContext(ReportContext);
   const { full_name, state } = useStore().user ?? {};
-  const { report } = useStore();
-
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
     report!.formTemplate.flatRoutes!,

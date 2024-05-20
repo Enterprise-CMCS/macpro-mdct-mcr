@@ -7,7 +7,6 @@ import { ReportContext, TextField } from "components";
 // utils
 import {
   mockMcparReportContext,
-  mockMcparReportStore,
   mockStateUserStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
@@ -34,17 +33,15 @@ const mockGetValues = (returnValue: any) =>
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockStateUserStore,
-  ...mockMcparReportStore,
-});
 
 const textFieldComponent = (
-  <TextField
-    name="testTextField"
-    label="test-label"
-    placeholder="test-placeholder"
-  />
+  <ReportContext.Provider value={mockMcparReportContext}>
+    <TextField
+      name="testTextField"
+      label="test-label"
+      placeholder="test-placeholder"
+    />
+  </ReportContext.Provider>
 );
 
 const textFieldAutosavingComponent = (
@@ -60,6 +57,7 @@ const textFieldAutosavingComponent = (
 
 describe("Test TextField component", () => {
   test("TextField is visible", () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues("");
     render(textFieldComponent);
     const textField = screen.getByText("test-label");
@@ -69,6 +67,9 @@ describe("Test TextField component", () => {
 });
 
 describe("Test TextField hydration functionality", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -160,6 +161,7 @@ describe("Test TextField component autosaves", () => {
     jest.clearAllMocks();
   });
   test("TextField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(true);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
@@ -187,6 +189,7 @@ describe("Test TextField component autosaves", () => {
   });
 
   test("TextField autosaves with default value when stateuser, autosave true, and form invalid", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockTrigger.mockReturnValue(false);
     mockGetValues(undefined);
     render(textFieldAutosavingComponent);
@@ -214,6 +217,7 @@ describe("Test TextField component autosaves", () => {
   });
 
   test("TextField does not autosave when not autosave not set to true", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldComponent);
     const textField = screen.getByRole("textbox", {
@@ -228,18 +232,21 @@ describe("Test TextField component autosaves", () => {
 
 describe("Textfield handles triggering validation", () => {
   const textFieldValidateOnRenderComponent = (
-    <TextField
-      name="testTextField"
-      label="test-label"
-      placeholder="test-placeholder"
-      validateOnRender
-    />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <TextField
+        name="testTextField"
+        label="test-label"
+        placeholder="test-placeholder"
+        validateOnRender
+      />
+    </ReportContext.Provider>
   );
 
   afterEach(() => {
     jest.clearAllMocks();
   });
   test("Blanking field triggers form validation", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldComponent);
     expect(mockTrigger).not.toHaveBeenCalled();
@@ -253,6 +260,7 @@ describe("Textfield handles triggering validation", () => {
   });
 
   test("Component with validateOnRender passed should validate on initial render", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     render(textFieldValidateOnRenderComponent);
     expect(mockTrigger).toHaveBeenCalled();
@@ -261,6 +269,7 @@ describe("Textfield handles triggering validation", () => {
 
 describe("Test TextField accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     mockGetValues(undefined);
     const { container } = render(textFieldComponent);
     const results = await axe(container);

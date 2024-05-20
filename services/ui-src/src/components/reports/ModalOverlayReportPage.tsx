@@ -45,18 +45,15 @@ export const ModalOverlayReportPage = ({
 
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
-  const { updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
   const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
     undefined
   );
   const [entering, setEntering] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  // state management
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
     useStore().user ?? {};
-  const { report } = useStore();
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;

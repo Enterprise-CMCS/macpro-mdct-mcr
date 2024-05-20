@@ -4,11 +4,8 @@ import { devtools, persist } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
-  McrReportState,
   MCRUser,
   McrUserState,
-  ReportMetadataShape,
-  ReportShape,
 } from "types";
 
 // USER STORE
@@ -56,45 +53,12 @@ const bannerStore = (set: Function) => ({
     }),
 });
 
-// REPORT STORE
-const reportStore = (set: Function) => ({
-  // initial state
-  report: undefined,
-  reportsByState: undefined,
-  copyEligibleReportsByState: undefined,
-  lastSavedTime: undefined,
-  // actions
-  setReport: (newReport: ReportShape | undefined) =>
-    set(() => ({ report: newReport }), false, { type: "setReport" }),
-  setReportsByState: (newReportsByState: ReportMetadataShape[] | undefined) =>
-    set(() => ({ reportsByState: newReportsByState }), false, {
-      type: "setReportsByState",
-    }),
-  clearReportsByState: () =>
-    set(() => ({ reportsByState: undefined }), false, {
-      type: "clearReportsByState",
-    }),
-  setCopyEligibleReportsByState: (
-    newCopyEligibleReportsByState: ReportMetadataShape[] | undefined
-  ) =>
-    set(
-      () => ({ copyEligibleReportsByState: newCopyEligibleReportsByState }),
-      false,
-      { type: "setCopyEligibleReportsByState" }
-    ),
-  setLastSavedTime: (lastSavedTime: string | undefined) =>
-    set(() => ({ lastSavedTime: lastSavedTime }), false, {
-      type: "setLastSavedTime",
-    }),
-});
-
 export const useStore = create(
   // persist and devtools are being used for debugging state
   persist(
-    devtools<McrUserState & AdminBannerState & McrReportState>((set) => ({
+    devtools<McrUserState & AdminBannerState>((set) => ({
       ...userStore(set),
       ...bannerStore(set),
-      ...reportStore(set),
     })),
     {
       name: "mcr-store",
