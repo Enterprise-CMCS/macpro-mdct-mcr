@@ -126,15 +126,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           ?.filter(isFieldElement)
           .every((field: FormField) => field.id in entity);
       };
+
+      // if reporting on ILOS, verify that there its questions are completed
+      let isIlosCompleted = false;
+      if (reportingOnIlos) {
+        isIlosCompleted = entity["plan_ilosOfferedByPlan"][0]?.value.startsWith(
+          "Yes"
+        )
+          ? ["plan_ilosUtilizationByPlan"].length > 0
+          : entity["plan_ilosOfferedByPlan"][0];
+      }
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
-       * If reporting on ILOS per plans, check that there are ILOS available.
        */
       const isEntityCompleted = reportingOnIlos
-        ? calculateEntityCompletion() &&
-          entity["plan_ilosUtilizationByPlan"].length > 0
+        ? calculateEntityCompletion() && isIlosCompleted
         : calculateEntityCompletion();
+
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
