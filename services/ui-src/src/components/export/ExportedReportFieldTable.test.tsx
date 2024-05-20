@@ -47,9 +47,17 @@ mockDrawerContext.report.fieldData = {
     {
       id: "123",
       name: "example-plan1",
+      plan_ilosUtilizationByPlan: [],
+      plan_ilosOfferedByPlan: [],
       ...fieldData,
     },
-    { id: "456", name: "example-plan2", ...fieldData },
+    {
+      id: "456",
+      name: "example-plan2",
+      plan_ilosUtilizationByPlan: [],
+      plan_ilosOfferedByPlan: [],
+      ...fieldData,
+    },
   ],
 };
 

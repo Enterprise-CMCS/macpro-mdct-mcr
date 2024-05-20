@@ -7,7 +7,7 @@
 1. The `scripts` section defines 2 jobs:
    - `yarn test`
      - runs two parallel processes:
-       1. `yarn start`, which is a wrapper to `./dev local`, and runs the local application
+       1. `yarn start`, which is a wrapper to `./run local`, and runs the local application
        1. `yarn cypress`, which opens cypress using chrome against the local instance
    - `yarn test:ci`
      - to be run in pipelines/actions

@@ -2,10 +2,12 @@
 
 set -eu -o pipefail
 
-# this is the entrypoint for development. It wraps up compiling and calling dev.ts
-# all arguments, changes, etc. should be found in src/dev.ts
+# this is the entrypoint for development. It wraps up compiling and calling run.ts
+# all arguments, changes, etc. should be found in src/run.ts
 
-# this script checks for all the prereqs and then calls dev.ts
+# this script checks for all the prereqs and then calls run.ts
+
+export REGION_A=us-east-1
 
 # check node exists
 if ! which node > /dev/null ; then
@@ -53,6 +55,6 @@ op inject -i .env.tpl -o .env -f
 #inject secrets to .env
 op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f
 
-# build and run dev.ts
+# build and run run.ts
 # tsc is configured to build what we expect in tsconfig.json
-./node_modules/.bin/tsc && node ./build_dev/dev.js "$@"
+./node_modules/.bin/tsc && node ./build_dev/run.js "$@"
