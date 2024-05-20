@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 // components
 import { Link as RouterLink } from "react-router-dom";
