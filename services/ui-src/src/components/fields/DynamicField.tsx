@@ -7,9 +7,10 @@ import {
   DeleteDynamicFieldRecordModal,
   ReportContext,
   TextField,
+  EntityContext,
 } from "components";
 import { svgFilters } from "styles/theme";
-// utils
+// types
 import {
   AnyObject,
   EntityShape,
@@ -17,14 +18,17 @@ import {
   InputChangeEvent,
   ReportStatus,
 } from "types";
+// utils
 import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { EntityContext } from "components/reports/EntityProvider";
 
 export const DynamicField = ({ name, label, ...props }: Props) => {
+  // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
-  const { report, updateReport } = useContext(ReportContext);
+  const { report } = useStore();
+
+  const { updateReport } = useContext(ReportContext);
   const { entities, entityType, updateEntities, selectedEntity } =
     useContext(EntityContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
@@ -137,6 +141,35 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         }
       );
 
+      // delete ILOS data from corresponding plans
+      const filteredPlans =
+        name === "plans"
+          ? filteredEntities
+          : report?.fieldData.plans?.map((entity: EntityShape) => {
+              let newEntity = { ...entity };
+              const planHasIlos =
+                entity["plan_ilosOfferedByPlan"]?.[0]?.value.startsWith("Yes");
+
+              if (name === "ilos" && planHasIlos) {
+                const ilosUtilizationByPlan = [
+                  ...newEntity["plan_ilosUtilizationByPlan"],
+                ];
+                const filteredUtilizationByPlan = ilosUtilizationByPlan?.filter(
+                  (ilos) => {
+                    return selectedRecord.id !== ilos.key;
+                  }
+                );
+                newEntity = {
+                  ...newEntity,
+                  plan_ilosUtilizationByPlan: filteredUtilizationByPlan,
+                };
+                delete newEntity[
+                  `plan_ilosUtilizationByPlan-otherText_${selectedRecord.id}`
+                ];
+              }
+              return newEntity;
+            });
+
       const dataToWrite = {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
@@ -146,8 +179,10 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           [name]: filteredEntities,
           sanctions: filteredSanctions,
           qualityMeasures: filteredQualityMeasures,
+          plans: filteredPlans,
         },
       };
+
       await updateReport(reportKeys, dataToWrite);
       removeRecord(selectedRecord);
     }

@@ -22,6 +22,8 @@ import {
   mockLDFlags,
   mockMlrReportContext,
   mockMlrDashboardReportContext,
+  mockMcparReportStore,
+  mockMlrLockedReportStore,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
@@ -65,6 +67,14 @@ const mlrDashboardViewWithReports = (
   </RouterWrappedComponent>
 );
 
+const mlrDashboardViewWithLockedReports = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockDashboardLockedReportContext}>
+      <DashboardPage reportType="MLR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
@@ -91,7 +101,10 @@ const dashboardViewWithLockedReport = (
 
 describe("Test Report Dashboard view (with reports, desktop view)", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     mockUseBreakpoint.mockReturnValue({
       isMobile: false,
     });
@@ -107,7 +120,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(dashboardViewWithReports);
     });
     expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByText("testProgram")).toBeVisible();
+    expect(screen.getAllByText("testProgram")[0]).toBeVisible();
     expect(
       screen.queryByText(mcparVerbiage.body.empty)
     ).not.toBeInTheDocument();
@@ -119,7 +132,7 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
       await render(mlrDashboardViewWithReports);
     });
     expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
-    expect(screen.getByText("testProgram")).toBeVisible();
+    expect(screen.getAllByText("testProgram")[0]).toBeVisible();
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
@@ -158,6 +171,10 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Unable to edit a report if it is locked", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMlrLockedReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithLockedReport);
     });
@@ -168,7 +185,10 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
 
 describe("Test Dashboard view (with reports, mobile view)", () => {
   beforeEach(async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     mockUseBreakpoint.mockReturnValue({
       isMobile: true,
     });
@@ -220,7 +240,10 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
   });
 
   test("Admin user can archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -235,7 +258,10 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
   });
 
   test("Help desk user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockHelpDeskUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockHelpDeskUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -243,7 +269,10 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
   });
 
   test("Internal user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockInternalUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockInternalUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -251,7 +280,10 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
   });
 
   test("State approver cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateApproverStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateApproverStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -259,7 +291,10 @@ describe("Test Dashboard report archiving privileges (desktop)", () => {
   });
 
   test("State user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -279,7 +314,10 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
   });
 
   test("Admin user can archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -294,7 +332,10 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
   });
 
   test("Help desk user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockHelpDeskUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockHelpDeskUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -302,7 +343,10 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
   });
 
   test("Internal user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockInternalUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockInternalUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -310,7 +354,10 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
   });
 
   test("State approver cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateApproverStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateApproverStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -318,7 +365,10 @@ describe("Test Dashboard report archiving privileges (mobile)", () => {
   });
 
   test("State user cannot archive reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     await act(async () => {
       await render(dashboardViewWithReports);
     });
@@ -339,9 +389,12 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
   });
 
   test("Admin user can release reports", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockMlrLockedReportStore,
+    });
     await act(async () => {
-      await render(mlrDashboardViewWithReports);
+      await render(mlrDashboardViewWithLockedReports);
     });
     const releaseProgramButton = screen.getAllByText("Unlock")[0];
     expect(releaseProgramButton).toBeVisible();
@@ -355,7 +408,6 @@ describe("Test Dashboard report releasing privileges (desktop)", () => {
   });
 
   test("State user cannot release reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
@@ -367,6 +419,7 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
   beforeEach(() => {
     mockUseBreakpoint.mockReturnValue({
       isMobile: true,
+      isTablet: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("mobile");
   });
@@ -376,9 +429,12 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
   });
 
   test("Admin user can release reports", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockMlrLockedReportStore,
+    });
     await act(async () => {
-      await render(mlrDashboardViewWithReports);
+      await render(mlrDashboardViewWithLockedReports);
     });
     const releaseProgramButton = screen.getAllByText("Unlock")[0];
     expect(releaseProgramButton).toBeVisible();
@@ -391,7 +447,6 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
   });
 
   test("State user cannot release reports", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(mlrDashboardViewWithReports);
     });
@@ -400,6 +455,13 @@ describe("Test Dashboard report releasing privileges (mobile)", () => {
 });
 
 describe("Test Dashboard with no activeState", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  });
   test("Dashboard reroutes to / with no active state", async () => {
     mockedUseStore.mockReturnValue(mockNoUserStore);
     await act(async () => {
@@ -415,6 +477,7 @@ describe("Test MCPAR Dashboard (without reports)", () => {
       isMobile: false,
     });
     mockMakeMediaQueryClasses.mockReturnValue("desktop");
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dashboardViewNoReports);
     });
@@ -435,7 +498,6 @@ describe("Test Dashboard with error", () => {
       isMobile: false,
       isTablet: false,
     });
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     await act(async () => {
       await render(dashboardViewWithError);
     });

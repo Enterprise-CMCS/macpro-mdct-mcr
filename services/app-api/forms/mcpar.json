@@ -8,7 +8,8 @@
     "accessMeasures": { "required": true },
     "qualityMeasures": { "required": true },
     "plans": { "required": true },
-    "bssEntities": { "required": true }
+    "bssEntities": { "required": true },
+    "ilos": { "required": false }
   },
   "routes": [
     {
@@ -180,21 +181,30 @@
               "spreadsheet": "A_Program_Info",
               "info": [
                 {
-                  "type": "span",
-                  "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
+                  "type": "p",
+                  "children": [
+                    {
+                      "type": "html",
+                      "content": "Enter the names of Beneficiary Support System (BSS) entities that support enrollees in the program for which the state is reporting data. Learn more about BSS entities at "
+                    },
+                    {
+                      "type": "externalLink",
+                      "content": "42 CFR 438.71",
+                      "props": {
+                        "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
+                        "target": "_blank",
+                        "aria-label": "42 CFR 438.71 (link opens in new tab)."
+                      }
+                    },
+                    {
+                      "type": "html",
+                      "content": "See Glossary in Excel Workbook for the definition of BSS entities."
+                    }
+                  ]
                 },
                 {
-                  "type": "externalLink",
-                  "content": "42 CFR 438.71",
-                  "props": {
-                    "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.71",
-                    "target": "_blank",
-                    "aria-label": "42 CFR 438.71 (link opens in new tab)."
-                  }
-                },
-                {
-                  "type": "html",
-                  "content": "<span>. See Glossary in Excel Workbook for the definition of BSS entities.</span><p>Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization.</p>"
+                  "type": "p",
+                  "content": "Examples of BSS entity types include a: State or Local Government Entity, Ombudsman Program, State Health Insurance Program (SHIP), Aging and Disability Resource Network (ADRN), Center for Indepedent Living (CIL), Legal Assistance Organization, Community-based Organization, Subcontractor, Enrollment Broker, Consultant, or Academic/Research Organization."
                 }
               ]
             }
@@ -208,6 +218,55 @@
                 "validation": "dynamic",
                 "props": {
                   "label": "BSS entity name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add In Lieu of Services",
+          "path": "/mcpar/program-information/add-in-lieu-of-services",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section A: Program Information",
+              "subsection": "In Lieu of Services and Settings Offered",
+              "info": [
+                {
+                  "type": "p",
+                  "children": [
+                    {
+                      "type": "html",
+                      "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered, as approved in the managed care plan contract(s). Do not include short-term IMD stays. <b>You are required to complete this section if ILOS are available.</b> Do not include short-term IMD stays. Access "
+                    },
+                    {
+                      "type": "externalLink",
+                      "content": "guidance on In Lieu of Services on Medicaid.gov",
+                      "props": {
+                        "href": "https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html",
+                        "target": "_blank",
+                        "aria-label": "guidance on In Lieu of Services on Medicaid.gov (link opens in new tab)."
+                      }
+                    },
+                    {
+                      "type": "html",
+                      "content": "."
+                    }
+                  ]
+                }
+              ],
+              "spreadsheet": "A_Program_Info"
+            }
+          },
+          "form": {
+            "id": "aailos",
+            "fields": [
+              {
+                "id": "ilos",
+                "type": "dynamic",
+                "validation": "dynamicOptional",
+                "props": {
+                  "label": "ILOS name"
                 }
               }
             ]
@@ -1010,8 +1069,12 @@
                       "content": "Access Measures"
                     },
                     {
-                      "type": "html",
-                      "content": "<p>Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level.</p><p>Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program.</p>"
+                      "type": "p",
+                      "content": "Describe the measures the state uses to monitor availability, accessibility, and network adequacy. Report at the program level."
+                    },
+                    {
+                      "type": "p",
+                      "content": "Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program."
                     }
                   ]
                 },
@@ -1482,15 +1545,20 @@
             "drawerTitle": "Report program characteristics & enrollment for",
             "missingEntityMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1546,15 +1614,20 @@
             "drawerTitle": "Report financial performance for",
             "missingEntityMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1689,15 +1762,20 @@
             "drawerTitle": "Report encounter data for",
             "missingEntityMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -1768,15 +1846,20 @@
                 ],
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -1970,15 +2053,20 @@
                 "drawerTitle": "Report appeals by service for",
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -2120,15 +2208,20 @@
                 "drawerTitle": "Report state fair hearings and external medical reviews for",
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -2226,15 +2319,20 @@
                 "drawerTitle": "Report on grievances for",
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -2331,15 +2429,20 @@
                 ],
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -2491,15 +2594,20 @@
                 ],
                 "missingEntityMessage": [
                   {
-                    "type": "span",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
                   }
                 ]
               },
@@ -2644,8 +2752,8 @@
               "spreadsheet": "D2_Plan_Measures",
               "info": [
                 {
-                  "type": "html",
-                  "content": "<p>Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component.</p>"
+                  "type": "p",
+                  "content": "Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component."
                 }
               ]
             },
@@ -2909,8 +3017,8 @@
               "spreadsheet": "D3_Plan_Sanctions",
               "info": [
                 {
-                  "type": "html",
-                  "content": "<p>Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance.</p>"
+                  "type": "p",
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
                 }
               ]
             },
@@ -3161,15 +3269,20 @@
             "drawerTitle": "Program integrity for",
             "missingEntityMessage": [
               {
-                "type": "span",
-                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-              },
-              {
-                "type": "internalLink",
-                "content": "Add Plans",
-                "props": {
-                  "to": "/mcpar/program-information/add-plans"
-                }
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -3362,6 +3475,176 @@
               }
             ]
           }
+        },
+        {
+          "name": "XI: ILOS",
+          "path": "/mcpar/plan-level-indicators/ilos",
+          "pageType": "drawer",
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic XI. ILOS",
+              "spreadsheet": "D4_Plan_ILOS",
+              "info": [
+                {
+                  "type": "p",
+                  "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, report ILOS utilization for each plan during the contract rating period. Select \"Enter\" for each plan listed below to indicate whether or not ILOS were offered by the plan, select which ILOS the plan offered, and enter data on utilization for each ILOS offered."
+                }
+              ]
+            },
+            "dashboardTitle": "Report ILOS utilization for each managed care plan during the contract rating period.",
+            "drawerTitle": "",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ],
+            "missingIlosMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add ILOS",
+                    "props": {
+                      "to": "/mcpar/program-information/add-in-lieu-of-services"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ],
+            "missingPlansAndIlosMessage": [
+              {
+                "type": "p",
+                "content": "This program is missing plans and ILOS."
+              },
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "If ILOS are available to this program, you won't be able to complete this section until you've:"
+                  },
+                  {
+                    "type": "ol",
+                    "children": [
+                      {
+                        "type": "li",
+                        "children": [
+                          {
+                            "type": "html",
+                            "content": "added all the managed care plans that serve enrollees in the program by going to: "
+                          },
+                          {
+                            "type": "internalLink",
+                            "content": "Add Plans",
+                            "props": {
+                              "to": "/mcpar/program-information/add-plans"
+                            }
+                          },
+                          {
+                            "type": "html",
+                            "content": " and"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "li",
+                        "children": [
+                          {
+                            "type": "html",
+                            "content": "added all the names of approved ILOS in the program: "
+                          },
+                          {
+                            "type": "internalLink",
+                            "content": "Add ILOS",
+                            "props": {
+                              "to": "/mcpar/program-information/add-in-lieu-of-services"
+                            }
+                          },
+                          {
+                            "type": "html",
+                            "content": "."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "p",
+                "content": "If ILOS are not available to this program, proceed to the next section."
+              }
+            ]
+          },
+          "drawerForm": {
+            "id": "dilos",
+            "fields": [
+              {
+                "id": "plan_ilosOfferedByPlan",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D4.XI.1 ILOS offered by plan",
+                  "hint": "Indicate whether this plan offered ILOS to their enrollees.",
+                  "choices": [
+                    {
+                      "id": "lHVzkc6Zk12TvS6ocYXeS2n9",
+                      "label": "No ILOS were offered by this plan"
+                    },
+                    {
+                      "id": "1qdYiWh0SaO7IQ41NeOt0uJU",
+                      "label": "Yes, at least 1 ILOS is offered by this plan",
+                      "children": [
+                        {
+                          "id": "plan_ilosUtilizationByPlan",
+                          "type": "checkbox",
+                          "validation": {
+                            "type": "checkbox",
+                            "nested": true,
+                            "parentFieldName": "plan_ilosOfferedByPlan",
+                            "parentOptionId": "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU"
+                          },
+                          "props": {
+                            "label": "D4.XI.2 ILOS utilization by plan",
+                            "hint": "For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\". If no ILOS were offered by this plan during the contract rating period, enter \"N/A\".",
+                            "choices": []
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     },
@@ -3377,19 +3660,24 @@
           "spreadsheet": "E_BSS_Entities",
           "info": [
             {
-              "type": "span",
-              "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
-            },
-            {
-              "type": "internalLink",
-              "content": "Program-Level BSS",
-              "props": {
-                "to": "/mcpar/program-information/add-bss-entities"
-              }
-            },
-            {
-              "type": "span",
-              "content": " page."
+              "type": "p",
+              "children": [
+                {
+                  "type": "html",
+                  "content": "Per 42 CFR 438.66(e)(2)(ix), the Managed Care Program Annual Report must provide information on and an assessment of the operation of the managed care program including activities and performance of the beneficiary support system. Information on how BSS entities support program-level functions is on the "
+                },
+                {
+                  "type": "internalLink",
+                  "content": "Program-Level BSS",
+                  "props": {
+                    "to": "/mcpar/program-information/add-bss-entities"
+                  }
+                },
+                {
+                  "type": "html",
+                  "content": " page."
+                }
+              ]
             }
           ]
         },
@@ -3397,15 +3685,20 @@
         "drawerTitle": "Report on",
         "missingEntityMessage": [
           {
-            "type": "span",
-            "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
-          },
-          {
-            "type": "internalLink",
-            "content": "Add BSS entities",
-            "props": {
-              "to": "/mcpar/program-information/add-bss-entities"
-            }
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add BSS entities",
+                "props": {
+                  "to": "/mcpar/program-information/add-bss-entities"
+                }
+              }
+            ]
           }
         ]
       },

@@ -2,10 +2,12 @@
 
 set -eu -o pipefail
 
-# this is the entrypoint for development. It wraps up compiling and calling dev.ts
-# all arguments, changes, etc. should be found in src/dev.ts
+# this is the entrypoint for development. It wraps up compiling and calling run.ts
+# all arguments, changes, etc. should be found in src/run.ts
 
-# this script checks for all the prereqs and then calls dev.ts
+# this script checks for all the prereqs and then calls run.ts
+
+export REGION_A=us-east-1
 
 # check node exists
 if ! which node > /dev/null ; then
@@ -31,7 +33,7 @@ fi
 # check serverless is installed globally.
 if ! which serverless > /dev/null ; then
 	echo "installing serverless globally"
-	yarn install -g serverless
+	yarn global add serverless
 fi
 
 # have to ensure that yarn install is up to date.
@@ -46,6 +48,6 @@ if [ ! -f .env ]; then
 	cp .env_example .env
 fi
 
-# build and run dev.ts
+# build and run run.ts
 # tsc is configured to build what we expect in tsconfig.json
-./node_modules/.bin/tsc && node ./build_dev/dev.js "$@"
+./node_modules/.bin/tsc && node ./build_dev/run.js "$@"

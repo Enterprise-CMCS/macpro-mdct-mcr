@@ -11,11 +11,9 @@ package:
 plugins:
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
-  - serverless-plugin-warmup
   - serverless-associate-waf
   - "@enterprise-cmcs/serverless-waf-plugin"
   - serverless-stack-termination-protection
-  - serverless-idempotency-helper
   - serverless-iam-helper
   - serverless-s3-bucket-helper
   - serverless-api-client-certificate
@@ -46,19 +44,19 @@ custom:
       - production
   dotenv:
     path: ../../.env
-  bannerTableName: ${env:BANNER_TABLE_NAME, cf:database-${self:custom.stage}.BannerTableName}
-  mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.McparReportTableName}
-  mcparReportTableStreamArn: ${env:MCPAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.McparReportTableStreamArn, cf:database-main.McparReportTableStreamArn}
-  mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.MlrReportTableName}
-  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, cf:database-${self:custom.stage}.FormTemplateTableName}
-  mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.MlrReportTableStreamArn, cf:database-main.MlrReportTableStreamArn}
-  naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, cf:database-${self:custom.stage}.NaaarReportTableName}
-  naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, cf:database-${self:custom.stage}.NaaarReportTableStreamArn, cf:database-main.NaaarReportTableStreamArn}
-  templateBucket: ${env:TEMPLATE_BUCKET, cf:uploads-${self:custom.stage}.AttachmentsBucketName}
+  bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
+  mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, param:McparReportTableName}
+  mcparReportTableStreamArn: ${env:MCPAR_REPORT_TABLE_STREAM_ARN, param:McparReportTableStreamArn}
+  mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, param:MlrReportTableName}
+  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, param:FormTemplateTableName}
+  mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, param:MlrReportTableStreamArn}
+  naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, param:NaaarReportTableName}
+  naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, param:NaaarReportTableStreamArn}
+  templateBucket: ${env:TEMPLATE_BUCKET, param:AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
-  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, cf:database-${self:custom.stage}.McparFormBucketName}
-  mlrFormBucket: ${env:MLR_FORM_BUCKET, cf:database-${self:custom.stage}.MlrFormBucketName}
-  naaarFormBucket: ${env:NAAAR_FORM_BUCKET, cf:database-${self:custom.stage}.NaaarFormBucketName}
+  mcparFormBucket: ${env:MCPAR_FORM_BUCKET, param:McparFormBucketName}
+  mlrFormBucket: ${env:MLR_FORM_BUCKET, param:MlrFormBucketName}
+  naaarFormBucket: ${env:NAAAR_FORM_BUCKET, param:NaaarFormBucketName}
   bootstrapBrokerStringTls: ${env:BROKER_STRINGS, ssm:/configuration/${self:custom.stage}/bigmac/bootstrapBrokerStringTls, ssm:/configuration/default/bigmac/bootstrapBrokerStringTls}
   vpcId: ${env:VPC_ID, ssm:/configuration/${self:custom.stage}/vpc/id, ssm:/configuration/default/vpc/id}
   privateSubnets:
@@ -71,15 +69,6 @@ custom:
   serverlessApiClientCertificate:
     rotateCerts: true
     daysLeft: 30
-  warmup:
-    default:
-      enabled: true
-      prewarm: true
-      events:
-        - schedule: rate(60 minutes)
-      concurrency: 5
-      package:
-        individually: true
   authValue:
     main: aws_iam
     val: aws_iam
@@ -95,7 +84,7 @@ params:
     topicNamespace: --${self:custom.project}--${sls:stage}--
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-east-1
   tracing:
     apiGateway: true

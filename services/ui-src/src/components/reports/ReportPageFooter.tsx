@@ -1,18 +1,21 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
-import { ReportContext } from "components";
 // utils
 import { parseCustomHtml, useFindRoute, useStore } from "utils";
-import { FormJson } from "types";
+import { CustomHtmlElement, FormJson } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
 
-export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
+export const ReportPageFooter = ({
+  submitting,
+  form,
+  praDisclosure,
+  ...props
+}: Props) => {
   const navigate = useNavigate();
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   const { previousRoute, nextRoute } = useFindRoute(
     report?.formTemplate.flatRoutes,
     report?.formTemplate.basePath
@@ -67,8 +70,8 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
           )}
         </Flex>
       </Box>
-      {props.praDisclosure && (
-        <Box sx={sx.praStatement}>{parseCustomHtml(props.praDisclosure)}</Box>
+      {praDisclosure && (
+        <Box sx={sx.praStatement}>{parseCustomHtml(praDisclosure)}</Box>
       )}
     </Box>
   );
@@ -77,6 +80,7 @@ export const ReportPageFooter = ({ submitting, form, ...props }: Props) => {
 interface Props {
   form?: FormJson;
   submitting?: boolean;
+  praDisclosure?: CustomHtmlElement[];
   [key: string]: any;
 }
 
