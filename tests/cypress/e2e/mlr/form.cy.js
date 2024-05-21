@@ -1,5 +1,9 @@
 import template from "../../../../services/app-api/forms/mlr.json";
 
+before(() => {
+  cy.archiveExistingMlrReports();
+});
+
 describe("MLR E2E Form Submission", () => {
   const programName = `automated test - ${new Date().toISOString()}`;
   beforeEach(() => {

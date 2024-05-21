@@ -14,6 +14,10 @@ const newReportInputArray = [
   { name: "programIsPCCM", type: "radio", value: "No" },
 ];
 
+before(() => {
+  cy.archiveExistingMcparReports();
+});
+
 describe("MCPAR Dashboard Page - Program Creation/Editing/Archiving", () => {
   it("State users can create and edit reports", () => {
     cy.authenticate("stateUser");
