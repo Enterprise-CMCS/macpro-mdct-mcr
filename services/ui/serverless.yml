@@ -284,7 +284,7 @@ resources:
               Override: true
             XSSProtection:
               Protection: false
-              Override: false
+              Override: true
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket
