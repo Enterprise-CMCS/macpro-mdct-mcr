@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd ../../ && ./run local && cd -",
+    "start": "cd ../../ && ./run local 1 && cd -",
     "cypress": "cypress open",
     "test": "concurrently --kill-others \"yarn start\" \"yarn cypress\"",
     "test:ci": "cypress install && cypress run --browser chrome --headless"
