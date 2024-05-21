@@ -110,7 +110,13 @@ function fillOutPartialMCPAR() {
 const traverseRoutes = (routes) => {
   //iterate over each route
   routes.forEach((route) => {
-    traverseRoute(route);
+    // skip over the ILOS routes as they are behind an LD flag
+    if (
+      !route.path.contains("add-in-lieu-of-services") ||
+      !route.path.contains("ilos")
+    ) {
+      traverseRoute(route);
+    }
   });
 };
 
