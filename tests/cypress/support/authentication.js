@@ -38,6 +38,7 @@ Cypress.Commands.add("navigateToHomePage", () => {
 Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   //Defeats the purpose of sessions, but does improve performance when switching between users
   Cypress.session.clearAllSavedSessions();
+  cy.wait(2000);
   cy.session([userType, userCredentials], () => {
     cy.visit("/");
     cy.wait(2000);

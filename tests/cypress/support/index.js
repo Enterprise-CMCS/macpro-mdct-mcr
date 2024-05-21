@@ -6,5 +6,6 @@
 import "cypress-axe";
 import "./accessibility";
 import "./authentication";
+import "./commands";
 
 export { fillFormField, verifyElementsArePrefilled } from "./form/formInputs";
