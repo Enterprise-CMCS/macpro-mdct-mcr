@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Flex, Spinner } from "@chakra-ui/react";
 import {
@@ -30,6 +31,9 @@ export const ReportPageWrapper = () => {
   const { pathname } = useLocation();
   const locationState = useLocation().state as AnyObject;
 
+  // LaunchDarkly
+  const ilos = useFlags()?.ilos;
+
   // get state and id from context or storage
   const reportId = report?.id || localStorage.getItem("selectedReport");
   const reportState = state || localStorage.getItem("selectedState");
@@ -49,15 +53,19 @@ export const ReportPageWrapper = () => {
   };
 
   const renderPageSection = (route: ReportRoute) => {
+    const ilosRoute =
+      route.path.endsWith("add-in-lieu-of-services") ||
+      route.path.endsWith("ilos");
     switch (route.pageType) {
       case PageTypes.DRAWER:
         showSidebar();
-        return (
+        return ilosRoute && !ilos ? null : (
           <DrawerReportPage
             route={route as DrawerReportPageShape}
             validateOnRender={locationState?.validateOnRender}
           />
         );
+
       case PageTypes.MODAL_DRAWER:
         showSidebar();
         return (
@@ -79,7 +87,7 @@ export const ReportPageWrapper = () => {
         return <ReviewSubmitPage />;
       default:
         showSidebar();
-        return (
+        return ilosRoute && !ilos ? null : (
           <StandardReportPage
             route={route as StandardReportPageShape}
             validateOnRender={locationState?.validateOnRender}
