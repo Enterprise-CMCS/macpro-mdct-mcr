@@ -112,8 +112,8 @@ const traverseRoutes = (routes) => {
   routes.forEach((route) => {
     // skip over the ILOS routes as they are behind an LD flag
     if (
-      !route.path.contains("add-in-lieu-of-services") ||
-      !route.path.contains("ilos")
+      !route.pathname.contains("add-in-lieu-of-services") ||
+      !route.pathname.contains("ilos")
     ) {
       traverseRoute(route);
     }
