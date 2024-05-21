@@ -2,6 +2,10 @@ import mcparTemplate from "../../../../services/app-api/forms/mcpar.json";
 
 const templateMap = { MCPAR: mcparTemplate };
 
+before(() => {
+  cy.archiveExistingMcparReports();
+});
+
 describe("MCPAR E2E Form Submission", () => {
   it("A state user can fully create a form and submit it", () => {
     cy.authenticate("stateUser");
