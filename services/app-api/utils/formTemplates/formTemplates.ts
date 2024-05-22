@@ -77,11 +77,12 @@ export async function getOrCreateFormTemplate(
   ilosAvailable?: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
-  if (isProgramPCCM) {
-    currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
-  }
+  // if ILOS is not enabled, remove the fields from form template
   if (!ilosAvailable) {
     currentFormTemplate = generateTemplateWithoutIlos(currentFormTemplate);
+  }
+  if (isProgramPCCM) {
+    currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
   const currentTemplateHash = createHash("md5")
