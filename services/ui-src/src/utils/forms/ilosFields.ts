@@ -1,4 +1,4 @@
-import { AnyObject, FormJson } from "types";
+import { AnyObject, EntityShape, FormJson } from "types";
 
 export const generateIlosFields = (form: FormJson, ilos: AnyObject[]) => {
   const fields = form.fields[0];
@@ -72,4 +72,23 @@ const updatedIlosChoiceList = (
     );
   });
   return updatedChoiceList;
+};
+
+// if reporting on ILOS, verify that its questions are completed
+export const isIlosCompleted = (
+  reportingOnIlos: boolean,
+  entity: EntityShape
+) => {
+  let isIlosCompleted = false;
+  if (
+    (reportingOnIlos && entity["plan_ilosOfferedByPlan"]) ||
+    entity["plan_ilosUtilizationByPlan"]
+  ) {
+    isIlosCompleted = entity["plan_ilosOfferedByPlan"][0].value.startsWith(
+      "Yes"
+    )
+      ? entity["plan_ilosUtilizationByPlan"].length > 0
+      : entity["plan_ilosOfferedByPlan"][0];
+  }
+  return isIlosCompleted;
 };

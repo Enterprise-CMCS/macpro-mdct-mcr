@@ -19,6 +19,7 @@ import {
   entityWasUpdated,
   filterFormData,
   generateIlosFields,
+  isIlosCompleted,
   getEntriesToClear,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
@@ -127,25 +128,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           .every((field: FormField) => field.id in entity);
       };
 
-      // if reporting on ILOS, verify that there its questions are completed
-      let isIlosCompleted = false;
-      if (
-        (reportingOnIlos && entity["plan_ilosOfferedByPlan"]) ||
-        entity["plan_ilosUtilizationByPlan"]
-      ) {
-        isIlosCompleted = entity["plan_ilosOfferedByPlan"][0].value.startsWith(
-          "Yes"
-        )
-          ? entity["plan_ilosUtilizationByPlan"].length > 0
-          : entity["plan_ilosOfferedByPlan"][0];
-      }
-
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
        */
       const isEntityCompleted = reportingOnIlos
-        ? calculateEntityCompletion() && isIlosCompleted
+        ? calculateEntityCompletion() &&
+          isIlosCompleted(reportingOnIlos, entity)
         : calculateEntityCompletion();
 
       return (
