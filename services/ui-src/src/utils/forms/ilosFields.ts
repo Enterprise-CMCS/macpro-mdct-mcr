@@ -74,7 +74,7 @@ const updatedIlosChoiceList = (
   return updatedChoiceList;
 };
 
-// if reporting on ILOS, verify that there its questions are completed
+// if reporting on ILOS, verify that its questions are completed
 export const isIlosCompleted = (
   reportingOnIlos: boolean,
   entity: EntityShape
