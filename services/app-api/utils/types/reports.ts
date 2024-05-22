@@ -152,6 +152,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  ilosAvailable?: boolean;
 }
 
 export enum ReportType {

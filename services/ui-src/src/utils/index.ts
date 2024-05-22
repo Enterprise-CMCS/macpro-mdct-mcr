@@ -11,7 +11,7 @@ export * from "./auth/authLifecycle";
 export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
-export * from "./forms/generateIlosFields";
+export * from "./forms/ilosFields";
 // reports
 export * from "./reports/entities";
 export * from "./reports/reports";

@@ -46,13 +46,13 @@ Before starting the project we're going to install some tools. We recommend havi
 ### Setting up the project locally
 
 1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
-2. In the root directory copy the .env_example file and name it .env
-3. In the services/ui-src directory copy the .env_example file and name it .env
-4. In the root directory run `pre-commit install`
+2. Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files
+3. In the root directory run `pre-commit install`
 
 ### Running the project locally
 
-In the root of the project run `./run local`
+In the root of the project run `./run local --update-env` to pull in values from 1Password and run the project. Alternatively, if you have your own `.env ` file you can simply run `./run local`
+
 
 ### Logging in
 
@@ -295,7 +295,7 @@ This repository uses 3 webhooks to publish to  3 different channels all in CMS S
 
 ## GitHub Actions Secret Management:
 - Secrets are added to GitHub secrets by GitHub Admins 
-- Upon editing and adding new secrets Admins should also update the encypted `/github/secret-list` SSM parameter in the MCR AWS Production Account.
+- Development secrets are maintained in a 1Password vault
 
 ## Copyright and license
 
