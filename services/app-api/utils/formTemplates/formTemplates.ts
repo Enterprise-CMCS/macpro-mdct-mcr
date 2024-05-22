@@ -330,10 +330,10 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
 
 const generateTemplateWithoutIlos = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-
   // remove ILOS sections from template
   for (let route of reportTemplate.routes) {
-    if (route.path === "/mcpar/program-information" ||
+    if (
+      route.path === "/mcpar/program-information" ||
       route.path === "/mcpar/plan-level-indicators"
     ) {
       // These sections' last subsection is ILOS-specific; remove it.
