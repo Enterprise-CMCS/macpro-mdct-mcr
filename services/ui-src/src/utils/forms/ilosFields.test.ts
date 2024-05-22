@@ -1,5 +1,5 @@
-import { generateIlosFields } from "utils";
-import { FormJson, AnyObject } from "types";
+import { generateIlosFields, isIlosCompleted } from "utils";
+import { FormJson, AnyObject, EntityShape } from "types";
 
 const mockForm: FormJson = {
   id: "mock-id",
@@ -50,9 +50,28 @@ const mockIlos: AnyObject[] = [
   },
 ];
 
-const result = generateIlosFields(mockForm, mockIlos);
+const mockCompleteIlosEntity: EntityShape = {
+  id: "mock-complete-ilos",
+  plan_ilosOfferedByPlan: [
+    {
+      key: "mock-key",
+      value: "Yes",
+    },
+  ],
+  plan_ilosUtilizationByPlan: [
+    {
+      id: "mock-ilos",
+      name: "ilos",
+    },
+  ],
+};
+
+const mockIncompleteIlosEntity: EntityShape = {
+  id: "mock-incomplete-ilos",
+};
 
 describe("generateIlosFields", () => {
+  const result = generateIlosFields(mockForm, mockIlos);
   it("should generate checkboxes per each available ILOS", () => {
     expect(result.fields[0].props.choices.length).toBe(2);
   });
@@ -64,5 +83,16 @@ describe("generateIlosFields", () => {
         expect(choice.children[0].type).toBe("number");
       }
     );
+  });
+});
+
+describe("isIlosCompleted", () => {
+  it("should return TRUE if entity is complete", () => {
+    const result = isIlosCompleted(true, mockCompleteIlosEntity);
+    expect(result).toBe(true);
+  });
+  it("should return FALSE if entity is incomplete", () => {
+    const result = isIlosCompleted(true, mockIncompleteIlosEntity);
+    expect(result).toBe(false);
   });
 });
