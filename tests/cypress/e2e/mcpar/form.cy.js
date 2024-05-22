@@ -1,4 +1,4 @@
-import mcparTemplate from "../../support/form/mcpar.json";
+import mcparTemplate from "../../support/form/mcpar-test-template.json";
 
 const templateMap = { MCPAR: mcparTemplate };
 
