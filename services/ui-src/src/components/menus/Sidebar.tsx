@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -90,9 +89,6 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  // LaunchDarkly
-  const ilos = useFlags()?.ilos;
-
   useEffect(() => {
     if (pathname.includes(section.path)) {
       setIsOpen(true);
@@ -100,9 +96,8 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   }, [pathname]);
 
   const { name, path, children } = section;
-  const ilosRoute =
-    path.endsWith("add-in-lieu-of-services") || path.endsWith("ilos");
-  return ilosRoute && !ilos ? null : (
+
+  return (
     <React.Fragment key={path}>
       {children ? (
         <Box
