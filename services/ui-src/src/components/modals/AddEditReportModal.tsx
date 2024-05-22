@@ -41,7 +41,7 @@ export const AddEditReportModal = ({
 
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
-  const ilos = useFlags()?.ilos;
+  const ilosAvailable = useFlags()?.ilos;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -93,7 +93,6 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const programIsPCCM = formData["programIsPCCM"];
-    const ilosAvailable = ilos;
 
     return {
       metadata: {
