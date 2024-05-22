@@ -332,16 +332,14 @@ const generateTemplateWithoutIlos = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
 
   // remove ILOS sections from template
-  reportTemplate.routes = reportTemplate.routes.map((route: ReportRoute) => {
-    if (
-      route.path === "/mcpar/program-information" ||
+  for (let route of reportTemplate.routes) {
+    if (route.path === "/mcpar/program-information" ||
       route.path === "/mcpar/plan-level-indicators"
     ) {
-      const updatedChildren = route.children?.slice(0, -1);
-      route.children = updatedChildren;
+      // These sections' last subsection is ILOS-specific; remove it.
+      route.children = route.children?.slice(0, -1);
     }
-    return route;
-  });
+  }
 
   return reportTemplate;
 };
