@@ -73,14 +73,17 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  isProgramPCCM: boolean
+  isProgramPCCM: boolean,
+  ilosAvailable?: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
+  if (!ilosAvailable) {
+    currentFormTemplate = generateTemplateWithoutIlos(currentFormTemplate);
+  }
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
-
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
     .digest("hex");
@@ -322,4 +325,22 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
     throw new Error("Update PCCM logic!");
   }
   programTypeQuestion.props!.disabled = true;
+};
+
+const generateTemplateWithoutIlos = (originalReportTemplate: any) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
+
+  // remove ILOS sections from template
+  reportTemplate.routes = reportTemplate.routes.map((route: ReportRoute) => {
+    if (
+      route.path === "/mcpar/program-information" ||
+      route.path === "/mcpar/plan-level-indicators"
+    ) {
+      const updatedChildren = route.children?.slice(0, -1);
+      route.children = updatedChildren;
+    }
+    return route;
+  });
+
+  return reportTemplate;
 };
