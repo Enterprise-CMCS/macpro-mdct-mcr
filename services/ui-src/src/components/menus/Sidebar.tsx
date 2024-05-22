@@ -96,6 +96,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
   }, [pathname]);
 
   const { name, path, children } = section;
+
   return (
     <React.Fragment key={path}>
       {children ? (

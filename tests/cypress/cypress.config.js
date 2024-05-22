@@ -1,5 +1,6 @@
 const { defineConfig } = require("cypress");
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
+require("dotenv").config({ path: "../../.env" });
 
 module.exports = defineConfig({
   experimentalStudio: true,
@@ -12,11 +13,15 @@ module.exports = defineConfig({
   downloadsFolder: "downloads",
   types: ["cypress", "cypress-axe"],
   env: {
-    STATE_USER_EMAIL: "cypressstateuser@test.com",
-    ADMIN_USER_EMAIL: "cypressadminuser@test.com",
+    STATE_USER_EMAIL: process.env.CYPRESS_STATE_USER_EMAIL,
+    ADMIN_USER_EMAIL: process.env.CYPRESS_ADMIN_USER_EMAIL,
+    // pragma: allowlist nextline secret
+    ADMIN_USER_PASSWORD: process.env.CYPRESS_ADMIN_USER_PASSWORD,
+    // pragma: allowlist nextline secret
+    STATE_USER_PASSWORD: process.env.CYPRESS_STATE_USER_PASSWORD,
   },
   e2e: {
-    baseUrl: "http://127.0.0.1:3000/",
+    baseUrl: "http://localhost:3000/",
     testIsolation: false,
     specPattern: ["e2e/**/*.cy.js"],
     supportFile: "support/index.js",
