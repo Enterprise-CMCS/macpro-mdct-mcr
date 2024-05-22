@@ -16,7 +16,7 @@ module.exports = defineConfig({
     ADMIN_USER_EMAIL: "cypressadminuser@test.com",
   },
   e2e: {
-    baseUrl: "http://127.0.0.1:3000/",
+    baseUrl: "http://localhost:3000/",
     testIsolation: false,
     specPattern: ["e2e/**/*.cy.js"],
     supportFile: "support/index.js",
