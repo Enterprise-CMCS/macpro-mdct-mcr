@@ -113,15 +113,15 @@ describe("EntityStatusIcon functionality tests", () => {
     const { findByText } = render(entityStatusIconPdfComponent);
     expect(await findByText("Complete")).toBeVisible();
   });
-  test.skip("should show a false icon if some required data is missing", () => {
+  test("should show a false icon if some required data is missing", () => {
     const { container } = render(entityStatusIconComponentIncomplete);
     expect(container.querySelector("img[alt='warning icon']")).toBeVisible();
   });
-  test.skip("should show special text on a pdf page if required data is missing", async () => {
+  test("should show special text on a pdf page if required data is missing", async () => {
     const { findByText } = render(entityStatusIconComponentIncompletePdf);
     expect(await findByText("Error")).toBeVisible();
   });
-  test.skip("should show a false icon if nested required value is missing", () => {
+  test("should show a false icon if nested required value is missing", () => {
     const { container } = render(entityStatusIconComponentIncompleteNested);
     expect(container.querySelector("img[alt='warning icon']")).toBeVisible();
   });

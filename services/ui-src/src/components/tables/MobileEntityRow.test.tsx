@@ -67,7 +67,7 @@ describe("Test MobileEntityRow", () => {
     jest.clearAllMocks();
   });
 
-  test.skip("It should render an error if an entity is incomplete", async () => {
+  test("It should render an error if an entity is incomplete", async () => {
     const { findByText } = render(incompleteRowComponent);
     expect(
       await findByText("Select “Enter MLR” to complete this report.")
