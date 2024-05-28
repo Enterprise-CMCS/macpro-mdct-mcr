@@ -11,7 +11,6 @@
     "test": "jest --setupFiles dotenv/config",
     "watchTest": "jest --setupFiles dotenv/config --watch",
     "a11y": "pa11y --runner axe --runner htmlcs",
-    "eject": "react-scripts eject",
     "postinstall": "patch-package"
   },
   "dependencies": {

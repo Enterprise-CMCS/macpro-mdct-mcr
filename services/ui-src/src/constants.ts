@@ -8,9 +8,6 @@ export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 export const dropdownDefaultOptionText = "- Select an option -";
 export const dropdownNoReports = "No reports eligible for copy";
 
-export const noCombinedDataInput =
-  "No, the report does not contain items for which the state is unable to remove Separate CHIP information";
-
 export const closeText = "Close";
 export const saveAndCloseText = "Save & close";
 export const drawerReminderText =

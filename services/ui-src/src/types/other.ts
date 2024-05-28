@@ -40,8 +40,6 @@ export interface AnyObject {
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
-export type { IconType } from "react-icons";
-
 export interface ScreenReaderOnlyHeaderName {
   hiddenName: string;
 }
