@@ -1,4 +1,9 @@
-import { AdminBannerData, MCRUser } from "types";
+import {
+  AdminBannerData,
+  MCRUser,
+  ReportMetadataShape,
+  ReportShape,
+} from "types";
 
 // initial user state
 export interface McrUserState {
@@ -25,4 +30,23 @@ export interface AdminBannerState {
   setBannerLoading: (bannerLoading: boolean) => void;
   setBannerErrorMessage: (bannerErrorMessage: string) => void;
   setBannerDeleting: (bannerDeleting: boolean) => void;
+}
+
+// initial report state
+export interface McrReportState {
+  // INITIAL STATE
+  report: ReportShape | undefined;
+  reportsByState: ReportMetadataShape[] | undefined;
+  copyEligibleReportsByState: ReportMetadataShape[] | undefined;
+  lastSavedTime: string | undefined;
+  // ACTIONS
+  setReport: (newReport: ReportShape | undefined) => void;
+  setReportsByState: (
+    newReportsByState: ReportMetadataShape[] | undefined
+  ) => void;
+  clearReportsByState: () => void;
+  setCopyEligibleReportsByState: (
+    newCopyEligibleReportsByState: ReportMetadataShape[] | undefined
+  ) => void;
+  setLastSavedTime: (lastSavedTime: string | undefined) => void;
 }

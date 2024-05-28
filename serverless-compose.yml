@@ -1,0 +1,53 @@
+services:
+  # wave 1: no dependencies
+  database:
+    path: services/database
+  topics:
+    path: services/topics
+  ui:
+    path: services/ui
+  uploads:
+    path: services/uploads
+
+  # wave 2: depends on database
+  app-api:
+    path: services/app-api
+    params:
+      BannerTableName: ${database.BannerTableName}
+      McparReportTableName: ${database.McparReportTableName}
+      McparReportTableStreamArn: ${database.McparReportTableStreamArn}
+      MlrReportTableName: ${database.MlrReportTableName}
+      FormTemplateTableName: ${database.FormTemplateTableName}
+      MlrReportTableStreamArn: ${database.MlrReportTableStreamArn}
+      NaaarReportTableName: ${database.NaaarReportTableName}
+      NaaarReportTableStreamArn: ${database.NaaarReportTableStreamArn}
+      AttachmentsBucketName: ${uploads.AttachmentsBucketName}
+      McparFormBucketName: ${database.McparFormBucketName}
+      MlrFormBucketName: ${database.MlrFormBucketName}
+      NaaarFormBucketName: ${database.NaaarFormBucketName}
+      
+  # wave 3: depends on many
+  ui-auth:
+    path: services/ui-auth
+    params:
+      AttachmentsBucketArn: ${uploads.AttachmentsBucketArn}
+      ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}
+      ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
+      
+  # wave 4: depends on most
+  ui-src:
+    path: services/ui-src
+    params:
+      ApiRegion: ${app-api.Region}
+      ApiGatewayRestApiUrl: ${app-api.ApiGatewayRestApiUrl}
+      CognitoRegion: ${ui-auth.Region}
+      IdentityPoolId: ${ui-auth.IdentityPoolId}
+      UserPoolId: ${ui-auth.UserPoolId}
+      UserPoolClientId: ${ui-auth.UserPoolClientId}
+      UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
+      IdentityProvider: ${ui-auth.IdentityProvider}
+      AttachmentsBucketRegion: ${uploads.Region}
+      AttachmentsBucketName: ${uploads.AttachmentsBucketName}
+      S3BucketName: ${ui.S3BucketName}
+      CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
+      ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}

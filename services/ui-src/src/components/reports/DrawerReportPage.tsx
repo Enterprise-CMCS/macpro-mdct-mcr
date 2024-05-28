@@ -18,11 +18,14 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  generateIlosFields,
+  isIlosCompleted,
   getEntriesToClear,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
+// types
 import {
   AnyObject,
   EntityShape,
@@ -31,13 +34,18 @@ import {
   FormField,
   isFieldElement,
 } from "types";
+// assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { report, updateReport } = useContext(ReportContext);
+  const { updateReport } = useContext(ReportContext);
+
+  // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { report } = useStore();
+
   // make state
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
@@ -45,6 +53,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
+
+  // check if there are ILOS
+  const ilos = report?.fieldData?.["ilos"];
+  const hasIlos = ilos?.length;
+  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
+
+  // generate ILOS fields (if applicable)
+  const form =
+    ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
 
   const openRowDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
@@ -65,11 +82,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
       const filteredFormData = filterFormData(
         enteredData,
-        drawerForm.fields.filter(isFieldElement)
+        form.fields.filter(isFieldElement)
       );
       const entriesToClear = getEntriesToClear(
         enteredData,
-        drawerForm.fields.filter(isFieldElement)
+        form.fields.filter(isFieldElement)
       );
       const newEntity = {
         ...selectedEntity,
@@ -103,14 +120,23 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
-    return entities.map((entity) => {
+    const disabled = reportingOnIlos && !hasIlos;
+    return entities?.map((entity) => {
+      const calculateEntityCompletion = () => {
+        return form.fields
+          ?.filter(isFieldElement)
+          .every((field: FormField) => field.id in entity);
+      };
+
       /*
        * If the entity has the same fields from drawerForms fields, it was completed
        * at somepoint.
        */
-      const isEntityCompleted = drawerForm.fields
-        ?.filter(isFieldElement)
-        .every((field: FormField) => field.id in entity);
+      const isEntityCompleted = reportingOnIlos
+        ? calculateEntityCompletion() &&
+          isIlosCompleted(reportingOnIlos, entity)
+        : calculateEntityCompletion();
+
       return (
         <Flex key={entity.id} sx={sx.entityRow}>
           {isEntityCompleted && (
@@ -124,9 +150,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {entity.name}
           </Heading>
           <Button
-            sx={sx.enterButton}
+            sx={disabled ? sx.disabledButton : sx.enterButton}
             onClick={() => openRowDrawer(entity)}
             variant="outline"
+            disabled={disabled}
           >
             {isEntityCompleted ? "Edit" : "Enter"}
           </Button>
@@ -134,19 +161,34 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+
   return (
     <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
-      <Heading as="h3" sx={sx.dashboardTitle}>
-        {verbiage.dashboardTitle}
-      </Heading>
+      {/* if there are no ILOS but there are plans added, display this message */}
+      {!hasIlos && entities?.length ? (
+        <Box sx={sx.missingIlos}>
+          {parseCustomHtml(verbiage.missingIlosMessage || "")}
+        </Box>
+      ) : (
+        <></>
+      )}
       <Box>
-        {entities?.length ? (
-          entityRows(entities)
-        ) : (
+        <Heading as="h3" sx={sx.dashboardTitle}>
+          {verbiage.dashboardTitle}
+        </Heading>
+        {reportingOnIlos && !entities?.length && !hasIlos ? (
+          // if there are no plans and no ILOS added, display this message
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
+          </Box>
+        ) : !entities?.length ? (
+          // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
+        ) : (
+          entityRows(entities)
         )}
       </Box>
       <ReportDrawer
@@ -155,7 +197,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={drawerForm}
+        form={form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
@@ -201,6 +243,17 @@ const sx = {
     flexGrow: 1,
     marginLeft: "2.25rem",
   },
+  missingIlos: {
+    fontWeight: "bold",
+    marginBottom: "2rem",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
+  },
   missingEntityMessage: {
     paddingTop: "1rem",
     fontWeight: "bold",
@@ -211,11 +264,26 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
+    ol: {
+      paddingLeft: "1rem",
+    },
   },
   enterButton: {
     width: "4.25rem",
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+  },
+  disabledButton: {
+    width: "4.25rem",
+    height: "1.75rem",
+    fontSize: "md",
+    fontWeight: "normal",
+    color: "palette.gray_lighter",
+    borderColor: "palette.gray_lighter",
+    "&:hover": {
+      color: "palette.gray_lighter",
+      borderColor: "palette.gray_lighter",
+    },
   },
 };

@@ -39,6 +39,7 @@ export default {
             ["D1_Plan_Set", "D: Plan-Level Indicators"],
             ["D2_Plan_Measures", "D: Plan-Level Indicators"],
             ["D3_Plan_Sanctions", "D: Plan-Level Indicators"],
+            ["D4_Plan_ILOS", "D: Plan-Level Indicators"],
             ["E_BSS_Entities", "E: BSS Entity Indicators"],
           ],
         },

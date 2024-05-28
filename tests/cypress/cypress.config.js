@@ -1,12 +1,11 @@
 const { defineConfig } = require("cypress");
-const preprocessor = require("@badeball/cypress-cucumber-preprocessor");
-const browserify = require("@badeball/cypress-cucumber-preprocessor/browserify");
 const { pa11y, prepareAudit } = require("@cypress-audit/pa11y");
+require("dotenv").config({ path: "../../.env" });
 
 module.exports = defineConfig({
   experimentalStudio: true,
   redirectionLimit: 20,
-  retries: 1,
+  retries: 2,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
@@ -14,19 +13,19 @@ module.exports = defineConfig({
   downloadsFolder: "downloads",
   types: ["cypress", "cypress-axe"],
   env: {
-    STATE_USER_EMAIL: "cypressstateuser@test.com",
-    ADMIN_USER_EMAIL: "cypressadminuser@test.com",
+    STATE_USER_EMAIL: process.env.CYPRESS_STATE_USER_EMAIL,
+    ADMIN_USER_EMAIL: process.env.CYPRESS_ADMIN_USER_EMAIL,
+    // pragma: allowlist nextline secret
+    ADMIN_USER_PASSWORD: process.env.CYPRESS_ADMIN_USER_PASSWORD,
+    // pragma: allowlist nextline secret
+    STATE_USER_PASSWORD: process.env.CYPRESS_STATE_USER_PASSWORD,
   },
   e2e: {
-    baseUrl: "http://127.0.0.1:3000/",
+    baseUrl: "http://localhost:3000/",
     testIsolation: false,
-    specPattern: ["tests/**/*.spec.js", "tests/**/*.feature"],
+    specPattern: ["e2e/**/*.cy.js"],
     supportFile: "support/index.js",
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async setupNodeEvents(on, config) {
-      await preprocessor.addCucumberPreprocessorPlugin(on, config);
-      on("file:preprocessor", browserify.default(config));
-
       on("task", {
         log(message) {
           // eslint-disable-next-line no-console

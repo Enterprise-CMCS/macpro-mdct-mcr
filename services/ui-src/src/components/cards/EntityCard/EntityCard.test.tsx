@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityCard, EntityCardBottomSection, ReportContext } from "components";
+import { EntityCard, EntityCardBottomSection } from "components";
 import {
   mockModalDrawerReportPageJson,
   mockAccessMeasuresEntity,
@@ -21,8 +21,9 @@ import {
   mockQualityMeasuresFormattedEntityDataMissingReportingPeriod,
   mockQualityMeasuresEntityMissingDetails,
   mockQualityMeasuresFormattedEntityDataMissingDetails,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
-import { ReportContextShape } from "types";
+import { useStore } from "utils";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
@@ -33,6 +34,12 @@ const {
   enterEntityDetailsButtonText,
   editEntityDetailsButtonText,
 } = mockModalDrawerReportPageJson.verbiage;
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockMcparReportStore,
+});
 
 // ACCESS MEASURES
 
@@ -253,87 +260,73 @@ describe("Test EntityCard status indicators for AccessMeasures", () => {
 
 // QUALITY MEASURES
 
-const mockReportWithTwoPlans = {
-  report: { fieldData: { plans: { length: 2 } } },
-} as unknown as ReportContextShape;
-
 const UnstartedQualityMeasuresEntityCardComponent = (
-  <ReportContext.Provider value={mockReportWithTwoPlans}>
-    <EntityCard
-      entity={mockQualityMeasuresEntity}
-      entityIndex={0}
-      entityType="qualityMeasures"
-      formattedEntityData={mockUnfinishedQualityMeasuresFormattedEntityData}
-      verbiage={mockModalDrawerReportPageJson.verbiage}
-      openAddEditEntityModal={openAddEditEntityModal}
-      openDeleteEntityModal={openDeleteEntityModal}
-      openDrawer={mockOpenDrawer}
-    />
-  </ReportContext.Provider>
+  <EntityCard
+    entity={mockQualityMeasuresEntity}
+    entityIndex={0}
+    entityType="qualityMeasures"
+    formattedEntityData={mockUnfinishedQualityMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
 );
 
 const QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails = (
-  <ReportContext.Provider value={mockReportWithTwoPlans}>
-    <EntityCard
-      entity={mockQualityMeasuresEntityMissingReportingPeriodAndDetails}
-      entityIndex={0}
-      entityType="qualityMeasures"
-      formattedEntityData={
-        mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails
-      }
-      verbiage={mockModalDrawerReportPageJson.verbiage}
-      openAddEditEntityModal={openAddEditEntityModal}
-      openDeleteEntityModal={openDeleteEntityModal}
-      openDrawer={mockOpenDrawer}
-    />
-  </ReportContext.Provider>
+  <EntityCard
+    entity={mockQualityMeasuresEntityMissingReportingPeriodAndDetails}
+    entityIndex={0}
+    entityType="qualityMeasures"
+    formattedEntityData={
+      mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails
+    }
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
 );
 
 const QualityMeasuresEntityCardComponentMissingReportingPeriod = (
-  <ReportContext.Provider value={mockReportWithTwoPlans}>
-    <EntityCard
-      entity={mockQualityMeasuresEntityMissingReportingPeriod}
-      entityIndex={0}
-      entityType="qualityMeasures"
-      formattedEntityData={
-        mockQualityMeasuresFormattedEntityDataMissingReportingPeriod
-      }
-      verbiage={mockModalDrawerReportPageJson.verbiage}
-      openAddEditEntityModal={openAddEditEntityModal}
-      openDeleteEntityModal={openDeleteEntityModal}
-      openDrawer={mockOpenDrawer}
-    />
-  </ReportContext.Provider>
+  <EntityCard
+    entity={mockQualityMeasuresEntityMissingReportingPeriod}
+    entityIndex={0}
+    entityType="qualityMeasures"
+    formattedEntityData={
+      mockQualityMeasuresFormattedEntityDataMissingReportingPeriod
+    }
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
 );
 
 const QualityMeasuresEntityCardComponentMissingDetails = (
-  <ReportContext.Provider value={mockReportWithTwoPlans}>
-    <EntityCard
-      entity={mockQualityMeasuresEntityMissingDetails}
-      entityIndex={0}
-      entityType="qualityMeasures"
-      formattedEntityData={mockQualityMeasuresFormattedEntityDataMissingDetails}
-      verbiage={mockModalDrawerReportPageJson.verbiage}
-      openAddEditEntityModal={openAddEditEntityModal}
-      openDeleteEntityModal={openDeleteEntityModal}
-      openDrawer={mockOpenDrawer}
-    />
-  </ReportContext.Provider>
+  <EntityCard
+    entity={mockQualityMeasuresEntityMissingDetails}
+    entityIndex={0}
+    entityType="qualityMeasures"
+    formattedEntityData={mockQualityMeasuresFormattedEntityDataMissingDetails}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
 );
 
 const CompletedQualityMeasuresEntityCardComponent = (
-  <ReportContext.Provider value={mockReportWithTwoPlans}>
-    <EntityCard
-      entity={mockCompletedQualityMeasuresEntity}
-      entityIndex={0}
-      entityType="qualityMeasures"
-      formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
-      verbiage={mockModalDrawerReportPageJson.verbiage}
-      openAddEditEntityModal={openAddEditEntityModal}
-      openDeleteEntityModal={openDeleteEntityModal}
-      openDrawer={mockOpenDrawer}
-    />
-  </ReportContext.Provider>
+  <EntityCard
+    entity={mockCompletedQualityMeasuresEntity}
+    entityIndex={0}
+    entityType="qualityMeasures"
+    formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
+    verbiage={mockModalDrawerReportPageJson.verbiage}
+    openAddEditEntityModal={openAddEditEntityModal}
+    openDeleteEntityModal={openDeleteEntityModal}
+    openDrawer={mockOpenDrawer}
+  />
 );
 
 describe("Test Unstarted QualityMeasures EntityCard", () => {
@@ -536,6 +529,9 @@ describe("Test QualityMeasures EntityCard accessibility", () => {
   });
 
   it("Half-completed QualityMeasures EntityCard should not have basic accessibility issues", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+    });
     const { container } = render(
       QualityMeasuresEntityCardComponentMissingDetails
     );

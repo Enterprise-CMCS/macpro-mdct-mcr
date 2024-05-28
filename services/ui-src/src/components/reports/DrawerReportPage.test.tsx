@@ -10,9 +10,9 @@ import {
   mockDrawerReportPageJson,
   mockNoUserStore,
   mockMcparReportContext,
-  mockStateRepStore,
   mockStateUserStore,
   RouterWrappedComponent,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -27,6 +27,7 @@ jest.mock("react-router-dom", () => ({
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockStateUserStore);
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -61,7 +62,6 @@ const drawerReportPageWithCompletedEntity = (
 
 describe("Test DrawerReportPage without entities", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(drawerReportPageWithoutEntities);
   });
 
@@ -79,6 +79,10 @@ describe("Test DrawerReportPage without entities", () => {
 
 describe("Test DrawerReportPage with entities", () => {
   beforeEach(() => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     render(drawerReportPageWithEntities);
   });
 
@@ -87,14 +91,12 @@ describe("Test DrawerReportPage with entities", () => {
   });
 
   it("should render the view", () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     expect(
       screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
     ).toBeVisible();
   });
 
   it("Opens the sidedrawer correctly", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -104,23 +106,6 @@ describe("Test DrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer opens and saves for state user", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    const visibleEntityText =
-      mockMcparReportContext.report.fieldData.plans[0].name;
-    expect(screen.getByText(visibleEntityText)).toBeVisible();
-    const launchDrawerButton = screen.getAllByText("Enter")[0];
-    await userEvent.click(launchDrawerButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock drawer text field");
-    expect(textField).toBeVisible();
-    await userEvent.type(textField, "test");
-    const saveAndCloseButton = screen.getByText(saveAndCloseText);
-    await userEvent.click(saveAndCloseButton);
-    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
-  });
-
-  it("Submit sidedrawer opens and saves for state rep user", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -136,7 +121,10 @@ describe("Test DrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer opens but admin user doesnt see save and close button", async () => {
-    mockedUseStore.mockReturnValue(mockAdminUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockAdminUserStore,
+      ...mockMcparReportStore,
+    });
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -150,7 +138,10 @@ describe("Test DrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer bad user can't submit the form", async () => {
-    mockedUseStore.mockReturnValue(mockNoUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockNoUserStore,
+      ...mockMcparReportStore,
+    });
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);
     expect(screen.getByRole("dialog")).toBeVisible();
@@ -160,22 +151,6 @@ describe("Test DrawerReportPage with entities", () => {
   });
 
   it("Submit sidedrawer doesn't save if no change was made by State User", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
-    const visibleEntityText =
-      mockMcparReportContext.report.fieldData.plans[0].name;
-    expect(screen.getByText(visibleEntityText)).toBeVisible();
-    const launchDrawerButton = screen.getAllByText("Enter")[0];
-    await userEvent.click(launchDrawerButton);
-    expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText("mock drawer text field");
-    expect(textField).toBeVisible();
-    const saveAndCloseButton = screen.getByText(saveAndCloseText);
-    await userEvent.click(saveAndCloseButton);
-    expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
-  });
-
-  it("Submit sidedrawer doesn't save if no change was made by State Rep", async () => {
-    mockedUseStore.mockReturnValue(mockStateRepStore);
     const visibleEntityText =
       mockMcparReportContext.report.fieldData.plans[0].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
@@ -192,7 +167,10 @@ describe("Test DrawerReportPage with entities", () => {
 
 describe("Test DrawerReportPage with completed entity", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     render(drawerReportPageWithCompletedEntity);
   });
 
@@ -214,7 +192,10 @@ describe("Test DrawerReportPage with completed entity", () => {
 
 describe("Test DrawerReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+    });
     const { container } = render(drawerReportPageWithEntities);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

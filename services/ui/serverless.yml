@@ -5,7 +5,7 @@ frameworkVersion: "3"
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: us-east-1
   iam:
     role:
@@ -235,9 +235,7 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
-            FunctionAssociations:
-              - EventType: viewer-response
-                FunctionARN: !GetAtt HeadersCloudfrontFunction.FunctionMetadata.FunctionARN
+            ResponseHeadersPolicyId: !GetAtt CloudFormationHeadersPolicy.Id
           ViewerCertificate:
             Fn::If:
               - CreateCustomCloudFrontDomain
@@ -264,25 +262,29 @@ resources:
           HostedZoneId: Z2FDTNDATAQYW2
           EvaluateTargetHealth: false
         Type: A
-    HeadersCloudfrontFunction:
-      Type: AWS::CloudFront::Function
+    CloudFormationHeadersPolicy:
+      Type: AWS::CloudFront::ResponseHeadersPolicy
       Properties:
-        AutoPublish: true
-        FunctionCode: |
-          function handler(event) {
-            var response = event.response;
-            var headers = response.headers;
-            headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};
-            headers['x-content-type-options'] = { value: 'nosniff' };
-            headers['x-xss-protection'] = { value: '0' };
-            headers["content-security-policy"] = { value: "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'"};
-            headers['x-frame-options'] = { value: 'DENY' };
-            return response;
-          }
-        FunctionConfig:
-          Comment: This function adds headers for security - HSTS, NoSniffContentType, XSS Protection
-          Runtime: cloudfront-js-1.0
-        Name: security-headers-${self:custom.stage}
+        ResponseHeadersPolicyConfig:
+          Name: Headers-Policy-${self:custom.stage}
+          Comment: Add Security Headers
+          SecurityHeadersConfig:
+            ContentTypeOptions: # sets to nosniff
+              Override: true
+            StrictTransportSecurity:
+              AccessControlMaxAgeSec: 63072000
+              IncludeSubdomains: true
+              Preload: true
+              Override: true
+            FrameOptions:
+              FrameOption: "DENY"
+              Override: true
+            ContentSecurityPolicy:
+              ContentSecurityPolicy:  "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'"
+              Override: true
+            XSSProtection:
+              Protection: false
+              Override: true
     ###############This code block enables logging on waf and sends all logs to s3.##################################
     WaflogsUploadBucket:
       Type: AWS::S3::Bucket

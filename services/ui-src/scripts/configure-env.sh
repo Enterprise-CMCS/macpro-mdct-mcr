@@ -4,9 +4,9 @@
 rm -rf ./public/env-config.js
 touch ./public/env-config.js
 
-# if .env doesn't exist, copy .env_example there
+# if .env doesn't exist, copy .env_tpl there
 if [ ! -f .env ]; then 
-	cp .env_example .env
+	cp .env.tpl .env
 fi
 
 # Add assignment

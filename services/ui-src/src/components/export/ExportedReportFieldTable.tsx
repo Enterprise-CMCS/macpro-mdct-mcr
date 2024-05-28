@@ -1,7 +1,7 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
 // components
-import { ExportedReportFieldRow, ReportContext, Table } from "components";
-// types, utils
+import { ExportedReportFieldRow, Table } from "components";
+// types
 import {
   Choice,
   EntityShape,
@@ -16,9 +16,11 @@ import {
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
+// utils
+import { useStore } from "utils";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
-  const { report } = useContext(ReportContext);
+  const { report } = useStore();
   const { tableHeaders } = verbiage;
 
   const pageType = section.pageType;

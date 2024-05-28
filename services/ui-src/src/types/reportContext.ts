@@ -29,6 +29,7 @@ export interface ReportMetadataShape extends ReportKeys {
   fieldDataId: string;
   copyFieldDataSourceId?: string;
   programIsPCCM?: Choice[];
+  ilosAvailable?: boolean;
   previousRevisions: string[];
 }
 
@@ -57,12 +58,8 @@ export interface ReportContextMethods {
 }
 
 export interface ReportContextShape extends ReportContextMethods {
-  report: ReportShape | undefined;
   contextIsLoaded: boolean;
-  reportsByState: ReportMetadataShape[] | undefined;
-  copyEligibleReportsByState: ReportMetadataShape[] | undefined;
   errorMessage?: string | undefined;
-  lastSavedTime?: string | undefined;
   isReportPage: boolean;
 }
 
