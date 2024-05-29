@@ -68,10 +68,10 @@ describe("Test MobileEntityRow", () => {
   });
 
   test("It should render an error if an entity is incomplete", async () => {
-    const { findByText } = render(incompleteRowComponent);
-    expect(
-      await findByText("Select “Enter MLR” to complete this report.")
-    ).toBeVisible();
+    await act(async () => {
+      await render(incompleteRowComponent);
+    });
+    expect(screen.getByAltText("warning icon")).toBeVisible();
   });
 
   test("It should NOT render an error if an entity is complete", async () => {
