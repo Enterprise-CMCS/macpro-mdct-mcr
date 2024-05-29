@@ -8,7 +8,7 @@ import {
 } from "utils/testing/mockZustand";
 import { EntityContext, EntityProvider } from "./EntityProvider";
 
-const testEntities = { ...mockEntityStore.selectedEntity };
+const testEntities = [{ ...mockEntityStore.selectedEntity }];
 
 const testEntitiesUpdated = [
   {
@@ -20,7 +20,6 @@ const testEntitiesUpdated = [
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue(mockEntityStore);
 
 const TestComponent = () => {
   const { prepareEntityPayload } = useContext(EntityContext);
@@ -28,7 +27,7 @@ const TestComponent = () => {
   return (
     <div>
       <button onClick={() => prepareEntityPayload({ test: "update" })}>
-        Update Entities
+        Prepare Entity
       </button>
       <p id="entities">{JSON.stringify(mockEntityStore.selectedEntity)}</p>
     </div>
@@ -49,15 +48,17 @@ const testComponentNoEntity = (
 
 describe("Test update entities provider function", () => {
   beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockMcparReportStore);
-    mockedUseStore.mockReturnValue(mockEntityStore);
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      ...mockEntityStore,
+    });
   });
   test("Should update entities if the selected entity is valid", async () => {
     const result = await render(testComponent);
     expect(
       await result.container.querySelector("[id='entities']")?.innerHTML
-    ).toMatch(JSON.stringify(testEntities));
-    const updateButton = await result.findByText("Update Entities");
+    ).toMatch(JSON.stringify(testEntities)[0]);
+    const updateButton = await result.findByText("Prepare Entity");
     await userEvent.click(updateButton);
 
     setTimeout(async () => {
@@ -71,8 +72,8 @@ describe("Test update entities provider function", () => {
     const result = render(testComponentNoEntity);
     expect(
       await result.container.querySelector("[id='entities']")?.innerHTML
-    ).toMatch(JSON.stringify(testEntities));
-    const updateButton = await result.findByText("Update Entities");
+    ).toMatch(JSON.stringify(testEntities)[0]);
+    const updateButton = await result.findByText("Prepare Entity");
     await userEvent.click(updateButton);
 
     setTimeout(async () => {
