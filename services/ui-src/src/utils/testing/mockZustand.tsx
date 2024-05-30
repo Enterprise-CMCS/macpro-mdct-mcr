@@ -167,7 +167,7 @@ export const mockEmptyReportStore: McrReportState = {
 // ENTITY STATES / STORE
 export const mockEntityStore: McrEntityState = {
   selectedEntity: {
-    id: "mock-id",
+    id: "mock-plan-id-1",
     type: entityTypes[0],
     report_planName: "mock-plan",
     report_programName: "mock-programName",
