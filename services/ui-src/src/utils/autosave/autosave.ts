@@ -112,7 +112,7 @@ export const autosaveFieldData = async ({
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
     let dataToWrite = {};
-    if (entityContext && entityContext.selectedEntity) {
+    if (entityContext?.selectedEntity) {
       dataToWrite = {
         metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
         fieldData: {
