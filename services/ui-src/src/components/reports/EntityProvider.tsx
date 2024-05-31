@@ -1,26 +1,13 @@
-import { ReactNode, useMemo, useState, createContext } from "react";
-import { EntityType, EntityShape } from "types";
+import { ReactNode, useMemo, createContext } from "react";
+import { EntityShape, AnyObject } from "types";
+import { useStore } from "utils";
 
 interface EntityContextShape {
-  updateEntities: Function;
-  setEntities: Function;
-  setSelectedEntity: Function;
-  setEntityType: Function;
-  entityType?: EntityType;
-  entityId?: string;
-  entities: EntityShape[];
-  selectedEntity?: EntityShape;
+  prepareEntityPayload: Function;
 }
 
 export const EntityContext = createContext<EntityContextShape>({
-  updateEntities: Function,
-  setEntities: Function,
-  setSelectedEntity: Function,
-  setEntityType: Function,
-  entityType: undefined,
-  entityId: undefined,
-  entities: [],
-  selectedEntity: undefined,
+  prepareEntityPayload: Function,
 });
 
 /**
@@ -33,12 +20,11 @@ export const EntityContext = createContext<EntityContextShape>({
  * @param children - React nodes
  */
 export const EntityProvider = ({ children }: EntityProviderProps) => {
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape>();
-  const [entityType, setEntityType] = useState<EntityType>();
-  const [entities, setEntities] = useState<EntityShape[]>([]);
+  // state management
+  const { selectedEntity, report } = useStore();
 
   /**
-   * updateEntities updates the user's selected entity with their changes, and
+   * prepareEntityPayload updates the user's selected entity with their changes, and
    * replaces the selected entity in the entities list.
    *
    * When we submit an entity related field for autosave, we need to send
@@ -46,10 +32,11 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
    *
    * @param updateData - updated entity information
    */
-  const updateEntities = (updateData: EntityShape) => {
-    const currentEntities = entities;
+  const prepareEntityPayload = (updateData: AnyObject) => {
+    const entityType = selectedEntity!.type;
+    const currentEntities = report?.fieldData?.[entityType];
     const selectedEntityIndex = currentEntities?.findIndex(
-      (x) => x.id === selectedEntity?.id
+      (x: EntityShape) => x.id === selectedEntity?.id
     );
     if (currentEntities && selectedEntityIndex > -1) {
       const newEntity = {
@@ -63,16 +50,9 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
 
   const providerValue = useMemo(
     () => ({
-      updateEntities,
-      setSelectedEntity,
-      setEntities,
-      selectedEntity,
-      entities,
-      setEntityType,
-      entityType,
-      entityId: selectedEntity?.id,
+      prepareEntityPayload,
     }),
-    [entities, selectedEntity]
+    [selectedEntity]
   );
 
   return (
