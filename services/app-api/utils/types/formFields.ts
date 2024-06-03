@@ -89,6 +89,7 @@ export interface FormLayoutElement {
   id: string;
   type: string;
   props?: AnyObject;
+  repeat?: string;
 }
 
 export interface DropdownOptions {
