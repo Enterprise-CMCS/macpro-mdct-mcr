@@ -1,5 +1,18 @@
-import { Choice, FormJson, ModalOverlayReportPageShape } from "./formFields";
-import { AnyObject, CompletionData, CustomHtmlElement, State } from "./other";
+import {
+  Choice,
+  FormJson,
+  AnyObject,
+  CustomHtmlElement,
+  State,
+  CompletionData,
+} from "./index";
+
+// REPORT TYPES
+export enum ReportType {
+  MCPAR = "MCPAR",
+  MLR = "MLR",
+  NAAAR = "NAAAR",
+}
 
 // REPORT STRUCTURE
 
@@ -63,6 +76,15 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
+export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  verbiage: ModalOverlayReportPageVerbiage;
+  modalForm: FormJson;
+  overlayForm?: FormJson;
+  drawerForm?: never;
+  form?: never;
+}
+
 export interface ReportRouteWithoutForm extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: string;
@@ -74,13 +96,17 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
   form?: never;
 }
 
+// REPORT VERBIAGE
+
 export interface ReportPageVerbiage {
   intro: {
     section: string;
     subsection?: string;
     spreadsheet?: string;
     info?: string | CustomHtmlElement[];
+    exportSectionHeader?: string;
   };
+  praDisclosure?: CustomHtmlElement[];
 }
 
 export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
@@ -89,6 +115,8 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   drawerTitle: string;
   drawerInfo?: CustomHtmlElement[];
   missingEntityMessage?: CustomHtmlElement[];
+  missingIlosMessage?: CustomHtmlElement[];
+  missingPlansAndIlosMessage?: CustomHtmlElement[];
 }
 
 export interface ModalDrawerReportPageVerbiage
@@ -155,11 +183,8 @@ export interface MCPARReportMetadata extends ReportMetadata {
   ilosAvailable?: boolean;
 }
 
-export enum ReportType {
-  MCPAR = "MCPAR",
-  MLR = "MLR",
-  NAAAR = "NAAAR",
-}
+// HELPER FUNCTIONS
+
 /**
  * Check if unknown value is a report type
  *
@@ -168,4 +193,10 @@ export enum ReportType {
  */
 export function isReportType(reportType: unknown): reportType is ReportType {
   return Object.values(ReportType).includes(reportType as ReportType);
+}
+
+export function pageHasOverlay(
+  unknownPage: ReportPageShapeBase
+): unknownPage is ModalOverlayReportPageShape {
+  return Object.getOwnPropertyNames(unknownPage).includes("overlayForm");
 }

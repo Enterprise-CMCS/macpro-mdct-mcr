@@ -22,16 +22,6 @@ export const entityTypes = [
  */
 export declare type EntityType = typeof entityTypes[number];
 
-/**
- * Check if an unknown string is an entity type.
- *
- * @param entityType unknown string
- * @returns true and string is EntityType, false.
- */
-export function isEntityType(entityType: string): entityType is EntityType {
-  return entityTypes.includes(entityType as EntityType);
-}
-
 export enum ModalDrawerEntityTypes {
   ACCESS_MEASURES = "accessMeasures",
   QUALITY_MEASURES = "qualityMeasures",
@@ -96,31 +86,10 @@ export interface FormField {
   repeat?: string;
 }
 
-export function isFieldElement(
-  field: FormField | FormLayoutElement
-): field is FormField {
-  /*
-   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
-   * If you change it here, change it there!
-   */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
-  return !formLayoutElementTypes.includes(field.type);
-}
-
 export interface FormLayoutElement {
   id: string;
   type: string;
   props?: AnyObject;
-}
-
-export function isLayoutElement(
-  field: FormField | FormLayoutElement
-): field is FormLayoutElement {
-  /*
-   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
-   * If you change it here, change it there!
-   */
-  return (field as FormField).validation === undefined;
 }
 
 export interface DropdownOptions {
@@ -153,4 +122,66 @@ export interface Choice {
 export interface DropdownChoice {
   label: string;
   value: string;
+}
+
+/**
+ * Shape of autosave field input. Since autosave is atomic, it requires a special shape
+ * to more easily validate field values.
+ */
+export interface AutosaveField {
+  name: string;
+  type: string;
+  value: FieldValue;
+  defaultValue?: FieldValue;
+  hydrationValue?: FieldValue;
+  overrideCheck?: boolean;
+}
+
+/**
+ * Type for a selection radio or checklist option.
+ */
+export interface SelectedOption {
+  label: string;
+  value: string;
+}
+
+/**
+ * All (most) of the possible field value types.
+ */
+export type FieldValue =
+  | string
+  | number
+  | EntityShape
+  | EntityShape[]
+  | Choice
+  | Choice[]
+  | SelectedOption;
+
+// HELPER FUNCTIONS
+
+/**
+ * Check if an unknown string is an entity type.
+ *
+ * @param entityType unknown string
+ * @returns true and string is EntityType, false.
+ */
+export function isEntityType(entityType: string): entityType is EntityType {
+  return entityTypes.includes(entityType as EntityType);
+}
+
+export function isFieldElement(
+  field: FormField | FormLayoutElement
+): field is FormField {
+  /*
+   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
+   * If you change it here, change it there!
+   */
+  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+  return !formLayoutElementTypes.includes(field.type);
+}
+
+export function isLayoutElement(
+  field: FormField | FormLayoutElement
+): field is FormLayoutElement {
+  return (field as FormField).validation === undefined;
 }
