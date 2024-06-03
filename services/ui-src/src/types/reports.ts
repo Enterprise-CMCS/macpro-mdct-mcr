@@ -22,6 +22,7 @@ export interface ReportJson {
   name: string;
   basePath: string;
   routes: ReportRoute[];
+  flatRoutes?: ReportRoute[];
   validationSchema?: AnyObject;
   /**
    * The validationJson property is populated at the moment any form template

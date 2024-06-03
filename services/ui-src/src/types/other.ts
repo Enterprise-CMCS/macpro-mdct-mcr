@@ -122,7 +122,7 @@ export interface CustomHtmlElement {
   content: string | any;
   as?: string;
   props?: AnyObject;
-  children?: AnyObject[];
+  children?: any[];
 }
 
 export const enum TemplateKeys {
