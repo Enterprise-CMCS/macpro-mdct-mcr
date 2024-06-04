@@ -92,11 +92,6 @@ export interface FormLayoutElement {
   repeat?: string;
 }
 
-export interface DropdownOptions {
-  label: string;
-  value: string;
-}
-
 export interface FieldChoice {
   id: string;
   name: string;
@@ -106,35 +101,9 @@ export interface FieldChoice {
   children?: FormField[];
   checkedChildren?: any;
 }
-
-export interface ChoiceFieldProps {
-  name: string;
-  label: string;
-  choices: FieldChoice[];
-  sxOverride?: AnyObject;
-  [key: string]: any;
-}
 export interface Choice {
   key: string; // choice.name
   value: string; // choice.value
-}
-
-export interface DropdownChoice {
-  label: string;
-  value: string;
-}
-
-/**
- * Shape of autosave field input. Since autosave is atomic, it requires a special shape
- * to more easily validate field values.
- */
-export interface AutosaveField {
-  name: string;
-  type: string;
-  value: FieldValue;
-  defaultValue?: FieldValue;
-  hydrationValue?: FieldValue;
-  overrideCheck?: boolean;
 }
 
 /**
@@ -159,26 +128,6 @@ export type FieldValue =
 
 // HELPER FUNCTIONS
 
-/**
- * Check if an unknown string is an entity type.
- *
- * @param entityType unknown string
- * @returns true and string is EntityType, false.
- */
-export function isEntityType(entityType: string): entityType is EntityType {
-  return entityTypes.includes(entityType as EntityType);
-}
-
-export function isFieldElement(
-  field: FormField | FormLayoutElement
-): field is FormField {
-  /*
-   * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
-   * If you change it here, change it there!
-   */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
-  return !formLayoutElementTypes.includes(field.type);
-}
 export function isLayoutElement(
   field: FormField | FormLayoutElement
 ): field is FormLayoutElement {
