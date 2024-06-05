@@ -145,6 +145,10 @@ function updateEnvFiles() {
       "op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f",
       { stdio: "inherit" }
     );
+    execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
+    execSync(
+      "sed -i '' -e 's/# pragma: allowlist secret//g' services/ui-src/.env"
+    );
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");

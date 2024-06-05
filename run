@@ -65,10 +65,12 @@ if [ "$UPDATE_ENV" = true ]; then
         echo "The MDCT team uses 1Password to store and retrieve development credentials. If you do not have a 1Password account please request one."
         exit 1
     fi
-    
-    # call 1password vault to retrieve secrets 
+
+    # call 1password vault to retrieve secrets
     op inject -i .env.tpl -o .env -f
     op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f
+    sed -i "" -e "s/# pragma: allowlist secret//g" .env
+    sed -i "" -e "s/# pragma: allowlist secret//g" services/ui-src/.env
 fi
 
 # build and run run.ts
