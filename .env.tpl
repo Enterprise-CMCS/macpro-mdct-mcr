@@ -21,11 +21,9 @@ S3_ATTACHMENTS_BUCKET_NAME=op://mdct_devs/mcr_secrets/S3_ATTACHMENTS_BUCKET_NAME
 S3_LOCAL_ENDPOINT=http://localhost:4569
 SKIP_PREFLIGHT_CHECK=true
 TEMPLATE_BUCKET=local-uploads
-URL=http://localhost/3000
 LOGGING_BUCKET=op://mdct_devs/mcr_secrets/LOGGING_BUCKET
 WARMUP_SCHEDULE=60
 WARMUP_CONCURRENCY=5
-
 
 # Values used for short-circuiting ssm: lookups, most likely won't need locally
 VPC_ID=local-nonsense
@@ -37,8 +35,8 @@ MCPAR_REPORT_TABLE_STREAM_ARN=local-nonsense
 MLR_REPORT_TABLE_STREAM_ARN=local-nonsense
 NAAAR_REPORT_TABLE_STREAM_ARN=local-nonsense
 
-#needed for e2e tests
+# needed for e2e tests
 CYPRESS_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_EMAIL
-CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret 
+CYPRESS_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret
 CYPRESS_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
 CYPRESS_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
