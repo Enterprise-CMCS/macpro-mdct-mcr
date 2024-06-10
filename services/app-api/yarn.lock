@@ -1021,17 +1021,10 @@
   dependencies:
     tslib "^2.6.2"
 
-"@aws-sdk/util-dynamodb@3.592.0":
+"@aws-sdk/util-dynamodb@3.592.0", "@aws-sdk/util-dynamodb@^3.577.0":
   version "3.592.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.592.0.tgz#e710f11caf7d33afb220681f29557aa6399deb89"
   integrity sha512-H4Qrw8/ZFO35yI425HXJb4VrWj9vzY9Fu5VL4Kiw7SLg9hdSoAqKgN8yQOJ22iNBEoIZVAkPBPh4FNjZ+eS/oQ==
-  dependencies:
-    tslib "^2.6.2"
-
-"@aws-sdk/util-dynamodb@^3.540.0":
-  version "3.556.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.556.0.tgz#b3f5989f628e0df8f76922e9a9de42633da52b0e"
-  integrity sha512-SF7bEPt8uCiklHkCvDQfGmAl6qADDd/sHHjcWS0zGYPesLkKSJDo/uKUjwuLxzkpHEp+xvB8BYrHFMIefb28AQ==
   dependencies:
     tslib "^2.6.2"
 
