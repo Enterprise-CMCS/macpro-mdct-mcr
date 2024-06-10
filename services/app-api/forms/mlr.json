@@ -541,7 +541,7 @@
             "validation": "numberNotLessThanOne",
             "props": {
               "label": "2.3 MLR denominator",
-              "hint": "Enter Federal, State, and local taxes and licensing; and regulatory fees (optional subcomponent of section 2.3 MLR denominator). <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank'> 42 CFR § 438.8(f)(1) </a>",
+              "hint": "Enter the required MLR denominator dollar value. If the optional subcomponents are reported in sections 2.1 - 2.2, states must still report the total MLR denominator (i.e., subcomponents will not automatically sum to denominator). <br/> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(f)(1)' target='_blank'> 42 CFR § 438.8(f)(1).</a>",
               "mask": "currency"
             }
           },
