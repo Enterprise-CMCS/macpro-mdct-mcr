@@ -225,7 +225,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     form.setValue(name, displayValues, { shouldValidate: true });
   }, [displayValues]);
 
-  const fieldErrorState: any = form?.formState?.errors?.[name];
+  const fieldErrorState: AnyObject | undefined =
+    form?.formState?.errors?.[name];
 
   return (
     <Box>
