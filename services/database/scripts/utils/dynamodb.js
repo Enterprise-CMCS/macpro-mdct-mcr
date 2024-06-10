@@ -11,7 +11,7 @@ let dynamoClient;
 const buildDynamoClient = () => {
   const dynamoConfig = {
     logger: {
-      // debug: console.debug,
+      debug: console.debug,
       info: console.info,
       warn: console.warn,
       error: console.error,

@@ -17,10 +17,7 @@ const mcparTableName = isLocal
 const mlrTableName = isLocal
   ? "local-mlr-reports"
   : process.env.branchPrefix + "-mlr-reports";
-const naaarTableName = isLocal
-  ? "local-naaar-reports"
-  : process.env.branchPrefix + "-naaar-reports";
-const tables = [mcparTableName, mlrTableName, naaarTableName];
+const tables = [mcparTableName, mlrTableName];
 
 const mcparBucketName = isLocal
   ? "local-mcpar-form"
@@ -28,12 +25,12 @@ const mcparBucketName = isLocal
 const mlrBucketName = isLocal
   ? "local-mlr-form"
   : "database-" + process.env.branchPrefix + "-mlr";
-const naaarBucketName = isLocal
-  ? "local-naaar-form"
-  : "database-" + process.env.branchPrefix + "-naaar";
-const buckets = [mcparBucketName, mlrBucketName, naaarBucketName];
+const buckets = [mcparBucketName, mlrBucketName];
 
-const syncTime = new Date().toISOString();
+// Maintaining consistency with the `lastAltered` field in the DB
+const dbSyncTime = Date.now();
+// Using a human readable format for easier debugging in the future
+const s3SyncTime = new Date().toISOString();
 
 async function handler() {
   try {
@@ -80,7 +77,7 @@ function filterData(items) {
 async function transform(items) {
   // Touch sync field only
   const transformed = items.map((item) => {
-    const corrected = { ...item, ...{ lastAltered: syncTime } };
+    const corrected = { ...item, ...{ lastAltered: dbSyncTime } };
     return corrected;
   });
 
@@ -119,7 +116,7 @@ async function tagObjects(bucketName, objectList) {
         TagSet: [
           {
             Key: "lastSyncedByTag",
-            Value: syncTime,
+            Value: s3SyncTime,
           },
         ],
       },
