@@ -87,11 +87,6 @@ class KafkaSourceLib {
     });
   }
 
-  unmarshallOptions = {
-    convertEmptyValues: true,
-    wrapNumbers: true,
-  };
-
   stringify(e: any, prettyPrint?: boolean) {
     if (prettyPrint === true) return JSON.stringify(e, null, 2);
     return JSON.stringify(e);
@@ -125,7 +120,7 @@ class KafkaSourceLib {
   }
 
   unmarshall(r: any) {
-    return unmarshall(r, this.unmarshallOptions);
+    return unmarshall(r);
   }
 
   createDynamoPayload(record: any): KafkaPayload {
