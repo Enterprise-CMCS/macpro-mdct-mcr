@@ -77,7 +77,7 @@ function filterData(items) {
 async function transform(items) {
   // Touch sync field only
   const transformed = items.map((item) => {
-    const corrected = { ...item, ...{ lastAltered: dbSyncTime } };
+    const corrected = { ...item, ...{ lastSynced: dbSyncTime } };
     return corrected;
   });
 
