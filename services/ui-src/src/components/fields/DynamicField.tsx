@@ -26,11 +26,10 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
-  const { report } = useStore();
+  const { report, selectedEntity } = useStore();
 
   const { updateReport } = useContext(ReportContext);
-  const { entities, entityType, updateEntities, selectedEntity } =
-    useContext(EntityContext);
+  const { prepareEntityPayload } = useContext(EntityContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined
@@ -95,9 +94,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       user,
       entityContext: {
         selectedEntity,
-        entityType,
-        updateEntities,
-        entities,
+        prepareEntityPayload,
       },
     });
   };
@@ -228,7 +225,8 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     form.setValue(name, displayValues, { shouldValidate: true });
   }, [displayValues]);
 
-  const fieldErrorState = form?.formState?.errors?.[name];
+  const fieldErrorState: AnyObject | undefined =
+    form?.formState?.errors?.[name];
 
   return (
     <Box>

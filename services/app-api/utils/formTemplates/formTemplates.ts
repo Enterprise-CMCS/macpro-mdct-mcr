@@ -255,16 +255,6 @@ export function isFieldElement(
   return !formLayoutElementTypes.includes(field.type);
 }
 
-export function isLayoutElement(
-  field: FormField | FormLayoutElement
-): field is FormLayoutElement {
-  /*
-   * This function is duplicated in ui-src/src/types/formFields.ts
-   * If you change it here, change it there!
-   */
-  return (field as FormField).validation === undefined;
-}
-
 export function getValidationFromFormTemplate(reportJson: ReportJson) {
   return compileValidationJsonFromRoutes(
     flattenReportRoutesArray(reportJson.routes)

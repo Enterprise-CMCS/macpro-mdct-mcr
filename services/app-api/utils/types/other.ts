@@ -13,10 +13,6 @@ export const enum StatusCodes {
   SERVER_ERROR = 500,
 }
 
-export interface CompletionData {
-  [key: string]: boolean | CompletionData;
-}
-
 /**
  * Abridged copy of the type used by `aws-lambda@1.0.7` (from `@types/aws-lambda@8.10.88`)
  * We only this package for these types, and we use only a subset of the
@@ -94,6 +90,29 @@ export interface S3EventRecord {
   glacierEventData?: S3EventRecordGlacierEventData | undefined;
 }
 
+// ALERTS
+
+export enum AlertTypes {
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
+// TIME
+
+export interface DateShape {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export interface TimeShape {
+  hour: number;
+  minute: number;
+  second: number;
+}
+
 // OTHER
 
 export interface CustomHtmlElement {
@@ -107,6 +126,24 @@ export const enum TemplateKeys {
   MCPAR = "templates/mcpar-reporting-template.xlsx",
   MLR = "templates/mlr-reporting-template.xlsx",
   NAAAR = "templates/naaar-reporting-template.xlsx",
+}
+
+export enum PageTypes {
+  STANDARD = "standard",
+  DRAWER = "drawer",
+  MODAL_DRAWER = "modalDrawer",
+  MODAL_OVERLAY = "modalOverlay",
+  REVIEW_SUBMIT = "reviewSubmit",
+}
+
+export interface ScreenReaderOnlyHeaderName {
+  hiddenName: string;
+}
+
+export interface TableContentShape {
+  caption?: string;
+  headRow?: Array<string | ScreenReaderOnlyHeaderName>;
+  bodyRows?: string[][];
 }
 
 const states = [
@@ -165,10 +202,6 @@ const states = [
 ] as const;
 export type State = typeof states[number];
 
-export const isState = (state: unknown): state is State => {
-  return states.includes(state as State);
-};
-
 export interface FormTemplate {
   md5Hash: string;
   versionNumber: number;
@@ -176,6 +209,12 @@ export interface FormTemplate {
   lastAltered: string;
   reportType: string;
 }
+
+// HELPER FUNCTIONS
+
+export const isState = (state: unknown): state is State => {
+  return states.includes(state as State);
+};
 
 /**
  * Instructs Typescript to complain if it detects that this function may be reachable.

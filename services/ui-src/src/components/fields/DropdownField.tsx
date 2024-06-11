@@ -38,12 +38,11 @@ export const DropdownField = ({
   ...props
 }: Props) => {
   const { updateReport } = useContext(ReportContext);
-  const { entities, entityType, updateEntities, selectedEntity } =
-    useContext(EntityContext);
+  const { prepareEntityPayload } = useContext(EntityContext);
 
   // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report, copyEligibleReportsByState } = useStore();
+  const { report, copyEligibleReportsByState, selectedEntity } = useStore();
 
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
@@ -154,17 +153,15 @@ export const DropdownField = ({
         user,
         entityContext: {
           selectedEntity,
-          entityType,
-          updateEntities,
-          entities,
+          prepareEntityPayload,
         },
       });
     }
   };
 
   // prepare error message, hint, and classes
-  const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[name]?.value?.message;
+  const formErrorState: AnyObject = form?.formState?.errors;
+  const errorMessage = formErrorState?.[name]?.value.message;
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";

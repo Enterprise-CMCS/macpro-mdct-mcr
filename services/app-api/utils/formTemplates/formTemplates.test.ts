@@ -6,7 +6,6 @@ import {
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
   isFieldElement,
-  isLayoutElement,
 } from "./formTemplates";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
@@ -21,7 +20,13 @@ import {
   mockS3PutObjectCommandOutput,
 } from "../testing/setupJest";
 // types
-import { FormJson, ReportJson, ReportRoute, ReportType } from "../types";
+import {
+  FormJson,
+  ReportJson,
+  ReportRoute,
+  ReportType,
+  isLayoutElement,
+} from "../types";
 import { createHash } from "crypto";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);

@@ -1,4 +1,4 @@
-import { mockStateUserStore } from "utils/testing/setupJest";
+import { mockEntityStore, mockStateUserStore } from "utils/testing/setupJest";
 import {
   autosaveFieldData,
   EntityContextShape,
@@ -42,12 +42,10 @@ const fields = [
 ];
 
 const mockEntityContext: EntityContextShape = {
-  updateEntities: jest.fn(() => {
+  prepareEntityPayload: jest.fn(() => {
     return [{ id: "foo", testField: 1, field1: "value1", field2: "value2" }];
   }),
-  entities: [{ id: "foo", testField: 1 }],
-  entityType: "program",
-  selectedEntity: { id: "foo" },
+  selectedEntity: { ...mockEntityStore.selectedEntity! },
 };
 
 describe("autosaveFieldData", () => {
@@ -130,7 +128,7 @@ describe("autosaveFieldData", () => {
           lastAlteredBy: "stateuser@test.com",
         },
         fieldData: {
-          program: [
+          plans: [
             { id: "foo", testField: 1, field1: "value1", field2: "value2" },
           ],
         },
