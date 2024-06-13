@@ -21,6 +21,8 @@ describe("MCPAR E2E Form Submission", () => {
     cy.get('[data-testid="modal-submit-button"]').focus().click();
 
     cy.contains("Successfully Submitted").should("be.visible");
+    cy.get("a:contains('Leave form')").focus().click();
+    cy.url().should("include", "/mcpar");
   });
 
   it("A state user cannot submit an incomplete form", () => {
