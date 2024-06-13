@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useLocation } from "react-router-dom";
 // utils
 import {
@@ -13,6 +20,7 @@ import {
   putReport,
   sortReportsOldestToNewest,
   useStore,
+  UserContext,
 } from "utils";
 import { ReportKeys, ReportContextShape, ReportShape } from "types";
 import { reportErrors } from "verbiage/errors";
@@ -43,6 +51,8 @@ export const ReportProvider = ({ children }: Props) => {
   const [error, setError] = useState<string>();
   const [contextIsLoaded, setContextIsLoaded] = useState<boolean>(false);
   const [isReportPage, setIsReportPage] = useState<boolean>(false);
+
+  const { logout } = useContext(UserContext);
 
   // state management
   const {
@@ -75,6 +85,7 @@ export const ReportProvider = ({ children }: Props) => {
       hydrateAndSetReport(result);
       return result;
     } catch (e: any) {
+      e.response.status === 403 && logout();
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
@@ -89,6 +100,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
     } catch (e: any) {
+      e.response.status === 403 && logout();
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
