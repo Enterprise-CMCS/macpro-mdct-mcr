@@ -13,7 +13,9 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
+  InputChangeEvent,
   ReportStatus,
+  ReportType,
 } from "types";
 // utils
 import {
@@ -38,6 +40,7 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isOtherProgramName, setIsOtherProgramName] = useState<boolean>(false);
 
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
@@ -80,9 +83,32 @@ export const AddEditReportModal = ({
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
+  const onChange = (event: InputChangeEvent) => {
+    if (reportType === ReportType.MCPAR) {
+      // make deep copy of baseline form for customization
+      let customizedModalForm: FormJson = modalFormJson;
+
+      // user selects "Other" for the program name
+      if (
+        event.target.name === "programName" &&
+        event.target.value === "Other, specify"
+      ) {
+        setIsOtherProgramName(true);
+        customizedModalForm.fields[1].props! = {
+          hidden: false,
+          label: "Specify a new program name",
+        };
+        setForm(customizedModalForm);
+        // TODO: reset form if not selecting "OTHER"
+      }
+    }
+  };
+
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const programName = isOtherProgramName
+      ? formData["programName-otherText"]
+      : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -213,6 +239,7 @@ export const AddEditReportModal = ({
         formJson={form}
         formData={selectedReport?.fieldData}
         onSubmit={writeReport}
+        onChange={onChange}
         validateOnRender={false}
         dontReset={true}
       />

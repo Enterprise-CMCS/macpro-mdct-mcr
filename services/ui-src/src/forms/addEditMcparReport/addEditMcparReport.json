@@ -11,10 +11,48 @@
   "fields": [
     {
       "id": "programName",
+      "type": "dropdown",
+      "validation": "dropdown",
+      "props": {
+        "label": "Program name",
+        "hint": "Select from an existing program name. If you need to add a new program or rename a program, select “Other, specify”.",
+        "options": "programList"
+      }
+    },
+    {
+      "id": "programName-otherText",
       "type": "text",
       "validation": "text",
       "props": {
-        "label": "Program name (for new MCPAR)"
+        "label": "",
+        "hidden": true
+      }
+    },
+    {
+      "id": "isProgramReplacingExistingProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "",
+        "hidden": true,
+        "choices": [
+          {
+            "id": "lADqpRjlro1yEons8JG2E3IY",
+            "label": "Yes",
+            "children": [
+              {
+                "id": "isProgramReplacingExistingProgram-dropdown",
+                "type": "dropdown",
+                "validation": "dropdown",
+                "options": "programList"
+              }
+            ]
+          },
+          {
+            "id": "x4YQ4NTyo21hDbYk1Ffj4a19",
+            "label": "No"
+          }
+        ]
       }
     },
     {
