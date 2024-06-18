@@ -65,13 +65,6 @@ custom:
   associateWaf:
     name: ${self:custom.webAclName}
     version: V2
-  serverlessApiClientCertificate:
-    rotateCerts: true
-    daysLeft: 30
-  authValue:
-    main: aws_iam
-    val: aws_iam
-    production: aws_iam
 params:
   main:
     topicNamespace: ""
@@ -161,7 +154,7 @@ functions:
           path: banners/{bannerId}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -173,7 +166,7 @@ functions:
           path: banners/{bannerId}
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -185,7 +178,7 @@ functions:
           path: banners/{bannerId}
           method: delete
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -197,7 +190,7 @@ functions:
           path: reports/{reportType}/{state}/{id}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -211,7 +204,7 @@ functions:
           path: reports/{reportType}/{state}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -225,7 +218,7 @@ functions:
           path: reports/archive/{reportType}/{state}/{id}
           method: put
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -239,7 +232,7 @@ functions:
           path: reports/release/{reportType}/{state}/{id}
           method: put
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -252,7 +245,7 @@ functions:
           path: reports/{reportType}/{state}
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -267,7 +260,7 @@ functions:
           path: reports/{reportType}/{state}/{id}
           method: put
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -283,7 +276,7 @@ functions:
           path: reports/submit/{reportType}/{state}/{id}
           method: post
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
@@ -297,7 +290,7 @@ functions:
           path: templates/{templateName}
           method: get
           cors: true
-          authorizer: ${self:custom.authValue.${self:custom.stage}, "aws_iam"}
+          authorizer: aws_iam
           request:
             parameters:
               paths:
