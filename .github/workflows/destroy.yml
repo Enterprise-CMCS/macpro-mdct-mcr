@@ -8,9 +8,6 @@ on:
         description: "Name of the environment to destroy:"
         required: true
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref_name }}
-
 permissions:
   id-token: write
   contents: read
