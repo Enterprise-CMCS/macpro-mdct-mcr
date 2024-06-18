@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 // types
 import {
   AdminBannerData,
@@ -112,18 +112,13 @@ const entityStore = (set: Function) => ({
 });
 
 export const useStore = create(
-  // persist and devtools are being used for debugging state
-  persist(
-    devtools<McrUserState & AdminBannerState & McrReportState & McrEntityState>(
-      (set) => ({
-        ...userStore(set),
-        ...bannerStore(set),
-        ...reportStore(set),
-        ...entityStore(set),
-      })
-    ),
-    {
-      name: "mcr-store",
-    }
+  // devtools is being used for debugging state
+  devtools<McrUserState & AdminBannerState & McrReportState & McrEntityState>(
+    (set) => ({
+      ...userStore(set),
+      ...bannerStore(set),
+      ...reportStore(set),
+      ...entityStore(set),
+    })
   )
 );
