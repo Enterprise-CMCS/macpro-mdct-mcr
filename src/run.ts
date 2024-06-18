@@ -189,4 +189,5 @@ yargs(process.argv.slice(2))
     }
   )
   .scriptName("run")
+  .strict()
   .demandCommand(1, "").argv; // this prints out the help if you don't call a subcommand
