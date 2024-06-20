@@ -20,42 +20,6 @@
       }
     },
     {
-      "id": "programName-otherText",
-      "type": "text",
-      "validation": "text",
-      "props": {
-        "label": "",
-        "hidden": true
-      }
-    },
-    {
-      "id": "isProgramReplacingExistingProgram",
-      "type": "radio",
-      "validation": "radio",
-      "props": {
-        "label": "",
-        "hidden": true,
-        "choices": [
-          {
-            "id": "lADqpRjlro1yEons8JG2E3IY",
-            "label": "Yes",
-            "children": [
-              {
-                "id": "isProgramReplacingExistingProgram-dropdown",
-                "type": "dropdown",
-                "validation": "dropdown",
-                "options": "programList"
-              }
-            ]
-          },
-          {
-            "id": "x4YQ4NTyo21hDbYk1Ffj4a19",
-            "label": "No"
-          }
-        ]
-      }
-    },
-    {
       "id": "copyFieldDataSourceId",
       "type": "dropdown",
       "props": {

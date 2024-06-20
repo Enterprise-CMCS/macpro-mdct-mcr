@@ -1,8 +1,10 @@
 import * as yup from "yup";
-import { radioOptional } from "./completionSchemas";
+import { radio, radioOptional, textOptional } from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
   programName: yup.string(),
+  isProgramReplacingExistingProgram: radio(),
+  existingProgramBeingReplaced: textOptional(),
   reportType: yup.string(),
   locked: yup.bool(),
   status: yup.string(),

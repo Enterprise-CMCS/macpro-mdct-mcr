@@ -174,6 +174,8 @@ export interface MLRReportMetadata extends ReportMetadata {
 
 export interface MCPARReportMetadata extends ReportMetadata {
   programName: string;
+  isProgramReplacingExistingProgram: Choice[];
+  existingProgramBeingReplaced?: string;
   reportType: "MCPAR";
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;

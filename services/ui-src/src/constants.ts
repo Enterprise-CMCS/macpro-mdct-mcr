@@ -96,6 +96,22 @@ export const programList = [
   },
 ];
 
+// PROGRAM LIST WITHOUT "OTHER, SPECIFY"
+export const programListWithoutOtherSpecify = [
+  {
+    label: "Placeholder 1",
+    value: "Placeholder 1",
+  },
+  {
+    label: "Placeholder 2",
+    value: "Placeholder 2",
+  },
+  {
+    label: "Placeholder 3",
+    value: "Placeholder 3",
+  },
+];
+
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms

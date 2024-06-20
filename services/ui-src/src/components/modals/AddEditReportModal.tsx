@@ -22,6 +22,8 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  generateEspFields,
+  resetJson,
   useStore,
 } from "utils";
 import { States } from "../../constants";
@@ -94,12 +96,8 @@ export const AddEditReportModal = ({
         event.target.value === "Other, specify"
       ) {
         setIsOtherProgramName(true);
-        customizedModalForm.fields[1].props! = {
-          hidden: false,
-          label: "Specify a new program name",
-        };
+        generateEspFields(modalFormJson);
         setForm(customizedModalForm);
-        // TODO: reset form if not selecting "OTHER"
       }
     }
   };
@@ -109,6 +107,12 @@ export const AddEditReportModal = ({
     const programName = isOtherProgramName
       ? formData["programName-otherText"]
       : formData["programName"].value;
+    const isProgramReplacingExistingProgram =
+      formData["isProgramReplacingExistingProgram"];
+    const existingProgramBeingReplaced =
+      isProgramReplacingExistingProgram[0]?.value === "Yes"
+        ? formData["existingProgramBeingReplaced"].value
+        : undefined;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -123,6 +127,8 @@ export const AddEditReportModal = ({
     return {
       metadata: {
         programName,
+        isProgramReplacingExistingProgram,
+        existingProgramBeingReplaced,
         reportingPeriodStartDate,
         reportingPeriodEndDate,
         dueDate,
@@ -221,11 +227,20 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
+  const onClose = () => {
+    if (reportType === ReportType.MCPAR) {
+      const formWithoutEspFields = resetJson(form);
+      setForm(formWithoutEspFields);
+      setIsOtherProgramName(false);
+    }
+    modalDisclosure.onClose();
+  };
+
   return (
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
-      modalDisclosure={modalDisclosure}
+      modalDisclosure={{ ...modalDisclosure, onClose: onClose }}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,

@@ -27,6 +27,7 @@ import {
   dropdownDefaultOptionText,
   dropdownNoReports,
   programList,
+  programListWithoutOtherSpecify,
 } from "../../constants";
 
 export const DropdownField = ({
@@ -68,6 +69,8 @@ export const DropdownField = ({
       }
     } else if (options === "programList") {
       dropdownOptions = programList;
+    } else if (options === "programListWithoutOtherSpecify") {
+      dropdownOptions = programListWithoutOtherSpecify;
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
