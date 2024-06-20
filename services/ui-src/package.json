@@ -114,6 +114,12 @@
       "node_modules",
       "src"
     ],
+    "transform": {
+      "\\.[jt]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(vest|@hookform/resolvers))"
+    ],
     "verbose": true,
     "moduleNameMapper": {
       "^.+\\.(css|less|scss)$": "identity-obj-proxy",
