@@ -23,7 +23,12 @@ import {
   SelectedOption,
   ReportMetadataShape,
 } from "types";
-import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
+import {
+  dropdownDefaultOptionText,
+  dropdownNoReports,
+  programList,
+  programListWithoutOtherSpecify,
+} from "../../constants";
 
 export const DropdownField = ({
   name,
@@ -62,6 +67,10 @@ export const DropdownField = ({
             value: report.fieldDataId,
           })) ?? [];
       }
+    } else if (options === "programList") {
+      dropdownOptions = programList;
+    } else if (options === "programListWithoutOtherSpecify") {
+      dropdownOptions = programListWithoutOtherSpecify;
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
@@ -82,6 +91,7 @@ export const DropdownField = ({
   };
 
   const formattedOptions = formatOptions(options);
+
   const defaultValue = props?.hydrate || formattedOptions[0];
   const [displayValue, setDisplayValue] =
     useState<DropdownChoice>(defaultValue);

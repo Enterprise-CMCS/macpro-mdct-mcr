@@ -13,13 +13,17 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
+  InputChangeEvent,
   ReportStatus,
+  ReportType,
 } from "types";
 // utils
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  generateEspFields,
+  resetJson,
   useStore,
 } from "utils";
 import { States } from "../../constants";
@@ -38,6 +42,7 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isOtherProgramName, setIsOtherProgramName] = useState<boolean>(false);
 
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
@@ -80,9 +85,35 @@ export const AddEditReportModal = ({
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
+  const onChange = (event: InputChangeEvent) => {
+    if (reportType === ReportType.MCPAR) {
+      // make deep copy of baseline form for customization
+      let customizedModalForm: FormJson = modalFormJson;
+
+      // user selects "Other" for the program name
+      if (
+        event.target.name === "programName" &&
+        event.target.value === "Other, specify"
+      ) {
+        setIsOtherProgramName(true);
+        generateEspFields(modalFormJson);
+        setForm(customizedModalForm);
+      }
+    }
+  };
+
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const programName = isOtherProgramName
+      ? formData["programName-otherText"]
+      : formData["programName"].value;
+    const isProgramReplacingExistingProgram = isOtherProgramName
+      ? formData["isProgramReplacingExistingProgram"]
+      : undefined;
+    const existingProgramBeingReplaced =
+      isProgramReplacingExistingProgram?.[0]?.value === "Yes"
+        ? formData["existingProgramBeingReplaced"].value
+        : undefined;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -97,6 +128,8 @@ export const AddEditReportModal = ({
     return {
       metadata: {
         programName,
+        isProgramReplacingExistingProgram,
+        existingProgramBeingReplaced,
         reportingPeriodStartDate,
         reportingPeriodEndDate,
         dueDate,
@@ -195,11 +228,20 @@ export const AddEditReportModal = ({
     modalDisclosure.onClose();
   };
 
+  const onClose = () => {
+    if (reportType === ReportType.MCPAR) {
+      const formWithoutEspFields = resetJson(form);
+      setForm(formWithoutEspFields);
+      setIsOtherProgramName(false);
+    }
+    modalDisclosure.onClose();
+  };
+
   return (
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
-      modalDisclosure={modalDisclosure}
+      modalDisclosure={{ ...modalDisclosure, onClose: onClose }}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
@@ -213,6 +255,7 @@ export const AddEditReportModal = ({
         formJson={form}
         formData={selectedReport?.fieldData}
         onSubmit={writeReport}
+        onChange={onChange}
         validateOnRender={false}
         dontReset={true}
       />
