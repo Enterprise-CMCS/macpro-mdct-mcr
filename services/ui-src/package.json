@@ -47,7 +47,7 @@
     "vite": "^5.2.11",
     "vite-tsconfig-paths": "^4.3.2",
     "yup": "^0.32.11",
-    "zustand": "^4.4.6"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
