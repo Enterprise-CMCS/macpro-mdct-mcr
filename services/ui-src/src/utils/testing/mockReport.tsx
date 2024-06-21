@@ -345,7 +345,14 @@ export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "MCPAR",
   formTemplate: mockReportJson,
-  programName: "testProgram",
+  programName: { key: "mock-key-1", value: "testProgram" },
+  isProgramReplacingExistingProgram: [
+    {
+      key: "mock-key-2",
+      value: "No",
+    },
+  ],
+  existingProgramBeingReplaced: "mock-program-name",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,

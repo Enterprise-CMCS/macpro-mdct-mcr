@@ -107,10 +107,11 @@ export const AddEditReportModal = ({
     const programName = isOtherProgramName
       ? formData["programName-otherText"]
       : formData["programName"].value;
-    const isProgramReplacingExistingProgram =
-      formData["isProgramReplacingExistingProgram"];
+    const isProgramReplacingExistingProgram = isOtherProgramName
+      ? formData["isProgramReplacingExistingProgram"]
+      : undefined;
     const existingProgramBeingReplaced =
-      isProgramReplacingExistingProgram[0]?.value === "Yes"
+      isProgramReplacingExistingProgram?.[0]?.value === "Yes"
         ? formData["existingProgramBeingReplaced"].value
         : undefined;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];

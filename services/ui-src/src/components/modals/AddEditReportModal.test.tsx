@@ -165,7 +165,9 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
 
   const fillForm = async (form: any) => {
     const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
+    await fireEvent.change(programNameField, {
+      target: { value: "Placeholder 1" },
+    });
     const startDateField = form.querySelector(
       "[name='reportingPeriodStartDate']"
     )!;
@@ -210,13 +212,15 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
     expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
     // hydrated values are in the modal
     const programNameField = form.querySelector("[name='programName']")!;
+    await fireEvent.change(programNameField, {
+      target: { value: "testProgram" },
+    });
     const startDateField = form.querySelector(
       "[name='reportingPeriodStartDate']"
     )!;
     const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
-    expect(programNameField).toHaveProperty(
-      "value",
-      mockMcparReport.programName
+    expect(programNameField).toHaveDisplayValue(
+      mockMcparReport.programName.value
     );
     expect(startDateField).toHaveProperty(
       "value",
