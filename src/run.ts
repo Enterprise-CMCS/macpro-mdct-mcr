@@ -125,14 +125,22 @@ async function destroy_stage(options: {
   verify: boolean;
 }) {
   let destroyer = new ServerlessStageDestroyer();
-  /*
-   * Filters enable filtering by resource tags but we aren't leveraging any tags other than
-   * the STAGE tag automatically applied by the serverless framework.  Adding PROJECT and SERVICE
-   * tags would be a good idea.
-   */
+  let filters = [
+    {
+      Key: "PROJECT",
+      Value: `${process.env.PROJECT}`,
+    },
+  ];
+  if (options.service) {
+    filters.push({
+      Key: "SERVICE",
+      Value: `${options.service}`,
+    });
+  }
+
   await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
     wait: options.wait,
-    filters: [],
+    filters: filters,
     verify: options.verify,
   });
 }
