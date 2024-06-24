@@ -12,6 +12,9 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}  
   iam:
     role:
       path: ${ssm:/configuration/${self:custom.stage}/iam/path, ssm:/configuration/default/iam/path, "/"}
@@ -37,6 +40,7 @@ s3BucketHelper:
     permissionsBoundary: ${env:IAM_PERMISSIONS_BOUNDARY, ssm:/configuration/${self:custom.stage}/iam/permissionsBoundaryPolicy, ssm:/configuration/default/iam/permissionsBoundaryPolicy, ""}
 
 custom:
+  project: "mcr"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:
