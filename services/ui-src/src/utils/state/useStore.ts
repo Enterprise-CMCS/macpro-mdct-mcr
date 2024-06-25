@@ -4,8 +4,6 @@ import { devtools } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
-  EntityShape,
-  McrEntityState,
   McrReportState,
   MCRUser,
   McrUserState,
@@ -90,35 +88,16 @@ const reportStore = (set: Function) => ({
     }),
 });
 
-// ENTITY STORE
-const entityStore = (set: Function) => ({
-  // initial state
-  selectedEntity: undefined,
-  // actions
-  setSelectedEntity: (newSelectedEntity: EntityShape | undefined) =>
-    set(
-      () => ({
-        selectedEntity: newSelectedEntity,
-      }),
-      false,
-      {
-        type: "setSelectedEntity",
-      }
-    ),
-  clearSelectedEntity: () =>
-    set(() => ({ selectedEntity: undefined }), false, {
-      type: "clearSelectedEntity",
-    }),
-});
-
 export const useStore = create(
-  // devtools is being used for debugging state
-  devtools<McrUserState & AdminBannerState & McrReportState & McrEntityState>(
+  // persist and devtools are being used for debugging state
+  devtools<McrUserState & AdminBannerState & McrReportState>(
     (set) => ({
       ...userStore(set),
       ...bannerStore(set),
       ...reportStore(set),
-      ...entityStore(set),
-    })
+    }),
+    {
+      name: "mcr-store",
+    }
   )
 );

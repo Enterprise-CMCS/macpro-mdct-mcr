@@ -42,12 +42,13 @@ export const ChoiceListField = ({
   const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
 
   const { updateReport } = useContext(ReportContext);
-  const { prepareEntityPayload } = useContext(EntityContext);
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
 
   // state management
   const { full_name, state, userIsAdmin, userIsReadOnly } =
     useStore().user ?? {};
-  const { report, selectedEntity } = useStore();
+  const { report } = useStore();
 
   // get form context and register field
   const form = useFormContext();
@@ -246,7 +247,9 @@ export const ChoiceListField = ({
           user,
           entityContext: {
             selectedEntity,
-            prepareEntityPayload,
+            entityType,
+            updateEntities,
+            entities,
           },
         });
       }, timeInMs);
