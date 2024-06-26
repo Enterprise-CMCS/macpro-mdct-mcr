@@ -31,7 +31,12 @@ Project Goals:
 
 ## Quick Start
 
+### Running MDCT Workspace Setup
+Team members are encouraged to setup all MDCT Products using the script located in the [MDCT Tools Repository](https://github.com/Enterprise-CMCS/macpro-mdct-tools). Please refer to the README for instructions running the MDCT Workspace Setup. After Running workspace setup team members can refer to the Running the project locally section below to proceed with running the application. 
+
 ### One time only
+
+**If you have run the MDCT Setup Script this section can be skipped**
 
 Before starting the project we're going to install some tools. We recommend having Homebrew installed if you haven't already to install other dependencies. Open up terminal on your mac and run the following:
 
@@ -45,13 +50,14 @@ Before starting the project we're going to install some tools. We recommend havi
 
 ### Setting up the project locally
 
+**If you have run the MDCT Setup Script this section can be skipped**
+
 1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
-2. Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files
-3. In the root directory run `pre-commit install`
+2. In the root directory run `pre-commit install`
 
 ### Running the project locally
 
-In the root of the project run `./run local --update-env` to pull in values from 1Password and run the project. Alternatively, if you have your own `.env ` file you can simply run `./run local`
+In the root of the project run `./run local --update-env` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env `. Then you can run `./run local` to use a static manually populated `.env` file.
 
 
 ### Logging in
@@ -64,7 +70,11 @@ For a password to that user, please ask a fellow developer.
 
 ### Running DynamoDB locally
 
-In order to run DynamoDB locally you will need to have java installed on your system. M1 Mac users can download [java from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`. Otherwise [install java from here](https://java.com/en/download/).
+In order to run DynamoDB locally you will need to have java installed on your system. The MDCT Workspace Setup script installs that for you.
+
+If you cannot run the MDCT Workspace setup script see below for manual instructions:
+
+M1 Mac users can download [java from azul](https://www.azul.com/downloads/?version=java-18-sts&os=macos&architecture=x86-64-bit&package=jdk). _Note that you'll need the x86 architecture Java for this to work_. You can verify the installation with `java --version`. Otherwise [install java from here](https://java.com/en/download/).
 
 To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
 
