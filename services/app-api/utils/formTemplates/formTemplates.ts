@@ -74,16 +74,18 @@ export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
   isProgramPCCM: boolean,
-  ilosAvailable?: boolean
+  julyMcparRelease: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
-  // if ILOS is not enabled, remove the fields from form template
-  if (!ilosAvailable) {
-    currentFormTemplate = generateTemplateWithoutIlos(currentFormTemplate);
-  }
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
+  // if July MCPAR Release is not enabled, remove the fields from form template
+  currentFormTemplate = handleTemplateForJulyMcparRelease(
+    currentFormTemplate,
+    julyMcparRelease
+  );
+
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
   const currentTemplateHash = createHash("md5")
     .update(stringifiedTemplate)
@@ -318,16 +320,50 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   programTypeQuestion.props!.disabled = true;
 };
 
-const generateTemplateWithoutIlos = (originalReportTemplate: any) => {
+const handleTemplateForJulyMcparRelease = (
+  originalReportTemplate: any,
+  julyMcparRelease: boolean
+) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  // remove ILOS sections from template
-  for (let route of reportTemplate.routes) {
-    if (
-      route.path === "/mcpar/program-information" ||
-      route.path === "/mcpar/plan-level-indicators"
-    ) {
-      // These sections' last subsection is ILOS-specific; remove it.
-      route.children = route.children?.slice(0, -1);
+  if (!julyMcparRelease) {
+    for (let route of reportTemplate.routes) {
+      // remove ILOS routes from template
+      if (
+        route.path === "/mcpar/program-information" ||
+        route.path === "/mcpar/plan-level-indicators"
+      ) {
+        // These sections' last subsection is ILOS-specific; remove it.
+        route.children = route.children?.slice(0, -1);
+      }
+      // remove Appeals and Grievances questions from template
+      if (route.path === "/mcpar/plan-level-indicators") {
+        const filteredAppealsAndGrievances =
+          route.children[3].children[0].drawerForm.fields.filter(
+            (field: AnyObject) => {
+              return !field.id.startsWith("plan_appeals");
+            }
+          );
+        route.children[3].children[0].drawerForm.fields =
+          filteredAppealsAndGrievances;
+
+        // replace Program Integrity questions in template
+        const filteredProgramIntegrity =
+          route.children[6].drawerForm.fields.filter((field: AnyObject) => {
+            return !field.id.startsWith("plan_annualOverpaymentRecoveryReport");
+          });
+        route.children[6].drawerForm.fields = filteredProgramIntegrity;
+      }
+    }
+  } else {
+    for (let route of reportTemplate.routes) {
+      if (route.path === "/mcpar/plan-level-indicators") {
+        // replace Program Integrity questions in template
+        const filteredProgramIntegrity =
+          route.children[6].drawerForm.fields.filter((field: AnyObject) => {
+            return field.id !== "plan_overpaymentRecoveryReportDescription";
+          });
+        route.children[6].drawerForm.fields = filteredProgramIntegrity;
+      }
     }
   }
 
