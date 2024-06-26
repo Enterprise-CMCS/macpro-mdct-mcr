@@ -1,57 +1,60 @@
-import React, { MouseEventHandler, useEffect } from "react";
+import React, { MouseEventHandler, useContext, useEffect } from "react";
 // components
 import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import { Form, ReportPageIntro } from "components";
 // types
-import { EntityShape, FormJson } from "types";
+import { EntityShape, EntityType, FormJson } from "types";
 // utils
-import { useStore } from "utils";
+
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
+import { EntityContext } from "components/reports/EntityProvider";
 
 export const EntityDetailsOverlay = ({
   closeEntityDetailsOverlay,
+  entityType,
+  entities,
   form,
   onSubmit,
+  selectedEntity,
   disabled,
   setEntering,
   submitting,
   validateOnRender,
 }: Props) => {
   // Entity Provider Setup
-  const { report, selectedEntity, setSelectedEntity } = useStore();
+  const { setEntities, setSelectedEntity, setEntityType } =
+    useContext(EntityContext);
 
-  /**
-   * Any time the report is updated on this page,
-   * we also want to update the selectedEntity in the store
-   * with new data that the report was given.
-   */
   useEffect(() => {
-    if (selectedEntity) {
-      setSelectedEntity(
-        report?.fieldData?.[selectedEntity.type]?.find(
-          (entity: EntityShape) => entity.id == selectedEntity.id
-        )
-      );
-    }
-  }, [report]);
+    setSelectedEntity(selectedEntity);
+    setEntityType(entityType);
+    setEntities(entities);
+    return () => {
+      setEntities([]);
+      setSelectedEntity(undefined);
+    };
+  }, [entityType, selectedEntity]);
 
   setEntering(false);
 
   // Display Variables
-
+  const {
+    report_programName: reportProgramName,
+    report_planName: reportPlanName,
+  } = selectedEntity;
   const eligibilityGroup = `${
-    selectedEntity?.["report_eligibilityGroup-otherText"] ||
-    selectedEntity?.report_eligibilityGroup[0].value
+    selectedEntity["report_eligibilityGroup-otherText"] ||
+    selectedEntity.report_eligibilityGroup[0].value
   }`;
-  const reportingPeriod = `${selectedEntity?.report_reportingPeriodStartDate} to ${selectedEntity?.report_reportingPeriodEndDate}`;
+  const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
 
   const programInfo = [
-    selectedEntity?.["report_planName"],
-    selectedEntity?.["report_programName"],
+    reportPlanName,
+    reportProgramName,
     eligibilityGroup,
     reportingPeriod,
   ];
@@ -111,8 +114,11 @@ export const EntityDetailsOverlay = ({
 
 interface Props {
   closeEntityDetailsOverlay: Function;
+  entityType: EntityType;
+  entities: any;
   form: FormJson;
   onSubmit: Function;
+  selectedEntity: EntityShape;
   disabled: boolean;
   setEntering: Function;
   submitting?: boolean;

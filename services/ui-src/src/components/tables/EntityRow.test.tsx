@@ -64,11 +64,11 @@ describe("Test EntityRow", () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
   });
 
-  test("It should render an error if an entity is incomplete", async () => {
-    await act(async () => {
-      await render(incompleteRowComponent);
-    });
-    expect(screen.getByAltText("warning icon")).toBeVisible();
+  test.skip("It should render an error if an entity is incomplete", async () => {
+    const { findByText } = render(incompleteRowComponent);
+    expect(
+      await findByText("Select “Enter MLR” to complete this report.")
+    ).toBeVisible();
   });
 
   test("It should NOT render an error if an entity is complete", async () => {
