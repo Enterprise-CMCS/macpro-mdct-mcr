@@ -41,8 +41,7 @@ export const AddEditReportModal = ({
 
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
-  // const julyMcparRelease = useFlags()?.julyMcparRelease;
-  const julyMcparRelease = true;
+  const julyMcparRelease = useFlags()?.julyMcparRelease;
 
   // get correct form
   const modalFormJsonMap: any = {

@@ -3480,15 +3480,6 @@
                 }
               },
               {
-                "id": "plan_overpaymentRecoveryReportDescription",
-                "type": "textarea",
-                "validation": "text",
-                "props": {
-                  "label": "D1.X.9 Plan overpayment reporting to the state",
-                  "hint": "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, at minimum, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 42 CFR 438.8(f)(2).</li></ul>"
-                }
-              },
-              {
                 "id": "plan_annualOverpaymentRecoveryReportSubmissionDate",
                 "type": "date",
                 "validation": "date",
