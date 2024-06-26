@@ -1,5 +1,5 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { AutosaveField, EntityShape, ReportStatus } from "types";
+import { AutosaveField, EntityShape, EntityType, ReportStatus } from "types";
 
 type FieldValue = any;
 
@@ -41,7 +41,9 @@ export interface GetAutosaveFieldsProps extends AutosaveField {
  */
 export interface EntityContextShape {
   selectedEntity?: EntityShape;
-  prepareEntityPayload: Function;
+  entities: EntityShape[];
+  entityType?: EntityType;
+  updateEntities: Function;
 }
 
 /**
@@ -112,14 +114,17 @@ export const autosaveFieldData = async ({
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
     let dataToWrite = {};
-    if (entityContext?.selectedEntity) {
+    if (
+      entityContext &&
+      entityContext.selectedEntity &&
+      entityContext.entityType
+    ) {
       dataToWrite = {
         metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
         fieldData: {
-          [entityContext.selectedEntity.type]:
-            entityContext.prepareEntityPayload(
-              Object.fromEntries(fieldsToSave)
-            ),
+          [entityContext.entityType]: entityContext.updateEntities(
+            Object.fromEntries(fieldsToSave)
+          ),
         }, // create field data object
       };
     } else {

@@ -1,64 +1,72 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useContext } from "react";
-import { useStore } from "utils";
-import {
-  mockEntityStore,
-  mockMcparReportStore,
-} from "utils/testing/mockZustand";
+import { useContext, useEffect } from "react";
 import { EntityContext, EntityProvider } from "./EntityProvider";
 
-const testEntities = [{ ...mockEntityStore.selectedEntity }];
-
-const testEntitiesUpdated = [
+const testEntities = [
   {
-    id: "mock-id",
-    type: "plans",
-    test: "update",
+    id: "foo",
+  },
+  {
+    id: "bar",
   },
 ];
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const testEntitiesUpdated = [
+  {
+    id: "foo",
+    test: "update",
+  },
+  {
+    id: "bar",
+  },
+];
 
-const TestComponent = () => {
-  const { prepareEntityPayload } = useContext(EntityContext);
+interface Props {
+  noEntity?: boolean;
+}
+
+const TestComponent = (props: Props) => {
+  const { entities, setEntities, updateEntities, setSelectedEntity } =
+    useContext(EntityContext);
+
+  useEffect(() => {
+    setEntities(testEntities);
+    if (!props.noEntity) {
+      setSelectedEntity({ id: "foo" });
+    }
+  }, [setEntities, setSelectedEntity]);
 
   return (
     <div>
-      <button onClick={() => prepareEntityPayload({ test: "update" })}>
-        Prepare Entity
+      <button onClick={() => updateEntities({ test: "update" })}>
+        Update Entities
       </button>
-      <p id="entities">{JSON.stringify(mockEntityStore.selectedEntity)}</p>
+      <p id="entities">{JSON.stringify(entities)}</p>
+      <p>{entities.length}</p>
     </div>
   );
 };
 
 const testComponent = (
   <EntityProvider>
-    <TestComponent />
+    <TestComponent noEntity={false} />
   </EntityProvider>
 );
 
 const testComponentNoEntity = (
   <EntityProvider>
-    <TestComponent />
+    <TestComponent noEntity={true} />
   </EntityProvider>
 );
 
 describe("Test update entities provider function", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue({
-      ...mockMcparReportStore,
-      ...mockEntityStore,
-    });
-  });
   test("Should update entities if the selected entity is valid", async () => {
     const result = await render(testComponent);
     expect(
       await result.container.querySelector("[id='entities']")?.innerHTML
-    ).toMatch(JSON.stringify(testEntities)[0]);
-    const updateButton = await result.findByText("Prepare Entity");
+    ).toMatch(JSON.stringify(testEntities));
+    const updateButton = await result.findByText("Update Entities");
     await userEvent.click(updateButton);
 
     setTimeout(async () => {
@@ -72,8 +80,8 @@ describe("Test update entities provider function", () => {
     const result = render(testComponentNoEntity);
     expect(
       await result.container.querySelector("[id='entities']")?.innerHTML
-    ).toMatch(JSON.stringify(testEntities)[0]);
-    const updateButton = await result.findByText("Prepare Entity");
+    ).toMatch(JSON.stringify(testEntities));
+    const updateButton = await result.findByText("Update Entities");
     await userEvent.click(updateButton);
 
     setTimeout(async () => {

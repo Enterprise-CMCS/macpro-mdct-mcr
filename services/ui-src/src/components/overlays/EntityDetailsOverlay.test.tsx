@@ -5,7 +5,8 @@ import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
 // utils
 import {
   mockAdminUserStore,
-  mockEntityStore,
+  mockEntityDetailsContext,
+  mockMLRReportEntityStartedFieldData,
   mockModalOverlayForm,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -14,6 +15,7 @@ import { useStore } from "utils";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
+import { EntityContext } from "components";
 
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
@@ -23,25 +25,35 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const entityDetailsOverlayComponentStateUser = (
   <RouterWrappedComponent>
-    <EntityDetailsOverlay
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      form={mockModalOverlayForm}
-      onSubmit={mockOnSubmit}
-      disabled={false}
-      setEntering={jest.fn()}
-    />
+    <EntityContext.Provider value={mockEntityDetailsContext}>
+      <EntityDetailsOverlay
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        entityType={"program"}
+        entities={[mockMLRReportEntityStartedFieldData.program[0]]}
+        form={mockModalOverlayForm}
+        onSubmit={mockOnSubmit}
+        disabled={false}
+        setEntering={jest.fn()}
+        selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
+      />
+    </EntityContext.Provider>
   </RouterWrappedComponent>
 );
 
 const entityDetailsOverlayComponentAdminUser = (
   <RouterWrappedComponent>
-    <EntityDetailsOverlay
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      form={mockModalOverlayForm}
-      onSubmit={mockOnSubmit}
-      disabled={true}
-      setEntering={jest.fn()}
-    />
+    <EntityContext.Provider value={mockEntityDetailsContext}>
+      <EntityDetailsOverlay
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        entityType={"program"}
+        entities={[mockMLRReportEntityStartedFieldData.program[0]]}
+        form={mockModalOverlayForm}
+        onSubmit={mockOnSubmit}
+        disabled={true}
+        setEntering={jest.fn()}
+        selectedEntity={mockMLRReportEntityStartedFieldData.program[0]}
+      />
+    </EntityContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -51,13 +63,10 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
   });
 
   const user = userEvent.setup();
-  const selectedEntity = mockEntityStore.selectedEntity;
+  const selectedEntity = mockMLRReportEntityStartedFieldData.program[0];
 
   it("should render the initial view for a state user", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockEntityStore,
-    });
+    mockedUseStore.mockReturnValue(mockStateUserStore);
     render(entityDetailsOverlayComponentStateUser);
 
     // Close out of the Overlay it opened
@@ -74,12 +83,10 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
     expect(screen.getByText(accordionHeader)).toBeVisible();
 
     // Check if MLR Report For is showing the correct Entity Data
-    const reportPlanName = selectedEntity!.report_planName;
-    const reportProgramName = selectedEntity!.report_programName;
-    const eligibilityGroup = selectedEntity!.report_eligibilityGroup[0].value;
-    const reportingPeriod = `${
-      selectedEntity!.report_reportingPeriodStartDate
-    } to ${selectedEntity!.report_reportingPeriodEndDate}`;
+    const reportPlanName = selectedEntity.report_planName;
+    const reportProgramName = selectedEntity.report_programName;
+    const eligibilityGroup = selectedEntity.report_eligibilityGroup[0].value;
+    const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
 
     expect(screen.getByText(reportPlanName)).toBeVisible();
     expect(screen.getByText(reportProgramName)).toBeVisible();
@@ -92,10 +99,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
   });
 
   it("should render the initial view for an admin", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockAdminUserStore,
-      ...mockEntityStore,
-    });
+    mockedUseStore.mockReturnValue(mockAdminUserStore);
     render(entityDetailsOverlayComponentAdminUser);
 
     // Close out of the Overlay it opened
@@ -112,12 +116,10 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
     expect(screen.getByText(accordionHeader)).toBeVisible();
 
     // Check if MLR Report For is showing the correct Entity Data
-    const reportPlanName = selectedEntity!.report_planName;
-    const reportProgramName = selectedEntity!.report_programName;
-    const eligibilityGroup = selectedEntity!.report_eligibilityGroup[0].value;
-    const reportingPeriod = `${
-      selectedEntity!.report_reportingPeriodStartDate
-    } to ${selectedEntity!.report_reportingPeriodEndDate}`;
+    const reportPlanName = selectedEntity.report_planName;
+    const reportProgramName = selectedEntity.report_programName;
+    const eligibilityGroup = selectedEntity.report_eligibilityGroup[0].value;
+    const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
 
     expect(screen.getByText(reportPlanName)).toBeVisible();
     expect(screen.getByText(reportProgramName)).toBeVisible();

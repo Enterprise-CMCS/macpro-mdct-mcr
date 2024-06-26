@@ -35,10 +35,11 @@ export const NumberField = ({
   const [displayValue, setDisplayValue] = useState(defaultValue);
   // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report, selectedEntity } = useStore();
+  const { report } = useStore();
 
   const { updateReport } = useContext(ReportContext);
-  const { prepareEntityPayload } = useContext(EntityContext);
+  const { entities, entityType, updateEntities, selectedEntity } =
+    useContext(EntityContext);
 
   // get form context and register field
   const form = useFormContext();
@@ -139,7 +140,9 @@ export const NumberField = ({
         user,
         entityContext: {
           selectedEntity,
-          prepareEntityPayload,
+          entityType,
+          updateEntities,
+          entities,
         },
       });
     }
