@@ -7,6 +7,16 @@ import { execSync } from "child_process";
 // load .env
 dotenv.config();
 
+const deployedServices = [
+  "database",
+  "uploads",
+  "topics",
+  "app-api",
+  "ui",
+  "ui-auth",
+  "ui-src",
+];
+
 // run_db_locally runs the local db
 async function run_db_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
@@ -118,6 +128,23 @@ async function run_all_locally() {
   run_fe_locally(runner);
 }
 
+async function install_deps_for_services(runner: LabeledProcessRunner) {
+  for (const service of deployedServices) {
+    await runner.run_command_and_output(
+      `Installing Dependencies`,
+      ["yarn", "install", "--frozen-lockfile"],
+      `services/${service}`
+    );
+  }
+}
+
+async function deploy(options: { stage: string }) {
+  const runner = new LabeledProcessRunner();
+  await install_deps_for_services(runner);
+  var deployCmd = ["sls", "deploy", "--stage", options.stage];
+  await runner.run_command_and_output(`SLS Deploy`, deployCmd, ".");
+}
+
 async function destroy_stage(options: {
   stage: string;
   service: string | undefined;
@@ -180,6 +207,14 @@ yargs(process.argv.slice(2))
       // eslint-disable-next-line no-console
       console.log("Testing 1. 2. 3.");
     }
+  )
+  .command(
+    "deploy",
+    "deploy the app with serverless compose to the cloud",
+    {
+      stage: { type: "string", demandOption: true },
+    },
+    deploy
   )
   .command(
     "destroy",
