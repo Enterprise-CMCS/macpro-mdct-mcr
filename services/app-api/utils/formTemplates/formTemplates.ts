@@ -322,6 +322,7 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   programTypeQuestion.props!.disabled = true;
 };
 
+/* This function is pretty large, however it is temporary (until the release of this new MCPAR template in July 25th)  */
 const handleTemplateForJulyMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
   for (let route of reportTemplate.routes) {
@@ -350,6 +351,9 @@ const handleTemplateForJulyMcparRelease = (originalReportTemplate: any) => {
           return !field.id.startsWith("plan_annualOverpaymentRecoveryReport");
         });
       route.children[6].drawerForm.fields = filteredProgramIntegrity;
+
+      // remove new radio button option from question D1.X.6 in template
+      route.children[6].drawerForm.fields[5].props.choices.splice(1, 1);
 
       // insert question D1.X.9 into template
       const questionD1X9 = {
