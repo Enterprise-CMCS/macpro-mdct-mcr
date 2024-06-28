@@ -1878,6 +1878,39 @@
                     }
                   },
                   {
+                    "id": "plan_appealsDenied",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.1a Appeals denied",
+                      "hint": "Enter the total number of appeals resolved during the reporting year (D1.IV.1) that were denied (adverse to the enrollee) during the reporting period.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_appealsResolvedInPartialFavorOfEnrollee",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.1b Appeals resolved in partial favor of enrollee",
+                      "hint": "Enter the total number of appeals (D.1.IV.1) resolved in partial favor of enrollee during the reporting year.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_appealsResolvedInFavorOfEnrollee",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.1c Appeals resolved in favor of enrollee",
+                      "hint": "Enter the total number of appeals (D.1.IV.1) resolved in favor of enrollee during the reporting year.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
                     "id": "plan_activeAppeals",
                     "type": "number",
                     "validation": "number",
@@ -3371,8 +3404,29 @@
                       ]
                     },
                     {
+                      "id": "xkYWhuCMfYlT9MOWSLWk5JZb",
+                      "label": "Makes referrals to the State Medicaid Agency (SMA) only",
+                      "children": [
+                        {
+                          "id": "plan_smaProgramIntegrityReferrals",
+                          "type": "number",
+                          "validation": {
+                            "type": "number",
+                            "nested": true,
+                            "parentFieldName": "plan_programIntegrityReferralPath"
+                          },
+                          "props": {
+                            "label": "D1.X.7 Count of program integrity referrals to the state",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made.",
+                            "mask": "comma-separated",
+                            "decimalPlacesToRoundTo": 0
+                          }
+                        }
+                      ]
+                    },
+                    {
                       "id": "Urpmgw3wiUWyYfiFg8OTNQ",
-                      "label": "Makes referrals to the State Medicaid Agency (SMA) and MFCU concurrently",
+                      "label": "Makes referrals to the SMA and MFCU concurrently",
                       "children": [
                         {
                           "id": "plan_smaMfcuConcurrentProgramIntegrityReferrals",
@@ -3384,7 +3438,7 @@
                           },
                           "props": {
                             "label": "D1.X.7 Count of program integrity referrals to the state",
-                            "hint": "Enter the total number of program integrity referrals made during the reporting year.",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of unduplicated referrals.",
                             "mask": "comma-separated",
                             "decimalPlacesToRoundTo": 0
                           }
@@ -3405,7 +3459,7 @@
                           },
                           "props": {
                             "label": "D1.X.7 Count of program integrity referrals to the state",
-                            "hint": "Enter the total number of program integrity referrals made during the reporting year.",
+                            "hint": "Enter the count of program integrity referrals that the plan made to the state in the past year. Enter the count of referrals made to the SMA and the MFCU in aggregate.",
                             "mask": "comma-separated",
                             "decimalPlacesToRoundTo": 0
                           }
@@ -3426,12 +3480,29 @@
                 }
               },
               {
-                "id": "plan_overpaymentRecoveryReportDescription",
-                "type": "textarea",
-                "validation": "text",
+                "id": "plan_annualOverpaymentRecoveryReportSubmissionDate",
+                "type": "date",
+                "validation": "date",
                 "props": {
-                  "label": "D1.X.9 Plan overpayment reporting to the state",
-                  "hint": "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, at minimum, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 42 CFR 438.8(f)(2).</li></ul>"
+                  "label": "D1.X.9a: What is the date of the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3)?"
+                }
+              },
+              {
+                "id": "plan_annualOverpaymentRecoveryReportDollarAmount",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.X.9b: What is the dollar amount of overpayments recovered that is listed in the plan's latest annual overpayment recovery report?",
+                  "mask": "currency"
+                }
+              },
+              {
+                "id": "plan_annualOverpaymentRecoveryReportPremiumRevenue",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.X.9c: What is the plan's amount of premium revenue as defined in MLR reporting under 438.8(f)(2) for the corresponding year?",
+                  "mask": "currency"
                 }
               },
               {

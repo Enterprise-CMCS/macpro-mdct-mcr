@@ -83,6 +83,7 @@ const createPccmEvent: APIGatewayProxyEvent = {
           key: "programIsPCCM-yes_programIsPCCM",
         },
       ],
+      julyMcparRelease: false,
     },
   }),
 };
