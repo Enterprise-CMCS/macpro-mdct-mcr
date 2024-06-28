@@ -224,20 +224,20 @@
           }
         },
         {
-          "name": "Add In Lieu of Services",
-          "path": "/mcpar/program-information/add-in-lieu-of-services",
+          "name": "Add In Lieu of Services and Settings",
+          "path": "/mcpar/program-information/add-in-lieu-of-services-and-settings",
           "pageType": "standard",
           "verbiage": {
             "intro": {
               "section": "Section A: Program Information",
-              "subsection": "In Lieu of Services and Settings Offered",
+              "subsection": "Add In Lieu of Services and Settings Offered",
               "info": [
                 {
                   "type": "p",
                   "children": [
                     {
                       "type": "html",
-                      "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS offered, as approved in the managed care plan contract(s). Do not include short-term IMD stays. <b>You are required to complete this section if ILOS are available.</b> Do not include short-term IMD stays. Access "
+                      "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, Enter the name of each ILOS, as approved in the managed care plan contract(s). <b>Complete this section if ILOS are available in your program.</b> Access "
                     },
                     {
                       "type": "externalLink",
@@ -255,7 +255,8 @@
                   ]
                 }
               ],
-              "spreadsheet": "A_Program_Info"
+              "spreadsheet": "A_Program_Info",
+              "alert": "<b>This section is required to be completed by states offering ILOS services, beginning with December 2025 submissions and onwards. Submission of this data before December 2025 is optional.</b>"
             }
           },
           "form": {

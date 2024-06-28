@@ -65,6 +65,10 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro
           text={route.verbiage.intro}
           reportType={report?.reportType}
+          showIlosAlert={
+            route.path ===
+            "/mcpar/program-information/add-in-lieu-of-services-and-settings"
+          }
         />
       )}
       <Form

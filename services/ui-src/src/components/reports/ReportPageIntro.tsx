@@ -1,17 +1,18 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { InstructionsAccordion, SpreadsheetWidget } from "components";
+import { Alert, InstructionsAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
-import { AnyObject } from "types";
+import { AlertTypes, AnyObject } from "types";
 
 export const ReportPageIntro = ({
   text,
   accordion,
   reportType,
+  showIlosAlert,
   ...props
 }: Props) => {
-  const { section, subsection, hint, info, spreadsheet } = text;
+  const { section, subsection, hint, info, spreadsheet, alert } = text;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -30,6 +31,9 @@ export const ReportPageIntro = ({
           />
         </Box>
       )}
+      {showIlosAlert && (
+        <Alert status={AlertTypes.WARNING} description={alert} />
+      )}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
@@ -39,6 +43,7 @@ interface Props {
   text: AnyObject;
   accordion?: AnyObject;
   reportType?: string;
+  showIlosAlert?: boolean;
   [key: string]: any;
 }
 
