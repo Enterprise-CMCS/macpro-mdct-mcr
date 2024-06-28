@@ -144,10 +144,10 @@
     pako "2.0.4"
     tslib "^1.8.0"
 
-"@aws-amplify/notifications@1.6.12":
-  version "1.6.12"
-  resolved "https://registry.yarnpkg.com/@aws-amplify/notifications/-/notifications-1.6.12.tgz#24c0eb622c87556d926a5389d8ea4065bdcdb5d8"
-  integrity sha512-zytF0N1Wvbuvz76tjr38vlEv0oC1n6eblgzDO9LsOb6mAJt1A0PN7O6xbF68sFgo47fxQbelaIJJyt2OQ6ex/g==
+"@aws-amplify/notifications@1.6.13":
+  version "1.6.13"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/notifications/-/notifications-1.6.13.tgz#a14c8362b3d05e77fc5a7e58122b583bca90b60e"
+  integrity sha512-fH1k8P1Nts/1OIy8IKQjWpJgdsql0562CPpwGBVvPnRYqnkPxvzImjZdhwTgpu+vxjDBKEky/Buu9ws+ST7Myg==
   dependencies:
     "@aws-amplify/cache" "5.1.18"
     "@aws-amplify/core" "5.8.12"
@@ -5153,10 +5153,10 @@ attr-accept@^2.2.2:
   resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.2.tgz#646613809660110749e92f2c10833b70968d929b"
   integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
 
-aws-amplify@^5.3.4:
-  version "5.3.18"
-  resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-5.3.18.tgz#5acf4a7b4ee8de6b422c30d389410496eef640cb"
-  integrity sha512-PL1LcA749R+4z29GeK+BmBgQdFHjJ1kQ7Yu6+NPN4uY+Dsfysrau2n4m2q4EQVLUvB0tK4QQ0yGgAfO2zllzpg==
+aws-amplify@^5.3.19:
+  version "5.3.19"
+  resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-5.3.19.tgz#1d8ec76d3c43f0edb41df867b75fe01570d3c5b4"
+  integrity sha512-/Sbgow1Zfe5RDnKyVlNZblaDuphz2g7IPBF6w6NKnM1JfuVCREHb5FwKUPr5RzfH8JAdCh/OFiCqhLDk2wo7dw==
   dependencies:
     "@aws-amplify/analytics" "6.5.12"
     "@aws-amplify/api" "5.4.12"
@@ -5166,7 +5166,7 @@ aws-amplify@^5.3.4:
     "@aws-amplify/datastore" "4.7.12"
     "@aws-amplify/geo" "2.3.12"
     "@aws-amplify/interactions" "5.2.18"
-    "@aws-amplify/notifications" "1.6.12"
+    "@aws-amplify/notifications" "1.6.13"
     "@aws-amplify/predictions" "5.5.12"
     "@aws-amplify/pubsub" "5.5.12"
     "@aws-amplify/storage" "5.9.12"
