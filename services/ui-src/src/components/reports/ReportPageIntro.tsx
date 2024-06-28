@@ -12,7 +12,7 @@ export const ReportPageIntro = ({
   ...props
 }: Props) => {
   const { section, subsection, hint, info, spreadsheet, alert } = text;
-  const showAlert = text.alert ?? false;
+  const showAlert = alert;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
