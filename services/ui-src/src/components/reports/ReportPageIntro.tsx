@@ -41,7 +41,6 @@ interface Props {
   text: AnyObject;
   accordion?: AnyObject;
   reportType?: string;
-  showIlosAlert?: boolean;
   [key: string]: any;
 }
 
