@@ -9,10 +9,10 @@ export const ReportPageIntro = ({
   text,
   accordion,
   reportType,
-  showIlosAlert,
   ...props
 }: Props) => {
   const { section, subsection, hint, info, spreadsheet, alert } = text;
+  const showAlert = text.alert ?? false;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -31,9 +31,7 @@ export const ReportPageIntro = ({
           />
         </Box>
       )}
-      {showIlosAlert && (
-        <Alert status={AlertTypes.WARNING} description={alert} />
-      )}
+      {showAlert && <Alert status={AlertTypes.WARNING} description={alert} />}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );
