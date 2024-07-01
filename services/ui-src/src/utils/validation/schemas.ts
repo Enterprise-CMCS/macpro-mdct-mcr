@@ -31,7 +31,14 @@ export const textOptional = () =>
     });
 
 // NUMBER - Helpers
-const validNAValues = ["N/A", "Data not available"];
+export const validNAValues = [
+  "N/A",
+  "NA",
+  "na",
+  "n/a",
+  "N/a",
+  "Data not available",
+];
 
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>

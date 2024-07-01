@@ -8,6 +8,7 @@ import {
   numberNotLessThanZero,
   text,
   textOptional,
+  validNAValues,
 } from "./schemas";
 
 describe("Schemas", () => {
@@ -19,8 +20,7 @@ describe("Schemas", () => {
     "1,2,30",
     "1230",
     "123450123,,,.123123123123",
-    "N/A",
-    "Data not available",
+    ...validNAValues,
   ];
 
   const goodPositiveNumberTestCases = [

@@ -5,6 +5,7 @@ import {
   validNumber,
   numberNotLessThanOne,
   numberNotLessThanZero,
+  validNAValues,
 } from "./completionSchemas";
 
 describe("Schemas", () => {
@@ -16,8 +17,7 @@ describe("Schemas", () => {
     "1,2,30",
     "1230",
     "123450123..,,,.123123123123",
-    "N/A",
-    "Data not available",
+    ...validNAValues,
   ];
   const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
 

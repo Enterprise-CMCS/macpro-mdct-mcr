@@ -28,7 +28,14 @@ export const text = (): StringSchema => string();
 export const textOptional = () => text();
 
 // NUMBER - Helpers
-const validNAValues = ["N/A", "Data not available"];
+export const validNAValues = [
+  "N/A",
+  "NA",
+  "na",
+  "n/a",
+  "N/a",
+  "Data not available",
+];
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   return numberSchema().transform((_value) => {

@@ -39,7 +39,14 @@ export const text = () => textSchema().required();
 export const textOptional = () => textSchema().notRequired().nullable();
 
 // NUMBER - Helpers
-const validNAValues = ["N/A", "Data not available"];
+export const validNAValues = [
+  "N/A",
+  "NA",
+  "na",
+  "n/a",
+  "N/a",
+  "Data not available",
+];
 
 /** This regex must be at least as permissive as the one in ui-src */
 const validNumberRegex = /^\.$|[0-9]/;
