@@ -76,14 +76,14 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  const ilosAvailable = unvalidatedMetadata?.ilosAvailable;
+  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease;
 
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
       isProgramPCCM,
-      ilosAvailable
+      julyMcparRelease
     ));
   } catch (err) {
     logger.error(err, "Error getting or creating template");

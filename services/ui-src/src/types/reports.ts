@@ -181,7 +181,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
-  ilosAvailable?: boolean;
+  julyMcparRelease?: boolean;
 }
 
 // HELPER FUNCTIONS
