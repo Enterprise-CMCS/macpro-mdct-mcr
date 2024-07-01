@@ -4,6 +4,13 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/maintainability)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/test_coverage)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/test_coverage)
 
+### Integration Environment Deploy Status:
+| Branch  | Build Status |
+| ------------- | ------------- |
+| main  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg)  |
+| val  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=val)  |
+| production  | ![deploy](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/deploy.yml/badge.svg?branch=production)  |
+
 MCR is the CMCS MDCT application for collecting state data related to Managed Care plans and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.
 
 Managed Care is a health care delivery system organized to manage cost, utilization, and quality. Medicaid managed care provides for the delivery of Medicaid health benefits and additional services through contractual arrangements between state Medicaid agencies and Managed Care Organizations (MCOs) that accept a set per member per month (capitation) payment for these services.
