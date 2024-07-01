@@ -13,6 +13,7 @@ import {
 import { AlertTypes } from "types";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
+import { parseCustomHtml } from "utils";
 
 export const Alert = ({
   status = AlertTypes.INFO,
@@ -36,7 +37,9 @@ export const Alert = ({
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (
             <AlertDescription>
-              <Text sx={sx.descriptionText}>{description}</Text>
+              <Text sx={sx.descriptionText}>
+                {parseCustomHtml(description)}
+              </Text>
               {link && (
                 <Text sx={sx.linkText}>
                   <Link href={link} isExternal>

@@ -1,9 +1,9 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { InstructionsAccordion, SpreadsheetWidget } from "components";
+import { Alert, InstructionsAccordion, SpreadsheetWidget } from "components";
 // utils
 import { parseCustomHtml } from "utils";
-import { AnyObject } from "types";
+import { AlertTypes, AnyObject } from "types";
 
 export const ReportPageIntro = ({
   text,
@@ -11,7 +11,8 @@ export const ReportPageIntro = ({
   reportType,
   ...props
 }: Props) => {
-  const { section, subsection, hint, info, spreadsheet } = text;
+  const { section, subsection, hint, info, spreadsheet, alert } = text;
+  const showAlert = alert;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -30,6 +31,7 @@ export const ReportPageIntro = ({
           />
         </Box>
       )}
+      {showAlert && <Alert status={AlertTypes.WARNING} description={alert} />}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
     </Box>
   );

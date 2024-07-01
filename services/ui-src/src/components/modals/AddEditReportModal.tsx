@@ -41,7 +41,7 @@ export const AddEditReportModal = ({
 
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
-  const ilosAvailable = useFlags()?.ilos;
+  const julyMcparRelease = useFlags()?.julyMcparRelease;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -104,7 +104,7 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         programIsPCCM,
-        ilosAvailable,
+        julyMcparRelease,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
