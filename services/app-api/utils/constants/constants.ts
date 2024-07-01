@@ -129,8 +129,6 @@ export const McparFieldsToCopy = {
     "plan_programIntegrityReferralPath",
     "plan_beneficiaryCircumstanceChangeReportingFrequency",
     "plan_ilosOfferedByPlan",
-    "plan_ilosUtilizationByPlan",
-    `plan_ilosUtilizationByPlan-otherText_${RegExp("^.*$")}`,
   ],
   qualityMeasures: [
     "id",
