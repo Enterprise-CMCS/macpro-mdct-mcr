@@ -498,7 +498,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.7a Changes in provider circumstances: Monitoring plans",
-                  "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
+                  "hint": "Does the state monitor whether plans report provider \"for cause\" terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
                       "id": "WFrdLUutmEujEZkS7rWVqQ",
@@ -1038,7 +1038,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter 'No challenges were encountered' as your response. 'N/A' is not an acceptable response."
+                      "hint": "What are the state's biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter 'No challenges were encountered' as your response. 'N/A' is not an acceptable response."
                     }
                   },
                   {
@@ -1524,6 +1524,336 @@
               }
             ]
           }
+        },
+        {
+          "name": "XII: Mental Health and Substance Use Disorder Parity",
+          "path": "/mcpar/program-level-indicators/mental-health-and-substance-use-disorder-parity",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic XII. Mental Health and Substance Use Disorder Parity",
+              "spreadsheet": "C1_Program_Set",
+              "alert": "<strong>This section is required to be completed by Comprehensive MCO programs beginning with December 2024 submissions and onwards.</strong>"
+            }
+          },
+          "form": {
+            "id": "cmhsudp",
+            "fields": [
+              {
+                "id": "program_isThisProgramTypeComprehensiveMCO",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "C1.XII.4 Is this program type a Comprehensive MCO?",
+                  "hint": "If \"Yes\", please complete the following questions.",
+                  "choices": [
+                    {
+                      "id": "WezgX4VYsCyGJ3w0ncCpsWkH",
+                      "label": "No"
+                    },
+                    {
+                      "id": "A4uFU0YyU9useo3DsWjnH264",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "program_areServicesProvidedToMcoEnrolleesByEntityOtherThanMco",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.5 In this program, are any services provided to MCO enrollees by an entity other than an MCO?",
+                            "hint": "(i.e. some services are delivered via fee for service (FFS), prepaid inpatient health plan (PIHP), or prepaid ambulatory health plan (PAHP) delivery system)",
+                            "choices": [
+                              {
+                                "id": "FjCDK2ONpqtd0z2DTz8YaGjP",
+                                "label": "Yes"
+                              },
+                              {
+                                "id": "wI8TMrw0hoJzYUjjH2mO7Om4",
+                                "label": "No"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "program_triggeringEventsNecessitatingUpdatesToParityAnalysis",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.6a In this performance/reporting period, have there been any triggering events necessitating updates to parity analysis?",
+                            "hint": "(e.g. changes in benefits, quantitative treatment limits (QTLs), non-quantitative treatment limits (NQTLs), or financial requirements; the addition of a new managed care plan (MCP) providing services to MCO enrollees; and/or deficiencies corrected)",
+                            "choices": [
+                              {
+                                "id": "q6F3AvbLimTiLUDN2xQvd2ip",
+                                "label": "Yes",
+                                "children": [
+                                  {
+                                    "id": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis",
+                                    "type": "checkbox",
+                                    "validation": {
+                                      "type": "checkbox",
+                                      "nested": true,
+                                      "parentFieldName": "program_triggeringEventsNecessitatingUpdatesToParityAnalysis",
+                                      "parentOptionId": "q6F3AvbLimTiLUDN2xQvd2ip"
+                                    },
+                                    "props": {
+                                      "label": "C1.XII.6b Describe the events necessitating updates to parity analysis.",
+                                      "hint": "Select all that apply.",
+                                      "choices": [
+                                        {
+                                          "id": "iLzELvKBsBoZxJ96fLU5wyDM",
+                                          "label": "Changes in benefits"
+                                        },
+                                        {
+                                          "id": "Yw9kYLAE5zz12meBm4g2lnfR",
+                                          "label": "Changes in financial requirements (e.g., copays, coinsurance, deductibles, out-of-pocket maximums)"
+                                        },
+                                        {
+                                          "id": "AQ0h7WeZm1nJ8Crr1BeOCCy0",
+                                          "label": "Changes in quantitative treatment limits (QTLs), (limits on the scope or duration of benefits that are represented numerically, such as day limits or visit limits)"
+                                        },
+                                        {
+                                          "id": "KDjEgzfwI8WRVvS6cAwa27mH",
+                                          "label": "Changes in non-quantitative treatment limits (NQTLs), (which otherwise limit the scope or duration of benefits, e.g., utilization management, network admission standards)"
+                                        },
+                                        {
+                                          "id": "3jrOpqW0YtFPDAgGcf7Ar9FS",
+                                          "label": "Addition of a new managed care plan (MCP) providing services to MCO enrollees"
+                                        },
+                                        {
+                                          "id": "tsdVnIPFc9RitXWFNHC5MTP0",
+                                          "label": "Deficiencies corrected"
+                                        },
+                                        {
+                                          "id": "SWvgQnZAENJ1sxe0Xf408AoE",
+                                          "label": "Other, specify",
+                                          "children": [
+                                            {
+                                              "id": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis-otherText",
+                                              "type": "textarea",
+                                              "validation": {
+                                                "type": "text",
+                                                "nested": true,
+                                                "parentFieldName": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis",
+                                                "parentOptionId": "SWvgQnZAENJ1sxe0Xf408AoE"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "avJf3iStX8t0lI6Ck8t51ZHy",
+                                "label": "No"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "program_whenWasTheLastParityAnalysisCoveringThisProgramCompleted",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.7 When was the last parity analysis covering this program completed?",
+                            "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state completed its most recent summary parity analysis report. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date any MCO sent the state its parity analysis (the state may have multiple reports, one for each MCO)."
+                          }
+                        },
+                        {
+                          "id": "program_whenWasTheLastParityAnalysisCoveringThisProgramSubmittedToCMS",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.8 When was the last parity analysis covering this program submitted to CMS?",
+                            "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state's most recent summary parity analysis report was submitted to CMS. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date the state submitted any MCO's parity report to CMS (the state may have multiple parity reports, one for each MCO)."
+                          }
+                        },
+                        {
+                          "id": "program_wereAnyDeficiencesInParityBenefitsIdentifiedDuringTheAnalysis",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.9a Were any deficiencies in parity for mental health and substance use disorder benefits identified during the analysis/analyses above?",
+                            "choices": [
+                              {
+                                "id": "z3iOa69iV6mQVBWTqIJBl5Ck",
+                                "label": "Yes",
+                                "children": [
+                                  {
+                                    "id": "descriptionOfDeficientesInParityIdentifiedDuringAnalysis",
+                                    "type": "textarea",
+                                    "validation": {
+                                      "type": "text",
+                                      "nested": true,
+                                      "parentFieldName": "program_wereAnyDeficiencesInParityBenefitsIdentifiedDuringTheAnalysis",
+                                      "parentOptionId": "z3iOa69iV6mQVBWTqIJBl5Ck"
+                                    },
+                                    "props": {
+                                      "label": "C1.XII.9b Describe deficiencies in parity for metal health and substance use disorder benefits identified during the analysis/analyses."
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "id5YVp8cXSTlUNX3dKXSqxqa",
+                                "label": "No"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.10a As of the end of this performance/reporting period, have these deficiences been resolved for all plans?",
+                            "choices": [
+                              {
+                                "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
+                                "label": "Yes"
+                              },
+                              {
+                                "id": "DCDJH4S1JHF7G5bZUMxOVMTe",
+                                "label": "No",
+                                "children": [
+                                  {
+                                    "id": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                    "type": "checkbox",
+                                    "validation": {
+                                      "type": "checkbox",
+                                      "nested": true,
+                                      "parentFieldName": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                                      "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
+                                    },
+                                    "props": {
+                                      "label": "C1.XII.10b Select all that apply.",
+                                      "choices": [
+                                        {
+                                          "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
+                                          "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or beneficiaries."
+                                        },
+                                        {
+                                          "id": "E63ZYRXBmOocAEUS9JA1PkNB",
+                                          "label": "Non-compliance is related to updated parity documentation not yet submitted to CMS."
+                                        },
+                                        {
+                                          "id": "NXbySoHbH3AvbOIvIUREAPsC",
+                                          "label": "Other, specify",
+                                          "children": [
+                                            {
+                                              "id": "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
+                                              "type": "textarea",
+                                              "validation": {
+                                                "type": "text",
+                                                "nested": true,
+                                                "parentFieldName": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                                "parentOptionId": "NXbySoHbH3AvbOIvIUREAPsC"
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "program_hasStatePostedCurrentParityAnalysisCoveringThisProgram",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.11a Has the state posted the current parity analysis/analyses covering this program on its website?",
+                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs' separate analyses must be posted. A \"Yes\" response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
+                            "choices": [
+                              {
+                                "id": "fncOB9LFBZd1nFJvLv9YM1Pb",
+                                "label": "Yes",
+                                "children": [
+                                  {
+                                    "id": "websiteStatePostedCurrentParityAnalysisCoveringThisProgram",
+                                    "type": "text",
+                                    "validation": {
+                                      "type": "url",
+                                      "nested": true,
+                                      "parentFieldName": "program_hasStatePostedCurrentParityAnalysisCoveringThisProgram",
+                                      "parentOptionId": "fncOB9LFBZd1nFJvLv9YM1Pb"
+                                    },
+                                    "props": {
+                                      "label": "C1.XII.11b Provide the URL link(s).",
+                                      "hint": "Response must be a valid hyperlink/URL beginning with \"http://\" or \"https://\". Separate links with commas."
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "fmEETS25bqmm0GIwg0CGRIn6",
+                                "label": "No",
+                                "children": [
+                                  {
+                                    "id": "dateStateWillRemediateThisAreaOfNoncompliance",
+                                    "type": "date",
+                                    "validation": {
+                                      "type": "date",
+                                      "nested": true,
+                                      "parentFieldName": "program_hasStatePostedCurrentParityAnalysisCoveringThisProgram",
+                                      "parentOptionId": "fmEETS25bqmm0GIwg0CGRIn6"
+                                    },
+                                    "props": {
+                                      "label": "C1.XII.11c What is the date the state will remediate this area of non-compliance and post the current parity analysis/analyses on their website?"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     },
@@ -1550,7 +1880,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -1619,7 +1949,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -1767,7 +2097,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -1797,8 +2127,8 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
-                  "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting year) met state requirements for timely submission? If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.",
+                  "label": "D1.III.2 Share of encounter data submissions that met state's timely submission requirements",
+                  "hint": "What percent of the plan's encounter data file submissions (submitted during the reporting year) met state requirements for timely submission? If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               },
@@ -1808,7 +2138,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.III.3 Share of encounter data submissions that were HIPAA compliant",
-                  "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting year) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting year.",
+                  "hint": "What percent of the plan's encounter data submissions (submitted during the reporting year) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               }
@@ -1851,7 +2181,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -1928,7 +2258,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.3 Appeals filed on behalf of LTSS users",
-                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
+                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter \"N/A\" if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -1939,7 +2269,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.4 Number of critical incidents filed during the reporting year by (or on behalf of) an LTSS user who previously filed an appeal",
-                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter \"N/A\".</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter \"N/A\".</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2091,7 +2421,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2246,7 +2576,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2357,7 +2687,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2467,7 +2797,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2632,7 +2962,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -3311,7 +3641,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -3489,7 +3819,7 @@
                 "type": "date",
                 "validation": "date",
                 "props": {
-                  "label": "D1.X.9a: What is the date of the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3)?"
+                  "label": "D1.X.9a: What is the date of the plan's latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3)?"
                 }
               },
               {
@@ -3765,7 +4095,7 @@
             "children": [
               {
                 "type": "html",
-                "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
+                "content": "This program is missing BSS entities. You won't be able to complete this section until you've added all the names of BSS entities that support enrollees in the program. "
               },
               {
                 "type": "internalLink",

@@ -1,36 +1,34 @@
 import { AnyObject } from "../types";
 
-/* This function is pretty large, however it is temporary (until the release of this new MCPAR template in July 25th)  */
+/*
+ * NOTE: This function is quite large, but it is temporary
+ * (until the release of this new MCPAR template in July 25th)
+ */
 export const handleTemplateForJulyMcparRelease = (
   originalReportTemplate: any
 ) => {
   const reportTemplate = structuredClone(originalReportTemplate);
   for (let route of reportTemplate.routes) {
-    // remove ILOS routes from template
+    // remove ILOS and Parity routes from template
     if (
       route.path === "/mcpar/program-information" ||
-      route.path === "/mcpar/plan-level-indicators"
+      route.path === "/mcpar/plan-level-indicators" ||
+      route.path === "/mcpar/program-level-indicators"
     ) {
-      // These sections' last subsection is ILOS-specific; remove it.
-      route.children = route.children?.slice(0, -1);
+      route.children = removeIlosAndParityRoutes(route.children);
     }
     // remove Appeals and Grievances questions from template
     if (route.path === "/mcpar/plan-level-indicators") {
-      const filteredAppealsAndGrievances =
-        route.children[3].children[0].drawerForm.fields.filter(
-          (field: AnyObject) => {
-            return !field.id.startsWith("plan_appeals");
-          }
-        );
       route.children[3].children[0].drawerForm.fields =
-        filteredAppealsAndGrievances;
+        removeAppealsAndGrievances(route.children);
+
+      // remove new radio button option from question D3.VIII.2 in template
+      route.children[5].modalForm.fields[1].props.choices.splice(6, 1);
 
       // replace Program Integrity questions in template
-      const filteredProgramIntegrity =
-        route.children[6].drawerForm.fields.filter((field: AnyObject) => {
-          return !field.id.startsWith("plan_annualOverpaymentRecoveryReport");
-        });
-      route.children[6].drawerForm.fields = filteredProgramIntegrity;
+      route.children[6].drawerForm.fields = replaceProgramIntegrity(
+        route.children[6].drawerForm.fields
+      );
 
       // remove new radio button option from question D1.X.6 in template
       route.children[6].drawerForm.fields[5].props.choices.splice(1, 1);
@@ -50,4 +48,22 @@ export const handleTemplateForJulyMcparRelease = (
   }
 
   return reportTemplate;
+};
+
+const removeIlosAndParityRoutes = (routeChildren: AnyObject[]) => {
+  return routeChildren.slice(0, -1);
+};
+
+const removeAppealsAndGrievances = (routeChildren: AnyObject[]) => {
+  return routeChildren[3].children[0].drawerForm.fields.filter(
+    (field: AnyObject) => {
+      return !field.id.startsWith("plan_appeals");
+    }
+  );
+};
+
+const replaceProgramIntegrity = (formFields: AnyObject[]) => {
+  return formFields.filter((field: AnyObject) => {
+    return !field.id.startsWith("plan_annualOverpaymentRecoveryReport");
+  });
 };
