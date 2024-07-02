@@ -3400,7 +3400,25 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting \"Enter sanction details\".",
             "enterEntityDetailsButtonText": "Enter sanction details",
             "editEntityDetailsButtonText": "Edit sanction details",
-            "drawerTitle": "Add details for sanction"
+            "drawerTitle": "Add details for sanction",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "modalForm": {
             "id": "ds-modal",
