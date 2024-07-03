@@ -20,12 +20,14 @@ import {
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
   resetClearProp,
+  parseCustomHtml,
 } from "utils";
 // types
 import {
   AnyObject,
   EntityShape,
   EntityType,
+  entityTypes,
   FormField,
   isFieldElement,
   ModalDrawerReportPageShape,
@@ -45,6 +47,14 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const { updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
+
+  // check if there is at least one (1) plan prior to being able to enter Sanctions
+  const checkForPlans = () => {
+    if (entityType === entityTypes[4]) {
+      return report?.fieldData["plans"]?.length;
+    }
+    return true;
+  };
 
   // create drawerForm from json with repeated fields
   const drawerForm = { ...drawerFormJson };
@@ -170,36 +180,45 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     <Box>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
-        <Button
-          sx={sx.topAddEntityButton}
-          onClick={addEditEntityModalOnOpenHandler}
-        >
-          {verbiage.addEntityButtonText}
-        </Button>
-        {reportFieldDataEntities.length !== 0 && (
-          <Heading as="h3" sx={sx.dashboardTitle}>
-            {dashTitle}
-          </Heading>
+        {!checkForPlans() ? (
+          <Box sx={sx.missingEntityMessage}>
+            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+          </Box>
+        ) : (
+          <Box>
+            <Button
+              sx={sx.topAddEntityButton}
+              onClick={addEditEntityModalOnOpenHandler}
+            >
+              {verbiage.addEntityButtonText}
+            </Button>
+            {reportFieldDataEntities.length > 0 && (
+              <Heading as="h3" sx={sx.dashboardTitle}>
+                {dashTitle}
+              </Heading>
+            )}
+            {reportFieldDataEntities.map(
+              (entity: EntityShape, entityIndex: number) => (
+                <EntityCard
+                  key={entity.id}
+                  entity={entity}
+                  entityIndex={entityIndex}
+                  entityType={entityType}
+                  verbiage={verbiage}
+                  formattedEntityData={getFormattedEntityData(
+                    entityType,
+                    entity,
+                    report?.fieldData
+                  )}
+                  openAddEditEntityModal={openAddEditEntityModal}
+                  openDeleteEntityModal={openDeleteEntityModal}
+                  openDrawer={openDrawer}
+                />
+              )
+            )}
+          </Box>
         )}
-        {reportFieldDataEntities.map(
-          (entity: EntityShape, entityIndex: number) => (
-            <EntityCard
-              key={entity.id}
-              entity={entity}
-              entityIndex={entityIndex}
-              entityType={entityType}
-              verbiage={verbiage}
-              formattedEntityData={getFormattedEntityData(
-                entityType,
-                entity,
-                report?.fieldData
-              )}
-              openAddEditEntityModal={openAddEditEntityModal}
-              openDeleteEntityModal={openDeleteEntityModal}
-              openDrawer={openDrawer}
-            />
-          )
-        )}
+
         <AddEditEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}
@@ -273,5 +292,19 @@ const sx = {
   bottomAddEntityButton: {
     marginTop: "2rem",
     marginBottom: "0",
+  },
+  missingEntityMessage: {
+    paddingTop: "1rem",
+    fontWeight: "bold",
+    a: {
+      color: "palette.primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "palette.primary_darker",
+      },
+    },
+    ol: {
+      paddingLeft: "1rem",
+    },
   },
 };
