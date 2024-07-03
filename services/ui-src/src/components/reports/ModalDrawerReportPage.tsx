@@ -51,7 +51,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   // check if there is at least one (1) plan prior to being able to enter Sanctions
   const checkForPlans = () => {
     if (entityType === entityTypes[4]) {
-      return report?.fieldData["plans"].length;
+      return report?.fieldData["plans"]?.length;
     }
     return true;
   };
@@ -192,7 +192,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
             >
               {verbiage.addEntityButtonText}
             </Button>
-            {reportFieldDataEntities.length !== 0 && (
+            {reportFieldDataEntities.length > 0 && (
               <Heading as="h3" sx={sx.dashboardTitle}>
                 {dashTitle}
               </Heading>

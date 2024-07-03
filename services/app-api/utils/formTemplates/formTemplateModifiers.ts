@@ -23,7 +23,12 @@ export const handleTemplateForJulyMcparRelease = (
         removeAppealsAndGrievances(route.children);
 
       // remove new radio button option from question D3.VIII.2 in template
-      route.children[5].modalForm.fields[1].props.choices.splice(6, 1);
+      let idx = route.children[5].modalForm.fields[1].props.choices.findIndex(
+        (choice: AnyObject) => {
+          return choice.id === "GuYmG53wQ2sWmGlVnBIxnIof";
+        }
+      );
+      route.children[5].modalForm.fields[1].props.choices.splice(idx, 1);
 
       // replace Program Integrity questions in template
       route.children[6].drawerForm.fields = replaceProgramIntegrity(
@@ -31,7 +36,12 @@ export const handleTemplateForJulyMcparRelease = (
       );
 
       // remove new radio button option from question D1.X.6 in template
-      route.children[6].drawerForm.fields[5].props.choices.splice(1, 1);
+      idx = route.children[6].drawerForm.fields[5].props.choices.findIndex(
+        (choice: AnyObject) => {
+          return choice.id === "xkYWhuCMfYlT9MOWSLWk5JZb";
+        }
+      );
+      route.children[6].drawerForm.fields[5].props.choices.splice(idx, 1);
 
       // insert question D1.X.9 into template
       const questionD1X9 = {
@@ -40,7 +50,7 @@ export const handleTemplateForJulyMcparRelease = (
         validation: "text",
         props: {
           label: "D1.X.9 Plan overpayment reporting to the state",
-          hint: "Describe the plan’s latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, at minimum, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 42 CFR 438.8(f)(2).</li></ul>",
+          hint: "Describe the plan's latest annual overpayment recovery report submitted to the state as required under 42 CFR 438.608(d)(3).</br>Include, at minimum, the following information:<ul><li>The date of the report (rating period or calendar year).</li><li>The dollar amount of overpayments recovered.</li><li>The ratio of the dollar amount of overpayments recovered as a percent of premium revenue as defined in MLR reporting under 42 CFR 438.8(f)(2).</li></ul>",
         },
       };
       route.children[6].drawerForm.fields.splice(7, 0, questionD1X9);
