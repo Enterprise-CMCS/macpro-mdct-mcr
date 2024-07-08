@@ -6,7 +6,6 @@ module.exports = defineConfig({
   experimentalStudio: true,
   redirectionLimit: 20,
   retries: 2,
-  defaultCommandTimeout: 10000,
   watchForFileChanges: true,
   fixturesFolder: "fixtures",
   screenshotsFolder: "screenshots",
