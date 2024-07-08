@@ -177,7 +177,7 @@ async function destroy_stage(options: {
 async function delete_topics(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await install_deps_for_services(runner);
-  let data = { project: "mfp", stage: options.stage };
+  let data = { project: "mcr", stage: options.stage };
   const deployCmd = [
     "sls",
     "invoke",
