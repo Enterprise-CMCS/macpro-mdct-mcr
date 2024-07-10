@@ -611,8 +611,8 @@
               },
               {
                 "id": "program_contractDate",
-                "type": "text",
-                "validation": "text",
+                "type": "date",
+                "validation": "date",
                 "props": {
                   "hint": "Enter the date of the contract between the state and plans participating in the managed care program."
                 }
