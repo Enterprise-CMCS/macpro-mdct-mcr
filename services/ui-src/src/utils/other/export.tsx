@@ -95,7 +95,7 @@ export const renderDrawerDataCell = (
     const fieldResponseData = entity[formField.id];
 
     // check for nested ILOS data
-    let nestedIlosResponses;
+    let nestedIlosResponses = [];
     if (
       fieldResponseData?.length &&
       formField.id === "plan_ilosUtilizationByPlan"
@@ -120,16 +120,15 @@ export const renderDrawerDataCell = (
             )}
           </li>
           {/* If there are nested ILOS responses available, render them here */}
-          {nestedIlosResponses &&
-            nestedIlosResponses.map((response: AnyObject) => {
-              return (
-                <li>
-                  <Box sx={sx.nestedIlos}>
-                    {response.key}: {response.value}
-                  </Box>
-                </li>
-              );
-            })}
+          {nestedIlosResponses.map((response: AnyObject, index: number) => {
+            return (
+              <li key={index}>
+                <Box sx={sx.nestedIlos}>
+                  {response.key}: {response.value}
+                </Box>
+              </li>
+            );
+          })}
         </ul>
       </Box>
     );
