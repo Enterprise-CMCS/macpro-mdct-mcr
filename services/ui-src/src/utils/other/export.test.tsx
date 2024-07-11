@@ -5,6 +5,7 @@ import {
   parseFormFieldInfo,
   renderResponseData,
   renderDefaultFieldResponse,
+  getNestedIlosResponses,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
@@ -52,6 +53,24 @@ describe("Test rendering methods", () => {
       "standard"
     );
     expect(result.props.children.id).toEqual("email-field-id");
+  });
+
+  test("Correctly renders nested ILOS fields", () => {
+    const mockFieldResponseData = [
+      {
+        key: "123",
+        value: "mock-ilos",
+      },
+    ];
+    const mockPlan = {
+      id: "mock-id",
+      plan_ilosUtilizationByPlan: [...mockFieldResponseData],
+      plan_ilosUtilizationByPlan_123: "N/A",
+    };
+
+    const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
+    expect(result[0].key).toEqual("mock-ilos");
+    expect(result[0].value).toEqual("N/A");
   });
 });
 
