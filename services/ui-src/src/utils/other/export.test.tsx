@@ -1,3 +1,4 @@
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -6,6 +7,7 @@ import {
   renderResponseData,
   renderDefaultFieldResponse,
   getNestedIlosResponses,
+  renderDrawerDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
@@ -53,6 +55,38 @@ describe("Test rendering methods", () => {
       "standard"
     );
     expect(result.props.children.id).toEqual("email-field-id");
+  });
+
+  test("renderDrawerDataCell renders ilos responses", () => {
+    const mockFormField: FormField = {
+      id: "plan_ilosUtilizationByPlan",
+      props: {
+        choices: [],
+      },
+      type: "checkbox",
+      validation: "checkbox",
+    };
+
+    const mockPlan: AnyObject = [
+      {
+        id: "mock-id",
+        plan_ilosUtilizationByPlan: [
+          {
+            key: "123",
+            value: "mock-ilos",
+          },
+        ],
+        plan_ilosUtilizationByPlan_123: "N/A",
+      },
+    ];
+
+    const cells = renderDrawerDataCell(mockFormField, mockPlan, "drawer");
+    const ul = cells[0].props.children;
+    const li = Array.from(ul.props.children)
+      .flat()
+      .filter((el) => (el as ReactJSXElement)?.type === "li");
+    expect(cells.length).toBe(1);
+    expect(li.length).toBe(3);
   });
 
   test("Correctly renders nested ILOS fields", () => {
