@@ -275,16 +275,14 @@ const getNestedIlosResponses = (
   fieldResponseData: AnyObject,
   entity: EntityShape
 ) => {
-  if (fieldResponseData) {
-    return fieldResponseData.map((data: AnyObject) => {
-      const nestedResponse = entity[`plan_ilosUtilizationByPlan_${data.key}`];
-      return (
-        <Box sx={sx.nestedIlos}>
-          {data.value}: {nestedResponse}
-        </Box>
-      );
-    });
-  }
+  return fieldResponseData.map((data: AnyObject) => {
+    const nestedResponse = entity[`plan_ilosUtilizationByPlan_${data.key}`];
+    return (
+      <Box sx={sx.nestedIlos}>
+        {data.value}: {nestedResponse}
+      </Box>
+    );
+  });
 };
 
 // style object for rendered elements
