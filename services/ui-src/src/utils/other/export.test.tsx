@@ -84,7 +84,9 @@ describe("Test rendering methods", () => {
     const Component = () => cells[0];
     const { container } = render(<Component />);
     expect(container.querySelectorAll("li").length).toBe(3);
-    expect(container.querySelectorAll("li")[2]).toHaveTextContent("mock-ilos: N/A");
+    expect(container.querySelectorAll("li")[2]).toHaveTextContent(
+      "mock-ilos: N/A"
+    );
   });
 
   test("renderDrawerDataCell renders without ilos responses", () => {
