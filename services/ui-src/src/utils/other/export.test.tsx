@@ -81,12 +81,10 @@ describe("Test rendering methods", () => {
     ];
 
     const cells = renderDrawerDataCell(mockFormField, mockPlan, "drawer");
-    const ul = cells[0].props.children;
-    const li = Array.from(ul.props.children)
-      .flat()
-      .filter((el) => (el as ReactJSXElement)?.type === "li");
-    expect(cells.length).toBe(1);
-    expect(li.length).toBe(3);
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(3);
+    expect(container.querySelectorAll("li")[2]).toHaveTextContent("mock-ilos: N/A");
   });
 
   test("Correctly renders nested ILOS fields", () => {
