@@ -30,7 +30,7 @@ const availableIlos = (ilos: AnyObject[]) => {
       checked: false,
       children: [
         {
-          id: `plan_ilosUtilizationByPlan-otherText_${item.id}`,
+          id: `plan_ilosUtilizationByPlan_${item.id}`,
           type: "number",
           validation: {
             type: "number",
