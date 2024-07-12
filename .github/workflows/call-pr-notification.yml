@@ -11,5 +11,5 @@ jobs:
       retrieve_endpoint: true
     secrets:
       slack_webhook:  ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
-      role-to-assume: ${{ secrets.AWS_DEFAULT_REGION }}
-      aws-region: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+      aws_oidc_role_to_assume: ${{ secrets.AWS_DEFAULT_REGION }}
+      aws_default_region: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
