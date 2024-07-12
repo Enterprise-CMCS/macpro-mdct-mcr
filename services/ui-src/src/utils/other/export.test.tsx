@@ -87,6 +87,36 @@ describe("Test rendering methods", () => {
     expect(container.querySelectorAll("li")[2]).toHaveTextContent("mock-ilos: N/A");
   });
 
+  test("renderDrawerDataCell renders without ilos responses", () => {
+    const mockFormField: FormField = {
+      id: "mock",
+      props: {
+        choices: [],
+      },
+      type: "checkbox",
+      validation: "checkbox",
+    };
+
+    const mockPlan: AnyObject = [
+      {
+        id: "mock-id",
+        mock: [
+          {
+            key: "123",
+            value: "mock-ilos",
+          },
+        ],
+        mock_123: "N/A",
+      },
+    ];
+
+    const cells = renderDrawerDataCell(mockFormField, mockPlan, "drawer");
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(2);
+    expect(screen.queryByText("mock-ilos: N/A")).not.toBeInTheDocument();
+  });
+
   test("Correctly renders nested ILOS fields", () => {
     const mockFieldResponseData = [
       {
