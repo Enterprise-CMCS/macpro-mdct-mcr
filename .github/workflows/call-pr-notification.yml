@@ -1,0 +1,15 @@
+name: Call PR Workflow
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  call-reusable-workflow:
+    uses: Enterprise-CMCS/macpro-mdct-core/.github/workflows/pr-notification.yml@main
+    with:
+      retrieve_endpoint: true
+    secrets:
+      slack_webhook:  ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
+      role-to-assume: ${{ secrets.AWS_DEFAULT_REGION }}
+      aws-region: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
