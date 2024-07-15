@@ -3,6 +3,35 @@ const _ = require("lodash");
 import { ConfigResourceTypes, Kafka } from "kafkajs";
 
 /**
+ * Removes topics in BigMac given the following
+ * @param {*} brokerString - Comma delimited list of brokers
+ * @param {*} namespace - String in the format of `--${event.project}--`, only used for temp branches for easy identification and cleanup
+ */
+export async function listProjectTopics(brokerString, namespace) {
+  const brokers = brokerString.split(",");
+
+  const kafka = new Kafka({
+    clientId: "admin",
+    brokers: brokers,
+    ssl: true,
+  });
+  var admin = kafka.admin();
+
+  await admin.connect();
+
+  const currentTopics = await admin.listTopics();
+  var lingeringTopics = _.filter(currentTopics, function (n) {
+    console.log(n);
+    return (
+      n.startsWith(namespace) || n.startsWith(`_confluent-ksql-${namespace}`)
+    );
+  });
+
+  console.log(lingeringTopics.join("\n"));
+  await admin.disconnect();
+}
+
+/**
  * Generates topics in BigMac given the following
  * @param {*} brokerString - Comma delimited list of brokers
  * @param {*} topicNamespace - String in the format of `--${event.project}--${event.stage}--`, only used for temp branches for easy identification and cleanup
@@ -111,6 +140,11 @@ export async function createTopics(brokerString, topicNamespace, topicsConfig) {
   await create();
 }
 
+/**
+ * Removes topics in BigMac given the following
+ * @param {*} brokerString - Comma delimited list of brokers
+ * @param {*} topicNamespace - String in the format of `--${event.project}--${event.stage}--`, only used for temp branches for easy identification and cleanup
+ */
 export async function deleteTopics(brokerString, topicNamespace) {
   if (!topicNamespace.startsWith("--")) {
     throw "ERROR:  The deleteTopics function only operates against topics that begin with --.";
@@ -136,9 +170,11 @@ export async function deleteTopics(brokerString, topicNamespace) {
       n.startsWith(`_confluent-ksql-${topicNamespace}`)
     );
   });
-  console.log(`Deleting topics:  ${topicsToDelete}`);
+  console.log(`Deleting topics:  ${JSON.stringify(topicsToDelete, null, 2)}`);
 
   await admin.deleteTopics({
     topics: topicsToDelete,
   });
+
+  await admin.disconnect();
 }
