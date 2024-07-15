@@ -27,8 +27,8 @@ export async function listProjectTopics(brokerString, namespace) {
     );
   });
 
-  console.log(lingeringTopics.join("\n"));
   await admin.disconnect();
+  return lingeringTopics;
 }
 
 /**

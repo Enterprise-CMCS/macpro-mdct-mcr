@@ -10,11 +10,7 @@ import * as topics from "../libs/topics-lib.js";
  */
 exports.handler = async function (event, _context, _callback) {
   console.log("Received event:", JSON.stringify(event, null, 2));
-  if (!event.project || !event.stage) {
-    throw "ERROR:  project and stage keys must be sent in the event.";
-  }
-  await topics.listProjectTopics(
-    process.env.brokerString,
-    `--${process.env.project}--`
-  );
+  return await topics
+    .listProjectTopics(process.env.brokerString, `--${process.env.project}--`)
+    .join("\n");
 };
