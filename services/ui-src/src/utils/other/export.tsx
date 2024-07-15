@@ -93,6 +93,16 @@ export const renderDrawerDataCell = (
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
     const fieldResponseData = entity[formField.id];
+
+    // check for nested ILOS data
+    let nestedIlosResponses = [];
+    if (
+      fieldResponseData?.length &&
+      formField.id === "plan_ilosUtilizationByPlan"
+    ) {
+      nestedIlosResponses = getNestedIlosResponses(fieldResponseData, entity);
+    }
+
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
         <ul>
@@ -109,6 +119,16 @@ export const renderDrawerDataCell = (
               index
             )}
           </li>
+          {/* If there are nested ILOS responses available, render them here */}
+          {nestedIlosResponses.map((response: AnyObject, index: number) => {
+            return (
+              <li key={index}>
+                <Box sx={sx.nestedIlos}>
+                  {response.key}: {response.value}
+                </Box>
+              </li>
+            );
+          })}
         </ul>
       </Box>
     );
@@ -261,6 +281,19 @@ export const getEntityDetailsMLR = (entity: EntityShape) => {
   };
 };
 
+export const getNestedIlosResponses = (
+  fieldResponseData: AnyObject,
+  entity: EntityShape
+) => {
+  return fieldResponseData.map((data: AnyObject) => {
+    const nestedResponse = entity[`plan_ilosUtilizationByPlan_${data.key}`];
+    return {
+      key: data.value,
+      value: nestedResponse,
+    };
+  });
+};
+
 // style object for rendered elements
 const sx = {
   fieldChoice: {
@@ -302,5 +335,9 @@ const sx = {
   },
   notApplicable: {
     color: "palette.gray_medium",
+  },
+  nestedIlos: {
+    lineHeight: "1.25rem",
+    fontSize: "sm",
   },
 };

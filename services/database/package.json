@@ -13,8 +13,8 @@
     "serverless-dynamodb": "^0.2.53"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.592.0",
-    "@aws-sdk/client-s3": "^3.592.0",
-    "@aws-sdk/lib-dynamodb": "^3.592.0"
+    "@aws-sdk/client-dynamodb": "^3.598.0",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.602.0"
   }
 }
