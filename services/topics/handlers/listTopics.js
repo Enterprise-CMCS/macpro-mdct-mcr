@@ -10,10 +10,8 @@ import * as topics from "../libs/topics-lib.js";
  */
 exports.handler = async function (event, _context, _callback) {
   console.log("Received event:", JSON.stringify(event, null, 2));
-  return JSON.stringify(
-    await topics.listProjectTopics(
-      process.env.brokerString,
-      `--${process.env.project}--`
-    )
+  return await topics.listProjectTopics(
+    process.env.brokerString,
+    `--${process.env.project}--`
   );
 };
