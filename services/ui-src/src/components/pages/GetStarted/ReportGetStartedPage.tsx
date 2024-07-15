@@ -190,7 +190,7 @@ const sx = {
     fontWeight: "bold",
   },
   image: {
-    maxWidth: "20rem",
+    maxWidth: "18rem",
   },
   additionalInfo: {
     marginTop: "1rem",
