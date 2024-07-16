@@ -13,5 +13,5 @@ exports.handler = async function (event, _context, _callback) {
   let namespace = event.stage
     ? `--${process.env.project}--${event.stage}--`
     : `--${process.env.project}--`;
-  return await topics.Topics(process.env.brokerString, namespace);
+  return await topics.listTopics(process.env.brokerString, namespace);
 };
