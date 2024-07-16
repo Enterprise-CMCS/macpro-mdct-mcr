@@ -81,6 +81,9 @@ export function createElementWithChildren(
       element.children.map((x) => createElementWithChildren(x))
     );
   }
+  if (type === "html") {
+    delete elementProps.as;
+  }
   const santizedContent = sanitizeAndParseHtml(content);
   return React.createElement(elementType, elementProps, santizedContent);
 }
