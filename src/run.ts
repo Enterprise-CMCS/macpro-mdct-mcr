@@ -198,6 +198,7 @@ async function delete_topics(options: { stage: string }) {
 async function list_topics(options: { stage: string | undefined }) {
   const runner = new LabeledProcessRunner();
   await install_deps_for_services(runner);
+  let data = { stage: options.stage };
   const deployCmd = [
     "sls",
     "invoke",
@@ -206,7 +207,7 @@ async function list_topics(options: { stage: string | undefined }) {
     "--function",
     "listTopics",
     "--data",
-    JSON.stringify(options.stage),
+    JSON.stringify(data),
   ];
   await runner.run_command_and_output(
     "List topics",
