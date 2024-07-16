@@ -40,134 +40,152 @@ const testReadEventByState: APIGatewayProxyEvent = {
   pathParameters: { reportType: "MCPAR", state: "CO" },
 };
 
-describe("Test fetchReport API method", () => {
+let consoleSpy: {
+  debug: jest.SpyInstance<void>;
+  error: jest.SpyInstance<void>;
+} = {
+  debug: jest.fn() as jest.SpyInstance,
+  error: jest.fn() as jest.SpyInstance,
+};
+
+describe("handlers/reports/fetch", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
     mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
+    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
+    consoleSpy.error = jest.spyOn(console, "error").mockImplementation();
   });
-  test("Test Report not found in DynamoDB", async () => {
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: undefined,
+
+  describe("Test fetchReport API method", () => {
+    test("Test Report not found in DynamoDB", async () => {
+      dynamoClientMock.on(GetCommand).resolves({
+        Item: undefined,
+      });
+      const res = await fetchReport(testReadEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-  });
 
-  test("Test Report Form not found in S3", async () => {
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: { ...mockDynamoData, formTemplateId: "badId" },
+    test("Test Report Form not found in S3", async () => {
+      dynamoClientMock.on(GetCommand).resolves({
+        Item: { ...mockDynamoData, formTemplateId: "badId" },
+      });
+      const res = await fetchReport(testReadEvent, "null");
+      expect(consoleSpy.error).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     });
-    const res = await fetchReport(testReadEvent, "null");
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-  });
 
-  test("Test Field Data not found in S3", async () => {
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: { ...mockDynamoData, fieldDataId: null },
+    test("Test Field Data not found in S3", async () => {
+      dynamoClientMock.on(GetCommand).resolves({
+        Item: { ...mockDynamoData, fieldDataId: null },
+      });
+      const res = await fetchReport(testReadEvent, "badId");
+      expect(consoleSpy.error).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     });
-    const res = await fetchReport(testReadEvent, "badId");
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
-  });
 
-  test("Test Successful Report Fetch w/ Incomplete Report", async () => {
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
-    s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: mockDynamoData,
+    test("Test Successful Report Fetch w/ Incomplete Report", async () => {
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(mockReportFieldData);
+      dynamoClientMock.on(GetCommand).resolves({
+        Item: mockDynamoData,
+      });
+      const res = await fetchReport(testReadEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+      const body = JSON.parse(res.body);
+      expect(body.lastAlteredBy).toContain("Thelonious States");
+      expect(body.programName).toContain("testProgram");
+      expect(body.completionStatus).toMatchObject(
+        mockDynamoData.completionStatus
+      );
+      expect(body.isComplete).toStrictEqual(false);
+      expect(body.fieldData).toStrictEqual(mockReportFieldData);
+      expect(body.formTemplate).toStrictEqual(mockReportJson);
+      expect(s3GetSpy).toHaveBeenCalledTimes(2);
     });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body.lastAlteredBy).toContain("Thelonious States");
-    expect(body.programName).toContain("testProgram");
-    expect(body.completionStatus).toMatchObject(
-      mockDynamoData.completionStatus
-    );
-    expect(body.isComplete).toStrictEqual(false);
-    expect(body.fieldData).toStrictEqual(mockReportFieldData);
-    expect(body.formTemplate).toStrictEqual(mockReportJson);
-    expect(s3GetSpy).toHaveBeenCalledTimes(2);
-  });
 
-  test("Test Successful Report Fetch w/ Complete Report", async () => {
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
-    s3GetSpy
-      .mockResolvedValueOnce(mockReportJson)
-      .mockResolvedValueOnce(mockReportFieldData);
-    dynamoClientMock.on(GetCommand).resolves({
-      Item: mockDynamoDataCompleted,
+    test("Test Successful Report Fetch w/ Complete Report", async () => {
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(mockReportFieldData);
+      dynamoClientMock.on(GetCommand).resolves({
+        Item: mockDynamoDataCompleted,
+      });
+      const res = await fetchReport(testReadEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+      const body = JSON.parse(res.body);
+      expect(body.lastAlteredBy).toContain("Thelonious States");
+      expect(body.programName).toContain("testProgram");
+      expect(body.completionStatus).toMatchObject({
+        "step-one": true,
+      });
+      expect(body.isComplete).toStrictEqual(true);
+      expect(body.fieldData).toStrictEqual(mockReportFieldData);
+      expect(body.formTemplate).toStrictEqual(mockReportJson);
+      expect(s3GetSpy).toHaveBeenCalledTimes(2);
     });
-    const res = await fetchReport(testReadEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body.lastAlteredBy).toContain("Thelonious States");
-    expect(body.programName).toContain("testProgram");
-    expect(body.completionStatus).toMatchObject({
-      "step-one": true,
+
+    test("Test reportKeys not provided throws 400 error", async () => {
+      const noKeyEvent: APIGatewayProxyEvent = {
+        ...testReadEvent,
+        pathParameters: {},
+      };
+      const res = await fetchReport(noKeyEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toContain(error.NO_KEY);
     });
-    expect(body.isComplete).toStrictEqual(true);
-    expect(body.fieldData).toStrictEqual(mockReportFieldData);
-    expect(body.formTemplate).toStrictEqual(mockReportJson);
-    expect(s3GetSpy).toHaveBeenCalledTimes(2);
+
+    test("Test reportKeys empty throws 400 error", async () => {
+      const noKeyEvent: APIGatewayProxyEvent = {
+        ...testReadEvent,
+        pathParameters: { state: "", id: "" },
+      };
+      const res = await fetchReport(noKeyEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toContain(error.NO_KEY);
+    });
   });
 
-  test("Test reportKeys not provided throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testReadEvent,
-      pathParameters: {},
-    };
-    const res = await fetchReport(noKeyEvent, null);
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toContain(error.NO_KEY);
-  });
+  describe("Test fetchReportsByState API method", () => {
+    test("Test successful call", async () => {
+      const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
+      dynamoQueryAllSpy.mockResolvedValue([mockDynamoData]);
+      const res = await fetchReportsByState(testReadEventByState, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+      const body = JSON.parse(res.body);
+      expect(body[0].lastAlteredBy).toContain("Thelonious States");
+      expect(body[0].programName).toContain("testProgram");
+    });
 
-  test("Test reportKeys empty throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testReadEvent,
-      pathParameters: { state: "", id: "" },
-    };
-    const res = await fetchReport(noKeyEvent, null);
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toContain(error.NO_KEY);
-  });
-});
+    test("Test reportKeys not provided throws 400 error", async () => {
+      const noKeyEvent: APIGatewayProxyEvent = {
+        ...testReadEventByState,
+        pathParameters: {},
+      };
+      const res = await fetchReportsByState(noKeyEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toContain(error.NO_KEY);
+    });
 
-describe("Test fetchReportsByState API method", () => {
-  beforeEach(() => {
-    jest.restoreAllMocks();
-    dynamoClientMock.reset();
-    mockAuthUtil.isAuthorizedToFetchState.mockReturnValueOnce(true);
-  });
-  test("Test successful call", async () => {
-    const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
-    dynamoQueryAllSpy.mockResolvedValue([mockDynamoData]);
-    const res = await fetchReportsByState(testReadEventByState, null);
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
-    expect(body[0].lastAlteredBy).toContain("Thelonious States");
-    expect(body[0].programName).toContain("testProgram");
-  });
-
-  test("Test reportKeys not provided throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testReadEventByState,
-      pathParameters: {},
-    };
-    const res = await fetchReportsByState(noKeyEvent, null);
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toContain(error.NO_KEY);
-  });
-
-  test("Test reportKeys empty throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testReadEventByState,
-      pathParameters: { state: "" },
-    };
-    const res = await fetchReportsByState(noKeyEvent, null);
-    expect(res.statusCode).toBe(400);
-    expect(res.body).toContain(error.NO_KEY);
+    test("Test reportKeys empty throws 400 error", async () => {
+      const noKeyEvent: APIGatewayProxyEvent = {
+        ...testReadEventByState,
+        pathParameters: { state: "" },
+      };
+      const res = await fetchReportsByState(noKeyEvent, null);
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(res.statusCode).toBe(400);
+      expect(res.body).toContain(error.NO_KEY);
+    });
   });
 });

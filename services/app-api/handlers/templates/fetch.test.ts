@@ -18,6 +18,14 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { templateName: "test" },
 };
 
+const consoleSpy: {
+  debug: jest.SpyInstance<void>;
+  error: jest.SpyInstance<void>;
+} = {
+  debug: jest.spyOn(console, "debug").mockImplementation(),
+  error: jest.spyOn(console, "error").mockImplementation(),
+};
+
 describe("Test fetchTemplate API method", () => {
   beforeAll(() => {
     process.env["TEMPLATE_BUCKET"] = "fakeTestBucket";
@@ -30,6 +38,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(mcparEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });
@@ -41,6 +50,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(mlrEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });
@@ -52,6 +62,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(naaarEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });
@@ -63,6 +74,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(noKeyEvent, null);
 
+    expect(consoleSpy.error).toHaveBeenCalled();
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_TEMPLATE_NAME);
   });
@@ -74,6 +86,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(noKeyEvent, null);
 
+    expect(consoleSpy.error).toHaveBeenCalled();
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.INVALID_TEMPLATE_NAME);
   });

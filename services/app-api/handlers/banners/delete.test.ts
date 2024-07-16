@@ -20,10 +20,19 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
+const consoleSpy: {
+  debug: jest.SpyInstance<void>;
+  error: jest.SpyInstance<void>;
+} = {
+  debug: jest.spyOn(console, "debug").mockImplementation(),
+  error: jest.spyOn(console, "error").mockImplementation(),
+};
+
 describe("Test deleteBanner API method", () => {
   test("Test not authorized to delete banner throws 403 error", async () => {
     const res = await deleteBanner(testEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
@@ -33,6 +42,7 @@ describe("Test deleteBanner API method", () => {
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
     const res = await deleteBanner(testEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(res.body).toContain("testKey");
     expect(mockDelete).toHaveBeenCalled();
@@ -45,6 +55,7 @@ describe("Test deleteBanner API method", () => {
     };
     const res = await deleteBanner(noKeyEvent, null);
 
+    expect(consoleSpy.error).toHaveBeenCalled();
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -56,6 +67,7 @@ describe("Test deleteBanner API method", () => {
     };
     const res = await deleteBanner(noKeyEvent, null);
 
+    expect(consoleSpy.error).toHaveBeenCalled();
     expect(res.statusCode).toBe(500);
     expect(res.body).toContain(error.NO_KEY);
   });
