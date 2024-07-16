@@ -1075,7 +1075,11 @@
                     },
                     {
                       "type": "p",
-                      "content": "Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68).</p><p>42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program."
+                      "content": "Revisions to the Medicaid managed care regulations in 2016 and 2020 built on existing requirements that managed care plans maintain provider networks sufficient to ensure adequate access to covered services by: (1) requiring states to develop quantitative network adequacy standards for at least eight specified provider types if covered under the contract, and to make these standards available online; (2) strengthening network adequacy monitoring requirements; and (3) addressing the needs of people with long-term care service needs (42 CFR 438.66; 42 CFR 438.68)."
+                    },
+                    {
+                      "type": "p",
+                      "content": "42 CFR 438.66(e) specifies that the MCPAR must provide information on and an assessment of the availability and accessibility of covered services within the MCO, PHIP, or PAHP contracts, including network adequacy standards for each managed care program."
                     }
                   ]
                 },
@@ -3382,7 +3386,11 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.</p><p>42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions."
+                },
+                {
+                  "type": "p",
+                  "content": "42 CFR 438.66(e)(2)(viii) specifies that the MCPAR include the results of any sanctions or corrective action plans imposed by the State or other formal or informal intervention with a contracted MCO, PIHP, PAHP, or PCCM entity to improve performance."
                 }
               ]
             },
