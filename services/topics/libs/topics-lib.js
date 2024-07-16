@@ -7,7 +7,7 @@ import { ConfigResourceTypes, Kafka } from "kafkajs";
  * @param {*} brokerString - Comma delimited list of brokers
  * @param {*} namespace - String in the format of `--${event.project}--`, only used for temp branches for easy identification and cleanup
  */
-export async function listProjectTopics(brokerString, namespace) {
+export async function listTopics(brokerString, namespace) {
   const brokers = brokerString.split(",");
 
   const kafka = new Kafka({
@@ -177,4 +177,5 @@ export async function deleteTopics(brokerString, topicNamespace) {
   });
 
   await admin.disconnect();
+  return topicsToDelete;
 }

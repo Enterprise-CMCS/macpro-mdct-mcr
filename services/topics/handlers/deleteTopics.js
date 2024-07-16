@@ -13,7 +13,7 @@ exports.handler = async function (event, _context, _callback) {
   if (!event.project || !event.stage) {
     throw "ERROR:  project and stage keys must be sent in the event.";
   }
-  await topics.deleteTopics(
+  return await topics.deleteTopics(
     process.env.brokerString,
     `--${event.project}--${event.stage}--`
   );
