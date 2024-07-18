@@ -1,16 +1,16 @@
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 // components
-import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 // utils
 import { useStore } from "utils";
 // types
-import { ReportType } from "types";
+import { ReportRoute, ReportType } from "types";
 
-export const ExportedReportBanner = () => {
+export const ExportedReportBanner = ({ error }: Props) => {
   const { report } = useStore();
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
@@ -24,6 +24,10 @@ export const ExportedReportBanner = () => {
   const verbiage = verbiageMap[reportType];
   const { reportBanner } = verbiage;
 
+  const routesToRender = report?.formTemplate.routes.filter(
+    (route: ReportRoute) => route
+  );
+
   const onClickHandler = () => {
     window?.print();
   };
@@ -31,13 +35,21 @@ export const ExportedReportBanner = () => {
   return (
     <Box data-testid="exportedReportBanner" sx={sx.container}>
       <Text>{reportBanner.intro}</Text>
-      <Button sx={sx.pdfButton} onClick={onClickHandler}>
-        <Image src={pdfIcon} w={5} alt="PDF Icon" />
-        {reportBanner.pdfButton}
-      </Button>
+      {!error && report && routesToRender ? (
+        <Button sx={sx.pdfButton} onClick={onClickHandler}>
+          <Image src={pdfIcon} w={5} alt="PDF Icon" />
+          {reportBanner.pdfButton}
+        </Button>
+      ) : (
+        <Spinner />
+      )}
     </Box>
   );
 };
+
+export interface Props {
+  error?: boolean;
+}
 
 const sx = {
   container: {
