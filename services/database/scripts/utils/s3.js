@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 const {
+  GetObjectCommand,
   ListObjectsV2Command,
+  PutObjectCommand,
   PutObjectTaggingCommand,
   S3Client,
 } = require("@aws-sdk/client-s3");
@@ -32,6 +34,20 @@ const buildS3Client = () => {
   s3Client = new S3Client(s3Config);
 };
 
+const getObject = async (params) => {
+  try {
+    const response = await s3Client.send(new GetObjectCommand(params));
+    const stringBody = await response.Body?.transformToString();
+    if (stringBody) {
+      return JSON.parse(stringBody);
+    } else {
+      throw new Error("No body");
+    }
+  } catch {
+    throw new Error("Error fetching object");
+  }
+};
+
 const list = async (params) => {
   let ContinuationToken;
   let contents = [];
@@ -46,7 +62,10 @@ const list = async (params) => {
   return contents;
 };
 
+const putObject = async (params) =>
+  await s3Client.send(new PutObjectCommand(params));
+
 const putObjectTag = async (params) =>
   await s3Client.send(new PutObjectTaggingCommand(params));
 
-module.exports = { buildS3Client, list, putObjectTag };
+module.exports = { buildS3Client, getObject, list, putObject, putObjectTag };
