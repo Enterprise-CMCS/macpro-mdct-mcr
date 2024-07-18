@@ -17,6 +17,9 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const reportBanner = <ExportedReportBanner />;
 
+// export banner called from <Error />
+const reportBannerFromError = <ExportedReportBanner error={true} />;
+
 describe("ExportedReportBanner", () => {
   // temporarily mock window.print for the testing environment
   beforeEach(() => {
@@ -62,6 +65,12 @@ describe("ExportedReportBanner", () => {
     const printButton = screen.getByText("Download PDF");
     expect(printButton).toBeVisible();
     await userEvent.click(printButton);
+  });
+
+  test("Download PDF button should not be visible", async () => {
+    render(reportBannerFromError);
+    const printButton = screen.queryByText("Download PDF");
+    expect(printButton).not.toBeInTheDocument;
   });
 });
 
