@@ -2,8 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 import { Error } from "components";
 import error from "verbiage/pages/error";
+import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
-const errorView = <Error />;
+const errorView = (
+  <RouterWrappedComponent>
+    <Error />
+  </RouterWrappedComponent>
+);
 
 describe("Test Error view", () => {
   test("Check that Error page renders", () => {
