@@ -25,6 +25,7 @@ export const DateField = ({
   autosave,
   validateOnRender,
   styleAsOptional,
+  clear,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -60,7 +61,7 @@ export const DateField = ({
     }
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
-      if (props.clear) {
+      if (clear) {
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {

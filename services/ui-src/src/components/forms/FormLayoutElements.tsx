@@ -3,6 +3,10 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 export const SectionHeader = ({
   content,
   divider,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  autosave,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  validateOnRender,
   ...props
 }: SectionHeaderProps) => {
   const sx = {
