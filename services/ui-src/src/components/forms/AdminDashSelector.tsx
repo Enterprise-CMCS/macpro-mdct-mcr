@@ -33,10 +33,17 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
 
   // assemble and inject report choices depending on whether report is enabled
   const mlrReport = useFlags()?.mlrReport;
-  if (mlrReport) {
-    reportChoices.push(mlrReportChoice);
-  }
   const reportField = formJson.fields.find((field) => field.id === "report")!;
+
+  if (mlrReport) {
+    reportField.type = "radio";
+    reportField.validation = "radio";
+    reportChoices.push(mlrReportChoice);
+  } else {
+    reportField.type = "checkbox";
+    reportField.validation = "checkbox";
+  }
+
   reportField.props.choices = reportChoices;
 
   // add validation to formJson

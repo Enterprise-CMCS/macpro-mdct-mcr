@@ -29,6 +29,7 @@ export const NumberField = ({
   validateOnRender,
   nested,
   styleAsOptional,
+  clear,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -68,7 +69,7 @@ export const NumberField = ({
     }
     // else set hydrationValue or defaultValue display value
     else if (hydrationValue) {
-      if (props.clear) {
+      if (clear) {
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {

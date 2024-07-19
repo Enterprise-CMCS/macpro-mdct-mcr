@@ -48,7 +48,6 @@ describe("Test EntityCardTopSection renders", () => {
     window.history.pushState({}, "", new URL(window.location.origin));
     const { container } = render(entityCardTopSectionComponent);
     const h4Tag = container.querySelector("h4");
-    screen.debug(container);
     expect(h4Tag).toHaveTextContent(
       "C2.V.1 General category: LTSS-related standard"
     );

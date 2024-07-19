@@ -95,6 +95,7 @@ describe("Test ChoiceListField component rendering", () => {
 
   it("RadioField should render nested child fields for choices with children", () => {
     // Render Initial State and choices
+    mockGetValues(undefined);
     render(RadioComponentWithNestedChildren);
     expect(screen.getByText("Choice 1")).toBeVisible();
     expect(screen.getByText("Choice 2")).toBeVisible();
