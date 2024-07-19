@@ -10,7 +10,7 @@ import { useStore } from "utils";
 // types
 import { ReportRoute, ReportType } from "types";
 
-export const ExportedReportBanner = ({ error }: Props) => {
+export const ExportedReportBanner = () => {
   const { report } = useStore();
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
@@ -35,7 +35,7 @@ export const ExportedReportBanner = ({ error }: Props) => {
   return (
     <Box data-testid="exportedReportBanner" sx={sx.container}>
       <Text>{reportBanner.intro}</Text>
-      {!error && report && routesToRender ? (
+      {report && routesToRender ? (
         <Button sx={sx.pdfButton} onClick={onClickHandler}>
           <Image src={pdfIcon} w={5} alt="PDF Icon" />
           {reportBanner.pdfButton}
@@ -46,10 +46,6 @@ export const ExportedReportBanner = ({ error }: Props) => {
     </Box>
   );
 };
-
-export interface Props {
-  error?: boolean;
-}
 
 const sx = {
   container: {
