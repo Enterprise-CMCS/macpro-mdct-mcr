@@ -74,7 +74,9 @@ describe("Test AdminBannerForm component", () => {
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
-    await expect(screen.getByText("Error")).toBeVisible();
+    await expect(
+      screen.getByText(/Something went wrong on our end/)
+    ).toBeVisible();
   });
 });
 
