@@ -377,6 +377,14 @@ export const mockMcparReport = {
   previousRevisions: [],
 };
 
+export const mockMcparReportWithFieldDataId = (id: number) => {
+  const { fieldDataId, ...other } = mockMcparReport;
+  return {
+    ...other,
+    fieldDataId: `${fieldDataId}-${id}`,
+  };
+};
+
 export const mockMcparReportCombinedData = {
   ...mockReportKeys,
   reportType: "MCPAR",
@@ -558,9 +566,9 @@ export const mockMlrModalOverlayReport = {
 };
 
 export const mockReportsByState = [
-  { ...mockMcparReport, id: "mock-report-id-1" },
-  { ...mockMcparReport, id: "mock-report-id-2" },
-  { ...mockMcparReport, id: "mock-report-id-3" },
+  { ...mockMcparReportWithFieldDataId(1), id: "mock-report-id-1" },
+  { ...mockMcparReportWithFieldDataId(2), id: "mock-report-id-2" },
+  { ...mockMcparReportWithFieldDataId(3), id: "mock-report-id-3" },
 ];
 
 export const mockMlrReportsByState = [

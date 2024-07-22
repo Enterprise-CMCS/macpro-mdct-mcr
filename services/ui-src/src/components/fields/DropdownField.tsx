@@ -35,6 +35,8 @@ export const DropdownField = ({
   validateOnRender,
   sxOverride,
   styleAsOptional,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  clear,
   ...props
 }: Props) => {
   const { updateReport } = useContext(ReportContext);
@@ -177,6 +179,7 @@ export const DropdownField = ({
         name={name}
         id={name}
         label={labelText || ""}
+        ariaLabel={labelText ? undefined : name}
         options={formattedOptions}
         hint={parsedHint}
         onChange={onChangeHandler}
