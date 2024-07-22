@@ -54,12 +54,12 @@ export const App = () => {
             <Timeout />
             <MainSkipNav />
             {!isExportPage && <Header handleLogout={logout} />}
-            <ErrorBoundary FallbackComponent={Error}>
-              {isExportPage && <ExportedReportBanner />}
-              <Container sx={sx.appContainer} data-testid="app-container">
+            {isExportPage && <ExportedReportBanner />}
+            <Container sx={sx.appContainer} data-testid="app-container">
+              <ErrorBoundary FallbackComponent={Error}>
                 <AppRoutes />
-              </Container>
-            </ErrorBoundary>
+              </ErrorBoundary>
+            </Container>
             <Footer />
           </ReportProvider>
         </Flex>

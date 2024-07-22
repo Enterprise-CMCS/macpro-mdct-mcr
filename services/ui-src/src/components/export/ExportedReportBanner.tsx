@@ -32,18 +32,25 @@ export const ExportedReportBanner = () => {
     window?.print();
   };
 
+  // check if the PDF is displaying an error message
+  const errorDisplay = window.document.getElementById("error-text");
+
   return (
-    <Box data-testid="exportedReportBanner" sx={sx.container}>
-      <Text>{reportBanner.intro}</Text>
-      {report && routesToRender ? (
-        <Button sx={sx.pdfButton} onClick={onClickHandler}>
-          <Image src={pdfIcon} w={5} alt="PDF Icon" />
-          {reportBanner.pdfButton}
-        </Button>
-      ) : (
-        <Spinner />
+    <>
+      {!errorDisplay && (
+        <Box data-testid="exportedReportBanner" sx={sx.container}>
+          <Text>{reportBanner.intro}</Text>
+          {report && routesToRender ? (
+            <Button sx={sx.pdfButton} onClick={onClickHandler}>
+              <Image src={pdfIcon} w={5} alt="PDF Icon" />
+              {reportBanner.pdfButton}
+            </Button>
+          ) : (
+            <Spinner />
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 };
 
