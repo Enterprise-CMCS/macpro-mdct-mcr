@@ -6,12 +6,12 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
-import { FormJson } from "types";
+import { ErrorVerbiage, FormJson } from "types";
 // data
 import formJson from "forms/addAdminBanner/addAdminBanner.json";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<ErrorVerbiage>();
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   // add validation to formJson
