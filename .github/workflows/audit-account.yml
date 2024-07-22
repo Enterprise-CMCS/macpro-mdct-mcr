@@ -56,6 +56,9 @@ jobs:
           UNTAGGED="$(./audit-account.sh untagged resources.json)"
           [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0] 
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv
+          TOPICS="$(./audit-account.sh orphaned_topics)"
+          [[ $(jq -r 'length' <<< "${TOPICS}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${TOPICS}" > reports/orphaned_topics.csv          
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:
