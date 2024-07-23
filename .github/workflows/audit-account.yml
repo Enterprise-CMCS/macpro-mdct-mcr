@@ -54,7 +54,7 @@ jobs:
       - name: List untagged resources
         run: pushd .github && ./audit-account.sh untagged resources.json
       - name: List orphaned topics
-        run: pushd .github && bash -x audit-account.sh orphaned_topics                
+        run: pushd .github && ./audit-account.sh orphaned_topics                
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
       - name: Assemble CSV files
