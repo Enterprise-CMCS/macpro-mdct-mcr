@@ -30,6 +30,15 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV          
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
       - name: List active resources created by CI pipeline
@@ -39,7 +48,9 @@ jobs:
       - name: List resources created by Cloudformation but not from CI pipeline
         run: pushd .github && ./audit-account.sh cf_other resources.json
       - name: List untagged resources
-        run: pushd .github && ./audit-account.sh untagged resources.json            
+        run: pushd .github && ./audit-account.sh untagged resources.json
+      - name: List orphaned topics
+        run: pushd .github && ./audit-account.sh orphaned_topics                
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
       - name: Assemble CSV files
