@@ -39,12 +39,10 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: List all topics
+      - name: List all topics for project
         run: |
           #Executing the run command is required to assemble all the dependencies in the topics service
-          ./run list-topics
-      - name: DEBUG TOPICS
-        run: pushd .github && pushd ../services/topics && sls invoke --stage main --function listTopics && exit 1          
+          ./run list-topics     
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
       - name: List active resources created by CI pipeline
