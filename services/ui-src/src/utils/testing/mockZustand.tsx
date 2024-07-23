@@ -103,7 +103,7 @@ export const mockBannerStore: AdminBannerState = {
   bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
-  bannerErrorMessage: "",
+  bannerErrorMessage: { title: "", description: "" },
   bannerDeleting: false,
   setBannerData: () => {},
   clearAdminBanner: () => {},
