@@ -50,7 +50,7 @@ jobs:
       - name: List untagged resources
         run: pushd .github && ./audit-account.sh untagged resources.json
       - name: DEBUG TOPICS
-        run: pushd ../services/topics && sls invoke --stage main --function listTopics
+        run: pushd .github && pushd ../services/topics && sls invoke --stage main --function listTopics
       - name: List orphaned topics
         run: pushd .github && bash -x audit-account.sh orphaned_topics                
       - name: Create reports dir
