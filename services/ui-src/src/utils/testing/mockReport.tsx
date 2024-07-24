@@ -1,5 +1,5 @@
 import { EntityType, ReportStatus } from "types";
-import { genericErrorContent } from "verbiage/errors";
+import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
 import {
@@ -598,10 +598,7 @@ export const mockMcparReportContext = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -610,10 +607,7 @@ export const mockMcparReportContextNoSubmittedReports = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: [],
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 export const mockMLRNewReportContext = {
@@ -621,10 +615,7 @@ export const mockMLRNewReportContext = {
   report: mockMLRNewReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "4:20pm",
 };
 
@@ -651,10 +642,7 @@ export const mockMLRLockedReportContext = {
   report: mockMLRLockedReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -662,10 +650,7 @@ export const mockMcparReportCombinedDataContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -674,10 +659,7 @@ export const mockMlrReportContext = {
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -688,10 +670,7 @@ export const mockReportContextNoReports = {
 
 export const mockReportContextWithError = {
   ...mockMcparReportContext,
-  errorMessage: {
-    title: "We've run into a problem",
-    description: genericErrorContent,
-  },
+  errorMessage: mockErrorMessage,
 };
 
 export const mockDashboardReportContext = {
