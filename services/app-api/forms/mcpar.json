@@ -1538,18 +1538,18 @@
               "section": "Section C: Program-Level Indicators",
               "subsection": "Topic XII. Mental Health and Substance Use Disorder Parity",
               "spreadsheet": "C1_Program_Set",
-              "alert": "<strong>This section is required to be completed by Comprehensive MCO programs beginning with December 2024 submissions and onwards.</strong>"
+              "alert": "<strong>Beginning December 2024, this section must be completed for programs that include MCOs</strong>"
             }
           },
           "form": {
             "id": "cmhsudp",
             "fields": [
               {
-                "id": "program_isThisProgramTypeComprehensiveMCO",
+                "id": "program_doesThisProgramIncludeMCOs",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "C1.XII.4 Is this program type a Comprehensive MCO?",
+                  "label": "C1.XII.4 Does this program include MCOs?",
                   "hint": "If \"Yes\", please complete the following questions.",
                   "choices": [
                     {
@@ -1561,16 +1561,16 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "program_areServicesProvidedToMcoEnrolleesByEntityOtherThanMco",
+                          "id": "program_areServicesProvidedToMcEnrolleesByPihpPahpOrFfsDeliverySystem",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.5 In this program, are any services provided to MCO enrollees by an entity other than an MCO?",
+                            "label": "C1.XII.5 Are any services provided to MC enrollees by a PIHP, PAHP, or FFS delivery system?",
                             "hint": "(i.e. some services are delivered via fee for service (FFS), prepaid inpatient health plan (PIHP), or prepaid ambulatory health plan (PAHP) delivery system)",
                             "choices": [
                               {
@@ -1585,6 +1585,45 @@
                           }
                         },
                         {
+                          "id": "program_didStateOrMCOsCompleteAnalysis",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
+                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
+                          },
+                          "props": {
+                            "label": "C1.XII.6 Did the State or MCOs complete the analysis(es)?",
+                            "choices": [
+                              {
+                                "id": "hzfe4WnueXTUDk0FoFcJcq1G",
+                                "label": "State"
+                              },
+                              {
+                                "id": "v6woH8xYbE59VMs82VxJlisF",
+                                "label": "MCO"
+                              },
+                              {
+                                "id": "vbuAOFC6DSx397ZoibATdonl",
+                                "label": "Other, specify",
+                                "children": [
+                                  {
+                                    "id": "program_didStateOrMCOsCompleteAnalysis-otherText",
+                                    "type": "textarea",
+                                    "validation": {
+                                      "type": "text",
+                                      "nested": true,
+                                      "parentFieldName": "program_didStateOrMCOsCompleteAnalysis",
+                                      "parentOptionId": "vbuAOFC6DSx397ZoibATdonl"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        {
                           "id": "program_triggeringEventsNecessitatingUpdatesToParityAnalysis",
                           "type": "radio",
                           "validation": {
@@ -1594,7 +1633,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.6a In this performance/reporting period, have there been any triggering events necessitating updates to parity analysis?",
+                            "label": "C1.XII.7a Have there been any events in the reporting period that necessitated an update to the parity analysis(es)?",
                             "hint": "(e.g. changes in benefits, quantitative treatment limits (QTLs), non-quantitative treatment limits (NQTLs), or financial requirements; the addition of a new managed care plan (MCP) providing services to MCO enrollees; and/or deficiencies corrected)",
                             "choices": [
                               {
@@ -1602,7 +1641,7 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis",
+                                    "id": "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis",
                                     "type": "checkbox",
                                     "validation": {
                                       "type": "checkbox",
@@ -1611,7 +1650,7 @@
                                       "parentOptionId": "q6F3AvbLimTiLUDN2xQvd2ip"
                                     },
                                     "props": {
-                                      "label": "C1.XII.6b Describe the events necessitating updates to parity analysis.",
+                                      "label": "C1.XII.7b Describe the event(s) that necessitated an update to the parity analysis(es).",
                                       "hint": "Select all that apply.",
                                       "choices": [
                                         {
@@ -1643,12 +1682,12 @@
                                           "label": "Other, specify",
                                           "children": [
                                             {
-                                              "id": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis-otherText",
+                                              "id": "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis-otherText",
                                               "type": "textarea",
                                               "validation": {
                                                 "type": "text",
                                                 "nested": true,
-                                                "parentFieldName": "descriptionOfEventsNecessitatingUpdatesToParityAnalysis",
+                                                "parentFieldName": "descriptionOfEventsInReportingPeriodThatNecessitatedUpdateToParityAnalysis",
                                                 "parentOptionId": "SWvgQnZAENJ1sxe0Xf408AoE"
                                               }
                                             }
@@ -1676,12 +1715,12 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.7 When was the last parity analysis covering this program completed?",
+                            "label": "C1.XII.8 When was the last parity analysis(es) for this program completed?",
                             "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state completed its most recent summary parity analysis report. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date any MCO sent the state its parity analysis (the state may have multiple reports, one for each MCO)."
                           }
                         },
                         {
-                          "id": "program_whenWasTheLastParityAnalysisCoveringThisProgramSubmittedToCMS",
+                          "id": "program_whenWasTheLastParityAnalysisForThisProgramSubmittedToCMS",
                           "type": "date",
                           "validation": {
                             "type": "date",
@@ -1690,12 +1729,12 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.8 When was the last parity analysis covering this program submitted to CMS?",
+                            "label": "C1.XII.9 When was the last parity analysis(es) for this program submitted to CMS?",
                             "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state's most recent summary parity analysis report was submitted to CMS. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date the state submitted any MCO's parity report to CMS (the state may have multiple parity reports, one for each MCO)."
                           }
                         },
                         {
-                          "id": "program_wereAnyDeficiencesInParityBenefitsIdentifiedDuringTheAnalysis",
+                          "id": "program_wereAnyDeficiencesIdentifiedDuringTheAnalysisConducted",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
@@ -1704,23 +1743,23 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.9a Were any deficiencies in parity for mental health and substance use disorder benefits identified during the analysis/analyses above?",
+                            "label": "C1.XII.10a Were any deficiencies identified in the last analysis(es) conducted?",
                             "choices": [
                               {
                                 "id": "z3iOa69iV6mQVBWTqIJBl5Ck",
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "descriptionOfDeficientesInParityIdentifiedDuringAnalysis",
+                                    "id": "descriptionOfDeficienciesInLastAnalysisConducted",
                                     "type": "textarea",
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "program_wereAnyDeficiencesInParityBenefitsIdentifiedDuringTheAnalysis",
+                                      "parentFieldName": "program_wereAnyDeficiencesIdentifiedDuringTheAnalysisConducted",
                                       "parentOptionId": "z3iOa69iV6mQVBWTqIJBl5Ck"
                                     },
                                     "props": {
-                                      "label": "C1.XII.9b Describe deficiencies in parity for metal health and substance use disorder benefits identified during the analysis/analyses."
+                                      "label": "C1.XII.10b Describe all deficiencies identified in the last analysis(es) conducted."
                                     }
                                   }
                                 ]
@@ -1742,7 +1781,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.10a As of the end of this performance/reporting period, have these deficiences been resolved for all plans?",
+                            "label": "C1.XII.11a As of the end of this reporting period, have these deficiences been resolved for all plans?",
                             "choices": [
                               {
                                 "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
@@ -1762,11 +1801,11 @@
                                       "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
                                     },
                                     "props": {
-                                      "label": "C1.XII.10b Select all that apply.",
+                                      "label": "C1.XII.11b If deficiencies have not been resolved, select all that apply.",
                                       "choices": [
                                         {
                                           "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
-                                          "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or beneficiaries."
+                                          "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or enrollees."
                                         },
                                         {
                                           "id": "E63ZYRXBmOocAEUS9JA1PkNB",
@@ -1806,7 +1845,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.11a Has the state posted the current parity analysis/analyses covering this program on its website?",
+                            "label": "C1.XII.12a Has the state posted the current parity analysis(es) covering this program on its website?",
                             "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs' separate analyses must be posted. A \"Yes\" response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
                             "choices": [
                               {
@@ -1823,7 +1862,7 @@
                                       "parentOptionId": "fncOB9LFBZd1nFJvLv9YM1Pb"
                                     },
                                     "props": {
-                                      "label": "C1.XII.11b Provide the URL link(s).",
+                                      "label": "C1.XII.12b Provide the URL link(s).",
                                       "hint": "Response must be a valid hyperlink/URL beginning with \"http://\" or \"https://\". Separate links with commas."
                                     }
                                   }
@@ -1843,7 +1882,7 @@
                                       "parentOptionId": "fmEETS25bqmm0GIwg0CGRIn6"
                                     },
                                     "props": {
-                                      "label": "C1.XII.11c What is the date the state will remediate this area of non-compliance and post the current parity analysis/analyses on their website?"
+                                      "label": "C1.XII.12c When will the state post the current parity analysis(es) on its State Medicaid website in accordance with 42 CFR § 438.920(b)(1)?"
                                     }
                                   }
                                 ]
@@ -3486,8 +3525,8 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "D3.VIII.2 Intervention topic",
-                  "hint": "What was the topic of intervention? Select one.",
+                  "label": "D3.VIII.2 Plan performance issue",
+                  "hint": "What area of plan performance was associated with the intervention? Select one.",
                   "choices": [
                     {
                       "id": "x6Cwd4oSrki6De4SnpjrMQ",
@@ -3499,7 +3538,7 @@
                     },
                     {
                       "id": "YBSfuKgdC0uEHGv4p0bi1g",
-                      "label": "Excess charges"
+                      "label": "Financial issues"
                     },
                     {
                       "id": "kB2nkoh27EG74eGG44pBrg",
