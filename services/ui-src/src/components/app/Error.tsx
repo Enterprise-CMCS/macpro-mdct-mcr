@@ -22,7 +22,7 @@ export const Error = () => {
       <Heading as="h2" sx={sx.subHeadingText}>
         {subHeading}
       </Heading>
-      <Text sx={sx.descriptionText}>
+      <Text sx={sx.descriptionText} id="error-text">
         {preLinkText}
         <Link href={createEmailLink({ address: helpDeskEmail })} isExternal>
           {helpDeskEmail}
