@@ -17,7 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4  
-      - name: set variable values
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - name: set variable values             
         run: ./.github/build-vars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
@@ -27,6 +30,19 @@ jobs:
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
+      - uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/Cypress
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: set path
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: List all topics for project
+        run: |
+          #Executing the run command is required to assemble all the dependencies in the topics service
+          ./run list-topics     
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
       - name: List active resources created by CI pipeline
@@ -36,7 +52,9 @@ jobs:
       - name: List resources created by Cloudformation but not from CI pipeline
         run: pushd .github && ./audit-account.sh cf_other resources.json
       - name: List untagged resources
-        run: pushd .github && ./audit-account.sh untagged resources.json            
+        run: pushd .github && ./audit-account.sh untagged resources.json
+      - name: List orphaned topics
+        run: pushd .github && ./audit-account.sh orphaned_topics                
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
       - name: Assemble CSV files
@@ -56,6 +74,9 @@ jobs:
           UNTAGGED="$(./audit-account.sh untagged resources.json)"
           [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0] 
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv
+          TOPICS="$(./audit-account.sh orphaned_topics)"
+          [[ $(jq -r 'length' <<< "${TOPICS}") -gt 0 ]] && jq -r '(.[0] 
+            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${TOPICS}" > reports/orphaned_topics.csv          
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:
