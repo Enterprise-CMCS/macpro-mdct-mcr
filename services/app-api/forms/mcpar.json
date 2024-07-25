@@ -3875,7 +3875,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.X.9d: Plan overpayment reporting to the state: Corresponding year's premium revenue",
-                  "hint": "What is the total amount of premium revenue for the corresponding year (D1.X.9a-b)? (Premium revenue as defined in MLR reporting under 438.8(f)(2)) ",
+                  "hint": "What is the total amount of premium revenue for the corresponding year (D1.X.9a-b)? (Premium revenue as defined in MLR reporting under 438.8(f)(2))",
                   "mask": "currency"
                 }
               },
