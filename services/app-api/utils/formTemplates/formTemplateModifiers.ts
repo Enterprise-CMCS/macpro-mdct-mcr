@@ -74,6 +74,6 @@ const removeAppealsAndGrievances = (routeChildren: AnyObject[]) => {
 
 const replaceProgramIntegrity = (formFields: AnyObject[]) => {
   return formFields.filter((field: AnyObject) => {
-    return !field.id.startsWith("plan_annualOverpaymentRecoveryReport");
+    return !field.id.startsWith("plan_overpaymentReportingToState");
   });
 };
