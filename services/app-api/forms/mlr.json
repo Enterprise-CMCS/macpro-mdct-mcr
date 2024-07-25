@@ -21,8 +21,17 @@
         },
         "praDisclosure": [
           {
-            "type": "html",
-            "content": "<b>PRA Disclosure Statement</b><br/>According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "<strong>PRA Disclosure Statement</strong>"
+              },
+              {
+                "type": "p",
+                "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
+              }
+            ]
           }
         ]
       },
@@ -174,8 +183,8 @@
           "spreadsheet": "Program Information",
           "info": [
             {
-              "type": "html",
-              "content": "<b>Total reports should match the number of rows starting at row 31 in Program Information tab. After adding program reporting information, enter the MLR for each report to add its MLR & Remittances.</b>"
+              "type": "p",
+              "content": "<strong>Total reports should match the number of rows starting at row 31 in Program Information tab. After adding program reporting information, enter the MLR for each report to add its MLR & Remittances.</strong>"
             }
           ]
         },
@@ -277,7 +286,7 @@
               "label": "L. Eligibility group",
               "hint": [
                 {
-                  "type": "html",
+                  "type": "p",
                   "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
                 },
                 {
@@ -292,17 +301,22 @@
                       },
                       "children": [
                         {
-                          "type": "html",
-                          "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in "
-                        },
-                        {
-                          "type": "externalLink",
-                          "content": "42 CFR § 457.10",
-                          "props": {
-                            "aria-label": "Link opens in new tab",
-                            "target": "_blank",
-                            "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10"
-                          }
+                          "type": "p",
+                          "children": [
+                            {
+                              "type": "html",
+                              "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in "
+                            },
+                            {
+                              "type": "externalLink",
+                              "content": "42 CFR § 457.10",
+                              "props": {
+                                "aria-label": "Link opens in new tab",
+                                "target": "_blank",
+                                "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10"
+                              }
+                            }
+                          ]
                         }
                       ]
                     },
@@ -315,7 +329,7 @@
                       },
                       "children": [
                         {
-                          "type": "html",
+                          "type": "p",
                           "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\"."
                         }
                       ]
@@ -329,7 +343,7 @@
                       },
                       "children": [
                         {
-                          "type": "html",
+                          "type": "p",
                           "content": "For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\"."
                         }
                       ]
