@@ -245,7 +245,7 @@
                       "props": {
                         "href": "https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html",
                         "target": "_blank",
-                        "aria-label": "Guidance on ILOS on Medicaid.gov  ."
+                        "aria-label": "Guidance on ILOS on Medicaid.gov."
                       }
                     },
                     {
@@ -3956,7 +3956,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing ILOSs. You won't be able to complete this section until you've added all the names of approved ILOSs for this program, if applicable. "
+                    "content": "This program is missing ILOSs. You won't be able to complete this section until you've added all the names of authorized ILOSs for this program, if applicable. "
                   },
                   {
                     "type": "internalLink",
