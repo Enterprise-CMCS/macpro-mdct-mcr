@@ -230,22 +230,22 @@
           "verbiage": {
             "intro": {
               "section": "Section A: Program Information",
-              "subsection": "Add In Lieu of Services and Settings Offered",
+              "subsection": "Add In Lieu of Services and Settings",
               "info": [
                 {
                   "type": "p",
                   "children": [
                     {
                       "type": "html",
-                      "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, enter the name of each ILOS, as approved in the managed care plan contract(s). <strong>Complete this section if ILOS are available in your program.</strong> Access "
+                      "content": "This section must be completed if any ILOSs <em>other than short term stays in an Institution for Mental Diseases (IMD)</em> are authorized for this managed care program. <strong>Enter the name of each ILOS offered as it is identified in the managed care plan contract(s).</strong> "
                     },
                     {
                       "type": "externalLink",
-                      "content": "guidance on In Lieu of Services on Medicaid.gov",
+                      "content": "Guidance on In Lieu of Services on Medicaid.gov",
                       "props": {
                         "href": "https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html",
                         "target": "_blank",
-                        "aria-label": "guidance on In Lieu of Services on Medicaid.gov (link opens in new tab)."
+                        "aria-label": "Guidance on ILOS on Medicaid.gov."
                       }
                     },
                     {
@@ -256,7 +256,7 @@
                 }
               ],
               "spreadsheet": "A_Program_Info",
-              "alert": "<b>This section is required to be completed by states offering ILOS services, beginning with December 2025 submissions and onwards. Submission of this data before December 2025 is optional.</b>"
+              "alert": "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>"
             }
           },
           "form": {
@@ -3970,10 +3970,11 @@
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic XI. ILOS",
               "spreadsheet": "D4_Plan_ILOS",
+              "alert": "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>",
               "info": [
                 {
                   "type": "p",
-                  "content": "If In Lieu of Services and Settings (ILOS) are available in this managed care program, report ILOS utilization for each plan during the contract rating period. Select \"Enter\" for each plan listed below to indicate whether or not ILOS were offered by the plan, select which ILOS the plan offered, and enter data on utilization for each ILOS offered."
+                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the contract rating period but there was no utilization, select “Yes” that the ILOS was offered but enter “0” for utilization."
                 }
               ]
             },
@@ -4007,18 +4008,18 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing ILOS. You won't be able to complete this section until you've added all the names of approved ILOS in the program, if applicable. "
+                    "content": "This program is missing ILOSs. You won't be able to complete this section until you've added all the names of authorized ILOSs for this program, if applicable. "
                   },
                   {
                     "type": "internalLink",
-                    "content": "Add ILOS",
+                    "content": "Add ILOSs",
                     "props": {
                       "to": "/mcpar/program-information/add-in-lieu-of-services-and-settings"
                     }
                   },
                   {
                     "type": "html",
-                    "content": "."
+                    "content": ". If ILOSs are not authorized for this program, proceed to the next section."
                   }
                 ]
               }
@@ -4026,14 +4027,14 @@
             "missingPlansAndIlosMessage": [
               {
                 "type": "p",
-                "content": "This program is missing plans and ILOS."
+                "content": "This program is missing plans and ILOSs."
               },
               {
                 "type": "p",
                 "children": [
                   {
                     "type": "html",
-                    "content": "If ILOS are available to this program, you won't be able to complete this section until you've:"
+                    "content": "If ILOSs are authorized for this program, you won't be able to complete this section until you've:"
                   },
                   {
                     "type": "ol",
@@ -4043,7 +4044,7 @@
                         "children": [
                           {
                             "type": "html",
-                            "content": "added all the managed care plans that serve enrollees in the program by going to: "
+                            "content": "Added all the managed care plans that serve enrollees in the program by going to "
                           },
                           {
                             "type": "internalLink",
@@ -4054,7 +4055,7 @@
                           },
                           {
                             "type": "html",
-                            "content": " and"
+                            "content": ", and"
                           }
                         ]
                       },
@@ -4063,11 +4064,11 @@
                         "children": [
                           {
                             "type": "html",
-                            "content": "added all the names of approved ILOS in the program: "
+                            "content": "Added all the names of authorized ILOSs for this program. "
                           },
                           {
                             "type": "internalLink",
-                            "content": "Add ILOS",
+                            "content": "Add ILOSs",
                             "props": {
                               "to": "/mcpar/program-information/add-in-lieu-of-services-and-settings"
                             }
@@ -4084,7 +4085,7 @@
               },
               {
                 "type": "p",
-                "content": "If ILOS are not available to this program, proceed to the next section."
+                "content": "If ILOSs are not authorized for this program, proceed to the next section."
               }
             ]
           },
@@ -4096,12 +4097,12 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "D4.XI.1 ILOS offered by plan",
-                  "hint": "Indicate whether this plan offered ILOS to their enrollees.",
+                  "label": "D4.XI.1 ILOSs offered by plan",
+                  "hint": "Indicate whether this plan offered any ILOS to their enrollees.",
                   "choices": [
                     {
                       "id": "lHVzkc6Zk12TvS6ocYXeS2n9",
-                      "label": "No ILOS were offered by this plan"
+                      "label": "No ILOSs were offered by this plan"
                     },
                     {
                       "id": "1qdYiWh0SaO7IQ41NeOt0uJU",
@@ -4117,9 +4118,13 @@
                             "parentOptionId": "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU"
                           },
                           "props": {
-                            "label": "D4.XI.2 ILOS utilization by plan",
-                            "hint": "For each ILOS offered by the plan, enter the deduplicated number of enrolles that utilized the ILOS during the contract rating period. If the plan offered an ILOS during the contract rating period but there was no utilization, select the ILOS and enter \"0\". If no ILOS were offered by this plan during the contract rating period, enter \"N/A\".",
-                            "choices": []
+                            "label": "D4.XI.2a ILOSs utilization by plan",
+                            "hint": "Select all ILOSs offered by this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrollees that utilized this ILOS during the contract rating period. If the plan offered this ILOS during the contract rating period but there was no utilization, enter \"0\".",
+                            "choices": [
+                              {
+                                "label": "D4.XI.2b"
+                              }
+                            ]
                           }
                         }
                       ]

@@ -164,7 +164,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   return (
     <Box>
-      {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
+      {verbiage.intro && (
+        <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
+      )}
       {/* if there are no ILOS but there are plans added, display this message */}
       {!hasIlos && entities?.length ? (
         <Box sx={sx.missingIlos}>
