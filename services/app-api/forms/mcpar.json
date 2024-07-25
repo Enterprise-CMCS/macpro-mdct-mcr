@@ -4046,7 +4046,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "D4.XI.1 ILOSs offered by plan",
-                  "hint": "Indicate whether this plan offered any ILOSs to their enrollees.",
+                  "hint": "Indicate whether this plan offered any ILOS to their enrollees.",
                   "choices": [
                     {
                       "id": "lHVzkc6Zk12TvS6ocYXeS2n9",
