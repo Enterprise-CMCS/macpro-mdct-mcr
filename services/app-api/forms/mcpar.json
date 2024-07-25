@@ -1734,7 +1734,7 @@
                           }
                         },
                         {
-                          "id": "program_wereAnyDeficiencesIdentifiedDuringTheAnalysisConducted",
+                          "id": "program_wereAnyDeficienciesIdentifiedDuringTheAnalysisConducted",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
@@ -1755,7 +1755,7 @@
                                     "validation": {
                                       "type": "text",
                                       "nested": true,
-                                      "parentFieldName": "program_wereAnyDeficiencesIdentifiedDuringTheAnalysisConducted",
+                                      "parentFieldName": "program_wereAnyDeficienciesIdentifiedDuringTheAnalysisConducted",
                                       "parentOptionId": "z3iOa69iV6mQVBWTqIJBl5Ck"
                                     },
                                     "props": {
@@ -1781,7 +1781,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.11a As of the end of this reporting period, have these deficiences been resolved for all plans?",
+                            "label": "C1.XII.11a As of the end of this reporting period, have these deficiencies been resolved for all plans?",
                             "choices": [
                               {
                                 "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
