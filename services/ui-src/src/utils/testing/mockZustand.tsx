@@ -1,5 +1,6 @@
 import {
   mockBannerData,
+  mockErrorMessage,
   mockMcparReport,
   mockMLRLockedReport,
   mockMlrReport,
@@ -103,7 +104,7 @@ export const mockBannerStore: AdminBannerState = {
   bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
-  bannerErrorMessage: "",
+  bannerErrorMessage: mockErrorMessage,
   bannerDeleting: false,
   setBannerData: () => {},
   clearAdminBanner: () => {},

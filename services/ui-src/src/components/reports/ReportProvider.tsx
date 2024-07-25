@@ -14,7 +14,12 @@ import {
   sortReportsOldestToNewest,
   useStore,
 } from "utils";
-import { ReportKeys, ReportContextShape, ReportShape } from "types";
+import {
+  ReportKeys,
+  ReportContextShape,
+  ReportShape,
+  ErrorVerbiage,
+} from "types";
 import { reportErrors } from "verbiage/errors";
 
 // CONTEXT DECLARATION
@@ -35,12 +40,12 @@ export const ReportContext = createContext<ReportContextShape>({
   clearReportsByState: Function,
   setReportSelection: Function,
   isReportPage: false as boolean,
-  errorMessage: undefined as string | undefined,
+  errorMessage: undefined,
 });
 
 export const ReportProvider = ({ children }: Props) => {
   const { pathname } = useLocation();
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<ErrorVerbiage | undefined>();
   const [contextIsLoaded, setContextIsLoaded] = useState<boolean>(false);
   const [isReportPage, setIsReportPage] = useState<boolean>(false);
 

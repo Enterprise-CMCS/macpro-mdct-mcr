@@ -6,10 +6,20 @@ import { act } from "react-dom/test-utils";
 import { ReportContext, ReportProvider } from "./ReportProvider";
 // utils
 import {
+  postReport,
+  getReport,
+  archiveReport,
+  putReport,
+  submitReport,
+  getReportsByState,
+  releaseReport,
+} from "utils";
+import {
   mockReportKeys,
   mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { axe } from "jest-axe";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
@@ -58,7 +68,7 @@ const TestComponent = () => {
         Set Report Selection
       </button>
       {context.errorMessage && (
-        <p data-testid="error-message">{context.errorMessage}</p>
+        <p data-testid="error-message">{context.errorMessage.title}</p>
       )}
     </div>
   );
@@ -72,108 +82,17 @@ const testComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test ReportProvider API methods", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      await render(testComponent);
-    });
-  });
-  afterEach(() => {
+describe("<ReportProvider />", () => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test("fetchReport method calls API getReport method", async () => {
-    await act(async () => {
-      const fetchButton = screen.getByText("Fetch Report");
-      await userEvent.click(fetchButton);
-    });
+    render(testComponent);
+    const fetchButton = screen.getByText("Fetch Report");
+    await userEvent.click(fetchButton);
     // 1 call on render + 1 call on button click
-    await waitFor(() =>
-      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
-    );
-  });
-
-  test("fetchReportsByState method calls API getReportsByState method", async () => {
-    await act(async () => {
-      const fetchByStateButton = screen.getByText("Fetch Reports By State");
-      await userEvent.click(fetchByStateButton);
-    });
-    // 1 call on render + 1 call on button click
-    await waitFor(() =>
-      expect(mockReportAPI.getReportsByState).toHaveBeenCalledTimes(1)
-    );
-  });
-
-  test("updateReport method calls API putReport method", async () => {
-    await act(async () => {
-      const updateButton = screen.getByText("Update Report");
-      await userEvent.click(updateButton);
-    });
-    expect(mockReportAPI.putReport).toHaveBeenCalledTimes(1);
-    expect(mockReportAPI.putReport).toHaveBeenCalledWith(
-      mockReportKeys,
-      mockMcparReport
-    );
-  });
-
-  test("createReport method calls postReport method", async () => {
-    await act(async () => {
-      const createButton = screen.getByText("Create Report");
-      await userEvent.click(createButton);
-    });
-    expect(mockReportAPI.postReport).toHaveBeenCalledTimes(1);
-  });
-
-  test("archiveReport method calls archiveReport method", async () => {
-    await act(async () => {
-      const archiveButton = screen.getByText("Archive Report");
-      await userEvent.click(archiveButton);
-    });
-    expect(mockReportAPI.archiveReport).toHaveBeenCalledTimes(1);
-  });
-
-  test("submitReport method calls submitReport method", async () => {
-    await act(async () => {
-      const submitButton = screen.getByText("Submit Report");
-      await userEvent.click(submitButton);
-    });
-    expect(mockReportAPI.submitReport).toHaveBeenCalledTimes(1);
-  });
-
-  test("releaseReport method calls releaseReport method", async () => {
-    await act(async () => {
-      const releaseButton = screen.getByText("Release Report");
-      await userEvent.click(releaseButton);
-    });
-    expect(mockReportAPI.releaseReport).toHaveBeenCalledTimes(1);
-  });
-
-  test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {
-    // start with no report set
-    expect(localStorage.getItem("selectedReport")).toBe(null);
-    // click button to set report
-    await act(async () => {
-      const setReportSelectionButton = screen.getByText("Set Report Selection");
-      await userEvent.click(setReportSelectionButton);
-    });
-    // verify report is set in storage
-    expect(localStorage.getItem("selectedReport")).toBe(mockMcparReport.id);
-
-    // click button to clear report selection
-    await act(async () => {
-      const clearReportSelectionButton = screen.getByText(
-        "Clear Report Selection"
-      );
-      await userEvent.click(clearReportSelectionButton);
-    });
-    // verify storage is set to empty string
-    expect(localStorage.getItem("selectedReport")).toBe("");
-  });
-});
-
-describe("Test ReportProvider error states", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+    expect(getReport).toHaveBeenCalledTimes(1);
   });
 
   test("Shows error if fetchReport throws error", async () => {
@@ -187,7 +106,17 @@ describe("Test ReportProvider error states", () => {
       const fetchButton = screen.getByText("Fetch Report");
       await userEvent.click(fetchButton);
     });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+    expect(screen.getByTestId("error-message")).toHaveTextContent(
+      /Report could not be loaded/
+    );
+  });
+
+  test("fetchReportsByState method calls API getReportsByState method", async () => {
+    render(testComponent);
+    const fetchByStateButton = screen.getByText("Fetch Reports By State");
+    await userEvent.click(fetchByStateButton);
+    // 1 call on render + 1 call on button click
+    expect(getReportsByState).toHaveBeenCalledTimes(1);
   });
 
   test("Shows error if fetchReportsByState throws error", async () => {
@@ -201,21 +130,17 @@ describe("Test ReportProvider error states", () => {
       const fetchByStateButton = screen.getByText("Fetch Reports By State");
       await userEvent.click(fetchByStateButton);
     });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+    expect(screen.getByTestId("error-message")).toHaveTextContent(
+      /Reports could not be loaded/
+    );
   });
 
-  test("Shows error if createReport throws error", async () => {
-    mockReportAPI.postReport.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const createButton = screen.getByText("Create Report");
-      await userEvent.click(createButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+  test("updateReport method calls API putReport method", async () => {
+    render(testComponent);
+    const updateButton = screen.getByText("Update Report");
+    await userEvent.click(updateButton);
+    expect(putReport).toHaveBeenCalledTimes(1);
+    expect(putReport).toHaveBeenCalledWith(mockReportKeys, mockMcparReport);
   });
 
   test("Shows error if updateReport throws error", async () => {
@@ -229,49 +154,56 @@ describe("Test ReportProvider error states", () => {
       const updateButton = screen.getByText("Update Report");
       await userEvent.click(updateButton);
     });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+    expect(screen.getByTestId("error-message")).toHaveTextContent(
+      /Report could not be updated/
+    );
   });
 
-  test("Shows error if archiveReport throws error", async () => {
-    mockReportAPI.archiveReport.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const archiveButton = screen.getByText("Archive Report");
-      await userEvent.click(archiveButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+  test("createReport method calls postReport method", async () => {
+    render(testComponent);
+    const createButton = screen.getByText("Create Report");
+    await userEvent.click(createButton);
+    expect(postReport).toHaveBeenCalledTimes(1);
   });
 
-  test("Shows error if releaseReport throws error", async () => {
-    mockReportAPI.releaseReport.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const releaseButton = screen.getByText("Release Report");
-      await userEvent.click(releaseButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+  test("archiveReport method calls archiveReport method", async () => {
+    render(testComponent);
+    const archiveButton = screen.getByText("Archive Report");
+    await userEvent.click(archiveButton);
+    expect(archiveReport).toHaveBeenCalledTimes(1);
   });
 
-  test("Shows error if submitReport throws error", async () => {
-    mockReportAPI.submitReport.mockImplementation(() => {
-      throw new Error();
-    });
-    await act(async () => {
-      await render(testComponent);
-    });
-    await act(async () => {
-      const submitButton = screen.getByText("Submit Report");
-      await userEvent.click(submitButton);
-    });
-    expect(screen.queryByTestId("error-message")).toBeVisible();
+  test("submitReport method calls submitReport method", async () => {
+    render(testComponent);
+    const submitButton = screen.getByText("Submit Report");
+    await userEvent.click(submitButton);
+    expect(submitReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("releaseReport method calls releaseReport method", async () => {
+    render(testComponent);
+    const releaseButton = screen.getByText("Release Report");
+    await userEvent.click(releaseButton);
+    expect(releaseReport).toHaveBeenCalledTimes(1);
+  });
+
+  test("setReportSelection sets report in storage and clearReportSelection clears report in storage", async () => {
+    render(testComponent);
+    // start with no report set
+    expect(localStorage.getItem("selectedReport")).toBe(null);
+    // click button to set report
+    const setReportSelectionButton = screen.getByText("Set Report Selection");
+    await userEvent.click(setReportSelectionButton);
+    // verify report is set in storage
+    expect(localStorage.getItem("selectedReport")).toBe(mockMcparReport.id);
+
+    // click button to clear report selection
+    const clearReportSelectionButton = screen.getByText(
+      "Clear Report Selection"
+    );
+    await userEvent.click(clearReportSelectionButton);
+    // verify storage is set to empty string
+    expect(localStorage.getItem("selectedReport")).toBe("");
   });
 });
 
@@ -291,8 +223,14 @@ describe("Test ReportProvider fetches when loading on report page", () => {
     await act(async () => {
       await render(testComponent);
     });
-    await waitFor(() =>
-      expect(mockReportAPI.getReport).toHaveBeenCalledTimes(1)
-    );
+    await waitFor(() => expect(getReport).toHaveBeenCalledTimes(1));
+  });
+});
+
+describe("Test Error view accessibility", () => {
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(testComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });
