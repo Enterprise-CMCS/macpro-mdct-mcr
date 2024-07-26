@@ -82,7 +82,7 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
-    b: {
+    strong: {
       color: "palette.base",
     },
   },
