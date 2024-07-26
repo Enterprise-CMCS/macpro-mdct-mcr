@@ -19,6 +19,8 @@ import verbiage from "verbiage/pages/mlr/mlr-export";
 export const ExportedEntityDetailsTable = ({
   fields,
   entity,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  showHintText,
   ...props
 }: Props) => {
   const { report } = useStore();

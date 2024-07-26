@@ -13,7 +13,7 @@ describe("Test Error view", () => {
 });
 
 describe("Test Error view accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
+  test("Should not have basic accessibility issues", async () => {
     const { container } = render(errorView);
     const results = await axe(container);
     expect(results).toHaveNoViolations();

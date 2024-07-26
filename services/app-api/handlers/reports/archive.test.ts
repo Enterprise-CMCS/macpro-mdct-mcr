@@ -38,6 +38,12 @@ const archiveEvent: APIGatewayProxyEvent = {
   }),
 };
 
+const consoleSpy: {
+  debug: jest.SpyInstance<void>;
+} = {
+  debug: jest.spyOn(console, "debug").mockImplementation(),
+};
+
 describe("Test archiveReport method", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -57,6 +63,7 @@ describe("Test archiveReport method", () => {
     });
     const res: any = await archiveReport(archiveEvent, null);
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SUCCESS);
     expect(body.archived).toBe(true);
@@ -73,6 +80,7 @@ describe("Test archiveReport method", () => {
       body: undefined!,
     });
     const res = await archiveReport(archiveEvent, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
@@ -88,6 +96,7 @@ describe("Test archiveReport method", () => {
       body: undefined!,
     });
     const res = await archiveReport(archiveEvent, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });

@@ -1,5 +1,5 @@
 // components
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 // types
 import { ReportPageVerbiage } from "types";
 // utils
@@ -34,11 +34,9 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
         {sectionInfo && (
           <Box sx={sx.info}>
-            <Text>
-              {typeof sectionInfo === "string"
-                ? sectionInfo
-                : parseCustomHtml(sectionInfo)}
-            </Text>
+            {typeof sectionInfo === "string"
+              ? sectionInfo
+              : parseCustomHtml(sectionInfo)}
           </Box>
         )}
       </Box>

@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 // utils
-import { AlertTypes } from "types";
+import { AlertTypes, CustomHtmlElement } from "types";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
 import { parseCustomHtml } from "utils";
@@ -58,7 +58,7 @@ export const Alert = ({
 interface Props {
   status?: AlertTypes;
   title?: string;
-  description?: string;
+  description?: string | CustomHtmlElement[];
   link?: string;
   showIcon?: boolean;
   [key: string]: any;

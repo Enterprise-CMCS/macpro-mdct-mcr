@@ -9,10 +9,12 @@ export const ReportPageIntro = ({
   text,
   accordion,
   reportType,
+  hasIlos,
   ...props
 }: Props) => {
   const { section, subsection, hint, info, spreadsheet, alert } = text;
-  const showAlert = alert;
+  const sectionDForIlos = subsection === "Topic XI. ILOS";
+  const showAlert = sectionDForIlos ? !hasIlos : alert;
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -41,6 +43,7 @@ interface Props {
   text: AnyObject;
   accordion?: AnyObject;
   reportType?: string;
+  hasIlos?: boolean;
   [key: string]: any;
 }
 
@@ -79,7 +82,7 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
-    b: {
+    strong: {
       color: "palette.base",
     },
   },

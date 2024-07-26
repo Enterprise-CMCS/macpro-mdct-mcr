@@ -10,11 +10,8 @@ import * as topics from "../libs/topics-lib.js";
  */
 exports.handler = async function (event, _context, _callback) {
   console.log("Received event:", JSON.stringify(event, null, 2));
-  if (!event.project || !event.stage) {
-    throw "ERROR:  project and stage keys must be sent in the event.";
-  }
-  return await topics.deleteTopics(
-    process.env.brokerString,
-    `--${event.project}--${event.stage}--`
-  );
+  let namespace = event.stage
+    ? `--${process.env.project}--${event.stage}--`
+    : `--${process.env.project}--`;
+  return await topics.listTopics(process.env.brokerString, namespace);
 };

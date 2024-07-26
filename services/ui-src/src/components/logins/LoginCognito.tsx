@@ -4,6 +4,7 @@ import { Auth } from "aws-amplify";
 // components
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
+import { ErrorVerbiage } from "types";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -26,7 +27,7 @@ export const LoginCognito = () => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<ErrorVerbiage>();
 
   const handleLogin = async (event: any) => {
     event.preventDefault();

@@ -34,7 +34,7 @@ export const DeleteDynamicFieldRecordModal = ({
       modalDisclosure={modalDisclosure}
       submitting={deleting}
       content={{
-        heading: `Delete ${entityName}`,
+        heading: `Delete ${entityName}?`,
         actionButtonText: `Yes, delete ${isIlos ? "ILOS" : entityName}`,
         closeButtonText: "Cancel",
       }}

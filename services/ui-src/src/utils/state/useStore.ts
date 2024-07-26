@@ -4,6 +4,7 @@ import { devtools, persist } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
+  ErrorVerbiage,
   McrReportState,
   MCRUser,
   McrUserState,
@@ -31,7 +32,7 @@ const bannerStore = (set: Function) => ({
   bannerData: undefined,
   bannerActive: false,
   bannerLoading: false,
-  bannerErrorMessage: "",
+  bannerErrorMessage: undefined,
   bannerDeleting: false,
   // actions
   setBannerData: (newBanner: AdminBannerData | undefined) =>
@@ -46,7 +47,7 @@ const bannerStore = (set: Function) => ({
     set(() => ({ bannerLoading: loading }), false, {
       type: "setBannerLoading",
     }),
-  setBannerErrorMessage: (errorMessage: string) =>
+  setBannerErrorMessage: (errorMessage: ErrorVerbiage | undefined) =>
     set(() => ({ bannerErrorMessage: errorMessage }), false, {
       type: "setBannerErrorMessage",
     }),

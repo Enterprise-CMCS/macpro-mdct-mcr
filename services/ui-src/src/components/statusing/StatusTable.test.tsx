@@ -253,16 +253,27 @@ describe("StatusIcon functionality", () => {
     expect(errorImages[0]).toBeVisible();
     expect(successImages).toHaveLength(0);
   });
-  it("should raise an error if you try to use an invalid report type", () => {
-    expect(() => {
-      render(
-        <StatusIcon
-          reportType={"invalidReportType" as ReportType}
-          status={false}
-        />
+
+  describe("Errors", () => {
+    const consoleSpy: {
+      error: jest.SpyInstance<void>;
+    } = {
+      error: jest.spyOn(console, "error").mockImplementation(),
+    };
+
+    it("should raise an error if you try to use an invalid report type", () => {
+      expect(() => {
+        render(
+          <StatusIcon
+            reportType={"invalidReportType" as ReportType}
+            status={false}
+          />
+        );
+      }).toThrowError(
+        "Statusing icons for 'invalidReportType' have not been implemented."
       );
-    }).toThrowError(
-      "Statusing icons for 'invalidReportType' have not been implemented."
-    );
+      expect(consoleSpy.error).toHaveBeenCalled();
+      consoleSpy.error.mockRestore();
+    });
   });
 });

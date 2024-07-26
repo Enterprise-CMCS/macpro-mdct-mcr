@@ -34,7 +34,7 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
   });
 
   test("DeleteDynamicFieldRecordModal shows the contents", () => {
-    expect(screen.queryAllByText("Delete plan")[0]).toBeTruthy();
+    expect(screen.queryAllByText("Delete plan?")[0]).toBeTruthy();
     expect(screen.getByText("Yes, delete plan")).toBeTruthy();
     expect(screen.getByText("Cancel")).toBeTruthy();
   });
