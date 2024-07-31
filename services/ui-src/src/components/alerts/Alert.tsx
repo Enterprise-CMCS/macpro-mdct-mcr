@@ -13,10 +13,11 @@ import {
 import { AlertTypes, CustomHtmlElement } from "types";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
+import warningIcon from "assets/icons/icon_warning.png";
 import { parseCustomHtml } from "utils";
 
 export const Alert = ({
-  status = AlertTypes.INFO,
+  status,
   title,
   description,
   link,
@@ -32,7 +33,13 @@ export const Alert = ({
       {...props}
     >
       <Flex>
-        {showIcon && <Image src={alertIcon} sx={sx.icon} alt="Alert" />}
+        {showIcon && (
+          <Image
+            src={status === AlertTypes.WARNING ? warningIcon : alertIcon}
+            sx={sx.icon}
+            alt={status}
+          />
+        )}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
           {title && <AlertTitle>{title}</AlertTitle>}
           {description && (
@@ -98,6 +105,7 @@ const sx = {
   icon: {
     position: "absolute",
     color: "palette.base",
+    marginTop: "0.5rem",
     marginBottom: "1.75rem",
     width: "1.25rem",
   },
