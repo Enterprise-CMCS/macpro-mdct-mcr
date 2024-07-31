@@ -64,7 +64,7 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
           </InfoSection>
           <InfoSection content={section2}>
             <Flex sx={sx.sectionContent}>
-              <Box>
+              <Box w="100%">
                 <Image
                   src={NavigationSectionsImage}
                   alt={section2.img?.alt}
@@ -191,6 +191,7 @@ const sx = {
   },
   image: {
     maxWidth: "20rem",
+    width: "100%",
   },
   additionalInfo: {
     marginTop: "1rem",

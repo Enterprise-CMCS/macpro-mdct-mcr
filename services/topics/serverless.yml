@@ -84,6 +84,17 @@ functions:
       subnetIds: ${self:custom.privateSubnets}
     timeout: 300
     enabled: ${param:deleteTopicsEnabled}
+  listTopics:
+    handler: handlers/listTopics.handler
+    maximumRetryAttempts: 0
+    environment:
+      brokerString: ${self:custom.brokerString}
+      project: ${self:custom.project}
+    vpc:
+      securityGroupIds:
+        - Ref: LambdaSecurityGroup
+      subnetIds: ${self:custom.privateSubnets}
+    timeout: 300 
 
 resources:
   Resources:

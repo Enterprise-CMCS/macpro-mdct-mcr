@@ -1,5 +1,5 @@
 // components
-import { Accordion, Box, Text } from "@chakra-ui/react";
+import { Accordion, Box } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 // types
 import { AnyObject } from "types";
@@ -11,9 +11,7 @@ export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
     <Accordion allowToggle={true} allowMultiple={true} {...props}>
       {accordionItems.map((item: AnyObject, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
-          <Box sx={sx.answerBox}>
-            <Text>{parseCustomHtml(item.answer)}</Text>
-          </Box>
+          <Box sx={sx.answerBox}>{parseCustomHtml(item.answer)}</Box>
         </AccordionItem>
       ))}
     </Accordion>

@@ -187,11 +187,19 @@ const mockSanctions = [
   },
 ];
 
+let consoleSpy: {
+  debug: jest.SpyInstance<void>;
+} = {
+  debug: jest.fn() as jest.SpyInstance,
+};
+
 describe("Test createReport API method", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
+    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
   });
+
   test("Test unauthorized report creation throws 403 error", async () => {
     jest.spyOn(authFunctions, "isAuthorized").mockResolvedValueOnce(false);
     const res = await createReport(creationEvent, null);
@@ -202,6 +210,7 @@ describe("Test createReport API method", () => {
   test("Test report creation by a state user without access to a report type throws 403 error", async () => {
     jest.spyOn(authFunctions, "hasPermissions").mockReturnValueOnce(false);
     const res = await createReport(creationEvent, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(403);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
@@ -215,6 +224,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
@@ -247,6 +257,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(createPccmEvent, null);
 
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
@@ -282,6 +293,7 @@ describe("Test createReport API method", () => {
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithInvalidData, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
     expect(res.body).toContain(error.INVALID_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
@@ -294,6 +306,7 @@ describe("Test createReport API method", () => {
     const s3PutSpy = jest.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithNoFieldData, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.MISSING_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
@@ -306,6 +319,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -317,6 +331,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -336,6 +351,7 @@ describe("Test createReport API method", () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
@@ -353,6 +369,7 @@ describe("Test createReport API method", () => {
   test("Test that a non-existent state returns a 400", async () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventInvalidState, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
@@ -360,6 +377,7 @@ describe("Test createReport API method", () => {
   test("Test that a non-existent report type returns a 400", async () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventMlrReport, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
@@ -377,6 +395,7 @@ describe("Test createReport API method", () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
@@ -403,6 +422,7 @@ describe("Test createReport API method", () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body);
+    expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.CREATED);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");

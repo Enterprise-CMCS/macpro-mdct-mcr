@@ -1,4 +1,5 @@
 import { EntityType, ReportStatus } from "types";
+import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
 import {
@@ -377,6 +378,14 @@ export const mockMcparReport = {
   previousRevisions: [],
 };
 
+export const mockMcparReportWithFieldDataId = (id: number) => {
+  const { fieldDataId, ...other } = mockMcparReport;
+  return {
+    ...other,
+    fieldDataId: `${fieldDataId}-${id}`,
+  };
+};
+
 export const mockMcparReportCombinedData = {
   ...mockReportKeys,
   reportType: "MCPAR",
@@ -558,9 +567,9 @@ export const mockMlrModalOverlayReport = {
 };
 
 export const mockReportsByState = [
-  { ...mockMcparReport, id: "mock-report-id-1" },
-  { ...mockMcparReport, id: "mock-report-id-2" },
-  { ...mockMcparReport, id: "mock-report-id-3" },
+  { ...mockMcparReportWithFieldDataId(1), id: "mock-report-id-1" },
+  { ...mockMcparReportWithFieldDataId(2), id: "mock-report-id-2" },
+  { ...mockMcparReportWithFieldDataId(3), id: "mock-report-id-3" },
 ];
 
 export const mockMlrReportsByState = [
@@ -589,7 +598,7 @@ export const mockMcparReportContext = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -598,7 +607,7 @@ export const mockMcparReportContextNoSubmittedReports = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: [],
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 export const mockMLRNewReportContext = {
@@ -606,7 +615,7 @@ export const mockMLRNewReportContext = {
   report: mockMLRNewReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "4:20pm",
 };
 
@@ -633,7 +642,7 @@ export const mockMLRLockedReportContext = {
   report: mockMLRLockedReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -641,7 +650,7 @@ export const mockMcparReportCombinedDataContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -650,7 +659,7 @@ export const mockMlrReportContext = {
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -661,7 +670,7 @@ export const mockReportContextNoReports = {
 
 export const mockReportContextWithError = {
   ...mockMcparReportContext,
-  errorMessage: "test error",
+  errorMessage: mockErrorMessage,
 };
 
 export const mockDashboardReportContext = {

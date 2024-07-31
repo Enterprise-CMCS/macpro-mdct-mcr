@@ -54,4 +54,7 @@ jobs:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Destroy
-        run: ./run destroy --stage $STAGE_PREFIX$branch_name --verify false
+        # destroy app-api first due to a dependency between it and database
+        run: |
+          ./run destroy --stage $STAGE_PREFIX$branch_name --verify false --service app-api
+          ./run destroy --stage $STAGE_PREFIX$branch_name --verify false

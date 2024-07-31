@@ -501,7 +501,7 @@ describe("Test Dashboard with error", () => {
     await act(async () => {
       await render(dashboardViewWithError);
     });
-    expect(screen.getByText("test error")).toBeVisible();
+    expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
   });
 });
 

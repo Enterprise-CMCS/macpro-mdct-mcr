@@ -150,7 +150,9 @@ describe("Test AdminPage delete banner error handling", () => {
 
     const deleteButton = screen.getByText("Delete Current Banner");
     await userEvent.click(deleteButton);
-    expect(screen.getByText("Error")).toBeVisible();
+    expect(
+      screen.getByText("Current banner could not be deleted")
+    ).toBeVisible();
   });
 });
 

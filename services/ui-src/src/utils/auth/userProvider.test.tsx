@@ -65,12 +65,21 @@ const testComponent = (
 );
 
 // HELPERS
+const mockReplace = jest.fn();
+
+const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
+  global,
+  "location"
+);
 
 const setWindowOrigin = (windowOrigin: string) => {
   global.window = Object.create(window);
   Object.defineProperty(window, "location", {
     value: {
+      assign: jest.fn(),
       origin: windowOrigin,
+      replace: mockReplace,
+      pathname: "/",
     },
     writable: true,
   });
@@ -85,106 +94,88 @@ const breakCheckAuthState = async () => {
 
 // TESTS
 
-describe("Test UserProvider", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      render(testComponent);
-    });
-  });
-
-  test("child component renders", () => {
-    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
-  });
-
-  test("test logout function", async () => {
-    await act(async () => {
-      const logoutButton = screen.getByTestId("logout-button");
-      await userEvent.click(logoutButton);
-    });
-    expect(window.location.pathname).toEqual("/");
-  });
-
-  test("test login with IDM function", async () => {
-    await act(async () => {
-      const loginButton = screen.getByTestId("login-idm-button");
-      await userEvent.click(loginButton);
-    });
-    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
-  });
-});
-
-describe("Test UserProvider with production path", () => {
-  const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
-    global,
-    "location"
-  );
-  const mockReplace = jest.fn();
-
-  beforeEach(() => {
-    Object.defineProperty(window, "location", {
-      value: {
-        replace: mockReplace,
-        origin: "https://mdctmcr.cms.gov",
-      },
-    });
+describe("<UserProvider />", () => {
+  beforeAll(() => {
+    setWindowOrigin("localhost");
   });
 
   afterAll(() => {
     Object.defineProperty(global, "location", originalLocationDescriptor);
   });
 
-  test("test production authenticates with idm when current authenticated user throws an error", async () => {
-    await setWindowOrigin("mdctmcr.cms.gov");
-    await breakCheckAuthState();
-    await act(async () => {
-      await render(testComponent);
+  describe("Test UserProvider", () => {
+    beforeEach(async () => {
+      await act(async () => {
+        render(testComponent);
+      });
     });
-    expect(window.location.origin).toContain("mdctmcr.cms.gov");
-    expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
-    expect(mockReplace).toHaveBeenCalled();
+
+    test("child component renders", () => {
+      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+    });
+
+    test("test logout function", async () => {
+      await act(async () => {
+        const logoutButton = screen.getByTestId("logout-button");
+        await userEvent.click(logoutButton);
+      });
+      expect(window.location.pathname).toEqual("/");
+    });
+
+    test("test login with IDM function", async () => {
+      await act(async () => {
+        const loginButton = screen.getByTestId("login-idm-button");
+        await userEvent.click(loginButton);
+      });
+      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+    });
   });
-});
 
-describe("Test UserProvider with non-production path", () => {
-  const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
-    global,
-    "location"
-  );
-
-  afterAll(() => {
-    Object.defineProperty(global, "location", originalLocationDescriptor);
+  describe("Test UserProvider with production path", () => {
+    test("test production authenticates with idm when current authenticated user throws an error", async () => {
+      setWindowOrigin("mdctmcr.cms.gov");
+      await breakCheckAuthState();
+      await act(async () => {
+        await render(testComponent);
+      });
+      expect(window.location.origin).toContain("mdctmcr.cms.gov");
+      expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
+      expect(mockReplace).toHaveBeenCalled();
+    });
   });
 
-  test("Non-production error state correctly sets showLocalLogins", async () => {
-    await setWindowOrigin("wherever");
-    await breakCheckAuthState();
-    await act(async () => {
-      await render(testComponent);
+  describe("Test UserProvider with non-production path", () => {
+    test("Non-production error state correctly sets showLocalLogins", async () => {
+      setWindowOrigin("wherever");
+      await breakCheckAuthState();
+      await act(async () => {
+        await render(testComponent);
+      });
+      expect(window.location.origin).toContain("wherever");
+      const showLocalLogins = screen.getByTestId("show-local-logins");
+      expect(showLocalLogins).toHaveTextContent("showLocalLogins is true");
     });
-    expect(window.location.origin).toContain("wherever");
-    const showLocalLogins = screen.getByTestId("show-local-logins");
-    expect(showLocalLogins).toHaveTextContent("showLocalLogins is true");
   });
-});
 
-describe("Test UserProvider error handling", () => {
-  it("Logs error to console if logout throws error", async () => {
-    jest.spyOn(console, "log").mockImplementation(jest.fn());
-    const spy = jest.spyOn(console, "log");
+  describe("Test UserProvider error handling", () => {
+    it("Logs error to console if logout throws error", async () => {
+      jest.spyOn(console, "log").mockImplementation(jest.fn());
+      const spy = jest.spyOn(console, "log");
 
-    const mockAmplify = require("aws-amplify");
-    mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
-      throw new Error();
+      const mockAmplify = require("aws-amplify");
+      mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
+        throw new Error();
+      });
+
+      await act(async () => {
+        render(testComponent);
+      });
+      await act(async () => {
+        const logoutButton = screen.getByTestId("logout-button");
+        await userEvent.click(logoutButton);
+      });
+
+      expect(spy).toHaveBeenCalled();
     });
-
-    await act(async () => {
-      render(testComponent);
-    });
-    await act(async () => {
-      const logoutButton = screen.getByTestId("logout-button");
-      await userEvent.click(logoutButton);
-    });
-
-    expect(spy).toHaveBeenCalled();
   });
 });

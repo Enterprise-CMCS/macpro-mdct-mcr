@@ -41,15 +41,15 @@ export const ExportedEntityDetailsTableRow = ({
       {/* label column/cell */}
       <Td sx={sx.labelColumn}>
         {formFieldInfo.label || formFieldInfo.hint ? (
-          <Text>
+          <Box>
             {formFieldInfo.label && (
               <Text sx={sx.fieldLabel} fontSize={"sm"}>
                 {!isDynamicField ? (
                   optional ? (
-                    <Box>
+                    <>
                       {formFieldInfo.label}
                       <span className="optional-text"> (optional)</span>
-                    </Box>
+                    </>
                   ) : (
                     formFieldInfo.label
                   )
@@ -63,7 +63,7 @@ export const ExportedEntityDetailsTableRow = ({
                 {parseCustomHtml(formFieldInfo.hint)}
               </Text>
             )}
-          </Text>
+          </Box>
         ) : (
           <Text>{"N/A"}</Text>
         )}

@@ -25,6 +25,7 @@ export const TextField = ({
   autosave,
   validateOnRender,
   styleAsOptional,
+  clear,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -61,7 +62,7 @@ export const TextField = ({
     }
     // else set hydrationValue or defaultValue as display value
     else if (hydrationValue) {
-      if (props.clear) {
+      if (clear) {
         setDisplayValue(defaultValue);
         form.setValue(name, defaultValue);
       } else {

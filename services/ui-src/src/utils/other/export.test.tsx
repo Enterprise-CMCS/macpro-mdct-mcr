@@ -1,3 +1,4 @@
+import { render, screen } from "@testing-library/react";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -5,6 +6,8 @@ import {
   parseFormFieldInfo,
   renderResponseData,
   renderDefaultFieldResponse,
+  getNestedIlosResponses,
+  renderDrawerDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
@@ -52,6 +55,86 @@ describe("Test rendering methods", () => {
       "standard"
     );
     expect(result.props.children.id).toEqual("email-field-id");
+  });
+
+  test("renderDrawerDataCell renders ilos responses", () => {
+    const mockFormField: FormField = {
+      id: "plan_ilosUtilizationByPlan",
+      props: {
+        choices: [],
+      },
+      type: "checkbox",
+      validation: "checkbox",
+    };
+
+    const mockPlan: AnyObject = [
+      {
+        id: "mock-id",
+        plan_ilosUtilizationByPlan: [
+          {
+            key: "123",
+            value: "mock-ilos",
+          },
+        ],
+        plan_ilosUtilizationByPlan_123: "N/A",
+      },
+    ];
+
+    const cells = renderDrawerDataCell(mockFormField, mockPlan, "drawer");
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(3);
+    expect(container.querySelectorAll("li")[2]).toHaveTextContent(
+      "mock-ilos: N/A"
+    );
+  });
+
+  test("renderDrawerDataCell renders without ilos responses", () => {
+    const mockFormField: FormField = {
+      id: "mock",
+      props: {
+        choices: [],
+      },
+      type: "checkbox",
+      validation: "checkbox",
+    };
+
+    const mockPlan: AnyObject = [
+      {
+        id: "mock-id",
+        mock: [
+          {
+            key: "123",
+            value: "mock-ilos",
+          },
+        ],
+        mock_123: "N/A",
+      },
+    ];
+
+    const cells = renderDrawerDataCell(mockFormField, mockPlan, "drawer");
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(2);
+    expect(screen.queryByText("mock-ilos: N/A")).not.toBeInTheDocument();
+  });
+
+  test("Correctly renders nested ILOS fields", () => {
+    const mockFieldResponseData = [
+      {
+        key: "123",
+        value: "mock-ilos",
+      },
+    ];
+    const mockPlan = {
+      id: "mock-id",
+      plan_ilosUtilizationByPlan: [...mockFieldResponseData],
+      plan_ilosUtilizationByPlan_123: "N/A",
+    };
+
+    const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
+    expect(result[0].key).toEqual("mock-ilos");
+    expect(result[0].value).toEqual("N/A");
   });
 });
 

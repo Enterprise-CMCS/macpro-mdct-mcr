@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Error } from "components/app/Error";
 import { axe } from "jest-axe";
 // utils
 import { useStore } from "utils";
@@ -15,6 +16,8 @@ let mockPrint: any;
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
+const errorComponent = <Error />;
+
 const reportBanner = <ExportedReportBanner />;
 
 describe("ExportedReportBanner", () => {
@@ -27,7 +30,7 @@ describe("ExportedReportBanner", () => {
     window.print = mockPrint;
   });
 
-  test("Is ExportedReportBanner present", async () => {
+  test("Is ExportedReportBanner present", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
     });
@@ -36,7 +39,7 @@ describe("ExportedReportBanner", () => {
     expect(banner).toBeVisible();
   });
 
-  test("Does MCPAR export banner have MCPAR-specific verbiage", async () => {
+  test("Does MCPAR export banner have MCPAR-specific verbiage", () => {
     mockedUseStore.mockReturnValue({
       ...mockMcparReportStore,
     });
@@ -45,7 +48,7 @@ describe("ExportedReportBanner", () => {
     expect(introText).toBeVisible();
   });
 
-  test("Does MLR export banner have MLR-specific verbiage", async () => {
+  test("Does MLR export banner have MLR-specific verbiage", () => {
     mockedUseStore.mockReturnValue({
       ...mockMlrReportStore,
     });
@@ -63,10 +66,23 @@ describe("ExportedReportBanner", () => {
     expect(printButton).toBeVisible();
     await userEvent.click(printButton);
   });
+
+  test("Banner should not be visible", () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+    render(errorComponent);
+    const errorDisplay = window.document.getElementById("error-text");
+    expect(errorDisplay).toBeInTheDocument();
+
+    render(reportBanner);
+    const printButton = screen.queryByText("Download PDF");
+    expect(printButton).toBeNull();
+  });
 });
 
 describe("Test ExportedReportBanner accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
+  test("Should not have basic accessibility issues", async () => {
     mockedUseStore.mockReturnValue({
       ...mockMlrReportStore,
     });
