@@ -9,11 +9,13 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-// utils
+// types
 import { AlertTypes, CustomHtmlElement } from "types";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
 import warningIcon from "assets/icons/icon_warning.png";
+import errorIcon from "assets/icons/icon_error_circle.png";
+// utils
 import { parseCustomHtml } from "utils";
 
 export const Alert = ({
@@ -35,7 +37,13 @@ export const Alert = ({
       <Flex>
         {showIcon && (
           <Image
-            src={status === AlertTypes.WARNING ? warningIcon : alertIcon}
+            src={
+              status === AlertTypes.WARNING
+                ? warningIcon
+                : status === AlertTypes.ERROR
+                ? errorIcon
+                : alertIcon
+            }
             sx={sx.icon}
             alt={status}
           />
