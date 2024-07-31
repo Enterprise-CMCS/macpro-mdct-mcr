@@ -6,7 +6,7 @@ import { ErrorAlert, Form, PreviewBanner } from "components";
 import { bannerId } from "../../constants";
 import { bannerErrors } from "verbiage/errors";
 import { convertDatetimeStringToNumber } from "utils";
-import { ErrorVerbiage, FormJson } from "types";
+import { AlertTypes, ErrorVerbiage, FormJson } from "types";
 // data
 import formJson from "forms/addAdminBanner/addAdminBanner.json";
 
@@ -53,7 +53,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
         dontReset={false}
         {...props}
       >
-        <PreviewBanner />
+        <PreviewBanner status={AlertTypes.INFO} />
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
