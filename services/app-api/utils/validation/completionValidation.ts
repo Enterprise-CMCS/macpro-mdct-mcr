@@ -5,6 +5,7 @@ import { AnyObject } from "../types";
 // utils
 import { nested, endDate } from "./completionSchemas";
 import { completionSchemaMap as schemaMap } from "./completionSchemaMap";
+import { logger } from "../debugging/debug-lib";
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
@@ -103,7 +104,8 @@ export const validateData = async (
       stripUnknown: true,
       ...options,
     });
-  } catch (_e: any) {
+  } catch (e) {
+    logger.error(e, "Error validating data");
     throw new Error(error.INVALID_DATA);
   }
 };

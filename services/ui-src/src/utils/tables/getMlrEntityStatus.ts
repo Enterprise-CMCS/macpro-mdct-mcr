@@ -77,7 +77,9 @@ export const getMlrEntityStatus = (
 
   try {
     return formResolverSchema.validateSync(entity);
-  } catch (_err) {
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e, "Error getting MLR entity status");
     return false;
   }
 };

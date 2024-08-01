@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createContext, ReactNode, useMemo, useEffect } from "react";
 // utils
 import { AdminBannerData, AdminBannerMethods } from "types/banners";
@@ -42,7 +43,8 @@ export const AdminBannerProvider = ({ children }: Props) => {
       const newBannerData = currentBanner?.Item || {};
       setBannerData(newBannerData);
       setBannerErrorMessage(undefined);
-    } catch (_error: any) {
+    } catch (e) {
+      console.error(e, "Error fetching admin banner");
       setBannerLoading(false);
       setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
     }
@@ -54,7 +56,8 @@ export const AdminBannerProvider = ({ children }: Props) => {
     try {
       await deleteBanner(ADMIN_BANNER_ID);
       await fetchAdminBanner();
-    } catch (_error: any) {
+    } catch (e) {
+      console.error(e, "Error deleting admin banner");
       setBannerErrorMessage(bannerErrors.DELETE_BANNER_FAILED);
     }
     setBannerDeleting(false);
@@ -63,7 +66,8 @@ export const AdminBannerProvider = ({ children }: Props) => {
   const writeAdminBanner = async (newBannerData: AdminBannerData) => {
     try {
       await writeBanner(newBannerData);
-    } catch (_error: any) {
+    } catch (e) {
+      console.error(e, "Error creating admin banner");
       setBannerErrorMessage(bannerErrors.CREATE_BANNER_FAILED);
     }
     await fetchAdminBanner();

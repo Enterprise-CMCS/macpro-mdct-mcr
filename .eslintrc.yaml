@@ -23,7 +23,8 @@ rules:
   no-unreachable: error
   no-unused-vars: off
   "@typescript-eslint/no-unused-vars":
-    ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }]
+    - error
+    - argsIgnorePattern: "^_"
   no-console: error
   no-empty: error
   no-extra-semi: error

@@ -20,6 +20,7 @@ import {
 import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
 // types
 import { AnyObject, isState, StatusCodes } from "../../utils/types";
+import { logger } from "../../utils/debugging/debug-lib";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -111,7 +112,8 @@ export const fetchReport = handler(async (event, _context) => {
         fieldData,
       },
     };
-  } catch (_err) {
+  } catch (e) {
+    logger.error(e, "Error fetching report");
     return {
       status: StatusCodes.NOT_FOUND,
       body: error.NO_MATCHING_RECORD,

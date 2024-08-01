@@ -4,6 +4,7 @@ import { error } from "../constants/constants";
 import { AnyObject } from "../types";
 // utils
 import { nested, endDate, schemaMap } from "./schemaMap";
+import { logger } from "../debugging/debug-lib";
 
 // compare payload data against validation schema
 export const validateData = async (
@@ -17,7 +18,8 @@ export const validateData = async (
       stripUnknown: true,
       ...options,
     });
-  } catch (_e: any) {
+  } catch (e) {
+    logger.error(e, "Error validating payload data");
     throw new Error(error.INVALID_DATA);
   }
 };

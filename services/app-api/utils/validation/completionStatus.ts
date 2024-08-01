@@ -1,4 +1,5 @@
 // types
+import { logger } from "../debugging/debug-lib";
 import {
   AnyObject,
   CompletionData,
@@ -51,8 +52,8 @@ export const calculateCompletionStatus = async (
       areAllFieldsValid =
         (await validateFieldData(validationJson, fieldsToBeValidated)) !==
         undefined;
-    } catch (_err) {
-      // Silently ignore error, will result in false
+    } catch (e) {
+      logger.error(e, "Error, fields are not valid");
     }
     return areAllFieldsValid;
   };

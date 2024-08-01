@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
@@ -69,7 +70,6 @@ export const ReportProvider = ({ children }: Props) => {
         report.formTemplate.routes
       );
     }
-
     setReport(report);
     setContextIsLoaded(true);
   };
@@ -79,7 +79,8 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReport(reportKeys);
       hydrateAndSetReport(result);
       return result;
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error fetching report");
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
@@ -93,7 +94,8 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportsByState();
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error fetching reports by state");
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
@@ -107,7 +109,8 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await postReport(reportType, state, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error creating report");
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -117,7 +120,8 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
       hydrateAndSetReport(result);
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error submitting report");
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -127,7 +131,8 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await putReport(reportKeys, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error updating report");
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -136,7 +141,8 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       await archiveReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error archiving report");
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -144,7 +150,8 @@ export const ReportProvider = ({ children }: Props) => {
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       await releaseReportRequest(reportKeys);
-    } catch (_e: any) {
+    } catch (e) {
+      console.error(e, "Error releasing report");
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };

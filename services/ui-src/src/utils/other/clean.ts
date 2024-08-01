@@ -54,7 +54,6 @@ export const cleanRatioInput = (value: string): CleanedValue => {
 
 export const makeStringParseableForDatabase = (
   value: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   maskName?: keyof typeof maskMap | null
 ) => {
   if (maskName === null) return value;

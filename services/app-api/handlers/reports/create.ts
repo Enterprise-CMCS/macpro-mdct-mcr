@@ -85,9 +85,9 @@ export const createReport = handler(async (event, _context) => {
       isProgramPCCM,
       julyMcparRelease
     ));
-  } catch (err) {
-    logger.error(err, "Error getting or creating template");
-    throw err;
+  } catch (e) {
+    logger.error(e, "Error creating report");
+    throw e;
   }
 
   // Return MISSING_DATA error if missing unvalidated data or validators.

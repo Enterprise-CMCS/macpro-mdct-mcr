@@ -6,6 +6,7 @@ import { error, reportTables } from "../../utils/constants/constants";
 import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { StatusCodes, UserRoles } from "../../utils/types";
+import { logger } from "../../utils/debugging/debug-lib";
 
 export const archiveReport = handler(async (event, context) => {
   // Return a 403 status if the user is not an admin.
@@ -50,7 +51,8 @@ export const archiveReport = handler(async (event, context) => {
 
     try {
       await dynamoDb.put(reportMetadataParams);
-    } catch (_err) {
+    } catch (e) {
+      logger.error(e, "Error archiving report");
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.DYNAMO_UPDATE_ERROR,
