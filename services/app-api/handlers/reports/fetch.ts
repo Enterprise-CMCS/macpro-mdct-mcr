@@ -111,7 +111,7 @@ export const fetchReport = handler(async (event, _context) => {
         fieldData,
       },
     };
-  } catch (err) {
+  } catch (_err) {
     return {
       status: StatusCodes.NOT_FOUND,
       body: error.NO_MATCHING_RECORD,

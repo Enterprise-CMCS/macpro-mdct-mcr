@@ -72,7 +72,7 @@ export const releaseReport = handler(async (event) => {
 
   try {
     reportMetadata = await dynamoDb.get(reportMetadataParams);
-  } catch (err) {
+  } catch (_err) {
     return {
       status: StatusCodes.NOT_FOUND,
       body: error.NO_MATCHING_RECORD,
@@ -137,7 +137,7 @@ export const releaseReport = handler(async (event) => {
       any
     >;
     formTemplate = (await s3Lib.get(getFormTemplateParameters)) as FormJson;
-  } catch (err) {
+  } catch (_err) {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_UPDATE_ERROR,
@@ -179,7 +179,7 @@ export const releaseReport = handler(async (event) => {
 
   try {
     await dynamoDb.put(putReportMetadataParams);
-  } catch (err) {
+  } catch (_err) {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_UPDATE_ERROR,
@@ -198,7 +198,7 @@ export const releaseReport = handler(async (event) => {
     };
 
     await s3Lib.put(putObjectParameters);
-  } catch (err) {
+  } catch (_err) {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.S3_OBJECT_CREATION_ERROR,
