@@ -149,6 +149,7 @@ export const createReport = handler(async (event, _context) => {
   try {
     await s3Lib.put(fieldDataParams);
   } catch (err) {
+    logger.error(err, "Error getting or creating template");
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.S3_OBJECT_CREATION_ERROR,
@@ -186,6 +187,7 @@ export const createReport = handler(async (event, _context) => {
   try {
     await dynamoDb.put(reportMetadataParams);
   } catch (err) {
+    logger.error(err, "Error getting or creating template");
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_CREATION_ERROR,
