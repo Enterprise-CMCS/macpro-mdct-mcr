@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 // utils
@@ -79,8 +78,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReport(reportKeys);
       hydrateAndSetReport(result);
       return result;
-    } catch (e) {
-      console.error(e, "Error fetching report");
+    } catch {
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
@@ -94,8 +92,7 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportsByState();
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
-    } catch (e) {
-      console.error(e, "Error fetching reports by state");
+    } catch {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
@@ -109,8 +106,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await postReport(reportType, state, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e) {
-      console.error(e, "Error creating report");
+    } catch {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -120,8 +116,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
       hydrateAndSetReport(result);
-    } catch (e) {
-      console.error(e, "Error submitting report");
+    } catch {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -131,8 +126,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await putReport(reportKeys, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e) {
-      console.error(e, "Error updating report");
+    } catch {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -141,8 +135,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       await archiveReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e) {
-      console.error(e, "Error archiving report");
+    } catch {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -150,8 +143,7 @@ export const ReportProvider = ({ children }: Props) => {
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       await releaseReportRequest(reportKeys);
-    } catch (e) {
-      console.error(e, "Error releasing report");
+    } catch {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };

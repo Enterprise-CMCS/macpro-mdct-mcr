@@ -97,9 +97,7 @@ export const UserProvider = ({ children }: Props) => {
         ...userCheck,
       };
       setUser(currentUser);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e, "Error authenticating user");
+    } catch {
       if (isProduction) {
         authenticateWithIDM();
       } else {
