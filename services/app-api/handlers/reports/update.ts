@@ -24,7 +24,6 @@ import {
 } from "../../utils/validation/completionStatus";
 // types
 import { isState, ReportJson, StatusCodes, UserRoles } from "../../utils/types";
-import { logger } from "../../utils/debugging/debug-lib";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -85,8 +84,7 @@ export const updateReport = handler(async (event, context) => {
         body: error.INVALID_DATA,
       };
     }
-  } catch (e) {
-    logger.error(e, "Error updating report");
+  } catch {
     return {
       status: StatusCodes.BAD_REQUEST,
       body: error.INVALID_DATA,
@@ -199,8 +197,7 @@ export const updateReport = handler(async (event, context) => {
 
   try {
     await s3Lib.put(updateFieldDataParams);
-  } catch (e) {
-    logger.error(e, "Error updating report");
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.S3_OBJECT_UPDATE_ERROR,
@@ -246,8 +243,7 @@ export const updateReport = handler(async (event, context) => {
 
   try {
     await dynamoDb.put(reportMetadataParams);
-  } catch (e) {
-    logger.error(e, "Error updating report");
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_UPDATE_ERROR,

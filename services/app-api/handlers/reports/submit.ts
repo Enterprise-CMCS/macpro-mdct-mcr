@@ -22,7 +22,6 @@ import {
   StatusCodes,
   UserRoles,
 } from "../../utils/types";
-import { logger } from "../../utils/debugging/debug-lib";
 
 export const submitReport = handler(async (event, _context) => {
   const requiredParams = ["id", "reportType", "state"];
@@ -112,8 +111,7 @@ export const submitReport = handler(async (event, _context) => {
     };
     try {
       await dynamodbLib.put(submitReportParams);
-    } catch (e) {
-      logger.error(e, "Error submitting report");
+    } catch {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.DYNAMO_UPDATE_ERROR,
@@ -133,8 +131,7 @@ export const submitReport = handler(async (event, _context) => {
         string,
         any
       >;
-    } catch (e) {
-      logger.error(e, "Error submitting report");
+    } catch {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.NOT_IN_DATABASE,
@@ -167,8 +164,7 @@ export const submitReport = handler(async (event, _context) => {
         string,
         any
       >;
-    } catch (e) {
-      logger.error(e, "Error submitting report");
+    } catch {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.NOT_IN_DATABASE,
@@ -177,8 +173,7 @@ export const submitReport = handler(async (event, _context) => {
 
     try {
       await s3Lib.put(updateFieldDataParams);
-    } catch (e) {
-      logger.error(e, "e submitting report");
+    } catch {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.S3_OBJECT_UPDATE_ERROR,
@@ -195,8 +190,7 @@ export const submitReport = handler(async (event, _context) => {
         },
       },
     };
-  } catch (e) {
-    logger.error(e, "Error submitting report");
+  } catch {
     return {
       status: StatusCodes.NOT_FOUND,
       body: error.NO_MATCHING_RECORD,

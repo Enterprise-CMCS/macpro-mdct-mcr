@@ -26,7 +26,6 @@ import {
   StatusCodes,
   UserRoles,
 } from "../../utils/types";
-import { logger } from "../../utils/debugging/debug-lib";
 
 /**
  * Locked reports can be released by admins.
@@ -73,8 +72,7 @@ export const releaseReport = handler(async (event) => {
 
   try {
     reportMetadata = await dynamoDb.get(reportMetadataParams);
-  } catch (e) {
-    logger.error(e, "Error releasing report");
+  } catch {
     return {
       status: StatusCodes.NOT_FOUND,
       body: error.NO_MATCHING_RECORD,
@@ -139,8 +137,7 @@ export const releaseReport = handler(async (event) => {
       any
     >;
     formTemplate = (await s3Lib.get(getFormTemplateParameters)) as FormJson;
-  } catch (e) {
-    logger.error(e, "Error releasing report");
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_UPDATE_ERROR,
@@ -182,8 +179,7 @@ export const releaseReport = handler(async (event) => {
 
   try {
     await dynamoDb.put(putReportMetadataParams);
-  } catch (e) {
-    logger.error(e, "Error releasing report");
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_UPDATE_ERROR,
@@ -202,8 +198,7 @@ export const releaseReport = handler(async (event) => {
     };
 
     await s3Lib.put(putObjectParameters);
-  } catch (e) {
-    logger.error(e, "Error releasing report");
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.S3_OBJECT_CREATION_ERROR,
