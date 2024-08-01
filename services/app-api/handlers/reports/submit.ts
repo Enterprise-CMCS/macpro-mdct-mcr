@@ -190,6 +190,7 @@ export const submitReport = handler(async (event, _context) => {
         },
       },
     };
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   } catch (_err) {
     return {
       status: StatusCodes.NOT_FOUND,
