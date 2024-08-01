@@ -36,7 +36,9 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     try {
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
-    } catch (_error: any) {
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e, "Error setting admin banner");
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
     setSubmitting(false);
