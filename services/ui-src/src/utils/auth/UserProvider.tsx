@@ -97,7 +97,7 @@ export const UserProvider = ({ children }: Props) => {
         ...userCheck,
       };
       setUser(currentUser);
-    } catch (error) {
+    } catch (_error) {
       if (isProduction) {
         authenticateWithIDM();
       } else {

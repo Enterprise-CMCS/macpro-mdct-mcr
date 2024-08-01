@@ -187,6 +187,7 @@ interface Props {
   name: string;
   label?: string;
   placeholder?: string;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mask?: keyof typeof maskMap | null;
   nested?: boolean;
   sxOverride?: AnyObject;
@@ -217,6 +218,7 @@ export const SymbolOverlay = ({
   );
 };
 interface SymbolOverlayProps {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fieldMask?: keyof typeof maskMap | null;
   nested?: boolean;
   disabled?: boolean;

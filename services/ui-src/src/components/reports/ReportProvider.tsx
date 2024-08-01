@@ -79,7 +79,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await getReport(reportKeys);
       hydrateAndSetReport(result);
       return result;
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.GET_REPORT_FAILED);
     }
   };
@@ -93,7 +93,7 @@ export const ReportProvider = ({ children }: Props) => {
       clearReportsByState();
       const result = await getReportsByState(reportType, selectedState);
       setReportsByState(sortReportsOldestToNewest(result));
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.GET_REPORTS_BY_STATE_FAILED);
     }
   };
@@ -107,7 +107,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await postReport(reportType, state, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -117,7 +117,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await submitReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
       hydrateAndSetReport(result);
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -127,7 +127,7 @@ export const ReportProvider = ({ children }: Props) => {
       const result = await putReport(reportKeys, report);
       hydrateAndSetReport(result);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -136,7 +136,7 @@ export const ReportProvider = ({ children }: Props) => {
     try {
       await archiveReportRequest(reportKeys);
       setLastSavedTime(getLocalHourMinuteTime());
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };
@@ -144,7 +144,7 @@ export const ReportProvider = ({ children }: Props) => {
   const releaseReport = async (reportKeys: ReportKeys) => {
     try {
       await releaseReportRequest(reportKeys);
-    } catch (e: any) {
+    } catch (_e: any) {
       setError(reportErrors.SET_REPORT_FAILED);
     }
   };

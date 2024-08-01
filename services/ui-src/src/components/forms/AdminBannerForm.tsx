@@ -36,7 +36,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
     try {
       await writeAdminBanner(newBannerData);
       window.scrollTo(0, 0);
-    } catch (error: any) {
+    } catch (_error: any) {
       setError(bannerErrors.REPLACE_BANNER_FAILED);
     }
     setSubmitting(false);
