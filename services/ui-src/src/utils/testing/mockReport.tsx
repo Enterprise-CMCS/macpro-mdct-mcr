@@ -1,4 +1,5 @@
 import { EntityType, ReportStatus } from "types";
+import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
 import {
@@ -597,7 +598,7 @@ export const mockMcparReportContext = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -606,7 +607,7 @@ export const mockMcparReportContextNoSubmittedReports = {
   report: mockMcparReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: [],
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 export const mockMLRNewReportContext = {
@@ -614,7 +615,7 @@ export const mockMLRNewReportContext = {
   report: mockMLRNewReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "4:20pm",
 };
 
@@ -641,7 +642,7 @@ export const mockMLRLockedReportContext = {
   report: mockMLRLockedReport,
   reportsByState: mockReportsByState,
   copyEligibleReportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -649,7 +650,7 @@ export const mockMcparReportCombinedDataContext = {
   ...mockReportMethods,
   report: mockMcparReport,
   reportsByState: mockReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -658,7 +659,7 @@ export const mockMlrReportContext = {
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
-  errorMessage: "",
+  errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };
 
@@ -669,7 +670,7 @@ export const mockReportContextNoReports = {
 
 export const mockReportContextWithError = {
   ...mockMcparReportContext,
-  errorMessage: "test error",
+  errorMessage: mockErrorMessage,
 };
 
 export const mockDashboardReportContext = {

@@ -1,6 +1,6 @@
 // REPORT PROVIDER/CONTEXT
 
-import { AnyObject, Choice, ReportJson } from "types";
+import { AnyObject, Choice, ErrorVerbiage, ReportJson } from "types";
 
 export interface ReportKeys {
   reportType: string;
@@ -59,7 +59,7 @@ export interface ReportContextMethods {
 
 export interface ReportContextShape extends ReportContextMethods {
   contextIsLoaded: boolean;
-  errorMessage?: string | undefined;
+  errorMessage?: ErrorVerbiage | undefined;
   isReportPage: boolean;
 }
 

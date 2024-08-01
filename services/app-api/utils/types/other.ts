@@ -146,6 +146,11 @@ export interface TableContentShape {
   bodyRows?: string[][];
 }
 
+export interface ErrorVerbiage {
+  title: string;
+  description: string | CustomHtmlElement[];
+}
+
 const states = [
   "AL",
   "AK",

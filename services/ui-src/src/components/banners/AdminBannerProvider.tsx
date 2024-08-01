@@ -41,7 +41,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
       const currentBanner = await getBanner(ADMIN_BANNER_ID);
       const newBannerData = currentBanner?.Item || {};
       setBannerData(newBannerData);
-      setBannerErrorMessage("");
+      setBannerErrorMessage(undefined);
     } catch (error: any) {
       setBannerLoading(false);
       setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
