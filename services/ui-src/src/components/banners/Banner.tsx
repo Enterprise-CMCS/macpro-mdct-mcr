@@ -5,10 +5,16 @@ import { BannerData } from "types/banners";
 
 export const Banner = ({ bannerData, ...props }: Props) => {
   if (bannerData) {
-    const { title, description, link } = bannerData;
+    const { status, title, description, link } = bannerData;
     return (
       bannerData && (
-        <Alert title={title} description={description} link={link} {...props} />
+        <Alert
+          status={status}
+          title={title}
+          description={description}
+          link={link}
+          {...props}
+        />
       )
     );
   } else return <></>;

@@ -1598,11 +1598,11 @@
                             "choices": [
                               {
                                 "id": "hzfe4WnueXTUDk0FoFcJcq1G",
-                                "label": "State"
+                                "label": "MCO"
                               },
                               {
                                 "id": "v6woH8xYbE59VMs82VxJlisF",
-                                "label": "MCO"
+                                "label": "State"
                               },
                               {
                                 "id": "vbuAOFC6DSx397ZoibATdonl",
@@ -1629,7 +1629,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -1711,7 +1711,7 @@
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -1725,7 +1725,7 @@
                           "validation": {
                             "type": "date",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -1739,7 +1739,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -1777,7 +1777,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -1841,7 +1841,7 @@
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "program_isThisProgramTypeComprehensiveMCO",
+                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
@@ -3986,7 +3986,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that serve enrollees in the program. "
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
                   },
                   {
                     "type": "internalLink",

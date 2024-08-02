@@ -2,10 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { Banner } from "components";
+// types
+import { AlertTypes } from "types";
 
 const bannerComponent = (
   <Banner
     bannerData={{
+      status: AlertTypes.WARNING,
       title: "Test banner!",
       description: "This is for testing.",
     }}

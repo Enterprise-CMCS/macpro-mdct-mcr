@@ -77,7 +77,7 @@ export const getMlrEntityStatus = (
 
   try {
     return formResolverSchema.validateSync(entity);
-  } catch (err) {
+  } catch {
     return false;
   }
 };

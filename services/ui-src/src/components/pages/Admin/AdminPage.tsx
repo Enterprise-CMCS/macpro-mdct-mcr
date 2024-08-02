@@ -19,6 +19,7 @@ import {
 // utils
 import { convertDateUtcToEt, useStore } from "utils";
 import verbiage from "verbiage/pages/admin";
+import { AlertTypes } from "types";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
@@ -70,7 +71,7 @@ export const AdminPage = () => {
                     </Text>
                   </Flex>
                   <Flex sx={sx.currentBannerFlex}>
-                    <Banner bannerData={bannerData} />
+                    <Banner status={AlertTypes.INFO} bannerData={bannerData} />
                     <Button
                       variant="danger"
                       sx={sx.deleteBannerButton}
