@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { PreviewBanner } from "components";
+// types
+import { AlertTypes } from "types";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -13,7 +15,7 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const previewBannerComponent = <PreviewBanner />;
+const previewBannerComponent = <PreviewBanner status={AlertTypes.WARNING} />;
 
 describe("Test PreviewBanner Item", () => {
   beforeEach(() => {
