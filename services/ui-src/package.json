@@ -39,7 +39,7 @@
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.52.0",
     "react-icons": "^4.3.1",
-    "react-router-dom": "6.24.0",
+    "react-router-dom": "6.24.1",
     "react-uuid": "^1.0.3",
     "sass": "^1.77.6",
     "vite": "^5.2.12",
