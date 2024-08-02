@@ -2,9 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
 //components
 import { Alert } from "components";
+import { AlertTypes } from "types";
 
 const alertComponent = (
   <Alert
+    status={AlertTypes.WARNING}
     title="Test alert!"
     description="This is for testing."
     link="test-link"
