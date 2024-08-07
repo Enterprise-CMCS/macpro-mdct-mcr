@@ -1570,7 +1570,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.5 Are any services provided to MC enrollees by a PIHP, PAHP, or FFS delivery system?",
+                            "label": "C1.XII.5 Are ANY services provided to MCO enrollees by a PIHP, PAHP, or FFS delivery system?",
                             "hint": "(i.e. some services are delivered via fee for service (FFS), prepaid inpatient health plan (PIHP), or prepaid ambulatory health plan (PAHP) delivery system)",
                             "choices": [
                               {
@@ -1743,7 +1743,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.10a Were any deficiencies identified in the last analysis(es) conducted?",
+                            "label": "C1.XII.10a In the last analysis(es) conducted, were any deficiencies identified?",
                             "choices": [
                               {
                                 "id": "z3iOa69iV6mQVBWTqIJBl5Ck",
@@ -1759,7 +1759,7 @@
                                       "parentOptionId": "z3iOa69iV6mQVBWTqIJBl5Ck"
                                     },
                                     "props": {
-                                      "label": "C1.XII.10b Describe all deficiencies identified in the last analysis(es) conducted."
+                                      "label": "C1.XII.10b In the last analysis(es) conducted, describe all deficiencies identified."
                                     }
                                   }
                                 ]
@@ -3886,7 +3886,7 @@
                 "validation": "date",
                 "props": {
                   "label": "D1.X.9a: Plan overpayment reporting to the state: Start Date",
-                  "hint": "What is the start date of the rating period or calendar year covered by the plan's latest overpayment recovery report submitted to the state?"
+                  "hint": "What is the start date of the reporting period covered by the plan's latest overpayment recovery report submitted to the state?"
                 }
               },
               {
@@ -3895,7 +3895,7 @@
                 "validation": "date",
                 "props": {
                   "label": "D1.X.9b: Plan overpayment reporting to the state: End Date",
-                  "hint": "What is the end date of the rating period or calendar year covered by the plan's latest overpayment recovery report submitted to the state?"
+                  "hint": "What is the end date of the reporting period covered by the plan's latest overpayment recovery report submitted to the state?"
                 }
               },
               {
@@ -3913,8 +3913,8 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.X.9d: Plan overpayment reporting to the state: Corresponding year's premium revenue",
-                  "hint": "What is the total amount of premium revenue for the corresponding year (D1.X.9a-b)? (Premium revenue as defined in MLR reporting under 438.8(f)(2))",
+                  "label": "D1.X.9d: Plan overpayment reporting to the state: Corresponding premium revenue",
+                  "hint": "What is the total amount of premium revenue for the corresponding reporting period (D1.X.9a-b)? (Premium revenue as defined in MLR reporting under 438.8(f)(2))",
                   "mask": "currency"
                 }
               },
@@ -3974,7 +3974,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the contract rating period but there was no utilization, select “Yes” that the ILOS was offered but enter “0” for utilization."
+                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check that the ILOS was offered but enter \"0\" for utilization."
                 }
               ]
             },
