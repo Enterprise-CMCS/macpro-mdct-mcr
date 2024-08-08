@@ -3968,13 +3968,13 @@
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic XI. ILOS",
+              "subsection": "Topic XI: ILOS",
               "spreadsheet": "D4_Plan_ILOS",
               "alert": "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>",
               "info": [
                 {
                   "type": "p",
-                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check that the ILOS was offered but enter \"0\" for utilization."
+                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check \"Yes\" that the ILOS was offered but enter \"0\" for utilization."
                 }
               ]
             },
