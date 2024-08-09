@@ -59,7 +59,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   // check if there are ILOS and associated plans
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-  const hasPlans = report?.fieldData?.["plans"].length > 0;
+  const hasPlans = report?.fieldData?.["plans"]?.length > 0;
 
   // generate ILOS fields (if applicable)
   const form =
