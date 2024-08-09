@@ -170,6 +170,11 @@ export const calculateCompletionStatus = async (
         break;
       case "drawer":
         if (!route.drawerForm) break;
+        // handle edge case where ILOS is not required
+        if (route.path === "/mcpar/plan-level-indicators/ilos") {
+          routeCompletion = { [route.path]: true };
+          break;
+        }
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm],
