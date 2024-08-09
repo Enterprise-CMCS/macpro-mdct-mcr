@@ -103,7 +103,7 @@ export const validateData = async (
       stripUnknown: true,
       ...options,
     });
-  } catch (e: any) {
+  } catch {
     throw new Error(error.INVALID_DATA);
   }
 };

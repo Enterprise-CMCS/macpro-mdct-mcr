@@ -18,7 +18,6 @@ import {
   reportBuckets,
 } from "../../utils/constants/constants";
 import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates";
-import { logger } from "../../utils/debugging/debug-lib";
 import {
   copyFieldDataFromSource,
   makePCCMModifications,
@@ -78,6 +77,7 @@ export const createReport = handler(async (event, _context) => {
 
   const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease;
 
+  // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
@@ -85,9 +85,8 @@ export const createReport = handler(async (event, _context) => {
       isProgramPCCM,
       julyMcparRelease
     ));
-  } catch (err) {
-    logger.error(err, "Error getting or creating template");
-    throw err;
+  } catch (e) {
+    throw e;
   }
 
   // Return MISSING_DATA error if missing unvalidated data or validators.
@@ -148,7 +147,7 @@ export const createReport = handler(async (event, _context) => {
 
   try {
     await s3Lib.put(fieldDataParams);
-  } catch (err) {
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.S3_OBJECT_CREATION_ERROR,
@@ -185,7 +184,7 @@ export const createReport = handler(async (event, _context) => {
 
   try {
     await dynamoDb.put(reportMetadataParams);
-  } catch (err) {
+  } catch {
     return {
       status: StatusCodes.SERVER_ERROR,
       body: error.DYNAMO_CREATION_ERROR,

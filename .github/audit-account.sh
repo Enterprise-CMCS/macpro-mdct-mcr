@@ -85,7 +85,7 @@ get_topics () {
     TOPICS+=($(echo '{"TOPIC":"'${T}'","STAGE":"'${STAGE}'"}'))
   done
 
-  jq -s '{TOPICS:.}' <<< ${TOPICS[*]}
+  jq -s '{TOPICS:.}' <<< ${TOPICS[*]-}
 }
 
 #Produce a report with all topics and associated resource tags

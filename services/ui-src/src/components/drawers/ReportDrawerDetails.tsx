@@ -25,7 +25,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           </Heading>
           <Grid sx={sx.grid}>
             <GridItem>
-              <Text sx={sx.detailSubtitle}>Intervention topic</Text>
+              <Text sx={sx.detailSubtitle}>Plan performance issue</Text>
               <Text sx={sx.detailSubtext}>
                 {drawerDetails.interventionTopic}
               </Text>

@@ -49,7 +49,7 @@ export const EntityCardTopSection = ({
           <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.subtitle}>
-                {`${printVersion ? "D3.VIII.2 " : ""}Intervention topic`}
+                {`${printVersion ? "D3.VIII.2 " : ""}Plan performance issue`}
               </Text>
               <Text sx={sx.subtext}>
                 {formattedEntityData.interventionTopic}

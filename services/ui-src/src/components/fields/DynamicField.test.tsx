@@ -51,6 +51,7 @@ const mockHydrationIlos = [
 ];
 
 const mockUpdateReport = jest.fn();
+
 const mockedReportContext = {
   ...mockMcparReportContext,
   updateReport: mockUpdateReport,
@@ -282,6 +283,7 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
     await act(async () => {
       await render(dynamicIlosFieldComponent(mockHydrationIlos));
     });
+
     // delete mock-ilos-1
     const removeButton = screen.queryAllByTestId("removeButton")[0];
     await userEvent.click(removeButton);
@@ -322,6 +324,38 @@ describe("Test DynamicField entity deletion and deletion of associated data", ()
         },
       }
     );
+  });
+
+  test("If there's no ILOS entities left, associated plan responses are cleared from field data", async () => {
+    const mcparReportWithoutIlos = {
+      ...mockMcparReport,
+      fieldData: {
+        ...mockMcparReport.fieldData,
+        ilos: [],
+      },
+    };
+
+    const mcparReportStoreWithoutIlos = {
+      ...mockMcparReportStore,
+      report: mcparReportWithoutIlos,
+    };
+
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mcparReportStoreWithoutIlos,
+    });
+
+    await act(async () => {
+      await render(dynamicIlosFieldComponent(mockHydrationIlos));
+    });
+
+    // delete mock-ilos-1
+    const removeButton = screen.queryAllByTestId("removeButton")[0];
+    await userEvent.click(removeButton);
+    const deleteButton = screen.getByText("Yes, delete ILOS");
+    await userEvent.click(deleteButton);
+
+    expect(mockUpdateReport).toHaveBeenCalledTimes(1);
   });
 
   test("Admin users can't delete plans", async () => {

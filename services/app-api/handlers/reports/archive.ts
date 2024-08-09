@@ -50,7 +50,7 @@ export const archiveReport = handler(async (event, context) => {
 
     try {
       await dynamoDb.put(reportMetadataParams);
-    } catch (err) {
+    } catch {
       return {
         status: StatusCodes.SERVER_ERROR,
         body: error.DYNAMO_UPDATE_ERROR,
