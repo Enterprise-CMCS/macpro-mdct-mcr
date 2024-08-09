@@ -14,9 +14,9 @@ const formattedEntityData = {
   standardType: "Maximum distance to travel",
 };
 
-const entityCardTopSectionComponent = (
+const entityCardTopSectionComponent = (entityType: string) => (
   <EntityCardTopSection
-    entityType="accessMeasures"
+    entityType={entityType}
     formattedEntityData={formattedEntityData}
     printVersion={true}
   />
@@ -27,7 +27,7 @@ describe("Test EntityCardTopSection renders", () => {
     window.location.pathname === "/mcpar/export";
   });
   test("EntityCardTopSection renders correctly", () => {
-    render(entityCardTopSectionComponent);
+    render(entityCardTopSectionComponent("accessMeasures"));
     expect(screen.getByText("fdsfds")).toBeVisible();
   });
 
@@ -37,19 +37,17 @@ describe("Test EntityCardTopSection renders", () => {
       "",
       new URL("/mcpar/export", window.location.origin)
     );
-    const { container } = render(entityCardTopSectionComponent);
+    const { container } = render(entityCardTopSectionComponent("sanctions"));
     const pTag = container.querySelectorAll("p")[0];
-    expect(pTag).toHaveTextContent(
-      "C2.V.1 General category: LTSS-related standard"
-    );
+    expect(pTag).toHaveTextContent("D3.VIII.1 Intervention type:");
   });
 
   test("EntityCardTopSection header renders h4 tag wrapper in report", () => {
     window.history.pushState({}, "", new URL(window.location.origin));
-    const { container } = render(entityCardTopSectionComponent);
-    const h4Tag = container.querySelector("h4");
-    expect(h4Tag).toHaveTextContent(
-      "C2.V.1 General category: LTSS-related standard"
+    const { container } = render(
+      entityCardTopSectionComponent("qualityMeasures")
     );
+    const h4Tag = container.querySelector("h4");
+    expect(h4Tag).toHaveTextContent("D2.VII.1 Measure Name:");
   });
 });
