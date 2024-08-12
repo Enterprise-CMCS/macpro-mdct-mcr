@@ -143,16 +143,22 @@ export const renderDrawerDataCell = (
             )}
           </li>
           {/* If there are nested ILOS responses available, render them here */}
-          {nestedIlosResponses.length > 0 &&
-            nestedIlosResponses.map((response: AnyObject, index: number) => {
-              return (
-                <li key={index}>
-                  <Box sx={sx.nestedIlos}>
-                    {response.key}: {response.value}
-                  </Box>
-                </li>
-              );
-            })}
+          {nestedIlosResponses.length > 0
+            ? nestedIlosResponses.map((response: AnyObject, index: number) => {
+                return (
+                  <li key={index}>
+                    <Box sx={sx.nestedIlos}>
+                      {response.key}: {response.value}
+                    </Box>
+                  </li>
+                );
+              })
+            : formField.id === "plan_ilosOfferedByPlan" && (
+                // there are plans added, but no responses for its nested ILOS
+                <Text sx={sx.noResponse}>
+                  {verbiage.missingEntry.noResponse}
+                </Text>
+              )}
         </ul>
       </Box>
     );
