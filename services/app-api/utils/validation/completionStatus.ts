@@ -173,7 +173,7 @@ export const calculateCompletionStatus = async (
         // handle ILOS edge case: if there are no ILOS added, this section is not required; otherwise it is
         if (
           route.path === "/mcpar/plan-level-indicators/ilos" &&
-          fieldData["ilos"]?.length < 1
+          (!fieldData["ilos"] || fieldData["ilos"].length < 1)
         ) {
           routeCompletion = { [route.path]: true };
           break;
