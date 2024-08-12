@@ -33,6 +33,7 @@ plugins:
   - serverless-s3-bucket-helper
   - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
   - serverless-plugin-include-dependencies
+  - "@enterprise-cmcs/serverless-waf-plugin"
 
 s3BucketHelper:
   loggingConfiguration:
@@ -43,6 +44,11 @@ custom:
   project: "mcr"
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
+  wafPlugin:
+    name: ${self:service}-${self:custom.stage}-webacl-waf
+  wafExcludeRules:
+    awsCommon:
+      - "SizeRestrictions_BODY"
   serverlessTerminationProtection:
     stages:
       - main
@@ -145,6 +151,18 @@ resources:
             StringAttributeConstraints:
               MinLength: 0
               MaxLength: 2048
+        UserPoolAddOns:
+          AdvancedSecurityMode: ENFORCED
+        UserPoolTags:
+          Name: ${self:custom.stage}-user-pool
+
+    # Associate the WAF Web ACL with the Cognito User Pool
+    CognitoUserPoolWAFAssociation:
+      Type: 'AWS::WAFv2::WebACLAssociation'
+      Properties:
+        ResourceArn: !GetAtt CognitoUserPool.Arn
+        WebACLArn: !GetAtt WafPluginAcl.Arn
+
     CognitoUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
