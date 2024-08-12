@@ -153,7 +153,8 @@ export const renderDrawerDataCell = (
                   </li>
                 );
               })
-            : formField.id === "plan_ilosOfferedByPlan" && (
+            : formField.id === "plan_ilosOfferedByPlan" &&
+              !("plan_ilosOfferedByPlan" in entity) && (
                 // there are plans added, but no responses for its nested ILOS
                 <Text sx={sx.noResponse}>
                   {verbiage.missingEntry.noResponse}
