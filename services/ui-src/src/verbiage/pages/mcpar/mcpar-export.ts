@@ -2,6 +2,8 @@ export default {
   missingEntry: {
     noResponse: "Not answered",
     notApplicable: "Not applicable",
+    missingPlans:
+      "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. Go to section A: Add Plans.",
   },
   reportBanner: {
     intro: "Click below to export or print MCPAR shown here",

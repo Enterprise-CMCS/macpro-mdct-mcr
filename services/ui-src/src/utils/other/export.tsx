@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+import uuid from "react-uuid";
 // types
 import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
 // utils
@@ -16,7 +17,23 @@ export const renderDataCell = (
 ) => {
   // render drawer data cell (list entities & per-entity responses)
   if (pageType === "drawer") {
-    const entityResponseData = allResponseData[entityType!];
+    let entityResponseData: AnyObject;
+
+    // if there are ILOS added, but no plans, insert this error verbiage as response
+    if (
+      formField.id === "plan_ilosOfferedByPlan" &&
+      (!allResponseData["plans"] || allResponseData["plans"].length < 1)
+    ) {
+      entityResponseData = [
+        {
+          id: uuid(),
+          name: verbiage.missingEntry.missingPlans,
+        },
+      ];
+    } else {
+      entityResponseData = allResponseData[entityType!];
+    }
+
     return renderDrawerDataCell(
       formField,
       entityResponseData,
@@ -97,17 +114,23 @@ export const renderDrawerDataCell = (
     // check for nested ILOS data
     let nestedIlosResponses = [];
     if (
-      fieldResponseData?.length &&
-      formField.id === "plan_ilosUtilizationByPlan"
+      formField.id === "plan_ilosUtilizationByPlan" &&
+      fieldResponseData?.length
     ) {
       nestedIlosResponses = getNestedIlosResponses(fieldResponseData, entity);
     }
+
+    // check if this is the ILOS topic
+    const isMissingPlansMessage =
+      entity.name === verbiage.missingEntry.missingPlans;
 
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
         <ul>
           <li>
-            <Text sx={sx.entityName}>{entity.name}</Text>
+            <Text sx={isMissingPlansMessage ? sx.noResponse : sx.entityName}>
+              {entity.name}
+            </Text>
           </li>
           <li className="entityResponse">
             {renderResponseData(
@@ -120,15 +143,16 @@ export const renderDrawerDataCell = (
             )}
           </li>
           {/* If there are nested ILOS responses available, render them here */}
-          {nestedIlosResponses.map((response: AnyObject, index: number) => {
-            return (
-              <li key={index}>
-                <Box sx={sx.nestedIlos}>
-                  {response.key}: {response.value}
-                </Box>
-              </li>
-            );
-          })}
+          {nestedIlosResponses.length > 0 &&
+            nestedIlosResponses.map((response: AnyObject, index: number) => {
+              return (
+                <li key={index}>
+                  <Box sx={sx.nestedIlos}>
+                    {response.key}: {response.value}
+                  </Box>
+                </li>
+              );
+            })}
         </ul>
       </Box>
     );
@@ -165,7 +189,11 @@ export const renderResponseData = (
     // need to explicitly make this else if conditional so
   }
 
-  if (!hasResponse && isChoiceListField) {
+  if (
+    !hasResponse &&
+    isChoiceListField &&
+    formField.id !== "plan_ilosOfferedByPlan"
+  ) {
     return (
       <Text
         sx={sx.noResponseOptional}
