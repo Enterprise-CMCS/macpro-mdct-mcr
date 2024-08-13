@@ -55,15 +55,14 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   const missingVerbiage = !hasPlans
     ? (section as DrawerReportPageShape).verbiage.missingPlansAndIlosMessage
-    : (section as DrawerReportPageShape).verbiage.missingIlosMessage ??
-      undefined;
+    : (section as DrawerReportPageShape).verbiage.missingIlosMessage;
 
   return (
     // if there are no ILOS added, render the appropriate verbiage
     <Box>
       {renderIlosVerbiage() ? (
         <Box sx={sx.missingEntityMessage}>
-          {parseCustomHtml(missingVerbiage!)}
+          {parseCustomHtml(missingVerbiage ?? "")}
         </Box>
       ) : (
         <Table
