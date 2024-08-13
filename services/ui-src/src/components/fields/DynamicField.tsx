@@ -171,10 +171,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                 ];
 
                 // if there's no ILOS, clear checked response
-                if (
-                  !report?.fieldData["ilos"] ||
-                  report?.fieldData["ilos"].length < 1
-                ) {
+                if (!report?.fieldData["ilos"]?.length) {
                   delete newEntity["plan_ilosOfferedByPlan"];
                 }
               }

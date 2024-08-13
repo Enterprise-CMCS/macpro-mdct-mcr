@@ -47,26 +47,23 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   // handle ILOS rendering logic
   const renderIlosVerbiage = () => {
-    const hasIlos =
-      report?.fieldData["ilos"] || report?.fieldData["ilos"]?.length > 0;
+    const hasIlos = report?.fieldData["ilos"]?.length;
     return section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos;
   };
-  const hasPlans =
-    report?.fieldData["plans"] || report?.fieldData["plans"]?.length > 0;
+
+  const hasPlans = report?.fieldData["plans"]?.length;
+
+  const missingVerbiage = !hasPlans
+    ? (section as DrawerReportPageShape).verbiage.missingPlansAndIlosMessage
+    : (section as DrawerReportPageShape).verbiage.missingIlosMessage ??
+      undefined;
 
   return (
     // if there are no ILOS added, render the appropriate verbiage
     <Box>
       {renderIlosVerbiage() ? (
         <Box sx={sx.missingEntityMessage}>
-          {!hasPlans
-            ? parseCustomHtml(
-                (section as DrawerReportPageShape).verbiage
-                  .missingPlansAndIlosMessage!
-              )
-            : parseCustomHtml(
-                (section as DrawerReportPageShape).verbiage.missingIlosMessage!
-              )}
+          {parseCustomHtml(missingVerbiage!)}
         </Box>
       ) : (
         <Table

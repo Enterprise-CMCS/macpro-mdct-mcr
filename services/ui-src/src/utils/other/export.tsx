@@ -22,7 +22,7 @@ export const renderDataCell = (
     // if there are ILOS added, but no plans, insert this error verbiage as response
     if (
       formField.id === "plan_ilosOfferedByPlan" &&
-      (!allResponseData["plans"] || allResponseData["plans"].length < 1)
+      !allResponseData["plans"]?.length
     ) {
       entityResponseData = [
         {
@@ -31,7 +31,9 @@ export const renderDataCell = (
         },
       ];
     } else {
-      entityResponseData = allResponseData[entityType!];
+      entityResponseData = allResponseData[entityType!]?.length
+        ? allResponseData[entityType!]
+        : undefined;
     }
 
     return renderDrawerDataCell(
@@ -43,7 +45,9 @@ export const renderDataCell = (
   }
   // render dynamic field data cell (list dynamic field entities)
   if (formField.type === "dynamic") {
-    const fieldResponseData = allResponseData[formField.id];
+    const fieldResponseData = allResponseData[formField.id]?.length
+      ? allResponseData[formField.id]
+      : undefined;
     return renderDynamicDataCell(fieldResponseData);
   }
   // render standard data cell (just field response data)
@@ -185,6 +189,7 @@ export const renderResponseData = (
   const hasResponse: boolean = isChoiceListField
     ? fieldResponseData?.length
     : fieldResponseData;
+
   const missingEntryVerbiage = notApplicable
     ? verbiage.missingEntry.notApplicable
     : verbiage.missingEntry.noResponse;
