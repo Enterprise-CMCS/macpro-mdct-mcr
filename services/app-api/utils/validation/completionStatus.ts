@@ -170,8 +170,11 @@ export const calculateCompletionStatus = async (
         break;
       case "drawer":
         if (!route.drawerForm) break;
-        // handle edge case where ILOS is not required
-        if (route.path === "/mcpar/plan-level-indicators/ilos") {
+        // handle ILOS edge case: if there are no ILOS added, this section is not required; otherwise it is
+        if (
+          route.path === "/mcpar/plan-level-indicators/ilos" &&
+          !fieldData["ilos"]?.length
+        ) {
           routeCompletion = { [route.path]: true };
           break;
         }

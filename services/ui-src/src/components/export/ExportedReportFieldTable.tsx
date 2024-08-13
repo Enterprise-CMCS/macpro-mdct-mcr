@@ -17,7 +17,8 @@ import {
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 // utils
-import { useStore } from "utils";
+import { parseCustomHtml, useStore } from "utils";
+import { Box } from "@chakra-ui/react";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useStore();
@@ -44,23 +45,44 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
 
+  // handle ILOS rendering logic
+  const renderIlosVerbiage = () => {
+    const hasIlos = report?.fieldData["ilos"]?.length;
+    return section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos;
+  };
+
+  const hasPlans = report?.fieldData["plans"]?.length;
+
+  const missingVerbiage = !hasPlans
+    ? (section as DrawerReportPageShape).verbiage.missingPlansAndIlosMessage
+    : (section as DrawerReportPageShape).verbiage.missingIlosMessage;
+
   return (
-    <Table
-      sx={sx.root}
-      className={formHasOnlyDynamicFields ? "two-column" : ""}
-      content={{
-        headRow: headRowItems,
-      }}
-      data-testid="exportTable"
-    >
-      {renderFieldTableBody(
-        formFields!,
-        pageType!,
-        report,
-        !hideHintText,
-        entityType
+    // if there are no ILOS added, render the appropriate verbiage
+    <Box>
+      {renderIlosVerbiage() ? (
+        <Box sx={sx.missingEntityMessage}>
+          {parseCustomHtml(missingVerbiage ?? "")}
+        </Box>
+      ) : (
+        <Table
+          sx={sx.root}
+          className={formHasOnlyDynamicFields ? "two-column" : ""}
+          content={{
+            headRow: headRowItems,
+          }}
+          data-testid="exportTable"
+        >
+          {renderFieldTableBody(
+            formFields!,
+            pageType!,
+            report,
+            !hideHintText,
+            entityType
+          )}
+        </Table>
       )}
-    </Table>
+    </Box>
   );
 };
 
@@ -196,6 +218,13 @@ const sx = {
           paddingLeft: "6rem",
         },
       },
+    },
+  },
+  missingEntityMessage: {
+    fontWeight: "bold",
+
+    ol: {
+      paddingLeft: "1rem",
     },
   },
 };

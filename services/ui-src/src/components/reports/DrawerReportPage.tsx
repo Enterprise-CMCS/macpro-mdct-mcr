@@ -186,7 +186,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
           </Box>
-        ) : !reportingOnIlos && !entities?.length ? (
+        ) : (!reportingOnIlos && !hasPlans) || !entities?.length ? (
           // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}

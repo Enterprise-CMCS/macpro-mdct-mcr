@@ -8,6 +8,7 @@ import {
   renderDefaultFieldResponse,
   getNestedIlosResponses,
   renderDrawerDataCell,
+  renderDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 
@@ -57,6 +58,35 @@ describe("Test rendering methods", () => {
     expect(result.props.children.id).toEqual("email-field-id");
   });
 
+  test("Correctly renders a dynamic field", () => {
+    const dynamicFormField = {
+      id: "plans",
+      type: "dynamic",
+      validation: "dynamic",
+      props: {
+        label: "Plan name",
+      },
+    };
+
+    const mockFieldResponseData = {
+      plans: [
+        {
+          key: "mock-id",
+          name: "plan 1",
+        },
+      ],
+    };
+
+    const result = renderDataCell(
+      dynamicFormField,
+      mockFieldResponseData,
+      "standard"
+    );
+
+    expect(result[0].props.children).toBe("plan 1");
+  });
+
+  // ILOS rendering
   test("renderDrawerDataCell renders ilos responses", () => {
     const mockFormField: FormField = {
       id: "plan_ilosUtilizationByPlan",
@@ -135,6 +165,22 @@ describe("Test rendering methods", () => {
     const result = getNestedIlosResponses(mockFieldResponseData, mockPlan);
     expect(result[0].key).toEqual("mock-ilos");
     expect(result[0].value).toEqual("N/A");
+  });
+
+  test("If there are ILOS but no plans, renders error message", () => {
+    const mockFormField: FormField = {
+      id: "plan_ilosUtilizationByPlan",
+      props: {
+        choices: [],
+      },
+      type: "checkbox",
+      validation: "checkbox",
+    };
+
+    const cells = renderDrawerDataCell(mockFormField, undefined, "drawer");
+    const Component = () => cells;
+    const { container } = render(<Component />);
+    expect(container.textContent).toBe("Not answered");
   });
 });
 
