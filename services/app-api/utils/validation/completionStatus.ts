@@ -51,7 +51,7 @@ export const calculateCompletionStatus = async (
       areAllFieldsValid =
         (await validateFieldData(validationJson, fieldsToBeValidated)) !==
         undefined;
-    } catch (err) {
+    } catch {
       // Silently ignore error, will result in false
     }
     return areAllFieldsValid;
@@ -170,6 +170,14 @@ export const calculateCompletionStatus = async (
         break;
       case "drawer":
         if (!route.drawerForm) break;
+        // handle ILOS edge case: if there are no ILOS added, this section is not required; otherwise it is
+        if (
+          route.path === "/mcpar/plan-level-indicators/ilos" &&
+          !fieldData["ilos"]?.length
+        ) {
+          routeCompletion = { [route.path]: true };
+          break;
+        }
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm],

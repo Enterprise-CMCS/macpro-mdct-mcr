@@ -1,7 +1,8 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
+import { Alert } from "components";
 // types
-import { ReportPageVerbiage } from "types";
+import { AlertTypes, ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 
@@ -10,6 +11,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionInfo = verbiage?.intro?.exportSectionHeader
     ? null
     : verbiage?.intro?.info;
+  const sectionAlert = verbiage?.intro.alert;
 
   const introHeaderRender = () => {
     const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
@@ -32,6 +34,9 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
+        {sectionAlert && (
+          <Alert status={AlertTypes.WARNING} description={sectionAlert} />
+        )}
         {sectionInfo && (
           <Box sx={sx.info}>
             {typeof sectionInfo === "string"
@@ -78,6 +83,7 @@ const sx = {
     },
     h4: {
       fontSize: "lg",
+      paddingTop: "1rem",
     },
   },
 };

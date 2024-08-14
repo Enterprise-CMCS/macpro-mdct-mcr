@@ -154,6 +154,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                 const ilosUtilizationByPlan = [
                   ...newEntity["plan_ilosUtilizationByPlan"],
                 ];
+
                 const filteredUtilizationByPlan = ilosUtilizationByPlan?.filter(
                   (ilos) => {
                     return selectedRecord.id !== ilos.key;
@@ -163,10 +164,18 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
                   ...newEntity,
                   plan_ilosUtilizationByPlan: filteredUtilizationByPlan,
                 };
+
+                // delete associated ILOS response
                 delete newEntity[
-                  `plan_ilosUtilizationByPlan-otherText_${selectedRecord.id}`
+                  `plan_ilosUtilizationByPlan_${selectedRecord.id}`
                 ];
+
+                // if there's no ILOS, clear checked response
+                if (!report?.fieldData["ilos"]?.length) {
+                  delete newEntity["plan_ilosOfferedByPlan"];
+                }
               }
+
               return newEntity;
             });
 

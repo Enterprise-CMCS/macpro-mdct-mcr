@@ -54,10 +54,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, drawerForm } = route;
   const entities = report?.fieldData?.[entityType];
 
-  // check if there are ILOS
+  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
+
+  // check if there are ILOS and associated plans
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
+  const hasPlans = report?.fieldData?.["plans"]?.length > 0;
 
   // generate ILOS fields (if applicable)
   const form =
@@ -179,12 +181,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <Heading as="h3" sx={sx.dashboardTitle}>
           {verbiage.dashboardTitle}
         </Heading>
-        {reportingOnIlos && !entities?.length && !hasIlos ? (
+        {reportingOnIlos && !hasPlans && !hasIlos ? (
           // if there are no plans and no ILOS added, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
           </Box>
-        ) : !entities?.length ? (
+        ) : (!reportingOnIlos && !hasPlans) || !entities?.length ? (
           // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
