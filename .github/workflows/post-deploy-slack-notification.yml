@@ -8,7 +8,6 @@ on:
       - 'main'
       - 'val'
       - 'production'
-      - 'snyk-**'
 
 jobs:
   notify_on_failure:
@@ -23,20 +22,6 @@ jobs:
           SLACK_MESSAGE: "${{ github.event.workflow_run.html_url }}"
           MSG_MINIMAL: true
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-
-  # Notify the integrations channel only when a Snyk auto merge fails
-  notify_failed_snyk_auto_merge:
-    runs-on: ubuntu-latest
-    #only check branch names that begin with snyk-
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && startsWith(github.event.workflow_run.head_branch, 'snyk-') }}
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_TITLE: ":boom: A Synk auto merge has failed in ${{ github.repository }}"
-          SLACK_MESSAGE: "${{ github.event.workflow_run.html_url }}"
-          MSG_MINIMAL: true
-          SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
 
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
   notify_on_prod_release:
