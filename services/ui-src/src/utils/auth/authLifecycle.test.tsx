@@ -1,12 +1,12 @@
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { refreshCredentials } from "./authLifecycle";
-import moment from "moment";
+import { sub } from "date-fns";
 import { Hub } from "aws-amplify";
 
 describe("Test AuthManager Init", () => {
-  test("Initiallizing when past expiration will require a new login", async () => {
+  test("Initializing when past expiration will require a new login", async () => {
     // Set an initial time, because jest runs too fast to have different timestamps
-    const expired = moment().subtract(5, "days").format().toString();
+    const expired = sub(Date.now(), { days: 5 }).toString();
     localStorage.setItem("mdctmcr_session_exp", expired);
 
     initAuthManager();
@@ -24,20 +24,19 @@ describe("Test AuthManager", () => {
   });
 
   test("Test updateTimeout", () => {
-    const currentTime = moment();
+    const currentTime = Date.now();
     updateTimeout();
     jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
     const savedTime = localStorage.getItem("mdctmcr_session_exp");
-    expect(moment(savedTime).isSameOrAfter(currentTime)).toBeTruthy();
+    expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
+      new Date(currentTime).valueOf()
+    );
   });
 
   test("Test getExpiration and refreshCredentials", async () => {
     // Set an initial time, because jest runs too fast to have different timestamps
-    const initialExpiration = moment()
-      .subtract(5, "seconds")
-      .format()
-      .toString();
+    const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
     localStorage.setItem("mdctmcr_session_exp", initialExpiration);
     await refreshCredentials();
     jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
@@ -45,7 +44,9 @@ describe("Test AuthManager", () => {
     // Check that the new timestamp is updated
     const storedExpiration = getExpiration();
     expect(storedExpiration).not.toEqual(initialExpiration);
-    expect(moment(storedExpiration).isAfter(initialExpiration)).toBeTruthy();
+    expect(new Date(storedExpiration!).valueOf()).toBeGreaterThanOrEqual(
+      new Date(initialExpiration).valueOf()
+    );
   });
   test("Test getExpiration returns an empty string if nothing is set", async () => {
     localStorage.removeItem("mdctmcr_session_exp");
@@ -72,7 +73,7 @@ describe("Test AuthManager Hub Integration", () => {
   });
 
   test("Ignore unrelated auth events", () => {
-    const currentTime = moment();
+    const currentTime = Date.now();
     Hub.listen = jest
       .fn()
       .mockImplementation((channel: string, callback: any) => {
@@ -80,7 +81,9 @@ describe("Test AuthManager Hub Integration", () => {
       });
     initAuthManager();
     const savedTime = localStorage.getItem("mdctmcr_session_exp");
-    expect(moment(savedTime).isSameOrAfter(currentTime)).toBeTruthy();
+    expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
+      new Date(currentTime).valueOf()
+    );
     expect(localStorage.setItem).not.toHaveBeenCalled();
   });
 });
