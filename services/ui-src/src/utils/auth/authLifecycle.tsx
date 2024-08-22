@@ -15,7 +15,7 @@ class AuthManager {
     // Force users with stale tokens greater than the timeout to log in for a fresh session
     const expiration = localStorage.getItem("mdctmcr_session_exp");
     const isExpired =
-      expiration && new Date(expiration).valueOf() <= Date.now().valueOf();
+      expiration && new Date(expiration).valueOf() < Date.now().valueOf();
     if (isExpired) {
       localStorage.removeItem("mdctmcr_session_exp");
       Auth.signOut().then(() => {

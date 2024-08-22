@@ -44,7 +44,7 @@ describe("Test AuthManager", () => {
     // Check that the new timestamp is updated
     const storedExpiration = getExpiration();
     expect(storedExpiration).not.toEqual(initialExpiration);
-    expect(new Date(storedExpiration!).valueOf()).toBeGreaterThanOrEqual(
+    expect(new Date(storedExpiration!).valueOf()).toBeGreaterThan(
       new Date(initialExpiration).valueOf()
     );
   });
