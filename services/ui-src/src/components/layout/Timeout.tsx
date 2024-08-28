@@ -17,7 +17,7 @@ import {
   UserContext,
 } from "utils";
 import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
-import moment from "moment";
+import { add } from "date-fns";
 
 export const Timeout = () => {
   const context = useContext(UserContext);
@@ -43,7 +43,7 @@ export const Timeout = () => {
   }, [location]);
 
   const setTimer = () => {
-    const expiration = moment().add(IDLE_WINDOW, "milliseconds");
+    const expiration = add(Date.now(), { seconds: IDLE_WINDOW / 1000 });
     if (timeoutPromptId) {
       clearTimers();
     }
