@@ -336,7 +336,22 @@ export const makeTopicXIIModifications = (reportTemplate: ReportJson) => {
    *   Find Question C1.XII.4, nest 11.a within 10.b
    *   also remove the response "No deficiencies identified" under question 11
    */
-  reportTemplate.routes[2].children![6].form!.fields[0];
+  const question11 =
+    reportTemplate.routes[2].children![6].form!.fields[0].props?.choices[1]
+      .children[6];
+
+  question11.props.choices.splice(2, 1);
+
+  reportTemplate.routes[2].children![6].form!.fields[0].props?.choices[1].children[5].props.choices[0].children.splice(
+    1,
+    0,
+    question11
+  );
+
+  reportTemplate.routes[2].children![6].form!.fields[0].props?.choices[1].children.splice(
+    6,
+    1
+  );
 
   return reportTemplate;
 };
