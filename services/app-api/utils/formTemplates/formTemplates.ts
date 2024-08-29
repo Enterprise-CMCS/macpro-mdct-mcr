@@ -78,7 +78,8 @@ export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
   isProgramPCCM: boolean,
-  julyMcparRelease: boolean
+  julyMcparRelease: boolean,
+  topicXIIUpdate: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
 
@@ -90,6 +91,10 @@ export async function getOrCreateFormTemplate(
 
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
+  }
+
+  if (topicXIIUpdate) {
+    currentFormTemplate = makeTopicXIIModifications(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -324,4 +329,14 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
     throw new Error("Update PCCM logic!");
   }
   programTypeQuestion.props!.disabled = true;
+};
+
+export const makeTopicXIIModifications = (reportTemplate: ReportJson) => {
+  /*
+   *   Find Question C1.XII.4, nest 11.a within 10.b
+   *   also remove the response "No deficiencies identified" under question 11
+   */
+  reportTemplate.routes[2].children![6].form!.fields[0];
+
+  return reportTemplate;
 };

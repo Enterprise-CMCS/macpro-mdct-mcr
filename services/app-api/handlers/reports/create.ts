@@ -77,13 +77,16 @@ export const createReport = handler(async (event, _context) => {
 
   const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease;
 
+  const topicXIIUpdate = unvalidatedMetadata?.topicXIIUpdate;
+
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
       isProgramPCCM,
-      julyMcparRelease
+      julyMcparRelease,
+      topicXIIUpdate
     ));
   } catch (e) {
     throw e;
