@@ -183,7 +183,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   combinedData: boolean;
   programIsPCCM: Choice[];
   julyMcparRelease?: boolean;
-  topicXIIUpdate?: boolean;
+  updateTopicXii?: boolean;
 }
 
 // HELPER FUNCTIONS

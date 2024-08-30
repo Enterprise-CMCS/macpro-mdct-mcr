@@ -42,7 +42,7 @@ export const AddEditReportModal = ({
   // LaunchDarkly
   const yoyCopyFlag = useFlags()?.yoyCopy;
   const julyMcparRelease = useFlags()?.julyMcparRelease;
-  const topicXIIUpdate = useFlags()?.topicXIIUpdate;
+  const updateTopicXii = useFlags()?.updateTopicXii;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -109,7 +109,7 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
-        topicXIIUpdate,
+        updateTopicXii,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

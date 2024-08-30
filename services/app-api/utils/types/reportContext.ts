@@ -31,7 +31,7 @@ export interface ReportMetadataShape extends ReportKeys {
   programIsPCCM?: Choice[];
   julyMcparRelease?: boolean;
   previousRevisions: string[];
-  topicXIIUpdate?: boolean;
+  updateTopicXii?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {
