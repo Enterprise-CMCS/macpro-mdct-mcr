@@ -75,7 +75,8 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease;
+  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease || false;
+  const topicXIIUpdate = unvalidatedMetadata?.topicXIIUpdate || false;
 
   // eslint-disable-next-line no-useless-catch
   try {
@@ -83,7 +84,8 @@ export const createReport = handler(async (event, _context) => {
       reportBucket,
       reportType,
       isProgramPCCM,
-      julyMcparRelease
+      julyMcparRelease,
+      topicXIIUpdate
     ));
   } catch (e) {
     throw e;
