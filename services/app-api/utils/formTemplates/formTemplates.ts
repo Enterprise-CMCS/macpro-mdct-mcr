@@ -79,7 +79,7 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   isProgramPCCM: boolean,
   julyMcparRelease: boolean,
-  topicXIIUpdate: boolean
+  updateTopicXii: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
 
@@ -93,7 +93,7 @@ export async function getOrCreateFormTemplate(
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
 
-  if (topicXIIUpdate) {
+  if (updateTopicXii) {
     currentFormTemplate = makeTopicXIIModifications(currentFormTemplate);
   }
 
