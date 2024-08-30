@@ -75,6 +75,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       true,
       false
     );
+
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplate).toEqual({
@@ -184,6 +185,44 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplateVersion?.versionNumber).toEqual(4);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentMCPARFormHash);
+  });
+
+  it("should create a new form template if none exist (feature flagged version)", async () => {
+    dynamoClientMock
+      .on(QueryCommand)
+      // mocked once for search by hash
+      .resolvesOnce({
+        Items: [],
+      })
+      // mocked again for search for latest report
+      .resolvesOnce({
+        Items: [],
+      });
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const result = await getOrCreateFormTemplate(
+      "local-mcpar-reports",
+      ReportType.MCPAR,
+      programIsNotPCCM,
+      true,
+      true
+    );
+
+    expect(dynamoPutSpy).toHaveBeenCalled();
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(result.formTemplate).toEqual({
+      ...mcpar,
+      validationJson: getValidationFromFormTemplate(mcpar as ReportJson),
+    });
+
+    delete result.formTemplate["validationJson"];
+    const ffFormHash = createHash("md5")
+      .update(JSON.stringify(result.formTemplate))
+      .digest("hex");
+
+    expect(result.formTemplateVersion?.versionNumber).toEqual(1);
+    expect(result.formTemplateVersion?.md5Hash).toEqual(ffFormHash);
   });
 });
 
