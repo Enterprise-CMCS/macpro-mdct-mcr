@@ -75,9 +75,8 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease;
-
-  const topicXIIUpdate = unvalidatedMetadata?.topicXIIUpdate;
+  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease || false;
+  const topicXIIUpdate = unvalidatedMetadata?.topicXIIUpdate || false;
 
   // eslint-disable-next-line no-useless-catch
   try {
