@@ -1,0 +1,14 @@
+{
+  "type": "NAAAR",
+  "name": "NAAAR Report Submission Form",
+  "basePath": "/naaar",
+  "version": "NAAAR_2024-08-06",
+  "entities": {},
+  "routes": [
+    {
+      "name": "Review & Submit",
+      "path": "/naaar/review-and-submit",
+      "pageType": "reviewSubmit"
+    }
+  ]
+}
