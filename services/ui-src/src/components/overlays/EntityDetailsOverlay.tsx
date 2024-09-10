@@ -1,17 +1,16 @@
-import React, { MouseEventHandler, useContext, useEffect } from "react";
+import React, { MouseEventHandler, useEffect } from "react";
 // components
 import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import { Form, ReportPageIntro } from "components";
 // types
 import { EntityShape, EntityType, FormJson } from "types";
 // utils
-
+import { useStore } from "utils";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 // verbiage
 import accordionVerbiage from "../../verbiage/pages/accordion";
 import overlayVerbiage from "../../verbiage/pages/overlays";
-import { EntityContext } from "components/reports/EntityProvider";
 
 export const EntityDetailsOverlay = ({
   closeEntityDetailsOverlay,
@@ -26,8 +25,7 @@ export const EntityDetailsOverlay = ({
   validateOnRender,
 }: Props) => {
   // Entity Provider Setup
-  const { setEntities, setSelectedEntity, setEntityType } =
-    useContext(EntityContext);
+  const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
   useEffect(() => {
     setSelectedEntity(selectedEntity);

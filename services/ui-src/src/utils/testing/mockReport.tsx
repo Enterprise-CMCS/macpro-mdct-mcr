@@ -593,6 +593,13 @@ export const mockReportMethods = {
   contextIsLoaded: true,
 };
 
+export const mockEntityMethods = {
+  updateEntities: jest.fn(),
+  setEntities: jest.fn(),
+  setSelectedEntity: jest.fn(),
+  setEntityType: jest.fn(),
+};
+
 export const mockMcparReportContext = {
   ...mockReportMethods,
   report: mockMcparReport,
@@ -628,13 +635,10 @@ export const mockMLREntityStartedReportContext = {
 };
 
 export const mockEntityDetailsContext = {
+  ...mockEntityMethods,
   selectedEntity: undefined,
   entities: [],
   entityType: "program" as EntityType,
-  updateEntities: jest.fn(),
-  setEntities: jest.fn(),
-  setSelectedEntity: jest.fn(),
-  setEntityType: jest.fn(),
 };
 
 export const mockMLRLockedReportContext = {
