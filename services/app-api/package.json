@@ -35,7 +35,7 @@
     "@aws-sdk/client-s3": "^3.621.0",
     "@aws-sdk/client-ssm": "^3.621.0",
     "@aws-sdk/lib-dynamodb": "^3.621.0",
-    "@aws-sdk/s3-request-presigner": "^3.621.0",
+    "@aws-sdk/s3-request-presigner": "^3.633.0",
     "@aws-sdk/util-dynamodb": "^3.621.0",
     "aws-jwt-verify": "^3.1.0",
     "date-fns": "^2.26.0",
