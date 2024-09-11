@@ -9,6 +9,8 @@ import {
 // types
 import {
   AdminBannerState,
+  entityTypes,
+  McrEntityState,
   McrReportState,
   McrUserState,
   UserRoles,
@@ -163,6 +165,36 @@ export const mockEmptyReportStore: McrReportState = {
   setLastSavedTime: () => {},
 };
 
+// ENTITY STATES / STORE
+export const mockEntityStore: McrEntityState = {
+  entities: [],
+  entityType: entityTypes[0],
+  selectedEntity: {
+    id: "mock-plan-id-1",
+    type: entityTypes[0],
+    report_planName: "mock-plan",
+    report_programName: "mock-programName",
+    report_programType: [
+      {
+        key: "report-programType-mock",
+        value: "mock value",
+      },
+    ],
+    report_eligibilityGroup: [
+      {
+        key: "report-eligibilityGroup-mock",
+        value: "mock value",
+      },
+    ],
+    report_reportingPeriodStartDate: "11/11/2011",
+    report_reportingPeriodEndDate: "11/11/2011",
+  },
+  // ACTIONS
+  setSelectedEntity: () => {},
+  setEntityType: () => {},
+  setEntities: () => {},
+};
+
 // BOUND STORE
 
 export const mockUseStore: McrUserState & AdminBannerState & McrReportState = {
@@ -171,4 +203,5 @@ export const mockUseStore: McrUserState & AdminBannerState & McrReportState = {
   ...mockMcparReportStore,
   ...mockMlrReport,
   ...mockEmptyReportStore,
+  ...mockEntityStore,
 };

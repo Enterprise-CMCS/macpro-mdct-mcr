@@ -27,7 +27,7 @@ interface Props {
 }
 
 const TestComponent = (props: Props) => {
-  const { entities, setEntities, updateEntities, setSelectedEntity } =
+  const { setEntities, updateEntities, setSelectedEntity } =
     useContext(EntityContext);
 
   useEffect(() => {
@@ -42,8 +42,8 @@ const TestComponent = (props: Props) => {
       <button onClick={() => updateEntities({ test: "update" })}>
         Update Entities
       </button>
-      <p id="entities">{JSON.stringify(entities)}</p>
-      <p>{entities.length}</p>
+      <p id="entities">{JSON.stringify(testEntities)}</p>
+      <p>{testEntities.length}</p>
     </div>
   );
 };
