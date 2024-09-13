@@ -12,6 +12,7 @@ import {
   mockLDFlags,
   mockStateUserStore,
   mockMcparReportStore,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
@@ -23,7 +24,7 @@ mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
 
-mockLDFlags.setDefault({ mlrReport: true, naaarReport: true });
+mockLDFlags.setDefault({ mlrReport: true, naaarReport: false });
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
@@ -100,6 +101,7 @@ describe("Test naaarReport feature flag functionality", () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockBannerStore,
+      ...mockNaaarReportStore,
     });
   });
   test("if naaarReport flag is true, NAAAR routes should be accesible to users", async () => {

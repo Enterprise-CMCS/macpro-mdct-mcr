@@ -479,6 +479,7 @@ export const mockNaaarReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: [],
+  locked: false,
   fieldDataId: "mockFieldDataId",
   submissionCount: 0,
   previousRevisions: [],
