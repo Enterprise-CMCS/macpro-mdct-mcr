@@ -27,6 +27,7 @@ export const AppRoutes = () => {
 
   // LaunchDarkly
   const mlrReport = useFlags()?.mlrReport;
+  const naaarReport = useFlags()?.naaarReport;
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -79,10 +80,6 @@ export const AppRoutes = () => {
           {mlrReport && (
             <Fragment>
               <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
-              <Route
-                path="/mlr/get-started"
-                element={<ReportGetStartedPage reportType="MLR" />}
-              />
               {report?.reportType === ReportType.MLR && (
                 <>
                   {(report.formTemplate.flatRoutes ?? []).map(
@@ -99,6 +96,45 @@ export const AppRoutes = () => {
               )}
               <Route
                 path="/mlr/*"
+                element={
+                  !contextIsLoaded ? (
+                    <Flex sx={sx.spinnerContainer}>
+                      <Spinner size="lg" />
+                    </Flex>
+                  ) : (
+                    <Navigate to="/mlr" />
+                  )
+                }
+              />
+            </Fragment>
+          )}
+
+          {/* NAAAR Routes */}
+          {naaarReport && (
+            <Fragment>
+              <Route
+                path="/naaar"
+                element={<DashboardPage reportType="NAAAR" />}
+              />
+              {report?.reportType === ReportType.NAAAR && (
+                <>
+                  {(report.formTemplate.flatRoutes ?? []).map(
+                    (route: ReportRoute) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={<ReportPageWrapper />}
+                      />
+                    )
+                  )}
+                  <Route
+                    path="/naaar/export"
+                    element={<ExportedReportPage />}
+                  />
+                </>
+              )}
+              <Route
+                path="/naaar/*"
                 element={
                   !contextIsLoaded ? (
                     <Flex sx={sx.spinnerContainer}>

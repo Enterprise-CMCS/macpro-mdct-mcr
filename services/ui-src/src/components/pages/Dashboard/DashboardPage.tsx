@@ -35,6 +35,7 @@ import {
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mcparVerbiageWithoutYoY from "verbiage/pages/mcpar/mcpar-dashboard-without-yoy";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
+import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
@@ -76,6 +77,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const dashboardVerbiageMap: any = {
     MCPAR: yoyCopyFlag ? mcparVerbiage : mcparVerbiageWithoutYoY,
     MLR: mlrVerbiage,
+    NAAAR: naaarVerbiage,
   };
 
   const dashboardVerbiage = dashboardVerbiageMap[reportType]!;
