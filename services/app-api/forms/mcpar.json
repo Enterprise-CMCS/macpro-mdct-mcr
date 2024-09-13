@@ -1761,68 +1761,64 @@
                                     "props": {
                                       "label": "C1.XII.10b In the last analysis(es) conducted, describe all deficiencies identified."
                                     }
-                                  }
-                                ]
-                              },
-                              {
-                                "id": "id5YVp8cXSTlUNX3dKXSqxqa",
-                                "label": "No"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "id": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
-                          "type": "radio",
-                          "validation": {
-                            "type": "radio",
-                            "nested": true,
-                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
-                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
-                          },
-                          "props": {
-                            "label": "C1.XII.11a As of the end of this reporting period, have these deficiencies been resolved for all plans?",
-                            "choices": [
-                              {
-                                "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
-                                "label": "Yes"
-                              },
-                              {
-                                "id": "DCDJH4S1JHF7G5bZUMxOVMTe",
-                                "label": "No",
-                                "children": [
+                                  },
                                   {
-                                    "id": "reasonsForNoDeficiencyResolutionsForAllPlans",
-                                    "type": "checkbox",
+                                    "id": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                                    "type": "radio",
                                     "validation": {
-                                      "type": "checkbox",
+                                      "type": "radio",
                                       "nested": true,
-                                      "parentFieldName": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
-                                      "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
+                                      "parentFieldName": "program_doesThisProgramIncludeMCOs",
+                                      "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                                     },
                                     "props": {
-                                      "label": "C1.XII.11b If deficiencies have not been resolved, select all that apply.",
+                                      "label": "C1.XII.11a As of the end of this reporting period, have these deficiencies been resolved for all plans?",
                                       "choices": [
                                         {
-                                          "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
-                                          "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or enrollees."
+                                          "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
+                                          "label": "Yes"
                                         },
                                         {
-                                          "id": "E63ZYRXBmOocAEUS9JA1PkNB",
-                                          "label": "Non-compliance is related to updated parity documentation not yet submitted to CMS."
-                                        },
-                                        {
-                                          "id": "NXbySoHbH3AvbOIvIUREAPsC",
-                                          "label": "Other, specify",
+                                          "id": "DCDJH4S1JHF7G5bZUMxOVMTe",
+                                          "label": "No",
                                           "children": [
                                             {
-                                              "id": "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
-                                              "type": "textarea",
+                                              "id": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                              "type": "checkbox",
                                               "validation": {
-                                                "type": "text",
+                                                "type": "checkbox",
                                                 "nested": true,
-                                                "parentFieldName": "reasonsForNoDeficiencyResolutionsForAllPlans",
-                                                "parentOptionId": "NXbySoHbH3AvbOIvIUREAPsC"
+                                                "parentFieldName": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                                                "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
+                                              },
+                                              "props": {
+                                                "label": "C1.XII.11b If deficiencies have not been resolved, select all that apply.",
+                                                "choices": [
+                                                  {
+                                                    "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
+                                                    "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or enrollees."
+                                                  },
+                                                  {
+                                                    "id": "E63ZYRXBmOocAEUS9JA1PkNB",
+                                                    "label": "Non-compliance is related to updated parity documentation not yet submitted to CMS."
+                                                  },
+                                                  {
+                                                    "id": "NXbySoHbH3AvbOIvIUREAPsC",
+                                                    "label": "Other, specify",
+                                                    "children": [
+                                                      {
+                                                        "id": "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
+                                                        "type": "textarea",
+                                                        "validation": {
+                                                          "type": "text",
+                                                          "nested": true,
+                                                          "parentFieldName": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                                          "parentOptionId": "NXbySoHbH3AvbOIvIUREAPsC"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
                                               }
                                             }
                                           ]
@@ -1833,8 +1829,8 @@
                                 ]
                               },
                               {
-                                "id": "KPYRWvuNZC7dwfOOCifXdQhw",
-                                "label": "No deficiencies identified"
+                                "id": "id5YVp8cXSTlUNX3dKXSqxqa",
+                                "label": "No"
                               }
                             ]
                           }
