@@ -94,3 +94,33 @@ describe("Test AppRoutes 404 handling", () => {
     expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
   });
 });
+
+describe("Test naaarReport feature flag functionality", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
+  });
+  test("if naaarReport flag is true, NAAAR routes should be accesible to users", async () => {
+    mockLDFlags.set({ naaarReport: true });
+    history = createMemoryHistory();
+    history.push("/naaar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(
+      screen.getByText("Network Adequacy and Access Assurances Report (NAAAR)")
+    ).toBeVisible();
+  });
+
+  test("if naaarReport flag is false, NAAAR routes should redirect to 404 Not Found page", async () => {
+    mockLDFlags.set({ naaarReport: false });
+    history = createMemoryHistory();
+    history.push("/naaar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
+  });
+});
