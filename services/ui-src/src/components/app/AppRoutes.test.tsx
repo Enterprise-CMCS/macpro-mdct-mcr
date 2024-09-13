@@ -23,7 +23,7 @@ mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
 
-mockLDFlags.setDefault({ mlrReport: true });
+mockLDFlags.setDefault({ mlrReport: true, naaarReport: true });
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
