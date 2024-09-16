@@ -74,6 +74,35 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
   });
 });
 
+describe("Test MCPAR and MLR report routes", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+    });
+  });
+
+  test("MCPAR routes load correctly", async () => {
+    history = createMemoryHistory();
+    history.push("/mcpar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(
+      screen.getByText("Managed Care Program Annual Report (MCPAR)")
+    ).toBeVisible();
+  });
+
+  test("MLR routes load correctly", async () => {
+    history = createMemoryHistory();
+    history.push("/mlr");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(screen.getByText("Medicaid Medical Loss Ratio (MLR)")).toBeVisible();
+  });
+});
+
 describe("Test AppRoutes 404 handling", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue({

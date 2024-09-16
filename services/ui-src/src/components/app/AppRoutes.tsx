@@ -72,7 +72,6 @@ export const AppRoutes = () => {
           />
 
           {/* MLR ROUTES */}
-
           <Fragment>
             <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
             <Route
