@@ -40,15 +40,15 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
   const naaarReport = useFlags()?.naaarReport;
   const reportField = formJson.fields.find((field) => field.id === "report")!;
 
-  if (naaarReport) {
-    reportField.type = "radio";
-    reportField.validation = "radio";
-    reportChoices.push(naaarReportChoice);
-  }
   if (mlrReport) {
     reportField.type = "radio";
     reportField.validation = "radio";
     reportChoices.push(mlrReportChoice);
+  }
+  if (naaarReport) {
+    reportField.type = "radio";
+    reportField.validation = "radio";
+    reportChoices.push(naaarReportChoice);
   } else {
     reportField.type = "checkbox";
     reportField.validation = "checkbox";

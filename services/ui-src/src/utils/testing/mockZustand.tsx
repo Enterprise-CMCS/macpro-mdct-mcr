@@ -156,7 +156,7 @@ export const mockMlrLockedReportStore: McrReportState = {
 
 export const mockNaaarReportStore: McrReportState = {
   report: mockNaaarReport,
-  reportsByState: [mockMcparReport],
+  reportsByState: [mockNaaarReport],
   copyEligibleReportsByState: mockReportsByState,
   lastSavedTime: "1:58 PM",
   setReport: () => {},

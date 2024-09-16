@@ -141,7 +141,7 @@ export const AppRoutes = () => {
                       <Spinner size="lg" />
                     </Flex>
                   ) : (
-                    <Navigate to="/mlr" />
+                    <Navigate to="/naaar" />
                   )
                 }
               />
