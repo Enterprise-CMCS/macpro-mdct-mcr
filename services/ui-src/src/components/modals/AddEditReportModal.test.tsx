@@ -133,7 +133,7 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("Add a Program")).toBeTruthy();
+    expect(screen.getByText("Add / Copy a MCPAR")).toBeTruthy();
     expect(screen.getByText("Save")).toBeTruthy();
   });
 

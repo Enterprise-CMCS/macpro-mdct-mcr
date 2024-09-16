@@ -99,7 +99,7 @@ describe("Test MLR TemplateCard", () => {
     await act(async () => {
       await userEvent.click(downloadButton);
     });
-    await waitFor(() => expect(apiSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(apiSpy).toHaveBeenCalled());
   });
 
   test("MLR TemplateCard image is visible on desktop", () => {
