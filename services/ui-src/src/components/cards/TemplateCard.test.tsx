@@ -6,6 +6,7 @@ import { act } from "react-dom/test-utils";
 import { TemplateCard } from "components";
 // utils
 import {
+  mockLDFlags,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -32,6 +33,7 @@ jest.mock("react-router-dom", () => ({
 
 const mcparTemplateVerbiage = verbiage.cards.MCPAR;
 const mlrTemplateVerbiage = verbiage.cards.MLR;
+const naaarTemplateVerbiage = verbiage.cards.NAAAR;
 
 const mcparTemplateCardComponent = (
   <RouterWrappedComponent>
@@ -44,6 +46,14 @@ const mlrTemplateCardComponent = (
     <TemplateCard templateName="MLR" verbiage={mlrTemplateVerbiage} />
   </RouterWrappedComponent>
 );
+
+const naaarTemplateCardComponent = (
+  <RouterWrappedComponent>
+    <TemplateCard templateName="NAAAR" verbiage={naaarTemplateVerbiage} />
+  </RouterWrappedComponent>
+);
+
+mockLDFlags.setDefault({ naaarReport: true });
 
 describe("Test MCPAR TemplateCard", () => {
   beforeEach(() => {
@@ -118,6 +128,26 @@ describe("Test MLR TemplateCard", () => {
     await userEvent.click(templateCardLink);
     const expectedRoute = mlrTemplateVerbiage.link.route;
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+  });
+});
+
+describe("Test naaarReport feature flag functionality", () => {
+  test("if naaarReport flag is true, NAAAR available verbiage should be visible", async () => {
+    mockLDFlags.set({ naaarReport: true });
+    render(naaarTemplateCardComponent);
+    expect(
+      screen.getByText(naaarTemplateVerbiage.body.available)
+    ).toBeVisible();
+    const enterNaaarButton = screen.getByText(naaarTemplateVerbiage.link.text);
+    expect(enterNaaarButton).toBeVisible();
+  });
+
+  test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
+    mockLDFlags.set({ naaarReport: false });
+    render(naaarTemplateCardComponent);
+    expect(
+      screen.queryByText(naaarTemplateVerbiage.link.text)
+    ).not.toBeInTheDocument();
   });
 });
 

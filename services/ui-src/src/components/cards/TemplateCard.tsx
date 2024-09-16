@@ -1,3 +1,4 @@
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
@@ -29,9 +30,12 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
+  const naaarReport = useFlags()?.naaarReport;
+
   const enabledReports = {
     MCPAR: true,
     MLR: true,
+    NAAAR: naaarReport,
   };
 
   const reportIndex = templateName as keyof typeof enabledReports;

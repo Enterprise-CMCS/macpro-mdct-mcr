@@ -12,12 +12,17 @@ import {
   mockStateUserStore,
   mockMcparReportStore,
   mockMlrReportStore,
+  mockNaaarReportStore,
+  mockLDFlags,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
+// LaunchDarkly
+mockLDFlags.setDefault({ naaarReport: false });
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
@@ -117,6 +122,37 @@ describe("Test AppRoutes 404 handling", () => {
   });
 
   test("not-found routes redirect to 404", () => {
+    expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
+  });
+});
+
+describe("Test naaarReport feature flag functionality", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+      ...mockNaaarReportStore,
+    });
+  });
+  test("if naaarReport flag is true, NAAAR routes should be accesible to users", async () => {
+    mockLDFlags.set({ naaarReport: true });
+    history = createMemoryHistory();
+    history.push("/naaar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(
+      screen.getByText("Network Adequacy and Access Assurances Report (NAAAR)")
+    ).toBeVisible();
+  });
+
+  test("if naaarReport flag is false, NAAAR routes should redirect to 404 Not Found page", async () => {
+    mockLDFlags.set({ naaarReport: false });
+    history = createMemoryHistory();
+    history.push("/naaar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
     expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
   });
 });

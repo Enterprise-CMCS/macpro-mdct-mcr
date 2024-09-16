@@ -1,0 +1,21 @@
+{
+  "id": "aen",
+  "options": {
+    "mode": "onChange"
+  },
+  "heading": {
+    "add": "Add new NAAAR submission",
+    "edit": "Edit NAAAR submission"
+  },
+  "fields": [
+    {
+      "id": "programName",
+      "type": "text",
+      "validation": "text",
+      "props": {
+        "label": "Placeholder",
+        "hint": "Placeholder"
+      }
+    }
+  ]
+}
