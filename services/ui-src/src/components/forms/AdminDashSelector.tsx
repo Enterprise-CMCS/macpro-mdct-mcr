@@ -44,11 +44,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
     reportField.type = "radio";
     reportField.validation = "radio";
     reportChoices.push(naaarReportChoice);
-  } else {
-    reportField.type = "checkbox";
-    reportField.validation = "checkbox";
   }
-
   reportField.props.choices = reportChoices;
 
   // add validation to formJson
