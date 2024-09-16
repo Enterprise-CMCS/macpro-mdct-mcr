@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   AdminBannerProvider,
@@ -24,9 +23,6 @@ export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
   const { report } = useStore();
   const { contextIsLoaded } = useContext(ReportContext);
-
-  // LaunchDarkly
-  const mlrReport = useFlags()?.mlrReport;
 
   return (
     <main id="main-content" tabIndex={-1}>
@@ -76,41 +72,40 @@ export const AppRoutes = () => {
           />
 
           {/* MLR ROUTES */}
-          {mlrReport && (
-            <Fragment>
-              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
-              <Route
-                path="/mlr/get-started"
-                element={<ReportGetStartedPage reportType="MLR" />}
-              />
-              {report?.reportType === ReportType.MLR && (
-                <>
-                  {(report.formTemplate.flatRoutes ?? []).map(
-                    (route: ReportRoute) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={<ReportPageWrapper />}
-                      />
-                    )
-                  )}
-                  <Route path="/mlr/export" element={<ExportedReportPage />} />
-                </>
-              )}
-              <Route
-                path="/mlr/*"
-                element={
-                  !contextIsLoaded ? (
-                    <Flex sx={sx.spinnerContainer}>
-                      <Spinner size="lg" />
-                    </Flex>
-                  ) : (
-                    <Navigate to="/mlr" />
+
+          <Fragment>
+            <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+            <Route
+              path="/mlr/get-started"
+              element={<ReportGetStartedPage reportType="MLR" />}
+            />
+            {report?.reportType === ReportType.MLR && (
+              <>
+                {(report.formTemplate.flatRoutes ?? []).map(
+                  (route: ReportRoute) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={<ReportPageWrapper />}
+                    />
                   )
-                }
-              />
-            </Fragment>
-          )}
+                )}
+                <Route path="/mlr/export" element={<ExportedReportPage />} />
+              </>
+            )}
+            <Route
+              path="/mlr/*"
+              element={
+                !contextIsLoaded ? (
+                  <Flex sx={sx.spinnerContainer}>
+                    <Spinner size="lg" />
+                  </Flex>
+                ) : (
+                  <Navigate to="/mlr" />
+                )
+              }
+            />
+          </Fragment>
         </Routes>
       </AdminBannerProvider>
     </main>

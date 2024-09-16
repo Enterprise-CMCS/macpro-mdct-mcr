@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
@@ -25,25 +24,13 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       id: "MCPAR",
       label: "Managed Care Program Annual Report (MCPAR)",
     },
+    {
+      id: "MLR",
+      label: "Medicaid Medical Loss Ratio (MLR)",
+    },
   ];
-  const mlrReportChoice = {
-    id: "MLR",
-    label: "Medicaid Medical Loss Ratio (MLR)",
-  };
 
-  // assemble and inject report choices depending on whether report is enabled
-  const mlrReport = useFlags()?.mlrReport;
   const reportField = formJson.fields.find((field) => field.id === "report")!;
-
-  if (mlrReport) {
-    reportField.type = "radio";
-    reportField.validation = "radio";
-    reportChoices.push(mlrReportChoice);
-  } else {
-    reportField.type = "checkbox";
-    reportField.validation = "checkbox";
-  }
-
   reportField.props.choices = reportChoices;
 
   // add validation to formJson
