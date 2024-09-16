@@ -9,7 +9,6 @@ import { UserProvider, useStore } from "utils";
 import {
   mockAdminUserStore,
   mockBannerStore,
-  mockLDFlags,
   mockStateUserStore,
   mockMcparReportStore,
 } from "utils/testing/setupJest";
@@ -22,8 +21,6 @@ mockedUseStore.mockReturnValue({
   ...mockBannerStore,
   ...mockMcparReportStore,
 });
-
-mockLDFlags.setDefault({ mlrReport: true });
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
