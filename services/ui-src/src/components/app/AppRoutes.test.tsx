@@ -11,16 +11,13 @@ import {
   mockBannerStore,
   mockStateUserStore,
   mockMcparReportStore,
+  mockMlrReportStore,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockBannerStore,
-  ...mockMcparReportStore,
-});
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
@@ -75,14 +72,12 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
 });
 
 describe("Test MCPAR and MLR report routes", () => {
-  beforeEach(async () => {
+  test("MCPAR routes load correctly", async () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockBannerStore,
+      ...mockMcparReportStore,
     });
-  });
-
-  test("MCPAR routes load correctly", async () => {
     history = createMemoryHistory();
     history.push("/mcpar");
     await act(async () => {
@@ -94,6 +89,11 @@ describe("Test MCPAR and MLR report routes", () => {
   });
 
   test("MLR routes load correctly", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+      ...mockMlrReportStore,
+    });
     history = createMemoryHistory();
     history.push("/mlr");
     await act(async () => {

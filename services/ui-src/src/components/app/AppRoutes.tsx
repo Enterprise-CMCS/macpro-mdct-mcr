@@ -16,7 +16,7 @@ import {
 // utils
 import { ReportRoute, ReportType } from "types";
 import { ScrollToTopComponent, useStore } from "utils";
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
@@ -72,39 +72,38 @@ export const AppRoutes = () => {
           />
 
           {/* MLR ROUTES */}
-          <Fragment>
-            <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
-            <Route
-              path="/mlr/get-started"
-              element={<ReportGetStartedPage reportType="MLR" />}
-            />
-            {report?.reportType === ReportType.MLR && (
-              <>
-                {(report.formTemplate.flatRoutes ?? []).map(
-                  (route: ReportRoute) => (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      element={<ReportPageWrapper />}
-                    />
-                  )
-                )}
-                <Route path="/mlr/export" element={<ExportedReportPage />} />
-              </>
-            )}
-            <Route
-              path="/mlr/*"
-              element={
-                !contextIsLoaded ? (
-                  <Flex sx={sx.spinnerContainer}>
-                    <Spinner size="lg" />
-                  </Flex>
-                ) : (
-                  <Navigate to="/mlr" />
+
+          <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+          <Route
+            path="/mlr/get-started"
+            element={<ReportGetStartedPage reportType="MLR" />}
+          />
+          {report?.reportType === ReportType.MLR && (
+            <>
+              {(report.formTemplate.flatRoutes ?? []).map(
+                (route: ReportRoute) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<ReportPageWrapper />}
+                  />
                 )
-              }
-            />
-          </Fragment>
+              )}
+              <Route path="/mlr/export" element={<ExportedReportPage />} />
+            </>
+          )}
+          <Route
+            path="/mlr/*"
+            element={
+              !contextIsLoaded ? (
+                <Flex sx={sx.spinnerContainer}>
+                  <Spinner size="lg" />
+                </Flex>
+              ) : (
+                <Navigate to="/mlr" />
+              )
+            }
+          />
         </Routes>
       </AdminBannerProvider>
     </main>
