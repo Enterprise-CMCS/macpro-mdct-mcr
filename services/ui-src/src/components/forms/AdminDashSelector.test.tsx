@@ -29,7 +29,7 @@ const adminDashSelectorView = (
   </RouterWrappedComponent>
 );
 
-mockLDFlags.setDefault({ mlrReport: true });
+mockLDFlags.setDefault({ mlrReport: true, naaarReport: true });
 
 // TESTS
 
@@ -73,6 +73,27 @@ describe("Test mlrReport feature flag functionality", () => {
       "Medicaid Medical Loss Ratio (MLR)"
     );
     expect(mlrRadioChoice).toBeNull();
+  });
+});
+
+describe("Test naaarReport feature flag functionality", () => {
+  test("if naaarReport flag is true, NAAAR radio choice should be visible", async () => {
+    mockLDFlags.set({ naaarReport: true });
+    render(adminDashSelectorView);
+    expect(
+      screen.getByLabelText(
+        "Network Adequacy and Access Assurances Report (NAAAR)"
+      )
+    ).toBeVisible();
+  });
+
+  test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
+    mockLDFlags.set({ naaarReport: false });
+    render(adminDashSelectorView);
+    const naaarRadioChoice = screen.queryByLabelText(
+      "Network Adequacy and Access Assurances Report (NAAAR)"
+    );
+    expect(naaarRadioChoice).toBeNull();
   });
 });
 

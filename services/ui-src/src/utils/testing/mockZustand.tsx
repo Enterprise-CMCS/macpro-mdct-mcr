@@ -4,6 +4,7 @@ import {
   mockMcparReport,
   mockMLRLockedReport,
   mockMlrReport,
+  mockNaaarReport,
   mockReportsByState,
 } from "./setupJest";
 // types
@@ -145,6 +146,18 @@ export const mockMlrLockedReportStore: McrReportState = {
   report: mockMLRLockedReport,
   reportsByState: [mockMLRLockedReport],
   copyEligibleReportsByState: [],
+  lastSavedTime: "1:58 PM",
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
+export const mockNaaarReportStore: McrReportState = {
+  report: mockNaaarReport,
+  reportsByState: [mockNaaarReport],
+  copyEligibleReportsByState: mockReportsByState,
   lastSavedTime: "1:58 PM",
   setReport: () => {},
   setReportsByState: () => {},

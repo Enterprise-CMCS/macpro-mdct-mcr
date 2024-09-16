@@ -464,6 +464,27 @@ export const mockMLRLockedReport = {
   previousRevisions: [],
 };
 
+export const mockNaaarReport = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.SUBMITTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: [],
+  locked: false,
+  fieldDataId: "mockFieldDataId",
+  submissionCount: 0,
+  previousRevisions: [],
+};
+
 export const mockMLRReportEmptyFieldData = {
   stateName: "Test State",
   versionControl: [
@@ -663,6 +684,15 @@ export const mockMlrReportContext = {
   report: mockMlrReport,
   reportsByState: mockMlrReportsByState,
   copyEligibleReportsByState: mockMlrReportsByState,
+  errorMessage: mockErrorMessage,
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockNaaarReportContext = {
+  ...mockReportMethods,
+  report: mockNaaarReport,
+  reportsByState: [],
+  copyEligibleReportsByState: [],
   errorMessage: mockErrorMessage,
   lastSavedTime: "1:58 PM",
 };

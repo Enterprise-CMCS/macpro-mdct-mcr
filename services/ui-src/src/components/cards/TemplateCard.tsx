@@ -31,10 +31,12 @@ export const TemplateCard = ({
   const navigate = useNavigate();
 
   const mlrReport = useFlags()?.mlrReport;
+  const naaarReport = useFlags()?.naaarReport;
 
   const enabledReports = {
     MCPAR: true,
     MLR: mlrReport,
+    NAAAR: naaarReport,
   };
 
   const reportIndex = templateName as keyof typeof enabledReports;

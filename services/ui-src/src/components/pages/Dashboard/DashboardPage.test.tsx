@@ -24,11 +24,13 @@ import {
   mockMlrDashboardReportContext,
   mockMcparReportStore,
   mockMlrLockedReportStore,
+  mockNaaarReportContext,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
+import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -99,6 +101,14 @@ const dashboardViewWithLockedReport = (
   </RouterWrappedComponent>
 );
 
+const naaarDashboardViewEmpty = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportContext}>
+      <DashboardPage reportType="NAAAR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 describe("Test Report Dashboard view (with reports, desktop view)", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue({
@@ -133,6 +143,14 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
     });
     expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
     expect(screen.getAllByText("testProgram")[0]).toBeVisible();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+  });
+
+  test("Check that NAAAR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(naaarDashboardViewEmpty);
+    });
+    expect(screen.getByText(naaarVerbiage.intro.header)).toBeVisible();
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 

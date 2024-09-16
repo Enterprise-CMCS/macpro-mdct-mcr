@@ -30,15 +30,25 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
     id: "MLR",
     label: "Medicaid Medical Loss Ratio (MLR)",
   };
+  const naaarReportChoice = {
+    id: "NAAAR",
+    label: "Network Adequacy and Access Assurances Report (NAAAR)",
+  };
 
   // assemble and inject report choices depending on whether report is enabled
   const mlrReport = useFlags()?.mlrReport;
+  const naaarReport = useFlags()?.naaarReport;
   const reportField = formJson.fields.find((field) => field.id === "report")!;
 
   if (mlrReport) {
     reportField.type = "radio";
     reportField.validation = "radio";
     reportChoices.push(mlrReportChoice);
+  }
+  if (naaarReport) {
+    reportField.type = "radio";
+    reportField.validation = "radio";
+    reportChoices.push(naaarReportChoice);
   } else {
     reportField.type = "checkbox";
     reportField.validation = "checkbox";

@@ -7,6 +7,7 @@ import { Spinner } from "@chakra-ui/react";
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
+import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
 // types
 import {
   AnyObject,
@@ -46,7 +47,9 @@ export const AddEditReportModal = ({
   const modalFormJsonMap: any = {
     MCPAR: yoyCopyFlag ? mcparFormJson : mcparFormJsonWithoutYoY,
     MLR: mlrFormJson,
+    NAAAR: naaarFormJson,
   };
+
   const modalFormJson = modalFormJsonMap[reportType]!;
   const [form, setForm] = useState<FormJson>(modalFormJson);
 
