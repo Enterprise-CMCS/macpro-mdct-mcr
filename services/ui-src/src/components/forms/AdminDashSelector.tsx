@@ -30,6 +30,7 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
       label: "Medicaid Medical Loss Ratio (MLR)",
     },
   ];
+
   const naaarReportChoice = {
     id: "NAAAR",
     label: "Network Adequacy and Access Assurances Report (NAAAR)",
