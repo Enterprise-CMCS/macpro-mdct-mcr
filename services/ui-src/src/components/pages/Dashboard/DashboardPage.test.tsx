@@ -19,7 +19,6 @@ import {
   mockReportContextNoReports,
   mockReportContextWithError,
   mockDashboardLockedReportContext,
-  mockLDFlags,
   mockMlrReportContext,
   mockMlrDashboardReportContext,
   mockMcparReportStore,
@@ -168,7 +167,6 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
-    mockLDFlags.set({ yoyCopy: true });
     await act(async () => {
       await render(dashboardViewWithReports);
     });

@@ -9,22 +9,20 @@ import { UserProvider, useStore } from "utils";
 import {
   mockAdminUserStore,
   mockBannerStore,
-  mockLDFlags,
   mockStateUserStore,
   mockMcparReportStore,
+  mockMlrReportStore,
   mockNaaarReportStore,
+  mockLDFlags,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockBannerStore,
-  ...mockMcparReportStore,
-});
 
-mockLDFlags.setDefault({ mlrReport: true, naaarReport: false });
+// LaunchDarkly
+mockLDFlags.setDefault({ naaarReport: false });
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
@@ -75,6 +73,38 @@ describe("Test AppRoutes for non-admin-specific routes", () => {
   test("/admin not visible for state user; redirects to /profile", async () => {
     const currentPath = history.location.pathname;
     expect(currentPath).toEqual("/profile");
+  });
+});
+
+describe("Test MCPAR and MLR report routes", () => {
+  test("MCPAR routes load correctly", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+      ...mockMcparReportStore,
+    });
+    history = createMemoryHistory();
+    history.push("/mcpar");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(
+      screen.getByText("Managed Care Program Annual Report (MCPAR)")
+    ).toBeVisible();
+  });
+
+  test("MLR routes load correctly", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockBannerStore,
+      ...mockMlrReportStore,
+    });
+    history = createMemoryHistory();
+    history.push("/mlr");
+    await act(async () => {
+      await render(appRoutesComponent(history));
+    });
+    expect(screen.getByText("Medicaid Medical Loss Ratio (MLR)")).toBeVisible();
   });
 });
 

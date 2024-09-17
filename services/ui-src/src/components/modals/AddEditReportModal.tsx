@@ -1,11 +1,9 @@
 import { useContext, useState, useEffect } from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
-import mcparFormJsonWithoutYoY from "forms/addEditMcparReport/addEditMcparReportWithoutYoY.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
 // types
@@ -40,12 +38,9 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  // LaunchDarkly
-  const yoyCopyFlag = useFlags()?.yoyCopy;
-
   // get correct form
   const modalFormJsonMap: any = {
-    MCPAR: yoyCopyFlag ? mcparFormJson : mcparFormJsonWithoutYoY,
+    MCPAR: mcparFormJson,
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,
   };

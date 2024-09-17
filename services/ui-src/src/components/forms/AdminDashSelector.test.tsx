@@ -29,7 +29,7 @@ const adminDashSelectorView = (
   </RouterWrappedComponent>
 );
 
-mockLDFlags.setDefault({ mlrReport: true, naaarReport: true });
+mockLDFlags.setDefault({ naaarReport: true });
 
 // TESTS
 
@@ -54,25 +54,6 @@ describe("Test AdminDashSelector view", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     expect(window.location.pathname).toEqual("/mcpar");
-  });
-});
-
-describe("Test mlrReport feature flag functionality", () => {
-  test("if mlrReport flag is true, MLR radio choice should be visible", async () => {
-    mockLDFlags.set({ mlrReport: true });
-    render(adminDashSelectorView);
-    expect(
-      screen.getByLabelText("Medicaid Medical Loss Ratio (MLR)")
-    ).toBeVisible();
-  });
-
-  test("if mlrReport flag is false, MLR available verbiage should not be visible", async () => {
-    mockLDFlags.set({ mlrReport: false });
-    render(adminDashSelectorView);
-    const mlrRadioChoice = screen.queryByLabelText(
-      "Medicaid Medical Loss Ratio (MLR)"
-    );
-    expect(mlrRadioChoice).toBeNull();
   });
 });
 

@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { Fragment, useContext } from "react";
+import { Flex, Spinner } from "@chakra-ui/react";
 // components
 import {
   AdminBannerProvider,
@@ -14,11 +16,10 @@ import {
   ReportPageWrapper,
   ReportContext,
 } from "components";
-// utils
+// types
 import { ReportRoute, ReportType } from "types";
+// utils
 import { ScrollToTopComponent, useStore } from "utils";
-import { Fragment, useContext } from "react";
-import { Flex, Spinner } from "@chakra-ui/react";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -26,7 +27,6 @@ export const AppRoutes = () => {
   const { contextIsLoaded } = useContext(ReportContext);
 
   // LaunchDarkly
-  const mlrReport = useFlags()?.mlrReport;
   const naaarReport = useFlags()?.naaarReport;
 
   return (
@@ -77,37 +77,37 @@ export const AppRoutes = () => {
           />
 
           {/* MLR ROUTES */}
-          {mlrReport && (
-            <Fragment>
-              <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
-              {report?.reportType === ReportType.MLR && (
-                <>
-                  {(report.formTemplate.flatRoutes ?? []).map(
-                    (route: ReportRoute) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={<ReportPageWrapper />}
-                      />
-                    )
-                  )}
-                  <Route path="/mlr/export" element={<ExportedReportPage />} />
-                </>
+          <Route path="/mlr" element={<DashboardPage reportType="MLR" />} />
+          <Route
+            path="/mlr/get-started"
+            element={<ReportGetStartedPage reportType="MLR" />}
+          />
+          {report?.reportType === ReportType.MLR && (
+            <>
+              {(report.formTemplate.flatRoutes ?? []).map(
+                (route: ReportRoute) => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<ReportPageWrapper />}
+                  />
+                )
               )}
-              <Route
-                path="/mlr/*"
-                element={
-                  !contextIsLoaded ? (
-                    <Flex sx={sx.spinnerContainer}>
-                      <Spinner size="lg" />
-                    </Flex>
-                  ) : (
-                    <Navigate to="/mlr" />
-                  )
-                }
-              />
-            </Fragment>
+              <Route path="/mlr/export" element={<ExportedReportPage />} />
+            </>
           )}
+          <Route
+            path="/mlr/*"
+            element={
+              !contextIsLoaded ? (
+                <Flex sx={sx.spinnerContainer}>
+                  <Spinner size="lg" />
+                </Flex>
+              ) : (
+                <Navigate to="/mlr" />
+              )
+            }
+          />
 
           {/* NAAAR Routes */}
           {naaarReport && (

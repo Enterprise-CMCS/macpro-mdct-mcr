@@ -4,7 +4,6 @@ import { axe } from "jest-axe";
 //components
 import { AddEditReportModal, ReportContext } from "components";
 import {
-  mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
   mockMcparReportStore,
@@ -134,7 +133,7 @@ describe("Test AddEditProgramModal", () => {
   });
 
   test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("Add a Program")).toBeTruthy();
+    expect(screen.getByText("Add / Copy a MCPAR")).toBeTruthy();
     expect(screen.getByText("Save")).toBeTruthy();
   });
 
@@ -178,7 +177,6 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   };
 
   test("Adding a new report", async () => {
-    mockLDFlags.setDefault({ yoyCopy: true });
     const result = render(modalComponent);
     const form = result.getByTestId("add-edit-report-form");
     const header = screen.getByRole("heading", { level: 1 });
@@ -200,7 +198,6 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   });
 
   test("Edit modal hydrates with report info and disables fields", async () => {
-    mockLDFlags.setDefault({ yoyCopy: true });
     const result = render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
     const copyFieldDataSourceId = form.querySelector(
@@ -237,7 +234,6 @@ describe("Test AddEditReportModal functionality for MCPAR", () => {
   });
 
   test("Editing an existing report", async () => {
-    mockLDFlags.setDefault({ yoyCopy: true });
     const result = render(modalComponentWithSelectedReport);
     const form = result.getByTestId("add-edit-report-form");
     await fillForm(form);

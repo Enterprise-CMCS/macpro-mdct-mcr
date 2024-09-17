@@ -53,7 +53,7 @@ const naaarTemplateCardComponent = (
   </RouterWrappedComponent>
 );
 
-mockLDFlags.setDefault({ mlrReport: true, naaarReport: true });
+mockLDFlags.setDefault({ naaarReport: true });
 
 describe("Test MCPAR TemplateCard", () => {
   beforeEach(() => {
@@ -93,21 +93,41 @@ describe("Test MCPAR TemplateCard", () => {
   });
 });
 
-describe("Test mlrReport feature flag functionality", () => {
-  test("if mlrReport flag is true, MLR available verbiage should be visible", async () => {
-    mockLDFlags.set({ mlrReport: true });
+describe("Test MLR TemplateCard", () => {
+  beforeEach(() => {
     render(mlrTemplateCardComponent);
-    expect(screen.getByText(mlrTemplateVerbiage.body.available)).toBeVisible();
-    const enterMlrButton = screen.getByText(mlrTemplateVerbiage.link.text);
-    expect(enterMlrButton).toBeVisible();
   });
 
-  test("if mlrReport flag is false, MLR available verbiage should not be visible", async () => {
-    mockLDFlags.set({ mlrReport: false });
-    render(mlrTemplateCardComponent);
-    expect(
-      screen.queryByText(mlrTemplateVerbiage.link.text)
-    ).not.toBeInTheDocument();
+  test("MLR TemplateCard is visible", () => {
+    expect(screen.getByText(mlrTemplateVerbiage.title)).toBeVisible();
+  });
+
+  test("MLR TemplateCard download button is visible and clickable", async () => {
+    const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
+    const downloadButton = screen.getByText(mlrTemplateVerbiage.downloadText);
+    expect(downloadButton).toBeVisible();
+    await act(async () => {
+      await userEvent.click(downloadButton);
+    });
+    await waitFor(() => expect(apiSpy).toHaveBeenCalled());
+  });
+
+  test("MLR TemplateCard image is visible on desktop", () => {
+    const imageAltText = "Spreadsheet icon";
+    expect(screen.getByAltText(imageAltText)).toBeVisible();
+  });
+
+  test("MLR TemplateCard link is visible on desktop", () => {
+    const templateCardLink = mlrTemplateVerbiage.link.text;
+    expect(screen.getByText(templateCardLink)).toBeVisible();
+  });
+
+  test("MLR TemplateCard navigates to next route on link click", async () => {
+    mockedUseStore.mockReturnValue(mockStateUserStore);
+    const templateCardLink = screen.getByText(mlrTemplateVerbiage.link.text)!;
+    await userEvent.click(templateCardLink);
+    const expectedRoute = mlrTemplateVerbiage.link.route;
+    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 });
 
