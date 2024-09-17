@@ -30,11 +30,12 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
-  const mlrReport = useFlags()?.mlrReport;
+  const naaarReport = useFlags()?.naaarReport;
 
   const enabledReports = {
     MCPAR: true,
-    MLR: mlrReport,
+    MLR: true,
+    NAAAR: naaarReport,
   };
 
   const reportIndex = templateName as keyof typeof enabledReports;
