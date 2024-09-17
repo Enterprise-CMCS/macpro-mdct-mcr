@@ -1,5 +1,7 @@
 import {
   AdminBannerData,
+  EntityShape,
+  EntityType,
   ErrorVerbiage,
   MCRUser,
   ReportMetadataShape,
@@ -52,4 +54,16 @@ export interface McrReportState {
     newCopyEligibleReportsByState: ReportMetadataShape[] | undefined
   ) => void;
   setLastSavedTime: (lastSavedTime: string | undefined) => void;
+}
+
+// initial entity state
+export interface McrEntityState {
+  // INITIAL STATE
+  selectedEntity: EntityShape | undefined;
+  entityType: EntityType | undefined;
+  entities: EntityShape[] | undefined;
+  // ACTIONS
+  setSelectedEntity: (newSelectedEntity: EntityShape | undefined) => void;
+  setEntityType: (newEntityType: EntityType | undefined) => void;
+  setEntities: (newEntities: EntityShape[] | undefined) => void;
 }

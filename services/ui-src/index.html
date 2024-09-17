@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Medicaid Data Collection Tool" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Managed Care Reporting</title>
+    <script src="/env-config.js"></script>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+       window.utag_cfg_ovrd = { noview: true };
+      const tealiumEnvMap = {
+        "mdctmcr.cms.gov": "prod",
+        "mdctmcrval.cms.gov": "qa",
+      };
+      const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
+      const tealiumDomainMap = {
+        prod: "tags.tiqcdn.com",
+        qa: "tags.tiqcdn.com",
+        dev: "tealium-tags.cms.gov",
+      };
+      const tealiumDomain = tealiumDomainMap[tealiumEnv];
+      const tealiumPath = `https://${tealiumDomain}/cms-mdctmcr/${tealiumEnv}`;
+      document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
+      document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
+    </script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Medicaid Data Collection Tool" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>Managed Care Reporting</title>
-  <script src="/env-config.js"></script>
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
-  <!-- Tealium Analytics Tag Manager -->
-  <script>
-    var tealiumEnvMap = {
-      "mdctmcr.cms.gov": "prod",
-      "mdctmcrval.cms.gov": "qa",
-    };
-    var tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-    var tealiumUrl = `https://tags.tiqcdn.com/utag/cmsgov/cms-general/${tealiumEnv}/utag.sync.js`;
-    document.write(`<script src="${tealiumUrl}" async><\/script>`);
-  </script>
-</head>
-
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <!-- Tealium Analytics Tag Manager -->
-  <script>
-    window.utag_cfg_ovrd = { noview: true };
-  </script>
-  <script>
-    (function (t, e, a, l, i, u, m) {
-      t = "cmsgov/cms-general";
-      e = tealiumEnv;
-      a = "/" + t + "/" + e + "/utag.js";
-      l = "//tags.tiqcdn.com/utag" + a;
-      i = document;
-      u = "script";
-      m = i.createElement(u);
-      m.src = l;
-      m.type = "text/java" + u;
-      m.async = true;
-      l = i.getElementsByTagName(u)[0];
-      l.parentNode.insertBefore(m, l);
-    })();
-  </script>
-  <div id="root"></div>
-  <script type="module" src="/src/index.tsx"></script>
-</body>
-
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
 </html>

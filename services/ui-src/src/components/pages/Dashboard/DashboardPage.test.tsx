@@ -19,16 +19,17 @@ import {
   mockReportContextNoReports,
   mockReportContextWithError,
   mockDashboardLockedReportContext,
-  mockLDFlags,
   mockMlrReportContext,
   mockMlrDashboardReportContext,
   mockMcparReportStore,
   mockMlrLockedReportStore,
+  mockNaaarReportContext,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
+import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -99,6 +100,14 @@ const dashboardViewWithLockedReport = (
   </RouterWrappedComponent>
 );
 
+const naaarDashboardViewEmpty = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportContext}>
+      <DashboardPage reportType="NAAAR" />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 describe("Test Report Dashboard view (with reports, desktop view)", () => {
   beforeEach(async () => {
     mockedUseStore.mockReturnValue({
@@ -136,6 +145,14 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
     expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
   });
 
+  test("Check that NAAAR Dashboard view renders", async () => {
+    await act(async () => {
+      await render(naaarDashboardViewEmpty);
+    });
+    expect(screen.getByText(naaarVerbiage.intro.header)).toBeVisible();
+    expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
+  });
+
   test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
     await act(async () => {
       await render(dashboardViewWithReports);
@@ -150,7 +167,6 @@ describe("Test Report Dashboard view (with reports, desktop view)", () => {
   });
 
   test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
-    mockLDFlags.set({ yoyCopy: true });
     await act(async () => {
       await render(dashboardViewWithReports);
     });

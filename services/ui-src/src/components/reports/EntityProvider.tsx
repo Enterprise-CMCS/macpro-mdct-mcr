@@ -1,15 +1,16 @@
-import { ReactNode, useMemo, useState, createContext } from "react";
-import { EntityType, EntityShape } from "types";
+import { ReactNode, useMemo, createContext } from "react";
+// types
+import { EntityShape } from "types";
+// utils
+import { useStore } from "utils";
+
+// CONTEXT DECLARATION
 
 interface EntityContextShape {
   updateEntities: Function;
   setEntities: Function;
   setSelectedEntity: Function;
   setEntityType: Function;
-  entityType?: EntityType;
-  entityId?: string;
-  entities: EntityShape[];
-  selectedEntity?: EntityShape;
 }
 
 export const EntityContext = createContext<EntityContextShape>({
@@ -17,10 +18,6 @@ export const EntityContext = createContext<EntityContextShape>({
   setEntities: Function,
   setSelectedEntity: Function,
   setEntityType: Function,
-  entityType: undefined,
-  entityId: undefined,
-  entities: [],
-  selectedEntity: undefined,
 });
 
 /**
@@ -33,9 +30,15 @@ export const EntityContext = createContext<EntityContextShape>({
  * @param children - React nodes
  */
 export const EntityProvider = ({ children }: EntityProviderProps) => {
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape>();
-  const [entityType, setEntityType] = useState<EntityType>();
-  const [entities, setEntities] = useState<EntityShape[]>([]);
+  // state management
+  const {
+    selectedEntity,
+    entityType,
+    entities,
+    setSelectedEntity,
+    setEntityType,
+    setEntities,
+  } = useStore();
 
   /**
    * updateEntities updates the user's selected entity with their changes, and
@@ -48,9 +51,8 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
    */
   const updateEntities = (updateData: EntityShape) => {
     const currentEntities = entities;
-    const selectedEntityIndex = currentEntities?.findIndex(
-      (x) => x.id === selectedEntity?.id
-    );
+    const selectedEntityIndex =
+      currentEntities?.findIndex((x) => x.id === selectedEntity?.id) ?? -1;
     if (currentEntities && selectedEntityIndex > -1) {
       const newEntity = {
         ...currentEntities[selectedEntityIndex],
@@ -58,19 +60,23 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
       };
       currentEntities[selectedEntityIndex] = newEntity;
     }
+
     return currentEntities;
   };
 
   const providerValue = useMemo(
     () => ({
-      updateEntities,
-      setSelectedEntity,
-      setEntities,
-      selectedEntity,
+      // entities
       entities,
+      setEntities,
+      updateEntities,
+      // selected entity
+      selectedEntity,
+      entityId: selectedEntity?.id,
+      setSelectedEntity,
+      // entity type
       setEntityType,
       entityType,
-      entityId: selectedEntity?.id,
     }),
     [entities, selectedEntity]
   );

@@ -14,6 +14,10 @@ const reportChoices = [
     id: "MCPAR",
     label: "Managed Care Program Annual Report (MCPAR)",
   },
+  {
+    id: "MLR",
+    label: "Medicaid Medical Loss Ratio (MLR)",
+  },
 ];
 
 export default {

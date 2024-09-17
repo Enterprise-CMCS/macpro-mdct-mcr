@@ -26,11 +26,10 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 export const DynamicField = ({ name, label, ...props }: Props) => {
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
-  const { report } = useStore();
+  const { report, entities, entityType, selectedEntity } = useStore();
 
   const { updateReport } = useContext(ReportContext);
-  const { entities, entityType, updateEntities, selectedEntity } =
-    useContext(EntityContext);
+  const { updateEntities } = useContext(EntityContext);
   const [displayValues, setDisplayValues] = useState<EntityShape[]>([]);
   const [selectedRecord, setSelectedRecord] = useState<EntityShape | undefined>(
     undefined

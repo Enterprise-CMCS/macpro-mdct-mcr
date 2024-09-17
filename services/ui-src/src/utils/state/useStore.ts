@@ -4,7 +4,10 @@ import { devtools, persist } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
+  EntityShape,
+  EntityType,
   ErrorVerbiage,
+  McrEntityState,
   McrReportState,
   MCRUser,
   McrUserState,
@@ -89,14 +92,38 @@ const reportStore = (set: Function) => ({
     }),
 });
 
+// ENTITY STORE
+const entityStore = (set: Function) => ({
+  // initial state
+  selectedEntity: undefined,
+  entityType: undefined,
+  entities: undefined,
+  // actions
+  setSelectedEntity: (newSelectedEntity: EntityShape | undefined) =>
+    set(() => ({ selectedEntity: newSelectedEntity }), false, {
+      type: "setSelectedEntity",
+    }),
+  setEntityType: (newEntityType: EntityType | undefined) =>
+    set(() => ({ entityType: newEntityType }), false, {
+      type: "setEntityType",
+    }),
+  setEntities: (newEntities: EntityShape[] | undefined) =>
+    set(() => ({ entities: newEntities }), false, {
+      type: "setEntities",
+    }),
+});
+
 export const useStore = create(
   // persist and devtools are being used for debugging state
   persist(
-    devtools<McrUserState & AdminBannerState & McrReportState>((set) => ({
-      ...userStore(set),
-      ...bannerStore(set),
-      ...reportStore(set),
-    })),
+    devtools<McrUserState & AdminBannerState & McrReportState & McrEntityState>(
+      (set) => ({
+        ...userStore(set),
+        ...bannerStore(set),
+        ...reportStore(set),
+        ...entityStore(set),
+      })
+    ),
     {
       name: "mcr-store",
       partialize: (state) => ({ report: state.report }),

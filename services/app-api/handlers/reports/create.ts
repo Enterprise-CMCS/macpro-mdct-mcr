@@ -75,17 +75,12 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  const julyMcparRelease = unvalidatedMetadata?.julyMcparRelease || false;
-  const updateTopicXii = unvalidatedMetadata?.updateTopicXii || false;
-
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
-      isProgramPCCM,
-      julyMcparRelease,
-      updateTopicXii
+      isProgramPCCM
     ));
   } catch (e) {
     throw e;

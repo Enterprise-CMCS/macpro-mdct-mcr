@@ -2,11 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import {
-  EntityProvider,
-  ModalOverlayReportPage,
-  ReportProvider,
-} from "components";
+import { ModalOverlayReportPage, ReportProvider } from "components";
 // utils
 import {
   RouterWrappedComponent,
@@ -17,6 +13,7 @@ import {
   mockMlrReportStore,
   mockMLRReportEntityStartedFieldData,
   mockEmptyReportStore,
+  mockEntityStore,
 } from "utils/testing/setupJest";
 import { UserProvider, useStore } from "utils";
 // verbiage
@@ -25,6 +22,7 @@ import accordionVerbiage from "../../verbiage/pages/accordion";
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const mockMlrEntityStartedStore = {
+  ...mockEntityStore,
   ...mockMlrReportStore,
   report: {
     ...mockMlrReportStore.report,
@@ -34,7 +32,7 @@ const mockMlrEntityStartedStore = {
 
 const mockSetSidebarHidden = jest.fn();
 
-const modalOverlayReportPageInitialComponent = (
+const modalOverlayReportPageComponent = (
   <RouterWrappedComponent>
     <UserProvider>
       <ReportProvider>
@@ -42,21 +40,6 @@ const modalOverlayReportPageInitialComponent = (
           route={mockModalOverlayReportPageWithOverlayJson}
           setSidebarHidden={mockSetSidebarHidden}
         />
-      </ReportProvider>
-    </UserProvider>
-  </RouterWrappedComponent>
-);
-
-const modalOverlayReportPageEntityAddedComponent = (
-  <RouterWrappedComponent>
-    <UserProvider>
-      <ReportProvider>
-        <EntityProvider>
-          <ModalOverlayReportPage
-            route={mockModalOverlayReportPageWithOverlayJson}
-            setSidebarHidden={mockSetSidebarHidden}
-          />
-        </EntityProvider>
       </ReportProvider>
     </UserProvider>
   </RouterWrappedComponent>
@@ -74,7 +57,7 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
       ...mockStateUserStore,
       ...mockEmptyReportStore,
     });
-    render(modalOverlayReportPageInitialComponent);
+    render(modalOverlayReportPageComponent);
 
     // Check if header is visible on load - H1
     expect(screen.getByText(verbiage.intro.section)).toBeVisible();
@@ -109,7 +92,7 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
     });
 
     await act(async () => {
-      render(modalOverlayReportPageInitialComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -132,7 +115,7 @@ describe("Test ModalOverlayReportPage (empty state)", () => {
     });
 
     await act(async () => {
-      render(modalOverlayReportPageInitialComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     // Check if header is visible on load - H1
@@ -172,6 +155,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockMlrEntityStartedStore,
+      ...mockEntityStore,
     });
   });
 
@@ -179,7 +163,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 
   it("should render the initial view for a State user", async () => {
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
     // Check if header is visible on load - H1
     expect(screen.getByText(verbiage.intro.section)).toBeVisible();
@@ -215,7 +199,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 
   it("should open the edit modal", async () => {
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -236,7 +220,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 
   it("should open and close the delete modal as a State user", async () => {
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -280,7 +264,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     });
 
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     // Verify the entity exists
@@ -299,7 +283,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 
   it("should open and close the overlay page as a State user", async () => {
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -331,7 +315,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     });
 
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -371,7 +355,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     });
 
     await act(async () => {
-      render(modalOverlayReportPageEntityAddedComponent);
+      render(modalOverlayReportPageComponent);
     });
 
     const user = userEvent.setup();
@@ -401,7 +385,7 @@ describe("Test ModalOverlayReportPage (Entities Added State)", () => {
 describe("Test ModalOverlayReportPage accessibility", () => {
   it("Should not have basic accessibility issues", async () => {
     await act(async () => {
-      const { container } = render(modalOverlayReportPageInitialComponent);
+      const { container } = render(modalOverlayReportPageComponent);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
@@ -409,7 +393,7 @@ describe("Test ModalOverlayReportPage accessibility", () => {
 
   it("Should not have basic accessibility issues", async () => {
     await act(async () => {
-      const { container } = render(modalOverlayReportPageEntityAddedComponent);
+      const { container } = render(modalOverlayReportPageComponent);
       const results = await axe(container);
       expect(results).toHaveNoViolations();
     });
