@@ -41,7 +41,7 @@ export interface GetAutosaveFieldsProps extends AutosaveField {
  */
 export interface EntityContextShape {
   selectedEntity?: EntityShape;
-  entities: EntityShape[];
+  entities?: EntityShape[];
   entityType?: EntityType;
   updateEntities: Function;
 }

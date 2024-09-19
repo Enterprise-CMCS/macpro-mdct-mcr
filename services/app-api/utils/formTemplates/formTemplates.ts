@@ -22,7 +22,6 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { handleTemplateForJulyMcparRelease } from "./formTemplateModifiers";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -77,16 +76,9 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  isProgramPCCM: boolean,
-  julyMcparRelease: boolean
+  isProgramPCCM: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
-
-  // if July MCPAR Release is not enabled, remove the fields from form template
-  if (!julyMcparRelease) {
-    currentFormTemplate =
-      handleTemplateForJulyMcparRelease(currentFormTemplate);
-  }
 
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
