@@ -14,13 +14,14 @@ import {
 import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
 // types
-import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent } from "../../utils/types";
+import { StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn(() => {}),
+  isAuthenticated: jest.fn().mockResolvedValue(true),
+  hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
 const mockAuthUtil = require("../../utils/auth/authorization");
@@ -67,9 +68,9 @@ describe("Test releaseReport method", () => {
     });
 
     const res = await releaseReport(releaseEvent, null);
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(body.locked).toBe(false);
     expect(body.previousRevisions).toEqual([
       mockDynamoDataMLRLocked.fieldDataId,
@@ -99,9 +100,9 @@ describe("Test releaseReport method", () => {
     });
 
     const res = await releaseReport(releaseEvent, null);
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(body.locked).toBe(false);
     expect(body.submissionCount).toBe(1);
     expect(body.previousRevisions.length).toBe(2);
@@ -112,6 +113,52 @@ describe("Test releaseReport method", () => {
     expect(body.fieldDataId).not.toBe(mockDynamoDataMLRLocked.fieldDataId);
   });
 
+  const newPreviousId = KSUID.randomSync().string;
+  test("Test release report on already-released report", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: {
+        ...mockDynamoDataMLRLocked,
+        previousRevisions: [newPreviousId],
+        submissionCount: 1,
+        locked: false,
+      },
+    });
+
+    const res = await releaseReport(releaseEvent, null);
+    const body = JSON.parse(res.body!);
+
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    expect(body.locked).toBe(false);
+  });
+
+  test("Test release report on archived report", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: {
+        ...mockDynamoDataMLRLocked,
+        previousRevisions: [newPreviousId],
+        archived: true,
+      },
+    });
+
+    const res = await releaseReport(releaseEvent, null);
+
+    expect(res.statusCode).toBe(StatusCodes.Conflict);
+    expect(res.body).toContain(error.ALREADY_ARCHIVED);
+  });
+
+  test("Test release report with no parameters returns 400", async () => {
+    const event = {
+      ...releaseEvent,
+      pathParameters: {
+        ...releaseEvent.pathParameters,
+        state: undefined,
+      },
+    };
+    const res = await releaseReport(event, null);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    expect(res.body).toContain(error.NO_KEY);
+  });
+
   test("Test release report with no existing record throws 404", async () => {
     mockAuthUtil.hasPermissions.mockReturnValue(true);
     dynamoClientMock.on(GetCommand).resolves({
@@ -119,7 +166,25 @@ describe("Test releaseReport method", () => {
     });
     const res = await releaseReport(releaseEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
+    expect(res.body).toContain(error.NO_MATCHING_RECORD);
+  });
+
+  test("Test release report with no field data returns 404", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: undefined,
+    });
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
+    expect(res.body).toContain(error.NO_MATCHING_RECORD);
+  });
+
+  test("Test release report with no form template returns 404", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: undefined,
+    });
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 
@@ -130,7 +195,7 @@ describe("Test releaseReport method", () => {
     });
     const res = await releaseReport(releaseEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 });

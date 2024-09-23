@@ -15,12 +15,13 @@ import {
 } from "../../utils/testing/setupJest";
 import s3Lib from "../../utils/s3/s3-lib";
 // types
-import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent } from "../../utils/types";
+import { StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockReturnValue(true),
+  isAuthenticated: jest.fn().mockReturnValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
@@ -53,7 +54,7 @@ describe("Test submitReport API method", () => {
     });
     const res = await submitReport(testSubmitEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
   });
 
   test("Test Successful Report Submittal", async () => {
@@ -71,8 +72,8 @@ describe("Test submitReport API method", () => {
 
     const res = await submitReport(testSubmitEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    const body = JSON.parse(res.body!);
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.programName).toContain("testProgram");
     expect(body.isComplete).toStrictEqual(true);
@@ -102,8 +103,8 @@ describe("Test submitReport API method", () => {
 
     const res = await submitReport(testSubmitEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
-    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
+    const body = JSON.parse(res.body!);
     expect(body.lastAlteredBy).toContain("Thelonious States");
     expect(body.submissionName).toContain("testProgram");
     expect(body.isComplete).toStrictEqual(true);
@@ -120,8 +121,8 @@ describe("Test submitReport API method", () => {
     });
     const res = await submitReport(testSubmitEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
-    const body = JSON.parse(res.body);
+    expect(res.statusCode).toBe(StatusCodes.Conflict);
+    const body = JSON.parse(res.body!);
     expect(body).toStrictEqual(error.REPORT_INCOMPLETE);
   });
 
@@ -132,7 +133,7 @@ describe("Test submitReport API method", () => {
     };
     const res = await submitReport(noKeyEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
 
@@ -143,7 +144,7 @@ describe("Test submitReport API method", () => {
     };
     const res = await submitReport(noKeyEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
 });

@@ -23,7 +23,7 @@ export const error = {
   ALREADY_ARCHIVED: "Cannot update archived report.",
   ALREADY_LOCKED: "Cannot update locked report.",
   REPORT_INCOMPLETE: "Cannot submit incomplete form.",
-};
+} as const;
 
 export const buckets = {
   FORM_TEMPLATE: "formTemplates",

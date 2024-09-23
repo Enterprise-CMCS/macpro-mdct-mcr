@@ -18,12 +18,19 @@ import s3Lib, {
   getFormTemplateKey,
 } from "../../utils/s3/s3-lib";
 import { calculateCompletionStatus } from "../../utils/validation/completionStatus";
+import {
+  badRequest,
+  conflict,
+  forbidden,
+  internalServerError,
+  notFound,
+  ok,
+} from "../../utils/responses/response-lib";
 // types
 import {
   FormJson,
   ReportMetadata,
   ReportType,
-  StatusCodes,
   UserRoles,
 } from "../../utils/types";
 
@@ -41,10 +48,7 @@ import {
 export const releaseReport = handler(async (event) => {
   // Return a 403 status if the user is not an admin.
   if (!hasPermissions(event, [UserRoles.ADMIN, UserRoles.APPROVER])) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
 
   if (
@@ -52,10 +56,7 @@ export const releaseReport = handler(async (event) => {
     !event.pathParameters?.state ||
     !event.pathParameters?.reportType
   ) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const { id, state, reportType } = event.pathParameters;
@@ -73,17 +74,11 @@ export const releaseReport = handler(async (event) => {
   try {
     reportMetadata = await dynamoDb.get(reportMetadataParams);
   } catch {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
+    return notFound(error.NO_MATCHING_RECORD);
   }
 
   if (!reportMetadata.Item) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
+    return notFound(error.NO_MATCHING_RECORD);
   }
 
   const metadata = reportMetadata.Item as ReportMetadata;
@@ -93,22 +88,14 @@ export const releaseReport = handler(async (event) => {
 
   // Report is not locked.
   if (!isLocked) {
-    return {
-      status: StatusCodes.SUCCESS,
-      body: {
-        ...metadata,
-      },
-    };
+    return ok(metadata);
   }
 
   // check if report is archived
   const isArchived = metadata.archived;
 
   if (isArchived) {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.ALREADY_ARCHIVED,
-    };
+    return conflict(error.ALREADY_ARCHIVED);
   }
 
   const newFieldDataId = KSUID.randomSync().string;
@@ -138,10 +125,7 @@ export const releaseReport = handler(async (event) => {
     >;
     formTemplate = (await s3Lib.get(getFormTemplateParameters)) as FormJson;
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.DYNAMO_UPDATE_ERROR,
-    };
+    return internalServerError(error.S3_OBJECT_GET_ERROR);
   }
 
   const updatedFieldData = {
@@ -180,10 +164,7 @@ export const releaseReport = handler(async (event) => {
   try {
     await dynamoDb.put(putReportMetadataParams);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.DYNAMO_UPDATE_ERROR,
-    };
+    return internalServerError(error.DYNAMO_UPDATE_ERROR);
   }
 
   // Copy the original field data to a new location.
@@ -199,14 +180,8 @@ export const releaseReport = handler(async (event) => {
 
     await s3Lib.put(putObjectParameters);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.S3_OBJECT_CREATION_ERROR,
-    };
+    return internalServerError(error.S3_OBJECT_CREATION_ERROR);
   }
 
-  return {
-    status: StatusCodes.SUCCESS,
-    body: putReportMetadataParams.Item,
-  };
+  return ok(putReportMetadataParams.Item);
 });
