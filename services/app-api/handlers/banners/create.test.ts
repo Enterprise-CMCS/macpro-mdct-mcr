@@ -39,6 +39,9 @@ const consoleSpy: {
 };
 
 describe("Test createBanner API method", () => {
+  beforeEach(() => {
+    dynamoClientMock.reset();
+  });
   test("Test unauthorized banner creation throws 403 error", async () => {
     (hasPermissions as jest.Mock).mockReturnValueOnce(false);
     const res = await createBanner(testEvent, null);
@@ -56,6 +59,13 @@ describe("Test createBanner API method", () => {
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");
     expect(mockPut).toHaveBeenCalled();
+  });
+
+  test("Test dynamo issue throws error", async () => {
+    dynamoClientMock.on(PutCommand).rejectsOnce("error with dynamo");
+    const res = await createBanner(testEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_CREATION_ERROR);
   });
 
   test("Test invalid data causes failure", async () => {

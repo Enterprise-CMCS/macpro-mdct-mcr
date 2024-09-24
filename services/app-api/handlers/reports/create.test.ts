@@ -1,5 +1,9 @@
 import { createReport } from "./create";
-import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
 import * as reportUtils from "../../utils/reports/reports";
@@ -284,6 +288,35 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.programName).toBeUndefined();
     expect(body.fieldData.plans).toBeUndefined();
     expect(s3PutSpy).toHaveBeenCalled();
+  });
+
+  test("Test dynamo issue throws error", async () => {
+    dynamoClientMock
+      .on(PutCommand)
+      .resolvesOnce({})
+      .rejectsOnce("error with dynamo")
+      .on(QueryCommand)
+      .resolves({
+        Items: [],
+      });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const res = await createReport(creationEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_CREATION_ERROR);
+  });
+
+  test("Test s3 issue throws error", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy
+      .mockResolvedValueOnce(mockS3PutObjectCommandOutput)
+      .mockRejectedValueOnce("error");
+    const res = await createReport(creationEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_CREATION_ERROR);
   });
 
   test("Test attempted report creation with invalid data fails", async () => {
