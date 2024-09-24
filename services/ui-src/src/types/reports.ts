@@ -65,7 +65,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
   drawerForm: FormJson;
   modalForm?: never;
   overlayForm?: never;
-  form?: never;
+  form?: FormJson;
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {

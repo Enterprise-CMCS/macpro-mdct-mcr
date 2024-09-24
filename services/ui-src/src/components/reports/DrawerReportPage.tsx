@@ -13,6 +13,7 @@ import {
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
+  Form,
 } from "components";
 // utils
 import {
@@ -24,6 +25,7 @@ import {
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
   useStore,
+  useFindRoute,
 } from "utils";
 // types
 import {
@@ -36,6 +38,7 @@ import {
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
+import { useNavigate } from "react-router-dom";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -50,8 +53,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
+  const [priorAuthStatus, setPriorAuthStatus] = useState<boolean>(false);
 
-  const { entityType, verbiage, drawerForm } = route;
+  const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
 
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
@@ -64,10 +68,22 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   // generate ILOS fields (if applicable)
   const form =
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+  const navigate = useNavigate();
+  const { nextRoute } = useFindRoute(
+    report!.formTemplate.flatRoutes!,
+    report!.formTemplate.basePath
+  );
 
-  const openRowDrawer = (entity: EntityShape) => {
-    setSelectedEntity(entity);
-    onOpen();
+  // check if reporting on Prior Authorization
+  const reportingPriorAuth =
+    route.path === "/mcpar/plan-level-indicators/prior-authorization";
+
+  const onError = () => {
+    navigate(nextRoute);
+  };
+
+  const onChange = () => {
+    setPriorAuthStatus(!priorAuthStatus);
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -121,8 +137,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
+  const openRowDrawer = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    onOpen();
+  };
+
   const entityRows = (entities: EntityShape[]) => {
-    const disabled = reportingOnIlos && !hasIlos;
+    const disabled =
+      (reportingOnIlos && !hasIlos) || (reportingPriorAuth && !priorAuthStatus);
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
         return form.fields
@@ -176,6 +198,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       ) : (
         <></>
+      )}
+      {standardForm && (
+        <Box sx={sx.standardForm}>
+          <Form
+            id={standardForm.id}
+            formJson={standardForm}
+            onSubmit={onSubmit}
+            onChange={onChange}
+            onError={onError}
+            formData={report?.fieldData}
+            autosave
+            validateOnRender={validateOnRender || false}
+            dontReset={false}
+          />
+        </Box>
       )}
       <Box>
         <Heading as="h3" sx={sx.dashboardTitle}>
@@ -289,5 +326,8 @@ const sx = {
       color: "palette.gray_lighter",
       borderColor: "palette.gray_lighter",
     },
+  },
+  standardForm: {
+    paddingBottom: "1rem",
   },
 };

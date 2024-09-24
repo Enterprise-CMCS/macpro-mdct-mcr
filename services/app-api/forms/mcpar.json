@@ -4134,6 +4134,72 @@
               }
             ]
           }
+        },
+        {
+          "name": "XIII: Prior Authorization",
+          "path": "/mcpar/plan-level-indicators/prior-authorization",
+          "pageType": "drawer",
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic XIII: Prior Authorization",
+              "spreadsheet": "D1_Plan_Set",
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-14 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, enter \"N/A\".</b>"
+            },
+            "dashboardTitle": "Report on prior authorization for each plan",
+            "drawerTitle": "Placeholder",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ]
+          },
+          "form": {
+            "id": "pa",
+            "fields": [
+              {
+                "id": "plan_reportingDataPriorToJune2026",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Are you reporting data prior to June 2026?",
+                  "hint": "If \"Yes\", please complete the following questions under each plan.",
+                  "choices": [
+                    {
+                      "id": "IELJsTZxQkFDkTMzWQkKocwb",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "bByTWRIwTSTBncyZRUiibagB",
+                      "label": "Yes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "drawerForm": {
+            "id": "dpa",
+            "fields": []
+          }
         }
       ]
     },
