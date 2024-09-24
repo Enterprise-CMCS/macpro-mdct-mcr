@@ -53,7 +53,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
-  const [priorAuthStatus, setPriorAuthStatus] = useState<boolean>(false);
+  const [priorAuthStatus, setPriorAuthStatus] = useState<boolean>();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
@@ -83,7 +83,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const onChange = () => {
-    setPriorAuthStatus(!priorAuthStatus);
+    reportingPriorAuth && setPriorAuthStatus(!priorAuthStatus);
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -143,8 +143,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
-    const disabled =
-      (reportingOnIlos && !hasIlos) || (reportingPriorAuth && !priorAuthStatus);
+    let disabled: boolean;
+    if (reportingOnIlos) {
+      disabled = !hasIlos ?? true;
+    } else if (reportingPriorAuth) {
+      disabled = !priorAuthStatus ?? true;
+    }
+
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
         return form.fields

@@ -178,6 +178,15 @@ export const calculateCompletionStatus = async (
           routeCompletion = { [route.path]: true };
           break;
         }
+        // handle Prior Authorization case: if the user is not reporting prior to June 2026, this section is not required
+        if (
+          route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
+          fieldData["plan_reportingDataPriorToJune2026"]?.[0].value ===
+            "Not reporting data"
+        ) {
+          routeCompletion = { [route.path]: true };
+          break;
+        }
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
             [route.drawerForm],

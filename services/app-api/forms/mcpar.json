@@ -4198,7 +4198,17 @@
           },
           "drawerForm": {
             "id": "dpa",
-            "fields": []
+            "fields": [
+              {
+                "id": "plan_totalNumberOfStandardPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.1 Total number of standard PA requests",
+                  "hint": "Logged by the plan during prior calendar year."
+                }
+              }
+            ]
           }
         }
       ]
