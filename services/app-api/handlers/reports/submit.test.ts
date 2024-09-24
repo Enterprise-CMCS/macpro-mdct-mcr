@@ -1,5 +1,9 @@
 import { submitReport } from "./submit";
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -14,6 +18,7 @@ import {
   mockS3PutObjectCommandOutput,
 } from "../../utils/testing/setupJest";
 import s3Lib from "../../utils/s3/s3-lib";
+import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
@@ -146,5 +151,66 @@ describe("Test submitReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
+  });
+
+  test("Test attempted report submit without permissions returns 403", async () => {
+    (hasPermissions as jest.Mock).mockReturnValueOnce(false);
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
+    expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test dynamo issue throws error", async () => {
+    dynamoClientMock
+      .on(GetCommand)
+      .resolves({
+        Item: mockDynamoDataCompleted,
+      })
+      .on(PutCommand)
+      .rejectsOnce("error with dynamo");
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_UPDATE_ERROR);
+  });
+
+  test("Test s3 form template get issue throws error", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoDataCompleted,
+    });
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockS3PutObjectCommandOutput)
+      .mockRejectedValueOnce("error");
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_GET_ERROR);
+  });
+
+  test("Test s3 field data get issue throws error", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoDataCompleted,
+    });
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockRejectedValueOnce("error")
+      .mockResolvedValueOnce(mockS3PutObjectCommandOutput);
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_GET_ERROR);
+  });
+
+  test("Test s3 put field data issue throws error", async () => {
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoDataCompleted,
+    });
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockRejectedValueOnce("error");
+    const res = await submitReport(testSubmitEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_UPDATE_ERROR);
   });
 });

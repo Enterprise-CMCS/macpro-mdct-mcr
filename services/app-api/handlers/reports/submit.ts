@@ -116,7 +116,7 @@ export const submitReport = handler(async (event, _context) => {
       any
     >;
   } catch {
-    return internalServerError(error.NOT_IN_DATABASE);
+    return internalServerError(error.S3_OBJECT_GET_ERROR);
   }
 
   const fieldData = {
@@ -146,7 +146,7 @@ export const submitReport = handler(async (event, _context) => {
       any
     >;
   } catch {
-    return internalServerError(error.NOT_IN_DATABASE);
+    return internalServerError(error.S3_OBJECT_GET_ERROR);
   }
 
   try {
