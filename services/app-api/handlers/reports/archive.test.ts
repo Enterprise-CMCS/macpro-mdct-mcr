@@ -115,4 +115,21 @@ describe("Test archiveReport method", () => {
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
+
+  test("Test dynamo put issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify(mockMcparReport),
+    });
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    dynamoPutSpy.mockRejectedValueOnce("error");
+    const res: any = await archiveReport(archiveEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_UPDATE_ERROR);
+  });
 });

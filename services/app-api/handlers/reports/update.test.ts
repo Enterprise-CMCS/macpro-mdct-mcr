@@ -13,7 +13,6 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
-import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
@@ -92,13 +91,11 @@ describe("handlers/reports/update", () => {
   beforeEach(() => {
     consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
     consoleSpy.error = jest.spyOn(console, "error").mockImplementation();
+    dynamoClientMock.reset();
+    jest.clearAllMocks();
   });
 
   describe("Test updateReport and archiveReport unauthorized calls", () => {
-    afterAll(() => {
-      jest.clearAllMocks();
-    });
-
     test("Test unauthorized report update throws 403 error", async () => {
       // fail both state and admin auth checks
       mockAuthUtil.hasPermissions.mockReturnValue(false);
@@ -114,10 +111,6 @@ describe("handlers/reports/update", () => {
     beforeAll(() => {
       // pass state auth check
       mockAuthUtil.hasPermissions.mockReturnValue(true);
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
     });
 
     test("Test report update submission succeeds", async () => {
@@ -230,13 +223,6 @@ describe("handlers/reports/update", () => {
       expect(res.body).toContain(error.INVALID_DATA);
     });
 
-    test("Test attempted report update without permissions returns 403", async () => {
-      (hasPermissions as jest.Mock).mockReturnValueOnce(false);
-      const res = await updateReport(submissionEvent, null);
-      expect(res.statusCode).toBe(StatusCodes.Forbidden);
-      expect(res.body).toContain(error.UNAUTHORIZED);
-    });
-
     test("Test attempted report update with no existing record throws 404", async () => {
       mockedFetchReport.mockResolvedValue({
         statusCode: 200,
@@ -290,6 +276,54 @@ describe("handlers/reports/update", () => {
       expect(consoleSpy.debug).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
+    });
+
+    test("Test dynamo put issue throws error", async () => {
+      // s3 mocks
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(mockReportFieldData);
+      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+      // fetch mock
+      mockedFetchReport.mockResolvedValue({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "string",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(mockDynamoData),
+      });
+      // dynamodb mock error
+      dynamoClientMock.on(PutCommand).rejectsOnce("error");
+
+      const response = await updateReport(submissionEvent, null);
+      expect(response.statusCode).toBe(StatusCodes.InternalServerError);
+      expect(response.body).toContain(error.DYNAMO_UPDATE_ERROR);
+    });
+
+    test("Test s3 put issue throws error", async () => {
+      // s3 mocks
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(mockReportFieldData);
+      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      s3PutSpy.mockRejectedValueOnce("error");
+      // fetch mock
+      mockedFetchReport.mockResolvedValue({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "string",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(mockDynamoData),
+      });
+
+      const response = await updateReport(submissionEvent, null);
+      expect(response.statusCode).toBe(StatusCodes.InternalServerError);
+      expect(response.body).toContain(error.S3_OBJECT_UPDATE_ERROR);
     });
 
     test("Test missing form template returns 404", async () => {

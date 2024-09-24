@@ -1,6 +1,10 @@
 import { releaseReport } from "./release";
 import KSUID from "ksuid";
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  GetCommand,
+  PutCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
@@ -197,5 +201,72 @@ describe("Test releaseReport method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test dynamo get metadata issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    // dynamodb mocks
+    dynamoClientMock.on(GetCommand).rejectsOnce("error");
+
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
+    expect(res.body).toContain(error.NO_MATCHING_RECORD);
+  });
+
+  test("Test dynamo put issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    // dynamodb mocks
+    dynamoClientMock
+      .on(GetCommand)
+      .resolves({
+        Item: mockDynamoDataMLRLocked,
+      })
+      .on(PutCommand)
+      .rejectsOnce("error");
+
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_UPDATE_ERROR);
+  });
+
+  test("Test s3 get issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockRejectedValueOnce("error")
+      .mockResolvedValueOnce(mockReportFieldData);
+    // dynamodb mocks
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoDataMLRLocked,
+    });
+
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_GET_ERROR);
+  });
+
+  test("Test s3 put issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    // s3 mocks
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    s3GetSpy
+      .mockResolvedValueOnce(mockReportJson)
+      .mockResolvedValueOnce(mockReportFieldData);
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockRejectedValueOnce("error");
+    // dynamodb mocks
+    dynamoClientMock.on(GetCommand).resolves({
+      Item: mockDynamoDataMLRLocked,
+    });
+
+    const res = await releaseReport(releaseEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_CREATION_ERROR);
   });
 });
