@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -38,7 +39,6 @@ import {
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
-import { useNavigate } from "react-router-dom";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -53,7 +53,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
-  const [priorAuthStatus, setPriorAuthStatus] = useState<boolean>();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
@@ -75,15 +74,26 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   );
 
   // check if reporting on Prior Authorization
-  const reportingPriorAuth =
+  const reportingOnPriorAuth =
     route.path === "/mcpar/plan-level-indicators/prior-authorization";
+  const priorAuthStatus =
+    report?.fieldData?.["plan_reportingDataPriorToJune2026"]?.[0].value;
+
+  // on load, get reporting status from store
+  const [isDisabled, setDisabled] = useState<boolean>(
+    priorAuthStatus === "Yes" ? false : true
+  );
 
   const onError = () => {
     navigate(nextRoute);
   };
 
-  const onChange = () => {
-    reportingPriorAuth && setPriorAuthStatus(!priorAuthStatus);
+  const onChange = (e: any) => {
+    if (e.target.value !== "Yes") {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -143,12 +153,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
-    let disabled: boolean;
-    if (reportingOnIlos) {
-      disabled = !hasIlos ?? true;
-    } else if (reportingPriorAuth) {
-      disabled = !priorAuthStatus ?? true;
-    }
+    // TODO: CLEAN UP THIS THING
+    let disableIlos = reportingOnIlos && !hasIlos && true;
 
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
@@ -179,10 +185,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {entity.name}
           </Heading>
           <Button
-            sx={disabled ? sx.disabledButton : sx.enterButton}
+            sx={disableIlos || isDisabled ? sx.disabledButton : sx.enterButton}
             onClick={() => openRowDrawer(entity)}
             variant="outline"
-            disabled={disabled}
+            disabled={reportingOnPriorAuth ? isDisabled : disableIlos}
           >
             {isEntityCompleted ? "Edit" : "Enter"}
           </Button>
