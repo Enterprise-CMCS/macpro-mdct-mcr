@@ -73,13 +73,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     report!.formTemplate.basePath
   );
 
-  // check if reporting on Prior Authorization
-  const reportingOnPriorAuth =
-    route.path === "/mcpar/plan-level-indicators/prior-authorization";
+  // on load, get reporting status from store
   const priorAuthStatus =
     report?.fieldData?.["plan_reportingDataPriorToJune2026"]?.[0].value;
-
-  // on load, get reporting status from store
   const [isDisabled, setDisabled] = useState<boolean>(
     priorAuthStatus === "Yes" ? false : true
   );
@@ -152,8 +148,36 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onOpen();
   };
 
+  const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
+    switch (route.path) {
+      case (route.path = "/mcpar/plan-level-indicators/ilos"):
+        return (
+          <Button
+            sx={!hasIlos ? sx.disabledButton : sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+            disabled={!hasIlos}
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        );
+      case (route.path = "/mcpar/plan-level-indicators/prior-authorization"):
+        return (
+          <Button
+            sx={isDisabled ? sx.disabledButton : sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+            disabled={isDisabled}
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        );
+      default:
+        return <></>;
+    }
+  };
+
   const entityRows = (entities: EntityShape[]) => {
-    let disableIlos = (reportingOnIlos && !hasIlos) || false;
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
         return form.fields
@@ -182,14 +206,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Heading as="h4" sx={sx.entityName}>
             {entity.name}
           </Heading>
-          <Button
-            sx={disableIlos || isDisabled ? sx.disabledButton : sx.enterButton}
-            onClick={() => openRowDrawer(entity)}
-            variant="outline"
-            disabled={reportingOnPriorAuth ? isDisabled : disableIlos}
-          >
-            {isEntityCompleted ? "Edit" : "Enter"}
-          </Button>
+          {enterButton(entity, isEntityCompleted)}
         </Flex>
       );
     });
