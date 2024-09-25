@@ -153,9 +153,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const entityRows = (entities: EntityShape[]) => {
-    // TODO: CLEAN UP THIS THING
-    let disableIlos = reportingOnIlos && !hasIlos && true;
-
+    let disableIlos = (reportingOnIlos && !hasIlos) || false;
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
         return form.fields
