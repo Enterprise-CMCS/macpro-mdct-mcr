@@ -1,22 +1,20 @@
 import handler from "../handler-lib";
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
-// types
-import { StatusCodes } from "../../utils/types";
 // utils
 import { error } from "../../utils/constants/constants";
+import { badRequest, ok } from "../../utils/responses/response-lib";
 
 export const fetchBanner = handler(async (event, _context) => {
   if (!event?.pathParameters?.bannerId!) {
-    throw new Error(error.NO_KEY);
+    return badRequest(error.NO_KEY);
   }
   const params = {
     TableName: process.env.BANNER_TABLE_NAME!,
     Key: {
-      key: event?.pathParameters?.bannerId!,
+      key: event.pathParameters.bannerId,
     },
   };
   const response = await dynamoDb.get(params);
 
-  const status = StatusCodes.SUCCESS;
-  return { status: status, body: response };
+  return ok(response);
 });
