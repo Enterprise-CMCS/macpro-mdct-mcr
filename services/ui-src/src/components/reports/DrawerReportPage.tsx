@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -26,7 +25,6 @@ import {
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
   useStore,
-  useFindRoute,
 } from "utils";
 // types
 import {
@@ -57,9 +55,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
 
-  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
-
   // check if there are ILOS and associated plans
+  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
@@ -67,11 +64,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   // generate ILOS fields (if applicable)
   const form =
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
-  const navigate = useNavigate();
-  const { nextRoute } = useFindRoute(
-    report!.formTemplate.flatRoutes!,
-    report!.formTemplate.basePath
-  );
 
   // on load, get reporting status from store
   const priorAuthStatus =
@@ -79,10 +71,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [isDisabled, setDisabled] = useState<boolean>(
     priorAuthStatus === "Yes" ? false : true
   );
-
-  const onError = () => {
-    navigate(nextRoute);
-  };
 
   const onChange = (e: any) => {
     if (e.target.value !== "Yes") {
@@ -232,7 +220,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             formJson={standardForm}
             onSubmit={onSubmit}
             onChange={onChange}
-            onError={onError}
             formData={report?.fieldData}
             autosave
             validateOnRender={validateOnRender || false}
