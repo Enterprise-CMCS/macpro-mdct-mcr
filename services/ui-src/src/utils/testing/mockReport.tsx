@@ -216,7 +216,7 @@ export const mockReportFieldData = {
       name: "mock-ilos-name-1",
     },
   ],
-  plan_reportingDataPriorToJune2026: [
+  reportingDataPriorToJune2026: [
     {
       key: "mock-key",
       value: "Yes",

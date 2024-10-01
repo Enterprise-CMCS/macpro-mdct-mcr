@@ -41,6 +41,7 @@ export const ChoiceListField = ({
   const defaultValue: Choice[] = [];
   const [displayValue, setDisplayValue] = useState<Choice[]>(defaultValue);
 
+  // context
   const { updateReport } = useContext(ReportContext);
   const { updateEntities } = useContext(EntityContext);
 

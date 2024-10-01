@@ -34,6 +34,7 @@ import {
   ReportStatus,
   FormField,
   isFieldElement,
+  InputChangeEvent,
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -45,12 +46,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
-  const { report } = useStore();
-
-  // make state
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
-    undefined
-  );
+  const { report, selectedEntity, setSelectedEntity } = useStore();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
@@ -67,12 +63,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // on load, get reporting status from store
   const priorAuthStatus =
-    report?.fieldData?.["plan_reportingDataPriorToJune2026"]?.[0].value;
+    report?.fieldData?.["reportingDataPriorToJune2026"]?.[0].value;
   const [isDisabled, setDisabled] = useState<boolean>(
     priorAuthStatus === "Yes" ? false : true
   );
 
-  const onChange = (e: any) => {
+  const onChange = async (e: InputChangeEvent) => {
     if (e.target.value !== "Yes") {
       setDisabled(true);
     } else {
