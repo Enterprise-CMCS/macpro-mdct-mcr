@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -25,6 +26,7 @@ import {
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
   useStore,
+  useFindRoute,
 } from "utils";
 // types
 import {
@@ -64,6 +66,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   // generate ILOS fields (if applicable)
   const form =
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+  const navigate = useNavigate();
+  const { nextRoute } = useFindRoute(
+    report!.formTemplate.flatRoutes!,
+    report!.formTemplate.basePath
+  );
 
   // on load, get reporting status from store
   const priorAuthStatus =
@@ -71,6 +78,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [isDisabled, setDisabled] = useState<boolean>(
     priorAuthStatus === "Yes" ? false : true
   );
+
+  const onError = () => {
+    navigate(nextRoute);
+  };
 
   const onChange = (e: any) => {
     if (e.target.value !== "Yes") {
@@ -161,7 +172,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           </Button>
         );
       default:
-        return <></>;
+        return (
+          <Button
+            sx={sx.enterButton}
+            onClick={() => openRowDrawer(entity)}
+            variant="outline"
+          >
+            {isEntityCompleted ? "Edit" : "Enter"}
+          </Button>
+        );
     }
   };
 
@@ -220,6 +239,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             formJson={standardForm}
             onSubmit={onSubmit}
             onChange={onChange}
+            onError={onError}
             formData={report?.fieldData}
             autosave
             validateOnRender={validateOnRender || false}
