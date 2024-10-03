@@ -1,25 +1,39 @@
-import { buildResponse, internalServerError } from "./response-lib";
+import {
+  ok,
+  created,
+  badRequest,
+  unauthenticated,
+  forbidden,
+  notFound,
+  conflict,
+  internalServerError,
+} from "./response-lib";
 
-test("Internal Server Error should give a 500 status", () => {
-  const res = internalServerError("internal error");
-  expect(res.body).toBe(JSON.stringify("internal error"));
-  expect(res.statusCode).toBe(500);
-  expect(res.headers["Access-Control-Allow-Origin"]).toBe("*");
-  expect(res.headers["Access-Control-Allow-Credentials"]).toBe(true);
-});
+describe("HTTP Response helper functions", () => {
+  test("Responses should have correct status codes", () => {
+    expect(ok({}).statusCode).toBe(200);
+    expect(created({}).statusCode).toBe(201);
+    expect(badRequest({}).statusCode).toBe(400);
+    expect(unauthenticated({}).statusCode).toBe(401);
+    expect(forbidden({}).statusCode).toBe(403);
+    expect(notFound({}).statusCode).toBe(404);
+    expect(conflict({}).statusCode).toBe(409);
+    expect(internalServerError({}).statusCode).toBe(500);
+  });
 
-test("Build Response should create an object with a status code 420 and message", () => {
-  const res = buildResponse(400, "status is 400");
-  expect(res.body).toBe(JSON.stringify("status is 400"));
-  expect(res.statusCode).toBe(400);
-  expect(res.headers["Access-Control-Allow-Origin"]).toBe("*");
-  expect(res.headers["Access-Control-Allow-Credentials"]).toBe(true);
-});
+  test("Responses should exclude a body if not provided", () => {
+    const response = badRequest();
+    expect(response.body).toBeUndefined();
+  });
 
-test("Build Response should create an object with a status code 403 and message", () => {
-  const res = buildResponse(403, "Unauthorized");
-  expect(res.body).toBe(JSON.stringify("Unauthorized"));
-  expect(res.statusCode).toBe(403);
-  expect(res.headers["Access-Control-Allow-Origin"]).toBe("*");
-  expect(res.headers["Access-Control-Allow-Credentials"]).toBe(true);
+  test("Responses should include a body if provided", () => {
+    const res = badRequest("try again");
+    expect(res.body).toBe('"try again"');
+  });
+
+  test("Responses should have the correct headers", () => {
+    const response = ok({});
+    expect(response.headers["Access-Control-Allow-Origin"]).toBe("*");
+    expect(response.headers["Access-Control-Allow-Credentials"]).toBe(true);
+  });
 });

@@ -22,8 +22,15 @@ import {
   calculateCompletionStatus,
   isComplete,
 } from "../../utils/validation/completionStatus";
+import {
+  badRequest,
+  forbidden,
+  internalServerError,
+  notFound,
+  ok,
+} from "../../utils/responses/response-lib";
 // types
-import { isState, ReportJson, StatusCodes, UserRoles } from "../../utils/types";
+import { isState, ReportJson, UserRoles } from "../../utils/types";
 
 export const updateReport = handler(async (event, context) => {
   const requiredParams = ["reportType", "id", "state"];
@@ -31,72 +38,51 @@ export const updateReport = handler(async (event, context) => {
     !event.pathParameters ||
     !hasReportPathParams(event.pathParameters!, requiredParams)
   ) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const { state } = event.pathParameters!;
 
   if (!isState(state)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   // If request body is missing, return a 400 error.
   if (!event?.body) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.MISSING_DATA,
-    };
+    return badRequest(error.MISSING_DATA);
   }
 
   // Blacklisted keys
-  const metadataBlacklist = [
+  const metadataBlocklist = [
     "submittedBy",
     "submittedOnDate",
     "locked",
     "archive",
   ];
-  const fieldDataBlacklist = [
+  const fieldDataBlocklist = [
     "submitterName",
     "submitterEmailAddress",
     "reportSubmissionDate",
   ];
 
-  try {
-    const eventBody = JSON.parse(event.body);
-    if (
-      (eventBody.metadata &&
-        Object.keys(eventBody.metadata).some((_) =>
-          metadataBlacklist.includes(_)
-        )) ||
-      (eventBody.fieldData &&
-        Object.keys(eventBody.fieldData).some((_) =>
-          fieldDataBlacklist.includes(_)
-        ))
-    ) {
-      return {
-        status: StatusCodes.BAD_REQUEST,
-        body: error.INVALID_DATA,
-      };
-    }
-  } catch {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.INVALID_DATA,
-    };
+  // This parse is guaranteed to succeed, because handler-lib already did it.
+  const eventBody = JSON.parse(event.body);
+  if (
+    (eventBody.metadata &&
+      Object.keys(eventBody.metadata).some((_) =>
+        metadataBlocklist.includes(_)
+      )) ||
+    (eventBody.fieldData &&
+      Object.keys(eventBody.fieldData).some((_) =>
+        fieldDataBlocklist.includes(_)
+      ))
+  ) {
+    return badRequest(error.INVALID_DATA);
   }
 
   // Ensure user has correct permissions to update a report.
   if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
 
   // Get current report
@@ -104,20 +90,14 @@ export const updateReport = handler(async (event, context) => {
   const fetchReportRequest = await fetchReport(reportEvent, context);
 
   if (!fetchReportRequest?.body || fetchReportRequest.statusCode !== 200) {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
+    return notFound(error.NO_MATCHING_RECORD);
   }
 
   // If current report exists, get formTemplateId and fieldDataId
   const currentReport = JSON.parse(fetchReportRequest.body);
 
   if (currentReport.archived || currentReport.locked) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
 
   const { formTemplateId, fieldDataId, reportType } = currentReport;
@@ -126,10 +106,7 @@ export const updateReport = handler(async (event, context) => {
   const reportTable = reportTables[reportType as keyof typeof reportTables];
 
   if (!formTemplateId || !fieldDataId) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.MISSING_DATA,
-    };
+    return notFound(error.MISSING_DATA);
   }
 
   const formTemplateParams = {
@@ -137,6 +114,9 @@ export const updateReport = handler(async (event, context) => {
     Key: getFormTemplateKey(formTemplateId),
   };
   const formTemplate = (await s3Lib.get(formTemplateParams)) as ReportJson;
+  if (!formTemplate) {
+    return notFound(error.MISSING_DATA);
+  }
 
   // Get existing fieldData from s3 bucket (for patching with passed data)
   const fieldDataParams = {
@@ -147,6 +127,9 @@ export const updateReport = handler(async (event, context) => {
     string,
     any
   >;
+  if (!existingFieldData) {
+    return notFound(error.MISSING_DATA);
+  }
 
   // Parse the passed payload.
   const unvalidatedPayload = JSON.parse(event.body);
@@ -155,31 +138,23 @@ export const updateReport = handler(async (event, context) => {
     unvalidatedPayload;
 
   if (!unvalidatedFieldData) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.MISSING_DATA,
-    };
+    return badRequest(error.MISSING_DATA);
   }
 
   // Validation JSON should be there—if it's not, there's an issue.
   if (!formTemplate.validationJson) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.MISSING_FORM_TEMPLATE,
-    };
+    return internalServerError(error.MISSING_FORM_TEMPLATE);
   }
 
   // Validate passed field data
-  const validatedFieldData = await validateFieldData(
-    formTemplate.validationJson,
-    unvalidatedFieldData
-  );
-
-  if (!validatedFieldData) {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.INVALID_DATA,
-    };
+  let validatedFieldData;
+  try {
+    validatedFieldData = await validateFieldData(
+      formTemplate.validationJson,
+      unvalidatedFieldData
+    );
+  } catch {
+    return badRequest(error.INVALID_DATA);
   }
 
   // Post validated field data to s3 bucket
@@ -198,10 +173,7 @@ export const updateReport = handler(async (event, context) => {
   try {
     await s3Lib.put(updateFieldDataParams);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.S3_OBJECT_UPDATE_ERROR,
-    };
+    return internalServerError(error.S3_OBJECT_UPDATE_ERROR);
   }
 
   const completionStatus = await calculateCompletionStatus(
@@ -210,17 +182,15 @@ export const updateReport = handler(async (event, context) => {
   );
 
   // validate report metadata
-  const validatedMetadata = await validateData(metadataValidationSchema, {
-    ...unvalidatedMetadata,
-    completionStatus,
-  });
-
-  // If metadata fails validation, return 400
-  if (!validatedMetadata) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.INVALID_DATA,
-    };
+  let validatedMetadata;
+  try {
+    validatedMetadata = await validateData(metadataValidationSchema, {
+      ...unvalidatedMetadata,
+      completionStatus,
+    });
+  } catch {
+    // If metadata fails validation, return 400
+    return badRequest(error.INVALID_DATA);
   }
 
   /*
@@ -244,18 +214,12 @@ export const updateReport = handler(async (event, context) => {
   try {
     await dynamoDb.put(reportMetadataParams);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.DYNAMO_UPDATE_ERROR,
-    };
+    return internalServerError(error.DYNAMO_UPDATE_ERROR);
   }
 
-  return {
-    status: StatusCodes.SUCCESS,
-    body: {
-      ...reportMetadataParams.Item,
-      fieldData,
-      formTemplate,
-    },
-  };
+  return ok({
+    ...reportMetadataParams.Item,
+    fieldData,
+    formTemplate,
+  });
 });

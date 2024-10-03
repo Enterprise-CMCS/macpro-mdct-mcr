@@ -8,11 +8,12 @@ import {
 } from "../../utils/testing/setupJest";
 import { error } from "../../utils/constants/constants";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
+import { StatusCodes } from "../../utils/responses/response-lib";
 // types
-import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent } from "../../utils/types";
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockResolvedValue(true),
+  isAuthenticated: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn(() => {}),
 }));
 
@@ -65,8 +66,22 @@ describe("Test archiveReport method", () => {
     const body = JSON.parse(res.body);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(dynamoPutSpy).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SUCCESS);
+    expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(body.archived).toBe(true);
+  });
+
+  test("Test archive report with missing parameters returns 400", async () => {
+    const event = {
+      ...archiveEvent,
+      pathParameters: {
+        ...archiveEvent.pathParameters,
+        state: undefined,
+      },
+    };
+    const res = await archiveReport(event, null);
+    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    expect(res.body).toContain(error.NO_KEY);
   });
 
   test("Test archive report with no existing record throws 404", async () => {
@@ -81,7 +96,7 @@ describe("Test archiveReport method", () => {
     });
     const res = await archiveReport(archiveEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.NOT_FOUND);
+    expect(res.statusCode).toBe(StatusCodes.NotFound);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
 
@@ -97,7 +112,24 @@ describe("Test archiveReport method", () => {
     });
     const res = await archiveReport(archiveEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.UNAUTHORIZED);
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test dynamo put issue throws error", async () => {
+    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    mockedFetchReport.mockResolvedValue({
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "string",
+        "Access-Control-Allow-Credentials": true,
+      },
+      body: JSON.stringify(mockMcparReport),
+    });
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    dynamoPutSpy.mockRejectedValueOnce("error");
+    const res: any = await archiveReport(archiveEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_UPDATE_ERROR);
   });
 });
