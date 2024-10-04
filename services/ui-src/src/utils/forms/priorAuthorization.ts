@@ -19,7 +19,7 @@ const priorAuthorizationFields = [
 
 export const deletePlanData = (planData: AnyObject) => {
   // delete Prior Authorization plan data if selecting "Not reporting data"
-  const filteredPlanData = planData.map((plan: AnyObject) => {
+  const filteredPlanData = planData?.map((plan: AnyObject) => {
     let planKeys = Object.keys(plan);
     for (let i = 0; i < priorAuthorizationFields.length; i++) {
       for (let j = 0; j < planKeys.length; j++) {

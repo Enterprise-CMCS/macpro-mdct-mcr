@@ -176,16 +176,16 @@ export const calculateCompletionStatus = async (
           !fieldData["ilos"]?.length
         ) {
           routeCompletion = { [route.path]: true };
-          break;
+          return;
         }
         // handle Prior Authorization case: if the user is not reporting prior to June 2026, this section is not required
-        if (
+        else if (
           route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
           fieldData["reportingDataPriorToJune2026"]?.[0].value ===
             "Not reporting data"
         ) {
           routeCompletion = { [route.path]: true };
-          break;
+          return;
         }
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
