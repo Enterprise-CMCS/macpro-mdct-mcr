@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
+
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
@@ -234,9 +235,11 @@ export const ChoiceListField = ({
           ...fields,
           ...getNestedChildFields(choicesWithNestedEnabledFields, form),
         ];
+
         const reportArgs = {
           id: report?.id,
           reportType: report?.reportType,
+          fieldData: report?.fieldData,
           updateReport,
         };
         const user = { userName: full_name, state };

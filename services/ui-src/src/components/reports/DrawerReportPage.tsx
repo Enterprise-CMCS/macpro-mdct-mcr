@@ -68,7 +68,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     priorAuthStatus === "Yes" ? false : true
   );
 
-  const onChange = async (e: InputChangeEvent) => {
+  const onChange = (e: InputChangeEvent) => {
     if (e.target.value !== "Yes") {
       setDisabled(true);
     } else {
@@ -133,40 +133,39 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
-    switch (route.path) {
-      case (route.path = "/mcpar/plan-level-indicators/ilos"):
-        return (
-          <Button
-            sx={!hasIlos ? sx.disabledButton : sx.enterButton}
-            onClick={() => openRowDrawer(entity)}
-            variant="outline"
-            disabled={!hasIlos}
-          >
-            {isEntityCompleted ? "Edit" : "Enter"}
-          </Button>
-        );
-      case (route.path = "/mcpar/plan-level-indicators/prior-authorization"):
-        return (
-          <Button
-            sx={isDisabled ? sx.disabledButton : sx.enterButton}
-            onClick={() => openRowDrawer(entity)}
-            variant="outline"
-            disabled={isDisabled}
-          >
-            {isEntityCompleted ? "Edit" : "Enter"}
-          </Button>
-        );
-      default:
-        return (
-          <Button
-            sx={sx.enterButton}
-            onClick={() => openRowDrawer(entity)}
-            variant="outline"
-          >
-            {isEntityCompleted ? "Edit" : "Enter"}
-          </Button>
-        );
+    if (route.path === "/mcpar/plan-level-indicators/ilos") {
+      return (
+        <Button
+          sx={!hasIlos ? sx.disabledButton : sx.enterButton}
+          onClick={() => openRowDrawer(entity)}
+          variant="outline"
+          disabled={!hasIlos}
+        >
+          {isEntityCompleted ? "Edit" : "Enter"}
+        </Button>
+      );
     }
+    if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
+      return (
+        <Button
+          sx={isDisabled ? sx.disabledButton : sx.enterButton}
+          onClick={() => openRowDrawer(entity)}
+          variant="outline"
+          disabled={isDisabled}
+        >
+          {isEntityCompleted ? "Edit" : "Enter"}
+        </Button>
+      );
+    }
+    return (
+      <Button
+        sx={sx.enterButton}
+        onClick={() => openRowDrawer(entity)}
+        variant="outline"
+      >
+        {isEntityCompleted ? "Edit" : "Enter"}
+      </Button>
+    );
   };
 
   const entityRows = (entities: EntityShape[]) => {
@@ -210,12 +209,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {/* if there are no ILOS but there are plans added, display this message */}
-      {!hasIlos && entities?.length ? (
+      {!hasIlos && entities?.length && (
         <Box sx={sx.missingIlos}>
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
         </Box>
-      ) : (
-        <></>
       )}
       {standardForm && (
         <Box sx={sx.standardForm}>
