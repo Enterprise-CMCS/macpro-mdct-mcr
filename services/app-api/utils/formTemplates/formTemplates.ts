@@ -324,17 +324,11 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   programTypeQuestion.props!.disabled = true;
 };
 
-const removePriorAuthorizationRoutes = (routeChildren: AnyObject[]) => {
-  return routeChildren.slice(0, -1);
-};
-
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  for (let route of reportTemplate.routes) {
-    // remove prior authorization routes from template
-    if (route.path === "/mcpar/state-level-indicators/prior-authorization") {
-      route.children = removePriorAuthorizationRoutes(route.children);
-    }
-    return reportTemplate;
-  }
+  reportTemplate.routes = reportTemplate.routes.filter(
+    (route: { path: string }) =>
+      route.path != "/mcpar/state-level-indicators/prior-authorization"
+  );
+  return reportTemplate;
 };

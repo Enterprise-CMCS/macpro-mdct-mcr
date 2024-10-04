@@ -9,8 +9,7 @@
     "qualityMeasures": { "required": true },
     "plans": { "required": true },
     "bssEntities": { "required": true },
-    "ilos": { "required": false },
-    "priorAuthorization": { "required": false }
+    "ilos": { "required": false }
   },
   "routes": [
     {
@@ -648,7 +647,7 @@
             "id": "bpi",
             "fields": [
               {
-                "id": "state_independentTimeframeForResponseToStandardRequests",
+                "id": "plan_independentTimeframeForResponseToStandardRequests",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -668,12 +667,12 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "state_daysAndHoursForPlansToRespondStandardRequests",
+                          "id": "plan_daysAndHoursForPlansToRespondStandardRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_independentTimeframeForResponseToStandardRequests"
+                            "parentFieldName": "plan_independentTimeframeForResponseToStandardRequests"
                           },
                           "props": {
                             "label": "B.XIII.1b State timeframe for plans to respond to standard PA requests",
@@ -690,7 +689,7 @@
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "state_daysAndHoursForPlansToRespondStandardRequests"
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
                                     }
                                   }
                                 ]
@@ -700,14 +699,14 @@
                                 "label": "Number of hours",
                                 "children": [
                                   {
-                                    "id": "state_numberOfHours",
+                                    "id": "plan_numberOfHours",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "state_daysAndHoursForPlansToRespondStandardRequests"
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
                                     }
                                   }
                                 ]
@@ -721,7 +720,7 @@
                 }
               },
               {
-                "id": "state_independentTimeframeForResponseToExpeditedRequests",
+                "id": "plan_independentTimeframeForResponseToExpeditedRequests",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -741,12 +740,12 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "state_daysAndHoursForPlansToRespondExpeditedRequests",
+                          "id": "plan_daysAndHoursForPlansToRespondExpeditedRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "state_independentTimeframeForResponseToExpeditedRequests"
+                            "parentFieldName": "plan_independentTimeframeForResponseToExpeditedRequests"
                           },
                           "props": {
                             "label": "B.XIII.1b State timeframe for plans to respond to expedited PA requests",
@@ -756,14 +755,14 @@
                                 "label": "Number of days",
                                 "children": [
                                   {
-                                    "id": "state_numberOfDaysExpedited",
+                                    "id": "plan_numberOfDaysExpedited",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "state_daysAndHoursForPlansToRespondExpeditedRequests"
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
                                     }
                                   }
                                 ]
@@ -780,7 +779,7 @@
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "state_daysAndHoursForPlansToRespondExpeditedRequests"
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
                                     }
                                   }
                                 ]
