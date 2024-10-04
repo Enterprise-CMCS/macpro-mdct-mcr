@@ -230,7 +230,7 @@
           "verbiage": {
             "intro": {
               "section": "Section A: Program Information",
-              "subsection": "Add In Lieu of Services and Settings",
+              "subsection": "Add In Lieu of Services and Settings (A.9)",
               "info": [
                 {
                   "type": "p",
@@ -1761,68 +1761,64 @@
                                     "props": {
                                       "label": "C1.XII.10b In the last analysis(es) conducted, describe all deficiencies identified."
                                     }
-                                  }
-                                ]
-                              },
-                              {
-                                "id": "id5YVp8cXSTlUNX3dKXSqxqa",
-                                "label": "No"
-                              }
-                            ]
-                          }
-                        },
-                        {
-                          "id": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
-                          "type": "radio",
-                          "validation": {
-                            "type": "radio",
-                            "nested": true,
-                            "parentFieldName": "program_doesThisProgramIncludeMCOs",
-                            "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
-                          },
-                          "props": {
-                            "label": "C1.XII.11a As of the end of this reporting period, have these deficiencies been resolved for all plans?",
-                            "choices": [
-                              {
-                                "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
-                                "label": "Yes"
-                              },
-                              {
-                                "id": "DCDJH4S1JHF7G5bZUMxOVMTe",
-                                "label": "No",
-                                "children": [
+                                  },
                                   {
-                                    "id": "reasonsForNoDeficiencyResolutionsForAllPlans",
-                                    "type": "checkbox",
+                                    "id": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                                    "type": "radio",
                                     "validation": {
-                                      "type": "checkbox",
+                                      "type": "radio",
                                       "nested": true,
-                                      "parentFieldName": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
-                                      "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
+                                      "parentFieldName": "program_doesThisProgramIncludeMCOs",
+                                      "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                                     },
                                     "props": {
-                                      "label": "C1.XII.11b If deficiencies have not been resolved, select all that apply.",
+                                      "label": "C1.XII.11a As of the end of this reporting period, have these deficiencies been resolved for all plans?",
                                       "choices": [
                                         {
-                                          "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
-                                          "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or enrollees."
+                                          "id": "sLd8M1tgf9dpVIZWRYEXvdBe",
+                                          "label": "Yes"
                                         },
                                         {
-                                          "id": "E63ZYRXBmOocAEUS9JA1PkNB",
-                                          "label": "Non-compliance is related to updated parity documentation not yet submitted to CMS."
-                                        },
-                                        {
-                                          "id": "NXbySoHbH3AvbOIvIUREAPsC",
-                                          "label": "Other, specify",
+                                          "id": "DCDJH4S1JHF7G5bZUMxOVMTe",
+                                          "label": "No",
                                           "children": [
                                             {
-                                              "id": "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
-                                              "type": "textarea",
+                                              "id": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                              "type": "checkbox",
                                               "validation": {
-                                                "type": "text",
+                                                "type": "checkbox",
                                                 "nested": true,
-                                                "parentFieldName": "reasonsForNoDeficiencyResolutionsForAllPlans",
-                                                "parentOptionId": "NXbySoHbH3AvbOIvIUREAPsC"
+                                                "parentFieldName": "program_haveTheseDeficienciesBeenResolvedForAllPlans",
+                                                "parentOptionId": "DCDJH4S1JHF7G5bZUMxOVMTe"
+                                              },
+                                              "props": {
+                                                "label": "C1.XII.11b If deficiencies have not been resolved, select all that apply.",
+                                                "choices": [
+                                                  {
+                                                    "id": "bEJDkUR6l4zwIgj3aLDd7TZ9",
+                                                    "label": "Noncompliant limits are still being applied in operations, affecting some providers and/or enrollees."
+                                                  },
+                                                  {
+                                                    "id": "E63ZYRXBmOocAEUS9JA1PkNB",
+                                                    "label": "Non-compliance is related to updated parity documentation not yet submitted to CMS."
+                                                  },
+                                                  {
+                                                    "id": "NXbySoHbH3AvbOIvIUREAPsC",
+                                                    "label": "Other, specify",
+                                                    "children": [
+                                                      {
+                                                        "id": "reasonsForNoDeficiencyResolutionsForAllPlans-otherText",
+                                                        "type": "textarea",
+                                                        "validation": {
+                                                          "type": "text",
+                                                          "nested": true,
+                                                          "parentFieldName": "reasonsForNoDeficiencyResolutionsForAllPlans",
+                                                          "parentOptionId": "NXbySoHbH3AvbOIvIUREAPsC"
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
                                               }
                                             }
                                           ]
@@ -1831,6 +1827,10 @@
                                     }
                                   }
                                 ]
+                              },
+                              {
+                                "id": "id5YVp8cXSTlUNX3dKXSqxqa",
+                                "label": "No"
                               }
                             ]
                           }
@@ -3974,7 +3974,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check \"Yes\" that the ILOS was offered but enter \"0\" for utilization."
+                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check that the ILOS was offered but enter \"0\" for utilization."
                 }
               ]
             },
@@ -4130,6 +4130,378 @@
                       ]
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "XIII: Prior Authorization",
+          "path": "/mcpar/plan-level-indicators/prior-authorization",
+          "pageType": "drawer",
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic XIII: Prior Authorization",
+              "spreadsheet": "D1_Plan_Set",
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-14 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, enter \"N/A\".</b>"
+            },
+            "dashboardTitle": "Report on prior authorization for each plan",
+            "drawerTitle": "Prior authorization (PA) for ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ]
+          },
+          "form": {
+            "id": "pa",
+            "fields": [
+              {
+                "id": "reportingDataPriorToJune2026",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Are you reporting data prior to June 2026?",
+                  "hint": "If \"Yes\", please complete the following questions under each plan.",
+                  "choices": [
+                    {
+                      "id": "IELJsTZxQkFDkTMzWQkKocwb",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "bByTWRIwTSTBncyZRUiibagB",
+                      "label": "Yes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "drawerForm": {
+            "id": "dpa",
+            "fields": [
+              {
+                "id": "D1.XIII.1Header",
+                "type": "sectionHeader",
+                "props": {
+                  "content": "Total count of PA requests logged in by the plan during the prior calendar year"
+                }
+              },
+              {
+                "id": "plan_totalNumberOfStandardPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.1 Total number of standard PA requests",
+                  "hint": "Logged by the plan during prior calendar year."
+                }
+              },
+              {
+                "id": "plan_totalNumberOfExpeditedPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.2 Total number of expedited PA requests",
+                  "hint": "Logged by the plan during prior calendar year."
+                }
+              },
+              {
+                "id": "plan_totalNumberOfStandardAndExpeditedPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.3 Total number of standard and expedited PA requests",
+                  "hint": "Logged by the plan during prior calendar year."
+                }
+              },
+              {
+                "id": "D1.XIII.4Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of the total standard PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.4 Percentage of standard PA requests that were approved",
+                  "hint": "Of the total standard PA requests, aggregated for all items and services. As defined in § 438.210(f)(2).",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsDenied",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.5 Percentage of standard PA requests that were denied",
+                  "hint": "Of the total standard PA requests, aggregated for all items and services. As defined in § 438.210(f)(3).",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsApprovedAfterAppeal",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
+                  "hint": "Of the total standard PA requests, aggregated for all items and services. As defined in § 438.210(f)(4).",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D1.XIII.7 Average time elapsed between submission of request and determination by the MCO, PIHP or PAHP, for standard PAs",
+                  "hint": "Enter a number of days or hours, aggregated. As defined in § 438.210(f)(8).",
+                  "choices": [
+                    {
+                      "id": "Sw6yO5BMWLjWNFGWHjaPOyvk",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "oGf7z8KzqDhWEOaNxOsCP0N9",
+                      "label": "Number of days",
+                      "children": [
+                        {
+                          "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs_oGf7z8KzqDhWEOaNxOsCP0N9",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                            "parentOptionId": "oGf7z8KzqDhWEOaNxOsCP0N9"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "XWUBmmjb4PNscoGGfZCkQtGx",
+                      "label": "Number of hours",
+                      "children": [
+                        {
+                          "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs_XWUBmmjb4PNscoGGfZCkQtGx",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                            "parentOptionId": "XWUBmmjb4PNscoGGfZCkQtGx"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D1.XIII.8 Median time elapsed between submission of request and determination by the MCO, PIHP or PAHP, for standard PAs",
+                  "hint": "Enter a number of days or hours, aggregated. As defined in § 438.210(f)(8).",
+                  "choices": [
+                    {
+                      "id": "dUxvTGk5UfoXkcaHJ5V8h4Ow",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "CeAnSBAH4kBsybe2kkyS6oFj",
+                      "label": "Number of days",
+                      "children": [
+                        {
+                          "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs_CeAnSBAH4kBsybe2kkyS6oFj",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                            "parentOptionId": "CeAnSBAH4kBsybe2kkyS6oFj"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "K0RcySVSGrlITMpnLfRiqAJj",
+                      "label": "Number of hours",
+                      "children": [
+                        {
+                          "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs_K0RcySVSGrlITMpnLfRiqAJj",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
+                            "parentOptionId": "K0RcySVSGrlITMpnLfRiqAJj"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "D1.XIII.9Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of the total expedited PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfExpeditedPARequestsApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.9 Percentage of expedited PA requests that were approved",
+                  "hint": "Of the total expedited PA requests, aggregated for all items and services. As defined in § 438.210(f)(6).",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_percentageOfExpeditedPARequestsDenied",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.10 Percentage of expedited PA requests that were denied",
+                  "hint": "Of the total expedited PA requests, aggregated for all items and services. As defined in § 438.210(f)(7).",
+                  "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D1.XIII.11 Average time elapsed between submission of request and determination by the MCO, PIHP or PAHP, for expedited PAs",
+                  "hint": "Enter a number of days or hours, aggregated. As defined in § 438.210(f)(9).",
+                  "choices": [
+                    {
+                      "id": "R5MHFOJ2dFebuCUsaYpDW30l",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "2dYVC0NQuDRrjBoH0GTX93fi",
+                      "label": "Number of days",
+                      "children": [
+                        {
+                          "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs_2dYVC0NQuDRrjBoH0GTX93fi",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                            "parentOptionId": "2dYVC0NQuDRrjBoH0GTX93fi"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "kGfRc6M6HYMpC62cqoR2Vtpi",
+                      "label": "Number of hours",
+                      "children": [
+                        {
+                          "id": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs_kGfRc6M6HYMpC62cqoR2Vtpi",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                            "parentOptionId": "kGfRc6M6HYMpC62cqoR2Vtpi"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D1.XIII.12 Median time elapsed between submission of request and determination by the MCO, PIHP or PAHP, for expedited PAs",
+                  "hint": "Enter a number of days or hours, aggregated. As defined in § 438.210(f)(9).",
+                  "choices": [
+                    {
+                      "id": "n6p5HvVjxjBFvYW03v52PwsY",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "8voYlfTx4ICkdQei5ng5QODK",
+                      "label": "Number of days",
+                      "children": [
+                        {
+                          "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs_8voYlfTx4ICkdQei5ng5QODK",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                            "parentOptionId": "8voYlfTx4ICkdQei5ng5QODK"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pNaOYMKwZtpLLU6DRxTtXOv7",
+                      "label": "Number of hours",
+                      "children": [
+                        {
+                          "id": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs_pNaOYMKwZtpLLU6DRxTtXOv7",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
+                            "parentOptionId": "pNaOYMKwZtpLLU6DRxTtXOv7"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "D1.XIII.13Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of the total PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfPARequestsExtendedReviewTimeframeAndApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.13 Percentage of prior authorization requests for which the timeframe for review was extended, and the request was approved",
+                  "mask": "percentage"
                 }
               }
             ]
