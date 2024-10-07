@@ -326,9 +326,13 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
 
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  reportTemplate.routes = reportTemplate.routes.filter(
-    (route: { path: string }) =>
-      route.path != "/mcpar/state-level-indicators/prior-authorization"
-  );
+  for (let route of reportTemplate.routes) {
+    if (route?.children) {
+      route.children = route.children.filter(
+        (childRoute: ReportRoute) =>
+          childRoute.path != "/mcpar/state-level-indicators/prior-authorization"
+      );
+    }
+  }
   return reportTemplate;
 };
