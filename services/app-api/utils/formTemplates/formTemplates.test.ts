@@ -72,7 +72,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       "local-mcpar-reports",
       ReportType.MCPAR,
       programIsNotPCCM,
-      false
+      true
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -175,7 +175,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       "local-mcpar-reports",
       ReportType.MCPAR,
       programIsNotPCCM,
-      false
+      true
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -201,7 +201,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       "local-mcpar-reports",
       ReportType.MCPAR,
       programIsNotPCCM,
-      false
+      true
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
       "local-mlr-reports",
       ReportType.MLR,
       programIsNotPCCM,
-      false
+      true
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -314,7 +314,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
       "local-mlr-reports",
       ReportType.MLR,
       programIsNotPCCM,
-      false
+      true
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
