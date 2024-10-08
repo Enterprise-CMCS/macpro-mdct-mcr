@@ -22,6 +22,7 @@ import {
   useStore,
 } from "utils";
 import { States } from "../../constants";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,
@@ -37,6 +38,8 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const novMcparRelease = useFlags()?.novMcparRelease;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -104,6 +107,7 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        novMcparRelease,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
