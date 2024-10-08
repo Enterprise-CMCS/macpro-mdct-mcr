@@ -1,5 +1,9 @@
 import { createReport } from "./create";
-import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
 import * as reportUtils from "../../utils/reports/reports";
@@ -11,13 +15,14 @@ import {
 import { error } from "../../utils/constants/constants";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
+import { StatusCodes } from "../../utils/responses/response-lib";
 // types
-import { APIGatewayProxyEvent, StatusCodes } from "../../utils/types";
+import { APIGatewayProxyEvent } from "../../utils/types";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthorized: jest.fn().mockResolvedValue(true),
+  isAuthenticated: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
@@ -199,10 +204,10 @@ describe("Test createReport API method", () => {
     consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
   });
 
-  test("Test unauthorized report creation throws 403 error", async () => {
-    jest.spyOn(authFunctions, "isAuthorized").mockResolvedValueOnce(false);
+  test("Test unauthorized report creation throws 401 error", async () => {
+    jest.spyOn(authFunctions, "isAuthenticated").mockResolvedValueOnce(false);
     const res = await createReport(creationEvent, null);
-    expect(res.statusCode).toBe(403);
+    expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
@@ -210,7 +215,7 @@ describe("Test createReport API method", () => {
     jest.spyOn(authFunctions, "hasPermissions").mockReturnValueOnce(false);
     const res = await createReport(creationEvent, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(403);
+    expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
@@ -222,9 +227,9 @@ describe("Test createReport API method", () => {
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEvent, null);
 
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
     expect(body.formTemplateId).toBeDefined;
@@ -255,9 +260,9 @@ describe("Test createReport API method", () => {
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(createPccmEvent, null);
 
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
     expect(body.formTemplateId).toBeDefined;
@@ -285,6 +290,35 @@ describe("Test createReport API method", () => {
     expect(s3PutSpy).toHaveBeenCalled();
   });
 
+  test("Test dynamo issue throws error", async () => {
+    dynamoClientMock
+      .on(PutCommand)
+      .resolvesOnce({})
+      .rejectsOnce("error with dynamo")
+      .on(QueryCommand)
+      .resolves({
+        Items: [],
+      });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const res = await createReport(creationEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.DYNAMO_CREATION_ERROR);
+  });
+
+  test("Test s3 issue throws error", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy
+      .mockResolvedValueOnce(mockS3PutObjectCommandOutput)
+      .mockRejectedValueOnce("error");
+    const res = await createReport(creationEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
+    expect(res.body).toContain(error.S3_OBJECT_CREATION_ERROR);
+  });
+
   test("Test attempted report creation with invalid data fails", async () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
@@ -293,7 +327,7 @@ describe("Test createReport API method", () => {
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithInvalidData, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.SERVER_ERROR);
+    expect(res.statusCode).toBe(StatusCodes.InternalServerError);
     expect(res.body).toContain(error.INVALID_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
   });
@@ -306,7 +340,7 @@ describe("Test createReport API method", () => {
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithNoFieldData, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.MISSING_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
   });
@@ -319,7 +353,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(noKeyEvent, null);
 
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
 
@@ -331,7 +365,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(noKeyEvent, null);
 
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
 
@@ -349,9 +383,9 @@ describe("Test createReport API method", () => {
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData.plans).toBeDefined();
@@ -369,7 +403,7 @@ describe("Test createReport API method", () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventInvalidState, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
 
@@ -377,7 +411,7 @@ describe("Test createReport API method", () => {
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventMlrReport, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.BAD_REQUEST);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
 
@@ -393,9 +427,9 @@ describe("Test createReport API method", () => {
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
@@ -420,9 +454,9 @@ describe("Test createReport API method", () => {
     });
     const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
-    const body = JSON.parse(res.body);
+    const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
-    expect(res.statusCode).toBe(StatusCodes.CREATED);
+    expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
