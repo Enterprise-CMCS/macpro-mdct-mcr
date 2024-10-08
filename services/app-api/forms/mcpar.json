@@ -630,6 +630,170 @@
               }
             ]
           }
+        },
+        {
+          "name": "XIII: Prior Authorization",
+          "path": "/mcpar/state-level-indicators/prior-authorization",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section B: State-Level Indicators",
+              "subsection": "Topic XIII: Prior Authorization",
+              "spreadsheet": "B_State",
+              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b-2a-b must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
+            }
+          },
+          "form": {
+            "id": "bpi",
+            "fields": [
+              {
+                "id": "plan_independentTimeframeForResponseToStandardRequests",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "B.XIII.1a Does the state have an independent timeframe standard for plans to respond to standard PA requests?",
+                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
+                  "choices": [
+                    {
+                      "id": "2mwADJVRdZoOfIaf6kGxoQIgNMm",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "2mwADLVa7emn5nMcosPVO2IMgZ8",
+                      "label": "No"
+                    },
+                    {
+                      "id": "2mwADGTgdOXaD87gn2PO5BWPKU4",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "plan_daysAndHoursForPlansToRespondStandardRequests",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "plan_independentTimeframeForResponseToStandardRequests"
+                          },
+                          "props": {
+                            "label": "B.XIII.1b State timeframe for plans to respond to standard PA requests",
+                            "choices": [
+                              {
+                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
+                                "label": "Number of days",
+                                "children": [
+                                  {
+                                    "id": "numberOfDays",
+                                    "type": "number",
+                                    "validation": {
+                                      "type": "number",
+                                      "nested": true,
+                                      "mask": "comma-separated",
+                                      "decimalPlacesToRoundTo": 0,
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
+                                "label": "Number of hours",
+                                "children": [
+                                  {
+                                    "id": "plan_numberOfHours",
+                                    "type": "number",
+                                    "validation": {
+                                      "type": "number",
+                                      "nested": true,
+                                      "mask": "comma-separated",
+                                      "decimalPlacesToRoundTo": 0,
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "plan_independentTimeframeForResponseToExpeditedRequests",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "B.XIII.2a Does the state have an independent timeframe standard for plans to respond to expedited PA requests?",
+                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
+                  "choices": [
+                    {
+                      "id": "UG7uunqq5UCtUq1is3iyiw",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "3DGAqqnOBE2kwKVFMxUt3A",
+                      "label": "No"
+                    },
+                    {
+                      "id": "jlIZKSPaf0GSVGmJbRUBzg",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "plan_daysAndHoursForPlansToRespondExpeditedRequests",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "plan_independentTimeframeForResponseToExpeditedRequests"
+                          },
+                          "props": {
+                            "label": "B.XIII.1b State timeframe for plans to respond to expedited PA requests",
+                            "choices": [
+                              {
+                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
+                                "label": "Number of days",
+                                "children": [
+                                  {
+                                    "id": "plan_numberOfDaysExpedited",
+                                    "type": "number",
+                                    "validation": {
+                                      "type": "number",
+                                      "nested": true,
+                                      "mask": "comma-separated",
+                                      "decimalPlacesToRoundTo": 0,
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
+                                "label": "Number of hours",
+                                "children": [
+                                  {
+                                    "id": "numberOfHours",
+                                    "type": "number",
+                                    "validation": {
+                                      "type": "number",
+                                      "nested": true,
+                                      "mask": "comma-separated",
+                                      "decimalPlacesToRoundTo": 0,
+                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     },
