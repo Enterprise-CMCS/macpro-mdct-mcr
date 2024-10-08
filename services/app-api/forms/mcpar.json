@@ -2061,6 +2061,46 @@
               }
             ]
           }
+        },
+        {
+          "name": "XIV: Patient Access / API Usage",
+          "path": "/mcpar/program-level-indicators/patient-access-api-usage",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic XIV: Patient Access / API Usage",
+              "spreadsheet": "C1_Program_Set",
+              "alert": "<b>Beginning June 2026, Indicators C1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, enter “N/A”.</b>"
+            }
+          },
+          "form": {
+            "id": "cpaau",
+            "fields": [
+              {
+                "id": "state_patientAccessNumberOfBeneficiariesOneDataTransfer",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "C1.XIV.1 Number of unique beneficiaries with at least one data transfer",
+                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data were transferred via the Patient Access API to a health app designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “N/A”.",
+                  "mask": "comma-separated",
+                  "decimalPlacesToRoundTo": 0
+                }
+              },
+              {
+                "id": "state_patientAcessNumberOfBeneficiariesMultipleDataTransfers",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "C1.XIV.2 Number of unique beneficiaries with multiple data transfers",
+                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “N/A”.",
+                  "mask": "comma-separated",
+                  "decimalPlacesToRoundTo": 0
+                }
+              }
+            ]
+          }
         }
       ]
     },
