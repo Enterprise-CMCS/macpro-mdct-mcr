@@ -1,5 +1,12 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
-import { AutosaveField, EntityShape, EntityType, ReportStatus } from "types";
+import {
+  AnyObject,
+  AutosaveField,
+  EntityShape,
+  EntityType,
+  ReportStatus,
+} from "types";
+import { deletePlanData } from "utils/forms/priorAuthorization";
 
 type FieldValue = any;
 
@@ -21,6 +28,7 @@ interface Props {
     id: string | undefined;
     reportType: string | undefined;
     updateReport: Function;
+    fieldData?: AnyObject | undefined;
   };
   user: {
     userName: string | undefined;
@@ -82,7 +90,7 @@ export const autosaveFieldData = async ({
   user,
   entityContext,
 }: Props) => {
-  const { id, reportType, updateReport } = report;
+  const { id, reportType, updateReport, fieldData: reportFieldData } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
@@ -128,10 +136,28 @@ export const autosaveFieldData = async ({
         }, // create field data object
       };
     } else {
+      // create field data object
+      const fieldData = Object.fromEntries(fieldsToSave);
       dataToWrite = {
         metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-        fieldData: Object.fromEntries(fieldsToSave), // create field data object
+        fieldData: fieldData,
       };
+
+      // handle Prior Authorization case
+      let reportingOnPriorAuthorization: boolean = true;
+      if (
+        fieldsToSave[0][0] === "reportingDataPriorToJune2026" &&
+        fieldsToSave[0][1][0].value !== "Yes"
+      ) {
+        reportingOnPriorAuthorization = false;
+      }
+      if (!reportingOnPriorAuthorization) {
+        const filteredFieldData = deletePlanData(reportFieldData!["plans"]);
+        dataToWrite = {
+          ...dataToWrite,
+          fieldData: { ...fieldData, plans: filteredFieldData },
+        };
+      }
     }
 
     await updateReport(reportKeys, dataToWrite);

@@ -13,6 +13,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
+  mockEntityStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -82,6 +83,7 @@ describe("Test DrawerReportPage with entities", () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockMcparReportStore,
+      ...mockEntityStore,
     });
     render(drawerReportPageWithEntities);
   });
@@ -98,7 +100,7 @@ describe("Test DrawerReportPage with entities", () => {
 
   it("Opens the sidedrawer correctly", async () => {
     const visibleEntityText =
-      mockMcparReportContext.report.fieldData.plans[0].name;
+      mockMcparReportContext.report.fieldData.plans[1].name;
     expect(screen.getByText(visibleEntityText)).toBeVisible();
     const launchDrawerButton = screen.getAllByText("Enter")[0];
     await userEvent.click(launchDrawerButton);

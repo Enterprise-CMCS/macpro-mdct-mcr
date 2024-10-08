@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
@@ -22,7 +23,6 @@ import {
   useStore,
 } from "utils";
 import { States } from "../../constants";
-import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,

@@ -216,6 +216,12 @@ export const mockReportFieldData = {
       name: "mock-ilos-name-1",
     },
   ],
+  reportingDataPriorToJune2026: [
+    {
+      key: "mock-key",
+      value: "Yes",
+    },
+  ],
   text: "text-input",
   number: 0,
   radio: ["option1"],

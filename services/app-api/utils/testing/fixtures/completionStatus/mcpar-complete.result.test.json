@@ -35,8 +35,7 @@
     },
     "/mcpar/plan-level-indicators/quality-measures": true,
     "/mcpar/plan-level-indicators/sanctions": true,
-    "/mcpar/plan-level-indicators/program-integrity": true,
-    "/mcpar/plan-level-indicators/ilos": true
+    "/mcpar/plan-level-indicators/program-integrity": true
   },
   "/mcpar/bss-entity-indicators": true
 }
