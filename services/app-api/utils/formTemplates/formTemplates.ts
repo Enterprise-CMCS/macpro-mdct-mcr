@@ -330,7 +330,8 @@ const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
     if (route?.children) {
       route.children = route.children.filter(
         (childRoute: ReportRoute) =>
-          childRoute.path != "/mcpar/state-level-indicators/prior-authorization"
+          childRoute.path !==
+          "/mcpar/state-level-indicators/prior-authorization"
       );
     }
   }
