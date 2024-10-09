@@ -19,7 +19,7 @@ async function archiveReport(reportKeys: ReportKeys) {
     path,
     options,
   });
-  return await restOperation.response;
+  await restOperation.response;
 }
 
 async function releaseReport(reportKeys: ReportKeys) {
@@ -36,7 +36,7 @@ async function releaseReport(reportKeys: ReportKeys) {
     path,
     options,
   });
-  return await restOperation.response;
+  await restOperation.response;
 }
 
 async function submitReport(reportKeys: ReportKeys) {
@@ -53,7 +53,8 @@ async function submitReport(reportKeys: ReportKeys) {
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 async function getReport(reportKeys: ReportKeys) {
@@ -70,7 +71,8 @@ async function getReport(reportKeys: ReportKeys) {
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 async function getReportsByState(reportType: string, state: string) {
@@ -86,7 +88,8 @@ async function getReportsByState(reportType: string, state: string) {
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 async function postReport(
@@ -107,7 +110,8 @@ async function postReport(
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 async function putReport(reportKeys: ReportKeys, report: ReportShape) {
@@ -125,7 +129,8 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 export {

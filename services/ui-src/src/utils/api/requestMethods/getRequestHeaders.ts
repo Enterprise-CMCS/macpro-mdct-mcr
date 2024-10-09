@@ -4,7 +4,7 @@ export const getRequestHeaders = async (): Promise<any> => {
   try {
     const { idToken } = (await fetchAuthSession()).tokens ?? {};
     const headers = {
-      "x-api-key": idToken,
+      "x-api-key": idToken?.toString(),
     };
     return headers;
   } catch (error) {

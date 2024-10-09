@@ -18,7 +18,8 @@ async function getBanner(bannerKey: string) {
     path,
     options,
   });
-  return await restOperation.response;
+  const { body } = await restOperation.response;
+  return await body.json();
 }
 
 async function writeBanner(bannerData: AdminBannerData) {
@@ -35,7 +36,7 @@ async function writeBanner(bannerData: AdminBannerData) {
     path,
     options,
   });
-  return await restOperation.response;
+  await restOperation.response;
 }
 
 async function deleteBanner(bannerKey: string) {
@@ -51,7 +52,7 @@ async function deleteBanner(bannerKey: string) {
     path,
     options,
   });
-  return await restOperation.response;
+  await restOperation.response;
 }
 
 export { getBanner, writeBanner, deleteBanner };
