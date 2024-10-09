@@ -675,6 +675,10 @@
                             "hint": "The federal timeframe standard for plans to respond to standard PA requests is not to exceed 14 days before 1/1/2026 and not to exceed 7 days on or after 1/1/2026. Does the state set a timeframe standard different from these federal standard?",
                             "choices": [
                               {
+                                "id": "2nDBqTh66xki2Nr1qwb5VsDLNX2",
+                                "label": "Not reporting data"
+                              },
+                              {
                                 "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
                                 "label": "No"
                               },
@@ -715,6 +719,10 @@
                             "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
                             "choices": [
                               {
+                                "id": "2nDBqU3GnljuoCyLDVyoXwqZSZO",
+                                "label": "Not reporting data"
+                              },
+                              {
                                 "id": "2nAidGQyKBhG1gxK1SuXbBjJh0V",
                                 "label": "No"
                               },
@@ -730,7 +738,7 @@
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysForStateToRespondStandardRequests"
+                                      "parentFieldName": "plan_hoursForStateToRespondExpeditedRequests"
                                     },
                                     "props": {
                                       "label": "B.XIII.2b Timeframe for State’s expedited PA requests",
