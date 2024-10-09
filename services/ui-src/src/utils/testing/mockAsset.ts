@@ -1,24 +1,25 @@
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        getJwtToken: () => "eyJLongToken",
-      }),
+jest.mock("aws-amplify/api", () => ({
+  get: () => {},
+  post: () => {},
+  put: () => {},
+  del: () => {},
+}));
+
+jest.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: jest.fn().mockReturnValue({
+    idToken: () => ({
+      payload: "eyJLongToken",
     }),
-    currentAuthenticatedUser: () => {},
-    configure: () => {},
-    signOut: async () => {},
-    federatedSignIn: () => {},
-  },
-  API: {
-    get: () => {},
-    post: () => {},
-    put: () => {},
-    del: () => {},
-    configure: () => {},
-  },
+  }),
+  configure: () => {},
+  signOut: jest.fn().mockImplementation(() => {}),
+  federatedSignIn: () => {},
+}));
+
+jest.mock("aws-amplify/utils", () => ({
   Hub: {
     listen: jest.fn(),
   },
 }));
+
 export default "test-file-stub";

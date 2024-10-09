@@ -15,17 +15,18 @@ const mockAuthPayload = {
   ["custom:cms_state"]: "AL",
 };
 
-jest.mock("aws-amplify", () => ({
-  Auth: {
-    currentSession: jest.fn().mockReturnValue({
-      getIdToken: () => ({
-        payload: mockAuthPayload,
-      }),
+jest.mock("aws-amplify/auth", () => ({
+  fetchAuthSession: jest.fn().mockReturnValue({
+    idToken: () => ({
+      payload: mockAuthPayload,
     }),
-    configure: () => {},
-    signOut: jest.fn().mockImplementation(() => {}),
-    federatedSignIn: () => {},
-  },
+  }),
+  configure: () => {},
+  signOut: jest.fn().mockImplementation(() => {}),
+  federatedSignIn: () => {},
+}));
+
+jest.mock("aws-amplify/utils", () => ({
   Hub: {
     listen: jest.fn(),
   },
@@ -86,8 +87,8 @@ const setWindowOrigin = (windowOrigin: string) => {
 };
 
 const breakCheckAuthState = async () => {
-  const mockAmplify = require("aws-amplify");
-  mockAmplify.Auth.currentSession = jest.fn().mockImplementation(() => {
+  const mockAmplify = require("aws-amplify/auth");
+  mockAmplify.fetchAuthSession = jest.fn().mockImplementation(() => {
     throw new Error();
   });
 };
@@ -162,8 +163,8 @@ describe("<UserProvider />", () => {
       jest.spyOn(console, "log").mockImplementation(jest.fn());
       const spy = jest.spyOn(console, "log");
 
-      const mockAmplify = require("aws-amplify");
-      mockAmplify.Auth.signOut = jest.fn().mockImplementation(() => {
+      const mockAmplify = require("aws-amplify/auth");
+      mockAmplify.signOut = jest.fn().mockImplementation(() => {
         throw new Error();
       });
 
