@@ -53,7 +53,9 @@ jest.mock("aws-amplify/api", () => ({
       },
     }),
   })),
-  del: () => {},
+  del: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({}),
+  })),
 }));
 
 jest.mock("aws-amplify/auth", () => ({

@@ -18,7 +18,7 @@ async function archiveReport(reportKeys: ReportKeys) {
     apiName,
     path,
     options,
-  });
+  }).response;
 }
 
 async function releaseReport(reportKeys: ReportKeys) {
@@ -34,7 +34,7 @@ async function releaseReport(reportKeys: ReportKeys) {
     apiName,
     path,
     options,
-  });
+  }).response;
 }
 
 async function submitReport(reportKeys: ReportKeys) {

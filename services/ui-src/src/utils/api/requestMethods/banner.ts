@@ -34,7 +34,7 @@ async function writeBanner(bannerData: AdminBannerData) {
     apiName,
     path,
     options,
-  });
+  }).response;
 }
 
 async function deleteBanner(bannerKey: string) {
@@ -49,7 +49,7 @@ async function deleteBanner(bannerKey: string) {
     apiName,
     path,
     options,
-  });
+  }).response;
 }
 
 export { getBanner, writeBanner, deleteBanner };
