@@ -14,12 +14,11 @@ async function archiveReport(reportKeys: ReportKeys) {
   const path = `/reports/archive/${reportType}/${state}/${id}`;
 
   updateTimeout();
-  const restOperation = put({
+  await put({
     apiName,
     path,
     options,
   });
-  await restOperation.response;
 }
 
 async function releaseReport(reportKeys: ReportKeys) {
@@ -31,12 +30,11 @@ async function releaseReport(reportKeys: ReportKeys) {
   const path = `/reports/release/${reportType}/${state}/${id}`;
 
   updateTimeout();
-  const restOperation = put({
+  await put({
     apiName,
     path,
     options,
   });
-  await restOperation.response;
 }
 
 async function submitReport(reportKeys: ReportKeys) {
@@ -48,12 +46,11 @@ async function submitReport(reportKeys: ReportKeys) {
   const path = `/reports/submit/${reportType}/${state}/${id}`;
 
   updateTimeout();
-  const restOperation = post({
+  const { body } = await post({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
+  }).response;
   return await body.json();
 }
 
@@ -66,12 +63,11 @@ async function getReport(reportKeys: ReportKeys) {
   const path = `/reports/${reportType}/${state}/${id}`;
 
   updateTimeout();
-  const restOperation = get({
+  const { body } = await get({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
+  }).response;
   return await body.json();
 }
 
@@ -83,12 +79,11 @@ async function getReportsByState(reportType: string, state: string) {
   const path = `/reports/${reportType}/${state}`;
 
   updateTimeout();
-  const restOperation = get({
+  const { body } = await get({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
+  }).response;
   return await body.json();
 }
 
@@ -105,12 +100,11 @@ async function postReport(
   const path = `/reports/${reportType}/${state}`;
 
   updateTimeout();
-  const restOperation = post({
+  const { body } = await post({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
+  }).response;
   return await body.json();
 }
 
@@ -124,12 +118,11 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   const path = `/reports/${reportType}/${state}/${id}`;
 
   updateTimeout();
-  const restOperation = put({
+  const { body } = await put({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
+  }).response;
   return await body.json();
 }
 

@@ -13,13 +13,12 @@ async function getBanner(bannerKey: string) {
   const path = `/banners/${bannerKey}`;
 
   updateTimeout();
-  const restOperation = get({
+  const { body } = await get({
     apiName,
     path,
     options,
-  });
-  const { body } = await restOperation.response;
-  return await body.json();
+  }).response;
+  return await body.text();
 }
 
 async function writeBanner(bannerData: AdminBannerData) {
@@ -31,12 +30,11 @@ async function writeBanner(bannerData: AdminBannerData) {
   const path = `/banners/${bannerData.key}`;
 
   updateTimeout();
-  const restOperation = post({
+  await post({
     apiName,
     path,
     options,
   });
-  await restOperation.response;
 }
 
 async function deleteBanner(bannerKey: string) {
@@ -47,12 +45,11 @@ async function deleteBanner(bannerKey: string) {
   const path = `/banners/${bannerKey}`;
 
   updateTimeout();
-  const restOperation = del({
+  await del({
     apiName,
     path,
     options,
   });
-  await restOperation.response;
 }
 
 export { getBanner, writeBanner, deleteBanner };
