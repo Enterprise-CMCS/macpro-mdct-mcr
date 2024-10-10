@@ -6,7 +6,7 @@ import {
   useMemo,
 } from "react";
 import { useLocation } from "react-router-dom";
-import { Auth } from "aws-amplify";
+import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import config from "config";
 // utils
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
@@ -49,7 +49,7 @@ export const UserProvider = ({ children }: Props) => {
     try {
       setUser(undefined);
       clearSelectedReportCache();
-      await Auth.signOut();
+      await signOut();
       localStorage.clear();
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
@@ -65,9 +65,15 @@ export const UserProvider = ({ children }: Props) => {
     }
 
     try {
-      const session = await Auth.currentSession();
-      const payload = session.getIdToken().payload;
-      const { email, given_name, family_name } = payload;
+      const tokens = (await fetchAuthSession()).tokens;
+      if (!tokens || !tokens.idToken) {
+        throw new Error("Missing tokens auth session.");
+      }
+      const payload = tokens.idToken.payload;
+      const { email, given_name, family_name } = payload as Record<
+        string,
+        string
+      >;
 
       // "custom:cms_roles" is an string of concat roles so we need to check for the one applicable to MCR
       const cms_role = payload["custom:cms_roles"] as string;

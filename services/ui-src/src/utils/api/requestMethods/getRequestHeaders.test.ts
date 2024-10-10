@@ -5,8 +5,8 @@ describe("Test getRequestHeaders error handling", () => {
     jest.spyOn(console, "log").mockImplementation(jest.fn());
     const spy = jest.spyOn(console, "log");
 
-    const mockAmplify = require("aws-amplify");
-    mockAmplify.Auth.currentSession = jest.fn().mockImplementation(() => {
+    const mockAmplify = require("aws-amplify/auth");
+    mockAmplify.fetchAuthSession = jest.fn().mockImplementation(() => {
       throw new Error();
     });
 
