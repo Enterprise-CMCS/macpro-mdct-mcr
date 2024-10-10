@@ -3,24 +3,6 @@ import { getBanner, writeBanner, deleteBanner } from "./banner";
 import { bannerId } from "../../../constants";
 import { mockBannerData } from "utils/testing/setupJest";
 
-jest.mock("aws-amplify/api", () => ({
-  del: jest.fn(),
-  get: jest.fn().mockImplementation(() => {
-    return {
-      response: Promise.resolve({
-        body: {
-          text: () => Promise.resolve(`{"json":"blob"}`),
-        },
-      }),
-    };
-  }),
-  post: jest.fn(),
-}));
-
-jest.mock("./getRequestHeaders", () => ({
-  getRequestHeaders: jest.fn().mockReturnValue({ header: "value" }),
-}));
-
 jest.mock("utils/auth/authLifecycle", () => ({
   updateTimeout: jest.fn(),
   initAuthManager: jest.fn(),

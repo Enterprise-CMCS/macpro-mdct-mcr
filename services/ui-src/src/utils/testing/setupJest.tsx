@@ -32,9 +32,27 @@ jest.mock("@chakra-ui/transition", () => ({
 
 /* Mock Amplify */
 jest.mock("aws-amplify/api", () => ({
-  get: () => {},
-  post: () => {},
-  put: () => {},
+  get: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        json: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  post: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        json: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
+  put: jest.fn().mockImplementation(() => ({
+    response: Promise.resolve({
+      body: {
+        json: () => Promise.resolve(`{"json":"blob"}`),
+      },
+    }),
+  })),
   del: () => {},
 }));
 
@@ -45,7 +63,7 @@ jest.mock("aws-amplify/auth", () => ({
     }),
   }),
   configure: () => {},
-  signOut: jest.fn().mockImplementation(() => {}),
+  signOut: jest.fn().mockImplementation(() => Promise.resolve()),
   federatedSignIn: () => {},
 }));
 

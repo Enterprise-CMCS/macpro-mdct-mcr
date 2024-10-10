@@ -18,7 +18,7 @@ async function getBanner(bannerKey: string) {
     path,
     options,
   }).response;
-  return await body.text();
+  return await body.json();
 }
 
 async function writeBanner(bannerData: AdminBannerData) {

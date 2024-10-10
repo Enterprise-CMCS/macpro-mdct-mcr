@@ -3,11 +3,6 @@ import { refreshCredentials } from "./authLifecycle";
 import { sub } from "date-fns";
 import { Hub } from "aws-amplify/utils";
 
-jest.mock("aws-amplify/auth", () => ({
-  signOut: jest.fn().mockImplementation(() => Promise.resolve()),
-  fetchAuthSession: jest.fn(),
-}));
-
 describe("Test AuthManager Init", () => {
   test("Initializing when past expiration will require a new login", async () => {
     // Set an initial time, because jest runs too fast to have different timestamps

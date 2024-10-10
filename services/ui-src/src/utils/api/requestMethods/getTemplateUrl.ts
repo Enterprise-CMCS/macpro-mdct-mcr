@@ -7,10 +7,10 @@ export async function getSignedTemplateUrl(templateName: string) {
     headers: { ...requestHeaders },
   };
 
-  const restOperation = get({
+  const { body } = await get({
     apiName: "mcr",
     path: `/templates/${templateName}`,
     options,
-  });
-  return await restOperation.response;
+  }).response;
+  return await body.json();
 }
