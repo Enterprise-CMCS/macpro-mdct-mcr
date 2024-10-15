@@ -326,12 +326,16 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
 
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
+  const routesToIncludeInNovMcparRelease = [
+    "/mcpar/state-level-indicators/prior-authorization",
+    "/mcpar/program-level-indicators/patient-access-api-usage",
+  ];
+  // remove paths associated with the nov release flag
   for (let route of reportTemplate.routes) {
     if (route?.children) {
       route.children = route.children.filter(
         (childRoute: ReportRoute) =>
-          childRoute.path !==
-          "/mcpar/state-level-indicators/prior-authorization"
+          !routesToIncludeInNovMcparRelease.includes(childRoute.path)
       );
     }
   }
