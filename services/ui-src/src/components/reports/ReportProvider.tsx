@@ -79,7 +79,7 @@ export const ReportProvider = ({ children }: Props) => {
       hydrateAndSetReport(result);
       return result;
     } catch {
-      setError(reportErrors.GET_REPORT_FAILED);
+      return setError(reportErrors.GET_REPORT_FAILED);
     }
   };
 
