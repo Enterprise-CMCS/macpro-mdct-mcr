@@ -18,7 +18,7 @@ async function getBanner(bannerKey: string) {
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as { Item: AdminBannerData };
 }
 
 async function writeBanner(bannerData: AdminBannerData) {

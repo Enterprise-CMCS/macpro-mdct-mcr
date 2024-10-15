@@ -12,5 +12,5 @@ export async function getSignedTemplateUrl(templateName: string) {
     path: `/templates/${templateName}`,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as string;
 }

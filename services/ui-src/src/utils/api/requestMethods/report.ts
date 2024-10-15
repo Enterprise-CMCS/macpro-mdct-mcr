@@ -51,7 +51,7 @@ async function submitReport(reportKeys: ReportKeys) {
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as ReportShape;
 }
 
 async function getReport(reportKeys: ReportKeys) {
@@ -68,7 +68,7 @@ async function getReport(reportKeys: ReportKeys) {
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as ReportShape;
 }
 
 async function getReportsByState(reportType: string, state: string) {
@@ -84,7 +84,7 @@ async function getReportsByState(reportType: string, state: string) {
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as ReportShape[];
 }
 
 async function postReport(
@@ -105,7 +105,7 @@ async function postReport(
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as ReportShape;
 }
 
 async function putReport(reportKeys: ReportKeys, report: ReportShape) {
@@ -123,7 +123,7 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
     path,
     options,
   }).response;
-  return await body.json();
+  return (await body.json()) as unknown as ReportShape;
 }
 
 export {
