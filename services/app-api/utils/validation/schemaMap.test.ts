@@ -10,6 +10,7 @@ import {
   numberNotLessThanOne,
   numberNotLessThanZero,
   validNAValues,
+  validNRValues,
 } from "./schemaMap";
 import {} from "./validation";
 
@@ -24,6 +25,7 @@ describe("Schemas", () => {
     "1230",
     "123450123..,,,.123123123123",
     ...validNAValues,
+    ...validNRValues,
   ];
   const badNumberTestCases = ["abc", "N", "!@#!@%"];
 

@@ -40,13 +40,16 @@ export const validNAValues = [
   "Data not available",
 ];
 
+export const validNRValues = ["NR", "nr"];
+
 // NUMBER - Number or Valid Strings
 export const numberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER_OR_NA,
     test: (value) => {
       if (value) {
-        const isValidStringValue = validNAValues.includes(value);
+        const isValidStringValue =
+          validNAValues.includes(value) || validNRValues.includes(value);
         const isValidNumberValue =
           checkStandardNumberInputAgainstRegexes(value);
         return isValidStringValue || isValidNumberValue;

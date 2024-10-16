@@ -48,6 +48,8 @@ export const validNAValues = [
   "Data not available",
 ];
 
+export const validNRValues = ["NR", "nr"];
+
 /** This regex must be at least as permissive as the one in ui-src */
 const validNumberRegex = /^\.$|[0-9]/;
 
@@ -58,7 +60,8 @@ const numberSchema = () =>
       message: error.INVALID_NUMBER_OR_NA,
       test: (value) => {
         if (value) {
-          const isValidStringValue = validNAValues.includes(value);
+          const isValidStringValue =
+            validNAValues.includes(value) || validNRValues.includes(value);
           const isValidNumberValue = validNumberRegex.test(value);
           return isValidStringValue || isValidNumberValue;
         } else return true;

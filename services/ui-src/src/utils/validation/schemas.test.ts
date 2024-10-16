@@ -9,6 +9,7 @@ import {
   text,
   textOptional,
   validNAValues,
+  validNRValues,
 } from "./schemas";
 
 describe("Schemas", () => {
@@ -21,6 +22,7 @@ describe("Schemas", () => {
     "1230",
     "123450123,,,.123123123123",
     ...validNAValues,
+    ...validNRValues,
   ];
 
   const goodPositiveNumberTestCases = [
