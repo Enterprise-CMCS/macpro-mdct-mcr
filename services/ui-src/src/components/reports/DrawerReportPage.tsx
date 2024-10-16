@@ -69,11 +69,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   );
 
   const onChange = (e: InputChangeEvent) => {
-    if (e.target.value !== "Yes") {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
+    setDisabled(e.target.value !== "Yes");
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -133,35 +129,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
-    if (route.path === "/mcpar/plan-level-indicators/ilos") {
-      return (
-        <Button
-          sx={!hasIlos ? sx.disabledButton : sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-          disabled={!hasIlos}
-        >
-          {isEntityCompleted ? "Edit" : "Enter"}
-        </Button>
-      );
+    let disabled = false;
+    let style = sx.enterButton;
+
+    if (
+      (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
+      (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
+        isDisabled)
+    ) {
+      style = sx.disabledButton;
+      disabled = true;
     }
-    if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
-      return (
-        <Button
-          sx={isDisabled ? sx.disabledButton : sx.enterButton}
-          onClick={() => openRowDrawer(entity)}
-          variant="outline"
-          disabled={isDisabled}
-        >
-          {isEntityCompleted ? "Edit" : "Enter"}
-        </Button>
-      );
-    }
+
     return (
       <Button
-        sx={sx.enterButton}
+        sx={style}
         onClick={() => openRowDrawer(entity)}
         variant="outline"
+        disabled={disabled}
       >
         {isEntityCompleted ? "Edit" : "Enter"}
       </Button>

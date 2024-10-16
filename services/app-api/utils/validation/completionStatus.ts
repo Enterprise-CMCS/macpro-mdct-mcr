@@ -179,7 +179,7 @@ export const calculateCompletionStatus = async (
           return;
         }
         // handle Prior Authorization case: if the user is not reporting prior to June 2026, this section is not required
-        else if (
+        if (
           route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
           fieldData["reportingDataPriorToJune2026"]?.[0].value ===
             "Not reporting data"
