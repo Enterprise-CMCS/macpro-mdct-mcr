@@ -77,7 +77,7 @@ export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
   isProgramPCCM: boolean,
-  novMcparRelease: boolean
+  novMcparRelease?: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
 
@@ -326,16 +326,16 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
 
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  const routesToIncludeInNovMcparRelease = [
+  const routesToFilter = [
     "/mcpar/state-level-indicators/prior-authorization",
+    "/mcpar/plan-level-indicators/prior-authorization",
     "/mcpar/program-level-indicators/patient-access-api-usage",
   ];
-  // remove paths associated with the nov release flag
+
   for (let route of reportTemplate.routes) {
     if (route?.children) {
       route.children = route.children.filter(
-        (childRoute: ReportRoute) =>
-          !routesToIncludeInNovMcparRelease.includes(childRoute.path)
+        (childRoute: ReportRoute) => !routesToFilter.includes(childRoute.path)
       );
     }
   }
