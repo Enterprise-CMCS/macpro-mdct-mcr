@@ -35,9 +35,9 @@ export const validNAValues = [
   "n/a",
   "N/a",
   "Data not available",
+  "NR",
+  "nr",
 ];
-
-export const validNRValues = ["NR", "nr"];
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   return numberSchema().transform((_value) => {
@@ -54,8 +54,7 @@ export const number = () =>
     message: error.INVALID_NUMBER_OR_NA,
     test: (value) => {
       if (value) {
-        const isValidStringValue =
-          validNAValues.includes(value) || validNRValues.includes(value);
+        const isValidStringValue = validNAValues.includes(value);
         const isValidNumberValue = validNumberRegex.test(value);
         return isValidStringValue || isValidNumberValue;
       } else return true;

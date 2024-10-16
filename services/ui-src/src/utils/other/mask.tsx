@@ -1,4 +1,4 @@
-import { validNAValues, validNRValues } from "utils";
+import { validNAValues } from "utils";
 import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 
 export const maskMap = {
@@ -20,8 +20,7 @@ export function maskResponseData(
 ): string {
   if (
     fieldResponseData === undefined ||
-    validNAValues.includes(fieldResponseData) ||
-    validNRValues.includes(fieldResponseData)
+    validNAValues.includes(fieldResponseData)
   )
     return fieldResponseData;
 
