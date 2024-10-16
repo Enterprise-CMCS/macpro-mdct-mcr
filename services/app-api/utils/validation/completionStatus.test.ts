@@ -175,6 +175,32 @@ describe("Completion Status Tests", () => {
       expect(result).toMatchObject({});
     });
 
+    test("If user has not added an ILOS, they're not required to complete that section", async () => {
+      const testData = {};
+      const formTemplate = {
+        routes: [
+          {
+            name: "D: Plan-Level Indicators",
+            path: "/mcpar/plan-level-indicators",
+            children: [
+              {
+                name: "ILOS",
+                path: "/mcpar/plan-level-indicators/ilos",
+                entityType: "plans",
+                pageType: "drawer",
+                drawerForm: {
+                  id: "dpa",
+                  fields: [],
+                },
+              },
+            ],
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({});
+    });
+
     test("If user is not reporting Prior Authorization data, they're not required to complete that section", async () => {
       const testData = {
         reportingDataPriorToJune2026: [
@@ -197,198 +223,11 @@ describe("Completion Status Tests", () => {
                 pageType: "drawer",
                 form: {
                   id: "pa",
-                  fields: [
-                    {
-                      id: "reportingDataPriorToJune2026",
-                      type: "radio",
-                      validation: "radio",
-                      props: {
-                        label: "Are you reporting data prior to June 2026?",
-                        hint: 'If "Yes", please complete the following questions under each plan.',
-                        choices: [
-                          {
-                            id: "IELJsTZxQkFDkTMzWQkKocwb",
-                            label: "Not reporting data",
-                          },
-                          {
-                            id: "bByTWRIwTSTBncyZRUiibagB",
-                            label: "Yes",
-                          },
-                        ],
-                      },
-                    },
-                  ],
+                  fields: [],
                 },
                 drawerForm: {
                   id: "dpa",
-                  fields: [
-                    {
-                      id: "D1.XIII.1Header",
-                      type: "sectionHeader",
-                      props: {
-                        content:
-                          "Total count of PA requests logged in by the plan during the prior calendar year",
-                      },
-                    },
-                    {
-                      id: "plan_totalStandardPARequests",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label: "D1.XIII.1 Total standard PA requests",
-                        hint: 'Enter the total number of standard PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "plan_totalExpeditedPARequests",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label: "D1.XIII.2 Total expedited PA requests",
-                        hint: 'Enter the total number of expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "plan_totalStandardAndExpeditedPARequests",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.3 Total standard and expedited PA requests",
-                        hint: 'Enter the total number of standard and expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "D1.XIII.4Header",
-                      type: "sectionHeader",
-                      props: {
-                        divider: "top",
-                        content: "Of the total standard PA requests",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfStandardPARequestsApproved",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.4 Percentage of standard PA requests that were approved",
-                        hint: 'Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfStandardPARequestsDenied",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.5 Percentage of standard PA requests that were denied",
-                        hint: 'Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were denied. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfStandardPARequestsApprovedAfterAppeal",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
-                        hint: 'Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                    {
-                      id: "plan_averageTimeToDecisionForStandardPAs",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.7 Average time to decision for standard PAs",
-                        hint: 'For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and determination by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "plan_medianTimeThatElapsedForDecisionOnStandardPAs",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.8 Median time that elapsed for decision on standard PAs",
-                        hint: 'For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "D1.XIII.9Header",
-                      type: "sectionHeader",
-                      props: {
-                        divider: "top",
-                        content: "Of the total expedited PA requests",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfExpeditedPARequestsApproved",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.9 Percentage of expedited PA requests that were approved",
-                        hint: 'Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfExpeditedPARequestsDenied",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.10 Percentage of expedited PA requests that were denied",
-                        hint: 'Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                    {
-                      id: "plan_averageTimeToDecisionForExpeditedPAs",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.11 Average time to decision for expedited PAs",
-                        hint: 'Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "plan_medianTimeThatElapsedForDecisionOnExpeditedPAs",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.12 Median time that elapsed for decision on expedited PAs",
-                        hint: 'Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision bt MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                      },
-                    },
-                    {
-                      id: "D1.XIII.13Header",
-                      type: "sectionHeader",
-                      props: {
-                        divider: "top",
-                        content: "Of total PA requests",
-                      },
-                    },
-                    {
-                      id: "plan_percentageOfTotalPARequestsApprovedWithExtendedTimeframe",
-                      type: "number",
-                      validation: "number",
-                      props: {
-                        label:
-                          "D1.XIII.13 Percentage of total PA requests approved with extended timeframe",
-                        hint: 'Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter "NR" for not reporting.',
-                        mask: "percentage",
-                      },
-                    },
-                  ],
+                  fields: [],
                 },
               },
             ],
