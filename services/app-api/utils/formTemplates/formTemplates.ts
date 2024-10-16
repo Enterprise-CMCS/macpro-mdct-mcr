@@ -329,6 +329,7 @@ const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const routesToFilter = [
     "/mcpar/state-level-indicators/prior-authorization",
     "/mcpar/plan-level-indicators/prior-authorization",
+    "/mcpar/program-level-indicators/patient-access-api-usage",
   ];
 
   for (let route of reportTemplate.routes) {
