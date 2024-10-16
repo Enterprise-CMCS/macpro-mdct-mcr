@@ -640,146 +640,109 @@
               "section": "Section B: State-Level Indicators",
               "subsection": "Topic XIII: Prior Authorization",
               "spreadsheet": "B_State",
-              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b-2a-b must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
+              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b–2a-b must be completed. Submission of this data before June 2026 is optional.</b>",
+              "info": "If the state sets timeframes for plans to respond to Prior Authorization (PA) requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions."
             }
           },
           "form": {
             "id": "bpi",
             "fields": [
               {
-                "id": "plan_independentTimeframeForResponseToStandardRequests",
+                "id": "plan_priorAuthorizationReporting",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "B.XIII.1a Does the state have an independent timeframe standard for plans to respond to standard PA requests?",
-                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
+                  "label": "Are you reporting data prior to June 2026?",
                   "choices": [
                     {
-                      "id": "2mwADJVRdZoOfIaf6kGxoQIgNMm",
+                      "id": "2nAidHmpZ9aJQMy0Gk0Zmldri84",
                       "label": "Not reporting data"
                     },
                     {
-                      "id": "2mwADLVa7emn5nMcosPVO2IMgZ8",
-                      "label": "No"
-                    },
-                    {
-                      "id": "2mwADGTgdOXaD87gn2PO5BWPKU4",
+                      "id": "2nAidDjXBvvkzLtaeYyE2RymW4G",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "plan_daysAndHoursForPlansToRespondStandardRequests",
+                          "id": "plan_daysForStateToRespondStandardRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_independentTimeframeForResponseToStandardRequests"
+                            "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1b State timeframe for plans to respond to standard PA requests",
+                            "label": "B.XIII.1a Different timeframe standard for the State’s standard PA requests",
+                            "hint": "The federal timeframe standard for plans to respond to standard PA requests is not to exceed 14 days before 1/1/2026 and not to exceed 7 days on or after 1/1/2026. Does the state set a timeframe standard different from these federal standard?",
                             "choices": [
                               {
-                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
-                                "label": "Number of days",
-                                "children": [
-                                  {
-                                    "id": "numberOfDays",
-                                    "type": "number",
-                                    "validation": {
-                                      "type": "number",
-                                      "nested": true,
-                                      "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
-                                    }
-                                  }
-                                ]
+                                "id": "2nDBqTh66xki2Nr1qwb5VsDLNX2",
+                                "label": "Not reporting data"
                               },
                               {
-                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
-                                "label": "Number of hours",
+                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
+                                "label": "No"
+                              },
+                              {
+                                "id": "2nAidFCWvENhYZvzLt3DxJWOqtx",
+                                "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "plan_numberOfHours",
+                                    "id": "standardResponseTimeNumberOfDays",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
+                                      "parentFieldName": "plan_daysForStateToRespondStandardRequests"
+                                    },
+                                    "props": {
+                                      "label": "B.XIII.1b Timeframe for State’s standard PA requests",
+                                      "hint": "Describe the state timeframe for plans to respond to standard PA requests in number of days."
                                     }
                                   }
                                 ]
                               }
                             ]
                           }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "plan_independentTimeframeForResponseToExpeditedRequests",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "B.XIII.2a Does the state have an independent timeframe standard for plans to respond to expedited PA requests?",
-                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
-                  "choices": [
-                    {
-                      "id": "UG7uunqq5UCtUq1is3iyiw",
-                      "label": "Not reporting data"
-                    },
-                    {
-                      "id": "3DGAqqnOBE2kwKVFMxUt3A",
-                      "label": "No"
-                    },
-                    {
-                      "id": "jlIZKSPaf0GSVGmJbRUBzg",
-                      "label": "Yes",
-                      "children": [
+                        },
                         {
-                          "id": "plan_daysAndHoursForPlansToRespondExpeditedRequests",
+                          "id": "plan_hoursForStateToRespondExpeditedRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_independentTimeframeForResponseToExpeditedRequests"
+                            "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1b State timeframe for plans to respond to expedited PA requests",
+                            "label": "B.XIII.2a Different timeframe standard for the State’s expedited PA requests",
+                            "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
                             "choices": [
                               {
-                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
-                                "label": "Number of days",
-                                "children": [
-                                  {
-                                    "id": "plan_numberOfDaysExpedited",
-                                    "type": "number",
-                                    "validation": {
-                                      "type": "number",
-                                      "nested": true,
-                                      "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
-                                    }
-                                  }
-                                ]
+                                "id": "2nDBqU3GnljuoCyLDVyoXwqZSZO",
+                                "label": "Not reporting data"
                               },
                               {
-                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
-                                "label": "Number of hours",
+                                "id": "2nAidGQyKBhG1gxK1SuXbBjJh0V",
+                                "label": "No"
+                              },
+                              {
+                                "id": "2nAidJFG47lnFfJsNJS2tU7d4pp",
+                                "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "numberOfHours",
+                                    "id": "expeditedNumberOfHours",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
+                                      "parentFieldName": "plan_hoursForStateToRespondExpeditedRequests"
+                                    },
+                                    "props": {
+                                      "label": "B.XIII.2b Timeframe for State’s expedited PA requests",
+                                      "hint": "Describe the state timeframe for plans to respond to expedited PA requests, in hours."
                                     }
                                   }
                                 ]
