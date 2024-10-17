@@ -1,9 +1,21 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 //components
 import { LoginCognito } from "components";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
+
+const mockSignIn = jest.fn();
+jest.mock("aws-amplify/auth", () => ({
+  signIn: (credentials: any) => mockSignIn(credentials),
+}));
+
+const mockUseNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  useNavigate: () => mockUseNavigate,
+}));
 
 const loginCognitoComponent = (
   <RouterWrappedComponent>
@@ -12,20 +24,19 @@ const loginCognitoComponent = (
 );
 
 describe("Test LoginCognito", () => {
-  beforeEach(() => {
+  test("LoginCognito login calls amplify auth login", async () => {
     render(loginCognitoComponent);
-  });
-
-  test("LoginCognito email field is visible", () => {
-    expect(screen.getByText("Email")).toBeVisible();
-  });
-
-  test("LoginCognito password field is visible", () => {
-    expect(screen.getByText("Password")).toBeVisible();
-  });
-
-  test("LoginCognito login button is visible", () => {
-    expect(screen.getByRole("button")).toBeVisible();
+    const emailInput = screen.getByLabelText("Email");
+    const passwordInput = screen.getByLabelText("Password");
+    const submitButton = screen.getByRole("button");
+    await userEvent.type(emailInput, "email@address.com");
+    await userEvent.type(passwordInput, "p@$$w0rd"); //pragma: allowlist secret
+    await userEvent.click(submitButton);
+    await expect(mockSignIn).toHaveBeenCalledWith({
+      username: "email@address.com",
+      password: "p@$$w0rd", //pragma: allowlist secret
+    });
+    await expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 });
 

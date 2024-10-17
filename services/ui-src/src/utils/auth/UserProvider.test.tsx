@@ -3,8 +3,16 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // utils
-import { UserContext, UserProvider } from "utils";
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { UserContext, UserProvider, useStore } from "utils";
+import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
+
+jest.mock("utils/state/useStore");
+const mockSetUser = jest.fn();
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockUseStore,
+  setUser: mockSetUser,
+});
 
 // COMPONENTS
 
@@ -151,6 +159,37 @@ describe("<UserProvider />", () => {
       });
 
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  test("test check auth function", async () => {
+    const mockAmplify = require("aws-amplify/auth");
+    mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
+      tokens: {
+        idToken: {
+          payload: {
+            email: "email@address.com",
+            given_name: "first",
+            family_name: "last",
+            "custom:cms_roles": "roles",
+            "custom:cms_state": "ZZ",
+          },
+        },
+      },
+    });
+    await act(async () => {
+      render(testComponent);
+    });
+    expect(mockSetUser).toHaveBeenCalledWith({
+      email: "email@address.com",
+      given_name: "first",
+      family_name: "last",
+      full_name: "first last",
+      userRole: undefined,
+      state: "ZZ",
+      userIsAdmin: false,
+      userIsReadOnly: false,
+      userIsEndUser: false,
     });
   });
 });
