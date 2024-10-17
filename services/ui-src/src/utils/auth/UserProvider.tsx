@@ -66,7 +66,7 @@ export const UserProvider = ({ children }: Props) => {
 
     try {
       const tokens = (await fetchAuthSession()).tokens;
-      if (!tokens || !tokens.idToken) {
+      if (!tokens?.idToken) {
         throw new Error("Missing tokens auth session.");
       }
       const payload = tokens.idToken.payload;

@@ -32,11 +32,11 @@ describe("Test LoginCognito", () => {
     await userEvent.type(emailInput, "email@address.com");
     await userEvent.type(passwordInput, "p@$$w0rd"); //pragma: allowlist secret
     await userEvent.click(submitButton);
-    await expect(mockSignIn).toHaveBeenCalledWith({
+    expect(mockSignIn).toHaveBeenCalledWith({
       username: "email@address.com",
       password: "p@$$w0rd", //pragma: allowlist secret
     });
-    await expect(mockUseNavigate).toHaveBeenCalledWith("/");
+    expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 });
 
