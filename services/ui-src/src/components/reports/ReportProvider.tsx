@@ -80,6 +80,7 @@ export const ReportProvider = ({ children }: Props) => {
       return result;
     } catch {
       setError(reportErrors.GET_REPORT_FAILED);
+      return;
     }
   };
 
