@@ -222,7 +222,7 @@
                     },
                     {
                       "type": "externalLink",
-                      "content": "\"Managed Care Enrollment by Program and Plan\"",
+                      "content": "“Managed Care Enrollment by Program and Plan”",
                       "props": {
                         "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
                         "target": "_blank",
@@ -287,7 +287,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select \"All Populations.\" If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
+                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select “All Populations.” If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
                 },
                 {
                   "type": "ol",
@@ -305,7 +305,7 @@
                           "children": [
                             {
                               "type": "html",
-                              "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select \"Standalone CHIP\". These separate child health assistance programs are defined in "
+                              "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select “Standalone CHIP”. These separate child health assistance programs are defined in "
                             },
                             {
                               "type": "externalLink",
@@ -330,7 +330,7 @@
                       "children": [
                         {
                           "type": "p",
-                          "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as \"the Expansion Group\"). Select \"Group VIII Expansion Adult Only\"."
+                          "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as “the Expansion Group”). Select “Group VIII Expansion Adult Only”."
                         }
                       ]
                     },
@@ -344,7 +344,7 @@
                       "children": [
                         {
                           "type": "p",
-                          "content": "For States that intend to report separate MLRs for elibility groups that are served under the same program, select \"Other, specify\"."
+                          "content": "For States that intend to report separate MLRs for elibility groups that are served under the same program, select “Other, specify”."
                         }
                       ]
                     }
