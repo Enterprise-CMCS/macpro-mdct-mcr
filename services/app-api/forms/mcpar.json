@@ -498,7 +498,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.7a Changes in provider circumstances: Monitoring plans",
-                  "hint": "Does the state monitor whether plans report provider \"for cause\" terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
+                  "hint": "Does the state monitor whether plans report provider “for cause“ terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
                       "id": "WFrdLUutmEujEZkS7rWVqQ",
@@ -675,10 +675,6 @@
                             "hint": "The federal timeframe standard for plans to respond to standard PA requests is not to exceed 14 days before 1/1/2026 and not to exceed 7 days on or after 1/1/2026. Does the state set a timeframe standard different from these federal standard?",
                             "choices": [
                               {
-                                "id": "2nDBqTh66xki2Nr1qwb5VsDLNX2",
-                                "label": "Not reporting data"
-                              },
-                              {
                                 "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
                                 "label": "No"
                               },
@@ -718,10 +714,6 @@
                             "label": "B.XIII.2a Different timeframe standard for the State’s expedited PA requests",
                             "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
                             "choices": [
-                              {
-                                "id": "2nDBqU3GnljuoCyLDVyoXwqZSZO",
-                                "label": "Not reporting data"
-                              },
                               {
                                 "id": "2nAidGQyKBhG1gxK1SuXbBjJh0V",
                                 "label": "No"
@@ -894,7 +886,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.4b Variation in special benefits",
-                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)? Enter \"N/A\" if not applicable."
+                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)? Enter “N/A“ if not applicable."
                 }
               },
               {
@@ -1066,7 +1058,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.III.5 Incentives for encounter data quality",
-                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with \"N/A\" if the plan does not use incentives to award encounter data quality."
+                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with “N/A“ if the plan does not use incentives to award encounter data quality."
                 }
               },
               {
@@ -1100,8 +1092,8 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.1 State's definition of \"critical incident,\" as used for reporting purposes in its MLTSS program",
-                  "hint": "If this report is being completed for a managed care program that covers LTSS, what is the definition that the state uses for \"critical incidents\" within the managed care program? Respond with \"N/A\" if the managed care program does not cover LTSS."
+                  "label": "C1.IV.1 State's definition of “critical incident,” as used for reporting purposes in its MLTSS program",
+                  "hint": "If this report is being completed for a managed care program that covers LTSS, what is the definition that the state uses for “critical incidents” within the managed care program? Respond with “N/A” if the managed care program does not cover LTSS."
                 }
               },
               {
@@ -1109,7 +1101,7 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.2 State definition of \"timely\" resolution for standard appeals",
+                  "label": "C1.IV.2 State definition of “timely” resolution for standard appeals",
                   "hint": "Provide the state's definition of timely resolution for standard appeals in the managed care program.</br>Per 42 CFR §438.408(b)(2), states must establish a timeframe for timely resolution of standard appeals that is no longer than 30 calendar days from the day the MCO, PIHP or PAHP receives the appeal."
                 }
               },
@@ -1118,7 +1110,7 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.3 State definition of \"timely\" resolution for expedited appeals",
+                  "label": "C1.IV.3 State definition of “timely” resolution for expedited appeals",
                   "hint": "Provide the state's definition of timely resolution for expedited appeals in the managed care program.</br>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal."
                 }
               },
@@ -1127,7 +1119,7 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.4 State definition of \"timely\" resolution for grievances",
+                  "label": "C1.IV.4 State definition of “timely” resolution for grievances",
                   "hint": "Provide the state's definition of timely resolution for grievances in the managed care program.</br>Per 42 CFR §438.408(b)(1), states must establish a timeframe for timely resolution of grievances that is no longer than 90 calendar days from the day the MCO, PIHP or PAHP receives the grievance."
                 }
               }
@@ -1216,7 +1208,7 @@
                 "editEntityButtonText": "Edit measure",
                 "addEditModalAddTitle": "Add access measure",
                 "addEditModalEditTitle": "Edit access measure",
-                "addEditModalMessage": "Complete the remaining indicators for this access measure by saving the measure and selecting \"Enter measure details\".",
+                "addEditModalMessage": "Complete the remaining indicators for this access measure by saving the measure and selecting “Enter measure details”.",
                 "deleteEntityButtonAltText": "Delete measure",
                 "deleteModalTitle": "Delete access measure?",
                 "deleteModalConfirmButtonText": "Yes, delete measure",
@@ -1271,7 +1263,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.3 Standard type",
-                      "hint": "What is the standard type? Select one or add free text if you select \"Other\".",
+                      "hint": "What is the standard type? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "kBady0XnCUG8nxXWSHHeBg",
@@ -1338,7 +1330,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.4 Provider type",
-                      "hint": "What is the provider type? Select one or add free text if you select \"Other\"",
+                      "hint": "What is the provider type? Select one or add free text if you select “Other”",
                       "choices": [
                         {
                           "id": "7z1m6zajqUupPe89o3dAGQ",
@@ -1392,7 +1384,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.5 Applicable region(s)",
-                      "hint": "What is the applicable region? Select one or add free text if you select \"Other\"",
+                      "hint": "What is the applicable region? Select one or add free text if you select “Other”",
                       "choices": [
                         {
                           "id": "X47v2Ee5kkaBERBjXFWGXw",
@@ -1434,7 +1426,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.6 Population",
-                      "hint": "What is the population? Select one or add free text if you select \"Other\"",
+                      "hint": "What is the population? Select one or add free text if you select “Other”",
                       "choices": [
                         {
                           "id": "YtRX5yx7NEWkGfU9vDI03g",
@@ -1476,7 +1468,7 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select \"Other\"",
+                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
@@ -1522,7 +1514,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.8 Frequency of oversight methods",
-                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select \"Other\"",
+                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select “Other”",
                       "choices": [
                         {
                           "id": "tOF04LLPa026mJlHmk0RaA",
@@ -1677,7 +1669,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "C1.XII.4 Does this program include MCOs?",
-                  "hint": "If \"Yes\", please complete the following questions.",
+                  "hint": "If “Yes”, please complete the following questions.",
                   "choices": [
                     {
                       "id": "WezgX4VYsCyGJ3w0ncCpsWkH",
@@ -1973,7 +1965,7 @@
                           },
                           "props": {
                             "label": "C1.XII.12a Has the state posted the current parity analysis(es) covering this program on its website?",
-                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs' separate analyses must be posted. A \"Yes\" response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
+                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs' separate analyses must be posted. A “Yes” response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
                             "choices": [
                               {
                                 "id": "fncOB9LFBZd1nFJvLv9YM1Pb",
@@ -1990,7 +1982,7 @@
                                     },
                                     "props": {
                                       "label": "C1.XII.12b Provide the URL link(s).",
-                                      "hint": "Response must be a valid hyperlink/URL beginning with \"http://\" or \"https://\". Separate links with commas."
+                                      "hint": "Response must be a valid hyperlink/URL beginning with “http://” or “https://”. Separate links with commas."
                                     }
                                   }
                                 ]
@@ -2034,7 +2026,7 @@
               "section": "Section C: Program-Level Indicators",
               "subsection": "Topic XIV: Patient Access / API Usage",
               "spreadsheet": "C1_Program_Set",
-              "alert": "<b>Beginning June 2026, Indicators C1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, enter “N/A”.</b>"
+              "alert": "<b>Beginning June 2026, Indicators C1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, enter “NR”.</b>"
             }
           },
           "form": {
@@ -2046,7 +2038,7 @@
                 "validation": "number",
                 "props": {
                   "label": "C1.XIV.1 Number of unique beneficiaries with at least one data transfer",
-                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data were transferred via the Patient Access API to a health app designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “N/A”.",
+                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data were transferred via the Patient Access API to a health app designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “NR”.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -2057,7 +2049,7 @@
                 "validation": "number",
                 "props": {
                   "label": "C1.XIV.2 Number of unique beneficiaries with multiple data transfers",
-                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “N/A”.",
+                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “NR”.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -2234,7 +2226,7 @@
                 "validation": "text",
                 "props": {
                   "label": "D1.II.2 Population specific MLR description",
-                  "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter \"N/A\" if not applicable.</br>See glossary for the regulatory definition of MLR."
+                  "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter “N/A” if not applicable.</br>See glossary for the regulatory definition of MLR."
                 }
               },
               {
@@ -2369,7 +2361,7 @@
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
                   "spreadsheet": "D1_Plan_Set",
-                  "alert": "<strong>Beginning June 2025, Indicators D1.IV.1a-c must be completed. Submission of this data before June 2025 is optional; if you choose not to respond prior to June 2025, enter \"N/A\".</strong>",
+                  "alert": "<strong>Beginning June 2025, Indicators D1.IV.1a-c must be completed. Submission of this data before June 2025 is optional; if you choose not to respond prior to June 2025, enter “N/A”.</strong>",
                   "info": [
                     {
                       "type": "heading",
@@ -2414,7 +2406,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1 Appeals resolved (at the plan level)",
-                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is \"resolved\" at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
+                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is “resolved” at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2425,7 +2417,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1a Appeals denied",
-                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee. If you choose not to respond prior to June 2025, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2436,7 +2428,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1b Appeals resolved in partial favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee. If you choose not to respond prior to June 2025, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2447,7 +2439,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1c Appeals resolved in favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee. If you choose not to respond prior to June 2025, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2469,7 +2461,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.3 Appeals filed on behalf of LTSS users",
-                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter \"N/A\" if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
+                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2480,7 +2472,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.4 Number of critical incidents filed during the reporting year by (or on behalf of) an LTSS user who previously filed an appeal",
-                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter \"N/A\".</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter \"N/A\".</p>The appeal and critical incident do not have to have been \"related\" to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2654,7 +2646,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7a Resolved appeals related to general inpatient services",
-                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.</p><p>Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter \"N/A\".</p>",
+                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.</p><p>Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter “N/A”.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2665,7 +2657,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7b Resolved appeals related to general outpatient services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2676,7 +2668,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7c Resolved appeals related to inpatient behavioral health services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover inpatient behavioral health services, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover inpatient behavioral health services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2687,7 +2679,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7d Resolved appeals related to outpatient behavioral health services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover outpatient behavioral health services, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover outpatient behavioral health services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2698,7 +2690,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7e Resolved appeals related to covered outpatient prescription drugs",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover outpatient prescription drugs, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover outpatient prescription drugs, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2709,7 +2701,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7f Resolved appeals related to skilled nursing facility (SNF) services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover skilled nursing services, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover skilled nursing services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2720,7 +2712,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7g Resolved appeals related to long-term services and supports (LTSS)",
-                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter \"N/A\".</p><p(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).</p>",
+                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter “N/A”.</p><p(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2731,7 +2723,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7h Resolved appeals related to dental services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover dental services, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover dental services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2742,7 +2734,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7i Resolved appeals related to non-emergency medical transportation (NEMT)",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover NEMT, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover NEMT, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2753,7 +2745,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7j Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter \"N/A\".",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2853,7 +2845,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
-                      "hint": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                      "hint": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter “N/A”.</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2864,7 +2856,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
-                      "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter \"N/A\".</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
+                      "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter “N/A”.</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2920,7 +2912,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.10 Grievances resolved",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year.</p><p>A grievance is \"resolved\" when it has reached completion and been closed by the plan.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year.</p><p>A grievance is “resolved” when it has reached completion and been closed by the plan.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2953,7 +2945,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
-                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been \"related\" to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter \"N/A\" in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter \"N/A\" in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
+                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been “related” to the same issue  - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter “N/A” in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter “N/A” in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3030,7 +3022,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15a Resolved grievances related to general inpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3041,7 +3033,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15b Resolved grievances related to general outpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3052,7 +3044,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15c Resolved grievances related to inpatient behavioral health services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3063,7 +3055,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15d Resolved grievances related to outpatient behavioral health services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3074,7 +3066,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15e Resolved grievances related to coverage of outpatient prescription drugs",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3085,7 +3077,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15f Resolved grievances related to skilled nursing facility (SNF) services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3096,7 +3088,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15g Resolved grievances related to long-term services and supports (LTSS)",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3107,7 +3099,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15h Resolved grievances related to dental services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3118,7 +3110,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15i Resolved grievances related to non-emergency medical transportation (NEMT)",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3129,7 +3121,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15j Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter \"N/A\".",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3339,7 +3331,7 @@
             "editEntityButtonText": "Edit measure",
             "addEditModalAddTitle": "Add a quality & performance measure",
             "addEditModalEditTitle": "Edit quality & performance measure",
-            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting \"Enter measure results\".",
+            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting “Enter measure results”.",
             "deleteEntityButtonAltText": "Delete quality & performance measure",
             "deleteModalTitle": "Delete quality measure?",
             "deleteModalConfirmButtonText": "Yes, delete measure",
@@ -3574,7 +3566,7 @@
                 "repeat": "plans",
                 "props": {
                   "label": ": Measure Results",
-                  "hint": "What are the measure results or values for this plan? Add free text or enter \"N/A\" if not applicable."
+                  "hint": "What are the measure results or values for this plan? Add free text or enter “N/A” if not applicable."
                 }
               }
             ]
@@ -3607,12 +3599,12 @@
             "editEntityButtonText": "Edit sanction",
             "addEditModalAddTitle": "Add sanction",
             "addEditModalEditTitle": "Edit sanction",
-            "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting \"Enter sanction details\".",
+            "addEditModalMessage": "Complete the remaining indicators for this sanction by saving the sanction and selecting “Enter sanction details”.",
             "deleteEntityButtonAltText": "Delete sanction",
             "deleteModalTitle": "Delete plan sanction?",
             "deleteModalConfirmButtonText": "Yes, delete sanction",
             "deleteModalWarning": "You will lose all information entered for this sanction. Are you sure you want to proceed?",
-            "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting \"Enter sanction details\".",
+            "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting “Enter sanction details”.",
             "enterEntityDetailsButtonText": "Enter sanction details",
             "editEntityDetailsButtonText": "Edit sanction details",
             "drawerTitle": "Add details for sanction",
@@ -4141,7 +4133,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check that the ILOS was offered but enter \"0\" for utilization."
+                  "content": "If ILOSs are authorized for this program, report for each plan: if the plan offered any ILOS; if “Yes”, which ILOS the plan offered; and utilization data for each ILOS offered. If the plan offered an ILOS during the reporting period but there was no utilization, check that the ILOS was offered but enter “0” for utilization."
                 }
               ]
             },
@@ -4286,7 +4278,7 @@
                           },
                           "props": {
                             "label": "D4.XI.2a ILOSs utilization by plan",
-                            "hint": "Select all ILOSs offered by this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrollees that utilized this ILOS during the contract rating period. If the plan offered this ILOS during the contract rating period but there was no utilization, enter \"0\".",
+                            "hint": "Select all ILOSs offered by this plan during the contract rating period. For each ILOS offered by the plan, enter the deduplicated number of enrollees that utilized this ILOS during the contract rating period. If the plan offered this ILOS during the contract rating period but there was no utilization, enter “0”.",
                             "choices": [
                               {
                                 "label": "D4.XI.2b"
@@ -4312,7 +4304,7 @@
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic XIII: Prior Authorization",
               "spreadsheet": "D1_Plan_Set",
-              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-14 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, select \"Not reporting data\".</b>"
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-13 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on prior authorization for each plan",
             "drawerTitle": "Prior authorization (PA) for ",
@@ -4348,7 +4340,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "Are you reporting data prior to June 2026?",
-                  "hint": "If \"Yes\", please complete the following questions under each plan.",
+                  "hint": "If “Yes”, please complete the following questions under each plan.",
                   "choices": [
                     {
                       "id": "IELJsTZxQkFDkTMzWQkKocwb",
@@ -4379,7 +4371,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.1 Total standard PA requests",
-                  "hint": "Enter the total number of standard PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                  "hint": "Enter the total number of standard PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
               },
               {
@@ -4388,7 +4380,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.2 Total expedited PA requests",
-                  "hint": "Enter the total number of expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                  "hint": "Enter the total number of expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
               },
               {
@@ -4397,7 +4389,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.3 Total standard and expedited PA requests",
-                  "hint": "Enter the total number of standard and expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                  "hint": "Enter the total number of standard and expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR“ for not reporting."
                 }
               },
               {
@@ -4414,7 +4406,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.4 Percentage of standard PA requests that were approved",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4425,7 +4417,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.5 Percentage of standard PA requests that were denied",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were denied. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were denied. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4436,7 +4428,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4447,7 +4439,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.7 Average time to decision for standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and determination by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and determination by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4457,7 +4449,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.8 Median time that elapsed for decision on standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4475,7 +4467,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.9 Percentage of expedited PA requests that were approved",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4486,7 +4478,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.10 Percentage of expedited PA requests that were denied",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4497,7 +4489,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.11 Average time to decision for expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4507,7 +4499,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.12 Median time that elapsed for decision on expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4525,7 +4517,7 @@
                 "validation": "numberNotLessThanZero",
                 "props": {
                   "label": "D1.XIII.13 Percentage of total PA requests approved with extended timeframe",
-                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }

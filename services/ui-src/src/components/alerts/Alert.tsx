@@ -84,8 +84,10 @@ const sx = {
     alignItems: "start",
     minHeight: "5.25rem",
     borderInlineStartWidth: "0.5rem",
-    marginTop: "1.25rem",
+    // marginTop: "1.25rem",
     padding: "1rem",
+    // marginBottom: "2.5rem",
+    margin: "1.25rem auto 2.5rem",
     "&.info": {
       backgroundColor: "palette.secondary_lightest",
       borderInlineStartColor: "palette.secondary",
