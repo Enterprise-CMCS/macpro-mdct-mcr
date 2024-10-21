@@ -89,9 +89,13 @@ export const validNumberOptional = () =>
 
 // NUMBER NOT LESS THAN ONE
 export const numberNotLessThanOne = () =>
-  validNumber().test({
+  number().test({
     test: (value) => {
-      return parseFloat(value!) >= 1;
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isNumberLargerThanOne = parseFloat(value!) >= 1;
+        return isValidStringValue || isNumberLargerThanOne;
+      } else return true;
     },
     message: error.NUMBER_LESS_THAN_ONE,
   });
