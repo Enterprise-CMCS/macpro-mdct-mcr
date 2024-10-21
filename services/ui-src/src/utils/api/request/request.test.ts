@@ -1,12 +1,12 @@
 import {
-  deleteApi,
-  getApi,
+  del,
+  get,
   getRequestHeaders,
   getTokens,
   loginUser,
   logoutUser,
-  postApi,
-  putApi,
+  post,
+  put,
   refreshSession,
 } from "utils";
 
@@ -86,23 +86,23 @@ describe("request", () => {
     expect(mockSession).toHaveBeenCalledTimes(1);
   });
 
-  test("deleteApi()", async () => {
-    await deleteApi("/");
+  test("delete()", async () => {
+    await del("/");
     expect(mockDelete).toHaveBeenCalledTimes(1);
   });
 
-  test("getApi()", async () => {
-    await getApi<string>("/");
+  test("get()", async () => {
+    await get<string>("/");
     expect(mockGet).toHaveBeenCalledTimes(1);
   });
 
-  test("postApi()", async () => {
-    await postApi<string>("/", { body: "" });
+  test("post()", async () => {
+    await post<string>("/", { body: "" });
     expect(mockPost).toHaveBeenCalledTimes(1);
   });
 
-  test("putApi()", async () => {
-    await putApi<string>("/");
+  test("put()", async () => {
+    await put<string>("/");
     expect(mockPut).toHaveBeenCalledTimes(1);
   });
 });

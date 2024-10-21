@@ -9,9 +9,9 @@ const mockPost = jest.fn();
 const mockTimeout = jest.fn();
 
 jest.mock("utils", () => ({
-  deleteApi: () => mockDelete(),
-  getApi: () => mockGet(),
-  postApi: () => mockPost(),
+  del: () => mockDelete(),
+  get: () => mockGet(),
+  post: () => mockPost(),
   updateTimeout: () => mockTimeout(),
 }));
 

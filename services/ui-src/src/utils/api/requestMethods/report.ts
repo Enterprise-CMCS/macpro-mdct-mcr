@@ -1,38 +1,38 @@
 import { ReportKeys, ReportShape } from "types";
-import { getApi, postApi, putApi, updateTimeout } from "utils";
+import { get, post, put, updateTimeout } from "utils";
 
 async function archiveReport(reportKeys: ReportKeys) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/archive/${reportType}/${state}/${id}`;
   updateTimeout();
-  return putApi<ReportShape>(path);
+  return put<ReportShape>(path);
 }
 
 async function releaseReport(reportKeys: ReportKeys) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/release/${reportType}/${state}/${id}`;
   updateTimeout();
-  return putApi<ReportShape>(path);
+  return put<ReportShape>(path);
 }
 
 async function submitReport(reportKeys: ReportKeys) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/submit/${reportType}/${state}/${id}`;
   updateTimeout();
-  return postApi<ReportShape>(path);
+  return post<ReportShape>(path);
 }
 
 async function getReport(reportKeys: ReportKeys) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/${reportType}/${state}/${id}`;
   updateTimeout();
-  return getApi<ReportShape>(path);
+  return get<ReportShape>(path);
 }
 
 async function getReportsByState(reportType: string, state: string) {
   const path = `/reports/${reportType}/${state}`;
   updateTimeout();
-  return getApi<ReportShape[]>(path);
+  return get<ReportShape[]>(path);
 }
 
 async function postReport(
@@ -45,7 +45,7 @@ async function postReport(
   };
   const path = `/reports/${reportType}/${state}`;
   updateTimeout();
-  return postApi<ReportShape>(path, options);
+  return post<ReportShape>(path, options);
 }
 
 async function putReport(reportKeys: ReportKeys, report: ReportShape) {
@@ -55,7 +55,7 @@ async function putReport(reportKeys: ReportKeys, report: ReportShape) {
   const { reportType, state, id } = reportKeys;
   const path = `/reports/${reportType}/${state}/${id}`;
   updateTimeout();
-  return putApi<ReportShape>(path, options);
+  return put<ReportShape>(path, options);
 }
 
 export {

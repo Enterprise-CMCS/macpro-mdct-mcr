@@ -1,4 +1,9 @@
-import { del, get, post, put } from "aws-amplify/api";
+import {
+  del as ampDel,
+  get as ampGet,
+  post as ampPost,
+  put as ampPut,
+} from "aws-amplify/api";
 import {
   AuthTokens,
   fetchAuthSession,
@@ -50,41 +55,26 @@ export const refreshSession = async (): Promise<void> => {
   await fetchAuthSession({ forceRefresh: true });
 };
 
-export const deleteApi = async (path: string, opts?: any): Promise<void> => {
+export const del = async (path: string, opts?: any): Promise<void> => {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
     ...opts,
   };
-  await del({
+  await ampDel({
     apiName,
     path,
     options,
   }).response;
 };
 
-export const getApi = async <T>(path: string, opts?: any): Promise<T> => {
+export const get = async <T>(path: string, opts?: any): Promise<T> => {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
     ...opts,
   };
-  const { body } = await get({
-    apiName,
-    path,
-    options,
-  }).response;
-
-  return (await body.json()) as unknown as T;
-};
-
-export const postApi = async <T>(path: string, opts?: any): Promise<T> => {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-    ...opts,
-  };
-  const { body } = await post({
+  const { body } = await ampGet({
     apiName,
     path,
     options,
@@ -93,13 +83,28 @@ export const postApi = async <T>(path: string, opts?: any): Promise<T> => {
   return (await body.json()) as unknown as T;
 };
 
-export const putApi = async <T>(path: string, opts?: any): Promise<T> => {
+export const post = async <T>(path: string, opts?: any): Promise<T> => {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
     ...opts,
   };
-  const { body } = await put({
+  const { body } = await ampPost({
+    apiName,
+    path,
+    options,
+  }).response;
+
+  return (await body.json()) as unknown as T;
+};
+
+export const put = async <T>(path: string, opts?: any): Promise<T> => {
+  const requestHeaders = await getRequestHeaders();
+  const options = {
+    headers: { ...requestHeaders },
+    ...opts,
+  };
+  const { body } = await ampPut({
     apiName,
     path,
     options,
