@@ -498,7 +498,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.7a Changes in provider circumstances: Monitoring plans",
-                  "hint": "Does the state monitor whether plans report provider “for cause“ terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
+                  "hint": "Does the state monitor whether plans report provider “for cause” terminations in a timely manner under 42 CFR 438.608(a)(4)? Select one.",
                   "choices": [
                     {
                       "id": "WFrdLUutmEujEZkS7rWVqQ",
