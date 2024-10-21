@@ -11,53 +11,67 @@ import {
 import { mockReportKeys, mockMcparReport } from "utils/testing/setupJest";
 import { initAuthManager } from "utils/auth/authLifecycle";
 
-const mockAmplifyApi = require("aws-amplify/api");
+const mockDelete = jest.fn();
+const mockGet = jest.fn();
+const mockPost = jest.fn();
+const mockPut = jest.fn();
+const mockTimeout = jest.fn();
 
-describe("Test report status methods", () => {
+jest.mock("utils", () => ({
+  deleteApi: () => mockDelete(),
+  getApi: () => mockGet(),
+  postApi: () => mockPost(),
+  putApi: () => mockPut(),
+  updateTimeout: () => mockTimeout(),
+}));
+
+describe("report", () => {
   beforeEach(() => {
     jest.useFakeTimers();
     initAuthManager();
     jest.runAllTimers();
     jest.clearAllMocks();
   });
-  test("archiveReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "put");
+
+  test("archiveReport()", async () => {
     await archiveReport(mockReportKeys);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
-  test("getReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "get");
+  test("getReport()", async () => {
     await getReport(mockReportKeys);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockGet).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
-  test("getReportsByState", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "get");
+  test("getReportsByState()", async () => {
     await getReportsByState("MCPAR", "AB");
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockGet).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
-  test("postReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "post");
+  test("postReport()", async () => {
     await postReport("MCPAR", "AB", mockMcparReport);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
-  test("putReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "put");
+  test("putReport()", async () => {
     await putReport(mockReportKeys, mockMcparReport);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
-  test("releaseReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "put");
+
+  test("releaseReport()", async () => {
     await releaseReport(mockReportKeys);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("submitReport", async () => {
-    const apiSpy = jest.spyOn(mockAmplifyApi, "post");
     await submitReport(mockReportKeys);
-    expect(apiSpy).toHaveBeenCalledTimes(1);
+    expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 });
