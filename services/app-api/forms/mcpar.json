@@ -886,7 +886,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.4b Variation in special benefits",
-                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)? Enter “N/A“ if not applicable."
+                  "hint": "What are any variations in the availability of special benefits within the program (e.g. by service area or population)? Enter “N/A” if not applicable."
                 }
               },
               {
