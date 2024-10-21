@@ -69,10 +69,12 @@ const setWindowOrigin = (windowOrigin: string) => {
 };
 
 const breakCheckAuthState = async () => {
-  const mockAmplify = require("aws-amplify/auth");
-  mockAmplify.fetchAuthSession = jest.fn().mockImplementation(() => {
-    throw new Error();
-  });
+  jest.mock("utils", () => ({
+    refeshTokens: () =>
+      jest.fn().mockImplementation(() => {
+        throw new Error();
+      }),
+  }));
 };
 
 // TESTS
@@ -119,7 +121,7 @@ describe("<UserProvider />", () => {
       setWindowOrigin("mdctmcr.cms.gov");
       await breakCheckAuthState();
       await act(async () => {
-        await render(testComponent);
+        render(testComponent);
       });
       expect(window.location.origin).toContain("mdctmcr.cms.gov");
       expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
@@ -132,7 +134,7 @@ describe("<UserProvider />", () => {
       setWindowOrigin("wherever");
       await breakCheckAuthState();
       await act(async () => {
-        await render(testComponent);
+        render(testComponent);
       });
       expect(window.location.origin).toContain("wherever");
       const showLocalLogins = screen.getByTestId("show-local-logins");
