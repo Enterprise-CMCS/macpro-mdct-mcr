@@ -4428,7 +4428,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4439,7 +4439,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.7 Average time to decision for standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4449,7 +4449,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.8 Median time that elapsed for decision on standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4467,7 +4467,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.9 Percentage of expedited PA requests that were approved",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4478,7 +4478,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.10 Percentage of expedited PA requests that were denied",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4489,7 +4489,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.11 Average time to decision for expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4499,7 +4499,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIII.12 Median time that elapsed for decision on expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
@@ -4517,7 +4517,7 @@
                 "validation": "numberNotLessThanZero",
                 "props": {
                   "label": "D1.XIII.13 Percentage of total PA requests approved with extended timeframe",
-                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter “NR“ for not reporting.",
+                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
