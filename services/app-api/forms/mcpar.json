@@ -1092,7 +1092,7 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.1 State's definition of “critical incident,” as used for reporting purposes in its MLTSS program",
+                  "label": "C1.IV.1 State's definition of “critical incident”, as used for reporting purposes in its MLTSS program",
                   "hint": "If this report is being completed for a managed care program that covers LTSS, what is the definition that the state uses for “critical incidents” within the managed care program? Respond with “N/A” if the managed care program does not cover LTSS."
                 }
               },
