@@ -10,7 +10,6 @@ import {
   signIn,
   signOut,
 } from "aws-amplify/auth";
-import { Hub as AmplifyHub } from "aws-amplify/utils";
 
 const apiName = "mcr";
 
@@ -18,11 +17,11 @@ interface RequestHeaders {
   "x-api-key": string | undefined;
 }
 
-export const Hub = AmplifyHub;
+interface RequestOptions {
+  body: any;
+}
 
-export const getRequestHeaders = async (): Promise<
-  RequestHeaders | undefined
-> => {
+export async function getRequestHeaders(): Promise<RequestHeaders | undefined> {
   try {
     const tokens = await getTokens();
     const headers = {
@@ -34,28 +33,28 @@ export const getRequestHeaders = async (): Promise<
     console.log(error); //eslint-disable-line no-console
     return;
   }
-};
+}
 
-export const getTokens = async (): Promise<AuthTokens | undefined> => {
+export async function getTokens(): Promise<AuthTokens | undefined> {
   return (await fetchAuthSession()).tokens;
-};
+}
 
-export const loginUser = async (
+export async function loginUser(
   username: string,
   password: string
-): Promise<void> => {
+): Promise<void> {
   await signIn({ username, password });
-};
+}
 
-export const logoutUser = async (): Promise<void> => {
+export async function logoutUser(): Promise<void> {
   await signOut();
-};
+}
 
-export const refreshSession = async (): Promise<void> => {
+export async function refreshSession(): Promise<void> {
   await fetchAuthSession({ forceRefresh: true });
-};
+}
 
-export const del = async (path: string, opts?: any): Promise<void> => {
+export async function del(path: string, opts?: RequestOptions): Promise<void> {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -66,9 +65,9 @@ export const del = async (path: string, opts?: any): Promise<void> => {
     path,
     options,
   }).response;
-};
+}
 
-export const get = async <T>(path: string, opts?: any): Promise<T> => {
+export async function get<T>(path: string, opts?: RequestOptions): Promise<T> {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -81,9 +80,9 @@ export const get = async <T>(path: string, opts?: any): Promise<T> => {
   }).response;
 
   return (await body.json()) as unknown as T;
-};
+}
 
-export const post = async <T>(path: string, opts?: any): Promise<T> => {
+export async function post<T>(path: string, opts?: RequestOptions): Promise<T> {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -96,9 +95,9 @@ export const post = async <T>(path: string, opts?: any): Promise<T> => {
   }).response;
 
   return (await body.json()) as unknown as T;
-};
+}
 
-export const put = async <T>(path: string, opts?: any): Promise<T> => {
+export async function put<T>(path: string, opts?: RequestOptions): Promise<T> {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -111,4 +110,4 @@ export const put = async <T>(path: string, opts?: any): Promise<T> => {
   }).response;
 
   return (await body.json()) as unknown as T;
-};
+}
