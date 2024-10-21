@@ -91,11 +91,10 @@ export const validNumberOptional = () =>
 export const numberNotLessThanOne = () =>
   number().test({
     test: (value) => {
-      if (value) {
-        const isValidStringValue = validNAValues.includes(value);
-        const isNumberLargerThanOne = parseFloat(value!) >= 1;
-        return isValidStringValue || isNumberLargerThanOne;
-      } else return true;
+      if (!value) return true;
+      const isValidString = validNAValues.includes(value);
+      const isGreaterThanOne = parseFloat(value) >= 1;
+      return isValidString || isGreaterThanOne;
     },
     message: error.NUMBER_LESS_THAN_ONE,
   });
@@ -104,11 +103,10 @@ export const numberNotLessThanOne = () =>
 export const numberNotLessThanZero = () =>
   number().test({
     test: (value) => {
-      if (value) {
-        const isValidStringValue = validNAValues.includes(value);
-        const isNumberLargerThanZero = parseFloat(value) >= 0;
-        return isValidStringValue || isNumberLargerThanZero;
-      } else return true;
+      if (!value) return true;
+      const isValidString = validNAValues.includes(value);
+      const isGreaterThanZero = parseFloat(value) >= 0;
+      return isValidString || isGreaterThanZero;
     },
     message: error.NUMBER_LESS_THAN_ZERO,
   });
