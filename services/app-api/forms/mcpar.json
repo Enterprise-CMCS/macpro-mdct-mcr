@@ -638,148 +638,111 @@
           "verbiage": {
             "intro": {
               "section": "Section B: State-Level Indicators",
-              "subsection": "Topic XIII: Prior Authorization",
+              "subsection": "Topic XIII. Prior Authorization",
               "spreadsheet": "B_State",
-              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b-2a-b must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
+              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b–2a-b must be completed. Submission of this data before June 2026 is optional.</b>",
+              "info": "If the state sets timeframes for plans to respond to Prior Authorization (PA) requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions."
             }
           },
           "form": {
             "id": "bpi",
             "fields": [
               {
-                "id": "plan_independentTimeframeForResponseToStandardRequests",
+                "id": "plan_priorAuthorizationReporting",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "B.XIII.1a Does the state have an independent timeframe standard for plans to respond to standard PA requests?",
-                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
+                  "label": "Are you reporting data prior to June 2026?",
                   "choices": [
                     {
-                      "id": "2mwADJVRdZoOfIaf6kGxoQIgNMm",
+                      "id": "2nAidHmpZ9aJQMy0Gk0Zmldri84",
                       "label": "Not reporting data"
                     },
                     {
-                      "id": "2mwADLVa7emn5nMcosPVO2IMgZ8",
-                      "label": "No"
-                    },
-                    {
-                      "id": "2mwADGTgdOXaD87gn2PO5BWPKU4",
+                      "id": "2nAidDjXBvvkzLtaeYyE2RymW4G",
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "plan_daysAndHoursForPlansToRespondStandardRequests",
+                          "id": "plan_daysForStateToRespondStandardRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_independentTimeframeForResponseToStandardRequests"
+                            "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1b State timeframe for plans to respond to standard PA requests",
+                            "label": "B.XIII.1a Different timeframe standard for the State’s standard PA requests",
+                            "hint": "The federal timeframe standard for plans to respond to standard PA requests is not to exceed 14 days before 1/1/2026 and not to exceed 7 days on or after 1/1/2026. Does the state set a timeframe standard different from these federal standard?",
                             "choices": [
                               {
-                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
-                                "label": "Number of days",
-                                "children": [
-                                  {
-                                    "id": "numberOfDays",
-                                    "type": "number",
-                                    "validation": {
-                                      "type": "number",
-                                      "nested": true,
-                                      "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
-                                    }
-                                  }
-                                ]
+                                "id": "2nDBqTh66xki2Nr1qwb5VsDLNX2",
+                                "label": "Not reporting data"
                               },
                               {
-                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
-                                "label": "Number of hours",
+                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
+                                "label": "No"
+                              },
+                              {
+                                "id": "2nAidFCWvENhYZvzLt3DxJWOqtx",
+                                "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "plan_numberOfHours",
+                                    "id": "standardResponseTimeNumberOfDays",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondStandardRequests"
+                                      "parentFieldName": "plan_daysForStateToRespondStandardRequests"
+                                    },
+                                    "props": {
+                                      "label": "B.XIII.1b Timeframe for State’s standard PA requests",
+                                      "hint": "Describe the state timeframe for plans to respond to standard PA requests in number of days."
                                     }
                                   }
                                 ]
                               }
                             ]
                           }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "plan_independentTimeframeForResponseToExpeditedRequests",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "B.XIII.2a Does the state have an independent timeframe standard for plans to respond to expedited PA requests?",
-                  "hint": "If you choose not to respond prior to June 2026, select “Not reporting data”.",
-                  "choices": [
-                    {
-                      "id": "UG7uunqq5UCtUq1is3iyiw",
-                      "label": "Not reporting data"
-                    },
-                    {
-                      "id": "3DGAqqnOBE2kwKVFMxUt3A",
-                      "label": "No"
-                    },
-                    {
-                      "id": "jlIZKSPaf0GSVGmJbRUBzg",
-                      "label": "Yes",
-                      "children": [
+                        },
                         {
-                          "id": "plan_daysAndHoursForPlansToRespondExpeditedRequests",
+                          "id": "plan_hoursForStateToRespondExpeditedRequests",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_independentTimeframeForResponseToExpeditedRequests"
+                            "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1b State timeframe for plans to respond to expedited PA requests",
+                            "label": "B.XIII.2a Different timeframe standard for the State’s expedited PA requests",
+                            "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
                             "choices": [
                               {
-                                "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
-                                "label": "Number of days",
-                                "children": [
-                                  {
-                                    "id": "plan_numberOfDaysExpedited",
-                                    "type": "number",
-                                    "validation": {
-                                      "type": "number",
-                                      "nested": true,
-                                      "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
-                                    }
-                                  }
-                                ]
+                                "id": "2nDBqU3GnljuoCyLDVyoXwqZSZO",
+                                "label": "Not reporting data"
                               },
                               {
-                                "id": "2mwADIT0tTFJTHwbuB9lcuVdkei",
-                                "label": "Number of hours",
+                                "id": "2nAidGQyKBhG1gxK1SuXbBjJh0V",
+                                "label": "No"
+                              },
+                              {
+                                "id": "2nAidJFG47lnFfJsNJS2tU7d4pp",
+                                "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "numberOfHours",
+                                    "id": "expeditedNumberOfHours",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysAndHoursForPlansToRespondExpeditedRequests"
+                                      "parentFieldName": "plan_hoursForStateToRespondExpeditedRequests"
+                                    },
+                                    "props": {
+                                      "label": "B.XIII.2b Timeframe for State’s expedited PA requests",
+                                      "hint": "Describe the state timeframe for plans to respond to expedited PA requests, in hours."
                                     }
                                   }
                                 ]
@@ -4334,6 +4297,237 @@
                       ]
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "XIII: Prior Authorization",
+          "path": "/mcpar/plan-level-indicators/prior-authorization",
+          "pageType": "drawer",
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic XIII: Prior Authorization",
+              "spreadsheet": "D1_Plan_Set",
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-14 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, select \"Not reporting data\".</b>"
+            },
+            "dashboardTitle": "Report on prior authorization for each plan",
+            "drawerTitle": "Prior authorization (PA) for ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ]
+          },
+          "form": {
+            "id": "pa",
+            "fields": [
+              {
+                "id": "reportingDataPriorToJune2026",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Are you reporting data prior to June 2026?",
+                  "hint": "If \"Yes\", please complete the following questions under each plan.",
+                  "choices": [
+                    {
+                      "id": "IELJsTZxQkFDkTMzWQkKocwb",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "bByTWRIwTSTBncyZRUiibagB",
+                      "label": "Yes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "drawerForm": {
+            "id": "dpa",
+            "fields": [
+              {
+                "id": "D1.XIII.1Header",
+                "type": "sectionHeader",
+                "props": {
+                  "content": "Total count of PA requests logged in by the plan during the prior calendar year"
+                }
+              },
+              {
+                "id": "plan_totalStandardPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.1 Total standard PA requests",
+                  "hint": "Enter the total number of standard PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                }
+              },
+              {
+                "id": "plan_totalExpeditedPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.2 Total expedited PA requests",
+                  "hint": "Enter the total number of expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                }
+              },
+              {
+                "id": "plan_totalStandardAndExpeditedPARequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.3 Total standard and expedited PA requests",
+                  "hint": "Enter the total number of standard and expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting."
+                }
+              },
+              {
+                "id": "D1.XIII.4Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of the total standard PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.4 Percentage of standard PA requests that were approved",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsDenied",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.5 Percentage of standard PA requests that were denied",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were denied. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_percentageOfStandardPARequestsApprovedAfterAppeal",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
+                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_averageTimeToDecisionForStandardPAs",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.7 Average time to decision for standard PAs",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and determination by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_medianTimeThatElapsedForDecisionOnStandardPAs",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.8 Median time that elapsed for decision on standard PAs",
+                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "D1.XIII.9Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of the total expedited PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfExpeditedPARequestsApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.9 Percentage of expedited PA requests that were approved",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_percentageOfExpeditedPARequestsDenied",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.10 Percentage of expedited PA requests that were denied",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_averageTimeToDecisionForExpeditedPAs",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.11 Average time to decision for expedited PAs",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_medianTimeThatElapsedForDecisionOnExpeditedPAs",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.12 Median time that elapsed for decision on expedited PAs",
+                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "D1.XIII.13Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of total PA requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfTotalPARequestsApprovedWithExtendedTimeframe",
+                "type": "number",
+                "validation": "numberNotLessThanZero",
+                "props": {
+                  "label": "D1.XIII.13 Percentage of total PA requests approved with extended timeframe",
+                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter \"NR\" for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
                 }
               }
             ]

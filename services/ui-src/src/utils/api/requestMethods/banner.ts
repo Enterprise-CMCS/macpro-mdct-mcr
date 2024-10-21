@@ -1,40 +1,55 @@
-import { API } from "aws-amplify";
+import { get, post, del } from "aws-amplify/api";
 import { getRequestHeaders } from "./getRequestHeaders";
 import { AdminBannerData } from "types/banners";
 import { updateTimeout } from "utils";
 
+const apiName = "mcr";
+
 async function getBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
+  const path = `/banners/${bannerKey}`;
 
   updateTimeout();
-  const response = await API.get("mcr", `/banners/${bannerKey}`, request);
-  return response;
+  const { body } = await get({
+    apiName,
+    path,
+    options,
+  }).response;
+  return (await body.json()) as unknown as { Item: AdminBannerData };
 }
 
 async function writeBanner(bannerData: AdminBannerData) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
     body: bannerData,
   };
+  const path = `/banners/${bannerData.key}`;
 
   updateTimeout();
-  const response = await API.post("mcr", `/banners/${bannerData.key}`, request);
-  return response;
+  await post({
+    apiName,
+    path,
+    options,
+  }).response;
 }
 
 async function deleteBanner(bannerKey: string) {
   const requestHeaders = await getRequestHeaders();
-  const request = {
+  const options = {
     headers: { ...requestHeaders },
   };
+  const path = `/banners/${bannerKey}`;
 
   updateTimeout();
-  const response = await API.del("mcr", `/banners/${bannerKey}`, request);
-  return response;
+  await del({
+    apiName,
+    path,
+    options,
+  }).response;
 }
 
 export { getBanner, writeBanner, deleteBanner };

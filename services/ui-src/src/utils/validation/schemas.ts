@@ -38,6 +38,8 @@ export const validNAValues = [
   "n/a",
   "N/a",
   "Data not available",
+  "NR",
+  "nr",
 ];
 
 // NUMBER - Number or Valid Strings

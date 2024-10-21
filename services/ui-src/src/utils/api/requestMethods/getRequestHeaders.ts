@@ -1,11 +1,10 @@
-import { Auth } from "aws-amplify";
+import { fetchAuthSession } from "aws-amplify/auth";
 
 export const getRequestHeaders = async (): Promise<any> => {
   try {
-    const session = await Auth.currentSession();
-    const token = await session.getIdToken().getJwtToken();
+    const { idToken } = (await fetchAuthSession()).tokens ?? {};
     const headers = {
-      "x-api-key": token,
+      "x-api-key": idToken?.toString(),
     };
     return headers;
   } catch (error) {
