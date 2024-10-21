@@ -72,7 +72,7 @@ export const getApi = async <T>(path: string, opts?: any): Promise<T> => {
     options,
   }).response;
 
-  return (await body.json()) as T;
+  return (await body.json()) as unknown as T;
 };
 
 export const postApi = async <T>(path: string, opts?: any): Promise<T> => {
@@ -87,7 +87,7 @@ export const postApi = async <T>(path: string, opts?: any): Promise<T> => {
     options,
   }).response;
 
-  return (await body.json()) as T;
+  return (await body.json()) as unknown as T;
 };
 
 export const putApi = async <T>(path: string, opts?: any): Promise<T> => {
@@ -102,5 +102,5 @@ export const putApi = async <T>(path: string, opts?: any): Promise<T> => {
     options,
   }).response;
 
-  return (await body.json()) as T;
+  return (await body.json()) as unknown as T;
 };

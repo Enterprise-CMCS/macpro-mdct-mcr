@@ -65,15 +65,6 @@ const setWindowOrigin = (windowOrigin: string) => {
   });
 };
 
-const breakCheckAuthState = async () => {
-  jest.mock("utils", () => ({
-    refeshTokens: () =>
-      jest.fn().mockImplementation(() => {
-        throw new Error();
-      }),
-  }));
-};
-
 // TESTS
 
 describe("<UserProvider />", () => {
@@ -116,7 +107,6 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider with production path", () => {
     test("test production authenticates with idm when current authenticated user throws an error", async () => {
       setWindowOrigin("mdctmcr.cms.gov");
-      await breakCheckAuthState();
       await act(async () => {
         render(testComponent);
       });
@@ -128,7 +118,6 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider with non-production path", () => {
     test("Non-production error state correctly sets showLocalLogins", async () => {
       setWindowOrigin("wherever");
-      await breakCheckAuthState();
       await act(async () => {
         render(testComponent);
       });
