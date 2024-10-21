@@ -83,6 +83,10 @@ export const numberNotLessThanZero = () =>
       message: error.INVALID_NUMBER,
     })
     .test({
+      test: (value) => validNAValues.includes(value!),
+      message: error.INVALID_NUMBER_OR_NA,
+    })
+    .test({
       test: (value) => parseFloat(value!) >= 0,
       message: error.NUMBER_LESS_THAN_ZERO,
     });

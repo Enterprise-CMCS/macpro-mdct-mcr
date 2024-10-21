@@ -98,8 +98,14 @@ export const numberNotLessThanOne = () =>
 
 // NUMBER NOT LESS THAN ZERO
 export const numberNotLessThanZero = () =>
-  validNumber().test({
-    test: (value) => parseFloat(value!) >= 0,
+  number().test({
+    test: (value) => {
+      if (value) {
+        const isValidStringValue = validNAValues.includes(value);
+        const isNumberLargerThanZero = parseFloat(value) >= 0;
+        return isValidStringValue || isNumberLargerThanZero;
+      } else return true;
+    },
     message: error.NUMBER_LESS_THAN_ZERO,
   });
 
