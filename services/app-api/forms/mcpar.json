@@ -1330,7 +1330,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.4 Provider type",
-                      "hint": "What is the provider type? Select one or add free text if you select “Other”",
+                      "hint": "What is the provider type? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "7z1m6zajqUupPe89o3dAGQ",
@@ -1384,7 +1384,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.5 Applicable region(s)",
-                      "hint": "What is the applicable region? Select one or add free text if you select “Other”",
+                      "hint": "What is the applicable region? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "X47v2Ee5kkaBERBjXFWGXw",
@@ -1426,7 +1426,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.6 Population",
-                      "hint": "What is the population? Select one or add free text if you select “Other”",
+                      "hint": "What is the population? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "YtRX5yx7NEWkGfU9vDI03g",
@@ -1468,7 +1468,7 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”",
+                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
@@ -1514,7 +1514,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.8 Frequency of oversight methods",
-                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select “Other”",
+                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
                           "id": "tOF04LLPa026mJlHmk0RaA",

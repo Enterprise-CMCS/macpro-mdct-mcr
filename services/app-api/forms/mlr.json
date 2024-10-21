@@ -287,7 +287,7 @@
               "hint": [
                 {
                   "type": "p",
-                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select “All Populations.” If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
+                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select “All Populations”. If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
                 },
                 {
                   "type": "ol",
