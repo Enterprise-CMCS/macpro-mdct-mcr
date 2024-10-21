@@ -6,7 +6,16 @@ import { act } from "react-dom/test-utils";
 import { UserContext, UserProvider, useStore } from "utils";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 
+const mockGetTokens = jest.fn();
+const mockLogoutUser = jest.fn();
+
+jest.mock("utils/api/request/request", () => ({
+  getTokens: () => mockGetTokens(),
+  logoutUser: () => mockLogoutUser(),
+}));
+
 jest.mock("utils/state/useStore");
+
 const mockSetUser = jest.fn();
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
@@ -128,12 +137,11 @@ describe("<UserProvider />", () => {
   });
 
   describe("Test UserProvider error handling", () => {
-    it("Logs error to console if logout throws error", async () => {
+    test("Logs error to console if logout throws error", async () => {
       jest.spyOn(console, "log").mockImplementation(jest.fn());
       const spy = jest.spyOn(console, "log");
 
-      const mockAmplify = require("aws-amplify/auth");
-      mockAmplify.signOut = jest.fn().mockImplementation(() => {
+      mockLogoutUser.mockImplementation(() => {
         throw new Error();
       });
 
@@ -145,22 +153,19 @@ describe("<UserProvider />", () => {
         await userEvent.click(logoutButton);
       });
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   test("test check auth function", async () => {
-    const mockAmplify = require("aws-amplify/auth");
-    mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
-      tokens: {
-        idToken: {
-          payload: {
-            email: "email@address.com",
-            given_name: "first",
-            family_name: "last",
-            "custom:cms_roles": "roles",
-            "custom:cms_state": "ZZ",
-          },
+    mockGetTokens.mockResolvedValue({
+      idToken: {
+        payload: {
+          email: "email@address.com",
+          given_name: "first",
+          family_name: "last",
+          "custom:cms_roles": "roles",
+          "custom:cms_state": "ZZ",
         },
       },
     });
