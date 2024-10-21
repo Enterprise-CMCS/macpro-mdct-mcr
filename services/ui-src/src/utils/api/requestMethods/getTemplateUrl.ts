@@ -1,5 +1,5 @@
-import { getApi } from "utils";
+import { get } from "utils";
 
 export async function getSignedTemplateUrl(templateName: string) {
-  return getApi<string>(`/templates/${templateName}`);
+  return get<string>(`/templates/${templateName}`);
 }
