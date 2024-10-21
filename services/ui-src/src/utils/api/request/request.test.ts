@@ -48,7 +48,7 @@ describe("request", () => {
 
       await getRequestHeaders();
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test("Returns token if current idToken exists", async () => {

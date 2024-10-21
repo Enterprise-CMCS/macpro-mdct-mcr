@@ -5,12 +5,15 @@ import {
   signIn,
   signOut,
 } from "aws-amplify/auth";
+import { Hub as AmplifyHub } from "aws-amplify/utils";
 
 const apiName = "mcr";
 
 interface RequestHeaders {
   "x-api-key": string | undefined;
 }
+
+export const Hub = AmplifyHub;
 
 export const getRequestHeaders = async (): Promise<
   RequestHeaders | undefined
