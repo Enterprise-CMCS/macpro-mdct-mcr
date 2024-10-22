@@ -94,7 +94,6 @@ describe("Schemas", () => {
   ) => {
     for (let testCase of testCases) {
       let test = schemaToUse.isValidSync(testCase);
-
       expect(test).toEqual(expectedReturn);
     }
   };
