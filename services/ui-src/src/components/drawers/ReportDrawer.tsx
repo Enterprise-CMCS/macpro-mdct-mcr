@@ -46,7 +46,6 @@ export const ReportDrawer = ({
           formData={selectedEntity}
           validateOnRender={validateOnRender || false}
           dontReset={true}
-          {...props}
         />
       ) : (
         <Text sx={sx.noFormMessage}>{verbiage.drawerNoFormMessage}</Text>
