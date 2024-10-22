@@ -6,10 +6,16 @@ import {
   useMemo,
 } from "react";
 import { useLocation } from "react-router-dom";
-import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import config from "config";
 // utils
-import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
+import {
+  getExpiration,
+  getTokens,
+  initAuthManager,
+  logoutUser,
+  updateTimeout,
+  useStore,
+} from "utils";
 import { PRODUCTION_HOST_DOMAIN } from "../../constants";
 // types
 import { MCRUser, UserContextShape, UserRoles } from "types/users";
@@ -49,7 +55,7 @@ export const UserProvider = ({ children }: Props) => {
     try {
       setUser(undefined);
       clearSelectedReportCache();
-      await signOut();
+      await logoutUser();
       localStorage.clear();
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
@@ -65,7 +71,7 @@ export const UserProvider = ({ children }: Props) => {
     }
 
     try {
-      const tokens = (await fetchAuthSession()).tokens;
+      const tokens = await getTokens();
       if (!tokens?.idToken) {
         throw new Error("Missing tokens auth session.");
       }
