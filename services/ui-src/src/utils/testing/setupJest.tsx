@@ -66,7 +66,7 @@ jest.mock("aws-amplify/auth", () => ({
   }),
   configure: () => {},
   signOut: jest.fn().mockImplementation(() => Promise.resolve()),
-  federatedSignIn: () => {},
+  signInWithRedirect: () => {},
 }));
 
 jest.mock("aws-amplify/utils", () => ({
