@@ -119,6 +119,11 @@
     lodash "^4.17.21"
     tslib "^2.5.0"
 
+"@aws-amplify/rtn-web-browser@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/rtn-web-browser/-/rtn-web-browser-1.1.1.tgz#c85c5c45d8c92283431ada7dfbf27af730bf9e8d"
+  integrity sha512-iHQNfdB+jRxgnttFHHf38JHQ9tOfzbcv1CR1H9Qb3RBPZMELQQhyvuKvTukvvzfjuGpxDR6/q3WOd5DJ9IRx9w==
+
 "@aws-amplify/storage@6.6.9":
   version "6.6.9"
   resolved "https://registry.yarnpkg.com/@aws-amplify/storage/-/storage-6.6.9.tgz#c23072d7e21f33b1954fafd99baa5d926c89dd04"
