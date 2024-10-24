@@ -6,13 +6,7 @@ import {
   useMemo,
 } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  fetchAuthSession,
-  getCurrentUser,
-  signInWithRedirect,
-  signOut,
-} from "aws-amplify/auth";
-import { Hub } from "aws-amplify/utils";
+import { fetchAuthSession, signOut } from "aws-amplify/auth";
 import config from "config";
 // utils
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
@@ -27,26 +21,11 @@ export const UserContext = createContext<UserContextShape>({
   getExpiration: () => {},
 });
 
-/* eslint-disable no-console */
-Hub.listen("auth", async ({ payload }) => {
-  switch (payload.event) {
-    case "signInWithRedirect":
-      // eslint-disable-next-line no-case-declarations
-      const user = await getCurrentUser();
-      console.log(user.username);
-      break;
-    case "signInWithRedirect_failure":
-      console.log("payload", payload);
-      break;
-  }
-});
-
 const authenticateWithIDM = async () => {
-  try {
-    await signInWithRedirect({ provider: { custom: "Okta" } });
-  } catch (err: any) {
-    console.error("error", err);
-  }
+  const cognitoHostedUrl = new URL(
+    `https://${config.cognito.APP_CLIENT_DOMAIN}/oauth2/authorize?identity_provider=${config.cognito.COGNITO_IDP_NAME}&redirect_uri=${config.APPLICATION_ENDPOINT}&response_type=CODE&client_id=${config.cognito.APP_CLIENT_ID}&scope=email openid profile`
+  );
+  window.location.replace(cognitoHostedUrl);
 };
 
 export const UserProvider = ({ children }: Props) => {
