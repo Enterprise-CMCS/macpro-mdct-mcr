@@ -173,6 +173,7 @@ resources:
         GenerateSecret: false # pragma: allowlist secret
         AllowedOAuthFlows:
           - code
+          - implicit
         AllowedOAuthFlowsUserPoolClient: true
         AllowedOAuthScopes:
           - email
