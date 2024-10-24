@@ -20,7 +20,7 @@ import { MCRUser, UserContextShape, UserRoles } from "types/users";
 
 export const UserContext = createContext<UserContextShape>({
   logout: async () => {},
-  loginWithIDM: () => {},
+  loginWithIDM: async () => {},
   updateTimeout: () => {},
   getExpiration: () => {},
 });
@@ -105,7 +105,7 @@ export const UserProvider = ({ children }: Props) => {
       setUser(currentUser);
     } catch {
       if (isProduction) {
-        authenticateWithIDM();
+        await authenticateWithIDM();
       } else {
         setShowLocalLogins(true);
       }
