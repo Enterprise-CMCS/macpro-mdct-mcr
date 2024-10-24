@@ -8,9 +8,11 @@ import {
 import { useLocation } from "react-router-dom";
 import {
   fetchAuthSession,
+  getCurrentUser,
   signInWithRedirect,
   signOut,
 } from "aws-amplify/auth";
+import { Hub } from "aws-amplify/utils";
 import config from "config";
 // utils
 import { initAuthManager, updateTimeout, getExpiration, useStore } from "utils";
@@ -25,8 +27,26 @@ export const UserContext = createContext<UserContextShape>({
   getExpiration: () => {},
 });
 
+/* eslint-disable no-console */
+Hub.listen("auth", async ({ payload }) => {
+  switch (payload.event) {
+    case "signInWithRedirect":
+      // eslint-disable-next-line no-case-declarations
+      const user = await getCurrentUser();
+      console.log(user.username);
+      break;
+    case "signInWithRedirect_failure":
+      console.log("payload", payload);
+      break;
+  }
+});
+
 const authenticateWithIDM = async () => {
-  await signInWithRedirect({ provider: { custom: "Okta" } });
+  try {
+    await signInWithRedirect({ provider: { custom: "Okta" } });
+  } catch (err: any) {
+    console.error("error", err);
+  }
 };
 
 export const UserProvider = ({ children }: Props) => {
