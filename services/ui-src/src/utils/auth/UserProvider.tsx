@@ -42,9 +42,11 @@ Hub.listen("auth", async ({ payload }) => {
 });
 
 const authenticateWithIDM = async () => {
-  await signInWithRedirect({ provider: { custom: "Okta" } }).catch((err) => {
+  try {
+    await signInWithRedirect({ provider: { custom: "Okta" } });
+  } catch (err: any) {
     console.error("error", err);
-  });
+  }
 };
 
 export const UserProvider = ({ children }: Props) => {
