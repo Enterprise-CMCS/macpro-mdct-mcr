@@ -89,7 +89,12 @@ export const AdminDashSelector = ({ verbiage }: Props) => {
         dontReset={false}
       />
       <Flex sx={sx.navigationButton}>
-        <Button type="submit" form={formJson.id} isDisabled={!reportSelected}>
+        <Button
+          type="submit"
+          form={formJson.id}
+          isDisabled={!reportSelected}
+          sx={!reportSelected ? sx.disabledButton : {}}
+        >
           {verbiage.buttonLabel}
         </Button>
       </Flex>
@@ -114,5 +119,9 @@ const sx = {
   },
   navigationButton: {
     padding: "1.5rem 0 2rem 0",
+  },
+  disabledButton: {
+    color: "palette.gray",
+    background: "palette.gray_lighter",
   },
 };
