@@ -1,6 +1,6 @@
 // api
+export * from "./api/apiLib";
 export * from "./api/providers/ApiProvider";
-export * from "./api/request/request";
 export * from "./api/requestMethods/banner";
 export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/report";

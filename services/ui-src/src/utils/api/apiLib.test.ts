@@ -18,6 +18,7 @@ const mockPut = jest.fn().mockImplementation(() => mockResponse);
 const mockSession = jest.fn();
 const mockSignIn = jest.fn();
 const mockSignOut = jest.fn();
+const mockTimeout = jest.fn();
 
 jest.mock("aws-amplify/api", () => ({
   del: () => mockDelete(),
@@ -30,6 +31,10 @@ jest.mock("aws-amplify/auth", () => ({
   fetchAuthSession: () => mockSession(),
   signIn: () => mockSignIn(),
   signOut: () => mockSignOut(),
+}));
+
+jest.mock("utils/auth/authLifecycle", () => ({
+  updateTimeout: () => mockTimeout(),
 }));
 
 describe("request", () => {
@@ -86,23 +91,59 @@ describe("request", () => {
     expect(mockSession).toHaveBeenCalledTimes(1);
   });
 
-  test("delete()", async () => {
-    await del("/");
+  test("del()", async () => {
+    await del("/del");
     expect(mockDelete).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("get()", async () => {
-    await get<string>("/");
+    await get<string>("/get");
     expect(mockGet).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("post()", async () => {
-    await post<string>("/", { body: "" });
+    await post<string>("/post", { body: "" });
     expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("put()", async () => {
-    await put<string>("/");
+    await put<string>("/put");
     expect(mockPut).toHaveBeenCalledTimes(1);
+    expect(mockTimeout).toHaveBeenCalledTimes(1);
+  });
+
+  test("API error throws with response info", async () => {
+    jest.spyOn(console, "log").mockImplementation(jest.fn());
+    const spy = jest.spyOn(console, "log");
+
+    mockGet.mockImplementationOnce(() => {
+      throw {
+        response: {
+          body: "Error Info",
+        },
+      };
+    });
+
+    await expect(get("/get")).rejects.toThrow(
+      "Request Failed - /get - Error Info"
+    );
+    expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  test("API error throws without response info", async () => {
+    jest.spyOn(console, "log").mockImplementation(jest.fn());
+    const spy = jest.spyOn(console, "log");
+
+    mockPost.mockImplementationOnce(() => {
+      throw "String Error";
+    });
+
+    await expect(post("/post")).rejects.toThrow(
+      "Request Failed - /post - undefined"
+    );
+    expect(spy).toHaveBeenCalledTimes(2);
   });
 });

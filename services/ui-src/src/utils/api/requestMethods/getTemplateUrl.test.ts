@@ -8,7 +8,7 @@ jest.mock("utils", () => ({
   get: () => mockGet(),
 }));
 
-describe("getTemplateUrl", () => {
+describe("utils/requestMethods/getTemplateUrl", () => {
   test("getSignedTemplateUrl()", async () => {
     await getSignedTemplateUrl(testTemplateName);
     expect(mockGet).toHaveBeenCalledTimes(1);

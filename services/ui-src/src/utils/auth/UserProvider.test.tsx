@@ -9,7 +9,7 @@ import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 const mockGetTokens = jest.fn();
 const mockLogoutUser = jest.fn();
 
-jest.mock("utils/api/request/request", () => ({
+jest.mock("utils/api/apiLib", () => ({
   getTokens: () => mockGetTokens(),
   logoutUser: () => mockLogoutUser(),
 }));
