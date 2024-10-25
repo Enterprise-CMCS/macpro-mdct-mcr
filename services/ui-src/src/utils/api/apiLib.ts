@@ -67,7 +67,7 @@ export async function apiRequest<T>(
   path: string,
   opts?: RequestOptions,
   hasResponseBody?: Boolean
-): Promise<T | void> {
+): Promise<T> {
   const requestHeaders = await getRequestHeaders();
   const options = {
     headers: { ...requestHeaders },
@@ -79,7 +79,7 @@ export async function apiRequest<T>(
 
     if (!hasResponseBody) {
       await request({ apiName, path, options }).response;
-      return;
+      return undefined as unknown as T;
     }
 
     const { body } = await request({ apiName, path, options }).response;
@@ -92,27 +92,18 @@ export async function apiRequest<T>(
   }
 }
 
-export async function del(path: string, opts?: RequestOptions): Promise<void> {
-  return apiRequest(ampDel, path, opts, false);
+export async function del<T>(path: string, opts?: RequestOptions): Promise<T> {
+  return apiRequest<T>(ampDel, path, opts, false);
 }
 
-export async function get<T>(
-  path: string,
-  opts?: RequestOptions
-): Promise<T | void> {
+export async function get<T>(path: string, opts?: RequestOptions): Promise<T> {
   return apiRequest<T>(ampGet, path, opts, true);
 }
 
-export async function post<T>(
-  path: string,
-  opts?: RequestOptions
-): Promise<T | void> {
+export async function post<T>(path: string, opts?: RequestOptions): Promise<T> {
   return apiRequest<T>(ampPost, path, opts, true);
 }
 
-export async function put<T>(
-  path: string,
-  opts?: RequestOptions
-): Promise<T | void> {
+export async function put<T>(path: string, opts?: RequestOptions): Promise<T> {
   return apiRequest<T>(ampPut, path, opts, true);
 }
