@@ -65,6 +65,7 @@ jest.mock("aws-amplify/auth", () => ({
     }),
   }),
   signOut: jest.fn().mockImplementation(() => Promise.resolve()),
+  signInWithRedirect: () => {},
 }));
 
 jest.mock("aws-amplify/utils", () => ({
