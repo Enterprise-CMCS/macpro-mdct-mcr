@@ -11,13 +11,13 @@ import {
   refreshSession,
 } from "utils";
 
-const mockResponse = {
-  response: { body: { json: () => ({ test: "value" }) } },
-};
-const mockDelete = jest.fn().mockImplementation(() => mockResponse);
-const mockGet = jest.fn().mockImplementation(() => mockResponse);
-const mockPost = jest.fn().mockImplementation(() => mockResponse);
-const mockPut = jest.fn().mockImplementation(() => mockResponse);
+const mockResponse = (method?: string) => ({
+  response: { body: { json: () => ({ test: method }) } },
+});
+const mockDelete = jest.fn().mockImplementation(() => mockResponse());
+const mockGet = jest.fn().mockImplementation(() => mockResponse("get"));
+const mockPost = jest.fn().mockImplementation(() => mockResponse("post"));
+const mockPut = jest.fn().mockImplementation(() => mockResponse("put"));
 const mockSession = jest.fn();
 const mockSignInWithRedirect = jest.fn();
 const mockSignIn = jest.fn();
@@ -42,7 +42,7 @@ jest.mock("utils/auth/authLifecycle", () => ({
   updateTimeout: () => mockTimeout(),
 }));
 
-describe("request", () => {
+describe("utils/api/apiLib", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -110,21 +110,21 @@ describe("request", () => {
 
   test("get()", async () => {
     const test = async () => await get<string>("/get");
-    await expect(test()).resolves.toEqual({ test: "value" });
+    await expect(test()).resolves.toEqual({ test: "get" });
     expect(mockGet).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("post()", async () => {
     const test = async () => await post<string>("/post");
-    await expect(test()).resolves.toEqual({ test: "value" });
+    await expect(test()).resolves.toEqual({ test: "post" });
     expect(mockPost).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("put()", async () => {
     const test = async () => await put<string>("/put");
-    await expect(test()).resolves.toEqual({ test: "value" });
+    await expect(test()).resolves.toEqual({ test: "put" });
     expect(mockPut).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });

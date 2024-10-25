@@ -6,11 +6,11 @@ import { LoginCognito } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
-const mockSignIn = jest.fn();
+const mockLoginUser = jest.fn();
 
 jest.mock("utils", () => ({
   loginUser: (username: string, password: string) =>
-    mockSignIn(username, password),
+    mockLoginUser(username, password),
 }));
 
 const mockUseNavigate = jest.fn();
@@ -34,7 +34,7 @@ describe("Test LoginCognito", () => {
     await userEvent.type(emailInput, "email@address.com");
     await userEvent.type(passwordInput, "test");
     await userEvent.click(submitButton);
-    expect(mockSignIn).toHaveBeenCalledWith("email@address.com", "test");
+    expect(mockLoginUser).toHaveBeenCalledWith("email@address.com", "test");
     expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 });
