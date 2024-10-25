@@ -6,12 +6,10 @@ import {
   useMemo,
 } from "react";
 import { useLocation } from "react-router-dom";
-import {
-  signInWithRedirect,
-} from "aws-amplify/auth";
 import config from "config";
 // utils
 import {
+  authenticateWithIDM,
   getExpiration,
   getTokens,
   initAuthManager,
@@ -29,10 +27,6 @@ export const UserContext = createContext<UserContextShape>({
   updateTimeout: () => {},
   getExpiration: () => {},
 });
-
-const authenticateWithIDM = async () => {
-  await signInWithRedirect({ provider: { custom: "Okta" } });
-};
 
 export const UserProvider = ({ children }: Props) => {
   const location = useLocation();

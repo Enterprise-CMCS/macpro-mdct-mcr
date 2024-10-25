@@ -1,4 +1,5 @@
 import {
+  authenticateWithIDM,
   del,
   get,
   getRequestHeaders,
@@ -16,6 +17,7 @@ const mockGet = jest.fn().mockImplementation(() => mockResponse);
 const mockPost = jest.fn().mockImplementation(() => mockResponse);
 const mockPut = jest.fn().mockImplementation(() => mockResponse);
 const mockSession = jest.fn();
+const mockSignInWithRedirect = jest.fn();
 const mockSignIn = jest.fn();
 const mockSignOut = jest.fn();
 const mockTimeout = jest.fn();
@@ -31,6 +33,7 @@ jest.mock("aws-amplify/auth", () => ({
   fetchAuthSession: () => mockSession(),
   signIn: () => mockSignIn(),
   signOut: () => mockSignOut(),
+  signInWithRedirect: () => mockSignInWithRedirect(),
 }));
 
 jest.mock("utils/auth/authLifecycle", () => ({
@@ -74,6 +77,11 @@ describe("request", () => {
   test("getTokens()", async () => {
     await getTokens();
     expect(mockSession).toHaveBeenCalledTimes(1);
+  });
+
+  test("authenticateWithIDM()", async () => {
+    await authenticateWithIDM();
+    expect(mockSignInWithRedirect).toHaveBeenCalledTimes(1);
   });
 
   test("loginUser()", async () => {

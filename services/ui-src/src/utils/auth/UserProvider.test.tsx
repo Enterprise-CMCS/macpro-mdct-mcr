@@ -6,10 +6,12 @@ import { act } from "react-dom/test-utils";
 import { UserContext, UserProvider, useStore } from "utils";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 
+const mockAuthenticateWithIDM = jest.fn();
 const mockGetTokens = jest.fn();
 const mockLogoutUser = jest.fn();
 
 jest.mock("utils/api/apiLib", () => ({
+  authenticateWithIDM: () => mockAuthenticateWithIDM(),
   getTokens: () => mockGetTokens(),
   logoutUser: () => mockLogoutUser(),
 }));

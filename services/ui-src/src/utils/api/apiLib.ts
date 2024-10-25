@@ -10,6 +10,7 @@ import {
   AuthTokens,
   fetchAuthSession,
   signIn,
+  signInWithRedirect,
   signOut,
 } from "aws-amplify/auth";
 import { updateTimeout } from "utils";
@@ -40,6 +41,10 @@ export async function getRequestHeaders(): Promise<RequestHeaders | undefined> {
 
 export async function getTokens(): Promise<AuthTokens | undefined> {
   return (await fetchAuthSession()).tokens;
+}
+
+export async function authenticateWithIDM(): Promise<void> {
+  await signInWithRedirect({ provider: { custom: "Okta" } });
 }
 
 export async function loginUser(
