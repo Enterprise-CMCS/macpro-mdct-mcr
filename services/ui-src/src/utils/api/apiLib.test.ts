@@ -11,7 +11,9 @@ import {
   refreshSession,
 } from "utils";
 
-const mockResponse = { response: { body: { json: () => jest.fn() } } };
+const mockResponse = {
+  response: { body: { json: () => ({ test: "value" }) } },
+};
 const mockDelete = jest.fn().mockImplementation(() => mockResponse);
 const mockGet = jest.fn().mockImplementation(() => mockResponse);
 const mockPost = jest.fn().mockImplementation(() => mockResponse);
@@ -100,25 +102,29 @@ describe("request", () => {
   });
 
   test("del()", async () => {
-    await del("/del");
+    const test = async () => await del("/del");
+    await expect(test()).resolves.toBeUndefined();
     expect(mockDelete).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("get()", async () => {
-    await get<string>("/get");
+    const test = async () => await get<string>("/get");
+    await expect(test()).resolves.toEqual({ test: "value" });
     expect(mockGet).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("post()", async () => {
-    await post<string>("/post", { body: "" });
+    const test = async () => await post<string>("/post");
+    await expect(test()).resolves.toEqual({ test: "value" });
     expect(mockPost).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });
 
   test("put()", async () => {
-    await put<string>("/put");
+    const test = async () => await put<string>("/put");
+    await expect(test()).resolves.toEqual({ test: "value" });
     expect(mockPut).toHaveBeenCalledTimes(1);
     expect(mockTimeout).toHaveBeenCalledTimes(1);
   });

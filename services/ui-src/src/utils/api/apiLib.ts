@@ -100,19 +100,19 @@ export async function get<T>(
   path: string,
   opts?: RequestOptions
 ): Promise<T | void> {
-  return apiRequest<T>(ampGet, path, opts);
+  return apiRequest<T>(ampGet, path, opts, true);
 }
 
 export async function post<T>(
   path: string,
   opts?: RequestOptions
 ): Promise<T | void> {
-  return apiRequest<T>(ampPost, path, opts);
+  return apiRequest<T>(ampPost, path, opts, true);
 }
 
 export async function put<T>(
   path: string,
   opts?: RequestOptions
 ): Promise<T | void> {
-  return apiRequest<T>(ampPut, path, opts);
+  return apiRequest<T>(ampPut, path, opts, true);
 }
