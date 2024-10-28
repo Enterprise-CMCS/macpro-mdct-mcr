@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";
+import "aws-amplify/auth/enable-oauth-listener";
 // utils
 import { ApiProvider, UserProvider } from "utils";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";

@@ -64,7 +64,6 @@ jest.mock("aws-amplify/auth", () => ({
       payload: "eyJLongToken",
     }),
   }),
-  configure: () => {},
   signOut: jest.fn().mockImplementation(() => Promise.resolve()),
   signInWithRedirect: () => {},
 }));
