@@ -1,90 +1,33 @@
-import { get, post, put } from "aws-amplify/api";
 import { ReportKeys, ReportShape } from "types";
-import { getRequestHeaders } from "./getRequestHeaders";
-import { updateTimeout } from "utils";
-
-const apiName = "mcr";
+import { get, post, put } from "utils";
 
 async function archiveReport(reportKeys: ReportKeys) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
   const { reportType, state, id } = reportKeys;
   const path = `/reports/archive/${reportType}/${state}/${id}`;
-
-  updateTimeout();
-  await put({
-    apiName,
-    path,
-    options,
-  }).response;
+  return put<ReportShape>(path);
 }
 
 async function releaseReport(reportKeys: ReportKeys) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
   const { reportType, state, id } = reportKeys;
   const path = `/reports/release/${reportType}/${state}/${id}`;
-
-  updateTimeout();
-  await put({
-    apiName,
-    path,
-    options,
-  }).response;
+  return put<ReportShape>(path);
 }
 
 async function submitReport(reportKeys: ReportKeys) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
   const { reportType, state, id } = reportKeys;
   const path = `/reports/submit/${reportType}/${state}/${id}`;
-
-  updateTimeout();
-  const { body } = await post({
-    apiName,
-    path,
-    options,
-  }).response;
-  return (await body.json()) as unknown as ReportShape;
+  return post<ReportShape>(path);
 }
 
 async function getReport(reportKeys: ReportKeys) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
   const { reportType, state, id } = reportKeys;
   const path = `/reports/${reportType}/${state}/${id}`;
-
-  updateTimeout();
-  const { body } = await get({
-    apiName,
-    path,
-    options,
-  }).response;
-  return (await body.json()) as unknown as ReportShape;
+  return get<ReportShape>(path);
 }
 
 async function getReportsByState(reportType: string, state: string) {
-  const requestHeaders = await getRequestHeaders();
-  const options = {
-    headers: { ...requestHeaders },
-  };
   const path = `/reports/${reportType}/${state}`;
-
-  updateTimeout();
-  const { body } = await get({
-    apiName,
-    path,
-    options,
-  }).response;
-  return (await body.json()) as unknown as ReportShape[];
+  return get<ReportShape[]>(path);
 }
 
 async function postReport(
@@ -92,38 +35,20 @@ async function postReport(
   state: string,
   report: ReportShape
 ) {
-  const requestHeaders = await getRequestHeaders();
   const options: any = {
-    headers: { ...requestHeaders },
     body: { ...report },
   };
   const path = `/reports/${reportType}/${state}`;
-
-  updateTimeout();
-  const { body } = await post({
-    apiName,
-    path,
-    options,
-  }).response;
-  return (await body.json()) as unknown as ReportShape;
+  return post<ReportShape>(path, options);
 }
 
 async function putReport(reportKeys: ReportKeys, report: ReportShape) {
-  const requestHeaders = await getRequestHeaders();
   const options: any = {
-    headers: { ...requestHeaders },
     body: { ...report },
   };
   const { reportType, state, id } = reportKeys;
   const path = `/reports/${reportType}/${state}/${id}`;
-
-  updateTimeout();
-  const { body } = await put({
-    apiName,
-    path,
-    options,
-  }).response;
-  return (await body.json()) as unknown as ReportShape;
+  return put<ReportShape>(path, options);
 }
 
 export {

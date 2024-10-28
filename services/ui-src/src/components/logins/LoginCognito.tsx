@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signIn } from "aws-amplify/auth";
 // components
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
 import { ErrorVerbiage } from "types";
+import { loginUser } from "utils";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -32,8 +32,8 @@ export const LoginCognito = () => {
   const handleLogin = async (event: any) => {
     event.preventDefault();
     try {
-      await signIn({ username: fields.email, password: fields.password });
-      navigate(`/`);
+      await loginUser(fields.email, fields.password);
+      navigate("/");
     } catch (error: any) {
       setError(error.message);
     }
