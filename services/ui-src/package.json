@@ -14,7 +14,6 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@aws-amplify/rtn-web-browser": "^1.1.1",
     "@chakra-ui/react": "^1.8.9",
     "@cmsgov/design-system": "^3.8.0",
     "@emotion/react": "^11.13.3",
