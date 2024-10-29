@@ -2,23 +2,34 @@ import { getBanner, writeBanner, deleteBanner } from "./banner";
 // utils
 import { bannerId } from "../../../constants";
 import { mockBannerData } from "utils/testing/setupJest";
-import { initAuthManager } from "utils/auth/authLifecycle";
 
-describe("Test banner methods", () => {
-  beforeEach(async () => {
-    jest.useFakeTimers();
-    initAuthManager();
-    jest.runAllTimers();
-  });
-  test("getBanner", () => {
-    expect(getBanner(bannerId)).toBeTruthy();
+const mockDelete = jest.fn();
+const mockGet = jest.fn();
+const mockPost = jest.fn();
+
+jest.mock("utils", () => ({
+  del: () => mockDelete(),
+  get: () => mockGet(),
+  post: () => mockPost(),
+}));
+
+describe("utils/requestMethods/banner", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  test("postBanner", () => {
-    expect(writeBanner(mockBannerData)).toBeTruthy();
+  test("getBanner()", async () => {
+    await getBanner(bannerId);
+    expect(mockGet).toHaveBeenCalledTimes(1);
   });
 
-  test("delBanner", () => {
-    expect(deleteBanner(bannerId)).toBeTruthy();
+  test("postBanner()", async () => {
+    await writeBanner(mockBannerData);
+    expect(mockPost).toHaveBeenCalledTimes(1);
+  });
+
+  test("deleteBanner()", async () => {
+    await deleteBanner(bannerId);
+    expect(mockDelete).toHaveBeenCalledTimes(1);
   });
 });

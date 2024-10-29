@@ -31,6 +31,7 @@ describe("Schemas", () => {
     "1,2,30",
     "1230",
     "123450123,,,.123123123123",
+    ...validNAValues,
   ];
 
   const negativeNumberTestCases = [

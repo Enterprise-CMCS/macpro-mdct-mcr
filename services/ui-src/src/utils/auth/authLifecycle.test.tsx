@@ -1,7 +1,7 @@
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
 import { refreshCredentials } from "./authLifecycle";
 import { sub } from "date-fns";
-import { Hub } from "aws-amplify";
+import { Hub } from "aws-amplify/utils";
 
 describe("Test AuthManager Init", () => {
   test("Initializing when past expiration will require a new login", async () => {

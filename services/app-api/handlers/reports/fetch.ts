@@ -18,31 +18,28 @@ import {
   isComplete,
 } from "../../utils/validation/completionStatus";
 import { isAuthorizedToFetchState } from "../../utils/auth/authorization";
+import {
+  badRequest,
+  forbidden,
+  notFound,
+  ok,
+} from "../../utils/responses/response-lib";
 // types
-import { AnyObject, isState, StatusCodes } from "../../utils/types";
+import { AnyObject, isState } from "../../utils/types";
 
 export const fetchReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "id", "state"];
   if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const { reportType, state, id } = event.pathParameters!;
 
   if (!isState(state)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
   if (!isAuthorizedToFetchState(event, state)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
@@ -57,10 +54,7 @@ export const fetchReport = handler(async (event, _context) => {
   try {
     const response = await dynamoDb.get(reportMetadataParams);
     if (!response?.Item) {
-      return {
-        status: StatusCodes.NOT_FOUND,
-        body: error.NOT_IN_DATABASE,
-      };
+      return notFound(error.NO_MATCHING_RECORD);
     }
 
     const reportMetadata = response.Item as Record<string, any>;
@@ -74,10 +68,7 @@ export const fetchReport = handler(async (event, _context) => {
 
     const formTemplate = (await s3Lib.get(formTemplateParams)) as AnyObject; // TODO: strict typing
     if (!formTemplate) {
-      return {
-        status: StatusCodes.NOT_FOUND,
-        body: error.MISSING_FORM_TEMPLATE,
-      };
+      return notFound(error.NO_MATCHING_RECORD);
     }
 
     // Get field data from S3
@@ -89,10 +80,7 @@ export const fetchReport = handler(async (event, _context) => {
     const fieldData = (await s3Lib.get(fieldDataParams)) as AnyObject; // TODO: strict typing
 
     if (!fieldData) {
-      return {
-        status: StatusCodes.NOT_FOUND,
-        body: error.NO_MATCHING_RECORD,
-      };
+      return notFound(error.NO_MATCHING_RECORD);
     }
 
     if (!reportMetadata.completionStatus) {
@@ -103,19 +91,13 @@ export const fetchReport = handler(async (event, _context) => {
       reportMetadata.isComplete = isComplete(reportMetadata.completionStatus);
     }
 
-    return {
-      status: StatusCodes.SUCCESS,
-      body: {
-        ...reportMetadata,
-        formTemplate,
-        fieldData,
-      },
-    };
+    return ok({
+      ...reportMetadata,
+      formTemplate,
+      fieldData,
+    });
   } catch {
-    return {
-      status: StatusCodes.NOT_FOUND,
-      body: error.NO_MATCHING_RECORD,
-    };
+    return notFound(error.NO_MATCHING_RECORD);
   }
 });
 
@@ -123,19 +105,13 @@ export const fetchReportsByState = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
 
   if (!hasReportPathParams(event.pathParameters!, requiredParams)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const { reportType, state } = event.pathParameters!;
 
   if (!isAuthorizedToFetchState(event, state!)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
 
   const reportTable = reportTables[reportType as keyof typeof reportTables];
@@ -153,8 +129,5 @@ export const fetchReportsByState = handler(async (event, _context) => {
 
   const reportsByState = await dynamoDb.queryAll(queryParams);
 
-  return {
-    status: StatusCodes.SUCCESS,
-    body: reportsByState,
-  };
+  return ok(reportsByState);
 });

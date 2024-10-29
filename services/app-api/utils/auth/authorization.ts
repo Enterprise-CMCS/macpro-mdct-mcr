@@ -41,7 +41,7 @@ const loadCognitoValues = async () => {
   }
 };
 
-export const isAuthorized = async (event: APIGatewayProxyEvent) => {
+export const isAuthenticated = async (event: APIGatewayProxyEvent) => {
   const cognitoValues = await loadCognitoValues();
   // Verifier that expects valid access tokens:
   const verifier = CognitoJwtVerifier.create({
@@ -50,18 +50,12 @@ export const isAuthorized = async (event: APIGatewayProxyEvent) => {
     clientId: cognitoValues.userPoolClientId,
   });
 
-  let isAuthorized;
-
-  if (event?.headers?.["x-api-key"]) {
-    try {
-      isAuthorized = await verifier.verify(event.headers["x-api-key"]);
-    } catch {
-      // verification failed - unauthorized
-      isAuthorized = false;
-    }
+  try {
+    await verifier.verify(event?.headers?.["x-api-key"]!);
+    return true;
+  } catch {
+    return false;
   }
-
-  return !!isAuthorized;
 };
 
 export const hasPermissions = (

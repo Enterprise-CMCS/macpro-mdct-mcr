@@ -38,6 +38,8 @@ export const validNAValues = [
   "n/a",
   "N/a",
   "Data not available",
+  "NR",
+  "nr",
 ];
 
 // NUMBER - Number or Valid Strings
@@ -87,17 +89,25 @@ export const validNumberOptional = () =>
 
 // NUMBER NOT LESS THAN ONE
 export const numberNotLessThanOne = () =>
-  validNumber().test({
+  number().test({
     test: (value) => {
-      return parseFloat(value!) >= 1;
+      if (!value) return true;
+      const isValidString = validNAValues.includes(value);
+      const isGreaterThanOne = parseFloat(value) >= 1;
+      return isValidString || isGreaterThanOne;
     },
     message: error.NUMBER_LESS_THAN_ONE,
   });
 
 // NUMBER NOT LESS THAN ZERO
 export const numberNotLessThanZero = () =>
-  validNumber().test({
-    test: (value) => parseFloat(value!) >= 0,
+  number().test({
+    test: (value) => {
+      if (!value) return true;
+      const isValidString = validNAValues.includes(value);
+      const isGreaterThanZero = parseFloat(value) >= 0;
+      return isValidString || isGreaterThanZero;
+    },
     message: error.NUMBER_LESS_THAN_ZERO,
   });
 
