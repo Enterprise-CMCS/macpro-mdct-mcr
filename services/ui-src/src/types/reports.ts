@@ -65,7 +65,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
   drawerForm: FormJson;
   modalForm?: never;
   overlayForm?: never;
-  form?: never;
+  form?: FormJson;
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
@@ -182,6 +182,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  novMcparRelease: boolean;
 }
 
 // HELPER FUNCTIONS

@@ -5,7 +5,7 @@ export const error = {
   MISSING_DATA: "Missing required data.",
   INVALID_DATA: "Provided data is not valid.",
   NO_MATCHING_RECORD: "No matching record found.",
-  SERVER_ERROR: "An unspecified server error occured.",
+  SERVER_ERROR: "An unspecified server error occurred.",
   // bucket errors
   S3_OBJECT_CREATION_ERROR: "Report could not be created due to an S3 error.",
   S3_OBJECT_GET_ERROR: "Error while fetching report.",
@@ -23,7 +23,7 @@ export const error = {
   ALREADY_ARCHIVED: "Cannot update archived report.",
   ALREADY_LOCKED: "Cannot update locked report.",
   REPORT_INCOMPLETE: "Cannot submit incomplete form.",
-};
+} as const;
 
 export const buckets = {
   FORM_TEMPLATE: "formTemplates",

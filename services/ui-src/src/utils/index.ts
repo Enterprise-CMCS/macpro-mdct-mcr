@@ -1,7 +1,7 @@
 // api
+export * from "./api/apiLib";
 export * from "./api/providers/ApiProvider";
 export * from "./api/requestMethods/banner";
-export * from "./api/requestMethods/getRequestHeaders";
 export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/report";
 // auth
@@ -12,6 +12,7 @@ export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
 export * from "./forms/ilosFields";
+export * from "./forms/priorAuthorization";
 // reports
 export * from "./reports/entities";
 export * from "./reports/reports";

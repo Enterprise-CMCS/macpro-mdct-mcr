@@ -2,12 +2,13 @@ import handler from "../handler-lib";
 // utils
 import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
+import { badRequest, ok } from "../../utils/responses/response-lib";
 // types
-import { StatusCodes, TemplateKeys } from "../../utils/types";
+import { TemplateKeys } from "../../utils/types";
 
 export const fetchTemplate = handler(async (event, _context) => {
   if (!event?.pathParameters?.templateName!) {
-    throw new Error(error.NO_TEMPLATE_NAME);
+    return badRequest(error.NO_TEMPLATE_NAME);
   }
   let key;
   if (event.pathParameters.templateName === "MCPAR") {
@@ -17,7 +18,7 @@ export const fetchTemplate = handler(async (event, _context) => {
   } else if (event.pathParameters.templateName === "NAAAR") {
     key = TemplateKeys.NAAAR;
   } else {
-    throw new Error(error.INVALID_TEMPLATE_NAME);
+    return badRequest(error.INVALID_TEMPLATE_NAME);
   }
   // get the signed URL string
   const params = {
@@ -26,5 +27,5 @@ export const fetchTemplate = handler(async (event, _context) => {
     Key: key,
   };
   const url = await s3Lib.getSignedDownloadUrl(params);
-  return { status: StatusCodes.SUCCESS, body: url };
+  return ok(url);
 });

@@ -21,13 +21,12 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.PRODUCTION_SYNC_OIDC_ROLE }}
       - name: Sync Security Hub and Jira
-        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v1.0.7
+        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.0.9
         with:
           jira-username: "mdct_github_service_account"
           jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
-          jira-host: jiraent.cms.gov
           jira-project-key: CMDCT
           jira-ignore-statuses: Done, Closed, Canceled
           jira-custom-fields: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40104", "value": "MCR"}] }'
           aws-severities: CRITICAL, HIGH, MEDIUM
-          assign-jira-ticket-to: "MWTW"
+          jira-assignee: "MWTW"

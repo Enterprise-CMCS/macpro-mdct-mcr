@@ -13,6 +13,7 @@ import {
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
+  Form,
 } from "components";
 // utils
 import {
@@ -33,6 +34,7 @@ import {
   ReportStatus,
   FormField,
   isFieldElement,
+  InputChangeEvent,
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -44,19 +46,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
-  const { report } = useStore();
+  const { report, selectedEntity, setSelectedEntity } = useStore();
 
-  // make state
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
-    undefined
-  );
-
-  const { entityType, verbiage, drawerForm } = route;
+  const { entityType, verbiage, drawerForm, form: standardForm } = route;
   const entities = report?.fieldData?.[entityType];
 
-  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
-
   // check if there are ILOS and associated plans
+  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
@@ -65,9 +61,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const form =
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
 
-  const openRowDrawer = (entity: EntityShape) => {
-    setSelectedEntity(entity);
-    onOpen();
+  // on load, get reporting status from store
+  const priorAuthStatus =
+    report?.fieldData?.["reportingDataPriorToJune2026"]?.[0].value;
+  const [isDisabled, setDisabled] = useState<boolean>(
+    priorAuthStatus === "Yes" ? false : true
+  );
+
+  const onChange = (e: InputChangeEvent) => {
+    setDisabled(e.target.value !== "Yes");
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -121,8 +123,37 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
+  const openRowDrawer = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    onOpen();
+  };
+
+  const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
+    let disabled = false;
+    let style = sx.enterButton;
+
+    if (
+      (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
+      (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
+        isDisabled)
+    ) {
+      style = sx.disabledButton;
+      disabled = true;
+    }
+
+    return (
+      <Button
+        sx={style}
+        onClick={() => openRowDrawer(entity)}
+        variant="outline"
+        disabled={disabled}
+      >
+        {isEntityCompleted ? "Edit" : "Enter"}
+      </Button>
+    );
+  };
+
   const entityRows = (entities: EntityShape[]) => {
-    const disabled = reportingOnIlos && !hasIlos;
     return entities?.map((entity) => {
       const calculateEntityCompletion = () => {
         return form.fields
@@ -151,14 +182,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Heading as="h4" sx={sx.entityName}>
             {entity.name}
           </Heading>
-          <Button
-            sx={disabled ? sx.disabledButton : sx.enterButton}
-            onClick={() => openRowDrawer(entity)}
-            variant="outline"
-            disabled={disabled}
-          >
-            {isEntityCompleted ? "Edit" : "Enter"}
-          </Button>
+          {enterButton(entity, isEntityCompleted)}
         </Flex>
       );
     });
@@ -170,12 +194,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {/* if there are no ILOS but there are plans added, display this message */}
-      {!hasIlos && entities?.length ? (
+      {!hasIlos && entities?.length && (
         <Box sx={sx.missingIlos}>
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
         </Box>
-      ) : (
-        <></>
+      )}
+      {standardForm && (
+        <Box sx={sx.standardForm}>
+          <Form
+            id={standardForm.id}
+            formJson={standardForm}
+            onSubmit={onSubmit}
+            onChange={onChange}
+            formData={report?.fieldData}
+            autosave
+            validateOnRender={validateOnRender || false}
+            dontReset={false}
+          />
+        </Box>
       )}
       <Box>
         <Heading as="h3" sx={sx.dashboardTitle}>
@@ -289,5 +325,8 @@ const sx = {
       color: "palette.gray_lighter",
       borderColor: "palette.gray_lighter",
     },
+  },
+  standardForm: {
+    paddingBottom: "1rem",
   },
 };

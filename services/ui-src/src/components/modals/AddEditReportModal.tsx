@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
@@ -37,6 +38,8 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const novMcparRelease = useFlags()?.novMcparRelease;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -104,6 +107,7 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        novMcparRelease,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

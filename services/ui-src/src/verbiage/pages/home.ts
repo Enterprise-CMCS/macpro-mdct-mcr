@@ -83,7 +83,7 @@ export default {
     },
   },
   readOnly: {
-    header: "View State Reports",
+    header: "View State/Territory Reports",
     buttonLabel: "Go to Report Dashboard",
   },
 };

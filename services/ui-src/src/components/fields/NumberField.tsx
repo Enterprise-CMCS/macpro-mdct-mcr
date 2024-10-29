@@ -31,6 +31,7 @@ export const NumberField = ({
   nested,
   styleAsOptional,
   clear,
+  decimalPlacesToRoundTo,
   ...props
 }: Props) => {
   const defaultValue = "";
@@ -63,7 +64,7 @@ export const NumberField = ({
       const maskedFieldValue = applyMask(
         fieldValue,
         mask,
-        props?.decimalPlacesToRoundTo
+        decimalPlacesToRoundTo
       ).maskedValue;
       setDisplayValue(maskedFieldValue);
     }
@@ -76,7 +77,7 @@ export const NumberField = ({
         const formattedHydrationValue = applyMask(
           hydrationValue,
           mask,
-          props?.decimalPlacesToRoundTo
+          decimalPlacesToRoundTo
         );
         const maskedHydrationValue = formattedHydrationValue.maskedValue;
         setDisplayValue(maskedHydrationValue);
@@ -103,11 +104,7 @@ export const NumberField = ({
     // if field is blank, trigger client-side field validation error
     if (!value.trim()) form.trigger(name);
     // mask value and set as display value
-    const formattedFieldValue = applyMask(
-      value,
-      mask,
-      props?.decimalPlacesToRoundTo
-    );
+    const formattedFieldValue = applyMask(value, mask, decimalPlacesToRoundTo);
     const maskedFieldValue = formattedFieldValue.maskedValue;
 
     // this value eventually gets sent to the database, so we need to make it parseable as a number again
@@ -193,6 +190,7 @@ interface Props {
   autosave?: boolean;
   validateOnRender?: boolean;
   clear?: boolean;
+  decimalPlacesToRoundTo?: number;
   [key: string]: any;
 }
 

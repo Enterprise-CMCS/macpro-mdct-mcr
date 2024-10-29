@@ -2,8 +2,15 @@ import { getSignedTemplateUrl } from "./getTemplateUrl";
 
 const testTemplateName = "TestName";
 
-describe("Test template methods", () => {
-  test("getSignedTemplateUrl", () => {
-    expect(getSignedTemplateUrl(testTemplateName)).toBeTruthy();
+const mockGet = jest.fn();
+
+jest.mock("utils", () => ({
+  get: () => mockGet(),
+}));
+
+describe("utils/requestMethods/getTemplateUrl", () => {
+  test("getSignedTemplateUrl()", async () => {
+    await getSignedTemplateUrl(testTemplateName);
+    expect(mockGet).toHaveBeenCalledTimes(1);
   });
 });

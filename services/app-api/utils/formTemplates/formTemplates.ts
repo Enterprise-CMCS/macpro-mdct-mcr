@@ -76,12 +76,18 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  isProgramPCCM: boolean
+  isProgramPCCM: boolean,
+  novMcparRelease?: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
 
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
+  }
+
+  // if Nov MCPAR Release is not enabled, remove the fields from form template
+  if (!novMcparRelease) {
+    currentFormTemplate = handleTemplateForNovMcparRelease(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -316,4 +322,22 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
     throw new Error("Update PCCM logic!");
   }
   programTypeQuestion.props!.disabled = true;
+};
+
+const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
+  const routesToFilter = [
+    "/mcpar/state-level-indicators/prior-authorization",
+    "/mcpar/plan-level-indicators/prior-authorization",
+    "/mcpar/program-level-indicators/patient-access-api-usage",
+  ];
+
+  for (let route of reportTemplate.routes) {
+    if (route?.children) {
+      route.children = route.children.filter(
+        (childRoute: ReportRoute) => !routesToFilter.includes(childRoute.path)
+      );
+    }
+  }
+  return reportTemplate;
 };

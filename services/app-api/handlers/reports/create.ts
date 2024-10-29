@@ -22,13 +22,14 @@ import {
   copyFieldDataFromSource,
   makePCCMModifications,
 } from "../../utils/reports/reports";
-// types
 import {
-  isReportType,
-  isState,
-  StatusCodes,
-  UserRoles,
-} from "../../utils/types";
+  badRequest,
+  created,
+  forbidden,
+  internalServerError,
+} from "../../utils/responses/response-lib";
+// types
+import { isReportType, isState, UserRoles } from "../../utils/types";
 
 export const createReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
@@ -37,34 +38,22 @@ export const createReport = handler(async (event, _context) => {
     !event.pathParameters ||
     !hasReportPathParams(event.pathParameters, requiredParams)
   ) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const { state, reportType } = event.pathParameters;
   if (!isState(state)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
   if (!hasPermissions(event, [UserRoles.STATE_USER], state)) {
-    return {
-      status: StatusCodes.UNAUTHORIZED,
-      body: error.UNAUTHORIZED,
-    };
+    return forbidden(error.UNAUTHORIZED);
   }
   const unvalidatedPayload = JSON.parse(event.body!);
   const { metadata: unvalidatedMetadata, fieldData: unvalidatedFieldData } =
     unvalidatedPayload;
 
   if (!isReportType(reportType)) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.NO_KEY,
-    };
+    return badRequest(error.NO_KEY);
   }
 
   const reportBucket = reportBuckets[reportType];
@@ -75,12 +64,15 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
+  const novMcparRelease = unvalidatedMetadata?.novMcparRelease || false;
+
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
-      isProgramPCCM
+      isProgramPCCM,
+      novMcparRelease
     ));
   } catch (e) {
     throw e;
@@ -88,10 +80,7 @@ export const createReport = handler(async (event, _context) => {
 
   // Return MISSING_DATA error if missing unvalidated data or validators.
   if (!unvalidatedFieldData || !formTemplate.validationJson) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.MISSING_DATA,
-    };
+    return badRequest(error.MISSING_DATA);
   }
 
   // Create report and field ids.
@@ -100,17 +89,19 @@ export const createReport = handler(async (event, _context) => {
   const formTemplateId: string = formTemplateVersion?.id;
 
   // Validate field data
-  const validatedFieldData = await validateFieldData(
-    formTemplate.validationJson,
-    unvalidatedFieldData
-  );
+  let validatedFieldData;
+  try {
+    validatedFieldData = await validateFieldData(
+      formTemplate.validationJson,
+      unvalidatedFieldData
+    );
+  } catch {
+    return badRequest(error.INVALID_DATA);
+  }
 
-  // Return INVALID_DATA error if field data is not valid.
-  if (!validatedFieldData || Object.keys(validatedFieldData).length === 0) {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.INVALID_DATA,
-    };
+  // Return INVALID_DATA error field data has no valid entries
+  if (validatedFieldData && Object.keys(validatedFieldData).length === 0) {
+    return internalServerError(error.INVALID_DATA);
   }
 
   // If the `copyFieldDataSourceId` parameter is passed, merge the validated field data with the source ids data.
@@ -123,7 +114,7 @@ export const createReport = handler(async (event, _context) => {
       state,
       unvalidatedMetadata.copyFieldDataSourceId,
       formTemplate,
-      validatedFieldData,
+      validatedFieldData!,
       reportType
     );
   } else {
@@ -145,25 +136,20 @@ export const createReport = handler(async (event, _context) => {
   try {
     await s3Lib.put(fieldDataParams);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.S3_OBJECT_CREATION_ERROR,
-    };
+    return internalServerError(error.S3_OBJECT_CREATION_ERROR);
   }
 
-  const validatedMetadata = await validateData(metadataValidationSchema, {
-    ...unvalidatedMetadata,
-  });
-
-  // Return INVALID_DATA error if metadata is not valid.
-  if (!validatedMetadata) {
-    return {
-      status: StatusCodes.BAD_REQUEST,
-      body: error.INVALID_DATA,
-    };
+  let validatedMetadata;
+  try {
+    validatedMetadata = await validateData(metadataValidationSchema, {
+      ...unvalidatedMetadata,
+    });
+  } catch {
+    // Return INVALID_DATA error if metadata is not valid.
+    return badRequest(error.INVALID_DATA);
   }
 
-  // Create DyanmoDB record.
+  // Create DynamoDB record.
   const reportMetadataParams: PutCommandInput = {
     TableName: reportTable,
     Item: {
@@ -182,19 +168,13 @@ export const createReport = handler(async (event, _context) => {
   try {
     await dynamoDb.put(reportMetadataParams);
   } catch {
-    return {
-      status: StatusCodes.SERVER_ERROR,
-      body: error.DYNAMO_CREATION_ERROR,
-    };
+    return internalServerError(error.DYNAMO_CREATION_ERROR);
   }
 
-  return {
-    status: StatusCodes.CREATED,
-    body: {
-      ...reportMetadataParams.Item,
-      fieldData: validatedFieldData,
-      formTemplate,
-      formTemplateVersion: formTemplateVersion?.versionNumber,
-    },
-  };
+  return created({
+    ...reportMetadataParams.Item,
+    fieldData: validatedFieldData,
+    formTemplate,
+    formTemplateVersion: formTemplateVersion?.versionNumber,
+  });
 });
