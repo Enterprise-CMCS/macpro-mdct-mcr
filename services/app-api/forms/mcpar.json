@@ -4328,7 +4328,7 @@
               {
                 "id": "plan_urlForPriorAuthorizationDataOnPlanWebsite",
                 "type": "text",
-                "validation": "urlOptional",
+                "validation": "text",
                 "props": {
                   "label": "D1.XIII.1 URL for prior authorization data on plan’s website",
                   "hint": "Provide the URL where the plan posts prior authorization data for all items and services excluding drugs, as required in 42 CFR § 438.210(f). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
@@ -4345,7 +4345,7 @@
               {
                 "id": "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization",
                 "type": "text",
-                "validation": "urlOptional",
+                "validation": "text",
                 "props": {
                   "label": "D1.XIII.2 URL for list of all items and services subject to prior authorization",
                   "hint": "Provide the URL where the plan posts the list of all items and services, excluding drugs, that are subject to prior authorization, as required in 42 CFR § 438.210(f)(1). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
