@@ -3,13 +3,18 @@ export default {
     header: "Network Adequacy and Access Assurances Report (NAAAR)",
     body: [
       {
-        type: "text",
-        content: "",
-      },
-      {
-        type: "externalLink",
-        content: "",
-        props: {},
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "",
+          },
+          {
+            type: "externalLink",
+            content: "",
+            props: {},
+          },
+        ],
       },
     ],
   },
