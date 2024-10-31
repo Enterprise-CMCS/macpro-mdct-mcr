@@ -430,7 +430,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.1 Payment risks between the state and plans",
-                  "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities. If no PI activities were performed, enter 'No PI activities were performed during the reporting period' as your response. 'N/A' is not an acceptable response."
+                  "hint": "Describe service-specific or other focused PI activities that the state conducted during the past year in this managed care program.</br>Examples include analyses focused on use of long-term services and supports (LTSS) or prescription drugs or activities that focused on specific payment issues to identify, address, and prevent fraud, waste or abuse. Consider data analytics, reviews of under/overutilization, and other activities. If no PI activities were performed, enter “No PI activities were performed during the reporting period” as your response. “N/A” is not an acceptable response."
                 }
               },
               {
@@ -557,7 +557,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.8a Federal database checks: Excluded person or entities",
-                  "hint": "During the state's federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
+                  "hint": "During the state’s federal database checks, did the state find any person or entity excluded? Select one.</br>Consistent with the requirements at 42 CFR 455.436 and 438.602, the State must confirm the identity and determine the exclusion status of the MCO, PIHP, PAHP, PCCM or PCCM entity, any subcontractor, as well as any person with an ownership or control interest, or who is an agent or managing employee of the MCO, PIHP, PAHP, PCCM or PCCM entity through routine checks of Federal databases.",
                   "choices": [
                     {
                       "id": "zrrv4vmXRkGhSkaS2V2d3A",
@@ -625,7 +625,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.10 Periodic audits",
-                  "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, provide the link(s) to the audit results. Refer to 42 CFR 438.602(e). If no audits were conducted, please enter 'No such audits were conducted during the reporting year' as your response. 'N/A' is not an acceptable response."
+                  "hint": "If the state conducted any audits during the contract year to determine the accuracy, truthfulness, and completeness of the encounter and financial data submitted by the plans, provide the link(s) to the audit results. Refer to 42 CFR 438.602(e). If no audits were conducted, please enter “No such audits were conducted during the reporting year” as your response. “N/A” is not an acceptable response."
                 }
               }
             ]
@@ -648,7 +648,7 @@
             "id": "bpi",
             "fields": [
               {
-                "id": "plan_priorAuthorizationReporting",
+                "id": "state_priorAuthorizationReporting",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -663,7 +663,7 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "plan_daysForStateToRespondStandardRequests",
+                          "id": "plan_timeframesForStandardPriorAuthorizationDecisions",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
@@ -671,8 +671,8 @@
                             "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1a Different timeframe standard for the State’s standard PA requests",
-                            "hint": "The federal timeframe standard for plans to respond to standard PA requests is not to exceed 14 days before 1/1/2026 and not to exceed 7 days on or after 1/1/2026. Does the state set a timeframe standard different from these federal standard?",
+                            "label": "B.XIII.1a Timeframes for Standard Prior Authorization Decisions",
+                            "hint": "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and within state established timeframes. For rating periods that start before January 1, 2026, a state’s time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state’s time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
                             "choices": [
                               {
                                 "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
@@ -683,18 +683,18 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "standardResponseTimeNumberOfDays",
+                                    "id": "plan_timeframesForStandardPriorAuthorizationDecisions-otherText",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_daysForStateToRespondStandardRequests"
+                                      "decimalPlacesToRoundTo": 2,
+                                      "parentFieldName": "plan_timeframesForStandardPriorAuthorizationDecisions"
                                     },
                                     "props": {
-                                      "label": "B.XIII.1b Timeframe for State’s standard PA requests",
-                                      "hint": "Describe the state timeframe for plans to respond to standard PA requests in number of days."
+                                      "label": "B.XIII.1b Timeframes for standard prior authorization decisions",
+                                      "hint": "Indicate the state’s maximum timeframe, as number of days, for plans to provide notice of their decisions on standard prior authorization requests."
                                     }
                                   }
                                 ]
@@ -703,7 +703,7 @@
                           }
                         },
                         {
-                          "id": "plan_hoursForStateToRespondExpeditedRequests",
+                          "id": "plan_timeframesForExpeditedPriorAuthorizationDecisions",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
@@ -711,7 +711,7 @@
                             "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.2a Different timeframe standard for the State’s expedited PA requests",
+                            "label": "B.XIII.2a Timeframes for Expedited Prior Authorization Decisions",
                             "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
                             "choices": [
                               {
@@ -723,18 +723,18 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "expeditedNumberOfHours",
+                                    "id": "plan_timeframesForExpeditedPriorAuthorizationDecisions-otherText",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
-                                      "decimalPlacesToRoundTo": 0,
-                                      "parentFieldName": "plan_hoursForStateToRespondExpeditedRequests"
+                                      "decimalPlacesToRoundTo": 2,
+                                      "parentFieldName": "plan_timeframesForExpeditedPriorAuthorizationDecisions"
                                     },
                                     "props": {
-                                      "label": "B.XIII.2b Timeframe for State’s expedited PA requests",
-                                      "hint": "Describe the state timeframe for plans to respond to expedited PA requests, in hours."
+                                      "label": "B.XIII.2b State’s timeframe for expedited prior authorization requests",
+                                      "hint": "Indicate the state’s maximum timeframe, as number of hours, for plans to provide notice of their decisions on expedited prior authorization requests."
                                     }
                                   }
                                 ]
@@ -906,7 +906,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.I.6 Changes to enrollment or benefits",
-                  "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year. If there were no major changes, please enter 'There were no major changes to the population or benefits during the reporting year' as your response. 'N/A' is not an acceptable response."
+                  "hint": "Briefly explain any major changes to the population enrolled in or benefits provided by the managed care program during the reporting year. If there were no major changes, please enter “There were no major changes to the population or benefits during the reporting year” as your response. “N/A” is not an acceptable response."
                 }
               }
             ]
@@ -1067,7 +1067,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.III.6 Barriers to collecting/validating encounter data",
-                  "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting year. If there were no barriers, please enter 'The state did not experience any barriers to collecting or validating encounter data during the reporting year' as your response. 'N/A' is not an acceptable response."
+                  "hint": "Describe any barriers to collecting and/or validating managed care plan encounter data that the state has experienced during the reporting year. If there were no barriers, please enter “The state did not experience any barriers to collecting or validating encounter data during the reporting year” as your response. “N/A” is not an acceptable response."
                 }
               }
             ]
@@ -1092,7 +1092,7 @@
                 "type": "textarea",
                 "validation": "text",
                 "props": {
-                  "label": "C1.IV.1 State's definition of “critical incident”, as used for reporting purposes in its MLTSS program",
+                  "label": "C1.IV.1 State’s definition of “critical incident”, as used for reporting purposes in its MLTSS program",
                   "hint": "If this report is being completed for a managed care program that covers LTSS, what is the definition that the state uses for “critical incidents” within the managed care program? Respond with “N/A” if the managed care program does not cover LTSS."
                 }
               },
@@ -1102,7 +1102,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IV.2 State definition of “timely” resolution for standard appeals",
-                  "hint": "Provide the state's definition of timely resolution for standard appeals in the managed care program.</br>Per 42 CFR §438.408(b)(2), states must establish a timeframe for timely resolution of standard appeals that is no longer than 30 calendar days from the day the MCO, PIHP or PAHP receives the appeal."
+                  "hint": "Provide the state’s definition of timely resolution for standard appeals in the managed care program.</br>Per 42 CFR §438.408(b)(2), states must establish a timeframe for timely resolution of standard appeals that is no longer than 30 calendar days from the day the MCO, PIHP or PAHP receives the appeal."
                 }
               },
               {
@@ -1111,7 +1111,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IV.3 State definition of “timely” resolution for expedited appeals",
-                  "hint": "Provide the state's definition of timely resolution for expedited appeals in the managed care program.</br>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal."
+                  "hint": "Provide the state’s definition of timely resolution for expedited appeals in the managed care program.</br>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal."
                 }
               },
               {
@@ -1120,7 +1120,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IV.4 State definition of “timely” resolution for grievances",
-                  "hint": "Provide the state's definition of timely resolution for grievances in the managed care program.</br>Per 42 CFR §438.408(b)(1), states must establish a timeframe for timely resolution of grievances that is no longer than 90 calendar days from the day the MCO, PIHP or PAHP receives the grievance."
+                  "hint": "Provide the state’s definition of timely resolution for grievances in the managed care program.</br>Per 42 CFR §438.408(b)(1), states must establish a timeframe for timely resolution of grievances that is no longer than 90 calendar days from the day the MCO, PIHP or PAHP receives the grievance."
                 }
               }
             ]
@@ -1157,7 +1157,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state's biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter 'No challenges were encountered' as your response. 'N/A' is not an acceptable response."
+                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter “No challenges were encountered” as your response. “N/A” is not an acceptable response."
                     }
                   },
                   {
@@ -1606,7 +1606,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IX.4 State evaluation of BSS entity performance",
-                  "hint": "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities' performance?"
+                  "hint": "What are steps taken by the state to evaluate the quality, effectiveness, and efficiency of the BSS entities’ performance?"
                 }
               }
             ]
@@ -1849,7 +1849,7 @@
                           },
                           "props": {
                             "label": "C1.XII.9 When was the last parity analysis(es) for this program submitted to CMS?",
-                            "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state's most recent summary parity analysis report was submitted to CMS. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date the state submitted any MCO's parity report to CMS (the state may have multiple parity reports, one for each MCO)."
+                            "hint": "States with ANY services provided to MCO enrollees by an entity other than an MCO should report the date the state’s most recent summary parity analysis report was submitted to CMS. States with NO services provided to MCO enrollees by an entity other than an MCO should report the most recent date the state submitted any MCO’s parity report to CMS (the state may have multiple parity reports, one for each MCO)."
                           }
                         },
                         {
@@ -1965,7 +1965,7 @@
                           },
                           "props": {
                             "label": "C1.XII.12a Has the state posted the current parity analysis(es) covering this program on its website?",
-                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs' separate analyses must be posted. A “Yes” response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
+                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs’ separate analyses must be posted. A “Yes” response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
                             "choices": [
                               {
                                 "id": "fncOB9LFBZd1nFJvLv9YM1Pb",
@@ -2016,46 +2016,6 @@
               }
             ]
           }
-        },
-        {
-          "name": "XIV: Patient Access / API Usage",
-          "path": "/mcpar/program-level-indicators/patient-access-api-usage",
-          "pageType": "standard",
-          "verbiage": {
-            "intro": {
-              "section": "Section C: Program-Level Indicators",
-              "subsection": "Topic XIV: Patient Access / API Usage",
-              "spreadsheet": "C1_Program_Set",
-              "alert": "<b>Beginning June 2026, Indicators C1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, enter “NR”.</b>"
-            }
-          },
-          "form": {
-            "id": "cpaau",
-            "fields": [
-              {
-                "id": "state_patientAccessNumberOfBeneficiariesOneDataTransfer",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "C1.XIV.1 Number of unique beneficiaries with at least one data transfer",
-                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data were transferred via the Patient Access API to a health app designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “NR”.",
-                  "mask": "comma-separated",
-                  "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "state_patientAcessNumberOfBeneficiariesMultipleDataTransfers",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "C1.XIV.2 Number of unique beneficiaries with multiple data transfers",
-                  "hint": "Indicate total number of unique beneficiaries covered by this contract (program) whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Enter the numbers for this program for the previous calendar year. If you choose not to respond prior to June 2026, enter “NR”.",
-                  "mask": "comma-separated",
-                  "decimalPlacesToRoundTo": 0
-                }
-              }
-            ]
-          }
         }
       ]
     },
@@ -2082,7 +2042,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -2115,7 +2075,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.I.2 Plan share of Medicaid",
-                  "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state's total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
+                  "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
                   "mask": "percentage"
                 }
               },
@@ -2151,7 +2111,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -2299,7 +2259,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -2321,7 +2281,7 @@
                 "validation": "text",
                 "props": {
                   "label": "D1.III.1 Definition of timely encounter data submissions",
-                  "hint": "Describe the state's standard for timely encounter data submissions used in this program.</br>If reporting frequencies and standards differ by type of encounter within this program, please explain."
+                  "hint": "Describe the state’s standard for timely encounter data submissions used in this program.</br>If reporting frequencies and standards differ by type of encounter within this program, please explain."
                 }
               },
               {
@@ -2329,8 +2289,8 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.III.2 Share of encounter data submissions that met state's timely submission requirements",
-                  "hint": "What percent of the plan's encounter data file submissions (submitted during the reporting year) met state requirements for timely submission? If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.",
+                  "label": "D1.III.2 Share of encounter data submissions that met state’s timely submission requirements",
+                  "hint": "What percent of the plan’s encounter data file submissions (submitted during the reporting year) met state requirements for timely submission? If the state has not yet received any encounter data file submissions for the entire contract year when it submits this report, the state should enter here the percentage of encounter data submissions that were compliant out of the file submissions it has received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               },
@@ -2340,7 +2300,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.III.3 Share of encounter data submissions that were HIPAA compliant",
-                  "hint": "What percent of the plan's encounter data submissions (submitted during the reporting year) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting year.",
+                  "hint": "What percent of the plan’s encounter data submissions (submitted during the reporting year) met state requirements for HIPAA compliance?</br>If the state has not yet received encounter data submissions for the entire contract period when it submits this report, enter here percentage of encounter data submissions that were compliant out of the proportion received from the managed care plan for the reporting year.",
                   "mask": "percentage"
                 }
               }
@@ -2384,7 +2344,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2406,7 +2366,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1 Appeals resolved (at the plan level)",
-                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is “resolved” at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary's representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
+                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is “resolved” at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary’s representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2520,7 +2480,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of authorization for a service not yet rendered or limited authorization of a service.</p>(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of authorization for a service not yet rendered or limited authorization of a service.</p>(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2531,7 +2491,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6b Resolved appeals related to reduction, suspension, or termination of a previously authorized service",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's reduction, suspension, or termination of a previously authorized service.",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s reduction, suspension, or termination of a previously authorized service.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2542,7 +2502,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6c Resolved appeals related to payment denial",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial, in whole or in part, of payment for a service that was already rendered.",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial, in whole or in part, of payment for a service that was already rendered.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2553,7 +2513,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6d Resolved appeals related to service timeliness",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to provide services in a timely manner (as defined by the state).",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s failure to provide services in a timely manner (as defined by the state).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2564,7 +2524,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6e Resolved appeals related to lack of timely plan response to an appeal or grievance",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals.",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2574,8 +2534,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee's right to request out-of-network care",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
+                      "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee’s right to request out-of-network care",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2585,8 +2545,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.6g Resolved appeals related to denial of an enrollee's request to dispute financial liability",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to dispute a financial liability.",
+                      "label": "D1.IV.6g Resolved appeals related to denial of an enrollee’s request to dispute financial liability",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to dispute a financial liability.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2624,7 +2584,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2779,7 +2739,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -2890,7 +2850,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -3000,7 +2960,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -3165,7 +3125,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                       },
                       {
                         "type": "internalLink",
@@ -3187,7 +3147,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16a Resolved grievances related to plan or provider customer service",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.</p><p>Customer service grievances include complaints about interactions with the plan's Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.</p><p>Customer service grievances include complaints about interactions with the plan’s Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3231,7 +3191,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16e Resolved grievances related to plan communications",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.</p><p>Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee's access to or the accessibility of enrollee materials or plan communications.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.</p><p>Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee’s access to or the accessibility of enrollee materials or plan communications.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3286,7 +3246,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
+                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3614,7 +3574,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -3866,7 +3826,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
                   },
                   {
                     "type": "internalLink",
@@ -4045,7 +4005,7 @@
                 "validation": "date",
                 "props": {
                   "label": "D1.X.9a: Plan overpayment reporting to the state: Start Date",
-                  "hint": "What is the start date of the reporting period covered by the plan's latest overpayment recovery report submitted to the state?"
+                  "hint": "What is the start date of the reporting period covered by the plan’s latest overpayment recovery report submitted to the state?"
                 }
               },
               {
@@ -4054,7 +4014,7 @@
                 "validation": "date",
                 "props": {
                   "label": "D1.X.9b: Plan overpayment reporting to the state: End Date",
-                  "hint": "What is the end date of the reporting period covered by the plan's latest overpayment recovery report submitted to the state?"
+                  "hint": "What is the end date of the reporting period covered by the plan’s latest overpayment recovery report submitted to the state?"
                 }
               },
               {
@@ -4063,7 +4023,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.X.9c: Plan overpayment reporting to the state: Dollar amount",
-                  "hint": "From the plan's latest annual overpayment recovery report, what is the total amount of overpayments recovered?",
+                  "hint": "From the plan’s latest annual overpayment recovery report, what is the total amount of overpayments recovered?",
                   "mask": "currency"
                 }
               },
@@ -4145,7 +4105,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the managed care plans that serve enrollees in the program. "
                   },
                   {
                     "type": "internalLink",
@@ -4167,7 +4127,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing ILOSs. You won't be able to complete this section until you've added all the names of authorized ILOSs for this program, if applicable. "
+                    "content": "This program is missing ILOSs. You won’t be able to complete this section until you’ve added all the names of authorized ILOSs for this program, if applicable. "
                   },
                   {
                     "type": "internalLink",
@@ -4193,7 +4153,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "If ILOSs are authorized for this program, you won't be able to complete this section until you've:"
+                    "content": "If ILOSs are authorized for this program, you won’t be able to complete this section until you’ve:"
                   },
                   {
                     "type": "ol",
@@ -4302,19 +4262,19 @@
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic XIII: Prior Authorization",
+              "subsection": "Topic XIII. Prior Authorization",
               "spreadsheet": "D1_Plan_Set",
-              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-13 must be completed. Submission of this data before June 2026 is optional; if you choose not to response prior to June 2026, select “Not reporting data”.</b>"
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-13 must be completed. Submission of this data including partial reporting on some but not all plans, before June 2026 is optional; if you choose not to response prior to June 2026, select “Not reporting data”.</b>"
             },
-            "dashboardTitle": "Report on prior authorization for each plan",
-            "drawerTitle": "Prior authorization (PA) for ",
+            "dashboardTitle": "Report on prior authorization requests received for each plan",
+            "drawerTitle": "Prior authorization for ",
             "missingEntityMessage": [
               {
                 "type": "p",
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the managed care plans that serve enrollees in the program. "
                   },
                   {
                     "type": "internalLink",
@@ -4335,7 +4295,7 @@
             "id": "pa",
             "fields": [
               {
-                "id": "reportingDataPriorToJune2026",
+                "id": "plan_priorAuthorizationReporting",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
@@ -4362,34 +4322,51 @@
                 "id": "D1.XIII.1Header",
                 "type": "sectionHeader",
                 "props": {
-                  "content": "Total count of PA requests logged in by the plan during the prior calendar year"
+                  "content": "URL where the MCO, PIHP or PAHP posts on its website prior authorization data for the prior calendar year"
                 }
               },
               {
-                "id": "plan_totalStandardPARequests",
-                "type": "number",
-                "validation": "number",
+                "id": "plan_urlForPriorAuthorizationDataOnPlanWebsite",
+                "type": "text",
+                "validation": "url",
                 "props": {
-                  "label": "D1.XIII.1 Total standard PA requests",
-                  "hint": "Enter the total number of standard PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                  "label": "D1.XIII.1 URL for prior authorization data on plan’s website",
+                  "hint": "Provide the URL where the plan posts prior authorization data for all items and services excluding drugs, as required in 42 CFR § 438.210(f). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
               },
               {
-                "id": "plan_totalExpeditedPARequests",
-                "type": "number",
-                "validation": "number",
+                "id": "D1.XIII.2Header",
+                "type": "sectionHeader",
                 "props": {
-                  "label": "D1.XIII.2 Total expedited PA requests",
-                  "hint": "Enter the total number of expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                  "divider": "top",
+                  "content": "URL where the MCO, PIHP or PAHP posts on its website the list of all items and services, excluding drugs, subject to prior authorization"
                 }
               },
               {
-                "id": "plan_totalStandardAndExpeditedPARequests",
+                "id": "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIII.2 URL for list of all items and services subject to prior authorization",
+                  "hint": "Provide the URL where the plan posts the list of all items and services, excluding drugs, that are subject to prior authorization, as required in 42 CFR § 438.210(f)(1). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                }
+              },
+              {
+                "id": "D1.XIII.3Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Total count of standard prior authorization requests received by the plan aggregated for all items and services, excluding drugs during the prior calendar year"
+                }
+              },
+              {
+                "id": "plan_totalStandardPriorAuthorizationRequestsReceived",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.3 Total standard and expedited PA requests",
-                  "hint": "Enter the total number of standard and expedited PA requests logged by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                  "label": "D1.XIII.3 Total standard prior authorization requests received",
+                  "hint": "Enter the total number of standard prior authorization requests received by the plan for all items and services, excluding drugs, during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
@@ -4397,129 +4374,220 @@
                 "type": "sectionHeader",
                 "props": {
                   "divider": "top",
-                  "content": "Of the total standard PA requests"
+                  "content": "Total count of expedited prior authorization requests aggregated for all items and services, excluding drugs during the prior calendar year"
                 }
               },
               {
-                "id": "plan_percentageOfStandardPARequestsApproved",
+                "id": "plan_totalExpeditedPriorAuthorizationRequestsReceived",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.4 Percentage of standard PA requests that were approved",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
-                  "mask": "percentage",
-                  "decimalPlacesToRoundTo": 2
+                  "label": "D1.XIII.4 Total expedited prior authorization requests received",
+                  "hint": "Enter the total number of expedited prior authorization requests received by the plan for all items and services, excluding drugs, during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
-                "id": "plan_percentageOfStandardPARequestsDenied",
+                "id": "plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.5 Percentage of standard PA requests that were denied",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
-                  "mask": "percentage",
-                  "decimalPlacesToRoundTo": 2
+                  "label": "D1.XIII.5 Total standard and expedited prior authorization requests received",
+                  "hint": "Enter the total number of standard and expedited prior authorization requests received (D.1.XIII.3 plus D.1. XIII.4) by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 0
                 }
               },
               {
-                "id": "plan_percentageOfStandardPARequestsApprovedAfterAppeal",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "D1.XIII.6 Percentage of standard PA requests that were approved after appeal",
-                  "hint": "Enter the percentage of the total standard PA requests, as reported in D1.XIII.1, that were approved after appeal, aggregated for all items and services as defined in § 438.210(f)(4). If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
-                  "mask": "percentage",
-                  "decimalPlacesToRoundTo": 2
-                }
-              },
-              {
-                "id": "plan_averageTimeToDecisionForStandardPAs",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "D1.XIII.7 Average time to decision for standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the average number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
-                  "decimalPlacesToRoundTo": 2
-                }
-              },
-              {
-                "id": "plan_medianTimeThatElapsedForDecisionOnStandardPAs",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "D1.XIII.8 Median time that elapsed for decision on standard PAs",
-                  "hint": "For standard PAs, as reported in D1.XIII.1, enter the median number of days that elapsed between submission of request and decision by the MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
-                  "decimalPlacesToRoundTo": 2
-                }
-              },
-              {
-                "id": "D1.XIII.9Header",
+                "id": "D1.XIII.6Header",
                 "type": "sectionHeader",
                 "props": {
                   "divider": "top",
-                  "content": "Of the total expedited PA requests"
+                  "content": "Standard prior authorization requests approved"
                 }
               },
               {
-                "id": "plan_percentageOfExpeditedPARequestsApproved",
+                "id": "plan_percentageOfStandardPriorAuthorizationRequestsApproved",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.9 Percentage of expedited PA requests that were approved",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "label": "D1.XIII.6 Percentage of standard prior authorization requests that were approved",
+                  "hint": "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
               },
               {
-                "id": "plan_percentageOfExpeditedPARequestsDenied",
+                "id": "plan_percentageOfStandardPriorAuthorizationRequestsDenied",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.10 Percentage of expedited PA requests that were denied",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "label": "D1.XIII.7 Percentage of standard prior authorization requests that were denied",
+                  "hint": "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
               },
               {
-                "id": "plan_averageTimeToDecisionForExpeditedPAs",
+                "id": "plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.11 Average time to decision for expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the average number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "label": "D1.XIII.8 Percentage of standard prior authorization requests approved after appeal",
+                  "hint": "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the percentage that were approved after appeal. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
                 }
               },
               {
-                "id": "plan_medianTimeThatElapsedForDecisionOnExpeditedPAs",
+                "id": "plan_averageTimeToDecisionForStandardPriorAuthorizations",
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.12 Median time that elapsed for decision on expedited PAs",
-                  "hint": "Of the total expedited PA requests, as reported in D1.XIII.2, enter the median number of hours elapsed between submission of request and decision by MCO, PIHP or PAHP, as defined in § 438.210(f)(9). If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "label": "D1.XIII.9 Average time to decision for standard prior authorizations",
+                  "hint": "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the average number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
               },
               {
-                "id": "D1.XIII.13Header",
+                "id": "plan_medianTimeToDecisionOnStandardPriorAuthorizations",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.10 Median time to decision on standard prior authorizations",
+                  "hint": "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the median number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "D1.XIII.11Header",
                 "type": "sectionHeader",
                 "props": {
                   "divider": "top",
-                  "content": "Of total PA requests"
+                  "content": "Expedited prior authorization requets aggregated for all items and services, excluding drugs"
                 }
               },
               {
-                "id": "plan_percentageOfTotalPARequestsApprovedWithExtendedTimeframe",
+                "id": "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.11 Percentage of expedited prior authorization requests that were approved",
+                  "hint": "Of the total expedited prior authorization requests reported in D1.XIII.4, enter the percentage that were approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_percentageOfExpeditedPriorAuthorizationRequestsDenied",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.12 Percentage of expedited prior authorization requests that were denied",
+                  "hint": "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "mask": "percentage",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_averageTimeToDecisionForExpeditedPriorAuthorizations",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.13 Average time to decision for expedited prior authorizations",
+                  "hint": "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the average number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIII.14 Median time to decision on expedited prior authorization requests",
+                  "hint": "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the median number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "decimalPlacesToRoundTo": 2
+                }
+              },
+              {
+                "id": "D1.XIII.15Header",
+                "type": "sectionHeader",
+                "props": {
+                  "divider": "top",
+                  "content": "Of total prior authorization requests"
+                }
+              },
+              {
+                "id": "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
                 "type": "number",
                 "validation": "numberNotLessThanZero",
                 "props": {
-                  "label": "D1.XIII.13 Percentage of total PA requests approved with extended timeframe",
-                  "hint": "Of the total PA requests, as reported in D1.XIII.3, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                  "label": "D1.XIII.15 Percentage of total prior authorization requests approved with extended timeframe",
+                  "hint": "Of the total prior authorization requests, as reported in D1.XIII.5, enter the percentage of requests for which the timeframe for review was extended and the request was approved. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "mask": "percentage",
                   "decimalPlacesToRoundTo": 2
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "XIV: Patient Access API (Application Programming Interface)",
+          "path": "/mcpar/plan-level-indicators/patient-access-api",
+          "pageType": "drawer",
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic XIV. Patient Access API (Application Programming Interface)",
+              "spreadsheet": "D1_Plan_Set",
+              "alert": "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
+            },
+            "dashboardTitle": "Report on Patient Access API for each plan",
+            "drawerTitle": "Patient Access Application Programming Interface for "
+          },
+          "form": {
+            "id": "paa",
+            "fields": [
+              {
+                "id": "plan_patientAccessApiReporting",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Are you reporting data prior to June 2026?",
+                  "hint": "If “Yes”, please complete the following questions under each plan.",
+                  "choices": [
+                    {
+                      "id": "qVOMziq3iRhgmBMAxX35qtQn",
+                      "label": "Not reporting data"
+                    },
+                    {
+                      "id": "taijmIVhoXueygYHFhrx6FrI",
+                      "label": "Yes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "drawerForm": {
+            "id": "dpaa",
+            "fields": [
+              {
+                "id": "plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIV.1 Number of unique beneficiaries with at least one data transfer",
+                  "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred via the Patient Access API to a health app designated by the beneficiary. Provide program-specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                }
+              },
+              {
+                "id": "plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers",
+                "type": "number",
+                "validation": "number",
+                "props": {
+                  "label": "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
+                  "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
               }
             ]
@@ -4568,7 +4636,7 @@
             "children": [
               {
                 "type": "html",
-                "content": "This program is missing BSS entities. You won't be able to complete this section until you've added all the names of BSS entities that support enrollees in the program. "
+                "content": "This program is missing BSS entities. You won’t be able to complete this section until you’ve added all the names of BSS entities that support enrollees in the program. "
               },
               {
                 "type": "internalLink",

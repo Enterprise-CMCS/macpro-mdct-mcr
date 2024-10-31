@@ -178,10 +178,27 @@ export const calculateCompletionStatus = async (
           routeCompletion = { [route.path]: true };
           return;
         }
-        // handle Prior Authorization case: if the user is not reporting prior to June 2026, this section is not required
+        // handle Prior Authorization cases: if the user is not reporting prior to June 2026, this section is not required
+        if (
+          route.path === "/mcpar/state-level-indicators/prior-authorization" &&
+          fieldData["state_priorAuthorizationReporting"]?.[0].value ===
+            "Not reporting data"
+        ) {
+          routeCompletion = { [route.path]: true };
+          return;
+        }
         if (
           route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
-          fieldData["reportingDataPriorToJune2026"]?.[0].value ===
+          fieldData["plan_priorAuthorizationReporting"]?.[0].value ===
+            "Not reporting data"
+        ) {
+          routeCompletion = { [route.path]: true };
+          return;
+        }
+        // handle Patient Access API case: if the user is not reporting prior to June 2026, this section is not required
+        if (
+          route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
+          fieldData["plan_patientAccessApiReporting"]?.[0].value ===
             "Not reporting data"
         ) {
           routeCompletion = { [route.path]: true };
