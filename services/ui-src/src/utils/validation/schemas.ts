@@ -132,15 +132,7 @@ export const emailOptional = () => email().notRequired();
 
 // URL
 export const url = () => text().url(error.INVALID_URL);
-export const urlOptional = () =>
-  text().test({
-    message: error.INVALID_URL_OR_NR,
-    test: (value) => {
-      if (value) {
-        return urlRegex.test(value) || validNRValues.includes(value);
-      } else return true;
-    },
-  });
+export const urlOptional = () => url().notRequired();
 
 // DATE
 export const date = () =>
@@ -237,5 +229,3 @@ export const nested = (
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
-export const urlRegex =
-  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
