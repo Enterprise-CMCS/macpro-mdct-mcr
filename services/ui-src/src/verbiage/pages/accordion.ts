@@ -158,7 +158,7 @@ export default {
             {
               type: "html",
               content:
-                " a state may exclude a plan that is newly contracted with the state from this reporting for the first year of the plan's operation. These “new experience” plans must report MLRs during the next MLR reporting year in which the plan is in business with the state, even if the first year was not a full 12 months.</p>",
+                " a state may exclude a plan that is newly contracted with the state from this reporting for the first year of the plan's operation. These “new experience” plans must report MLRs during the next MLR reporting year in which the plan is in business with the state, even if the first year was not a full 12 months.",
             },
           ],
         },
