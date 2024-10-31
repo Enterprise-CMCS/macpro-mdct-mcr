@@ -3,13 +3,18 @@ export default {
     header: "Medicaid Medical Loss Ratio (MLR)",
     body: [
       {
-        type: "text",
-        content: "",
-      },
-      {
-        type: "externalLink",
-        content: "",
-        props: {},
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "",
+          },
+          {
+            type: "externalLink",
+            content: "",
+            props: {},
+          },
+        ],
       },
     ],
   },
