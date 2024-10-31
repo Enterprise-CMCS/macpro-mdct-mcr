@@ -4328,7 +4328,7 @@
               {
                 "id": "plan_urlForPriorAuthorizationDataOnPlanWebsite",
                 "type": "text",
-                "validation": "url",
+                "validation": "urlOptional",
                 "props": {
                   "label": "D1.XIII.1 URL for prior authorization data on plan’s website",
                   "hint": "Provide the URL where the plan posts prior authorization data for all items and services excluding drugs, as required in 42 CFR § 438.210(f). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
@@ -4345,7 +4345,7 @@
               {
                 "id": "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization",
                 "type": "text",
-                "validation": "url",
+                "validation": "urlOptional",
                 "props": {
                   "label": "D1.XIII.2 URL for list of all items and services subject to prior authorization",
                   "hint": "Provide the URL where the plan posts the list of all items and services, excluding drugs, that are subject to prior authorization, as required in 42 CFR § 438.210(f)(1). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
@@ -4543,7 +4543,25 @@
               "alert": "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on Patient Access API for each plan",
-            "drawerTitle": "Patient Access Application Programming Interface for "
+            "drawerTitle": "Patient Access Application Programming Interface for ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "form": {
             "id": "paa",
