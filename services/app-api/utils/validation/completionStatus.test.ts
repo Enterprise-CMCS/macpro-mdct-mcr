@@ -201,9 +201,41 @@ describe("Completion Status Tests", () => {
       expect(result).toMatchObject({});
     });
 
-    test("If user is not reporting Prior Authorization data, they're not required to complete that section", async () => {
+    test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
       const testData = {
-        reportingDataPriorToJune2026: [
+        state_priorAuthorizationReporting: [
+          {
+            key: "mock-key",
+            value: "Not reporting data",
+          },
+        ],
+      };
+      const formTemplate = {
+        routes: [
+          {
+            name: "B: State-Level Indicators",
+            path: "/mcpar/state-level-indicators",
+            children: [
+              {
+                name: "Prior Authorization",
+                path: "/mcpar/state-level-indicators/prior-authorization",
+                pageType: "standard",
+                form: {
+                  id: "bpi",
+                  fields: [],
+                },
+              },
+            ],
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({});
+    });
+
+    test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
+      const testData = {
+        plan_priorAuthorizationReporting: [
           {
             key: "mock-key",
             value: "Not reporting data",
