@@ -641,7 +641,7 @@
               "subsection": "Topic XIII. Prior Authorization",
               "spreadsheet": "B_State",
               "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b–2a-b must be completed. Submission of this data before June 2026 is optional.</b>",
-              "info": "If the state sets timeframes for plans to respond to Prior Authorization (PA) requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions."
+              "info": "If the state sets timeframes for plans to respond to Prior Authorization requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions."
             }
           },
           "form": {
@@ -671,7 +671,7 @@
                             "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.1a Timeframes for Standard Prior Authorization Decisions",
+                            "label": "B.XIII.1a Timeframes for standard prior authorization decisions",
                             "hint": "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and within state established timeframes. For rating periods that start before January 1, 2026, a state’s time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state’s time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
                             "choices": [
                               {
@@ -711,8 +711,8 @@
                             "parentFieldName": "plan_priorAuthorizationReporting"
                           },
                           "props": {
-                            "label": "B.XIII.2a Timeframes for Expedited Prior Authorization Decisions",
-                            "hint": "The federal timeframe standard for expedited PA requests is not to exceed 72 hours. Does the state set a timeframe standard different from this? If you choose not to respond prior to June 2026, select “Not reporting data.”",
+                            "label": "B.XIII.2a Timeframes for expedited prior authorization decisions",
+                            "hint": "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and no later than 72 hours after receipt of the request for service. Does the state set timeframes shorter than the maximum timeframe for expedited prior authorization requests?",
                             "choices": [
                               {
                                 "id": "2nAidGQyKBhG1gxK1SuXbBjJh0V",
