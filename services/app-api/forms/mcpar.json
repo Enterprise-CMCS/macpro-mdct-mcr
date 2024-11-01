@@ -663,12 +663,13 @@
                       "label": "Yes",
                       "children": [
                         {
-                          "id": "plan_timeframesForStandardPriorAuthorizationDecisions",
+                          "id": "state_timeframesForStandardPriorAuthorizationDecisions",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_priorAuthorizationReporting"
+                            "parentFieldName": "state_priorAuthorizationReporting",
+                            "parentOptionId": "2nAidDjXBvvkzLtaeYyE2RymW4G"
                           },
                           "props": {
                             "label": "B.XIII.1a Timeframes for standard prior authorization decisions",
@@ -683,14 +684,15 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "plan_timeframesForStandardPriorAuthorizationDecisions-otherText",
+                                    "id": "state_timeframesForStandardPriorAuthorizationDecisions-otherText",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 2,
-                                      "parentFieldName": "plan_timeframesForStandardPriorAuthorizationDecisions"
+                                      "parentFieldName": "state_timeframesForStandardPriorAuthorizationDecisions",
+                                      "parentOptionId": "2nAidFCWvENhYZvzLt3DxJWOqtx"
                                     },
                                     "props": {
                                       "label": "B.XIII.1b Timeframes for standard prior authorization decisions",
@@ -703,12 +705,13 @@
                           }
                         },
                         {
-                          "id": "plan_timeframesForExpeditedPriorAuthorizationDecisions",
+                          "id": "state_timeframesForExpeditedPriorAuthorizationDecisions",
                           "type": "radio",
                           "validation": {
                             "type": "radio",
                             "nested": true,
-                            "parentFieldName": "plan_priorAuthorizationReporting"
+                            "parentFieldName": "state_priorAuthorizationReporting",
+                            "parentOptionId": "2nAidDjXBvvkzLtaeYyE2RymW4G"
                           },
                           "props": {
                             "label": "B.XIII.2a Timeframes for expedited prior authorization decisions",
@@ -723,14 +726,15 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "plan_timeframesForExpeditedPriorAuthorizationDecisions-otherText",
+                                    "id": "state_timeframesForExpeditedPriorAuthorizationDecisions-otherText",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 2,
-                                      "parentFieldName": "plan_timeframesForExpeditedPriorAuthorizationDecisions"
+                                      "parentFieldName": "state_timeframesForExpeditedPriorAuthorizationDecisions",
+                                      "parentOptionId": "2nAidJFG47lnFfJsNJS2tU7d4pp"
                                     },
                                     "props": {
                                       "label": "B.XIII.2b State’s timeframe for expedited prior authorization requests",
