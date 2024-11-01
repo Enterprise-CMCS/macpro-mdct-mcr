@@ -7,12 +7,31 @@ export default {
         children: [
           {
             type: "html",
-            content: "",
+            content:
+              "Complete one (1) report with information for applicable managed care plans and their applicable managed care programs. MMPs are considered both Medicaid and Medicare managed care plans and are not exempt from ",
           },
           {
             type: "externalLink",
-            content: "",
-            props: {},
+            content: "42 CFR 438.207",
+            props: {
+              href: "https://www.google.com",
+              target: "_blank",
+              "aria-label": "Link opens in new tab",
+            },
+          },
+          {
+            type: "html",
+            content:
+              ". Therefore, states must submit the tool for integrated plans; however, to reduce duplication, states can complete network adequacy sections of the tool (II.A.1-II.A.5) for Medicaid-only covered services. Reporting on Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. ",
+          },
+          {
+            type: "externalLink",
+            content: "Learn more about NAAAR.",
+            props: {
+              href: "https://www.google.com",
+              target: "_blank",
+              "aria-label": "Learn more (link opens in new tab)",
+            },
           },
         ],
       },
