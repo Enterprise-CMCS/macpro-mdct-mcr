@@ -269,6 +269,43 @@ describe("Completion Status Tests", () => {
       const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toMatchObject({});
     });
+
+    test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
+      const testData = {
+        plan_patientAccessApiReporting: [
+          {
+            key: "mock-key",
+            value: "Not reporting data",
+          },
+        ],
+      };
+      const formTemplate = {
+        routes: [
+          {
+            name: "D: Plan-Level Indicators",
+            path: "/mcpar/plan-level-indicators",
+            children: [
+              {
+                name: "Prior Authorization",
+                path: "/mcpar/plan-level-indicators/patient-access-api",
+                entityType: "plans",
+                pageType: "drawer",
+                form: {
+                  id: "paa",
+                  fields: [],
+                },
+                drawerForm: {
+                  id: "dpaa",
+                  fields: [],
+                },
+              },
+            ],
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({});
+    });
   });
 
   describe("Fixture Testing", () => {
