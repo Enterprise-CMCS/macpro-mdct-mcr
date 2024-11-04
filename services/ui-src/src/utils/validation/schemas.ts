@@ -31,6 +31,7 @@ export const textOptional = () =>
     });
 
 // NUMBER - Helpers
+const validNRValues = ["NR", "nr"];
 export const validNAValues = [
   "N/A",
   "NA",
@@ -38,8 +39,7 @@ export const validNAValues = [
   "n/a",
   "N/a",
   "Data not available",
-  "NR",
-  "nr",
+  ...validNRValues,
 ];
 
 // NUMBER - Number or Valid Strings

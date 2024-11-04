@@ -10,22 +10,27 @@ export default {
       infoHeader: "Ready to Submit?",
       info: [
         {
-          type: "span",
-          content:
-            "Double check that everything in your MCPAR Report is accurate. You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report. After compliance review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the MCPAR dashboard. Once you’ve reviewed your report, certify that it’s in compliance with ",
-        },
-        {
-          type: "externalLink",
-          content: "42 CFR § 438.66(e)",
-          props: {
-            href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.66#p-438.66(e)",
-            target: "_blank",
-            "aria-label": "Learn more (link opens in new tab)",
-          },
-        },
-        {
-          type: "span",
-          content: ".",
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content:
+                "Double check that everything in your MCPAR Report is accurate. You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report. After compliance review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the MCPAR dashboard. Once you’ve reviewed your report, certify that it’s in compliance with ",
+            },
+            {
+              type: "externalLink",
+              content: "42 CFR § 438.66(e)",
+              props: {
+                href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.66#p-438.66(e)",
+                target: "_blank",
+                "aria-label": "Learn more (link opens in new tab)",
+              },
+            },
+            {
+              type: "html",
+              content: ".",
+            },
+          ],
         },
       ],
     },

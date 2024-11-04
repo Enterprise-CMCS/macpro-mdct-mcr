@@ -45,6 +45,7 @@ export const validationErrors = {
   INVALID_GENERIC: "Response must be valid",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
+  INVALID_URL_OR_NR: 'Response must be a valid hyperlink/URL or "NR"',
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
