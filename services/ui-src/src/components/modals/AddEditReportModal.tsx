@@ -39,6 +39,7 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const naaarReport = useFlags()?.naaarReport;
   const novMcparRelease = useFlags()?.novMcparRelease;
 
   // get correct form
@@ -135,15 +136,44 @@ export const AddEditReportModal = ({
     };
   };
 
+  // NAAAR report payload
+  const prepareNaaarPayload = (formData: any) => {
+    const contactName = formData["contactName"];
+
+    return {
+      metadata: {
+        contactName,
+        lastAlteredBy: full_name,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
+        naaarReport,
+      },
+      fieldData: {
+        contactName,
+      },
+    };
+  };
+
   const writeReport = async (formData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
-    const dataToWrite =
-      reportType === "MCPAR"
-        ? prepareMcparPayload(formData)
-        : prepareMlrPayload(formData);
+    let dataToWrite;
+    switch (reportType) {
+      case "MCPAR":
+        dataToWrite = prepareMcparPayload(formData);
+        break;
+      case "MLR":
+        dataToWrite = prepareMlrPayload(formData);
+        break;
+      case "NAAAR":
+        dataToWrite = prepareNaaarPayload(formData);
+        break;
+      default:
+        throw new Error("Issue creating report");
+    }
 
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
