@@ -96,6 +96,9 @@ const sx = {
     "&.desktop": {
       maxWidth: "36rem",
     },
+    h2: {
+      lineHeight: "1.3rem",
+    },
   },
   drawerEyebrowHeaderText: {
     fontSize: "md",
