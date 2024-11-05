@@ -87,7 +87,7 @@ export default {
                 {
                   type: "span",
                   content:
-                    "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.",
+                    "In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.",
                 },
                 {
                   type: "html",
