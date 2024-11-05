@@ -4,29 +4,24 @@ export default {
     body: [
       {
         type: "p",
+        content:
+          "One MCPAR is required for every managed care program in your state.",
+      },
+      {
+        type: "p",
         children: [
           {
             type: "html",
-            content:
-              "One MCPAR is required for every managed care program in your state.",
+            content: "MCPAR is required by 42 CFR § 438.66(e). ",
           },
           {
-            type: "p",
-            children: [
-              {
-                type: "html",
-                content: "MCPAR is required by 42 CFR § 438.66(e). ",
-              },
-              {
-                type: "externalLink",
-                content: "Learn more",
-                props: {
-                  href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#AMCPR",
-                  target: "_blank",
-                  "aria-label": "Learn more (link opens in new tab)",
-                },
-              },
-            ],
+            type: "externalLink",
+            content: "Learn more",
+            props: {
+              href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting/index.html#AMCPR",
+              target: "_blank",
+              "aria-label": "Learn more (link opens in new tab)",
+            },
           },
         ],
       },

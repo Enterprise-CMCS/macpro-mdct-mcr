@@ -31,7 +31,7 @@ export default {
       question: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",
       answer: [
         {
-          type: "p",
+          type: "div",
           children: [
             {
               type: "html",
@@ -72,51 +72,51 @@ export default {
                 {
                   type: "html",
                   content:
-                    "Please follow these section-by-section instructions for PCCM-Es:<br/>",
+                    "Please follow these section-by-section instructions for PCCM-Es:",
                 },
+              ],
+            },
+            {
+              type: "ul",
+              content: "",
+              children: [
                 {
-                  type: "ul",
-                  content: "",
+                  type: "li",
                   children: [
                     {
-                      type: "li",
-                      children: [
-                        {
-                          type: "html",
-                          content:
-                            "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.</span><br></br>",
-                        },
-                      ],
+                      type: "html",
+                      content:
+                        "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.</span><br></br>",
                     },
+                  ],
+                },
+                {
+                  type: "li",
+                  children: [
                     {
-                      type: "li",
-                      children: [
-                        {
-                          type: "html",
-                          content:
-                            "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
-                        },
-                      ],
+                      type: "html",
+                      content:
+                        "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
                     },
+                  ],
+                },
+                {
+                  type: "li",
+                  children: [
                     {
-                      type: "li",
-                      children: [
-                        {
-                          type: "html",
-                          content:
-                            "<span>In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.</span><br></br>",
-                        },
-                      ],
+                      type: "html",
+                      content:
+                        "<span>In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.</span><br></br>",
                     },
+                  ],
+                },
+                {
+                  type: "li",
+                  children: [
                     {
-                      type: "li",
-                      children: [
-                        {
-                          type: "span",
-                          content:
-                            "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
-                        },
-                      ],
+                      type: "span",
+                      content:
+                        "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
                     },
                   ],
                 },

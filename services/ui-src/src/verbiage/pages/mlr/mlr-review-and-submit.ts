@@ -10,7 +10,7 @@ export default {
       infoHeader: "Ready to Submit?",
       info: [
         {
-          type: "p",
+          type: "span",
           children: [
             {
               type: "html",
