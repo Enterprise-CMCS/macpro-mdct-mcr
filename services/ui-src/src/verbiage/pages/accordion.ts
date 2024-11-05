@@ -188,13 +188,8 @@ export default {
       intro: [
         {
           type: "p",
-          children: [
-            {
-              type: "html",
-              content:
-                "States must report the five required MLR summary elements. Note that the form fields do not automatically calculate the MLR numerator, denominator, or MLR percentage. Each element must be entered manually. Fields marked as “optional” are included to allow states to report additional MLR data that states currently collect from MCOs, PIHPs, or PAHPs.",
-            },
-          ],
+          content:
+            "States must report the five required MLR summary elements. Note that the form fields do not automatically calculate the MLR numerator, denominator, or MLR percentage. Each element must be entered manually. Fields marked as “optional” are included to allow states to report additional MLR data that states currently collect from MCOs, PIHPs, or PAHPs.",
         },
         {
           type: "p",

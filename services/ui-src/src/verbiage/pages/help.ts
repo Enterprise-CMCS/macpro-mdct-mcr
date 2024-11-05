@@ -31,7 +31,7 @@ export default {
       question: "MCPAR: Primary Care Case Management Entity (PCCM-E) reports",
       answer: [
         {
-          type: "div",
+          type: "p",
           children: [
             {
               type: "html",
@@ -66,81 +66,81 @@ export default {
               type: "html",
               content: ").<br></br>",
             },
+          ],
+        },
+        {
+          type: "p",
+          children: [
             {
-              type: "p",
+              type: "html",
+              content:
+                "Please follow these section-by-section instructions for PCCM-Es:<br>",
+            },
+          ],
+        },
+        {
+          type: "ul",
+          content: "",
+          children: [
+            {
+              type: "li",
               children: [
                 {
                   type: "html",
                   content:
-                    "Please follow these section-by-section instructions for PCCM-Es:",
+                    "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.</span><br></br>",
                 },
               ],
             },
             {
-              type: "ul",
-              content: "",
-              children: [
-                {
-                  type: "li",
-                  children: [
-                    {
-                      type: "html",
-                      content:
-                        "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.</span><br></br>",
-                    },
-                  ],
-                },
-                {
-                  type: "li",
-                  children: [
-                    {
-                      type: "html",
-                      content:
-                        "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
-                    },
-                  ],
-                },
-                {
-                  type: "li",
-                  children: [
-                    {
-                      type: "html",
-                      content:
-                        "<span>In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.</span><br></br>",
-                    },
-                  ],
-                },
-                {
-                  type: "li",
-                  children: [
-                    {
-                      type: "span",
-                      content:
-                        "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: "p",
+              type: "li",
               children: [
                 {
                   type: "html",
-                  as: "b",
                   content:
-                    "<br/><b>Please note:</b> States can voluntarily report additional information about their PCCM-Es beyond the designated sections in the PCCM-E specific form. If a state wants to report additional information, please contact ",
-                },
-                {
-                  type: "externalLink",
-                  content: "ManagedCareTA@cms.hhs.gov",
-                  props: {
-                    href: "mailto:ManagedCareTA@cms.hhs.gov",
-                    target: "_blank",
-                    "aria-label": "Mail to ManagedCareTA@cms.hhs.gov",
-                  },
+                    "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
                 },
               ],
+            },
+            {
+              type: "li",
+              children: [
+                {
+                  type: "html",
+                  content:
+                    "<span>In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.</span><br></br>",
+                },
+              ],
+            },
+            {
+              type: "li",
+              children: [
+                {
+                  type: "span",
+                  content:
+                    "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              as: "b",
+              content:
+                "<br/><b>Please note:</b> States can voluntarily report additional information about their PCCM-Es beyond the designated sections in the PCCM-E specific form. If a state wants to report additional information, please contact ",
+            },
+            {
+              type: "externalLink",
+              content: "ManagedCareTA@cms.hhs.gov",
+              props: {
+                href: "mailto:ManagedCareTA@cms.hhs.gov",
+                target: "_blank",
+                "aria-label": "Mail to ManagedCareTA@cms.hhs.gov",
+              },
             },
           ],
         },
