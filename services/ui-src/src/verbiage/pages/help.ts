@@ -70,13 +70,12 @@ export default {
         },
         {
           type: "p",
-          children: [
-            {
-              type: "html",
-              content:
-                "Please follow these section-by-section instructions for PCCM-Es:<br>",
-            },
-          ],
+          content:
+            "Please follow these section-by-section instructions for PCCM-Es:",
+        },
+        {
+          type: "html",
+          content: "<br>",
         },
         {
           type: "ul",
@@ -86,9 +85,13 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "html",
+                  type: "span",
                   content:
-                    "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.</span><br></br>",
+                    "<span>In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.",
+                },
+                {
+                  type: "html",
+                  content: "<br></br>",
                 },
               ],
             },
@@ -96,9 +99,13 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "html",
+                  type: "span",
                   content:
-                    "<span>In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.</span><br></br>",
+                    "In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.",
+                },
+                {
+                  type: "html",
+                  content: "<br></br>",
                 },
               ],
             },
@@ -106,9 +113,13 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "html",
+                  type: "span",
                   content:
-                    "<span>In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.</span><br></br>",
+                    "In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.",
+                },
+                {
+                  type: "html",
+                  content: "<br></br>",
                 },
               ],
             },
@@ -119,6 +130,10 @@ export default {
                   type: "span",
                   content:
                     "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
+                },
+                {
+                  type: "html",
+                  content: "<br></br>",
                 },
               ],
             },
@@ -131,7 +146,7 @@ export default {
               type: "html",
               as: "b",
               content:
-                "<br/><b>Please note:</b> States can voluntarily report additional information about their PCCM-Es beyond the designated sections in the PCCM-E specific form. If a state wants to report additional information, please contact ",
+                "<b>Please note:</b> States can voluntarily report additional information about their PCCM-Es beyond the designated sections in the PCCM-E specific form. If a state wants to report additional information, please contact ",
             },
             {
               type: "externalLink",
