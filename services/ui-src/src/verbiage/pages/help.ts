@@ -85,7 +85,7 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "span",
+                  type: "html",
                   content:
                     "In <b>section A.7, Program Information</b>, write the name of the PCCM-E as the Plan.",
                 },
@@ -99,7 +99,7 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "span",
+                  type: "html",
                   content:
                     "In <b>section C1.I.3 Topic 1, Program Characteristics</b>, the radio button for PCCM-E will be pre-selected.",
                 },
@@ -113,7 +113,7 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "span",
+                  type: "html",
                   content:
                     "In <b>section D.VIII, Sanctions</b>, PCCM-Es should describe sanctions the state has issued against the PCCM-E itself.",
                 },
@@ -127,7 +127,7 @@ export default {
               type: "li",
               children: [
                 {
-                  type: "span",
+                  type: "html",
                   content:
                     "Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions.",
                 },
