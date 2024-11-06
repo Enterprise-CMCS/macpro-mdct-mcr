@@ -161,18 +161,12 @@ export const AddEditReportModal = ({
     submitButton?.setAttribute("disabled", "true");
 
     let dataToWrite;
-    switch (reportType) {
-      case "MCPAR":
-        dataToWrite = prepareMcparPayload(formData);
-        break;
-      case "MLR":
-        dataToWrite = prepareMlrPayload(formData);
-        break;
-      case "NAAAR":
-        dataToWrite = prepareNaaarPayload(formData);
-        break;
-      default:
-        throw new Error("Issue creating report");
+    if (reportType === "MCPAR") {
+      dataToWrite = prepareMcparPayload(formData);
+    } else if (reportType === "NAAAR") {
+      dataToWrite = prepareNaaarPayload(formData);
+    } else {
+      dataToWrite = prepareMlrPayload(formData);
     }
 
     // if an existing program was selected, use that report id
