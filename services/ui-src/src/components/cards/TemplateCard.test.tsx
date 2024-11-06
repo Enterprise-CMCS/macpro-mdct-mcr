@@ -14,7 +14,11 @@ import { useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
-const mockAPI = require("utils/api/requestMethods/getTemplateUrl");
+const mockGetSignedTemplateUrl = jest.fn();
+
+jest.mock("utils/api/requestMethods/getTemplateUrl", () => ({
+  getSignedTemplateUrl: () => mockGetSignedTemplateUrl(),
+}));
 
 jest.mock("utils/other/useBreakpoint", () => ({
   useBreakpoint: jest.fn(() => ({
@@ -65,13 +69,14 @@ describe("Test MCPAR TemplateCard", () => {
   });
 
   test("MCPAR TemplateCard download button is visible and clickable", async () => {
-    const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
     const downloadButton = screen.getByText(mcparTemplateVerbiage.downloadText);
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
     });
-    await waitFor(() => expect(apiSpy).toHaveBeenCalledTimes(1));
+    await waitFor(() =>
+      expect(mockGetSignedTemplateUrl).toHaveBeenCalledTimes(1)
+    );
   });
 
   test("MCPAR TemplateCard image is visible on desktop", () => {
@@ -103,13 +108,12 @@ describe("Test MLR TemplateCard", () => {
   });
 
   test("MLR TemplateCard download button is visible and clickable", async () => {
-    const apiSpy = jest.spyOn(mockAPI, "getSignedTemplateUrl");
     const downloadButton = screen.getByText(mlrTemplateVerbiage.downloadText);
     expect(downloadButton).toBeVisible();
     await act(async () => {
       await userEvent.click(downloadButton);
     });
-    await waitFor(() => expect(apiSpy).toHaveBeenCalled());
+    await waitFor(() => expect(mockGetSignedTemplateUrl).toHaveBeenCalled());
   });
 
   test("MLR TemplateCard image is visible on desktop", () => {

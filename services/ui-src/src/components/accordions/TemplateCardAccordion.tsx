@@ -47,6 +47,7 @@ const sx = {
     paddingLeft: "1rem",
     "li:last-of-type": {
       fontWeight: "bold",
+      textDecoration: "underline",
     },
   },
 };

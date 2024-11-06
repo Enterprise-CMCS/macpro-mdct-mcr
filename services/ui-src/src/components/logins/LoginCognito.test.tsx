@@ -6,9 +6,11 @@ import { LoginCognito } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
-const mockSignIn = jest.fn();
-jest.mock("aws-amplify/auth", () => ({
-  signIn: (credentials: any) => mockSignIn(credentials),
+const mockLoginUser = jest.fn();
+
+jest.mock("utils", () => ({
+  loginUser: (username: string, password: string) =>
+    mockLoginUser(username, password),
 }));
 
 const mockUseNavigate = jest.fn();
@@ -30,12 +32,9 @@ describe("Test LoginCognito", () => {
     const passwordInput = screen.getByLabelText("Password");
     const submitButton = screen.getByRole("button");
     await userEvent.type(emailInput, "email@address.com");
-    await userEvent.type(passwordInput, "p@$$w0rd"); //pragma: allowlist secret
+    await userEvent.type(passwordInput, "test");
     await userEvent.click(submitButton);
-    expect(mockSignIn).toHaveBeenCalledWith({
-      username: "email@address.com",
-      password: "p@$$w0rd", //pragma: allowlist secret
-    });
+    expect(mockLoginUser).toHaveBeenCalledWith("email@address.com", "test");
     expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 });

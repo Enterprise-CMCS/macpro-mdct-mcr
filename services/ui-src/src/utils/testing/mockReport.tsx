@@ -216,7 +216,13 @@ export const mockReportFieldData = {
       name: "mock-ilos-name-1",
     },
   ],
-  reportingDataPriorToJune2026: [
+  plan_priorAuthorizationReporting: [
+    {
+      key: "mock-key",
+      value: "Yes",
+    },
+  ],
+  plan_patientAccessApiReporting: [
     {
       key: "mock-key",
       value: "Yes",

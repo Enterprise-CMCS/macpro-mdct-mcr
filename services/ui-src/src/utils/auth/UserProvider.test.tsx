@@ -6,7 +6,18 @@ import { act } from "react-dom/test-utils";
 import { UserContext, UserProvider, useStore } from "utils";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
 
+const mockAuthenticateWithIDM = jest.fn();
+const mockGetTokens = jest.fn();
+const mockLogoutUser = jest.fn();
+
+jest.mock("utils/api/apiLib", () => ({
+  authenticateWithIDM: () => mockAuthenticateWithIDM(),
+  getTokens: () => mockGetTokens(),
+  logoutUser: () => mockLogoutUser(),
+}));
+
 jest.mock("utils/state/useStore");
+
 const mockSetUser = jest.fn();
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
@@ -65,13 +76,6 @@ const setWindowOrigin = (windowOrigin: string) => {
   });
 };
 
-const breakCheckAuthState = async () => {
-  const mockAmplify = require("aws-amplify/auth");
-  mockAmplify.fetchAuthSession = jest.fn().mockImplementation(() => {
-    throw new Error();
-  });
-};
-
 // TESTS
 
 describe("<UserProvider />", () => {
@@ -114,9 +118,8 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider with production path", () => {
     test("test production authenticates with idm when current authenticated user throws an error", async () => {
       setWindowOrigin("mdctmcr.cms.gov");
-      await breakCheckAuthState();
       await act(async () => {
-        await render(testComponent);
+        render(testComponent);
       });
       expect(window.location.origin).toContain("mdctmcr.cms.gov");
       expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
@@ -126,9 +129,8 @@ describe("<UserProvider />", () => {
   describe("Test UserProvider with non-production path", () => {
     test("Non-production error state correctly sets showLocalLogins", async () => {
       setWindowOrigin("wherever");
-      await breakCheckAuthState();
       await act(async () => {
-        await render(testComponent);
+        render(testComponent);
       });
       expect(window.location.origin).toContain("wherever");
       const showLocalLogins = screen.getByTestId("show-local-logins");
@@ -137,12 +139,11 @@ describe("<UserProvider />", () => {
   });
 
   describe("Test UserProvider error handling", () => {
-    it("Logs error to console if logout throws error", async () => {
+    test("Logs error to console if logout throws error", async () => {
       jest.spyOn(console, "log").mockImplementation(jest.fn());
       const spy = jest.spyOn(console, "log");
 
-      const mockAmplify = require("aws-amplify/auth");
-      mockAmplify.signOut = jest.fn().mockImplementation(() => {
+      mockLogoutUser.mockImplementation(() => {
         throw new Error();
       });
 
@@ -154,22 +155,19 @@ describe("<UserProvider />", () => {
         await userEvent.click(logoutButton);
       });
 
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
   test("test check auth function", async () => {
-    const mockAmplify = require("aws-amplify/auth");
-    mockAmplify.fetchAuthSession = jest.fn().mockResolvedValue({
-      tokens: {
-        idToken: {
-          payload: {
-            email: "email@address.com",
-            given_name: "first",
-            family_name: "last",
-            "custom:cms_roles": "roles",
-            "custom:cms_state": "ZZ",
-          },
+    mockGetTokens.mockResolvedValue({
+      idToken: {
+        payload: {
+          email: "email@address.com",
+          given_name: "first",
+          family_name: "last",
+          "custom:cms_roles": "roles",
+          "custom:cms_state": "ZZ",
         },
       },
     });
