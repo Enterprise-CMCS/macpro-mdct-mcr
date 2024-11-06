@@ -74,10 +74,6 @@ export default {
             "Please follow these section-by-section instructions for PCCM-Es:",
         },
         {
-          type: "html",
-          content: "<br>",
-        },
-        {
           type: "ul",
           content: "",
           children: [
