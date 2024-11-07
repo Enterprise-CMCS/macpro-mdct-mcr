@@ -6,6 +6,97 @@
   "entities": {},
   "routes": [
     {
+      "name": "I. State and program information",
+      "path": "/naaar/state-and-program-information",
+      "children": [
+        {
+          "name": "State information and reporting scenario",
+          "path": "/naaar/state-and-program-information/state-information-and-reporting-scenario",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "State information and reporting scenario",
+              "info": [
+                {
+                  "type": "p",
+                  "content": "Who should CMS contact with questions regarding information reported in the NAAAR? Follow up communications related to this report will be made to the primary contact."
+                },
+                {
+                  "type": "p",
+                  "content": "Use this section to report your contact information, date of report submission, and reporting scenario."
+                }
+              ]
+            },
+            "praDisclosure": [
+              {
+                "type": "p",
+                "content": "<strong>PRA Disclosure Statement</strong>"
+              },
+              {
+                "type": "p",
+                "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
+              }
+
+            ]
+          },
+          "form": {
+            "id": "isiarc",
+            "fields": [
+              {
+                "id": "contactName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "I.A.1 Contact name",
+                  "hint": "First and last name of the contact person. "
+                }
+              },
+              {
+                "id": "contactEmailAddress",
+                "type": "text",
+                "validation": "email",
+                "props": {
+                  "label": "I.A.2 Contact email address",
+                  "hint": "Enter email address. Department or program-wide email addresses ok."
+                }
+              },
+              {
+                "id": "stateOrTerritory",
+                "type": "text",
+                "validation": "textOptional",
+                "props": {
+                  "label": "I.A.3 State or territory",
+                  "hint": "Auto-populates from your account profile.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "reportSubmissionDate",
+                "type": "date",
+                "validation": "textOptional",
+                "props": {
+                  "label": "I.A.4 Date of report submission",
+                  "hint": "CMS receives this date upon submission of this report.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "reportingScenario",
+                "type": "text",
+                "validation": "textOptional",
+                "props": {
+                  "label": "I.A.5 Reporting scenario (TODO)",
+                  "hint": "TODO: Convert to radio",
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "Review & Submit",
       "path": "/naaar/review-and-submit",
       "pageType": "reviewSubmit"

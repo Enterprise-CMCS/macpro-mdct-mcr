@@ -10,6 +10,8 @@ import {
   mockMlrReport,
   mockMlrReportContext,
   mockMlrReportStore,
+  mockNaaarReportContext,
+  mockNaaarReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -30,6 +32,14 @@ const mockedMcparReportContext = {
 
 const mockedMlrReportContext = {
   ...mockMlrReportContext,
+  createReport: mockCreateReport,
+  updateReport: mockUpdateReport,
+  fetchReportsByState: mockFetchReportsByState,
+  isReportPage: true,
+};
+
+const mockedNaaarReportContext = {
+  ...mockNaaarReportContext,
   createReport: mockCreateReport,
   updateReport: mockUpdateReport,
   fetchReportsByState: mockFetchReportsByState,
@@ -110,6 +120,22 @@ const mlrModalComponentWithSelectedReport = (
         activeState="AB"
         selectedReport={mockMlrReport}
         reportType={"MLR"}
+        modalDisclosure={{
+          isOpen: true,
+          onClose: mockCloseHandler,
+        }}
+      />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const naaarModalComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockedNaaarReportContext}>
+      <AddEditReportModal
+        activeState="AB"
+        selectedReport={undefined}
+        reportType={"NAAAR"}
         modalDisclosure={{
           isOpen: true,
           onClose: mockCloseHandler,
@@ -280,6 +306,36 @@ describe("Test AddEditReportModal functionality for MLR", () => {
     await fillForm(form);
     await waitFor(() => {
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe("Test AddEditReportModal functionality for NAAAR", () => {
+  beforeEach(async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockNaaarReportStore,
+    });
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const fillForm = async (form: any) => {
+    const contactNameField = form.querySelector("[name='contactName']")!;
+    await userEvent.type(contactNameField, "fake contact name");
+    const submitButton = screen.getByRole("button", { name: "Save" });
+    await userEvent.click(submitButton);
+  };
+
+  test("Adding a new report", async () => {
+    const result = render(naaarModalComponent);
+    const form = result.getByTestId("add-edit-report-form");
+    await fillForm(form);
+    await waitFor(() => {
+      expect(mockCreateReport).toHaveBeenCalledTimes(1);
       expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
       expect(mockCloseHandler).toHaveBeenCalledTimes(1);
     });
