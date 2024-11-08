@@ -43,6 +43,3 @@ repos:
         entry: .github/branch-name-validation.sh
         language: script
         pass_filenames: false
-
-ci:
-  skip: ['branch-name-validation']
