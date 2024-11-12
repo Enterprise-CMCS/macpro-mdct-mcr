@@ -29,6 +29,7 @@ import {
   MCPARReportMetadata,
   MLRReportMetadata,
   UserRoles,
+  NAAARReportMetadata,
 } from "../../utils/types";
 
 export const submitReport = handler(async (event, _context) => {
@@ -65,7 +66,8 @@ export const submitReport = handler(async (event, _context) => {
 
   const reportMetadata = response.Item as
     | MLRReportMetadata
-    | MCPARReportMetadata;
+    | MCPARReportMetadata
+    | NAAARReportMetadata;
   const { status, isComplete, fieldDataId, formTemplateId } = reportMetadata;
 
   if (status === "Submitted") {

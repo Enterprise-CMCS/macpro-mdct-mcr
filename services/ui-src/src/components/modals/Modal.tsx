@@ -39,8 +39,9 @@ export const Modal = ({
           </Heading>
         </ModalHeader>
         {content.subheading && (
-          <Box sx={sx.modalSubheader}>{content.subheading}</Box>
+          <Box sx={sx.modalSubheading}>{content.subheading}</Box>
         )}
+        {content.hint && <Box sx={sx.hint}>{content.hint}</Box>}
         <Flex sx={sx.modalCloseContainer}>
           <Button
             sx={sx.modalClose}
@@ -95,6 +96,7 @@ interface Props {
   content: {
     heading: string;
     subheading?: string;
+    hint?: string;
     actionButtonText: string | ReactNode;
     closeButtonText?: string;
   };
@@ -121,7 +123,12 @@ const sx = {
     fontSize: "2xl",
     fontWeight: "bold",
   },
-  modalSubheader: {
+  modalSubheading: {
+    marginTop: "0.5rem",
+    fontSize: "xl",
+    fontWeight: "bold",
+  },
+  hint: {
     margin: "0.5rem auto -1rem auto",
   },
   modalCloseContainer: {

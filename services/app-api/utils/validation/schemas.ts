@@ -19,4 +19,5 @@ export const metadataValidationSchema = yup.object().shape({
   submissionName: yup.string(),
   completionStatus: yup.mixed(),
   copyFieldDataSourceId: yup.string(),
+  planTypeIncludedInProgram: yup.string(),
 });

@@ -4,17 +4,91 @@
     "mode": "onChange"
   },
   "heading": {
-    "add": "Add new NAAAR submission",
-    "edit": "Edit NAAAR submission"
+    "add": "Add / Copy a Program",
+    "subheading": "State information and reporting scenario",
+    "hint": "Add a new program to start a blank report or copy an existing report. Copying a program’s NAAAR will retain the structure of your program, including plans and access measures, but allow you to enter updated responses for the new reporting period, saving you time. You can still edit these details within.",
+    "edit": "Edit Program"
   },
   "fields": [
     {
-      "id": "contactName",
+      "id": "programName",
       "type": "text",
       "validation": "text",
       "props": {
-        "label": "Placeholder",
-        "hint": "Placeholder"
+        "label": "Program name"
+      }
+    },
+    {
+      "id": "copyFieldDataSourceId",
+      "type": "dropdown",
+      "props": {
+        "label": "If you want to copy an existing report, select one (optional)",
+        "options": "copyEligibleReports"
+      }
+    },
+    {
+      "id": "reportingPeriodStartDate",
+      "type": "date",
+      "validation": "date",
+      "props": {
+        "label": "Reporting period (i.e. contract period) start date",
+        "hint": "Enter start date of the reporting period represented in the report.",
+        "timetype": "startDate"
+      }
+    },
+    {
+      "id": "reportingPeriodEndDate",
+      "type": "date",
+      "validation": {
+        "type": "endDate",
+        "dependentFieldName": "reportingPeriodStartDate"
+      },
+      "props": {
+        "label": "Reporting period  (i.e. contract period) end date",
+        "hint": "Enter end date of the reporting period represented in the report.",
+        "timetype": "endDate"
+      }
+    },
+    {
+      "id": "planTypeIncludedInProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Plan type included in program",
+        "hint": "Indicate the managed care plan type (MCO, PIHP, PAHP, or MMP) that contracts with the state in each program.",
+        "choices": [
+          {
+            "id": "NHAbx1VBdvZkHgG2HTfexemq",
+            "label": "MCO"
+          },
+          {
+            "id": "MiyW1eKfcetIG8k2eyT5dbhw",
+            "label": "PIHP"
+          },
+          {
+            "id": "QASeuhF5cDBrRpWbmYBndH2v",
+            "label": "PAHP"
+          },
+          {
+            "id": "U4dg782RHft2Fs53fOpcbocr",
+            "label": "MMP"
+          },
+          {
+            "id": "ZRH5GgCnJSlnCdieekgh67sv",
+            "label": "Other, specify",
+            "children": [
+              {
+                "id": "planTypeIncludedInProgram-otherText",
+                "type": "textarea",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "planTypeIncludedInProgram"
+                }
+              }
+            ]
+          }
+        ]
       }
     }
   ]

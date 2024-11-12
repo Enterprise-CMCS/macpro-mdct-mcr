@@ -5,7 +5,7 @@
   },
   "heading": {
     "add": "Add / Copy a MCPAR",
-    "subheading": "Complete the form below to generate a MCPAR for your managed care program. You may choose to copy an existing MCPAR report, which will retain many key responses (e.g., plan names, quality measures, etc.). Copied MCPARs will still have several blank fields and all responses can be edited. To create a blank MCPAR form, leave the “copy a report” field as “Select an option”.",
+    "hint": "Complete the form below to generate a MCPAR for your managed care program. You may choose to copy an existing MCPAR report, which will retain many key responses (e.g., plan names, quality measures, etc.). Copied MCPARs will still have several blank fields and all responses can be edited. To create a blank MCPAR form, leave the “copy a report” field as “Select an option”.",
     "edit": "Edit Program"
   },
   "fields": [

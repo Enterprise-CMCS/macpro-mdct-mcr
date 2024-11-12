@@ -138,19 +138,33 @@ export const AddEditReportModal = ({
 
   // NAAAR report payload
   const prepareNaaarPayload = (formData: any) => {
-    const contactName = formData["contactName"];
+    const programName = formData["programName"];
+    const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
+    const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["reportingPeriodStartDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(
+      formData["reportingPeriodEndDate"]
+    );
+    const planTypeIncludedInProgram = formData["planTypeIncludedInProgram"][0];
 
     return {
       metadata: {
-        contactName,
+        programName,
+        reportingPeriodStartDate,
+        reportingPeriodEndDate,
+        dueDate,
         lastAlteredBy: full_name,
+        copyFieldDataSourceId: copyFieldDataSourceId?.value,
+        planTypeIncludedInProgram: planTypeIncludedInProgram.value,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
         naaarReport,
       },
       fieldData: {
-        contactName,
+        programName,
       },
     };
   };
@@ -227,6 +241,7 @@ export const AddEditReportModal = ({
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
+        hint: selectedReport?.id ? "" : form.heading?.hint,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
       }}
