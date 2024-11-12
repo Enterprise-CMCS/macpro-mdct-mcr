@@ -185,6 +185,15 @@ export interface MCPARReportMetadata extends ReportMetadata {
   novMcparRelease: boolean;
 }
 
+export interface NAAARReportMetadata extends ReportMetadata {
+  programName: string;
+  reportType: "NAAAR";
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  planTypeIncludedInProgram: Choice[];
+}
+
 // HELPER FUNCTIONS
 
 /**
