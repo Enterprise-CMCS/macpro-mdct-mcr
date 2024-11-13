@@ -15,4 +15,11 @@ export default defineConfig({
   build: {
     outDir: "./build",
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler", // or "modern"
+      },
+    },
+  },
 });
