@@ -191,7 +191,7 @@ export interface NAAARReportMetadata extends ReportMetadata {
   reportingPeriodEndDate: number;
   dueDate: number;
   planTypeIncludedInProgram: Choice[];
-  otherPlanType?: string;
+  "planTypeIncludedInProgram-otherText"?: string;
 }
 
 // HELPER FUNCTIONS

@@ -20,5 +20,5 @@ export const metadataValidationSchema = yup.object().shape({
   completionStatus: yup.mixed(),
   copyFieldDataSourceId: yup.string(),
   planTypeIncludedInProgram: radio(),
-  otherPlanType: textOptional(),
+  "planTypeIncludedInProgram-otherText": textOptional(),
 });
