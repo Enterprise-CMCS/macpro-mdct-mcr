@@ -3,7 +3,9 @@
   "name": "NAAAR Report Submission Form",
   "basePath": "/naaar",
   "version": "NAAAR_2024-08-06",
-  "entities": {},
+  "entities": {
+    "plans": { "required": true }
+  },
   "routes": [
     {
       "name": "I. State and program information",
@@ -89,6 +91,31 @@
                   "label": "I.A.5 Reporting scenario (TODO)",
                   "hint": "TODO: Convert to radio",
                   "disabled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add Plans",
+          "path": "/naaar/state-and-program-information/add-plans",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "Add plans",
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
+            }
+          },
+          "form": {
+            "id": "iap",
+            "fields": [
+              {
+                "id": "plans",
+                "type": "dynamic",
+                "validation": "dynamic",
+                "props": {
+                  "label": "Plan name"
                 }
               }
             ]
