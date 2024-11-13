@@ -31,6 +31,7 @@ export interface ReportMetadataShape extends ReportKeys {
   programIsPCCM?: Choice[];
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
+  otherPlanType?: string;
   novMcparRelease?: boolean;
 }
 

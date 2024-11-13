@@ -148,6 +148,7 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const planTypeIncludedInProgram = formData["planTypeIncludedInProgram"];
+    const otherPlanType = formData["planTypeIncludedInProgram-otherText"];
 
     return {
       metadata: {
@@ -158,6 +159,7 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         planTypeIncludedInProgram,
+        otherPlanType,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
