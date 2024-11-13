@@ -65,7 +65,8 @@ export async function refreshSession(): Promise<void> {
 export async function apiRequest<T>(
   request: any,
   path: string,
-  opts?: RequestOptions
+  opts?: RequestOptions,
+  hasResponseBody?: Boolean
 ): Promise<T> {
   const requestHeaders = await getRequestHeaders();
   const options = {
@@ -78,7 +79,7 @@ export async function apiRequest<T>(
 
     const { body } = await request({ apiName, path, options }).response;
 
-    if (!body) {
+    if (hasResponseBody === false) {
       return undefined as unknown as T;
     }
 
@@ -92,7 +93,7 @@ export async function apiRequest<T>(
 }
 
 export async function del<T>(path: string, opts?: RequestOptions): Promise<T> {
-  return apiRequest<T>(ampDel, path, opts);
+  return apiRequest<T>(ampDel, path, opts, false);
 }
 
 export async function get<T>(path: string, opts?: RequestOptions): Promise<T> {
