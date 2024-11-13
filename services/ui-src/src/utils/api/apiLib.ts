@@ -76,13 +76,13 @@ export async function apiRequest<T>(
   try {
     await updateTimeout();
 
-    const response = await request({ apiName, path, options }).response;
+    const { body } = await request({ apiName, path, options }).response;
 
-    if (!response.body) {
+    if (!body) {
       return undefined as unknown as T;
     }
 
-    return (await response.body.json()) as unknown as T;
+    return (await body.json()) as unknown as T;
   } catch (e: any) {
     const info = `Request Failed - ${path} - ${e.response?.body}`;
     console.log(e);
