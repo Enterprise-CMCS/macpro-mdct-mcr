@@ -39,11 +39,10 @@
                 "type": "p",
                 "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
               }
-
             ]
           },
           "form": {
-            "id": "isiarc",
+            "id": "isiars",
             "fields": [
               {
                 "id": "contactName",
@@ -85,12 +84,90 @@
               },
               {
                 "id": "reportingScenario",
-                "type": "text",
-                "validation": "textOptional",
+                "type": "radio",
+                "validation": "radio",
                 "props": {
-                  "label": "I.A.5 Reporting scenario (TODO)",
-                  "hint": "TODO: Convert to radio",
-                  "disabled": true
+                  "label": "1.A.5 Reporting scenario",
+                  "hint": [
+                    {
+                      "type": "p",
+                      "content": "Enter the scenario under which the state is submitting this form to CMS. Under 42 C.F.R. § 438.207(c) - (d), the state must submit an assurance of compliance after reviewing documentation submitted by a plan under the following three scenarios:"
+                    },
+                    {
+                      "type": "ul",
+                      "children": [
+                        {
+                          "type": "li",
+                          "content": "Scenario 1: At the time the plan enters into a contract with the state;"
+                        },
+                        {
+                          "type": "li",
+                          "content": "Scenario 2: On an annual basis;"
+                        },
+                        {
+                          "type": "li",
+                          "content": "Scenario 3: Any time there has been a significant change (as defined by the state) in the plan’s operations that would affect its adequacy of capacity and services, including (1) changes in the plan’s services, benefits, geographic service area, composition of or payments to its provider network, or (2) enrollment of a new population in the plan."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "p",
+                      "content": "States should complete one (1) form with information for applicable managed care plans and programs. For example, if the state submits this form under scenario 1 above, the state should submit this form only for the managed care plan (and the applicable managed care program) that entered into a new contract with the state. The state should not report on any other plans or programs under this scenario. As another example, if the state submits this form under scenario 2, the state should submit this form for all managed care plans and managed care programs."
+                    }
+                  ],
+                  "choices": [
+                    {
+                      "id": "g3B64XNZhZCZ017er2Y6hJ",
+                      "label": "Scenario 1: New contract"
+                    },
+                    {
+                      "id": "mlvX4umhgnU199rPmMJybc",
+                      "label": "Scenario 2: Annual report"
+                    },
+                    {
+                      "id": "l7XDjKKDrwryEe5YgDTTmP",
+                      "label": "Scenario 3: Significant change - services"
+                    },
+                    {
+                      "id": "7ZtsZ25K0romDSTAIStzzY",
+                      "label": "Scenario 3: Significant change - benefits"
+                    },
+                    {
+                      "id": "ObbAyoYB97trcbVN0OFQ2X",
+                      "label": "Scenario 3: Significant change - geographic service area"
+                    },
+                    {
+                      "id": "FC9hagL8vz3i0bFoHsJYEw",
+                      "label": "Scenario 3: Significant change - composition of provider network"
+                    },
+                    {
+                      "id": "ziLQDOD5TucgEHzmlzOEn6",
+                      "label": "Scenario 3: Significant change - payments to provider network"
+                    },
+                    {
+                      "id": "TDkPWZJai0kwHIp4zm1ZVy",
+                      "label": "Scenario 3: Significant change - enrollment of new population"
+                    },
+                    {
+                      "id": "IyPRlUA4k3bTkj5rF1E8zg",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "reportingScenario-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "reportingScenario"
+                          },
+                          "props": {
+                            "label": "1.A.6 Reporting scenario - other ",
+                            "hint": "If the state is submitting this form to CMS for any reason other than those specified in I.A.5, explain the reason."
+                          }
+                        }
+                      ]
+                    }
+                  ]
                 }
               }
             ]
