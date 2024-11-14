@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { radioOptional } from "./completionSchemas";
+import { radioOptional, textOptional } from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
   programName: yup.string(),
@@ -19,4 +19,6 @@ export const metadataValidationSchema = yup.object().shape({
   submissionName: yup.string(),
   completionStatus: yup.mixed(),
   copyFieldDataSourceId: yup.string(),
+  planTypeIncludedInProgram: radioOptional(),
+  "planTypeIncludedInProgram-otherText": textOptional(),
 });

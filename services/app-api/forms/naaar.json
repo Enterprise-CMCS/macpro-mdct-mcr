@@ -63,7 +63,7 @@
                 }
               },
               {
-                "id": "stateOrTerritory",
+                "id": "stateName",
                 "type": "text",
                 "validation": "textOptional",
                 "props": {

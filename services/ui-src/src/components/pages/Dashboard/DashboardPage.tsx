@@ -155,6 +155,9 @@ export const DashboardPage = ({ reportType }: Props) => {
           combinedData: report.combinedData,
           copyFieldDataSourceId,
           programIsPCCM: report?.programIsPCCM,
+          planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
+          "planTypeIncludedInProgram-otherText":
+            report?.["planTypeIncludedInProgram-otherText"],
         },
         state: report.state,
         id: report.id,
