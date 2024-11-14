@@ -243,7 +243,7 @@ export const AddEditReportModal = ({
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
-        hint: selectedReport?.id ? "" : form.heading?.hint,
+        intro: selectedReport?.id ? "" : form.heading?.intro,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
       }}

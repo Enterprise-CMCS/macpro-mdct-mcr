@@ -6,7 +6,7 @@
   "heading": {
     "add": "Add / Copy a Program",
     "subheading": "State information and reporting scenario",
-    "hint": "Add a new program to start a blank report or copy an existing report. Copying a program’s NAAAR will retain the structure of your program, including plans and access measures, but allow you to enter updated responses for the new reporting period, saving you time. You can still edit these details within.",
+    "intro": "Add a new program to start a blank report or copy an existing report. Copying a program’s NAAAR will retain the structure of your program, including plans and access measures, but allow you to enter updated responses for the new reporting period, saving you time. You can still edit these details within.",
     "edit": "Edit Program"
   },
   "fields": [
