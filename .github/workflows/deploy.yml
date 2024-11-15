@@ -11,7 +11,8 @@ concurrency:
 
 permissions:
   id-token: write
-  contents: read
+  contents: write
+  pages: write
   actions: read
 
 jobs:
@@ -279,6 +280,52 @@ jobs:
             ${{github.workspace}}/tests/cypress/videos/
           retention-days: 14
   
+  test:
+    name: Playwright Tests
+    needs:
+      - deploy
+      - register-runner
+      - e2e-test
+      - a11y-tests
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - name: yarn install
+        run: yarn install
+      - name: yarn install tests
+        run: yarn install
+        working-directory: tests
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+        working-directory: tests
+      - name: Run Playwright tests
+        run: yarn playwright test
+        working-directory: tests
+        continue-on-error: true
+        env:
+          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
+          TEST_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+          TEST_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+          TEST_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+          TEST_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-html-report # upload artifact as this name
+          # path: playwright-report/index.html # path on runner
+          path: playwright-report # path on runner
+          retention-days: 30
+
   cleanup:
     name: Delist GHA Runner CIDR Blocks
     if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
