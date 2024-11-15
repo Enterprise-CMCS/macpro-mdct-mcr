@@ -257,7 +257,7 @@ jobs:
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
-          working-directory: tests/cypress
+          working-directory: tests
           spec: cypress/e2e/accessibility/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
