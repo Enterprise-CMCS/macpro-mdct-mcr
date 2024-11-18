@@ -55,7 +55,7 @@ export async function loginUser(
 }
 
 export async function logoutUser(): Promise<void> {
-  await signOut();
+  await signOut({ global: true });
 }
 
 export async function refreshSession(): Promise<void> {
