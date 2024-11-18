@@ -323,7 +323,7 @@ jobs:
         with:
           name: playwright-html-report # upload artifact as this name
           # path: playwright-report/index.html # path on runner
-          path: playwright-report # path on runner
+          path: tests/playwright-report # path on runner
           retention-days: 30
 
   upload-reports:
