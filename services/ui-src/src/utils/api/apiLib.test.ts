@@ -14,7 +14,7 @@ import {
 const mockResponse = (method?: string) => ({
   response: { body: { json: () => ({ test: method }) } },
 });
-const mockDelete = jest.fn().mockImplementation(() => mockResponse());
+const mockDelete = jest.fn().mockImplementation(() => ({ response: {} }));
 const mockGet = jest.fn().mockImplementation(() => mockResponse("get"));
 const mockPost = jest.fn().mockImplementation(() => mockResponse("post"));
 const mockPut = jest.fn().mockImplementation(() => mockResponse("put"));

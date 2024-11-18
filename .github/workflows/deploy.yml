@@ -217,12 +217,12 @@ jobs:
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          working-directory: tests/cypress
+          working-directory: tests
           spec: |
-            e2e/*.cy.js
-            e2e/admin/*.cy.js
-            e2e/mcpar/*.cy.js
-            e2e/mlr/*.cy.js
+            cypress/e2e/*.cy.js
+            cypress/e2e/admin/*.cy.js
+            cypress/e2e/mcpar/*.cy.js
+            cypress/e2e/mlr/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
@@ -257,8 +257,8 @@ jobs:
       - name: Check Project A11y
         uses: cypress-io/github-action@v6
         with:
-          working-directory: tests/cypress
-          spec: e2e/accessibility/*.cy.js
+          working-directory: tests
+          spec: cypress/e2e/accessibility/*.cy.js
           browser: chrome
           config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
           wait-on: ${{ needs.deploy.outputs.application_endpoint }}
