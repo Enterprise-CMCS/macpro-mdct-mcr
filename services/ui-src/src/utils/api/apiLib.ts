@@ -40,7 +40,7 @@ export async function getRequestHeaders(): Promise<RequestHeaders | undefined> {
 }
 
 export async function getTokens(): Promise<AuthTokens | undefined> {
-  return (await fetchAuthSession()).tokens;
+  return (await fetchAuthSession({ forceRefresh: true })).tokens;
 }
 
 export async function authenticateWithIDM(): Promise<void> {
