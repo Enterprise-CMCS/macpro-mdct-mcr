@@ -20,7 +20,7 @@ export default class BasePage {
     });
     this.continueButton = page.getByRole("button", { name: "Continue" });
     this.previousButton = page.getByRole("button", { name: "Previous" });
-    this.myAccountButton = page.getByRole("button", { name: "my account" });
+    this.myAccountButton = page.getByRole("button", { name: "My Account" });
     this.accountMenu = page.getByRole("menu");
     this.manageAccountButton = page.getByRole("menuitem", {
       name: "Manage Account",
