@@ -7,6 +7,7 @@ import { CustomHtmlElement, FormJson, ReportStatus } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
+import { ROUTES } from "../../constants";
 
 export const ReportPageFooter = ({
   submitting,
@@ -23,7 +24,7 @@ export const ReportPageFooter = ({
 
   const { userIsAdmin, userIsReadOnly, userIsEndUser } = useStore().user ?? {};
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const hidePrevious = previousRoute === "/mcpar" || previousRoute === "/mlr";
+  const hidePrevious = ROUTES.includes(previousRoute);
   const reportWithSubmittedStatus = report?.status === ReportStatus.SUBMITTED;
   const formIsDisabled =
     (isAdminUserType && !form?.editableByAdmins) ||
@@ -34,7 +35,7 @@ export const ReportPageFooter = ({
     <Button
       onClick={() => navigate(previousRoute)}
       variant="outline"
-      leftIcon={<Image src={previousIcon} alt="" sx={sx.arrowIcon} />}
+      leftIcon={<Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />}
     >
       Previous
     </Button>
@@ -44,7 +45,7 @@ export const ReportPageFooter = ({
     <Button
       onClick={() => navigate(nextRoute)}
       sx={sx.nextButton}
-      rightIcon={<Image src={nextIcon} alt="" sx={sx.arrowIcon} />}
+      rightIcon={<Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />}
     >
       Continue
     </Button>
@@ -57,7 +58,7 @@ export const ReportPageFooter = ({
       sx={sx.nextButton}
       rightIcon={
         !submitting ? (
-          <Image src={nextIcon} alt="" sx={sx.arrowIcon} />
+          <Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />
         ) : undefined
       }
     >
@@ -102,6 +103,6 @@ const sx = {
   },
   praStatement: {
     fontSize: "0.875rem",
-    marginTop: "1rem",
+    marginTop: "2rem",
   },
 };
