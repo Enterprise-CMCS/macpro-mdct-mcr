@@ -80,5 +80,5 @@ export enum States {
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms
 
-// routes
-export const ROUTES = ["/mcpar", "/mlr", "/naaar"];
+// REPORT ROUTES FOR FIRST SECTION OF A PROGRAM
+export const INITIAL_REPORT_ROUTES = ["/mcpar", "/mlr", "/naaar"];

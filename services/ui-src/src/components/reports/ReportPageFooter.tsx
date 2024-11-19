@@ -7,7 +7,7 @@ import { CustomHtmlElement, FormJson, ReportStatus } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
-import { ROUTES } from "../../constants";
+import { INITIAL_REPORT_ROUTES } from "../../constants";
 
 export const ReportPageFooter = ({
   submitting,
@@ -24,7 +24,7 @@ export const ReportPageFooter = ({
 
   const { userIsAdmin, userIsReadOnly, userIsEndUser } = useStore().user ?? {};
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const hidePrevious = ROUTES.includes(previousRoute);
+  const hidePrevious = INITIAL_REPORT_ROUTES.includes(previousRoute);
   const reportWithSubmittedStatus = report?.status === ReportStatus.SUBMITTED;
   const formIsDisabled =
     (isAdminUserType && !form?.editableByAdmins) ||
