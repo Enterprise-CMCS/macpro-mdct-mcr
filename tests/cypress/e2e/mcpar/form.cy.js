@@ -62,6 +62,7 @@ function fillOutMCPAR() {
 
   //Find our new program and open it
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
       .parent()
