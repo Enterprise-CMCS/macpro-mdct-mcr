@@ -64,6 +64,7 @@ function unlockMLR(programName) {
   cy.get('button:contains("Go to Report Dashboard")').click();
 
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
       .parent()
@@ -153,8 +154,11 @@ function fillOutMLR(programName) {
 
 function submitMLR() {
   //Submit the program
-  cy.get('button:contains("Submit MLR")').focus().click();
-  cy.get('[data-testid="modal-submit-button"]').focus().click();
+  cy.get('button:contains("Submit MLR")').as("submitMLRButton");
+  cy.get("@submitMLRButton").focus().click();
+  cy.get('[data-testid="modal-submit-button"]').as("modalSubmitButton");
+  cy.get("@modalSubmitButton").focus().click();
+  cy.wait(2000);
 }
 
 const traverseRoutes = (routes) => {
