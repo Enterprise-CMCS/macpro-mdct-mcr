@@ -17,3 +17,7 @@ tests/cypress/downloads
 .vscode/
 *._S3rver_cors.xml
 services/database/local_buckets
+tests/test-results/
+tests/playwright-report/
+tests/playwright/.cache/
+tests/playwright/.auth
