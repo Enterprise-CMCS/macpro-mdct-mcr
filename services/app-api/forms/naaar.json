@@ -174,7 +174,7 @@
           }
         },
         {
-          "name": "Add Plans",
+          "name": "Add plans",
           "path": "/naaar/state-and-program-information/add-plans",
           "pageType": "standard",
           "verbiage": {
@@ -193,6 +193,71 @@
                 "validation": "dynamic",
                 "props": {
                   "label": "Plan name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Provider type coverage",
+          "path": "/naaar/state-and-program-information/provider-type-coverage",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "Provider type coverage",
+              "info": "Instructions will be here for for how to best classify provider types to the categories shown. If your standards include more specific providers, select the core provider type category closest to the provider type and you can provide it as a subcategory when creating standards later in the form."
+            }
+          },
+          "form": {
+            "id": "iptc",
+            "fields": [
+              {
+                "id": "providerTypes",
+                "type": "checkbox",
+                "validation": "checkbox",
+                "props": {
+                  "label": "Select all core provider types covered in the program",
+                  "choices": [
+                    {
+                      "id": "UZK4hxPVnuYGcIgNzYFHCk",
+                      "label": "Primary Care"
+                    },
+                    {
+                      "id": "uITThePQiXntwGGViPTD62",
+                      "label": "Specialist",
+                      "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                    },
+                    {
+                      "id": "9kBoKCLD1dYizieU5psnJi",
+                      "label": "Mental health",
+                      "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                    },
+                    {
+                      "id": "kV7553HIWXekySIFLiMXLW",
+                      "label": "OB/GYN"
+                    },
+                    {
+                      "id": "nzmRTbJeqBCoAabR4oHrrh",
+                      "label": "Hospital"
+                    },
+                    {
+                      "id": "cb4y58UmsRXVITpWL7l9up",
+                      "label": "Pharmacy"
+                    },
+                    {
+                      "id": "tlzAMYfH4I7iIl5pjqAm7R",
+                      "label": "Dental"
+                    },
+                    {
+                      "id": "WrMpSdivds4c0XfN2RPlRd",
+                      "label": "LTSS"
+                    },
+                    {
+                      "id": "qbR8X0YAh8vObedJPx6QTJ",
+                      "label": "Substance Use Disorder (SUD)"
+                    }
+                  ]
                 }
               }
             ]
