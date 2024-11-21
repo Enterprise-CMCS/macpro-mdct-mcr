@@ -145,9 +145,15 @@ const traverseRoute = (route) => {
 const completeDrawerForm = (drawerForm) => {
   if (drawerForm) {
     //enter the drawer, then fill out the form and save it
-    cy.get('button:contains("Enter")').focus().click();
-    completeFrom(drawerForm);
-    cy.get('button:contains("Save")').focus().click();
+    cy.get('button:contains("Enter")').then(($editButton) => {
+      if ($editButton.is(":disabled")) {
+        return;
+      } else {
+        cy.wrap($editButton).focus().click();
+        completeFrom(drawerForm);
+        cy.get('button:contains("Save")').focus().click();
+      }
+    });
   }
 };
 
