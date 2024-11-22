@@ -222,6 +222,7 @@ const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
     cy.get('button:contains("Enter")')
+      .last()
       .as("mlrCompleteOverlayEnterButton")
       .focus();
     cy.get("@mlrCompleteOverlayEnterButton").click();

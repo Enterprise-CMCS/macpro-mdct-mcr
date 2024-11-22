@@ -140,7 +140,7 @@ const traverseRoute = (route) => {
       cy.contains(route.verbiage?.intro?.subsection);
 
     //Fill out the 3 different types of forms
-    completeFrom(route.form);
+    completeForm(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeDrawerForm(route.drawerForm);
 
@@ -160,7 +160,7 @@ const completeDrawerForm = (drawerForm) => {
       } else {
         cy.wrap($editButton).focus();
         cy.get($editButton).click();
-        completeFrom(drawerForm);
+        completeForm(drawerForm);
         cy.get('button:contains("Save")')
           .as("mcparCompleteDrawerSaveButton")
           .focus();
@@ -177,7 +177,7 @@ const completeModalForm = (modalForm, buttonText) => {
       .as("mcparCompleteModalButton")
       .focus();
     cy.get("@mcparCompleteModalButton").click();
-    completeFrom(modalForm);
+    completeForm(modalForm);
     cy.get('button:contains("Save")')
       .as("mcparCompleteModalSaveButton")
       .focus();
@@ -185,7 +185,7 @@ const completeModalForm = (modalForm, buttonText) => {
   }
 };
 
-const completeFrom = (form) => {
+const completeForm = (form) => {
   //iterate over each field and fill it appropriately
   form?.fields?.forEach((field) => processField(field));
 };
