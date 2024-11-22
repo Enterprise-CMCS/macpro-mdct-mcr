@@ -212,9 +212,7 @@ const completeModalForm = (modalForm, buttonText) => {
       .focus();
     cy.get("@mlrCompleteModalButton").click();
     completeFrom(modalForm);
-    cy.get('button:saveCompleteModalMLRButtoncontains("Save")')
-      .as("mlrCompleteModalSaveButton")
-      .focus();
+    cy.get('button:contains("Save")').as("mlrCompleteModalSaveButton").focus();
     cy.get("@mlrCompleteModalSaveButton").click();
   }
 };
@@ -222,7 +220,7 @@ const completeModalForm = (modalForm, buttonText) => {
 const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
-    cy.get(`button:contains("Enter")`)
+    cy.get('button:contains("Enter")')
       .as("mlrCompleteOverlayEnterButton")
       .focus();
     cy.get("@mlrCompleteOverlayEnterButton").click();

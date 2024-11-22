@@ -14,10 +14,10 @@ describe("MCPAR E2E Form Submission", () => {
 
     //no errors; submit enabled
     cy.get('div[role*="alert"]').should("not.exist");
-    cy.get(`button:contains("Submit MCPAR")`).should("not.be.disabled");
+    cy.get('button:contains("Submit MCPAR")').should("not.be.disabled");
 
     //Submit the program
-    cy.get(`button:contains("Submit MCPAR")`).as("mcparSubmitButton").focus();
+    cy.get('button:contains("Submit MCPAR")').as("mcparSubmitButton").focus();
     cy.get("@mcparSubmitButton").click();
     cy.get('[data-testid="modal-submit-button"]')
       .as("mcparModalSubmitButton")
