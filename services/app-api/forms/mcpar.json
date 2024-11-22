@@ -644,8 +644,7 @@
               "section": "Section B: State-Level Indicators",
               "subsection": "Topic XIII. Prior Authorization",
               "spreadsheet": "B_State",
-              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b–2a-b must be completed. Submission of this data before June 2026 is optional.</b>",
-              "info": "If the state sets timeframes for plans to respond to Prior Authorization requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions."
+              "alert": "<b>Beginning June 2026, Indicators B.XIII.1a-b–2a-b must be completed. Submission of this data before June 2026 is optional.</b>"
             }
           },
           "form": {
@@ -665,6 +664,7 @@
                     {
                       "id": "2nAidDjXBvvkzLtaeYyE2RymW4G",
                       "label": "Yes",
+                      "hint": "If the state sets timeframes for plans to respond to Prior Authorization requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions.",
                       "children": [
                         {
                           "id": "state_timeframesForStandardPriorAuthorizationDecisions",
@@ -699,7 +699,7 @@
                                       "parentOptionId": "2nAidFCWvENhYZvzLt3DxJWOqtx"
                                     },
                                     "props": {
-                                      "label": "B.XIII.1b State's timeframe for standard prior authorization decisions",
+                                      "label": "B.XIII.1b State’s timeframe for standard prior authorization decisions",
                                       "hint": "Indicate the state’s maximum timeframe, as number of days, for plans to provide notice of their decisions on standard prior authorization requests."
                                     }
                                   }
@@ -4272,7 +4272,7 @@
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic XIII. Prior Authorization",
               "spreadsheet": "D1_Plan_Set",
-              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-15 must be completed. Submission of this data including partial reporting on some but not all plans, before June 2026 is optional; if you choose not to response prior to June 2026, select “Not reporting data”.</b>"
+              "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-15 must be completed. Submission of this data including partial reporting on some but not all plans, before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on prior authorization requests received for each plan",
             "drawerTitle": "Prior authorization for ",
@@ -4327,27 +4327,12 @@
             "id": "dpa",
             "fields": [
               {
-                "id": "D1.XIII.1Header",
-                "type": "sectionHeader",
-                "props": {
-                  "content": "URL where the MCO, PIHP or PAHP posts on its website prior authorization data for the prior calendar year"
-                }
-              },
-              {
                 "id": "plan_urlForPriorAuthorizationDataOnPlanWebsite",
                 "type": "text",
                 "validation": "text",
                 "props": {
                   "label": "D1.XIII.1 URL for prior authorization data on plan’s website",
                   "hint": "Provide the URL where the plan posts prior authorization data for all items and services excluding drugs, as required in 42 CFR § 438.210(f). If you choose not to respond prior to June 2026, enter “NR” for not reporting."
-                }
-              },
-              {
-                "id": "D1.XIII.2Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "URL where the MCO, PIHP or PAHP posts on its website the list of all items and services, excluding drugs, subject to prior authorization"
                 }
               },
               {
@@ -4360,14 +4345,6 @@
                 }
               },
               {
-                "id": "D1.XIII.3Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "Total count of standard prior authorization requests received by the plan aggregated for all items and services, excluding drugs during the prior calendar year"
-                }
-              },
-              {
                 "id": "plan_totalStandardPriorAuthorizationRequestsReceived",
                 "type": "number",
                 "validation": "number",
@@ -4375,14 +4352,6 @@
                   "label": "D1.XIII.3 Total standard prior authorization requests received",
                   "hint": "Enter the total number of standard prior authorization requests received by the plan for all items and services, excluding drugs, during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "D1.XIII.4Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "Total count of expedited prior authorization requests aggregated for all items and services, excluding drugs during the prior calendar year"
                 }
               },
               {
@@ -4403,14 +4372,6 @@
                   "label": "D1.XIII.5 Total standard and expedited prior authorization requests received",
                   "hint": "Enter the total number of standard and expedited prior authorization requests received (D1.XIII.3 plus D1.XIII.4) by the plan during the prior calendar year. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "D1.XIII.6Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "Standard prior authorization requests approved"
                 }
               },
               {
@@ -4467,14 +4428,6 @@
                 }
               },
               {
-                "id": "D1.XIII.11Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "Expedited prior authorization requests aggregated for all items and services, excluding drugs"
-                }
-              },
-              {
                 "id": "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
                 "type": "number",
                 "validation": "number",
@@ -4514,14 +4467,6 @@
                   "label": "D1.XIII.14 Median time to decision for expedited prior authorization requests",
                   "hint": "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the median number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
-                }
-              },
-              {
-                "id": "D1.XIII.15Header",
-                "type": "sectionHeader",
-                "props": {
-                  "divider": "top",
-                  "content": "Of total prior authorization requests"
                 }
               },
               {
