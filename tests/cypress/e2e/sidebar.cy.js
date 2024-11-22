@@ -33,8 +33,9 @@ describe("Sidebar integration tests", () => {
         .contains(programName)
         .parent()
         .find('button:contains("Edit")')
-        .focus()
-        .click();
+        .as("sidebarEditButton")
+        .focus();
+      cy.get("@sidebarEditButton").click();
     });
     cy.wait(2000);
 

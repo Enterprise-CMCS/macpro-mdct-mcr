@@ -17,11 +17,16 @@ describe("MCPAR E2E Form Submission", () => {
     cy.get(`button:contains("Submit MCPAR")`).should("not.be.disabled");
 
     //Submit the program
-    cy.get(`button:contains("Submit MCPAR")`).focus().click();
-    cy.get('[data-testid="modal-submit-button"]').focus().click();
+    cy.get(`button:contains("Submit MCPAR")`).as("mcparSubmitButton").focus();
+    cy.get("@mcparSubmitButton").click();
+    cy.get('[data-testid="modal-submit-button"]')
+      .as("mcparModalSubmitButton")
+      .focus();
+    cy.get("@mcparModalSubmitButton").click();
 
     cy.contains("Successfully Submitted").should("be.visible");
-    cy.get("a:contains('Leave form')").focus().click();
+    cy.get("a:contains('Leave form')").as("mcparLinkFormLink").focus();
+    cy.get("@mcparLinkFormLink").click();
     cy.url().should("include", "/mcpar");
   });
 
@@ -62,13 +67,13 @@ function fillOutMCPAR() {
 
   //Find our new program and open it
   cy.get("table").within(() => {
-    cy.wait(2000);
     cy.get("td")
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
-      .focus()
-      .click();
+      .as("mcparEditButton")
+      .focus();
+    cy.get("@mcparEditButton").click();
   });
 
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
@@ -102,8 +107,9 @@ function fillOutPartialMCPAR() {
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
-      .focus()
-      .click();
+      .as("mcparPartialEditButton")
+      .focus();
+    cy.get("@mcparPartialEditButton").click();
   });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
   const template = templateMap["MCPAR"];
@@ -137,7 +143,8 @@ const traverseRoute = (route) => {
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeDrawerForm(route.drawerForm);
 
-    cy.get('button:contains("Continue")').focus().click();
+    cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
+    cy.get("@mcparContinueButton").click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
@@ -150,9 +157,13 @@ const completeDrawerForm = (drawerForm) => {
       if ($editButton.is(":disabled")) {
         return;
       } else {
-        cy.wrap($editButton).focus().click();
+        cy.wrap($editButton).focus();
+        cy.get($editButton).click();
         completeFrom(drawerForm);
-        cy.get('button:contains("Save")').focus().click();
+        cy.get('button:contains("Save")')
+          .as("mcparCompleteDrawerSaveButton")
+          .focus();
+        cy.get("@mcparCompleteDrawerSaveButton").click();
       }
     });
   }
@@ -161,9 +172,15 @@ const completeDrawerForm = (drawerForm) => {
 const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
-    cy.get(`button:contains("${buttonText}")`).focus().click();
+    cy.get(`button:contains("${buttonText}")`)
+      .as("mcparCompleteModalButton")
+      .focus();
+    cy.get("@mcparCompleteModalButton").click();
     completeFrom(modalForm);
-    cy.get('button:contains("Save")').focus().click();
+    cy.get('button:contains("Save")')
+      .as("mcparCompleteModalSaveButton")
+      .focus();
+    cy.get("@mcparCompleteModalSaveButton").click();
   }
 };
 
