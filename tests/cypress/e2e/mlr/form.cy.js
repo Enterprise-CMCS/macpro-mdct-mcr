@@ -143,8 +143,9 @@ function fillOutMLR(programName) {
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
-      .focus()
-      .click();
+      .as("editMLRButton")
+      .focus();
+    cy.get("@editMLRButton").click();
   });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
@@ -154,10 +155,10 @@ function fillOutMLR(programName) {
 
 function submitMLR() {
   //Submit the program
-  cy.get('button:contains("Submit MLR")').as("submitMLRButton");
-  cy.get("@submitMLRButton").focus().click();
-  cy.get('[data-testid="modal-submit-button"]').as("modalSubmitButton");
-  cy.get("@modalSubmitButton").focus().click();
+  cy.get('button:contains("Submit MLR")').as("submitMLRButton").focus();
+  cy.get("@submitMLRButton").click();
+  cy.get('[data-testid="modal-submit-button"]').as("modalSubmitButton").focus();
+  cy.get("@modalSubmitButton").click();
   cy.wait(2000);
 }
 
