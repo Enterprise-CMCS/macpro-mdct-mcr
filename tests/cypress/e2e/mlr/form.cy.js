@@ -189,7 +189,7 @@ const traverseRoute = (route) => {
       cy.contains(route.verbiage?.intro?.subsection);
 
     //Fill out form
-    completeFrom(route.form);
+    completeForm(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeOverlayForm(route.overlayForm);
     // Continue to next route
@@ -200,7 +200,7 @@ const traverseRoute = (route) => {
   if (route.children) traverseRoutes(route.children);
 };
 
-const completeFrom = (form) => {
+const completeForm = (form) => {
   //iterate over each field and fill it appropriately
   form?.fields?.forEach((field) => processField(field));
 };
@@ -212,7 +212,7 @@ const completeModalForm = (modalForm, buttonText) => {
       .as("mlrCompleteModalButton")
       .focus();
     cy.get("@mlrCompleteModalButton").click();
-    completeFrom(modalForm);
+    completeForm(modalForm);
     cy.get('button:contains("Save")').as("mlrCompleteModalSaveButton").focus();
     cy.get("@mlrCompleteModalSaveButton").click();
   }
@@ -222,11 +222,11 @@ const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
     cy.get('button:contains("Enter")')
-      .last()
+      .first()
       .as("mlrCompleteOverlayEnterButton")
       .focus();
     cy.get("@mlrCompleteOverlayEnterButton").click();
-    completeFrom(overlayForm);
+    completeForm(overlayForm);
     cy.get('button:contains("Save")')
       .as("mlrCompleteOverlaySaveButton")
       .focus();
