@@ -595,7 +595,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.9a Website posting of 5 percent or more ownership control",
-                  "hint": "Does the state post on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to §455.104 and required by 42 CFR 438.602(g)(3).",
+                  "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to 42 CFR 438.602(g)(3) and 455.104.",
                   "choices": [
                     {
                       "id": "fNiPtEub20Soo1W5FcdU3A",
