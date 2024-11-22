@@ -78,6 +78,7 @@ function unlockMLR(programName) {
   cy.wait(2000);
 
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
       .parent()
