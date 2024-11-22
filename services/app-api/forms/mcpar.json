@@ -695,11 +695,11 @@
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 2,
-                                      "parentFieldName": "state_timeframesForStandardPriorAuthorizationDecisions",
+                                      "parentFieldName": "state_stateTimeframeForStandardPriorAuthorizationDecisions",
                                       "parentOptionId": "2nAidFCWvENhYZvzLt3DxJWOqtx"
                                     },
                                     "props": {
-                                      "label": "B.XIII.1b Timeframes for standard prior authorization decisions",
+                                      "label": "B.XIII.1b State's timeframe for standard prior authorization decisions",
                                       "hint": "Indicate the state’s maximum timeframe, as number of days, for plans to provide notice of their decisions on standard prior authorization requests."
                                     }
                                   }
@@ -741,7 +741,7 @@
                                       "parentOptionId": "2nAidJFG47lnFfJsNJS2tU7d4pp"
                                     },
                                     "props": {
-                                      "label": "B.XIII.2b State’s timeframe for expedited prior authorization requests",
+                                      "label": "B.XIII.2b State’s timeframe for expedited prior authorization decisions",
                                       "hint": "Indicate the state’s maximum timeframe, as number of hours, for plans to provide notice of their decisions on expedited prior authorization requests."
                                     }
                                   }
