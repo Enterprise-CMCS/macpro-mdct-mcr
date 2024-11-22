@@ -145,7 +145,7 @@ const traverseRoute = (route) => {
     completeDrawerForm(route.drawerForm);
 
     cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
-    cy.get("@mcparContinueButton").click({ waitForAnimations: false });
+    cy.get("@mcparContinueButton").click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
