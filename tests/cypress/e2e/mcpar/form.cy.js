@@ -129,7 +129,7 @@ const traverseRoutes = (routes) => {
 };
 
 const traverseRoute = (route) => {
-  // TODO: Not this
+  // TODO: Don't just skip these routes
   if (
     [
       "/mcpar/plan-level-indicators/patient-access-api",
@@ -177,6 +177,7 @@ const completeDrawerForm = (drawerForm) => {
           .as("mcparCompleteDrawerSaveButton")
           .focus();
         cy.get("@mcparCompleteDrawerSaveButton").click();
+        cy.wait(1000);
       }
     });
   }
@@ -194,6 +195,7 @@ const completeModalForm = (modalForm, buttonText) => {
       .as("mcparCompleteModalSaveButton")
       .focus();
     cy.get("@mcparCompleteModalSaveButton").click();
+    cy.wait(1000);
   }
 };
 
