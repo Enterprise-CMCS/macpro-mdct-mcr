@@ -146,6 +146,7 @@ const traverseRoute = (route) => {
 
     cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
     cy.get("@mcparContinueButton").click();
+    cy.wait(1000);
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
