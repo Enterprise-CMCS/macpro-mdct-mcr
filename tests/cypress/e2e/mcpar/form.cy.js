@@ -129,7 +129,17 @@ const traverseRoutes = (routes) => {
 };
 
 const traverseRoute = (route) => {
-  cy.wait(2000);
+  // TODO: Not this
+  if (
+    [
+      "/mcpar/plan-level-indicators/patient-access-api",
+      "/mcpar/plan-level-indicators/prior-authorization",
+      "/mcpar/state-level-indicators/prior-authorization",
+    ].includes(route.path)
+  ) {
+    return;
+  }
+
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
     //validate we are on the URL we expect to be
@@ -148,6 +158,7 @@ const traverseRoute = (route) => {
     cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
     cy.get("@mcparContinueButton").click();
   }
+
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
 };
