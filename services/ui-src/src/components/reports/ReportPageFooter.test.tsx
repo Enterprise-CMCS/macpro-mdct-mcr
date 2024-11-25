@@ -56,7 +56,7 @@ describe("Test ReportPageFooter without form", () => {
 
   test("Check that ReportPageFooter without form renders", () => {
     const { getByTestId } = render(reportPageComponent);
-    expect(getByTestId("report-footer")).toBeVisible();
+    expect(getByTestId("report-page-footer")).toBeVisible();
   });
 
   test("ReportPageFooter without form previous navigation works", async () => {
@@ -75,7 +75,7 @@ describe("Test ReportPageFooter without form", () => {
 
   test("should not render a border line on a DrawerReportPage", () => {
     const result = render(drawerReportPageComponent);
-    const footer = result.getByTestId("report-footer");
+    const footer = result.getByTestId("report-page-footer");
     expect(footer).not.toHaveStyle(`borderTop: 1px solid`);
   });
 });

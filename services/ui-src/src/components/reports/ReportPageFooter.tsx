@@ -71,7 +71,7 @@ export const ReportPageFooter = ({
     <Box
       sx={drawerForm ? sx.footerBox : sx.footerBoxWithBorder}
       {...props}
-      data-testid="report-footer"
+      data-testid="report-page-footer"
     >
       <Flex>
         {!hidePrevious ? prevButton : null}
