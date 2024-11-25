@@ -664,7 +664,7 @@
                     {
                       "id": "2nAidDjXBvvkzLtaeYyE2RymW4G",
                       "label": "Yes",
-                      "hint": "If the state sets timeframes for plans to respond to Prior Authorization requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions.",
+                      "hint": "By selecting “Yes” you will see new questions around timeframes. If the state sets timeframes for plans to respond to Prior Authorization requests that are different than timeframes specified by Federal regulation at 42 CFR §438.210(d), please respond “Yes” to the following questions.",
                       "children": [
                         {
                           "id": "state_timeframesForStandardPriorAuthorizationDecisions",
@@ -4487,19 +4487,19 @@
           }
         },
         {
-          "name": "XIV: Patient Access API (Application Programming Interface)",
+          "name": "XIV: Patient Access API Usage",
           "path": "/mcpar/plan-level-indicators/patient-access-api",
           "pageType": "drawer",
           "entityType": "plans",
           "verbiage": {
             "intro": {
               "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic XIV. Patient Access API (Application Programming Interface)",
+              "subsection": "Topic XIV. Patient Access API Usage",
               "spreadsheet": "D1_Plan_Set",
               "alert": "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
-            "dashboardTitle": "Report on Patient Access API for each plan",
-            "drawerTitle": "Patient Access Application Programming Interface (API) for ",
+            "dashboardTitle": "Report on Patient Access API (Application Programming Interface) Usage for each plan",
+            "drawerTitle": "Patient Access Application Programming Interface (API) Usage for ",
             "missingEntityMessage": [
               {
                 "type": "p",
