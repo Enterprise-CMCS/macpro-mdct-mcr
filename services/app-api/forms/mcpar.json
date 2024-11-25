@@ -1664,8 +1664,7 @@
             "intro": {
               "section": "Section C: Program-Level Indicators",
               "subsection": "Topic XII. Mental Health and Substance Use Disorder Parity",
-              "spreadsheet": "C1_Program_Set",
-              "alert": "<strong>Beginning December 2024, this section must be completed for programs that include MCOs</strong>"
+              "spreadsheet": "C1_Program_Set"
             }
           },
           "form": {
@@ -1721,7 +1720,7 @@
                             "parentOptionId": "A4uFU0YyU9useo3DsWjnH264"
                           },
                           "props": {
-                            "label": "C1.XII.6 Did the State or MCOs complete the analysis(es)?",
+                            "label": "C1.XII.6 Did the State or MCOs complete the most recent parity analysis(es)?",
                             "choices": [
                               {
                                 "id": "hzfe4WnueXTUDk0FoFcJcq1G",
@@ -1949,6 +1948,10 @@
                                               }
                                             }
                                           ]
+                                        },
+                                        {
+                                          "id": "vWaoaAmH4YXjQStwgz5BcBGH",
+                                          "label": "No deficiencies identified"
                                         }
                                       ]
                                     }
