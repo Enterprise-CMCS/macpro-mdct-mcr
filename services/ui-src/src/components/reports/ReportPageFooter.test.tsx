@@ -2,12 +2,13 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { ReportPageFooter } from "components";
+import { DrawerReportPage, ReportPageFooter } from "components";
 // types
 import { FormJson } from "types";
 // utils
 import {
   mockAdminUserStore,
+  mockDrawerReportPageJson,
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -38,7 +39,13 @@ mockedUseStore.mockReturnValue({
 
 const reportPageComponent = (
   <RouterWrappedComponent>
-    <ReportPageFooter data-testid="report-page-footer" />
+    <ReportPageFooter />
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageComponent = (
+  <RouterWrappedComponent>
+    <DrawerReportPage route={mockDrawerReportPageJson} />
   </RouterWrappedComponent>
 );
 
@@ -49,7 +56,7 @@ describe("Test ReportPageFooter without form", () => {
 
   test("Check that ReportPageFooter without form renders", () => {
     const { getByTestId } = render(reportPageComponent);
-    expect(getByTestId("report-page-footer")).toBeVisible();
+    expect(getByTestId("report-footer")).toBeVisible();
   });
 
   test("ReportPageFooter without form previous navigation works", async () => {
@@ -64,6 +71,12 @@ describe("Test ReportPageFooter without form", () => {
     const continueButton = result.getByText("Continue");
     await userEvent.click(continueButton);
     expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-next-route");
+  });
+
+  test("should not render a border line on a DrawerReportPage", () => {
+    const result = render(drawerReportPageComponent);
+    const footer = result.getByTestId("report-footer");
+    expect(footer).not.toHaveStyle(`borderTop: 1px solid`);
   });
 });
 

@@ -259,7 +259,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         validateOnRender={validateOnRender}
         data-testid="report-drawer"
       />
-      <ReportPageFooter />
+      <ReportPageFooter drawerForm={true} />
     </Box>
   );
 };
