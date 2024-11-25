@@ -51,7 +51,8 @@ describe("test unlock with incomplete reports", () => {
     // go to dashboard
     cy.visit("/");
     cy.get('select[id="state"').focus().select("District of Columbia");
-    cy.get('input[id="report-MLR"]').focus().click();
+    cy.get('input[id="report-MLR"]').as("mlrIncompleteReportInput").focus();
+    cy.get("@mlrIncompleteReportInput").click();
     cy.get('button:contains("Go to Report Dashboard")').click();
     verifyCannotUnlockReport(programName);
   });
@@ -60,7 +61,8 @@ describe("test unlock with incomplete reports", () => {
 function unlockMLR(programName) {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
-  cy.get('input[id="report-MLR"]').focus().click();
+  cy.get('input[id="report-MLR"]').as("mlrUnlockReportInput").focus();
+  cy.get("@mlrUnlockReportInput").click();
   cy.get('button:contains("Go to Report Dashboard")').click();
 
   cy.get("table").within(() => {
@@ -68,13 +70,15 @@ function unlockMLR(programName) {
       .contains(programName)
       .parent()
       .find('button:contains("Unlock")')
-      .focus()
-      .click();
+      .as("mlrUnlockButton")
+      .focus();
+    cy.get("@mlrUnlockButton").click();
   });
 
   cy.wait(2000);
 
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
       .parent()
@@ -86,7 +90,8 @@ function unlockMLR(programName) {
 function archiveReport(programName) {
   cy.visit("/");
   cy.get('select[id="state"').focus().select("District of Columbia");
-  cy.get('input[id="report-MLR"]').focus().click();
+  cy.get('input[id="report-MLR"]').as("mlrArchiveReportInput").focus();
+  cy.get("@mlrArchiveReportInput").click();
   cy.get('button:contains("Go to Report Dashboard")').click();
 
   cy.get("table").within(() => {
@@ -94,8 +99,9 @@ function archiveReport(programName) {
       .contains(programName)
       .parent()
       .find('button:contains("Archive")')
-      .focus()
-      .click();
+      .as("mlrArchiveButton")
+      .focus();
+    cy.get("@mlrArchiveButton").click();
   });
 }
 
@@ -116,8 +122,9 @@ function verifyFormIsFilledFromLastSubmission(programName) {
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
-      .focus()
-      .click();
+      .as("mlrVerifyEditButton")
+      .focus();
+    cy.get("@mlrVerifyEditButton").click();
   });
   cy.get('input[type="radio"]').first().should("be.checked");
   cy.get('input[name="stateName"]').should(
@@ -131,9 +138,9 @@ function verifyFormIsFilledFromLastSubmission(programName) {
 
 function fillOutMLR(programName) {
   //Create the program
-  cy.visit(`/mlr`);
+  cy.visit("/mlr");
   cy.get('button:contains("Add new MLR submission")').click();
-  cy.get('input[id="programName"]').type(programName);
+  cy.get('input[name="programName"]').type(programName);
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -142,8 +149,9 @@ function fillOutMLR(programName) {
       .contains(programName)
       .parent()
       .find('button:contains("Edit")')
-      .focus()
-      .click();
+      .as("mlrFillEditButton")
+      .focus();
+    cy.get("@mlrFillEditButton").click();
   });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
@@ -153,8 +161,13 @@ function fillOutMLR(programName) {
 
 function submitMLR() {
   //Submit the program
-  cy.get('button:contains("Submit MLR")').focus().click();
-  cy.get('[data-testid="modal-submit-button"]').focus().click();
+  cy.get('button:contains("Submit MLR")').as("mlrSubmitButton").focus();
+  cy.get("@mlrSubmitButton").click();
+  cy.get('[data-testid="modal-submit-button"]')
+    .as("mlrModalSubmitButton")
+    .focus();
+  cy.get("@mlrModalSubmitButton").click();
+  cy.wait(2000);
 }
 
 const traverseRoutes = (routes) => {
@@ -176,17 +189,18 @@ const traverseRoute = (route) => {
       cy.contains(route.verbiage?.intro?.subsection);
 
     //Fill out form
-    completeFrom(route.form);
+    completeForm(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeOverlayForm(route.overlayForm);
     // Continue to next route
-    cy.get('button:contains("Continue")').focus().click();
+    cy.get('button:contains("Continue")').as("mlrContinueButton").focus();
+    cy.get("@mlrContinueButton").click();
   }
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
 };
 
-const completeFrom = (form) => {
+const completeForm = (form) => {
   //iterate over each field and fill it appropriately
   form?.fields?.forEach((field) => processField(field));
 };
@@ -194,18 +208,29 @@ const completeFrom = (form) => {
 const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
-    cy.get(`button:contains("${buttonText}")`).focus().click();
-    completeFrom(modalForm);
-    cy.get('button:contains("Save")').focus().click();
+    cy.get(`button:contains("${buttonText}")`)
+      .as("mlrCompleteModalButton")
+      .focus();
+    cy.get("@mlrCompleteModalButton").click();
+    completeForm(modalForm);
+    cy.get('button:contains("Save")').as("mlrCompleteModalSaveButton").focus();
+    cy.get("@mlrCompleteModalSaveButton").click();
   }
 };
 
 const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
   if (overlayForm) {
-    cy.get(`button:contains("Enter")`).focus().click();
-    completeFrom(overlayForm);
-    cy.get('button:contains("Save")').focus().click();
+    cy.get('button:contains("Enter")')
+      .first()
+      .as("mlrCompleteOverlayEnterButton")
+      .focus();
+    cy.get("@mlrCompleteOverlayEnterButton").click();
+    completeForm(overlayForm);
+    cy.get('button:contains("Save")')
+      .as("mlrCompleteOverlaySaveButton")
+      .focus();
+    cy.get("@mlrCompleteOverlaySaveButton").click();
   }
 };
 
