@@ -332,5 +332,8 @@ const sx = {
   },
   textField: {
     width: "100%",
+    label: {
+      marginTop: "0",
+    },
   },
 };

@@ -30,6 +30,8 @@ export interface ReportMetadataShape extends ReportKeys {
   copyFieldDataSourceId?: string;
   programIsPCCM?: Choice[];
   previousRevisions: string[];
+  planTypeIncludedInProgram?: Choice[];
+  "planTypeIncludedInProgram-otherText"?: string;
   novMcparRelease?: boolean;
 }
 

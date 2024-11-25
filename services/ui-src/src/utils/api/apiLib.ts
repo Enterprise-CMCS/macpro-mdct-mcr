@@ -55,7 +55,7 @@ export async function loginUser(
 }
 
 export async function logoutUser(): Promise<void> {
-  await signOut();
+  await signOut({ global: true });
 }
 
 export async function refreshSession(): Promise<void> {
@@ -77,12 +77,12 @@ export async function apiRequest<T>(
   try {
     await updateTimeout();
 
-    if (!hasResponseBody) {
-      await request({ apiName, path, options }).response;
+    const { body } = await request({ apiName, path, options }).response;
+
+    if (hasResponseBody === false) {
       return undefined as unknown as T;
     }
 
-    const { body } = await request({ apiName, path, options }).response;
     return (await body.json()) as unknown as T;
   } catch (e: any) {
     const info = `Request Failed - ${path} - ${e.response?.body}`;
@@ -97,13 +97,13 @@ export async function del<T>(path: string, opts?: RequestOptions): Promise<T> {
 }
 
 export async function get<T>(path: string, opts?: RequestOptions): Promise<T> {
-  return apiRequest<T>(ampGet, path, opts, true);
+  return apiRequest<T>(ampGet, path, opts);
 }
 
 export async function post<T>(path: string, opts?: RequestOptions): Promise<T> {
-  return apiRequest<T>(ampPost, path, opts, true);
+  return apiRequest<T>(ampPost, path, opts);
 }
 
 export async function put<T>(path: string, opts?: RequestOptions): Promise<T> {
-  return apiRequest<T>(ampPut, path, opts, true);
+  return apiRequest<T>(ampPut, path, opts);
 }

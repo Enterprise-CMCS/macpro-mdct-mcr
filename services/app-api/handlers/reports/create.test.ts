@@ -65,6 +65,28 @@ const creationEvent: APIGatewayProxyEvent = {
   }),
 };
 
+const naaarCreationEvent: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { reportType: "NAAAR", state: "AL" },
+  body: JSON.stringify({
+    fieldData: {
+      contactName: "Contact Name",
+    },
+    metadata: {
+      reportType: "NAAAR",
+      contactName: "Contact Name",
+      status: "Not started",
+      reportingPeriodStartDate: 162515200000,
+      reportingPeriodEndDate: 168515200000,
+      dueDate: 168515200000,
+      combinedData: false,
+      lastAlteredBy: "Thelonious States",
+      naaarReport: false,
+    },
+  }),
+};
+
 const createPccmEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
@@ -217,6 +239,12 @@ describe("Test createReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
+  });
+
+  test("Test NAAAR report creation when form is disabled throws 400 error", async () => {
+    const res = await createReport(naaarCreationEvent, null);
+    expect(res.statusCode).toBe(StatusCodes.BadRequest);
+    expect(res.body).toContain(error.INVALID_DATA);
   });
 
   test("Test successful run of report creation, not copied", async () => {

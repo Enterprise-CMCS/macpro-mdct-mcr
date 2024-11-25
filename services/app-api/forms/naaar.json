@@ -3,8 +3,268 @@
   "name": "NAAAR Report Submission Form",
   "basePath": "/naaar",
   "version": "NAAAR_2024-08-06",
-  "entities": {},
+  "entities": {
+    "plans": { "required": true }
+  },
   "routes": [
+    {
+      "name": "I. State and program information",
+      "path": "/naaar/state-and-program-information",
+      "children": [
+        {
+          "name": "State information and reporting scenario",
+          "path": "/naaar/state-and-program-information/state-information-and-reporting-scenario",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "State information and reporting scenario",
+              "info": [
+                {
+                  "type": "p",
+                  "content": "Who should CMS contact with questions regarding information reported in the NAAAR? Follow up communications related to this report will be made to the primary contact."
+                },
+                {
+                  "type": "p",
+                  "content": "Use this section to report your contact information, date of report submission, and reporting scenario."
+                }
+              ]
+            },
+            "praDisclosure": [
+              {
+                "type": "p",
+                "content": "<strong>PRA Disclosure Statement</strong>"
+              },
+              {
+                "type": "p",
+                "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
+              }
+            ]
+          },
+          "form": {
+            "id": "isiars",
+            "fields": [
+              {
+                "id": "contactName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "I.A.1 Contact name",
+                  "hint": "First and last name of the contact person. "
+                }
+              },
+              {
+                "id": "contactEmailAddress",
+                "type": "text",
+                "validation": "email",
+                "props": {
+                  "label": "I.A.2 Contact email address",
+                  "hint": "Enter email address. Department or program-wide email addresses ok."
+                }
+              },
+              {
+                "id": "stateName",
+                "type": "text",
+                "validation": "textOptional",
+                "props": {
+                  "label": "I.A.3 State or territory",
+                  "hint": "Auto-populates from your account profile.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "reportSubmissionDate",
+                "type": "date",
+                "validation": "textOptional",
+                "props": {
+                  "label": "I.A.4 Date of report submission",
+                  "hint": "CMS receives this date upon submission of this report.",
+                  "disabled": true
+                }
+              },
+              {
+                "id": "reportingScenario",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "1.A.5 Reporting scenario",
+                  "hint": [
+                    {
+                      "type": "p",
+                      "content": "Enter the scenario under which the state is submitting this form to CMS. Under 42 C.F.R. § 438.207(c) - (d), the state must submit an assurance of compliance after reviewing documentation submitted by a plan under the following three scenarios:"
+                    },
+                    {
+                      "type": "ul",
+                      "children": [
+                        {
+                          "type": "li",
+                          "content": "Scenario 1: At the time the plan enters into a contract with the state;"
+                        },
+                        {
+                          "type": "li",
+                          "content": "Scenario 2: On an annual basis;"
+                        },
+                        {
+                          "type": "li",
+                          "content": "Scenario 3: Any time there has been a significant change (as defined by the state) in the plan’s operations that would affect its adequacy of capacity and services, including (1) changes in the plan’s services, benefits, geographic service area, composition of or payments to its provider network, or (2) enrollment of a new population in the plan."
+                        }
+                      ]
+                    },
+                    {
+                      "type": "p",
+                      "content": "States should complete one (1) form with information for applicable managed care plans and programs. For example, if the state submits this form under scenario 1 above, the state should submit this form only for the managed care plan (and the applicable managed care program) that entered into a new contract with the state. The state should not report on any other plans or programs under this scenario. As another example, if the state submits this form under scenario 2, the state should submit this form for all managed care plans and managed care programs."
+                    }
+                  ],
+                  "choices": [
+                    {
+                      "id": "g3B64XNZhZCZ017er2Y6hJ",
+                      "label": "Scenario 1: New contract"
+                    },
+                    {
+                      "id": "mlvX4umhgnU199rPmMJybc",
+                      "label": "Scenario 2: Annual report"
+                    },
+                    {
+                      "id": "l7XDjKKDrwryEe5YgDTTmP",
+                      "label": "Scenario 3: Significant change - services"
+                    },
+                    {
+                      "id": "7ZtsZ25K0romDSTAIStzzY",
+                      "label": "Scenario 3: Significant change - benefits"
+                    },
+                    {
+                      "id": "ObbAyoYB97trcbVN0OFQ2X",
+                      "label": "Scenario 3: Significant change - geographic service area"
+                    },
+                    {
+                      "id": "FC9hagL8vz3i0bFoHsJYEw",
+                      "label": "Scenario 3: Significant change - composition of provider network"
+                    },
+                    {
+                      "id": "ziLQDOD5TucgEHzmlzOEn6",
+                      "label": "Scenario 3: Significant change - payments to provider network"
+                    },
+                    {
+                      "id": "TDkPWZJai0kwHIp4zm1ZVy",
+                      "label": "Scenario 3: Significant change - enrollment of new population"
+                    },
+                    {
+                      "id": "IyPRlUA4k3bTkj5rF1E8zg",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "reportingScenario-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "reportingScenario"
+                          },
+                          "props": {
+                            "label": "1.A.6 Reporting scenario - other ",
+                            "hint": "If the state is submitting this form to CMS for any reason other than those specified in I.A.5, explain the reason."
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Add plans",
+          "path": "/naaar/state-and-program-information/add-plans",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "Add plans",
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
+            }
+          },
+          "form": {
+            "id": "iap",
+            "fields": [
+              {
+                "id": "plans",
+                "type": "dynamic",
+                "validation": "dynamic",
+                "props": {
+                  "label": "Plan name"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Provider type coverage",
+          "path": "/naaar/state-and-program-information/provider-type-coverage",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "I. State and program information",
+              "subsection": "Provider type coverage",
+              "info": "Instructions will be here for for how to best classify provider types to the categories shown. If your standards include more specific providers, select the core provider type category closest to the provider type and you can provide it as a subcategory when creating standards later in the form."
+            }
+          },
+          "form": {
+            "id": "iptc",
+            "fields": [
+              {
+                "id": "providerTypes",
+                "type": "checkbox",
+                "validation": "checkbox",
+                "props": {
+                  "label": "Select all core provider types covered in the program",
+                  "choices": [
+                    {
+                      "id": "UZK4hxPVnuYGcIgNzYFHCk",
+                      "label": "Primary Care"
+                    },
+                    {
+                      "id": "uITThePQiXntwGGViPTD62",
+                      "label": "Specialist",
+                      "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                    },
+                    {
+                      "id": "9kBoKCLD1dYizieU5psnJi",
+                      "label": "Mental health",
+                      "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                    },
+                    {
+                      "id": "kV7553HIWXekySIFLiMXLW",
+                      "label": "OB/GYN"
+                    },
+                    {
+                      "id": "nzmRTbJeqBCoAabR4oHrrh",
+                      "label": "Hospital"
+                    },
+                    {
+                      "id": "cb4y58UmsRXVITpWL7l9up",
+                      "label": "Pharmacy"
+                    },
+                    {
+                      "id": "tlzAMYfH4I7iIl5pjqAm7R",
+                      "label": "Dental"
+                    },
+                    {
+                      "id": "WrMpSdivds4c0XfN2RPlRd",
+                      "label": "LTSS"
+                    },
+                    {
+                      "id": "qbR8X0YAh8vObedJPx6QTJ",
+                      "label": "Substance Use Disorder (SUD)"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
     {
       "name": "Review & Submit",
       "path": "/naaar/review-and-submit",
