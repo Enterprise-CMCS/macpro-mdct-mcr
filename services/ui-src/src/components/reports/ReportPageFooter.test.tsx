@@ -2,13 +2,12 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
-import { DrawerReportPage, ReportPageFooter } from "components";
+import { ReportPageFooter } from "components";
 // types
 import { FormJson } from "types";
 // utils
 import {
   mockAdminUserStore,
-  mockDrawerReportPageJson,
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -43,12 +42,6 @@ const reportPageComponent = (
   </RouterWrappedComponent>
 );
 
-const drawerReportPageComponent = (
-  <RouterWrappedComponent>
-    <DrawerReportPage route={mockDrawerReportPageJson} />
-  </RouterWrappedComponent>
-);
-
 describe("Test ReportPageFooter without form", () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -71,12 +64,6 @@ describe("Test ReportPageFooter without form", () => {
     const continueButton = result.getByText("Continue");
     await userEvent.click(continueButton);
     expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-next-route");
-  });
-
-  test("should not render a border line on a DrawerReportPage", () => {
-    const result = render(drawerReportPageComponent);
-    const footer = result.getByTestId("report-page-footer");
-    expect(footer).not.toHaveStyle(`borderTop: 1px solid`);
   });
 });
 

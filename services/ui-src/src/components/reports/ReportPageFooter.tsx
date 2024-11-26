@@ -13,7 +13,6 @@ export const ReportPageFooter = ({
   submitting,
   form,
   praDisclosure,
-  drawerForm,
   ...props
 }: Props) => {
   const navigate = useNavigate();
@@ -68,11 +67,7 @@ export const ReportPageFooter = ({
   );
 
   return (
-    <Box
-      sx={drawerForm ? sx.footerBox : sx.footerBoxWithBorder}
-      {...props}
-      data-testid="report-page-footer"
-    >
+    <Box sx={sx.footerBox} {...props} data-testid="report-page-footer">
       <Flex>
         {!hidePrevious ? prevButton : null}
         {isReadOnly ? nextButtonNavOnly : nextButtonSubmit}
@@ -88,16 +83,11 @@ interface Props {
   form?: FormJson;
   submitting?: boolean;
   praDisclosure?: CustomHtmlElement[];
-  drawerForm?: boolean;
   [key: string]: any;
 }
 
 const sx = {
   footerBox: {
-    marginTop: "2.5rem",
-    paddingTop: "1.5rem",
-  },
-  footerBoxWithBorder: {
     marginTop: "2.5rem",
     paddingTop: "1.5rem",
     borderTop: "1px solid",
