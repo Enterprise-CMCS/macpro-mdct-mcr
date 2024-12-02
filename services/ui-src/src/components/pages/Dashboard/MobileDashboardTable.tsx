@@ -136,7 +136,7 @@ interface MobileDashboardTableProps {
 const DateFields = ({ report, reportType }: DateFieldProps) => {
   return (
     <>
-      {reportType !== "MLR" && (
+      {reportType !== ReportType.MLR && (
         <Box sx={sx.editDate}>
           <Text sx={sx.label}>Due date</Text>
           <Text>{convertDateUtcToEt(report.dueDate)}</Text>
