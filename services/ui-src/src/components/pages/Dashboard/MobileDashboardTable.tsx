@@ -1,7 +1,7 @@
 // components
 import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
 // utils
-import { AnyObject, ReportMetadataShape } from "types";
+import { AnyObject, ReportMetadataShape, ReportType } from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -27,7 +27,7 @@ export const MobileDashboardTable = ({
       <Box data-testid="mobile-row" sx={sx.mobileTable} key={report.id}>
         <Box sx={sx.labelGroup}>
           <Text sx={sx.label}>
-            {reportType === "MCPAR" ? "Program name" : "Submission name"}
+            {reportType === ReportType.MLR ? "Submission name" : "Program name"}
           </Text>
           <Flex alignContent="flex-start">
             {isStateLevelUser && !report?.locked && (
@@ -44,6 +44,17 @@ export const MobileDashboardTable = ({
             <Text sx={sxOverride.programNameText}>{report.programName}</Text>
           </Flex>
         </Box>
+        {reportType === ReportType.NAAAR && (
+          <Box sx={sx.labelGroup}>
+            <Text sx={sx.label}>Plan type</Text>
+            <Text>
+              {report["planTypeIncludedInProgram-otherText"]
+                ? report["planTypeIncludedInProgram-otherText"]
+                : report.planTypeIncludedInProgram?.[0].value}
+            </Text>
+          </Box>
+        )}
+
         <Box sx={sx.labelGroup}>
           <Flex alignContent="flex-start">
             <DateFields report={report} reportType={reportType} />
@@ -125,7 +136,7 @@ interface MobileDashboardTableProps {
 const DateFields = ({ report, reportType }: DateFieldProps) => {
   return (
     <>
-      {reportType === "MCPAR" && (
+      {reportType !== "MLR" && (
         <Box sx={sx.editDate}>
           <Text sx={sx.label}>Due date</Text>
           <Text>{convertDateUtcToEt(report.dueDate)}</Text>
