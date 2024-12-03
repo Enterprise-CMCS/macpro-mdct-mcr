@@ -10,7 +10,7 @@ type CustomFixtures = {
 export const baseTest = base.extend<CustomFixtures>({
   stateHomePage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: "playwright/.auth/user.json",
+      storageState: ".auth/user.json",
     });
     const stateHomePage = new StateHomePage(await context.newPage());
     await use(stateHomePage);
@@ -18,7 +18,7 @@ export const baseTest = base.extend<CustomFixtures>({
   },
   adminHomePage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: "playwright/.auth/admin.json",
+      storageState: ".auth/admin.json",
     });
     const adminHomePage = new AdminHomePage(await context.newPage());
     await use(adminHomePage);

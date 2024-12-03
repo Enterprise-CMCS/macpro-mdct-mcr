@@ -2,7 +2,7 @@ import { test as setup } from "@playwright/test";
 
 import { adminPassword, adminUser, statePassword, stateUser } from "./consts";
 
-const adminFile = "playwright/.auth/admin.json";
+const adminFile = ".auth/admin.json";
 
 setup("authenticate as admin", async ({ page }) => {
   await page.goto("/");
@@ -22,7 +22,7 @@ setup("authenticate as admin", async ({ page }) => {
   await page.context().storageState({ path: adminFile });
 });
 
-const userFile = "playwright/.auth/user.json";
+const userFile = ".auth/user.json";
 
 setup("authenticate as user", async ({ page }) => {
   await page.goto("/");
