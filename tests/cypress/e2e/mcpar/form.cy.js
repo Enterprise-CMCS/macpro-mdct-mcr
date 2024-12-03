@@ -129,16 +129,19 @@ const traverseRoutes = (routes) => {
 };
 
 const traverseRoute = (route) => {
-  // TODO: Don't just skip these routes
-  if (
-    [
-      "/mcpar/plan-level-indicators/patient-access-api",
-      "/mcpar/plan-level-indicators/prior-authorization",
-      "/mcpar/state-level-indicators/prior-authorization",
-    ].includes(route.path)
-  ) {
-    return;
-  }
+  /*
+   * TODO: account for flag status
+   *
+   * if (
+   *   [
+   *     "/mcpar/plan-level-indicators/patient-access-api",
+   *     "/mcpar/plan-level-indicators/prior-authorization",
+   *     "/mcpar/state-level-indicators/prior-authorization",
+   *   ].includes(route.path)
+   * ) {
+   *   return;
+   * }
+   */
 
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {

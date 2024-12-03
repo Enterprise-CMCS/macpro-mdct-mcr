@@ -67,7 +67,7 @@ export const ReportPageFooter = ({
   );
 
   return (
-    <Box sx={sx.footerBox} {...props}>
+    <Box sx={sx.footerBox} {...props} data-testid="report-page-footer">
       <Flex>
         {!hidePrevious ? prevButton : null}
         {isReadOnly ? nextButtonNavOnly : nextButtonSubmit}
@@ -90,6 +90,8 @@ const sx = {
   footerBox: {
     marginTop: "2.5rem",
     paddingTop: "1.5rem",
+    borderTop: "1px solid",
+    borderColor: "palette.gray_light",
   },
   arrowIcon: {
     width: "1rem",

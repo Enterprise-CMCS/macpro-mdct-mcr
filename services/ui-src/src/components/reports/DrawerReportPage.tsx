@@ -183,7 +183,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         : calculateEntityCompletion();
 
       return (
-        <Flex key={entity.id} sx={sx.entityRow}>
+        <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
           {isEntityCompleted && (
             <Image
               src={completedIcon}
@@ -288,6 +288,9 @@ const sx = {
     padding: "0.5rem",
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    "&:last-of-type": {
+      borderBottom: "none",
+    },
   },
   entityName: {
     fontSize: "lg",
