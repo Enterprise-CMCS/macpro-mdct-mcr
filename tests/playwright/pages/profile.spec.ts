@@ -6,6 +6,7 @@ let adminPage: Page;
 let userPage: Page;
 let adminContext: BrowserContext;
 let userContext: BrowserContext;
+
 test.beforeAll(async ({ browser }) => {
   adminContext = await browser.newContext({
     storageState: ".auth/admin.json",
@@ -22,6 +23,7 @@ test.afterAll(async () => {
   await adminContext.close();
   await userContext.close();
 });
+
 test.describe("Admin profile", () => {
   test(
     "Is accessible on all device types for admin user",
