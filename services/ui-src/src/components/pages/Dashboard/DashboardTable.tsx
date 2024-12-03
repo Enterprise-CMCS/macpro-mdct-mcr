@@ -2,7 +2,12 @@
 import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
 // utils
-import { AnyObject, ReportMetadataShape, TableContentShape } from "types";
+import {
+  AnyObject,
+  ReportMetadataShape,
+  ReportType,
+  TableContentShape,
+} from "types";
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -40,6 +45,14 @@ export const DashboardTable = ({
         <Td sx={sxOverride.programNameText}>
           {report.programName ?? report.submissionName}
         </Td>
+        {/* Plan type (NAAAR only) */}
+        {report.reportType === ReportType.NAAAR && (
+          <Td>
+            {report["planTypeIncludedInProgram"]?.[0].value === "Other, specify"
+              ? report["planTypeIncludedInProgram-otherText"]
+              : report.planTypeIncludedInProgram?.[0].value}
+          </Td>
+        )}
         {/* Date Fields */}
         <DateFields report={report} reportType={reportType} />
         {/* Last Altered By */}
@@ -162,7 +175,9 @@ interface EditReportProps {
 const DateFields = ({ report, reportType }: DateFieldProps) => {
   return (
     <>
-      {reportType === "MCPAR" && <Td>{convertDateUtcToEt(report.dueDate)}</Td>}
+      {reportType !== ReportType.MLR && (
+        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
+      )}
       <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
     </>
   );
