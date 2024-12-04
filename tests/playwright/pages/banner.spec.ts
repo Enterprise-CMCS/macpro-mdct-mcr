@@ -1,4 +1,5 @@
 import { test, expect } from "../utils/fixtures/base";
+import BannerPage from "../utils/pageObjects/banner.page";
 
 test.describe("admin user banner page", () => {
   test("Should see the correct banner page as an admin user", async ({
@@ -15,7 +16,6 @@ test.describe("admin user banner page", () => {
     await bannerPage.goto();
     await bannerPage.isReady();
     await bannerPage.createAdminBanner();
-    await bannerPage.isReady();
     await expect(bannerPage.deleteBannerButton).toBeVisible();
   });
 
@@ -26,8 +26,22 @@ test.describe("admin user banner page", () => {
     await bannerPage.isReady();
     await bannerPage.createAdminBanner();
     await bannerPage.deleteAdminBanner();
-    await bannerPage.isReady();
     await expect(bannerPage.deleteBannerButton).not.toBeVisible();
+  });
+
+  test("Should not be able to edit a banner as a state user", async ({
+    browser,
+    profilePage,
+  }) => {
+    const userContext = await browser.newContext({
+      storageState: ".auth/user.json",
+    });
+    const newBannerPage = new BannerPage(await userContext.newPage());
+    await newBannerPage.goto();
+    await newBannerPage.redirectPage("/profile");
+    await profilePage.isReady();
+    await expect(profilePage.title).toBeVisible();
+    await userContext.close();
   });
 
   test("Is accessible on all device types for admin user", async ({
