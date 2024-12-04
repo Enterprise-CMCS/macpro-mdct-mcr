@@ -10,5 +10,5 @@ export const currentYear: number = new Date().getFullYear();
 
 export const newBannerTitle: string = "Newly Created Banner";
 export const newBannerDescription: string = "Banner Description Text";
-export const newBannerStartDate: string = "10/10/2023";
-export const newBannerEndDate: string = "11/10/2023";
+export const newBannerStartDate: string = "10/10/2024";
+export const newBannerEndDate: string = "12/10/2024";

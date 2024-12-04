@@ -9,24 +9,28 @@ test.describe("admin user banner page", () => {
     await expect(adminBannerPage.title).toBeVisible();
   });
 
-  test("Should be able to create banner an admin user", async ({
+  test("Should be able to create banner as an admin user", async ({
     adminBannerPage,
   }) => {
     await adminBannerPage.goto();
     await adminBannerPage.isReady();
     await adminBannerPage.createAdminBanner();
-    await expect(adminBannerPage.replaceCurrentBannerButton).toBeVisible();
-  });
-
-  test("Should be able to delete banner an admin user", async ({
-    adminBannerPage,
-  }) => {
-    await adminBannerPage.goto();
     await adminBannerPage.isReady();
     await expect(adminBannerPage.deleteBannerButton).toBeVisible();
   });
 
-  test("Is accessible on all device types for state user", async ({
+  test("Should be able to delete banner as an admin user", async ({
+    adminBannerPage,
+  }) => {
+    await adminBannerPage.goto();
+    await adminBannerPage.isReady();
+    await adminBannerPage.createAdminBanner();
+    await adminBannerPage.deleteAdminBanner();
+    await adminBannerPage.isReady();
+    await expect(adminBannerPage.deleteBannerButton).not.toBeVisible();
+  });
+
+  test("Is accessible on all device types for admin user", async ({
     adminBannerPage,
   }) => {
     await adminBannerPage.goto();
