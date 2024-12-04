@@ -30,7 +30,7 @@ export const baseTest = base.extend<CustomFixtures>({
   },
   bannerPage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: "playwright/.auth/admin.json",
+      storageState: ".auth/admin.json",
     });
     const bannerPage = new BannerPage(await context.newPage());
     await use(bannerPage);
@@ -38,7 +38,7 @@ export const baseTest = base.extend<CustomFixtures>({
   },
   profilePage: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: "playwright/.auth/user.json",
+      storageState: ".auth/user.json",
     });
     const profilePage = new ProfilePage(await context.newPage());
     await use(profilePage);
