@@ -7,3 +7,8 @@ export const stateAbbreviation = process.env.TEST_STATE || "MN";
 export const stateName = process.env.TEST_STATE_NAME || "Minnesota";
 
 export const currentYear: number = new Date().getFullYear();
+
+export const newBannerTitle: string = "Newly Created Banner";
+export const newBannerDescription: string = "Banner Description Text";
+export const newBannerStartDate: string = "10/10/2023";
+export const newBannerEndDate: string = "11/10/2023";
