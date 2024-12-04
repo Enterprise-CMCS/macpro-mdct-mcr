@@ -20,4 +20,4 @@ services/database/local_buckets
 tests/test-results/
 tests/playwright-report/
 tests/playwright/.cache/
-tests/playwright/.auth
+tests/.auth/

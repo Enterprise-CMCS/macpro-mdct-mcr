@@ -6,7 +6,7 @@ export default class ProfilePage extends BasePage {
 
   readonly page: Page;
   readonly title: Locator;
-  readonly adminButton: Locator;
+  readonly bannerEditorButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -14,7 +14,7 @@ export default class ProfilePage extends BasePage {
     this.title = page.getByRole("heading", {
       name: "My Account",
     });
-    this.adminButton = page.getByRole("button", {
+    this.bannerEditorButton = page.getByRole("button", {
       name: "Banner Editor",
     });
   }
