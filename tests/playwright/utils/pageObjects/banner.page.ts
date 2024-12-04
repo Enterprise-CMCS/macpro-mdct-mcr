@@ -1,13 +1,7 @@
 import { Locator, Page } from "@playwright/test";
-import {
-  newBannerDescription,
-  newBannerEndDate,
-  newBannerStartDate,
-  newBannerTitle,
-} from "../consts";
 import BasePage from "./base.page";
 
-export default class AdminBannerPage extends BasePage {
+export default class BannerPage extends BasePage {
   public path = "/admin";
 
   readonly page: Page;
@@ -42,10 +36,10 @@ export default class AdminBannerPage extends BasePage {
   }
 
   public async createAdminBanner() {
-    await this.newBannerTitleInput.fill(newBannerTitle);
-    await this.newBannerDescriptionInput.fill(newBannerDescription);
-    await this.newBannerStartDateInput.fill(newBannerStartDate);
-    await this.newBannerEndDateInput.fill(newBannerEndDate);
+    await this.newBannerTitleInput.fill("Newly Created Banner");
+    await this.newBannerDescriptionInput.fill("Banner Description Text");
+    await this.newBannerStartDateInput.fill("10/10/2024");
+    await this.newBannerEndDateInput.fill("12/10/2024");
     await this.replaceCurrentBannerButton.click();
     await this.page.waitForResponse((response) => response.status() == 200);
   }

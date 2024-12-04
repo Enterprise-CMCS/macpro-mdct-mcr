@@ -1,12 +1,14 @@
 import { mergeTests, test as base } from "@playwright/test";
 import StateHomePage from "../pageObjects/stateHome.page";
 import AdminHomePage from "../pageObjects/adminHome.page";
-import AdminBannerPage from "../pageObjects/adminBanner.page";
+import BannerPage from "../pageObjects/banner.page";
+import ProfilePage from "../pageObjects/profile.page";
 
 type CustomFixtures = {
   stateHomePage: StateHomePage;
   adminHomePage: AdminHomePage;
-  adminBannerPage: AdminBannerPage;
+  bannerPage: BannerPage;
+  profilePage: ProfilePage;
 };
 
 export const baseTest = base.extend<CustomFixtures>({
@@ -26,12 +28,20 @@ export const baseTest = base.extend<CustomFixtures>({
     await use(adminHomePage);
     await context.close();
   },
-  adminBannerPage: async ({ browser }, use) => {
+  bannerPage: async ({ browser }, use) => {
     const context = await browser.newContext({
       storageState: "playwright/.auth/admin.json",
     });
-    const adminBannerPage = new AdminBannerPage(await context.newPage());
-    await use(adminBannerPage);
+    const bannerPage = new BannerPage(await context.newPage());
+    await use(bannerPage);
+    await context.close();
+  },
+  profilePage: async ({ browser }, use) => {
+    const context = await browser.newContext({
+      storageState: "playwright/.auth/user.json",
+    });
+    const profilePage = new ProfilePage(await context.newPage());
+    await use(profilePage);
     await context.close();
   },
 });
