@@ -36,11 +36,13 @@ test.describe("admin user banner page", () => {
     const userContext = await browser.newContext({
       storageState: ".auth/user.json",
     });
+    await profilePage.goto();
     const newBannerPage = new BannerPage(await userContext.newPage());
     await newBannerPage.goto();
     await newBannerPage.redirectPage("/profile");
     await profilePage.isReady();
     await expect(profilePage.title).toBeVisible();
+    await expect(profilePage.bannerEditorButton).not.toBeVisible();
     await userContext.close();
   });
 
