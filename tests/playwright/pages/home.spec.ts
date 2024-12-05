@@ -9,7 +9,7 @@ test.describe("state user home page", () => {
     await stateHomePage.isReady();
     await expect(stateHomePage.mcparButton).toBeVisible();
     await expect(stateHomePage.mlrButton).toBeVisible();
-    await expect(stateHomePage.naarButton).toBeVisible();
+    await expect(stateHomePage.naaarButton).toBeVisible();
   });
 
   test("Is accessible on all device types for state user", async ({

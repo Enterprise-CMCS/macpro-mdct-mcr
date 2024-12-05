@@ -8,7 +8,7 @@ export default class StateHomePage extends BasePage {
   readonly title: Locator;
   readonly mcparButton: Locator;
   readonly mlrButton: Locator;
-  readonly naarButton: Locator;
+  readonly naaarButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -20,6 +20,6 @@ export default class StateHomePage extends BasePage {
       name: "Enter MCPAR online",
     });
     this.mlrButton = page.getByRole("button", { name: "Enter MLR online" });
-    this.naarButton = page.getByRole("button", { name: "Enter NAAAR online" });
+    this.naaarButton = page.getByRole("button", { name: "Enter NAAAR online" });
   }
 }
