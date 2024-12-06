@@ -40,6 +40,10 @@ export default class BasePage {
     await this.page.waitForURL(url);
   }
 
+  public async getByRole(role: any, options?: any) {
+    return this.page.getByRole(role, options);
+  }
+
   public async isReady() {
     await this.title.isVisible();
     return expect(this.page).toHaveURL(this.path);

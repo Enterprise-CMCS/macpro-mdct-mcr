@@ -1,4 +1,9 @@
 import { expect, test } from "../../utils/fixtures/base";
+import { stateName } from "../../utils";
+
+const currentDate = new Date().toISOString();
+const programName = `automated test - ${currentDate}`;
+const newName = `Edited: ${programName}`;
 
 test.describe(
   "MCPAR Dashboard Page - Program Creation/Editing/Archiving",
@@ -19,10 +24,20 @@ test.describe(
       await stateMCPARGetStartedPage.mcparButton.click();
       await stateMCPARGetStartedPage.redirectPage("/mcpar");
 
-      await expect(stateMCPARDashboardPage.addCopyButton).toBeVisible();
-      await stateMCPARDashboardPage.addCopyButton.click();
+      // Create MCPAR
+      await stateMCPARDashboardPage.createMCPAR(programName);
+      await expect(
+        stateMCPARDashboardPage.table.getByRole("row", { name: programName })
+      ).toBeVisible();
 
-      await expect(stateMCPARDashboardPage.saveButton).toBeVisible();
+      // Edit MCPAR
+      await stateMCPARDashboardPage.editProgram(programName, newName);
+      await expect(
+        stateMCPARDashboardPage.table.getByRole("row", { name: programName })
+      ).not.toBeVisible();
+      await expect(
+        stateMCPARDashboardPage.table.getByRole("row", { name: newName })
+      ).toBeVisible();
     });
   }
 );
@@ -33,14 +48,22 @@ test.describe("Admin Archiving", () => {
   }) => {
     await adminHomePage.goto();
     await adminHomePage.isReady();
+    await adminHomePage.selectMCPAR(stateName);
   });
 });
 
 test.describe("State users can't see archived programs", () => {
   test("State users can't see archived programs", async ({
+    adminHomePage,
     stateMCPARDashboardPage,
   }) => {
     await stateMCPARDashboardPage.goto();
     await stateMCPARDashboardPage.isReady();
+
+    await stateMCPARDashboardPage.logOut();
+
+    await adminHomePage.goto();
+    await adminHomePage.isReady();
+    await adminHomePage.selectMCPAR(stateName);
   });
 });

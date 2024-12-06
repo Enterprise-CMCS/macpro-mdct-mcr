@@ -1,5 +1,6 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./base.page";
+import { ReportType } from "../../../../services/ui-src/src/types";
 
 export default class AdminHomePage extends BasePage {
   public path = "/";
@@ -55,5 +56,13 @@ export default class AdminHomePage extends BasePage {
         name: "Go to Report Dashboard",
       })
       .click();
+  }
+
+  public async archiveExistingReports(reportType: string, state: string) {
+    switch (reportType) {
+      case ReportType.MCPAR: {
+        this.selectMCPAR(state);
+      }
+    }
   }
 }
