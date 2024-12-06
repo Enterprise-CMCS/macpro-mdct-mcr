@@ -196,24 +196,15 @@ export const renderResponseData = (
 
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 
-  if (!hasResponse && !isChoiceListField) {
-    return <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>;
+  if (!hasResponse) {
+    const isIlos = formField.id === "plan_ilosOfferedByPlan";
+    return (
+      !isIlos && <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>
+    );
     // need to explicitly make this else if conditional so
   }
 
-  if (
-    !hasResponse &&
-    isChoiceListField &&
-    formField.id !== "plan_ilosOfferedByPlan"
-  ) {
-    return (
-      <Text
-        sx={sx.noResponseOptional}
-      >{`${verbiage.missingEntry.noResponse}, optional`}</Text>
-    );
-  }
-
-  // chandle choice list fields (checkbox, radio)
+  // handle choice list fields (checkbox, radio)
   if (isChoiceListField) {
     return renderChoiceListFieldResponse(
       formField,
