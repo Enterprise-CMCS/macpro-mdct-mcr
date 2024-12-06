@@ -75,12 +75,12 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     // if there are no plans added, render the appropriate verbiage
     <Box>
       {entityType === entityTypes[0] && missingPlansOrIlos ? (
-        <Box sx={sx.missingEntityMessage}>
+        <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(renderMissingEntityVerbiage() || "")}
         </Box>
       ) : entityType === entityTypes[1] && !hasBss ? (
         // if there are no BSS entities added, render the appropriate verbiage
-        <Box sx={sx.missingEntityMessage}>
+        <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(
             (section as DrawerReportPageShape).verbiage.missingEntityMessage ||
               ""
