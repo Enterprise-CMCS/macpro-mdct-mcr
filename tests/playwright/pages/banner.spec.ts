@@ -1,5 +1,5 @@
-import { test, expect } from "../utils/fixtures/base";
-import BannerPage from "../utils/pageObjects/banner.page";
+import { expect, test } from "../utils/fixtures/base";
+import { BannerPage, stateUserAuth } from "../utils";
 
 test.describe("admin user banner page", () => {
   test("Should see the correct banner page as an admin user", async ({
@@ -34,7 +34,7 @@ test.describe("admin user banner page", () => {
     profilePage,
   }) => {
     const userContext = await browser.newContext({
-      storageState: ".auth/user.json",
+      storageState: stateUserAuth,
     });
     await profilePage.goto();
     const newBannerPage = new BannerPage(await userContext.newPage());

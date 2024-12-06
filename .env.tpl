@@ -46,5 +46,5 @@ TEST_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_EMAIL
 TEST_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_ADMIN_USER_PASSWORD # pragma: allowlist secret
 TEST_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
 TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
-TEST_STATE=MN
-TEST_STATE=Minnesota
+TEST_STATE=DC
+TEST_STATE_NAME="District of Columbia"
