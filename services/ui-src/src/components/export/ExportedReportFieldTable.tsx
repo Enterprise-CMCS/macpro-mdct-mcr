@@ -235,7 +235,6 @@ const sx = {
   },
   missingEntityMessage: {
     fontWeight: "bold",
-
     ol: {
       paddingLeft: "1rem",
     },
