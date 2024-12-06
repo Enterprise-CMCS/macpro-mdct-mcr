@@ -42,10 +42,8 @@ export default class MCPARDashboardPage extends BasePage {
     await this.modal
       .getByLabel("A.5b Reporting period (i.e. contract period) end date")
       .fill("12/10/2024");
-    await this.modal
-      .getByLabel("Exclusion of CHIP from MCPAR")
-      .click({ force: true });
-    await this.modal.getByLabel("No").click({ force: true });
+    await this.modal.getByLabel("Exclusion of CHIP from MCPAR").click();
+    await this.modal.getByLabel("No").click();
     await this.saveButton.click();
 
     await this.modal.isHidden();
