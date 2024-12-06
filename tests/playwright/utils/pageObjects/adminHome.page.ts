@@ -8,6 +8,7 @@ export default class AdminHomePage extends BasePage {
   readonly page: Page;
   readonly title: Locator;
   readonly dropdown: Locator;
+  readonly table: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -18,6 +19,7 @@ export default class AdminHomePage extends BasePage {
     this.dropdown = page.getByRole("combobox", {
       name: "List of states, including District of Columbia and Puerto Rico",
     });
+    this.table = page.getByRole("table");
   }
 
   public async selectMCPAR(state: string) {
@@ -56,6 +58,7 @@ export default class AdminHomePage extends BasePage {
         name: "Go to Report Dashboard",
       })
       .click();
+    await this.page.waitForResponse((response) => response.status() == 200);
   }
 
   public async archiveExistingReports(reportType: string, state: string) {
@@ -64,5 +67,23 @@ export default class AdminHomePage extends BasePage {
         this.selectMCPAR(state);
       }
     }
+  }
+
+  public async archiveMCPAR(programName: string) {
+    await this.table.isVisible();
+    const row = this.table.getByRole("row", { name: programName });
+    await row.getByRole("button", { name: "Archive" }).click();
+    await this.page.waitForResponse((response) => response.status() == 200);
+    await row.getByRole("button", { name: "Archive" }).isHidden();
+    await row.getByRole("button", { name: "Unarchive" }).isVisible();
+  }
+
+  public async unarchiveMCPAR(programName: string) {
+    await this.table.isVisible();
+    const row = this.table.getByRole("row", { name: programName });
+    await row.getByRole("button", { name: "Unarchive" }).click();
+    await this.page.waitForResponse((response) => response.status() == 200);
+    await row.getByRole("button", { name: "Unarchive" }).isHidden();
+    await row.getByRole("button", { name: "Archive" }).isVisible();
   }
 }
