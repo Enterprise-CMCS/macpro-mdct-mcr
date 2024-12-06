@@ -13,6 +13,7 @@ import {
   FormLayoutElement,
   isFieldElement,
   ReportType,
+  entityTypes,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
@@ -45,24 +46,36 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
 
-  // handle ILOS rendering logic
-  const renderIlosVerbiage = () => {
-    const hasIlos = report?.fieldData["ilos"]?.length;
-    return section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos;
+  const hasPlans = report?.fieldData["plans"]?.length;
+  const hasIlos = report?.fieldData["ilos"]?.length;
+
+  // handle missing entities rendering logic
+  const renderMissingEntityVerbiage = () => {
+    let missingVerbiage;
+    // verbiage for ILOS
+    if (section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) {
+      !hasPlans
+        ? (missingVerbiage = (section as DrawerReportPageShape).verbiage
+            .missingPlansAndIlosMessage)
+        : (missingVerbiage = (section as DrawerReportPageShape).verbiage
+            .missingIlosMessage);
+      return missingVerbiage;
+    }
+    // verbiage for missing plans
+    !hasPlans &&
+      (missingVerbiage = (section as DrawerReportPageShape).verbiage
+        .missingEntityMessage);
+    return missingVerbiage;
   };
 
-  const hasPlans = report?.fieldData["plans"]?.length;
-
-  const missingVerbiage = !hasPlans
-    ? (section as DrawerReportPageShape).verbiage.missingPlansAndIlosMessage
-    : (section as DrawerReportPageShape).verbiage.missingIlosMessage;
+  const missingEntity = !(hasIlos || hasPlans);
 
   return (
-    // if there are no ILOS added, render the appropriate verbiage
+    // if there are no plans or BSS entities added, render the appropriate verbiage
     <Box>
-      {renderIlosVerbiage() ? (
+      {entityType === entityTypes[0] && missingEntity ? (
         <Box sx={sx.missingEntityMessage}>
-          {parseCustomHtml(missingVerbiage ?? "")}
+          {parseCustomHtml(renderMissingEntityVerbiage() || "")}
         </Box>
       ) : (
         <Table
