@@ -78,6 +78,14 @@ const sx = {
     p: {
       margin: "1.5rem 0",
     },
+    a: {
+      color: "palette.base",
+      textDecoration: "none",
+      "&:hover": {
+        color: "palette.base",
+        textDecoration: "none",
+      },
+    },
     h3: {
       fontSize: "xl",
     },
