@@ -48,8 +48,9 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   const hasPlans = report?.fieldData["plans"]?.length;
   const hasIlos = report?.fieldData["ilos"]?.length;
+  const hasBss = report?.fieldData["bssEntities"]?.length;
 
-  // handle missing entities rendering logic
+  // handle missing plans / ilos rendering logic
   const renderMissingEntityVerbiage = () => {
     let missingVerbiage;
     // verbiage for ILOS
@@ -68,14 +69,22 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     return missingVerbiage;
   };
 
-  const missingEntity = !(hasIlos || hasPlans);
+  const missingPlansOrIlos = !(hasIlos || hasPlans);
 
   return (
-    // if there are no plans or BSS entities added, render the appropriate verbiage
+    // if there are no plans added, render the appropriate verbiage
     <Box>
-      {entityType === entityTypes[0] && missingEntity ? (
+      {entityType === entityTypes[0] && missingPlansOrIlos ? (
         <Box sx={sx.missingEntityMessage}>
           {parseCustomHtml(renderMissingEntityVerbiage() || "")}
+        </Box>
+      ) : entityType === entityTypes[1] && !hasBss ? (
+        // if there are no BSS entities added, render the appropriate verbiage
+        <Box sx={sx.missingEntityMessage}>
+          {parseCustomHtml(
+            (section as DrawerReportPageShape).verbiage.missingEntityMessage ||
+              ""
+          )}
         </Box>
       ) : (
         <Table
