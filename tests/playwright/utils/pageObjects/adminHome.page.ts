@@ -60,7 +60,7 @@ export default class AdminHomePage extends BasePage {
     await this.page.waitForResponse((response) => response.status() == 200);
   }
 
-  public async archiveMCPAR(programName: string, stateName: string) {
+  public async archiveMCPAR(stateName: string, programName: string) {
     await this.goto();
     await this.isReady();
     await this.selectMCPAR(stateName);
@@ -73,7 +73,7 @@ export default class AdminHomePage extends BasePage {
     await row.getByRole("button", { name: "Unarchive" }).isVisible();
   }
 
-  public async unarchiveMCPAR(programName: string, stateName: string) {
+  public async unarchiveMCPAR(stateName: string, programName: string) {
     await this.goto();
     await this.isReady();
     await this.selectMCPAR(stateName);

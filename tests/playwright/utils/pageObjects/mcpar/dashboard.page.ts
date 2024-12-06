@@ -51,15 +51,15 @@ export default class MCPARDashboardPage extends BasePage {
     await this.table.isVisible();
   }
 
-  public async update(currentName: string, newName: string) {
-    const row = this.page.getByRole("row", { name: currentName });
+  public async update(programName: string, updatedProgramName: string) {
+    const row = this.page.getByRole("row", { name: programName });
     const editProgramButton = row.getByRole("button").first();
 
     await editProgramButton.isVisible();
     await editProgramButton.click();
     await this.modal.isVisible();
     await this.modal.getByRole("heading", { name: "Edit Program" }).isVisible();
-    await this.programNameInput.fill(newName);
+    await this.programNameInput.fill(updatedProgramName);
     await this.saveButton.click();
     await this.page.waitForResponse((response) => response.status() == 200);
     await this.modal.isHidden();

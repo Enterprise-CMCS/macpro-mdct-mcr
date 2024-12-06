@@ -3,12 +3,12 @@ import { stateName } from "../../utils";
 
 let currentDate = "";
 let programName = "";
-let newName = "";
+let updatedProgramName = "";
 
 test.beforeAll(async () => {
   currentDate = new Date().toISOString();
   programName = `automated test - ${currentDate}`;
-  newName = `Edited: ${programName}`;
+  updatedProgramName = `Updated: ${programName}`;
 });
 
 test.describe(
@@ -36,37 +36,37 @@ test.describe(
         mcparDashboardPage.table.getByRole("row", { name: programName })
       ).toBeVisible();
       await expect(
-        mcparDashboardPage.table.getByRole("row", { name: newName })
+        mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
       ).not.toBeVisible();
 
       // Update MCPAR
-      await mcparDashboardPage.update(programName, newName);
+      await mcparDashboardPage.update(programName, updatedProgramName);
       await expect(
         mcparDashboardPage.table.getByRole("row", { name: programName })
       ).not.toBeVisible();
       await expect(
-        mcparDashboardPage.table.getByRole("row", { name: newName })
+        mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
       ).toBeVisible();
     });
 
     test("Admin users can archive/unarchive reports", async ({
       adminHomePage,
     }) => {
-      await adminHomePage.archiveMCPAR(newName, stateName);
-      await adminHomePage.unarchiveMCPAR(newName, stateName);
+      await adminHomePage.archiveMCPAR(stateName, updatedProgramName);
+      await adminHomePage.unarchiveMCPAR(stateName, updatedProgramName);
     });
 
     test("State users can't see archived programs", async ({
       adminHomePage,
       mcparDashboardPage,
     }) => {
-      await adminHomePage.archiveMCPAR(newName, stateName);
+      await adminHomePage.archiveMCPAR(stateName, updatedProgramName);
 
       await mcparDashboardPage.goto();
       await mcparDashboardPage.isReady();
       await mcparDashboardPage.table.isVisible();
       await expect(
-        mcparDashboardPage.table.getByRole("row", { name: newName })
+        mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
       ).not.toBeVisible();
     });
   }
