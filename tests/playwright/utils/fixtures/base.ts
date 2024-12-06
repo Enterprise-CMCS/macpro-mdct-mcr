@@ -14,9 +14,9 @@ type CustomFixtures = {
   adminHomePage: AdminHomePage;
   bannerPage: BannerPage;
   profilePage: ProfilePage;
+  mcparGetStartedPage: MCPARGetStartedPage;
+  mcparDashboardPage: MCPARDashboardPage;
   stateHomePage: StateHomePage;
-  stateMCPARDashboardPage: MCPARDashboardPage;
-  stateMCPARGetStartedPage: MCPARGetStartedPage;
 };
 
 async function addPageObject(
@@ -48,17 +48,17 @@ export const baseTest = base.extend<CustomFixtures>({
   bannerPage: async ({ browser }, use) => {
     await adminPage(BannerPage, browser, use);
   },
+  mcparDashboardPage: async ({ browser }, use) => {
+    await statePage(MCPARDashboardPage, browser, use);
+  },
+  mcparGetStartedPage: async ({ browser }, use) => {
+    await statePage(MCPARGetStartedPage, browser, use);
+  },
   profilePage: async ({ browser }, use) => {
     await statePage(ProfilePage, browser, use);
   },
   stateHomePage: async ({ browser }, use) => {
     await statePage(StateHomePage, browser, use);
-  },
-  stateMCPARDashboardPage: async ({ browser }, use) => {
-    await statePage(MCPARDashboardPage, browser, use);
-  },
-  stateMCPARGetStartedPage: async ({ browser }, use) => {
-    await statePage(MCPARGetStartedPage, browser, use);
   },
 });
 

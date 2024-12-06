@@ -6,9 +6,10 @@ export default class MCPARDashboardPage extends BasePage {
 
   readonly page: Page;
   readonly addCopyButton: Locator;
-  readonly saveButton: Locator;
-  readonly modal: Locator;
   readonly table: Locator;
+  readonly modal: Locator;
+  readonly programNameInput: Locator;
+  readonly saveButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -18,21 +19,22 @@ export default class MCPARDashboardPage extends BasePage {
     });
     this.table = page.getByRole("table");
     this.modal = page.getByRole("dialog");
+    this.programNameInput = this.modal.getByLabel(
+      "Program name (for new MCPAR)"
+    );
     this.saveButton = this.modal.getByRole("button", {
       name: "Save",
     });
   }
 
-  public async createMCPAR(programName: string) {
+  public async create(programName: string) {
     await this.addCopyButton.isVisible();
     await this.addCopyButton.click();
     await this.modal.isVisible();
     await this.modal
       .getByRole("heading", { name: "Add / Copy a MCPAR" })
       .isVisible();
-    await this.modal
-      .getByLabel("Program name (for new MCPAR)")
-      .fill(programName);
+    await this.programNameInput.fill(programName);
     await this.modal
       .getByLabel("A.5a Reporting period (i.e. contract period) start date")
       .fill("10/10/2024");
@@ -49,7 +51,7 @@ export default class MCPARDashboardPage extends BasePage {
     await this.table.isVisible();
   }
 
-  public async editProgram(currentName: string, newName: string) {
+  public async update(currentName: string, newName: string) {
     const row = this.page.getByRole("row", { name: currentName });
     const editProgramButton = row.getByRole("button").first();
 
@@ -57,7 +59,7 @@ export default class MCPARDashboardPage extends BasePage {
     await editProgramButton.click();
     await this.modal.isVisible();
     await this.modal.getByRole("heading", { name: "Edit Program" }).isVisible();
-    await this.modal.getByLabel("Program name (for new MCPAR)").fill(newName);
+    await this.programNameInput.fill(newName);
     await this.saveButton.click();
     await this.page.waitForResponse((response) => response.status() == 200);
     await this.modal.isHidden();

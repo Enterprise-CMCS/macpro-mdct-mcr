@@ -1,6 +1,5 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./base.page";
-import { ReportType } from "../../../../services/ui-src/src/types";
 
 export default class AdminHomePage extends BasePage {
   public path = "/";
@@ -61,16 +60,12 @@ export default class AdminHomePage extends BasePage {
     await this.page.waitForResponse((response) => response.status() == 200);
   }
 
-  public async archiveExistingReports(reportType: string, state: string) {
-    switch (reportType) {
-      case ReportType.MCPAR: {
-        this.selectMCPAR(state);
-      }
-    }
-  }
-
-  public async archiveMCPAR(programName: string) {
+  public async archiveMCPAR(programName: string, stateName: string) {
+    await this.goto();
+    await this.isReady();
+    await this.selectMCPAR(stateName);
     await this.table.isVisible();
+
     const row = this.table.getByRole("row", { name: programName });
     await row.getByRole("button", { name: "Archive" }).click();
     await this.page.waitForResponse((response) => response.status() == 200);
@@ -78,12 +73,16 @@ export default class AdminHomePage extends BasePage {
     await row.getByRole("button", { name: "Unarchive" }).isVisible();
   }
 
-  public async unarchiveMCPAR(programName: string) {
+  public async unarchiveMCPAR(programName: string, stateName: string) {
+    await this.goto();
+    await this.isReady();
+    await this.selectMCPAR(stateName);
     await this.table.isVisible();
+
     const row = this.table.getByRole("row", { name: programName });
     await row.getByRole("button", { name: "Unarchive" }).click();
     await this.page.waitForResponse((response) => response.status() == 200);
-    await row.getByRole("button", { name: "Unarchive" }).isHidden();
     await row.getByRole("button", { name: "Archive" }).isVisible();
+    await row.getByRole("button", { name: "Unarchive" }).isHidden();
   }
 }

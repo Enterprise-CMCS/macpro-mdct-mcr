@@ -15,8 +15,8 @@ test.describe(
   "MCPAR Dashboard Page - Program Creation/Editing/Archiving",
   () => {
     test("State users can create and edit reports", async ({
-      stateMCPARDashboardPage,
-      stateMCPARGetStartedPage,
+      mcparDashboardPage,
+      mcparGetStartedPage,
       stateHomePage,
     }) => {
       await stateHomePage.goto();
@@ -26,54 +26,48 @@ test.describe(
       await stateHomePage.mcparButton.click();
       await stateHomePage.redirectPage("/mcpar/get-started");
 
-      await expect(stateMCPARGetStartedPage.mcparButton).toBeVisible();
-      await stateMCPARGetStartedPage.mcparButton.click();
-      await stateMCPARGetStartedPage.redirectPage("/mcpar");
+      await expect(mcparGetStartedPage.mcparButton).toBeVisible();
+      await mcparGetStartedPage.mcparButton.click();
+      await mcparGetStartedPage.redirectPage("/mcpar");
 
       // Create MCPAR
-      await stateMCPARDashboardPage.createMCPAR(programName);
+      await mcparDashboardPage.create(programName);
       await expect(
-        stateMCPARDashboardPage.table.getByRole("row", { name: programName })
+        mcparDashboardPage.table.getByRole("row", { name: programName })
       ).toBeVisible();
-
-      // Edit MCPAR
-      await stateMCPARDashboardPage.editProgram(programName, newName);
       await expect(
-        stateMCPARDashboardPage.table.getByRole("row", { name: programName })
+        mcparDashboardPage.table.getByRole("row", { name: newName })
+      ).not.toBeVisible();
+
+      // Update MCPAR
+      await mcparDashboardPage.update(programName, newName);
+      await expect(
+        mcparDashboardPage.table.getByRole("row", { name: programName })
       ).not.toBeVisible();
       await expect(
-        stateMCPARDashboardPage.table.getByRole("row", { name: newName })
+        mcparDashboardPage.table.getByRole("row", { name: newName })
       ).toBeVisible();
-
-      await stateMCPARDashboardPage.logOut();
     });
 
     test("Admin users can archive/unarchive reports", async ({
       adminHomePage,
     }) => {
-      await adminHomePage.goto();
-      await adminHomePage.isReady();
-      await adminHomePage.selectMCPAR(stateName);
-      await adminHomePage.table.isVisible();
-      await expect(
-        adminHomePage.table.getByRole("row", { name: newName })
-      ).toBeVisible();
-      await adminHomePage.archiveMCPAR(newName);
-      await adminHomePage.unarchiveMCPAR(newName);
-      await adminHomePage.archiveMCPAR(newName);
-      await adminHomePage.logOut();
+      await adminHomePage.archiveMCPAR(newName, stateName);
+      await adminHomePage.unarchiveMCPAR(newName, stateName);
     });
 
     test("State users can't see archived programs", async ({
-      stateMCPARDashboardPage,
+      adminHomePage,
+      mcparDashboardPage,
     }) => {
-      await stateMCPARDashboardPage.goto();
-      await stateMCPARDashboardPage.isReady();
-      await stateMCPARDashboardPage.table.isVisible();
+      await adminHomePage.archiveMCPAR(newName, stateName);
+
+      await mcparDashboardPage.goto();
+      await mcparDashboardPage.isReady();
+      await mcparDashboardPage.table.isVisible();
       await expect(
-        stateMCPARDashboardPage.table.getByRole("row", { name: newName })
+        mcparDashboardPage.table.getByRole("row", { name: newName })
       ).not.toBeVisible();
-      await stateMCPARDashboardPage.logOut();
     });
   }
 );
