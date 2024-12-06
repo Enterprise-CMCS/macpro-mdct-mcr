@@ -12,6 +12,7 @@ export default class BasePage {
   readonly accountMenu: Locator;
   readonly manageAccountButton: Locator;
   readonly logoutButton: Locator;
+  readonly mcrLogo: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,6 +27,7 @@ export default class BasePage {
       name: "Manage Account",
     });
     this.logoutButton = page.getByRole("menuitem", { name: "Log Out" });
+    this.mcrLogo = page.getByAltText("MCR logo");
   }
 
   public async goto(url?: string) {
