@@ -136,6 +136,7 @@ export interface ModalDrawerReportPageVerbiage
   entityUnfinishedMessage: string;
   enterEntityDetailsButtonText: string;
   editEntityDetailsButtonText: string;
+  tableHeader?: string;
 }
 
 export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {

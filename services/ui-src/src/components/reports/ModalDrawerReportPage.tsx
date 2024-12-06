@@ -5,10 +5,13 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
+  EntityRow,
+  MobileEntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
+  Table,
 } from "components";
 // utils
 import {
@@ -21,6 +24,7 @@ import {
   setClearedEntriesToDefaultValue,
   resetClearProp,
   parseCustomHtml,
+  useBreakpoint,
 } from "utils";
 // types
 import {
@@ -31,7 +35,9 @@ import {
   FormField,
   isFieldElement,
   ModalDrawerReportPageShape,
+  ModalDrawerReportPageVerbiage,
   ReportStatus,
+  ReportType,
 } from "types";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
@@ -184,6 +190,15 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
+        ) : report?.reportType === ReportType.NAAAR ? (
+          <Box>
+            {entityTable(
+              reportFieldDataEntities,
+              openAddEditEntityModal,
+              openDeleteEntityModal,
+              verbiage
+            )}
+          </Box>
         ) : (
           <Box>
             <Button
@@ -218,7 +233,6 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
             )}
           </Box>
         )}
-
         <AddEditEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}
@@ -278,6 +292,42 @@ interface Props {
   validateOnRender?: boolean;
 }
 
+const entityTable = (
+  entities: AnyObject,
+  openAddEditEntityModal: Function,
+  openDeleteEntityModal: Function,
+  verbiage: ModalDrawerReportPageVerbiage
+) => {
+  const { isTablet, isMobile } = useBreakpoint();
+  const tableHeaders = () => {
+    if (isTablet || isMobile) return { headRow: ["", ""] };
+    return { headRow: ["", verbiage.tableHeader!, ""] };
+  };
+  return (
+    <Table sx={sx.table} content={tableHeaders()}>
+      {entities.map((entity: EntityShape) =>
+        isMobile || isTablet ? (
+          <MobileEntityRow
+            key={entity.id}
+            entity={entity}
+            verbiage={verbiage}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openDeleteEntityModal={openDeleteEntityModal}
+          />
+        ) : (
+          <EntityRow
+            key={entity.id}
+            entity={entity}
+            verbiage={verbiage}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openDeleteEntityModal={openDeleteEntityModal}
+          />
+        )
+      )}
+    </Table>
+  );
+};
+
 const sx = {
   dashboardTitle: {
     marginBottom: "1.25rem",
@@ -305,6 +355,27 @@ const sx = {
     },
     ol: {
       paddingLeft: "1rem",
+    },
+  },
+  table: {
+    tableLayout: "fixed",
+    br: {
+      marginBottom: "0.25rem",
+    },
+    th: {
+      paddingLeft: "1rem",
+      paddingRight: "0",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      ".tablet &, .mobile &": {
+        border: "none",
+      },
+      "&:nth-of-type(1)": {
+        width: "2.5rem",
+      },
+      "&:nth-of-type(3)": {
+        width: "260px",
+      },
     },
   },
 };
