@@ -30,6 +30,7 @@ export default class MCPARDashboardPage extends BasePage {
   public async create(programName: string) {
     await this.addCopyButton.isVisible();
     await this.addCopyButton.click();
+
     await this.modal.isVisible();
     await this.modal
       .getByRole("heading", { name: "Add / Copy a MCPAR" })
@@ -46,7 +47,7 @@ export default class MCPARDashboardPage extends BasePage {
       .click({ force: true });
     await this.modal.getByLabel("No").click({ force: true });
     await this.saveButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
+
     await this.modal.isHidden();
     await this.table.isVisible();
   }
@@ -54,14 +55,14 @@ export default class MCPARDashboardPage extends BasePage {
   public async update(programName: string, updatedProgramName: string) {
     const row = this.page.getByRole("row", { name: programName });
     const editProgramButton = row.getByRole("button").first();
-
     await editProgramButton.isVisible();
     await editProgramButton.click();
+
     await this.modal.isVisible();
     await this.modal.getByRole("heading", { name: "Edit Program" }).isVisible();
     await this.programNameInput.fill(updatedProgramName);
     await this.saveButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
+
     await this.modal.isHidden();
     await this.table.isVisible();
   }

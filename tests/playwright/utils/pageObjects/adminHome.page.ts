@@ -60,29 +60,32 @@ export default class AdminHomePage extends BasePage {
     await this.page.waitForResponse((response) => response.status() == 200);
   }
 
-  public async archiveMCPAR(stateName: string, programName: string) {
+  public async getRowMCPAR(stateName: string, programName: string) {
     await this.goto();
     await this.isReady();
     await this.selectMCPAR(stateName);
     await this.table.isVisible();
 
-    const row = this.table.getByRole("row", { name: programName });
-    await row.getByRole("button", { name: "Archive" }).click();
+    return this.table.getByRole("row", { name: programName });
+  }
+
+  public async archiveMCPAR(stateName: string, programName: string) {
+    const row = await this.getRowMCPAR(stateName, programName);
+    const archiveButton = row.getByRole("button", { name: "Archive" });
+
+    await archiveButton.click();
     await this.page.waitForResponse((response) => response.status() == 200);
-    await row.getByRole("button", { name: "Archive" }).isHidden();
+    await archiveButton.isHidden();
     await row.getByRole("button", { name: "Unarchive" }).isVisible();
   }
 
   public async unarchiveMCPAR(stateName: string, programName: string) {
-    await this.goto();
-    await this.isReady();
-    await this.selectMCPAR(stateName);
-    await this.table.isVisible();
+    const row = await this.getRowMCPAR(stateName, programName);
+    const unarchiveButton = row.getByRole("button", { name: "Unarchive" });
 
-    const row = this.table.getByRole("row", { name: programName });
-    await row.getByRole("button", { name: "Unarchive" }).click();
+    await unarchiveButton.click();
     await this.page.waitForResponse((response) => response.status() == 200);
     await row.getByRole("button", { name: "Archive" }).isVisible();
-    await row.getByRole("button", { name: "Unarchive" }).isHidden();
+    await unarchiveButton.isHidden();
   }
 }

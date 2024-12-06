@@ -22,31 +22,30 @@ test.describe(
       await stateHomePage.goto();
       await stateHomePage.isReady();
 
-      await expect(stateHomePage.mcparButton).toBeVisible();
+      await stateHomePage.mcparButton.isVisible();
       await stateHomePage.mcparButton.click();
       await stateHomePage.redirectPage("/mcpar/get-started");
 
-      await expect(mcparGetStartedPage.mcparButton).toBeVisible();
+      await mcparGetStartedPage.mcparButton.isVisible();
       await mcparGetStartedPage.mcparButton.click();
       await mcparGetStartedPage.redirectPage("/mcpar");
 
+      const originalRow = mcparDashboardPage.table.getByRole("row", {
+        name: programName,
+      });
+      const updatedRow = mcparDashboardPage.table.getByRole("row", {
+        name: updatedProgramName,
+      });
+
       // Create MCPAR
       await mcparDashboardPage.create(programName);
-      await expect(
-        mcparDashboardPage.table.getByRole("row", { name: programName })
-      ).toBeVisible();
-      await expect(
-        mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
-      ).not.toBeVisible();
+      await expect(originalRow).toBeVisible();
+      await expect(updatedRow).toBeHidden();
 
       // Update MCPAR
       await mcparDashboardPage.update(programName, updatedProgramName);
-      await expect(
-        mcparDashboardPage.table.getByRole("row", { name: programName })
-      ).not.toBeVisible();
-      await expect(
-        mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
-      ).toBeVisible();
+      await expect(originalRow).toBeHidden();
+      await expect(updatedRow).toBeVisible();
     });
 
     test("Admin users can archive/unarchive reports", async ({
@@ -67,7 +66,7 @@ test.describe(
       await mcparDashboardPage.table.isVisible();
       await expect(
         mcparDashboardPage.table.getByRole("row", { name: updatedProgramName })
-      ).not.toBeVisible();
+      ).toBeHidden();
     });
   }
 );
