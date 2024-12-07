@@ -60,14 +60,17 @@ export const EntityRow = ({
           >
             {verbiage.editEntityButtonText}
           </Button>
-          <Button
-            sx={sx.enterButton}
-            onClick={() => openEntityDetailsOverlay(entity)}
-            variant="outline"
-            size="sm"
-          >
-            {entering ? <Spinner size="md" /> : verbiage.enterReportText}
-          </Button>
+          {openEntityDetailsOverlay && (
+            <Button
+              sx={sx.enterButton}
+              onClick={() => openEntityDetailsOverlay(entity)}
+              variant="outline"
+              size="sm"
+            >
+              {entering ? <Spinner size="md" /> : verbiage.enterReportText}
+            </Button>
+          )}
+
           <Button
             sx={sx.deleteButton}
             data-testid="delete-entity"
@@ -86,10 +89,10 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
-  entering: boolean;
+  entering?: boolean;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
-  openEntityDetailsOverlay: Function;
+  openEntityDetailsOverlay?: Function;
   [key: string]: any;
 }
 
