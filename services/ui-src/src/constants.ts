@@ -76,6 +76,17 @@ export enum States {
   WY = "Wyoming",
 }
 
+// ANALYSIS METHODS (NAAAR)
+export const DEFAULT_ANALYSIS_METHODS = [
+  "Geomapping",
+  "Plan Provider Directory Review",
+  "Secret Shopper: Network Participation",
+  "Secret Shopper: Appointment Availability",
+  "EVV Data Analysis",
+  "Review of Grievances Related to Access",
+  "Encounter Data Analysis",
+];
+
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms

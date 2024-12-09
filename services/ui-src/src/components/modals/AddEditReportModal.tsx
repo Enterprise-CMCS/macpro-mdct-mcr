@@ -22,7 +22,8 @@ import {
   convertDateUtcToEt,
   useStore,
 } from "utils";
-import { States } from "../../constants";
+// constants
+import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -170,6 +171,7 @@ export const AddEditReportModal = ({
       },
       fieldData: {
         programName,
+        ["analysisMethods"]: DEFAULT_ANALYSIS_METHODS,
       },
     };
   };

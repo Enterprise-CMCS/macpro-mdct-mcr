@@ -79,15 +79,16 @@ export const MobileEntityRow = ({
           >
             {editEntityButtonText}
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => openEntityDetailsOverlay(entity)}
-            size="sm"
-            sx={sx.enterButton}
-          >
-            {entering ? <Spinner size="md" /> : enterReportText}
-          </Button>
-
+          {openEntityDetailsOverlay && (
+            <Button
+              variant="outline"
+              onClick={() => openEntityDetailsOverlay(entity)}
+              size="sm"
+              sx={sx.enterButton}
+            >
+              {entering ? <Spinner size="md" /> : enterReportText}
+            </Button>
+          )}
           <Button
             sx={sx.deleteButton}
             onClick={() => openDeleteEntityModal(entity)}
@@ -105,10 +106,10 @@ interface Props {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;
-  entering: boolean;
+  entering?: boolean;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
-  openEntityDetailsOverlay: Function;
+  openEntityDetailsOverlay?: Function;
   [key: string]: any;
 }
 
