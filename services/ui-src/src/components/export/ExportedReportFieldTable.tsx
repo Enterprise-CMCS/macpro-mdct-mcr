@@ -13,6 +13,7 @@ import {
   FormLayoutElement,
   isFieldElement,
   ReportType,
+  entityTypes,
 } from "types";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
@@ -45,24 +46,39 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const reportType = report?.reportType as ReportType;
   const hideHintText = reportType === ReportType.MLR;
 
-  // handle ILOS rendering logic
-  const renderIlosVerbiage = () => {
-    const hasIlos = report?.fieldData["ilos"]?.length;
-    return section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos;
+  const hasPlans = report?.fieldData["plans"]?.length;
+  const hasIlos = report?.fieldData["ilos"]?.length;
+  const hasBss = report?.fieldData["bssEntities"]?.length;
+
+  // handle missing plans / ilos rendering logic
+  const renderMissingEntityVerbiage = () => {
+    const { path, verbiage: v } = section as DrawerReportPageShape;
+
+    // verbiage for ILOS
+    if (path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) {
+      return !hasPlans ? v.missingPlansAndIlosMessage : v.missingIlosMessage;
+    }
+
+    // verbiage for missing plans
+    return !hasPlans ? v.missingEntityMessage : undefined;
   };
 
-  const hasPlans = report?.fieldData["plans"]?.length;
-
-  const missingVerbiage = !hasPlans
-    ? (section as DrawerReportPageShape).verbiage.missingPlansAndIlosMessage
-    : (section as DrawerReportPageShape).verbiage.missingIlosMessage;
+  const missingPlansOrIlos = !(hasIlos || hasPlans);
 
   return (
-    // if there are no ILOS added, render the appropriate verbiage
+    // if there are no plans added, render the appropriate verbiage
     <Box>
-      {renderIlosVerbiage() ? (
-        <Box sx={sx.missingEntityMessage}>
-          {parseCustomHtml(missingVerbiage ?? "")}
+      {entityType === entityTypes[0] && missingPlansOrIlos ? (
+        <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
+          {parseCustomHtml(renderMissingEntityVerbiage() || "")}
+        </Box>
+      ) : entityType === entityTypes[1] && !hasBss ? (
+        // if there are no BSS entities added, render the appropriate verbiage
+        <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
+          {parseCustomHtml(
+            (section as DrawerReportPageShape).verbiage.missingEntityMessage ||
+              ""
+          )}
         </Box>
       ) : (
         <Table
@@ -222,7 +238,6 @@ const sx = {
   },
   missingEntityMessage: {
     fontWeight: "bold",
-
     ol: {
       paddingLeft: "1rem",
     },

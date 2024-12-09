@@ -128,21 +128,7 @@ const traverseRoutes = (routes) => {
   });
 };
 
-const traverseRoute = (route) => {
-  /*
-   * TODO: account for flag status
-   *
-   * if (
-   *   [
-   *     "/mcpar/plan-level-indicators/patient-access-api",
-   *     "/mcpar/plan-level-indicators/prior-authorization",
-   *     "/mcpar/state-level-indicators/prior-authorization",
-   *   ].includes(route.path)
-   * ) {
-   *   return;
-   * }
-   */
-
+const continueTraversing = (route) => {
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
     //validate we are on the URL we expect to be
@@ -164,6 +150,21 @@ const traverseRoute = (route) => {
 
   //If this route has children routes, traverse those as well
   if (route.children) traverseRoutes(route.children);
+};
+
+const traverseRoute = (route) => {
+  if (route.flag) {
+    cy.intercept(/launchdarkly/).as("ld");
+    cy.wait("@ld").then(({ request }) => {
+      const flags = request.body[0].features;
+      if (!flags[route.flag]) {
+        return;
+      }
+      continueTraversing(route);
+    });
+  } else {
+    continueTraversing(route);
+  }
 };
 
 const completeDrawerForm = (drawerForm) => {
