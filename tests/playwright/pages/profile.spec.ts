@@ -1,6 +1,6 @@
-import { test } from "../utils/fixtures/base";
+import { expect, test } from "../utils/fixtures/base";
 import { BrowserContext, Page } from "@playwright/test";
-import ProfilePage from "../utils/pageObjects/profile.page";
+import { adminUserAuth, ProfilePage, stateUserAuth } from "../utils";
 
 let adminPage: Page;
 let userPage: Page;
@@ -9,12 +9,12 @@ let userContext: BrowserContext;
 
 test.beforeAll(async ({ browser }) => {
   adminContext = await browser.newContext({
-    storageState: ".auth/admin.json",
+    storageState: adminUserAuth,
   });
   adminPage = await adminContext.newPage();
 
   userContext = await browser.newContext({
-    storageState: ".auth/user.json",
+    storageState: stateUserAuth,
   });
   userPage = await userContext.newPage();
 });
@@ -25,6 +25,12 @@ test.afterAll(async () => {
 });
 
 test.describe("Admin profile", () => {
+  test("admin profile should have banner edit button", async () => {
+    const profilePage = new ProfilePage(adminPage);
+    await profilePage.goto();
+    await profilePage.isReady();
+    await expect(profilePage.bannerEditorButton).toBeVisible();
+  });
   test(
     "Is accessible on all device types for admin user",
     { tag: "@admin" },
@@ -36,10 +42,20 @@ test.describe("Admin profile", () => {
   );
 });
 
-test.describe("State user profile", { tag: "@user" }, () => {
-  test("Is accessible on all device types for state user", async () => {
+test.describe("State user profile", async () => {
+  test("state user profile should not have banner edit button", async () => {
     const profilePage = new ProfilePage(userPage);
     await profilePage.goto();
-    await profilePage.e2eA11y();
+    await profilePage.isReady();
+    await expect(profilePage.bannerEditorButton).not.toBeVisible();
   });
+  test(
+    "Is accessible on all device types for state user",
+    { tag: "@user" },
+    async () => {
+      const profilePage = new ProfilePage(userPage);
+      await profilePage.goto();
+      await profilePage.e2eA11y();
+    }
+  );
 });

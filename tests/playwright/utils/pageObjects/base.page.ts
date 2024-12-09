@@ -36,6 +36,10 @@ export default class BasePage {
     }
   }
 
+  public async redirectPage(url: string) {
+    await this.page.waitForURL(url);
+  }
+
   public async isReady() {
     await this.title.isVisible();
     return expect(this.page).toHaveURL(this.path);
