@@ -128,7 +128,7 @@ const traverseRoutes = (routes) => {
   });
 };
 
-const continueTraversing = async (route) => {
+const continueTraversing = (route) => {
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
     //validate we are on the URL we expect to be
@@ -152,16 +152,14 @@ const continueTraversing = async (route) => {
   if (route.children) traverseRoutes(route.children);
 };
 
-const traverseRoute = async (route) => {
+const traverseRoute = (route) => {
   if (route.flag) {
-    cy.intercept(/launchdarkly/).as("ldflags");
-    cy.wait("@ldflags").then(({ request }) => {
+    cy.intercept(/launchdarkly/).as("ld");
+    cy.wait("@ld").then(({ request }) => {
       const flags = request.body[0].features;
-
       if (!flags[route.flag]) {
         return;
       }
-
       continueTraversing(route);
     });
   } else {
