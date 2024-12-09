@@ -135,7 +135,9 @@ const traverseRoutes = (routes, flags) => {
     // Intercept Launch Darkly request first time only
     cy.intercept(/launchdarkly/).as("ld");
     cy.wait("@ld").then(({ request }) => {
-      continueTraversing(request.body[0].features);
+      const response = request.body.filter((item) => item.features)[0];
+      const ldFlags = response ? response.features : {};
+      continueTraversing(ldFlags);
     });
   } else {
     // Reset intercept
