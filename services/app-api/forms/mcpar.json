@@ -637,6 +637,7 @@
         },
         {
           "name": "XIII: Prior Authorization",
+          "flag": "novMcparRelease",
           "path": "/mcpar/state-level-indicators/prior-authorization",
           "pageType": "standard",
           "verbiage": {
@@ -4267,6 +4268,7 @@
         },
         {
           "name": "XIII: Prior Authorization",
+          "flag": "novMcparRelease",
           "path": "/mcpar/plan-level-indicators/prior-authorization",
           "pageType": "drawer",
           "entityType": "plans",
@@ -4488,6 +4490,7 @@
         },
         {
           "name": "XIV: Patient Access API Usage",
+          "flag": "novMcparRelease",
           "path": "/mcpar/plan-level-indicators/patient-access-api",
           "pageType": "drawer",
           "entityType": "plans",
