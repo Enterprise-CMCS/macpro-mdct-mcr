@@ -1,8 +1,13 @@
 import { test as setup } from "@playwright/test";
 
-import { adminPassword, adminUser, statePassword, stateUser } from "./consts";
-
-const adminFile = ".auth/admin.json";
+import {
+  adminPassword,
+  adminUser,
+  adminUserAuth,
+  statePassword,
+  stateUser,
+  stateUserAuth,
+} from "./consts";
 
 setup("authenticate as admin", async ({ page }) => {
   await page.goto("/");
@@ -19,10 +24,8 @@ setup("authenticate as admin", async ({ page }) => {
     })
     .isVisible();
   await page.waitForTimeout(1000);
-  await page.context().storageState({ path: adminFile });
+  await page.context().storageState({ path: adminUserAuth });
 });
-
-const userFile = ".auth/user.json";
 
 setup("authenticate as user", async ({ page }) => {
   await page.goto("/");
@@ -39,5 +42,5 @@ setup("authenticate as user", async ({ page }) => {
     })
     .isVisible();
   await page.waitForTimeout(1000);
-  await page.context().storageState({ path: userFile });
+  await page.context().storageState({ path: stateUserAuth });
 });
