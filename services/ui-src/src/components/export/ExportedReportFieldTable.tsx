@@ -52,21 +52,15 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
 
   // handle missing plans / ilos rendering logic
   const renderMissingEntityVerbiage = () => {
-    let missingVerbiage;
+    const { path, verbiage: v } = section as DrawerReportPageShape;
+
     // verbiage for ILOS
-    if (section.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) {
-      !hasPlans
-        ? (missingVerbiage = (section as DrawerReportPageShape).verbiage
-            .missingPlansAndIlosMessage)
-        : (missingVerbiage = (section as DrawerReportPageShape).verbiage
-            .missingIlosMessage);
-      return missingVerbiage;
+    if (path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) {
+      return !hasPlans ? v.missingPlansAndIlosMessage : v.missingIlosMessage;
     }
+
     // verbiage for missing plans
-    !hasPlans &&
-      (missingVerbiage = (section as DrawerReportPageShape).verbiage
-        .missingEntityMessage);
-    return missingVerbiage;
+    return !hasPlans ? v.missingEntityMessage : undefined;
   };
 
   const missingPlansOrIlos = !(hasIlos || hasPlans);
