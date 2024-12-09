@@ -1,49 +1,56 @@
+import { BrowserContext, Page } from "@playwright/test";
+import { HelpPage, ProfilePage, StateHomePage, stateUserAuth } from "../utils";
 import { test, expect } from "../utils/fixtures/base";
 
-test.describe("Header test", () => {
-  test("MCR logo link should navigate to /", async ({
-    profilePage,
-    stateHomePage,
-  }) => {
-    await stateHomePage.goto();
-    await profilePage.goto();
-    await profilePage.isReady();
-    await profilePage.mcrLogo.click();
-    await stateHomePage.isReady();
-    await expect(stateHomePage.title).toBeVisible();
+let userPage: Page;
+let userContext: BrowserContext;
+let homePage: StateHomePage;
+let profilePage: ProfilePage;
+let helpPage: HelpPage;
+
+test.beforeAll(async ({ browser }) => {
+  userContext = await browser.newContext({
+    storageState: stateUserAuth,
   });
-  test("Manage account link should navigate to /profile", async ({
-    stateHomePage,
-    profilePage,
-  }) => {
-    await profilePage.goto();
-    await stateHomePage.goto();
-    await stateHomePage.isReady();
-    await stateHomePage.manageAccount();
+  userPage = await userContext.newPage();
+  homePage = new StateHomePage(userPage);
+  profilePage = new ProfilePage(userPage);
+  helpPage = new HelpPage(userPage);
+});
+
+test.afterAll(async () => {
+  await userContext.close();
+});
+
+test.describe("Header test", () => {
+  test("MCR logo link should navigate to /", async () => {
+    await homePage.goto();
+    await homePage.isReady();
+    await homePage.mcrLogo.click();
+    await expect(homePage.title).toBeVisible();
+  });
+  test("Manage account link should navigate to /profile", async () => {
+    await homePage.goto();
+    await homePage.isReady();
+    await homePage.manageAccount();
     await expect(profilePage.title).toBeVisible();
   });
 
-  test("Get help link navigate to /help", async ({
-    stateHomePage,
-    helpPage,
-  }) => {
-    await helpPage.goto();
-    await stateHomePage.goto();
-    await stateHomePage.isReady();
-    await stateHomePage.manageAccount();
+  test("Get help link navigate to /help", async () => {
+    await homePage.goto();
+    await homePage.isReady();
+    await homePage.getHelp();
     await helpPage.isReady();
     await expect(helpPage.title).toBeVisible();
   });
 
-  test("Logout button should navigate successfully log out the user", async ({
-    page,
-    stateHomePage,
-  }) => {
-    await page.goto("");
-    await stateHomePage.goto();
-    await stateHomePage.isReady();
-    await stateHomePage.logOut();
-    await stateHomePage.redirectPage("");
-    await expect(page.getByRole("textbox", { name: "email" })).toBeVisible();
+  test("Logout button should navigate successfully log out the user", async () => {
+    await homePage.goto();
+    await homePage.isReady();
+    await homePage.logOut();
+    await homePage.redirectPage("");
+    await expect(
+      userPage.getByRole("textbox", { name: "email" })
+    ).toBeVisible();
   });
 });
