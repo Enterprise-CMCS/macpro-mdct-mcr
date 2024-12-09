@@ -3,6 +3,7 @@ import {
   AdminHomePage,
   adminUserAuth,
   BannerPage,
+  HelpPage,
   MCPARDashboardPage,
   MCPARGetStartedPage,
   ProfilePage,
@@ -14,6 +15,7 @@ type CustomFixtures = {
   adminHomePage: AdminHomePage;
   bannerPage: BannerPage;
   profilePage: ProfilePage;
+  helpPage: HelpPage;
   mcparGetStartedPage: MCPARGetStartedPage;
   mcparDashboardPage: MCPARDashboardPage;
   stateHomePage: StateHomePage;
@@ -59,6 +61,9 @@ export const baseTest = base.extend<CustomFixtures>({
   },
   stateHomePage: async ({ browser }, use) => {
     await statePage(StateHomePage, browser, use);
+  },
+  helpPage: async ({ browser }, use) => {
+    await statePage(HelpPage, browser, use);
   },
 });
 
