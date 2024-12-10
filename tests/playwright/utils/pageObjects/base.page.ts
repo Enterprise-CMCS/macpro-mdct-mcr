@@ -11,7 +11,9 @@ export default class BasePage {
   readonly myAccountButton: Locator;
   readonly accountMenu: Locator;
   readonly manageAccountButton: Locator;
+  readonly getHelpButton: Locator;
   readonly logoutButton: Locator;
+  readonly mcrLogo: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,7 +27,11 @@ export default class BasePage {
     this.manageAccountButton = page.getByRole("menuitem", {
       name: "Manage Account",
     });
+    this.getHelpButton = page.getByRole("link", {
+      name: "Get Help",
+    });
     this.logoutButton = page.getByRole("menuitem", { name: "Log Out" });
+    this.mcrLogo = page.getByAltText("MCR logo");
   }
 
   public async goto(url?: string) {
@@ -49,6 +55,10 @@ export default class BasePage {
     await this.myAccountButton.click();
     await this.accountMenu.isVisible();
     await this.manageAccountButton.click();
+  }
+
+  public async getHelp() {
+    await this.getHelpButton.click();
   }
 
   public async logOut() {
