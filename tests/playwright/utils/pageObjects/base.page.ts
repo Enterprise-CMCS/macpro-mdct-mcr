@@ -75,6 +75,7 @@ export default class BasePage {
     await this.myAccountButton.click();
     await this.accountMenu.isVisible();
     await this.logoutButton.click();
+    await this.page.waitForResponse((response) => response.ok());
   }
 
   public async e2eA11y() {
