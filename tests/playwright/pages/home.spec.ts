@@ -1,5 +1,5 @@
-import { test, expect } from "../utils/fixtures/base";
-import BasePage from "../utils/pageObjects/base.page";
+import { expect, test } from "../utils/fixtures/base";
+import { BasePage } from "../utils";
 
 test.describe("state user home page", () => {
   test("Should see the correct home page as a state user", async ({
@@ -7,8 +7,9 @@ test.describe("state user home page", () => {
   }) => {
     await stateHomePage.goto();
     await stateHomePage.isReady();
-    await expect(stateHomePage.wpButton).toBeVisible();
-    await expect(stateHomePage.sarButton).toBeVisible();
+    await expect(stateHomePage.mcparButton).toBeVisible();
+    await expect(stateHomePage.mlrButton).toBeVisible();
+    await expect(stateHomePage.naaarButton).toBeVisible();
   });
 
   test("Is accessible on all device types for state user", async ({

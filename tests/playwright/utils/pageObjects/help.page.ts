@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
 import BasePage from "./base.page";
 
-export default class helpPage extends BasePage {
+export default class HelpPage extends BasePage {
   public path = "/help";
 
   readonly page: Page;
