@@ -47,7 +47,7 @@ test.describe("Header test", () => {
   test("Logout button should successfully log out the user", async () => {
     await homePage.goto();
     await homePage.isReady();
+    // logout function checks for successful response
     await homePage.logOut();
-    await userPage.waitForResponse((response) => response.status() == 200);
   });
 });
