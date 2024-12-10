@@ -1,5 +1,11 @@
 import { BrowserContext, Page } from "@playwright/test";
-import { HelpPage, ProfilePage, StateHomePage, stateUserAuth } from "../utils";
+import {
+  BasePage,
+  HelpPage,
+  ProfilePage,
+  StateHomePage,
+  stateUserAuth,
+} from "../utils";
 import { test, expect } from "../utils/fixtures/base";
 
 let userPage: Page;
@@ -7,6 +13,7 @@ let userContext: BrowserContext;
 let homePage: StateHomePage;
 let profilePage: ProfilePage;
 let helpPage: HelpPage;
+let basePage: BasePage;
 
 test.beforeAll(async ({ browser }) => {
   userContext = await browser.newContext({
@@ -16,6 +23,7 @@ test.beforeAll(async ({ browser }) => {
   homePage = new StateHomePage(userPage);
   profilePage = new ProfilePage(userPage);
   helpPage = new HelpPage(userPage);
+  basePage = new BasePage(userPage);
 });
 
 test.afterAll(async () => {
@@ -49,6 +57,7 @@ test.describe("Header test", () => {
     await homePage.isReady();
     await homePage.logOut();
     await homePage.redirectPage("");
+    await basePage.isReady();
     await expect(
       userPage.getByRole("textbox", { name: "email" })
     ).toBeVisible();
