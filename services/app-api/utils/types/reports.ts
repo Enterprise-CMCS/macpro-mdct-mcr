@@ -36,6 +36,7 @@ export interface ReportRouteBase {
   name: string;
   path: string;
   pageType?: string;
+  flag?: string;
 }
 
 export type ReportRouteWithForm =
