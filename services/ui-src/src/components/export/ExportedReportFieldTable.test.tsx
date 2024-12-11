@@ -73,6 +73,7 @@ const mockStandardPageJson = {
 };
 const mockDrawerPageJson = {
   ...mockDrawerReportPageJson,
+  form: { id: "form", fields: [] },
   drawerForm: { id: "drawer", fields: reportJsonFields },
 };
 const mockMissingPlansPageJson = {
