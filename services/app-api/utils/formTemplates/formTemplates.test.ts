@@ -1,5 +1,6 @@
 import {
   compileValidationJsonFromRoutes,
+  filterByFlag,
   flattenReportRoutesArray,
   formTemplateForReportType,
   generatePCCMTemplate,
@@ -407,5 +408,34 @@ describe("Test compileValidationJsonFromRoutes", () => {
       "with-label": "text",
       "mock-nested-field": "radio",
     });
+  });
+});
+
+describe("filterByFlag()", () => {
+  it("Return whether route is allowed", () => {
+    const routes: ReportRoute[] = [
+      {
+        name: "noFlag",
+        path: "/noFlag",
+      },
+      {
+        name: "filteredFlag",
+        path: "/filteredFlag",
+        flag: "filteredFlag",
+      },
+      {
+        name: "allowedFlag",
+        path: "/allowedFlag",
+        flag: "allowedFlag",
+      },
+    ];
+    const route1 = filterByFlag(routes[0], "filteredFlag");
+    expect(route1).toEqual(true);
+
+    const route2 = filterByFlag(routes[1], "filteredFlag");
+    expect(route2).toEqual(false);
+
+    const route3 = filterByFlag(routes[2], "filteredFlag");
+    expect(route3).toEqual(true);
   });
 });
