@@ -696,7 +696,7 @@
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 2,
-                                      "parentFieldName": "state_stateTimeframeForStandardPriorAuthorizationDecisions",
+                                      "parentFieldName": "state_timeframesForStandardPriorAuthorizationDecisions",
                                       "parentOptionId": "2nAidFCWvENhYZvzLt3DxJWOqtx"
                                     },
                                     "props": {
