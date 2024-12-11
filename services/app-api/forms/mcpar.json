@@ -689,7 +689,7 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "state_timeframesForStandardPriorAuthorizationDecisions-otherText",
+                                    "id": "state_stateTimeframeForStandardPriorAuthorizationDecisions",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
@@ -731,7 +731,7 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "state_timeframesForExpeditedPriorAuthorizationDecisions-otherText",
+                                    "id": "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
