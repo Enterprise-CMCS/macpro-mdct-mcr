@@ -329,8 +329,14 @@ const sx = {
     ".ds-u-clearfix": {
       width: "100%",
     },
+    "&:not(:first-of-type)": {
+      paddingTop: "2rem",
+    },
   },
   textField: {
     width: "100%",
+    label: {
+      marginTop: "0",
+    },
   },
 };

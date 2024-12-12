@@ -39,6 +39,7 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const naaarReport = useFlags()?.naaarReport;
   const novMcparRelease = useFlags()?.novMcparRelease;
 
   // get correct form
@@ -135,15 +136,57 @@ export const AddEditReportModal = ({
     };
   };
 
+  // NAAAR report payload
+  const prepareNaaarPayload = (formData: any) => {
+    const programName = formData["programName"];
+    const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
+    const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
+    const reportingPeriodStartDate = convertDateEtToUtc(
+      formData["reportingPeriodStartDate"]
+    );
+    const reportingPeriodEndDate = convertDateEtToUtc(
+      formData["reportingPeriodEndDate"]
+    );
+    const planTypeIncludedInProgram = formData["planTypeIncludedInProgram"];
+    const planTypeOtherText =
+      planTypeIncludedInProgram[0].value === "Other, specify"
+        ? formData["planTypeIncludedInProgram-otherText"]
+        : null;
+
+    return {
+      metadata: {
+        programName,
+        reportingPeriodStartDate,
+        reportingPeriodEndDate,
+        dueDate,
+        lastAlteredBy: full_name,
+        copyFieldDataSourceId: copyFieldDataSourceId?.value,
+        planTypeIncludedInProgram,
+        "planTypeIncludedInProgram-otherText": planTypeOtherText,
+        locked: false,
+        submissionCount: 0,
+        previousRevisions: [],
+        naaarReport,
+      },
+      fieldData: {
+        programName,
+      },
+    };
+  };
+
   const writeReport = async (formData: any) => {
     setSubmitting(true);
     const submitButton = document.querySelector("[form=" + form.id + "]");
     submitButton?.setAttribute("disabled", "true");
 
-    const dataToWrite =
-      reportType === "MCPAR"
-        ? prepareMcparPayload(formData)
-        : prepareMlrPayload(formData);
+    let dataToWrite;
+    if (reportType === "MCPAR") {
+      dataToWrite = prepareMcparPayload(formData);
+    } else if (reportType === "NAAAR") {
+      dataToWrite = prepareNaaarPayload(formData);
+    } else {
+      dataToWrite = prepareMlrPayload(formData);
+    }
 
     // if an existing program was selected, use that report id
     if (selectedReport?.id) {
@@ -203,6 +246,7 @@ export const AddEditReportModal = ({
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
+        intro: selectedReport?.id ? "" : form.heading?.intro,
         actionButtonText: submitting ? <Spinner size="md" /> : "Save",
         closeButtonText: "Cancel",
       }}

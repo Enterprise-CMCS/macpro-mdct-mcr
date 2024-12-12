@@ -79,3 +79,6 @@ export enum States {
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms
+
+// REPORT ROUTES FOR FIRST SECTION OF A PROGRAM
+export const INITIAL_REPORT_ROUTES = ["/mcpar", "/mlr", "/naaar"];

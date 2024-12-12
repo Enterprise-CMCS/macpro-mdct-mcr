@@ -10,24 +10,27 @@ export default {
       infoHeader: "Ready to Submit?",
       info: [
         {
-          type: "text",
-          as: "span",
-          content:
-            "Double check that everything in your MLR submission is accurate. You won’t be able to make edits after submitting, unless you send a request to CMS to unlock your report. After compliance review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the MLR dashboard. Once you’ve reviewed your report, certify that it’s in compliance with ",
-        },
-        {
-          type: "externalLink",
-          content: "42 CFR § 438.74",
-          props: {
-            href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
-            target: "_blank",
-            "aria-label": "42 CFR § 438.74 (link opens in new tab)",
-          },
-        },
-        {
-          type: "text",
-          as: "span",
-          content: ".",
+          type: "span",
+          children: [
+            {
+              type: "html",
+              content:
+                "Double check that everything in your MLR submission is accurate. You won’t be able to make edits after submitting, unless you send a request to CMS to unlock your report. After compliance review, a CMS representative will contact you if there are corrections to be made and your report status will change to “In revision” in the MLR dashboard. Once you’ve reviewed your report, certify that it’s in compliance with ",
+            },
+            {
+              type: "externalLink",
+              content: "42 CFR § 438.74",
+              props: {
+                href: "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74",
+                target: "_blank",
+                "aria-label": "42 CFR § 438.74 (link opens in new tab)",
+              },
+            },
+            {
+              type: "html",
+              content: ".",
+            },
+          ],
         },
       ],
     },

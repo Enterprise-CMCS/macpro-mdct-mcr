@@ -44,6 +44,9 @@ const sx = {
       color: "palette.primary",
       textDecoration: "underline",
     },
+    p: {
+      margin: "1rem 0",
+    },
   },
   text: {
     marginBottom: "1rem",

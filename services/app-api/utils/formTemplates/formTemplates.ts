@@ -7,6 +7,7 @@ import { createHash } from "crypto";
 // forms
 import mlrForm from "../../forms/mlr.json";
 import mcparForm from "../../forms/mcpar.json";
+import naaarForm from "../../forms/naaar.json";
 // types
 import {
   AnyObject,
@@ -62,9 +63,7 @@ export const formTemplateForReportType = (reportType: ReportType) => {
     case ReportType.MLR:
       return mlrForm as ReportJson;
     case ReportType.NAAAR:
-      throw new Error(
-        "Not Implemented: NAAAR form template JSON must be added to FormTemplateProvider"
-      );
+      return naaarForm as ReportJson;
     default:
       assertExhaustive(reportType);
       throw new Error(
@@ -324,18 +323,17 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   programTypeQuestion.props!.disabled = true;
 };
 
+export const filterByFlag = (route: ReportRoute, flag: string) => {
+  return route?.flag !== flag;
+};
+
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  const routesToFilter = [
-    "/mcpar/state-level-indicators/prior-authorization",
-    "/mcpar/plan-level-indicators/prior-authorization",
-    "/mcpar/program-level-indicators/patient-access-api-usage",
-  ];
 
   for (let route of reportTemplate.routes) {
     if (route?.children) {
-      route.children = route.children.filter(
-        (childRoute: ReportRoute) => !routesToFilter.includes(childRoute.path)
+      route.children = route.children.filter((childRoute: ReportRoute) =>
+        filterByFlag(childRoute, "novMcparRelease")
       );
     }
   }

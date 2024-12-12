@@ -38,7 +38,7 @@ mockedUseStore.mockReturnValue({
 
 const reportPageComponent = (
   <RouterWrappedComponent>
-    <ReportPageFooter data-testid="report-page-footer" />
+    <ReportPageFooter />
   </RouterWrappedComponent>
 );
 

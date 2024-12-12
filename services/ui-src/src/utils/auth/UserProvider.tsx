@@ -53,7 +53,6 @@ export const UserProvider = ({ children }: Props) => {
     } catch (error) {
       console.log(error); // eslint-disable-line no-console
     }
-    window.location.assign(config.POST_SIGNOUT_REDIRECT);
   }, []);
 
   const checkAuthState = useCallback(async () => {

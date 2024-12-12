@@ -9,8 +9,10 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "cd tests/cypress && npm test && cd -",
-    "test:ci": "cd tests/cypress && yarn run test:ci"
+    "test": "cd tests && npm test && cd -",
+    "test:ci": "cd tests && yarn run test:ci",
+    "test:e2e": "cd tests && yarn run test:e2e",
+    "test:e2e-ui": "cd tests && yarn run test:e2e-ui"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,7 @@
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "fast-xml-parser": "4.4.1",
+    "fast-xml-parser": "4.5.0",
     "loader-utils": "2.0.4"
   },
   "devDependencies": {

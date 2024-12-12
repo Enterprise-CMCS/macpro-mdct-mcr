@@ -216,7 +216,13 @@ export const mockReportFieldData = {
       name: "mock-ilos-name-1",
     },
   ],
-  reportingDataPriorToJune2026: [
+  plan_priorAuthorizationReporting: [
+    {
+      key: "mock-key",
+      value: "Yes",
+    },
+  ],
+  plan_patientAccessApiReporting: [
     {
       key: "mock-key",
       value: "Yes",
@@ -348,6 +354,15 @@ export const mockMlrReportFieldData = {
   ],
 };
 
+export const mockNaaarReportFieldData = {
+  stateName: "TestState",
+  text: "text-input",
+  number: 0,
+  radio: ["option1"],
+  checkbox: ["option1", "option2"],
+  dropdown: "dropdown-selection",
+};
+
 export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "MCPAR",
@@ -475,7 +490,7 @@ export const mockNaaarReport = {
   reportType: "NAAAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
-  status: ReportStatus.SUBMITTED,
+  status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
   reportingPeriodEndDate: 168515200000,
@@ -484,9 +499,15 @@ export const mockNaaarReport = {
   lastAlteredBy: "Thelonious States",
   combinedData: false,
   submittedOnDate: Date.now(),
-  fieldData: [],
+  fieldData: mockNaaarReportFieldData,
   locked: false,
   fieldDataId: "mockFieldDataId",
+  planTypeIncludedInProgram: [
+    {
+      key: "mock-key",
+      value: "MCO",
+    },
+  ],
   submissionCount: 0,
   previousRevisions: [],
 };

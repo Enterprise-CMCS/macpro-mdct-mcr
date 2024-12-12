@@ -62,14 +62,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
 
   // on load, get reporting status from store
-  const priorAuthStatus =
-    report?.fieldData?.["reportingDataPriorToJune2026"]?.[0].value;
-  const [isDisabled, setDisabled] = useState<boolean>(
-    priorAuthStatus === "Yes" ? false : true
+  const reportingOnPriorAuthorization =
+    report?.fieldData?.["plan_priorAuthorizationReporting"]?.[0].value;
+  const reportingOnPatientAccessApi =
+    report?.fieldData?.["plan_patientAccessApiReporting"]?.[0].value;
+  const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(
+    reportingOnPriorAuthorization === "Yes" ? false : true
+  );
+  const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
+    reportingOnPatientAccessApi === "Yes" ? false : true
   );
 
   const onChange = (e: InputChangeEvent) => {
-    setDisabled(e.target.value !== "Yes");
+    if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
+      setPriorAuthDisabled(e.target.value !== "Yes");
+    }
+    if (route.path === "/mcpar/plan-level-indicators/patient-access-api") {
+      setPatientAccessDisabled(e.target.value !== "Yes");
+    }
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -135,7 +145,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     if (
       (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
       (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
-        isDisabled)
+        priorAuthDisabled) ||
+      (route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
+        patientAccessDisabled)
     ) {
       style = sx.disabledButton;
       disabled = true;
@@ -171,7 +183,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         : calculateEntityCompletion();
 
       return (
-        <Flex key={entity.id} sx={sx.entityRow}>
+        <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
           {isEntityCompleted && (
             <Image
               src={completedIcon}
@@ -276,6 +288,9 @@ const sx = {
     padding: "0.5rem",
     paddingLeft: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    "&:last-of-type": {
+      borderBottom: "none",
+    },
   },
   entityName: {
     fontSize: "lg",

@@ -36,6 +36,7 @@ export interface ReportRouteBase {
   name: string;
   path: string;
   pageType?: string;
+  flag?: string;
 }
 
 export type ReportRouteWithForm =
@@ -182,6 +183,16 @@ export interface MCPARReportMetadata extends ReportMetadata {
   combinedData: boolean;
   programIsPCCM: Choice[];
   novMcparRelease: boolean;
+}
+
+export interface NAAARReportMetadata extends ReportMetadata {
+  programName: string;
+  reportType: "NAAAR";
+  reportingPeriodStartDate: number;
+  reportingPeriodEndDate: number;
+  dueDate: number;
+  planTypeIncludedInProgram: Choice[];
+  "planTypeIncludedInProgram-otherText"?: string;
 }
 
 // HELPER FUNCTIONS
