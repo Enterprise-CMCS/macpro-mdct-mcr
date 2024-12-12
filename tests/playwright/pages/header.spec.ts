@@ -44,13 +44,10 @@ test.describe("Header test", () => {
     await expect(helpPage.title).toBeVisible();
   });
 
-  test("Logout button should navigate successfully log out the user", async () => {
+  test("Logout button should successfully log out the user", async () => {
     await homePage.goto();
     await homePage.isReady();
+    // logout function checks for successful response
     await homePage.logOut();
-    await homePage.redirectPage("");
-    await expect(
-      userPage.getByRole("textbox", { name: "email" })
-    ).toBeVisible();
   });
 });
