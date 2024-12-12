@@ -30,9 +30,10 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
     pageType === "drawer" ? section.drawerForm?.fields : section.form?.fields;
 
   const renderNotReportingFields = (field: FormField | FormLayoutElement) => {
-    report?.fieldData[field.id]?.value === "Yes"
-      ? (formFields = [field, ...formFields!])
-      : (formFields = section.form!.fields);
+    formFields =
+      report?.fieldData[field.id]?.value === "Yes"
+        ? [field, ...(formFields || [])]
+        : section.form?.fields;
   };
 
   if (
