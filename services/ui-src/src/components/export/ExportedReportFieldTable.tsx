@@ -26,8 +26,27 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   const { tableHeaders } = verbiage;
 
   const pageType = section.pageType;
-  const formFields =
+  let formFields =
     pageType === "drawer" ? section.drawerForm?.fields : section.form?.fields;
+
+  const renderNotReportingFields = (field: FormField | FormLayoutElement) => {
+    formFields =
+      report?.fieldData[field.id]?.value === "Yes"
+        ? [field, ...(formFields || [])]
+        : section.form?.fields;
+  };
+
+  if (
+    pageType === "drawer" &&
+    section.form &&
+    (section.path === "/mcpar/plan-level-indicators/prior-authorization" ||
+      section.path === "/mcpar/plan-level-indicators/patient-access-api")
+  ) {
+    for (let i = 0; i < section.form.fields.length; i++) {
+      renderNotReportingFields(section.form.fields[i]);
+    }
+  }
+
   const entityType = section.entityType;
 
   const formHasOnlyDynamicFields = formFields?.every(

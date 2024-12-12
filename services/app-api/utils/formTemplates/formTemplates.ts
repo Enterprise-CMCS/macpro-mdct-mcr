@@ -323,18 +323,17 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
   programTypeQuestion.props!.disabled = true;
 };
 
+export const filterByFlag = (route: ReportRoute, flag: string) => {
+  return route?.flag !== flag;
+};
+
 const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  const routesToFilter = [
-    "/mcpar/state-level-indicators/prior-authorization",
-    "/mcpar/plan-level-indicators/prior-authorization",
-    "/mcpar/plan-level-indicators/patient-access-api",
-  ];
 
   for (let route of reportTemplate.routes) {
     if (route?.children) {
-      route.children = route.children.filter(
-        (childRoute: ReportRoute) => !routesToFilter.includes(childRoute.path)
+      route.children = route.children.filter((childRoute: ReportRoute) =>
+        filterByFlag(childRoute, "novMcparRelease")
       );
     }
   }
