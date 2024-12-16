@@ -1,6 +1,7 @@
 export { default as BasePage } from "./base.page";
 export { default as BannerPage } from "./banner.page";
 export { default as ProfilePage } from "./profile.page";
+export { default as HelpPage } from "./help.page";
 
 // Admin User
 export { default as AdminHomePage } from "./adminHome.page";
