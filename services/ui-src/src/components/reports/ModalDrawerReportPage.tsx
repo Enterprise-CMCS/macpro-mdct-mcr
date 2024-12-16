@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Heading, Image, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
@@ -39,6 +39,8 @@ import {
   ReportStatus,
   ReportType,
 } from "types";
+// assets
+import addIcon from "assets/icons/icon_add.png";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   // state management
@@ -116,7 +118,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose: drawerOnCloseHandler,
   } = useDisclosure();
 
-  const openDrawer = (entity: EntityShape) => {
+  const openOverlayOrDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
     drawerOnOpenHandler();
   };
@@ -196,6 +198,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
               reportFieldDataEntities,
               openAddEditEntityModal,
               openDeleteEntityModal,
+              openOverlayOrDrawer,
               verbiage
             )}
           </Box>
@@ -227,7 +230,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
                   )}
                   openAddEditEntityModal={openAddEditEntityModal}
                   openDeleteEntityModal={openDeleteEntityModal}
-                  openDrawer={openDrawer}
+                  openOverlayOrDrawer={openOverlayOrDrawer}
                 />
               )
             )}
@@ -277,6 +280,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Button
             sx={sx.bottomAddEntityButton}
             onClick={addEditEntityModalOnOpenHandler}
+            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
           >
             {verbiage.addEntityButtonText}
           </Button>
@@ -296,6 +300,7 @@ const entityTable = (
   entities: AnyObject,
   openAddEditEntityModal: Function,
   openDeleteEntityModal: Function,
+  openOverlayOrDrawer: Function,
   verbiage: ModalDrawerReportPageVerbiage
 ) => {
   const { isTablet, isMobile } = useBreakpoint();
@@ -313,6 +318,7 @@ const entityTable = (
             verbiage={verbiage}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
           />
         ) : (
           <EntityRow
@@ -321,6 +327,7 @@ const entityTable = (
             verbiage={verbiage}
             openAddEditEntityModal={openAddEditEntityModal}
             openDeleteEntityModal={openDeleteEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
           />
         )
       )}
@@ -329,6 +336,9 @@ const entityTable = (
 };
 
 const sx = {
+  buttonIcons: {
+    height: "1rem",
+  },
   dashboardTitle: {
     marginBottom: "1.25rem",
     fontSize: "md",

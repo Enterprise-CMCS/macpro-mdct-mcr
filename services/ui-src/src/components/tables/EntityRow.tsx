@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape } from "types";
+import { AnyObject, EntityShape, ReportType } from "types";
 // utils
 import { eligibilityGroup, getMlrEntityStatus, useStore } from "utils";
 // assets
@@ -16,69 +16,89 @@ export const EntityRow = ({
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
-  openEntityDetailsOverlay,
+  openOverlayOrDrawer,
 }: Props) => {
-  const { report_programName, report_planName } = entity;
+  const { report_programName, report_planName, name } = entity;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
+  // TODO: refactor to handle NAAAR analysis methods
   const entityComplete = useMemo(() => {
     return report ? getMlrEntityStatus(report, entity) : false;
   }, [report]);
 
-  const programInfo = [
-    report_planName,
-    report_programName,
-    eligibilityGroup(entity),
-    reportingPeriod,
-  ];
+  const entityFields = () => {
+    let fields: any[] = [];
+    if (report?.reportType === ReportType.MLR) {
+      fields = [
+        report_planName,
+        report_programName,
+        eligibilityGroup(entity),
+        reportingPeriod,
+      ];
+    } else {
+      fields = [name];
+    }
+    return fields;
+  };
 
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
         <EntityStatusIcon entity={entity as EntityShape} />
       </Td>
-      <Td sx={sx.programInfo}>
+      <Td sx={sx.entityFields}>
         <ul>
-          {programInfo.map((field, index) => (
+          {entityFields().map((field, index) => (
             <li key={index}>{field}</li>
           ))}
         </ul>
-        {!entityComplete && report?.reportType === "MLR" && (
+        {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            Select “Enter MLR” to complete this report.
+            {report.reportType === ReportType.MLR
+              ? "Select “Enter MLR” to complete this report."
+              : report.reportType === ReportType.NAAAR &&
+                "Select “Enter” to complete response."}
           </Text>
         )}
       </Td>
       <Td>
         <Flex sx={sx.actionContainer}>
-          <Button
-            sx={sx.editButton}
-            variant="none"
-            onClick={() => openAddEditEntityModal(entity)}
-          >
-            {verbiage.editEntityButtonText}
-          </Button>
-          {openEntityDetailsOverlay && (
+          {!entity.isRequired && (
+            <Button
+              sx={sx.editButton}
+              variant="none"
+              onClick={() => openAddEditEntityModal(entity)}
+            >
+              {verbiage.editEntityButtonText}
+            </Button>
+          )}
+          {openOverlayOrDrawer && (
             <Button
               sx={sx.enterButton}
-              onClick={() => openEntityDetailsOverlay(entity)}
+              onClick={() => openOverlayOrDrawer(entity)}
               variant="outline"
               size="sm"
             >
-              {entering ? <Spinner size="md" /> : verbiage.enterReportText}
+              {entering ? (
+                <Spinner size="md" />
+              ) : (
+                verbiage.enterReportText ||
+                verbiage.enterEntityDetailsButtonText
+              )}
             </Button>
           )}
-
-          <Button
-            sx={sx.deleteButton}
-            data-testid="delete-entity"
-            onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked || !userIsEndUser}
-          >
-            <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-          </Button>
+          {!entity.isRequired && (
+            <Button
+              sx={sx.deleteButton}
+              data-testid="delete-entity"
+              onClick={() => openDeleteEntityModal(entity)}
+              disabled={locked || !userIsEndUser}
+            >
+              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+            </Button>
+          )}
         </Flex>
       </Td>
     </Tr>
@@ -92,7 +112,7 @@ interface Props {
   entering?: boolean;
   openAddEditEntityModal: Function;
   openDeleteEntityModal: Function;
-  openEntityDetailsOverlay?: Function;
+  openOverlayOrDrawer?: Function;
   [key: string]: any;
 }
 
@@ -113,7 +133,7 @@ const sx = {
     fontSize: "0.75rem",
     marginBottom: "0.75rem",
   },
-  programInfo: {
+  entityFields: {
     maxWidth: "18.75rem",
     ul: {
       margin: "0.5rem auto",
