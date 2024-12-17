@@ -52,7 +52,7 @@ const UnfinishedAccessMeasuresEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
     printVersion={false}
   />
 );
@@ -66,7 +66,7 @@ const UnfinishedAccessMeasuresEntityCardPrintComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
     printVersion={true}
   />
 );
@@ -80,7 +80,7 @@ const AccessMeasuresEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
     printVersion={false}
   />
 );
@@ -94,7 +94,7 @@ const AccessMeasuresEntityCardPrintComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
     printVersion={true}
   />
 );
