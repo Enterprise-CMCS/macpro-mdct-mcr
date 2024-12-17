@@ -28,6 +28,14 @@ export const EntityRow = ({
     return report ? getMlrEntityStatus(report, entity) : false;
   }, [report]);
 
+  const enterDetailsText = () => {
+    let enterText;
+    report?.reportType === ReportType.MLR
+      ? (enterText = verbiage.enterReportText)
+      : (enterText = verbiage.enterEntityDetailsButtonText);
+    return enterText;
+  };
+
   const entityFields = () => {
     let fields: any[] = [];
     if (report?.reportType === ReportType.MLR) {
@@ -81,12 +89,7 @@ export const EntityRow = ({
               variant="outline"
               size="sm"
             >
-              {entering ? (
-                <Spinner size="md" />
-              ) : (
-                verbiage.enterReportText ||
-                verbiage.enterEntityDetailsButtonText
-              )}
+              {entering ? <Spinner size="md" /> : enterDetailsText()}
             </Button>
           )}
           {!entity.isRequired && (

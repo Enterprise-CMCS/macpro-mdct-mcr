@@ -218,7 +218,7 @@ export const ModalOverlayReportPage = ({
                       entering={entering}
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
-                      openEntityDetailsOverlay={openEntityDetailsOverlay}
+                      openOverlayOrDrawer={openEntityDetailsOverlay}
                     />
                   ) : (
                     <EntityRow
@@ -229,7 +229,7 @@ export const ModalOverlayReportPage = ({
                       entering={entering}
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
-                      openEntityDetailsOverlay={openEntityDetailsOverlay}
+                      openOverlayOrDrawer={openEntityDetailsOverlay}
                     />
                   )
                 )}
