@@ -12,6 +12,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 // constants
 import { saveAndCloseText } from "../../constants";
@@ -159,6 +160,19 @@ describe("ModalDrawerReportPage drawer form repeats fields if necessary", () => 
     // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
     const renderedFields = screen.getAllByRole("textbox");
     expect(renderedFields.length).toEqual(2);
+  });
+});
+
+describe("Test ModalDrawerReportPage w/ Entity Table (NAAAR)", () => {
+  test("Entity table should render for a NAAAR report", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockNaaarReportStore,
+    });
+
+    render(modalDrawerReportPageComponentWithEntities);
+    const entityTable = screen.getByTestId("entity-table");
+    expect(entityTable).toBeVisible();
   });
 });
 

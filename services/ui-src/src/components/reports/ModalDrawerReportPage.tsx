@@ -309,7 +309,7 @@ const entityTable = (
     return { headRow: ["", verbiage.tableHeader!, ""] };
   };
   return (
-    <Table sx={sx.table} content={tableHeaders()}>
+    <Table sx={sx.table} content={tableHeaders()} data-testid={"entity-table"}>
       {entities.map((entity: EntityShape) =>
         isMobile || isTablet ? (
           <MobileEntityRow
