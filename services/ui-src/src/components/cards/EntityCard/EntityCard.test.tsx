@@ -269,7 +269,7 @@ const UnstartedQualityMeasuresEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -284,7 +284,7 @@ const QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -299,7 +299,7 @@ const QualityMeasuresEntityCardComponentMissingReportingPeriod = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -312,7 +312,7 @@ const QualityMeasuresEntityCardComponentMissingDetails = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -325,7 +325,7 @@ const CompletedQualityMeasuresEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -557,7 +557,7 @@ const UnfinishedSanctionsEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
@@ -570,7 +570,7 @@ const SanctionsEntityCardComponent = (
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
-    openDrawer={mockOpenDrawer}
+    openOverlayOrDrawer={mockOpenDrawer}
   />
 );
 
