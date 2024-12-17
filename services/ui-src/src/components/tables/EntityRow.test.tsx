@@ -35,7 +35,7 @@ const incompleteRowComponent = (
           entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
-          openEntityDetailsOverlay={mockOpenDrawer}
+          openOverlayOrDrawer={mockOpenDrawer}
         ></EntityRow>
       </Table>
     </ReportContext.Provider>
@@ -52,7 +52,7 @@ const completeRowComponent = (
           entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
-          openEntityDetailsOverlay={mockOpenDrawer}
+          openOverlayOrDrawer={mockOpenDrawer}
         ></EntityRow>
       </Table>
     </ReportContext.Provider>
