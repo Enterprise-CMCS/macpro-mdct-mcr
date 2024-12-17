@@ -29,25 +29,23 @@ export const EntityRow = ({
   }, [report]);
 
   const enterDetailsText = () => {
-    let enterText;
-    report?.reportType === ReportType.MLR
-      ? (enterText = verbiage.enterReportText)
-      : (enterText = verbiage.enterEntityDetailsButtonText);
+    const enterText =
+      report?.reportType === ReportType.MLR
+        ? verbiage.enterReportText
+        : verbiage.enterEntityDetailsButtonText;
     return enterText;
   };
 
   const entityFields = () => {
-    let fields: any[] = [];
-    if (report?.reportType === ReportType.MLR) {
-      fields = [
-        report_planName,
-        report_programName,
-        eligibilityGroup(entity),
-        reportingPeriod,
-      ];
-    } else {
-      fields = [name];
-    }
+    const fields: any[] =
+      report?.reportType === ReportType.MLR
+        ? [
+            report_planName,
+            report_programName,
+            eligibilityGroup(entity),
+            reportingPeriod,
+          ]
+        : [name];
     return fields;
   };
 
@@ -64,10 +62,10 @@ export const EntityRow = ({
         </ul>
         {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            {report.reportType === ReportType.MLR
-              ? "Select “Enter MLR” to complete this report."
-              : report.reportType === ReportType.NAAAR &&
-                "Select “Enter” to complete response."}
+            {report.reportType === ReportType.MLR &&
+              "Select “Enter MLR” to complete this report."}
+            {report.reportType === ReportType.NAAAR &&
+              "Select “Enter” to complete response."}
           </Text>
         )}
       </Td>
