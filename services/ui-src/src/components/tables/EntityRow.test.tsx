@@ -7,6 +7,7 @@ import { Table } from "./Table";
 // utils
 import {
   mockMlrReportContext,
+  mockMlrReportStore,
   mockStateUserStore,
   mockVerbiageIntro,
   RouterWrappedComponent,
@@ -89,6 +90,10 @@ describe("Test EntityRow", () => {
   });
 
   test("Clicking Enter Details button opens the Drawer", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMlrReportStore,
+    });
     await act(async () => {
       await render(completeRowComponent);
     });
