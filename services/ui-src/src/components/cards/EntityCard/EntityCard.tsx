@@ -24,7 +24,7 @@ export const EntityCard = ({
   verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
-  openDrawer,
+  openOverlayOrDrawer,
   printVersion,
   ...props
 }: Props) => {
@@ -170,12 +170,12 @@ export const EntityCard = ({
             {verbiage.entityUnfinishedMessage}
           </Text>
         )}
-        {openDrawer && (
+        {openOverlayOrDrawer && (
           <Button
             size="sm"
             sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
             variant={entityCompleted ? "outline" : "primary"}
-            onClick={() => openDrawer(entity)}
+            onClick={() => openOverlayOrDrawer(entity)}
             data-testid={
               entityCompleted ? "edit-details-button" : "enter-details-button"
             }
@@ -203,7 +203,7 @@ interface Props {
   verbiage: AnyObject;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
-  openDrawer?: Function;
+  openOverlayOrDrawer?: Function;
   printVersion?: boolean;
   [key: string]: any;
 }
