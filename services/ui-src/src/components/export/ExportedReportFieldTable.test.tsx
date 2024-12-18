@@ -9,6 +9,8 @@ import {
   mockStandardReportPageJson,
   mockMlrReportStore,
   mockMcparReportStore,
+  mockVerbiageIntro,
+  mockDrawerForm,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 // components
@@ -73,6 +75,48 @@ const mockDrawerPageJson = {
   ...mockDrawerReportPageJson,
   drawerForm: { id: "drawer", fields: reportJsonFields },
 };
+
+const mockDrawerPageWithStandardFormJson = {
+  ...mockDrawerReportPageJson,
+  path: "/mcpar/plan-level-indicators/prior-authorization",
+  form: {
+    id: "pa",
+    fields: [
+      {
+        id: "plan_priorAuthorizationReporting",
+        type: "radio",
+        validation: "radio",
+        props: {
+          label: "Are you reporting data prior to June 2026?",
+          hint: "If “Yes”, please complete the following questions under each plan.",
+          choices: [
+            {
+              id: "IELJsTZxQkFDkTMzWQkKocwb",
+              label: "Not reporting data",
+            },
+            {
+              id: "bByTWRIwTSTBncyZRUiibagB",
+              label: "Yes",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+const mockMissingPlansPageJson = {
+  name: "mock-route-2a",
+  path: "/mcpar/plan-level-indicators/ilos",
+  pageType: "drawer",
+  entityType: "plans",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+  },
+  drawerForm: mockDrawerForm,
+};
 const mockEmptyPageJson = {
   ...mockStandardReportPageJson,
   form: {
@@ -115,11 +159,25 @@ const hintJson = {
 const exportedStandardTableComponent = (
   <ExportedReportFieldTable section={mockStandardPageJson} />
 );
+
 const exportedDrawerTableComponent = (
   <ExportedReportFieldTable
     section={mockDrawerPageJson as DrawerReportPageShape}
   />
 );
+
+const exportedDrawerTableComponentWithStandardForm = (
+  <ExportedReportFieldTable
+    section={mockDrawerPageWithStandardFormJson as DrawerReportPageShape}
+  />
+);
+
+const exportedMissingEntitiesComponent = (
+  <ExportedReportFieldTable
+    section={mockMissingPlansPageJson as DrawerReportPageShape}
+  />
+);
+
 const emptyTableComponent = (
   <ExportedReportFieldTable section={mockEmptyPageJson} />
 );
@@ -138,6 +196,27 @@ describe("ExportedReportFieldRow", () => {
   test("handles drawer pages with children", async () => {
     render(exportedDrawerTableComponent);
     const row = screen.getByTestId("exportTable");
+    expect(row).toBeVisible();
+  });
+
+  test("handles drawer pages with standard forms", async () => {
+    render(exportedDrawerTableComponentWithStandardForm);
+    const row = screen.getByText("Are you reporting data prior to June 2026?");
+    expect(row).toBeVisible();
+  });
+
+  test("handles drawer pages with missing plans", async () => {
+    const missingEntitiesStore = {
+      ...mockMcparReportStore,
+      report: {
+        fieldData: {},
+      },
+    };
+    mockedUseStore.mockReturnValue({
+      ...missingEntitiesStore,
+    });
+    render(exportedMissingEntitiesComponent);
+    const row = screen.getByTestId("missingEntityMessage");
     expect(row).toBeVisible();
   });
 

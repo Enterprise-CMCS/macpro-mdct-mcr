@@ -202,7 +202,7 @@
                     },
                     {
                       "type": "html",
-                      "content": "See Glossary in Excel Workbook for the definition of BSS entities."
+                      "content": ". See Glossary in Excel Workbook for the definition of BSS entities."
                     }
                   ]
                 },
@@ -595,7 +595,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "B.X.9a Website posting of 5 percent or more ownership control",
-                  "hint": "Does the state posts on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to 42 CFR 438.602(g)(3) and 455.104.",
+                  "hint": "Does the state post on its website the names of individuals and entities with 5% or more ownership or control interest in MCOs, PIHPs, PAHPs, PCCMs and PCCM entities and subcontractors? Refer to 42 CFR 438.602(g)(3) and 455.104.",
                   "choices": [
                     {
                       "id": "fNiPtEub20Soo1W5FcdU3A",
@@ -637,6 +637,7 @@
         },
         {
           "name": "XIII: Prior Authorization",
+          "flag": "novMcparRelease",
           "path": "/mcpar/state-level-indicators/prior-authorization",
           "pageType": "standard",
           "verbiage": {
@@ -677,7 +678,7 @@
                           },
                           "props": {
                             "label": "B.XIII.1a Timeframes for standard prior authorization decisions",
-                            "hint": "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and within state established timeframes. For rating periods that start before January 1, 2026, a state’s time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state’s time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
+                            "hint": "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and within state-established timeframes. For rating periods that start before January 1, 2026, a state’s time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state’s time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
                             "choices": [
                               {
                                 "id": "2mwADFxQVwjgYKMq5rEMPF8nryi",
@@ -688,14 +689,14 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "state_timeframesForStandardPriorAuthorizationDecisions-otherText",
+                                    "id": "state_stateTimeframeForStandardPriorAuthorizationDecisions",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
                                       "nested": true,
                                       "mask": "comma-separated",
                                       "decimalPlacesToRoundTo": 2,
-                                      "parentFieldName": "state_stateTimeframeForStandardPriorAuthorizationDecisions",
+                                      "parentFieldName": "state_timeframesForStandardPriorAuthorizationDecisions",
                                       "parentOptionId": "2nAidFCWvENhYZvzLt3DxJWOqtx"
                                     },
                                     "props": {
@@ -730,7 +731,7 @@
                                 "label": "Yes",
                                 "children": [
                                   {
-                                    "id": "state_timeframesForExpeditedPriorAuthorizationDecisions-otherText",
+                                    "id": "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
                                     "type": "number",
                                     "validation": {
                                       "type": "number",
@@ -4267,6 +4268,7 @@
         },
         {
           "name": "XIII: Prior Authorization",
+          "flag": "novMcparRelease",
           "path": "/mcpar/plan-level-indicators/prior-authorization",
           "pageType": "drawer",
           "entityType": "plans",
@@ -4467,7 +4469,7 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "D1.XIII.14 Median time to decision for expedited prior authorization requests",
+                  "label": "D1.XIII.14 Median time to decision for expedited prior authorizations",
                   "hint": "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the median number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                   "decimalPlacesToRoundTo": 2
                 }
@@ -4488,6 +4490,7 @@
         },
         {
           "name": "XIV: Patient Access API Usage",
+          "flag": "novMcparRelease",
           "path": "/mcpar/plan-level-indicators/patient-access-api",
           "pageType": "drawer",
           "entityType": "plans",
@@ -4561,7 +4564,7 @@
                 "validation": "number",
                 "props": {
                   "label": "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
-                  "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data are transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                  "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
               }
             ]

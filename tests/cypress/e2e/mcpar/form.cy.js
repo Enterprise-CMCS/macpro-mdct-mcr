@@ -121,25 +121,32 @@ function fillOutPartialMCPAR() {
   cy.get('a[href*="review-and-submit"]').click();
 }
 
-const traverseRoutes = (routes) => {
-  //iterate over each route
-  routes.forEach((route) => {
-    traverseRoute(route);
-  });
-};
-
-const traverseRoute = (route) => {
-  // TODO: Don't just skip these routes
-  if (
-    [
-      "/mcpar/plan-level-indicators/patient-access-api",
-      "/mcpar/plan-level-indicators/prior-authorization",
-      "/mcpar/state-level-indicators/prior-authorization",
-    ].includes(route.path)
-  ) {
-    return;
+const traverseRoutes = (routes, flags) => {
+  function continueTraversing(existingFlags) {
+    //iterate over each route
+    routes.forEach((route) => {
+      // Flag is defined in mcpar.json and doesn't exist in Launch Darkly response
+      if (route.flag && !existingFlags[route.flag]) return;
+      traverseRoute(route, existingFlags);
+    });
   }
 
+  if (!flags) {
+    // Intercept Launch Darkly request first time only
+    cy.intercept(/launchdarkly/).as("ld");
+    cy.wait("@ld").then(({ request }) => {
+      const response = request.body.filter((item) => item.features)[0];
+      const ldFlags = response ? response.features : {};
+      continueTraversing(ldFlags);
+    });
+  } else {
+    // Reset intercept
+    cy.intercept(/launchdarkly/, (req) => req.continue());
+    continueTraversing(flags);
+  }
+};
+
+const traverseRoute = (route, flags) => {
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
     //validate we are on the URL we expect to be
@@ -160,7 +167,7 @@ const traverseRoute = (route) => {
   }
 
   //If this route has children routes, traverse those as well
-  if (route.children) traverseRoutes(route.children);
+  if (route.children) traverseRoutes(route.children, flags);
 };
 
 const completeDrawerForm = (drawerForm) => {

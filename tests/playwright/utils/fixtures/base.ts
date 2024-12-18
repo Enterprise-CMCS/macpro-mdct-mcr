@@ -1,28 +1,69 @@
-import { mergeTests, test as base } from "@playwright/test";
-import StateHomePage from "../pageObjects/stateHome.page";
-import AdminHomePage from "../pageObjects/adminHome.page";
+import { Browser, mergeTests, test as base } from "@playwright/test";
+import {
+  AdminHomePage,
+  adminUserAuth,
+  BannerPage,
+  HelpPage,
+  MCPARDashboardPage,
+  MCPARGetStartedPage,
+  ProfilePage,
+  StateHomePage,
+  stateUserAuth,
+} from "../../utils";
 
 type CustomFixtures = {
-  stateHomePage: StateHomePage;
   adminHomePage: AdminHomePage;
+  bannerPage: BannerPage;
+  profilePage: ProfilePage;
+  helpPage: HelpPage;
+  mcparGetStartedPage: MCPARGetStartedPage;
+  mcparDashboardPage: MCPARDashboardPage;
+  stateHomePage: StateHomePage;
 };
 
+async function addPageObject(
+  PageObject: any,
+  browser: Browser,
+  use: any,
+  storageState: string
+) {
+  const context = await browser.newContext({ storageState });
+  const page = new PageObject(await context.newPage());
+  // Init page
+  await page.goto();
+  await use(page);
+  await context.close();
+}
+
+async function adminPage(PageObject: any, browser: Browser, use: any) {
+  await addPageObject(PageObject, browser, use, adminUserAuth);
+}
+
+async function statePage(PageObject: any, browser: Browser, use: any) {
+  await addPageObject(PageObject, browser, use, stateUserAuth);
+}
+
 export const baseTest = base.extend<CustomFixtures>({
-  stateHomePage: async ({ browser }, use) => {
-    const context = await browser.newContext({
-      storageState: "playwright/.auth/user.json",
-    });
-    const stateHomePage = new StateHomePage(await context.newPage());
-    await use(stateHomePage);
-    await context.close();
-  },
   adminHomePage: async ({ browser }, use) => {
-    const context = await browser.newContext({
-      storageState: "playwright/.auth/admin.json",
-    });
-    const adminHomePage = new AdminHomePage(await context.newPage());
-    await use(adminHomePage);
-    await context.close();
+    await adminPage(AdminHomePage, browser, use);
+  },
+  bannerPage: async ({ browser }, use) => {
+    await adminPage(BannerPage, browser, use);
+  },
+  mcparDashboardPage: async ({ browser }, use) => {
+    await statePage(MCPARDashboardPage, browser, use);
+  },
+  mcparGetStartedPage: async ({ browser }, use) => {
+    await statePage(MCPARGetStartedPage, browser, use);
+  },
+  profilePage: async ({ browser }, use) => {
+    await statePage(ProfilePage, browser, use);
+  },
+  stateHomePage: async ({ browser }, use) => {
+    await statePage(StateHomePage, browser, use);
+  },
+  helpPage: async ({ browser }, use) => {
+    await statePage(HelpPage, browser, use);
   },
 });
 

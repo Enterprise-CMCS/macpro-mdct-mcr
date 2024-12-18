@@ -76,6 +76,45 @@ export enum States {
   WY = "Wyoming",
 }
 
+// ANALYSIS METHODS (NAAAR)
+export const DEFAULT_ANALYSIS_METHODS = [
+  {
+    id: "k9t7YoOeTOAXX3s7qF6XfN33",
+    name: "Geomapping",
+    isRequired: true,
+  },
+  {
+    id: "rklEpKXz8jDefWdCtzI7c7oQ",
+    name: "Plan Provider Directory Review",
+    isRequired: true,
+  },
+  {
+    id: "lWbEf22iUIwylv0D8f73LvNK",
+    name: "Secret Shopper: Network Participation",
+    isRequired: true,
+  },
+  {
+    id: "KPCPdKzBefj4BqwKVAmMnvUj",
+    name: "Secret Shopper: Appointment Availability",
+    isRequired: true,
+  },
+  {
+    id: "fPrkUzYKDISHITjusb9WyqTg",
+    name: "EVV Data Analysis",
+    isRequired: true,
+  },
+  {
+    id: "2wrlQNlvY8d3qZ6pwmH4pqYA",
+    name: "Review of Grievances Related to Access",
+    isRequired: true,
+  },
+  {
+    id: "j9XspYm012nfntIjHWr4mjly",
+    name: "Encounter Data Analysis",
+    isRequired: true,
+  },
+];
+
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms

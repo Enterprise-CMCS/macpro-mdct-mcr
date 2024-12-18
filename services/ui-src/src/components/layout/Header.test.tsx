@@ -20,14 +20,14 @@ mockedUseStore.mockReturnValue({
 
 const headerComponent = (
   <RouterWrappedComponent>
-    <Header handleLogout={() => {}} />
+    <Header />
   </RouterWrappedComponent>
 );
 
 const reportComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
-      <Header handleLogout={() => {}} />
+      <Header />
       <ReportPageWrapper />
     </ReportContext.Provider>
   </RouterWrappedComponent>

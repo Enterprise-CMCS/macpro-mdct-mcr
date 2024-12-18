@@ -298,6 +298,12 @@ describe("Test DrawerReportPage with completed entity", () => {
     expect(screen.queryAllByText("Enter")).toHaveLength(1);
     expect(screen.getAllByAltText("Entity is complete")).toHaveLength(1);
   });
+
+  test("should not render a bottom border on last entity row", () => {
+    const entityRows = screen.getAllByTestId("report-drawer");
+    const lastEntityRow = entityRows[1];
+    expect(lastEntityRow).toHaveStyle(`borderBottom: none`);
+  });
 });
 
 describe("Test DrawerReportPage accessibility", () => {

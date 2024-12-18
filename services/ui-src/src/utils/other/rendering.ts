@@ -5,5 +5,5 @@ export const eligibilityGroup = (entity: EntityShape) => {
   if (entity["report_eligibilityGroup-otherText"]) {
     return entity["report_eligibilityGroup-otherText"];
   }
-  return entity.report_eligibilityGroup[0].value;
+  return entity.report_eligibilityGroup?.[0].value;
 };

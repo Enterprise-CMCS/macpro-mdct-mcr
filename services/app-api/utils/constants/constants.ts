@@ -57,6 +57,8 @@ export const bucketTopics = {
 
 export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;
 
+// COPY-OVER
+
 export const McparFieldsToCopy = {
   root: [
     "state_encounterDataValidationEntity",
@@ -72,6 +74,10 @@ export const McparFieldsToCopy = {
     "state_providerTerminationReportingMonitoringMetricsDescription",
     "state_ownershipControlDisclosureWebsite",
     "state_ownershipControlDisclosureWebsiteLink",
+    "state_timeframesForStandardPriorAuthorizationDecisions",
+    "state_stateTimeframeForStandardPriorAuthorizationDecisions",
+    "state_timeframesForExpeditedPriorAuthorizationDecisions",
+    "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
     "program_contractTitle",
     "program_type",
     "program_type-otherText",
@@ -152,3 +158,14 @@ export const McparFieldsToCopy = {
   ],
   // sanctions are never copied from year to year.
 };
+
+// ANALYSIS METHODS (NAAAR)
+export const DEFAULT_ANALYSIS_METHODS = [
+  "Geomapping",
+  "Plan Provider Directory Review",
+  "Secret Shopper: Network Participation",
+  "Secret Shopper: Appointment Availability",
+  "EVV Data Analysis",
+  "Review of Grievances Related to Access",
+  "Encounter Data Analysis",
+];

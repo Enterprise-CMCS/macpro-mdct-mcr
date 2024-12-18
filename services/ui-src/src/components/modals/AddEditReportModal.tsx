@@ -22,7 +22,8 @@ import {
   convertDateUtcToEt,
   useStore,
 } from "utils";
-import { States } from "../../constants";
+// constants
+import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -148,6 +149,10 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const planTypeIncludedInProgram = formData["planTypeIncludedInProgram"];
+    const planTypeOtherText =
+      planTypeIncludedInProgram[0].value === "Other, specify"
+        ? formData["planTypeIncludedInProgram-otherText"]
+        : null;
 
     return {
       metadata: {
@@ -158,8 +163,7 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         planTypeIncludedInProgram,
-        "planTypeIncludedInProgram-otherText":
-          formData["planTypeIncludedInProgram-otherText"],
+        "planTypeIncludedInProgram-otherText": planTypeOtherText,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
@@ -167,6 +171,7 @@ export const AddEditReportModal = ({
       },
       fieldData: {
         programName,
+        ["analysisMethods"]: DEFAULT_ANALYSIS_METHODS,
       },
     };
   };
