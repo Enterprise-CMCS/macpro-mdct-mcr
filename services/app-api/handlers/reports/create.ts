@@ -97,11 +97,16 @@ export const createReport = handler(async (event, _context) => {
   const fieldDataId: string = KSUID.randomSync().string;
   const formTemplateId: string = formTemplateVersion?.id;
 
+  let validationSchema = formTemplate.validationJson;
+  if (reportType === "NAAAR") {
+    validationSchema["analysisMethods"] = "objectArray";
+  }
+
   // Validate field data
   let validatedFieldData;
   try {
     validatedFieldData = await validateFieldData(
-      formTemplate.validationJson,
+      validationSchema,
       unvalidatedFieldData
     );
   } catch {
