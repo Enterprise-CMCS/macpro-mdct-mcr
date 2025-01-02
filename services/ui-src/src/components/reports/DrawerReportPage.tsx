@@ -41,6 +41,7 @@ import completedIcon from "assets/icons/icon_check_circle.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [addingEntity, setAddingEntity] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
@@ -49,9 +50,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { report, selectedEntity, setSelectedEntity } = useStore();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
+  const { addEntityDrawerForm } = route ?? {};
+  const canAddEntities = !!addEntityDrawerForm;
   const entities = report?.fieldData?.[entityType];
 
   // check if there are ILOS and associated plans
+  const isMcparReport = route.path.includes("mcpar");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
@@ -133,7 +137,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
-  const openRowDrawer = (entity: EntityShape) => {
+  const openRowDrawer = (
+    entity?: EntityShape,
+    isNewEntity: boolean = false
+  ) => {
+    setAddingEntity(isNewEntity);
     setSelectedEntity(entity);
     onOpen();
   };
@@ -229,18 +237,22 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <Heading as="h3" sx={sx.dashboardTitle}>
           {verbiage.dashboardTitle}
         </Heading>
-        {reportingOnIlos && !hasPlans && !hasIlos ? (
+        {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
           // if there are no plans and no ILOS added, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
           </Box>
-        ) : (!reportingOnIlos && !hasPlans) || !entities?.length ? (
+        ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+          !entities?.length ? (
           // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
         ) : (
           entityRows(entities)
+        )}
+        {canAddEntities && (
+          <Button onClick={() => openRowDrawer(undefined, true)}>Add</Button>
         )}
       </Box>
       <ReportDrawer
@@ -249,7 +261,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={form}
+        form={addingEntity ? addEntityDrawerForm! : form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
