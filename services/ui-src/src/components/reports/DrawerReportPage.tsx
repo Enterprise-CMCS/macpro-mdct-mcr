@@ -42,7 +42,6 @@ import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [addingEntity, setAddingEntity] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
@@ -51,8 +50,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { report, selectedEntity, setSelectedEntity } = useStore();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
-  const { addEntityDrawerForm } = route ?? {};
-  const canAddEntities = !!addEntityDrawerForm;
   const entities = report?.fieldData?.[entityType];
 
   // check if there are ILOS and associated plans
@@ -138,11 +135,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
-  const openRowDrawer = (
-    entity?: EntityShape,
-    isNewEntity: boolean = false
-  ) => {
-    setAddingEntity(isNewEntity);
+  const openRowDrawer = (entity?: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
   };
@@ -250,9 +243,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ) : (
           entityRows(entities)
         )}
-        {canAddEntities && (
-          <Button onClick={() => openRowDrawer(undefined, true)}>Add</Button>
-        )}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
@@ -260,7 +250,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={addingEntity ? addEntityDrawerForm! : form}
+        form={form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
