@@ -38,6 +38,7 @@ import {
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
+import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -192,13 +193,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
       return (
         <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
-          {isEntityCompleted && (
-            <Image
-              src={completedIcon}
-              alt={"Entity is complete"}
-              sx={sx.statusIcon}
-            />
-          )}
+          <Image
+            src={isEntityCompleted ? completedIcon : unfinishedIcon}
+            alt={"Entity is complete"}
+            sx={sx.statusIcon}
+          />
           <Heading as="h4" sx={sx.entityName}>
             {entity.name}
           </Heading>
