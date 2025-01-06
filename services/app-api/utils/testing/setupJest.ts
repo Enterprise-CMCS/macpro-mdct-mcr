@@ -123,6 +123,26 @@ export const mockDynamoDataMLRLocked: MLRReportMetadata = {
   isComplete: false,
 };
 
+export const mockDynamoNAAARData = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  programName: "testProgram",
+  status: "Not started",
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  dueDate: 168515200000,
+  combinedData: false,
+  lastAlteredBy: "Thelonious States",
+  fieldDataId: "mockReportFieldData",
+  formTemplateId: "mockReportJson",
+  isComplete: false,
+  completionStatus: {
+    "step-one": false,
+  },
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+};
+
 export const mockApiKey = sign(
   {
     sub: "b528a6fa-f58f-4928-8cf0-32c50599821f",
@@ -153,6 +173,26 @@ export const mockMcparReport = {
         value: "No",
       },
     ],
+    lastAlteredBy: "Thelonious States",
+    fieldDataId: "mockReportFieldData",
+    formTemplateId: "mockReportJson",
+  },
+  formTemplate: { ...mockReportJson },
+  fieldData: { ...mockReportFieldData },
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+};
+
+export const mockNaaarReport = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  metadata: {
+    reportType: "NAAAR",
+    programName: "testProgram",
+    status: "Not started",
+    reportingPeriodStartDate: 162515200000,
+    reportingPeriodEndDate: 168515200000,
+    dueDate: 168515200000,
     lastAlteredBy: "Thelonious States",
     fieldDataId: "mockReportFieldData",
     formTemplateId: "mockReportJson",

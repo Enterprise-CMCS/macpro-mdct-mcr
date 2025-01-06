@@ -4,8 +4,12 @@
   "basePath": "/naaar",
   "version": "NAAAR_2024-08-06",
   "entities": {
-    "plans": { "required": true },
-    "analysisMethods": { "required": true }
+    "plans": {
+      "required": true
+    },
+    "analysisMethods": {
+      "required": true
+    }
   },
   "routes": [
     {
@@ -267,7 +271,7 @@
         {
           "name": "Analysis methods",
           "path": "/naaar/state-and-program-information/analysis-methods",
-          "pageType": "modalDrawer",
+          "pageType": "drawer",
           "entityType": "analysisMethods",
           "verbiage": {
             "intro": {
@@ -294,16 +298,109 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
             "enterEntityDetailsButtonText": "Enter",
             "readOnlyEntityDetailsButtonText": "View",
-            "drawerTitle": "Analysis method: ",
-            "drawerInfo": [
+            "drawerTitle": "Analysis method: "
+          },
+          "drawerForm": {
+            "id": "iam",
+            "fields": [
               {
-                "type": "p",
-                "content": "Complete all fields and select the “Save & close” button to save this section."
+                "id": "analysis_applicable",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Is this analysis method utilized to assess plan compliance?",
+                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
+                  "choices": [
+                    {
+                      "id": "KHvMO9SzSrkBhqCobPBUOY",
+                      "label": "No"
+                    },
+                    {
+                      "id": "Br7jPULxsYgbiuHV9zwyIB",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "analysis_method_frequency",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "analysis_applicable"
+                          },
+                          "props": {
+                            "label": "Frequency of analysis",
+                            "choices": [
+                              {
+                                "id": "Sol1W6HJCixyOVxw4vDgXQ",
+                                "label": "Weekly"
+                              },
+                              {
+                                "id": "YjI3qT3Ml9cZfP4a1RV6G9",
+                                "label": "Bi-weekly"
+                              },
+                              {
+                                "id": "L8q1N1DXEYv8LsDfGkdbOe",
+                                "label": "Monthly"
+                              },
+                              {
+                                "id": "05ThR4UN7kYDGpKaTWESOB",
+                                "label": "Bi-monthly"
+                              },
+                              {
+                                "id": "Y0Rkz7e3Kkxw0T4aFDb38j",
+                                "label": "Quarterly"
+                              },
+                              {
+                                "id": "mcn99pzTOqnEmr3uXiEOYs",
+                                "label": "Semi-annually"
+                              },
+                              {
+                                "id": "r938vpeMJxkPOqk53N7qW0",
+                                "label": "Other, specify",
+                                "children": [
+                                  {
+                                    "id": "analysis_method_frequency-otherText",
+                                    "type": "textarea",
+                                    "validation": {
+                                      "type": "text",
+                                      "nested": true,
+                                      "parentFieldName": "analysis_method_frequency"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "id": "WkqIis4bGGtK8Nzzqa6rPl",
+                                "label": "Varies by plan"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "id": "analysis_method_applicable_plans",
+                          "type": "checkbox",
+                          "validation": {
+                            "type": "checkbox",
+                            "nested": true,
+                            "parentFieldName": "analysis_applicable"
+                          },
+                          "props": {
+                            "label": "Plans utilizing this method",
+                            "choices": [
+                              {
+                                "id": "tvCUw5CcaGUFSIMByAopjF",
+                                "label": "Fill in plans here"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             ]
-          },
-          "modalForm": { "id": "", "fields": [] },
-          "drawerForm": { "id": "", "fields": [] }
+          }
         }
       ]
     },

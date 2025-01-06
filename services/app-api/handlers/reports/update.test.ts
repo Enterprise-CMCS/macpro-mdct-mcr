@@ -6,7 +6,9 @@ import { mockClient } from "aws-sdk-client-mock";
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
   mockDynamoData,
+  mockDynamoNAAARData,
   mockMcparReport,
+  mockNaaarReport,
   mockReportFieldData,
   mockReportJson,
   mockS3PutObjectCommandOutput,
@@ -37,6 +39,13 @@ const mockProxyEvent: APIGatewayProxyEvent = {
   body: JSON.stringify(mockMcparReport),
 };
 
+const mockNaaarProxyEvent: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { reportType: "NAAAR", state: "CO", id: "testReportId" },
+  body: JSON.stringify(mockNaaarReport),
+};
+
 const updateEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({
@@ -58,6 +67,34 @@ const submissionEvent: APIGatewayProxyEvent = {
     submittedBy: mockMcparReport.metadata.lastAlteredBy,
     submittedOnDate: Date.now(),
     fieldData: { ...mockReportFieldData, "mock-number-field": 2 },
+  }),
+};
+
+const naaarSubmissionEvent: APIGatewayProxyEvent = {
+  ...mockNaaarProxyEvent,
+  body: JSON.stringify({
+    ...mockNaaarReport,
+    metadata: {
+      status: "submitted",
+    },
+    submittedBy: mockNaaarReport.metadata.lastAlteredBy,
+    submittedOnDate: Date.now(),
+    fieldData: {
+      ...mockReportFieldData,
+      contactName: "Contact Name",
+      analysisMethods: [
+        {
+          id: "id1",
+          name: "Geomapping",
+          isRequired: true,
+        },
+        {
+          id: "id2",
+          name: "Plan Provider Directory Review",
+          isRequired: true,
+        },
+      ],
+    },
   }),
 };
 
@@ -113,7 +150,7 @@ describe("handlers/reports/update", () => {
       mockAuthUtil.hasPermissions.mockReturnValue(true);
     });
 
-    test("Test report update submission succeeds", async () => {
+    test("Test MCPAR report update submission succeeds", async () => {
       // s3 mocks
       const s3GetSpy = jest.spyOn(s3Lib, "get");
       s3GetSpy
@@ -138,6 +175,36 @@ describe("handlers/reports/update", () => {
       const body = JSON.parse(response.body!);
       expect(body.status).toContain("submitted");
       expect(body.fieldData["mock-number-field"]).toBe("2");
+      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(response.statusCode).toBe(StatusCodes.Ok);
+      expect(mockPut).toHaveBeenCalled();
+    });
+
+    test("Test NAAAR report update submission succeeds", async () => {
+      // s3 mocks
+      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      s3GetSpy
+        .mockResolvedValueOnce(mockReportJson)
+        .mockResolvedValueOnce(mockReportFieldData);
+      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+      // dynamodb mocks
+      const mockPut = jest.fn();
+      dynamoClientMock.on(PutCommand).callsFake(mockPut);
+      // fetch mock
+      mockedFetchReport.mockResolvedValue({
+        statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "string",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(mockDynamoNAAARData),
+      });
+
+      const response = await updateReport(naaarSubmissionEvent, null);
+      const body = JSON.parse(response.body!);
+      expect(body.status).toContain("submitted");
+      expect(body.fieldData["analysisMethods"]).toBeDefined();
       expect(consoleSpy.debug).toHaveBeenCalled();
       expect(response.statusCode).toBe(StatusCodes.Ok);
       expect(mockPut).toHaveBeenCalled();
