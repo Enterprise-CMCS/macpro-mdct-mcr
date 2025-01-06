@@ -188,7 +188,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
           <Image
             src={isEntityCompleted ? completedIcon : unfinishedIcon}
-            alt={"Entity is complete"}
+            alt={
+              isEntityCompleted ? "Entity is complete" : "Entity is incomplete"
+            }
             sx={sx.statusIcon}
           />
           <Heading as="h4" sx={sx.entityName}>
