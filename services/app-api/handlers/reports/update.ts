@@ -148,7 +148,7 @@ export const updateReport = handler(async (event, context) => {
 
   let validationSchema = formTemplate.validationJson;
   if (reportType === "NAAAR") {
-    // this entity is does not have validation specified in the form template
+    // this entity does not have validation specified in the form template
     validationSchema["analysisMethods"] = "objectArray";
   }
 
