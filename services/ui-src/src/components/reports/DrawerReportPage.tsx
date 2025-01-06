@@ -54,6 +54,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
+  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
@@ -186,13 +187,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
       return (
         <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
-          <Image
-            src={isEntityCompleted ? completedIcon : unfinishedIcon}
-            alt={
-              isEntityCompleted ? "Entity is complete" : "Entity is incomplete"
-            }
-            sx={sx.statusIcon}
-          />
+          {isEntityCompleted ? (
+            <Image
+              src={completedIcon}
+              alt={"Entity is complete"}
+              sx={sx.statusIcon}
+            />
+          ) : (
+            isAnalysisMethodsPage && (
+              <Image
+                src={unfinishedIcon}
+                alt={"Entity is incomplete"}
+                sx={sx.statusIcon}
+              />
+            )
+          )}
           <Heading as="h4" sx={sx.entityName}>
             {entity.name}
           </Heading>
