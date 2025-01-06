@@ -115,6 +115,10 @@ export const DEFAULT_ANALYSIS_METHODS = [
   },
 ];
 
+export function getDefaultAnalysisMethodIds() {
+  return DEFAULT_ANALYSIS_METHODS.map((method) => method.id);
+}
+
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms
 export const PROMPT_AT = 29 * 60 * 1000; //ms

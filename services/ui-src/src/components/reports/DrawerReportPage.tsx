@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import uuid from "react-uuid";
 // components
 import {
   Box,
@@ -26,6 +27,7 @@ import {
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
+import { getDefaultAnalysisMethodIds } from "../../constants";
 // types
 import {
   AnyObject,
@@ -42,7 +44,6 @@ import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [addingEntity, setAddingEntity] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
@@ -97,22 +98,35 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+      let selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
+      if (isAnalysisMethodsPage && selectedEntityIndex < 0) {
+        selectedEntityIndex = currentEntities.length;
+      }
+      let referenceForm = form;
+      if (
+        isAnalysisMethodsPage &&
+        !getDefaultAnalysisMethodIds().includes(selectedEntity?.id)
+      ) {
+        referenceForm = addEntityDrawerForm!;
+      }
       const filteredFormData = filterFormData(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
       const entriesToClear = getEntriesToClear(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
       const newEntity = {
         ...selectedEntity,
         ...filteredFormData,
       };
-      let newEntities = currentEntities;
+      if (!selectedEntity?.id) {
+        newEntity.id = uuid();
+      }
+      const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
         newEntities[selectedEntityIndex],
@@ -139,11 +153,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
-  const openRowDrawer = (
-    entity?: EntityShape,
-    isNewEntity: boolean = false
-  ) => {
-    setAddingEntity(isNewEntity);
+  const openRowDrawer = (entity?: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
   };
@@ -210,7 +220,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             )
           )}
           <Heading as="h4" sx={sx.entityName}>
-            {entity.name}
+            {entity.custom_analysis_method_name ?? entity.name}
           </Heading>
           {enterButton(entity, isEntityCompleted)}
         </Flex>
@@ -261,9 +271,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ) : (
           entityRows(entities)
         )}
-        {canAddEntities && (
-          <Button onClick={() => openRowDrawer(undefined, true)}>Add</Button>
-        )}
+        {canAddEntities && <Button onClick={() => openRowDrawer()}>Add</Button>}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
@@ -271,7 +279,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={addingEntity ? addEntityDrawerForm! : form}
+        form={
+          isAnalysisMethodsPage &&
+          !getDefaultAnalysisMethodIds().includes(selectedEntity?.id)
+            ? addEntityDrawerForm!
+            : form
+        }
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{

@@ -405,7 +405,7 @@
             "id": "iamnew",
             "fields": [
               {
-                "id": "analysis_applicable_new_method",
+                "id": "custom_analysis_method_name",
                 "type": "text",
                 "validation": "text",
                 "props": {
@@ -414,7 +414,7 @@
                 }
               },
               {
-                "id": "analysis_applicable_new_description",
+                "id": "custom_analysis_method_description",
                 "type": "textarea",
                 "validation": "textarea",
                 "props": {
