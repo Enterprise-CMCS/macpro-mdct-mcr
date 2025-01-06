@@ -400,6 +400,104 @@
                 }
               }
             ]
+          },
+          "addEntityDrawerForm": {
+            "id": "iamnew",
+            "fields": [
+              {
+                "id": "analysis_applicable_new_method",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "Analysis method",
+                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards that is not already listed in the system."
+                }
+              },
+              {
+                "id": "analysis_applicable_new_description",
+                "type": "textarea",
+                "validation": "textarea",
+                "props": {
+                  "label": "Analysis method description",
+                  "hint": "Describe the method."
+                }
+              },
+              {
+                "id": "analysis_method_frequency",
+                "type": "radio",
+                "validation": {
+                  "type": "radio",
+                  "nested": true,
+                  "parentFieldName": "analysis_applicable"
+                },
+                "props": {
+                  "label": "Frequency of analysis",
+                  "choices": [
+                    {
+                      "id": "Sol1W6HJCixyOVxw4vDgXQ",
+                      "label": "Weekly"
+                    },
+                    {
+                      "id": "YjI3qT3Ml9cZfP4a1RV6G9",
+                      "label": "Bi-weekly"
+                    },
+                    {
+                      "id": "L8q1N1DXEYv8LsDfGkdbOe",
+                      "label": "Monthly"
+                    },
+                    {
+                      "id": "05ThR4UN7kYDGpKaTWESOB",
+                      "label": "Bi-monthly"
+                    },
+                    {
+                      "id": "Y0Rkz7e3Kkxw0T4aFDb38j",
+                      "label": "Quarterly"
+                    },
+                    {
+                      "id": "mcn99pzTOqnEmr3uXiEOYs",
+                      "label": "Semi-annually"
+                    },
+                    {
+                      "id": "r938vpeMJxkPOqk53N7qW0",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "analysis_method_frequency-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "analysis_method_frequency"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "WkqIis4bGGtK8Nzzqa6rPl",
+                      "label": "Varies by plan"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "analysis_method_applicable_plans",
+                "type": "checkbox",
+                "validation": {
+                  "type": "checkbox",
+                  "nested": true,
+                  "parentFieldName": "analysis_applicable"
+                },
+                "props": {
+                  "label": "Plans utilizing this method",
+                  "choices": [
+                    {
+                      "id": "tvCUw5CcaGUFSIMByAopjF",
+                      "label": "Fill in plans here"
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]
