@@ -97,7 +97,7 @@ export const createReport = handler(async (event, _context) => {
   const fieldDataId: string = KSUID.randomSync().string;
   const formTemplateId: string = formTemplateVersion?.id;
 
-  let validationSchema = formTemplate.validationJson;
+  const validationSchema = formTemplate.validationJson;
   if (reportType === "NAAAR") {
     // this entity does not have validation specified in the form template
     validationSchema["analysisMethods"] = "objectArray";

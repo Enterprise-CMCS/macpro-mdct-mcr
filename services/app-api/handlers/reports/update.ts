@@ -146,7 +146,7 @@ export const updateReport = handler(async (event, context) => {
     return internalServerError(error.MISSING_FORM_TEMPLATE);
   }
 
-  let validationSchema = formTemplate.validationJson;
+  const validationSchema = formTemplate.validationJson;
   if (reportType === "NAAAR") {
     // this entity does not have validation specified in the form template
     validationSchema["analysisMethods"] = "objectArray";
