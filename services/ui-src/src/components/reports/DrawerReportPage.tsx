@@ -78,10 +78,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnPatientAccessApi =
     report?.fieldData?.["plan_patientAccessApiReporting"]?.[0].value;
   const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(
-    reportingOnPriorAuthorization === "Yes" ? false : true
+    reportingOnPriorAuthorization !== "Yes"
   );
   const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
-    reportingOnPatientAccessApi === "Yes" ? false : true
+    reportingOnPatientAccessApi !== "Yes"
   );
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
-        state: state,
+        state,
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
