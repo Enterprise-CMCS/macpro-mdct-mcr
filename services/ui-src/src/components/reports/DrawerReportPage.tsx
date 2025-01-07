@@ -8,6 +8,7 @@ import {
   Image,
   Heading,
   useDisclosure,
+  Text,
 } from "@chakra-ui/react";
 import {
   ReportDrawer,
@@ -211,7 +212,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         : calculateEntityCompletion();
 
       return (
-        <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
+        <Flex
+          key={entity.id}
+          sx={entityRowStyling(isAnalysisMethodsPage)}
+          data-testid="report-drawer"
+        >
           {isEntityCompleted ? (
             <Image
               src={completedIcon}
@@ -227,9 +232,30 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               />
             )
           )}
-          <Heading as="h4" sx={sx.entityName}>
-            {entity.custom_analysis_method_name ?? entity.name}
-          </Heading>
+          {isAnalysisMethodsPage &&
+          !getDefaultAnalysisMethodIds().includes(entity.id) ? (
+            <Flex direction={"column"} sx={sx.customEntityRow}>
+              <Heading as="h4" sx={sx.customEntityName}>
+                {entity.custom_analysis_method_name}
+              </Heading>
+              {entity.custom_analysis_method_description && (
+                <Text>{entity.custom_analysis_method_description}</Text>
+              )}
+              {entity.analysis_method_frequency &&
+                entity.analysis_method_applicable_plans && (
+                  <Text>
+                    {entity.analysis_method_frequency[0].value}:
+                    {entity.analysis_method_applicable_plans.map(
+                      (entity: AnyObject) => entity.value
+                    )}
+                  </Text>
+                )}
+            </Flex>
+          ) : (
+            <Heading as="h4" sx={sx.entityName}>
+              {entity.name}
+            </Heading>
+          )}
           {enterButton(entity, isEntityCompleted)}
         </Flex>
       );
@@ -321,6 +347,20 @@ interface Props {
   validateOnRender?: boolean;
 }
 
+function entityRowStyling(isAnalysisMethodsPage: boolean) {
+  return {
+    justifyContent: "space-between",
+    alignItems: "center",
+    minHeight: "3.25rem",
+    padding: "0.5rem",
+    paddingLeft: "0.75rem",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    "&:last-of-type": {
+      borderBottom: !isAnalysisMethodsPage && "none",
+    },
+  };
+}
+
 const sx = {
   buttonIcons: {
     height: "1rem",
@@ -336,22 +376,19 @@ const sx = {
     fontSize: "lg",
     fontWeight: "bold",
   },
-  entityRow: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "3.25rem",
-    padding: "0.5rem",
-    paddingLeft: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-    "&:last-of-type": {
-      borderBottom: "none",
-    },
+  customEntityRow: {
+    paddingLeft: "2.25rem",
   },
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+  },
+  customEntityName: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    flexGrow: 1,
   },
   missingIlos: {
     fontWeight: "bold",
