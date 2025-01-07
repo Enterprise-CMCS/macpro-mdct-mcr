@@ -39,6 +39,7 @@ import {
   InputChangeEvent,
 } from "types";
 // assets
+import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
@@ -272,7 +273,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ) : (
           entityRows(entities)
         )}
-        {canAddEntities && <Button onClick={() => openRowDrawer()}>Add</Button>}
+        {canAddEntities && (
+          <Button
+            variant={"outline"}
+            sx={sx.bottomAddEntityButton}
+            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
+            onClick={() => openRowDrawer()}
+          >
+            {verbiage.addEntityButtonText}
+          </Button>
+        )}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
@@ -281,9 +291,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerInfo: verbiage.drawerInfo,
         }}
         form={
-          selectedEntity?.id &&
           isAnalysisMethodsPage &&
-          !getDefaultAnalysisMethodIds().includes(selectedEntity.id)
+          !getDefaultAnalysisMethodIds().includes(selectedEntity?.id!)
             ? addEntityDrawerForm!
             : form
         }
@@ -307,6 +316,9 @@ interface Props {
 }
 
 const sx = {
+  buttonIcons: {
+    height: "1rem",
+  },
   statusIcon: {
     height: "1.25rem",
     position: "absolute",
@@ -380,5 +392,9 @@ const sx = {
   },
   standardForm: {
     paddingBottom: "1rem",
+  },
+  bottomAddEntityButton: {
+    marginTop: "2rem",
+    marginBottom: "0",
   },
 };

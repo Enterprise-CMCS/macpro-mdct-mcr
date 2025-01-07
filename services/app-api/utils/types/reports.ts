@@ -116,6 +116,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   countEntitiesInTitle?: boolean;
   drawerTitle: string;
+  addEntityButtonText?: string;
   drawerInfo?: CustomHtmlElement[];
   missingEntityMessage?: CustomHtmlElement[];
   missingIlosMessage?: CustomHtmlElement[];
