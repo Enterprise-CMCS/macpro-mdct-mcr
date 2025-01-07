@@ -37,7 +37,7 @@
     "react-dom": "^17.0.1",
     "react-dropzone": "^11.4.2",
     "react-error-boundary": "^3.1.4",
-    "react-hook-form": "^7.53.1",
+    "react-hook-form": "^7.54.1",
     "react-icons": "^4.3.1",
     "react-router-dom": "6.28.0",
     "react-uuid": "^1.0.3",
