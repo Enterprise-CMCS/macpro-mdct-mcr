@@ -35,6 +35,7 @@ import {
   FormField,
   isFieldElement,
   InputChangeEvent,
+  ReportType,
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
@@ -62,15 +63,26 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const plans = report?.fieldData?.plans?.map((plan: { name: any }) => plan);
 
-  // generate plan fields (if applicable)
-  let form =
-    isAnalysisMethodsPage && hasPlans
-      ? generatePlanFields(drawerForm, plans)
-      : drawerForm;
+  const getForm = (reportType: string) => {
+    let modifiedForm = drawerForm;
+    switch (reportType) {
+      case ReportType.NAAAR:
+        if (isAnalysisMethodsPage && hasPlans) {
+          modifiedForm = generatePlanFields(drawerForm, plans);
+        }
+        break;
+      case ReportType.MCPAR:
+        if (ilos && reportingOnIlos) {
+          modifiedForm = generateIlosFields(drawerForm, ilos);
+        }
+        break;
+      default:
+        modifiedForm = drawerForm;
+    }
+    return modifiedForm;
+  };
 
-  // generate ILOS fields (if applicable)
-  form =
-    ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+  const form = getForm(report?.reportType!);
 
   // on load, get reporting status from store
   const reportingOnPriorAuthorization =

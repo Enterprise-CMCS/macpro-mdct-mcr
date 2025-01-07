@@ -59,10 +59,11 @@ const updatedPlanChoiceList = (
         ? {
             ...choice,
             children: [
+              choice.children[0],
               {
-                ...choice.children[0],
+                ...choice.children[1],
                 props: {
-                  ...choice.children[0].props,
+                  ...choice.children[1].props,
                   choices: [...planChoices],
                 },
               },
