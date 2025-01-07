@@ -382,14 +382,14 @@
                           "validation": {
                             "type": "checkbox",
                             "nested": true,
-                            "parentFieldName": "analysis_applicable"
+                            "parentFieldName": "analysis_applicable",
+                            "parentOptionId": "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB"
                           },
                           "props": {
                             "label": "Plans utilizing this method",
                             "choices": [
                               {
-                                "id": "tvCUw5CcaGUFSIMByAopjF",
-                                "label": "Fill in plans here"
+                                "label": "Plans"
                               }
                             ]
                           }

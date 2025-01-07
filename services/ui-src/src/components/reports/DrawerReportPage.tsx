@@ -39,6 +39,7 @@ import {
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import { generatePlanFields } from "utils/forms/planFields";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -59,9 +60,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
+  const plans = report?.fieldData?.plans?.map((plan: { name: any }) => plan);
+
+  // generate plan fields (if applicable)
+  let form =
+    isAnalysisMethodsPage && hasPlans
+      ? generatePlanFields(drawerForm, plans)
+      : drawerForm;
 
   // generate ILOS fields (if applicable)
-  const form =
+  form =
     ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
 
   // on load, get reporting status from store

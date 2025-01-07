@@ -27,6 +27,7 @@ export const Drawer = ({
 }: Props) => {
   const mqClasses = makeMediaQueryClasses();
   const { isOpen, onClose } = drawerDisclosure;
+
   return (
     <ChakraDrawer
       isOpen={isOpen}
