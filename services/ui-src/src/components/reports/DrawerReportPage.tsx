@@ -106,8 +106,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       }
       let referenceForm = form;
       if (
+        selectedEntity?.id &&
         isAnalysisMethodsPage &&
-        !getDefaultAnalysisMethodIds().includes(selectedEntity?.id)
+        !getDefaultAnalysisMethodIds().includes(selectedEntity.id)
       ) {
         referenceForm = addEntityDrawerForm!;
       }
@@ -280,8 +281,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerInfo: verbiage.drawerInfo,
         }}
         form={
+          selectedEntity?.id &&
           isAnalysisMethodsPage &&
-          !getDefaultAnalysisMethodIds().includes(selectedEntity?.id)
+          !getDefaultAnalysisMethodIds().includes(selectedEntity.id)
             ? addEntityDrawerForm!
             : form
         }
