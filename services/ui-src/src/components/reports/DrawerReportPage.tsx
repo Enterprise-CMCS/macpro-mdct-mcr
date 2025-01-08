@@ -19,7 +19,6 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
-  generateIlosFields,
   isIlosCompleted,
   getEntriesToClear,
   parseCustomHtml,
@@ -40,7 +39,10 @@ import {
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
-import { generatePlanFields } from "utils/forms/planFields";
+import {
+  generateDrawerItemFields,
+  parentFieldName,
+} from "utils/forms/dynamicItemFields";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -61,19 +63,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
-  const plans = report?.fieldData?.plans?.map((plan: { name: any }) => plan);
+  const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
 
   const getForm = (reportType: string) => {
     let modifiedForm = drawerForm;
     switch (reportType) {
       case ReportType.NAAAR:
         if (isAnalysisMethodsPage && hasPlans) {
-          modifiedForm = generatePlanFields(drawerForm, plans);
+          modifiedForm = generateDrawerItemFields(drawerForm, plans, "plan");
+          parentFieldName("plan");
         }
         break;
       case ReportType.MCPAR:
         if (ilos && reportingOnIlos) {
-          modifiedForm = generateIlosFields(drawerForm, ilos);
+          modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
+          parentFieldName("ilos");
         }
         break;
       default:
@@ -170,7 +174,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
         priorAuthDisabled) ||
       (route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
-        patientAccessDisabled)
+        patientAccessDisabled) ||
+      (isAnalysisMethodsPage && !hasPlans)
     ) {
       style = sx.disabledButton;
       disabled = true;
@@ -240,6 +245,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       {!hasIlos && entities?.length && (
         <Box sx={sx.missingIlos}>
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
+        </Box>
+      )}
+      {isAnalysisMethodsPage && !hasPlans && (
+        <Box sx={sx.missingIlos}>
+          {parseCustomHtml(verbiage.missingEntityMessage || "")}
         </Box>
       )}
       {standardForm && (

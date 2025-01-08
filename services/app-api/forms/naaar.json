@@ -298,7 +298,25 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
             "enterEntityDetailsButtonText": "Enter",
             "readOnlyEntityDetailsButtonText": "View",
-            "drawerTitle": "Analysis method: "
+            "drawerTitle": "Analysis method: ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/naaar/state-and-program-information/add-plans"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "drawerForm": {
             "id": "iam",
