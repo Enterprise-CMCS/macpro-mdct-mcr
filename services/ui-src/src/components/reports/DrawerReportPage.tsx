@@ -170,6 +170,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
     let disabled = false;
     let style = sx.enterButton;
+    const buttonText = userIsEndUser
+      ? isEntityCompleted
+        ? "Edit"
+        : "Enter"
+      : "View";
 
     if (
       (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
@@ -189,7 +194,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         variant="outline"
         disabled={disabled}
       >
-        {isEntityCompleted ? "Edit" : "Enter"}
+        {buttonText}
       </Button>
     );
   };
@@ -266,6 +271,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+  const getDrawerTitle = () => {
+    let name = "Add other";
+    if (selectedEntity?.name) {
+      name = selectedEntity.name;
+    } else if (selectedEntity?.custom_analysis_method_name) {
+      name = selectedEntity.custom_analysis_method_name;
+    }
+    return `${verbiage.drawerTitle} ${name}`;
+  };
 
   return (
     <Box>
@@ -294,7 +308,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       )}
       <Box>
         <Heading as="h3" sx={sx.dashboardTitle}>
-          {verbiage.dashboardTitle}
+          {parseCustomHtml(verbiage.dashboardTitle)}
         </Heading>
         {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
           // if there are no plans and no ILOS added, display this message
@@ -324,7 +338,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       <ReportDrawer
         selectedEntity={selectedEntity!}
         verbiage={{
-          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
         form={selectedIsCustomEntity ? addEntityDrawerForm : form}

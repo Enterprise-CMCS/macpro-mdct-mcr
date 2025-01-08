@@ -284,20 +284,12 @@
                 }
               ]
             },
-            "dashboardTitle": "",
+            "dashboardTitle": "Analysis method <br/> Frequency and plan utilization",
             "addEntityButtonText": "Add other analysis method",
-            "editEntityButtonText": "",
-            "readOnlyEntityButtonText": "",
-            "tableHeader": "Analysis method <br/> Frequency and plan utilization",
-            "addEditModalAddTitle": "Analysis method: Add other",
-            "addEditModalEditTitle": "Analysis method: Edit other",
             "deleteEntityButtonAltText": "Delete other analysis method",
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",
             "deleteModalConfirmButtonText": "Yes, delete method",
             "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this analysis method in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-            "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
-            "enterEntityDetailsButtonText": "Enter",
-            "readOnlyEntityDetailsButtonText": "View",
             "drawerTitle": "Analysis method: "
           },
           "drawerForm": {
