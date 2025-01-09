@@ -254,10 +254,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               {entity.analysis_method_frequency &&
                 entity.analysis_method_applicable_plans && (
                   <Text>
-                    {entity.analysis_method_frequency[0].value}:
-                    {entity.analysis_method_applicable_plans.map(
-                      (entity: AnyObject) => entity.value
-                    )}
+                    {entity.analysis_method_frequency[0].value}:&nbsp;
+                    {entity.analysis_method_applicable_plans
+                      .map((entity: AnyObject) => entity.value)
+                      .join(", ")}
                   </Text>
                 )}
             </Flex>
