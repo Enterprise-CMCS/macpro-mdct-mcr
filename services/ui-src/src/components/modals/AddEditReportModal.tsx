@@ -22,7 +22,8 @@ import {
   convertDateUtcToEt,
   useStore,
 } from "utils";
-import { States } from "../../constants";
+// constants
+import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
 
 export const AddEditReportModal = ({
   activeState,
@@ -131,7 +132,14 @@ export const AddEditReportModal = ({
         previousRevisions: [],
       },
       fieldData: {
-        programName,
+        // All new MLR reports are NOT resubmissions by definition.
+        versionControl: [
+          {
+            // pragma: allowlist nextline secret
+            key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+            value: "No, this is an initial submission",
+          },
+        ],
       },
     };
   };
@@ -169,7 +177,7 @@ export const AddEditReportModal = ({
         naaarReport,
       },
       fieldData: {
-        programName,
+        analysisMethods: DEFAULT_ANALYSIS_METHODS,
       },
     };
   };
@@ -218,18 +226,6 @@ export const AddEditReportModal = ({
         fieldData: {
           ...dataToWrite.fieldData,
           stateName: States[activeState as keyof typeof States],
-          submissionCount: 0,
-          // All new MLR reports are NOT resubmissions by definition.
-          versionControl:
-            reportType === "MLR"
-              ? [
-                  {
-                    // pragma: allowlist nextline secret
-                    key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
-                    value: "No, this is an initial submission",
-                  },
-                ]
-              : undefined,
         },
       });
     }

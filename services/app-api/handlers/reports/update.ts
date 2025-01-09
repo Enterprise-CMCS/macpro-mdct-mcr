@@ -52,7 +52,7 @@ export const updateReport = handler(async (event, context) => {
     return badRequest(error.MISSING_DATA);
   }
 
-  // Blacklisted keys
+  // Blocklisted keys
   const metadataBlocklist = [
     "submittedBy",
     "submittedOnDate",
@@ -144,6 +144,12 @@ export const updateReport = handler(async (event, context) => {
   // Validation JSON should be there—if it's not, there's an issue.
   if (!formTemplate.validationJson) {
     return internalServerError(error.MISSING_FORM_TEMPLATE);
+  }
+
+  const validationSchema = formTemplate.validationJson;
+  if (reportType === "NAAAR") {
+    // this entity does not have validation specified in the form template
+    validationSchema["analysisMethods"] = "objectArray";
   }
 
   // Validate passed field data

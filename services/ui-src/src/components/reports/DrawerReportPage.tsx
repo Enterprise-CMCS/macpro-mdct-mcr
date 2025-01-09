@@ -38,6 +38,7 @@ import {
 } from "types";
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
+import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -52,6 +53,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const entities = report?.fieldData?.[entityType];
 
   // check if there are ILOS and associated plans
+  const isMcparReport = route.path.includes("mcpar");
+  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
@@ -133,7 +136,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose();
   };
 
-  const openRowDrawer = (entity: EntityShape) => {
+  const openRowDrawer = (entity?: EntityShape) => {
     setSelectedEntity(entity);
     onOpen();
   };
@@ -184,12 +187,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
       return (
         <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
-          {isEntityCompleted && (
+          {isEntityCompleted ? (
             <Image
               src={completedIcon}
               alt={"Entity is complete"}
               sx={sx.statusIcon}
             />
+          ) : (
+            isAnalysisMethodsPage && (
+              <Image
+                src={unfinishedIcon}
+                alt={"Entity is incomplete"}
+                sx={sx.statusIcon}
+              />
+            )
           )}
           <Heading as="h4" sx={sx.entityName}>
             {entity.name}
@@ -229,12 +240,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <Heading as="h3" sx={sx.dashboardTitle}>
           {verbiage.dashboardTitle}
         </Heading>
-        {reportingOnIlos && !hasPlans && !hasIlos ? (
+        {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
           // if there are no plans and no ILOS added, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
           </Box>
-        ) : (!reportingOnIlos && !hasPlans) || !entities?.length ? (
+        ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+          !entities?.length ? (
           // if not reporting on ILOS, but missing entities, display this message
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}

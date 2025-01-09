@@ -1,14 +1,17 @@
 import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Heading, Image, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
+  EntityRow,
+  MobileEntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
+  Table,
 } from "components";
 // utils
 import {
@@ -21,6 +24,7 @@ import {
   setClearedEntriesToDefaultValue,
   resetClearProp,
   parseCustomHtml,
+  useBreakpoint,
 } from "utils";
 // types
 import {
@@ -31,8 +35,12 @@ import {
   FormField,
   isFieldElement,
   ModalDrawerReportPageShape,
+  ModalDrawerReportPageVerbiage,
   ReportStatus,
+  ReportType,
 } from "types";
+// assets
+import addIcon from "assets/icons/icon_add.png";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   // state management
@@ -110,7 +118,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     onClose: drawerOnCloseHandler,
   } = useDisclosure();
 
-  const openDrawer = (entity: EntityShape) => {
+  const openOverlayOrDrawer = (entity: EntityShape) => {
     setSelectedEntity(entity);
     drawerOnOpenHandler();
   };
@@ -184,6 +192,16 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
+        ) : report?.reportType === ReportType.NAAAR ? (
+          <Box>
+            {entityTable(
+              reportFieldDataEntities,
+              openAddEditEntityModal,
+              openDeleteEntityModal,
+              openOverlayOrDrawer,
+              verbiage
+            )}
+          </Box>
         ) : (
           <Box>
             <Button
@@ -212,13 +230,12 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
                   )}
                   openAddEditEntityModal={openAddEditEntityModal}
                   openDeleteEntityModal={openDeleteEntityModal}
-                  openDrawer={openDrawer}
+                  openOverlayOrDrawer={openOverlayOrDrawer}
                 />
               )
             )}
           </Box>
         )}
-
         <AddEditEntityModal
           entityType={entityType}
           selectedEntity={selectedEntity}
@@ -263,6 +280,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Button
             sx={sx.bottomAddEntityButton}
             onClick={addEditEntityModalOnOpenHandler}
+            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
           >
             {verbiage.addEntityButtonText}
           </Button>
@@ -278,7 +296,49 @@ interface Props {
   validateOnRender?: boolean;
 }
 
+const entityTable = (
+  entities: AnyObject,
+  openAddEditEntityModal: Function,
+  openDeleteEntityModal: Function,
+  openOverlayOrDrawer: Function,
+  verbiage: ModalDrawerReportPageVerbiage
+) => {
+  const { isTablet, isMobile } = useBreakpoint();
+  const tableHeaders = () => {
+    if (isTablet || isMobile) return { headRow: ["", ""] };
+    return { headRow: ["", verbiage.tableHeader!, ""] };
+  };
+  return (
+    <Table sx={sx.table} content={tableHeaders()} data-testid={"entity-table"}>
+      {entities.map((entity: EntityShape) =>
+        isMobile || isTablet ? (
+          <MobileEntityRow
+            key={entity.id}
+            entity={entity}
+            verbiage={verbiage}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openDeleteEntityModal={openDeleteEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
+          />
+        ) : (
+          <EntityRow
+            key={entity.id}
+            entity={entity}
+            verbiage={verbiage}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openDeleteEntityModal={openDeleteEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
+          />
+        )
+      )}
+    </Table>
+  );
+};
+
 const sx = {
+  buttonIcons: {
+    height: "1rem",
+  },
   dashboardTitle: {
     marginBottom: "1.25rem",
     fontSize: "md",
@@ -305,6 +365,27 @@ const sx = {
     },
     ol: {
       paddingLeft: "1rem",
+    },
+  },
+  table: {
+    tableLayout: "fixed",
+    br: {
+      marginBottom: "0.25rem",
+    },
+    th: {
+      paddingLeft: "1rem",
+      paddingRight: "0",
+      borderBottom: "1px solid",
+      borderColor: "palette.gray_light",
+      ".tablet &, .mobile &": {
+        border: "none",
+      },
+      "&:nth-of-type(1)": {
+        width: "2.5rem",
+      },
+      "&:nth-of-type(3)": {
+        width: "260px",
+      },
     },
   },
 };
