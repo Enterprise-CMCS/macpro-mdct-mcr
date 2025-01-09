@@ -45,7 +45,7 @@ export const Alert = ({
                 : alertIcon
             }
             sx={sx.icon}
-            alt={status}
+            alt={status || "alert"}
           />
         )}
         <Box sx={sx.contentBox} className={!showIcon ? "no-icon" : ""}>
