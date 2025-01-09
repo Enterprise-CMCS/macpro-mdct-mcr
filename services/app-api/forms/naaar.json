@@ -284,7 +284,7 @@
                 }
               ]
             },
-            "dashboardTitle": "<div style=\"margin-left: 3rem;\">Analysis method <br/> Frequency and plan utilization</div>",
+            "dashboardTitle": "Analysis method <br/> Frequency and plan utilization",
             "addEntityButtonText": "Add other analysis method",
             "deleteEntityButtonAltText": "Delete other analysis method",
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",

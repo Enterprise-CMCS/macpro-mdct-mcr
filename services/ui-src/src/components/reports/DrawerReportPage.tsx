@@ -307,7 +307,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        <Heading as="h3" sx={sx.dashboardTitle}>
+        <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
           {parseCustomHtml(verbiage.dashboardTitle)}
         </Heading>
         {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
@@ -375,6 +375,17 @@ function entityRowStyling(canAddEntities: boolean) {
   };
 }
 
+function dashboardTitleStyling(canAddEntities: boolean) {
+  return {
+    paddingLeft: canAddEntities && "3rem",
+    paddingBottom: "0.75rem",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    color: "palette.gray_medium",
+    fontSize: "lg",
+    fontWeight: "bold",
+  };
+}
+
 const sx = {
   buttonIcons: {
     height: "1rem",
@@ -382,13 +393,6 @@ const sx = {
   statusIcon: {
     height: "1.25rem",
     position: "absolute",
-  },
-  dashboardTitle: {
-    paddingBottom: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-    color: "palette.gray_medium",
-    fontSize: "lg",
-    fontWeight: "bold",
   },
   customEntityRow: {
     paddingLeft: "2.25rem",
