@@ -396,6 +396,8 @@ const sx = {
   },
   customEntityRow: {
     paddingLeft: "2.25rem",
+    maxWidth: "32rem",
+    gap: "4px",
   },
   entityName: {
     fontSize: "lg",
