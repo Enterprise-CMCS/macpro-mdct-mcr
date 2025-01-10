@@ -181,7 +181,7 @@ describe("generateDrawerItemFields for NAAAR analysis methods without custom ent
     "plan"
   );
   it("should generate checkboxes per each available plan", () => {
-    expect(result.fields[0].props.choices[1].length).toBe(2);
+    expect(result.fields[0].props.choices[1].children.length).toBe(2);
   });
 });
 
