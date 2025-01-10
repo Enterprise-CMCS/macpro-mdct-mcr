@@ -28,6 +28,23 @@ export const generateDrawerItemFields = (
   };
 };
 
+export const generateAddEntityDrawerItemFields = (
+  form: FormJson,
+  items: AnyObject[],
+  entityType: string
+) => {
+  if (entityType === "plan") {
+    form.fields[3] = {
+      ...form.fields[3],
+      props: {
+        ...form.fields[3].props,
+        choices: [...availableItems(items, entityType)],
+      },
+    };
+  }
+  return form;
+};
+
 export const parentFieldName = (entityType: string) => {
   if (entityType === "plan") {
     return "analysis_applicable";
