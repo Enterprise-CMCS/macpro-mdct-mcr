@@ -39,10 +39,7 @@ import {
 // assets
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
-import {
-  generateDrawerItemFields,
-  parentFieldName,
-} from "utils/forms/dynamicItemFields";
+import { generateDrawerItemFields } from "utils/forms/dynamicItemFields";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -71,17 +68,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       case ReportType.NAAAR:
         if (isAnalysisMethodsPage && hasPlans) {
           modifiedForm = generateDrawerItemFields(drawerForm, plans, "plan");
-          parentFieldName("plan");
         }
         break;
       case ReportType.MCPAR:
         if (ilos && reportingOnIlos) {
           modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
-          parentFieldName("ilos");
         }
         break;
       default:
-        modifiedForm = drawerForm;
     }
     return modifiedForm;
   };

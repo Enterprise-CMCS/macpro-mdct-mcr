@@ -5,7 +5,7 @@ import { AnyObject, FormJson } from "types";
 export const generateDrawerItemFields = (
   form: FormJson,
   items: AnyObject[],
-  itemType: string
+  entityType: string
 ) => {
   const fields = form.fields[0];
   return {
@@ -18,8 +18,8 @@ export const generateDrawerItemFields = (
           choices: [
             ...updatedItemChoiceList(
               fields.props?.choices,
-              availableItems(items),
-              itemType
+              availableItems(items, entityType),
+              entityType
             ),
           ],
         },
@@ -28,15 +28,15 @@ export const generateDrawerItemFields = (
   };
 };
 
-export const parentFieldName = (itemType: string) => {
-  if (itemType === "plan") {
+export const parentFieldName = (entityType: string) => {
+  if (entityType === "plan") {
     return "analysis_applicable";
   } else {
     return "plan_ilosUtilizationByPlan";
   }
 };
 
-const availableItems = (items: AnyObject[]) => {
+const availableItems = (items: AnyObject[], entityType: string) => {
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     updatedItemChoices.push({
@@ -45,12 +45,12 @@ const availableItems = (items: AnyObject[]) => {
       checked: false,
       children: [
         {
-          id: `${parentFieldName}_${item.id}`,
+          id: `${parentFieldName(entityType)}_${item.id}`,
           type: "number",
           validation: {
             type: "number",
             nested: true,
-            parentFieldName: `${parentFieldName}`,
+            parentFieldName: `${parentFieldName(entityType)}`,
             parentOptionId: item.id,
           },
           props: {
@@ -66,10 +66,10 @@ const availableItems = (items: AnyObject[]) => {
 const updatedItemChoiceList = (
   choices: AnyObject[],
   itemChoices: AnyObject[],
-  itemType: string
+  entityType: string
 ) => {
   const updatedChoiceList: AnyObject[] = [];
-  if (itemType === "plan") {
+  if (entityType === "plan") {
     choices.map((choice: AnyObject) => {
       updatedChoiceList.push(
         choice.children
