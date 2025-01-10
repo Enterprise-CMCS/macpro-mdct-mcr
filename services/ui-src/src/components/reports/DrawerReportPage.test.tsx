@@ -18,6 +18,7 @@ import {
   mockDrawerForm,
   mockNaaarReportStore,
   mockNaaarReportContext,
+  mockNaaarAnalysisMethodsPageJson,
 } from "utils/testing/setupJest";
 // constants
 import { DEFAULT_ANALYSIS_METHODS, saveAndCloseText } from "../../constants";
@@ -327,44 +328,6 @@ describe("Test DrawerReportPage with custom entities", () => {
     setEntityType: () => {},
     setEntities: () => {},
   };
-  const mockAnalysisMethodsReportPageJson = {
-    name: "mock-route",
-    path: "/naaar/analysis-methods",
-    pageType: "drawer",
-    entityType: "analysisMethods",
-    verbiage: {
-      intro: mockVerbiageIntro,
-      dashboardTitle: "Mock dashboard title",
-      drawerTitle: "Mock drawer title",
-      addEntityButtonText: "Add other analysis method",
-    },
-    drawerForm: {
-      id: "am",
-      fields: [
-        {
-          id: "am_default_text",
-          type: "text",
-          validation: "text",
-          props: {
-            label: "Fill in info on analysis method",
-          },
-        },
-      ],
-    },
-    addEntityDrawerForm: {
-      id: "am_custom",
-      fields: [
-        {
-          id: "am_custom_text",
-          type: "text",
-          validation: "text",
-          props: {
-            label: "Fill in info on custom analysis method",
-          },
-        },
-      ],
-    },
-  };
 
   const mockNaaarReportContextWithAnalysisMethods: any = mockNaaarReportContext;
   mockNaaarReportContextWithAnalysisMethods.report.fieldData[
@@ -379,7 +342,7 @@ describe("Test DrawerReportPage with custom entities", () => {
   const drawerReportPageWithCustomEntities = (
     <RouterWrappedComponent>
       <ReportContext.Provider value={mockNaaarReportContextWithAnalysisMethods}>
-        <DrawerReportPage route={mockAnalysisMethodsReportPageJson} />
+        <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
       </ReportContext.Provider>
     </RouterWrappedComponent>
   );
@@ -394,9 +357,7 @@ describe("Test DrawerReportPage with custom entities", () => {
     const enterDefaultMethod = screen.getAllByText("Enter")[0];
     await userEvent.click(enterDefaultMethod);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const textField = await screen.getByLabelText(
-      "Fill in info on analysis method"
-    );
+    const textField = await screen.getByLabelText("mock label 1");
     expect(textField).toBeVisible();
   });
 
@@ -414,9 +375,7 @@ describe("Test DrawerReportPage with custom entities", () => {
     const addCustomMethod = screen.getByText("Add other analysis method");
     await userEvent.click(addCustomMethod);
     expect(screen.getByRole("dialog")).toBeVisible();
-    const customTextField = await screen.getByLabelText(
-      "Fill in info on custom analysis method"
-    );
+    const customTextField = await screen.getByLabelText("Analysis method");
     expect(customTextField).toBeVisible();
     await userEvent.type(customTextField, "new analysis method");
     const saveCustomMethod = screen.getByText("Save & close");
@@ -455,7 +414,7 @@ describe("Test DrawerReportPage with custom entities", () => {
         <ReportContext.Provider
           value={mockNaaarReportContextWithCustomAnalysisMethods}
         >
-          <DrawerReportPage route={mockAnalysisMethodsReportPageJson} />
+          <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
