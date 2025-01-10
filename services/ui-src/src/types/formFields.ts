@@ -15,6 +15,7 @@ export const entityTypes = [
   "sanctions",
   "program",
   "ilos",
+  "analysisMethods",
 ] as const;
 
 /**
