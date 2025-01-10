@@ -63,6 +63,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: DrawerReportPageVerbiage;
   drawerForm: FormJson;
+  addEntityDrawerForm?: FormJson;
   modalForm?: never;
   overlayForm?: never;
   form?: FormJson;
@@ -115,6 +116,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   countEntitiesInTitle?: boolean;
   drawerTitle: string;
+  addEntityButtonText?: string;
   drawerInfo?: CustomHtmlElement[];
   missingEntityMessage?: CustomHtmlElement[];
   missingIlosMessage?: CustomHtmlElement[];

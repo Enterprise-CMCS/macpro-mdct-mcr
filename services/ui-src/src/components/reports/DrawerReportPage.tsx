@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import uuid from "react-uuid";
 // components
 import {
   Box,
@@ -7,6 +8,7 @@ import {
   Image,
   Heading,
   useDisclosure,
+  Text,
 } from "@chakra-ui/react";
 import {
   ReportDrawer,
@@ -26,6 +28,7 @@ import {
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
+import { getDefaultAnalysisMethodIds } from "../../constants";
 // types
 import {
   AnyObject,
@@ -35,13 +38,17 @@ import {
   FormField,
   isFieldElement,
   InputChangeEvent,
+  FormJson,
 } from "types";
 // assets
+import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
+    useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
@@ -50,11 +57,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { report, selectedEntity, setSelectedEntity } = useStore();
 
   const { entityType, verbiage, drawerForm, form: standardForm } = route;
+  const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
+  const canAddEntities = !!addEntityDrawerForm.id;
   const entities = report?.fieldData?.[entityType];
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
-  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
@@ -70,11 +78,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnPatientAccessApi =
     report?.fieldData?.["plan_patientAccessApiReporting"]?.[0].value;
   const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(
-    reportingOnPriorAuthorization === "Yes" ? false : true
+    reportingOnPriorAuthorization !== "Yes"
   );
   const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
-    reportingOnPatientAccessApi === "Yes" ? false : true
+    reportingOnPatientAccessApi !== "Yes"
   );
+
+  useEffect(() => {
+    const isCustomEntity =
+      // we are on a page where custom entities can be added
+      canAddEntities &&
+      // and the selectedEntity id is not in the default analysis methods list (only custom entity drawer page)
+      !getDefaultAnalysisMethodIds().includes(selectedEntity?.id!);
+    // enable logic for custom entity manipulation
+    setSelectedIsCustomEntity(isCustomEntity);
+  }, [selectedEntity]);
 
   const onChange = (e: InputChangeEvent) => {
     if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
@@ -90,26 +108,34 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
-        state: state,
+        state,
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || {})];
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+      let selectedEntityIndex = report?.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
+      // if new custom entity, set index to append to array
+      if (canAddEntities && selectedEntityIndex < 0) {
+        selectedEntityIndex = currentEntities.length;
+      }
+      let referenceForm = form;
+      if (selectedIsCustomEntity) {
+        referenceForm = addEntityDrawerForm;
+      }
       const filteredFormData = filterFormData(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
       const entriesToClear = getEntriesToClear(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
       const newEntity = {
-        ...selectedEntity,
+        ...(selectedEntity || { id: uuid() }),
         ...filteredFormData,
       };
-      let newEntities = currentEntities;
+      const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
         newEntities[selectedEntityIndex],
@@ -144,6 +170,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
     let disabled = false;
     let style = sx.enterButton;
+    const buttonText = userIsEndUser
+      ? isEntityCompleted
+        ? "Edit"
+        : "Enter"
+      : "View";
 
     if (
       (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
@@ -163,15 +194,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         variant="outline"
         disabled={disabled}
       >
-        {isEntityCompleted ? "Edit" : "Enter"}
+        {buttonText}
       </Button>
     );
   };
 
   const entityRows = (entities: EntityShape[]) => {
     return entities?.map((entity) => {
+      const isCustomEntity =
+        canAddEntities && !getDefaultAnalysisMethodIds().includes(entity.id);
       const calculateEntityCompletion = () => {
-        return form.fields
+        let formFields = form.fields;
+        if (isCustomEntity) {
+          formFields = addEntityDrawerForm.fields;
+        }
+        return formFields
           ?.filter(isFieldElement)
           .every((field: FormField) => field.id in entity);
       };
@@ -186,7 +223,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         : calculateEntityCompletion();
 
       return (
-        <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
+        <Flex
+          key={entity.id}
+          sx={entityRowStyling(canAddEntities)}
+          data-testid="report-drawer"
+        >
           {isEntityCompleted ? (
             <Image
               src={completedIcon}
@@ -194,7 +235,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               sx={sx.statusIcon}
             />
           ) : (
-            isAnalysisMethodsPage && (
+            canAddEntities && (
               <Image
                 src={unfinishedIcon}
                 alt={"Entity is incomplete"}
@@ -202,13 +243,42 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               />
             )
           )}
-          <Heading as="h4" sx={sx.entityName}>
-            {entity.name}
-          </Heading>
+          {isCustomEntity ? (
+            <Flex direction={"column"} sx={sx.customEntityRow}>
+              <Heading as="h4" sx={sx.customEntityName}>
+                {entity.custom_analysis_method_name}
+              </Heading>
+              {entity.custom_analysis_method_description && (
+                <Text>{entity.custom_analysis_method_description}</Text>
+              )}
+              {entity.analysis_method_frequency &&
+                entity.analysis_method_applicable_plans && (
+                  <Text>
+                    {entity.analysis_method_frequency[0].value}:&nbsp;
+                    {entity.analysis_method_applicable_plans
+                      .map((entity: AnyObject) => entity.value)
+                      .join(", ")}
+                  </Text>
+                )}
+            </Flex>
+          ) : (
+            <Heading as="h4" sx={sx.entityName}>
+              {entity.name}
+            </Heading>
+          )}
           {enterButton(entity, isEntityCompleted)}
         </Flex>
       );
     });
+  };
+  const getDrawerTitle = () => {
+    let name = "Add other";
+    if (selectedEntity?.name) {
+      name = selectedEntity.name;
+    } else if (selectedEntity?.custom_analysis_method_name) {
+      name = selectedEntity.custom_analysis_method_name;
+    }
+    return `${verbiage.drawerTitle} ${name}`;
   };
 
   return (
@@ -237,8 +307,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        <Heading as="h3" sx={sx.dashboardTitle}>
-          {verbiage.dashboardTitle}
+        <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+          {parseCustomHtml(verbiage.dashboardTitle)}
         </Heading>
         {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
           // if there are no plans and no ILOS added, display this message
@@ -254,14 +324,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ) : (
           entityRows(entities)
         )}
+        {canAddEntities && (
+          <Button
+            variant={"outline"}
+            sx={sx.bottomAddEntityButton}
+            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
+            onClick={() => openRowDrawer()}
+          >
+            {verbiage.addEntityButtonText}
+          </Button>
+        )}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
         verbiage={{
-          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={form}
+        form={selectedIsCustomEntity ? addEntityDrawerForm : form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
@@ -281,34 +361,54 @@ interface Props {
   validateOnRender?: boolean;
 }
 
-const sx = {
-  statusIcon: {
-    height: "1.25rem",
-    position: "absolute",
-  },
-  dashboardTitle: {
+function entityRowStyling(canAddEntities: boolean) {
+  return {
+    justifyContent: "space-between",
+    alignItems: "center",
+    minHeight: "3.25rem",
+    padding: "0.5rem",
+    paddingLeft: "0.75rem",
+    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    "&:last-of-type": {
+      borderBottom: canAddEntities ?? "none",
+    },
+  };
+}
+
+function dashboardTitleStyling(canAddEntities: boolean) {
+  return {
+    paddingLeft: canAddEntities && "3rem",
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
     color: "palette.gray_medium",
     fontSize: "lg",
     fontWeight: "bold",
+  };
+}
+
+const sx = {
+  buttonIcons: {
+    height: "1rem",
   },
-  entityRow: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "3.25rem",
-    padding: "0.5rem",
-    paddingLeft: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-    "&:last-of-type": {
-      borderBottom: "none",
-    },
+  statusIcon: {
+    height: "1.25rem",
+    position: "absolute",
+  },
+  customEntityRow: {
+    paddingLeft: "2.25rem",
+    maxWidth: "32rem",
+    gap: "4px",
   },
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+  },
+  customEntityName: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    flexGrow: 1,
   },
   missingIlos: {
     fontWeight: "bold",
@@ -355,5 +455,9 @@ const sx = {
   },
   standardForm: {
     paddingBottom: "1rem",
+  },
+  bottomAddEntityButton: {
+    marginTop: "2rem",
+    marginBottom: "0",
   },
 };
