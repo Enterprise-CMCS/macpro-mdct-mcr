@@ -32,7 +32,6 @@ export interface ReportMetadataShape extends ReportKeys {
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
-  novMcparRelease?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {
