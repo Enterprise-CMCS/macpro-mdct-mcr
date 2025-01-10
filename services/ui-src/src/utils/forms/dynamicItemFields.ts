@@ -33,15 +33,13 @@ export const generateAddEntityDrawerItemFields = (
   items: AnyObject[],
   entityType: string
 ) => {
-  if (entityType === "plan") {
-    form.fields[3] = {
-      ...form.fields[3],
-      props: {
-        ...form.fields[3].props,
-        choices: [...availableItems(items, entityType)],
-      },
-    };
-  }
+  form.fields[3] = {
+    ...form.fields[3],
+    props: {
+      ...form.fields[3].props,
+      choices: [...availableItems(items, entityType)],
+    },
+  };
   return form;
 };
 
@@ -60,21 +58,23 @@ const availableItems = (items: AnyObject[], entityType: string) => {
       ...item,
       label: item.name,
       checked: false,
-      children: [
-        {
-          id: `${parentFieldName(entityType)}_${item.id}`,
-          type: "number",
-          validation: {
+      ...(entityType === "ilos" && {
+        children: [
+          {
+            id: `${parentFieldName(entityType)}_${item.id}`,
             type: "number",
-            nested: true,
-            parentFieldName: `${parentFieldName(entityType)}`,
-            parentOptionId: item.id,
+            validation: {
+              type: "number",
+              nested: true,
+              parentFieldName: `${parentFieldName(entityType)}`,
+              parentOptionId: item.id,
+            },
+            props: {
+              decimalPlacesToRoundTo: 0,
+            },
           },
-          props: {
-            decimalPlacesToRoundTo: 0,
-          },
-        },
-      ],
+        ],
+      }),
     });
   });
   return updatedItemChoices;

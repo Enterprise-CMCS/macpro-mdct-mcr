@@ -1,5 +1,8 @@
 import { FormJson, AnyObject } from "types";
-import { generateDrawerItemFields } from "./dynamicItemFields";
+import {
+  generateAddEntityDrawerItemFields,
+  generateDrawerItemFields,
+} from "./dynamicItemFields";
 
 const mockIlosForm: FormJson = {
   id: "mock-id",
@@ -91,6 +94,48 @@ const mockAnalysisMethodsForm: FormJson = {
   ],
 };
 
+const mockAddAnalysisMethodsForm: FormJson = {
+  id: "mock-id",
+  fields: [
+    {
+      id: "mock_custom_analysis_method_name",
+      type: "text",
+      validation: "text",
+      props: {
+        label: "Analysis method",
+      },
+    },
+    {
+      id: "mock_custom_analysis_method_description",
+      type: "textarea",
+      validation: "textarea",
+      props: {
+        label: "description",
+      },
+    },
+    {
+      id: "mock_analysis_method_frequency",
+      type: "radio",
+      props: {
+        label: "Frequency of analysis",
+        choices: [],
+      },
+    },
+    {
+      id: "mock_analysis_method_applicable_plans",
+      type: "checkbox",
+      props: {
+        label: "Plans utilizing this method",
+        choices: [
+          {
+            label: "Plans",
+          },
+        ],
+      },
+    },
+  ],
+};
+
 const mockIlos: AnyObject[] = [
   {
     id: "mock-ilos-1",
@@ -129,22 +174,24 @@ describe("generateDrawerItemFields for ILOS", () => {
   });
 });
 
-describe("generateDrawerItemFields for NAAAR analysis methods", () => {
+describe("generateDrawerItemFields for NAAAR analysis methods without custom entity form", () => {
   const result = generateDrawerItemFields(
     mockAnalysisMethodsForm,
     mockPlans,
     "plan"
   );
-  it("should generate checkboxes per each available ILOS", () => {
+  it("should generate checkboxes per each available plan", () => {
     expect(result.fields[0].props.choices[1].length).toBe(2);
   });
+});
 
-  it("each ILOS checkbox should have a nested text field of type number", () => {
-    result.fields[0].props.choices[1].children[1].props.choices.map(
-      (choice: AnyObject) => {
-        expect(choice.children);
-        expect(choice.children[1].type).toBe("number");
-      }
-    );
+describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with custom entity form", () => {
+  const result = generateAddEntityDrawerItemFields(
+    mockAddAnalysisMethodsForm,
+    mockPlans,
+    "plan"
+  );
+  it("should generate checkboxes per each available plan", () => {
+    expect(result.fields[3].props?.choices.length).toBe(2);
   });
 });
