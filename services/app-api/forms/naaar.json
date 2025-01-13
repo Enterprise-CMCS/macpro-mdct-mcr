@@ -290,7 +290,25 @@
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",
             "deleteModalConfirmButtonText": "Yes, delete method",
             "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this analysis method in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-            "drawerTitle": "Analysis method: "
+            "drawerTitle": "Analysis method: ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/naaar/state-and-program-information/add-plans"
+                    }
+                  }
+                ]
+              }
+            ]
           },
           "drawerForm": {
             "id": "iam",
@@ -374,23 +392,14 @@
                           "validation": {
                             "type": "checkbox",
                             "nested": true,
-                            "parentFieldName": "analysis_applicable"
+                            "parentFieldName": "analysis_applicable",
+                            "parentOptionId": "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB"
                           },
                           "props": {
                             "label": "Plans utilizing this method",
                             "choices": [
                               {
-                                "id": "tvCUw5CcaGUFSIMByAopjF",
-                                "label": "Fill in plans here"
-                              },
-                              {
-                                "id": "tvCUw5CcaGUFSIMByAopjA",
-                                "label": "Second plan"
-                              }
-                              ,
-                              {
-                                "id": "tvCUw5CcaGUFSIMByAopjB",
-                                "label": "Third plan with the absolutest most longest name you ever did see in a plan like this one"
+                                "label": "Plans"
                               }
                             ]
                           }
@@ -484,25 +493,13 @@
                 "id": "analysis_method_applicable_plans",
                 "type": "checkbox",
                 "validation": {
-                  "type": "checkbox",
-                  "nested": true,
-                  "parentFieldName": "analysis_applicable"
+                  "type": "checkbox"
                 },
                 "props": {
                   "label": "Plans utilizing this method",
                   "choices": [
                     {
-                      "id": "tvCUw5CcaGUFSIMByAopjF",
-                      "label": "Fill in plans here"
-                    },
-                    {
-                      "id": "tvCUw5CcaGUFSIMByAopjA",
-                      "label": "Second plan"
-                    }
-                    ,
-                    {
-                      "id": "tvCUw5CcaGUFSIMByAopjB",
-                      "label": "Third plan with the absolutest most longest name you ever did see in a plan like this one"
+                      "label": "Plans"
                     }
                   ]
                 }

@@ -11,5 +11,10 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "serverless-s3-local": "^0.8.4"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.6",
+    "path-to-regexp": "^6.3.0",
+    "ws": "^8.18.0"
   }
 }

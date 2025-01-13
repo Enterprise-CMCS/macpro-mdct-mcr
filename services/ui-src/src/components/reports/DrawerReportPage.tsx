@@ -21,7 +21,6 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
-  generateIlosFields,
   isIlosCompleted,
   getEntriesToClear,
   parseCustomHtml,
@@ -38,12 +37,17 @@ import {
   FormField,
   isFieldElement,
   InputChangeEvent,
+  ReportType,
   FormJson,
 } from "types";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import {
+  generateAddEntityDrawerItemFields,
+  generateDrawerItemFields,
+} from "utils/forms/dynamicItemFields";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -63,14 +67,42 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
+  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
+  const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
 
-  // generate ILOS fields (if applicable)
-  const form =
-    ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+  const getForm = (
+    reportType?: string,
+    isCustomEntityForm: boolean = false
+  ) => {
+    let modifiedForm = drawerForm;
+    switch (reportType) {
+      case ReportType.NAAAR:
+        if (isAnalysisMethodsPage && hasPlans) {
+          modifiedForm = isCustomEntityForm
+            ? generateAddEntityDrawerItemFields(
+                addEntityDrawerForm,
+                plans,
+                "plan"
+              )
+            : generateDrawerItemFields(drawerForm, plans, "plan");
+        }
+        break;
+      case ReportType.MCPAR:
+        if (ilos && reportingOnIlos) {
+          modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
+        }
+        break;
+      default:
+    }
+    return modifiedForm;
+  };
+
+  const form = getForm(report?.reportType);
+  const addEntityForm = getForm(report?.reportType, true);
 
   // on load, get reporting status from store
   const reportingOnPriorAuthorization =
@@ -121,7 +153,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       }
       let referenceForm = form;
       if (selectedIsCustomEntity) {
-        referenceForm = addEntityDrawerForm;
+        referenceForm = addEntityForm;
       }
       const filteredFormData = filterFormData(
         enteredData,
@@ -181,7 +213,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
         priorAuthDisabled) ||
       (route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
-        patientAccessDisabled)
+        patientAccessDisabled) ||
+      (isAnalysisMethodsPage && !hasPlans)
     ) {
       style = sx.disabledButton;
       disabled = true;
@@ -206,7 +239,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       const calculateEntityCompletion = () => {
         let formFields = form.fields;
         if (isCustomEntity) {
-          formFields = addEntityDrawerForm.fields;
+          formFields = addEntityForm.fields;
         }
         return formFields
           ?.filter(isFieldElement)
@@ -292,6 +325,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
         </Box>
       )}
+      {isAnalysisMethodsPage && !hasPlans && (
+        <Box sx={sx.missingIlos}>
+          {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        </Box>
+      )}
       {standardForm && (
         <Box sx={sx.standardForm}>
           <Form
@@ -324,7 +362,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ) : (
           entityRows(entities)
         )}
-        {canAddEntities && (
+        {canAddEntities && hasPlans && (
           <Button
             variant={"outline"}
             sx={sx.bottomAddEntityButton}
@@ -341,7 +379,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={selectedIsCustomEntity ? addEntityDrawerForm : form}
+        form={selectedIsCustomEntity ? addEntityForm : form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
