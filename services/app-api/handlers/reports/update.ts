@@ -156,7 +156,7 @@ export const updateReport = handler(async (event, context) => {
   let validatedFieldData;
   try {
     validatedFieldData = await validateFieldData(
-      formTemplate.validationJson,
+      validationSchema,
       unvalidatedFieldData
     );
   } catch {
@@ -184,7 +184,8 @@ export const updateReport = handler(async (event, context) => {
 
   const completionStatus = await calculateCompletionStatus(
     fieldData,
-    formTemplate
+    formTemplate,
+    validationSchema
   );
 
   // validate report metadata
