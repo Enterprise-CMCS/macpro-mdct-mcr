@@ -43,15 +43,8 @@ export const generateAddEntityDrawerItemFields = (
   return form;
 };
 
-export const parentFieldName = (entityType: string) => {
-  if (entityType === "plan") {
-    return "analysis_applicable";
-  } else {
-    return "plan_ilosUtilizationByPlan";
-  }
-};
-
 const availableItems = (items: AnyObject[], entityType: string) => {
+  const ilosFieldName = "plan_ilosUtilizationByPlan";
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     updatedItemChoices.push({
@@ -61,12 +54,12 @@ const availableItems = (items: AnyObject[], entityType: string) => {
       ...(entityType === "ilos" && {
         children: [
           {
-            id: `${parentFieldName(entityType)}_${item.id}`,
+            id: `${ilosFieldName}_${item.id}`,
             type: "number",
             validation: {
               type: "number",
               nested: true,
-              parentFieldName: `${parentFieldName(entityType)}`,
+              parentFieldName: `${ilosFieldName}`,
               parentOptionId: item.id,
             },
             props: {

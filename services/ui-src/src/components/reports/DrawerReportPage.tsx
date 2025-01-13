@@ -74,18 +74,21 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
 
-  const getForm = (reportType: string, isCustomEntityForm: boolean = false) => {
+  const getForm = (
+    reportType?: string,
+    isCustomEntityForm: boolean = false
+  ) => {
     let modifiedForm = drawerForm;
     switch (reportType) {
       case ReportType.NAAAR:
-        if (isAnalysisMethodsPage && hasPlans && !isCustomEntityForm) {
-          modifiedForm = generateDrawerItemFields(drawerForm, plans, "plan");
-        } else if (isAnalysisMethodsPage && hasPlans && isCustomEntityForm) {
-          modifiedForm = generateAddEntityDrawerItemFields(
-            addEntityDrawerForm,
-            plans,
-            "plan"
-          );
+        if (isAnalysisMethodsPage && hasPlans) {
+          modifiedForm = isCustomEntityForm
+            ? generateAddEntityDrawerItemFields(
+                addEntityDrawerForm,
+                plans,
+                "plan"
+              )
+            : generateDrawerItemFields(drawerForm, plans, "plan");
         }
         break;
       case ReportType.MCPAR:
@@ -98,8 +101,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return modifiedForm;
   };
 
-  const form = getForm(report?.reportType!);
-  const addEntityForm = getForm(report?.reportType!, true);
+  const form = getForm(report?.reportType);
+  const addEntityForm = getForm(report?.reportType, true);
 
   // on load, get reporting status from store
   const reportingOnPriorAuthorization =
