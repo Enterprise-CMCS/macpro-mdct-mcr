@@ -41,7 +41,6 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
-  const novMcparRelease = useFlags()?.novMcparRelease;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -109,7 +108,6 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
-        novMcparRelease,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

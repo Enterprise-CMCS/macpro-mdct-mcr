@@ -185,7 +185,6 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
-  novMcparRelease: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {
