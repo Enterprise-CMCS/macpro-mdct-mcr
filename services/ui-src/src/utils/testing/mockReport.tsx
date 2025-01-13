@@ -361,6 +361,16 @@ export const mockNaaarReportFieldData = {
   radio: ["option1"],
   checkbox: ["option1", "option2"],
   dropdown: "dropdown-selection",
+  plans: [
+    {
+      id: "id1",
+      name: "plan 1",
+    },
+    {
+      id: "id2",
+      name: "plan 2",
+    },
+  ],
 };
 
 export const mockMcparReport = {
