@@ -318,16 +318,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               {entity.name}
             </Heading>
           )}
-          {enterButton(entity, isEntityCompleted)}
-          {canAddEntities && !entity.isRequired && (
-            <Button
-              sx={sx.deleteButton}
-              data-testid="delete-entity"
-              onClick={() => openDeleteEntityModal(entity)}
-            >
-              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-            </Button>
-          )}
+          <Box sx={buttonBoxStyling(canAddEntities)}>
+            {enterButton(entity, isEntityCompleted)}
+            {canAddEntities && !entity.isRequired && (
+              <Button
+                sx={sx.deleteButton}
+                data-testid="delete-entity"
+                onClick={() => openDeleteEntityModal(entity)}
+              >
+                <Image src={deleteIcon} alt="delete icon" boxSize="2xl" />
+              </Button>
+            )}
+          </Box>
         </Flex>
       );
     });
@@ -461,6 +463,15 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   };
 }
 
+function buttonBoxStyling(canAddEntities: boolean) {
+  return {
+    marginRight: canAddEntities && "1.5rem",
+    "button + button": {
+      marginRight: "-2.5rem",
+    },
+  };
+}
+
 const sx = {
   buttonIcons: {
     height: "1rem",
@@ -517,7 +528,6 @@ const sx = {
     fontWeight: "normal",
   },
   deleteButton: {
-    minWidth: "1.875rem",
     padding: 0,
     background: "white",
     "&:hover, &:hover:disabled, :disabled": {
