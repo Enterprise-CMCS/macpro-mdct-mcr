@@ -490,6 +490,7 @@ const sx = {
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+    paddingRight: "1rem",
   },
   customEntityName: {
     fontSize: "lg",
