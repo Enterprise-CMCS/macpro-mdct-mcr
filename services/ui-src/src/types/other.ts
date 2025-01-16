@@ -65,6 +65,14 @@ export interface ScreenReaderOnlyHeaderName {
 export interface TableContentShape {
   caption?: string;
   headRow?: Array<string | ScreenReaderOnlyHeaderName>;
+  sortableHeadRow?: {
+    [key: string]: {
+      header: string;
+      admin?: boolean;
+      hidden?: boolean;
+      stateUser?: boolean;
+    };
+  };
   bodyRows?: string[][];
 }
 

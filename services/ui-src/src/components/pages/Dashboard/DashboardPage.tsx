@@ -1,3 +1,4 @@
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // components
@@ -20,6 +21,7 @@ import {
   MobileDashboardTable,
   PageTemplate,
   ReportContext,
+  SortableDashboardTable,
 } from "components";
 // types
 import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
@@ -37,6 +39,7 @@ import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
+import { DashboardTableProps } from "./DashboardTableUtils";
 
 export const DashboardPage = ({ reportType }: Props) => {
   const {
@@ -134,10 +137,10 @@ export const DashboardPage = ({ reportType }: Props) => {
         );
       const copyFieldDataSourceId = copySourceReport
         ? {
-            label: `${copySourceReport?.programName} ${convertDateUtcToEt(
+            label: `${copySourceReport.programName} ${convertDateUtcToEt(
               report.reportingPeriodEndDate
             )}`,
-            value: copySourceReport?.fieldDataId!,
+            value: copySourceReport.fieldDataId,
           }
         : undefined;
       if (report.submittedOnDate) {
@@ -180,35 +183,41 @@ export const DashboardPage = ({ reportType }: Props) => {
   } = useDisclosure();
 
   const toggleReportArchiveStatus = async (report: ReportShape) => {
-    if (userIsAdmin) {
-      setReportId(report.id);
-      setArchiving(true);
-      const reportKeys = {
-        reportType: reportType,
-        state: selectedState,
-        id: report.id,
-      };
-      await archiveReport(reportKeys);
-      await fetchReportsByState(reportType, activeState);
-      setReportId(undefined);
-      setArchiving(false);
-    }
+    setReportId(report.id);
+    setArchiving(true);
+    const reportKeys = {
+      reportType: reportType,
+      state: selectedState,
+      id: report.id,
+    };
+    await archiveReport(reportKeys);
+    await fetchReportsByState(reportType, activeState);
+    setReportId(undefined);
+    setArchiving(false);
   };
 
   const toggleReportLockStatus = async (report: ReportShape) => {
-    if (userIsAdmin) {
-      setReportId(report.id);
-      setReleasing(true);
-      const reportKeys = {
-        reportType: reportType,
-        state: selectedState,
-        id: report.id,
-      };
-      await releaseReport!(reportKeys);
-      await fetchReportsByState(reportType, activeState);
-      setReportId(undefined);
-      setReleasing(false);
-    }
+    setReportId(report.id);
+    setReleasing(true);
+    const reportKeys = {
+      reportType: reportType,
+      state: selectedState,
+      id: report.id,
+    };
+    await releaseReport(reportKeys);
+    await fetchReportsByState(reportType, activeState);
+    setReportId(undefined);
+    setReleasing(false);
+  };
+
+  const sortableTable = useFlags()?.sortableDashboardTable;
+
+  const DesktopDashboardTable = (props: DashboardTableProps) => {
+    return sortableTable ? (
+      <SortableDashboardTable {...props} />
+    ) : (
+      <DashboardTable {...props} />
+    );
   };
 
   return (
@@ -252,7 +261,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               sxOverride={sxChildStyles}
             />
           ) : (
-            <DashboardTable
+            <DesktopDashboardTable
               reportsByState={reportsToDisplay}
               reportType={reportType}
               reportId={reportId}
