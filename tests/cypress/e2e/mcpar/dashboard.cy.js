@@ -82,13 +82,13 @@ describe("Admin Archiving", () => {
     }).should("be.visible");
 
     cy.get('button:contains("Archive")').last().click();
-    cy.contains("Unarchive").should("be.visible");
+    cy.get('button:contains("Unarchive")').should("be.visible");
 
-    cy.contains("Unarchive").last().click();
-    cy.contains("Archive").should("be.visible");
+    cy.get('button:contains("Unarchive")').last().click();
+    cy.get('button:contains("Archive")').should("be.visible");
 
-    cy.contains("Archive").last().click();
-    cy.contains("Unarchive").should("be.visible");
+    cy.get('button:contains("Archive")').last().click();
+    cy.get('button:contains("Unarchive")').should("be.visible");
   });
 });
 
