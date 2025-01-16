@@ -52,7 +52,7 @@ const TestComponent = () => {
       <button onClick={() => context.archiveReport(mockReportKeys)}>
         Archive Report
       </button>
-      <button onClick={() => context.releaseReport!(mockReportKeys)}>
+      <button onClick={() => context.releaseReport(mockReportKeys)}>
         Release Report
       </button>
       <button onClick={() => context.submitReport(mockReportKeys)}>
