@@ -19,19 +19,13 @@ import {
   mockReportContextNoReports,
   mockReportContextWithError,
   mockDashboardLockedReportContext,
-  mockMlrReportContext,
   mockMlrDashboardReportContext,
   mockMcparReportStore,
   mockMlrLockedReportStore,
-  mockNaaarReportContext,
-  mockMlrReportStore,
-  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
-import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
@@ -94,22 +88,6 @@ const dashboardViewWithError = (
   </RouterWrappedComponent>
 );
 
-const dashboardViewWithLockedReport = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockDashboardLockedReportContext}>
-      <DashboardPage reportType="MLR" />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const naaarDashboardViewEmpty = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockNaaarReportContext}>
-      <DashboardPage reportType="NAAAR" />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
 const { report, ...rest } = mockMcparReportStore;
 
 const multiSubmissionCount = {
@@ -157,66 +135,35 @@ const noAlteredByReportStore = {
   reportsByState: [noAlteredByReport],
 };
 
-describe("<DashboardTable />", () => {
-  describe("Test Report Dashboard view (with reports, desktop view)", () => {
+describe("<MobileDashboardTable />", () => {
+  describe("Test Dashboard view (with reports, mobile view)", () => {
     beforeEach(() => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMcparReportStore,
       });
       mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
+        isMobile: true,
       });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
+      mockMakeMediaQueryClasses.mockReturnValue("mobile");
+      render(dashboardViewWithReports);
     });
 
     afterEach(() => {
       jest.clearAllMocks();
     });
 
-    test("Check that MCPAR Dashboard view renders", async () => {
-      render(dashboardViewWithReports);
+    test("MCPAR Dashboard view renders", async () => {
       await waitFor(() => {
         expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
-        expect(
-          screen.getAllByRole("gridcell", { name: "testProgram" })[0]
-        ).toBeVisible();
+        expect(screen.getAllByTestId("mobile-row")[0]).toBeVisible();
         expect(
           screen.queryByText(mcparVerbiage.body.empty)
         ).not.toBeInTheDocument();
-        expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
     });
 
-    test("Check that MLR Dashboard view renders", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMlrReportStore,
-      });
-      render(mlrDashboardViewWithReports);
-      await waitFor(() => {
-        expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
-        expect(
-          screen.getAllByRole("gridcell", { name: "testSubmission" })[0]
-        ).toBeVisible();
-        expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
-      });
-    });
-
-    test("Check that NAAAR Dashboard view renders", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockNaaarReportStore,
-      });
-      render(naaarDashboardViewEmpty);
-      await waitFor(() => {
-        expect(screen.getByText(naaarVerbiage.intro.header)).toBeVisible();
-        expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
-      });
-    });
-
-    test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
-      render(dashboardViewWithReports);
+    test("Clicking 'Edit' button on a report navigates to first page of report", async () => {
       mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
       const enterReportButton = screen.getAllByRole("button", {
         name: "Edit",
@@ -224,43 +171,17 @@ describe("<DashboardTable />", () => {
       expect(enterReportButton).toBeVisible();
       await userEvent.click(enterReportButton);
       await waitFor(async () => {
-        expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(
-          1
-        );
         expect(mockUseNavigate).toBeCalledTimes(1);
         expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
       });
     });
 
-    test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
-      render(dashboardViewWithReports);
-      const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
-      expect(addReportButton).toBeVisible();
-      await userEvent.click(addReportButton);
-      await waitFor(async () => {
-        expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
-      });
-    });
-
-    test("Clicking 'Edit Report' icon opens the AddEditProgramModal", async () => {
-      render(dashboardViewWithReports);
+    test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
       const addReportButton = screen.getAllByAltText("Edit Report")[0];
       expect(addReportButton).toBeVisible();
       await userEvent.click(addReportButton);
       await waitFor(async () => {
         expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
-      });
-    });
-
-    test("Unable to edit a report if it is locked", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMlrLockedReportStore,
-      });
-      render(dashboardViewWithLockedReport);
-      await waitFor(() => {
-        const addReportButtons = screen.queryAllByAltText("Edit Report");
-        expect(addReportButtons).toHaveLength(0);
       });
     });
 
@@ -271,9 +192,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(
-          screen.getAllByRole("gridcell", { name: "123" })[0]
-        ).toBeVisible();
+        expect(screen.getAllByText("123")[0]).toBeVisible();
       });
     });
 
@@ -284,7 +203,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(screen.getAllByRole("gridcell", { name: "1" })[0]).toBeVisible();
+        expect(screen.getAllByText("1")[0]).toBeVisible();
       });
     });
 
@@ -313,12 +232,12 @@ describe("<DashboardTable />", () => {
     });
   });
 
-  describe("Test Dashboard report archiving privileges (desktop)", () => {
+  describe("Test Dashboard report archiving privileges (mobile)", () => {
     beforeEach(() => {
       mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
+        isMobile: true,
       });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
+      mockMakeMediaQueryClasses.mockReturnValue("mobile");
     });
 
     afterEach(() => {
@@ -331,12 +250,12 @@ describe("<DashboardTable />", () => {
         ...mockMcparReportStore,
       });
       render(dashboardViewWithReports);
+      const archiveProgramButton = screen.getByRole("button", {
+        name: "Archive",
+      });
+      expect(archiveProgramButton).toBeVisible();
+      await userEvent.click(archiveProgramButton);
       await waitFor(async () => {
-        const archiveProgramButton = screen.getByRole("button", {
-          name: "Archive",
-        });
-        expect(archiveProgramButton).toBeVisible();
-        await userEvent.click(archiveProgramButton);
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
         expect(
@@ -431,12 +350,13 @@ describe("<DashboardTable />", () => {
     });
   });
 
-  describe("Test Dashboard report releasing privileges (desktop)", () => {
+  describe("Test Dashboard report releasing privileges (mobile)", () => {
     beforeEach(() => {
       mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
+        isMobile: true,
+        isTablet: false,
       });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
+      mockMakeMediaQueryClasses.mockReturnValue("mobile");
     });
 
     afterEach(() => {
@@ -451,14 +371,13 @@ describe("<DashboardTable />", () => {
       render(mlrDashboardViewWithLockedReports);
       const releaseProgramButton = screen.getAllByText("Unlock")[0];
       expect(releaseProgramButton).toBeVisible();
-      expect(releaseProgramButton).toBeEnabled();
       await userEvent.click(releaseProgramButton);
       await waitFor(async () => {
-        expect(mockMlrReportContext.releaseReport).toHaveBeenCalledTimes(1);
+        expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
         // once for render, once for release
-        expect(mockMlrReportContext.fetchReportsByState).toHaveBeenCalledTimes(
-          2
-        );
+        expect(
+          mockMcparReportContext.fetchReportsByState
+        ).toHaveBeenCalledTimes(2);
       });
     });
 
@@ -471,14 +390,12 @@ describe("<DashboardTable />", () => {
   });
 
   describe("Test Dashboard with no activeState", () => {
-    beforeEach(() => {
+    test("Dashboard reroutes to / with no active state", async () => {
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
         isTablet: false,
       });
       mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    });
-    test("Dashboard reroutes to / with no active state", async () => {
       mockedUseStore.mockReturnValue(mockNoUserStore);
       render(dashboardViewWithReports);
       await waitFor(() => {
@@ -517,11 +434,11 @@ describe("<DashboardTable />", () => {
   });
 
   describe("Test Dashboard view accessibility", () => {
-    it("Should not have basic accessibility issues (desktop)", async () => {
+    it("Should not have basic accessibility issues (mobile)", async () => {
       mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
+        isMobile: true,
       });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
+      mockMakeMediaQueryClasses.mockReturnValue("mobile");
       await act(async () => {
         const { container } = render(dashboardViewWithReports);
         const results = await axe(container);

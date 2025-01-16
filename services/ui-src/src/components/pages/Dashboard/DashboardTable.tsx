@@ -1,16 +1,17 @@
 // components
-import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
+import { Button, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
 // utils
+import { ReportMetadataShape, ReportType } from "types";
 import {
-  AnyObject,
-  ReportMetadataShape,
-  ReportType,
-  TableContentShape,
-} from "types";
-import { convertDateUtcToEt } from "utils";
-// assets
-import editIcon from "assets/icons/icon_edit_square_gray.png";
+  AdminArchiveButton,
+  AdminReleaseButton,
+  DashboardTableProps,
+  DateFields,
+  EditReportButton,
+  getStatus,
+  tableBody,
+} from "./DashboardTableUtils";
 
 export const DashboardTable = ({
   reportsByState,
@@ -32,18 +33,18 @@ export const DashboardTable = ({
     {reportsByState.map((report: ReportMetadataShape) => (
       <Tr key={report.id}>
         {/* Edit Button */}
-        {isStateLevelUser && !report?.locked ? (
-          <EditReportButton
-            report={report}
-            openAddEditReportModal={openAddEditReportModal}
-            sxOverride={sxOverride}
-          />
-        ) : (
-          <Td></Td>
-        )}
+        <Td>
+          {isStateLevelUser && !report?.locked && (
+            <EditReportButton
+              report={report}
+              openAddEditReportModal={openAddEditReportModal}
+              sxOverride={sxOverride}
+            />
+          )}
+        </Td>
         {/* Report Name */}
         <Td sx={sxOverride.programNameText}>
-          {report.programName ?? report.submissionName}
+          {report.submissionName || report.programName}
         </Td>
         {/* Plan type (NAAAR only) */}
         {report.reportType === ReportType.NAAAR && (
@@ -63,7 +64,7 @@ export const DashboardTable = ({
         </Td>
         {/* ADMIN ONLY: Submission count */}
         {isAdmin && (
-          <Td> {report.submissionCount === 0 ? 1 : report.submissionCount} </Td>
+          <Td>{report.submissionCount === 0 ? 1 : report.submissionCount}</Td>
         )}
         {/* Action Buttons */}
         <Td sx={sxOverride.editReportButtonCell}>
@@ -83,7 +84,7 @@ export const DashboardTable = ({
           </Button>
         </Td>
         {isAdmin && (
-          <>
+          <Td>
             <AdminReleaseButton
               report={report}
               reportType={reportType}
@@ -92,159 +93,24 @@ export const DashboardTable = ({
               releasing={releasing}
               sxOverride={sxOverride}
             />
+          </Td>
+        )}
+        {isAdmin && (
+          <Td>
             <AdminArchiveButton
               report={report}
               reportType={reportType}
               reportId={reportId}
               archiveReport={archiveReport}
               archiving={archiving}
-              releaseReport={releaseReport}
-              releasing={releasing}
               sxOverride={sxOverride}
             />
-          </>
+          </Td>
         )}
       </Tr>
     ))}
   </Table>
 );
-
-interface DashboardTableProps {
-  reportsByState: ReportMetadataShape[];
-  body: { table: AnyObject };
-  reportType: string;
-  reportId: string | undefined;
-  openAddEditReportModal: Function;
-  enterSelectedReport: Function;
-  archiveReport: Function;
-  archiving: boolean;
-  entering: boolean;
-  isAdmin: boolean;
-  isStateLevelUser: boolean;
-  releaseReport?: Function | undefined;
-  releasing?: boolean | undefined;
-  sxOverride: AnyObject;
-}
-
-export const getStatus = (
-  status: string,
-  archived?: boolean,
-  submissionCount?: number
-) => {
-  if (archived) {
-    return `Archived`;
-  }
-  if (
-    submissionCount &&
-    submissionCount >= 1 &&
-    !status.includes("Submitted")
-  ) {
-    return `In revision`;
-  }
-  return status;
-};
-const tableBody = (body: TableContentShape, isAdmin: boolean) => {
-  var tableContent = body;
-  if (!isAdmin) {
-    tableContent.headRow = tableContent.headRow!.filter((e) => e !== "#");
-    return tableContent;
-  }
-  return body;
-};
-
-const EditReportButton = ({
-  report,
-  openAddEditReportModal,
-  sxOverride,
-}: EditReportProps) => {
-  return (
-    <Td sx={sxOverride.editReport}>
-      <button onClick={() => openAddEditReportModal(report)}>
-        <Image src={editIcon} alt="Edit Report" />
-      </button>
-    </Td>
-  );
-};
-
-interface EditReportProps {
-  report: ReportMetadataShape;
-  openAddEditReportModal: Function;
-  sxOverride: AnyObject;
-}
-
-const DateFields = ({ report, reportType }: DateFieldProps) => {
-  return (
-    <>
-      {reportType !== ReportType.MLR && (
-        <Td>{convertDateUtcToEt(report.dueDate)}</Td>
-      )}
-      <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
-    </>
-  );
-};
-
-interface DateFieldProps {
-  report: ReportMetadataShape;
-  reportType: string;
-}
-
-const AdminReleaseButton = ({
-  report,
-  reportId,
-  releasing,
-  releaseReport,
-  sxOverride,
-}: AdminActionButtonProps) => {
-  return (
-    <Td>
-      <Button
-        variant="link"
-        disabled={report.locked === false || report.archived === true}
-        sx={sxOverride.adminActionButton}
-        onClick={() => releaseReport!(report)}
-      >
-        {releasing && reportId === report.id ? <Spinner size="md" /> : "Unlock"}
-      </Button>
-    </Td>
-  );
-};
-
-const AdminArchiveButton = ({
-  report,
-  reportId,
-  archiveReport,
-  archiving,
-  sxOverride,
-}: AdminActionButtonProps) => {
-  return (
-    <Td>
-      <Button
-        variant="link"
-        sx={sxOverride.adminActionButton}
-        onClick={() => archiveReport!(report)}
-      >
-        {archiving && reportId === report.id ? (
-          <Spinner size="md" />
-        ) : report?.archived ? (
-          "Unarchive"
-        ) : (
-          "Archive"
-        )}
-      </Button>
-    </Td>
-  );
-};
-
-interface AdminActionButtonProps {
-  report: ReportMetadataShape;
-  reportType: string;
-  reportId: string | undefined;
-  archiveReport?: Function;
-  archiving?: boolean;
-  releasing?: boolean;
-  releaseReport?: Function;
-  sxOverride: AnyObject;
-}
 
 const sx = {
   table: {
