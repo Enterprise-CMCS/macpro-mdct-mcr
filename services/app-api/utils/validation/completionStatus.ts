@@ -225,12 +225,14 @@ export const calculateCompletionStatus = async (
             )
               ? route.drawerForm
               : route.addEntityDrawerForm;
-            const isEntityComplete = await calculateFormCompletion(
+
+            areAllFormsComplete = await calculateFormCompletion(
               applicableForm,
               entity
             );
-            // update combined result
-            areAllFormsComplete &&= isEntityComplete;
+
+            // if any form is incomplete, exit loop and return false
+            if (!areAllFormsComplete) break;
           }
           routeCompletion = { [route.path]: areAllFormsComplete };
           break;

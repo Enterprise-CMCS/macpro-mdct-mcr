@@ -326,7 +326,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
                 data-testid="delete-entity"
                 onClick={() => openDeleteEntityModal(entity)}
               >
-                <Image src={deleteIcon} alt="delete icon" boxSize="2xl" />
+                <Image src={deleteIcon} alt="delete" boxSize="2xl" />
               </Button>
             )}
           </Box>
@@ -466,9 +466,6 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 function buttonBoxStyling(canAddEntities: boolean) {
   return {
     marginRight: canAddEntities && "1.5rem",
-    "button + button": {
-      marginRight: "-2.5rem",
-    },
   };
 }
 
@@ -529,6 +526,7 @@ const sx = {
     fontWeight: "normal",
   },
   deleteButton: {
+    marginRight: "-2.5rem",
     padding: 0,
     background: "white",
     "&:hover, &:hover:disabled, :disabled": {

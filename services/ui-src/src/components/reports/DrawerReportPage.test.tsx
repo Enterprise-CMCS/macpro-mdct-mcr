@@ -388,9 +388,11 @@ describe("Test DrawerReportPage with custom entities", () => {
     beforeEach(() => {
       const mockNaaarReportContextWithCustomAnalysisMethods: any =
         mockNaaarReportContext;
-      mockNaaarReportContextWithCustomAnalysisMethods.report.fieldData[
-        "analysisMethods"
-      ] = [
+
+      const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
+
+      // add custom entity to render special row type
+      report.fieldData["analysisMethods"] = [
         DEFAULT_ANALYSIS_METHODS[0],
         {
           id: "custom_entity",
@@ -400,10 +402,8 @@ describe("Test DrawerReportPage with custom entities", () => {
 
       const mockCustomNaaarReportStore = {
         ...mockNaaarReportStore,
-        report: mockNaaarReportContextWithCustomAnalysisMethods.report,
-        reportsByState: [
-          mockNaaarReportContextWithCustomAnalysisMethods.report,
-        ],
+        report,
+        reportsByState: [report],
       };
 
       mockedUseStore.mockReturnValue({
