@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
+import { ExportedEntityDetailsTable } from "components";
 // utils
 import {
   mockMlrReportContext,
@@ -7,8 +8,7 @@ import {
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// components
-import { ExportedEntityDetailsTable } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -23,8 +23,8 @@ const exportedEntityDetailsTableComponent = () => (
     data-testid="exportedEntityDetailsTable"
   ></ExportedEntityDetailsTable>
 );
-describe("ExportedEntityDetailsTable", () => {
-  it("renders successfully", async () => {
+describe("<ExportedEntityDetailsTable />", () => {
+  test("renders successfully", async () => {
     const { findAllByText, findByTestId } = render(
       exportedEntityDetailsTableComponent()
     );
@@ -43,11 +43,6 @@ describe("ExportedEntityDetailsTable", () => {
       }
     }
   });
-});
 
-describe("ExportedEntityDetailsTable has no accessibility issues", () => {
-  it("should have no violations", async () => {
-    const { container } = render(exportedEntityDetailsTableComponent());
-    expect(await axe(container)).toHaveNoViolations();
-  });
+  testA11y(exportedEntityDetailsTableComponent());
 });
