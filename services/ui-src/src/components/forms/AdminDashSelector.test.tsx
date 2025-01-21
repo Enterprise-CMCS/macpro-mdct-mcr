@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
 import { AdminDashSelector } from "components";
@@ -11,6 +10,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -33,55 +33,51 @@ mockLDFlags.setDefault({ naaarReport: true });
 
 // TESTS
 
-describe("Test AdminDashSelector view", () => {
-  test("Check that AdminDashSelector view renders", () => {
-    render(adminDashSelectorView);
-    expect(screen.getByText(verbiage.readOnly.header)).toBeVisible();
+describe("<AdminDashSelector />", () => {
+  describe("Test AdminDashSelector view", () => {
+    test("Check that AdminDashSelector view renders", () => {
+      render(adminDashSelectorView);
+      expect(screen.getByText(verbiage.readOnly.header)).toBeVisible();
+    });
+
+    test("Check that submit button is disabled if no report type is selected", () => {
+      render(adminDashSelectorView);
+      expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
+    });
+
+    test("Form submits correctly", async () => {
+      const result = render(adminDashSelectorView);
+      const form = result.container;
+      const dropdownInput = form.querySelector("[name='state']")!;
+      await fireEvent.change(dropdownInput, { target: { value: "CA" } });
+      const reportInput = form.querySelector("[name='report']")!;
+      fireEvent.click(reportInput, { target: { value: "MCPAR" } });
+      const submitButton = screen.getByRole("button");
+      await userEvent.click(submitButton);
+      expect(window.location.pathname).toEqual("/mcpar");
+    });
   });
 
-  test("Check that submit button is disabled if no report type is selected", () => {
-    render(adminDashSelectorView);
-    expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
-  });
+  describe("Test naaarReport feature flag functionality", () => {
+    test("if naaarReport flag is true, NAAAR radio choice should be visible", async () => {
+      mockLDFlags.set({ naaarReport: true });
+      render(adminDashSelectorView);
+      expect(
+        screen.getByLabelText(
+          "Network Adequacy and Access Assurances Report (NAAAR)"
+        )
+      ).toBeVisible();
+    });
 
-  test("Form submits correctly", async () => {
-    const result = render(adminDashSelectorView);
-    const form = result.container;
-    const dropdownInput = form.querySelector("[name='state']")!;
-    await fireEvent.change(dropdownInput, { target: { value: "CA" } });
-    const reportInput = form.querySelector("[name='report']")!;
-    fireEvent.click(reportInput, { target: { value: "MCPAR" } });
-    const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
-    expect(window.location.pathname).toEqual("/mcpar");
-  });
-});
-
-describe("Test naaarReport feature flag functionality", () => {
-  test("if naaarReport flag is true, NAAAR radio choice should be visible", async () => {
-    mockLDFlags.set({ naaarReport: true });
-    render(adminDashSelectorView);
-    expect(
-      screen.getByLabelText(
+    test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
+      mockLDFlags.set({ naaarReport: false });
+      render(adminDashSelectorView);
+      const naaarRadioChoice = screen.queryByLabelText(
         "Network Adequacy and Access Assurances Report (NAAAR)"
-      )
-    ).toBeVisible();
+      );
+      expect(naaarRadioChoice).toBeNull();
+    });
   });
 
-  test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
-    mockLDFlags.set({ naaarReport: false });
-    render(adminDashSelectorView);
-    const naaarRadioChoice = screen.queryByLabelText(
-      "Network Adequacy and Access Assurances Report (NAAAR)"
-    );
-    expect(naaarRadioChoice).toBeNull();
-  });
-});
-
-describe("Test AdminDashSelector view accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(adminDashSelectorView);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(adminDashSelectorView);
 });
