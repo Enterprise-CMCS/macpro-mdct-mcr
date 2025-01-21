@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { axe } from "jest-axe";
 // components
 import { DeleteEntityModal, ReportContext } from "components";
 // utils
@@ -15,6 +14,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
@@ -88,7 +88,7 @@ const modalComponent = (
 const { deleteModalTitle, deleteModalConfirmButtonText } =
   mockModalDrawerReportPageVerbiage;
 
-describe("Test DeleteEntityModal", () => {
+describe("<DeleteEntityModal />", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(modalComponent);
@@ -114,60 +114,53 @@ describe("Test DeleteEntityModal", () => {
     fireEvent.click(screen.getByText("Cancel"));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
-});
-
-describe("Test DeleteEntityModal functionality", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
+  describe("Test DeleteEntityModal functionality", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
     });
 
-    render(modalComponent);
+    test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockDeletedEntityStore,
+      });
 
-    const submitButton = screen.getByText(deleteModalConfirmButtonText);
-    await userEvent.click(submitButton);
+      render(modalComponent);
 
-    const mockUpdateCallPayload = mockUpdateCallBaseline;
-    mockUpdateCallPayload.fieldData.accessMeasures = [];
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
 
-    await expect(mockUpdateReport).toHaveBeenCalledWith(
-      mockReportKeys,
-      mockUpdateCallPayload
-    );
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
+      const mockUpdateCallPayload = mockUpdateCallBaseline;
+      mockUpdateCallPayload.fieldData.accessMeasures = [];
 
-  test("DeleteEntityModal delete handles empty fielddata", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
+      await expect(mockUpdateReport).toHaveBeenCalledWith(
+        mockReportKeys,
+        mockUpdateCallPayload
+      );
+      await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
     });
 
-    render(modalComponent);
+    test("DeleteEntityModal delete handles empty fielddata", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockDeletedEntityStore,
+      });
 
-    const submitButton = screen.getByText(deleteModalConfirmButtonText);
-    await userEvent.click(submitButton);
+      render(modalComponent);
 
-    const mockUpdateCallPayload = mockBadUpdateCallBaseline;
-    mockUpdateCallPayload.fieldData = { accessMeasures: [] };
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
 
-    await expect(mockUpdateReport).toHaveBeenCalledWith(
-      mockReportKeys,
-      mockUpdateCallPayload
-    );
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      const mockUpdateCallPayload = mockBadUpdateCallBaseline;
+      mockUpdateCallPayload.fieldData = { accessMeasures: [] };
+
+      await expect(mockUpdateReport).toHaveBeenCalledWith(
+        mockReportKeys,
+        mockUpdateCallPayload
+      );
+      await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
   });
-});
 
-describe("Test DeleteEntityModal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(modalComponent);
 });

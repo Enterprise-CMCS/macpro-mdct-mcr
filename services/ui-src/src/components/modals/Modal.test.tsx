@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 const mockConfirmationHandler = jest.fn();
@@ -27,7 +27,7 @@ const modalComponent = (
   </Modal>
 );
 
-describe("Test Modal", () => {
+describe("<Modal />", () => {
   beforeEach(() => {
     render(modalComponent);
   });
@@ -46,12 +46,6 @@ describe("Test Modal", () => {
     fireEvent.click(screen.getByText(/Cancel/i));
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
-});
 
-describe("Test Modal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(modalComponent);
 });
