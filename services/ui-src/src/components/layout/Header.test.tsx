@@ -38,25 +38,27 @@ jest.mock("utils/reports/routing", () => ({
 }));
 
 describe("<Header />", () => {
-  beforeEach(() => {
-    render(headerComponent);
-  });
+  describe("Renders", () => {
+    beforeEach(() => {
+      render(headerComponent);
+    });
 
-  test("Header is visible", () => {
-    const header = screen.getByRole("navigation");
-    expect(header).toBeVisible();
-  });
+    test("Header is visible", () => {
+      const header = screen.getByRole("navigation");
+      expect(header).toBeVisible();
+    });
 
-  test("Logo is visible", () => {
-    expect(screen.getByAltText("MCR logo")).toBeVisible();
-  });
+    test("Logo is visible", () => {
+      expect(screen.getByAltText("MCR logo")).toBeVisible();
+    });
 
-  test("Help button is visible", () => {
-    expect(screen.getByAltText("Help")).toBeVisible();
-  });
+    test("Help button is visible", () => {
+      expect(screen.getByAltText("Help")).toBeVisible();
+    });
 
-  test("Menu button is visible", () => {
-    expect(screen.getByAltText("Arrow down")).toBeVisible();
+    test("Menu button is visible", () => {
+      expect(screen.getByAltText("Arrow down")).toBeVisible();
+    });
   });
   describe("Report Context", () => {
     beforeEach(() => {

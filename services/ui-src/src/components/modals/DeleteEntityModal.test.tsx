@@ -89,43 +89,43 @@ const { deleteModalTitle, deleteModalConfirmButtonText } =
   mockModalDrawerReportPageVerbiage;
 
 describe("<DeleteEntityModal />", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      await render(modalComponent);
-    });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  test("DeleteEntityModal shows the contents", () => {
-    expect(screen.getByText(deleteModalTitle)).toBeTruthy();
-    expect(screen.getByText(deleteModalConfirmButtonText)).toBeTruthy();
-    expect(screen.getByText("Cancel")).toBeTruthy();
-  });
-
-  test("DeleteEntityModal top close button can be clicked", () => {
-    fireEvent.click(screen.getByText("Close"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-
-  test("DeleteEntityModal bottom cancel button can be clicked", () => {
-    fireEvent.click(screen.getByText("Cancel"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-  describe("Test DeleteEntityModal functionality", () => {
-    afterEach(() => {
-      jest.clearAllMocks();
+  describe("Test DeleteEntityModal", () => {
+    beforeEach(async () => {
+      await act(async () => {
+        await render(modalComponent);
+      });
     });
 
+    test("DeleteEntityModal shows the contents", () => {
+      expect(screen.getByText(deleteModalTitle)).toBeTruthy();
+      expect(screen.getByText(deleteModalConfirmButtonText)).toBeTruthy();
+      expect(screen.getByText("Cancel")).toBeTruthy();
+    });
+
+    test("DeleteEntityModal top close button can be clicked", () => {
+      fireEvent.click(screen.getByText("Close"));
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+
+    test("DeleteEntityModal bottom cancel button can be clicked", () => {
+      fireEvent.click(screen.getByText("Cancel"));
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Test DeleteEntityModal functionality", () => {
     test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockDeletedEntityStore,
       });
 
-      render(modalComponent);
+      await act(async () => {
+        await render(modalComponent);
+      });
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
       await userEvent.click(submitButton);
@@ -146,7 +146,9 @@ describe("<DeleteEntityModal />", () => {
         ...mockDeletedEntityStore,
       });
 
-      render(modalComponent);
+      await act(async () => {
+        await render(modalComponent);
+      });
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
       await userEvent.click(submitButton);

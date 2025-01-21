@@ -12,21 +12,23 @@ const footerComponent = (
 );
 
 describe("<Footer />", () => {
-  beforeEach(() => {
-    render(footerComponent);
-  });
+  describe("Renders", () => {
+    beforeEach(() => {
+      render(footerComponent);
+    });
 
-  test("Footer is visible", () => {
-    const footer = screen.getByRole("contentinfo");
-    expect(footer).toBeVisible();
-  });
+    test("Footer is visible", () => {
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeVisible();
+    });
 
-  test("Help link is visible", () => {
-    expect(screen.getByText("Contact Us")).toBeVisible();
-  });
+    test("Help link is visible", () => {
+      expect(screen.getByText("Contact Us")).toBeVisible();
+    });
 
-  test("Accessibility statement link is visible", () => {
-    expect(screen.getByText("Accessibility Statement")).toBeVisible();
+    test("Accessibility statement link is visible", () => {
+      expect(screen.getByText("Accessibility Statement")).toBeVisible();
+    });
   });
 
   testA11y(footerComponent);

@@ -43,61 +43,63 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 const spy = jest.spyOn(global, "setTimeout");
 
 describe("<Timeout />", () => {
-  beforeEach(async () => {
-    jest.useFakeTimers();
-    mockedUseStore.mockReturnValue(mockUser);
-    initAuthManager();
-    await render(timeoutComponent);
-  });
+  describe("Renders", () => {
+    beforeEach(async () => {
+      jest.useFakeTimers();
+      mockedUseStore.mockReturnValue(mockUser);
+      initAuthManager();
+      await render(timeoutComponent);
+    });
 
-  afterEach(() => {
-    jest.useRealTimers();
-    jest.restoreAllMocks();
-    spy.mockClear();
-  });
+    afterEach(() => {
+      jest.useRealTimers();
+      jest.restoreAllMocks();
+      spy.mockClear();
+    });
 
-  test("Timeout modal is visible", async () => {
-    await act(async () => {
-      jest.advanceTimersByTime(PROMPT_AT + 5000);
+    test("Timeout modal is visible", async () => {
+      await act(async () => {
+        jest.advanceTimersByTime(PROMPT_AT + 5000);
+      });
+      await waitFor(() => {
+        expect(screen.getByText("Stay logged in")).toBeVisible();
+        expect(screen.getByText("Log out")).toBeVisible();
+      });
     });
-    await waitFor(() => {
-      expect(screen.getByText("Stay logged in")).toBeVisible();
-      expect(screen.getByText("Log out")).toBeVisible();
-    });
-  });
 
-  test("Timeout modal refresh button is clickable and closes modal", async () => {
-    await act(async () => {
-      jest.advanceTimersByTime(PROMPT_AT + 5000);
+    test("Timeout modal refresh button is clickable and closes modal", async () => {
+      await act(async () => {
+        jest.advanceTimersByTime(PROMPT_AT + 5000);
+      });
+      const refreshButton = screen.getByText("Stay logged in");
+      await act(async () => {
+        await fireEvent.click(refreshButton);
+      });
+      await waitFor(() => {
+        expect(screen.getByText("Stay logged in")).not.toBeVisible();
+        expect(screen.getByText("Log out")).not.toBeVisible();
+      });
     });
-    const refreshButton = screen.getByText("Stay logged in");
-    await act(async () => {
-      await fireEvent.click(refreshButton);
-    });
-    await waitFor(() => {
-      expect(screen.getByText("Stay logged in")).not.toBeVisible();
-      expect(screen.getByText("Log out")).not.toBeVisible();
-    });
-  });
 
-  test("Timeout modal logout button is clickable and triggers logout", async () => {
-    await act(async () => {
-      jest.advanceTimersByTime(PROMPT_AT + 5000);
+    test("Timeout modal logout button is clickable and triggers logout", async () => {
+      await act(async () => {
+        jest.advanceTimersByTime(PROMPT_AT + 5000);
+      });
+      const logoutButton = screen.getByText("Log out");
+      mockLogout.mockReset();
+      await act(async () => {
+        await fireEvent.click(logoutButton);
+      });
+      expect(mockLogout).toHaveBeenCalledTimes(1);
     });
-    const logoutButton = screen.getByText("Log out");
-    mockLogout.mockReset();
-    await act(async () => {
-      await fireEvent.click(logoutButton);
-    });
-    expect(mockLogout).toHaveBeenCalledTimes(1);
-  });
-  test("Timeout modal executes logout on timeout", async () => {
-    mockLogout.mockReset();
+    test("Timeout modal executes logout on timeout", async () => {
+      mockLogout.mockReset();
 
-    await act(async () => {
-      jest.advanceTimersByTime(10 * IDLE_WINDOW);
+      await act(async () => {
+        jest.advanceTimersByTime(10 * IDLE_WINDOW);
+      });
+      expect(mockLogout).toHaveBeenCalledTimes(1);
     });
-    expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 
   testA11y(timeoutComponent, () => {
