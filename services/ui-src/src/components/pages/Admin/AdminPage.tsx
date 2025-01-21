@@ -16,10 +16,12 @@ import {
   ErrorAlert,
   PageTemplate,
 } from "components";
+// types
+import { AlertTypes } from "types";
 // utils
 import { convertDateUtcToEt, useStore } from "utils";
+// verbiage
 import verbiage from "verbiage/pages/admin";
-import { AlertTypes } from "types";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =

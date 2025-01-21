@@ -1,13 +1,14 @@
 // components
 import { Button, Image, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
-// utils
+// types
 import {
   AnyObject,
   ReportMetadataShape,
   ReportType,
   TableContentShape,
 } from "types";
+// utils
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";

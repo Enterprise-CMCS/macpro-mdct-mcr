@@ -1,23 +1,18 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
 import { NotFoundPage } from "components";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/not-found";
 
 const notFoundView = <NotFoundPage />;
 
-describe("Test NotFoundPage (404)", () => {
+describe("<NotFoundPage />", () => {
   test("Check that page renders", () => {
     render(notFoundView);
     expect(screen.getByText(verbiage.header)).toBeVisible();
   });
-});
 
-describe("Test NotFoundPage (404) accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(notFoundView);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(notFoundView);
 });

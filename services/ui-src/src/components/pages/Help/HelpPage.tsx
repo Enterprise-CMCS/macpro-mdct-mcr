@@ -1,8 +1,10 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
-import verbiage from "verbiage/pages/help";
+// types
 import { AnyObject } from "types";
+// verbiage
+import verbiage from "verbiage/pages/help";
 
 export const HelpPage = () => {
   const { intro, cards, accordionItems } = verbiage;
