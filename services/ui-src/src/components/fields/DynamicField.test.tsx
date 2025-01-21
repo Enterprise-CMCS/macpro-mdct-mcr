@@ -230,7 +230,7 @@ describe("<DynamicField />", () => {
       jest.clearAllMocks();
     });
 
-    it("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
+    test("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
       await act(async () => {
         await render(dynamicFieldComponent(mockHydrationPlans));
       });
@@ -280,7 +280,7 @@ describe("<DynamicField />", () => {
       );
     });
 
-    it("Deletes ILOS entity and associated fields from the associated plan if state user", async () => {
+    test("Deletes ILOS entity and associated fields from the associated plan if state user", async () => {
       await act(async () => {
         await render(dynamicIlosFieldComponent(mockHydrationIlos));
       });
