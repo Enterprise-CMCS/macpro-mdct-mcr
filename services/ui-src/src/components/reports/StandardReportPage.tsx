@@ -8,8 +8,6 @@ import {
   ReportPageFooter,
   ReportPageIntro,
 } from "components";
-// utils
-import { filterFormData, useFindRoute, useStore } from "utils";
 // types
 import {
   AnyObject,
@@ -17,6 +15,8 @@ import {
   ReportStatus,
   StandardReportPageShape,
 } from "types";
+// utils
+import { filterFormData, useFindRoute, useStore } from "utils";
 
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);

@@ -17,16 +17,7 @@ import {
   ReportPageIntro,
   Form,
 } from "components";
-// utils
-import {
-  entityWasUpdated,
-  filterFormData,
-  isIlosCompleted,
-  getEntriesToClear,
-  parseCustomHtml,
-  setClearedEntriesToDefaultValue,
-  useStore,
-} from "utils";
+// constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
 // types
 import {
@@ -40,14 +31,24 @@ import {
   ReportType,
   FormJson,
 } from "types";
-// assets
-import addIcon from "assets/icons/icon_add_blue.png";
-import completedIcon from "assets/icons/icon_check_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+// utils
+import {
+  entityWasUpdated,
+  filterFormData,
+  isIlosCompleted,
+  getEntriesToClear,
+  parseCustomHtml,
+  setClearedEntriesToDefaultValue,
+  useStore,
+} from "utils";
 import {
   generateAddEntityDrawerItemFields,
   generateDrawerItemFields,
 } from "utils/forms/dynamicItemFields";
+// assets
+import addIcon from "assets/icons/icon_add_blue.png";
+import completedIcon from "assets/icons/icon_check_circle.png";
+import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);

@@ -11,8 +11,7 @@ import {
   StandardReportPage,
   ModalOverlayReportPage,
 } from "components";
-// utils
-import { useStore } from "utils";
+// types
 import {
   ModalDrawerReportPageShape,
   ModalOverlayReportPageShape,
@@ -22,6 +21,8 @@ import {
   StandardReportPageShape,
   AnyObject,
 } from "types";
+// utils
+import { useStore } from "utils";
 
 export const ReportPageWrapper = () => {
   const { user: state, report } = useStore();
