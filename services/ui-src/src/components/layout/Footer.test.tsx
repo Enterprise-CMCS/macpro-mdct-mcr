@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
+import { Footer } from "components";
+import { testA11y } from "utils/testing/commonTests";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
-import { Footer } from "components";
 
 const footerComponent = (
   <RouterWrappedComponent>
@@ -11,7 +11,7 @@ const footerComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test Footer", () => {
+describe("<Footer />", () => {
   beforeEach(() => {
     render(footerComponent);
   });
@@ -28,12 +28,6 @@ describe("Test Footer", () => {
   test("Accessibility statement link is visible", () => {
     expect(screen.getByText("Accessibility Statement")).toBeVisible();
   });
-});
 
-describe("Test Footer accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(footerComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(footerComponent);
 });

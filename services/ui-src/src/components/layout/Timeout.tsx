@@ -1,4 +1,7 @@
 import { useContext, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { add } from "date-fns";
+// components
 import {
   Button,
   Modal,
@@ -9,15 +12,15 @@ import {
   ModalContent,
   Text,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+// constants
+import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
+// utils
 import {
   calculateRemainingSeconds,
   refreshCredentials,
   updateTimeout,
   UserContext,
 } from "utils";
-import { PROMPT_AT, IDLE_WINDOW } from "../../constants";
-import { add } from "date-fns";
 
 export const Timeout = () => {
   const context = useContext(UserContext);

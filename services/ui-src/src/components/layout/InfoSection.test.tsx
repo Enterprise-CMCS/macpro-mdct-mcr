@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
 import { InfoSection } from "components";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
@@ -8,7 +10,7 @@ const content = mcparVerbiage.body.sections[0];
 
 const InfoSectionComponent = <InfoSection content={content} />;
 
-describe("Test InfoSection", () => {
+describe("<InfoSection />", () => {
   test("Check that Section renders", () => {
     render(InfoSectionComponent);
     expect(screen.getByText(content.header)).toBeVisible();
@@ -21,12 +23,6 @@ describe("Test InfoSection", () => {
     const sectionHeader = screen.getByText(content.header);
     await expect(sectionHeader).toBeVisible();
   });
-});
 
-describe("Test InfoSection accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(InfoSectionComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(InfoSectionComponent);
 });
