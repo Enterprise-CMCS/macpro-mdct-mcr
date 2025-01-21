@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
+// components
+import { Sidebar } from "components";
 // utils
 import {
   mockMcparReportStore,
@@ -8,8 +9,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// components
-import { Sidebar } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -34,7 +34,7 @@ const sidebarComponentHidden = (
   </RouterWrappedComponent>
 );
 
-describe("Test Sidebar", () => {
+describe("<Sidebar />", () => {
   beforeEach(() => {
     render(sidebarComponent);
   });
@@ -70,21 +70,14 @@ describe("Test Sidebar", () => {
     await userEvent.click(parentSection);
     await expect(childSection).not.toBeVisible();
   });
-});
-
-describe("Test Sidebar isHidden property", () => {
-  test("If isHidden is true, Sidebar is invisible", () => {
-    render(sidebarComponentHidden);
-    expect(
-      screen.getByText(mockMcparReportStore.report!.formTemplate.name)
-    ).not.toBeVisible();
+  describe("Test Sidebar isHidden property", () => {
+    test("If isHidden is true, Sidebar is invisible", () => {
+      render(sidebarComponentHidden);
+      expect(
+        screen.getByText(mockMcparReportStore.report!.formTemplate.name)
+      ).not.toBeVisible();
+    });
   });
-});
 
-describe("Test Sidebar accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(sidebarComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(sidebarComponent);
 });
