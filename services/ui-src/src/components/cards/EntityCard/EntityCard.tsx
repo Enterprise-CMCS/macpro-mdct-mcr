@@ -5,12 +5,13 @@ import {
   EntityCardTopSection,
 } from "components";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
+// styles
+import { svgFilters } from "styles/theme";
 // types
 import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
 // utils
 import { useStore } from "utils";
 // assets
-import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
