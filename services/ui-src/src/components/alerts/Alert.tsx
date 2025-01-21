@@ -11,12 +11,12 @@ import {
 } from "@chakra-ui/react";
 // types
 import { AlertTypes, CustomHtmlElement } from "types";
+// utils
+import { parseCustomHtml } from "utils";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
 import warningIcon from "assets/icons/icon_warning.png";
 import errorIcon from "assets/icons/icon_error_circle.png";
-// utils
-import { parseCustomHtml } from "utils";
 
 export const Alert = ({
   status,
