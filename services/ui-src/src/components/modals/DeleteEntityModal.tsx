@@ -16,8 +16,9 @@ export const DeleteEntityModal = ({
   const { updateReport } = useContext(ReportContext);
 
   // state management
-  const { full_name } = useStore().user ?? {};
+  const { full_name, userIsEndUser } = useStore().user ?? {};
   const { report } = useStore();
+  const locked = report?.locked;
 
   const [deleting, setDeleting] = useState<boolean>(false);
 
@@ -55,6 +56,7 @@ export const DeleteEntityModal = ({
         actionButtonText: verbiage.deleteModalConfirmButtonText,
         closeButtonText: "Cancel",
       }}
+      submitButtonDisabled={!userIsEndUser || locked}
     >
       <Text>{verbiage.deleteModalWarning}</Text>
     </Modal>

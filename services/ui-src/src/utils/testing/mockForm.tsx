@@ -253,6 +253,8 @@ export const mockNaaarAnalysisMethodsPageJson = {
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
     addEntityButtonText: "Add other analysis method",
+    deleteModalTitle: "Are you sure you want to delete this analysis method?",
+    deleteModalConfirmButtonText: "Yes, delete method",
   },
   drawerForm: {
     id: "am",

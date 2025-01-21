@@ -308,6 +308,55 @@ describe("Completion Status Tests", () => {
     });
   });
 
+  test("Test analysis methods custom logic", async () => {
+    const testData = {
+      plans: [
+        {
+          id: "123",
+          name: "test plan",
+        },
+      ],
+      analysisMethods: [
+        {
+          id: "1",
+          name: "first method",
+          analysis_applicable: [
+            {
+              key: "a",
+              value: "no",
+            },
+          ],
+        },
+      ],
+    };
+    const formTemplate = {
+      routes: [
+        {
+          name: "I. State and program information",
+          path: "/naaar/state-and-program-information",
+          children: [
+            {
+              name: "Analysis methods",
+              path: "/naaar/state-and-program-information/analysis-methods",
+              entityType: "analysisMethods",
+              pageType: "drawer",
+              drawerForm: {
+                id: "iam",
+                fields: [],
+              },
+              addEntityDrawerForm: {
+                id: "iamnew",
+                fields: [],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toMatchObject({});
+  });
+
   describe("Fixture Testing", () => {
     const runs = [
       {

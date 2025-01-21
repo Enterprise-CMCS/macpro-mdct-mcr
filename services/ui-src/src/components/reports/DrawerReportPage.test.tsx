@@ -384,49 +384,67 @@ describe("<DrawerReportPage />", () => {
       expect(enterDefaultMethod).toBeVisible();
     });
 
-    test("Can show statusing for custom analysis methods", async () => {
-      const mockNaaarReportContextWithCustomAnalysisMethods: any =
-        mockNaaarReportContext;
-      mockNaaarReportContextWithCustomAnalysisMethods.report.fieldData[
-        "analysisMethods"
-      ] = [
-        DEFAULT_ANALYSIS_METHODS[0],
-        {
-          id: "custom_entity",
-          name: "custom entity",
-        },
-      ];
+    describe("test analysis methods custom logic", () => {
+      beforeEach(() => {
+        const mockNaaarReportContextWithCustomAnalysisMethods: any =
+          mockNaaarReportContext;
 
-      const mockCustomNaaarReportStore = {
-        ...mockNaaarReportStore,
-        report: mockNaaarReportContextWithCustomAnalysisMethods.report,
-        reportsByState: [
-          mockNaaarReportContextWithCustomAnalysisMethods.report,
-        ],
-      };
+        const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
 
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockCustomNaaarReportStore,
-        ...mockAnalysisMethodEntityStore,
+        // add custom entity to render special row type
+        report.fieldData["analysisMethods"] = [
+          DEFAULT_ANALYSIS_METHODS[0],
+          {
+            id: "custom_entity",
+            name: "custom entity",
+          },
+        ];
+
+        const mockCustomNaaarReportStore = {
+          ...mockNaaarReportStore,
+          report,
+          reportsByState: [report],
+        };
+
+        mockedUseStore.mockReturnValue({
+          ...mockStateUserStore,
+          ...mockCustomNaaarReportStore,
+          ...mockAnalysisMethodEntityStore,
+        });
+
+        const drawerReportPageWithCustomEntities = (
+          <RouterWrappedComponent>
+            <ReportContext.Provider
+              value={mockNaaarReportContextWithCustomAnalysisMethods}
+            >
+              <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
+            </ReportContext.Provider>
+          </RouterWrappedComponent>
+        );
+
+        render(drawerReportPageWithCustomEntities);
       });
 
-      const drawerReportPageWithCustomEntities = (
-        <RouterWrappedComponent>
-          <ReportContext.Provider
-            value={mockNaaarReportContextWithCustomAnalysisMethods}
-          >
-            <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
-          </ReportContext.Provider>
-        </RouterWrappedComponent>
-      );
+      test("Can shows statusing for custom analysis methods", async () => {
+        const iconAltText = screen.getAllByAltText("Entity is incomplete");
+        expect(iconAltText.length).toBeGreaterThan(0);
+      });
 
-      render(drawerReportPageWithCustomEntities);
-      const iconAltText = screen.getAllByAltText("Entity is incomplete");
-      expect(iconAltText.length).toBeGreaterThan(0);
+      test("DrawerReportPage opens the delete modal on remove click", async () => {
+        const addCustomMethod = screen.getByText("Add other analysis method");
+        const removeButton = screen.getByTestId("delete-entity");
+        await userEvent.click(removeButton);
+        // click delete in modal
+        const deleteButton = screen.getByText("Yes, delete method");
+        await userEvent.click(deleteButton);
+
+        // verify that the field is removed
+        const inputBoxLabelAfterRemove = screen.queryAllByTestId("test-label");
+        expect(inputBoxLabelAfterRemove).toHaveLength(0);
+        expect(addCustomMethod).toBeVisible();
+      });
     });
   });
-
   testA11y(drawerReportPageWithEntities, () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,

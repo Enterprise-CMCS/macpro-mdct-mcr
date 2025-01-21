@@ -16,6 +16,7 @@ import {
   ReportPageFooter,
   ReportPageIntro,
   Form,
+  DeleteEntityModal,
 } from "components";
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
@@ -49,6 +50,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -116,6 +118,23 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
     reportingOnPatientAccessApi !== "Yes"
   );
+
+  // delete modal disclosure and methods
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openDeleteEntityModal = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    deleteEntityModalOnOpenHandler();
+  };
+
+  const closeDeleteEntityModal = () => {
+    setSelectedEntity(undefined);
+    deleteEntityModalOnCloseHandler();
+  };
 
   useEffect(() => {
     const isCustomEntity =
@@ -300,7 +319,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               {entity.name}
             </Heading>
           )}
-          {enterButton(entity, isEntityCompleted)}
+          <Box sx={buttonBoxStyling(canAddEntities)}>
+            {enterButton(entity, isEntityCompleted)}
+            {canAddEntities && !entity.isRequired && (
+              <Button
+                sx={sx.deleteButton}
+                data-testid="delete-entity"
+                onClick={() => openDeleteEntityModal(entity)}
+              >
+                <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+              </Button>
+            )}
+          </Box>
         </Flex>
       );
     });
@@ -390,6 +420,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         validateOnRender={validateOnRender}
         data-testid="report-drawer"
       />
+      <DeleteEntityModal
+        entityType={entityType}
+        selectedEntity={selectedEntity}
+        verbiage={verbiage}
+        modalDisclosure={{
+          isOpen: deleteEntityModalIsOpen,
+          onClose: closeDeleteEntityModal,
+        }}
+      />
       <ReportPageFooter />
     </Box>
   );
@@ -425,6 +464,12 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   };
 }
 
+function buttonBoxStyling(canAddEntities: boolean) {
+  return {
+    marginRight: canAddEntities && "1.5rem",
+  };
+}
+
 const sx = {
   buttonIcons: {
     height: "1rem",
@@ -443,6 +488,7 @@ const sx = {
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+    paddingRight: "1rem",
   },
   customEntityName: {
     fontSize: "lg",
@@ -479,6 +525,14 @@ const sx = {
     height: "1.75rem",
     fontSize: "md",
     fontWeight: "normal",
+  },
+  deleteButton: {
+    marginRight: "-2.5rem",
+    padding: 0,
+    background: "white",
+    "&:hover, &:hover:disabled, :disabled": {
+      background: "white",
+    },
   },
   disabledButton: {
     width: "4.25rem",

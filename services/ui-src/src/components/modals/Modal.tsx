@@ -24,6 +24,7 @@ export const Modal = ({
   submitting,
   formId,
   children,
+  submitButtonDisabled,
 }: Props) => {
   return (
     <ChakraModal
@@ -60,6 +61,7 @@ export const Modal = ({
               form={formId}
               type="submit"
               data-testid="modal-submit-button"
+              disabled={submitButtonDisabled}
             >
               {submitting ? <Spinner size="md" /> : content.actionButtonText}
             </Button>
@@ -69,6 +71,7 @@ export const Modal = ({
               sx={sx.action}
               onClick={() => onConfirmHandler()}
               data-testid="modal-submit-button"
+              disabled={submitButtonDisabled}
             >
               {submitting ? <Spinner size="md" /> : content.actionButtonText}
             </Button>
@@ -104,6 +107,7 @@ interface Props {
   onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;
+  submitButtonDisabled?: boolean;
   [key: string]: any;
 }
 
