@@ -19,6 +19,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^2.9.11",
+    "@tanstack/react-table": "^8.20.6",
     "@vitejs/plugin-react": "^4.3.4",
     "aws-amplify": "^6.10.0",
     "date-fns": "^2.30.0",

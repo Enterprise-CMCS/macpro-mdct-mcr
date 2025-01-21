@@ -49,7 +49,7 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
-  releaseReport?: Function;
+  releaseReport: Function;
   submitReport: Function;
   createReport: Function;
   updateReport: Function;
