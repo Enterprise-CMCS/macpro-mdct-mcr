@@ -43,3 +43,8 @@ repos:
         entry: .github/branch-name-validation.sh
         language: script
         pass_filenames: false
+      - id: track-flags
+        name: track-flags
+        entry: yarn track-flags
+        language: system
+        files: '\.tsx?$'
