@@ -15,8 +15,7 @@
     "braces": "^3.0.3",
     "kafkajs": "^2.2.4",
     "lodash": "^4.17.21",
-    "micromatch": "^4.0.8",
-    "nanoid": "^3.3.8"
+    "micromatch": "^4.0.8"
   },
   "resolutions": {
     "nwsapi": "^2.2.5",
