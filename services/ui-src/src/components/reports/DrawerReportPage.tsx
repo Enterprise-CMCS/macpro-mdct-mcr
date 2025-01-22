@@ -257,6 +257,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       const isCustomEntity =
         canAddEntities && !getDefaultAnalysisMethodIds().includes(entity.id);
       const calculateEntityCompletion = () => {
+        // logic to ensure analysis methods always have a plan selected
+        if (
+          isAnalysisMethodsPage &&
+          !entity?.analysis_method_applicable_plans?.length
+        ) {
+          if (isCustomEntity) {
+            return false;
+          } else if (entity?.analysis_applicable?.[0]?.value === "Yes") {
+            return false;
+          }
+        }
+
         let formFields = form.fields;
         if (isCustomEntity) {
           formFields = addEntityForm.fields;
@@ -305,7 +317,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
                 <Text>{entity.custom_analysis_method_description}</Text>
               )}
               {entity.analysis_method_frequency &&
-                entity.analysis_method_applicable_plans && (
+                entity.analysis_method_applicable_plans?.length > 0 && (
                   <Text>
                     {entity.analysis_method_frequency[0].value}:&nbsp;
                     {entity.analysis_method_applicable_plans
@@ -321,7 +333,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           )}
           <Box sx={buttonBoxStyling(canAddEntities)}>
             {enterButton(entity, isEntityCompleted)}
-            {canAddEntities && !entity.isRequired && (
+            {hasPlans && canAddEntities && !entity.isRequired && (
               <Button
                 sx={sx.deleteButton}
                 data-testid="delete-entity"
