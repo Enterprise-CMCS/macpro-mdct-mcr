@@ -140,6 +140,19 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         }
       );
 
+      // filter analysis methods to remove deleted plans
+      const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
+        (method: EntityShape) => {
+          if (method.analysis_method_applicable_plans?.length) {
+            method.analysis_method_applicable_plans =
+              method.analysis_method_applicable_plans.filter(
+                (plan: AnyObject) => plan.key !== selectedRecord.id
+              );
+          }
+          return method;
+        }
+      );
+
       // delete ILOS data from corresponding plans
       const filteredPlans =
         name === "plans"
@@ -188,6 +201,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           sanctions: filteredSanctions,
           qualityMeasures: filteredQualityMeasures,
           plans: filteredPlans,
+          analysisMethods: filteredAnalysisMethods,
         },
       };
 
