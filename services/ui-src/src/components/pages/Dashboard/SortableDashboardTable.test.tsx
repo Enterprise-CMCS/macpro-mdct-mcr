@@ -7,9 +7,6 @@ import { ReportContext, DashboardPage } from "components";
 // utils
 import {
   mockAdminUserStore,
-  mockHelpDeskUserStore,
-  mockInternalUserStore,
-  mockStateApproverStore,
   mockNoUserStore,
   mockStateUserStore,
   mockMcparReportContext,
@@ -18,12 +15,10 @@ import {
   mockDashboardReportContext,
   mockReportContextNoReports,
   mockReportContextWithError,
-  mockDashboardLockedReportContext,
-  mockMlrReportContext,
   mockMlrDashboardReportContext,
   mockMcparReportStore,
-  mockMlrLockedReportStore,
   mockNaaarReportContext,
+  mockLDFlags,
   mockMlrReportStore,
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
@@ -70,14 +65,6 @@ const mlrDashboardViewWithReports = (
   </RouterWrappedComponent>
 );
 
-const mlrDashboardViewWithLockedReports = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockDashboardLockedReportContext}>
-      <DashboardPage reportType="MLR" />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
 const dashboardViewNoReports = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextNoReports}>
@@ -90,14 +77,6 @@ const dashboardViewWithError = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockReportContextWithError}>
       <DashboardPage reportType="MCPAR" />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const dashboardViewWithLockedReport = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockDashboardLockedReportContext}>
-      <DashboardPage reportType="MLR" />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -134,15 +113,16 @@ const zeroSubmissionCountStore = {
   reportsByState: [zeroSubmissionCountReport],
 };
 
-const archivedReport = {
+const noNameReport = {
   ...report,
-  archived: true,
 };
 
-const archivedReportStore = {
+delete noNameReport.programName;
+
+const noNameReportStore = {
   ...rest,
-  report: archivedReport,
-  reportsByState: [archivedReport],
+  report: noNameReport,
+  reportsByState: [noNameReport],
 };
 
 const noAlteredByReport = {
@@ -157,9 +137,10 @@ const noAlteredByReportStore = {
   reportsByState: [noAlteredByReport],
 };
 
-describe("<DashboardTable />", () => {
-  describe("Test Report Dashboard view (with reports, desktop view)", () => {
-    beforeEach(() => {
+describe("<SortableDashboardTable />", () => {
+  describe("Test Report Dashboard with Sortable Table", () => {
+    beforeEach(async () => {
+      mockLDFlags.set({ sortableDashboardTable: true });
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMcparReportStore,
@@ -232,35 +213,15 @@ describe("<DashboardTable />", () => {
       });
     });
 
-    test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
-      render(dashboardViewWithReports);
-      const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
-      expect(addReportButton).toBeVisible();
-      await userEvent.click(addReportButton);
-      await waitFor(async () => {
-        expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
-      });
-    });
-
-    test("Clicking 'Edit Report' icon opens the AddEditProgramModal", async () => {
-      render(dashboardViewWithReports);
-      const addReportButton = screen.getAllByAltText("Edit Report")[0];
-      expect(addReportButton).toBeVisible();
-      await userEvent.click(addReportButton);
-      await waitFor(async () => {
-        expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
-      });
-    });
-
-    test("Unable to edit a report if it is locked", async () => {
+    test("Returns empty cell for missing data", async () => {
       mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMlrLockedReportStore,
+        ...mockAdminUserStore,
+        ...noNameReportStore,
       });
-      render(dashboardViewWithLockedReport);
+      const { container } = render(dashboardViewWithReports);
       await waitFor(() => {
-        const addReportButtons = screen.queryAllByAltText("Edit Report");
-        expect(addReportButtons).toHaveLength(0);
+        const cells = container.querySelectorAll("td");
+        expect(cells[0]).toHaveTextContent("");
       });
     });
 
@@ -313,165 +274,9 @@ describe("<DashboardTable />", () => {
     });
   });
 
-  describe("Test Dashboard report archiving privileges (desktop)", () => {
-    beforeEach(() => {
-      mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
-      });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    test("Admin user can archive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockAdminUserStore,
-        ...mockMcparReportStore,
-      });
-      render(dashboardViewWithReports);
-      await waitFor(async () => {
-        const archiveProgramButton = screen.getByRole("button", {
-          name: "Archive",
-        });
-        expect(archiveProgramButton).toBeVisible();
-        await userEvent.click(archiveProgramButton);
-        expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
-        // once for render, once for archive
-        expect(
-          mockMcparReportContext.fetchReportsByState
-        ).toHaveBeenCalledTimes(2);
-      });
-    });
-
-    test("Admin user can unarchive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockAdminUserStore,
-        ...archivedReportStore,
-      });
-      render(dashboardViewWithReports);
-      const archiveProgramButton = screen.getByRole("button", {
-        name: "Unarchive",
-      });
-      expect(archiveProgramButton).toBeVisible();
-      await userEvent.click(archiveProgramButton);
-      await waitFor(async () => {
-        expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
-        // once for render, once for archive
-        expect(
-          mockMcparReportContext.fetchReportsByState
-        ).toHaveBeenCalledTimes(2);
-      });
-    });
-
-    test("State approver can archive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateApproverStore,
-        ...mockMcparReportStore,
-      });
-      render(dashboardViewWithReports);
-      const archiveProgramButton = screen.getByRole("button", {
-        name: "Archive",
-      });
-      expect(archiveProgramButton).toBeVisible();
-      await userEvent.click(archiveProgramButton);
-      await waitFor(async () => {
-        expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
-        // once for render, once for archive
-        expect(
-          mockMcparReportContext.fetchReportsByState
-        ).toHaveBeenCalledTimes(2);
-      });
-    });
-
-    test("Help desk user cannot archive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockHelpDeskUserStore,
-        ...mockMcparReportStore,
-      });
-      render(dashboardViewWithReports);
-      await waitFor(() => {
-        expect(
-          screen.queryByRole("button", {
-            name: "Archive",
-          })
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    test("Internal user cannot archive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockInternalUserStore,
-        ...mockMcparReportStore,
-      });
-      render(dashboardViewWithReports);
-      await waitFor(() => {
-        expect(
-          screen.queryByRole("button", {
-            name: "Archive",
-          })
-        ).not.toBeInTheDocument();
-      });
-    });
-
-    test("State user cannot archive reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockMcparReportStore,
-      });
-      render(dashboardViewWithReports);
-      await waitFor(() => {
-        expect(
-          screen.queryByRole("button", {
-            name: "Archive",
-          })
-        ).not.toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("Test Dashboard report releasing privileges (desktop)", () => {
-    beforeEach(() => {
-      mockUseBreakpoint.mockReturnValue({
-        isMobile: false,
-      });
-      mockMakeMediaQueryClasses.mockReturnValue("desktop");
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    test("Admin user can release reports", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockAdminUserStore,
-        ...mockMlrLockedReportStore,
-      });
-      render(mlrDashboardViewWithLockedReports);
-      const releaseProgramButton = screen.getAllByText("Unlock")[0];
-      expect(releaseProgramButton).toBeVisible();
-      expect(releaseProgramButton).toBeEnabled();
-      await userEvent.click(releaseProgramButton);
-      await waitFor(async () => {
-        expect(mockMlrReportContext.releaseReport).toHaveBeenCalledTimes(1);
-        // once for render, once for release
-        expect(mockMlrReportContext.fetchReportsByState).toHaveBeenCalledTimes(
-          2
-        );
-      });
-    });
-
-    test("State user cannot release reports", async () => {
-      render(mlrDashboardViewWithReports);
-      await waitFor(() => {
-        expect(screen.queryByAltText("Unlock")).toBeNull();
-      });
-    });
-  });
-
   describe("Test Dashboard with no activeState", () => {
     beforeEach(() => {
+      mockLDFlags.set({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
         isTablet: false,
@@ -489,6 +294,7 @@ describe("<DashboardTable />", () => {
 
   describe("Test MCPAR Dashboard (without reports)", () => {
     test("MCPAR dashboard renders table with empty text", async () => {
+      mockLDFlags.set({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
       });
@@ -503,6 +309,7 @@ describe("<DashboardTable />", () => {
 
   describe("Test Dashboard with error", () => {
     test("Error alert shows when there is an error", async () => {
+      mockLDFlags.set({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
         isTablet: false,
@@ -518,6 +325,7 @@ describe("<DashboardTable />", () => {
 
   describe("Test Dashboard view accessibility", () => {
     it("Should not have basic accessibility issues (desktop)", async () => {
+      mockLDFlags.set({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
       });
