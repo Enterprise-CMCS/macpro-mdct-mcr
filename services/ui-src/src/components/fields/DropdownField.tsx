@@ -4,15 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
-// utils
-import {
-  autosaveFieldData,
-  getAutosaveFields,
-  labelTextWithOptional,
-  parseCustomHtml,
-  useStore,
-  convertDateUtcToEt,
-} from "utils";
+// constants
+import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 // types
 import {
   AnyObject,
@@ -23,7 +16,15 @@ import {
   SelectedOption,
   ReportMetadataShape,
 } from "types";
-import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
+// utils
+import {
+  autosaveFieldData,
+  getAutosaveFields,
+  labelTextWithOptional,
+  parseCustomHtml,
+  useStore,
+  convertDateUtcToEt,
+} from "utils";
 
 export const DropdownField = ({
   name,

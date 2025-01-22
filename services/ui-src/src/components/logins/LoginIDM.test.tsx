@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
+import { LoginIDM } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-//components
-import { LoginIDM } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const loginIDMComponent = (
   <RouterWrappedComponent>
@@ -11,7 +11,7 @@ const loginIDMComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test LoginIDM", () => {
+describe("<LoginIDM />", () => {
   beforeEach(() => {
     render(loginIDMComponent);
   });
@@ -20,12 +20,6 @@ describe("Test LoginIDM", () => {
     const loginButton = screen.getByRole("button");
     expect(loginButton).toBeVisible();
   });
-});
 
-describe("Test LoginIDM accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(loginIDMComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(loginIDMComponent);
 });

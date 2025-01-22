@@ -11,8 +11,8 @@ import {
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 // verbiage
-import accordionVerbiage from "../../verbiage/pages/accordion";
-import overlayVerbiage from "../../verbiage/pages/overlays";
+import accordionVerbiage from "verbiage/pages/accordion";
+import overlayVerbiage from "verbiage/pages/overlays";
 
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
@@ -39,7 +39,7 @@ const entityDetailsOverlayComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test EntityDetailsOverlayV2 (empty state)", () => {
+describe("<EntityDetailsOverlay />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     render(entityDetailsOverlayComponent);
@@ -48,7 +48,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
   const user = userEvent.setup();
   const selectedEntity = mockEntityStore.selectedEntity;
 
-  it("should render the initial view for a state user", async () => {
+  test("should render the initial view for a state user", async () => {
     // Close out of the Overlay it opened
     const closeButton = screen.getByText("Return to MLR Reporting");
     expect(closeButton).toBeVisible();
@@ -80,7 +80,7 @@ describe("Test EntityDetailsOverlayV2 (empty state)", () => {
     expect(saveAndReturn).toBeVisible();
   });
 
-  it("should call the close overlay function when clicking Return to MLR", async () => {
+  test("should call the close overlay function when clicking Return to MLR", async () => {
     // Close out of the Overlay it opened
     const closeButton = screen.getByText("Return to MLR Reporting");
     await user.click(closeButton);

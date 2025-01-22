@@ -3,8 +3,9 @@ import { useFormContext } from "react-hook-form";
 // components
 import { Choice as CmsdsChoice } from "@cmsgov/design-system";
 import { Box, Text } from "@chakra-ui/react";
-// utils
+// types
 import { AnyObject } from "types";
+// utils
 import { labelTextWithOptional } from "utils";
 
 export const ChoiceField = ({

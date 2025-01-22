@@ -6,8 +6,8 @@ import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
 import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
 // verbiage
-import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";

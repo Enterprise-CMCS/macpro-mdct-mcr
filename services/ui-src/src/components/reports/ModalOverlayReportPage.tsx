@@ -33,7 +33,7 @@ import {
   resetClearProp,
 } from "utils";
 // verbiage
-import accordionVerbiage from "../../verbiage/pages/accordion";
+import accordionVerbiage from "verbiage/pages/accordion";
 
 export const ModalOverlayReportPage = ({
   route,

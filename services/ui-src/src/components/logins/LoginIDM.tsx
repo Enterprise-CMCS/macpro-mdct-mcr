@@ -1,8 +1,8 @@
 import { useContext } from "react";
-// utils
-import { UserContext } from "utils";
 // components
 import { Box, Button, Heading } from "@chakra-ui/react";
+// utils
+import { UserContext } from "utils";
 
 export const LoginIDM = () => {
   const context = useContext(UserContext);

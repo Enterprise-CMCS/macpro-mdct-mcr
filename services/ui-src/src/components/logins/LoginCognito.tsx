@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
+// types
 import { ErrorVerbiage } from "types";
+// utils
 import { loginUser } from "utils";
 
 const useFormFields = (initialState: any) => {

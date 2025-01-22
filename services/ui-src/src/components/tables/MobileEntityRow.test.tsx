@@ -13,6 +13,7 @@ import {
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
@@ -21,26 +22,6 @@ const mockEntering = false;
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-
-const incompleteRowComponent = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMlrReportContext}>
-      <Table content={{}}>
-        <MobileEntityRow
-          entity={{
-            ...mockMlrReportContext.report.fieldData.program[1],
-            report_mlrNumerator: null,
-          }}
-          verbiage={mockVerbiageIntro}
-          entering={mockEntering}
-          openAddEditEntityModal={openAddEditEntityModal}
-          openDeleteEntityModal={openDeleteEntityModal}
-          openEntityDetailsOverlay={mockOpenDrawer}
-        />
-      </Table>
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
 
 const completeRowComponent = (
   <RouterWrappedComponent>
@@ -59,19 +40,12 @@ const completeRowComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test MobileEntityRow", () => {
+describe("<MobileEntityRow />", () => {
   beforeEach(() => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
   });
   afterEach(() => {
     jest.clearAllMocks();
-  });
-
-  test.skip("It should render an error if an entity is incomplete", async () => {
-    const { findByText } = render(incompleteRowComponent);
-    expect(
-      await findByText("Select “Enter MLR” to complete this report.")
-    ).toBeVisible();
   });
 
   test("It should NOT render an error if an entity is complete", async () => {
@@ -110,4 +84,6 @@ describe("Test MobileEntityRow", () => {
     await userEvent.click(deleteButton);
     await expect(openDeleteEntityModal).toBeCalledTimes(1);
   });
+
+  testA11y(completeRowComponent);
 });

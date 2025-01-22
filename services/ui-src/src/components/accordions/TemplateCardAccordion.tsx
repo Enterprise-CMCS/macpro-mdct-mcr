@@ -1,7 +1,7 @@
 // components
 import { Accordion, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { AccordionItem, Table } from "components";
-// utils
+// types
 import { AnyObject } from "types";
 
 export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (

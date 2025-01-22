@@ -1,5 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
+import {
+  ExportedModalOverlayReportSection,
+  renderModalOverlayTableBody,
+} from "./ExportedModalOverlayReportSection";
 // types
 import { ModalOverlayReportPageShape, ReportType } from "types";
 // utils
@@ -9,13 +13,9 @@ import {
   mockModalOverlayReportPageJson,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// components
-import {
-  ExportedModalOverlayReportSection,
-  renderModalOverlayTableBody,
-} from "./ExportedModalOverlayReportSection";
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
-import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
@@ -129,120 +129,113 @@ const exportedModalOverlayReportSectionComponentOther = (
   />
 );
 
-describe("Test ExportedModalOverlayReportSection", () => {
+describe("<ExportedModalOverlayReportSection />", () => {
   test("ExportedModalOverlayReportSection renders", () => {
     const { getByTestId } = render(exportedModalOverlayReportSectionComponent);
     const section = getByTestId("exportTable");
     expect(section).toBeVisible();
   });
-});
 
-describe("Test renderModalOverlayTableBody", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  it("Should render data correctly", async () => {
-    mockReportContext.report.fieldData.program = [mockMlrProgram];
-    const { container, findByText } = render(
-      exportedModalOverlayReportSectionComponent
-    );
-    expect(await container.querySelectorAll("th").length).toEqual(
-      mlrTableHeader.length
-    );
+  describe("Test renderModalOverlayTableBody", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+    test("Should render data correctly", async () => {
+      mockReportContext.report.fieldData.program = [mockMlrProgram];
+      const { container, findByText } = render(
+        exportedModalOverlayReportSectionComponent
+      );
+      expect(await container.querySelectorAll("th").length).toEqual(
+        mlrTableHeader.length
+      );
 
-    // All table headers are present
-    expect(container.querySelectorAll("th").length).toBe(6);
+      // All table headers are present
+      expect(container.querySelectorAll("th").length).toBe(6);
 
-    // Every entity has a row (+1 for header)
-    expect(container.querySelectorAll("tr").length).toBe(
-      mockReportContext.report.fieldData.program.length + 1
-    );
+      // Every entity has a row (+1 for header)
+      expect(container.querySelectorAll("tr").length).toBe(
+        mockReportContext.report.fieldData.program.length + 1
+      );
 
-    // Check that icon is visible and has empty alt-text
-    const completeIcon = screen.getByRole("img");
-    expect(completeIcon).toBeVisible();
-    expect(completeIcon).toHaveAttribute("alt", "");
+      // Check that icon is visible and has empty alt-text
+      const completeIcon = screen.getByRole("img");
+      expect(completeIcon).toBeVisible();
+      expect(completeIcon).toHaveAttribute("alt", "");
 
-    // Correct index
-    expect(await findByText("1")).toBeVisible();
+      // Correct index
+      expect(await findByText("1")).toBeVisible();
 
-    // Correct info column
-    expect(
-      await findByText(mockMlrProgram.report_programName, { exact: false })
-    ).toBeVisible();
-    expect(
-      await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
-        exact: false,
-      })
-    ).toBeVisible();
-    expect(
-      await findByText(
-        `${mockMlrProgram.report_reportingPeriodStartDate} to ${mockMlrProgram.report_reportingPeriodEndDate}`,
-        { exact: false }
-      )
-    ).toBeVisible();
-    expect(
-      await findByText(mockMlrProgram.report_planName, { exact: false })
-    ).toBeVisible();
-
-    // Correct program type
-    expect(
-      await findByText(mockMlrProgram.report_programType[0].value)
-    ).toBeVisible();
-
-    // Correct discrepancy
-    expect(await findByText(`N/A`)).toBeVisible();
-
-    // Correct notes
-    expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
-  });
-
-  it('Should render "other" explanations if they are filled.', async () => {
-    mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
-
-    const { findByText } = render(
-      exportedModalOverlayReportSectionComponentOther
-    );
-
-    expect(
-      await findByText(
-        mockMlrProgramOther["report_eligibilityGroup-otherText"],
-        {
+      // Correct info column
+      expect(
+        await findByText(mockMlrProgram.report_programName, { exact: false })
+      ).toBeVisible();
+      expect(
+        await findByText(mockMlrProgram.report_eligibilityGroup[0].value, {
           exact: false,
-        }
-      )
-    ).toBeVisible();
+        })
+      ).toBeVisible();
+      expect(
+        await findByText(
+          `${mockMlrProgram.report_reportingPeriodStartDate} to ${mockMlrProgram.report_reportingPeriodEndDate}`,
+          { exact: false }
+        )
+      ).toBeVisible();
+      expect(
+        await findByText(mockMlrProgram.report_planName, { exact: false })
+      ).toBeVisible();
 
-    expect(
-      await findByText(
-        mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
-        {
-          exact: false,
-        }
-      )
-    ).toBeVisible();
+      // Correct program type
+      expect(
+        await findByText(mockMlrProgram.report_programType[0].value)
+      ).toBeVisible();
+
+      // Correct discrepancy
+      expect(await findByText(`N/A`)).toBeVisible();
+
+      // Correct notes
+      expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+    });
+
+    test('Should render "other" explanations if they are filled.', async () => {
+      mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
+
+      const { findByText } = render(
+        exportedModalOverlayReportSectionComponentOther
+      );
+
+      expect(
+        await findByText(
+          mockMlrProgramOther["report_eligibilityGroup-otherText"],
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible();
+
+      expect(
+        await findByText(
+          mockMlrProgramOther["report_reportingPeriodDiscrepancyExplanation"],
+          {
+            exact: false,
+          }
+        )
+      ).toBeVisible();
+    });
+
+    test("Should render empty state with no entities.", async () => {
+      mockReportContextOther.report.fieldData.program = [];
+      const { findByText } = render(
+        exportedModalOverlayReportSectionComponentOther
+      );
+
+      expect(await findByText("No entities found.")).toBeVisible();
+    });
+
+    test("Should throw an error using an unsupported report", async () => {
+      expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
+        Error
+      );
+    });
   });
-
-  it("Should render empty state with no entities.", async () => {
-    mockReportContextOther.report.fieldData.program = [];
-    const { findByText } = render(
-      exportedModalOverlayReportSectionComponentOther
-    );
-
-    expect(await findByText("No entities found.")).toBeVisible();
-  });
-
-  it("Should throw an error using an unsupported report", async () => {
-    expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
-      Error
-    );
-  });
-});
-
-describe("Test ExportedModalOverlayReportSection accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(exportedModalOverlayReportSectionComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(exportedModalOverlayReportSectionComponent);
 });

@@ -1,7 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { axe } from "jest-axe";
 // components
 import { DeleteEntityModal, ReportContext } from "components";
 // utils
@@ -15,6 +14,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
@@ -88,86 +88,81 @@ const modalComponent = (
 const { deleteModalTitle, deleteModalConfirmButtonText } =
   mockModalDrawerReportPageVerbiage;
 
-describe("Test DeleteEntityModal", () => {
-  beforeEach(async () => {
-    await act(async () => {
-      await render(modalComponent);
-    });
-  });
-
+describe("<DeleteEntityModal />", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  test("DeleteEntityModal shows the contents", () => {
-    expect(screen.getByText(deleteModalTitle)).toBeTruthy();
-    expect(screen.getByText(deleteModalConfirmButtonText)).toBeTruthy();
-    expect(screen.getByText("Cancel")).toBeTruthy();
-  });
-
-  test("DeleteEntityModal top close button can be clicked", () => {
-    fireEvent.click(screen.getByText("Close"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-
-  test("DeleteEntityModal bottom cancel button can be clicked", () => {
-    fireEvent.click(screen.getByText("Cancel"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe("Test DeleteEntityModal functionality", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
+  describe("Test DeleteEntityModal", () => {
+    beforeEach(async () => {
+      await act(async () => {
+        await render(modalComponent);
+      });
     });
 
-    render(modalComponent);
-
-    const submitButton = screen.getByText(deleteModalConfirmButtonText);
-    await userEvent.click(submitButton);
-
-    const mockUpdateCallPayload = mockUpdateCallBaseline;
-    mockUpdateCallPayload.fieldData.accessMeasures = [];
-
-    await expect(mockUpdateReport).toHaveBeenCalledWith(
-      mockReportKeys,
-      mockUpdateCallPayload
-    );
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-
-  test("DeleteEntityModal delete handles empty fielddata", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockDeletedEntityStore,
+    test("DeleteEntityModal shows the contents", () => {
+      expect(screen.getByText(deleteModalTitle)).toBeTruthy();
+      expect(screen.getByText(deleteModalConfirmButtonText)).toBeTruthy();
+      expect(screen.getByText("Cancel")).toBeTruthy();
     });
 
-    render(modalComponent);
+    test("DeleteEntityModal top close button can be clicked", () => {
+      fireEvent.click(screen.getByText("Close"));
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
 
-    const submitButton = screen.getByText(deleteModalConfirmButtonText);
-    await userEvent.click(submitButton);
-
-    const mockUpdateCallPayload = mockBadUpdateCallBaseline;
-    mockUpdateCallPayload.fieldData = { accessMeasures: [] };
-
-    await expect(mockUpdateReport).toHaveBeenCalledWith(
-      mockReportKeys,
-      mockUpdateCallPayload
-    );
-    await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    test("DeleteEntityModal bottom cancel button can be clicked", () => {
+      fireEvent.click(screen.getByText("Cancel"));
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
   });
-});
 
-describe("Test DeleteEntityModal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+  describe("Test DeleteEntityModal functionality", () => {
+    test("DeleteEntityModal deletes entity when deletion confirmed", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockDeletedEntityStore,
+      });
+
+      await act(async () => {
+        await render(modalComponent);
+      });
+
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
+
+      const mockUpdateCallPayload = mockUpdateCallBaseline;
+      mockUpdateCallPayload.fieldData.accessMeasures = [];
+
+      await expect(mockUpdateReport).toHaveBeenCalledWith(
+        mockReportKeys,
+        mockUpdateCallPayload
+      );
+      await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+
+    test("DeleteEntityModal delete handles empty fielddata", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockDeletedEntityStore,
+      });
+
+      await act(async () => {
+        await render(modalComponent);
+      });
+
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
+
+      const mockUpdateCallPayload = mockBadUpdateCallBaseline;
+      mockUpdateCallPayload.fieldData = { accessMeasures: [] };
+
+      await expect(mockUpdateReport).toHaveBeenCalledWith(
+        mockReportKeys,
+        mockUpdateCallPayload
+      );
+      await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
   });
+
+  testA11y(modalComponent);
 });

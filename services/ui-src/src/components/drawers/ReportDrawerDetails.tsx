@@ -1,5 +1,6 @@
 // components
 import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+// types
 import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {

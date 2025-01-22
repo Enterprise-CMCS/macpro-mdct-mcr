@@ -1,6 +1,6 @@
 // components
 import { Box, Flex, Text } from "@chakra-ui/react";
-// utils
+// types
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
 export const EntityCardBottomSection = ({

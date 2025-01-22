@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+// components
 import { EntityCardTopSection } from "./EntityCardTopSection";
 
 jest.mock("utils/state/useStore");
@@ -22,7 +23,7 @@ const entityCardTopSectionComponent = (entityType: string) => (
   />
 );
 
-describe("Test EntityCardTopSection renders", () => {
+describe("<EntityCardTopSection />", () => {
   beforeEach(() => {
     window.location.pathname === "/mcpar/export";
   });

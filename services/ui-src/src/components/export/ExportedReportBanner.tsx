@@ -1,14 +1,14 @@
-// assets
-import pdfIcon from "assets/icons/icon_pdf_white.png";
 // components
 import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
+// types
+import { ReportRoute, ReportType } from "types";
+// utils
+import { useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-// utils
-import { useStore } from "utils";
-// types
-import { ReportRoute, ReportType } from "types";
+// assets
+import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const ExportedReportBanner = () => {
   const { report } = useStore();

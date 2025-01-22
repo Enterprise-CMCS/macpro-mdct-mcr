@@ -1,8 +1,8 @@
+import { useRef } from "react";
 // components
 import { Box, Collapse } from "@chakra-ui/react";
 import { Alert } from "components";
-import { useRef } from "react";
-// utils
+// types
 import { AlertTypes, AnyObject, ErrorVerbiage } from "types";
 
 export const ErrorAlert = ({

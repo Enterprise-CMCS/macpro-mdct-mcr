@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 // components
 import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
-// utils
+// types
 import { AnyObject, ModalDrawerEntityTypes } from "types";
 
 export const EntityCardTopSection = ({
