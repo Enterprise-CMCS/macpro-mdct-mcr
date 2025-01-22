@@ -18,6 +18,20 @@ import {
   Form,
   DeleteEntityModal,
 } from "components";
+// constants
+import { getDefaultAnalysisMethodIds } from "../../constants";
+// types
+import {
+  AnyObject,
+  EntityShape,
+  DrawerReportPageShape,
+  ReportStatus,
+  FormField,
+  isFieldElement,
+  InputChangeEvent,
+  ReportType,
+  FormJson,
+} from "types";
 // utils
 import {
   entityWasUpdated,
@@ -32,19 +46,6 @@ import {
   generateAddEntityDrawerItemFields,
   generateDrawerItemFields,
 } from "utils/forms/dynamicItemFields";
-import { getDefaultAnalysisMethodIds } from "../../constants";
-// types
-import {
-  AnyObject,
-  EntityShape,
-  DrawerReportPageShape,
-  ReportStatus,
-  FormField,
-  isFieldElement,
-  InputChangeEvent,
-  ReportType,
-  FormJson,
-} from "types";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";

@@ -12,8 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon } from "@cmsgov/design-system";
 import { ReportDrawerDetails } from "components";
-// utils
+// types
 import { AnyObject, CustomHtmlElement, EntityType } from "types";
+// utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
 import { drawerReminderText } from "../../constants";

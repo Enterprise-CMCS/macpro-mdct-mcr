@@ -10,14 +10,14 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-// utils
-import { sanitizeAndParseHtml } from "utils";
 // types
 import {
   AnyObject,
   ScreenReaderOnlyHeaderName,
   TableContentShape,
 } from "types";
+// utils
+import { sanitizeAndParseHtml } from "utils";
 
 export const Table = ({
   content,

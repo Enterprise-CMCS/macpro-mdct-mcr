@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
 import { ExportedReportFieldRow } from "components";
 import { Table } from "@chakra-ui/react";
 // utils
 import { mockMcparReportStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -68,7 +68,7 @@ const noHintRow = (
   </Table>
 );
 
-describe("ExportedReportFieldRow", () => {
+describe("<ExportedReportFieldRow />", () => {
   test("Is present", async () => {
     render(exportRow);
     const row = screen.getByTestId("exportRow");
@@ -98,12 +98,6 @@ describe("ExportedReportFieldRow", () => {
     const hint = screen.queryByText(/hint/);
     expect(hint).not.toBeInTheDocument();
   });
-});
 
-describe("Test ExportedReportFieldRow accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(exportRow);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(exportRow);
 });

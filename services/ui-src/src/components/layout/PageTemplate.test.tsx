@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
 import { PageTemplate } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const standardPageComponent = (
   <PageTemplate>
@@ -14,7 +15,7 @@ const reportPageComponent = (
   </PageTemplate>
 );
 
-describe("Test PageTemplate view", () => {
+describe("<PageTemplate />", () => {
   test("Check that PageTemplate (standard) renders", () => {
     render(standardPageComponent);
     expect(screen.getByText("Test text")).toBeVisible();
@@ -24,18 +25,7 @@ describe("Test PageTemplate view", () => {
     render(reportPageComponent);
     expect(screen.getByText("Test text")).toBeVisible();
   });
-});
 
-describe("Test PageTemplate accessibility", () => {
-  test("PageTemplate (standard) hould not have basic accessibility issues", async () => {
-    const { container } = render(standardPageComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  test("PageTemplate (report) hould not have basic accessibility issues", async () => {
-    const { container } = render(reportPageComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(standardPageComponent);
+  testA11y(reportPageComponent);
 });

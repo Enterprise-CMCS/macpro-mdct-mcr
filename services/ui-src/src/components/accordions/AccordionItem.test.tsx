@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
+// verbiage
 import verbiage from "verbiage/pages/home";
 
 const accordionItemComponent = (
@@ -16,7 +17,7 @@ const accordionItemComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test AccordionItem", () => {
+describe("<AccordionItem />", () => {
   beforeEach(() => {
     render(accordionItemComponent);
   });
@@ -37,12 +38,6 @@ describe("Test AccordionItem", () => {
     expect(screen.queryByAltText("Expand")).toBeFalsy();
     expect(screen.getByAltText("Collapse")).toBeVisible();
   });
-});
 
-describe("Test AccordionItem accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(accordionItemComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(accordionItemComponent);
 });

@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
 // components
 import { Form } from "components";
+// types
+import { ReportStatus } from "types";
 // utils
 import {
   mockForm,
@@ -13,8 +14,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// types
-import { ReportStatus } from "types";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockOnSubmit = jest.fn();
 
@@ -55,7 +55,7 @@ const formComponentJustHeader = (
   </RouterWrappedComponent>
 );
 
-describe("Test Form component", () => {
+describe("<Form />", () => {
   test("Form is visible", () => {
     render(formComponent);
     const form = screen.getByText(mockForm.fields[0].props.label);
@@ -113,12 +113,6 @@ describe("Test Form component", () => {
       expect(x).toBeDisabled();
     });
   });
-});
 
-describe("Test Form accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(formComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(formComponent);
 });

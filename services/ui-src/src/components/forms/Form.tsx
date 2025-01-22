@@ -10,15 +10,6 @@ import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-// utils
-import {
-  compileValidationJsonFromFields,
-  formFieldFactory,
-  hydrateFormFields,
-  mapValidationTypesToSchema,
-  sortFormErrors,
-  useStore,
-} from "utils";
 // types
 import {
   AnyObject,
@@ -28,6 +19,15 @@ import {
   FormLayoutElement,
   ReportStatus,
 } from "types";
+// utils
+import {
+  compileValidationJsonFromFields,
+  formFieldFactory,
+  hydrateFormFields,
+  mapValidationTypesToSchema,
+  sortFormErrors,
+  useStore,
+} from "utils";
 
 export const Form = ({
   id,

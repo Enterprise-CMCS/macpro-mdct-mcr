@@ -3,13 +3,13 @@ import { useMemo } from "react";
 import { Box, Image, Text } from "@chakra-ui/react";
 // types
 import { EntityShape } from "types";
+// utils
+import { getMlrEntityStatus, useStore } from "utils";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
-// utils
-import { getMlrEntityStatus, useStore } from "utils";
 
 export const EntityStatusIcon = ({ entity, isPdf }: Props) => {
   const { report } = useStore();

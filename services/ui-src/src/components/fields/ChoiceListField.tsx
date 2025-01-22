@@ -1,19 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
-
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
-// utils
-import {
-  autosaveFieldData,
-  formFieldFactory,
-  getAutosaveFields,
-  labelTextWithOptional,
-  parseCustomHtml,
-  useStore,
-} from "utils";
 // types
 import {
   AnyObject,
@@ -24,6 +14,15 @@ import {
   FormField,
   InputChangeEvent,
 } from "types";
+// utils
+import {
+  autosaveFieldData,
+  formFieldFactory,
+  getAutosaveFields,
+  labelTextWithOptional,
+  parseCustomHtml,
+  useStore,
+} from "utils";
 
 export const ChoiceListField = ({
   name,

@@ -6,10 +6,10 @@ import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Form } from "components";
 // types
 import { AnyObject, FormJson, InputChangeEvent } from "types";
-// form
-import formJson from "forms/adminDashSelector/adminDashSelector";
 // utils
 import { useStore } from "utils";
+// form
+import formJson from "forms/adminDashSelector/adminDashSelector";
 
 export const AdminDashSelector = ({ verbiage }: Props) => {
   const navigate = useNavigate();

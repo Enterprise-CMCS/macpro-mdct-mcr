@@ -1,7 +1,7 @@
 import React from "react";
 // components
 import { Box, Flex } from "@chakra-ui/react";
-// utils
+// types
 import { AnyObject } from "types";
 
 export const PageTemplate = ({

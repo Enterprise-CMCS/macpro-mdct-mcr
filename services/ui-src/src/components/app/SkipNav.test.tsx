@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { SkipNav } from "components";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 const skipNavComponent = (
   <SkipNav id="skip-nav-test" href="#main-content" text="Test text" />
 );
 
-describe("Test SkipNav component", () => {
+describe("<SkipNav />", () => {
   test("SkipNav is visible and focusable", async () => {
     render(skipNavComponent);
     const skipNav = document.getElementById("skip-nav-test")!;
@@ -17,12 +18,6 @@ describe("Test SkipNav component", () => {
     await expect(skipNavLink).toHaveFocus();
     await expect(skipNavLink).toBeVisible();
   });
-});
 
-describe("Test SkipNav accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(skipNavComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(skipNavComponent);
 });

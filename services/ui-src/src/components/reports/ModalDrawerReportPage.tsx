@@ -13,19 +13,6 @@ import {
   ReportPageIntro,
   Table,
 } from "components";
-// utils
-import {
-  filterFormData,
-  getFormattedEntityData,
-  createRepeatedFields,
-  useStore,
-  entityWasUpdated,
-  getEntriesToClear,
-  setClearedEntriesToDefaultValue,
-  resetClearProp,
-  parseCustomHtml,
-  useBreakpoint,
-} from "utils";
 // types
 import {
   AnyObject,
@@ -39,6 +26,19 @@ import {
   ReportStatus,
   ReportType,
 } from "types";
+// utils
+import {
+  filterFormData,
+  getFormattedEntityData,
+  createRepeatedFields,
+  useStore,
+  entityWasUpdated,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  resetClearProp,
+  parseCustomHtml,
+  useBreakpoint,
+} from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
 

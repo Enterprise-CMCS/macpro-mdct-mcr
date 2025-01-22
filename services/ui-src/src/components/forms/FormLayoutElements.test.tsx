@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+import { testA11y } from "utils/testing/commonTests";
+// components
 import { SectionContent, SectionHeader } from "./FormLayoutElements";
+// utils
 
 const sectionHeaderComponentTopDivider = (
   <SectionHeader
@@ -31,7 +33,7 @@ const sectionHeaderComponentNoDivider = (
 
 const sectionContentComponent = <SectionContent content={"Foo"} />;
 
-describe("Test SectionHeader component", () => {
+describe("<SectionHeader />", () => {
   test("Top should make the section divider on the top.", async () => {
     const { findByText, getByRole } = render(sectionHeaderComponentTopDivider);
     const sectionHeader = screen.getByTestId("test-section-header");
@@ -60,27 +62,18 @@ describe("Test SectionHeader component", () => {
     expect(await findByText("1. Section Header")).toBeTruthy();
     expect(queryByRole("separator")).not.toBeInTheDocument();
   });
+
+  testA11y(sectionHeaderComponentBottomDivider);
+  testA11y(sectionHeaderComponentTopDivider);
+  testA11y(sectionHeaderComponentNoDivider);
 });
 
-describe("Test SectionContent component", () => {
+describe("<SectionContent />", () => {
   test("Component should be visible and render correct text.", async () => {
     const { findByText } = render(sectionContentComponent);
     expect(await findByText("Foo")).toBeTruthy();
     expect(await findByText("Foo")).toBeVisible();
   });
-});
 
-describe("Test FormLayoutElements components accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    for (const component of [
-      sectionHeaderComponentBottomDivider,
-      sectionHeaderComponentTopDivider,
-      sectionHeaderComponentNoDivider,
-      sectionContentComponent,
-    ]) {
-      const { container } = render(component);
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    }
-  });
+  testA11y(sectionContentComponent);
 });

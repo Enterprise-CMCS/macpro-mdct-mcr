@@ -1,5 +1,6 @@
 // components
 import { Link } from "@chakra-ui/react";
+// types
 import { AnyObject } from "types";
 
 export const SkipNav = ({ id, href, text, sxOverride, ...props }: Props) => {

@@ -1,7 +1,8 @@
 // components
 import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
-// utils
+// types
 import { ReportMetadataShape, ReportType } from "types";
+// utils
 import { convertDateUtcToEt } from "utils";
 import {
   AdminArchiveActionButtonProps,

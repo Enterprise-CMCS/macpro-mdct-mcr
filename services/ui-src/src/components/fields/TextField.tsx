@@ -4,6 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
+// types
+import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 // utils
 import {
   autosaveFieldData,
@@ -12,8 +14,6 @@ import {
   parseCustomHtml,
   useStore,
 } from "utils";
-// types
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
 
 export const TextField = ({
   name,

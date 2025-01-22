@@ -1,12 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { ReportDrawerDetails } from "components";
+// utils
 import {
   mockUnfinishedAccessMeasuresFormattedEntityData,
   mockUnfinishedQualityMeasuresFormattedEntityData,
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 const ReportDrawerDetailsAccessMeasuresComponent = (
   <ReportDrawerDetails
@@ -33,63 +34,48 @@ const ReportDrawerDetailsInvalidEntityTypeComponent = (
   <ReportDrawerDetails drawerDetails={{}} entityType="bssEntities" />
 );
 
-describe("Test ReportDrawerDetails renders given text", () => {
-  it("Should render access measures text provided in drawerDetails", async () => {
-    render(ReportDrawerDetailsAccessMeasuresComponent);
-    expect(
-      screen.getByText(mockUnfinishedAccessMeasuresFormattedEntityData.category)
-    ).toBeVisible();
+describe("<ReportDrawerDetails />", () => {
+  describe("Test ReportDrawerDetails renders given text", () => {
+    test("Should render access measures text provided in drawerDetails", async () => {
+      render(ReportDrawerDetailsAccessMeasuresComponent);
+      expect(
+        screen.getByText(
+          mockUnfinishedAccessMeasuresFormattedEntityData.category
+        )
+      ).toBeVisible();
+    });
+
+    test("Should render sanctions text provided in drawerDetails", async () => {
+      render(ReportDrawerDetailsSanctionsComponent);
+      expect(
+        screen.getByText(
+          mockUnfinishedSanctionsFormattedEntityData.interventionTopic
+        )
+      ).toBeVisible();
+    });
+
+    test("Should render quality measures text provided in drawerDetails", async () => {
+      render(ReportDrawerDetailsQualityMeasuresComponent);
+      expect(
+        screen.getByText(
+          mockUnfinishedQualityMeasuresFormattedEntityData.domain
+        )
+      ).toBeVisible();
+      expect(
+        screen.getByText(mockUnfinishedQualityMeasuresFormattedEntityData.name)
+      ).toBeVisible();
+    });
   });
 
-  it("Should render sanctions text provided in drawerDetails", async () => {
-    render(ReportDrawerDetailsSanctionsComponent);
-    expect(
-      screen.getByText(
-        mockUnfinishedSanctionsFormattedEntityData.interventionTopic
-      )
-    ).toBeVisible();
+  describe("Test ReportDrawerDetails invalid entity type", () => {
+    test("Renders invalid entity type as 'entity type'", () => {
+      render(ReportDrawerDetailsInvalidEntityTypeComponent);
+      expect(screen.getByText("bssEntities")).toBeVisible();
+    });
   });
 
-  it("Should render quality measures text provided in drawerDetails", async () => {
-    render(ReportDrawerDetailsQualityMeasuresComponent);
-    expect(
-      screen.getByText(mockUnfinishedQualityMeasuresFormattedEntityData.domain)
-    ).toBeVisible();
-    expect(
-      screen.getByText(mockUnfinishedQualityMeasuresFormattedEntityData.name)
-    ).toBeVisible();
-  });
-});
-
-describe("Test ReportDrawerDetails invalid entity type", () => {
-  it("Renders invalid entity type as 'entity type'", () => {
-    render(ReportDrawerDetailsInvalidEntityTypeComponent);
-    expect(screen.getByText("bssEntities")).toBeVisible();
-  });
-});
-
-describe("Test ReportDrawerDetails accessibility", () => {
-  it("AccessMeasures drawer details should not have basic accessibility issues", async () => {
-    const { container } = render(ReportDrawerDetailsAccessMeasuresComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("Sanctions drawer details should not have basic accessibility issues", async () => {
-    const { container } = render(ReportDrawerDetailsSanctionsComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("QualityMeasures drawer details should not have basic accessibility issues", async () => {
-    const { container } = render(ReportDrawerDetailsQualityMeasuresComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it("Invalid entity drawer details should not have basic accessibility issues", async () => {
-    const { container } = render(ReportDrawerDetailsInvalidEntityTypeComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(ReportDrawerDetailsAccessMeasuresComponent);
+  testA11y(ReportDrawerDetailsSanctionsComponent);
+  testA11y(ReportDrawerDetailsQualityMeasuresComponent);
+  testA11y(ReportDrawerDetailsInvalidEntityTypeComponent);
 });

@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { Table } from "components";
+// utils
+import { testA11y } from "utils/testing/commonTests";
+import { RouterWrappedComponent } from "utils/testing/setupJest";
+// verbiage
 import verbiage from "verbiage/pages/home";
 
 const tableContent = verbiage.cards.MCPAR.accordion.table;
@@ -13,20 +14,11 @@ const tableComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test Table", () => {
-  beforeEach(() => {
-    render(tableComponent);
-  });
-
+describe("<Table />", () => {
   test("Table is visible", () => {
+    render(tableComponent);
     expect(screen.getByRole("table")).toBeVisible();
   });
-});
 
-describe("Test Table accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(tableComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(tableComponent);
 });

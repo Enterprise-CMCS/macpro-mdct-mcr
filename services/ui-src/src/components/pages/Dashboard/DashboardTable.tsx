@@ -1,8 +1,9 @@
 // components
 import { Button, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
-// utils
+// types
 import { ReportMetadataShape, ReportType } from "types";
+// utils
 import {
   AdminArchiveButton,
   AdminReleaseButton,

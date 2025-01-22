@@ -1,9 +1,10 @@
 // components
 import { Box, Text } from "@chakra-ui/react";
 import { EntityCard } from "components";
+// types
+import { EntityShape, ModalDrawerReportPageShape } from "types";
 // utils
 import { getFormattedEntityData, useStore } from "utils";
-import { EntityShape, ModalDrawerReportPageShape } from "types";
 // verbiage
 import exportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 

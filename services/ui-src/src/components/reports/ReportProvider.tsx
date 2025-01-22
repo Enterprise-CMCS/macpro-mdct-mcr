@@ -1,5 +1,12 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
+// types
+import {
+  ReportKeys,
+  ReportContextShape,
+  ReportShape,
+  ErrorVerbiage,
+} from "types";
 // utils
 import {
   archiveReport as archiveReportRequest,
@@ -14,12 +21,7 @@ import {
   sortReportsOldestToNewest,
   useStore,
 } from "utils";
-import {
-  ReportKeys,
-  ReportContextShape,
-  ReportShape,
-  ErrorVerbiage,
-} from "types";
+// verbiage
 import { reportErrors } from "verbiage/errors";
 
 // CONTEXT DECLARATION

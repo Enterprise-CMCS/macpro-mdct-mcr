@@ -1,11 +1,14 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { TemplateCardAccordion } from "components";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
+// verbiage
 import verbiage from "verbiage/pages/home";
+
+const { buttonLabel, text: accordionText } = verbiage.cards.MCPAR.accordion;
 
 const accordionComponent = (
   <RouterWrappedComponent>
@@ -13,44 +16,28 @@ const accordionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test TemplateCardAccordion", () => {
+describe("<TemplateCardAccordion />", () => {
   beforeEach(() => {
     render(accordionComponent);
   });
 
   test("Accordion is visible", () => {
-    expect(
-      screen.getByText(verbiage.cards.MCPAR.accordion.buttonLabel)
-    ).toBeVisible();
+    expect(screen.getByText(buttonLabel)).toBeVisible();
   });
 
   test("Accordion default closed state only shows the question", () => {
-    expect(
-      screen.getByText(verbiage.cards.MCPAR.accordion.buttonLabel)
-    ).toBeVisible();
-    expect(
-      screen.getByText(verbiage.cards.MCPAR.accordion.text)
-    ).not.toBeVisible();
+    expect(screen.getByText(buttonLabel)).toBeVisible();
+    expect(screen.getByText(accordionText)).not.toBeVisible();
   });
 
   test("Accordion should show answer on click", async () => {
-    const accordionQuestion = screen.getByText(
-      verbiage.cards.MCPAR.accordion.buttonLabel
-    );
+    const accordionQuestion = screen.getByText(buttonLabel);
     expect(accordionQuestion).toBeVisible();
-    expect(
-      screen.getByText(verbiage.cards.MCPAR.accordion.text)
-    ).not.toBeVisible();
+    expect(screen.getByText(accordionText)).not.toBeVisible();
     await userEvent.click(accordionQuestion);
     expect(accordionQuestion).toBeVisible();
-    expect(screen.getByText(verbiage.cards.MCPAR.accordion.text)).toBeVisible();
+    expect(screen.getByText(accordionText)).toBeVisible();
   });
-});
 
-describe("Test TemplateCardAccordion accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(accordionComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(accordionComponent);
 });

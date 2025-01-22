@@ -2,8 +2,8 @@ import { MouseEventHandler } from "react";
 // Components
 import { Box, Button, Flex, Text, Spinner } from "@chakra-ui/react";
 import { Drawer, Form } from "components";
-// utils
-import { useStore } from "utils";
+// constants
+import { closeText, saveAndCloseText } from "../../constants";
 // types
 import {
   AnyObject,
@@ -12,8 +12,8 @@ import {
   EntityShape,
   EntityType,
 } from "types";
-// constants
-import { closeText, saveAndCloseText } from "../../constants";
+// utils
+import { useStore } from "utils";
 
 export const ReportDrawer = ({
   entityType,

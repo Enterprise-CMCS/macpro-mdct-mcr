@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, StandardReportPage } from "components";
@@ -13,6 +12,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -31,7 +31,7 @@ const standardPageSectionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test StandardReportPage", () => {
+describe("<StandardReportPage />", () => {
   test("StandardReportPage view renders", () => {
     render(standardPageSectionComponent);
     expect(
@@ -62,12 +62,6 @@ describe("Test StandardReportPage", () => {
     const newPath = window.location.pathname;
     expect(newPath).not.toBe("/");
   });
-});
 
-describe("Test StandardReportPage accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(standardPageSectionComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(standardPageSectionComponent);
 });

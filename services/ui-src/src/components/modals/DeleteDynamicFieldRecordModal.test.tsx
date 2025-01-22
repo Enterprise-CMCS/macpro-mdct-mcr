@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
-import { axe } from "jest-axe";
 // components
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 // utils
 import { mockMcparReportContext } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 const mockDeleteRecord = jest.fn();
@@ -22,7 +22,7 @@ const modalComponent = (
   </ReportContext.Provider>
 );
 
-describe("Test DeleteDynamicFieldRecordModal", () => {
+describe("<DeleteDynamicFieldRecordModal />", () => {
   beforeEach(async () => {
     await act(async () => {
       await render(modalComponent);
@@ -55,12 +55,6 @@ describe("Test DeleteDynamicFieldRecordModal", () => {
       expect(mockDeleteRecord).toHaveBeenCalledTimes(1);
     });
   });
-});
 
-describe("Test DeleteDynamicFieldRecordModal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(modalComponent);
 });

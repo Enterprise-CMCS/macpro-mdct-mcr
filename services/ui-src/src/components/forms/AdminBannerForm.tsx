@@ -2,12 +2,15 @@ import { useState } from "react";
 // components
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
-// utils
+// constants
 import { bannerId } from "../../constants";
-import { bannerErrors } from "verbiage/errors";
-import { convertDatetimeStringToNumber } from "utils";
+// types
 import { AlertTypes, ErrorVerbiage, FormJson } from "types";
-// data
+// utils
+import { convertDatetimeStringToNumber } from "utils";
+// verbiage
+import { bannerErrors } from "verbiage/errors";
+// form
 import formJson from "forms/addAdminBanner/addAdminBanner.json";
 
 export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
