@@ -48,3 +48,8 @@ repos:
         entry: yarn track-flags
         language: system
         files: '\.tsx?$'
+      - id: track-todos
+        name: track-todos
+        entry: yarn track-todos
+        language: system
+        exclude: 'logs/.*'

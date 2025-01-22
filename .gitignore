@@ -12,6 +12,7 @@ services/uploads/local_buckets
 tests_output
 *.log
 !launchdarkly-flags.log
+!todos.log
 tests/cypress/videos
 tests/cypress/screenshots
 tests/cypress/downloads
