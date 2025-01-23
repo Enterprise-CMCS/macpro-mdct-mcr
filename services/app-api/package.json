@@ -48,8 +48,8 @@
     "kafkajs": "^2.2.3",
     "ksuid": "^3.0.0",
     "micromatch": "^4.0.8",
-    "nanoid": "^5.0.9",
-    "path-to-regexp": "^8.0.0",
+    "nanoid": "^3.3.7",
+    "path-to-regexp": "^6.2.1",
     "yup": "^0.32.11"
   },
   "resolutions": {

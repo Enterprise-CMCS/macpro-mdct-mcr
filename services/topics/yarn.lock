@@ -601,11 +601,6 @@ nanoid@^3.3.6:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
-nanoid@^5.0.9:
-  version "5.0.9"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.9.tgz#977dcbaac055430ce7b1e19cf0130cea91a20e50"
-  integrity sha512-Aooyr6MXU6HpvvWXKoVoXwKMs/KyVakWwg7xQfv5/S/RIgJMy0Ifa45H9qqYy7pTCszrHzP21Uk4PZq2HpEM8Q==
-
 node-source-walk@^4.0.0, node-source-walk@^4.2.0, node-source-walk@^4.2.2:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/node-source-walk/-/node-source-walk-4.3.0.tgz#8336b56cfed23ac5180fe98f1e3bb6b11fd5317c"

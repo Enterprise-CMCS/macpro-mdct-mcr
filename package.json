@@ -29,8 +29,6 @@
     "axios": "^1.7.9",
     "fast-xml-parser": "4.5.1",
     "loader-utils": "2.0.4",
-    "nanoid": "^5.0.9",
-    "tar": "^7.0.0",
     "webpack": "^5.97.1"
   },
   "devDependencies": {
