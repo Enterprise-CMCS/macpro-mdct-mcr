@@ -15,8 +15,8 @@ permissions:
   pages: write
   actions: read
 
-  env:
-    SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
+env:
+  SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
 
 jobs:
   unit-tests:
