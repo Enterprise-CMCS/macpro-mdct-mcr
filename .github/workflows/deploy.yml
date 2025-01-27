@@ -15,6 +15,9 @@ permissions:
   pages: write
   actions: read
 
+  env:
+    SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
+
 jobs:
   unit-tests:
     name: Unit Tests
@@ -201,12 +204,11 @@ jobs:
 
     outputs:
       ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
-      ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} 
-
+      ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }}
 
   e2e-test:
     name: E2E Integration Tests
-    needs: 
+    needs:
       - deploy
       - register-runner
     if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
@@ -243,10 +245,9 @@ jobs:
             ${{github.workspace}}/tests/cypress/videos/
           retention-days: 14
 
-
   a11y-tests:
     name: E2E A11y Tests
-    needs: 
+    needs:
       - deploy
       - register-runner
     if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
@@ -279,7 +280,7 @@ jobs:
             ${{github.workspace}}/tests/cypress/screenshots/
             ${{github.workspace}}/tests/cypress/videos/
           retention-days: 14
-  
+
   test:
     name: Playwright Tests
     needs:

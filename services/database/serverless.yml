@@ -1,17 +1,11 @@
 service: database
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
   - serverless-dynamodb
   - serverless-stack-termination-protection
-  - serverless-s3-bucket-helper
   - serverless-offline
-
-s3BucketHelper:
-  loggingConfiguration:
-    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
-    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 custom:
   project: "mcr"
@@ -46,7 +40,7 @@ provider:
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
-    
+
 resources:
   Resources:
     BannerTable:
@@ -91,6 +85,16 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+         PublicAccessBlockConfiguration:
+           BlockPublicAcls: true
+           BlockPublicPolicy: true
+           IgnorePublicAcls: true
+           RestrictPublicBuckets: true
+         VersioningConfiguration:
+           Status: Enabled
+         LoggingConfiguration:
+           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
     MlrReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -118,6 +122,16 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+         PublicAccessBlockConfiguration:
+           BlockPublicAcls: true
+           BlockPublicPolicy: true
+           IgnorePublicAcls: true
+           RestrictPublicBuckets: true
+         VersioningConfiguration:
+           Status: Enabled
+         LoggingConfiguration:
+           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
     NaaarReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -145,6 +159,16 @@ resources:
           ServerSideEncryptionConfiguration:
             - ServerSideEncryptionByDefault:
                 SSEAlgorithm: AES256
+         PublicAccessBlockConfiguration:
+           BlockPublicAcls: true
+           BlockPublicPolicy: true
+           IgnorePublicAcls: true
+           RestrictPublicBuckets: true
+         VersioningConfiguration:
+           Status: Enabled
+         LoggingConfiguration:
+           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
+           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
     FormTemplateVersionsTable:
       Type: AWS::DynamoDB::Table
       Properties:
