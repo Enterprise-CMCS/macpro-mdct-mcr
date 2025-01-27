@@ -31,12 +31,6 @@ if ! which yarn > /dev/null ; then
     exit 1
 fi
 
-# check serverless is installed globally.
-if ! which serverless > /dev/null ; then
-    echo "installing serverless globally"
-    yarn global add serverless@3.38.0
-fi
-
 # have to ensure that yarn install is up to date.
 # we use .yarn_install as a marker for the last time `yarn install` was run. Rerun the command when yarn.lock is updated
 if [ "yarn.lock" -nt ".yarn_install" ]; then

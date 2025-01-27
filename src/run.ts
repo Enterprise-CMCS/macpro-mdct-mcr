@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
 import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { execSync } from "child_process";
+import path from "path";
 
 // load .env
 dotenv.config();
@@ -17,6 +18,12 @@ const deployedServices = [
   "ui-src",
 ];
 
+const serverlessBin = path.join(
+  process.cwd(),
+  "node_modules/.bin",
+  "serverless"
+);
+
 // run_db_locally runs the local db
 async function run_db_locally(runner: LabeledProcessRunner) {
   await runner.run_command_and_output(
@@ -26,18 +33,18 @@ async function run_db_locally(runner: LabeledProcessRunner) {
   );
   await runner.run_command_and_output(
     "db svls doc",
-    ["serverless", "doctor"],
+    [serverlessBin, "doctor"],
     "services/database"
   );
   await runner.run_command_and_output(
     "db svls",
-    ["serverless", "dynamodb", "install", "--stage", "local"],
+    [serverlessBin, "dynamodb", "install", "--stage", "local"],
     "services/database"
   );
   runner.run_command_and_output(
     "db",
     [
-      "serverless",
+      serverlessBin,
       "offline",
       "start",
       "--stage",
@@ -58,13 +65,13 @@ async function run_api_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "api svls doc",
-    ["serverless", "doctor"],
+    [serverlessBin, "doctor"],
     "services/app-api"
   );
   runner.run_command_and_output(
     "api",
     [
-      "serverless",
+      serverlessBin,
       "offline",
       "start",
       "--stage",
@@ -87,12 +94,12 @@ async function run_s3_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "s3 svls doc",
-    ["serverless", "doctor"],
+    [serverlessBin, "doctor"],
     "services/uploads"
   );
   runner.run_command_and_output(
     "s3",
-    ["serverless", "s3", "start", "--stage", "local"],
+    [serverlessBin, "s3", "start", "--stage", "local"],
     "services/uploads"
   );
 }
@@ -106,7 +113,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   );
   runner.run_command_and_output(
     "ui svls doc",
-    ["serverless", "doctor"],
+    [serverlessBin, "doctor"],
     "services/ui-src"
   );
   await runner.run_command_and_output(

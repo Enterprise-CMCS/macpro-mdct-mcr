@@ -51,7 +51,6 @@ Before starting the project we're going to install some tools. We recommend havi
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Install specified version of node. We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): `nvm install`, then `nvm use`
-- Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
 - Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
 
