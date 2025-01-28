@@ -336,6 +336,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {hasPlans && canAddEntities && !entity.isRequired && (
               <Button
                 sx={sx.deleteButton}
+                data-testid="delete-entity"
                 onClick={() => openDeleteEntityModal(entity)}
               >
                 <Image
