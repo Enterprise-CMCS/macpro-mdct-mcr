@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
 // components
 import { DynamicField, ReportContext } from "components";
+// constants
+import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 // types
 import { ReportStatus } from "types";
 // utils
@@ -17,6 +19,9 @@ import {
   mockQualityMeasuresEntity,
   mockAdminUserStore,
   mockMcparReportStore,
+  mockNaaarReportWithAnalysisMethodsContext,
+  mockNaaarAnalysisMethodsReportStore,
+  mockAnalysisMethodEntityStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -63,7 +68,7 @@ const MockForm = (props: any) => {
     shouldFocusError: false,
   });
   return (
-    <ReportContext.Provider value={mockedReportContext}>
+    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
       <FormProvider {...form}>
         <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
           <DynamicField
@@ -77,8 +82,8 @@ const MockForm = (props: any) => {
   );
 };
 
-const dynamicFieldComponent = (hydrationValue?: any) => (
-  <MockForm hydrationValue={hydrationValue} />
+const dynamicFieldComponent = (hydrationValue?: any, customContext?: any) => (
+  <MockForm hydrationValue={hydrationValue} customContext={customContext} />
 );
 
 const MockIlosForm = (props: any) => {
@@ -322,6 +327,72 @@ describe("<DynamicField />", () => {
               ...mockMcparReportStore.report!.fieldData.qualityMeasures,
             ],
             sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
+          },
+        }
+      );
+    });
+
+    test("Deletes plan and associated analysis methods plan in NAAAR if state user", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarAnalysisMethodsReportStore,
+        ...mockAnalysisMethodEntityStore,
+      });
+
+      const mockedReportContext = {
+        ...mockNaaarReportWithAnalysisMethodsContext,
+        updateReport: mockUpdateReport,
+        report: mockNaaarReportWithAnalysisMethodsContext.report,
+      };
+
+      await act(async () => {
+        await render(
+          dynamicFieldComponent(mockHydrationPlans, mockedReportContext)
+        );
+      });
+      // delete mock-plan-1
+      const removeButton = screen.getByRole("button", {
+        name: "Delete mock-plan-1",
+      });
+      await userEvent.click(removeButton);
+      const deleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
+      await userEvent.click(deleteButton);
+
+      expect(mockUpdateReport).toHaveBeenCalledWith(
+        {
+          ...mockReportKeys,
+          reportType: "NAAAR",
+          state: mockStateUserStore.user?.state,
+        },
+        {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: mockStateUserStore.user?.full_name,
+          },
+          fieldData: {
+            plans: [
+              {
+                id: "mock-plan-id-2",
+                name: "mock-plan-2",
+              },
+            ],
+            analysisMethods: [
+              {
+                ...DEFAULT_ANALYSIS_METHODS[0],
+                analysis_method_applicable_plans: [
+                  {
+                    key: "mock-plan-id-2",
+                    name: "mock-plan-2",
+                  },
+                ],
+              },
+              {
+                id: "custom_entity",
+                name: "custom entity",
+              },
+            ],
           },
         }
       );
