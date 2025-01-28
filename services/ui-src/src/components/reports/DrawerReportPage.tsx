@@ -336,10 +336,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {hasPlans && canAddEntities && !entity.isRequired && (
               <Button
                 sx={sx.deleteButton}
-                data-testid="delete-entity"
                 onClick={() => openDeleteEntityModal(entity)}
               >
-                <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+                <Image
+                  src={deleteIcon}
+                  alt={`Delete ${
+                    entity.custom_analysis_method_name ?? "unnamed entity"
+                  }`}
+                  boxSize="2xl"
+                />
               </Button>
             )}
           </Box>

@@ -351,9 +351,13 @@ describe("<DynamicField />", () => {
         );
       });
       // delete mock-plan-1
-      const removeButton = screen.queryAllByTestId("removeButton")[0];
+      const removeButton = screen.getByRole("button", {
+        name: "Delete mock-plan-1",
+      });
       await userEvent.click(removeButton);
-      const deleteButton = screen.getByText("Yes, delete plan");
+      const deleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
       await userEvent.click(deleteButton);
 
       expect(mockUpdateReport).toHaveBeenCalledWith(

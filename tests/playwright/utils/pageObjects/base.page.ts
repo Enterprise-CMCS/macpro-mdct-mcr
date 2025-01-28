@@ -88,7 +88,7 @@ export default class BasePage {
     for (const size of Object.values(breakpoints)) {
       this.page.setViewportSize({ width: size[0], height: size[1] });
       const results = await new AxeBuilder({ page: this.page })
-        .withTags(["wcag2a", "wcag2aa"])
+        .withTags(["wcag2a", "wcag2aa", "best-practice"])
         .disableRules(["duplicate-id"])
         .analyze();
       expect(results.violations).toEqual([]);

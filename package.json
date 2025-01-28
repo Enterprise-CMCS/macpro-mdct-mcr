@@ -12,7 +12,9 @@
     "test": "cd tests && npm test && cd -",
     "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
-    "test:e2e-ui": "cd tests && yarn run test:e2e-ui"
+    "test:e2e-ui": "cd tests && yarn run test:e2e-ui",
+    "track-flags": "./scripts/track-flags.sh",
+    "track-todos": "./scripts/track-todos.sh"
   },
   "repository": {
     "type": "git",

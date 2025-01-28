@@ -144,7 +144,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
         (method: EntityShape) => {
-          if (method?.analysis_method_applicable_plans?.length) {
+          if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans =
               method.analysis_method_applicable_plans.filter(
                 (plan: AnyObject) => plan.key !== selectedRecord.id

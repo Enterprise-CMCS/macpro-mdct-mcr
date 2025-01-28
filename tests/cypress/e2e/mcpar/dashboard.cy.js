@@ -68,7 +68,7 @@ const adminSelectorArray = [
 ];
 
 describe("Admin Archiving", () => {
-  it("Admin users can archive/unarchive reports", () => {
+  it("Admin users can archive reports", () => {
     cy.authenticate("adminUser");
 
     fillFormField(adminSelectorArray);
@@ -82,13 +82,26 @@ describe("Admin Archiving", () => {
     }).should("be.visible");
 
     cy.get('button:contains("Archive")').last().click();
+    cy.wait(500);
     cy.get('button:contains("Unarchive")').should("be.visible");
+  });
+
+  it("Admin users can unarchive reports", () => {
+    cy.authenticate("adminUser");
+
+    fillFormField(adminSelectorArray);
+    cy.contains("Go to Report Dashboard").click();
+
+    // cannot create reports
+    cy.contains("Add / copy a MCPAR").should("not.exist");
+
+    cy.contains(`Edited Program - ${currentDate}`, {
+      matchCase: true,
+    }).should("be.visible");
 
     cy.get('button:contains("Unarchive")').last().click();
+    cy.wait(1000);
     cy.get('button:contains("Archive")').should("be.visible");
-
-    cy.get('button:contains("Archive")').last().click();
-    cy.get('button:contains("Unarchive")').should("be.visible");
   });
 });
 
