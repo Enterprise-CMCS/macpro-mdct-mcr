@@ -5,8 +5,6 @@ frameworkVersion: "4"
 
 package:
   individually: true
-  # patterns:
-  #   - node_modules/**
 
 build:
   esbuild:
