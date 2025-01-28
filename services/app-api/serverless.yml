@@ -8,6 +8,10 @@ package:
   patterns:
     - node_modules/**
 
+build:
+  esbuild:
+    packages: external
+
 plugins:
   - serverless-dotenv-plugin
   - serverless-associate-waf
