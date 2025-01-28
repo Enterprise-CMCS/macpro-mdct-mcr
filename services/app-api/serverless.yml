@@ -20,7 +20,6 @@ plugins:
   - serverless-iam-helper
   - serverless-offline
   - serverless-plugin-common-excludes # this should go before serverless-plugin-include-dependencies
-  - serverless-plugin-include-dependencies
 
 custom:
   project: "mcr"
