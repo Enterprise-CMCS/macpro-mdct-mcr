@@ -24,7 +24,6 @@
     "jest": "^27.4.7",
     "serverless-associate-waf": "^1.2.1",
     "serverless-plugin-common-excludes": "^4.0.0",
-    "serverless-plugin-include-dependencies": "^5.1.0",
     "ts-jest": "^27.1.3",
     "typescript": "^4.5.4"
   },
