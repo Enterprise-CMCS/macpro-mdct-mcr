@@ -14,15 +14,18 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import {
-  useReactTable,
+  CellContext,
+  ColumnFiltersState,
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
-  SortingState,
+  getFilteredRowModel,
   getSortedRowModel,
-  ColumnFiltersState,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
 // types
-import { AnyObject, TableContentShape } from "types";
+import { AnyObject, SortableHeadRow, TableContentShape } from "types";
 // assets
 import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
 import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
@@ -50,6 +53,7 @@ export const SortableTable = ({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
@@ -144,6 +148,60 @@ export const SortableTable = ({
     </TableRoot>
   );
 };
+
+export function generateColumns<T>(
+  headRow: SortableHeadRow,
+  isAdmin: boolean,
+  generateCellsCallback?: (
+    headerId: string,
+    cellValue: any,
+    originalRowData: T
+  ) => {}
+) {
+  const columnHelper = createColumnHelper<T>();
+
+  function getCell(id: string, info: CellContext<T, unknown>) {
+    // Undefined must return null or cell won't render
+    const value = info.getValue() ?? null;
+    let cell;
+
+    if (generateCellsCallback) {
+      cell = generateCellsCallback(id, value, info.row.original);
+    }
+
+    return cell ?? value;
+  }
+
+  return Object.keys(headRow)
+    .filter((id) => {
+      const { admin, stateUser } = headRow[id];
+      const hideFromAdmin = isAdmin && stateUser;
+      const hideFromStateUser = !isAdmin && admin === true;
+
+      if (hideFromAdmin || hideFromStateUser) {
+        return false;
+      }
+      return true;
+    })
+    .map((id) => {
+      const { filter, header, hidden, sort } = headRow[id];
+
+      if (hidden) {
+        return columnHelper.display({
+          id,
+          header: () => <VisuallyHidden>{header}</VisuallyHidden>,
+          cell: (info) => getCell(id, info),
+        });
+      }
+
+      return columnHelper.accessor((row: T) => row[id as keyof T], {
+        header,
+        cell: (info) => getCell(id, info),
+        enableColumnFilter: !!filter,
+        enableSorting: !!sort,
+      });
+    });
+}
 
 interface Props {
   border?: boolean;

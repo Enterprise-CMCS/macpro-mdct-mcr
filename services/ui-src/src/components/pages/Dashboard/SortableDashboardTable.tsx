@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
 // components
-import { Box, Button, Spinner, VisuallyHidden } from "@chakra-ui/react";
+import { Box, Button, Spinner } from "@chakra-ui/react";
 import { SortableTable } from "components";
-// utils
+// types
 import { ReportMetadataShape } from "types";
+// utils
 import { convertDateUtcToEt } from "utils";
 import {
   AdminArchiveButton,
@@ -13,13 +13,7 @@ import {
   EditReportButton,
   getStatus,
 } from "./DashboardTableUtils";
-
-interface SortableReportShape extends ReportMetadataShape {
-  editedBy: string;
-  name: string;
-  planType?: string;
-  report: ReportMetadataShape;
-}
+import { generateColumns } from "components/tables/SortableTable";
 
 export const SortableDashboardTable = ({
   reportsByState,
@@ -38,7 +32,6 @@ export const SortableDashboardTable = ({
   isAdmin,
 }: DashboardTableProps) => {
   const content = body.table;
-  const columnHelper = createColumnHelper<SortableReportShape>();
   const data = useMemo(
     () =>
       reportsByState.map((report) => {
@@ -59,25 +52,26 @@ export const SortableDashboardTable = ({
               : report.planTypeIncludedInProgram?.[0].value,
           status: getStatus(status, report.archived, submissionCount),
           submissionCount: submissionCount === 0 ? 1 : submissionCount,
-          report,
+          // Original report shape to pass to cell components
+          originalReportData: report,
           ...rest,
         };
       }),
     [reportsByState]
   );
 
-  const cells = (id: string, value?: string | number | ReportMetadataShape) => {
-    if (!value) {
-      // Undefined must return null or cell won't render
-      return null;
-    }
+  const generateCells = (
+    headerId: string,
+    cellValue: any,
+    originalRowData: SortableReportShape
+  ) => {
+    const { originalReportData } = originalRowData;
 
-    switch (id) {
+    switch (headerId) {
       case "edit": {
-        const report = value as ReportMetadataShape;
-        return isStateLevelUser && !report.locked ? (
+        return isStateLevelUser && !originalReportData.locked ? (
           <EditReportButton
-            report={report}
+            report={originalReportData}
             openAddEditReportModal={openAddEditReportModal}
             sxOverride={sxOverride}
           />
@@ -86,25 +80,24 @@ export const SortableDashboardTable = ({
       case "name":
         return (
           <Box as="span" sx={sxOverride.programNameText}>
-            {value}
+            {cellValue}
           </Box>
         );
       case "dueDate":
       case "lastAltered":
-        return convertDateUtcToEt(value as number);
+        return convertDateUtcToEt(cellValue);
       case "actions": {
-        const report = value as ReportMetadataShape;
         return (
           <Box display="inline" sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               data-testid="enter-report"
-              onClick={() => enterSelectedReport(report)}
-              isDisabled={report.archived}
+              onClick={() => enterSelectedReport(originalReportData)}
+              isDisabled={originalReportData.archived}
             >
-              {entering && reportId === report.id ? (
+              {entering && reportId === originalReportData.id ? (
                 <Spinner size="md" />
-              ) : isStateLevelUser && !report.locked ? (
+              ) : isStateLevelUser && !originalReportData.locked ? (
                 "Edit"
               ) : (
                 "View"
@@ -114,10 +107,9 @@ export const SortableDashboardTable = ({
         );
       }
       case "adminRelease": {
-        const report = value as ReportMetadataShape;
         return (
           <AdminReleaseButton
-            report={report}
+            report={originalReportData}
             reportType={reportType}
             reportId={reportId}
             releaseReport={releaseReport}
@@ -127,10 +119,9 @@ export const SortableDashboardTable = ({
         );
       }
       case "adminArchive": {
-        const report = value as ReportMetadataShape;
         return (
           <AdminArchiveButton
-            report={report}
+            report={originalReportData}
             reportType={reportType}
             reportId={reportId}
             archiveReport={archiveReport}
@@ -140,33 +131,15 @@ export const SortableDashboardTable = ({
         );
       }
       default:
-        return value;
+        return cellValue;
     }
   };
 
-  const columns = Object.keys(content.sortableHeadRow)
-    .filter((id) => {
-      const { admin, stateUser } = content.sortableHeadRow[id];
-      if ((!isAdmin && admin === true) || (isAdmin && stateUser)) {
-        return;
-      }
-      return id;
-    })
-    .map((id: any) => {
-      const { header, hidden } = content.sortableHeadRow[id];
-
-      if (hidden === true) {
-        return columnHelper.display({
-          id,
-          header: () => <VisuallyHidden>{header}</VisuallyHidden>,
-          cell: ({ row }) => cells(id, row.original.report),
-        });
-      }
-      return columnHelper.accessor(id, {
-        header,
-        cell: (info) => cells(id, info.getValue()),
-      });
-    });
+  const columns = generateColumns<SortableReportShape>(
+    content.sortableHeadRow,
+    isAdmin,
+    generateCells
+  );
 
   return (
     <SortableTable
@@ -178,6 +151,13 @@ export const SortableDashboardTable = ({
     />
   );
 };
+
+interface SortableReportShape extends ReportMetadataShape {
+  editedBy: string;
+  name: string;
+  planType?: string;
+  originalReportData: ReportMetadataShape;
+}
 
 const sx = {
   table: {
