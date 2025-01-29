@@ -48,3 +48,5 @@ TEST_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
 TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
 TEST_STATE=DC
 TEST_STATE_NAME="District of Columbia"
+
+SERVERLESS_LICENSE_KEY=op://mdct_devs/mcr_secrets/SERVERLESS_LICENSE_KEY
