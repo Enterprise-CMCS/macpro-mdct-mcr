@@ -30,7 +30,7 @@ export const ReportDrawer = ({
   const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
   const buttonText =
     userIsAdmin || userIsReadOnly ? closeText : saveAndCloseText;
-  const formFieldsExist = form.fields.length;
+  const formFieldsExist = form && form.fields.length;
   return (
     <Drawer
       verbiage={verbiage}

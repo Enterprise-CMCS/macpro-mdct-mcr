@@ -76,6 +76,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
+  const reportingOnStandards =
+    route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
   const getForm = (
     reportType?: string,
@@ -381,32 +383,38 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
-          {parseCustomHtml(verbiage.dashboardTitle)}
-        </Heading>
-        {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
-          // if there are no plans and no ILOS added, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
-          </Box>
-        ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
-          !entities?.length ? (
-          // if not reporting on ILOS, but missing entities, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingEntityMessage || "")}
-          </Box>
+        {reportingOnStandards ? (
+          <Box></Box>
         ) : (
-          entityRows(entities)
-        )}
-        {canAddEntities && hasPlans && (
-          <Button
-            variant={"outline"}
-            sx={sx.bottomAddEntityButton}
-            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
-            onClick={() => openRowDrawer()}
-          >
-            {verbiage.addEntityButtonText}
-          </Button>
+          <Box>
+            <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+              {parseCustomHtml(verbiage.dashboardTitle)}
+            </Heading>
+            {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
+              // if there are no plans and no ILOS added, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
+              </Box>
+            ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+              !entities?.length ? (
+              // if not reporting on ILOS, but missing entities, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingEntityMessage || "")}
+              </Box>
+            ) : (
+              entityRows(entities)
+            )}
+            {canAddEntities && hasPlans && (
+              <Button
+                variant={"outline"}
+                sx={sx.bottomAddEntityButton}
+                leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
+                onClick={() => openRowDrawer()}
+              >
+                {verbiage.addEntityButtonText}
+              </Button>
+            )}
+          </Box>
         )}
       </Box>
       <ReportDrawer
