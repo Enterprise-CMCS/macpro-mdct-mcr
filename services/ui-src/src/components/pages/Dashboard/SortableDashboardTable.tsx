@@ -60,7 +60,7 @@ export const SortableDashboardTable = ({
     [reportsByState]
   );
 
-  const generateCells = (
+  const customCells = (
     id: string,
     value: any,
     originalRowData: SortableReportShape
@@ -138,7 +138,7 @@ export const SortableDashboardTable = ({
   const columns = generateColumns<SortableReportShape>(
     content.sortableHeadRow,
     isAdmin,
-    generateCells
+    customCells
   );
 
   return (

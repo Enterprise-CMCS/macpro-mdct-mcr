@@ -145,7 +145,7 @@ export const SortableTable = ({
 export function generateColumns<T>(
   headRow: SortableHeadRow,
   isAdmin: boolean,
-  generateCellsCallback?: (
+  customCellsCallback?: (
     headerId: string,
     cellValue: any,
     originalRowData: T
@@ -158,8 +158,8 @@ export function generateColumns<T>(
     const value = info.getValue() ?? null;
     let cell;
 
-    if (generateCellsCallback) {
-      cell = generateCellsCallback(id, value, info.row.original);
+    if (customCellsCallback) {
+      cell = customCellsCallback(id, value, info.row.original);
     }
 
     return cell ?? value;
