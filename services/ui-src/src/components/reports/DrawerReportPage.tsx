@@ -260,13 +260,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         // logic to ensure analysis methods always have a plan selected
         if (
           isAnalysisMethodsPage &&
-          !entity?.analysis_method_applicable_plans?.length
+          !entity?.analysis_method_applicable_plans?.length &&
+          (isCustomEntity || entity?.analysis_applicable?.[0]?.value === "Yes")
         ) {
-          if (isCustomEntity) {
-            return false;
-          } else if (entity?.analysis_applicable?.[0]?.value === "Yes") {
-            return false;
-          }
+          return false;
         }
 
         let formFields = form.fields;
