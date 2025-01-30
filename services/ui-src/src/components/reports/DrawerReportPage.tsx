@@ -48,6 +48,7 @@ import {
 } from "utils/forms/dynamicItemFields";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
+import addIconWhite from "assets/icons/icon_add.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -342,12 +343,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+
   const getDrawerTitle = () => {
     let name = "Add other";
-    if (selectedEntity?.name) {
-      name = selectedEntity.name;
-    } else if (selectedEntity?.custom_analysis_method_name) {
-      name = selectedEntity.custom_analysis_method_name;
+    if (reportingOnStandards) {
+      name = report?.programName!;
+    } else {
+      // handle custom analysis methods
+      if (selectedEntity?.name) {
+        name = selectedEntity.name;
+      } else if (selectedEntity?.custom_analysis_method_name) {
+        name = selectedEntity.custom_analysis_method_name;
+      }
     }
     return `${verbiage.drawerTitle} ${name}`;
   };
@@ -384,7 +391,28 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       )}
       <Box>
         {reportingOnStandards ? (
-          <Box></Box>
+          // table of standards
+          <Box>
+            <Button
+              sx={sx.bottomAddEntityButton}
+              leftIcon={
+                <Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />
+              }
+              onClick={() => openRowDrawer()}
+            >
+              {verbiage.addEntityButtonText}
+            </Button>
+            <Box>TABLEEEEE</Box>
+            <Button
+              sx={sx.bottomAddEntityButton}
+              leftIcon={
+                <Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />
+              }
+              onClick={() => openRowDrawer()}
+            >
+              {verbiage.addEntityButtonText}
+            </Button>
+          </Box>
         ) : (
           <Box>
             <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
