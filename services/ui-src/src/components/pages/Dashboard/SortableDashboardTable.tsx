@@ -61,13 +61,13 @@ export const SortableDashboardTable = ({
   );
 
   const customCells = (
-    id: string,
+    headKey: keyof SortableTableDataShape,
     value: any,
-    originalRowData: SortableReportShape
+    originalRowData: SortableTableDataShape
   ) => {
     const { report } = originalRowData;
 
-    switch (id) {
+    switch (headKey) {
       case "edit": {
         return isStateLevelUser && !report.locked ? (
           <EditReportButton
@@ -135,7 +135,7 @@ export const SortableDashboardTable = ({
     }
   };
 
-  const columns = generateColumns<SortableReportShape>(
+  const columns = generateColumns<SortableTableDataShape>(
     content.sortableHeadRow,
     isAdmin,
     customCells
@@ -153,11 +153,16 @@ export const SortableDashboardTable = ({
   );
 };
 
-interface SortableReportShape extends ReportMetadataShape {
+interface SortableTableDataShape extends ReportMetadataShape {
   editedBy: string;
   name: string;
   planType?: string;
   report: ReportMetadataShape;
+  // All table columns must be defined in type
+  edit?: string;
+  actions?: string;
+  adminRelease?: string;
+  adminArchive?: string;
 }
 
 const sx = {

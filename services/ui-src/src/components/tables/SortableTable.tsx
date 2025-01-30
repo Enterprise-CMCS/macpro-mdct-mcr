@@ -18,7 +18,6 @@ import {
   CellContext,
   ColumnFiltersState,
   createColumnHelper,
-  DisplayColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -142,32 +141,32 @@ export const SortableTable = ({
   );
 };
 
-export function generateColumns<T>(
+export function generateColumns<TData>(
   headRow: SortableHeadRow,
   isAdmin: boolean,
   customCellsCallback?: (
-    headerId: string,
+    headKey: keyof TData,
     cellValue: any,
-    originalRowData: T
+    originalRowData: TData
   ) => ReactNode
-): (DisplayColumnDef<T, unknown> | AccessorFnColumnDef<T, any>)[] {
-  const columnHelper = createColumnHelper<T>();
+): AccessorFnColumnDef<TData, any>[] {
+  const columnHelper = createColumnHelper<TData>();
 
-  function getCell(id: string, info: CellContext<T, unknown>) {
+  function getCell(headKey: keyof TData, info: CellContext<TData, unknown>) {
     // Undefined must return null or cell won't render
     const value = info.getValue() ?? null;
     let cell;
 
     if (customCellsCallback) {
-      cell = customCellsCallback(id, value, info.row.original);
+      cell = customCellsCallback(headKey, value, info.row.original);
     }
 
     return cell ?? value;
   }
 
   return Object.keys(headRow)
-    .filter((id) => {
-      const { admin, stateUser } = headRow[id];
+    .filter((headKey) => {
+      const { admin, stateUser } = headRow[headKey];
       const hideFromAdmin = isAdmin && stateUser;
       const hideFromStateUser = !isAdmin && admin === true;
 
@@ -176,29 +175,25 @@ export function generateColumns<T>(
       }
       return true;
     })
-    .map((id) => {
+    .map((headKey) => {
       const {
         filter = true,
         header,
         hidden = false,
         sort = true,
-      } = headRow[id];
+      } = headRow[headKey];
 
-      if (hidden) {
-        return columnHelper.display({
-          id,
-          header: () => <VisuallyHidden>{header}</VisuallyHidden>,
-          cell: (info) => getCell(id, info),
-        });
-      }
-
-      return columnHelper.accessor((row: T) => row[id as keyof T], {
-        id,
-        header,
-        cell: (info) => getCell(id, info),
-        enableColumnFilter: filter,
-        enableSorting: sort,
-      });
+      return columnHelper.accessor(
+        (row: TData) => row[headKey as keyof TData],
+        {
+          id: headKey,
+          header: () =>
+            hidden ? <VisuallyHidden>{header}</VisuallyHidden> : header,
+          cell: (info) => getCell(headKey as keyof TData, info),
+          enableColumnFilter: hidden ? false : filter,
+          enableSorting: hidden ? false : sort,
+        }
+      );
     });
 }
 
