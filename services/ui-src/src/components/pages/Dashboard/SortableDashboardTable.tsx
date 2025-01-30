@@ -146,6 +146,7 @@ export const SortableDashboardTable = ({
       columns={columns}
       data={data}
       content={content}
+      initialSorting={[{ id: "name", desc: false }]}
       sxOverride={sxOverride}
       sx={sx.table}
     />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 // components
 import {
   Box,
@@ -14,9 +14,11 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import {
+  AccessorFnColumnDef,
   CellContext,
   ColumnFiltersState,
   createColumnHelper,
+  DisplayColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -30,19 +32,12 @@ import { AnyObject, SortableHeadRow, TableContentShape } from "types";
 import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
 import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
 
-const sortByName = [
-  {
-    id: "name",
-    desc: false,
-  },
-];
-
 export const SortableTable = ({
   border,
   columns,
   content,
   data,
-  initialSorting = sortByName,
+  initialSorting = [],
   sxOverride,
   variant,
   ...props
@@ -63,8 +58,6 @@ export const SortableTable = ({
     },
   });
 
-  type AriaSortValues = "ascending" | "descending";
-
   return (
     <TableRoot
       variant={variant}
@@ -78,7 +71,7 @@ export const SortableTable = ({
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
-            {headerGroup.headers.map((header, index) => {
+            {headerGroup.headers.map((header) => {
               const ariaSort = header.column.getIsSorted()
                 ? {
                     "aria-sort": (header.column.getIsSorted() === "asc"
@@ -89,7 +82,7 @@ export const SortableTable = ({
 
               return (
                 <Th
-                  key={header.id + index}
+                  key={header.id}
                   scope="col"
                   sx={{ ...sx.tableHeader, ...sxOverride }}
                   {...ariaSort}
@@ -130,12 +123,12 @@ export const SortableTable = ({
         ))}
       </Thead>
       <Tbody>
-        {table.getRowModel().rows.map((row, index) => (
-          <Tr key={row.id + index}>
-            {row.getVisibleCells().map((cell, index) => {
+        {table.getRowModel().rows.map((row) => (
+          <Tr key={row.id}>
+            {row.getVisibleCells().map((cell) => {
               return (
                 <Td
-                  key={cell.id + index}
+                  key={cell.id}
                   sx={border ? sx.tableCellBorder : sx.tableCell}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -156,8 +149,8 @@ export function generateColumns<T>(
     headerId: string,
     cellValue: any,
     originalRowData: T
-  ) => {}
-) {
+  ) => ReactNode
+): (DisplayColumnDef<T, unknown> | AccessorFnColumnDef<T, any>)[] {
   const columnHelper = createColumnHelper<T>();
 
   function getCell(id: string, info: CellContext<T, unknown>) {
@@ -184,7 +177,12 @@ export function generateColumns<T>(
       return true;
     })
     .map((id) => {
-      const { filter, header, hidden, sort } = headRow[id];
+      const {
+        filter = true,
+        header,
+        hidden = false,
+        sort = true,
+      } = headRow[id];
 
       if (hidden) {
         return columnHelper.display({
@@ -195,10 +193,11 @@ export function generateColumns<T>(
       }
 
       return columnHelper.accessor((row: T) => row[id as keyof T], {
+        id,
         header,
         cell: (info) => getCell(id, info),
-        enableColumnFilter: !!filter,
-        enableSorting: !!sort,
+        enableColumnFilter: filter,
+        enableSorting: sort,
       });
     });
 }
@@ -213,6 +212,8 @@ interface Props {
   variant?: string;
   [key: string]: any;
 }
+
+type AriaSortValues = "ascending" | "descending";
 
 const sx = {
   root: {
@@ -251,5 +252,4 @@ const sx = {
       fontSize: "xs",
     },
   },
-  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };
