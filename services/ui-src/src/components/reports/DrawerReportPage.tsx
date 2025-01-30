@@ -51,6 +51,7 @@ import addIcon from "assets/icons/icon_add_blue.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -392,8 +393,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
         ) : (
-          entityRows(entities)
-          // <DrawerReportEntityRows
+          // entityRows(entities)
+          {DrawerReportPageEntityRows(entities)}
         )}
         {canAddEntities && hasPlans && (
           <Button
