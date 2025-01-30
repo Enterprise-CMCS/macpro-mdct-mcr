@@ -335,6 +335,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+
   const getDrawerTitle = () => {
     let name = "Add other";
     if (selectedEntity?.name) {
@@ -392,6 +393,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           </Box>
         ) : (
           entityRows(entities)
+          // <DrawerReportEntityRows
         )}
         {canAddEntities && hasPlans && (
           <Button
