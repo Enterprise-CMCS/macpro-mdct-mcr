@@ -53,7 +53,7 @@ export const SortableDashboardTable = ({
           status: getStatus(status, report.archived, submissionCount),
           submissionCount: submissionCount === 0 ? 1 : submissionCount,
           // Original report shape to pass to cell components
-          originalReportData: report,
+          report,
           ...rest,
         };
       }),
@@ -61,17 +61,17 @@ export const SortableDashboardTable = ({
   );
 
   const generateCells = (
-    headerId: string,
-    cellValue: any,
+    id: string,
+    value: any,
     originalRowData: SortableReportShape
   ) => {
-    const { originalReportData } = originalRowData;
+    const { report } = originalRowData;
 
-    switch (headerId) {
+    switch (id) {
       case "edit": {
-        return isStateLevelUser && !originalReportData.locked ? (
+        return isStateLevelUser && !report.locked ? (
           <EditReportButton
-            report={originalReportData}
+            report={report}
             openAddEditReportModal={openAddEditReportModal}
             sxOverride={sxOverride}
           />
@@ -80,24 +80,24 @@ export const SortableDashboardTable = ({
       case "name":
         return (
           <Box as="span" sx={sxOverride.programNameText}>
-            {cellValue}
+            {value}
           </Box>
         );
       case "dueDate":
       case "lastAltered":
-        return convertDateUtcToEt(cellValue);
+        return convertDateUtcToEt(value);
       case "actions": {
         return (
           <Box display="inline" sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               data-testid="enter-report"
-              onClick={() => enterSelectedReport(originalReportData)}
-              isDisabled={originalReportData.archived}
+              onClick={() => enterSelectedReport(report)}
+              isDisabled={report.archived}
             >
-              {entering && reportId === originalReportData.id ? (
+              {entering && reportId === report.id ? (
                 <Spinner size="md" />
-              ) : isStateLevelUser && !originalReportData.locked ? (
+              ) : isStateLevelUser && !report.locked ? (
                 "Edit"
               ) : (
                 "View"
@@ -109,7 +109,7 @@ export const SortableDashboardTable = ({
       case "adminRelease": {
         return (
           <AdminReleaseButton
-            report={originalReportData}
+            report={report}
             reportType={reportType}
             reportId={reportId}
             releaseReport={releaseReport}
@@ -121,7 +121,7 @@ export const SortableDashboardTable = ({
       case "adminArchive": {
         return (
           <AdminArchiveButton
-            report={originalReportData}
+            report={report}
             reportType={reportType}
             reportId={reportId}
             archiveReport={archiveReport}
@@ -131,7 +131,7 @@ export const SortableDashboardTable = ({
         );
       }
       default:
-        return cellValue;
+        return value;
     }
   };
 
@@ -157,7 +157,7 @@ interface SortableReportShape extends ReportMetadataShape {
   editedBy: string;
   name: string;
   planType?: string;
-  originalReportData: ReportMetadataShape;
+  report: ReportMetadataShape;
 }
 
 const sx = {
