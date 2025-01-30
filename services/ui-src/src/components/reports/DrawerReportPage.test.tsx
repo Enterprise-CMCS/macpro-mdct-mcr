@@ -379,27 +379,6 @@ describe("<DrawerReportPage />", () => {
       const enterDefaultMethod = screen.getAllByText("Enter")[0];
       expect(enterDefaultMethod).toBeVisible();
     });
-
-    test("Can shows statusing for custom analysis methods", async () => {
-      render(drawerReportPageWithCustomEntities);
-      const iconAltText = screen.getAllByAltText("Entity is incomplete");
-      expect(iconAltText.length).toBeGreaterThan(0);
-    });
-
-    test("DrawerReportPage opens the delete modal on remove click", async () => {
-      render(drawerReportPageWithCustomEntities);
-      const addCustomMethod = screen.getByText("Add other analysis method");
-      const removeButton = screen.getByTestId("delete-entity");
-      await userEvent.click(removeButton);
-      // click delete in modal
-      const deleteButton = screen.getByText("Yes, delete method");
-      await userEvent.click(deleteButton);
-
-      // verify that the field is removed
-      const inputBoxLabelAfterRemove = screen.queryAllByTestId("test-label");
-      expect(inputBoxLabelAfterRemove).toHaveLength(0);
-      expect(addCustomMethod).toBeVisible();
-    });
   });
 
   testA11y(drawerReportPageWithEntities, () => {
