@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Box, Button, Spinner } from "@chakra-ui/react";
 import { SortableTable } from "components";
 // types
-import { ReportMetadataShape } from "types";
+import { ReportMetadataShape, ReportStatus } from "types";
 // utils
 import { convertDateUtcToEt } from "utils";
 import {
@@ -16,45 +16,48 @@ import {
 import { generateColumns } from "components/tables/SortableTable";
 
 export const SortableDashboardTable = ({
-  reportsByState,
-  reportType,
-  reportId,
-  body,
-  openAddEditReportModal,
-  enterSelectedReport,
   archiveReport,
   archiving,
+  body,
   entering,
+  enterSelectedReport,
+  isAdmin,
+  isStateLevelUser,
+  openAddEditReportModal,
   releaseReport,
   releasing,
+  reportId,
+  reportsByState,
+  reportType,
   sxOverride,
-  isStateLevelUser,
-  isAdmin,
 }: DashboardTableProps) => {
   const content = body.table;
   const data = useMemo(
     () =>
       reportsByState.map((report) => {
         const {
+          dueDate,
+          lastAltered,
           lastAlteredBy,
           programName,
+          status,
           submissionCount,
           submissionName,
-          status,
-          ...rest
         } = report;
         return {
-          editedBy: lastAlteredBy || "-",
+          // Return only fields visible in table
           name: submissionName || programName,
+          dueDate,
+          lastAltered,
+          editedBy: lastAlteredBy || "-",
           planType:
             report["planTypeIncludedInProgram"]?.[0].value === "Other, specify"
               ? report["planTypeIncludedInProgram-otherText"]
               : report.planTypeIncludedInProgram?.[0].value,
           status: getStatus(status, report.archived, submissionCount),
           submissionCount: submissionCount === 0 ? 1 : submissionCount,
-          // Original report shape to pass to cell components
+          // Original report shape to pass to cell buttons
           report,
-          ...rest,
         };
       }),
     [reportsByState]
@@ -88,7 +91,7 @@ export const SortableDashboardTable = ({
         return convertDateUtcToEt(value);
       case "actions": {
         return (
-          <Box display="inline" sx={sxOverride.editReportButtonCell}>
+          <Box as="span" sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               data-testid="enter-report"
@@ -153,16 +156,20 @@ export const SortableDashboardTable = ({
   );
 };
 
-interface SortableTableDataShape extends ReportMetadataShape {
-  editedBy: string;
+interface SortableTableDataShape {
   name: string;
+  dueDate: number;
+  lastAltered: number;
+  editedBy: string;
   planType?: string;
+  status: ReportStatus;
+  submissionCount: number;
   report: ReportMetadataShape;
-  // All table columns must be defined in type
-  edit?: string;
-  actions?: string;
-  adminRelease?: string;
-  adminArchive?: string;
+  // Columns with buttons
+  edit?: null;
+  actions?: null;
+  adminRelease?: null;
+  adminArchive?: null;
 }
 
 const sx = {
