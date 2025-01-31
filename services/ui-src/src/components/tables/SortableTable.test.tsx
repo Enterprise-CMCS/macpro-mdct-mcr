@@ -20,8 +20,8 @@ const content = {
   },
 };
 
-function customCells(_headerKey: any, value: any, _originalRowData: any) {
-  return `Custom: ${value}`;
+function customCells(headerKey: keyof TestDataShape, value: any) {
+  return `Custom ${headerKey}: ${value}`;
 }
 
 const columns = generateColumns<TestDataShape>(content.sortableHeadRow, true);
@@ -103,7 +103,7 @@ describe("<SortableTable />", () => {
     const cells = container.querySelectorAll("td");
     const columnHeader = screen.getByRole("columnheader", { name: "ID" });
     expect(cells.length).toBe(6);
-    expect(cells[0]).toHaveTextContent(`Custom: ${data[1].id}`);
+    expect(cells[0]).toHaveTextContent(`Custom id: ${data[1].id}`);
     expect(columnHeader).toHaveAttribute("aria-sort", "descending");
   });
 
