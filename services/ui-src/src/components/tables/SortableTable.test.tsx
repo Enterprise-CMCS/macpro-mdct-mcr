@@ -124,7 +124,7 @@ describe("<SortableTable />", () => {
       actions: { header: "Actions", hidden: true },
     };
 
-    test("create columns for admin", async () => {
+    test("create columns for admin", () => {
       const columns = generateColumns<TestDataShape>(sortableHeadRow, true);
       expect(columns.length).toBe(2);
 
@@ -137,7 +137,7 @@ describe("<SortableTable />", () => {
       expect(columns[1].enableSorting).toBe(false);
     });
 
-    test("create columns for state user", async () => {
+    test("create columns for state user", () => {
       const columns = generateColumns<TestDataShape>(sortableHeadRow, false);
       expect(columns.length).toBe(2);
 
