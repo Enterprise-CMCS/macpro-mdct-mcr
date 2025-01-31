@@ -547,7 +547,7 @@
                   "label": "Maximum time to travel",
                   "children": [
                     {
-                      "id": "",
+                      "id": "2e6zA0mK1Qs93xSoyJXmW3AD",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -571,28 +571,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -603,7 +582,7 @@
                   "label": "Maximum distance to travel",
                   "children": [
                     {
-                      "id": "",
+                      "id": "qjDGoXRR8qnuIztUS7rymsLP",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -627,28 +606,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -659,7 +617,7 @@
                   "label": "Maximum time or distance",
                   "children": [
                     {
-                      "id": "",
+                      "id": "p2UjSQQTOHYWtLDqWXSxGFOP",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -683,28 +641,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -715,7 +652,7 @@
                   "label": "Ease of getting a timely appointment",
                   "children": [
                     {
-                      "id": "",
+                      "id": "rWrmasaJJ8V3PdVhZGf6bly3",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -739,28 +676,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -771,7 +687,7 @@
                   "label": "Appointment wait time",
                   "children": [
                     {
-                      "id": "",
+                      "id": "WCv5x1OePNjPWHdqog1Riv5s",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -795,28 +711,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -827,7 +722,7 @@
                   "label": "Hours of operation",
                   "children": [
                     {
-                      "id": "",
+                      "id": "l8KWEMUCqnOgRkYyBHvSYLPw",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -851,28 +746,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -883,7 +757,7 @@
                   "label": "Provider to enrollee ratios",
                   "children": [
                     {
-                      "id": "",
+                      "id": "kKaVlFMA9VpbhVj2gSPloqBr",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -907,28 +781,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -939,7 +792,7 @@
                   "label": "Minimum number of network providers",
                   "children": [
                     {
-                      "id": "",
+                      "id": "Le1VoGTeVcMbskIiBSImlIMO",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -963,28 +816,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -995,7 +827,7 @@
                   "label": "Service fulfillment",
                   "children": [
                     {
-                      "id": "",
+                      "id": "QVdykzW594MqR5xWTrAF8elY",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -1019,28 +851,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": [
-                          {
-                            "type": "p",
-                            "children": [
-                              {
-                                "type": "html",
-                                "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                              },
-                              {
-                                "type": "internalLink",
-                                "content": "“Analysis Methods”",
-                                "props": {
-                                  "to": "/naaar/state-and-program-information/analysis-methods"
-                                }
-                              },
-                              {
-                                "type": "html",
-                                "content": " section."
-                              }
-                            ]
-                          }
-                        ],
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -1057,58 +868,35 @@
                         "type": "text",
                         "nested": true,
                         "parentFieldName": "standard_standardType"
+                      }
+                    },
+                    {
+                      "id": "QW4MxtOeD2vjcRHcgKGBXYyI",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType-otherText"
                       },
-                      "children": [
-                        {
-                          "id": "",
-                          "type": "textarea",
-                          "validation": {
-                            "type": "text",
-                            "nested": true,
-                            "parentFieldName": "standard_standardType-otherText"
-                          },
-                          "props": {
-                            "label": "Standard description",
-                            "hint": "Describe the standard (for example, 15 days)."
-                          }
-                        },
-                        {
-                          "id": "",
-                          "type": "checkbox",
-                          "validation": {
-                            "type": "checkbox",
-                            "nested": true,
-                            "parentFieldName": "standard_standardType",
-                            "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
-                          },
-                          "props": {
-                            "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                            "hint": [
-                              {
-                                "type": "p",
-                                "children": [
-                                  {
-                                    "type": "html",
-                                    "content": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the "
-                                  },
-                                  {
-                                    "type": "internalLink",
-                                    "content": "“Analysis Methods”",
-                                    "props": {
-                                      "to": "/naaar/state-and-program-information/analysis-methods"
-                                    }
-                                  },
-                                  {
-                                    "type": "html",
-                                    "content": " section."
-                                  }
-                                ]
-                              }
-                            ],
-                            "choices": []
-                          }
-                        }
-                      ]
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
                     }
                   ]
                 }
