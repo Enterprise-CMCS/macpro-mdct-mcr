@@ -402,7 +402,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             >
               {verbiage.addEntityButtonText}
             </Button>
-            <Box>placeholder for Standards table</Box>
+            {/* standards table */}
             <Button
               sx={sx.bottomAddEntityButton}
               leftIcon={
