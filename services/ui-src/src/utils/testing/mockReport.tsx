@@ -556,6 +556,15 @@ export const mockNaaarReportWithAnalysisMethods = {
         ],
       },
       {
+        ...DEFAULT_ANALYSIS_METHODS[1],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+      },
+      {
         id: "custom_entity",
         name: "custom entity",
       },
