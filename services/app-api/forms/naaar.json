@@ -197,7 +197,8 @@
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
-                  "label": "Plan name"
+                  "label": "Plan name",
+                  "isRequired": true
                 }
               }
             ]
@@ -507,6 +508,7 @@
       "name": "III. Plan compliance",
       "path": "/naaar/plan-compliance",
       "pageType": "planOverlay",
+      "entityType": "plans",
       "verbiage": {
         "intro": {
           "section": "",
@@ -518,8 +520,44 @@
             }
           ]
         },
-        "tableHeader": "Plan name",
-        "enterPlanButtonText": "Enter"
+        "missingInformationMessage": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section "
+              },
+              {
+                "type": "internalLink",
+                "content": "I. State and program information.",
+                "props": {
+                  "to": "/naaar/state-and-program-information/state-information-and-reporting-scenario"
+                }
+              }
+            ]
+          }
+        ],
+        "missingStandardsMessage": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing standards. You won’t be able to access this section until you’ve added standards in section "
+              },
+              {
+                "type": "internalLink",
+                "content": "II. Program-level access and network adequacy standards.",
+                "props": {
+                  "to": "/naaar"
+                }
+              }
+            ]
+          }
+        ],
+        "tableHeader": "Plan Name",
+        "enterEntityDetailsButtonText": "Enter"
       },
       "form": {
         "id": "pc",

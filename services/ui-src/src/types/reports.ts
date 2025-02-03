@@ -90,6 +90,7 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
 
 export interface PlanOverlayReportPageShape extends ReportPageShapeBase {
   entityType: string;
+  verbiage: PlanOverlayReportPageVerbiage;
   overlayForm?: FormJson;
   modalForm?: never;
   drawerForm?: never;
@@ -156,6 +157,13 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   countEntitiesInTitle: boolean;
   tableHeader: string;
   addEditModalHint: string;
+  emptyDashboardText: string;
+}
+
+export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
+  missingStandardsMessage: CustomHtmlElement[];
+  missingInformationMessage: CustomHtmlElement[];
+  tableHeader: string;
   emptyDashboardText: string;
 }
 
