@@ -345,19 +345,25 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const getDrawerTitle = () => {
-    let name = "Add other";
-    if (reportingOnStandards) {
-      name = report?.programName!;
-    } else {
-      // handle custom analysis methods
-      if (selectedEntity?.name) {
-        name = selectedEntity.name;
-      } else if (selectedEntity?.custom_analysis_method_name) {
-        name = selectedEntity.custom_analysis_method_name;
-      }
+    let name =
+      selectedEntity?.name ||
+      selectedEntity?.custom_analysis_method_name ||
+      "Add other";
+    if (reportingOnStandards && report) {
+      name = report?.programName;
     }
     return `${verbiage.drawerTitle} ${name}`;
   };
+
+  const addStandardsButton = (
+    <Button
+      sx={sx.bottomAddEntityButton}
+      leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
+      onClick={() => openRowDrawer()}
+    >
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
 
   return (
     <Box>
@@ -393,26 +399,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {reportingOnStandards ? (
           // table of standards
           <Box>
-            <Button
-              sx={sx.bottomAddEntityButton}
-              leftIcon={
-                <Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />
-              }
-              onClick={() => openRowDrawer()}
-            >
-              {verbiage.addEntityButtonText}
-            </Button>
+            {addStandardsButton}
             {/* standards table */}
             <Box></Box>
-            <Button
-              sx={sx.bottomAddEntityButton}
-              leftIcon={
-                <Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />
-              }
-              onClick={() => openRowDrawer()}
-            >
-              {verbiage.addEntityButtonText}
-            </Button>
+            {addStandardsButton}
           </Box>
         ) : (
           <Box>

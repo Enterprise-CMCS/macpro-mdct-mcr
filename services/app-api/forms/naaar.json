@@ -283,7 +283,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "States should use this section of the tab to report on the analyses that the state uses to assess plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
+                  "content": "States should use this section of the tab to report on the analyses that the state uses to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
                 }
               ]
             },
@@ -322,7 +322,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "Is this analysis method utilized to assess plan compliance?",
-                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
+                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
                   "choices": [
                     {
                       "id": "KHvMO9SzSrkBhqCobPBUOY",
@@ -571,7 +571,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -606,7 +606,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -641,7 +641,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -676,7 +676,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -711,7 +711,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -746,7 +746,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -781,7 +781,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -816,7 +816,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -851,7 +851,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -894,7 +894,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
