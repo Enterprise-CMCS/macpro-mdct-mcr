@@ -3,7 +3,11 @@ import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, DrawerReportPage } from "components";
 // constants
-import { DEFAULT_ANALYSIS_METHODS, saveAndCloseText } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  PLAN_ILOS,
+  saveAndCloseText,
+} from "../../constants";
 // types
 import { McrEntityState } from "types";
 // utils
@@ -22,6 +26,7 @@ import {
   mockNaaarReportStore,
   mockNaaarReportContext,
   mockNaaarAnalysisMethodsPageJson,
+  mockMcparIlosPageJson,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -346,6 +351,53 @@ describe("<DrawerReportPage />", () => {
         </ReportContext.Provider>
       </RouterWrappedComponent>
     );
+
+    // ilos
+    const mockIlosEntityStore: McrEntityState = {
+      entities: [],
+      entityType: "ilos",
+      selectedEntity: {
+        id: "k9t7YoOeTOAXX3s7qF6XfN44",
+        name: "Ilos",
+        isRequired: true,
+      },
+      // ACTIONS
+      setSelectedEntity: () => {},
+      setEntityType: () => {},
+      setEntities: () => {},
+    };
+
+    const mockMcparReportContextWithIlos: any = mockMcparReportContext;
+    mockMcparReportContextWithIlos.report.fieldData["ilos"] = [PLAN_ILOS[0]];
+
+    const mockCustomMcparReportStore = {
+      ...mockMcparReportStore,
+      report: mockMcparReportContextWithIlos.report,
+      reportsByState: [mockMcparReportContextWithIlos.report],
+    };
+    const drawerReportPageWithIlos = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockMcparReportContextWithIlos}>
+          <DrawerReportPage route={mockMcparIlosPageJson} />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    test("Can enter default ilos drawer", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockCustomMcparReportStore,
+        ...mockIlosEntityStore,
+      });
+
+      render(drawerReportPageWithIlos);
+      const enterDefaultMethod = screen.getAllByText("Enter")[0];
+      await userEvent.click(enterDefaultMethod);
+      expect(screen.getByRole("dialog")).toBeVisible();
+      const textField = await screen.getByLabelText("mock label 1 - ILOS");
+      expect(textField).toBeVisible();
+    });
+
     test("Can enter default analysis method drawer", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
@@ -375,9 +427,14 @@ describe("<DrawerReportPage />", () => {
       const addCustomMethod = screen.getByText("Add other analysis method");
       await userEvent.click(addCustomMethod);
       expect(screen.getByRole("dialog")).toBeVisible();
-      const customTextField = await screen.getByLabelText("Analysis method");
-      expect(customTextField).toBeVisible();
-      await userEvent.type(customTextField, "new analysis method");
+      // fill out custom drawer
+      const customTitleField = await screen.getByLabelText("Analysis method");
+      expect(customTitleField).toBeVisible();
+      await userEvent.type(customTitleField, "New analysis method");
+      const customDescriptionField = await screen.getByLabelText("description");
+      await userEvent.type(customDescriptionField, "New analysis description");
+      const customFrequencyRadioButton = await screen.getByLabelText("Weekly");
+      await userEvent.click(customFrequencyRadioButton);
       const saveCustomMethod = screen.getByText("Save & close");
       await userEvent.click(saveCustomMethod);
       const enterDefaultMethod = screen.getAllByText("Enter")[0];
@@ -445,6 +502,7 @@ describe("<DrawerReportPage />", () => {
       });
     });
   });
+
   testA11y(drawerReportPageWithEntities, () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
