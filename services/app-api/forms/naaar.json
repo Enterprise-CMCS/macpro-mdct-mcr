@@ -506,7 +506,7 @@
     {
       "name": "III. Plan compliance",
       "path": "/naaar/plan-compliance",
-      "pageType": "standard",
+      "pageType": "planOverlay",
       "verbiage": {
         "intro": {
           "section": "",
