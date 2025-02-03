@@ -504,6 +504,29 @@
       ]
     },
     {
+      "name": "III. Plan compliance",
+      "path": "/naaar/plan-compliance",
+      "pageType": "standard",
+      "verbiage": {
+        "intro": {
+          "section": "",
+          "subsection": "III. Plan compliance",
+          "info": [
+            {
+              "type": "text",
+              "content": "States should use this section to report on plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
+            }
+          ]
+        },
+        "tableHeader": "Plan name",
+        "enterPlanButtonText": "Enter"
+      },
+      "form": {
+        "id": "pc",
+        "fields": []
+      }
+    },
+    {
       "name": "Review & Submit",
       "path": "/naaar/review-and-submit",
       "pageType": "reviewSubmit"
