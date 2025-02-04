@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 // components
 import {
   Box,
@@ -14,32 +14,29 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 import {
-  useReactTable,
+  AccessorFnColumnDef,
+  CellContext,
+  ColumnFiltersState,
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
-  SortingState,
+  getFilteredRowModel,
   getSortedRowModel,
-  ColumnFiltersState,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table";
 // types
-import { AnyObject, TableContentShape } from "types";
+import { AnyObject, SortableHeadRow, TableContentShape } from "types";
 // assets
 import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
 import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
-
-const sortByName = [
-  {
-    id: "name",
-    desc: false,
-  },
-];
 
 export const SortableTable = ({
   border,
   columns,
   content,
   data,
-  initialSorting = sortByName,
+  initialSorting = [],
   sxOverride,
   variant,
   ...props
@@ -50,6 +47,7 @@ export const SortableTable = ({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
@@ -58,8 +56,6 @@ export const SortableTable = ({
       sorting,
     },
   });
-
-  type AriaSortValues = "ascending" | "descending";
 
   return (
     <TableRoot
@@ -74,7 +70,7 @@ export const SortableTable = ({
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
-            {headerGroup.headers.map((header, index) => {
+            {headerGroup.headers.map((header) => {
               const ariaSort = header.column.getIsSorted()
                 ? {
                     "aria-sort": (header.column.getIsSorted() === "asc"
@@ -85,7 +81,7 @@ export const SortableTable = ({
 
               return (
                 <Th
-                  key={header.id + index}
+                  key={header.id}
                   scope="col"
                   sx={{ ...sx.tableHeader, ...sxOverride }}
                   {...ariaSort}
@@ -126,12 +122,12 @@ export const SortableTable = ({
         ))}
       </Thead>
       <Tbody>
-        {table.getRowModel().rows.map((row, index) => (
-          <Tr key={row.id + index}>
-            {row.getVisibleCells().map((cell, index) => {
+        {table.getRowModel().rows.map((row) => (
+          <Tr key={row.id}>
+            {row.getVisibleCells().map((cell) => {
               return (
                 <Td
-                  key={cell.id + index}
+                  key={cell.id}
                   sx={border ? sx.tableCellBorder : sx.tableCell}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -145,6 +141,62 @@ export const SortableTable = ({
   );
 };
 
+export function generateColumns<TData>(
+  headRow: SortableHeadRow,
+  isAdmin: boolean,
+  customCellsCallback?: (
+    headKey: keyof TData,
+    cellValue: any,
+    originalRowData: TData
+  ) => ReactNode
+): AccessorFnColumnDef<TData, any>[] {
+  const columnHelper = createColumnHelper<TData>();
+
+  function getCell(headKey: keyof TData, info: CellContext<TData, unknown>) {
+    // Undefined must return null or cell won't render
+    const value = info.getValue() ?? null;
+    let cell;
+
+    if (customCellsCallback) {
+      cell = customCellsCallback(headKey, value, info.row.original);
+    }
+
+    return cell ?? value;
+  }
+
+  return Object.keys(headRow)
+    .filter((headKey) => {
+      const { admin, stateUser } = headRow[headKey];
+      const hideFromAdmin = isAdmin && stateUser;
+      const hideFromStateUser = !isAdmin && admin === true;
+
+      if (hideFromAdmin || hideFromStateUser) {
+        return false;
+      }
+      return true;
+    })
+    .map((headKey) => {
+      const {
+        filter = true,
+        header,
+        hidden = false,
+        sort = true,
+      } = headRow[headKey];
+
+      return columnHelper.accessor(
+        (row: TData) => row[headKey as keyof TData],
+        {
+          id: headKey,
+          header: () =>
+            hidden ? <VisuallyHidden>{header}</VisuallyHidden> : header,
+          cell: (info) => getCell(headKey as keyof TData, info),
+          enableColumnFilter: hidden ? false : filter,
+          enableSorting: hidden ? false : sort,
+        }
+      );
+    });
+}
+
 interface Props {
   border?: boolean;
   columns: any[];
@@ -155,6 +207,8 @@ interface Props {
   variant?: string;
   [key: string]: any;
 }
+
+type AriaSortValues = "ascending" | "descending";
 
 const sx = {
   root: {
@@ -193,5 +247,4 @@ const sx = {
       fontSize: "xs",
     },
   },
-  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };

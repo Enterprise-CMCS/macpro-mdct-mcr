@@ -78,7 +78,7 @@ export const getStatus = (
 };
 
 export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
-  const tableContent = body;
+  const tableContent = { ...body };
   if (!isAdmin && tableContent.headRow) {
     tableContent.headRow = tableContent.headRow.filter((e) => e !== "#");
     return tableContent;

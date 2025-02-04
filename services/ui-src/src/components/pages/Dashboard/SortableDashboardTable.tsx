@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { createColumnHelper } from "@tanstack/react-table";
 // components
-import { Box, Button, Spinner, VisuallyHidden } from "@chakra-ui/react";
+import { Box, Button, Spinner } from "@chakra-ui/react";
 import { SortableTable } from "components";
+// types
+import { ReportMetadataShape, ReportStatus } from "types";
 // utils
-import { ReportMetadataShape } from "types";
 import { convertDateUtcToEt } from "utils";
 import {
   AdminArchiveButton,
@@ -13,68 +13,65 @@ import {
   EditReportButton,
   getStatus,
 } from "./DashboardTableUtils";
-
-interface SortableReportShape extends ReportMetadataShape {
-  editedBy: string;
-  name: string;
-  planType?: string;
-  report: ReportMetadataShape;
-}
+import { generateColumns } from "components/tables/SortableTable";
 
 export const SortableDashboardTable = ({
-  reportsByState,
-  reportType,
-  reportId,
-  body,
-  openAddEditReportModal,
-  enterSelectedReport,
   archiveReport,
   archiving,
+  body,
   entering,
+  enterSelectedReport,
+  isAdmin,
+  isStateLevelUser,
+  openAddEditReportModal,
   releaseReport,
   releasing,
+  reportId,
+  reportsByState,
+  reportType,
   sxOverride,
-  isStateLevelUser,
-  isAdmin,
 }: DashboardTableProps) => {
   const content = body.table;
-  const columnHelper = createColumnHelper<SortableReportShape>();
   const data = useMemo(
     () =>
       reportsByState.map((report) => {
         const {
+          dueDate,
+          lastAltered,
           lastAlteredBy,
           programName,
+          status,
           submissionCount,
           submissionName,
-          status,
-          ...rest
         } = report;
         return {
-          editedBy: lastAlteredBy || "-",
+          // Return only fields visible in table
           name: submissionName || programName,
+          dueDate,
+          lastAltered,
+          editedBy: lastAlteredBy || "-",
           planType:
             report["planTypeIncludedInProgram"]?.[0].value === "Other, specify"
               ? report["planTypeIncludedInProgram-otherText"]
               : report.planTypeIncludedInProgram?.[0].value,
           status: getStatus(status, report.archived, submissionCount),
           submissionCount: submissionCount === 0 ? 1 : submissionCount,
+          // Original report shape to pass to cell buttons
           report,
-          ...rest,
         };
       }),
     [reportsByState]
   );
 
-  const cells = (id: string, value?: string | number | ReportMetadataShape) => {
-    if (!value) {
-      // Undefined must return null or cell won't render
-      return null;
-    }
+  const customCells = (
+    headKey: keyof SortableTableDataShape,
+    value: any,
+    originalRowData: SortableTableDataShape
+  ) => {
+    const { report } = originalRowData;
 
-    switch (id) {
+    switch (headKey) {
       case "edit": {
-        const report = value as ReportMetadataShape;
         return isStateLevelUser && !report.locked ? (
           <EditReportButton
             report={report}
@@ -91,11 +88,10 @@ export const SortableDashboardTable = ({
         );
       case "dueDate":
       case "lastAltered":
-        return convertDateUtcToEt(value as number);
+        return convertDateUtcToEt(value);
       case "actions": {
-        const report = value as ReportMetadataShape;
         return (
-          <Box display="inline" sx={sxOverride.editReportButtonCell}>
+          <Box as="span" sx={sxOverride.editReportButtonCell}>
             <Button
               variant="outline"
               data-testid="enter-report"
@@ -114,7 +110,6 @@ export const SortableDashboardTable = ({
         );
       }
       case "adminRelease": {
-        const report = value as ReportMetadataShape;
         return (
           <AdminReleaseButton
             report={report}
@@ -127,7 +122,6 @@ export const SortableDashboardTable = ({
         );
       }
       case "adminArchive": {
-        const report = value as ReportMetadataShape;
         return (
           <AdminArchiveButton
             report={report}
@@ -144,40 +138,39 @@ export const SortableDashboardTable = ({
     }
   };
 
-  const columns = Object.keys(content.sortableHeadRow)
-    .filter((id) => {
-      const { admin, stateUser } = content.sortableHeadRow[id];
-      if ((!isAdmin && admin === true) || (isAdmin && stateUser)) {
-        return;
-      }
-      return id;
-    })
-    .map((id: any) => {
-      const { header, hidden } = content.sortableHeadRow[id];
-
-      if (hidden === true) {
-        return columnHelper.display({
-          id,
-          header: () => <VisuallyHidden>{header}</VisuallyHidden>,
-          cell: ({ row }) => cells(id, row.original.report),
-        });
-      }
-      return columnHelper.accessor(id, {
-        header,
-        cell: (info) => cells(id, info.getValue()),
-      });
-    });
+  const columns = generateColumns<SortableTableDataShape>(
+    content.sortableHeadRow,
+    isAdmin,
+    customCells
+  );
 
   return (
     <SortableTable
       columns={columns}
       data={data}
       content={content}
+      initialSorting={[{ id: "name", desc: false }]}
       sxOverride={sxOverride}
       sx={sx.table}
     />
   );
 };
+
+interface SortableTableDataShape {
+  name: string;
+  dueDate: number;
+  lastAltered: number;
+  editedBy: string;
+  planType?: string;
+  status: ReportStatus;
+  submissionCount: number;
+  report: ReportMetadataShape;
+  // Columns with buttons
+  edit?: null;
+  actions?: null;
+  adminRelease?: null;
+  adminArchive?: null;
+}
 
 const sx = {
   table: {
