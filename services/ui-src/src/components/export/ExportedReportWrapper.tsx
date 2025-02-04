@@ -51,6 +51,8 @@ export const ExportedReportWrapper = ({ section }: Props) => {
           />
         </>
       );
+    case PageTypes.PLAN_OVERLAY:
+      return <></>;
     default:
       return <></>;
   }
