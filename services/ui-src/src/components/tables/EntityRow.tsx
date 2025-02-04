@@ -29,11 +29,14 @@ export const EntityRow = ({
   }, [report]);
 
   const enterDetailsText = () => {
-    const enterText =
-      report?.reportType === ReportType.MLR
-        ? verbiage.enterReportText
-        : verbiage.enterEntityDetailsButtonText;
-    return enterText;
+    switch (report?.reportType) {
+      case ReportType.MLR:
+        return verbiage.enterReportText;
+      case ReportType.NAAAR:
+        return verbiage.enterEntityDetailsButtonText;
+      default:
+        return "Enter";
+    }
   };
 
   const entityFields = () => {
