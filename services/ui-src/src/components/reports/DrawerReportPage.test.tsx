@@ -21,6 +21,8 @@ import {
   mockAnalysisMethodEntityStore,
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
+  mockNaaarStandardsPageJson,
+  mockNaaarReportContext,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -71,6 +73,14 @@ const drawerReportPageWithCustomEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
       <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageWithNaaarRoutes = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportContext}>
+      <DrawerReportPage route={mockNaaarStandardsPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -285,6 +295,13 @@ describe("<DrawerReportPage />", () => {
       await userEvent.click(saveAndCloseButton);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
+
+    test("Test DrawerReportPage for NAAAR standards", async () => {
+      render(drawerReportPageWithNaaarRoutes);
+      const addStandardsButton = screen.getAllByText("Add standard")[0];
+      await userEvent.click(addStandardsButton);
+      expect(screen.getByText("mock label 1")).toBeVisible();
+    });
   });
 
   describe("Test DrawerReportPage with completed entity", () => {
@@ -356,6 +373,7 @@ describe("<DrawerReportPage />", () => {
       expect(addCustomMethod).toBeVisible();
     });
   });
+
   describe("test filling out custom entity form", () => {
     test("Can enter custom analysis method drawer and fill out form", async () => {
       const mockAnalysisMethodNoSelectedEntityStore =

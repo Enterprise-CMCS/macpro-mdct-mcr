@@ -350,6 +350,38 @@ export const mockNaaarAnalysisMethodsPageJson = {
   },
 };
 
+export const mockNaaarStandardsPageJson = {
+  name: "mock-route",
+  path: "/naaar/program-level-access-and-network-adequacy-standards",
+  pageType: "drawer",
+  entityType: "standards",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    countEntitiesInTitle: true,
+    addEntityButtonText: "Add standard",
+  },
+  drawerForm: {
+    id: "standards",
+    fields: [
+      {
+        id: "mock-field-id",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1",
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+    ],
+  },
+};
+
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",

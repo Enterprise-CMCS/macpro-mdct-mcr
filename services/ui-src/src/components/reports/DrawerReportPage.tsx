@@ -48,6 +48,7 @@ import {
 } from "utils/forms/dynamicItemFields";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
+import addIconWhite from "assets/icons/icon_add.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
@@ -76,6 +77,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
+  const reportingOnStandards =
+    route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
   const getForm = (
     reportType?: string,
@@ -349,15 +352,27 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     });
   };
+
   const getDrawerTitle = () => {
-    let name = "Add other";
-    if (selectedEntity?.name) {
-      name = selectedEntity.name;
-    } else if (selectedEntity?.custom_analysis_method_name) {
-      name = selectedEntity.custom_analysis_method_name;
+    let name =
+      selectedEntity?.name ||
+      selectedEntity?.custom_analysis_method_name ||
+      "Add other";
+    if (reportingOnStandards && report) {
+      name = report?.programName;
     }
     return `${verbiage.drawerTitle} ${name}`;
   };
+
+  const addStandardsButton = (
+    <Button
+      sx={sx.bottomAddEntityButton}
+      leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
+      onClick={() => openRowDrawer()}
+    >
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
 
   return (
     <Box>
@@ -390,32 +405,44 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
-          {parseCustomHtml(verbiage.dashboardTitle)}
-        </Heading>
-        {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
-          // if there are no plans and no ILOS added, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
-          </Box>
-        ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
-          !entities?.length ? (
-          // if not reporting on ILOS, but missing entities, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        {reportingOnStandards ? (
+          // table of standards
+          <Box>
+            {addStandardsButton}
+            {/* standards table */}
+            <Box></Box>
+            {addStandardsButton}
           </Box>
         ) : (
-          entityRows(entities)
-        )}
-        {canAddEntities && hasPlans && (
-          <Button
-            variant={"outline"}
-            sx={sx.bottomAddEntityButton}
-            leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
-            onClick={() => openRowDrawer()}
-          >
-            {verbiage.addEntityButtonText}
-          </Button>
+          <Box>
+            <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+              {parseCustomHtml(verbiage.dashboardTitle)}
+            </Heading>
+            {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
+              // if there are no plans and no ILOS added, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
+              </Box>
+            ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+              !entities?.length ? (
+              // if not reporting on ILOS, but missing entities, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingEntityMessage || "")}
+              </Box>
+            ) : (
+              entityRows(entities)
+            )}
+            {canAddEntities && hasPlans && (
+              <Button
+                variant={"outline"}
+                sx={sx.bottomAddEntityButton}
+                leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
+                onClick={() => openRowDrawer()}
+              >
+                {verbiage.addEntityButtonText}
+              </Button>
+            )}
+          </Box>
         )}
       </Box>
       <ReportDrawer
