@@ -13,7 +13,7 @@ import { EntityShape, PlanOverlayReportPageShape } from "types";
 // utils
 import { parseCustomHtml, useBreakpoint, useStore } from "utils";
 
-export const PlanOverlayPage = ({ route, setSidebarHidden }: Props) => {
+export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   // Route Information
   const { verbiage } = route;
 
