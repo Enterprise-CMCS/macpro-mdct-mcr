@@ -558,10 +558,6 @@
         ],
         "tableHeader": "Plan Name",
         "enterEntityDetailsButtonText": "Enter"
-      },
-      "form": {
-        "id": "pc",
-        "fields": []
       }
     },
     {
