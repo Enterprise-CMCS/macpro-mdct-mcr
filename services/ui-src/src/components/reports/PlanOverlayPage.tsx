@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 // components
-import { Box, Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import {
-  EntityProvider,
   EntityRow,
   MobileEntityRow,
   ReportPageFooter,
@@ -15,13 +13,9 @@ import { EntityShape, PlanOverlayReportPageShape } from "types";
 // utils
 import { parseCustomHtml, useBreakpoint, useStore } from "utils";
 
-export const PlanOverlayPage = ({
-  route,
-  setSidebarHidden,
-  validateOnRender,
-}: Props) => {
+export const PlanOverlayPage = ({ route, setSidebarHidden }: Props) => {
   // Route Information
-  const { entityType, verbiage, overlayForm } = route;
+  const { verbiage } = route;
 
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
@@ -141,15 +135,6 @@ const sx = {
     ".tablet &, .mobile &": {
       paddingBottom: "0",
     },
-  },
-  emptyDashboard: {
-    paddingTop: "1rem",
-  },
-  tableSeparator: {
-    borderTop: "1px solid",
-    borderColor: "palette.gray_light",
-    paddingBottom: "1rem",
-    marginTop: "1.25rem",
   },
   table: {
     tableLayout: "fixed",
