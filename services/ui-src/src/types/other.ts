@@ -63,17 +63,21 @@ export interface ScreenReaderOnlyHeaderName {
   hiddenName: string;
 }
 
+export interface SortableHeadRow {
+  [key: string]: {
+    header: string;
+    admin?: boolean;
+    filter?: boolean;
+    hidden?: boolean;
+    sort?: boolean;
+    stateUser?: boolean;
+  };
+}
+
 export interface TableContentShape {
   caption?: string;
   headRow?: Array<string | ScreenReaderOnlyHeaderName>;
-  sortableHeadRow?: {
-    [key: string]: {
-      header: string;
-      admin?: boolean;
-      hidden?: boolean;
-      stateUser?: boolean;
-    };
-  };
+  sortableHeadRow?: SortableHeadRow;
   bodyRows?: string[][];
 }
 

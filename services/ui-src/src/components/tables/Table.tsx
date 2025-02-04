@@ -132,5 +132,4 @@ const sx = {
       fontSize: "xs",
     },
   },
-  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };
