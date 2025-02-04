@@ -165,6 +165,7 @@ export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
   missingInformationMessage: CustomHtmlElement[];
   tableHeader: string;
   emptyDashboardText: string;
+  enterEntityDetailsButtonText: string;
 }
 
 // REPORT METADATA
