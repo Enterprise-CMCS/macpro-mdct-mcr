@@ -14,6 +14,7 @@ import {
 } from "utils/testing/setupJest";
 import { UserProvider, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -169,6 +170,43 @@ describe("<PlanOverlayReportPage />", () => {
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
       expect(screen.getByText("Previous")).toBeVisible();
+    });
+
+    test("should allow the user to enter the overlay for a plan", async () => {
+      await act(async () => {
+        render(planOverlayReportPageComponent);
+      });
+
+      // Check if header is visible on load - H1
+      expect(screen.getByText(verbiage.intro.section)).toBeVisible();
+      // Check if header is visible on load - H2
+      expect(screen.getByText(verbiage.intro.subsection!)).toBeVisible();
+
+      //TODO: Update this when logic surrounding standards has been updated!
+
+      // Check if missing Standards notice is displaying
+      const missingStandardsMessage =
+        "This program is missing required standards.";
+      expect(screen.getByText(missingStandardsMessage)).toBeVisible();
+
+      // Check if missing Plans notice is NOT displaying
+      const missingInformationMessage =
+        "This program is missing required information.";
+      expect(screen.queryByText(missingInformationMessage)).toBeNull();
+
+      const planName = mockNaaarWithPlansStore.report.fieldData.plans[0].name;
+      // Check if theres a new plan added
+      expect(screen.getByText(planName)).toBeVisible();
+
+      const enterButton = screen.getByText(
+        verbiage.enterEntityDetailsButtonText
+      );
+      // Check if Enter button is visible
+      expect(enterButton).toBeVisible();
+      await userEvent.click(enterButton);
+
+      //TODO: Update this when the overlay has been updated!
+      expect(screen.getByText(`You've opened the entity: ${planName}!`));
     });
   });
 

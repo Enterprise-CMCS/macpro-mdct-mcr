@@ -52,12 +52,12 @@ export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
     return true;
   };
 
+  const openEntityMessage = `You've opened the entity: ${currentEntity?.name}!`;
+
   return (
     <Box>
       {isEntityDetailsOpen && currentEntity ? (
-        <h1>
-          You've opened the entity: <b>{currentEntity?.name}</b>!
-        </h1>
+        <h1>{openEntityMessage}</h1>
       ) : (
         <Box sx={sx.content}>
           {route.verbiage.intro && (
