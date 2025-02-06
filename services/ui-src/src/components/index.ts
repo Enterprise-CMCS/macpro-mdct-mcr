@@ -99,7 +99,7 @@ export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
-export { PlanOverlayReportPage } from "./reports/PlanOverlayReportPage";
+export { OverlayReportPage } from "./reports/OverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { EntityContext, EntityProvider } from "./reports/EntityProvider";

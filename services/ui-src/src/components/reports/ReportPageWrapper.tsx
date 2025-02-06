@@ -20,11 +20,11 @@ import {
   ReportRoute,
   StandardReportPageShape,
   AnyObject,
-  PlanOverlayReportPageShape,
+  OverlayReportPageShape,
 } from "types";
 // utils
 import { useStore } from "utils";
-import { PlanOverlayReportPage } from "./PlanOverlayReportPage";
+import { OverlayReportPage } from "./OverlayReportPage";
 
 export const ReportPageWrapper = () => {
   const { user: state, report } = useStore();
@@ -79,8 +79,8 @@ export const ReportPageWrapper = () => {
         );
       case PageTypes.PLAN_OVERLAY:
         return (
-          <PlanOverlayReportPage
-            route={route as PlanOverlayReportPageShape}
+          <OverlayReportPage
+            route={route as OverlayReportPageShape}
             setSidebarHidden={setSidebarHidden}
             validateOnRender={locationState?.validateOnRender}
           />

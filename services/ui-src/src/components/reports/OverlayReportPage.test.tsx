@@ -1,13 +1,13 @@
 import { act, render, screen } from "@testing-library/react";
 // components
-import { PlanOverlayReportPage, ReportProvider } from "components";
+import { OverlayReportPage, ReportProvider } from "components";
 // utils
 import {
   RouterWrappedComponent,
   mockStateUserStore,
   mockAdminUserStore,
   mockEntityStore,
-  mockPlanOverlayReportPageJson,
+  mockOverlayReportPageJson,
   mockNaaarReportStore,
   mockNAAREmptyFieldData,
   mockNAARWithPlanCreated,
@@ -38,12 +38,12 @@ const mockNaaarWithPlansStore = {
 
 const mockSetSidebarHidden = jest.fn();
 
-const planOverlayReportPageComponent = (
+const overlayReportPageComponent = (
   <RouterWrappedComponent>
     <UserProvider>
       <ReportProvider>
-        <PlanOverlayReportPage
-          route={mockPlanOverlayReportPageJson}
+        <OverlayReportPage
+          route={mockOverlayReportPageJson}
           setSidebarHidden={mockSetSidebarHidden}
         />
       </ReportProvider>
@@ -51,20 +51,20 @@ const planOverlayReportPageComponent = (
   </RouterWrappedComponent>
 );
 
-describe("<PlanOverlayReportPage />", () => {
-  describe("Test PlanOverlayReportPage (empty state)", () => {
+describe("<OverlayReportPage />", () => {
+  describe("Test OverlayReportPage (empty state)", () => {
     beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    const verbiage = mockPlanOverlayReportPageJson.verbiage;
+    const verbiage = mockOverlayReportPageJson.verbiage;
 
     test("should render the initial view for a State user", () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockNaaarWithoutPlansStore,
       });
-      render(planOverlayReportPageComponent);
+      render(overlayReportPageComponent);
 
       // Check if header is visible on load - H1
       expect(screen.getByText(verbiage.intro.section)).toBeVisible();
@@ -97,7 +97,7 @@ describe("<PlanOverlayReportPage />", () => {
       });
 
       await act(async () => {
-        render(planOverlayReportPageComponent);
+        render(overlayReportPageComponent);
       });
 
       // Check if header is visible on load - H1
@@ -124,7 +124,7 @@ describe("<PlanOverlayReportPage />", () => {
     });
   });
 
-  describe("Test PlanOverlayReportPage (Plans Have Been Added)", () => {
+  describe("Test OverlayReportPage (Plans Have Been Added)", () => {
     beforeEach(() => {
       jest.clearAllMocks();
       mockedUseStore.mockReturnValue({
@@ -133,11 +133,11 @@ describe("<PlanOverlayReportPage />", () => {
       });
     });
 
-    const verbiage = mockPlanOverlayReportPageJson.verbiage;
+    const verbiage = mockOverlayReportPageJson.verbiage;
 
     test("should render the initial view for a State user", async () => {
       await act(async () => {
-        render(planOverlayReportPageComponent);
+        render(overlayReportPageComponent);
       });
 
       // Check if header is visible on load - H1
@@ -174,7 +174,7 @@ describe("<PlanOverlayReportPage />", () => {
 
     test("should allow the user to enter the overlay for a plan", async () => {
       await act(async () => {
-        render(planOverlayReportPageComponent);
+        render(overlayReportPageComponent);
       });
 
       // Check if header is visible on load - H1
@@ -210,5 +210,5 @@ describe("<PlanOverlayReportPage />", () => {
     });
   });
 
-  testA11yAct(planOverlayReportPageComponent);
+  testA11yAct(overlayReportPageComponent);
 });

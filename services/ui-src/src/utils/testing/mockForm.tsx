@@ -1,7 +1,7 @@
 import {
   CustomHtmlElement,
-  PlanOverlayReportPageShape,
-  PlanOverlayReportPageVerbiage,
+  OverlayReportPageShape,
+  OverlayReportPageVerbiage,
 } from "types";
 
 export const mockFormField = {
@@ -424,35 +424,34 @@ export const mockModalOverlayReportPageVerbiage = {
   enterReportText: "Mock enter report text",
 };
 
-export const mockPlanOverlayReportPageVerbiage: PlanOverlayReportPageVerbiage =
-  {
-    intro: mockVerbiageIntro,
-    missingStandardsMessage: [
-      {
-        type: "p",
-        children: [
-          {
-            type: "html",
-            content: "This program is missing required standards.",
-          },
-        ],
-      },
-    ] as CustomHtmlElement[],
-    missingInformationMessage: [
-      {
-        type: "p",
-        children: [
-          {
-            type: "html",
-            content: "This program is missing required information.",
-          },
-        ],
-      },
-    ] as CustomHtmlElement[],
-    tableHeader: "Mock table header",
-    emptyDashboardText: "No entities found",
-    enterEntityDetailsButtonText: "Mock Enter Button Text",
-  };
+export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  missingStandardsMessage: [
+    {
+      type: "p",
+      children: [
+        {
+          type: "html",
+          content: "This program is missing required standards.",
+        },
+      ],
+    },
+  ] as CustomHtmlElement[],
+  missingInformationMessage: [
+    {
+      type: "p",
+      children: [
+        {
+          type: "html",
+          content: "This program is missing required information.",
+        },
+      ],
+    },
+  ] as CustomHtmlElement[],
+  tableHeader: "Mock table header",
+  emptyDashboardText: "No entities found",
+  enterEntityDetailsButtonText: "Mock Enter Button Text",
+};
 
 export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
@@ -484,12 +483,12 @@ export const mockModalOverlayReportPageWithOverlayJson = {
   overlayForm: mockModalOverlayForm,
 };
 
-export const mockPlanOverlayReportPageJson: PlanOverlayReportPageShape = {
+export const mockOverlayReportPageJson: OverlayReportPageShape = {
   name: "mock-route-2d",
   path: "/mock/mock-route-2d",
   pageType: "modalOverlay",
   entityType: "program",
-  verbiage: mockPlanOverlayReportPageVerbiage,
+  verbiage: mockOverlayReportPageVerbiage,
 };
 
 export const mockReviewSubmitPageJson = {

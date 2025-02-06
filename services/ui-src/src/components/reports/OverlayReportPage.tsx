@@ -9,13 +9,13 @@ import {
   Table,
 } from "components";
 // types
-import { EntityShape, PlanOverlayReportPageShape } from "types";
+import { CustomHtmlElement, EntityShape, OverlayReportPageShape } from "types";
 // utils
 import { parseCustomHtml, useBreakpoint, useStore } from "utils";
 
-export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
+export const OverlayReportPage = ({ route, setSidebarHidden }: Props) => {
   // Route Information
-  const { verbiage } = route;
+  const { verbiage, entityType } = route;
 
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
@@ -26,9 +26,9 @@ export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
     undefined
   );
   const [entering, setEntering] = useState<boolean>(false);
-  // Display Variables
-  const planEntities = report?.fieldData["plans"] || [];
+  const entityData = report?.fieldData[entityType] || [];
   const standardEntities = report?.fieldData["standards"] || [];
+
   const tableHeaders = () => {
     if (isTablet || isMobile) return { headRow: ["", ""] };
     return { headRow: ["", verbiage.tableHeader, ""] };
@@ -42,14 +42,28 @@ export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
     setSidebarHidden(true);
   };
 
-  const missingInformation = () => {
-    if (planEntities.length) return false;
-    return true;
+  const displayErrorMessages = () => {
+    if (!entityData.length) {
+      const errorMessage: CustomHtmlElement[] | undefined =
+        verbiage.requiredMessages[entityType];
+      return (
+        <Box sx={sx.missingEntityMessage}>
+          {parseCustomHtml(errorMessage || "")}
+        </Box>
+      );
+    } else if (standardEntities.length == 0) {
+      // TODO - Update this when working through the actual logic pertaining to Standards and how it'll be checked
+      return (
+        <Box sx={sx.missingEntityMessage}>
+          {parseCustomHtml(verbiage.requiredMessages.standards || "")}
+        </Box>
+      );
+    }
+    return <></>;
   };
 
-  const missingStandards = () => {
-    if (standardEntities.length) return false;
-    return true;
+  const displayTable = () => {
+    return entityData.length > 0;
   };
 
   const openEntityMessage = `You've opened the entity: ${currentEntity?.name}!`;
@@ -66,22 +80,13 @@ export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
               reportType={report?.reportType}
             />
           )}
-          {missingInformation() && (
-            <Box sx={sx.missingEntityMessage}>
-              {parseCustomHtml(verbiage.missingInformationMessage || "")}
-            </Box>
-          )}
 
-          {missingStandards() && (
-            <Box sx={sx.missingEntityMessage}>
-              {parseCustomHtml(verbiage.missingStandardsMessage || "")}
-            </Box>
-          )}
+          {displayErrorMessages()}
 
           <Box sx={sx.dashboardBox}>
-            {planEntities.length !== 0 && (
+            {displayTable() && (
               <Table sx={sx.table} content={tableHeaders()}>
-                {planEntities.map((entity: EntityShape) =>
+                {entityData.map((entity: EntityShape) =>
                   isMobile || isTablet ? (
                     <MobileEntityRow
                       key={entity.id}
@@ -113,7 +118,7 @@ export const PlanOverlayReportPage = ({ route, setSidebarHidden }: Props) => {
 };
 
 interface Props {
-  route: PlanOverlayReportPageShape;
+  route: OverlayReportPageShape;
   setSidebarHidden: Function;
   validateOnRender?: boolean;
 }
@@ -158,7 +163,7 @@ const sx = {
     },
   },
   missingEntityMessage: {
-    paddingTop: "1rem",
+    padding: "0 0 1rem 0",
     fontWeight: "bold",
     a: {
       color: "palette.primary",

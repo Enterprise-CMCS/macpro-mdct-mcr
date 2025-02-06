@@ -88,9 +88,9 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
-export interface PlanOverlayReportPageShape extends ReportPageShapeBase {
+export interface OverlayReportPageShape extends ReportPageShapeBase {
   entityType: string;
-  verbiage: PlanOverlayReportPageVerbiage;
+  verbiage: OverlayReportPageVerbiage;
   overlayForm?: FormJson;
   modalForm?: never;
   drawerForm?: never;
@@ -159,9 +159,10 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   emptyDashboardText: string;
 }
 
-export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
-  missingStandardsMessage: CustomHtmlElement[];
-  missingInformationMessage: CustomHtmlElement[];
+export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
+  requiredMessages: {
+    [key: string]: CustomHtmlElement[] | undefined;
+  };
   tableHeader: string;
   emptyDashboardText: string;
   enterEntityDetailsButtonText: string;
