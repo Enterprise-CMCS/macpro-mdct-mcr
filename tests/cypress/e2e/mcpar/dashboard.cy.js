@@ -100,7 +100,7 @@ describe("Admin Archiving", () => {
     }).should("be.visible");
 
     cy.get('button:contains("Unarchive")').last().click();
-    cy.wait(500);
+    cy.wait(1000);
     cy.get('button:contains("Archive")').should("be.visible");
   });
 });

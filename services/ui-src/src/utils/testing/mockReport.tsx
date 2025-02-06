@@ -1,3 +1,4 @@
+import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 import { EntityType, ReportStatus } from "types";
 import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
@@ -524,6 +525,63 @@ export const mockNaaarReport = {
   previousRevisions: [],
 };
 
+export const mockNaaarReportWithAnalysisMethods = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: {
+    ...mockNaaarReportFieldData,
+    analysisMethods: [
+      {
+        ...DEFAULT_ANALYSIS_METHODS[0],
+        analysis_method_applicable_plans: [
+          {
+            key: "mock-plan-id-1",
+            name: "mock-plan-1",
+          },
+          {
+            key: "mock-plan-id-2",
+            name: "mock-plan-2",
+          },
+        ],
+      },
+      {
+        ...DEFAULT_ANALYSIS_METHODS[1],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+      },
+      {
+        id: "custom_entity",
+        name: "custom entity",
+      },
+    ],
+  },
+  locked: false,
+  fieldDataId: "mockFieldDataId",
+  planTypeIncludedInProgram: [
+    {
+      key: "mock-key",
+      value: "MCO",
+    },
+  ],
+  submissionCount: 0,
+  previousRevisions: [],
+};
+
 export const mockMLRReportEmptyFieldData = {
   stateName: "Test State",
   versionControl: [
@@ -730,6 +788,15 @@ export const mockMlrReportContext = {
 export const mockNaaarReportContext = {
   ...mockReportMethods,
   report: mockNaaarReport,
+  reportsByState: [],
+  copyEligibleReportsByState: [],
+  errorMessage: mockErrorMessage,
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockNaaarReportWithAnalysisMethodsContext = {
+  ...mockReportMethods,
+  report: mockNaaarReportWithAnalysisMethods,
   reportsByState: [],
   copyEligibleReportsByState: [],
   errorMessage: mockErrorMessage,

@@ -13,10 +13,12 @@ $example}
 
 service=${1}
 output=${2}
-stage=${3:-dev}
+stage=${3}
 
 if [ $output == "url" ]; then
   output="CloudFrontEndpointUrl"
 fi
 
-cd $service && serverless info --stage $stage --verbose | sed -e '1,/^Stack Outputs/d' -e '$d' | sed -n -e "s/^.*$output: //p" && cd ..
+cd $service
+serverless info --stage $stage --json | jq --raw-output --arg output $output '.outputs[] | select(.OutputKey == $output) | .OutputValue'
+cd ..
