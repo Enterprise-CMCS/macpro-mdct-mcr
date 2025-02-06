@@ -86,24 +86,24 @@ describe("<DrawerReportEntityRow />", () => {
         {
           id: "mock-id",
           custom_analysis_method_name: "New Method",
-          custom_analysis_method_description: "dgdsfgds",
+          custom_analysis_method_description: "mock description",
           analysis_method_frequency: [
             {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
+              key: "analysis_method_frequency",
               value: "Weekly",
             },
           ],
           analysis_method_applicable_plans: [
             {
-              key: "7516ccb-c03-5e0a-3b7f-5b04e88f07",
+              key: "mock-id-1",
               value: "Plan 1",
             },
             {
-              key: "755a741-8803-d7b5-b323-ac78c34fc2d7",
+              key: "mock-id-2",
               value: "Plan 2",
             },
             {
-              key: "77df234-8632-7450-bf17-6810e7063c",
+              key: "mock-id-3",
               value: "Plan 3",
             },
           ],
