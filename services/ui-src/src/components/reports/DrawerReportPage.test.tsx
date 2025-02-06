@@ -406,6 +406,11 @@ describe("<DrawerReportPage />", () => {
       });
 
       render(drawerReportPageWithCustomEntities);
+      expect(
+        screen.getByText(
+          mockNaaarAnalysisMethodsPageJson.verbiage.dashboardTitle
+        )
+      ).toBeVisible();
       const enterDefaultMethod = screen.getAllByText("Enter")[0];
       await userEvent.click(enterDefaultMethod);
       expect(screen.getByRole("dialog")).toBeVisible();
@@ -482,7 +487,7 @@ describe("<DrawerReportPage />", () => {
         render(drawerReportPageWithCustomEntities);
       });
 
-      test("Can shows statusing for custom analysis methods", async () => {
+      test("Shows statusing for custom analysis methods", async () => {
         const iconAltText = screen.getAllByAltText("Entity is incomplete");
         expect(iconAltText.length).toBeGreaterThan(0);
       });
