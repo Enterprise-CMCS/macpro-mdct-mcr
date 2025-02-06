@@ -23,6 +23,7 @@ import {
   mockNaaarAnalysisMethodsReportStore,
   mockNaaarStandardsPageJson,
   mockNaaarReportContext,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -87,7 +88,7 @@ const drawerReportPageWithNaaarRoutesEmptyState = (
 
 const drawerReportPageWithNaaarRoutes = (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
+    <ReportContext.Provider value={mockNaaarReportContext}>
       <DrawerReportPage route={mockNaaarStandardsPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -311,10 +312,15 @@ describe("<DrawerReportPage />", () => {
     });
 
     test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+        ...mockEntityStore,
+      });
       render(drawerReportPageWithNaaarRoutes);
       const addStandardsButton = screen.getAllByText("Add standard")[0];
       await userEvent.click(addStandardsButton);
-      expect(screen.getByText("mock label 1")).toBeVisible();
+      expect(screen.getByText("Mock dashboard title")).toBeVisible();
     });
   });
 
