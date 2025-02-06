@@ -77,9 +77,17 @@ const drawerReportPageWithCustomEntities = (
   </RouterWrappedComponent>
 );
 
-const drawerReportPageWithNaaarRoutes = (
+const drawerReportPageWithNaaarRoutesEmptyState = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockNaaarReportContext}>
+      <DrawerReportPage route={mockNaaarStandardsPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageWithNaaarRoutes = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
       <DrawerReportPage route={mockNaaarStandardsPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -296,7 +304,13 @@ describe("<DrawerReportPage />", () => {
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
 
-    test("Test DrawerReportPage for NAAAR standards", async () => {
+    test("Test DrawerReportPage for NAAAR standards (empty state)", async () => {
+      render(drawerReportPageWithNaaarRoutesEmptyState);
+      const addStandardsButton = screen.getAllByText("Add standard")[0];
+      expect(addStandardsButton).toBeDisabled();
+    });
+
+    test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {
       render(drawerReportPageWithNaaarRoutes);
       const addStandardsButton = screen.getAllByText("Add standard")[0];
       await userEvent.click(addStandardsButton);

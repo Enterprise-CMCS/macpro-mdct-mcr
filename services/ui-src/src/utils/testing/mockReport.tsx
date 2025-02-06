@@ -569,6 +569,12 @@ export const mockNaaarReportWithAnalysisMethods = {
         name: "custom entity",
       },
     ],
+    providerTypes: [
+      {
+        key: "mock-key",
+        value: "mock-value",
+      },
+    ],
   },
   locked: false,
   fieldDataId: "mockFieldDataId",
