@@ -74,15 +74,15 @@ describe("<OverlayReportPage />", () => {
 
       //TODO: Update this when logic surrounding standards has been updated!
 
-      // Check if missing Standards notice is displaying
-      const missingStandardsMessage =
-        "This program is missing required standards.";
-      expect(screen.getByText(missingStandardsMessage)).toBeVisible();
-
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
         "This program is missing required information.";
       expect(screen.getByText(missingInformationMessage)).toBeVisible();
+
+      // Check if missing Standards notice is NOT displaying
+      const missingStandardsMessage =
+        "This program is missing required standards.";
+      expect(screen.queryByText(missingStandardsMessage)).toBeNull();
 
       // Check if Footer is display with a next button and no previous button
       expect(screen.getByText("Continue")).toBeVisible();
@@ -108,15 +108,15 @@ describe("<OverlayReportPage />", () => {
 
       //TODO: Update this when logic surrounding standards has been updated!
 
-      // Check if missing Standards notice is displaying
-      const missingStandardsMessage =
-        "This program is missing required standards.";
-      expect(screen.getByText(missingStandardsMessage)).toBeVisible();
-
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
         "This program is missing required information.";
       expect(screen.getByText(missingInformationMessage)).toBeVisible();
+
+      // Check if missing Standards notice is NOT displaying
+      const missingStandardsMessage =
+        "This program is missing required standards.";
+      expect(screen.queryByText(missingStandardsMessage)).toBeNull();
 
       // Check if Footer is display with a next button and no previous button
       expect(screen.getByText("Continue")).toBeVisible();

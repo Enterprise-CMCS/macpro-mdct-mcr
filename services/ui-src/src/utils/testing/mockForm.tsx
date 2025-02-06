@@ -426,28 +426,30 @@ export const mockModalOverlayReportPageVerbiage = {
 
 export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
   intro: mockVerbiageIntro,
-  missingStandardsMessage: [
-    {
-      type: "p",
-      children: [
-        {
-          type: "html",
-          content: "This program is missing required standards.",
-        },
-      ],
-    },
-  ] as CustomHtmlElement[],
-  missingInformationMessage: [
-    {
-      type: "p",
-      children: [
-        {
-          type: "html",
-          content: "This program is missing required information.",
-        },
-      ],
-    },
-  ] as CustomHtmlElement[],
+  requiredMessages: {
+    plans: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required information.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+    standards: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required standards.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+  },
   tableHeader: "Mock table header",
   emptyDashboardText: "No entities found",
   enterEntityDetailsButtonText: "Mock Enter Button Text",
@@ -487,7 +489,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
   name: "mock-route-2d",
   path: "/mock/mock-route-2d",
   pageType: "modalOverlay",
-  entityType: "program",
+  entityType: "plans",
   verbiage: mockOverlayReportPageVerbiage,
 };
 
