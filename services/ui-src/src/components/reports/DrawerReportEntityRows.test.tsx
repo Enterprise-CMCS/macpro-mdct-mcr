@@ -84,16 +84,29 @@ describe("<DrawerReportEntityRow />", () => {
       report.fieldData["analysisMethods"] = [
         DEFAULT_ANALYSIS_METHODS[0],
         {
-          id: "custom_entity_1",
-          name: "custom entity 1",
-        },
-        {
-          id: "custom_entity_2",
-          name: "custom entity 2",
-        },
-        {
-          id: "custom_entity_3",
-          name: "custom entity 3",
+          id: "mock-id",
+          custom_analysis_method_name: "New Method",
+          custom_analysis_method_description: "dgdsfgds",
+          analysis_method_frequency: [
+            {
+              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
+              value: "Weekly",
+            },
+          ],
+          analysis_method_applicable_plans: [
+            {
+              key: "7516ccb-c03-5e0a-3b7f-5b04e88f07",
+              value: "Plan 1",
+            },
+            {
+              key: "755a741-8803-d7b5-b323-ac78c34fc2d7",
+              value: "Plan 2",
+            },
+            {
+              key: "77df234-8632-7450-bf17-6810e7063c",
+              value: "Plan 3",
+            },
+          ],
         },
       ];
 
@@ -123,8 +136,12 @@ describe("<DrawerReportEntityRow />", () => {
     });
 
     test("Should display comma separated plans list", async () => {
-      const CommaSeparatedList = screen.getByDisplayValue(
-        "custom entity 1, custom entity 2"
+      const CommaSeparatedList = screen.getByText(
+        "Weekly: Plan 1, Plan 2, Plan 3",
+        {
+          trim: true,
+          collapseWhitespace: true,
+        }
       );
       expect(CommaSeparatedList).toBeVisible();
     });

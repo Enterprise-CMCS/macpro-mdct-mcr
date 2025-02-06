@@ -20,7 +20,6 @@ import {
   ReportStatus,
   isFieldElement,
   InputChangeEvent,
-  ReportType,
   FormJson,
 } from "types";
 // utils
@@ -28,14 +27,12 @@ import {
   entityWasUpdated,
   filterFormData,
   getEntriesToClear,
+  getForm,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
   useStore,
 } from "utils";
-import {
-  generateAddEntityDrawerItemFields,
-  generateDrawerItemFields,
-} from "utils/forms/dynamicItemFields";
+
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
@@ -52,7 +49,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, selectedEntity, setSelectedEntity } = useStore();
 
-  const { entityType, verbiage, drawerForm, form: standardForm } = route;
+  const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities = !!addEntityDrawerForm.id;
   const entities = report?.fieldData?.[entityType];
@@ -64,39 +61,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
-  const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
   const reportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
-  const getForm = (
-    reportType?: string,
-    isCustomEntityForm: boolean = false
-  ) => {
-    let modifiedForm = drawerForm;
-    switch (reportType) {
-      case ReportType.NAAAR:
-        if (isAnalysisMethodsPage && hasPlans) {
-          modifiedForm = isCustomEntityForm
-            ? generateAddEntityDrawerItemFields(
-                addEntityDrawerForm,
-                plans,
-                "plan"
-              )
-            : generateDrawerItemFields(drawerForm, plans, "plan");
-        }
-        break;
-      case ReportType.MCPAR:
-        if (ilos && reportingOnIlos) {
-          modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
-        }
-        break;
-      default:
-    }
-    return modifiedForm;
+  const formParams = {
+    route,
+    report,
+    isAnalysisMethodsPage,
+    ilos,
+    reportingOnIlos,
   };
-
-  const form = getForm(report?.reportType);
-  const addEntityForm = getForm(report?.reportType, true);
+  const form = getForm(formParams);
+  const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   // on load, get reporting status from store
   const reportingOnPriorAuthorization =

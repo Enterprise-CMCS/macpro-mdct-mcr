@@ -245,7 +245,7 @@ export const mockNestedReportPageJson = {
 
 export const mockMcparIlosPageJson = {
   name: "mock-route",
-  path: "/mcpar/ilos",
+  path: "/mcpar/plan-level-indicators/ilos",
   pageType: "drawer",
   entityType: "ilos",
   verbiage: {

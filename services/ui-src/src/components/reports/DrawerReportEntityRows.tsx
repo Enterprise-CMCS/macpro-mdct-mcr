@@ -5,17 +5,12 @@ import {
   FormField,
   FormJson,
   isFieldElement,
-  ReportType,
 } from "types";
 import { AnyObject } from "yup/lib/types";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
-import { isIlosCompleted, useStore } from "utils";
-import {
-  generateAddEntityDrawerItemFields,
-  generateDrawerItemFields,
-} from "utils/forms/dynamicItemFields";
+import { getForm, isIlosCompleted, useStore } from "utils";
 import { getDefaultAnalysisMethodIds } from "../../constants";
 
 export const DrawerReportPageEntityRows = ({
@@ -26,7 +21,6 @@ export const DrawerReportPageEntityRows = ({
   priorAuthDisabled,
   patientAccessDisabled,
 }: Props) => {
-  const { drawerForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities = !!addEntityDrawerForm.id;
   const { report } = useStore();
@@ -34,37 +28,9 @@ export const DrawerReportPageEntityRows = ({
 
   const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
-  const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-
-  const getForm = (
-    reportType?: string,
-    isCustomEntityForm: boolean = false
-  ) => {
-    let modifiedForm = drawerForm;
-    switch (reportType) {
-      case ReportType.NAAAR:
-        if (isAnalysisMethodsPage && hasPlans) {
-          modifiedForm = isCustomEntityForm
-            ? generateAddEntityDrawerItemFields(
-                addEntityDrawerForm,
-                plans,
-                "plan"
-              )
-            : generateDrawerItemFields(drawerForm, plans, "plan");
-        }
-        break;
-      case ReportType.MCPAR:
-        if (ilos && reportingOnIlos) {
-          modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
-        }
-        break;
-      default:
-    }
-    return modifiedForm;
-  };
 
   const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
     let disabled = false;
@@ -99,8 +65,15 @@ export const DrawerReportPageEntityRows = ({
     );
   };
 
-  const form = getForm(report?.reportType);
-  const addEntityForm = getForm(report?.reportType, true);
+  const formParams = {
+    route,
+    report,
+    isAnalysisMethodsPage,
+    ilos,
+    reportingOnIlos,
+  };
+  const form = getForm(formParams);
+  const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   const entityRows = (entities: EntityShape[]) => {
     return entities?.map((entity) => {

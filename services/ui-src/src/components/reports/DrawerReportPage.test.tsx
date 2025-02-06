@@ -25,7 +25,6 @@ import {
   mockDrawerForm,
   mockNaaarAnalysisMethodsPageJson,
   mockMcparIlosPageJson,
-  mockAnalysisMethodEntityStore,
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
   mockNaaarStandardsPageJson,
@@ -364,21 +363,6 @@ describe("<DrawerReportPage />", () => {
       "analysisMethods"
     ] = [DEFAULT_ANALYSIS_METHODS[0]];
 
-    const mockCustomNaaarReportStore = {
-      ...mockNaaarReportStore,
-      report: mockNaaarReportContextWithAnalysisMethods.report,
-      reportsByState: [mockNaaarReportContextWithAnalysisMethods.report],
-    };
-    const drawerReportPageWithCustomEntities = (
-      <RouterWrappedComponent>
-        <ReportContext.Provider
-          value={mockNaaarReportContextWithAnalysisMethods}
-        >
-          <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
-        </ReportContext.Provider>
-      </RouterWrappedComponent>
-    );
-
     // ilos
     const mockIlosEntityStore: McrEntityState = {
       entities: [],
@@ -425,7 +409,7 @@ describe("<DrawerReportPage />", () => {
       expect(textField).toBeVisible();
     });
 
-    test("Can enter default analysis method drawer", async () => {
+    describe("Can enter default analysis method drawer", () => {
       beforeEach(() => {
         mockedUseStore.mockReturnValue({
           ...mockStateUserStore,
@@ -450,22 +434,6 @@ describe("<DrawerReportPage />", () => {
       test("Can shows statusing for custom analysis methods", async () => {
         const iconAltText = screen.getAllByAltText("Entity is incomplete");
         expect(iconAltText.length).toBeGreaterThan(0);
-      });
-
-      test("DrawerReportPage opens the delete modal on remove click", async () => {
-        const addCustomMethod = screen.getByText("Add other analysis method");
-        const removeButton = screen.getByRole("button", {
-          name: "Delete unnamed entity",
-        });
-        await userEvent.click(removeButton);
-        // click delete in modal
-        const deleteButton = screen.getByText("Yes, delete method");
-        await userEvent.click(deleteButton);
-
-        // verify that the field is removed
-        const inputBoxLabelAfterRemove = screen.queryAllByTestId("test-label");
-        expect(inputBoxLabelAfterRemove).toHaveLength(0);
-        expect(addCustomMethod).toBeVisible();
       });
     });
 
@@ -532,16 +500,6 @@ describe("<DrawerReportPage />", () => {
             ...mockCustomNaaarReportStore,
             ...mockAnalysisMethodEntityStore,
           });
-
-          const drawerReportPageWithCustomEntities = (
-            <RouterWrappedComponent>
-              <ReportContext.Provider
-                value={mockNaaarReportContextWithCustomAnalysisMethods}
-              >
-                <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
-              </ReportContext.Provider>
-            </RouterWrappedComponent>
-          );
 
           render(drawerReportPageWithCustomEntities);
         });

@@ -14,11 +14,11 @@ import {
 // types
 import {
   AnyObject,
-  DrawerReportPageShape,
   FieldChoice,
   FormField,
   FormJson,
   FormLayoutElement,
+  getFormParams,
   isFieldElement,
   ReportType,
 } from "types";
@@ -270,22 +270,25 @@ export const resetClearProp = (fields: (FormField | FormLayoutElement)[]) => {
   });
 };
 
-export const getForm = (
-  route: DrawerReportPageShape,
-  reportType?: string,
-  isCustomEntityForm: boolean = false,
-  isAnalysisMethodsPage?: boolean,
-  hasPlans?: boolean,
-  ilos?: AnyObject[],
-  reportingOnIlos?: boolean,
-  plans?: any
-) => {
+export const getForm = (params: getFormParams) => {
+  const {
+    route,
+    report,
+    isCustomEntityForm = false,
+    isAnalysisMethodsPage = false,
+    ilos,
+    reportingOnIlos = false,
+  } = params;
   const { drawerForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
+  const plans =
+    report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];
+  const reportType = report?.reportType;
+
   let modifiedForm = drawerForm;
   switch (reportType) {
     case ReportType.NAAAR:
-      if (isAnalysisMethodsPage && hasPlans) {
+      if (isAnalysisMethodsPage && plans.length > 0) {
         modifiedForm = isCustomEntityForm
           ? generateAddEntityDrawerItemFields(
               addEntityDrawerForm,
