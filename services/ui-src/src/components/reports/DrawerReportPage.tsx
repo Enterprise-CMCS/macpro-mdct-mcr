@@ -77,8 +77,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasIlos = ilos?.length;
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const plans = report?.fieldData?.plans?.map((plan: { name: string }) => plan);
-  const reportingOnStandards =
+  const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
+  const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
+  const providerTypes = report?.fieldData?.providerTypes?.map(
+    (providerType: { name: string }) => providerType
+  );
 
   const getForm = (
     reportType?: string,
@@ -95,6 +99,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
                 "plan"
               )
             : generateDrawerItemFields(drawerForm, plans, "plan");
+        }
+        if (isReportingOnStandards && hasProviderTypes) {
+          const providerTypeFields = generateDrawerItemFields(
+            drawerForm,
+            providerTypes,
+            "standards"
+          );
+          modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
         }
         break;
       case ReportType.MCPAR:
@@ -358,7 +370,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       selectedEntity?.name ||
       selectedEntity?.custom_analysis_method_name ||
       "Add other";
-    if (reportingOnStandards && report) {
+    if (isReportingOnStandards && report) {
       name = report?.programName;
     }
     return `${verbiage.drawerTitle} ${name}`;
@@ -369,6 +381,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       sx={sx.bottomAddEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
+      disabled={!hasProviderTypes}
     >
       {verbiage.addEntityButtonText}
     </Button>
@@ -390,6 +403,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           {parseCustomHtml(verbiage.missingEntityMessage || "")}
         </Box>
       )}
+      {isReportingOnStandards && !hasProviderTypes && (
+        <Box sx={sx.missingIlos}>
+          {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        </Box>
+      )}
       {standardForm && (
         <Box sx={sx.standardForm}>
           <Form
@@ -405,7 +423,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        {reportingOnStandards ? (
+        {isReportingOnStandards ? (
           // table of standards
           <Box>
             {addStandardsButton}

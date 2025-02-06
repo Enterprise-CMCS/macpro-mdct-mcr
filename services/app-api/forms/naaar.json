@@ -300,7 +300,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the managed care plans that serve enrollees in the program. "
                   },
                   {
                     "type": "internalLink",
@@ -308,6 +308,10 @@
                     "props": {
                       "to": "/naaar/state-and-program-information/add-plans"
                     }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
                   }
                 ]
               }
@@ -519,7 +523,29 @@
         "dashboardTitle": "Standard total count: ",
         "countEntitiesInTitle": true,
         "addEntityButtonText": "Add standard",
-        "drawerTitle": "Add access and network adequacy standard for "
+        "drawerTitle": "Add access and network adequacy standard for ",
+        "missingEntityMessage": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing required information. You won’t be able to complete this section until you’ve completed all the required questions in section "
+              },
+              {
+                "type": "internalLink",
+                "content": "I. State and program information",
+                "props": {
+                  "to": "/naaar/state-and-program-information/provider-type-coverage"
+                }
+              },
+              {
+                "type": "html",
+                "content": "."
+              }
+            ]
+          }
+        ]
       },
       "drawerForm": {
         "id": "danas",
