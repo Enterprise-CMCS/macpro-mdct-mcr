@@ -16,13 +16,20 @@ import {
   AnyObject,
   FieldChoice,
   FormField,
+  FormJson,
   FormLayoutElement,
+  getFormParams,
   isFieldElement,
+  ReportType,
 } from "types";
 import {
   SectionContent,
   SectionHeader,
 } from "components/forms/FormLayoutElements";
+import {
+  generateAddEntityDrawerItemFields,
+  generateDrawerItemFields,
+} from "./dynamicItemFields";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -261,4 +268,42 @@ export const resetClearProp = (fields: (FormField | FormLayoutElement)[]) => {
         break;
     }
   });
+};
+
+export const getForm = (params: getFormParams) => {
+  const {
+    route,
+    report,
+    isCustomEntityForm = false,
+    isAnalysisMethodsPage = false,
+    ilos,
+    reportingOnIlos = false,
+  } = params;
+  const { drawerForm } = route;
+  const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
+  const plans =
+    report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];
+  const reportType = report?.reportType;
+
+  let modifiedForm = drawerForm;
+  switch (reportType) {
+    case ReportType.NAAAR:
+      if (isAnalysisMethodsPage && plans.length > 0) {
+        modifiedForm = isCustomEntityForm
+          ? generateAddEntityDrawerItemFields(
+              addEntityDrawerForm,
+              plans,
+              "plan"
+            )
+          : generateDrawerItemFields(drawerForm, plans, "plan");
+      }
+      break;
+    case ReportType.MCPAR:
+      if (ilos && reportingOnIlos) {
+        modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
+      }
+      break;
+    default:
+  }
+  return modifiedForm;
 };

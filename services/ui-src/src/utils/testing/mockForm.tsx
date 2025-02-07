@@ -249,6 +249,65 @@ export const mockNestedReportPageJson = {
   drawerForm: mockNestedForm,
 };
 
+export const mockMcparIlosPageJson = {
+  name: "mock-route",
+  path: "/mcpar/plan-level-indicators/ilos",
+  pageType: "drawer",
+  entityType: "ilos",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+  },
+  drawerForm: {
+    id: "dilos",
+    fields: [
+      {
+        id: "mock-field-id",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1 - ILOS",
+            },
+            {
+              id: "mock-choice-id-2",
+              label: "mock label 2",
+              children: [
+                {
+                  id: "mock-child-id-0",
+                  type: "radio",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "ilos",
+                  },
+                  props: {
+                    label: "ILOSs utilization by plan",
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-id-1",
+                  type: "checkbox",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "mock-field-id",
+                    parentOptionId: "mock-field-id-mock-choice-id-1",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+    ],
+  },
+};
+
 export const mockNaaarAnalysisMethodsPageJson = {
   name: "mock-route",
   path: "/naaar/analysis-methods",
@@ -337,7 +396,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
         type: "radio",
         props: {
           label: "Frequency of analysis",
-          choices: [],
+          choices: [{ id: "option1", label: "Weekly" }],
         },
       },
       {
@@ -345,11 +404,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
         type: "checkbox",
         props: {
           label: "Plans utilizing this method",
-          choices: [
-            {
-              label: "Plans",
-            },
-          ],
+          choices: [{ label: "Plan 1" }],
         },
       },
     ],

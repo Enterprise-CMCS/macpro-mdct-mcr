@@ -3,7 +3,13 @@ import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, DrawerReportPage } from "components";
 // constants
-import { saveAndCloseText } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  PLAN_ILOS,
+  saveAndCloseText,
+} from "../../constants";
+// types
+import { McrEntityState } from "types";
 // utils
 import { useStore } from "utils";
 import {
@@ -18,11 +24,12 @@ import {
   mockVerbiageIntro,
   mockDrawerForm,
   mockNaaarAnalysisMethodsPageJson,
-  mockAnalysisMethodEntityStore,
+  mockMcparIlosPageJson,
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
   mockNaaarStandardsPageJson,
   mockNaaarReportContext,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -336,73 +343,194 @@ describe("<DrawerReportPage />", () => {
   });
 
   describe("Test DrawerReportPage with custom entities", () => {
-    beforeEach(() => {
+    const mockAnalysisMethodEntityStore: McrEntityState = {
+      entities: [],
+      entityType: "analysisMethods",
+      selectedEntity: {
+        id: "k9t7YoOeTOAXX3s7qF6XfN33",
+        name: "Geomapping",
+        isRequired: true,
+      },
+      // ACTIONS
+      setSelectedEntity: () => {},
+      setEntityType: () => {},
+      setEntities: () => {},
+    };
+
+    const mockNaaarReportContextWithAnalysisMethods: any =
+      mockNaaarReportContext;
+    mockNaaarReportContextWithAnalysisMethods.report.fieldData[
+      "analysisMethods"
+    ] = [DEFAULT_ANALYSIS_METHODS[0]];
+
+    // ilos
+    const mockIlosEntityStore: McrEntityState = {
+      entities: [],
+      entityType: "ilos",
+      selectedEntity: {
+        id: "k9t7YoOeTOAXX3s7qF6XfN44",
+        name: "Ilos",
+        isRequired: true,
+      },
+      // ACTIONS
+      setSelectedEntity: () => {},
+      setEntityType: () => {},
+      setEntities: () => {},
+    };
+
+    const mockMcparReportContextWithIlos: any = mockMcparReportContext;
+    mockMcparReportContextWithIlos.report.fieldData["ilos"] = [PLAN_ILOS[0]];
+
+    const mockCustomMcparReportStore = {
+      ...mockMcparReportStore,
+      report: mockMcparReportContextWithIlos.report,
+      reportsByState: [mockMcparReportContextWithIlos.report],
+    };
+    const drawerReportPageWithIlos = (
+      <RouterWrappedComponent>
+        <ReportContext.Provider value={mockMcparReportContextWithIlos}>
+          <DrawerReportPage route={mockMcparIlosPageJson} />
+        </ReportContext.Provider>
+      </RouterWrappedComponent>
+    );
+
+    test("Can enter default ilos drawer", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
-        ...mockNaaarAnalysisMethodsReportStore,
-        ...mockAnalysisMethodEntityStore,
+        ...mockCustomMcparReportStore,
+        ...mockIlosEntityStore,
       });
-      render(drawerReportPageWithCustomEntities);
-    });
-    test("Can enter default analysis method drawer", async () => {
+
+      render(drawerReportPageWithIlos);
       const enterDefaultMethod = screen.getAllByText("Enter")[0];
       await userEvent.click(enterDefaultMethod);
       expect(screen.getByRole("dialog")).toBeVisible();
-      const textField = await screen.getByLabelText("mock label 1");
+      const textField = await screen.getByLabelText("mock label 1 - ILOS");
       expect(textField).toBeVisible();
     });
 
-    test("Can shows statusing for custom analysis methods", async () => {
-      const iconAltText = screen.getAllByAltText("Entity is incomplete");
-      expect(iconAltText.length).toBeGreaterThan(0);
-    });
-
-    test("DrawerReportPage opens the delete modal on remove click", async () => {
-      const addCustomMethod = screen.getByText("Add other analysis method");
-      const removeButton = screen.getByRole("button", {
-        name: "Delete unnamed entity",
+    describe("Can enter default analysis method drawer", () => {
+      beforeEach(() => {
+        mockedUseStore.mockReturnValue({
+          ...mockStateUserStore,
+          ...mockNaaarAnalysisMethodsReportStore,
+          ...mockAnalysisMethodEntityStore,
+        });
+        render(drawerReportPageWithCustomEntities);
+        expect(
+          screen.getByText(
+            mockNaaarAnalysisMethodsPageJson.verbiage.dashboardTitle
+          )
+        ).toBeVisible();
       });
-      await userEvent.click(removeButton);
-      // click delete in modal
-      const deleteButton = screen.getByText("Yes, delete method");
-      await userEvent.click(deleteButton);
+      test("Can enter default analysis method drawer", async () => {
+        const enterDefaultMethod = screen.getAllByText("Enter")[0];
+        await userEvent.click(enterDefaultMethod);
+        expect(screen.getByRole("dialog")).toBeVisible();
+        const textField = await screen.getByLabelText("mock label 1");
+        expect(textField).toBeVisible();
+      });
 
-      // verify that the field is removed
-      const inputBoxLabelAfterRemove = screen.queryAllByTestId("test-label");
-      expect(inputBoxLabelAfterRemove).toHaveLength(0);
-      expect(addCustomMethod).toBeVisible();
+      test("Can shows statusing for custom analysis methods", async () => {
+        const iconAltText = screen.getAllByAltText("Entity is incomplete");
+        expect(iconAltText.length).toBeGreaterThan(0);
+      });
     });
-  });
 
-  describe("test filling out custom entity form", () => {
-    test("Can enter custom analysis method drawer and fill out form", async () => {
-      const mockAnalysisMethodNoSelectedEntityStore =
-        mockAnalysisMethodEntityStore;
-      mockAnalysisMethodNoSelectedEntityStore.selectedEntity = undefined;
+    describe("test filling out custom entity form", () => {
+      test("Can enter custom analysis method drawer and fill out form", async () => {
+        const mockAnalysisMethodNoSelectedEntityStore =
+          mockAnalysisMethodEntityStore;
+        mockAnalysisMethodNoSelectedEntityStore.selectedEntity = undefined;
+        mockedUseStore.mockReturnValue({
+          ...mockStateUserStore,
+          ...mockNaaarAnalysisMethodsReportStore,
+          ...mockAnalysisMethodNoSelectedEntityStore,
+        });
+
+        render(drawerReportPageWithCustomEntities);
+        const addCustomMethod = screen.getByText("Add other analysis method");
+        await userEvent.click(addCustomMethod);
+        expect(screen.getByRole("dialog")).toBeVisible();
+        // fill out custom drawer
+        const customTitleField = await screen.getByLabelText("Analysis method");
+        expect(customTitleField).toBeVisible();
+        await userEvent.type(customTitleField, "New analysis method");
+        const customDescriptionField = await screen.getByLabelText(
+          "description"
+        );
+        await userEvent.type(
+          customDescriptionField,
+          "New analysis description"
+        );
+        const customFrequencyRadioButton = await screen.getByLabelText(
+          "Weekly"
+        );
+        await userEvent.click(customFrequencyRadioButton);
+        const saveCustomMethod = screen.getByText("Save & close");
+        await userEvent.click(saveCustomMethod);
+        const enterDefaultMethod = screen.getAllByText("Enter")[0];
+        expect(enterDefaultMethod).toBeVisible();
+      });
+
+      describe("test analysis methods custom logic", () => {
+        beforeEach(() => {
+          const mockNaaarReportContextWithCustomAnalysisMethods: any =
+            mockNaaarReportContext;
+
+          const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
+
+          // add custom entity to render special row type
+          report.fieldData["analysisMethods"] = [
+            DEFAULT_ANALYSIS_METHODS[0],
+            {
+              id: "custom_entity",
+              name: "custom entity",
+            },
+          ];
+
+          const mockCustomNaaarReportStore = {
+            ...mockNaaarReportStore,
+            report,
+            reportsByState: [report],
+          };
+
+          mockedUseStore.mockReturnValue({
+            ...mockStateUserStore,
+            ...mockCustomNaaarReportStore,
+            ...mockAnalysisMethodEntityStore,
+          });
+
+          render(drawerReportPageWithCustomEntities);
+        });
+
+        test("Shows statusing for custom analysis methods", async () => {
+          const iconAltText = screen.getAllByAltText("Entity is incomplete");
+          expect(iconAltText.length).toBeGreaterThan(0);
+        });
+
+        test("DrawerReportPage opens the delete modal on remove click", async () => {
+          const addCustomMethod = screen.getByText("Add other analysis method");
+          const removeButton = screen.getByTestId("delete-entity");
+          await userEvent.click(removeButton);
+          // click delete in modal
+          const deleteButton = screen.getByText("Yes, delete method");
+          await userEvent.click(deleteButton);
+
+          // verify that the field is removed
+          const inputBoxLabelAfterRemove =
+            screen.queryAllByTestId("test-label");
+          expect(inputBoxLabelAfterRemove).toHaveLength(0);
+          expect(addCustomMethod).toBeVisible();
+        });
+      });
+    });
+
+    testA11y(drawerReportPageWithEntities, () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
-        ...mockNaaarAnalysisMethodsReportStore,
-        ...mockAnalysisMethodNoSelectedEntityStore,
+        ...mockMcparReportStore,
       });
-
-      render(drawerReportPageWithCustomEntities);
-      const addCustomMethod = screen.getByText("Add other analysis method");
-      await userEvent.click(addCustomMethod);
-      expect(screen.getByRole("dialog")).toBeVisible();
-      const customTextField = await screen.getByLabelText("Analysis method");
-      expect(customTextField).toBeVisible();
-      await userEvent.type(customTextField, "new analysis method");
-      const saveCustomMethod = screen.getByText("Save & close");
-      await userEvent.click(saveCustomMethod);
-      const enterDefaultMethod = screen.getAllByText("Enter")[0];
-      expect(enterDefaultMethod).toBeVisible();
-    });
-  });
-
-  testA11y(drawerReportPageWithEntities, () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMcparReportStore,
     });
   });
 });
