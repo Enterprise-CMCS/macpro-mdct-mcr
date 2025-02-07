@@ -7,6 +7,7 @@ import { Table } from "./Table";
 // utils
 import {
   mockMlrReportContext,
+  mockMlrReportStore,
   mockStateUserStore,
   mockVerbiageIntro,
   RouterWrappedComponent,
@@ -33,7 +34,7 @@ const completeRowComponent = (
           entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
-          openEntityDetailsOverlay={mockOpenDrawer}
+          openOverlayOrDrawer={mockOpenDrawer}
         />
       </Table>
     </ReportContext.Provider>
@@ -66,6 +67,10 @@ describe("<MobileEntityRow />", () => {
   });
 
   test("Clicking Enter Details button opens the Drawer", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMlrReportStore,
+    });
     await act(async () => {
       await render(completeRowComponent);
     });

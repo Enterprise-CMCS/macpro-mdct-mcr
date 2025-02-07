@@ -1,3 +1,9 @@
+import {
+  CustomHtmlElement,
+  OverlayReportPageShape,
+  OverlayReportPageVerbiage,
+} from "types";
+
 export const mockFormField = {
   id: "mock-text-field",
   type: "text",
@@ -418,6 +424,37 @@ export const mockModalOverlayReportPageVerbiage = {
   enterReportText: "Mock enter report text",
 };
 
+export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  requiredMessages: {
+    plans: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required information.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+    standards: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required standards.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+  },
+  tableHeader: "Mock table header",
+  emptyDashboardText: "No entities found",
+  enterEntityDetailsButtonText: "Mock Enter Button Text",
+};
+
 export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
@@ -446,6 +483,14 @@ export const mockModalOverlayReportPageWithOverlayJson = {
   verbiage: mockModalOverlayReportPageVerbiage,
   modalForm: mockModalOverlayForm,
   overlayForm: mockModalOverlayForm,
+};
+
+export const mockOverlayReportPageJson: OverlayReportPageShape = {
+  name: "mock-route-2d",
+  path: "/mock/mock-route-2d",
+  pageType: "modalOverlay",
+  entityType: "plans",
+  verbiage: mockOverlayReportPageVerbiage,
 };
 
 export const mockReviewSubmitPageJson = {

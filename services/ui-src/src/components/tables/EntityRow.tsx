@@ -29,11 +29,14 @@ export const EntityRow = ({
   }, [report]);
 
   const enterDetailsText = () => {
-    const enterText =
-      report?.reportType === ReportType.MLR
-        ? verbiage.enterReportText
-        : verbiage.enterEntityDetailsButtonText;
-    return enterText;
+    switch (report?.reportType) {
+      case ReportType.MLR:
+        return verbiage.enterReportText;
+      case ReportType.NAAAR:
+        return verbiage.enterEntityDetailsButtonText;
+      default:
+        return "Enter";
+    }
   };
 
   const entityFields = () => {
@@ -71,7 +74,7 @@ export const EntityRow = ({
       </Td>
       <Td>
         <Flex sx={sx.actionContainer}>
-          {!entity.isRequired && (
+          {!entity.isRequired && openAddEditEntityModal && (
             <Button
               sx={sx.editButton}
               variant="none"
@@ -90,7 +93,7 @@ export const EntityRow = ({
               {entering ? <Spinner size="md" /> : enterDetailsText()}
             </Button>
           )}
-          {!entity.isRequired && (
+          {!entity.isRequired && openDeleteEntityModal && (
             <Button
               sx={sx.deleteButton}
               data-testid="delete-entity"
@@ -111,8 +114,8 @@ interface Props {
   verbiage: AnyObject;
   locked?: boolean;
   entering?: boolean;
-  openAddEditEntityModal: Function;
-  openDeleteEntityModal: Function;
+  openAddEditEntityModal?: Function;
+  openDeleteEntityModal?: Function;
   openOverlayOrDrawer?: Function;
   [key: string]: any;
 }
