@@ -9,21 +9,22 @@ import {
   init,
   logger,
 } from "./debug-lib";
+import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 
-jest.mock("./debug-lib", () => ({
-  ...jest.requireActual("./debug-lib"),
+vi.mock("./debug-lib", async (importOriginal) => ({
+  ...(await importOriginal()),
 }));
 
-jest.spyOn(console, "trace").mockImplementation();
-jest.spyOn(console, "debug").mockImplementation();
-jest.spyOn(console, "info").mockImplementation();
-jest.spyOn(console, "warn").mockImplementation();
-jest.spyOn(console, "error").mockImplementation();
+vi.spyOn(console, "trace").mockImplementation(vi.fn());
+vi.spyOn(console, "debug").mockImplementation(vi.fn());
+vi.spyOn(console, "info").mockImplementation(vi.fn());
+vi.spyOn(console, "warn").mockImplementation(vi.fn());
+vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("Debug Library Functions", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
+    vi.clearAllMocks();
+    vi.resetModules();
   });
 
   test("Flush should write all logs in the buffer", () => {
@@ -66,7 +67,7 @@ describe("Debug Library Functions", () => {
     debug("%s %d %O", "hello", 2, { person: "you" });
     flush();
 
-    const [date, message] = (console.debug as jest.Mock).mock.calls[0];
+    const [date, message] = (console.debug as Mock).mock.calls[0];
     expect(date).toBeInstanceOf(Date);
     expect(message).toBe(`hello 2 { person: 'you' }`);
   });

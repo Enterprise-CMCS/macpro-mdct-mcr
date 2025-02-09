@@ -8,6 +8,7 @@ import {
   getValidationFromFormTemplate,
   isFieldElement,
 } from "./formTemplates";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import s3Lib from "../s3/s3-lib";
@@ -19,7 +20,7 @@ import mcpar from "../../forms/mcpar.json";
 import {
   mockReportJson,
   mockS3PutObjectCommandOutput,
-} from "../testing/setupJest";
+} from "../testing/setupTests";
 // types
 import {
   FormJson,
@@ -52,7 +53,7 @@ const currentPCCMFormHash = createHash("md5")
 
 describe("Test getOrCreateFormTemplate MCPAR", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vi.clearAllMocks();
     dynamoClientMock.reset();
   });
   it("should create a new form template if none exist", async () => {
@@ -66,8 +67,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       .resolvesOnce({
         Items: [],
       });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
@@ -96,8 +97,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       .resolvesOnce({
         Items: [],
       });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
@@ -115,7 +116,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
   });
 
   it("should return the right form and formTemplateVersion if it matches the most recent form", async () => {
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy.mockResolvedValue(mlr);
     // mocked once for search by hash
     dynamoClientMock.on(QueryCommand).resolvesOnce({
@@ -128,8 +129,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
         },
       ],
     });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
@@ -166,8 +167,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
           },
         ],
       });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
@@ -191,8 +192,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
       .resolvesOnce({
         Items: [],
       });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
@@ -219,7 +220,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
 
 describe("Test getOrCreateFormTemplate MLR", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vi.clearAllMocks();
     dynamoClientMock.reset();
   });
   it("should create a new form template if none exist", async () => {
@@ -231,8 +232,8 @@ describe("Test getOrCreateFormTemplate MLR", () => {
       })
       // mocked again for search for latest report
       .resolvesOnce({ Items: [] });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
@@ -250,7 +251,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
   });
 
   it("should return the right form and formTemplateVersion if it matches the most recent form", async () => {
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy.mockResolvedValue(mlr);
     // mocked once for search by hash
     dynamoClientMock.on(QueryCommand).resolvesOnce({
@@ -263,8 +264,8 @@ describe("Test getOrCreateFormTemplate MLR", () => {
         },
       ],
     });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
@@ -301,8 +302,8 @@ describe("Test getOrCreateFormTemplate MLR", () => {
           },
         ],
       });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const dynamoPutSpy = vi.spyOn(dynamodbLib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",

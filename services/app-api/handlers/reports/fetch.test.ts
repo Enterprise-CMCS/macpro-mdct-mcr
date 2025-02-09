@@ -1,4 +1,5 @@
 import { fetchReport, fetchReportsByState } from "./fetch";
+import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
@@ -9,7 +10,7 @@ import {
   mockReportJson,
   mockReportFieldData,
   mockDynamoDataCompleted,
-} from "../../utils/testing/setupJest";
+} from "../../utils/testing/setupTests";
 import dynamodbLib from "../../utils/dynamo/dynamodb-lib";
 import s3Lib from "../../utils/s3/s3-lib";
 import { StatusCodes } from "../../utils/responses/response-lib";
@@ -19,9 +20,9 @@ import { APIGatewayProxyEvent } from "../../utils/types";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
-  isAuthorizedToFetchState: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockReturnValue(true),
+  isAuthorizedToFetchState: vi.fn().mockReturnValue(true),
 }));
 
 const testReadEvent: APIGatewayProxyEvent = {
@@ -40,20 +41,13 @@ const testReadEventByState: APIGatewayProxyEvent = {
   pathParameters: { reportType: "MCPAR", state: "CO" },
 };
 
-let consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.fn() as jest.SpyInstance,
-  error: jest.fn() as jest.SpyInstance,
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
+const errorSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("handlers/reports/fetch", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     dynamoClientMock.reset();
-    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
-    consoleSpy.error = jest.spyOn(console, "error").mockImplementation();
   });
 
   describe("Test fetchReport API method", () => {
@@ -62,7 +56,7 @@ describe("handlers/reports/fetch", () => {
         Item: undefined,
       });
       const res = await fetchReport(testReadEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.NotFound);
     });
 
@@ -71,7 +65,7 @@ describe("handlers/reports/fetch", () => {
         Item: { ...mockDynamoData, formTemplateId: "badId" },
       });
       const res = await fetchReport(testReadEvent, "null");
-      expect(consoleSpy.error).toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.NotFound);
     });
 
@@ -80,12 +74,12 @@ describe("handlers/reports/fetch", () => {
         Item: { ...mockDynamoData, fieldDataId: null },
       });
       const res = await fetchReport(testReadEvent, "badId");
-      expect(consoleSpy.error).toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.NotFound);
     });
 
     test("Test Successful Report Fetch w/ Incomplete Report", async () => {
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
@@ -93,7 +87,7 @@ describe("handlers/reports/fetch", () => {
         Item: mockDynamoData,
       });
       const res = await fetchReport(testReadEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.Ok);
       const body = JSON.parse(res.body!);
       expect(body.lastAlteredBy).toContain("Thelonious States");
@@ -108,7 +102,7 @@ describe("handlers/reports/fetch", () => {
     });
 
     test("Test Successful Report Fetch w/ Complete Report", async () => {
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
@@ -116,7 +110,7 @@ describe("handlers/reports/fetch", () => {
         Item: mockDynamoDataCompleted,
       });
       const res = await fetchReport(testReadEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.Ok);
       const body = JSON.parse(res.body!);
       expect(body.lastAlteredBy).toContain("Thelonious States");
@@ -138,7 +132,7 @@ describe("handlers/reports/fetch", () => {
       dynamoClientMock.on(GetCommand).resolves({
         Item: metadataWithNoCompletionStatus,
       });
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
@@ -158,7 +152,7 @@ describe("handlers/reports/fetch", () => {
         pathParameters: {},
       };
       const res = await fetchReport(noKeyEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
@@ -169,13 +163,13 @@ describe("handlers/reports/fetch", () => {
         pathParameters: { state: "", id: "" },
       };
       const res = await fetchReport(noKeyEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
 
     test("Test unauthorized returns 403", async () => {
-      (isAuthorizedToFetchState as jest.Mock).mockReturnValueOnce(false);
+      (isAuthorizedToFetchState as Mock).mockReturnValueOnce(false);
       const res = await fetchReport(testReadEvent, null);
       expect(res.statusCode).toBe(StatusCodes.Forbidden);
       expect(res.body).toContain(error.UNAUTHORIZED);
@@ -184,10 +178,10 @@ describe("handlers/reports/fetch", () => {
 
   describe("Test fetchReportsByState API method", () => {
     test("Test successful call", async () => {
-      const dynamoQueryAllSpy = jest.spyOn(dynamodbLib, "queryAll");
+      const dynamoQueryAllSpy = vi.spyOn(dynamodbLib, "queryAll");
       dynamoQueryAllSpy.mockResolvedValue([mockDynamoData]);
       const res = await fetchReportsByState(testReadEventByState, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.Ok);
       const body = JSON.parse(res.body!);
       expect(body[0].lastAlteredBy).toContain("Thelonious States");
@@ -200,7 +194,7 @@ describe("handlers/reports/fetch", () => {
         pathParameters: {},
       };
       const res = await fetchReportsByState(noKeyEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
@@ -211,13 +205,13 @@ describe("handlers/reports/fetch", () => {
         pathParameters: { state: "" },
       };
       const res = await fetchReportsByState(noKeyEvent, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
 
     test("Test unauthorized returns 403", async () => {
-      (isAuthorizedToFetchState as jest.Mock).mockReturnValueOnce(false);
+      (isAuthorizedToFetchState as Mock).mockReturnValueOnce(false);
       const res = await fetchReportsByState(testReadEventByState, null);
       expect(res.statusCode).toBe(StatusCodes.Forbidden);
       expect(res.body).toContain(error.UNAUTHORIZED);

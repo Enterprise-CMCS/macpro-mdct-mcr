@@ -1,4 +1,5 @@
 import { deleteBanner } from "./delete";
+import { describe, expect, Mock, test, vi } from "vitest";
 import { DeleteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
@@ -11,9 +12,9 @@ import { StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockReturnValue(true),
+  hasPermissions: vi.fn().mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -22,30 +23,25 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-const consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.spyOn(console, "debug").mockImplementation(),
-  error: jest.spyOn(console, "error").mockImplementation(),
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
+vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("Test deleteBanner API method", () => {
   test("Test not authorized to delete banner throws 403 error", async () => {
-    (hasPermissions as jest.Mock).mockReturnValueOnce(false);
+    (hasPermissions as Mock).mockReturnValueOnce(false);
     const res = await deleteBanner(testEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Banner Deletion", async () => {
-    const mockDelete = jest.fn();
+    const mockDelete = vi.fn();
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
     const res = await deleteBanner(testEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(mockDelete).toHaveBeenCalled();
   });

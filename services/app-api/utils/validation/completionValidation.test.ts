@@ -1,4 +1,5 @@
 import { mapValidationTypesToSchema } from "./completionValidation";
+import { describe, expect, it } from "vitest";
 import * as schema from "./completionSchemas";
 
 const mockStandardValidationType = {
