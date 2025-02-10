@@ -222,9 +222,7 @@ function updateEnvFiles() {
  * All valid arguments to dev should be enumerated here, this is the entrypoint to the script
  */
 yargs(process.argv.slice(2))
-  .command("local", "run system locally", {}, () => {
-    run_all_locally();
-  })
+  .command("local", "run system locally", {}, run_all_locally)
   .command(
     "test",
     "run all tests",
