@@ -1,5 +1,5 @@
 import React from "react";
-import { AnyObject } from "types";
+import { AnyObject, DrawerReportPageShape, ReportShape } from "types";
 
 // FORM & FIELD STRUCTURE
 
@@ -137,6 +137,16 @@ export interface AutosaveField {
   defaultValue?: FieldValue;
   hydrationValue?: FieldValue;
   overrideCheck?: boolean;
+}
+
+export interface getFormParams {
+  route: DrawerReportPageShape;
+  report?: ReportShape;
+  isCustomEntityForm?: boolean;
+  isAnalysisMethodsPage?: boolean;
+  isReportingOnStandards?: boolean;
+  ilos?: AnyObject[];
+  reportingOnIlos?: boolean;
 }
 
 /**

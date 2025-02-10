@@ -24,7 +24,7 @@ import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
-export const DynamicField = ({ name, label, ...props }: Props) => {
+export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, entities, entityType, selectedEntity } = useStore();
@@ -65,6 +65,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const currentEntityIndex = displayValues.indexOf(currentEntity!);
     const newDisplayValues = [...displayValues];
     newDisplayValues[currentEntityIndex].name = value;
+    if (isRequired) newDisplayValues[currentEntityIndex].isRequired = true;
     setDisplayValues(newDisplayValues);
   };
 
@@ -313,6 +314,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 interface Props {
   name: EntityType;
   label: string;
+  isRequired?: boolean;
   [key: string]: any;
 }
 

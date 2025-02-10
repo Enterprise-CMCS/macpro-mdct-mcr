@@ -76,6 +76,15 @@ export enum States {
   WY = "Wyoming",
 }
 
+// ILOS
+export const PLAN_ILOS = [
+  {
+    id: "k9t7YoOeTOAXX3s7qF6XfN44",
+    name: "ilos",
+    isRequired: true,
+  },
+];
+
 // ANALYSIS METHODS (NAAAR)
 export const DEFAULT_ANALYSIS_METHODS = [
   {

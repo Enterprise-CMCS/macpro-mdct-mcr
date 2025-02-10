@@ -700,6 +700,21 @@ export const mockMlrModalOverlayReport = {
   },
 };
 
+export const mockNAAREmptyFieldData = {
+  stateName: "Test State",
+};
+
+export const mockNAARWithPlanCreated = {
+  ...mockNAAREmptyFieldData,
+  plans: [
+    {
+      id: "mock-plan-id-1",
+      name: "Example Plan",
+      isRequired: true,
+    },
+  ],
+};
+
 export const mockReportsByState = [
   { ...mockMcparReportWithFieldDataId(1), id: "mock-report-id-1" },
   { ...mockMcparReportWithFieldDataId(2), id: "mock-report-id-2" },
