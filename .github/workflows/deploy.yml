@@ -73,7 +73,7 @@ jobs:
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
-        run: ./.github/branch-name-validation.sh $STAGE_PREFIX$branch_name
+        run: ./.github/branch-name-validation.sh $branch_name
       - name: set branch specific variable names
         run: ./.github/build-vars.sh set_names
       - name: set variable values
@@ -81,7 +81,6 @@ jobs:
         env:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
@@ -104,10 +103,10 @@ jobs:
         run: |
           # When deploying multiple copies of this quickstart to the same AWS Account (not ideal), a prefix helps prevent stepping on each other.
           # This can optionally be set as an GitHub Actions Secret
-          ./run deploy --stage $STAGE_PREFIX$branch_name
+          ./run deploy --stage $branch_name
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $STAGE_PREFIX$branch_name)
+          APPLICATION_ENDPOINT=$(./output.sh ui ApplicationEndpointUrl $branch_name)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
@@ -143,7 +142,6 @@ jobs:
         env:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          STAGE_PREFIX: ${{ secrets.STAGE_PREFIX }}
 
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
@@ -173,7 +171,7 @@ jobs:
         id: gen-ip-set-name
         run: |
           #!/bin/bash
-          STAGE_GH_IPSET_NAME=$STAGE_PREFIX$branch_name-gh-ipset
+          STAGE_GH_IPSET_NAME=$branch_name-gh-ipset
           echo "Github IP Set name:  $STAGE_GH_IPSET_NAME"
           echo "STAGE_GH_IPSET_NAME=$STAGE_GH_IPSET_NAME" >> $GITHUB_OUTPUT
 
