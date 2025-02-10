@@ -276,6 +276,7 @@ export const getForm = (params: getFormParams) => {
     report,
     isCustomEntityForm = false,
     isAnalysisMethodsPage = false,
+    isReportingOnStandards = false,
     ilos,
     reportingOnIlos = false,
   } = params;
@@ -283,6 +284,9 @@ export const getForm = (params: getFormParams) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];
+  const providerTypes = report?.fieldData?.providerTypes?.map(
+    (providerType: { name: string }) => providerType
+  );
   const reportType = report?.reportType;
 
   let modifiedForm = drawerForm;
@@ -296,6 +300,14 @@ export const getForm = (params: getFormParams) => {
               "plan"
             )
           : generateDrawerItemFields(drawerForm, plans, "plan");
+      }
+      if (isReportingOnStandards && providerTypes?.length > 0) {
+        const providerTypeFields = generateDrawerItemFields(
+          drawerForm,
+          providerTypes,
+          "standards"
+        );
+        modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
       }
       break;
     case ReportType.MCPAR:

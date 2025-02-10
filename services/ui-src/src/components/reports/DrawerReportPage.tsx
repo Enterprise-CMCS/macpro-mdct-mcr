@@ -52,7 +52,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities = !!addEntityDrawerForm.id;
-  const entities = report?.fieldData?.[entityType];
+  const entities = report?.fieldData?.[entityType] || [];
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -60,14 +60,17 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-  const hasPlans = report?.fieldData?.["plans"]?.length > 0;
-  const reportingOnStandards =
+  const plans = report?.fieldData?.["plans"];
+  const hasPlans = plans?.length;
+  const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
+  const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
   const formParams = {
     route,
     report,
     isAnalysisMethodsPage,
+    isReportingOnStandards,
     ilos,
     reportingOnIlos,
   };
@@ -191,10 +194,31 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       selectedEntity?.name ||
       selectedEntity?.custom_analysis_method_name ||
       "Add other";
-    if (reportingOnStandards && report) {
+    if (isReportingOnStandards && report) {
       name = report?.programName;
     }
     return `${verbiage.drawerTitle} ${name}`;
+  };
+
+  const displayErrorMessages = () => {
+    // if there are no ILOS but there are plans added, display this message
+    if (!hasIlos && entities.length > 0) {
+      return (
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(verbiage.missingIlosMessage || "")}
+        </Box>
+      );
+    } else if (
+      (isAnalysisMethodsPage && !hasPlans) ||
+      (isReportingOnStandards && !hasProviderTypes)
+    ) {
+      return (
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        </Box>
+      );
+    }
+    return <></>;
   };
 
   const addStandardsButton = (
@@ -202,6 +226,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       sx={sx.bottomAddEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
+      disabled={!hasProviderTypes}
     >
       {verbiage.addEntityButtonText}
     </Button>
@@ -212,17 +237,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
-      {/* if there are no ILOS but there are plans added, display this message */}
-      {!hasIlos && entities?.length && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingIlosMessage || "")}
-        </Box>
-      )}
-      {isAnalysisMethodsPage && !hasPlans && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingEntityMessage || "")}
-        </Box>
-      )}
+      {displayErrorMessages()}
       {standardForm && (
         <Box sx={sx.standardForm}>
           <Form
@@ -238,7 +253,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        {reportingOnStandards ? (
+        {isReportingOnStandards ? (
           // table of standards
           <Box>
             {addStandardsButton}
@@ -342,7 +357,7 @@ const sx = {
     marginLeft: "2.25rem",
     paddingRight: "1rem",
   },
-  missingIlos: {
+  missingEntity: {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {

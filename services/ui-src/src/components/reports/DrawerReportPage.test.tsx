@@ -84,6 +84,14 @@ const drawerReportPageWithCustomEntities = (
   </RouterWrappedComponent>
 );
 
+const drawerReportPageWithNaaarRoutesEmptyState = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportContext}>
+      <DrawerReportPage route={mockNaaarStandardsPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
 const drawerReportPageWithNaaarRoutes = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockNaaarReportContext}>
@@ -303,11 +311,22 @@ describe("<DrawerReportPage />", () => {
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
 
-    test("Test DrawerReportPage for NAAAR standards", async () => {
+    test("Test DrawerReportPage for NAAAR standards (empty state)", async () => {
+      render(drawerReportPageWithNaaarRoutesEmptyState);
+      const addStandardsButton = screen.getAllByText("Add standard")[0];
+      expect(addStandardsButton).toBeDisabled();
+    });
+
+    test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+        ...mockEntityStore,
+      });
       render(drawerReportPageWithNaaarRoutes);
       const addStandardsButton = screen.getAllByText("Add standard")[0];
       await userEvent.click(addStandardsButton);
-      expect(screen.getByText("mock label 1")).toBeVisible();
+      expect(screen.getByText("Mock dashboard title")).toBeVisible();
     });
   });
 
