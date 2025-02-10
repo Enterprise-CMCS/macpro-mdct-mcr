@@ -60,7 +60,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-  const hasPlans = report?.fieldData?.["plans"]?.length > 0;
+  const plans = report?.fieldData?.["plans"];
+  const hasPlans = plans?.length;
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
   const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
@@ -201,9 +202,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const displayErrorMessages = () => {
     // if there are no ILOS but there are plans added, display this message
-    if (!hasIlos && !entities.length) {
+    if (!hasIlos && entities.length > 0) {
       return (
-        <Box sx={sx.missingIlos}>
+        <Box sx={sx.missingEntity}>
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
         </Box>
       );
@@ -212,7 +213,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       (isReportingOnStandards && !hasProviderTypes)
     ) {
       return (
-        <Box sx={sx.missingIlos}>
+        <Box sx={sx.missingEntity}>
           {parseCustomHtml(verbiage.missingEntityMessage || "")}
         </Box>
       );
@@ -236,24 +237,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
-      {/* working on it */}
       {displayErrorMessages()}
-      {/* if there are no ILOS but there are plans added, display this message
-      {!hasIlos && entities?.length && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingIlosMessage || "")}
-        </Box>
-      )}
-      {isAnalysisMethodsPage && !hasPlans && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingEntityMessage || "")}
-        </Box>
-      )}
-      {isReportingOnStandards && !hasProviderTypes && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingEntityMessage || "")}
-        </Box>
-      )} */}
       {standardForm && (
         <Box sx={sx.standardForm}>
           <Form
@@ -373,7 +357,7 @@ const sx = {
     marginLeft: "2.25rem",
     paddingRight: "1rem",
   },
-  missingIlos: {
+  missingEntity: {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {

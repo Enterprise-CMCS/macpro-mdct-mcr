@@ -301,7 +301,7 @@ export const getForm = (params: getFormParams) => {
             )
           : generateDrawerItemFields(drawerForm, plans, "plan");
       }
-      if (isReportingOnStandards && providerTypes.length > 0) {
+      if (isReportingOnStandards && providerTypes?.length > 0) {
         const providerTypeFields = generateDrawerItemFields(
           drawerForm,
           providerTypes,
