@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test } from "vitest";
 // components
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";

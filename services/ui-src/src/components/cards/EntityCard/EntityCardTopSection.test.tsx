@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 // components
 import { EntityCardTopSection } from "./EntityCardTopSection";
 
-jest.mock("utils/state/useStore");
+vi.mock("utils/state/useStore");
 
 const formattedEntityData = {
   category: "LTSS-related standard: provider travels to the enrollee",

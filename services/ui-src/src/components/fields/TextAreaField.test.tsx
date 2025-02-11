@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 // components
 import { TextAreaField } from "components";
 // utils
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("react-hook-form", () => ({
+vi.mock("react-hook-form", () => ({
   useFormContext: () => ({
     setValue: () => {},
     register: () => {},
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue("test"),
+    getValues: vi.fn().mockReturnValueOnce([]).mockReturnValue("test"),
   }),
 }));
 

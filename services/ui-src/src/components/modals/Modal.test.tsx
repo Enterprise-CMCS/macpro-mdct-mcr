@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 // components
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockCloseHandler = jest.fn();
-const mockConfirmationHandler = jest.fn();
+const mockCloseHandler = vi.fn();
+const mockConfirmationHandler = vi.fn();
 
 const content = {
   heading: "Dialog Heading",

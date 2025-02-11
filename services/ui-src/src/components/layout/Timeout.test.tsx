@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 // components
 import { Timeout } from "components";
 // constants
@@ -8,25 +7,33 @@ import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
 import {
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
-import { initAuthManager, useStore, UserContext } from "utils";
+} from "utils/testing/setupTests";
+import { useStore, UserContext } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-
-const mockLogout = jest.fn();
-const mockLoginWithIDM = jest.fn();
-const mockUpdateTimeout = jest.fn();
-const mockGetExpiration = jest.fn();
-
-const mockUser = {
-  ...mockStateUserStore,
-};
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
+import { refreshCredentials } from "utils/auth/authLifecycle";
+import { ReactNode, useEffect, useState } from "react";
+import {
+  CSSObject,
+  ModalContextProvider,
+  StylesProvider,
+} from "@chakra-ui/react";
 
 const mockUserContext = {
   user: undefined,
-  logout: mockLogout,
-  loginWithIDM: mockLoginWithIDM,
-  updateTimeout: mockUpdateTimeout,
-  getExpiration: mockGetExpiration,
+  logout: vi.fn(),
+  loginWithIDM: vi.fn(),
+  updateTimeout: vi.fn(),
+  getExpiration: vi.fn(),
 };
 
 const timeoutComponent = (
@@ -37,73 +44,102 @@ const timeoutComponent = (
   </RouterWrappedComponent>
 );
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/auth/authLifecycle", () => ({
+  updateTimeout: vi.fn(),
+  refreshCredentials: vi.fn(),
+}));
 
-const spy = jest.spyOn(global, "setTimeout");
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+});
+
+vi.mock("@chakra-ui/react", async (importOriginal) => ({
+  ...(await importOriginal()),
+  /** This modal opens/closes instantly, making it easier to test than Chakra's */
+  Modal: (props: {
+    isOpen: boolean;
+    onClose: () => {};
+    children: ReactNode;
+  }) => {
+    const { isOpen, onClose, children } = props;
+    const [wasOpen, setWasOpen] = useState(false);
+    useEffect(() => {
+      if (isOpen) setWasOpen(true);
+      else if (wasOpen) onClose();
+    }, [isOpen]);
+    return (
+      <StylesProvider value={{} as Record<string, CSSObject>}>
+        <ModalContextProvider
+          value={
+            {
+              getDialogProps: () => ({}),
+              getDialogContainerProps: () => ({}),
+              setHeaderMounted: () => ({}),
+              setBodyMounted: () => ({}),
+            } as any
+          }
+        >
+          <div style={{ display: isOpen ? "block" : "none" }}>{children}</div>
+        </ModalContextProvider>
+      </StylesProvider>
+    );
+  },
+}));
 
 describe("<Timeout />", () => {
   describe("Renders", () => {
-    beforeEach(async () => {
-      jest.useFakeTimers();
-      mockedUseStore.mockReturnValue(mockUser);
-      initAuthManager();
-      await render(timeoutComponent);
+    beforeAll(() => {
+      vi.useFakeTimers();
     });
 
-    afterEach(() => {
-      jest.useRealTimers();
-      jest.restoreAllMocks();
-      spy.mockClear();
+    beforeEach(async () => {
+      vi.clearAllMocks();
+      vi.clearAllTimers();
+      render(timeoutComponent);
+    });
+
+    afterAll(() => {
+      vi.useRealTimers();
     });
 
     test("Timeout modal is visible", async () => {
-      await act(async () => {
-        jest.advanceTimersByTime(PROMPT_AT + 5000);
-      });
-      await waitFor(() => {
-        expect(screen.getByText("Stay logged in")).toBeVisible();
-        expect(screen.getByText("Log out")).toBeVisible();
-      });
+      vi.advanceTimersByTime(PROMPT_AT + 5000);
+      expect(screen.getByText("Stay logged in")).toBeVisible();
+      expect(screen.getByText("Log out")).toBeVisible();
     });
 
     test("Timeout modal refresh button is clickable and closes modal", async () => {
-      await act(async () => {
-        jest.advanceTimersByTime(PROMPT_AT + 5000);
-      });
+      vi.advanceTimersByTime(PROMPT_AT + 5000);
       const refreshButton = screen.getByText("Stay logged in");
       await act(async () => {
         await fireEvent.click(refreshButton);
       });
-      await waitFor(() => {
-        expect(screen.getByText("Stay logged in")).not.toBeVisible();
-        expect(screen.getByText("Log out")).not.toBeVisible();
-      });
+      expect(screen.getByText("Stay logged in")).not.toBeVisible();
+      expect(screen.getByText("Log out")).not.toBeVisible();
+      expect(refreshCredentials).toHaveBeenCalled();
     });
 
     test("Timeout modal logout button is clickable and triggers logout", async () => {
-      await act(async () => {
-        jest.advanceTimersByTime(PROMPT_AT + 5000);
-      });
+      vi.advanceTimersByTime(PROMPT_AT + 5000);
       const logoutButton = screen.getByText("Log out");
-      mockLogout.mockReset();
       await act(async () => {
         await fireEvent.click(logoutButton);
       });
-      expect(mockLogout).toHaveBeenCalledTimes(1);
+
+      expect(mockUserContext.logout).toHaveBeenCalledTimes(1);
+      expect(refreshCredentials).not.toHaveBeenCalled();
     });
+
     test("Timeout modal executes logout on timeout", async () => {
-      mockLogout.mockReset();
-
       await act(async () => {
-        jest.advanceTimersByTime(10 * IDLE_WINDOW);
+        vi.advanceTimersByTime(10 * IDLE_WINDOW);
       });
-      expect(mockLogout).toHaveBeenCalledTimes(1);
+
+      expect(mockUserContext.logout).toHaveBeenCalledTimes(1);
     });
   });
 
-  testA11y(timeoutComponent, () => {
-    initAuthManager();
-    mockedUseStore.mockReturnValue(mockUser);
-  });
+  testA11y(timeoutComponent);
 });

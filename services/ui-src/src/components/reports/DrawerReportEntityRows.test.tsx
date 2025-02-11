@@ -1,4 +1,13 @@
 import { render, screen } from "@testing-library/react";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { useStore } from "utils";
 import { DrawerReportPage } from "./DrawerReportPage";
 import { ReportContext } from "./ReportProvider";
@@ -12,23 +21,15 @@ import {
   mockNaaarReportContext,
   mockNaaarReportStore,
   mockNaaarAnalysisMethodsPageJson,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 import { McrEntityState } from "types";
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-  useLocation: jest.fn(() => ({
-    pathname: "/mock-route",
-  })),
-}));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockStateUserStore);
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
@@ -40,7 +41,7 @@ const drawerReportPageWithEntities = (
 
 describe("<DrawerReportEntityRow />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   describe("ILOS form", () => {
     beforeEach(() => {

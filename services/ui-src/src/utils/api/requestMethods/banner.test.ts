@@ -1,13 +1,14 @@
 import { getBanner, writeBanner, deleteBanner } from "./banner";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 // utils
 import { bannerId } from "../../../constants";
-import { mockBannerData } from "utils/testing/setupJest";
+import { mockBannerData } from "utils/testing/setupTests";
 
-const mockDelete = jest.fn();
-const mockGet = jest.fn();
-const mockPost = jest.fn();
+const mockDelete = vi.fn();
+const mockGet = vi.fn();
+const mockPost = vi.fn();
 
-jest.mock("utils", () => ({
+vi.mock("utils", () => ({
   del: () => mockDelete(),
   get: () => mockGet(),
   post: () => mockPost(),
@@ -15,7 +16,7 @@ jest.mock("utils", () => ({
 
 describe("utils/requestMethods/banner", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("getBanner()", async () => {

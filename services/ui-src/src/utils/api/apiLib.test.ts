@@ -10,47 +10,48 @@ import {
   put,
   refreshSession,
 } from "utils";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const mockResponse = (method?: string) => ({
   response: { body: { json: () => ({ test: method }) } },
 });
-const mockDelete = jest.fn().mockImplementation(() => ({ response: {} }));
-const mockGet = jest.fn().mockImplementation(() => mockResponse("get"));
-const mockPost = jest.fn().mockImplementation(() => mockResponse("post"));
-const mockPut = jest.fn().mockImplementation(() => mockResponse("put"));
-const mockSession = jest.fn();
-const mockSignInWithRedirect = jest.fn();
-const mockSignIn = jest.fn();
-const mockSignOut = jest.fn();
-const mockTimeout = jest.fn();
+const mockDelete = vi.fn().mockImplementation(() => ({ response: {} }));
+const mockGet = vi.fn().mockImplementation(() => mockResponse("get"));
+const mockPost = vi.fn().mockImplementation(() => mockResponse("post"));
+const mockPut = vi.fn().mockImplementation(() => mockResponse("put"));
+const mockSession = vi.fn();
+const mockSignInWithRedirect = vi.fn();
+const mockSignIn = vi.fn();
+const mockSignOut = vi.fn();
+const mockTimeout = vi.fn();
 
-jest.mock("aws-amplify/api", () => ({
+vi.mock("aws-amplify/api", () => ({
   del: () => mockDelete(),
   get: () => mockGet(),
   post: () => mockPost(),
   put: () => mockPut(),
 }));
 
-jest.mock("aws-amplify/auth", () => ({
+vi.mock("aws-amplify/auth", () => ({
   fetchAuthSession: () => mockSession(),
   signIn: () => mockSignIn(),
   signOut: () => mockSignOut(),
   signInWithRedirect: () => mockSignInWithRedirect(),
 }));
 
-jest.mock("utils/auth/authLifecycle", () => ({
+vi.mock("utils/auth/authLifecycle", () => ({
   updateTimeout: () => mockTimeout(),
 }));
 
 describe("utils/api/apiLib", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("getRequestHeaders()", () => {
     test("Logs error to console if Auth throws error", async () => {
-      jest.spyOn(console, "log").mockImplementation(jest.fn());
-      const spy = jest.spyOn(console, "log");
+      vi.spyOn(console, "log").mockImplementation(vi.fn());
+      const spy = vi.spyOn(console, "log");
 
       mockSession.mockImplementation(() => {
         throw new Error();
@@ -130,8 +131,8 @@ describe("utils/api/apiLib", () => {
   });
 
   test("API error throws with response info", async () => {
-    jest.spyOn(console, "log").mockImplementation(jest.fn());
-    const spy = jest.spyOn(console, "log");
+    vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const spy = vi.spyOn(console, "log");
 
     mockGet.mockImplementationOnce(() => {
       throw {
@@ -148,8 +149,8 @@ describe("utils/api/apiLib", () => {
   });
 
   test("API error throws without response info", async () => {
-    jest.spyOn(console, "log").mockImplementation(jest.fn());
-    const spy = jest.spyOn(console, "log");
+    vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const spy = vi.spyOn(console, "log");
 
     mockPost.mockImplementationOnce(() => {
       throw "String Error";

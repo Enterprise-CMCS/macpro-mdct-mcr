@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
 // components
 import { ReportPageIntro } from "components";
 // utils
-import { mockVerbiageIntro } from "utils/testing/setupJest";
+import { mockVerbiageIntro } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 const reportPageComponent = <ReportPageIntro text={mockVerbiageIntro} />;

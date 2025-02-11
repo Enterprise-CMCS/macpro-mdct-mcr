@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 // components
 import { Drawer } from "components";
 // constants
@@ -7,9 +8,9 @@ import { closeText } from "../../constants";
 // utils
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
-import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupJest";
+import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupTests";
 
-const mockOnClose = jest.fn();
+const mockOnClose = vi.fn();
 
 const mockDrawerDisclosure = {
   isOpen: true,

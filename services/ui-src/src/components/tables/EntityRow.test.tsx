@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 import { act } from "react-dom/test-utils";
 // components
 import { ReportContext } from "components/reports/ReportProvider";
@@ -11,17 +12,17 @@ import {
   mockStateUserStore,
   mockVerbiageIntro,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import userEvent from "@testing-library/user-event";
 import { useStore } from "utils";
 
-const openAddEditEntityModal = jest.fn();
-const openDeleteEntityModal = jest.fn();
-const mockOpenDrawer = jest.fn();
+const openAddEditEntityModal = vi.fn();
+const openDeleteEntityModal = vi.fn();
+const mockOpenDrawer = vi.fn();
 const mockEntering = false;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
 const completeRowComponent = (
   <RouterWrappedComponent>

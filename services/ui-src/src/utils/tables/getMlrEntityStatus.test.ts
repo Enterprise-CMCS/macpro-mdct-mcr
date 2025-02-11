@@ -1,4 +1,5 @@
-import { mockMlrModalOverlayReport } from "utils/testing/setupJest";
+import { mockMlrModalOverlayReport } from "utils/testing/setupTests";
+import { describe, expect, test } from "vitest";
 import { getMlrEntityStatus } from "./getMlrEntityStatus";
 
 describe("Test getMlrEntityStatus", () => {

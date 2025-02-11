@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ReportContext, ReportPageWrapper } from "components";
 // utils
@@ -13,30 +14,32 @@ import {
   mockStandardReportPageJson,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { useLocation, useNavigate, Location } from "react-router-dom";
 
-const mockUseNavigate = jest.fn();
-const mockUseLocation = jest.fn();
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-  useLocation: () => mockUseLocation(),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+  useLocation: vi.fn(),
 }));
+const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
+const mockUseLocation = useLocation as MockedFunction<typeof useLocation>;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
 });
 
 const mockLocations = {
-  standard: { pathname: mockReportJson.flatRoutes[0].path },
-  drawer: { pathname: mockReportJson.flatRoutes[1].path },
-  modalDrawer: { pathname: mockReportJson.flatRoutes[2].path },
-  modalOverlay: { pathname: mockReportJson.flatRoutes[3].path },
-  reviewSubmit: { pathname: mockReportJson.flatRoutes[4].path },
+  standard: { pathname: mockReportJson.flatRoutes[0].path } as Location,
+  drawer: { pathname: mockReportJson.flatRoutes[1].path } as Location,
+  modalDrawer: { pathname: mockReportJson.flatRoutes[2].path } as Location,
+  modalOverlay: { pathname: mockReportJson.flatRoutes[3].path } as Location,
+  reviewSubmit: { pathname: mockReportJson.flatRoutes[4].path } as Location,
 };
 
 const ReportPageWrapperComponent = (
@@ -110,17 +113,17 @@ describe("<ReportPageWrapper />", () => {
   });
 
   describe("Test ReportPageWrapper functionality", () => {
-    afterEach(() => jest.clearAllMocks());
+    afterEach(() => vi.clearAllMocks());
 
     test("ReportPageWrapper navigates to dashboard if no report", () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       mockUseLocation.mockReturnValue(mockLocations.standard);
       render(ReportPageWrapper_WithoutReport);
-      expect(mockUseNavigate).toHaveBeenCalledWith("/");
+      expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
     test("ReportPageWrapper doesn't display report if no matching report route template", () => {
-      mockUseLocation.mockReturnValue({ pathname: "" });
+      mockUseLocation.mockReturnValue({ pathname: "" } as Location);
       render(ReportPageWrapperComponent);
       expect(
         screen.queryByText(mockStandardReportPageJson.verbiage.intro.section)

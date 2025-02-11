@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { CustomHtmlElement } from "types";
 // utils
 import { labelTextWithOptional, parseCustomHtml } from "utils";
 
-jest.mock("dompurify", () => ({
-  sanitize: jest.fn((el) => el),
-  ...jest.requireActual("dompurify"),
+vi.mock("dompurify", async (importOriginal) => ({
+  ...(await importOriginal()),
+  sanitize: vi.fn((el) => el),
 }));
 
 const mockHtmlString = "<span script='foo'><em>whatever</em></span>";

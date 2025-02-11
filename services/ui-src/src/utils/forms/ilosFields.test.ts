@@ -1,5 +1,6 @@
 import { isIlosCompleted } from "utils";
 import { EntityShape } from "types";
+import { describe, expect, it } from "vitest";
 
 const mockCompleteIlosEntity: EntityShape = {
   id: "mock-complete-ilos",

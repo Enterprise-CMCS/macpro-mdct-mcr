@@ -1,4 +1,5 @@
 import { createEmailLink } from "./email";
+import { describe, expect, test } from "vitest";
 
 const testEmailAddress = "test@testme.com";
 const testEmailSubject = "TestSubject";

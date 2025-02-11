@@ -9,7 +9,9 @@
       "ES2021.String"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      // This allows us to expect(...).toBeVisible() (etc) without TS complaints
+      "@testing-library/jest-dom",
     ],
     "jsx": "react-jsx",
     "sourceMap": true,

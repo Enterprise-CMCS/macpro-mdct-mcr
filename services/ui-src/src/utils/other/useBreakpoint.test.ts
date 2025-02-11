@@ -1,8 +1,9 @@
 import { useMediaQuery } from "@chakra-ui/react";
 import { convertBreakpoints, makeMediaQueryClasses } from "./useBreakpoint";
+import { describe, expect, Mock, test, vi } from "vitest";
 
-jest.mock("@chakra-ui/react", () => ({
-  useMediaQuery: jest.fn((array: boolean[]): boolean[] => array),
+vi.mock("@chakra-ui/react", () => ({
+  useMediaQuery: vi.fn((array: boolean[]): boolean[] => array),
   useTheme: () => ({
     breakpoints: {
       sm: "35em",
@@ -13,7 +14,7 @@ jest.mock("@chakra-ui/react", () => ({
   }),
 }));
 
-const mockedUseMQ = useMediaQuery as unknown as jest.Mock<typeof useMediaQuery>;
+const mockedUseMQ = useMediaQuery as unknown as Mock<typeof useMediaQuery>;
 
 describe("Test useBreakpoint convertBreakpoints method", () => {
   test("Breakpoints are converted from em to px correctly", () => {

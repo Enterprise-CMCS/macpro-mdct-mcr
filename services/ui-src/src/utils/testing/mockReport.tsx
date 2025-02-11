@@ -1,3 +1,4 @@
+import { vi } from "vitest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 import { EntityType, ReportStatus } from "types";
 import { mockErrorMessage } from "./mockBanner";
@@ -712,25 +713,25 @@ export const mockMlrReportsByState = [
 ];
 
 export const mockReportMethods = {
-  archiveReport: jest.fn(),
-  releaseReport: jest.fn(),
-  fetchReport: jest.fn(),
-  fetchReportsByState: jest.fn(),
-  createReport: jest.fn(),
-  updateReport: jest.fn(),
-  submitReport: jest.fn(),
-  clearReportSelection: jest.fn(),
-  clearReportsByState: jest.fn(),
-  setReportSelection: jest.fn(),
+  archiveReport: vi.fn(),
+  releaseReport: vi.fn(),
+  fetchReport: vi.fn(),
+  fetchReportsByState: vi.fn(),
+  createReport: vi.fn(),
+  updateReport: vi.fn(),
+  submitReport: vi.fn(),
+  clearReportSelection: vi.fn(),
+  clearReportsByState: vi.fn(),
+  setReportSelection: vi.fn(),
   isReportPage: true,
   contextIsLoaded: true,
 };
 
 export const mockEntityMethods = {
-  updateEntities: jest.fn(),
-  setEntities: jest.fn(),
-  setSelectedEntity: jest.fn(),
-  setEntityType: jest.fn(),
+  updateEntities: vi.fn(),
+  setEntities: vi.fn(),
+  setSelectedEntity: vi.fn(),
+  setEntityType: vi.fn(),
 };
 
 export const mockMcparReportContext = {

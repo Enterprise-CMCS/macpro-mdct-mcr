@@ -1,5 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { useFormContext } from "react-hook-form";
 // components
 import { NumberField, ReportContext } from "components";
@@ -10,31 +20,31 @@ import {
   mockMcparReportContext,
   mockMcparReportStore,
   mockStateUserStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockTrigger = jest.fn();
+const mockTrigger = vi.fn();
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
-  getValues: jest.fn(),
+  getValues: vi.fn(),
   trigger: mockTrigger,
 };
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
+const mockUseFormContext = useFormContext as unknown as Mock<
   typeof useFormContext
 >;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
+vi.mock("react-hook-form", () => ({
+  useFormContext: vi.fn(() => mockRhfMethods),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+    getValues: vi.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -83,7 +93,7 @@ const numberFieldAutosavingComponent = (
 describe("<NumberField />", () => {
   describe("Test Maskless NumberField", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("NumberField is visible", () => {
@@ -244,7 +254,7 @@ describe("<NumberField />", () => {
     );
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("If only formFieldValue exists, displayValue is set to it", () => {
@@ -301,7 +311,7 @@ describe("<NumberField />", () => {
 
   describe("Test NumberField component autosaves", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test("NumberField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
       mockTrigger.mockReturnValue(true);
@@ -370,7 +380,7 @@ describe("<NumberField />", () => {
     );
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test("Blanking field triggers form validation", async () => {
       mockGetValues(undefined);

@@ -1,5 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 // components
 import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
@@ -14,22 +23,14 @@ import {
   RouterWrappedComponent,
   mockMcparReportStore,
   mockNaaarReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-  useLocation: jest.fn(() => ({
-    pathname: "/mock-route",
-  })),
-}));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockStateUserStore);
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
 const {
   addEntityButtonText,
@@ -54,7 +55,7 @@ const modalDrawerReportPageComponentWithEntities = (
 
 describe("<ModalDrawerReportPage />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   describe("Test ModalDrawerReportPage without entities", () => {
     test("should render the view", () => {

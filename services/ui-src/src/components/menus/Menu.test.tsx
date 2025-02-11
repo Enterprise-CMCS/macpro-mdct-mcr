@@ -1,20 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 // components
 import { Menu } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { UserContext } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockLogout = jest.fn();
+const mockLogout = vi.fn();
 
 const mockUserContext = {
   user: undefined,
   logout: mockLogout,
-  loginWithIDM: jest.fn(),
-  updateTimeout: jest.fn(),
-  getExpiration: jest.fn(),
+  loginWithIDM: vi.fn(),
+  updateTimeout: vi.fn(),
+  getExpiration: vi.fn(),
 };
 
 const menuComponent = (

@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import { describe, expect, MockedFunction, test, vi } from "vitest";
 import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
 // types
 import { ReportShape, ReportType } from "types";
@@ -10,12 +11,12 @@ import {
   mockMcparReportStore,
   mockMlrReportStore,
   mockNaaarReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,

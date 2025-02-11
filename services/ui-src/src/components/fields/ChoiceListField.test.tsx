@@ -1,4 +1,14 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceListField, ReportContext } from "components";
@@ -10,36 +20,36 @@ import {
   mockChoiceWithChild,
   mockMcparReportContext,
   mockMcparReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
 
-const mockTrigger = jest.fn().mockReturnValue(true);
-const mockSetValue = jest.fn();
+const mockTrigger = vi.fn().mockReturnValue(true);
+const mockSetValue = vi.fn();
 const mockRhfMethods = {
   register: () => {},
   unregister: () => {},
   setValue: mockSetValue,
-  getValues: jest.fn(),
+  getValues: vi.fn(),
   trigger: mockTrigger,
 };
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
+const mockUseFormContext = useFormContext as unknown as Mock<
   typeof useFormContext
 >;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
+vi.mock("react-hook-form", () => ({
+  useFormContext: vi.fn(() => mockRhfMethods),
 }));
 
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+    getValues: vi.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
 const CheckboxComponent = (
@@ -166,7 +176,7 @@ describe("<ChoiceListField />", () => {
     );
 
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Checkbox Choicelist correctly setting passed hydration value", () => {
@@ -282,7 +292,7 @@ describe("<ChoiceListField />", () => {
     );
 
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Choicelist Checkbox autosaves with checked value when autosave true, and form is valid", async () => {
@@ -352,7 +362,7 @@ describe("<ChoiceListField />", () => {
    */
   describe("Test Choicelist onChangeHandler", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Checking and unchecking choices in a CheckboxChoicelist are reflected correctly in the form", async () => {
@@ -761,7 +771,7 @@ describe("<ChoiceListField />", () => {
     );
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Component with validateOnRender passed should validate on initial render", async () => {
@@ -773,7 +783,7 @@ describe("<ChoiceListField />", () => {
 
   describe("Test ChoiceList accessibility", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       mockGetValues(undefined);
     });
 

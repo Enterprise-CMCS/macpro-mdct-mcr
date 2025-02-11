@@ -1,22 +1,30 @@
 import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { act } from "react-dom/test-utils";
 // components
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
 // utils
-import { useStore } from "utils";
-import { mockBannerData } from "utils/testing/setupJest";
+import { useStore, deleteBanner, getBanner, writeBanner } from "utils";
+import { mockBannerData } from "utils/testing/setupTests";
 // verbiage
 import { bannerErrors } from "verbiage/errors";
 
-jest.mock("utils/api/requestMethods/banner", () => ({
-  deleteBanner: jest.fn(() => {}),
-  getBanner: jest.fn(() => {}),
-  writeBanner: jest.fn(() => {}),
+vi.mock("utils/api/requestMethods/banner", () => ({
+  deleteBanner: vi.fn(),
+  getBanner: vi.fn(),
+  writeBanner: vi.fn(),
 }));
-
-const mockAPI = require("utils/api/requestMethods/banner");
+const mockedGetBanner = getBanner as MockedFunction<typeof getBanner>;
 
 const TestComponent = () => {
   const { ...context } = useContext(AdminBannerContext);
@@ -47,24 +55,24 @@ describe("<AdminBannerProvider />", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   describe("test fetch banner method", () => {
     test("fetchAdminBanner method is called on load", async () => {
-      expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
+      expect(getBanner).toHaveBeenCalledTimes(1);
     });
 
     test("fetchAdminBanner method calls API getBanner method", async () => {
-      expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
+      expect(getBanner).toHaveBeenCalledTimes(1);
       await act(async () => {
         const fetchButton = screen.getByText("Fetch");
         await userEvent.click(fetchButton);
       });
       // 1 call on render + 1 call on button click
-      await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(getBanner).toHaveBeenCalledTimes(2));
     });
     test("Shows error if fetchBanner throws error", async () => {
-      mockAPI.getBanner.mockImplementation(() => {
+      mockedGetBanner.mockImplementation(() => {
         throw new Error();
       });
       await act(async () => {
@@ -81,11 +89,11 @@ describe("<AdminBannerProvider />", () => {
         const deleteButton = screen.getByText("Delete");
         await userEvent.click(deleteButton);
       });
-      expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
-      expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
+      expect(deleteBanner).toHaveBeenCalledTimes(1);
+      expect(deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
 
       // 1 call on render + 1 call on button click
-      await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(getBanner).toHaveBeenCalledTimes(2));
     });
   });
 
@@ -95,8 +103,8 @@ describe("<AdminBannerProvider />", () => {
         const writeButton = screen.getByText("Write");
         await userEvent.click(writeButton);
       });
-      expect(mockAPI.writeBanner).toHaveBeenCalledTimes(1);
-      expect(mockAPI.writeBanner).toHaveBeenCalledWith(mockBannerData);
+      expect(writeBanner).toHaveBeenCalledTimes(1);
+      expect(writeBanner).toHaveBeenCalledWith(mockBannerData);
     });
   });
 });

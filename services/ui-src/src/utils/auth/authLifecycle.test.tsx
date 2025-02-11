@@ -1,4 +1,5 @@
 import { initAuthManager, updateTimeout, getExpiration } from "utils";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { refreshCredentials } from "./authLifecycle";
 import { sub } from "date-fns";
 import { Hub } from "aws-amplify/utils";
@@ -18,15 +19,15 @@ describe("Test AuthManager Init", () => {
 describe("Test AuthManager", () => {
   beforeEach(() => {
     // Auth manager has a debounce that runs for 2s every time it updates
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     initAuthManager();
-    jest.runAllTimers();
+    vi.runAllTimers();
   });
 
   test("Test updateTimeout", () => {
     const currentTime = Date.now();
     updateTimeout();
-    jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
+    vi.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
     const savedTime = localStorage.getItem("mdctmcr_session_exp");
     expect(new Date(savedTime!).valueOf()).toBeGreaterThanOrEqual(
@@ -39,7 +40,7 @@ describe("Test AuthManager", () => {
     const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
     localStorage.setItem("mdctmcr_session_exp", initialExpiration);
     await refreshCredentials();
-    jest.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
+    vi.runAllTimers(); // Dodge 2 second debounce, get the updated timestamp
 
     // Check that the new timestamp is updated
     const storedExpiration = getExpiration();
@@ -57,13 +58,13 @@ describe("Test AuthManager", () => {
 });
 
 describe("Test AuthManager Hub Integration", () => {
-  let spy = jest.spyOn(localStorage.__proto__, "setItem");
+  let spy = vi.spyOn(localStorage.__proto__, "setItem");
 
   afterEach(() => {
     spy.mockClear();
   });
   test("Listens for auth events", () => {
-    Hub.listen = jest
+    Hub.listen = vi
       .fn()
       .mockImplementation((channel: string, callback: any) => {
         callback({ payload: { event: "signIn" } });
@@ -74,7 +75,7 @@ describe("Test AuthManager Hub Integration", () => {
 
   test("Ignore unrelated auth events", () => {
     const currentTime = Date.now();
-    Hub.listen = jest
+    Hub.listen = vi
       .fn()
       .mockImplementation((channel: string, callback: any) => {
         callback({ payload: { event: "nonExistantEvent" } });

@@ -1,5 +1,14 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 // components
 import { AddEditReportModal, ReportContext } from "components";
 // utils
@@ -15,14 +24,14 @@ import {
   mockNaaarReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { convertDateUtcToEt, useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockCreateReport = jest.fn();
-const mockUpdateReport = jest.fn();
-const mockFetchReportsByState = jest.fn();
-const mockCloseHandler = jest.fn();
+const mockCreateReport = vi.fn();
+const mockUpdateReport = vi.fn();
+const mockFetchReportsByState = vi.fn();
+const mockCloseHandler = vi.fn();
 
 const mockedMcparReportContext = {
   ...mockMcparReportContext,
@@ -48,8 +57,8 @@ const mockedNaaarReportContext = {
   isReportPage: true,
 };
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
 const modalComponent = (
   <RouterWrappedComponent>
@@ -181,7 +190,7 @@ const naaarModalComponentWithSelectedReport = (
 
 describe("<AddEditProgramModal />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   describe("Test AddEditProgramModal", () => {
     beforeEach(async () => {
@@ -216,7 +225,7 @@ describe("<AddEditProgramModal />", () => {
       });
     });
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     const fillForm = async (form: any) => {

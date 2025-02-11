@@ -1,5 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 // components
 import { AddEditEntityModal, ReportContext } from "components";
 // utils
@@ -12,20 +21,22 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
+vi.mock("react-uuid", () => ({
+  default: vi.fn(() => "mock-id-2"),
+}));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
 });
 
-const mockUpdateReport = jest.fn();
-const mockCloseHandler = jest.fn();
+const mockUpdateReport = vi.fn();
+const mockCloseHandler = vi.fn();
 
 const mockEntity = {
   id: "mock-id-1",
@@ -67,7 +78,7 @@ describe("<AddEditEntityModal />", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("AddEditEntityModal shows the contents", () => {

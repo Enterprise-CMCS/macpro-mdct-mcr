@@ -1,6 +1,16 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { axe } from "jest-axe";
 // components
 import { ReportContext, DashboardPage } from "components";
@@ -26,33 +36,30 @@ import {
   mockNaaarReportContext,
   mockMlrReportStore,
   mockNaaarReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
+import { useNavigate } from "react-router-dom";
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
-jest.mock("utils/other/useBreakpoint");
-const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
-  typeof useBreakpoint
->;
-const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
+vi.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as MockedFunction<typeof useBreakpoint>;
+const mockMakeMediaQueryClasses = makeMediaQueryClasses as MockedFunction<
   typeof makeMediaQueryClasses
 >;
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
-  useLocation: jest.fn(() => ({
-    pathname: "/mcpar",
-  })),
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
+const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
@@ -171,7 +178,7 @@ describe("<DashboardTable />", () => {
     });
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Check that MCPAR Dashboard view renders", async () => {
@@ -227,8 +234,8 @@ describe("<DashboardTable />", () => {
         expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(
           1
         );
-        expect(mockUseNavigate).toBeCalledTimes(1);
-        expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
+        expect(mockNavigate).toBeCalledTimes(1);
+        expect(mockNavigate).toBeCalledWith("/mock/mock-route-1");
       });
     });
 
@@ -322,7 +329,7 @@ describe("<DashboardTable />", () => {
     });
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Admin user can archive reports", async () => {
@@ -440,7 +447,7 @@ describe("<DashboardTable />", () => {
     });
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Admin user can release reports", async () => {
@@ -482,7 +489,7 @@ describe("<DashboardTable />", () => {
       mockedUseStore.mockReturnValue(mockNoUserStore);
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(mockUseNavigate).toBeCalledWith("/");
+        expect(mockNavigate).toBeCalledWith("/");
       });
     });
   });

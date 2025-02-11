@@ -1,25 +1,35 @@
 import { useContext } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { act } from "react-dom/test-utils";
 // utils
 import { UserContext, UserProvider, useStore } from "utils";
-import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
+import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupTests";
 
-const mockAuthenticateWithIDM = jest.fn();
-const mockGetTokens = jest.fn();
-const mockLogoutUser = jest.fn();
+const mockAuthenticateWithIDM = vi.fn();
+const mockGetTokens = vi.fn();
+const mockLogoutUser = vi.fn();
 
-jest.mock("utils/api/apiLib", () => ({
+vi.mock("utils/api/apiLib", () => ({
   authenticateWithIDM: () => mockAuthenticateWithIDM(),
   getTokens: () => mockGetTokens(),
   logoutUser: () => mockLogoutUser(),
 }));
 
-jest.mock("utils/state/useStore");
+vi.mock("utils/state/useStore");
 
-const mockSetUser = jest.fn();
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockSetUser = vi.fn();
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockUseStore,
   setUser: mockSetUser,
@@ -68,7 +78,7 @@ const setWindowOrigin = (windowOrigin: string) => {
   global.window = Object.create(window);
   Object.defineProperty(window, "location", {
     value: {
-      assign: jest.fn(),
+      assign: vi.fn(),
       origin: windowOrigin,
       pathname: "/",
     },
@@ -140,8 +150,8 @@ describe("<UserProvider />", () => {
 
   describe("Test UserProvider error handling", () => {
     test("Logs error to console if logout throws error", async () => {
-      jest.spyOn(console, "log").mockImplementation(jest.fn());
-      const spy = jest.spyOn(console, "log");
+      vi.spyOn(console, "log").mockImplementation(vi.fn());
+      const spy = vi.spyOn(console, "log");
 
       mockLogoutUser.mockImplementation(() => {
         throw new Error();

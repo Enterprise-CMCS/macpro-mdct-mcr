@@ -1,5 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ModalOverlayReportPage, ReportProvider } from "components";
 // utils
@@ -13,14 +14,14 @@ import {
   mockMLRReportEntityStartedFieldData,
   mockEmptyReportStore,
   mockEntityStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { UserProvider, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 const mockMlrEntityStartedStore = {
   ...mockEntityStore,
   ...mockMlrReportStore,
@@ -30,7 +31,7 @@ const mockMlrEntityStartedStore = {
   },
 };
 
-const mockSetSidebarHidden = jest.fn();
+const mockSetSidebarHidden = vi.fn();
 
 const modalOverlayReportPageComponent = (
   <RouterWrappedComponent>
@@ -48,7 +49,7 @@ const modalOverlayReportPageComponent = (
 describe("<ModalOverlayReportPage />", () => {
   describe("Test ModalOverlayReportPage (empty state)", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     const verbiage = mockModalOverlayReportPageWithOverlayJson.verbiage;
@@ -152,7 +153,7 @@ describe("<ModalOverlayReportPage />", () => {
 
   describe("Test ModalOverlayReportPage (Entities Added State)", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMlrEntityStartedStore,

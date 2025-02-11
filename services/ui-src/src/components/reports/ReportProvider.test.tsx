@@ -1,6 +1,15 @@
 import { useContext } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
@@ -18,19 +27,23 @@ import {
   mockReportKeys,
   mockMcparReport,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockReportAPI = require("utils/api/requestMethods/report");
-jest.mock("utils/api/requestMethods/report", () => ({
-  getReport: jest.fn(() => {}),
-  getReportsByState: jest.fn(() => {}),
-  postReport: jest.fn(() => {}),
-  putReport: jest.fn(() => {}),
-  archiveReport: jest.fn(() => {}),
-  submitReport: jest.fn(() => {}),
-  releaseReport: jest.fn(() => {}),
+vi.mock("utils/api/requestMethods/report", () => ({
+  getReport: vi.fn(),
+  getReportsByState: vi.fn(),
+  postReport: vi.fn(),
+  putReport: vi.fn(),
+  archiveReport: vi.fn(),
+  submitReport: vi.fn(),
+  releaseReport: vi.fn(),
 }));
+const mockedGetReport = getReport as MockedFunction<typeof getReport>;
+const mockedGetReportsByState = getReportsByState as MockedFunction<
+  typeof getReportsByState
+>;
+const mockedPutReport = putReport as MockedFunction<typeof putReport>;
 
 const TestComponent = () => {
   const { ...context } = useContext(ReportContext);
@@ -84,7 +97,7 @@ const testComponent = (
 
 describe("<ReportProvider />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("fetchReport method calls API getReport method", async () => {
@@ -96,7 +109,7 @@ describe("<ReportProvider />", () => {
   });
 
   test("Shows error if fetchReport throws error", async () => {
-    mockReportAPI.getReport.mockImplementation(() => {
+    mockedGetReport.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {
@@ -120,7 +133,7 @@ describe("<ReportProvider />", () => {
   });
 
   test("Shows error if fetchReportsByState throws error", async () => {
-    mockReportAPI.getReportsByState.mockImplementation(() => {
+    mockedGetReportsByState.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {
@@ -144,7 +157,7 @@ describe("<ReportProvider />", () => {
   });
 
   test("Shows error if updateReport throws error", async () => {
-    mockReportAPI.putReport.mockImplementation(() => {
+    mockedPutReport.mockImplementation(() => {
       throw new Error();
     });
     await act(async () => {
@@ -213,7 +226,7 @@ describe("<ReportProvider />", () => {
       localStorage.setItem("selectedReportBasePath", "/mock");
     });
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
       localStorage.clear();
     });
 

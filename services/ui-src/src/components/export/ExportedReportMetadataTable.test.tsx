@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import {
   ExportedReportMetadataTable,
@@ -12,14 +13,14 @@ import { useStore } from "utils";
 import {
   mockMcparReportStore,
   mockMlrReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import mcparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrExportVerbiage from "verbiage/pages/mlr/mlr-export";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });

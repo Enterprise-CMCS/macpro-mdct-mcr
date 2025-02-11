@@ -12,6 +12,7 @@ import {
   oneSecondToMidnight,
   twoDigitCalendarDate,
 } from "./time";
+import { describe, expect, it, test } from "vitest";
 
 // 1/1/2022 @ 00:00:00
 const testDate = {

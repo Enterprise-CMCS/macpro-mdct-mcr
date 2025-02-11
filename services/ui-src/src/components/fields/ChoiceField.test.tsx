@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, Mock, test, vi } from "vitest";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceField } from "components";
@@ -9,18 +10,18 @@ import { testA11y } from "utils/testing/commonTests";
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
-  getValues: jest.fn(),
+  getValues: vi.fn(),
 };
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
+const mockUseFormContext = useFormContext as unknown as Mock<
   typeof useFormContext
 >;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
+vi.mock("react-hook-form", () => ({
+  useFormContext: vi.fn(() => mockRhfMethods),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValue(returnValue),
+    getValues: vi.fn().mockReturnValue(returnValue),
   }));
 
 const ChoiceFieldComponent = (

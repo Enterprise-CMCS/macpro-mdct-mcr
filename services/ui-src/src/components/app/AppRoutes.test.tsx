@@ -1,11 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 // components
 import { AppRoutes } from "components";
 // utils
 import { UserProvider, useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import {
   mockAdminUserStore,
   mockBannerStore,
@@ -13,16 +23,19 @@ import {
   mockMcparReportStore,
   mockMlrReportStore,
   mockNaaarReportStore,
-  mockLDFlags,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore", () => ({
+  useStore: vi.fn(),
+}));
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
-// LaunchDarkly
-mockLDFlags.setDefault({ naaarReport: false });
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({ naaarReport: false }),
+}));
+const mockedUseFlags = useFlags as MockedFunction<typeof useFlags>;
 
 const appRoutesComponent = (history: any) => (
   <Router location={history.location} navigator={history}>
@@ -138,7 +151,7 @@ describe("<AppRoutes />", () => {
       });
     });
     test("if naaarReport flag is true, NAAAR routes should be accesible to users", async () => {
-      mockLDFlags.set({ naaarReport: true });
+      mockedUseFlags.mockReturnValueOnce({ naaarReport: true });
       history = createMemoryHistory();
       history.push("/naaar");
       await act(async () => {
@@ -152,7 +165,6 @@ describe("<AppRoutes />", () => {
     });
 
     test("if naaarReport flag is false, NAAAR routes should redirect to 404 Not Found page", async () => {
-      mockLDFlags.set({ naaarReport: false });
       history = createMemoryHistory();
       history.push("/naaar");
       await act(async () => {
