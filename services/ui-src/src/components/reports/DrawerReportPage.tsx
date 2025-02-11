@@ -133,8 +133,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         state,
         id: report?.id,
       };
-      const currentEntities = [...(report?.fieldData[entityType] || {})];
-      let selectedEntityIndex = report?.fieldData[entityType].findIndex(
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
+      let selectedEntityIndex = report?.fieldData[entityType]?.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
       // if new custom entity, set index to append to array
