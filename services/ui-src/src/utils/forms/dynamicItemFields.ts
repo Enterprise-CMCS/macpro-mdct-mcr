@@ -48,7 +48,8 @@ export const generateAnalysisMethodChoices = (
 ) => {
   const standardTypeField = form.fields?.[1].props?.choices;
   for (let i = 0; i < standardTypeField.length; i++) {
-    const idx = i === 9 ? 2 : 1;
+    // handle additional fields for the last option
+    const idx = i === standardTypeField.length - 1 ? 2 : 1;
     standardTypeField[i].children[idx].props.choices = items.map((item) => {
       return {
         id: item.id,
