@@ -427,12 +427,69 @@ export const mockNaaarStandardsPageJson = {
     id: "standards",
     fields: [
       {
-        id: "mock-field-id",
+        id: "mock-field-id-1",
         props: {
           choices: [
             {
               id: "mock-choice-id-1",
               label: "mock label 1",
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+      {
+        id: "mock-field-id-2",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1",
+              children: [
+                {
+                  id: "mock-child-1",
+                  props: {
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-2",
+                  props: {
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-3",
+                  props: {
+                    choices: [],
+                  },
+                },
+              ],
+            },
+            {
+              id: "mock-choice-id-2",
+              label: "mock label 2",
+              children: [
+                {
+                  id: "mock-child-1",
+                  props: {
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-2",
+                  props: {
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-3",
+                  props: {
+                    choices: [],
+                  },
+                },
+              ],
             },
           ],
         },
