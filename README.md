@@ -106,7 +106,7 @@ Local authorization bypasses Cognito. The frontend mimics login in local storage
 
 ### Unit Testing
 
-We use Jest for unit tests.
+We use Vitest for unit tests. If you're familiar with Jest, have no fear - the API is nearly identical.
 
 To run all frontend unit tests:
 

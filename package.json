@@ -52,7 +52,6 @@
     "eslint-plugin-jsx-a11y": "^6.x",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "jest-environment-jsdom": "^29.7.0",
     "prettier": "^2.4.1",
     "serverless": "^4.4.18",
     "serverless-cloudfront-invalidate": "^1.11.0",

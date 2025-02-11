@@ -6,7 +6,7 @@ import { Hub } from "aws-amplify/utils";
 
 describe("Test AuthManager Init", () => {
   test("Initializing when past expiration will require a new login", async () => {
-    // Set an initial time, because jest runs too fast to have different timestamps
+    // Set an initial time, because tests run too fast to have different timestamps
     const expired = sub(Date.now(), { days: 5 }).toString();
     localStorage.setItem("mdctmcr_session_exp", expired);
 
@@ -36,7 +36,7 @@ describe("Test AuthManager", () => {
   });
 
   test("Test getExpiration and refreshCredentials", async () => {
-    // Set an initial time, because jest runs too fast to have different timestamps
+    // Set an initial time, because tests run too fast to have different timestamps
     const initialExpiration = sub(Date.now(), { seconds: 5 }).toString();
     localStorage.setItem("mdctmcr_session_exp", initialExpiration);
     await refreshCredentials();

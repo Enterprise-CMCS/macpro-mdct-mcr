@@ -13,7 +13,7 @@ import { cleanup } from "@testing-library/react";
  */
 expect.extend(domMatchers);
 
-// jest-axe provides the same behavior for expect(...).toHaveNoViolations()
+// jest-axe defines the custom matcher expect(...).toHaveNoViolations()
 expect.extend(toHaveNoViolations);
 
 // Explicitly instruct TL to tear down the DOM between each test
