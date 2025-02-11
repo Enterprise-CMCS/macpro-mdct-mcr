@@ -42,6 +42,23 @@ export const generateAddEntityDrawerItemFields = (
   return form;
 };
 
+export const generateAnalysisMethodChoices = (
+  form: FormJson,
+  items: AnyObject[]
+) => {
+  const standardTypeField = form.fields?.[1].props?.choices;
+  for (let i = 0; i < standardTypeField.length; i++) {
+    const idx = i === 9 ? 2 : 1;
+    standardTypeField[i].children[idx].props.choices = items.map((item) => {
+      return {
+        id: item.id,
+        label: item.name || item.custom_analysis_method_name,
+      };
+    });
+  }
+  return form;
+};
+
 const availableItems = (items: AnyObject[], entityType: string) => {
   const ilosFieldName = "plan_ilosUtilizationByPlan";
   const providerTypeFieldName = "standard_coreProviderTypeCoveredByStandard";

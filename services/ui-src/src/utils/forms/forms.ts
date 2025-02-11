@@ -28,6 +28,7 @@ import {
 } from "components/forms/FormLayoutElements";
 import {
   generateAddEntityDrawerItemFields,
+  generateAnalysisMethodChoices,
   generateDrawerItemFields,
 } from "./dynamicItemFields";
 
@@ -287,6 +288,9 @@ export const getForm = (params: getFormParams) => {
   const providerTypes = report?.fieldData?.providerTypes?.map(
     (providerType: { name: string }) => providerType
   );
+  const analysisMethods = report?.fieldData?.analysisMethods?.map(
+    (analysisMethod: { name: string }) => analysisMethod
+  );
   const reportType = report?.reportType;
 
   let modifiedForm = drawerForm;
@@ -308,6 +312,7 @@ export const getForm = (params: getFormParams) => {
           "standards"
         );
         modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
+        generateAnalysisMethodChoices(drawerForm, analysisMethods);
       }
       break;
     case ReportType.MCPAR:
