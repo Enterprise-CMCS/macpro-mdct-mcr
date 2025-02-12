@@ -134,13 +134,17 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         id: report?.id,
       };
       const currentEntities = [...(report?.fieldData[entityType] || [])];
-      let selectedEntityIndex = report?.fieldData[entityType]?.findIndex(
-        (entity: EntityShape) => entity.id === selectedEntity?.id
-      );
+      let selectedEntityIndex = selectedEntity
+        ? report?.fieldData[entityType]?.findIndex(
+            (entity: EntityShape) => entity.id === selectedEntity?.id
+          )
+        : 0;
+
       // if new custom entity, set index to append to array
       if (canAddEntities && selectedEntityIndex < 0) {
         selectedEntityIndex = currentEntities.length;
       }
+
       let referenceForm = form;
       if (selectedIsCustomEntity) {
         referenceForm = addEntityForm;
@@ -149,14 +153,17 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         enteredData,
         referenceForm.fields.filter(isFieldElement)
       );
+
       const entriesToClear = getEntriesToClear(
         enteredData,
         referenceForm.fields.filter(isFieldElement)
       );
+
       const newEntity = {
         ...(selectedEntity || { id: uuid() }),
         ...filteredFormData,
       };
+
       const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
