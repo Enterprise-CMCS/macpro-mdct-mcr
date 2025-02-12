@@ -9,7 +9,6 @@
     "preview": "vite preview",
     "coverage": "vitest --run --coverage",
     "test": "vitest",
-    "watchTest": "vitest",
     "a11y": "pa11y --runner axe --runner htmlcs",
     "postinstall": "patch-package"
   },

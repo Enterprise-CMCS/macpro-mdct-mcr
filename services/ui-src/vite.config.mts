@@ -38,5 +38,12 @@ export default defineConfig(({ mode }) => ({
       process.cwd(), // Find the .env file in services/ui-src/src
       '' // Load all variables, regardless of prefix (by default, only 'VITE_')
     ),
+    coverage: {
+      /*
+       * The default coverage directory is "<root>/coverage",
+       * but we want to output to ui-src/coverage instead.
+       */
+      reportsDirectory: "../coverage",
+    },
   },
 }));
