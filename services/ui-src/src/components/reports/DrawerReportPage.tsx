@@ -21,6 +21,7 @@ import {
   isFieldElement,
   InputChangeEvent,
   FormJson,
+  entityTypes,
 } from "types";
 // utils
 import {
@@ -51,7 +52,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
-  const canAddEntities = !!addEntityDrawerForm.id;
+  const canAddEntities =
+    !!addEntityDrawerForm.id || entityType === entityTypes[8];
   const entities = report?.fieldData?.[entityType] || [];
 
   // check if there are ILOS and associated plans
@@ -133,12 +135,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         state,
         id: report?.id,
       };
+
       const currentEntities = [...(report?.fieldData[entityType] || [])];
-      let selectedEntityIndex = selectedEntity
-        ? report?.fieldData[entityType]?.findIndex(
-            (entity: EntityShape) => entity.id === selectedEntity?.id
-          )
-        : 0;
+      let selectedEntityIndex = currentEntities.findIndex(
+        (entity: EntityShape) => entity.id == selectedEntity?.id
+      );
 
       // if new custom entity, set index to append to array
       if (canAddEntities && selectedEntityIndex < 0) {
