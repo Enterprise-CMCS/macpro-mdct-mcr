@@ -128,10 +128,11 @@ In either of these directories you can also check code coverage with
 yarn coverage
 ```
 
-Live reload all tests
+By default, `yarn test` will watch files for changes.
+To run tests once and exit:
 
 ```
-yarn test --watch
+yarn test --run
 ```
 
 ### Integration Testing
