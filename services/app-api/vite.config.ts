@@ -4,5 +4,8 @@ export default defineConfig({
   test: {
     setupFiles: "utils/testing/setupTests.ts",
     exclude: [...configDefaults.exclude, ".build/**"],
+    coverage: {
+      reporter: ["text", "lcov"],
+    },
   },
 });

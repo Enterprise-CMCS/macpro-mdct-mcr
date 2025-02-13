@@ -44,6 +44,7 @@ export default defineConfig(({ mode }) => ({
        * but we want to output to ui-src/coverage instead.
        */
       reportsDirectory: "../coverage",
+      reporter: ["text", "lcov"],
     },
   },
 }));
