@@ -45,6 +45,7 @@ export default defineConfig(({ mode }) => ({
        */
       reportsDirectory: "../coverage",
       reporter: ["text", "lcov"],
+      provider: "istanbul",
     },
   },
 }));

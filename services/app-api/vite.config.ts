@@ -6,6 +6,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, ".build/**"],
     coverage: {
       reporter: ["text", "lcov"],
+      provider: "istanbul",
     },
   },
 });
