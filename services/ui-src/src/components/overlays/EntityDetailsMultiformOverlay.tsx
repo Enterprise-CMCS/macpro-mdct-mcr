@@ -1,7 +1,22 @@
 import React, { MouseEventHandler, useEffect } from "react";
 // components
-import { Box, Button, Flex, Heading, Image, Spinner } from "@chakra-ui/react";
-import { Form, InstructionsAccordion, ReportPageIntro } from "components";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Spinner,
+  Td,
+  Text,
+  Tr,
+} from "@chakra-ui/react";
+import {
+  Form,
+  InstructionsAccordion,
+  ReportPageIntro,
+  Table,
+} from "components";
 // types
 import {
   EntityDetailsMultiformShape,
@@ -17,8 +32,12 @@ const Intro = ({ verbiage }: { verbiage: EntityDetailsMultiformVerbiage }) => {
 
   return (
     <Box>
-      {heading && <Heading as="h3">{heading}</Heading>}
-      {hint && <Box>{hint}</Box>}
+      {heading && (
+        <Heading as="h3" sx={sx.plan.heading}>
+          {heading}
+        </Heading>
+      )}
+      {hint && <Text>{hint}</Text>}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
     </Box>
   );
@@ -51,23 +70,44 @@ export const EntityDetailsMultiformOverlay = ({
         {verbiage.backButton}
       </Button>
       <ReportPageIntro text={verbiage.intro} />
-      {forms.map((formObject: EntityDetailsMultiformShape, index: number) => (
-        <Box key={`${formObject.form.id}-${index}`}>
-          {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
-          <Form
-            id={formObject.form.id}
-            formJson={formObject.form}
-            onSubmit={onSubmit}
-            formData={selectedEntity}
-            autosave={true}
-            disabled={disabled}
-            validateOnRender={validateOnRender || false}
-            dontReset={true}
-          >
-            {formObject.table && <Box>TODO: Table</Box>}
-          </Form>
-        </Box>
-      ))}
+      <Box>
+        {forms.map((formObject: EntityDetailsMultiformShape) => (
+          <Box key={`${formObject.form.id}`} sx={sx.plan.container}>
+            {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
+            <Form
+              id={formObject.form.id}
+              formJson={formObject.form}
+              onSubmit={onSubmit}
+              formData={selectedEntity}
+              autosave={true}
+              disabled={disabled}
+              validateOnRender={validateOnRender || false}
+              dontReset={true}
+            >
+              {formObject.table && (
+                <Table
+                  content={{
+                    headRow: formObject.table.headRow,
+                    caption: formObject.table.caption,
+                  }}
+                >
+                  {formObject.table.bodyRows.map((row, rowIndex) => {
+                    <Tr key={`${formObject.form.id}-${rowIndex}`}>
+                      {row.map((cell: string, cellIndex: number) => {
+                        <Td
+                          key={`${formObject.form.id}-${rowIndex}-${cellIndex}}`}
+                        >
+                          {cell}
+                        </Td>;
+                      })}
+                    </Tr>;
+                  })}
+                </Table>
+              )}
+            </Form>
+          </Box>
+        ))}
+      </Box>
       <Box sx={sx.footerBox}>
         <Flex sx={sx.buttonFlex}>
           {disabled ? (
@@ -123,7 +163,6 @@ const sx = {
   },
   footerBox: {
     marginTop: "2rem",
-    borderTop: "1.5px solid var(--chakra-colors-palette-gray_light)",
   },
   buttonFlex: {
     justifyContent: "end",
@@ -131,5 +170,17 @@ const sx = {
   },
   saveButton: {
     width: "8.25rem",
+  },
+  plan: {
+    container: {
+      paddingTop: "1.75rem",
+      "&:first-child": {
+        borderTopColor: "palette.gray_lighter",
+        borderTopWidth: "1px",
+      },
+    },
+    heading: {
+      fontSize: "1.3rem",
+    },
   },
 };

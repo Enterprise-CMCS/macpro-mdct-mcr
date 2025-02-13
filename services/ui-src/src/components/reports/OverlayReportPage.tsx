@@ -224,7 +224,7 @@ const sx = {
       paddingLeft: "1rem",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
+      borderColor: "palette.gray_lighter",
       ".tablet &, .mobile &": {
         border: "none",
       },
@@ -234,6 +234,9 @@ const sx = {
       "&:nth-of-type(3)": {
         width: "260px",
       },
+    },
+    td: {
+      borderColor: "palette.gray_lighter",
     },
   },
   missingEntityMessage: {

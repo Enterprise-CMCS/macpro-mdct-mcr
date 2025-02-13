@@ -92,8 +92,9 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
 export interface EntityDetailsMultiformShape {
   form: FormJson;
   table?: {
+    caption: string;
+    bodyRows: Array<[string]>;
     headRow: Array<string | ScreenReaderOnlyHeaderName>;
-    columns: any;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
