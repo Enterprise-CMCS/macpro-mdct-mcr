@@ -11,6 +11,7 @@ import {
 // types
 import {
   AdminBannerState,
+  DrawerEntityType,
   McrEntityState,
   McrReportState,
   McrUserState,
@@ -223,7 +224,7 @@ export const mockEntityStore: McrEntityState = {
 
 export const mockAnalysisMethodEntityStore: McrEntityState = {
   entities: [],
-  entityType: "analysisMethods",
+  entityType: DrawerEntityType.ANALYSIS_METHODS,
   selectedEntity: {
     id: "k9t7YoOeTOAXX3s7qF6XfN33",
     name: "Geomapping",

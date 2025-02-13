@@ -4,15 +4,17 @@ import { devtools, persist } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
+  DrawerEntityType,
   EntityShape,
-  EntityType,
   ErrorVerbiage,
   McrEntityState,
   McrReportState,
   MCRUser,
   McrUserState,
+  ModalDrawerEntityType,
   ReportMetadataShape,
   ReportShape,
+  StandardEntityType,
 } from "types";
 
 // USER STORE
@@ -103,7 +105,13 @@ const entityStore = (set: Function) => ({
     set(() => ({ selectedEntity: newSelectedEntity }), false, {
       type: "setSelectedEntity",
     }),
-  setEntityType: (newEntityType: EntityType | undefined) =>
+  setEntityType: (
+    newEntityType:
+      | StandardEntityType
+      | DrawerEntityType
+      | ModalDrawerEntityType
+      | undefined
+  ) =>
     set(() => ({ entityType: newEntityType }), false, {
       type: "setEntityType",
     }),

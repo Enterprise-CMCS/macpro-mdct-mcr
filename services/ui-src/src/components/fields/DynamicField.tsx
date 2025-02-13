@@ -14,10 +14,11 @@ import { svgFilters } from "styles/theme";
 // types
 import {
   AnyObject,
+  DrawerEntityType,
   EntityShape,
-  EntityType,
   InputChangeEvent,
   ReportStatus,
+  StandardEntityType,
 } from "types";
 // utils
 import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
@@ -312,7 +313,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
 };
 
 interface Props {
-  name: EntityType;
+  name: StandardEntityType | DrawerEntityType;
   label: string;
   isRequired?: boolean;
   [key: string]: any;

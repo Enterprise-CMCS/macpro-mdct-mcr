@@ -1,11 +1,13 @@
 import {
   AdminBannerData,
+  DrawerEntityType,
   EntityShape,
-  EntityType,
   ErrorVerbiage,
   MCRUser,
+  ModalDrawerEntityType,
   ReportMetadataShape,
   ReportShape,
+  StandardEntityType,
 } from "types";
 
 // initial user state
@@ -60,10 +62,20 @@ export interface McrReportState {
 export interface McrEntityState {
   // INITIAL STATE
   selectedEntity: EntityShape | undefined;
-  entityType: EntityType | undefined;
+  entityType:
+    | StandardEntityType
+    | DrawerEntityType
+    | ModalDrawerEntityType
+    | undefined;
   entities: EntityShape[] | undefined;
   // ACTIONS
   setSelectedEntity: (newSelectedEntity: EntityShape | undefined) => void;
-  setEntityType: (newEntityType: EntityType | undefined) => void;
+  setEntityType: (
+    newEntityType:
+      | StandardEntityType
+      | DrawerEntityType
+      | ModalDrawerEntityType
+      | undefined
+  ) => void;
   setEntities: (newEntities: EntityShape[] | undefined) => void;
 }

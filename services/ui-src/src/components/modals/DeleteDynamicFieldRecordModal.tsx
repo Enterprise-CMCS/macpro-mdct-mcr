@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 // types
-import { EntityShape, EntityType } from "types";
+import { DrawerEntityType, EntityShape, StandardEntityType } from "types";
 
 export const DeleteDynamicFieldRecordModal = ({
   selectedRecord,
@@ -51,7 +51,7 @@ export const DeleteDynamicFieldRecordModal = ({
 interface Props {
   selectedRecord?: EntityShape;
   deleteRecord: Function;
-  entityType: EntityType;
+  entityType: StandardEntityType | DrawerEntityType;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;

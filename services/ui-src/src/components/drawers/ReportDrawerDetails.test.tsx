@@ -8,30 +8,36 @@ import {
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { ModalDrawerEntityType, StandardEntityType } from "types";
 
 const ReportDrawerDetailsAccessMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedAccessMeasuresFormattedEntityData}
-    entityType="accessMeasures"
+    entityType={ModalDrawerEntityType.ACCESS_MEASURES}
   />
 );
 
 const ReportDrawerDetailsSanctionsComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedSanctionsFormattedEntityData}
-    entityType="sanctions"
+    entityType={ModalDrawerEntityType.SANCTIONS}
   />
 );
 
 const ReportDrawerDetailsQualityMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedQualityMeasuresFormattedEntityData}
-    entityType="qualityMeasures"
+    entityType={ModalDrawerEntityType.QUALITY_MEASURES}
   />
 );
 
 const ReportDrawerDetailsInvalidEntityTypeComponent = (
-  <ReportDrawerDetails drawerDetails={{}} entityType="bssEntities" />
+  <ReportDrawerDetails
+    drawerDetails={{}}
+    entityType={
+      StandardEntityType.BSS_ENTITIES as unknown as ModalDrawerEntityType
+    }
+  />
 );
 
 describe("<ReportDrawerDetails />", () => {
