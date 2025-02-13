@@ -1085,6 +1085,102 @@
         },
         "tableHeader": "Plan Name",
         "enterEntityDetailsButtonText": "Enter"
+      },
+      "details": {
+        "verbiage": {
+          "intro" : {
+            "info": "States should use this section to report on plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards for the plan listed above.",
+            "section": "",
+            "subsection": "III. Plan compliance data for {{planName}}"
+          },
+          "backButton": "Return to plan compliance dashboard"
+        },
+        "forms": [
+          {
+            "verbiage": {
+              "intro": {
+                "hint": "Indicate whether the state assures that the plan complies with the state's network adequacy standards based on each analysis the state conducted for the plan during the reporting period.",
+                "section": "Assurance of plan compliance for 438.68"
+              }
+            },
+            "table": {
+              "headRow": [
+                { "hiddenName": "Status" },
+                { "hiddenName": "Report section" },
+                { "hiddenName": "Action" }
+              ],
+              "columns": [
+                "",
+                "Select non-compliant / exception standards and provide details for 438.68",
+                ""
+              ]
+            },
+            "form": {
+              "id": "planCompliance43868",
+              "fields": [
+                {
+                  "id": "planComplianceAssurance43868",
+                  "type": "radio",
+                  "validation": "radio",
+                  "props": {
+                    "choices": [
+                      {
+                        "id": "planComplianceAssurance43868-yes",
+                        "label": "Yes, the plan complies on all standards based on all analyses"
+                      },
+                      {
+                        "id": "planComplianceAssurance43868-no",
+                        "label": "No, the plan does not comply on all standards based on all analyses and/or exceptions granted"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "verbiage": {
+              "intro": {
+                "hint": "Indicate whether the state assures that the plan complies with the state's network adequacy standards based on each analysis the state conducted for the plan during the reporting period.",
+                "section": "Assurance of plan compliance for 438.206"
+              }
+            },
+            "table": {
+              "headRow": [
+                { "hiddenName": "Status" },
+                { "hiddenName": "Report section" },
+                { "hiddenName": "Action" }
+              ],
+              "columns": [
+                "",
+                "Select non-compliant / exception standards and provide details for 438.206",
+                ""
+              ]
+            },
+            "form": {
+              "id": "planCompliance438206",
+              "fields": [
+                {
+                  "id": "planComplianceAssurance438206",
+                  "type": "radio",
+                  "validation": "radio",
+                  "props": {
+                    "choices": [
+                      {
+                        "id": "planComplianceAssurance438206-yes",
+                        "label": "Yes, the plan complies on all standards based on all analyses"
+                      },
+                      {
+                        "id": "planComplianceAssurance438206-no",
+                        "label": "No, the plan does not comply on all standards based on all analyses and/or exceptions granted"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     },
     {

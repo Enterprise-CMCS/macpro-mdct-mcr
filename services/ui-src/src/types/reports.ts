@@ -4,6 +4,7 @@ import {
   CompletionData,
   CustomHtmlElement,
   FormJson,
+  ScreenReaderOnlyHeaderName,
   State,
 } from "types";
 
@@ -88,6 +89,15 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
+export interface EntityDetailsMultiformShape {
+  form: FormJson;
+  table?: {
+    headRow: Array<string | ScreenReaderOnlyHeaderName>;
+    columns: any;
+  };
+  verbiage?: ReportPageVerbiage;
+}
+
 export interface OverlayReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: OverlayReportPageVerbiage;
@@ -95,6 +105,10 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   modalForm?: never;
   drawerForm?: never;
   form?: never;
+  details?: {
+    forms: [EntityDetailsMultiformShape];
+    verbiage: EntityDetailsOverlayMultiformVerbiage;
+  };
 }
 
 export interface ReportRouteWithoutForm extends ReportRouteBase {
@@ -167,6 +181,11 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   tableHeader: string;
   emptyDashboardText: string;
   enterEntityDetailsButtonText: string;
+}
+
+export interface EntityDetailsOverlayMultiformVerbiage
+  extends ReportPageVerbiage {
+  backButton: string;
 }
 
 // REPORT METADATA
