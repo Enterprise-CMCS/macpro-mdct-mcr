@@ -14,7 +14,7 @@ import {
   FormLayoutElement,
   isFieldElement,
   ReportType,
-  entityTypes,
+  StandardEntityType,
 } from "types";
 // utils
 import { parseCustomHtml, useStore } from "utils";
@@ -87,11 +87,11 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   return (
     // if there are no plans added, render the appropriate verbiage
     <Box>
-      {entityType === entityTypes[0] && missingPlansOrIlos ? (
+      {entityType === StandardEntityType.PLANS && missingPlansOrIlos ? (
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(renderMissingEntityVerbiage() || "")}
         </Box>
-      ) : entityType === entityTypes[1] && !hasBss ? (
+      ) : entityType === StandardEntityType.BSS_ENTITIES && !hasBss ? (
         // if there are no BSS entities added, render the appropriate verbiage
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(

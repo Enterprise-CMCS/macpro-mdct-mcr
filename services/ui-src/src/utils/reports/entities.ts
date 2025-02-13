@@ -1,5 +1,5 @@
 // utils
-import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
+import { AnyObject, EntityShape, ModalDrawerEntityType } from "types";
 import { maskResponseData } from "utils";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
@@ -43,7 +43,7 @@ export const getFormattedEntityData = (
   reportFieldData?: AnyObject
 ) => {
   switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+    case ModalDrawerEntityType.ACCESS_MEASURES:
       return {
         category: entity?.accessMeasure_generalCategory[0].value,
         standardDescription: entity?.accessMeasure_standardDescription,
@@ -60,7 +60,7 @@ export const getFormattedEntityData = (
           "accessMeasure_oversightMethodFrequency"
         ),
       };
-    case ModalDrawerEntityTypes.SANCTIONS:
+    case ModalDrawerEntityType.SANCTIONS:
       return {
         interventionType: getRadioValue(entity, "sanction_interventionType"),
         interventionTopic: getRadioValue(entity, "sanction_interventionTopic"),
@@ -86,7 +86,7 @@ export const getFormattedEntityData = (
           "sanction_correctiveActionPlan"
         ),
       };
-    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+    case ModalDrawerEntityType.QUALITY_MEASURES:
       return {
         domain: getRadioValue(entity, "qualityMeasure_domain"),
         name: entity?.qualityMeasure_name,

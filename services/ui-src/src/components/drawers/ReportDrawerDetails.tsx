@@ -1,11 +1,11 @@
 // components
 import { Box, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // types
-import { AnyObject, EntityType, ModalDrawerEntityTypes } from "types";
+import { AnyObject, ModalDrawerEntityType } from "types";
 
 export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
   switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+    case ModalDrawerEntityType.ACCESS_MEASURES:
       return (
         <Box sx={sx.detailBox}>
           <Heading as="h4" sx={sx.detailHeader}>
@@ -18,7 +18,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           <Text sx={sx.detailSubtext}>{drawerDetails.category}</Text>
         </Box>
       );
-    case ModalDrawerEntityTypes.SANCTIONS:
+    case ModalDrawerEntityType.SANCTIONS:
       return (
         <Box sx={sx.detailBox}>
           <Heading as="h4" sx={sx.detailHeader}>
@@ -42,7 +42,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
           </Text>
         </Box>
       );
-    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+    case ModalDrawerEntityType.QUALITY_MEASURES:
       return (
         <Box sx={sx.detailBox}>
           <Text sx={sx.detailHeader}>{drawerDetails.name}</Text>
@@ -78,7 +78,7 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
 };
 
 interface Props {
-  entityType: EntityType;
+  entityType: ModalDrawerEntityType;
   drawerDetails: AnyObject;
 }
 

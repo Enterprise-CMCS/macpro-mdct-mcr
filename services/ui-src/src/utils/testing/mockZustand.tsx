@@ -11,10 +11,10 @@ import {
 // types
 import {
   AdminBannerState,
-  entityTypes,
   McrEntityState,
   McrReportState,
   McrUserState,
+  StandardEntityType,
   UserRoles,
 } from "types";
 
@@ -194,10 +194,10 @@ export const mockEmptyReportStore: McrReportState = {
 // ENTITY STATES / STORE
 export const mockEntityStore: McrEntityState = {
   entities: [],
-  entityType: entityTypes[0],
+  entityType: StandardEntityType.PLANS,
   selectedEntity: {
     id: "mock-plan-id-1",
-    type: entityTypes[0],
+    type: StandardEntityType.PLANS,
     report_planName: "mock-plan",
     report_programName: "mock-programName",
     report_programType: [
