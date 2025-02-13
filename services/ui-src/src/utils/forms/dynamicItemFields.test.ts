@@ -5,6 +5,7 @@ import {
 } from "utils/testing/mockForm";
 import {
   generateAddEntityDrawerItemFields,
+  generateAnalysisMethodChoices,
   generateDrawerItemFields,
 } from "./dynamicItemFields";
 
@@ -51,7 +52,7 @@ const mockAnalysisMethodsForm: FormJson =
 const mockAddAnalysisMethodsForm: FormJson =
   mockNaaarAnalysisMethodsPageJson.addEntityDrawerForm;
 
-const mockStandardsForm: FormJson = mockNaaarStandardsPageJson.drawerForm;
+const mockNaaarStandardsForm: FormJson = mockNaaarStandardsPageJson.drawerForm;
 
 const mockIlos: AnyObject[] = [
   {
@@ -86,6 +87,49 @@ const mockProviderTypes: AnyObject[] = [
   },
 ];
 
+const mockAnalysisMethods: AnyObject[] = [
+  {
+    id: "mock-analysis-method-1",
+    isRequired: true,
+    name: "Analysis method 1",
+  },
+  {
+    id: "mock-analysis-method-2",
+    isRequired: true,
+    name: "Analysis method 2",
+  },
+  {
+    id: "mock-analysis-method-3",
+    isRequired: true,
+    name: "Analysis method 3",
+  },
+  {
+    id: "mock-analysis-method-4",
+    isRequired: true,
+    name: "Analysis method 4",
+  },
+  {
+    id: "mock-analysis-method-5",
+    isRequired: true,
+    name: "Analysis method 5",
+  },
+  {
+    id: "mock-analysis-method-6",
+    isRequired: true,
+    name: "Analysis method 6",
+  },
+  {
+    id: "mock-analysis-method-7",
+    isRequired: true,
+    name: "Analysis method 7",
+  },
+  {
+    id: "mock-custom-analysis-method",
+    isRequired: true,
+    custom_analysis_method_name: "Custom analysis method",
+  },
+];
+
 describe("generateDrawerItemFields for ILOS", () => {
   const result = generateDrawerItemFields(mockIlosForm, mockIlos, "ilos");
   it("should generate checkboxes per each available ILOS", () => {
@@ -115,12 +159,24 @@ describe("generateDrawerItemFields for NAAAR analysis methods without custom ent
 
 describe("generateDrawerItemFields for NAAAR provider types", () => {
   const result = generateDrawerItemFields(
-    mockStandardsForm,
+    mockNaaarStandardsForm,
     mockProviderTypes,
     "standards"
   );
   it("should generate radio buttons for each selected provider type", () => {
     expect(result.fields[0].props.choices.length).toBe(2);
+  });
+});
+
+describe("generateAnalysisMethodChoices for NAAAR standards form", () => {
+  const result = generateAnalysisMethodChoices(
+    mockNaaarStandardsForm,
+    mockAnalysisMethods
+  );
+  it("should generate analysis method checkboxes for the second field of the form", () => {
+    expect(
+      result.fields[1].props?.choices[0].children[1].props.choices.length
+    ).toBe(8);
   });
 });
 

@@ -16,6 +16,7 @@ export const entityTypes = [
   "program",
   "ilos",
   "analysisMethods",
+  "standards",
 ] as const;
 
 /**
