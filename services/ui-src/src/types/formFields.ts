@@ -9,16 +9,16 @@ export enum StandardEntityType {
   PROGRAM = "program",
 }
 
-export enum ModalDrawerEntityType {
-  ACCESS_MEASURES = "accessMeasures",
-  QUALITY_MEASURES = "qualityMeasures",
-  SANCTIONS = "sanctions",
-}
-
 export enum DrawerEntityType {
   ILOS = "ilos",
   ANALYSIS_METHODS = "analysisMethods",
   STANDARDS = "standards",
+}
+
+export enum ModalDrawerEntityType {
+  ACCESS_MEASURES = "accessMeasures",
+  QUALITY_MEASURES = "qualityMeasures",
+  SANCTIONS = "sanctions",
 }
 
 export interface EntityShape {
