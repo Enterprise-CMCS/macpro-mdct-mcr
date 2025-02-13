@@ -189,8 +189,6 @@ export interface EntityDetailsMultiformVerbiage extends ReportPageVerbiage {
   hint?: string;
   accordion?: {
     buttonLabel: string;
-    intro: string;
-    list: [string];
     text: string;
   };
 }
