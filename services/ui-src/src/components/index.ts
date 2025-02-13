@@ -77,6 +77,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // overlays
 export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
+export { EntityDetailsMultiformOverlay } from "./overlays/EntityDetailsMultiformOverlay";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
