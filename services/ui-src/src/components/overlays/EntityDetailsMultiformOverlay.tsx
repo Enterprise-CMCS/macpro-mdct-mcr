@@ -1,18 +1,30 @@
 import React, { MouseEventHandler, useEffect } from "react";
 // components
-import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
-import { Form, ReportPageIntro } from "components";
+import { Box, Button, Flex, Heading, Image, Spinner } from "@chakra-ui/react";
+import { Form, InstructionsAccordion, ReportPageIntro } from "components";
 // types
 import {
   EntityDetailsMultiformShape,
-  EntityDetailsOverlayMultiformVerbiage,
+  EntityDetailsMultiformVerbiage,
   EntityShape,
   EntityType,
 } from "types";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 
-export const EntityDetailsOverlayMultiform = ({
+const Intro = ({ verbiage }: { verbiage: EntityDetailsMultiformVerbiage }) => {
+  const { heading, hint, accordion } = verbiage;
+
+  return (
+    <Box>
+      {heading && <Heading as="h3">{heading}</Heading>}
+      {hint && <Box>{hint}</Box>}
+      {accordion && <InstructionsAccordion verbiage={accordion} />}
+    </Box>
+  );
+};
+
+export const EntityDetailsMultiformOverlay = ({
   closeEntityDetailsOverlay,
   disabled,
   forms,
@@ -41,7 +53,7 @@ export const EntityDetailsOverlayMultiform = ({
       <ReportPageIntro text={verbiage.intro} />
       {forms.map((formObject: EntityDetailsMultiformShape, index: number) => (
         <Box key={`${formObject.form.id}-${index}`}>
-          {formObject.verbiage?.intro && <Box>TODO: Show heading and hint</Box>}
+          {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
           <Form
             id={formObject.form.id}
             formJson={formObject.form}
@@ -82,12 +94,11 @@ interface Props {
   entityType: EntityType;
   forms: [EntityDetailsMultiformShape];
   onSubmit: Function;
-  referrer?: string;
   selectedEntity?: EntityShape;
   setEntering: Function;
   submitting: boolean;
   validateOnRender?: boolean;
-  verbiage: EntityDetailsOverlayMultiformVerbiage;
+  verbiage: EntityDetailsMultiformVerbiage;
 }
 
 const sx = {
@@ -120,24 +131,5 @@ const sx = {
   },
   saveButton: {
     width: "8.25rem",
-  },
-  textHeading: {
-    fontWeight: "bold",
-    lineHeight: "1.25rem",
-  },
-  programInfo: {
-    ul: {
-      margin: "0.5rem auto 0 auto",
-      listStyleType: "none",
-      li: {
-        wordWrap: "break-word",
-        whiteSpace: "break-spaces",
-        fontSize: "xl",
-        lineHeight: "1.75rem",
-        "&:first-of-type": {
-          fontWeight: "bold",
-        },
-      },
-    },
   },
 };

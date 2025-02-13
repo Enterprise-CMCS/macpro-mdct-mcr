@@ -2,7 +2,7 @@ import { useState } from "react";
 // components
 import { Box } from "@chakra-ui/react";
 import {
-  EntityDetailsOverlayMultiform,
+  EntityDetailsMultiformOverlay,
   EntityProvider,
   EntityRow,
   MobileEntityRow,
@@ -164,7 +164,7 @@ export const OverlayReportPage = ({
 
     return (
       <EntityProvider>
-        <EntityDetailsOverlayMultiform
+        <EntityDetailsMultiformOverlay
           closeEntityDetailsOverlay={() => toggleOverlay()}
           disabled={false}
           entityType={entityType as EntityType}

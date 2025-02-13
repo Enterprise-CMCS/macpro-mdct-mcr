@@ -17,7 +17,7 @@ export const EntityRow = ({
   openAddEditEntityModal,
   openDeleteEntityModal,
   openOverlayOrDrawer,
-}: Props) => {
+}: EntityRowProps) => {
   const { report_programName, report_planName, name } = entity;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
@@ -109,7 +109,7 @@ export const EntityRow = ({
   );
 };
 
-interface Props {
+export interface EntityRowProps {
   entity: EntityShape;
   verbiage: AnyObject;
   locked?: boolean;

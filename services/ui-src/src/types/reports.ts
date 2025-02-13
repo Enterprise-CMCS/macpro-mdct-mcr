@@ -95,7 +95,7 @@ export interface EntityDetailsMultiformShape {
     headRow: Array<string | ScreenReaderOnlyHeaderName>;
     columns: any;
   };
-  verbiage?: ReportPageVerbiage;
+  verbiage?: EntityDetailsMultiformVerbiage;
 }
 
 export interface OverlayReportPageShape extends ReportPageShapeBase {
@@ -107,7 +107,7 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   form?: never;
   details?: {
     forms: [EntityDetailsMultiformShape];
-    verbiage: EntityDetailsOverlayMultiformVerbiage;
+    verbiage: EntityDetailsMultiformVerbiage;
   };
 }
 
@@ -183,9 +183,16 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   enterEntityDetailsButtonText: string;
 }
 
-export interface EntityDetailsOverlayMultiformVerbiage
-  extends ReportPageVerbiage {
-  backButton: string;
+export interface EntityDetailsMultiformVerbiage extends ReportPageVerbiage {
+  backButton?: string;
+  heading?: string;
+  hint?: string;
+  accordion?: {
+    buttonLabel: string;
+    intro: string;
+    list: [string];
+    text: string;
+  };
 }
 
 // REPORT METADATA
