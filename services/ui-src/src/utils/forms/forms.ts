@@ -209,7 +209,7 @@ export const setClearedEntriesToDefaultValue = (
     } else if (typeof entity[entry] == "object") {
       entity[entry] = {};
     } else {
-      entity[entry] = "";
+      delete entity[entry];
     }
   });
   return entity;
