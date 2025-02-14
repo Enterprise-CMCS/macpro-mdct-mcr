@@ -32,7 +32,6 @@ import {
   mockNaaarReportStore,
 } from "utils/testing/setupTests";
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
@@ -57,9 +56,11 @@ vi.mock("react-router-dom", async (importOriginal) => ({
 const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
 
 vi.mock("launchdarkly-react-client-sdk", () => ({
-  useFlags: vi.fn().mockReturnValue({ naaarReport: false }),
+  useFlags: vi.fn().mockReturnValue({
+    naaarReport: false,
+    sortableDashboardTable: true,
+  }),
 }));
-const mockedUseFlags = useFlags as MockedFunction<typeof useFlags>;
 
 const dashboardViewWithReports = (
   <RouterWrappedComponent>
@@ -152,7 +153,6 @@ const noAlteredByReportStore = {
 describe("<SortableDashboardTable />", () => {
   describe("Test Report Dashboard with Sortable Table", () => {
     beforeEach(async () => {
-      mockedUseFlags.mockReturnValueOnce({ sortableDashboardTable: true });
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMcparReportStore,
@@ -288,7 +288,6 @@ describe("<SortableDashboardTable />", () => {
 
   describe("Test Dashboard with no activeState", () => {
     beforeEach(() => {
-      mockedUseFlags.mockReturnValueOnce({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
         isTablet: false,
@@ -306,7 +305,6 @@ describe("<SortableDashboardTable />", () => {
 
   describe("Test MCPAR Dashboard (without reports)", () => {
     test("MCPAR dashboard renders table with empty text", async () => {
-      mockedUseFlags.mockReturnValueOnce({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
       });
@@ -321,7 +319,6 @@ describe("<SortableDashboardTable />", () => {
 
   describe("Test Dashboard with error", () => {
     test("Error alert shows when there is an error", async () => {
-      mockedUseFlags.mockReturnValueOnce({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
         isTablet: false,
@@ -337,7 +334,6 @@ describe("<SortableDashboardTable />", () => {
 
   describe("Test Dashboard view accessibility", () => {
     it("Should not have basic accessibility issues (desktop)", async () => {
-      mockedUseFlags.mockReturnValueOnce({ sortableDashboardTable: true });
       mockUseBreakpoint.mockReturnValue({
         isMobile: false,
       });
