@@ -373,6 +373,16 @@ export const mockNaaarReportFieldData = {
       name: "plan 2",
     },
   ],
+  providerTypes: [
+    {
+      key: "key1",
+      name: "provider1",
+    },
+    {
+      key: "key2",
+      name: "provider2",
+    },
+  ],
 };
 
 export const mockMcparReport = {
@@ -568,6 +578,12 @@ export const mockNaaarReportWithAnalysisMethods = {
       {
         id: "custom_entity",
         name: "custom entity",
+      },
+    ],
+    providerTypes: [
+      {
+        key: "mock-key",
+        value: "mock-value",
       },
     ],
   },

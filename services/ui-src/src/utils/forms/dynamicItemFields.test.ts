@@ -1,8 +1,12 @@
 import { FormJson, AnyObject } from "types";
 import { describe, expect, it } from "vitest";
-import { mockNaaarAnalysisMethodsPageJson } from "utils/testing/mockForm";
+import {
+  mockNaaarAnalysisMethodsPageJson,
+  mockNaaarStandardsPageJson,
+} from "utils/testing/mockForm";
 import {
   generateAddEntityDrawerItemFields,
+  generateAnalysisMethodChoices,
   generateDrawerItemFields,
 } from "./dynamicItemFields";
 
@@ -49,6 +53,8 @@ const mockAnalysisMethodsForm: FormJson =
 const mockAddAnalysisMethodsForm: FormJson =
   mockNaaarAnalysisMethodsPageJson.addEntityDrawerForm;
 
+const mockNaaarStandardsForm: FormJson = mockNaaarStandardsPageJson.drawerForm;
+
 const mockIlos: AnyObject[] = [
   {
     id: "mock-ilos-1",
@@ -68,6 +74,60 @@ const mockPlans: AnyObject[] = [
   {
     id: "mock-plan-2",
     name: "Plan 2",
+  },
+];
+
+const mockProviderTypes: AnyObject[] = [
+  {
+    key: "mock-provider-1",
+    value: "Provider Type 1",
+  },
+  {
+    key: "mock-provider-2",
+    value: "Provider Type 2",
+  },
+];
+
+const mockAnalysisMethods: AnyObject[] = [
+  {
+    id: "mock-analysis-method-1",
+    isRequired: true,
+    name: "Analysis method 1",
+  },
+  {
+    id: "mock-analysis-method-2",
+    isRequired: true,
+    name: "Analysis method 2",
+  },
+  {
+    id: "mock-analysis-method-3",
+    isRequired: true,
+    name: "Analysis method 3",
+  },
+  {
+    id: "mock-analysis-method-4",
+    isRequired: true,
+    name: "Analysis method 4",
+  },
+  {
+    id: "mock-analysis-method-5",
+    isRequired: true,
+    name: "Analysis method 5",
+  },
+  {
+    id: "mock-analysis-method-6",
+    isRequired: true,
+    name: "Analysis method 6",
+  },
+  {
+    id: "mock-analysis-method-7",
+    isRequired: true,
+    name: "Analysis method 7",
+  },
+  {
+    id: "mock-custom-analysis-method",
+    isRequired: true,
+    custom_analysis_method_name: "Custom analysis method",
   },
 ];
 
@@ -95,6 +155,29 @@ describe("generateDrawerItemFields for NAAAR analysis methods without custom ent
   );
   it("should generate checkboxes per each available plan", () => {
     expect(result.fields[0].props.choices[1].children.length).toBe(2);
+  });
+});
+
+describe("generateDrawerItemFields for NAAAR provider types", () => {
+  const result = generateDrawerItemFields(
+    mockNaaarStandardsForm,
+    mockProviderTypes,
+    "standards"
+  );
+  it("should generate radio buttons for each selected provider type", () => {
+    expect(result.fields[0].props.choices.length).toBe(2);
+  });
+});
+
+describe("generateAnalysisMethodChoices for NAAAR standards form", () => {
+  const result = generateAnalysisMethodChoices(
+    mockNaaarStandardsForm,
+    mockAnalysisMethods
+  );
+  it("should generate analysis method checkboxes for the second field of the form", () => {
+    expect(
+      result.fields[1].props?.choices[0].children[1].props.choices.length
+    ).toBe(8);
   });
 });
 

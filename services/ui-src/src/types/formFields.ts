@@ -16,6 +16,7 @@ export const entityTypes = [
   "program",
   "ilos",
   "analysisMethods",
+  "standards",
 ] as const;
 
 /**
@@ -144,6 +145,7 @@ export interface getFormParams {
   report?: ReportShape;
   isCustomEntityForm?: boolean;
   isAnalysisMethodsPage?: boolean;
+  isReportingOnStandards?: boolean;
   ilos?: AnyObject[];
   reportingOnIlos?: boolean;
 }
