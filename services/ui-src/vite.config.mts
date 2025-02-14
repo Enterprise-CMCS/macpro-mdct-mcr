@@ -44,8 +44,18 @@ export default defineConfig(({ mode }) => ({
        * but we want to output to ui-src/coverage instead.
        */
       reportsDirectory: "../coverage",
-      reporter: ["text", "lcov"],
-      provider: "istanbul",
+      reporter: [
+        [
+          // Generate machine-readable coverage files for Code Climate
+          "lcov",
+          // filepaths in the lcov report should start with services/ui-src
+          { projectRoot: "../.." },
+        ],
+        // Print a table of each file's coverage to the terminal
+        ["text"],
+        // Print a table of overall coverage to the terminal
+        ["text-summary"],
+      ],
     },
   },
 }));
