@@ -13,6 +13,7 @@ import { useStore } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
+import { StandardEntityType } from "types";
 
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
@@ -28,7 +29,7 @@ const entityDetailsOverlayComponent = (
   <RouterWrappedComponent>
     <EntityDetailsOverlay
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      entityType={mockEntityStore.entityType!}
+      entityType={mockEntityStore.entityType! as StandardEntityType}
       entities={mockEntityStore.entities}
       form={mockModalOverlayForm}
       onSubmit={mockOnSubmit}

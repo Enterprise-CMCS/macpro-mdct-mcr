@@ -9,7 +9,7 @@ import {
   saveAndCloseText,
 } from "../../constants";
 // types
-import { McrEntityState } from "types";
+import { DrawerEntityType, McrEntityState } from "types";
 // utils
 import { useStore } from "utils";
 import {
@@ -364,7 +364,7 @@ describe("<DrawerReportPage />", () => {
   describe("Test DrawerReportPage with custom entities", () => {
     const mockAnalysisMethodEntityStore: McrEntityState = {
       entities: [],
-      entityType: "analysisMethods",
+      entityType: DrawerEntityType.ANALYSIS_METHODS,
       selectedEntity: {
         id: "k9t7YoOeTOAXX3s7qF6XfN33",
         name: "Geomapping",
@@ -385,7 +385,7 @@ describe("<DrawerReportPage />", () => {
     // ilos
     const mockIlosEntityStore: McrEntityState = {
       entities: [],
-      entityType: "ilos",
+      entityType: DrawerEntityType.ILOS,
       selectedEntity: {
         id: "k9t7YoOeTOAXX3s7qF6XfN44",
         name: "Ilos",
