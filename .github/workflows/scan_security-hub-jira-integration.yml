@@ -11,7 +11,7 @@ permissions:
 jobs:
   sync:
     name: Run sync
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
