@@ -370,6 +370,7 @@ describe("Test setClearedEntriesToDefaultValue", () => {
       ])
     ).toEqual({
       ...mockSanctionsEntity,
+      sanction_remediationDate: "",
     });
   });
 });
