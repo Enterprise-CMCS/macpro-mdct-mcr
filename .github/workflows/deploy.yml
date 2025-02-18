@@ -48,7 +48,6 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
         with:
-          debug: true
           coverageLocations: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
             ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
