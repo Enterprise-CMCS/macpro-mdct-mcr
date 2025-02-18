@@ -5,6 +5,7 @@ import {
   CustomHtmlElement,
   State,
   CompletionData,
+  EntityType,
 } from "./index";
 
 // REPORT TYPES
@@ -60,7 +61,7 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
 }
 
 export interface DrawerReportPageShape extends ReportPageShapeBase {
-  entityType: string;
+  entityType: EntityType;
   verbiage: DrawerReportPageVerbiage;
   drawerForm: FormJson;
   addEntityDrawerForm?: FormJson;
@@ -70,7 +71,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
 }
 
 export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
-  entityType: string;
+  entityType: EntityType;
   verbiage: ModalDrawerReportPageVerbiage;
   modalForm: FormJson;
   drawerForm: FormJson;
@@ -80,7 +81,7 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
 }
 
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
-  entityType: string;
+  entityType: EntityType;
   verbiage: ModalOverlayReportPageVerbiage;
   modalForm: FormJson;
   overlayForm?: FormJson;
@@ -89,7 +90,7 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
 }
 
 export interface OverlayReportPageShape extends ReportPageShapeBase {
-  entityType: string;
+  entityType: EntityType;
   verbiage: OverlayReportPageVerbiage;
   overlayForm?: FormJson;
   modalForm?: never;

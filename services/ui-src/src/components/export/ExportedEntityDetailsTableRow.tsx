@@ -1,7 +1,12 @@
 // components
 import { Box, Tr, Td, Text } from "@chakra-ui/react";
 // types
-import { FormField, FormLayoutElement, isFieldElement } from "types";
+import {
+  EntityType,
+  FormField,
+  FormLayoutElement,
+  isFieldElement,
+} from "types";
 // utils
 import {
   parseFormFieldInfo,
@@ -88,7 +93,7 @@ export interface Props {
   formField: FormField | FormLayoutElement;
   pageType: string;
   entityId: string;
-  entityType: string;
+  entityType: EntityType;
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
   optional?: boolean;

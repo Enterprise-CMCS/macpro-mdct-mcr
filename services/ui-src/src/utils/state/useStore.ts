@@ -4,8 +4,8 @@ import { devtools, persist } from "zustand/middleware";
 import {
   AdminBannerData,
   AdminBannerState,
-  EntityShape,
   EntityType,
+  EntityShape,
   ErrorVerbiage,
   McrEntityState,
   McrReportState,

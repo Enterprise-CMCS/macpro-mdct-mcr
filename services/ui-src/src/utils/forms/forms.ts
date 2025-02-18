@@ -14,6 +14,7 @@ import {
 // types
 import {
   AnyObject,
+  EntityType,
   FieldChoice,
   FormField,
   FormJson,
@@ -301,15 +302,15 @@ export const getForm = (params: getFormParams) => {
           ? generateAddEntityDrawerItemFields(
               addEntityDrawerForm,
               plans,
-              "plan"
+              EntityType.PLANS
             )
-          : generateDrawerItemFields(drawerForm, plans, "plan");
+          : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
       }
       if (isReportingOnStandards && providerTypes?.length > 0) {
         const providerTypeFields = generateDrawerItemFields(
           drawerForm,
           providerTypes,
-          "standards"
+          EntityType.STANDARDS
         );
         modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
         generateAnalysisMethodChoices(drawerForm, analysisMethods);
@@ -317,7 +318,11 @@ export const getForm = (params: getFormParams) => {
       break;
     case ReportType.MCPAR:
       if (ilos && reportingOnIlos) {
-        modifiedForm = generateDrawerItemFields(drawerForm, ilos, "ilos");
+        modifiedForm = generateDrawerItemFields(
+          drawerForm,
+          ilos,
+          EntityType.ILOS
+        );
       }
       break;
     default:

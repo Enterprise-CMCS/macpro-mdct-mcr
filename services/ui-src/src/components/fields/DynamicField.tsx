@@ -14,8 +14,8 @@ import { svgFilters } from "styles/theme";
 // types
 import {
   AnyObject,
-  EntityShape,
   EntityType,
+  EntityShape,
   InputChangeEvent,
   ReportStatus,
 } from "types";

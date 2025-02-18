@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 // components
 import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // types
-import { AnyObject, ModalDrawerEntityTypes } from "types";
+import { AnyObject, EntityType } from "types";
 
 export const EntityCardTopSection = ({
   entityType,
@@ -18,7 +18,7 @@ export const EntityCardTopSection = ({
   }, []);
 
   switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+    case EntityType.ACCESS_MEASURES:
       return (
         <>
           <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
@@ -38,7 +38,7 @@ export const EntityCardTopSection = ({
           <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
         </>
       );
-    case ModalDrawerEntityTypes.SANCTIONS:
+    case EntityType.SANCTIONS:
       return (
         <>
           <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
@@ -70,7 +70,7 @@ export const EntityCardTopSection = ({
           </Text>
         </>
       );
-    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+    case EntityType.QUALITY_MEASURES:
       return (
         <>
           <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
@@ -139,7 +139,7 @@ export const EntityCardTopSection = ({
 };
 
 interface Props {
-  entityType: string;
+  entityType: EntityType;
   formattedEntityData: AnyObject;
   printVersion?: boolean;
 }

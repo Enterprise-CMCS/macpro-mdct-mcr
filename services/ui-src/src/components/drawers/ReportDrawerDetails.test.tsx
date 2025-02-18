@@ -8,30 +8,34 @@ import {
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { EntityType } from "types";
 
 const ReportDrawerDetailsAccessMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedAccessMeasuresFormattedEntityData}
-    entityType="accessMeasures"
+    entityType={EntityType.ACCESS_MEASURES}
   />
 );
 
 const ReportDrawerDetailsSanctionsComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedSanctionsFormattedEntityData}
-    entityType="sanctions"
+    entityType={EntityType.SANCTIONS}
   />
 );
 
 const ReportDrawerDetailsQualityMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedQualityMeasuresFormattedEntityData}
-    entityType="qualityMeasures"
+    entityType={EntityType.QUALITY_MEASURES}
   />
 );
 
 const ReportDrawerDetailsInvalidEntityTypeComponent = (
-  <ReportDrawerDetails drawerDetails={{}} entityType="bssEntities" />
+  <ReportDrawerDetails
+    drawerDetails={{}}
+    entityType={EntityType.BSS_ENTITIES}
+  />
 );
 
 describe("<ReportDrawerDetails />", () => {

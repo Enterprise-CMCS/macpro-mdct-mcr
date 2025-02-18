@@ -1,7 +1,12 @@
 // components
 import { Box, Tr, Td, Text, Th } from "@chakra-ui/react";
 // types
-import { FormField, FormLayoutElement, isFieldElement } from "types";
+import {
+  EntityType,
+  FormField,
+  FormLayoutElement,
+  isFieldElement,
+} from "types";
 // utils
 import {
   parseFormFieldInfo,
@@ -78,7 +83,7 @@ export const ExportedReportFieldRow = ({
 export interface Props {
   formField: FormField | FormLayoutElement;
   pageType: string;
-  entityType?: string;
+  entityType?: EntityType;
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
 }

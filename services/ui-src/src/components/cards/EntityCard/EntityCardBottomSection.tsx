@@ -1,7 +1,7 @@
 // components
 import { Box, Flex, Text } from "@chakra-ui/react";
 // types
-import { AnyObject, ModalDrawerEntityTypes } from "types";
+import { AnyObject, EntityType } from "types";
 
 export const EntityCardBottomSection = ({
   entityType,
@@ -15,7 +15,7 @@ export const EntityCardBottomSection = ({
     </Text>
   );
   switch (entityType) {
-    case ModalDrawerEntityTypes.ACCESS_MEASURES:
+    case EntityType.ACCESS_MEASURES:
       return (
         <>
           <Box
@@ -73,7 +73,7 @@ export const EntityCardBottomSection = ({
           </Text>
         </>
       );
-    case ModalDrawerEntityTypes.SANCTIONS:
+    case EntityType.SANCTIONS:
       return (
         <>
           <Text sx={sx.subtitle}>Sanction details</Text>
@@ -145,7 +145,7 @@ export const EntityCardBottomSection = ({
           </Box>
         </>
       );
-    case ModalDrawerEntityTypes.QUALITY_MEASURES:
+    case EntityType.QUALITY_MEASURES:
       return (
         <>
           <Text sx={sx.resultsHeader}>Measure results</Text>
@@ -185,7 +185,7 @@ export const EntityCardBottomSection = ({
 };
 
 interface Props {
-  entityType: string;
+  entityType: EntityType;
   formattedEntityData: AnyObject;
   printVersion?: boolean;
   verbiage?: {

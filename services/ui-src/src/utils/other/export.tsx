@@ -1,7 +1,14 @@
 import { Box, Text } from "@chakra-ui/react";
 import uuid from "react-uuid";
 // types
-import { AnyObject, Choice, EntityShape, FieldChoice, FormField } from "types";
+import {
+  AnyObject,
+  Choice,
+  EntityShape,
+  EntityType,
+  FieldChoice,
+  FormField,
+} from "types";
 // utils
 import { eligibilityGroup, maskResponseData } from "utils";
 // verbiage
@@ -12,7 +19,7 @@ export const renderDataCell = (
   formField: FormField,
   allResponseData: AnyObject,
   pageType: string,
-  entityType?: string,
+  entityType?: EntityType,
   parentFieldCheckedChoiceIds?: string[]
 ) => {
   // render drawer data cell (list entities & per-entity responses)

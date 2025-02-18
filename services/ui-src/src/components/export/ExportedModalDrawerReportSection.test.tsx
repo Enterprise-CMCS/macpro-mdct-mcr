@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { ExportedModalDrawerReportSection } from "components";
 // types
-import { ModalDrawerReportPageShape } from "types";
+import { EntityType, ModalDrawerReportPageShape } from "types";
 // utils
 import {
   mockModalDrawerReportPageJson,
@@ -37,7 +37,7 @@ describe("<ExportedModalDrawerReportSection />", () => {
       render(
         exportedReportSectionComponent({
           ...mockModalDrawerReportPageJson,
-          entityType: "accessMeasures",
+          entityType: EntityType.ACCESS_MEASURES,
         })
       );
       const entityMessage = screen.getByText("0 - No access measures entered");
@@ -48,7 +48,7 @@ describe("<ExportedModalDrawerReportSection />", () => {
       render(
         exportedReportSectionComponent({
           ...mockModalDrawerReportPageJson,
-          entityType: "qualityMeasures",
+          entityType: EntityType.QUALITY_MEASURES,
         })
       );
       const entityMessage = screen.getByText(
@@ -61,7 +61,7 @@ describe("<ExportedModalDrawerReportSection />", () => {
       render(
         exportedReportSectionComponent({
           ...mockModalDrawerReportPageJson,
-          entityType: "sanctions",
+          entityType: EntityType.SANCTIONS,
         })
       );
       const entityMessage = screen.getByText("0 - No sanctions entered");

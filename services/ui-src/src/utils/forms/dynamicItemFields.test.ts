@@ -1,4 +1,4 @@
-import { FormJson, AnyObject } from "types";
+import { FormJson, AnyObject, EntityType } from "types";
 import {
   mockNaaarAnalysisMethodsPageJson,
   mockNaaarStandardsPageJson,
@@ -131,7 +131,11 @@ const mockAnalysisMethods: AnyObject[] = [
 ];
 
 describe("generateDrawerItemFields for ILOS", () => {
-  const result = generateDrawerItemFields(mockIlosForm, mockIlos, "ilos");
+  const result = generateDrawerItemFields(
+    mockIlosForm,
+    mockIlos,
+    EntityType.ILOS
+  );
   it("should generate checkboxes per each available ILOS", () => {
     expect(result.fields[0].props.choices.length).toBe(2);
   });
@@ -150,7 +154,7 @@ describe("generateDrawerItemFields for NAAAR analysis methods without custom ent
   const result = generateDrawerItemFields(
     mockAnalysisMethodsForm,
     mockPlans,
-    "plan"
+    EntityType.PLANS
   );
   it("should generate checkboxes per each available plan", () => {
     expect(result.fields[0].props.choices[1].children.length).toBe(2);
@@ -161,7 +165,7 @@ describe("generateDrawerItemFields for NAAAR provider types", () => {
   const result = generateDrawerItemFields(
     mockNaaarStandardsForm,
     mockProviderTypes,
-    "standards"
+    EntityType.STANDARDS
   );
   it("should generate radio buttons for each selected provider type", () => {
     expect(result.fields[0].props.choices.length).toBe(2);
@@ -184,7 +188,7 @@ describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with cust
   const result = generateAddEntityDrawerItemFields(
     mockAddAnalysisMethodsForm,
     mockPlans,
-    "plan"
+    EntityType.PLANS
   );
   it("should generate checkboxes per each available plan", () => {
     expect(result.fields[3].props?.choices.length).toBe(2);

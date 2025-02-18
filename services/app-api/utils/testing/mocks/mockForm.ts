@@ -1,3 +1,5 @@
+import { EntityType } from "../../types";
+
 export const mockFormField = {
   id: "mock-text-field",
   type: "text",
@@ -144,7 +146,7 @@ export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
   pageType: "drawer",
-  entityType: "plans",
+  entityType: EntityType.PLANS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -192,7 +194,7 @@ export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
-  entityType: "accessMeasures",
+  entityType: EntityType.ACCESS_MEASURES,
   verbiage: mockModalDrawerReportPageVerbiage,
   modalForm: mockModalForm,
   drawerForm: mockDrawerForm,
@@ -202,7 +204,7 @@ export const mockModalOverlayReportPageJson = {
   name: "mock-route-2c",
   path: "/mock/mock-route-2c",
   pageType: "modalOverlay",
-  entityType: "program",
+  entityType: EntityType.PROGRAM,
   verbiage: mockModalOverlayReportPageVerbiage,
   modalForm: mockModalOverlayForm,
   overlayForm: mockModalOverlayForm,
