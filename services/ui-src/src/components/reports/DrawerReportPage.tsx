@@ -58,7 +58,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
   const entities = report?.fieldData?.[entityType] || [];
   const existingStandards = entityType === entityTypes[8];
-  console.log(existingStandards);
+  console.log(entities);
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -326,14 +326,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {isReportingOnStandards ? (
           <Box>
             {addStandardsButton}
-            {existingStandards && (
+            {/* {existingStandards && (
               <SortableTable
                 columns={columns}
                 data={actualData}
                 content={content}
                 initialSorting={[{ id: "provider", desc: false }]}
               />
-            )}
+            )} */}
             {addStandardsButton}
           </Box>
         ) : (
