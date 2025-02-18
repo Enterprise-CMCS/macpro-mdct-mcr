@@ -22,13 +22,14 @@ export const Header = () => {
 
   const saveStatusText = "Last saved " + lastSavedTime;
   const getHeaderText = () => {
+    let name = report?.programName || "";
     if (report?.reportType === ReportType.MCPAR) {
-      return `Program: ${report.programName}`;
-    } else if (report?.reportType === ReportType.MLR) {
-      return `Submission: ${report.programName}`;
-    } else {
-      return `${report?.programName}`;
+      name = `Program: ${name}`;
     }
+    if (report?.reportType === ReportType.MLR) {
+      name = `Submission: ${name}`;
+    }
+    return name;
   };
 
   return (
