@@ -1,4 +1,4 @@
-import { StandardEntityType } from "types";
+import { EntityType } from "types";
 import { mockStateUserStore } from "utils/testing/setupJest";
 import {
   autosaveFieldData,
@@ -47,7 +47,7 @@ const mockEntityContext: EntityContextShape = {
     return [{ id: "foo", testField: 1, field1: "value1", field2: "value2" }];
   }),
   entities: [{ id: "foo", testField: 1 }],
-  entityType: StandardEntityType.PROGRAM,
+  entityType: EntityType.PROGRAM,
   selectedEntity: { id: "foo" },
 };
 
