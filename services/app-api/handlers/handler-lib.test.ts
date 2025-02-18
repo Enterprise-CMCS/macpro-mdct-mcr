@@ -1,27 +1,28 @@
 import handlerLib from "./handler-lib";
+import { describe, expect, Mock, test, vi } from "vitest";
 // utils
 import { proxyEvent } from "../utils/testing/proxyEvent";
 import { isAuthenticated } from "../utils/auth/authorization";
 import * as logger from "../utils/debugging/debug-lib";
 import { ok, StatusCodes } from "../utils/responses/response-lib";
 
-jest.mock("../utils/debugging/debug-lib", () => ({
-  init: jest.fn(),
-  debug: jest.fn(),
-  error: jest.fn(),
-  flush: jest.fn(),
+vi.mock("../utils/debugging/debug-lib", () => ({
+  init: vi.fn(),
+  debug: vi.fn(),
+  error: vi.fn(),
+  flush: vi.fn(),
 }));
 
-jest.mock("../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn(),
+vi.mock("../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn(),
 }));
 
 describe("Test Lambda Handler Lib", () => {
   test("Test successful authorized lambda workflow", async () => {
-    const testFunc = jest.fn().mockReturnValue(ok("test"));
+    const testFunc = vi.fn().mockReturnValue(ok("test"));
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(true);
+    (isAuthenticated as Mock).mockReturnValue(true);
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.Ok);
@@ -40,10 +41,10 @@ describe("Test Lambda Handler Lib", () => {
   });
 
   test("Test unsuccessful authorization lambda workflow", async () => {
-    const testFunc = jest.fn();
+    const testFunc = vi.fn();
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(false);
+    (isAuthenticated as Mock).mockReturnValue(false);
     const res = await handler(proxyEvent, null);
 
     expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
@@ -54,12 +55,12 @@ describe("Test Lambda Handler Lib", () => {
 
   test("Test Errored lambda workflow", async () => {
     const err = new Error("Test Error");
-    const testFunc = jest.fn().mockImplementation(() => {
+    const testFunc = vi.fn().mockImplementation(() => {
       throw err;
     });
     const handler = handlerLib(testFunc);
 
-    (isAuthenticated as jest.Mock).mockReturnValue(true);
+    (isAuthenticated as Mock).mockReturnValue(true);
     const res = await handler(proxyEvent, null);
 
     expect(testFunc).toHaveBeenCalledWith(proxyEvent, null);

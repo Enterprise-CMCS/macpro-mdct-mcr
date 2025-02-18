@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
 // components
 import { HelpPage } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/help";

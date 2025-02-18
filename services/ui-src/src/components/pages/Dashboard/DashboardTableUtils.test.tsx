@@ -1,4 +1,5 @@
 import { getStatus, tableBody } from "./DashboardTableUtils";
+import { describe, expect, test } from "vitest";
 
 describe("DashboardTableUtils", () => {
   describe("getStatus()", () => {

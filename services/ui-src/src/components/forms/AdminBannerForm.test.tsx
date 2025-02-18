@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, test, vi } from "vitest";
 // components
 import { AdminBannerForm } from "components";
 // constants
@@ -9,8 +10,8 @@ import { convertDateTimeEtToUtc } from "utils";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockWriteAdminBanner = jest.fn();
-const mockWriteAdminBannerWithError = jest.fn(() => {
+const mockWriteAdminBanner = vi.fn();
+const mockWriteAdminBannerWithError = vi.fn(() => {
   throw new Error();
 });
 
@@ -67,7 +68,7 @@ describe("<AdminBannerForm />", () => {
   });
 
   test("Shows error if writeBanner throws error", async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
     const result = render(
       adminBannerFormComponent(mockWriteAdminBannerWithError)
     );
@@ -75,7 +76,10 @@ describe("<AdminBannerForm />", () => {
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
-    expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
+    await waitFor(() =>
+      // Chakra's Collapse transition (on ErrorAlert) is not instant; we must wait for it
+      expect(screen.getByText(/Something went wrong on our end/)).toBeVisible()
+    );
   });
 
   testA11y(adminBannerFormComponent(mockWriteAdminBanner));

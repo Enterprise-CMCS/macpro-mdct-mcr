@@ -1,23 +1,24 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { AdminDashSelector } from "components";
 // utils
 import {
   mockAdminUserStore,
-  mockLDFlags,
   mockMlrReportStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
 // MOCKS
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockAdminUserStore,
   ...mockMlrReportStore,
@@ -29,7 +30,10 @@ const adminDashSelectorView = (
   </RouterWrappedComponent>
 );
 
-mockLDFlags.setDefault({ naaarReport: true });
+vi.mock("launchdarkly-react-client-sdk", () => ({
+  useFlags: vi.fn().mockReturnValue({ naaarReport: false }),
+}));
+const mockedUseFlags = useFlags as MockedFunction<typeof useFlags>;
 
 // TESTS
 
@@ -60,7 +64,7 @@ describe("<AdminDashSelector />", () => {
 
   describe("Test naaarReport feature flag functionality", () => {
     test("if naaarReport flag is true, NAAAR radio choice should be visible", async () => {
-      mockLDFlags.set({ naaarReport: true });
+      mockedUseFlags.mockReturnValueOnce({ naaarReport: true });
       render(adminDashSelectorView);
       expect(
         screen.getByLabelText(
@@ -70,7 +74,6 @@ describe("<AdminDashSelector />", () => {
     });
 
     test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
-      mockLDFlags.set({ naaarReport: false });
       render(adminDashSelectorView);
       const naaarRadioChoice = screen.queryByLabelText(
         "Network Adequacy and Access Assurances Report (NAAAR)"

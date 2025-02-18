@@ -1,4 +1,5 @@
 import { createReport } from "./create";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   DynamoDBDocumentClient,
   PutCommand,
@@ -11,7 +12,7 @@ import { proxyEvent } from "../../utils/testing/proxyEvent";
 import {
   mockMcparReport,
   mockS3PutObjectCommandOutput,
-} from "../../utils/testing/setupJest";
+} from "../../utils/testing/setupTests";
 import { error } from "../../utils/constants/constants";
 import * as authFunctions from "../../utils/auth/authorization";
 import s3Lib from "../../utils/s3/s3-lib";
@@ -21,9 +22,9 @@ import { APIGatewayProxyEvent } from "../../utils/types";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockResolvedValue(true),
+  hasPermissions: vi.fn().mockReturnValue(true),
 }));
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
@@ -259,30 +260,25 @@ const mockSanctions = [
   },
 ];
 
-let consoleSpy: {
-  debug: jest.SpyInstance<void>;
-} = {
-  debug: jest.fn() as jest.SpyInstance,
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
 
 describe("Test createReport API method", () => {
   beforeEach(() => {
-    jest.restoreAllMocks();
+    vi.clearAllMocks();
     dynamoClientMock.reset();
-    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
   });
 
   test("Test unauthorized report creation throws 401 error", async () => {
-    jest.spyOn(authFunctions, "isAuthenticated").mockResolvedValueOnce(false);
+    vi.spyOn(authFunctions, "isAuthenticated").mockResolvedValueOnce(false);
     const res = await createReport(creationEvent, null);
     expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test report creation by a state user without access to a report type throws 403 error", async () => {
-    jest.spyOn(authFunctions, "hasPermissions").mockReturnValueOnce(false);
+    vi.spyOn(authFunctions, "hasPermissions").mockReturnValueOnce(false);
     const res = await createReport(creationEvent, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
@@ -297,12 +293,12 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEvent, null);
 
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
@@ -330,12 +326,12 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(createPccmEvent, null);
 
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
@@ -368,12 +364,12 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(naaarCreationEvent, null);
 
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
     expect(body.fieldDataId).toBeDefined;
@@ -393,7 +389,7 @@ describe("Test createReport API method", () => {
       .resolves({
         Items: [],
       });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEvent, null);
     expect(res.statusCode).toBe(StatusCodes.InternalServerError);
@@ -404,7 +400,7 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy
       .mockResolvedValueOnce(mockS3PutObjectCommandOutput)
       .mockRejectedValueOnce("error");
@@ -417,10 +413,10 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithInvalidData, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.InternalServerError);
     expect(res.body).toContain(error.INVALID_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
@@ -430,10 +426,10 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     const res = await createReport(creationEventWithNoFieldData, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.MISSING_DATA);
     expect(s3PutSpy).toHaveBeenCalled();
@@ -446,7 +442,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -458,7 +454,7 @@ describe("Test createReport API method", () => {
     };
     const res = await createReport(noKeyEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.NO_KEY);
   });
@@ -467,18 +463,18 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
-    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+    vi.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       programName: "Old Program",
       plans: [{ plan_programIntegrityReferralPath: "1", name: "name" }],
       bssEntities: mockBssEntities,
     });
-    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const copyFieldDataSpy = vi.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
@@ -494,17 +490,17 @@ describe("Test createReport API method", () => {
   });
 
   test("Test that a non-existent state returns a 400", async () => {
-    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const copyFieldDataSpy = vi.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventInvalidState, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
 
   test("Test that a non-existent report type returns a 400", async () => {
-    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const copyFieldDataSpy = vi.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventMlrReport, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(copyFieldDataSpy).not.toBeCalled();
   });
@@ -513,16 +509,16 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
-    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+    vi.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ id: "foo", entityField: "bar", name: "name" }],
     });
-    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const copyFieldDataSpy = vi.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
@@ -537,19 +533,19 @@ describe("Test createReport API method", () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
-    jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+    vi.spyOn(s3Lib, "get").mockResolvedValueOnce({
       stateName: "Alabama",
       plans: [{ entityField: "bar", appeals_foo: "1" }],
       state_statewideMedicaidEnrollment: "43",
       state_statewideMedicaidManagedCareEnrollment: "34",
       sanctions: mockSanctions,
     });
-    const copyFieldDataSpy = jest.spyOn(reportUtils, "copyFieldDataFromSource");
+    const copyFieldDataSpy = vi.spyOn(reportUtils, "copyFieldDataFromSource");
     const res = await createReport(creationEventWithCopySource, null);
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(copyFieldDataSpy).toBeCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");

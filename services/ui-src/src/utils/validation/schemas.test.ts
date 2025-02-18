@@ -10,6 +10,7 @@ import {
   textOptional,
   validNAValues,
 } from "./schemas";
+import { describe, expect, test } from "vitest";
 
 describe("Schemas", () => {
   const goodNumberTestCases = [

@@ -1,4 +1,5 @@
 import { createBanner } from "./create";
+import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // types
@@ -11,9 +12,9 @@ import { hasPermissions } from "../../utils/auth/authorization";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockReturnValue(true),
+  hasPermissions: vi.fn().mockReturnValue(true),
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -30,31 +31,26 @@ const testEventWithInvalidData: APIGatewayProxyEvent = {
   pathParameters: { bannerId: "testKey" },
 };
 
-const consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.spyOn(console, "debug").mockImplementation(),
-  error: jest.spyOn(console, "error").mockImplementation(),
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
+vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("Test createBanner API method", () => {
   beforeEach(() => {
     dynamoClientMock.reset();
   });
   test("Test unauthorized banner creation throws 403 error", async () => {
-    (hasPermissions as jest.Mock).mockReturnValueOnce(false);
+    (hasPermissions as Mock).mockReturnValueOnce(false);
     const res = await createBanner(testEvent, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test Successful Run of Banner Creation", async () => {
-    const mockPut = jest.fn();
+    const mockPut = vi.fn();
     dynamoClientMock.on(PutCommand).callsFake(mockPut);
     const res = await createBanner(testEvent, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(res.body).toContain("test banner");
     expect(res.body).toContain("test description");

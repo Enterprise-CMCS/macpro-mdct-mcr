@@ -1,6 +1,7 @@
 import { copyFieldDataFromSource, makePCCMModifications } from "./reports";
+import { describe, expect, test } from "vitest";
 import { ReportType } from "../../utils/types";
-import { mockReportJson } from "../../utils/testing/setupJest";
+import { mockReportJson } from "../testing/setupTests";
 describe("Test copyFieldDataFromSource", () => {
   test("Test copyFieldDataFromSource returns validatedField data if reportType is not MCPAR", async () => {
     const res = await copyFieldDataFromSource(

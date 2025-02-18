@@ -1,25 +1,31 @@
 import KafkaSourceLib from "./kafka-source-lib";
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  test,
+  vi,
+} from "vitest";
+import { Kafka } from "kafkajs";
 import s3Lib from "../s3/s3-lib";
 
 let tempStage: string | undefined;
 let tempNamespace: string | undefined;
 let tempBrokers: string | undefined;
 
-const mockSendBatch = jest.fn();
-const mockProducer = jest.fn().mockImplementation(() => {
-  return {
-    disconnect: () => {},
-    removeListener: () => {},
-    connect: () => {},
-    sendBatch: mockSendBatch,
-  };
-});
-
-jest.mock("kafkajs", () => ({
-  Kafka: () => ({
-    producer: mockProducer,
+vi.mock("kafkajs", () => ({
+  Kafka: vi.fn().mockReturnValue({
+    producer: vi.fn().mockReturnValue({
+      disconnect: vi.fn(),
+      connect: vi.fn(),
+      sendBatch: vi.fn(),
+    }),
   }),
 }));
+const mockSendBatch = (Kafka as Mock)().producer().sendBatch;
 
 const stage = "testing";
 const namespace = "--mcr--test-stage--";
@@ -133,11 +139,7 @@ const s3IgnoredEvent = {
   ],
 };
 
-let consoleSpy: {
-  log: jest.SpyInstance<void>;
-} = {
-  log: jest.fn() as jest.SpyInstance,
-};
+const logSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
 
 describe("Test Kafka Lib", () => {
   beforeAll(() => {
@@ -156,26 +158,22 @@ describe("Test Kafka Lib", () => {
   });
 
   beforeEach(() => {
-    consoleSpy.log = jest.spyOn(console, "log").mockImplementation();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("Handles a dynamo event", async () => {
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
 
   test("Processes bucket events", async () => {
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy.mockResolvedValue("response object");
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3Event);
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(s3GetSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
@@ -183,7 +181,7 @@ describe("Test Kafka Lib", () => {
   test("Handles events without versions", async () => {
     const sourceLib = new KafkaSourceLib("mcr", null, [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(1);
   });
 
@@ -197,7 +195,7 @@ describe("Test Kafka Lib", () => {
     );
     await sourceLib.handler(s3Event);
     await sourceLib.handler(dynamoEvent);
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(0);
   });
 
@@ -205,7 +203,7 @@ describe("Test Kafka Lib", () => {
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(s3IgnoredEvent);
     await sourceLib.handler({});
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledTimes(0);
   });
 
@@ -226,7 +224,7 @@ describe("Test Kafka Lib", () => {
     };
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], []);
     await sourceLib.handler(dynamoInsertEvent);
-    expect(consoleSpy.log).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalled();
     expect(mockSendBatch).toBeCalledWith({
       topicMessages: [
         {

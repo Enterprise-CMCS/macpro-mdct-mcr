@@ -1,4 +1,5 @@
 import { releaseReport } from "./release";
+import { beforeEach, describe, expect, Mock, test, vi } from "vitest";
 import KSUID from "ksuid";
 import {
   DynamoDBDocumentClient,
@@ -14,21 +15,20 @@ import {
   mockReportJson,
   mockReportFieldData,
   mockS3PutObjectCommandOutput,
-} from "../../utils/testing/setupJest";
+} from "../../utils/testing/setupTests";
 import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
+import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockResolvedValue(true),
+  hasPermissions: vi.fn().mockReturnValue(true),
 }));
-
-const mockAuthUtil = require("../../utils/auth/authorization");
 
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -41,30 +41,22 @@ const releaseEvent: APIGatewayProxyEvent = {
   ...mockProxyEvent,
 };
 
-let consoleSpy: {
-  debug: jest.SpyInstance<void>;
-} = {
-  debug: jest.fn() as jest.SpyInstance,
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
 
 describe("Test releaseReport method", () => {
   beforeEach(() => {
+    vi.clearAllMocks();
     dynamoClientMock.reset();
-    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 
   test("Test release report passes with valid data", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // s3 mocks
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy
       .mockResolvedValueOnce(mockReportJson)
       .mockResolvedValueOnce(mockReportFieldData);
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     // dynamodb mocks
     dynamoClientMock.on(GetCommand).resolves({
@@ -73,7 +65,7 @@ describe("Test releaseReport method", () => {
 
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(body.locked).toBe(false);
     expect(body.previousRevisions).toEqual([
@@ -85,13 +77,13 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report passes with valid data, but it's been more than the first submission", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // s3 mocks
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy
       .mockResolvedValueOnce(mockReportJson)
       .mockResolvedValueOnce(mockReportFieldData);
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
     // dynamodb mocks
     const newPreviousId = KSUID.randomSync().string;
@@ -105,7 +97,7 @@ describe("Test releaseReport method", () => {
 
     const res = await releaseReport(releaseEvent, null);
     const body = JSON.parse(res.body!);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(body.locked).toBe(false);
     expect(body.submissionCount).toBe(1);
@@ -164,12 +156,12 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report with no existing record throws 404", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     dynamoClientMock.on(GetCommand).resolves({
       Item: undefined,
     });
     const res = await releaseReport(releaseEvent, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.NotFound);
     expect(res.body).toContain(error.NO_MATCHING_RECORD);
   });
@@ -193,18 +185,18 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test release report without admin permissions throws 403", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(false);
+    (hasPermissions as Mock).mockReturnValue(false);
     dynamoClientMock.on(GetCommand).resolves({
       Item: mockDynamoDataMLRLocked,
     });
     const res = await releaseReport(releaseEvent, null);
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test dynamo get metadata issue throws error", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // dynamodb mocks
     dynamoClientMock.on(GetCommand).rejectsOnce("error");
 
@@ -214,9 +206,9 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test dynamo put issue throws error", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // s3 mocks
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy
       .mockResolvedValueOnce(mockReportJson)
       .mockResolvedValueOnce(mockReportFieldData);
@@ -235,9 +227,9 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test s3 get issue throws error", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // s3 mocks
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy
       .mockRejectedValueOnce("error")
       .mockResolvedValueOnce(mockReportFieldData);
@@ -252,13 +244,13 @@ describe("Test releaseReport method", () => {
   });
 
   test("Test s3 put issue throws error", async () => {
-    mockAuthUtil.hasPermissions.mockReturnValue(true);
+    (hasPermissions as Mock).mockReturnValue(true);
     // s3 mocks
-    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const s3GetSpy = vi.spyOn(s3Lib, "get");
     s3GetSpy
       .mockResolvedValueOnce(mockReportJson)
       .mockResolvedValueOnce(mockReportFieldData);
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    const s3PutSpy = vi.spyOn(s3Lib, "put");
     s3PutSpy.mockRejectedValueOnce("error");
     // dynamodb mocks
     dynamoClientMock.on(GetCommand).resolves({

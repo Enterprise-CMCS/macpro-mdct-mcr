@@ -1,5 +1,15 @@
 import s3Lib, { getConfig } from "./s3-lib";
 import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  test,
+  vi,
+} from "vitest";
+import {
   GetObjectCommand,
   GetObjectCommandOutput,
   PutObjectCommand,
@@ -10,8 +20,8 @@ import { mockClient } from "aws-sdk-client-mock";
 
 const s3ClientMock = mockClient(S3Client);
 
-jest.mock("@aws-sdk/s3-request-presigner", () => ({
-  getSignedUrl: jest.fn().mockResolvedValue("mock signed url"),
+vi.mock("@aws-sdk/s3-request-presigner", () => ({
+  getSignedUrl: vi.fn().mockResolvedValue("mock signed url"),
 }));
 
 describe("Test s3Lib Interaction API Build Structure", () => {
@@ -24,7 +34,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     s3ClientMock.reset();
   });
 
@@ -41,7 +51,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
   });
 
   test("Can put object", async () => {
-    const mockPut = jest.fn();
+    const mockPut = vi.fn();
     s3ClientMock.on(PutObjectCommand).callsFake(mockPut);
 
     await s3Lib.put({ Bucket: "b", Key: "k", Body: "body" });
@@ -55,13 +65,14 @@ describe("Test s3Lib Interaction API Build Structure", () => {
 
     expect(url).toBe("mock signed url");
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_client, command] = (getSignedUrl as jest.Mock).mock.calls[0];
+    const [_client, command] = (getSignedUrl as Mock).mock.calls[0];
     expect(command).toBeInstanceOf(GetObjectCommand);
   });
 });
 
 describe("Checking Environment Variable Changes", () => {
-  beforeEach(() => jest.resetModules());
+  beforeEach(() => vi.resetModules());
+
   test("Check if statement with S3_LOCAL_ENDPOINT set", () => {
     process.env.S3_LOCAL_ENDPOINT = "mock endpoint";
     const config = getConfig();

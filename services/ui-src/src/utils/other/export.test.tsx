@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
 // types
 import { FormField, AnyObject } from "types";
 // utils
@@ -10,7 +11,7 @@ import {
   renderDrawerDataCell,
   renderDataCell,
 } from "./export";
-import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
+import { mockFormField, mockNestedFormField } from "utils/testing/setupTests";
 
 const emailInput: FormField = {
   id: "email-field-id",

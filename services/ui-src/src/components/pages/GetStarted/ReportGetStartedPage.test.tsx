@@ -1,18 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ReportGetStartedPage } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
+import { useNavigate } from "react-router-dom";
 
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+  useLocation: vi.fn(),
 }));
+const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
 
 const dashboardView = (
   <RouterWrappedComponent>
@@ -33,7 +36,7 @@ describe("<ReportGetStartedPage />", () => {
     const templateCardLink = screen.getByText(verbiage.pageLink.text)!;
     await userEvent.click(templateCardLink);
     const expectedRoute = verbiage.pageLink.route;
-    await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
+    await expect(mockNavigate).toHaveBeenCalledWith(expectedRoute);
   });
 
   testA11y(dashboardView);

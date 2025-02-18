@@ -1,5 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { Error } from "components/app/Error";
 // components
 import { ExportedReportBanner } from "./ExportedReportBanner";
@@ -8,13 +17,13 @@ import { useStore } from "utils";
 import {
   mockMcparReportStore,
   mockMlrReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 let mockPrint: any;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
 const errorComponent = <Error />;
 
@@ -24,7 +33,7 @@ describe("<ExportedReportBanner />", () => {
   // temporarily mock window.print for the testing environment
   beforeEach(() => {
     mockPrint = window.print;
-    jest.spyOn(window, "print").mockImplementation(() => {});
+    vi.spyOn(window, "print").mockImplementation(() => {});
   });
   afterEach(() => {
     window.print = mockPrint;

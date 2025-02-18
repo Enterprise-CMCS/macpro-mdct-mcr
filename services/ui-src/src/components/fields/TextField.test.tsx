@@ -1,5 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  describe,
+  expect,
+  Mock,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { useFormContext } from "react-hook-form";
 // components
 import { ReportContext, TextField } from "components";
@@ -10,31 +19,31 @@ import {
   mockMcparReportContext,
   mockMcparReportStore,
   mockStateUserStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockTrigger = jest.fn();
+const mockTrigger = vi.fn();
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
-  getValues: jest.fn(),
+  getValues: vi.fn(),
   trigger: mockTrigger,
 };
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
+const mockUseFormContext = useFormContext as unknown as Mock<
   typeof useFormContext
 >;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
+vi.mock("react-hook-form", () => ({
+  useFormContext: vi.fn(() => mockRhfMethods),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+    getValues: vi.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -66,13 +75,13 @@ describe("<TextField />", () => {
       render(textFieldComponent);
       const textField = screen.getByText("test-label");
       expect(textField).toBeVisible();
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
   });
 
   describe("Test TextField hydration functionality", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     const mockFormFieldValue = "mock-form-field-value";
     const mockHydrationValue = "mock-hydration-value";
@@ -159,7 +168,7 @@ describe("<TextField />", () => {
 
   describe("Test TextField component autosaves", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test("TextField autosaves with typed value when stateuser, autosave true, and form is valid", async () => {
       mockTrigger.mockReturnValue(true);
@@ -239,7 +248,7 @@ describe("<TextField />", () => {
     );
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test("Blanking field triggers form validation", async () => {
       mockGetValues(undefined);

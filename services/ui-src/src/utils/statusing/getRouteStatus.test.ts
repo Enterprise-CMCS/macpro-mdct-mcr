@@ -1,4 +1,5 @@
-import { mockMcparReport } from "utils/testing/setupJest";
+import { mockMcparReport } from "utils/testing/setupTests";
+import { describe, expect, test } from "vitest";
 import { getRouteStatus } from "./getRouteStatus";
 
 describe("getRouteStatusFunctionality", () => {

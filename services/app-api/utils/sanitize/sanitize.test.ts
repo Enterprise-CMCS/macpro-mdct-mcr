@@ -1,4 +1,5 @@
 import { sanitizeArray, sanitizeObject, sanitizeString } from "./sanitize";
+import { describe, expect, test } from "vitest";
 
 // SAFE TYPES
 

@@ -1,5 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { useFormContext } from "react-hook-form";
 // components
 import { DropdownField, ReportContext } from "components";
@@ -12,31 +22,31 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockTrigger = jest.fn();
+const mockTrigger = vi.fn();
 const mockRhfMethods = {
   register: () => {},
   setValue: () => {},
-  getValues: jest.fn(),
+  getValues: vi.fn(),
   trigger: mockTrigger,
 };
-const mockUseFormContext = useFormContext as unknown as jest.Mock<
+const mockUseFormContext = useFormContext as unknown as Mock<
   typeof useFormContext
 >;
-jest.mock("react-hook-form", () => ({
-  useFormContext: jest.fn(() => mockRhfMethods),
+vi.mock("react-hook-form", () => ({
+  useFormContext: vi.fn(() => mockRhfMethods),
 }));
 const mockGetValues = (returnValue: any) =>
   mockUseFormContext.mockImplementation((): any => ({
     ...mockRhfMethods,
-    getValues: jest.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
+    getValues: vi.fn().mockReturnValueOnce([]).mockReturnValue(returnValue),
   }));
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -174,7 +184,7 @@ describe("<DropdownField />", () => {
 
   describe("Test DropdownField autosaves", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Autosaves selected value when stateuser, autosave true, and field is valid", async () => {
@@ -259,7 +269,7 @@ describe("<DropdownField />", () => {
     );
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Component with validateOnRender passed should validate on render", () => {

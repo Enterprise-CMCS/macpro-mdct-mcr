@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test } from "vitest";
 // components
 import { FaqAccordion } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 const accordionItems = [
@@ -39,7 +40,10 @@ describe("<FaqAccordion />", () => {
     expect(screen.getByText(accordionItems[0].answer)).not.toBeVisible();
     await userEvent.click(faqQuestion);
     expect(faqQuestion).toBeVisible();
-    expect(screen.getByText(accordionItems[0].answer)).toBeVisible();
+    await waitFor(() =>
+      // Chakra's accordion transition is not instant; we must wait for it
+      expect(screen.getByText(accordionItems[0].answer)).toBeVisible()
+    );
   });
 
   testA11y(faqAccordionComponent);

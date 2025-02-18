@@ -1,4 +1,5 @@
 import { fetchTemplate } from "./fetch";
+import { beforeAll, describe, expect, test, vi } from "vitest";
 // utils
 import { proxyEvent } from "../../utils/testing/proxyEvent";
 import { error } from "../../utils/constants/constants";
@@ -6,12 +7,14 @@ import { error } from "../../utils/constants/constants";
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockReturnValue(true),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockReturnValue(true),
 }));
 
-jest.mock("../../utils/s3/s3-lib", () => ({
-  getSignedDownloadUrl: jest.fn().mockReturnValue("s3://fakeurl.bucket.here"),
+vi.mock("../../utils/s3/s3-lib", () => ({
+  default: {
+    getSignedDownloadUrl: vi.fn().mockReturnValue("s3://fakeurl.bucket.here"),
+  },
 }));
 
 const testEvent: APIGatewayProxyEvent = {
@@ -19,13 +22,8 @@ const testEvent: APIGatewayProxyEvent = {
   pathParameters: { templateName: "test" },
 };
 
-const consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.spyOn(console, "debug").mockImplementation(),
-  error: jest.spyOn(console, "error").mockImplementation(),
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
+vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("Test fetchTemplate API method", () => {
   beforeAll(() => {
@@ -39,7 +37,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(mcparEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });
@@ -51,7 +49,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(mlrEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });
@@ -63,7 +61,7 @@ describe("Test fetchTemplate API method", () => {
     };
     const res = await fetchTemplate(naaarEvent, null);
 
-    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(debugSpy).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Ok);
     expect(res.body).toContain("s3://fakeurl.bucket.here");
   });

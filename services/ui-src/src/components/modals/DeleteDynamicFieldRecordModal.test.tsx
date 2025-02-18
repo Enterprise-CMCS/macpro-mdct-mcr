@@ -1,13 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 // components
 import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 // utils
-import { mockMcparReportContext } from "utils/testing/setupJest";
+import { mockMcparReportContext } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockCloseHandler = jest.fn();
-const mockDeleteRecord = jest.fn();
+const mockCloseHandler = vi.fn();
+const mockDeleteRecord = vi.fn();
 
 const modalComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
@@ -30,7 +31,7 @@ describe("<DeleteDynamicFieldRecordModal />", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test("DeleteDynamicFieldRecordModal shows the contents", () => {

@@ -14,7 +14,8 @@ import {
   mockDrawerReportPageJson,
   mockDrawerFormField,
   mockModalFormField,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
+import { describe, expect, it, test } from "vitest";
 
 describe("Test flattenReportRoutesArray", () => {
   it("Should flatten report routes", () => {

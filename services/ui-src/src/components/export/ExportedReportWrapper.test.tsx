@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
 // components
 import { ReportContext, ExportedReportWrapper } from "components";
 // utils
@@ -9,7 +10,7 @@ import {
   mockNestedReportPageJson,
   mockStandardReportPageJson,
   mockMcparReportContext,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 const exportedStandardReportWrapperComponent = (

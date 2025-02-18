@@ -12,7 +12,8 @@ import {
   mockReportFieldData,
   mockQualityMeasuresEntityMissingDetails,
   mockQualityMeasuresFormattedEntityDataMissingDetails,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
+import { describe, expect, it } from "vitest";
 
 describe("Test getFormattedEntityData", () => {
   it("Returns correct data for access measures", () => {

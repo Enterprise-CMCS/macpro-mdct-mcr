@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ReportContext, ReviewSubmitPage } from "components";
 import { SuccessMessageGenerator } from "./ReviewSubmitPage";
@@ -13,14 +14,14 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -135,7 +136,7 @@ const McparReviewSubmitPage_InProgress = (
 describe("<ReviewSubmitPage />", () => {
   describe("MCPAR Review and Submit Page Functionality", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     describe("User has not started filling out the form", () => {

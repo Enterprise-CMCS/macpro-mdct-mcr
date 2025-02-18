@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ReportPageFooter } from "components";
 // types
@@ -10,27 +11,27 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { useNavigate } from "react-router-dom";
 
-const mockUseNavigate = jest.fn();
-const mockRoutes = {
-  previousRoute: "/mock-previous-route",
-  nextRoute: "/mock-next-route",
-};
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+}));
+const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
 
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
+vi.mock("utils", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useFindRoute: () => ({
+    previousRoute: "/mock-previous-route",
+    nextRoute: "/mock-next-route",
+  }),
 }));
 
-jest.mock("utils", () => ({
-  ...jest.requireActual("utils"),
-  useFindRoute: () => mockRoutes,
-}));
-
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -44,7 +45,7 @@ const reportPageComponent = (
 
 describe("<ReportPageFooter />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Test ReportPageFooter without form", () => {
@@ -57,14 +58,14 @@ describe("<ReportPageFooter />", () => {
       const result = render(reportPageComponent);
       const previousNavigationButton = result.getByText("Previous");
       await userEvent.click(previousNavigationButton);
-      expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-previous-route");
+      expect(mockNavigate).toHaveBeenLastCalledWith("/mock-previous-route");
     });
 
     test("ReportPageFooter without form 'Continue' functionality works", async () => {
       const result = render(reportPageComponent);
       const continueButton = result.getByText("Continue");
       await userEvent.click(continueButton);
-      expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-next-route");
+      expect(mockNavigate).toHaveBeenLastCalledWith("/mock-next-route");
     });
   });
 

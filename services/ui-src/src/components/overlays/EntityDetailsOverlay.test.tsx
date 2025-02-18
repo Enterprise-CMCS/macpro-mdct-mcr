@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
 // utils
@@ -8,17 +9,17 @@ import {
   mockModalOverlayForm,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
 
-const mockCloseEntityDetailsOverlay = jest.fn();
-const mockOnSubmit = jest.fn();
+const mockCloseEntityDetailsOverlay = vi.fn();
+const mockOnSubmit = vi.fn();
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockEntityStore,
@@ -33,7 +34,7 @@ const entityDetailsOverlayComponent = (
       form={mockModalOverlayForm}
       onSubmit={mockOnSubmit}
       disabled={false}
-      setEntering={jest.fn()}
+      setEntering={vi.fn()}
       selectedEntity={mockEntityStore.selectedEntity!}
     />
   </RouterWrappedComponent>
@@ -41,7 +42,7 @@ const entityDetailsOverlayComponent = (
 
 describe("<EntityDetailsOverlay />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     render(entityDetailsOverlayComponent);
   });
 
