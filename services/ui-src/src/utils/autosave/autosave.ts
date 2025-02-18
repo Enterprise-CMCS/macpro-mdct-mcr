@@ -2,11 +2,9 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import {
   AnyObject,
   AutosaveField,
-  DrawerEntityType,
+  EntityType,
   EntityShape,
-  ModalDrawerEntityType,
   ReportStatus,
-  StandardEntityType,
 } from "types";
 import { deletePlanData } from "utils/forms/priorAuthorization";
 
@@ -52,7 +50,7 @@ export interface GetAutosaveFieldsProps extends AutosaveField {
 export interface EntityContextShape {
   selectedEntity?: EntityShape;
   entities?: EntityShape[];
-  entityType?: StandardEntityType | DrawerEntityType | ModalDrawerEntityType;
+  entityType?: EntityType;
   updateEntities: Function;
 }
 

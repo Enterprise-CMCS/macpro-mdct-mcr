@@ -19,7 +19,7 @@ import {
   EntityShape,
   FormField,
   isFieldElement,
-  ModalDrawerEntityType,
+  EntityType,
   ModalDrawerReportPageShape,
   ModalDrawerReportPageVerbiage,
   ReportStatus,
@@ -57,7 +57,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there is at least one (1) plan prior to being able to enter Sanctions
   const checkForPlans = () => {
-    if (entityType === ModalDrawerEntityType.SANCTIONS) {
+    if (entityType === EntityType.SANCTIONS) {
       return report?.fieldData["plans"]?.length;
     }
     return true;
@@ -255,7 +255,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           }}
         />
         <ReportDrawer
-          entityType={entityType as ModalDrawerEntityType}
+          entityType={entityType}
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,

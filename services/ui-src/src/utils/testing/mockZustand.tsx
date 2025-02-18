@@ -11,11 +11,10 @@ import {
 // types
 import {
   AdminBannerState,
-  DrawerEntityType,
+  EntityType,
   McrEntityState,
   McrReportState,
   McrUserState,
-  StandardEntityType,
   UserRoles,
 } from "types";
 
@@ -195,10 +194,10 @@ export const mockEmptyReportStore: McrReportState = {
 // ENTITY STATES / STORE
 export const mockEntityStore: McrEntityState = {
   entities: [],
-  entityType: StandardEntityType.PLANS,
+  entityType: EntityType.PLANS,
   selectedEntity: {
     id: "mock-plan-id-1",
-    type: StandardEntityType.PLANS,
+    type: EntityType.PLANS,
     report_planName: "mock-plan",
     report_programName: "mock-programName",
     report_programType: [
@@ -224,7 +223,7 @@ export const mockEntityStore: McrEntityState = {
 
 export const mockAnalysisMethodEntityStore: McrEntityState = {
   entities: [],
-  entityType: DrawerEntityType.ANALYSIS_METHODS,
+  entityType: EntityType.ANALYSIS_METHODS,
   selectedEntity: {
     id: "k9t7YoOeTOAXX3s7qF6XfN33",
     name: "Geomapping",

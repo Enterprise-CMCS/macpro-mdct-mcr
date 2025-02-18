@@ -14,7 +14,7 @@ import {
   mockNaaarAnalysisMethodsPageJson,
 } from "utils/testing/setupJest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
-import { DrawerEntityType, McrEntityState } from "types";
+import { EntityType, McrEntityState } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -62,7 +62,7 @@ describe("<DrawerReportEntityRow />", () => {
   describe("Analysis methods custom logic", () => {
     const mockAnalysisMethodEntityStore: McrEntityState = {
       entities: [],
-      entityType: DrawerEntityType.ANALYSIS_METHODS,
+      entityType: EntityType.ANALYSIS_METHODS,
       selectedEntity: {
         id: "k9t7YoOeTOAXX3s7qF6XfN33",
         name: "Geomapping",

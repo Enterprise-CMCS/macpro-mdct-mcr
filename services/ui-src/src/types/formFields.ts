@@ -3,19 +3,16 @@ import { AnyObject, DrawerReportPageShape, ReportShape } from "types";
 
 // FORM & FIELD STRUCTURE
 
-export enum StandardEntityType {
+export enum EntityType {
+  // StandardReportPage entities
   PLANS = "plans",
   BSS_ENTITIES = "bssEntities",
   PROGRAM = "program",
-}
-
-export enum DrawerEntityType {
+  // DrawerReportPage entities
   ILOS = "ilos",
   ANALYSIS_METHODS = "analysisMethods",
   STANDARDS = "standards",
-}
-
-export enum ModalDrawerEntityType {
+  // ModalDrawerReportPage entities
   ACCESS_MEASURES = "accessMeasures",
   QUALITY_MEASURES = "qualityMeasures",
   SANCTIONS = "sanctions",

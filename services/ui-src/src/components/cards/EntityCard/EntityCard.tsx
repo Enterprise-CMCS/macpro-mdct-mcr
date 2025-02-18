@@ -8,7 +8,7 @@ import { Box, Button, Image, Text } from "@chakra-ui/react";
 // styles
 import { svgFilters } from "styles/theme";
 // types
-import { AnyObject, EntityShape, ModalDrawerEntityType } from "types";
+import { AnyObject, EntityShape, EntityType } from "types";
 // utils
 import { useStore } from "utils";
 // assets
@@ -33,7 +33,7 @@ export const EntityCard = ({
   let entityStarted = false;
   let entityCompleted = false;
   const reportingPeriodCompletedOrOptional =
-    entityType == ModalDrawerEntityType.QUALITY_MEASURES
+    entityType == EntityType.QUALITY_MEASURES
       ? formattedEntityData.reportingPeriod
       : true;
 
@@ -45,13 +45,13 @@ export const EntityCard = ({
 
   // any drawer-based field will do for this check
   switch (entityType) {
-    case ModalDrawerEntityType.ACCESS_MEASURES:
+    case EntityType.ACCESS_MEASURES:
       entityCompleted = !!formattedEntityData?.population;
       break;
-    case ModalDrawerEntityType.SANCTIONS:
+    case EntityType.SANCTIONS:
       entityCompleted = !!formattedEntityData?.assessmentDate;
       break;
-    case ModalDrawerEntityType.QUALITY_MEASURES: {
+    case EntityType.QUALITY_MEASURES: {
       const perPlanResponses = formattedEntityData?.perPlanResponses;
       const validPerPlanResponses = perPlanResponses?.filter(
         (el: any) => el.response
@@ -139,7 +139,7 @@ export const EntityCard = ({
         />
         {openAddEditEntityModal && (
           <>
-            {entityType == ModalDrawerEntityType.QUALITY_MEASURES &&
+            {entityType == EntityType.QUALITY_MEASURES &&
               !formattedEntityData.reportingPeriod && (
                 <Text sx={sx.missingReportingPeriodMessage}>
                   {verbiage.missingReportingPeriodMessage}
@@ -199,7 +199,7 @@ export const EntityCard = ({
 interface Props {
   entity: EntityShape;
   entityIndex: number;
-  entityType: string;
+  entityType: EntityType;
   formattedEntityData: AnyObject;
   verbiage: AnyObject;
   openAddEditEntityModal?: Function;

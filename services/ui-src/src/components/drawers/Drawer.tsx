@@ -13,12 +13,7 @@ import {
 import { CloseIcon } from "@cmsgov/design-system";
 import { ReportDrawerDetails } from "components";
 // types
-import {
-  AnyObject,
-  CustomHtmlElement,
-  DrawerEntityType,
-  ModalDrawerEntityType,
-} from "types";
+import { AnyObject, CustomHtmlElement, EntityType } from "types";
 // utils
 import { makeMediaQueryClasses, parseCustomHtml } from "utils";
 
@@ -60,7 +55,7 @@ export const Drawer = ({
           {verbiage.drawerDetails && entityType && (
             <ReportDrawerDetails
               drawerDetails={verbiage.drawerDetails}
-              entityType={entityType as ModalDrawerEntityType}
+              entityType={entityType}
             />
           )}
           <Button
@@ -89,7 +84,7 @@ interface Props {
     isOpen: boolean;
     onClose: Function;
   };
-  entityType?: DrawerEntityType | ModalDrawerEntityType;
+  entityType?: EntityType;
   [key: string]: any;
 }
 

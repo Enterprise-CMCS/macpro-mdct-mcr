@@ -20,7 +20,6 @@ import {
   isFieldElement,
   ModalOverlayReportPageShape,
   ReportStatus,
-  StandardEntityType,
 } from "types";
 // utils
 import {
@@ -178,7 +177,7 @@ export const ModalOverlayReportPage = ({
         <EntityProvider>
           <EntityDetailsOverlay
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
-            entityType={entityType as StandardEntityType}
+            entityType={entityType}
             entities={report?.fieldData[entityType]}
             form={overlayForm}
             onSubmit={onSubmit}

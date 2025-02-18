@@ -10,8 +10,7 @@ import {
   CustomHtmlElement,
   FormJson,
   EntityShape,
-  DrawerEntityType,
-  ModalDrawerEntityType,
+  EntityType,
 } from "types";
 // utils
 import { useStore } from "utils";
@@ -87,7 +86,7 @@ interface Props {
   };
   form: FormJson;
   onSubmit: Function;
-  entityType?: DrawerEntityType | ModalDrawerEntityType;
+  entityType?: EntityType;
   submitting?: boolean;
   drawerDisclosure: {
     isOpen: boolean;

@@ -1,5 +1,5 @@
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
-import { DrawerEntityType, ReportStatus } from "types";
+import { EntityType, ReportStatus } from "types";
 import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
 
@@ -787,7 +787,7 @@ export const mockEntityDetailsContext = {
   ...mockEntityMethods,
   selectedEntity: undefined,
   entities: [],
-  entityType: "program" as DrawerEntityType,
+  entityType: EntityType.PROGRAM,
 };
 
 export const mockMLRLockedReportContext = {

@@ -3,7 +3,7 @@ import React, { MouseEventHandler, useEffect } from "react";
 import { Box, Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
 import { Form, ReportPageIntro } from "components";
 // types
-import { EntityShape, FormJson, StandardEntityType } from "types";
+import { EntityShape, FormJson, EntityType } from "types";
 // utils
 import { useStore } from "utils";
 // verbiage
@@ -112,7 +112,7 @@ export const EntityDetailsOverlay = ({
 
 interface Props {
   closeEntityDetailsOverlay: Function;
-  entityType: StandardEntityType;
+  entityType: EntityType;
   entities: any;
   form: FormJson;
   onSubmit: Function;

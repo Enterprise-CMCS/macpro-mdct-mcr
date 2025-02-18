@@ -5,7 +5,7 @@ import { DeleteDynamicFieldRecordModal, ReportContext } from "components";
 // utils
 import { mockMcparReportContext } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { StandardEntityType } from "types";
+import { EntityType } from "types";
 
 const mockCloseHandler = jest.fn();
 const mockDeleteRecord = jest.fn();
@@ -18,7 +18,7 @@ const modalComponent = (
         onClose: mockCloseHandler,
       }}
       deleteRecord={mockDeleteRecord}
-      entityType={StandardEntityType.PLANS}
+      entityType={EntityType.PLANS}
     />
   </ReportContext.Provider>
 );

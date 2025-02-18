@@ -8,7 +8,7 @@ import { closeText } from "../../constants";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupJest";
-import { ModalDrawerEntityType } from "types";
+import { EntityType } from "types";
 
 const mockOnClose = jest.fn();
 
@@ -19,7 +19,7 @@ const mockDrawerDisclosure = {
 
 const drawerComponent = (
   <Drawer
-    entityType={ModalDrawerEntityType.ACCESS_MEASURES}
+    entityType={EntityType.ACCESS_MEASURES}
     drawerDisclosure={mockDrawerDisclosure}
     verbiage={mockModalDrawerReportPageVerbiage}
   />

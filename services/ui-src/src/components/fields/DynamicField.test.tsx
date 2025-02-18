@@ -7,7 +7,7 @@ import { DynamicField, ReportContext } from "components";
 // constants
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 // types
-import { DrawerEntityType, ReportStatus, StandardEntityType } from "types";
+import { EntityType, ReportStatus } from "types";
 // utils
 import { useStore } from "utils";
 import {
@@ -72,7 +72,7 @@ const MockForm = (props: any) => {
       <FormProvider {...form}>
         <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
           <DynamicField
-            name={StandardEntityType.PLANS}
+            name={EntityType.PLANS}
             label="test-label"
             hydrate={props.hydrationValue}
           />
@@ -95,7 +95,7 @@ const MockIlosForm = (props: any) => {
       <FormProvider {...form}>
         <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
           <DynamicField
-            name={DrawerEntityType.ILOS}
+            name={EntityType.ILOS}
             label="test-label"
             hydrate={props.hydrationValue}
           />

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
 // types
-import { DrawerEntityType, EntityShape, StandardEntityType } from "types";
+import { EntityType, EntityShape } from "types";
 
 export const DeleteDynamicFieldRecordModal = ({
   selectedRecord,
@@ -18,7 +18,7 @@ export const DeleteDynamicFieldRecordModal = ({
     ilos: "In Lieu of Services",
   };
 
-  const isIlos = entityType === "ilos";
+  const isIlos = entityType === EntityType.ILOS;
   const entityName = fieldTypeMap[entityType];
 
   const deleteProgramHandler = async () => {
@@ -51,7 +51,7 @@ export const DeleteDynamicFieldRecordModal = ({
 interface Props {
   selectedRecord?: EntityShape;
   deleteRecord: Function;
-  entityType: StandardEntityType | DrawerEntityType;
+  entityType: EntityType;
   modalDisclosure: {
     isOpen: boolean;
     onClose: any;
