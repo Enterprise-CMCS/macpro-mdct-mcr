@@ -57,6 +57,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
   const entities = report?.fieldData?.[entityType] || [];
+  const existingStandards = entityType === entityTypes[8];
+  console.log(existingStandards);
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -75,6 +77,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     report,
     isAnalysisMethodsPage,
     isReportingOnStandards,
+
     ilos,
     reportingOnIlos,
   };
@@ -271,29 +274,31 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     true,
     customCells
   );
-  const data = useMemo(
-    () => [
-      {
-        count: 1,
-        provider: "Provider Name 1",
-        standardType: "Type 1",
-        standardDescription: "Description of standard 1",
-        analysisMethods: "Analysis method 1",
-        population: "pop 1",
-        region: "Large Metro",
-      },
-      {
-        count: 2,
-        provider: "Provider Name 2",
-        standardType: "Type 2",
-        standardDescription: "Description of standard 2",
-        analysisMethods: "Analysis method 2",
-        population: "pop 2",
-        region: "Rural",
-      },
-    ],
+
+  const actualData = useMemo(
+    () =>
+      entities.map((entity: any) => {
+        const {
+          standard_coreProviderTypeCoveredByStandard,
+          standard_standardType,
+          standard_standardDescription,
+          standard_analysisMethodsUtilized,
+          standard_populationCoveredByStandard,
+          standard_applicableRegion,
+        } = entity;
+        return {
+          provider: standard_coreProviderTypeCoveredByStandard[0].value,
+          standardType: standard_standardType[0].value,
+          standardDescription: standard_standardDescription,
+          analysisMethods: standard_analysisMethodsUtilized,
+          population: standard_populationCoveredByStandard[0].value,
+          region: standard_applicableRegion[0].value,
+        };
+      }),
     []
   );
+
+  console.log("actual data", actualData);
 
   const content = { caption: "caption here" };
 
@@ -321,12 +326,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {isReportingOnStandards ? (
           <Box>
             {addStandardsButton}
-            <SortableTable
-              columns={columns}
-              data={data}
-              content={content}
-              initialSorting={[{ id: "provider", desc: false }]}
-            />
+            {existingStandards && (
+              <SortableTable
+                columns={columns}
+                data={actualData}
+                content={content}
+                initialSorting={[{ id: "provider", desc: false }]}
+              />
+            )}
             {addStandardsButton}
           </Box>
         ) : (
