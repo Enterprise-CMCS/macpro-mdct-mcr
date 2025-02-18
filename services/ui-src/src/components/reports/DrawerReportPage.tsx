@@ -58,7 +58,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
   const entities = report?.fieldData?.[entityType] || [];
   const existingStandards = entityType === entityTypes[8];
-  console.log(entities);
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -277,7 +276,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const actualData = useMemo(
     () =>
-      entities.map((entity: any) => {
+      entities.map((entity: any, index: number) => {
         const {
           standard_coreProviderTypeCoveredByStandard,
           standard_standardType,
@@ -286,21 +285,30 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           standard_populationCoveredByStandard,
           standard_applicableRegion,
         } = entity;
+
+        // there are 7 analysis methods checkboxes
+        function extractMethods(
+          standard_analysisMethodsUtilized: { value: any }[]
+        ) {
+          return standard_analysisMethodsUtilized
+            .map((method: { value: any }) => method.value)
+            .join(", ");
+        }
+
         return {
+          count: index + 1,
           provider: standard_coreProviderTypeCoveredByStandard[0].value,
           standardType: standard_standardType[0].value,
           standardDescription: standard_standardDescription,
-          analysisMethods: standard_analysisMethodsUtilized,
+          analysisMethods: extractMethods(standard_analysisMethodsUtilized),
           population: standard_populationCoveredByStandard[0].value,
           region: standard_applicableRegion[0].value,
         };
       }),
-    []
+    [entities]
   );
 
-  console.log("actual data", actualData);
-
-  const content = { caption: "caption here" };
+  const content = { caption: "caption" };
 
   return (
     <Box>
@@ -326,14 +334,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {isReportingOnStandards ? (
           <Box>
             {addStandardsButton}
-            {/* {existingStandards && (
+            {existingStandards && hasProviderTypes && (
               <SortableTable
                 columns={columns}
                 data={actualData}
                 content={content}
                 initialSorting={[{ id: "provider", desc: false }]}
               />
-            )} */}
+            )}
             {addStandardsButton}
           </Box>
         ) : (
