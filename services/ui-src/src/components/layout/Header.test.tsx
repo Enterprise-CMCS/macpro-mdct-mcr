@@ -4,7 +4,8 @@ import { Header, ReportContext, ReportPageWrapper } from "components";
 // utils
 import {
   mockMcparReportContext,
-  mockMcparReportStore,
+  mockMlrReportContext,
+  mockNaaarReportContext,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -15,7 +16,6 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
-  ...mockMcparReportStore,
 });
 
 const headerComponent = (
@@ -24,9 +24,27 @@ const headerComponent = (
   </RouterWrappedComponent>
 );
 
-const reportComponent = (
+const mcparReportComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
+      <Header />
+      <ReportPageWrapper />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const mlrReportComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockMlrReportContext}>
+      <Header />
+      <ReportPageWrapper />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const naaarReportComponent = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportContext}>
       <Header />
       <ReportPageWrapper />
     </ReportContext.Provider>
@@ -61,15 +79,38 @@ describe("<Header />", () => {
     });
   });
   describe("Report Context", () => {
-    beforeEach(() => {
-      render(reportComponent);
-    });
-    test("Report Data is visible", () => {
+    test("Report Data is visible (MCPAR)", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportContext,
+      });
+      render(mcparReportComponent);
       expect(screen.getByText("Program: testProgram")).toBeVisible();
       expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
     });
 
+    test("Report Data is visible (MLR)", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrReportContext,
+      });
+      render(mlrReportComponent);
+      expect(screen.getByText("Submission: testProgram")).toBeVisible();
+      expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
+    });
+
+    test("Report Data is visible (NAAAR)", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportContext,
+      });
+      render(naaarReportComponent);
+      expect(screen.getByText("testProgram")).toBeVisible();
+      expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
+    });
+
     test("Subnav is visible on report screens; navigates to dashboard", async () => {
+      render(mcparReportComponent);
       expect(screen.getByText("Leave form")).toBeVisible();
     });
   });
