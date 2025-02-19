@@ -603,6 +603,23 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
   pageType: "modalOverlay",
   entityType: "plans",
   verbiage: mockOverlayReportPageVerbiage,
+  details: {
+    verbiage: {
+      intro: {
+        section: "",
+        subsection: "Mock Details: {{planName}}",
+      },
+      backButton: "Return to dashboard",
+    },
+    forms: [
+      {
+        form: {
+          id: "mock-form",
+          fields: [],
+        },
+      },
+    ],
+  },
 };
 
 export const mockReviewSubmitPageJson = {
