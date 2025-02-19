@@ -42,7 +42,7 @@ export const MobileEntityRow = ({
   const { userIsEndUser } = useStore().user ?? {};
 
   const entityComplete = useMemo(() => {
-    return report ? getEntityStatus(report, entity, entityType) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const enterDetailsText = () => {

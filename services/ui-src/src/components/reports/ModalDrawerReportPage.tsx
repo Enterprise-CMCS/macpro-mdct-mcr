@@ -5,12 +5,11 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
-  EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
+  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
@@ -310,27 +309,16 @@ const entityTable = (
   };
   return (
     <Table sx={sx.table} content={tableHeaders()} data-testid={"entity-table"}>
-      {entities.map((entity: EntityShape) =>
-        isMobile || isTablet ? (
-          <MobileEntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        ) : (
-          <EntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        )
-      )}
+      {entities.map((entity: EntityShape) => (
+        <ResponsiveEntityRow
+          key={entity.id}
+          entity={entity}
+          verbiage={verbiage}
+          openAddEditEntityModal={openAddEditEntityModal}
+          openDeleteEntityModal={openDeleteEntityModal}
+          openOverlayOrDrawer={openOverlayOrDrawer}
+        />
+      ))}
     </Table>
   );
 };

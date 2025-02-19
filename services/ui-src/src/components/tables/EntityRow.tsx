@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape, ReportType } from "types";
+import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
 import { eligibilityGroup, getEntityStatus, useStore } from "utils";
 // assets
@@ -25,7 +25,7 @@ export const EntityRow = ({
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const entityComplete = useMemo(() => {
-    return report ? getEntityStatus(report, entity, entityType) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const enterDetailsText = () => {
@@ -111,7 +111,7 @@ export const EntityRow = ({
 
 export interface EntityRowProps {
   entity: EntityShape;
-  entityType?: string;
+  entityType?: EntityType;
   verbiage: AnyObject;
   locked?: boolean;
   entering?: boolean;

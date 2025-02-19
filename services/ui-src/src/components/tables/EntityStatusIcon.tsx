@@ -15,7 +15,7 @@ export const EntityStatusIcon = ({ entity, entityType, isPdf }: Props) => {
   const { report } = useStore();
 
   const entityComplete = useMemo(() => {
-    return report ? getEntityStatus(report, entity, entityType) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
   return (

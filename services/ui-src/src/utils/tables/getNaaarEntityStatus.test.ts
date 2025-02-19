@@ -13,10 +13,10 @@ describe("getNaaarEntityStatus()", () => {
   const entityType = "plans";
 
   test("returns false", () => {
-    expect(getNaaarEntityStatus(report, entity)).toBe(false);
+    expect(getNaaarEntityStatus(entity, report)).toBe(false);
   });
 
   test("returns true", () => {
-    expect(getNaaarEntityStatus(report, entity, entityType)).toBe(true);
+    expect(getNaaarEntityStatus(entity, report, entityType)).toBe(true);
   });
 });

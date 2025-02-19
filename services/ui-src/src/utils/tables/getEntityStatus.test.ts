@@ -13,30 +13,26 @@ describe("getEntityStatus()", () => {
   const entityType = "plans";
 
   test("calls getMlrEntityStatus() for MLR", () => {
-    getEntityStatus(report, entity);
-    expect(getMlrEntityStatus).toHaveBeenCalledWith(report, entity);
+    getEntityStatus(entity, report);
+    expect(getMlrEntityStatus).toHaveBeenCalledWith(entity, report);
   });
 
   test("calls getNaaarEntityStatus() for NAAAR", () => {
     report.reportType = ReportType.NAAAR;
-    getEntityStatus(report, entity, entityType);
+    getEntityStatus(entity, report, entityType);
     expect(getNaaarEntityStatus).toHaveBeenCalledWith(
-      report,
       entity,
+      report,
       entityType
     );
   });
 
   test("returns false for unknown report type", () => {
     report.reportType = "unknown";
-    expect(getEntityStatus(report, entity)).toBe(false);
+    expect(getEntityStatus(entity, report)).toBe(false);
   });
 
   test("returns false for undefined report", () => {
-    expect(getEntityStatus(report, undefined)).toBe(false);
-  });
-
-  test("returns false for undefined entity", () => {
-    expect(getEntityStatus(undefined, entity)).toBe(false);
+    expect(getEntityStatus(entity, undefined)).toBe(false);
   });
 });

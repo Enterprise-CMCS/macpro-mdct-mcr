@@ -1,20 +1,18 @@
-import { EntityShape, ReportShape, ReportType } from "types";
+// types
+import { EntityShape, EntityType, ReportShape, ReportType } from "types";
+// utils
 import { getMlrEntityStatus, getNaaarEntityStatus } from "utils";
 
 export const getEntityStatus = (
+  entity: EntityShape,
   report?: ReportShape,
-  entity?: EntityShape,
-  entityType?: string
+  entityType?: EntityType
 ) => {
-  if (!report || !entity) {
-    return false;
-  }
-
-  switch (report.reportType) {
+  switch (report?.reportType) {
     case ReportType.MLR:
-      return getMlrEntityStatus(report, entity);
+      return getMlrEntityStatus(entity, report);
     case ReportType.NAAAR:
-      return getNaaarEntityStatus(report, entity, entityType);
+      return getNaaarEntityStatus(entity, report, entityType);
     default:
       return false;
   }
