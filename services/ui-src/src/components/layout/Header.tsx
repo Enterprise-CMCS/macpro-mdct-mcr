@@ -11,6 +11,7 @@ import appLogo from "assets/logos/logo_mcr.png";
 import getHelpIcon from "assets/icons/icon_help.png";
 import checkIcon from "assets/icons/icon_check_gray.png";
 import closeIcon from "assets/icons/icon_cancel_x_circle.png";
+import { ReportType } from "types";
 
 export const Header = () => {
   const { isMobile } = useBreakpoint();
@@ -20,6 +21,16 @@ export const Header = () => {
   const { lastSavedTime, report } = useStore();
 
   const saveStatusText = "Last saved " + lastSavedTime;
+  const getHeaderText = () => {
+    let name = report?.programName || "";
+    if (report?.reportType === ReportType.MCPAR) {
+      name = `Program: ${name}`;
+    }
+    if (report?.reportType === ReportType.MLR) {
+      name = `Submission: ${name}`;
+    }
+    return name;
+  };
 
   return (
     <Box sx={sx.root} id="header">
@@ -57,16 +68,7 @@ export const Header = () => {
           <Container sx={sx.subnavContainer}>
             <Flex sx={sx.subnavFlex}>
               <Flex>
-                {report?.reportType === "MCPAR" && (
-                  <Text sx={sx.programNameText}>
-                    Program: {report?.programName}
-                  </Text>
-                )}
-                {report?.reportType === "MLR" && (
-                  <Text sx={sx.programNameText}>
-                    Submission: {report?.programName}
-                  </Text>
-                )}
+                <Text sx={sx.headerNameText}>{getHeaderText()}</Text>
               </Flex>
               <Flex sx={sx.subnavFlexRight}>
                 {lastSavedTime && (
@@ -156,7 +158,7 @@ const sx = {
     justifyContent: "space-between",
     alignItems: "center",
   },
-  programNameText: {
+  headerNameText: {
     fontWeight: "bold",
   },
   subnavFlexRight: {
