@@ -55,9 +55,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
-  const entities = useStore(
-    (state) => state.report?.fieldData?.[entityType] || []
-  );
+  const entities = report?.fieldData?.[entityType] || [];
 
   const existingStandards =
     entityType === entityTypes[8] && entities.length > 0;
