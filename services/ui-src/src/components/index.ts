@@ -110,6 +110,7 @@ export { StatusTable } from "./statusing/StatusTable";
 export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
 export { MobileEntityRow } from "./tables/MobileEntityRow";
+export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 export { SortableTable } from "./tables/SortableTable";
 // widgets

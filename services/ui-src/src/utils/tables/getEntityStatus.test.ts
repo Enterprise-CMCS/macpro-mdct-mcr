@@ -1,5 +1,8 @@
-import { ReportShape, ReportType } from "types";
+// components
 import { getEntityStatus } from "./getEntityStatus";
+// types
+import { ReportShape, ReportType } from "types";
+// utils
 import { getMlrEntityStatus, getNaaarEntityStatus } from "utils";
 
 jest.mock("utils");
@@ -17,7 +20,11 @@ describe("getEntityStatus()", () => {
   test("calls getNaaarEntityStatus() for NAAAR", () => {
     report.reportType = ReportType.NAAAR;
     getEntityStatus(report, entity, entityType);
-    expect(getNaaarEntityStatus).toHaveBeenCalled();
+    expect(getNaaarEntityStatus).toHaveBeenCalledWith(
+      report,
+      entity,
+      entityType
+    );
   });
 
   test("returns false for unknown report type", () => {

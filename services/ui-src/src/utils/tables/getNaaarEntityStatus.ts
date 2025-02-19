@@ -1,3 +1,4 @@
+// types
 import { EntityShape, EntityType, ReportShape } from "types";
 
 // TODO: Update to actual logic
@@ -7,7 +8,7 @@ export const getNaaarEntityStatus = (
   entityType?: EntityType
 ) => {
   if (entityType === "plans") {
-    return (
+    return !!(
       entity.planCompliance438206_assurance &&
       entity.planCompliance43868_assurance
     );

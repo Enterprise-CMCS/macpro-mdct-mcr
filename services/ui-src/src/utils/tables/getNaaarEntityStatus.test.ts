@@ -1,12 +1,22 @@
-import { ReportShape, ReportType } from "types";
+// components
 import { getNaaarEntityStatus } from "./getNaaarEntityStatus";
+// types
+import { ReportShape, ReportType } from "types";
 
 describe("getNaaarEntityStatus()", () => {
   const report = { reportType: ReportType.NAAAR } as ReportShape;
-  const entity = { id: "mock-entity" };
+  const entity = {
+    id: "mock-entity",
+    planCompliance438206_assurance: [],
+    planCompliance43868_assurance: [],
+  };
   const entityType = "plans";
 
   test("returns false", () => {
-    expect(getNaaarEntityStatus(report, entity, entityType)).toBe(false);
+    expect(getNaaarEntityStatus(report, entity)).toBe(false);
+  });
+
+  test("returns true", () => {
+    expect(getNaaarEntityStatus(report, entity, entityType)).toBe(true);
   });
 });

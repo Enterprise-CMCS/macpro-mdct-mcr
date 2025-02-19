@@ -3,15 +3,15 @@ import { useContext, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import {
   EntityDetailsMultiformOverlay,
-  EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
+  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
 import {
+  AnyObject,
   CustomHtmlElement,
   EntityShape,
   EntityType,
@@ -25,9 +25,7 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
-import { EntityRowProps } from "components/tables/EntityRow";
 import { translate } from "utils/text/translate";
-import { AnyObject } from "yup/lib/types";
 
 export const OverlayReportPage = ({
   route,
@@ -66,13 +64,15 @@ export const OverlayReportPage = ({
     const standardEntities = report?.fieldData["standards"] || [];
 
     const tableHeaders = () => {
-      if (isTablet || isMobile)
+      if (isTablet || isMobile) {
         return {
           headRow: [
             { hiddenName: "Status" },
             { hiddenName: verbiage.tableHeader },
           ],
         };
+      }
+
       return {
         headRow: [
           { hiddenName: "Status" },
@@ -104,14 +104,6 @@ export const OverlayReportPage = ({
 
     const displayTable = () => {
       return entityData.length > 0;
-    };
-
-    const ResponsiveEntityRow = (props: EntityRowProps) => {
-      return isMobile || isTablet ? (
-        <MobileEntityRow {...props} />
-      ) : (
-        <EntityRow {...props} />
-      );
     };
 
     return (
