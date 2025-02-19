@@ -97,6 +97,7 @@ export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
+export { SortableDrawerReportPageTable } from "./reports/SortableDrawerReportPageTable";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { OverlayReportPage } from "./reports/OverlayReportPage";

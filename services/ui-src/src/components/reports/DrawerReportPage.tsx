@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import uuid from "react-uuid";
 // components
 import { Box, Button, Image, Heading, useDisclosure } from "@chakra-ui/react";
@@ -9,7 +9,7 @@ import {
   ReportPageIntro,
   Form,
   DeleteEntityModal,
-  SortableTable,
+  SortableDrawerReportPageTable,
 } from "components";
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
@@ -17,12 +17,12 @@ import { getDefaultAnalysisMethodIds } from "../../constants";
 import {
   AnyObject,
   EntityShape,
-  DrawerReportPageShape,
   ReportStatus,
   isFieldElement,
   InputChangeEvent,
   FormJson,
   entityTypes,
+  DrawerReportPageShape,
 } from "types";
 // utils
 import {
@@ -39,7 +39,6 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
-import { generateColumns } from "components/tables/SortableTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -56,8 +55,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
-  const entities = report?.fieldData?.[entityType] || [];
-  const existingStandards = entityType === entityTypes[8];
+  const entities = useStore(
+    (state) => state.report?.fieldData?.[entityType] || []
+  );
+
+  const existingStandards =
+    entityType === entityTypes[8] && entities.length > 0;
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -244,72 +247,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     </Button>
   );
 
-  const sortableHeadRow = {
-    count: { header: "#" },
-    provider: { header: "Provider" },
-    standardType: { header: "Standard Type" },
-    standardDescription: { header: "Standard Description" },
-    analysisMethods: { header: "Analysis Methods" },
-    population: { header: "Pop." },
-    region: { header: "Region" },
-    edit: { header: "" },
-  };
-
-  const customCells = (
-    headKey: keyof DrawerReportPageTableShape,
-    value: any
-  ) => {
-    switch (headKey) {
-      case "edit": {
-        return <Button variant="outline">Edit</Button>;
-      }
-      default:
-        return value;
-    }
-  };
-
-  const columns = generateColumns<DrawerReportPageTableShape>(
-    sortableHeadRow,
-    true,
-    customCells
-  );
-
-  const actualData = useMemo(
-    () =>
-      entities.map((entity: any, index: number) => {
-        const {
-          standard_coreProviderTypeCoveredByStandard,
-          standard_standardType,
-          standard_standardDescription,
-          standard_analysisMethodsUtilized,
-          standard_populationCoveredByStandard,
-          standard_applicableRegion,
-        } = entity;
-
-        // there are 7 analysis methods checkboxes
-        function extractMethods(
-          standard_analysisMethodsUtilized: { value: any }[]
-        ) {
-          return standard_analysisMethodsUtilized
-            .map((method: { value: any }) => method.value)
-            .join(", ");
-        }
-
-        return {
-          count: index + 1,
-          provider: standard_coreProviderTypeCoveredByStandard[0].value,
-          standardType: standard_standardType[0].value,
-          standardDescription: standard_standardDescription,
-          analysisMethods: extractMethods(standard_analysisMethodsUtilized),
-          population: standard_populationCoveredByStandard[0].value,
-          region: standard_applicableRegion[0].value,
-        };
-      }),
-    [entities]
-  );
-
-  const content = { caption: "caption" };
-
   return (
     <Box>
       {verbiage.intro && (
@@ -334,15 +271,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {isReportingOnStandards ? (
           <Box>
             {addStandardsButton}
-            {existingStandards && hasProviderTypes && (
-              <SortableTable
-                columns={columns}
-                data={actualData}
-                content={content}
-                initialSorting={[{ id: "provider", desc: false }]}
-              />
+            {existingStandards ? (
+              <SortableDrawerReportPageTable entities={entities} />
+            ) : (
+              <></>
             )}
-            {addStandardsButton}
+            <Box>{addStandardsButton}</Box>
           </Box>
         ) : (
           <Box>
@@ -414,19 +348,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 };
 
 interface Props {
-  route: DrawerReportPageShape;
+  entities: any[];
   validateOnRender?: boolean;
-}
-
-interface DrawerReportPageTableShape {
-  count: number;
-  provider: number;
-  standardType: string;
-  description: string;
-  analysisMethods: string;
-  population: string;
-  region: string;
-  edit?: null;
+  route: DrawerReportPageShape;
 }
 
 function dashboardTitleStyling(canAddEntities: boolean) {
