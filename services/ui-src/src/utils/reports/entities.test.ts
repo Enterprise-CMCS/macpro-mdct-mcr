@@ -1,5 +1,5 @@
 import { getFormattedEntityData } from "./entities";
-import { ModalDrawerEntityTypes } from "types";
+import { EntityType } from "types";
 import {
   mockAccessMeasuresEntity,
   mockCompletedAccessMeasuresFormattedEntityData,
@@ -17,7 +17,7 @@ import {
 describe("Test getFormattedEntityData", () => {
   it("Returns correct data for access measures", () => {
     const entityData = getFormattedEntityData(
-      ModalDrawerEntityTypes.ACCESS_MEASURES,
+      EntityType.ACCESS_MEASURES,
       mockAccessMeasuresEntity
     );
     expect(entityData).toEqual(mockCompletedAccessMeasuresFormattedEntityData);
@@ -25,7 +25,7 @@ describe("Test getFormattedEntityData", () => {
 
   it("Returns correct data for quality measures with no completed measures", () => {
     const entityData = getFormattedEntityData(
-      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      EntityType.QUALITY_MEASURES,
       mockQualityMeasuresEntity,
       mockReportFieldData
     );
@@ -36,7 +36,7 @@ describe("Test getFormattedEntityData", () => {
 
   it("Returns correct data for quality measures with some completed measures", () => {
     const entityData = getFormattedEntityData(
-      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      EntityType.QUALITY_MEASURES,
       mockQualityMeasuresEntityMissingDetails,
       mockReportFieldData
     );
@@ -47,7 +47,7 @@ describe("Test getFormattedEntityData", () => {
 
   it("Returns correct data for quality measures with fully completed measures", () => {
     const entityData = getFormattedEntityData(
-      ModalDrawerEntityTypes.QUALITY_MEASURES,
+      EntityType.QUALITY_MEASURES,
       mockCompletedQualityMeasuresEntity,
       mockReportFieldData
     );
@@ -56,7 +56,7 @@ describe("Test getFormattedEntityData", () => {
 
   it("Returns correct data for sanctions", () => {
     const entityData = getFormattedEntityData(
-      ModalDrawerEntityTypes.SANCTIONS,
+      EntityType.SANCTIONS,
       mockSanctionsEntity,
       mockReportFieldData
     );
@@ -65,7 +65,7 @@ describe("Test getFormattedEntityData", () => {
 
   it("Returns empty object if invalid entity type is passed", () => {
     const entityData = getFormattedEntityData(
-      "invalid entity type",
+      "invalid entity type" as EntityType,
       mockSanctionsEntity,
       mockReportFieldData
     );

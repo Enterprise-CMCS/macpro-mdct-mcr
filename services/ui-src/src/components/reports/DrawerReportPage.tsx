@@ -21,7 +21,7 @@ import {
   isFieldElement,
   InputChangeEvent,
   FormJson,
-  entityTypes,
+  EntityType,
 } from "types";
 // utils
 import {
@@ -53,7 +53,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
-    !!addEntityDrawerForm.id || entityType === entityTypes[8];
+    !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
 
   // check if there are ILOS and associated plans

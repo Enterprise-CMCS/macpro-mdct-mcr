@@ -1,5 +1,6 @@
 import {
   CustomHtmlElement,
+  EntityType,
   OverlayReportPageShape,
   OverlayReportPageVerbiage,
 } from "types";
@@ -227,7 +228,7 @@ export const mockDrawerReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
   pageType: "drawer",
-  entityType: "plans",
+  entityType: EntityType.PLANS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -240,7 +241,7 @@ export const mockNestedReportPageJson = {
   name: "mock-route-2a",
   path: "/mock/mock-route-2a",
   pageType: "drawer",
-  entityType: "plans",
+  entityType: EntityType.PLANS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -253,7 +254,7 @@ export const mockMcparIlosPageJson = {
   name: "mock-route",
   path: "/mcpar/plan-level-indicators/ilos",
   pageType: "drawer",
-  entityType: "ilos",
+  entityType: EntityType.ILOS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -312,7 +313,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
   name: "mock-route",
   path: "/naaar/analysis-methods",
   pageType: "drawer",
-  entityType: "analysisMethods",
+  entityType: EntityType.ANALYSIS_METHODS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -415,7 +416,7 @@ export const mockNaaarStandardsPageJson = {
   name: "mock-route",
   path: "/naaar/program-level-access-and-network-adequacy-standards",
   pageType: "drawer",
-  entityType: "standards",
+  entityType: EntityType.STANDARDS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
@@ -571,7 +572,7 @@ export const mockModalDrawerReportPageJson = {
   name: "mock-route-2b",
   path: "/mock/mock-route-2b",
   pageType: "modalDrawer",
-  entityType: "accessMeasures",
+  entityType: EntityType.ACCESS_MEASURES,
   verbiage: mockModalDrawerReportPageVerbiage,
   modalForm: mockModalForm,
   drawerForm: mockDrawerForm,
@@ -581,7 +582,7 @@ export const mockModalOverlayReportPageJson = {
   name: "mock-route-2c",
   path: "/mock/mock-route-2c",
   pageType: "modalOverlay",
-  entityType: "program",
+  entityType: EntityType.PROGRAM,
   verbiage: mockModalOverlayReportPageVerbiage,
   modalForm: mockModalOverlayForm,
   overlayForm: mockModalOverlayForm,
@@ -591,7 +592,7 @@ export const mockModalOverlayReportPageWithOverlayJson = {
   name: "mock-route-2c",
   path: "/mock/mock-route-2c",
   pageType: "modalOverlay",
-  entityType: "program",
+  entityType: EntityType.PROGRAM,
   verbiage: mockModalOverlayReportPageVerbiage,
   modalForm: mockModalOverlayForm,
   overlayForm: mockModalOverlayForm,
@@ -601,7 +602,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
   name: "mock-route-2d",
   path: "/mock/mock-route-2d",
   pageType: "modalOverlay",
-  entityType: "plans",
+  entityType: EntityType.PLANS,
   verbiage: mockOverlayReportPageVerbiage,
 };
 
