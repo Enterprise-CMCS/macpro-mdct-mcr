@@ -2,8 +2,11 @@
 
 ./services/app-api/handlers/reports/fetch.ts:69: TODO: strict typing
 ./services/app-api/handlers/reports/fetch.ts:80: TODO: strict typing
+./services/ui-src/src/components/fields/ChoiceListField.test.tsx:583: TODO: Fix this test
+./services/ui-src/src/components/fields/ChoiceListField.test.tsx:673: TODO: Fix this test
 ./services/ui-src/src/components/layout/Timeout.tsx:36: TODO: When autosave is implemented, set up a callback function to listen to calls to update in authLifecycle
 ./services/ui-src/src/components/reports/ModalOverlayReportPage.test.tsx:150:todo Write a test to make sure admins can't click/change details?
+./services/ui-src/src/components/reports/ModalOverlayReportPage.test.tsx:225: TODO: Fix this test
 ./services/ui-src/src/components/reports/OverlayReportPage.test.tsx:110:TODO: Update this when logic surrounding standards has been updated!
 ./services/ui-src/src/components/reports/OverlayReportPage.test.tsx:149:TODO: Update this when logic surrounding standards has been updated!
 ./services/ui-src/src/components/reports/OverlayReportPage.test.tsx:186:TODO: Update this when logic surrounding standards has been updated!
