@@ -1,9 +1,9 @@
 import { AdminBannerData } from "types/banners";
 import { del, get, post } from "utils";
 
-async function getBanner(bannerKey: string) {
-  const path = `/banners/${bannerKey}`;
-  return get<AdminBannerData>(path);
+async function getBanners() {
+  const path = `/banners`;
+  return get<AdminBannerData[]>(path);
 }
 
 async function writeBanner(bannerData: AdminBannerData) {
@@ -19,4 +19,4 @@ async function deleteBanner(bannerKey: string) {
   return del(path);
 }
 
-export { getBanner, writeBanner, deleteBanner };
+export { getBanners, writeBanner, deleteBanner };

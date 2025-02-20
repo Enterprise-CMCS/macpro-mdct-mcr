@@ -1,4 +1,4 @@
-import { useContext, MouseEventHandler } from "react";
+import React, { useContext } from "react";
 // components
 import {
   Box,
@@ -17,7 +17,7 @@ import {
   PageTemplate,
 } from "components";
 // types
-import { AlertTypes } from "types";
+import { AdminBannerData, AlertTypes } from "types";
 // utils
 import { convertDateUtcToEt, useStore } from "utils";
 // verbiage
@@ -29,12 +29,41 @@ export const AdminPage = () => {
 
   // state management
   const {
-    bannerData,
+    allBanners,
     bannerActive,
     bannerLoading,
     bannerErrorMessage,
     bannerDeleting,
   } = useStore();
+
+  const BannerPreview = (banner: AdminBannerData) => (
+    <React.Fragment key={banner.key}>
+      <Flex sx={sx.currentBannerInfo}>
+        <Text sx={sx.currentBannerStatus}>
+          Status:{" "}
+          <span className={bannerActive ? "active" : "inactive"}>
+            {bannerActive ? "Active" : "Inactive"}
+          </span>
+        </Text>
+        <Text sx={sx.currentBannerDate}>
+          Start Date: <span>{convertDateUtcToEt(banner?.startDate)}</span>
+        </Text>
+        <Text sx={sx.currentBannerDate}>
+          End Date: <span>{convertDateUtcToEt(banner?.endDate)}</span>
+        </Text>
+      </Flex>
+      <Flex sx={sx.currentBannerFlex}>
+        <Banner status={AlertTypes.INFO} bannerData={banner} />
+        <Button
+          variant="danger"
+          sx={sx.deleteBannerButton}
+          onClick={() => deleteAdminBanner(banner.key)}
+        >
+          {bannerDeleting ? <Spinner size="md" /> : "Delete Current Banner"}
+        </Button>
+      </Flex>
+    </React.Fragment>
+  );
 
   return (
     <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
@@ -53,43 +82,12 @@ export const AdminPage = () => {
           </Flex>
         ) : (
           <>
-            <Collapse in={!!bannerData?.key}>
-              {bannerData && (
-                <>
-                  <Flex sx={sx.currentBannerInfo}>
-                    <Text sx={sx.currentBannerStatus}>
-                      Status:{" "}
-                      <span className={bannerActive ? "active" : "inactive"}>
-                        {bannerActive ? "Active" : "Inactive"}
-                      </span>
-                    </Text>
-                    <Text sx={sx.currentBannerDate}>
-                      Start Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
-                    </Text>
-                    <Text sx={sx.currentBannerDate}>
-                      End Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
-                    </Text>
-                  </Flex>
-                  <Flex sx={sx.currentBannerFlex}>
-                    <Banner status={AlertTypes.INFO} bannerData={bannerData} />
-                    <Button
-                      variant="danger"
-                      sx={sx.deleteBannerButton}
-                      onClick={deleteAdminBanner as MouseEventHandler}
-                    >
-                      {bannerDeleting ? (
-                        <Spinner size="md" />
-                      ) : (
-                        "Delete Current Banner"
-                      )}
-                    </Button>
-                  </Flex>
-                </>
-              )}
+            <Collapse in={allBanners && allBanners?.length > 0}>
+              {allBanners?.map((banner) => BannerPreview(banner))}
             </Collapse>
-            {!bannerData?.key && <Text>There is no current banner</Text>}
+            {allBanners?.length === 0 && (
+              <Text>There is no current banner</Text>
+            )}
           </>
         )}
       </Box>

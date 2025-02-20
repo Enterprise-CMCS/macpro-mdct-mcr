@@ -32,12 +32,15 @@ const userStore = (set: Function) => ({
 // ADMIN BANNER STORE
 const bannerStore = (set: Function) => ({
   // initial state
+  allBanners: undefined,
   bannerData: undefined,
   bannerActive: false,
   bannerLoading: false,
   bannerErrorMessage: undefined,
   bannerDeleting: false,
   // actions
+  setAllBanners: (allBanners: AdminBannerData[] | undefined) =>
+    set(() => ({ allBanners }), false, { type: "setAllBanners" }),
   setBannerData: (newBanner: AdminBannerData | undefined) =>
     set(() => ({ bannerData: newBanner }), false, { type: "setBannerData" }),
   clearAdminBanner: () =>

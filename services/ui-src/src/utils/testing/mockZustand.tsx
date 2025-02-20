@@ -105,6 +105,7 @@ export const mockAdminUserStore: McrUserState = {
 //  BANNER STATES / STORE
 
 export const mockBannerStore: AdminBannerState = {
+  allBanners: [mockBannerData],
   bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
@@ -112,6 +113,7 @@ export const mockBannerStore: AdminBannerState = {
   bannerDeleting: false,
   setBannerData: () => {},
   clearAdminBanner: () => {},
+  setAllBanners: () => {},
   setBannerActive: () => {},
   setBannerLoading: () => {},
   setBannerErrorMessage: () => {},

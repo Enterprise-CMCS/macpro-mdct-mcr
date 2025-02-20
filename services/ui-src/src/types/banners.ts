@@ -16,6 +16,7 @@ export interface AdminBannerData extends BannerData {
 
 export interface AdminBannerMethods {
   fetchAdminBanner: Function;
+  fetchAllBanners: Function;
   writeAdminBanner: Function;
   deleteAdminBanner: Function;
 }

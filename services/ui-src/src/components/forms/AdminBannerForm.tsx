@@ -1,9 +1,8 @@
 import { useState } from "react";
+import uuid from "react-uuid";
 // components
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
-// constants
-import { bannerId } from "../../constants";
 // types
 import { AlertTypes, ErrorVerbiage, FormJson } from "types";
 // utils
@@ -23,7 +22,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
     const newBannerData = {
-      key: bannerId,
+      key: uuid(),
       title: formData["bannerTitle"],
       description: formData["bannerDescription"],
       link: formData["bannerLink"] || undefined,
