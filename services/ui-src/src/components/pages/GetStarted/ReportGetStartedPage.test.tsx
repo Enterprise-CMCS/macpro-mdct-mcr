@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
+import { useNavigate } from "react-router-dom";
 // components
 import { ReportGetStartedPage } from "components";
 // utils
@@ -8,7 +9,6 @@ import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
-import { useNavigate } from "react-router-dom";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),

@@ -12,6 +12,7 @@ import {
   vi,
 } from "vitest";
 import { axe } from "jest-axe";
+import { useNavigate } from "react-router-dom";
 // components
 import { ReportContext, DashboardPage } from "components";
 // utils
@@ -36,7 +37,6 @@ import {
 import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import { useNavigate } from "react-router-dom";
 
 window.HTMLElement.prototype.scrollIntoView = vi.fn();
 

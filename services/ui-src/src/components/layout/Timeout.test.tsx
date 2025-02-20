@@ -1,15 +1,10 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
-// components
-import { Timeout } from "components";
-// constants
-import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
-// utils
+import { ReactNode, useEffect, useState } from "react";
 import {
-  mockStateUserStore,
-  RouterWrappedComponent,
-} from "utils/testing/setupTests";
-import { useStore, UserContext } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+  CSSObject,
+  ModalContextProvider,
+  StylesProvider,
+} from "@chakra-ui/react";
+import { refreshCredentials } from "utils/auth/authLifecycle";
 import {
   afterAll,
   beforeAll,
@@ -20,13 +15,18 @@ import {
   test,
   vi,
 } from "vitest";
-import { refreshCredentials } from "utils/auth/authLifecycle";
-import { ReactNode, useEffect, useState } from "react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { testA11y } from "utils/testing/commonTests";
+// components
+import { Timeout } from "components";
+// constants
+import { IDLE_WINDOW, PROMPT_AT } from "../../constants";
+// utils
 import {
-  CSSObject,
-  ModalContextProvider,
-  StylesProvider,
-} from "@chakra-ui/react";
+  mockStateUserStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupTests";
+import { useStore, UserContext } from "utils";
 
 const mockUserContext = {
   user: undefined,

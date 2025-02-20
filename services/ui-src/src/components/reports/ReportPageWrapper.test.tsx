@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
+import { useLocation, useNavigate, Location } from "react-router-dom";
 // components
 import { ReportContext, ReportPageWrapper } from "components";
 // utils
@@ -17,7 +18,6 @@ import {
 } from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { useLocation, useNavigate, Location } from "react-router-dom";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),

@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
+import { useNavigate } from "react-router-dom";
 // components
 import { ReportPageFooter } from "components";
 // types
@@ -14,7 +15,6 @@ import {
 } from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
-import { useNavigate } from "react-router-dom";
 
 vi.mock("react-router-dom", async (importOriginal) => ({
   ...(await importOriginal()),
