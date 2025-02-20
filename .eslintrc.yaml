@@ -31,3 +31,12 @@ rules:
   multiline-comment-style:
     - error
     - starred-block
+
+overrides:
+  # Normally, the linter expects an `expect()` in every test.
+  # But our Cypress tests assert with `cy.should()`.
+  # We disable that linting rule here.
+  - files:
+      - "tests/cypress/**/*.cy.js"
+    rules:
+      "@vitest/expect-expect": "off"
