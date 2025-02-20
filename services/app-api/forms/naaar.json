@@ -574,7 +574,7 @@
                   "label": "Maximum time to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_2e6zA0mK1Qs93xSoyJXmW3AD",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -588,7 +588,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_CL6r1vfwqen1VpNHmeiD0I9J",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",

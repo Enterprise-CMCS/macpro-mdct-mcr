@@ -9,6 +9,7 @@ import {
   ReportPageIntro,
   Form,
   DeleteEntityModal,
+  SortableDrawerReportPageTable,
 } from "components";
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
@@ -16,12 +17,12 @@ import { getDefaultAnalysisMethodIds } from "../../constants";
 import {
   AnyObject,
   EntityShape,
-  DrawerReportPageShape,
   ReportStatus,
   isFieldElement,
   InputChangeEvent,
   FormJson,
   entityTypes,
+  DrawerReportPageShape,
 } from "types";
 // utils
 import {
@@ -56,6 +57,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === entityTypes[8];
   const entities = report?.fieldData?.[entityType] || [];
 
+  const existingStandards =
+    entityType === entityTypes[8] && entities.length > 0;
+
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
   const isAnalysisMethodsPage = route.path.includes("analysis-methods");
@@ -73,6 +77,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     report,
     isAnalysisMethodsPage,
     isReportingOnStandards,
+
     ilos,
     reportingOnIlos,
   };
@@ -262,12 +267,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       )}
       <Box>
         {isReportingOnStandards ? (
-          // table of standards
           <Box>
             {addStandardsButton}
-            {/* standards table */}
-            <Box></Box>
-            {addStandardsButton}
+            {existingStandards ? (
+              <SortableDrawerReportPageTable entities={entities} />
+            ) : (
+              <></>
+            )}
+            <Box>{addStandardsButton}</Box>
           </Box>
         ) : (
           <Box>
@@ -339,8 +346,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 };
 
 interface Props {
-  route: DrawerReportPageShape;
+  entities?: any[];
   validateOnRender?: boolean;
+  route: DrawerReportPageShape;
 }
 
 function dashboardTitleStyling(canAddEntities: boolean) {
