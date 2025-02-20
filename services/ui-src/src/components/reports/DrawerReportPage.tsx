@@ -346,7 +346,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 };
 
 interface Props {
-  entities: any[];
+  entities?: any[];
   validateOnRender?: boolean;
   route: DrawerReportPageShape;
 }
