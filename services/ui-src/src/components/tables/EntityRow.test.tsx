@@ -1,88 +1,186 @@
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import * as React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 // components
 import { ReportContext } from "components/reports/ReportProvider";
 import { EntityRow } from "./EntityRow";
 import { Table } from "./Table";
+// types
+import { EntityType } from "types";
 // utils
 import {
   mockMlrReportContext,
   mockMlrReportStore,
+  mockNaaarReportStore,
+  mockNaaarReportContext,
   mockStateUserStore,
   mockVerbiageIntro,
   RouterWrappedComponent,
+  mockMcparReportStore,
+  mockMcparReportContext,
+  mockAdminUserStore,
+  mockNoUserStore,
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
-import { useStore } from "utils";
+import { getEntityStatus, useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
 const mockOpenDrawer = jest.fn();
-const mockEntering = false;
+let mockEntering = false;
 
 jest.mock("utils/state/useStore");
+jest.mock("utils/tables/getEntityStatus");
+jest.spyOn(React, "useMemo").mockImplementation((fn) => fn());
+
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockedGetEntityStatus = getEntityStatus as jest.MockedFunction<
+  typeof getEntityStatus
+>;
 
 const completeRowComponent = (
+  context: any = mockMlrReportContext,
+  entity: EntityType = "program"
+) => (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMlrReportContext}>
+    <ReportContext.Provider value={context}>
       <Table content={{}}>
         <EntityRow
-          entity={mockMlrReportContext.report.fieldData.program[1]}
+          entity={context.report.fieldData[entity][0]}
           verbiage={mockVerbiageIntro}
           entering={mockEntering}
           openAddEditEntityModal={openAddEditEntityModal}
           openDeleteEntityModal={openDeleteEntityModal}
           openOverlayOrDrawer={mockOpenDrawer}
-        ></EntityRow>
+        />
       </Table>
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 describe("<EntityRow />", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue(mockStateUserStore);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test("It should NOT render an error if an entity is complete", async () => {
-    const { queryByText } = render(completeRowComponent);
-    expect(queryByText("Select “Enter MLR” to complete this report.")).toBe(
-      null
-    );
+  describe("MLR", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrReportStore,
+      });
+    });
+
+    test("render error if entity is incomplete", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockNoUserStore,
+        ...mockMlrReportStore,
+      });
+      mockedGetEntityStatus.mockReturnValue(false);
+      render(completeRowComponent(mockMlrReportContext));
+      const errorMessage = screen.getByText(
+        "Select “Enter MLR” to complete this report."
+      );
+      expect(errorMessage).toBeVisible();
+    });
+
+    test("don't render error if entity is complete", async () => {
+      mockedGetEntityStatus.mockReturnValue(true);
+      render(completeRowComponent(mockMlrReportContext));
+      const errorMessage = screen.queryByText(
+        "Select “Enter MLR” to complete this report."
+      );
+      expect(errorMessage).not.toBeInTheDocument();
+    });
+
+    test("Edit button opens the AddEditEntityModal", async () => {
+      render(completeRowComponent());
+      const addReportButton = screen.getByRole("button", { name: "Edit" });
+      expect(addReportButton).toBeVisible();
+      await userEvent.click(addReportButton);
+      await waitFor(() => {
+        expect(openAddEditEntityModal).toBeCalledTimes(1);
+      });
+    });
+
+    test("Enter Details button opens the Drawer", async () => {
+      render(completeRowComponent());
+      const enterDetailsButton = screen.getByRole("button", {
+        name: "Enter Details",
+      });
+      expect(enterDetailsButton).toBeVisible();
+      await userEvent.click(enterDetailsButton);
+      await waitFor(() => {
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
+    });
+
+    test("Delete button opens the DeleteEntityModal", async () => {
+      render(completeRowComponent());
+      const deleteButton = screen.getByRole("button", { name: "delete icon" });
+      expect(deleteButton).toBeVisible();
+      await userEvent.click(deleteButton);
+      await waitFor(() => {
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
+      });
+    });
+
+    test("Delete button is disabled for admin", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockAdminUserStore,
+        ...mockMlrReportStore,
+      });
+      render(completeRowComponent());
+      const deleteButton = screen.getByRole("button", { name: "delete icon" });
+      expect(deleteButton).toBeDisabled();
+    });
+
+    test("render Spinner when entering", async () => {
+      mockEntering = true;
+      render(completeRowComponent(mockMlrReportContext));
+      const loading = screen.getByRole("button", { name: "Loading..." });
+      expect(loading).toBeVisible();
+      mockEntering = false;
+    });
   });
 
-  test("Clicking Edit button opens the AddEditEntityModal", async () => {
-    await act(async () => {
-      await render(completeRowComponent);
+  describe("NAAAR", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+      });
     });
-    const addReportButton = screen.getByText("Edit");
-    expect(addReportButton).toBeVisible();
-    await userEvent.click(addReportButton);
-    await expect(openAddEditEntityModal).toBeCalledTimes(1);
+
+    test("Edit button opens the AddEditEntityModal", async () => {
+      render(completeRowComponent(mockNaaarReportContext, "plans"));
+      const editButton = screen.getByRole("button", { name: "Edit" });
+      expect(editButton).toBeVisible();
+      await userEvent.click(editButton);
+      await waitFor(() => {
+        expect(openAddEditEntityModal).toBeCalledTimes(1);
+      });
+    });
   });
 
-  test("Clicking Enter Details button opens the Drawer", async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMlrReportStore,
+  describe("MCPAR", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
     });
-    await act(async () => {
-      await render(completeRowComponent);
+
+    test("MCPAR Enter Details button opens the Drawer", async () => {
+      render(completeRowComponent(mockMcparReportContext, "plans"));
+      const enterButton = screen.getByRole("button", { name: "Enter" });
+      expect(enterButton).toBeVisible();
+      await userEvent.click(enterButton);
+      await waitFor(() => {
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
     });
-    const enterDetailsButton = screen.getByText("Enter Details");
-    expect(enterDetailsButton).toBeVisible();
-    await userEvent.click(enterDetailsButton);
-    await expect(mockOpenDrawer).toBeCalledTimes(1);
   });
 
-  test("Clicking Delete button opens the DeleteEntityModal", async () => {
-    await act(async () => {
-      await render(completeRowComponent);
-    });
-    const deleteButton = screen.getByAltText("delete icon");
-    expect(deleteButton).toBeVisible();
-    await userEvent.click(deleteButton);
-    await expect(openDeleteEntityModal).toBeCalledTimes(1);
-  });
+  testA11y(completeRowComponent());
 });

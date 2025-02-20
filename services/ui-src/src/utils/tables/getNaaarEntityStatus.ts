@@ -9,8 +9,8 @@ export const getNaaarEntityStatus = (
 ) => {
   if (entityType === "plans") {
     return !!(
-      entity.planCompliance438206_assurance &&
-      entity.planCompliance43868_assurance
+      entity?.planCompliance438206_assurance &&
+      entity?.planCompliance43868_assurance
     );
   }
   return false;

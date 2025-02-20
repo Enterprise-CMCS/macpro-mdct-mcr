@@ -201,6 +201,7 @@ export const mockVerbiageIntro = {
   ],
   editEntityButtonText: "Edit",
   enterReportText: "Enter Details",
+  tableHeader: "Mock table header",
 };
 
 export const mockStandardReportPageJson = {
@@ -519,6 +520,7 @@ export const mockModalDrawerReportPageVerbiage = {
   editEntityDetailsButtonText: "Mock edit entity details button text",
   drawerTitle: "Mock drawer title",
   drawerNoFormMessage: "Mock no form fields here",
+  tableHeader: "Mock table header",
 };
 
 export const mockModalOverlayReportPageVerbiage = {
