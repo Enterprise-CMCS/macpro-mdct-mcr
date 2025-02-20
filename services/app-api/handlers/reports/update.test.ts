@@ -1,5 +1,14 @@
 import { fetchReport } from "./fetch";
 import { updateReport } from "./update";
+import {
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  Mock,
+  test,
+  vi,
+} from "vitest";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
@@ -12,25 +21,23 @@ import {
   mockReportFieldData,
   mockReportJson,
   mockS3PutObjectCommandOutput,
-} from "../../utils/testing/setupJest";
+} from "../../utils/testing/setupTests";
 import { error } from "../../utils/constants/constants";
 import s3Lib from "../../utils/s3/s3-lib";
+import { hasPermissions } from "../../utils/auth/authorization";
 // types
 import { APIGatewayProxyEvent } from "../../utils/types";
 import { StatusCodes } from "../../utils/responses/response-lib";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
-jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
-  hasPermissions: jest.fn(() => {}),
+vi.mock("../../utils/auth/authorization", () => ({
+  isAuthenticated: vi.fn().mockResolvedValue(true),
+  hasPermissions: vi.fn().mockResolvedValue(true),
 }));
-const mockAuthUtil = require("../../utils/auth/authorization");
 
-jest.mock("./fetch");
-const mockedFetchReport = fetchReport as jest.MockedFunction<
-  typeof fetchReport
->;
+vi.mock("./fetch");
+const mockedFetchReport = fetchReport as Mock<typeof fetchReport>;
 
 const mockProxyEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
@@ -116,29 +123,22 @@ const updateEventWithInvalidData: APIGatewayProxyEvent = {
   body: `{"programName":{}}`,
 };
 
-let consoleSpy: {
-  debug: jest.SpyInstance<void>;
-  error: jest.SpyInstance<void>;
-} = {
-  debug: jest.fn() as jest.SpyInstance,
-  error: jest.fn() as jest.SpyInstance,
-};
+const debugSpy = vi.spyOn(console, "debug").mockImplementation(vi.fn());
+vi.spyOn(console, "error").mockImplementation(vi.fn());
 
 describe("handlers/reports/update", () => {
   beforeEach(() => {
-    consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
-    consoleSpy.error = jest.spyOn(console, "error").mockImplementation();
     dynamoClientMock.reset();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Test updateReport and archiveReport unauthorized calls", () => {
     test("Test unauthorized report update throws 403 error", async () => {
       // fail both state and admin auth checks
-      mockAuthUtil.hasPermissions.mockReturnValue(false);
+      (hasPermissions as Mock).mockReturnValue(false);
       const res = await updateReport(updateEvent, null);
 
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(403);
       expect(res.body).toContain(error.UNAUTHORIZED);
     });
@@ -147,19 +147,19 @@ describe("handlers/reports/update", () => {
   describe("Test updateReport API method", () => {
     beforeAll(() => {
       // pass state auth check
-      mockAuthUtil.hasPermissions.mockReturnValue(true);
+      (hasPermissions as Mock).mockReturnValue(true);
     });
 
     test("Test MCPAR report update submission succeeds", async () => {
       // s3 mocks
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      const s3PutSpy = vi.spyOn(s3Lib, "put");
       s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
       // dynamodb mocks
-      const mockPut = jest.fn();
+      const mockPut = vi.fn();
       dynamoClientMock.on(PutCommand).callsFake(mockPut);
       // fetch mock
       mockedFetchReport.mockResolvedValue({
@@ -175,21 +175,21 @@ describe("handlers/reports/update", () => {
       const body = JSON.parse(response.body!);
       expect(body.status).toContain("submitted");
       expect(body.fieldData["mock-number-field"]).toBe("2");
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(response.statusCode).toBe(StatusCodes.Ok);
       expect(mockPut).toHaveBeenCalled();
     });
 
     test("Test NAAAR report update submission succeeds", async () => {
       // s3 mocks
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      const s3PutSpy = vi.spyOn(s3Lib, "put");
       s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
       // dynamodb mocks
-      const mockPut = jest.fn();
+      const mockPut = vi.fn();
       dynamoClientMock.on(PutCommand).callsFake(mockPut);
       // fetch mock
       mockedFetchReport.mockResolvedValue({
@@ -205,7 +205,7 @@ describe("handlers/reports/update", () => {
       const body = JSON.parse(response.body!);
       expect(body.status).toContain("submitted");
       expect(body.fieldData["analysisMethods"]).toBeDefined();
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(response.statusCode).toBe(StatusCodes.Ok);
       expect(mockPut).toHaveBeenCalled();
     });
@@ -222,14 +222,14 @@ describe("handlers/reports/update", () => {
 
     test("Test report update with invalid fieldData fails", async () => {
       // s3 mocks
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      const s3PutSpy = vi.spyOn(s3Lib, "put");
       s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
       // dynamodb mocks
-      const mockPut = jest.fn();
+      const mockPut = vi.fn();
       dynamoClientMock.on(PutCommand).callsFake(mockPut);
       // fetch mock
       mockedFetchReport.mockResolvedValue({
@@ -259,7 +259,7 @@ describe("handlers/reports/update", () => {
         body: JSON.stringify(mockMcparReport),
       });
       const res = await updateReport(updateEventWithInvalidData, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.NotFound);
       expect(res.body).toContain(error.MISSING_DATA);
     });
@@ -300,7 +300,7 @@ describe("handlers/reports/update", () => {
         body: undefined!,
       });
       const res = await updateReport(updateEventWithInvalidData, null);
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.NotFound);
       expect(res.body).toContain(error.NO_MATCHING_RECORD);
     });
@@ -316,7 +316,7 @@ describe("handlers/reports/update", () => {
       });
       const res = await updateReport(updateEvent, null);
 
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.Forbidden);
       expect(res.body).toContain(error.UNAUTHORIZED);
     });
@@ -328,7 +328,7 @@ describe("handlers/reports/update", () => {
       };
       const res = await updateReport(noKeyEvent, null);
 
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
@@ -340,18 +340,18 @@ describe("handlers/reports/update", () => {
       };
       const res = await updateReport(noKeyEvent, null);
 
-      expect(consoleSpy.debug).toHaveBeenCalled();
+      expect(debugSpy).toHaveBeenCalled();
       expect(res.statusCode).toBe(StatusCodes.BadRequest);
       expect(res.body).toContain(error.NO_KEY);
     });
 
     test("Test dynamo put issue throws error", async () => {
       // s3 mocks
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      const s3PutSpy = vi.spyOn(s3Lib, "put");
       s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
       // fetch mock
       mockedFetchReport.mockResolvedValue({
@@ -372,11 +372,11 @@ describe("handlers/reports/update", () => {
 
     test("Test s3 put issue throws error", async () => {
       // s3 mocks
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(mockReportJson)
         .mockResolvedValueOnce(mockReportFieldData);
-      const s3PutSpy = jest.spyOn(s3Lib, "put");
+      const s3PutSpy = vi.spyOn(s3Lib, "put");
       s3PutSpy.mockRejectedValueOnce("error");
       // fetch mock
       mockedFetchReport.mockResolvedValue({
@@ -394,7 +394,7 @@ describe("handlers/reports/update", () => {
     });
 
     test("Test missing form template returns 404", async () => {
-      const s3GetSpy = jest.spyOn(s3Lib, "get");
+      const s3GetSpy = vi.spyOn(s3Lib, "get");
       s3GetSpy
         .mockResolvedValueOnce(undefined)
         .mockResolvedValueOnce(mockReportFieldData);

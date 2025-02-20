@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { ReportContext, ReviewSubmitPage } from "components";
 import { SuccessMessageGenerator } from "./ReviewSubmitPage";
@@ -13,14 +14,14 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -135,7 +136,7 @@ const McparReviewSubmitPage_InProgress = (
 describe("<ReviewSubmitPage />", () => {
   describe("MCPAR Review and Submit Page Functionality", () => {
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     describe("User has not started filling out the form", () => {
@@ -189,23 +190,6 @@ describe("<ReviewSubmitPage />", () => {
     });
 
     describe("User has filled out the form correctly", () => {
-      test("Show no alert message or errors and the submit button is enabled", () => {
-        mockedUseStore.mockReturnValue({
-          ...mockStateUserStore,
-          ...mockFilledMcparReportStore,
-        });
-        render(McparReviewSubmitPage_Filled);
-        const { alertBox } = reviewVerbiage;
-        const { title, description } = alertBox;
-        expect(screen.queryByText(title)).not.toBeInTheDocument();
-        expect(screen.queryByText(description)).not.toBeInTheDocument();
-        expect(screen.getByText("Submit MCPAR")!).not.toBeDisabled();
-        const unfilledPageImg = document.querySelector(
-          "img[alt='Error notification']"
-        );
-        expect(unfilledPageImg).toBe(null);
-      });
-
       test("Show no alert message or errors and the submit button is enabled", () => {
         mockedUseStore.mockReturnValue({
           ...mockStateUserStore,

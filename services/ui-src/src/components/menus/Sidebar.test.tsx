@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { Sidebar } from "components";
 // utils
@@ -7,19 +8,19 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
 });
 
-jest.mock("utils/reports/routing", () => ({
-  isReportFormPage: jest.fn(() => true),
+vi.mock("utils/reports/routing", () => ({
+  isReportFormPage: vi.fn(() => true),
 }));
 
 const sidebarComponent = (
@@ -65,11 +66,17 @@ describe("<Sidebar />", () => {
 
       // click parent section open. now child is visible.
       await userEvent.click(parentSection);
-      await expect(childSection).toBeVisible();
+      await waitFor(() =>
+        // Chakra's Collapse transition is not instant; we must wait for it
+        expect(childSection).toBeVisible()
+      );
 
       // click parent section closed. now child is not visible.
       await userEvent.click(parentSection);
-      await expect(childSection).not.toBeVisible();
+      await waitFor(() =>
+        // Chakra's Collapse transition is not instant; we must wait for it
+        expect(childSection).not.toBeVisible()
+      );
     });
   });
   describe("Test Sidebar isHidden property", () => {

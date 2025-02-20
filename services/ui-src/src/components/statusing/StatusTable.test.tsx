@@ -1,5 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 // components
 import { StatusTable, StatusIcon } from "./StatusTable";
 // types
@@ -9,26 +18,26 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { makeMediaQueryClasses, useBreakpoint, useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { useNavigate } from "react-router-dom";
 
-const mockUseNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  useNavigate: () => mockUseNavigate,
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+  useLocation: vi.fn(),
 }));
+const mockNavigate = useNavigate() as MockedFunction<typeof useNavigate>;
 
-jest.mock("utils/other/useBreakpoint");
-const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
-  typeof useBreakpoint
->;
-const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
+vi.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as MockedFunction<typeof useBreakpoint>;
+const mockMakeMediaQueryClasses = makeMediaQueryClasses as MockedFunction<
   typeof makeMediaQueryClasses
 >;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -42,7 +51,7 @@ const McparReviewSubmitPage = (
 
 describe("<StatusTable />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Status Table Functionality", () => {
@@ -122,21 +131,21 @@ describe("<StatusTable />", () => {
       await userEvent.click(editButtons[0]);
       const validateOnRenderProp = { state: { validateOnRender: true } };
       const expectedRoute1 = "/mock/mock-route-1";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute1,
         validateOnRenderProp
       );
 
       await userEvent.click(editButtons[1]);
       const expectedRoute2 = "/mock/mock-route-2a";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute2,
         validateOnRenderProp
       );
 
       await userEvent.click(editButtons[2]);
       const expectedRoute3 = "/mock/mock-route-2b";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute3,
         validateOnRenderProp
       );
@@ -155,21 +164,21 @@ describe("<StatusTable />", () => {
       await userEvent.click(editButtons[0]);
       const validateOnRenderProp = { state: { validateOnRender: true } };
       const expectedRoute1 = "/mock/mock-route-1";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute1,
         validateOnRenderProp
       );
 
       await userEvent.click(editButtons[1]);
       const expectedRoute2 = "/mock/mock-route-2a";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute2,
         validateOnRenderProp
       );
 
       await userEvent.click(editButtons[2]);
       const expectedRoute3 = "/mock/mock-route-2b";
-      expect(mockUseNavigate).toHaveBeenCalledWith(
+      expect(mockNavigate).toHaveBeenCalledWith(
         expectedRoute3,
         validateOnRenderProp
       );
@@ -234,11 +243,7 @@ describe("<StatusTable />", () => {
     });
 
     describe("Errors", () => {
-      const consoleSpy: {
-        error: jest.SpyInstance<void>;
-      } = {
-        error: jest.spyOn(console, "error").mockImplementation(),
-      };
+      const errorSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
 
       test("should raise an error if you try to use an invalid report type", () => {
         expect(() => {
@@ -251,8 +256,8 @@ describe("<StatusTable />", () => {
         }).toThrowError(
           "Statusing icons for 'invalidReportType' have not been implemented."
         );
-        expect(consoleSpy.error).toHaveBeenCalled();
-        consoleSpy.error.mockRestore();
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
       });
     });
   });

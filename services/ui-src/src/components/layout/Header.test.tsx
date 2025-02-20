@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { Header, ReportContext, ReportPageWrapper } from "components";
 // utils
@@ -7,12 +8,12 @@ import {
   mockMcparReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -33,8 +34,8 @@ const reportComponent = (
   </RouterWrappedComponent>
 );
 
-jest.mock("utils/reports/routing", () => ({
-  isReportFormPage: jest.fn(() => true),
+vi.mock("utils/reports/routing", () => ({
+  isReportFormPage: vi.fn(() => true),
 }));
 
 describe("<Header />", () => {

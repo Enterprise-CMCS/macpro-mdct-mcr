@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, test } from "vitest";
 // components
 import { Footer } from "components";
 import { testA11y } from "utils/testing/commonTests";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 
 const footerComponent = (
   <RouterWrappedComponent>

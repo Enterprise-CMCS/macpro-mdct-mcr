@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, it, test } from "vitest";
 import { axe } from "jest-axe";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 // components
 import { SortableTable } from "components";
 import { generateColumns } from "./SortableTable";

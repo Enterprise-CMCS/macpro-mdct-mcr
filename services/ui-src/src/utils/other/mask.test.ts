@@ -4,6 +4,7 @@ import {
   maskResponseData,
 } from "utils";
 import { maskMap, applyMask } from "./mask";
+import { describe, expect, test } from "vitest";
 
 const thousandsSeparatedMaskAcceptableTestCases = [
   // valid input, masked

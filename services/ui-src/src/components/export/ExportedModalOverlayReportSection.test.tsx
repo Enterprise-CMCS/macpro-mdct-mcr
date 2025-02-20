@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import {
   ExportedModalOverlayReportSection,
@@ -11,7 +12,7 @@ import {
   mockMlrReportContext,
   mockMlrReportStore,
   mockModalOverlayReportPageJson,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
@@ -20,8 +21,8 @@ import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 const mockReportContext = mockMlrReportContext;
 const mockReportContextOther = Object.assign({}, mockReportContext);
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMlrReportStore,
 });
@@ -138,7 +139,7 @@ describe("<ExportedModalOverlayReportSection />", () => {
 
   describe("Test renderModalOverlayTableBody", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     test("Should render data correctly", async () => {
       mockReportContext.report.fieldData.program = [mockMlrProgram];
@@ -193,7 +194,9 @@ describe("<ExportedModalOverlayReportSection />", () => {
       expect(await findByText(`N/A`)).toBeVisible();
 
       // Correct notes
-      expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+      expect(
+        await findByText(mockMlrProgram.report_miscellaneousNotes)
+      ).toBeInTheDocument();
     });
 
     test('Should render "other" explanations if they are filled.', async () => {

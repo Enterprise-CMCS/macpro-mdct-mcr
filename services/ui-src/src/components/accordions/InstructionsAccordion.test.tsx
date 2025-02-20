@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test } from "vitest";
 // components
 import { InstructionsAccordion } from "components";
 // utils
@@ -45,7 +46,10 @@ describe("<InstructionsAccordion />", () => {
     expect(screen.getByText(mockAccordion.text)).not.toBeVisible();
     await userEvent.click(accordionQuestion);
     expect(accordionQuestion).toBeVisible();
-    expect(screen.getByText(mockAccordion.text)).toBeVisible();
+    await waitFor(() =>
+      // Chakra's accordion transition is not instant; we must wait for it
+      expect(screen.getByText(mockAccordion.text)).toBeVisible()
+    );
   });
 
   testA11y(accordionComponent);

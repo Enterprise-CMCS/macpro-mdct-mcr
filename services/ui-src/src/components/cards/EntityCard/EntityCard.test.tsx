@@ -1,5 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 // components
 import { EntityCard, EntityCardBottomSection } from "components";
 // utils
@@ -22,13 +31,13 @@ import {
   mockQualityMeasuresEntityMissingDetails,
   mockQualityMeasuresFormattedEntityDataMissingDetails,
   mockMcparReportStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const openAddEditEntityModal = jest.fn();
-const openDeleteEntityModal = jest.fn();
-const mockOpenDrawer = jest.fn();
+const openAddEditEntityModal = vi.fn();
+const openDeleteEntityModal = vi.fn();
+const mockOpenDrawer = vi.fn();
 
 const {
   editEntityButtonText,
@@ -36,8 +45,8 @@ const {
   editEntityDetailsButtonText,
 } = mockModalDrawerReportPageJson.verbiage;
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
@@ -210,7 +219,7 @@ const UndefinedEntityCardBottomSection = (
 
 describe("<EntityCard />", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Test Completed AccessMeasures EntityCard", () => {

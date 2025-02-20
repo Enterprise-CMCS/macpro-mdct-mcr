@@ -1,4 +1,5 @@
-import { mockStateUserStore } from "utils/testing/setupJest";
+import { mockStateUserStore } from "utils/testing/setupTests";
+import { describe, expect, it, test, vi } from "vitest";
 import {
   autosaveFieldData,
   EntityContextShape,
@@ -6,7 +7,7 @@ import {
   isFieldChanged,
 } from "./autosave";
 
-const mockTrigger = jest.fn();
+const mockTrigger = vi.fn();
 
 const mockForm: any = {
   trigger: mockTrigger,
@@ -15,7 +16,7 @@ const mockForm: any = {
 const report = {
   id: "reportId",
   reportType: "MCPAR",
-  updateReport: jest.fn().mockResolvedValue(true),
+  updateReport: vi.fn().mockResolvedValue(true),
 };
 const user = {
   userName: mockStateUserStore.user?.email,
@@ -42,7 +43,7 @@ const fields = [
 ];
 
 const mockEntityContext: EntityContextShape = {
-  updateEntities: jest.fn(() => {
+  updateEntities: vi.fn(() => {
     return [{ id: "foo", testField: 1, field1: "value1", field2: "value2" }];
   }),
   entities: [{ id: "foo", testField: 1 }],
@@ -155,7 +156,7 @@ describe("autosaveFieldData", () => {
       fieldData: {
         plans: [],
       },
-      updateReport: jest.fn().mockResolvedValue(true),
+      updateReport: vi.fn().mockResolvedValue(true),
     };
     mockTrigger.mockResolvedValue(true);
     await autosaveFieldData({

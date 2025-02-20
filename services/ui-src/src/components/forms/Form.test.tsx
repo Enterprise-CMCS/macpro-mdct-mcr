@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { Form } from "components";
 // types
@@ -12,14 +13,14 @@ import {
   mockNonFieldForm,
   mockStateUserStore,
   RouterWrappedComponent,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
-const mockOnSubmit = jest.fn();
+const mockOnSubmit = vi.fn();
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
@@ -74,7 +75,7 @@ describe("<Form />", () => {
   });
 
   test("Submission fails on invalid fill; focuses first errored field", async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    window.HTMLElement.prototype.scrollIntoView = vi.fn();
     const result = render(formComponent);
     const form = result.container;
     const submitButton = screen.getByRole("button");

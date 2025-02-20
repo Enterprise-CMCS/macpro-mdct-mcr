@@ -1,4 +1,5 @@
 import { calculateCompletionStatus, isComplete } from "./completionStatus";
+import { describe, expect, test, vi } from "vitest";
 
 describe("Completion Status Tests", () => {
   describe("Test Nested Completion Check", () => {
@@ -72,7 +73,7 @@ describe("Completion Status Tests", () => {
       },
     ];
     test("Basic Standard Form No Fields", async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       const testData = {};
       const formTemplate = {
@@ -100,7 +101,7 @@ describe("Completion Status Tests", () => {
     });
 
     test("Basic Standard Form With Fields", async () => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
 
       const testData = {};
       const formTemplate = {

@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
 // components
 import { ReportDrawerDetails } from "components";
 // utils
@@ -6,7 +7,7 @@ import {
   mockUnfinishedAccessMeasuresFormattedEntityData,
   mockUnfinishedQualityMeasuresFormattedEntityData,
   mockUnfinishedSanctionsFormattedEntityData,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 const ReportDrawerDetailsAccessMeasuresComponent = (

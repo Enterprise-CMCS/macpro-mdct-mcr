@@ -9,6 +9,7 @@ import {
   setClearedEntriesToDefaultValue,
   sortFormErrors,
 } from "./forms";
+import { describe, expect, it } from "vitest";
 // types
 import { FormField, isEntityType } from "types";
 // utils
@@ -19,7 +20,7 @@ import {
   mockNestedFormField,
   mockNumberField,
   mockSanctionsEntity,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 
 const mockedFormFields = [
   { ...mockFormField, id: "mockField1" },

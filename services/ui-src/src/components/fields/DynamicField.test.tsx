@@ -1,6 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  MockedFunction,
+  test,
+  vi,
+} from "vitest";
 import { FormProvider, useForm } from "react-hook-form";
 // components
 import { DynamicField, ReportContext } from "components";
@@ -22,18 +31,19 @@ import {
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
   mockAnalysisMethodEntityStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockMcparReportStore,
 });
 
-const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
+const mockUseNavigate = vi.fn();
+vi.mock("react-router-dom", async (importOriginal) => ({
+  ...(await importOriginal()),
   useNavigate: () => mockUseNavigate,
 }));
 
@@ -55,7 +65,7 @@ const mockHydrationIlos = [
   },
 ];
 
-const mockUpdateReport = jest.fn();
+const mockUpdateReport = vi.fn();
 
 const mockedReportContext = {
   ...mockMcparReportContext,
@@ -70,7 +80,7 @@ const MockForm = (props: any) => {
   return (
     <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
       <FormProvider {...form}>
-        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(vi.fn())}>
           <DynamicField
             name="plans"
             label="test-label"
@@ -93,7 +103,7 @@ const MockIlosForm = (props: any) => {
   return (
     <ReportContext.Provider value={mockedReportContext}>
       <FormProvider {...form}>
-        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(vi.fn())}>
           <DynamicField
             name="ilos"
             label="test-label"
@@ -118,7 +128,7 @@ describe("<DynamicField />", () => {
     });
 
     afterEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("DynamicField is visible", () => {
@@ -232,7 +242,7 @@ describe("<DynamicField />", () => {
 
   describe("Test DynamicField entity deletion and deletion of associated data", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Deletes entity and associated sanctions and quality measure responses if state user", async () => {
@@ -465,7 +475,7 @@ describe("<DynamicField />", () => {
 
   describe("Test DynamicField Autosave Functionality", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     test("Autosaves when state user", async () => {

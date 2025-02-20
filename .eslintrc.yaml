@@ -2,12 +2,11 @@ env:
   browser: true
   es6: true
   node: true
-  jest/globals: true
   cypress/globals: true
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
-  - "jest"
+  - "@vitest"
   - "cypress"
 parserOptions:
   ecmaVersion: 6
@@ -16,6 +15,7 @@ parserOptions:
     modules: true
 extends:
   - "eslint:recommended"
+  - "plugin:@vitest/legacy-recommended"
 
 rules:
   no-const-assign: error
@@ -31,3 +31,20 @@ rules:
   multiline-comment-style:
     - error
     - starred-block
+
+overrides:
+  # Normally, the linter expects an `expect()` in every test.
+  # But our Cypress tests assert with `cy.should()`.
+  # We disable that linting rule here.
+  - files:
+      - "tests/cypress/**/*.cy.js"
+    rules:
+      "@vitest/expect-expect": "off"
+  # Normally, the linter discourages describe("strings")
+  # and the contained test("strings") not to share a common prefix.
+  # We do this a LOT, so this rule would just be noise for us.
+  - files:
+      - "**/*.ts"
+      - "**/*.tsx"
+    rules:
+      "@vitest/valid-title": "off"

@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, test } from "vitest";
 // components
 import { TemplateCardAccordion } from "components";
 // utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { RouterWrappedComponent } from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
@@ -36,7 +37,10 @@ describe("<TemplateCardAccordion />", () => {
     expect(screen.getByText(accordionText)).not.toBeVisible();
     await userEvent.click(accordionQuestion);
     expect(accordionQuestion).toBeVisible();
-    expect(screen.getByText(accordionText)).toBeVisible();
+    await waitFor(() =>
+      // Chakra's accordion transition is not instant; we must wait for it
+      expect(screen.getByText(accordionText)).toBeVisible()
+    );
   });
 
   testA11y(accordionComponent);

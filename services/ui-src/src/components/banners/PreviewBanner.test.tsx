@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, test, vi } from "vitest";
 // components
 import { PreviewBanner } from "components";
 // types
@@ -6,9 +7,9 @@ import { AlertTypes } from "types";
 // utils
 import { testA11y } from "utils/testing/commonTests";
 
-jest.mock("react-hook-form", () => ({
+vi.mock("react-hook-form", () => ({
   useFormContext: () => ({
-    getValues: jest.fn().mockReturnValue({
+    getValues: vi.fn().mockReturnValue({
       bannerTitle: "Mock preview banner title",
       bannerDescription: "Mock preview banner description",
       bannerLink: "",

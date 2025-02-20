@@ -1,5 +1,14 @@
 import dynamoLib, { getConfig } from "./dynamodb-lib";
 import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+  vi,
+} from "vitest";
+import {
   GetCommand,
   DeleteCommand,
   DynamoDBDocumentClient,
@@ -34,7 +43,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
     const mockKey = {};
     const mockItem1 = { foo: "bar" };
     const mockItem2 = { foo: "baz" };
-    const extraCall = jest.fn();
+    const extraCall = vi.fn();
     dynamoClientMock
       .on(QueryCommand)
       .resolvesOnce({ Items: [mockItem1], LastEvaluatedKey: mockKey })
@@ -52,7 +61,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
     expect(extraCall).not.toHaveBeenCalled();
   });
   test("Can delete", async () => {
-    const mockDelete = jest.fn();
+    const mockDelete = vi.fn();
     dynamoClientMock.on(DeleteCommand).callsFake(mockDelete);
 
     await dynamoLib.delete({ TableName: "foos", Key: { id: "fid" } });
@@ -60,7 +69,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
     expect(mockDelete).toHaveBeenCalled();
   });
   test("Can get", async () => {
-    const mockGet = jest.fn();
+    const mockGet = vi.fn();
     dynamoClientMock.on(GetCommand).callsFake(mockGet);
 
     await dynamoLib.get({ TableName: "foos", Key: { id: "foo1" } });

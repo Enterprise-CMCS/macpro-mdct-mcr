@@ -1,4 +1,5 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { mockClient } from "aws-sdk-client-mock";
 import { proxyEvent } from "../testing/proxyEvent";
 import {
@@ -8,12 +9,12 @@ import {
 } from "./authorization";
 import { UserRoles } from "../types";
 
-const mockVerifier = jest.fn();
+const mockVerifier = vi.fn();
 
-jest.mock("aws-jwt-verify", () => ({
+vi.mock("aws-jwt-verify", () => ({
   __esModule: true,
   CognitoJwtVerifier: {
-    create: jest.fn().mockImplementation(() => ({
+    create: vi.fn().mockImplementation(() => ({
       verify: mockVerifier,
     })),
   },
@@ -42,7 +43,7 @@ describe("Test authorization with api key and environment variables", () => {
   afterEach(() => {
     delete process.env.COGNITO_USER_POOL_ID;
     delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   test("is not authorized when no api key is passed", async () => {
     mockVerifier.mockImplementation(() => {
@@ -70,10 +71,10 @@ describe("Test authorization with api key and ssm parameters", () => {
     mockVerifier.mockReturnValue(true);
   });
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   test("throws error when api key is passed and ssm parameters do not exist", async () => {
-    const mockGetSsmParameter = jest.fn().mockImplementation(() => {
+    const mockGetSsmParameter = vi.fn().mockImplementation(() => {
       throw new Error("failed in test");
     });
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
@@ -82,7 +83,7 @@ describe("Test authorization with api key and ssm parameters", () => {
     );
   });
   test("is authorized when api key is passed and ssm parameters exist", async () => {
-    const mockGetSsmParameter = jest
+    const mockGetSsmParameter = vi
       .fn()
       .mockResolvedValue({ Parameter: { Value: "VALUE" } });
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
@@ -93,7 +94,7 @@ describe("Test authorization with api key and ssm parameters", () => {
   test("authorization should reach out to SSM when missing cognito info", async () => {
     delete process.env["COGNITO_USER_POOL_ID"];
     delete process.env["COGNITO_USER_POOL_CLIENT_ID"];
-    const mockGetSsmParameter = jest.fn().mockResolvedValue(mockSsmResponse);
+    const mockGetSsmParameter = vi.fn().mockResolvedValue(mockSsmResponse);
     ssmClientMock.on(GetParameterCommand).callsFake(mockGetSsmParameter);
 
     await isAuthenticated(apiKeyEvent);
@@ -109,9 +110,9 @@ describe("Test authorization with api key and ssm parameters", () => {
   });
 });
 
-const mockedDecode = jest.fn();
+const mockedDecode = vi.fn();
 
-jest.mock("jwt-decode", () => ({
+vi.mock("jwt-decode", () => ({
   __esModule: true,
   default: () => {
     return mockedDecode();

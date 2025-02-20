@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react";
+import { describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import {
   ExportedEntityDetailsOverlaySection,
@@ -14,7 +15,7 @@ import {
   mockMlrReportStore,
   mockMlrReportContext,
   mockModalOverlayReportPageWithOverlayJson,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { testA11y } from "utils/testing/commonTests";
 
 const exportedEntityDetailsOverlaySectionComponent = (
@@ -26,8 +27,8 @@ const exportedEntityDetailsOverlaySectionComponent = (
   />
 );
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMlrReportStore,
 });
@@ -65,7 +66,7 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
 
       const { findByText } = render(<div>{results}</div>);
 
-      expect(await findByText("Standalone CHIP"));
+      expect(await findByText("Standalone CHIP")).toBeInTheDocument();
     });
 
     test("it correctly renders display data with other text fields", async () => {
@@ -80,7 +81,7 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
 
       const { findByText } = render(<div>{results}</div>);
 
-      expect(await findByText("Other Text"));
+      expect(await findByText("Other Text")).toBeInTheDocument();
     });
   });
 

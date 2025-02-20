@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+import { beforeEach, describe, expect, MockedFunction, test, vi } from "vitest";
 // components
 import { AdminPage, AdminBannerContext } from "components";
 // utils
@@ -8,20 +9,20 @@ import {
   RouterWrappedComponent,
   mockBannerData,
   mockBannerStore,
-} from "utils/testing/setupJest";
+} from "utils/testing/setupTests";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import { bannerErrors } from "verbiage/errors";
 
 const mockBannerMethods = {
-  fetchAdminBanner: jest.fn(() => {}),
-  writeAdminBanner: jest.fn(() => {}),
-  deleteAdminBanner: jest.fn(() => {}),
+  fetchAdminBanner: vi.fn(() => {}),
+  writeAdminBanner: vi.fn(() => {}),
+  deleteAdminBanner: vi.fn(() => {}),
 };
 
-jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+vi.mock("utils/state/useStore");
+const mockedUseStore = useStore as unknown as MockedFunction<typeof useStore>;
 
 const adminView = (context: any) => (
   <RouterWrappedComponent>

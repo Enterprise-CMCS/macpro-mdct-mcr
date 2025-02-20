@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, test } from "vitest";
 import { axe } from "jest-axe";
 import { BrowserRouter as Router } from "react-router-dom";
 // // utils
@@ -17,7 +18,7 @@ describe("Test scrollToTop Component", () => {
     render(scrollToTopComponent);
   });
   test("test scrollToTop renders", () => {
-    expect(screen.getByTestId("test-scroll-comp")).toBeVisible;
+    expect(screen.getByTestId("test-scroll-comp")).toBeVisible();
   });
 });
 

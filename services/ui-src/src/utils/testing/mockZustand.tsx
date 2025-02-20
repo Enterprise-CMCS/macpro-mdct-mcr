@@ -7,7 +7,7 @@ import {
   mockNaaarReport,
   mockNaaarReportWithAnalysisMethods,
   mockReportsByState,
-} from "./setupJest";
+} from "./setupTests";
 // types
 import {
   AdminBannerState,

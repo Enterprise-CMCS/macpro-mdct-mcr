@@ -1,10 +1,11 @@
 import { getSignedTemplateUrl } from "./getTemplateUrl";
+import { describe, expect, test, vi } from "vitest";
 
 const testTemplateName = "TestName";
 
-const mockGet = jest.fn();
+const mockGet = vi.fn();
 
-jest.mock("utils", () => ({
+vi.mock("utils", () => ({
   get: () => mockGet(),
 }));
 
