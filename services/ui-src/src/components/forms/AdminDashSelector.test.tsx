@@ -46,7 +46,7 @@ describe("<AdminDashSelector />", () => {
 
     test("Check that submit button is disabled if no report type is selected", () => {
       render(adminDashSelectorView);
-      expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
+      expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy();
     });
 
     test("Form submits correctly", async () => {

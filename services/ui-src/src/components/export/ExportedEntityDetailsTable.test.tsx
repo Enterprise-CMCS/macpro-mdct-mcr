@@ -29,7 +29,9 @@ describe("<ExportedEntityDetailsTable />", () => {
     const { findAllByText, findByTestId } = render(
       exportedEntityDetailsTableComponent()
     );
-    expect(await findByTestId("exportedEntityDetailsTable"));
+    expect(
+      await findByTestId("exportedEntityDetailsTable")
+    ).toBeInTheDocument();
 
     const expectedTextContent = [
       "N/A",

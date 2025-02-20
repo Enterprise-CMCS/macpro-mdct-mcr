@@ -40,3 +40,11 @@ overrides:
       - "tests/cypress/**/*.cy.js"
     rules:
       "@vitest/expect-expect": "off"
+  # Normally, the linter discourages describe("strings")
+  # and the contained test("strings") not to share a common prefix.
+  # We do this a LOT, so this rule would just be noise for us.
+  - files:
+      - "**/*.ts"
+      - "**/*.tsx"
+    rules:
+      "@vitest/valid-title": "off"

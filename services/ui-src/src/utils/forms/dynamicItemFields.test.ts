@@ -140,7 +140,7 @@ describe("generateDrawerItemFields for ILOS", () => {
   it("each ILOS checkbox should have a nested text field of type number", () => {
     result.fields[0].props.choices[1].children[0].props.choices.map(
       (choice: AnyObject) => {
-        expect(choice.children);
+        expect(choice.children).toBeDefined();
         expect(choice.children[0].type).toBe("number");
       }
     );

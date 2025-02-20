@@ -370,15 +370,10 @@ describe("Test form contents", () => {
         for (let field of form.fields) {
           const isField = isFieldElement(field);
           const isLayout = isLayoutElement(field);
-          if (isField && isLayout) {
-            throw new Error(
-              `Field '${field.id}' of type ${field.type} has confused the field type guards! Update them.`
-            );
-          } else if (!isField && !isLayout) {
-            throw new Error(
-              `Field '${field.id}' of type ${field.type} has confused the field type guards! Update them.`
-            );
-          }
+          // Every field should be either an input field or a layout field
+          expect(isField || isLayout).toBe(true);
+          // No field should be both
+          expect(isField && isLayout).toBe(false);
         }
       }
     }

@@ -194,7 +194,9 @@ describe("<ExportedModalOverlayReportSection />", () => {
       expect(await findByText(`N/A`)).toBeVisible();
 
       // Correct notes
-      expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+      expect(
+        await findByText(mockMlrProgram.report_miscellaneousNotes)
+      ).toBeInTheDocument();
     });
 
     test('Should render "other" explanations if they are filled.', async () => {

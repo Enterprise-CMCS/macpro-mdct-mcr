@@ -18,7 +18,7 @@ describe("Test scrollToTop Component", () => {
     render(scrollToTopComponent);
   });
   test("test scrollToTop renders", () => {
-    expect(screen.getByTestId("test-scroll-comp")).toBeVisible;
+    expect(screen.getByTestId("test-scroll-comp")).toBeVisible();
   });
 });
 

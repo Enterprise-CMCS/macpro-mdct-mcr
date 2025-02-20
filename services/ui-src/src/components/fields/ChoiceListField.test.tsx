@@ -666,7 +666,7 @@ describe("<ChoiceListField />", () => {
       const childRadioCleared: HTMLInputElement =
         wrapper.container.querySelector("[name='Choice 4']")!;
 
-      expect(childRadioCleared).not.toBeChecked;
+      expect(childRadioCleared).not.toBeChecked();
     });
 
     test("Selecting and unselecting a radio button that has nested checkbox children sets that checkbox to its default state", () => {
@@ -755,7 +755,7 @@ describe("<ChoiceListField />", () => {
       const childCheckboxCleared: HTMLInputElement =
         wrapper.container.querySelector("[name='Choice 6']")!;
 
-      expect(childCheckboxCleared).not.toBeChecked;
+      expect(childCheckboxCleared).not.toBeChecked();
     });
   });
 

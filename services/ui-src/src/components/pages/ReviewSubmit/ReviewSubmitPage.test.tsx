@@ -207,23 +207,6 @@ describe("<ReviewSubmitPage />", () => {
         expect(unfilledPageImg).toBe(null);
       });
 
-      test("Show no alert message or errors and the submit button is enabled", () => {
-        mockedUseStore.mockReturnValue({
-          ...mockStateUserStore,
-          ...mockFilledMcparReportStore,
-        });
-        render(McparReviewSubmitPage_Filled);
-        const { alertBox } = reviewVerbiage;
-        const { title, description } = alertBox;
-        expect(screen.queryByText(title)).not.toBeInTheDocument();
-        expect(screen.queryByText(description)).not.toBeInTheDocument();
-        expect(screen.getByText("Submit MCPAR")!).not.toBeDisabled();
-        const unfilledPageImg = document.querySelector(
-          "img[alt='Error notification']"
-        );
-        expect(unfilledPageImg).toBe(null);
-      });
-
       test("McparReviewSubmitPage shows modal on submit button click", async () => {
         mockedUseStore.mockReturnValue({
           ...mockStateUserStore,

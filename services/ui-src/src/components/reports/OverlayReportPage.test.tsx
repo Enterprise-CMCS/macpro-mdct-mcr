@@ -207,7 +207,9 @@ describe("<OverlayReportPage />", () => {
       await userEvent.click(enterButton);
 
       //TODO: Update this when the overlay has been updated!
-      expect(screen.getByText(`You've opened the entity: ${planName}!`));
+      expect(
+        screen.getByText(`You've opened the entity: ${planName}!`)
+      ).toBeInTheDocument();
     });
   });
 

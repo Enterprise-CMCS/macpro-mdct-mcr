@@ -197,7 +197,7 @@ describe("<DrawerReportPage />", () => {
       const notReportingDataButton = screen.getAllByRole("radio")[0];
       await userEvent.click(notReportingDataButton);
       const launchDrawerButton = screen.getAllByText("Enter")[1];
-      expect(launchDrawerButton).toBeDisabled;
+      expect(launchDrawerButton).toBeDisabled();
     });
 
     test("Selected 'Not reporting data' should disable the 'Enter' button for Patient Access API", async () => {
@@ -250,7 +250,7 @@ describe("<DrawerReportPage />", () => {
       const notReportingDataButton = screen.getAllByRole("radio")[0];
       await userEvent.click(notReportingDataButton);
       const launchDrawerButton = screen.getAllByText("Enter")[1];
-      expect(launchDrawerButton).toBeDisabled;
+      expect(launchDrawerButton).toBeDisabled();
     });
 
     test("Submit sidedrawer opens and saves for state user", async () => {

@@ -1,3 +1,5 @@
+// Both of these helpers describe "Accessibility", and that's fine.
+/* eslint-disable @vitest/no-identical-title */
 import { act, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { ReactElement } from "react";

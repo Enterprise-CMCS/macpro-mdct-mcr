@@ -66,7 +66,7 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
 
       const { findByText } = render(<div>{results}</div>);
 
-      expect(await findByText("Standalone CHIP"));
+      expect(await findByText("Standalone CHIP")).toBeInTheDocument();
     });
 
     test("it correctly renders display data with other text fields", async () => {
@@ -81,7 +81,7 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
 
       const { findByText } = render(<div>{results}</div>);
 
-      expect(await findByText("Other Text"));
+      expect(await findByText("Other Text")).toBeInTheDocument();
     });
   });
 

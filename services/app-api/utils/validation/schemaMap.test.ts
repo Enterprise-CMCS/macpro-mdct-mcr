@@ -1,3 +1,8 @@
+/*
+ * These tests' assertions are in helper functions,
+ * so the linting rule for every test to contain an expect is not helpful.
+ */
+/* eslint-disable @vitest/expect-expect */
 import { MixedSchema } from "yup/lib/mixed";
 import { describe, expect, test } from "vitest";
 import { AnyObject } from "yup/lib/types";
