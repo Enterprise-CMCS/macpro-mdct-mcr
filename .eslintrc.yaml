@@ -6,8 +6,7 @@ env:
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
-  # Vitest is so similar to jest that the same linting rules will apply.
-  - "jest"
+  - "@vitest"
   - "cypress"
 parserOptions:
   ecmaVersion: 6
@@ -16,6 +15,7 @@ parserOptions:
     modules: true
 extends:
   - "eslint:recommended"
+  - "plugin:@vitest/legacy-recommended"
 
 rules:
   no-const-assign: error
