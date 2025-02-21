@@ -71,7 +71,7 @@ describe("<MobileEntityRow />", () => {
       });
     });
 
-    test("render error if entity is incomplete", async () => {
+    test("render error if entity is incomplete", () => {
       mockedUseStore.mockReturnValue({
         ...mockNoUserStore,
         ...mockMlrReportStore,
@@ -84,7 +84,7 @@ describe("<MobileEntityRow />", () => {
       expect(errorMessage).toBeVisible();
     });
 
-    test("don't render error if entity is complete", async () => {
+    test("don't render error if entity is complete", () => {
       mockedGetEntityStatus.mockReturnValue(true);
       render(completeRowComponent(mockMlrReportContext));
       const errorMessage = screen.queryByText(
@@ -125,7 +125,7 @@ describe("<MobileEntityRow />", () => {
       });
     });
 
-    test("Delete button is disabled for admin", async () => {
+    test("Delete button is disabled for admin", () => {
       mockedUseStore.mockReturnValue({
         ...mockAdminUserStore,
         ...mockMlrReportStore,
@@ -135,7 +135,7 @@ describe("<MobileEntityRow />", () => {
       expect(deleteButton).toBeDisabled();
     });
 
-    test("render Spinner when entering", async () => {
+    test("render Spinner when entering", () => {
       mockEntering = true;
       render(completeRowComponent(mockMlrReportContext));
       const loading = screen.getByRole("button", { name: "Loading..." });
