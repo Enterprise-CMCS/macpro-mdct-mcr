@@ -201,6 +201,7 @@ export const mockVerbiageIntro = {
   ],
   editEntityButtonText: "Edit",
   enterReportText: "Enter Details",
+  tableHeader: "Mock table header",
 };
 
 export const mockStandardReportPageJson = {
@@ -519,6 +520,7 @@ export const mockModalDrawerReportPageVerbiage = {
   editEntityDetailsButtonText: "Mock edit entity details button text",
   drawerTitle: "Mock drawer title",
   drawerNoFormMessage: "Mock no form fields here",
+  tableHeader: "Mock table header",
 };
 
 export const mockModalOverlayReportPageVerbiage = {
@@ -603,6 +605,61 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
   pageType: "modalOverlay",
   entityType: "plans",
   verbiage: mockOverlayReportPageVerbiage,
+  details: {
+    verbiage: {
+      intro: {
+        section: "",
+        subsection: "Mock Details: Example Plan",
+      },
+      backButton: "Return to dashboard",
+    },
+    forms: [
+      {
+        form: {
+          id: "mock-form",
+          fields: [
+            {
+              id: "mockRadio",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label: "Mock No",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["", "Mock Cell", ""]],
+          caption: "",
+          headRow: [
+            { hiddenName: "Status" },
+            "Mock table header",
+            { hiddenName: "Action" },
+          ],
+        },
+        verbiage: {
+          accordion: {
+            buttonLabel: "Mock Accordion",
+            text: "",
+          },
+          intro: {
+            section: "",
+          },
+          heading: "Mock heading",
+          hint: "Mock hint",
+        },
+      },
+    ],
+  },
 };
 
 export const mockReviewSubmitPageJson = {

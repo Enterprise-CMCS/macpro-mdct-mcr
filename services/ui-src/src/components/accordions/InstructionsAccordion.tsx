@@ -11,13 +11,15 @@ export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
   return (
     <Accordion allowToggle={true} allowMultiple={true} sx={sx.root} {...props}>
       <AccordionItem label={buttonLabel} sx={sx.item}>
-        <Box sx={sx.textBox}>{parseCustomHtml(intro)}</Box>
-        <UnorderedList sx={sx.list}>
-          {list.map((listItem: string, index: number) => (
-            <ListItem key={index}>{sanitizeAndParseHtml(listItem)}</ListItem>
-          ))}
-        </UnorderedList>
-        <Box sx={sx.textBox}>{sanitizeAndParseHtml(text)}</Box>
+        {intro && <Box sx={sx.textBox}>{parseCustomHtml(intro)}</Box>}
+        {list?.length > 0 && (
+          <UnorderedList sx={sx.list}>
+            {list.map((listItem: string, index: number) => (
+              <ListItem key={index}>{sanitizeAndParseHtml(listItem)}</ListItem>
+            ))}
+          </UnorderedList>
+        )}
+        {text && <Box sx={sx.textBox}>{sanitizeAndParseHtml(text)}</Box>}
       </AccordionItem>
     </Accordion>
   );
@@ -46,6 +48,9 @@ const sx = {
     },
     p: {
       margin: "1rem 0",
+      "&:first-of-type": {
+        marginTop: 0,
+      },
     },
   },
   text: {

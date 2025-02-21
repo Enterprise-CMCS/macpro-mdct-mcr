@@ -3,29 +3,29 @@ import { useMemo } from "react";
 import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape, ReportType } from "types";
+import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
-import { eligibilityGroup, getMlrEntityStatus, useStore } from "utils";
+import { eligibilityGroup, getEntityStatus, useStore } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const EntityRow = ({
   entity,
+  entityType,
   verbiage,
   locked,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openOverlayOrDrawer,
-}: Props) => {
+}: EntityRowProps) => {
   const { report_programName, report_planName, name } = entity;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
-  // TODO: refactor to handle NAAAR analysis methods
   const entityComplete = useMemo(() => {
-    return report ? getMlrEntityStatus(report, entity) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const enterDetailsText = () => {
@@ -55,7 +55,7 @@ export const EntityRow = ({
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity as EntityShape} />
+        <EntityStatusIcon entity={entity} entityType={entityType} />
       </Td>
       <Td sx={sx.entityFields}>
         <ul>
@@ -109,8 +109,9 @@ export const EntityRow = ({
   );
 };
 
-interface Props {
+export interface EntityRowProps {
   entity: EntityShape;
+  entityType?: EntityType;
   verbiage: AnyObject;
   locked?: boolean;
   entering?: boolean;
