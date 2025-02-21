@@ -9,6 +9,8 @@ import {
   QueryCommandInput,
   PutCommand,
   PutCommandInput,
+  ScanCommandInput,
+  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 // utils
 import { logger } from "../debugging/debug-lib";
@@ -48,6 +50,19 @@ export default {
 
     do {
       const command = new QueryCommand({ ...params, ExclusiveStartKey });
+      const result = await client.send(command);
+      items = items.concat(result.Items ?? []);
+      ExclusiveStartKey = result.LastEvaluatedKey;
+    } while (ExclusiveStartKey);
+
+    return items;
+  },
+  scanAll: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
+    let items: AnyObject[] = [];
+    let ExclusiveStartKey: Record<string, any> | undefined;
+
+    do {
+      const command = new ScanCommand({ ...params, ExclusiveStartKey });
       const result = await client.send(command);
       items = items.concat(result.Items ?? []);
       ExclusiveStartKey = result.LastEvaluatedKey;

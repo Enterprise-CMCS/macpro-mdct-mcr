@@ -1,4 +1,4 @@
-import { useContext, MouseEventHandler } from "react";
+import React, { useContext } from "react";
 // components
 import {
   Box,
@@ -17,9 +17,9 @@ import {
   PageTemplate,
 } from "components";
 // types
-import { AlertTypes } from "types";
+import { AdminBannerData, AlertTypes } from "types";
 // utils
-import { convertDateUtcToEt, useStore } from "utils";
+import { checkDateRangeStatus, convertDateUtcToEt, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/admin";
 
@@ -28,13 +28,40 @@ export const AdminPage = () => {
     useContext(AdminBannerContext);
 
   // state management
-  const {
-    bannerData,
-    bannerActive,
-    bannerLoading,
-    bannerErrorMessage,
-    bannerDeleting,
-  } = useStore();
+  const { allBanners, bannerLoading, bannerErrorMessage, bannerDeleting } =
+    useStore();
+
+  const BannerPreview = (banner: AdminBannerData) => {
+    const bannerActive = checkDateRangeStatus(banner.startDate, banner.endDate);
+    return (
+      <React.Fragment key={banner.key}>
+        <Flex sx={sx.currentBannerInfo}>
+          <Text sx={sx.currentBannerStatus}>
+            Status:{" "}
+            <span className={bannerActive ? "active" : "inactive"}>
+              {bannerActive ? "Active" : "Inactive"}
+            </span>
+          </Text>
+          <Text sx={sx.currentBannerDate}>
+            Start Date: <span>{convertDateUtcToEt(banner?.startDate)}</span>
+          </Text>
+          <Text sx={sx.currentBannerDate}>
+            End Date: <span>{convertDateUtcToEt(banner?.endDate)}</span>
+          </Text>
+        </Flex>
+        <Flex sx={sx.currentBannerFlex}>
+          <Banner status={AlertTypes.INFO} bannerData={banner} />
+          <Button
+            variant="danger"
+            sx={sx.deleteBannerButton}
+            onClick={() => deleteAdminBanner(banner.key)}
+          >
+            {bannerDeleting ? <Spinner size="md" /> : "Delete Banner"}
+          </Button>
+        </Flex>
+      </React.Fragment>
+    );
+  };
 
   return (
     <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
@@ -46,50 +73,17 @@ export const AdminPage = () => {
         <Text>{verbiage.intro.body}</Text>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
-        <Text sx={sx.sectionHeader}>Current Banner</Text>
+        <Text sx={sx.sectionHeader}>Current Banner(s)</Text>
         {bannerLoading ? (
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="md" />
           </Flex>
         ) : (
           <>
-            <Collapse in={!!bannerData?.key}>
-              {bannerData && (
-                <>
-                  <Flex sx={sx.currentBannerInfo}>
-                    <Text sx={sx.currentBannerStatus}>
-                      Status:{" "}
-                      <span className={bannerActive ? "active" : "inactive"}>
-                        {bannerActive ? "Active" : "Inactive"}
-                      </span>
-                    </Text>
-                    <Text sx={sx.currentBannerDate}>
-                      Start Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.startDate)}</span>
-                    </Text>
-                    <Text sx={sx.currentBannerDate}>
-                      End Date:{" "}
-                      <span>{convertDateUtcToEt(bannerData?.endDate)}</span>
-                    </Text>
-                  </Flex>
-                  <Flex sx={sx.currentBannerFlex}>
-                    <Banner status={AlertTypes.INFO} bannerData={bannerData} />
-                    <Button
-                      variant="danger"
-                      sx={sx.deleteBannerButton}
-                      onClick={deleteAdminBanner as MouseEventHandler}
-                    >
-                      {bannerDeleting ? (
-                        <Spinner size="md" />
-                      ) : (
-                        "Delete Current Banner"
-                      )}
-                    </Button>
-                  </Flex>
-                </>
-              )}
+            <Collapse in={allBanners && allBanners?.length > 0}>
+              {allBanners?.map((banner) => BannerPreview(banner))}
             </Collapse>
-            {!bannerData?.key && <Text>There is no current banner</Text>}
+            {!allBanners?.length && <Text>There is no current banner</Text>}
           </>
         )}
       </Box>
@@ -164,9 +158,9 @@ const sx = {
     },
   },
   deleteBannerButton: {
-    width: "13.3rem",
+    width: "10rem",
     alignSelf: "end",
-    marginTop: "1rem !important",
+    marginTop: "-1rem",
   },
   newBannerBox: {
     width: "100%",
