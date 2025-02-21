@@ -220,7 +220,7 @@ describe("<ModalDrawerReportPage />", () => {
       const entityCell = screen.getByText("plan 1");
 
       expect(entityTable).toBeVisible();
-      expect(entityHeader).not.toBeInTheDocument();
+      expect(entityHeader).toBeNull();
       expect(entityCell).toBeVisible();
     });
 

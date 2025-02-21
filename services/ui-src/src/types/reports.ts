@@ -93,7 +93,7 @@ export interface EntityDetailsMultiformShape {
   form: FormJson;
   table?: {
     caption: string;
-    bodyRows: Array<[string]>;
+    bodyRows: [Array<string>];
     headRow: Array<string | ScreenReaderOnlyHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;

@@ -609,7 +609,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
     verbiage: {
       intro: {
         section: "",
-        subsection: "Mock Details: {{planName}}",
+        subsection: "Mock Details: Example Plan",
       },
       backButton: "Return to dashboard",
     },
@@ -617,7 +617,45 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
       {
         form: {
           id: "mock-form",
-          fields: [],
+          fields: [
+            {
+              id: "mockRadio",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label: "Mock No",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["", "Mock Cell", ""]],
+          caption: "",
+          headRow: [
+            { hiddenName: "Status" },
+            "Mock table header",
+            { hiddenName: "Action" },
+          ],
+        },
+        verbiage: {
+          accordion: {
+            buttonLabel: "Mock Accordion",
+            text: "",
+          },
+          intro: {
+            section: "",
+          },
+          heading: "Mock heading",
+          hint: "Mock hint",
         },
       },
     ],

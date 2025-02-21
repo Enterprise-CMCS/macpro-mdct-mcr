@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // components
 import { Box } from "@chakra-ui/react";
 import {
@@ -22,10 +22,10 @@ import {
 import {
   entityWasUpdated,
   parseCustomHtml,
+  translate,
   useBreakpoint,
   useStore,
 } from "utils";
-import { translate } from "utils/text/translate";
 
 export const OverlayReportPage = ({
   route,
@@ -51,7 +51,8 @@ export const OverlayReportPage = ({
 
   // Open/Close overlay action methods
   const toggleOverlay = (entity?: EntityShape) => {
-    const openOverlay = !!entity;
+    // Don't open overlay if no entity or details
+    const openOverlay = !!entity && !!details;
 
     setSelectedEntity(entity);
     setEntering(openOverlay);
@@ -91,14 +92,15 @@ export const OverlayReportPage = ({
             {parseCustomHtml(errorMessage || "")}
           </Box>
         );
+        // TODO: Update this when working through the actual logic pertaining to Standards and how it'll be checked
       } else if (standardEntities.length === 0) {
-        // TODO - Update this when working through the actual logic pertaining to Standards and how it'll be checked
         return (
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.requiredMessages.standards || "")}
           </Box>
         );
       }
+      /* istanbul ignore next */
       return <></>;
     };
 
@@ -124,7 +126,7 @@ export const OverlayReportPage = ({
                 <ResponsiveEntityRow
                   entering={entering}
                   entity={entity}
-                  entityType={entityType}
+                  entityType={entityType as EntityType}
                   key={entity.id}
                   locked={undefined}
                   openOverlayOrDrawer={() => toggleOverlay(entity)}
@@ -140,7 +142,13 @@ export const OverlayReportPage = ({
   };
 
   const DetailsOverlay = () => {
-    if (!details) {
+    useEffect(() => {
+      if (!details?.verbiage || !details?.forms) {
+        toggleOverlay();
+      }
+    }, [details]);
+
+    if (!details?.verbiage || !details?.forms) {
       return <></>;
     }
 
@@ -163,13 +171,9 @@ export const OverlayReportPage = ({
       };
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
-      let selectedEntityIndex = currentEntities.findIndex(
+      const selectedEntityIndex = currentEntities.findIndex(
         (entity: EntityShape) => entity.id === selectedEntity?.id
       );
-
-      if (selectedEntityIndex < 0) {
-        selectedEntityIndex = currentEntities.length;
-      }
 
       const newEntity = {
         ...selectedEntity,

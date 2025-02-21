@@ -90,7 +90,7 @@ describe("<EntityRow />", () => {
       const errorMessage = screen.queryByText(
         "Select “Enter MLR” to complete this report."
       );
-      expect(errorMessage).not.toBeInTheDocument();
+      expect(errorMessage).toBeNull();
     });
 
     test("Edit button opens the AddEditEntityModal", async () => {

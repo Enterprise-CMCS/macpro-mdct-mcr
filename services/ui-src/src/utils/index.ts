@@ -42,3 +42,5 @@ export * from "./other/parsing";
 export * from "./other/typing";
 // state management (zustand)
 export * from "./state/useStore";
+// text
+export * from "./text/translate";
