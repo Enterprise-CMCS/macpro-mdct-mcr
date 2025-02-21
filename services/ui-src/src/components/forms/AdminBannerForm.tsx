@@ -59,7 +59,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
-          {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
+          {submitting ? <Spinner size="md" /> : "Create banner"}
         </Button>
       </Flex>
     </>
@@ -79,7 +79,7 @@ const sx = {
     flexDirection: "column",
   },
   replaceBannerButton: {
-    width: "14rem",
+    width: "10rem",
     marginTop: "1rem !important",
     alignSelf: "end",
   },

@@ -38,7 +38,7 @@ describe("<AdminPage />", () => {
         mockedUseStore.mockReturnValue(mockBannerStore);
         await render(adminView(mockBannerMethods));
       });
-      const deleteButton = screen.getByText("Delete Current Banner");
+      const deleteButton = screen.getByText("Delete Banner");
       await userEvent.click(deleteButton);
       await waitFor(() =>
         expect(mockBannerMethods.deleteAdminBanner).toHaveBeenCalled()
@@ -52,6 +52,7 @@ describe("<AdminPage />", () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,
           bannerData: undefined,
+          allBanners: undefined,
         });
         await render(adminView(mockBannerMethods));
       });
@@ -87,7 +88,7 @@ describe("<AdminPage />", () => {
       const currentBannerStatus = screen.queryByText("Status:");
       expect(currentBannerStatus).toBeVisible();
 
-      const deleteButton = screen.getByText("Delete Current Banner");
+      const deleteButton = screen.getByText("Delete Banner");
       expect(deleteButton).toBeVisible();
     });
 
@@ -113,6 +114,7 @@ describe("<AdminPage />", () => {
       await act(async () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,
+          allBanners: [activeBannerData],
           bannerData: activeBannerData,
           bannerActive: true,
         });
@@ -150,7 +152,7 @@ describe("<AdminPage />", () => {
         await render(adminView(mockBannerMethods));
       });
 
-      const deleteButton = screen.getByText("Delete Current Banner");
+      const deleteButton = screen.getByText("Delete Banner");
       await userEvent.click(deleteButton);
       expect(
         screen.getByText("Current banner could not be deleted")

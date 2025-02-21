@@ -42,6 +42,10 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerLoading(true);
     try {
       const allBanners = await getBanners();
+      // sort by latest start date (assuming the most recent one should be active)
+      allBanners.sort(
+        (a: AdminBannerData, b: AdminBannerData) => b.startDate - a.startDate
+      );
       setAllBanners(allBanners);
     } catch {
       setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
@@ -53,18 +57,15 @@ export const AdminBannerProvider = ({ children }: Props) => {
   const fetchAdminBanner = async () => {
     setBannerLoading(true);
     try {
-      const currentBanners = await getBanners();
+      let currentBanners = await getBanners();
       if (currentBanners.length > 1) {
-        const currentTimeStamp = Date.now();
-        // ensure banner should be active at current time
-        currentBanners.filter(
-          (banner: AdminBannerData) =>
-            banner.startDate < currentTimeStamp &&
-            banner.endDate > currentTimeStamp
+        // limit to banners active at current time
+        currentBanners = currentBanners.filter((banner: AdminBannerData) =>
+          checkDateRangeStatus(banner.startDate, banner.endDate)
         );
-        // sort by earliest start date
+        // sort by latest start date (assuming the most recent one should be active)
         currentBanners.sort(
-          (a: AdminBannerData, b: AdminBannerData) => a.startDate - b.startDate
+          (a: AdminBannerData, b: AdminBannerData) => b.startDate - a.startDate
         );
       }
       const bannerData = currentBanners[0] || {};
@@ -81,6 +82,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerDeleting(true);
     try {
       await deleteBanner(bannerKey);
+      await fetchAllBanners();
       await fetchAdminBanner();
     } catch {
       setBannerErrorMessage(bannerErrors.DELETE_BANNER_FAILED);
@@ -94,6 +96,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
     } catch {
       setBannerErrorMessage(bannerErrors.CREATE_BANNER_FAILED);
     }
+    await fetchAllBanners();
     await fetchAdminBanner();
   };
 

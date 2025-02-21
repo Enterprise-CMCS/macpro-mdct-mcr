@@ -85,7 +85,7 @@ describe("<AdminBannerProvider />", () => {
       expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
 
       // 1 call on render + 1 call on button click
-      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(3));
     });
   });
 

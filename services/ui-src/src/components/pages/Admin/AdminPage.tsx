@@ -19,7 +19,7 @@ import {
 // types
 import { AdminBannerData, AlertTypes } from "types";
 // utils
-import { convertDateUtcToEt, useStore } from "utils";
+import { checkDateRangeStatus, convertDateUtcToEt, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/admin";
 
@@ -28,42 +28,40 @@ export const AdminPage = () => {
     useContext(AdminBannerContext);
 
   // state management
-  const {
-    allBanners,
-    bannerActive,
-    bannerLoading,
-    bannerErrorMessage,
-    bannerDeleting,
-  } = useStore();
+  const { allBanners, bannerLoading, bannerErrorMessage, bannerDeleting } =
+    useStore();
 
-  const BannerPreview = (banner: AdminBannerData) => (
-    <React.Fragment key={banner.key}>
-      <Flex sx={sx.currentBannerInfo}>
-        <Text sx={sx.currentBannerStatus}>
-          Status:{" "}
-          <span className={bannerActive ? "active" : "inactive"}>
-            {bannerActive ? "Active" : "Inactive"}
-          </span>
-        </Text>
-        <Text sx={sx.currentBannerDate}>
-          Start Date: <span>{convertDateUtcToEt(banner?.startDate)}</span>
-        </Text>
-        <Text sx={sx.currentBannerDate}>
-          End Date: <span>{convertDateUtcToEt(banner?.endDate)}</span>
-        </Text>
-      </Flex>
-      <Flex sx={sx.currentBannerFlex}>
-        <Banner status={AlertTypes.INFO} bannerData={banner} />
-        <Button
-          variant="danger"
-          sx={sx.deleteBannerButton}
-          onClick={() => deleteAdminBanner(banner.key)}
-        >
-          {bannerDeleting ? <Spinner size="md" /> : "Delete Current Banner"}
-        </Button>
-      </Flex>
-    </React.Fragment>
-  );
+  const BannerPreview = (banner: AdminBannerData) => {
+    const bannerActive = checkDateRangeStatus(banner.startDate, banner.endDate);
+    return (
+      <React.Fragment key={banner.key}>
+        <Flex sx={sx.currentBannerInfo}>
+          <Text sx={sx.currentBannerStatus}>
+            Status:{" "}
+            <span className={bannerActive ? "active" : "inactive"}>
+              {bannerActive ? "Active" : "Inactive"}
+            </span>
+          </Text>
+          <Text sx={sx.currentBannerDate}>
+            Start Date: <span>{convertDateUtcToEt(banner?.startDate)}</span>
+          </Text>
+          <Text sx={sx.currentBannerDate}>
+            End Date: <span>{convertDateUtcToEt(banner?.endDate)}</span>
+          </Text>
+        </Flex>
+        <Flex sx={sx.currentBannerFlex}>
+          <Banner status={AlertTypes.INFO} bannerData={banner} />
+          <Button
+            variant="danger"
+            sx={sx.deleteBannerButton}
+            onClick={() => deleteAdminBanner(banner.key)}
+          >
+            {bannerDeleting ? <Spinner size="md" /> : "Delete Banner"}
+          </Button>
+        </Flex>
+      </React.Fragment>
+    );
+  };
 
   return (
     <PageTemplate sxOverride={sx.layout} data-testid="admin-view">
@@ -75,7 +73,7 @@ export const AdminPage = () => {
         <Text>{verbiage.intro.body}</Text>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
-        <Text sx={sx.sectionHeader}>Current Banner</Text>
+        <Text sx={sx.sectionHeader}>Current Banner(s)</Text>
         {bannerLoading ? (
           <Flex sx={sx.spinnerContainer}>
             <Spinner size="md" />
@@ -85,9 +83,7 @@ export const AdminPage = () => {
             <Collapse in={allBanners && allBanners?.length > 0}>
               {allBanners?.map((banner) => BannerPreview(banner))}
             </Collapse>
-            {allBanners?.length === 0 && (
-              <Text>There is no current banner</Text>
-            )}
+            {!allBanners?.length && <Text>There is no current banner</Text>}
           </>
         )}
       </Box>
@@ -162,9 +158,9 @@ const sx = {
     },
   },
   deleteBannerButton: {
-    width: "13.3rem",
+    width: "10rem",
     alignSelf: "end",
-    marginTop: "1rem !important",
+    marginTop: "-1rem",
   },
   newBannerBox: {
     width: "100%",
