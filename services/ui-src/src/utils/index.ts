@@ -20,7 +20,9 @@ export * from "./reports/routing";
 // statusing
 export * from "./statusing/getRouteStatus";
 // tables
+export * from "./tables/getEntityStatus";
 export * from "./tables/getMlrEntityStatus";
+export * from "./tables/getNaaarEntityStatus";
 // tracking
 export * from "./tracking/tealium";
 // validation
@@ -40,3 +42,5 @@ export * from "./other/parsing";
 export * from "./other/typing";
 // state management (zustand)
 export * from "./state/useStore";
+// text
+export * from "./text/translate";

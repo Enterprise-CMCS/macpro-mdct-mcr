@@ -12,26 +12,28 @@ import {
 } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape, ReportType } from "types";
+import { ReportType } from "types";
 // utils
 import {
   eligibilityGroup,
-  getMlrEntityStatus,
+  getEntityStatus,
   parseCustomHtml,
   useStore,
 } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { EntityRowProps } from "./EntityRow";
 
 export const MobileEntityRow = ({
   entity,
+  entityType,
   verbiage,
   locked,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
   openOverlayOrDrawer,
-}: Props) => {
+}: EntityRowProps) => {
   const { editEntityButtonText, tableHeader } = verbiage;
   const { report } = useStore();
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
@@ -40,7 +42,7 @@ export const MobileEntityRow = ({
   const { userIsEndUser } = useStore().user ?? {};
 
   const entityComplete = useMemo(() => {
-    return report ? getMlrEntityStatus(report, entity) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const enterDetailsText = () => {
@@ -70,7 +72,7 @@ export const MobileEntityRow = ({
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity as EntityShape} />
+        <EntityStatusIcon entity={entity} entityType={entityType} />
       </Td>
       <Td>
         <Text sx={sx.rowHeader}>
@@ -123,17 +125,6 @@ export const MobileEntityRow = ({
     </Tr>
   );
 };
-
-interface Props {
-  entity: EntityShape;
-  verbiage: AnyObject;
-  locked?: boolean;
-  entering?: boolean;
-  openAddEditEntityModal?: Function;
-  openDeleteEntityModal?: Function;
-  openOverlayOrDrawer?: Function;
-  [key: string]: any;
-}
 
 const sx = {
   statusIcon: {
