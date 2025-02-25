@@ -17,6 +17,27 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
         standard_applicableRegion,
       } = entity;
 
+      const coreProviderType = entity[
+        "standard_coreProviderTypeCoveredByStandard-otherText"
+      ]
+        ? `${standard_coreProviderTypeCoveredByStandard[0].value}; ${entity["standard_coreProviderTypeCoveredByStandard-otherText"]}`
+        : standard_coreProviderTypeCoveredByStandard[0].value;
+
+      const standardType =
+        standard_standardType[0].value === "Other, specify"
+          ? entity["standard_standardType-otherText"]
+          : standard_standardType[0].value;
+
+      const standardPopulation =
+        standard_populationCoveredByStandard[0].value === "Other, specify"
+          ? entity["standard_populationCoveredByStandard-otherText"]
+          : standard_populationCoveredByStandard[0].value;
+
+      const standardRegion =
+        standard_applicableRegion[0].value === "Other, specify"
+          ? entity["standard_applicableRegion-otherText"]
+          : standard_applicableRegion[0].value;
+
       // there are 7 analysis methods checkboxes
       function extractMethods(
         standard_analysisMethodsUtilized: { value: any }[]
@@ -28,12 +49,12 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
 
       return {
         count: index + 1,
-        provider: standard_coreProviderTypeCoveredByStandard[0].value,
-        standardType: standard_standardType[0].value,
+        provider: coreProviderType,
+        standardType: standardType,
         standardDescription: standard_standardDescription,
         analysisMethods: extractMethods(standard_analysisMethodsUtilized),
-        population: standard_populationCoveredByStandard[0].value,
-        region: standard_applicableRegion[0].value,
+        population: standardPopulation,
+        region: standardRegion,
       };
     });
 
@@ -74,6 +95,7 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
 
   return (
     <SortableTable
+      border={true}
       columns={columns}
       data={actualData}
       content={content}

@@ -128,7 +128,13 @@ export const SortableTable = ({
               return (
                 <Td
                   key={cell.id}
-                  sx={border ? sx.tableCellBorder : sx.tableCell}
+                  sx={
+                    border
+                      ? sx.tableCellBorder
+                      : cell.id.includes("standardType")
+                      ? sx.boldTableCell
+                      : sx.tableCell
+                  }
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
@@ -234,6 +240,14 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
+    ".mobile &": {
+      fontSize: "xs",
+    },
+  },
+  boldTableCell: {
+    padding: "0.75rem 0.5rem",
+    borderStyle: "none",
+    fontWeight: "bold",
     ".mobile &": {
       fontSize: "xs",
     },

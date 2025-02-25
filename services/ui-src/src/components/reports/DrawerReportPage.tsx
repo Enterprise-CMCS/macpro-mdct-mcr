@@ -234,9 +234,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return <></>;
   };
 
-  const addStandardsButton = (
+  const dashTitle = `${verbiage.dashboardTitle}${
+    verbiage.countEntitiesInTitle ? ` ${entities.length}` : ""
+  }`;
+
+  const addStandardsButton = (count: number) => (
     <Button
-      sx={sx.bottomAddEntityButton}
+      sx={count === 0 ? sx.addEntityButton : sx.bottomAddEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
       disabled={!hasProviderTypes}
@@ -268,13 +272,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       <Box>
         {isReportingOnStandards ? (
           <Box>
-            {addStandardsButton}
+            {addStandardsButton(0)}
             {existingStandards ? (
-              <SortableDrawerReportPageTable entities={entities} />
+              <Box>
+                <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
+                <SortableDrawerReportPageTable entities={entities} />
+              </Box>
             ) : (
               <></>
             )}
-            <Box>{addStandardsButton}</Box>
+            {addStandardsButton(1)}
           </Box>
         ) : (
           <Box>
@@ -363,6 +370,12 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 }
 
 const sx = {
+  dashboardTitle: {
+    marginBottom: "1.25rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
   buttonIcons: {
     height: "1rem",
   },
@@ -400,6 +413,9 @@ const sx = {
   },
   standardForm: {
     paddingBottom: "1rem",
+  },
+  addEntityButton: {
+    marginBottom: "2rem",
   },
   bottomAddEntityButton: {
     marginTop: "2rem",
