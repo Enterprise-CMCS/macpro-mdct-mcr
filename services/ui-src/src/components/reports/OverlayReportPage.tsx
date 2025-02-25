@@ -266,7 +266,7 @@ const sx = {
         width: "2.5rem",
       },
       "&:nth-of-type(3)": {
-        width: "260px",
+        width: "11rem",
       },
     },
     td: {

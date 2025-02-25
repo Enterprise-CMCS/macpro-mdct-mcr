@@ -51,11 +51,38 @@ export const EntityDetailsMultiformOverlay = ({
 }: Props) => {
   const formRefs = useRef<HTMLFormElement[]>([]);
   const [formCount, setFormCount] = useState<number>(0);
+  const [formEnabled, setFormEnabled] = useState<AnyObject>({});
+  const [formComplete, setFormComplete] = useState<AnyObject>({});
   const [formData, setFormData] = useState<AnyObject>({});
+  const NOT_COMPLIANT_LABEL =
+    "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
 
   useEffect(() => {
     setEntering(false);
   }, []);
+
+  useEffect(() => {
+    const formIds = forms.map((form) => form.form.id);
+    const enabled = {} as AnyObject;
+    const complete = {} as AnyObject;
+
+    formIds.forEach((formId) => {
+      const assuranceField = `${formId}_assurance`;
+      let enableForm = false;
+
+      if (selectedEntity && selectedEntity[assuranceField]) {
+        enableForm =
+          selectedEntity[assuranceField][0]?.value === NOT_COMPLIANT_LABEL;
+      }
+
+      enabled[formId] = enableForm;
+      // TODO: Update with actual logic
+      complete[formId] = false;
+    });
+
+    setFormComplete(complete);
+    setFormEnabled(enabled);
+  }, [forms]);
 
   useEffect(() => {
     if (formCount === formRefs.current.length) {
@@ -69,6 +96,13 @@ export const EntityDetailsMultiformOverlay = ({
       setFormCount(0);
     }
   }, [formCount]);
+
+  const handlChange = (event: AnyObject) => {
+    const updateFormEnabled = { ...formEnabled };
+    const formId = event.target.id.split("_")[0];
+    updateFormEnabled[formId] = event.target.value === NOT_COMPLIANT_LABEL;
+    setFormEnabled(updateFormEnabled);
+  };
 
   const handleSubmit = (enteredData: AnyObject) => {
     // Combine into one submission
@@ -109,33 +143,57 @@ export const EntityDetailsMultiformOverlay = ({
   };
 
   const Cell = ({
+    formId,
     header,
     text,
   }: {
+    formId: string;
     header?: string | ScreenReaderOnlyHeaderName;
     text: string;
   }) => {
     const headerName = typeof header === "object" ? header.hiddenName : header;
+    const isEnabled = formEnabled[formId];
+    const isComplete = formComplete[formId];
 
     switch (headerName) {
-      case "Status":
+      case "Status": {
+        if (isEnabled) {
+          return (
+            <EntityStatusIcon
+              entity={selectedEntity as EntityShape}
+              entityType={entityType}
+              override={isComplete}
+            />
+          );
+        }
+        return <></>;
+      }
+      case "Action": {
+        // TODO: Update with actual logic
+        const updatedFormComplete = { ...formComplete };
+        updatedFormComplete[formId] = true;
+
         return (
-          <EntityStatusIcon
-            entity={selectedEntity as EntityShape}
-            entityType={entityType}
-          />
-        );
-      case "Action":
-        return (
-          <Button variant="outline" disabled={true}>
+          <Button
+            disabled={!isEnabled}
+            onClick={() => setFormComplete(updatedFormComplete)}
+            sx={sx.plan.tableButton}
+            variant="outline"
+          >
             Enter
           </Button>
         );
+      }
       default:
         return (
-          <Text as="span" sx={sx.plan.tableData}>
-            {text}
-          </Text>
+          <>
+            <Text sx={sx.plan.tableData}>{text}</Text>
+            {isEnabled && !isComplete && (
+              <Text sx={sx.plan.errorText}>
+                Select “Enter” to complete response.
+              </Text>
+            )}
+          </>
         );
     }
   };
@@ -163,6 +221,7 @@ export const EntityDetailsMultiformOverlay = ({
               formData={selectedEntity}
               formJson={formObject.form}
               id={formObject.form.id}
+              onChange={handlChange}
               onSubmit={(data: AnyObject) => handleSubmit(data)}
               ref={(el) => (formRefs.current[index] = el as HTMLFormElement)}
               validateOnRender={validateOnRender || false}
@@ -183,8 +242,9 @@ export const EntityDetailsMultiformOverlay = ({
                         sx={sx.plan.tableCell}
                       >
                         <Cell
-                          text={cell}
+                          formId={formObject.form.id}
                           header={formObject.table?.headRow[cellIndex]}
+                          text={cell}
                         />
                       </Td>
                     ))}
@@ -267,11 +327,28 @@ const sx = {
         borderTopWidth: "1px",
       },
     },
+    errorText: {
+      color: "palette.error_dark",
+      fontSize: "0.75rem",
+      marginTop: "0.25rem",
+    },
     heading: {
       fontSize: "1.3rem",
     },
     table: {
       marginBottom: "1.5rem",
+      maxWidth: "36.125rem",
+      td: {
+        paddingRight: "0",
+      },
+      th: {
+        "&:nth-of-type(1)": {
+          width: "2.5rem",
+        },
+        "&:nth-of-type(3)": {
+          width: "8rem",
+        },
+      },
     },
     tableCell: {
       borderColor: "palette.gray_lighter",
@@ -282,6 +359,12 @@ const sx = {
       fontWeight: "bold",
       lineHeight: "1.5rem",
       maxWidth: "19rem",
+    },
+    tableButton: {
+      "&:disabled": {
+        borderColor: "palette.gray_lighter",
+        color: "palette.gray_lighter",
+      },
     },
   },
 };
