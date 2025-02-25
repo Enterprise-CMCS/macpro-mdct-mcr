@@ -42,10 +42,8 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerLoading(true);
     try {
       const allBanners = await getBanners();
-      // sort by latest start date (assuming the most recent one should be active)
-      allBanners.sort(
-        (a: AdminBannerData, b: AdminBannerData) => b.startDate - a.startDate
-      );
+      // sort by latest creation date so the latest banner the admin creates shows up first
+      allBanners.sort((a, b) => b.createdAt - a.createdAt);
       setAllBanners(allBanners);
     } catch {
       setBannerErrorMessage(bannerErrors.GET_BANNER_FAILED);
@@ -58,18 +56,13 @@ export const AdminBannerProvider = ({ children }: Props) => {
     setBannerLoading(true);
     try {
       let currentBanners = await getBanners();
-      if (currentBanners.length > 1) {
-        // limit to banners active at current time
-        currentBanners = currentBanners.filter((banner: AdminBannerData) =>
+      // Find the most recent currently-active banner
+      const currentBanner = currentBanners
+        .sort((a, b) => b.createdAt - a.createdAt)
+        .find((banner) =>
           checkDateRangeStatus(banner.startDate, banner.endDate)
         );
-        // sort by latest start date (assuming the most recent one should be active)
-        currentBanners.sort(
-          (a: AdminBannerData, b: AdminBannerData) => b.startDate - a.startDate
-        );
-      }
-      const bannerData = currentBanners[0] || {};
-      setBannerData(bannerData);
+      setBannerData(currentBanner);
       setBannerErrorMessage(undefined);
     } catch {
       setBannerLoading(false);

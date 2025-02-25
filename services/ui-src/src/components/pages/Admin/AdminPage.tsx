@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 // components
 import {
   Box,
@@ -19,27 +19,40 @@ import {
 // types
 import { AdminBannerData, AlertTypes } from "types";
 // utils
-import { checkDateRangeStatus, convertDateUtcToEt, useStore } from "utils";
+import { convertDateUtcToEt, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/admin";
 
 export const AdminPage = () => {
   const { deleteAdminBanner, writeAdminBanner } =
     useContext(AdminBannerContext);
+  const [bannerToDelete, setBannerToDelete] = useState<string>("");
 
   // state management
   const { allBanners, bannerLoading, bannerErrorMessage, bannerDeleting } =
     useStore();
 
+  const deleteSelectedBanner = async (bannerKey: string) => {
+    setBannerToDelete(bannerKey);
+    await deleteAdminBanner(bannerKey);
+    setBannerToDelete("");
+  };
+
   const BannerPreview = (banner: AdminBannerData) => {
-    const bannerActive = checkDateRangeStatus(banner.startDate, banner.endDate);
+    let bannerStatus = "Active";
+    if (banner.endDate < Date.now()) {
+      bannerStatus = "Expired";
+    }
+    if (banner.startDate > Date.now()) {
+      bannerStatus = "Scheduled";
+    }
     return (
       <React.Fragment key={banner.key}>
         <Flex sx={sx.currentBannerInfo}>
           <Text sx={sx.currentBannerStatus}>
             Status:{" "}
-            <span className={bannerActive ? "active" : "inactive"}>
-              {bannerActive ? "Active" : "Inactive"}
+            <span className={bannerStatus === "Active" ? "active" : "inactive"}>
+              {bannerStatus}
             </span>
           </Text>
           <Text sx={sx.currentBannerDate}>
@@ -54,9 +67,13 @@ export const AdminPage = () => {
           <Button
             variant="danger"
             sx={sx.deleteBannerButton}
-            onClick={() => deleteAdminBanner(banner.key)}
+            onClick={() => deleteSelectedBanner(banner.key)}
           >
-            {bannerDeleting ? <Spinner size="md" /> : "Delete Banner"}
+            {bannerDeleting && banner.key === bannerToDelete ? (
+              <Spinner size="md" />
+            ) : (
+              "Delete Banner"
+            )}
           </Button>
         </Flex>
       </React.Fragment>
@@ -83,7 +100,7 @@ export const AdminPage = () => {
             <Collapse in={allBanners && allBanners?.length > 0}>
               {allBanners?.map((banner) => BannerPreview(banner))}
             </Collapse>
-            {!allBanners?.length && <Text>There is no current banner</Text>}
+            {!allBanners?.length && <Text>There are no existing banners</Text>}
           </>
         )}
       </Box>
