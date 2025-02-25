@@ -16,6 +16,7 @@ import { bannerErrors } from "verbiage/errors";
 
 const mockBannerMethods = {
   fetchAdminBanner: jest.fn(() => {}),
+  fetchAllBanners: jest.fn(() => {}),
   writeAdminBanner: jest.fn(() => {}),
   deleteAdminBanner: jest.fn(() => {}),
 };
@@ -39,10 +40,10 @@ describe("<AdminPage />", () => {
         await render(adminView(mockBannerMethods));
       });
       const deleteButton = screen.getByText("Delete Banner");
-      await userEvent.click(deleteButton);
-      await waitFor(() =>
-        expect(mockBannerMethods.deleteAdminBanner).toHaveBeenCalled()
-      );
+      await waitFor(async () => {
+        await userEvent.click(deleteButton);
+        expect(mockBannerMethods.deleteAdminBanner).toHaveBeenCalled();
+      });
     });
   });
 
@@ -67,8 +68,8 @@ describe("<AdminPage />", () => {
       expect(currentBannerStatus).not.toBeInTheDocument();
     });
 
-    test("Check that 'no current banner' text shows", async () => {
-      expect(screen.getByText("There is no current banner")).toBeVisible();
+    test("Check that 'no existing banners' text shows", async () => {
+      expect(screen.getByText("There are no existing banners")).toBeVisible();
     });
   });
 
@@ -92,9 +93,9 @@ describe("<AdminPage />", () => {
       expect(deleteButton).toBeVisible();
     });
 
-    test("Check that 'no current banner' text does not show", () => {
+    test("Check that 'no existing banners' text does not show", () => {
       expect(
-        screen.queryByText("There is no current banner")
+        screen.queryByText("There are no existing banners")
       ).not.toBeInTheDocument();
     });
   });
@@ -138,12 +139,13 @@ describe("<AdminPage />", () => {
         await render(adminView(context));
       });
       const currentBannerStatus = screen.getByText("Status:");
-      expect(currentBannerStatus.textContent).toEqual("Status: Inactive");
+      expect(currentBannerStatus.textContent).toEqual("Status: Expired");
     });
   });
 
   describe("Test AdminPage delete banner error handling", () => {
     test("Displays error if deleteBanner throws error", async () => {
+      window.HTMLElement.prototype.scrollIntoView = jest.fn();
       await act(async () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,
