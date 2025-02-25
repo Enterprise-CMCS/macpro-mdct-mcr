@@ -67,14 +67,14 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
     switch (headKey) {
       case "edit": {
         return (
-          <Button variant="link" onClick={() => {}}>
+          <Button variant="link" id={value}>
             Edit
           </Button>
         );
       }
       case "delete": {
         return (
-          <Button sx={sx.deleteButton} onClick={() => {}}>
+          <Button sx={sx.deleteButton} id={value}>
             <Image src={deleteIcon} alt="delete" boxSize="2xl" />
           </Button>
         );
@@ -85,15 +85,30 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   };
 
   const sortableHeadRow = {
-    count: { header: "#" },
-    provider: { header: "Provider" },
-    standardType: { header: "Standard Type" },
-    standardDescription: { header: "Standard Description" },
-    analysisMethods: { header: "Analysis Methods" },
-    population: { header: "Pop." },
-    region: { header: "Region" },
-    edit: { header: "" },
-    delete: { header: "" },
+    count: { meta: { ariaLabel: "Standards count" }, header: "#" },
+    provider: {
+      meta: { ariaLabel: "Core provider type column" },
+      header: "Provider",
+    },
+    standardType: {
+      meta: { ariaLabel: "Standard type column" },
+      header: "Standard Type",
+    },
+    standardDescription: {
+      meta: { ariaLabel: "Standard description column" },
+      header: "Standard Description",
+    },
+    analysisMethods: {
+      meta: { ariaLabel: "Analysis methods column" },
+      header: "Analysis Methods",
+    },
+    population: {
+      meta: { ariaLabel: "Standard population column" },
+      header: "Pop.",
+    },
+    region: { meta: { ariaLabel: "Standard region column" }, header: "Region" },
+    edit: { meta: { ariaLabel: "Edit button column " }, header: "" },
+    delete: { meta: { ariaLabel: "Delete button column " }, header: "" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(

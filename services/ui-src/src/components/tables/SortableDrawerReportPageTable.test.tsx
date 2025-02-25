@@ -1,0 +1,59 @@
+import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
+// components
+import { SortableDrawerReportPageTable } from "components";
+// utils
+import { useStore } from "utils";
+import {
+  mockNaaarReportStore,
+  mockStateUserStore,
+  RouterWrappedComponent,
+} from "utils/testing/setupJest";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue({
+  ...mockStateUserStore,
+  ...mockNaaarReportStore,
+});
+
+const mockStandards = [
+  {
+    standard_coreProviderTypeCoveredByStandard: [
+      { key: "mock-key", value: "mock-provider" },
+    ],
+    standard_standardType: [{ key: "mock-key", value: "mock-standard" }],
+    standard_standardDescription: "mock standard description",
+    standard_analysisMethodsUtilized: [
+      {
+        key: "mock-key",
+        value: "mock method",
+      },
+    ],
+    standard_populationCoveredByStandard: [
+      { key: "mock-key", value: "mock-population" },
+    ],
+    standard_applicableRegion: [{ key: "mock-key", value: "mock-region" }],
+  },
+];
+
+const sortableTableComponent = (
+  <RouterWrappedComponent>
+    <SortableDrawerReportPageTable entities={mockStandards} />
+  </RouterWrappedComponent>
+);
+
+describe("Test SortableDrawerReportPageTable component", () => {
+  test("Check that NAAAR table view renders", async () => {
+    render(sortableTableComponent);
+    expect(screen.getByText("mock-population")).toBeVisible;
+  });
+});
+
+describe("Test SortableDrawerReportPageTable accessibility", () => {
+  it("Should not have basic accessibility issues", async () => {
+    const { container } = render(sortableTableComponent);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+});

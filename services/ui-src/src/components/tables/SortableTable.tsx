@@ -93,6 +93,7 @@ export const SortableTable = ({
                       p={0}
                       height={4}
                       variant="ghost"
+                      aria-label="placeholder"
                     >
                       <Box as="span">
                         {flexRender(
