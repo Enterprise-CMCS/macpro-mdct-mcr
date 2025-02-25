@@ -551,7 +551,7 @@ export const mockNaaarStandardsPageJson = {
                         label: "mock label 1",
                       },
                       {
-                        id: "standards-mock-child-3-choice-2",
+                        id: "standards-mock-child-6-choice-2",
                         label: "mock label 2",
                       },
                     ],
