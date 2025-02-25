@@ -97,7 +97,6 @@ export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
-export { SortableDrawerReportPageTable } from "./reports/SortableDrawerReportPageTable";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { OverlayReportPage } from "./reports/OverlayReportPage";
@@ -111,6 +110,7 @@ export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
 export { MobileEntityRow } from "./tables/MobileEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
+export { SortableDrawerReportPageTable } from "./tables/SortableDrawerReportPageTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
