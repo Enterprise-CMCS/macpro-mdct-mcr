@@ -4,20 +4,26 @@ import userEvent from "@testing-library/user-event";
 import { ReportContext, ReviewSubmitPage } from "components";
 import { SuccessMessageGenerator } from "./ReviewSubmitPage";
 // types
-import { ReportStatus } from "types";
+import { ReportContextShape, ReportStatus } from "types";
 // utils
 import {
   mockAdminUserStore,
   mockMcparReport,
   mockMcparReportContext,
   mockMcparReportStore,
+  mockMlrReportContext,
+  mockMlrReportStore,
+  mockNaaarReportContext,
+  mockNaaarReportStore,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
-import reviewVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MCPARverbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
+import MLRverbiage from "verbiage/pages/mlr/mlr-review-and-submit";
+import NAAARverbiage from "verbiage/pages/naaar/naaar-review-and-submit";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -92,41 +98,9 @@ const mockSubmittedMcparReportStore = {
 };
 
 // components
-const McparReviewSubmitPage_NotStarted = (
+const ReviewSubmitPageComponent = (context: ReportContextShape) => (
   <RouterWrappedComponent>
-    <ReportContext.Provider value={mockMcparReportContext}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Unfilled = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Unfilled}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Filled = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Filled}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_Submitted = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_Submitted}>
-      <ReviewSubmitPage />
-    </ReportContext.Provider>
-  </RouterWrappedComponent>
-);
-
-const McparReviewSubmitPage_InProgress = (
-  <RouterWrappedComponent>
-    <ReportContext.Provider value={mockedReportContext_InProgress}>
+    <ReportContext.Provider value={context}>
       <ReviewSubmitPage />
     </ReportContext.Provider>
   </RouterWrappedComponent>
@@ -140,8 +114,8 @@ describe("<ReviewSubmitPage />", () => {
 
     describe("User has not started filling out the form", () => {
       test("Show alert message if status is NOT_STARTED and is not able to be submitted", () => {
-        render(McparReviewSubmitPage_NotStarted);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockMcparReportContext));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.getByText(title)).toBeVisible();
         expect(screen.getByText(description)).toBeVisible();
@@ -149,8 +123,8 @@ describe("<ReviewSubmitPage />", () => {
       });
 
       test("Admin users get same experience and can't submit form", () => {
-        render(McparReviewSubmitPage_NotStarted);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockMcparReportContext));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.getByText(title)).toBeVisible();
         expect(screen.getByText(description)).toBeVisible();
@@ -160,8 +134,8 @@ describe("<ReviewSubmitPage />", () => {
 
     describe("User has errors on the form", () => {
       test("Show alert message that form has not been filled out and is not able to be submitted", () => {
-        render(McparReviewSubmitPage_Unfilled);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Unfilled));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.getByText(title)).toBeVisible();
         expect(screen.getByText(description)).toBeVisible();
@@ -174,8 +148,8 @@ describe("<ReviewSubmitPage />", () => {
       });
 
       test("Admin users get same experience and can't submit form", () => {
-        render(McparReviewSubmitPage_Unfilled);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Unfilled));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.getByText(title)).toBeVisible();
         expect(screen.getByText(description)).toBeVisible();
@@ -194,8 +168,8 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockFilledMcparReportStore,
         });
-        render(McparReviewSubmitPage_Filled);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Filled));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText(description)).not.toBeInTheDocument();
@@ -211,8 +185,8 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockFilledMcparReportStore,
         });
-        render(McparReviewSubmitPage_Filled);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Filled));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText(description)).not.toBeInTheDocument();
@@ -228,8 +202,8 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockFilledMcparReportStore,
         });
-        render(McparReviewSubmitPage_Filled);
-        const { review } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Filled));
+        const { review } = MCPARverbiage;
         const { modal, pageLink } = review;
         const submitCheckButton = screen.getByText(pageLink.text)!;
         await userEvent.click(submitCheckButton);
@@ -242,7 +216,7 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockFilledMcparReportStore,
         });
-        render(McparReviewSubmitPage_Filled);
+        render(ReviewSubmitPageComponent(mockedReportContext_Filled));
         const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
         await userEvent.click(reviewSubmitButton);
         const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
@@ -257,8 +231,8 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockSubmittedMcparReportStore,
         });
-        render(McparReviewSubmitPage_Submitted);
-        const { submitted } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Submitted));
+        const { submitted } = MCPARverbiage;
         const { intro } = submitted;
         expect(screen.getByText(intro.header)).toBeVisible();
       });
@@ -268,8 +242,8 @@ describe("<ReviewSubmitPage />", () => {
           ...mockAdminUserStore,
           ...mockFilledMcparReportStore,
         });
-        render(McparReviewSubmitPage_Filled);
-        const { alertBox } = reviewVerbiage;
+        render(ReviewSubmitPageComponent(mockedReportContext_Filled));
+        const { alertBox } = MCPARverbiage;
         const { title, description } = alertBox;
         expect(screen.queryByText(title)).not.toBeInTheDocument();
         expect(screen.queryByText(description)).not.toBeInTheDocument();
@@ -285,7 +259,7 @@ describe("<ReviewSubmitPage />", () => {
   describe("MCPAR Review and Submit Page - LaunchDarkly", () => {
     describe("When loading an in-progress report", () => {
       test("Review PDF button should be visible and correctly formed", async () => {
-        render(McparReviewSubmitPage_InProgress);
+        render(ReviewSubmitPageComponent(mockedReportContext_InProgress));
         const printButton = screen.getByText("Review PDF");
         expect(printButton).toBeVisible();
         expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
@@ -299,7 +273,7 @@ describe("<ReviewSubmitPage />", () => {
           ...mockStateUserStore,
           ...mockSubmittedMcparReportStore,
         });
-        render(McparReviewSubmitPage_Submitted);
+        render(ReviewSubmitPageComponent(mockedReportContext_Submitted));
         const printButton = screen.getByRole("link");
         expect(printButton).toBeVisible();
         expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
@@ -342,53 +316,47 @@ describe("<ReviewSubmitPage />", () => {
     });
   });
 
+  describe("MLR Review and Submit Page Render", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("should render MLR verbiage", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrReportStore,
+      });
+      render(ReviewSubmitPageComponent(mockMlrReportContext));
+      const { alertBox } = MLRverbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit MLR")!).toBeDisabled();
+    });
+  });
+
+  describe("NAAAR Review and Submit Page Render", () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("should render NAAAR verbiage", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+      });
+      render(ReviewSubmitPageComponent(mockNaaarReportContext));
+      const { alertBox } = NAAARverbiage;
+      const { title, description } = alertBox;
+      expect(screen.getByText(title)).toBeVisible();
+      expect(screen.getByText(description)).toBeVisible();
+      expect(screen.getByText("Submit NAAAR")!).toBeDisabled();
+    });
+  });
+
   describe("Test McparReviewSubmitPage view accessibility", () => {
-    const McparReviewSubmitPage_NotStarted = (
-      <RouterWrappedComponent>
-        <ReportContext.Provider value={mockMcparReportContext}>
-          <ReviewSubmitPage />
-        </ReportContext.Provider>
-      </RouterWrappedComponent>
-    );
-
-    const mockInProgressReport = {
-      ...mockMcparReport,
-      status: ReportStatus.IN_PROGRESS,
-    };
-
-    const mockedReportContext_InProgress = {
-      ...mockMcparReportContext,
-      report: mockInProgressReport,
-    };
-
-    const McparReviewSubmitPage_InProgress = (
-      <RouterWrappedComponent>
-        <ReportContext.Provider value={mockedReportContext_InProgress}>
-          <ReviewSubmitPage />
-        </ReportContext.Provider>
-      </RouterWrappedComponent>
-    );
-
-    const mockSubmittedReport = {
-      ...mockMcparReport,
-      status: ReportStatus.SUBMITTED,
-    };
-
-    const mockedReportContext_Submitted = {
-      ...mockMcparReportContext,
-      report: mockSubmittedReport,
-    };
-
-    const McparReviewSubmitPage_Submitted = (
-      <RouterWrappedComponent>
-        <ReportContext.Provider value={mockedReportContext_Submitted}>
-          <ReviewSubmitPage />
-        </ReportContext.Provider>
-      </RouterWrappedComponent>
-    );
-
-    testA11y(McparReviewSubmitPage_NotStarted);
-    testA11y(McparReviewSubmitPage_InProgress);
-    testA11y(McparReviewSubmitPage_Submitted);
+    testA11y(ReviewSubmitPageComponent(mockMcparReportContext));
+    testA11y(ReviewSubmitPageComponent(mockedReportContext_InProgress));
+    testA11y(ReviewSubmitPageComponent(mockedReportContext_Submitted));
   });
 });
