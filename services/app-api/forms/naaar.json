@@ -609,7 +609,7 @@
                   "label": "Maximum distance to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_qjDGoXRR8qnuIztUS7rymsLP",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -644,7 +644,7 @@
                   "label": "Maximum time or distance",
                   "children": [
                     {
-                      "id": "standard_standardDescription_p2UjSQQTOHYWtLDqWXSxGFOP",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -679,7 +679,7 @@
                   "label": "Ease of getting a timely appointment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_rWrmasaJJ8V3PdVhZGf6bly3",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -714,7 +714,7 @@
                   "label": "Appointment wait time",
                   "children": [
                     {
-                      "id": "standard_standardDescription_WCv5x1OePNjPWHdqog1Riv5s",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -749,7 +749,7 @@
                   "label": "Hours of operation",
                   "children": [
                     {
-                      "id": "standard_standardDescription_l8KWEMUCqnOgRkYyBHvSYLPw",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -784,7 +784,7 @@
                   "label": "Provider to enrollee ratios",
                   "children": [
                     {
-                      "id": "standard_standardDescription_kKaVlFMA9VpbhVj2gSPloqBr",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -819,7 +819,7 @@
                   "label": "Minimum number of network providers",
                   "children": [
                     {
-                      "id": "standard_standardDescription_Le1VoGTeVcMbskIiBSImlIMO",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -854,7 +854,7 @@
                   "label": "Service fulfillment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_QVdykzW594MqR5xWTrAF8elY",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -899,7 +899,7 @@
                       }
                     },
                     {
-                      "id": "standard_standardDescription_QW4MxtOeD2vjcRHcgKGBXYyI",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
