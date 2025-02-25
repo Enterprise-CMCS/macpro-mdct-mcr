@@ -218,7 +218,7 @@ type AriaSortValues = "ascending" | "descending";
 
 const sx = {
   root: {
-    width: "100%",
+    width: "10%",
   },
   captionBox: {
     margin: 0,

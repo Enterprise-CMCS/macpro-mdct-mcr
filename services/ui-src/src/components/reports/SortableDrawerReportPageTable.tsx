@@ -1,9 +1,8 @@
-import { Button } from "@chakra-ui/react";
-import {
-  generateColumns,
-  SortableTable,
-} from "components/tables/SortableTable";
+import { Button, Image } from "@chakra-ui/react";
 import { useMemo } from "react";
+// components
+import { generateColumns, SortableTable } from "components";
+import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   const actualData = useMemo(() => {
@@ -67,7 +66,18 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   ) => {
     switch (headKey) {
       case "edit": {
-        return <Button variant="outline">Edit</Button>;
+        return (
+          <Button variant="link" onClick={() => {}}>
+            Edit
+          </Button>
+        );
+      }
+      case "delete": {
+        return (
+          <Button sx={sx.deleteButton} onClick={() => {}}>
+            <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+          </Button>
+        );
       }
       default:
         return value;
@@ -83,6 +93,7 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
     population: { header: "Pop." },
     region: { header: "Region" },
     edit: { header: "" },
+    delete: { header: "" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(
@@ -104,6 +115,17 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   );
 };
 
+const sx = {
+  deleteButton: {
+    marginRight: "-2.5rem",
+    padding: 0,
+    background: "white",
+    "&:hover, &:hover:disabled, :disabled": {
+      background: "white",
+    },
+  },
+};
+
 interface Props {
   entities: any[];
 }
@@ -117,4 +139,5 @@ interface DrawerReportPageTableShape {
   population: string;
   region: string;
   edit?: null;
+  delete?: null;
 }

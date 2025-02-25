@@ -250,7 +250,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   );
 
   return (
-    <Box>
+    <Box sx={sx.tablePage}>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
@@ -273,15 +273,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         {isReportingOnStandards ? (
           <Box>
             {addStandardsButton(0)}
+            <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
             {existingStandards ? (
-              <Box>
-                <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
-                <SortableDrawerReportPageTable entities={entities} />
-              </Box>
+              <SortableDrawerReportPageTable entities={entities} />
             ) : (
               <></>
             )}
-            {addStandardsButton(1)}
+            {entities.length > 0 && addStandardsButton(1)}
           </Box>
         ) : (
           <Box>
@@ -370,6 +368,9 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 }
 
 const sx = {
+  tablePage: {
+    width: "fit-content",
+  },
   dashboardTitle: {
     marginBottom: "1.25rem",
     fontSize: "md",
