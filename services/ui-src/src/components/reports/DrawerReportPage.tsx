@@ -234,13 +234,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return <></>;
   };
 
-  const dashTitle = `${verbiage.dashboardTitle}${
-    verbiage.countEntitiesInTitle ? ` ${entities.length}` : ""
-  }`;
+  const entityCount = verbiage.countEntitiesInTitle
+    ? ` ${entities.length}`
+    : "";
+  const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
 
-  const addStandardsButton = (count: number) => (
+  const addStandardsButton = () => (
     <Button
-      sx={count === 0 ? sx.addEntityButton : sx.bottomAddEntityButton}
+      sx={sx.addEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
       disabled={!hasProviderTypes}
@@ -272,14 +273,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       <Box>
         {isReportingOnStandards ? (
           <Box>
-            {addStandardsButton(0)}
+            {addStandardsButton()}
             <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
-            {existingStandards ? (
+            {existingStandards && (
               <SortableDrawerReportPageTable entities={entities} />
-            ) : (
-              <></>
             )}
-            {entities.length > 0 && addStandardsButton(1)}
+            {entities.length > 0 && addStandardsButton()}
           </Box>
         ) : (
           <Box>
@@ -310,7 +309,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {canAddEntities && hasPlans && (
               <Button
                 variant={"outline"}
-                sx={sx.bottomAddEntityButton}
+                sx={sx.addEntityButton}
                 leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
                 onClick={() => openRowDrawer()}
               >
@@ -416,10 +415,11 @@ const sx = {
     paddingBottom: "1rem",
   },
   addEntityButton: {
-    marginBottom: "2rem",
-  },
-  bottomAddEntityButton: {
-    marginTop: "2rem",
     marginBottom: "0",
+    marginTop: "2rem",
+    "&:first-of-type": {
+      marginBottom: "2rem",
+      marginTop: "0",
+    },
   },
 };

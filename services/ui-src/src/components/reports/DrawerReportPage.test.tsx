@@ -319,8 +319,8 @@ describe("<DrawerReportPage />", () => {
 
     test("Test DrawerReportPage without standards should not render the table", async () => {
       render(drawerReportPageWithNaaarRoutesEmptyState);
-      const providerColumn = screen.queryByText(/Provider/);
-      expect(providerColumn).not.toBeInTheDocument();
+      const standardsTable = screen.queryByRole("table");
+      expect(standardsTable).toBeNull();
     });
 
     test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {

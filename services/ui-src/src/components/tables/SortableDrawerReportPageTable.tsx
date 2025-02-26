@@ -102,8 +102,8 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
       header: "Pop.",
     },
     region: { header: "Region" },
-    edit: { header: "Edit standard" },
-    delete: { header: "Delete standard" },
+    edit: { header: "" },
+    delete: { header: "" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(
@@ -112,7 +112,7 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
     customCells
   );
 
-  const content = { caption: "caption" };
+  const content = { caption: "Access and Network Adequacy Standards" };
 
   return (
     <SortableTable
