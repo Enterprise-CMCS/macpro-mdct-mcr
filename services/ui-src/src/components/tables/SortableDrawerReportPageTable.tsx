@@ -85,30 +85,25 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   };
 
   const sortableHeadRow = {
-    count: { meta: { ariaLabel: "Standards count" }, header: "#" },
+    count: { header: "#" },
     provider: {
-      meta: { ariaLabel: "Core provider type column" },
       header: "Provider",
     },
     standardType: {
-      meta: { ariaLabel: "Standard type column" },
       header: "Standard Type",
     },
     standardDescription: {
-      meta: { ariaLabel: "Standard description column" },
       header: "Standard Description",
     },
     analysisMethods: {
-      meta: { ariaLabel: "Analysis methods column" },
       header: "Analysis Methods",
     },
     population: {
-      meta: { ariaLabel: "Standard population column" },
       header: "Pop.",
     },
-    region: { meta: { ariaLabel: "Standard region column" }, header: "Region" },
-    edit: { meta: { ariaLabel: "Edit button column " }, header: "" },
-    delete: { meta: { ariaLabel: "Delete button column " }, header: "" },
+    region: { header: "Region" },
+    edit: { header: "Edit standard" },
+    delete: { header: "Delete standard" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(

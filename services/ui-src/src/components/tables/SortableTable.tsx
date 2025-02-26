@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 // components
 import {
   Box,
@@ -41,8 +41,12 @@ export const SortableTable = ({
   variant,
   ...props
 }: Props) => {
+  const headerRefs = useRef<{ [key: string]: HTMLElement }>({});
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [headerLabels, setHeaderLabels] = useState<{ [key: string]: string }>(
+    {}
+  );
   const table = useReactTable({
     columns,
     data,
@@ -56,6 +60,15 @@ export const SortableTable = ({
       sorting,
     },
   });
+
+  useEffect(() => {
+    const relKeys = Object.keys(headerRefs.current);
+    const refLabels = relKeys.reduce((obj, key) => {
+      obj[key] = headerRefs.current[key].textContent || "";
+      return obj;
+    }, {} as { [key: string]: string });
+    setHeaderLabels(refLabels);
+  }, [headerRefs.current]);
 
   return (
     <TableRoot
@@ -93,9 +106,14 @@ export const SortableTable = ({
                       p={0}
                       height={4}
                       variant="ghost"
-                      aria-label="placeholder"
+                      aria-label={headerLabels[header.id]}
                     >
-                      <Box as="span">
+                      <Box
+                        as="span"
+                        ref={(el: any) =>
+                          (headerRefs.current[header.id] = el as HTMLElement)
+                        }
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
@@ -129,13 +147,7 @@ export const SortableTable = ({
               return (
                 <Td
                   key={cell.id}
-                  sx={
-                    border
-                      ? sx.tableCellBorder
-                      : cell.id.includes("standardType")
-                      ? sx.boldTableCell
-                      : sx.tableCell
-                  }
+                  sx={border ? sx.tableCellBorder : sx.tableCell}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Td>
@@ -241,14 +253,6 @@ const sx = {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
-  },
-  boldTableCell: {
-    padding: "0.75rem 0.5rem",
-    borderStyle: "none",
-    fontWeight: "bold",
     ".mobile &": {
       fontSize: "xs",
     },
