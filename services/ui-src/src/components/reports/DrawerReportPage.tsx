@@ -69,7 +69,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
   const completedAnalysisMethods = () => {
-    const result = report?.fieldData["analysisMethods"].filter(
+    const result = report?.fieldData["analysisMethods"]?.filter(
       (analysisMethod: AnyObject) => {
         return analysisMethod.analysis_applicable && analysisMethod.isRequired;
       }
