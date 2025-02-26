@@ -22,11 +22,13 @@ before(() => {
 
   cy.get("body").then(($body) => {
     if ($body.find(`button:contains(${deleteButton})`).length > 0) {
-      $body.find(`button:contains(${deleteButton})`).each(($button) => {
-        $button.click();
+      $body.find(`button:contains(${deleteButton})`).each(() => {
+        cy.get(`button:contains(${deleteButton})`).first().click();
         cy.wait(500);
       });
     }
+    // wait for api calls to resolve
+    cy.wait(3000);
   });
 });
 
