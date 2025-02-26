@@ -102,8 +102,8 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
       header: "Pop.",
     },
     region: { header: "Region" },
-    edit: { header: "" },
-    delete: { header: "" },
+    edit: { header: "Edit standard" },
+    delete: { header: "Delete standard" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(
