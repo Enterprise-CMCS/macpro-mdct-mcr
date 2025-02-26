@@ -110,7 +110,7 @@ export const SortableTable = ({
                     >
                       <Box
                         as="span"
-                        ref={(el: any) =>
+                        ref={(el) =>
                           (headerRefs.current[header.id] = el as HTMLElement)
                         }
                       >
