@@ -1,4 +1,5 @@
 import React, {
+  ChangeEvent,
   FormEvent,
   MouseEventHandler,
   useEffect,
@@ -97,7 +98,7 @@ export const EntityDetailsMultiformOverlay = ({
     }
   }, [formCount]);
 
-  const handlChange = (event: AnyObject) => {
+  const handlChange = (event: ChangeEvent<HTMLInputElement>) => {
     const updateFormEnabled = { ...formEnabled };
     const formId = event.target.id.split("_")[0];
     updateFormEnabled[formId] = event.target.value === NOT_COMPLIANT_LABEL;

@@ -616,10 +616,10 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
     forms: [
       {
         form: {
-          id: "mock-form",
+          id: "mockMultiform",
           fields: [
             {
-              id: "mockRadio",
+              id: "mockMultiform_assurance",
               type: "radio",
               validation: "radio",
               props: {
@@ -630,7 +630,8 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label: "Mock No",
+                    label:
+                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
                   },
                 ],
               },
