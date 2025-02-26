@@ -16,7 +16,7 @@ import {
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { ModalDrawerReportPageShape } from "types";
+import { EntityType, ModalDrawerReportPageShape } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -185,7 +185,7 @@ describe("<ModalDrawerReportPage />", () => {
     test("renders Entity table for a NAAAR report", async () => {
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "plans",
+        entityType: EntityType.PLANS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
@@ -209,7 +209,7 @@ describe("<ModalDrawerReportPage />", () => {
       });
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "plans",
+        entityType: EntityType.PLANS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
@@ -235,7 +235,7 @@ describe("<ModalDrawerReportPage />", () => {
 
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "sanctions",
+        entityType: EntityType.SANCTIONS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
