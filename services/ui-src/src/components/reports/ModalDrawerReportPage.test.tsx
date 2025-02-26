@@ -5,7 +5,7 @@ import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
 import { saveAndCloseText } from "../../constants";
 // utils
-import { useStore } from "utils";
+import { useBreakpoint, useStore } from "utils";
 import {
   mockModalDrawerReportPageJson,
   mockRepeatedFormField,
@@ -16,6 +16,7 @@ import {
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { ModalDrawerReportPageShape } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -29,6 +30,10 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockStateUserStore);
 
+jest.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
+  typeof useBreakpoint
+>;
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const {
@@ -45,14 +50,23 @@ const modalDrawerReportPageComponentWithoutEntities = (
 );
 
 const modalDrawerReportPageComponentWithEntities = (
+  route: ModalDrawerReportPageShape = mockModalDrawerReportPageJson
+) => (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
-      <ModalDrawerReportPage route={mockModalDrawerReportPageJson} />
+      <ModalDrawerReportPage route={route} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
 describe("<ModalDrawerReportPage />", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+  });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -69,7 +83,7 @@ describe("<ModalDrawerReportPage />", () => {
         ...mockStateUserStore,
         ...mockMcparReportStore,
       });
-      render(modalDrawerReportPageComponentWithEntities);
+      render(modalDrawerReportPageComponentWithEntities());
     });
 
     test("ModalDrawerReportPage should render the view", () => {
@@ -161,19 +175,76 @@ describe("<ModalDrawerReportPage />", () => {
   });
 
   describe("Test ModalDrawerReportPage w/ Entity Table (NAAAR)", () => {
-    test("Entity table should render for a NAAAR report", async () => {
+    beforeEach(() => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockNaaarReportStore,
       });
+    });
 
-      render(modalDrawerReportPageComponentWithEntities);
-      const entityTable = screen.getByTestId("entity-table");
+    test("renders Entity table for a NAAAR report", async () => {
+      const naaarRoute = {
+        ...mockModalDrawerReportPageJson,
+        entityType: "plans",
+      };
+      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
+
+      const entityTable = screen.getByRole("table");
+      const entityHeader = screen.getByRole("columnheader", {
+        name: "Mock table header",
+      });
+      const entityCell = screen.getByRole("gridcell", {
+        name: "plan 1 Select “Enter” to complete response.",
+      });
+
       expect(entityTable).toBeVisible();
+      expect(entityHeader).toBeVisible();
+      expect(entityCell).toBeVisible();
+    });
+
+    test("renders mobile Entity table for a NAAAR report", async () => {
+      mockUseBreakpoint.mockReturnValue({
+        isMobile: true,
+        isTablet: false,
+      });
+      const naaarRoute = {
+        ...mockModalDrawerReportPageJson,
+        entityType: "plans",
+      };
+      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
+
+      const entityTable = screen.getByRole("table");
+      const entityHeader = screen.queryByRole("columnheader", {
+        name: "Mock table header",
+      });
+      const entityCell = screen.getByText("plan 1");
+
+      expect(entityTable).toBeVisible();
+      expect(entityHeader).toBeNull();
+      expect(entityCell).toBeVisible();
+    });
+
+    test("show error for missing plans in NAAAR report", async () => {
+      const noPlans = { ...mockNaaarReportStore };
+      delete noPlans.report?.fieldData.plans;
+
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...noPlans,
+      });
+
+      const naaarRoute = {
+        ...mockModalDrawerReportPageJson,
+        entityType: "sanctions",
+      };
+      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
+
+      const missingMessage = screen.getByTestId("missingEntityMessage");
+      expect(missingMessage).toBeVisible();
     });
   });
 
-  testA11y(modalDrawerReportPageComponentWithEntities, () => {
+  testA11y(modalDrawerReportPageComponentWithEntities(), () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockMcparReportStore,

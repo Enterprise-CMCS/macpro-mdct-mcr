@@ -6,11 +6,10 @@ import {
   DeleteEntityModal,
   EntityDetailsOverlay,
   EntityProvider,
-  EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
+  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
@@ -207,31 +206,18 @@ export const ModalOverlayReportPage = ({
               </>
             ) : (
               <Table sx={sx.table} content={tableHeaders()}>
-                {reportFieldDataEntities.map((entity: EntityShape) =>
-                  isMobile || isTablet ? (
-                    <MobileEntityRow
-                      key={entity.id}
-                      entity={entity}
-                      verbiage={verbiage}
-                      locked={isLocked}
-                      entering={entering}
-                      openAddEditEntityModal={openAddEditEntityModal}
-                      openDeleteEntityModal={openDeleteEntityModal}
-                      openOverlayOrDrawer={openEntityDetailsOverlay}
-                    />
-                  ) : (
-                    <EntityRow
-                      key={entity.id}
-                      entity={entity}
-                      verbiage={verbiage}
-                      locked={isLocked}
-                      entering={entering}
-                      openAddEditEntityModal={openAddEditEntityModal}
-                      openDeleteEntityModal={openDeleteEntityModal}
-                      openOverlayOrDrawer={openEntityDetailsOverlay}
-                    />
-                  )
-                )}
+                {reportFieldDataEntities.map((entity: EntityShape) => (
+                  <ResponsiveEntityRow
+                    key={entity.id}
+                    entity={entity}
+                    verbiage={verbiage}
+                    locked={isLocked}
+                    entering={entering}
+                    openAddEditEntityModal={openAddEditEntityModal}
+                    openDeleteEntityModal={openDeleteEntityModal}
+                    openOverlayOrDrawer={openEntityDetailsOverlay}
+                  />
+                ))}
               </Table>
             )}
             <Button

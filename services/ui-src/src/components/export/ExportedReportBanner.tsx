@@ -67,6 +67,9 @@ const sx = {
     ".mobile &": {
       padding: "2rem 1rem",
     },
+    ".tablet &, .mobile &": {
+      position: "static",
+    },
     "@media print": {
       display: "none",
     },

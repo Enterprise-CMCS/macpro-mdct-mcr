@@ -5,12 +5,11 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
-  EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
+  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
@@ -188,7 +187,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         {!checkForPlans() ? (
-          <Box sx={sx.missingEntityMessage}>
+          <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
         ) : report?.reportType === ReportType.NAAAR ? (
@@ -308,28 +307,17 @@ const entityTable = (
     return { headRow: ["", verbiage.tableHeader!, ""] };
   };
   return (
-    <Table sx={sx.table} content={tableHeaders()} data-testid={"entity-table"}>
-      {entities.map((entity: EntityShape) =>
-        isMobile || isTablet ? (
-          <MobileEntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        ) : (
-          <EntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        )
-      )}
+    <Table sx={sx.table} content={tableHeaders()}>
+      {entities.map((entity: EntityShape) => (
+        <ResponsiveEntityRow
+          key={entity.id}
+          entity={entity}
+          verbiage={verbiage}
+          openAddEditEntityModal={openAddEditEntityModal}
+          openDeleteEntityModal={openDeleteEntityModal}
+          openOverlayOrDrawer={openOverlayOrDrawer}
+        />
+      ))}
     </Table>
   );
 };

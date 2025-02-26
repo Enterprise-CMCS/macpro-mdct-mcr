@@ -23,7 +23,14 @@ Cypress.Commands.add("runAccessibilityTests", () => {
   cy.checkA11y(
     null,
     {
-      values: ["wcag2a", "wcag2aa", "best-practice"],
+      values: [
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa",
+        "best-practice",
+      ],
       includedImpacts: ["minor", "moderate", "serious", "critical"],
       rules: {
         "duplicate-id": { enabled: false },

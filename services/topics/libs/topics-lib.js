@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 const _ = require("lodash");
-import { ConfigResourceTypes, Kafka } from "kafkajs";
+const { ConfigResourceTypes, Kafka } = require("kafkajs");
 
 /**
  * Removes topics in BigMac given the following
  * @param {*} brokerString - Comma delimited list of brokers
  * @param {*} namespace - String in the format of `--${event.project}--`, only used for temp branches for easy identification and cleanup
  */
-export async function listTopics(brokerString, namespace) {
+exports.listTopics = async function (brokerString, namespace) {
   const brokers = brokerString.split(",");
 
   const kafka = new Kafka({
@@ -29,7 +29,7 @@ export async function listTopics(brokerString, namespace) {
 
   await admin.disconnect();
   return lingeringTopics;
-}
+};
 
 /**
  * Generates topics in BigMac given the following
@@ -37,7 +37,11 @@ export async function listTopics(brokerString, namespace) {
  * @param {*} topicNamespace - String in the format of `--${event.project}--${event.stage}--`, only used for temp branches for easy identification and cleanup
  * @param {*} topicsConfig - array of topics to create or update
  */
-export async function createTopics(brokerString, topicNamespace, topicsConfig) {
+exports.createTopics = async function (
+  brokerString,
+  topicNamespace,
+  topicsConfig
+) {
   const topics = topicsConfig;
   const brokers = brokerString.split(",");
 
@@ -138,14 +142,14 @@ export async function createTopics(brokerString, topicNamespace, topicsConfig) {
   };
 
   await create();
-}
+};
 
 /**
  * Removes topics in BigMac given the following
  * @param {*} brokerString - Comma delimited list of brokers
  * @param {*} topicNamespace - String in the format of `--${event.project}--${event.stage}--`, only used for temp branches for easy identification and cleanup
  */
-export async function deleteTopics(brokerString, topicNamespace) {
+exports.deleteTopics = async function (brokerString, topicNamespace) {
   if (!topicNamespace.startsWith("--")) {
     throw "ERROR:  The deleteTopics function only operates against topics that begin with --.";
   }
@@ -178,4 +182,4 @@ export async function deleteTopics(brokerString, topicNamespace) {
 
   await admin.disconnect();
   return topicsToDelete;
-}
+};

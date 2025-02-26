@@ -28,6 +28,10 @@ export const EntityDetailsOverlay = ({
   const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
   useEffect(() => {
+    setEntering(false);
+  }, []);
+
+  useEffect(() => {
     setSelectedEntity(selectedEntity);
     setEntityType(entityType);
     setEntities(entities);
@@ -36,8 +40,6 @@ export const EntityDetailsOverlay = ({
       setSelectedEntity(undefined);
     };
   }, [entityType, selectedEntity]);
-
-  setEntering(false);
 
   // Display Variables
   const {

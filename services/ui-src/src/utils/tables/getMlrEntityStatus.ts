@@ -3,8 +3,8 @@ import { mapValidationTypesToSchema } from "utils/validation/validation";
 import { object } from "yup";
 
 export const getMlrEntityStatus = (
-  report: ReportShape,
-  entity: EntityShape
+  entity: EntityShape,
+  report: ReportShape
 ) => {
   const reportFormValidation = Object.fromEntries(
     Object.entries(report?.formTemplate.validationJson ?? {}).filter(

@@ -16,6 +16,9 @@ permissions:
   contents: read
   actions: read
 
+env:
+  SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
+
 jobs:
   destroy:
     # Protected branches should be designated as such in the GitHub UI.
