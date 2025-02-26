@@ -11,12 +11,17 @@ import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
-export const EntityStatusIcon = ({ entity, entityType, isPdf }: Props) => {
+export const EntityStatusIcon = ({
+  entity,
+  entityType,
+  isPdf,
+  override,
+}: Props) => {
   const { report } = useStore();
 
   const entityComplete = useMemo(() => {
-    return getEntityStatus(entity, report, entityType);
-  }, [report]);
+    return override ?? getEntityStatus(entity, report, entityType);
+  }, [report, override]);
 
   return (
     <Box sx={isPdf ? sx.containerPdf : sx.container}>
@@ -63,6 +68,7 @@ interface Props {
    * Whether or not icon is appearing on PDF page (used for styling)
    */
   isPdf?: boolean;
+  override?: boolean;
   [key: string]: any;
 }
 
