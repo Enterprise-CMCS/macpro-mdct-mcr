@@ -23,6 +23,7 @@ const TestComponent = () => {
   return (
     <div>
       <button onClick={() => context.fetchAdminBanner()}>Fetch</button>
+      <button onClick={() => context.fetchAllBanners()}>Fetch all</button>
       <button onClick={() => context.writeAdminBanner(mockBannerData)}>
         Write
       </button>
@@ -49,12 +50,34 @@ describe("<AdminBannerProvider />", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  describe("test fetch banner method", () => {
+  describe("test fetch banner methods", () => {
     test("fetchAdminBanner method is called on load", async () => {
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
     });
 
+    test("fetchAllBanners method calls API getBanners method", async () => {
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      await act(async () => {
+        const fetchButton = screen.getByText("Fetch all");
+        await userEvent.click(fetchButton);
+      });
+      // 1 call on render + 1 call on button click
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
+    });
+
     test("fetchAdminBanner method calls API getBanners method", async () => {
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      await act(async () => {
+        const fetchButton = screen.getByText("Fetch");
+        await userEvent.click(fetchButton);
+      });
+      // 1 call on render + 1 call on button click
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
+    });
+    test("fetchAdminBanner method calls API getBanners method and filters/sorts without error", async () => {
+      mockAPI.getBanners.mockImplementation(() => {
+        mockBannerData;
+      });
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
       await act(async () => {
         const fetchButton = screen.getByText("Fetch");

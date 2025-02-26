@@ -100,7 +100,7 @@ describe("<AdminPage />", () => {
     });
   });
 
-  describe("Test AdminPage with active/inactive banner", () => {
+  describe("Test AdminPage with active/inactive/scheduled banner", () => {
     const currentTime = Date.now(); // 'current' time in ms since unix epoch
     const oneDay = 1000 * 60 * 60 * 24; // 1000ms * 60s * 60m * 24h = 86,400,000ms
     const context = mockBannerMethods;
@@ -116,8 +116,6 @@ describe("<AdminPage />", () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,
           allBanners: [activeBannerData],
-          bannerData: activeBannerData,
-          bannerActive: true,
         });
         await render(adminView(context));
       });
@@ -128,18 +126,35 @@ describe("<AdminPage />", () => {
     test("Inactive banner shows 'inactive' status", async () => {
       const inactiveBannerData = {
         ...mockBannerData,
+        startDate: currentTime - oneDay - oneDay,
+        endDate: currentTime - oneDay,
+      };
+      await act(async () => {
+        mockedUseStore.mockReturnValue({
+          ...mockBannerStore,
+          allBanners: [inactiveBannerData],
+        });
+        await render(adminView(context));
+      });
+      const currentBannerStatus = screen.getByText("Status:");
+      expect(currentBannerStatus.textContent).toEqual("Status: Expired");
+    });
+
+    test("Future banner shows 'Scheduled' status", async () => {
+      const futureBannerData = {
+        ...mockBannerData,
         startDate: currentTime + oneDay,
         endDate: currentTime + oneDay + oneDay,
       };
       await act(async () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,
-          bannerData: inactiveBannerData,
+          allBanners: [futureBannerData],
         });
         await render(adminView(context));
       });
       const currentBannerStatus = screen.getByText("Status:");
-      expect(currentBannerStatus.textContent).toEqual("Status: Expired");
+      expect(currentBannerStatus.textContent).toEqual("Status: Scheduled");
     });
   });
 
