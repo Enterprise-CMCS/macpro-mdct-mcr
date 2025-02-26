@@ -68,6 +68,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
   const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
+  const completedAnalysisMethods = () => {
+    const result = report?.fieldData["analysisMethods"].filter(
+      (analysisMethod: AnyObject) => {
+        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
+      }
+    );
+    return result.length === 7;
+  };
+
   const formParams = {
     route,
     report,
@@ -218,6 +227,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     } else if (
       (isAnalysisMethodsPage && !hasPlans) ||
+      (isReportingOnStandards && !completedAnalysisMethods()) ||
       (isReportingOnStandards && !hasProviderTypes)
     ) {
       return (
@@ -234,7 +244,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       sx={sx.bottomAddEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
-      disabled={!hasProviderTypes}
+      disabled={!hasProviderTypes || !completedAnalysisMethods()}
     >
       {verbiage.addEntityButtonText}
     </Button>
