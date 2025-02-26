@@ -11,7 +11,10 @@ import {
   DeleteEntityModal,
 } from "components";
 // constants
-import { getDefaultAnalysisMethodIds } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  getDefaultAnalysisMethodIds,
+} from "../../constants";
 // types
 import {
   AnyObject,
@@ -74,7 +77,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         return analysisMethod.analysis_applicable && analysisMethod.isRequired;
       }
     );
-    return result && result.length === 7;
+    return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
   const formParams = {
