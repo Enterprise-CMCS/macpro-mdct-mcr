@@ -74,7 +74,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         return analysisMethod.analysis_applicable && analysisMethod.isRequired;
       }
     );
-    return result.length === 7;
+    return result && result.length === 7;
   };
 
   const formParams = {
