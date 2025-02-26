@@ -7,6 +7,29 @@ const bannerInputArray = [
   { name: "bannerEndDate", type: "text", value: "07/14/2026" },
 ];
 
+// delete existing banners before starting
+before(() => {
+  // login as admin and go to banner page
+  cy.authenticate("adminUser");
+  cy.visit("/admin");
+  cy.wait(3000);
+
+  /*
+   * Check if there are already banners, if so, delete
+   * to ensure a clean test bed
+   */
+  const deleteButton = "Delete Banner";
+
+  cy.get("body").then(($body) => {
+    if ($body.find(`button:contains(${deleteButton})`).length > 0) {
+      $body.find(`button:contains(${deleteButton})`).each(($button) => {
+        $button.click();
+        cy.wait(500);
+      });
+    }
+  });
+});
+
 describe("Admin Page E2E Testing", () => {
   it("Create a Banner and then delete it", () => {
     cy.authenticate("adminUser");
@@ -39,11 +62,11 @@ describe("Admin Page E2E Testing", () => {
     checkForErrors();
 
     // delete banner
-    const deleteButton = "Delete Current Banner";
+    const deleteButton = "Delete Banner";
     cy.contains(deleteButton).click();
 
     // verify banner is gone
-    const noCurrentBannerMessage = "There is no current banner";
+    const noCurrentBannerMessage = "There are no existing banners";
     cy.contains(noCurrentBannerMessage).should("be.visible");
 
     checkForErrors();
