@@ -7,7 +7,7 @@ import { EntityShape } from "types";
 
 export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   const actualData = useMemo(() => {
-    const result = entities.map((entity: any, index: number) => {
+    return entities.map((entity: any, index: number) => {
       const {
         standard_coreProviderTypeCoveredByStandard,
         standard_standardType,
@@ -57,8 +57,6 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
         region: standardRegion,
       };
     });
-
-    return result;
   }, [entities]);
 
   const customCells = (
