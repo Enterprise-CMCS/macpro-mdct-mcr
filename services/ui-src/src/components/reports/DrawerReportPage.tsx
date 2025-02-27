@@ -64,13 +64,14 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const isAnalysisMethodsPage = route.path.includes("analysis-methods");
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
-  const hasIlos = ilos?.length;
+  const hasIlos = ilos?.length > 0;
   const plans = report?.fieldData?.["plans"];
-  const hasPlans = plans?.length;
+  const hasPlans = plans?.length > 0;
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
   const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
+  // check if user has completed default analysis methods (NAAAR)
   const completedAnalysisMethods = () => {
     const result = report?.fieldData["analysisMethods"]?.filter(
       (analysisMethod: AnyObject) => {
@@ -222,7 +223,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const displayErrorMessages = () => {
     // if there are no ILOS but there are plans added, display this message
-    if (!hasIlos && entities.length > 0) {
+    if (reportingOnIlos && !hasIlos && entities.length > 0) {
       return (
         <Box sx={sx.missingEntity}>
           {parseCustomHtml(verbiage.missingIlosMessage || "")}
