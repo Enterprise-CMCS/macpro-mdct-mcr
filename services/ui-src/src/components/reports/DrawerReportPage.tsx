@@ -239,7 +239,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     : "";
   const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
 
-  const addStandardsButton = () => (
+  const addStandardsButton = (
     <Button
       sx={sx.addEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
@@ -273,12 +273,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       <Box>
         {isReportingOnStandards ? (
           <Box>
-            {addStandardsButton()}
+            {addStandardsButton}
             <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
             {existingStandards && (
               <SortableDrawerReportPageTable entities={entities} />
             )}
-            {entities.length > 0 && addStandardsButton()}
+            {entities.length > 0 && addStandardsButton}
           </Box>
         ) : (
           <Box>
@@ -350,7 +350,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 };
 
 interface Props {
-  entities?: any[];
+  entities?: EntityShape[];
   validateOnRender?: boolean;
   route: DrawerReportPageShape;
 }

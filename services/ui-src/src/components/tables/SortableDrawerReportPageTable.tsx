@@ -3,6 +3,7 @@ import { useMemo } from "react";
 // components
 import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { EntityShape } from "types";
 
 export const SortableDrawerReportPageTable = ({ entities }: Props) => {
   const actualData = useMemo(() => {
@@ -102,8 +103,8 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
       header: "Pop.",
     },
     region: { header: "Region" },
-    edit: { header: "Edit standard" },
-    delete: { header: "Delete standard" },
+    edit: { header: "Edit standard", hidden: true },
+    delete: { header: "Delete standard", hidden: true },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(
@@ -137,7 +138,7 @@ const sx = {
 };
 
 interface Props {
-  entities: any[];
+  entities: EntityShape[];
 }
 
 interface DrawerReportPageTableShape {

@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
 import { SortableDrawerReportPageTable } from "components";
 // utils
@@ -9,6 +8,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -19,6 +19,7 @@ mockedUseStore.mockReturnValue({
 
 const mockStandards = [
   {
+    id: "mock-id",
     standard_coreProviderTypeCoveredByStandard: [
       { key: "mock-key", value: "mock-provider" },
     ],
@@ -51,9 +52,5 @@ describe("Test SortableDrawerReportPageTable component", () => {
 });
 
 describe("Test SortableDrawerReportPageTable accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(sortableTableComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(sortableTableComponent);
 });
