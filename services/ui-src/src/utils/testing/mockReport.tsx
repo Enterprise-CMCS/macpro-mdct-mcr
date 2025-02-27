@@ -1,3 +1,4 @@
+import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 import { EntityType, ReportStatus } from "types";
 import { mockErrorMessage } from "./mockBanner";
 import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
@@ -361,6 +362,26 @@ export const mockNaaarReportFieldData = {
   radio: ["option1"],
   checkbox: ["option1", "option2"],
   dropdown: "dropdown-selection",
+  plans: [
+    {
+      id: "id1",
+      name: "plan 1",
+    },
+    {
+      id: "id2",
+      name: "plan 2",
+    },
+  ],
+  providerTypes: [
+    {
+      key: "key1",
+      name: "provider1",
+    },
+    {
+      key: "key2",
+      name: "provider2",
+    },
+  ],
 };
 
 export const mockMcparReport = {
@@ -448,6 +469,7 @@ export const mockMlrReport = {
   reportType: "MLR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  submissionName: "testSubmission",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
@@ -469,6 +491,7 @@ export const mockMLRLockedReport = {
   reportType: "MLR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  submissionName: "testSubmission",
   status: ReportStatus.SUBMITTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
@@ -500,6 +523,69 @@ export const mockNaaarReport = {
   combinedData: false,
   submittedOnDate: Date.now(),
   fieldData: mockNaaarReportFieldData,
+  locked: false,
+  fieldDataId: "mockFieldDataId",
+  planTypeIncludedInProgram: [
+    {
+      key: "mock-key",
+      value: "MCO",
+    },
+  ],
+  submissionCount: 0,
+  previousRevisions: [],
+};
+
+export const mockNaaarReportWithAnalysisMethods = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: {
+    ...mockNaaarReportFieldData,
+    analysisMethods: [
+      {
+        ...DEFAULT_ANALYSIS_METHODS[0],
+        analysis_method_applicable_plans: [
+          {
+            key: "mock-plan-id-1",
+            name: "mock-plan-1",
+          },
+          {
+            key: "mock-plan-id-2",
+            name: "mock-plan-2",
+          },
+        ],
+      },
+      {
+        ...DEFAULT_ANALYSIS_METHODS[1],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+      },
+      {
+        id: "custom_entity",
+        name: "custom entity",
+      },
+    ],
+    providerTypes: [
+      {
+        key: "mock-key",
+        value: "mock-value",
+      },
+    ],
+  },
   locked: false,
   fieldDataId: "mockFieldDataId",
   planTypeIncludedInProgram: [
@@ -614,6 +700,21 @@ export const mockMlrModalOverlayReport = {
   },
 };
 
+export const mockNAAREmptyFieldData = {
+  stateName: "Test State",
+};
+
+export const mockNAARWithPlanCreated = {
+  ...mockNAAREmptyFieldData,
+  plans: [
+    {
+      id: "mock-plan-id-1",
+      name: "Example Plan",
+      isRequired: true,
+    },
+  ],
+};
+
 export const mockReportsByState = [
   { ...mockMcparReportWithFieldDataId(1), id: "mock-report-id-1" },
   { ...mockMcparReportWithFieldDataId(2), id: "mock-report-id-2" },
@@ -718,6 +819,15 @@ export const mockMlrReportContext = {
 export const mockNaaarReportContext = {
   ...mockReportMethods,
   report: mockNaaarReport,
+  reportsByState: [],
+  copyEligibleReportsByState: [],
+  errorMessage: mockErrorMessage,
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockNaaarReportWithAnalysisMethodsContext = {
+  ...mockReportMethods,
+  report: mockNaaarReportWithAnalysisMethods,
   reportsByState: [],
   copyEligibleReportsByState: [],
   errorMessage: mockErrorMessage,

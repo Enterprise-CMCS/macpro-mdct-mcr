@@ -12,48 +12,67 @@ import {
 } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape } from "types";
+import { ReportType } from "types";
 // utils
 import {
   eligibilityGroup,
-  getMlrEntityStatus,
+  getEntityStatus,
   parseCustomHtml,
   useStore,
 } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import { EntityRowProps } from "./EntityRow";
 
 export const MobileEntityRow = ({
   entity,
+  entityType,
   verbiage,
   locked,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
-  openEntityDetailsOverlay,
-}: Props) => {
-  const { editEntityButtonText, enterReportText, tableHeader } = verbiage;
+  openOverlayOrDrawer,
+}: EntityRowProps) => {
+  const { editEntityButtonText, tableHeader } = verbiage;
   const { report } = useStore();
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
-  const { report_programName, report_planName } = entity;
+  const { report_programName, report_planName, name } = entity;
   const { userIsEndUser } = useStore().user ?? {};
 
   const entityComplete = useMemo(() => {
-    return report ? getMlrEntityStatus(report, entity) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
-  const programInfo = [
-    report_planName,
-    report_programName,
-    eligibilityGroup(entity),
-    reportingPeriod,
-  ];
+  const enterDetailsText = () => {
+    switch (report?.reportType) {
+      case ReportType.MLR:
+        return verbiage.enterReportText;
+      case ReportType.NAAAR:
+        return verbiage.enterEntityDetailsButtonText;
+      default:
+        return "Enter";
+    }
+  };
+
+  const entityFields = () => {
+    const fields: any[] =
+      report?.reportType === ReportType.MLR
+        ? [
+            report_planName,
+            report_programName,
+            eligibilityGroup(entity),
+            reportingPeriod,
+          ]
+        : [name];
+    return fields;
+  };
 
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity as EntityShape} />
+        <EntityStatusIcon entity={entity} entityType={entityType} />
       </Td>
       <Td>
         <Text sx={sx.rowHeader}>
@@ -61,7 +80,7 @@ export const MobileEntityRow = ({
         </Text>
         <Box sx={sx.programList}>
           <ul>
-            {programInfo.map((field, index) => (
+            {entityFields().map((field, index) => (
               <li key={index}>{field}</li>
             ))}
           </ul>
@@ -72,46 +91,40 @@ export const MobileEntityRow = ({
           )}
         </Box>
         <Flex sx={sx.actionButtons}>
-          <Button
-            variant="none"
-            sx={sx.editButton}
-            onClick={() => openAddEditEntityModal(entity)}
-          >
-            {editEntityButtonText}
-          </Button>
-          {openEntityDetailsOverlay && (
+          {!entity.isRequired && openAddEditEntityModal && (
+            <Button
+              variant="none"
+              sx={sx.editButton}
+              onClick={() => openAddEditEntityModal(entity)}
+            >
+              {editEntityButtonText}
+            </Button>
+          )}
+
+          {openOverlayOrDrawer && (
             <Button
               variant="outline"
-              onClick={() => openEntityDetailsOverlay(entity)}
+              onClick={() => openOverlayOrDrawer(entity)}
               size="sm"
               sx={sx.enterButton}
             >
-              {entering ? <Spinner size="md" /> : enterReportText}
+              {entering ? <Spinner size="md" /> : enterDetailsText()}
             </Button>
           )}
-          <Button
-            sx={sx.deleteButton}
-            onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked ?? !userIsEndUser}
-          >
-            <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-          </Button>
+          {!entity.isRequired && openDeleteEntityModal && (
+            <Button
+              sx={sx.deleteButton}
+              onClick={() => openDeleteEntityModal(entity)}
+              disabled={locked ?? !userIsEndUser}
+            >
+              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+            </Button>
+          )}
         </Flex>
       </Td>
     </Tr>
   );
 };
-
-interface Props {
-  entity: EntityShape;
-  verbiage: AnyObject;
-  locked?: boolean;
-  entering?: boolean;
-  openAddEditEntityModal: Function;
-  openDeleteEntityModal: Function;
-  openEntityDetailsOverlay?: Function;
-  [key: string]: any;
-}
 
 const sx = {
   statusIcon: {

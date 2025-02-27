@@ -5,14 +5,26 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
-  EntityRow,
-  MobileEntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
+  ResponsiveEntityRow,
   Table,
 } from "components";
+// types
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  FormField,
+  isFieldElement,
+  ModalDrawerEntityTypes,
+  ModalDrawerReportPageShape,
+  ModalDrawerReportPageVerbiage,
+  ReportStatus,
+  ReportType,
+} from "types";
 // utils
 import {
   filterFormData,
@@ -26,19 +38,6 @@ import {
   parseCustomHtml,
   useBreakpoint,
 } from "utils";
-// types
-import {
-  AnyObject,
-  EntityShape,
-  EntityType,
-  entityTypes,
-  FormField,
-  isFieldElement,
-  ModalDrawerReportPageShape,
-  ModalDrawerReportPageVerbiage,
-  ReportStatus,
-  ReportType,
-} from "types";
 // assets
 import addIcon from "assets/icons/icon_add.png";
 
@@ -58,7 +57,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there is at least one (1) plan prior to being able to enter Sanctions
   const checkForPlans = () => {
-    if (entityType === entityTypes[4]) {
+    if (entityType === ModalDrawerEntityTypes.SANCTIONS) {
       return report?.fieldData["plans"]?.length;
     }
     return true;
@@ -189,7 +188,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         {!checkForPlans() ? (
-          <Box sx={sx.missingEntityMessage}>
+          <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
         ) : report?.reportType === ReportType.NAAAR ? (
@@ -309,28 +308,17 @@ const entityTable = (
     return { headRow: ["", verbiage.tableHeader!, ""] };
   };
   return (
-    <Table sx={sx.table} content={tableHeaders()} data-testid={"entity-table"}>
-      {entities.map((entity: EntityShape) =>
-        isMobile || isTablet ? (
-          <MobileEntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        ) : (
-          <EntityRow
-            key={entity.id}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openDeleteEntityModal={openDeleteEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-          />
-        )
-      )}
+    <Table sx={sx.table} content={tableHeaders()}>
+      {entities.map((entity: EntityShape) => (
+        <ResponsiveEntityRow
+          key={entity.id}
+          entity={entity}
+          verbiage={verbiage}
+          openAddEditEntityModal={openAddEditEntityModal}
+          openDeleteEntityModal={openDeleteEntityModal}
+          openOverlayOrDrawer={openOverlayOrDrawer}
+        />
+      ))}
     </Table>
   );
 };

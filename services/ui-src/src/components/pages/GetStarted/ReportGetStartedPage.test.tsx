@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
 // components
 import { ReportGetStartedPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
@@ -20,7 +20,7 @@ const dashboardView = (
   </RouterWrappedComponent>
 );
 
-describe("Test ReportGetStartedPage", () => {
+describe("<ReportGetStartedPage />", () => {
   beforeEach(() => {
     render(dashboardView);
   });
@@ -35,12 +35,6 @@ describe("Test ReportGetStartedPage", () => {
     const expectedRoute = verbiage.pageLink.route;
     await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
   });
-});
 
-describe("Test ReportGetStartedPage accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(dashboardView);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(dashboardView);
 });

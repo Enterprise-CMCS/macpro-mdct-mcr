@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
+// constants
+import { INITIAL_REPORT_ROUTES } from "../../constants";
+// types
+import { CustomHtmlElement, FormJson, ReportStatus } from "types";
 // utils
 import { parseCustomHtml, useFindRoute, useStore } from "utils";
-import { CustomHtmlElement, FormJson, ReportStatus } from "types";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
 import previousIcon from "assets/icons/icon_previous_blue.png";
-import { INITIAL_REPORT_ROUTES } from "../../constants";
 
 export const ReportPageFooter = ({
   submitting,

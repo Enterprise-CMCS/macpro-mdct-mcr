@@ -30,6 +30,7 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
 export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
+export { SortableDashboardTable } from "./pages/Dashboard/SortableDashboardTable";
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";
@@ -76,6 +77,7 @@ export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // overlays
 export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
+export { EntityDetailsMultiformOverlay } from "./overlays/EntityDetailsMultiformOverlay";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
@@ -98,6 +100,7 @@ export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
+export { OverlayReportPage } from "./reports/OverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { EntityContext, EntityProvider } from "./reports/EntityProvider";
@@ -107,7 +110,9 @@ export { StatusTable } from "./statusing/StatusTable";
 export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
 export { MobileEntityRow } from "./tables/MobileEntityRow";
+export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
+export { SortableTable } from "./tables/SortableTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
 // redirects

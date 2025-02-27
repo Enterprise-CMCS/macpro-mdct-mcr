@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { PreviewBanner } from "components";
 // types
 import { AlertTypes } from "types";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -17,21 +18,12 @@ jest.mock("react-hook-form", () => ({
 
 const previewBannerComponent = <PreviewBanner status={AlertTypes.WARNING} />;
 
-describe("Test PreviewBanner Item", () => {
-  beforeEach(() => {
-    render(previewBannerComponent);
-  });
-
+describe("<PreviewBanner />", () => {
   test("PreviewBanner is visible", () => {
+    render(previewBannerComponent);
     expect(screen.getByText("Mock preview banner title")).toBeVisible();
     expect(screen.getByText("Mock preview banner description")).toBeVisible();
   });
-});
 
-describe("Test PreviewBanner accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(previewBannerComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(previewBannerComponent);
 });

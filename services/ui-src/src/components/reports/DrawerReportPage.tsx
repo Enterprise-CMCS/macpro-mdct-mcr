@@ -1,47 +1,51 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import uuid from "react-uuid";
 // components
-import {
-  Box,
-  Button,
-  Flex,
-  Image,
-  Heading,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Image, Heading, useDisclosure } from "@chakra-ui/react";
 import {
   ReportDrawer,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
   Form,
+  DeleteEntityModal,
 } from "components";
-// utils
+// constants
 import {
-  entityWasUpdated,
-  filterFormData,
-  generateIlosFields,
-  isIlosCompleted,
-  getEntriesToClear,
-  parseCustomHtml,
-  setClearedEntriesToDefaultValue,
-  useStore,
-} from "utils";
+  DEFAULT_ANALYSIS_METHODS,
+  getDefaultAnalysisMethodIds,
+} from "../../constants";
 // types
 import {
   AnyObject,
   EntityShape,
   DrawerReportPageShape,
   ReportStatus,
-  FormField,
   isFieldElement,
   InputChangeEvent,
+  FormJson,
+  entityTypes,
 } from "types";
+// utils
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  getForm,
+  parseCustomHtml,
+  setClearedEntriesToDefaultValue,
+  useStore,
+} from "utils";
+
 // assets
-import completedIcon from "assets/icons/icon_check_circle.png";
-import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
+import addIcon from "assets/icons/icon_add_blue.png";
+import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
+import addIconWhite from "assets/icons/icon_add.png";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
+    useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
@@ -49,8 +53,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, selectedEntity, setSelectedEntity } = useStore();
 
-  const { entityType, verbiage, drawerForm, form: standardForm } = route;
-  const entities = report?.fieldData?.[entityType];
+  const { entityType, verbiage, form: standardForm } = route;
+  const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
+  const canAddEntities =
+    !!addEntityDrawerForm.id || entityType === entityTypes[8];
+  const entities = report?.fieldData?.[entityType] || [];
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -58,11 +65,31 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
-  const hasPlans = report?.fieldData?.["plans"]?.length > 0;
+  const plans = report?.fieldData?.["plans"];
+  const hasPlans = plans?.length;
+  const isReportingOnStandards =
+    route.path === "/naaar/program-level-access-and-network-adequacy-standards";
+  const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
-  // generate ILOS fields (if applicable)
-  const form =
-    ilos && reportingOnIlos ? generateIlosFields(drawerForm, ilos) : drawerForm;
+  const completedAnalysisMethods = () => {
+    const result = report?.fieldData["analysisMethods"]?.filter(
+      (analysisMethod: AnyObject) => {
+        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
+      }
+    );
+    return result?.length === DEFAULT_ANALYSIS_METHODS.length;
+  };
+
+  const formParams = {
+    route,
+    report,
+    isAnalysisMethodsPage,
+    isReportingOnStandards,
+    ilos,
+    reportingOnIlos,
+  };
+  const form = getForm(formParams);
+  const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   // on load, get reporting status from store
   const reportingOnPriorAuthorization =
@@ -70,11 +97,38 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const reportingOnPatientAccessApi =
     report?.fieldData?.["plan_patientAccessApiReporting"]?.[0].value;
   const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(
-    reportingOnPriorAuthorization === "Yes" ? false : true
+    reportingOnPriorAuthorization !== "Yes"
   );
   const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
-    reportingOnPatientAccessApi === "Yes" ? false : true
+    reportingOnPatientAccessApi !== "Yes"
   );
+
+  // delete modal disclosure and methods
+  const {
+    isOpen: deleteEntityModalIsOpen,
+    onOpen: deleteEntityModalOnOpenHandler,
+    onClose: deleteEntityModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openDeleteEntityModal = (entity: EntityShape) => {
+    setSelectedEntity(entity);
+    deleteEntityModalOnOpenHandler();
+  };
+
+  const closeDeleteEntityModal = () => {
+    setSelectedEntity(undefined);
+    deleteEntityModalOnCloseHandler();
+  };
+
+  useEffect(() => {
+    const isCustomEntity =
+      // we are on a page where custom entities can be added
+      canAddEntities &&
+      // and the selectedEntity id is not in the default analysis methods list (only custom entity drawer page)
+      !getDefaultAnalysisMethodIds().includes(selectedEntity?.id!);
+    // enable logic for custom entity manipulation
+    setSelectedIsCustomEntity(isCustomEntity);
+  }, [selectedEntity]);
 
   const onChange = (e: InputChangeEvent) => {
     if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
@@ -90,26 +144,40 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       setSubmitting(true);
       const reportKeys = {
         reportType: report?.reportType,
-        state: state,
+        state,
         id: report?.id,
       };
-      const currentEntities = [...(report?.fieldData[entityType] || {})];
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
-        (entity: EntityShape) => entity.id === selectedEntity?.id
+
+      const currentEntities = [...(report?.fieldData[entityType] || [])];
+      let selectedEntityIndex = currentEntities.findIndex(
+        (entity: EntityShape) => entity.id == selectedEntity?.id
       );
+
+      // if new custom entity, set index to append to array
+      if (canAddEntities && selectedEntityIndex < 0) {
+        selectedEntityIndex = currentEntities.length;
+      }
+
+      let referenceForm = form;
+      if (selectedIsCustomEntity) {
+        referenceForm = addEntityForm;
+      }
       const filteredFormData = filterFormData(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
+
       const entriesToClear = getEntriesToClear(
         enteredData,
-        form.fields.filter(isFieldElement)
+        referenceForm.fields.filter(isFieldElement)
       );
+
       const newEntity = {
-        ...selectedEntity,
+        ...(selectedEntity || { id: uuid() }),
         ...filteredFormData,
       };
-      let newEntities = currentEntities;
+
+      const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
         newEntities[selectedEntityIndex],
@@ -141,87 +209,56 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     onOpen();
   };
 
-  const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
-    let disabled = false;
-    let style = sx.enterButton;
-
-    if (
-      (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
-      (route.path === "/mcpar/plan-level-indicators/prior-authorization" &&
-        priorAuthDisabled) ||
-      (route.path === "/mcpar/plan-level-indicators/patient-access-api" &&
-        patientAccessDisabled)
-    ) {
-      style = sx.disabledButton;
-      disabled = true;
+  const getDrawerTitle = () => {
+    let name =
+      selectedEntity?.name ||
+      selectedEntity?.custom_analysis_method_name ||
+      "Add other";
+    if (isReportingOnStandards && report) {
+      name = report?.programName;
     }
-
-    return (
-      <Button
-        sx={style}
-        onClick={() => openRowDrawer(entity)}
-        variant="outline"
-        disabled={disabled}
-      >
-        {isEntityCompleted ? "Edit" : "Enter"}
-      </Button>
-    );
+    return `${verbiage.drawerTitle} ${name}`;
   };
 
-  const entityRows = (entities: EntityShape[]) => {
-    return entities?.map((entity) => {
-      const calculateEntityCompletion = () => {
-        return form.fields
-          ?.filter(isFieldElement)
-          .every((field: FormField) => field.id in entity);
-      };
-
-      /*
-       * If the entity has the same fields from drawerForms fields, it was completed
-       * at somepoint.
-       */
-      const isEntityCompleted = reportingOnIlos
-        ? calculateEntityCompletion() &&
-          isIlosCompleted(reportingOnIlos, entity)
-        : calculateEntityCompletion();
-
+  const displayErrorMessages = () => {
+    // if there are no ILOS but there are plans added, display this message
+    if (!hasIlos && entities.length > 0) {
       return (
-        <Flex key={entity.id} sx={sx.entityRow} data-testid="report-drawer">
-          {isEntityCompleted ? (
-            <Image
-              src={completedIcon}
-              alt={"Entity is complete"}
-              sx={sx.statusIcon}
-            />
-          ) : (
-            isAnalysisMethodsPage && (
-              <Image
-                src={unfinishedIcon}
-                alt={"Entity is incomplete"}
-                sx={sx.statusIcon}
-              />
-            )
-          )}
-          <Heading as="h4" sx={sx.entityName}>
-            {entity.name}
-          </Heading>
-          {enterButton(entity, isEntityCompleted)}
-        </Flex>
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(verbiage.missingIlosMessage || "")}
+        </Box>
       );
-    });
+    } else if (
+      (isAnalysisMethodsPage && !hasPlans) ||
+      (isReportingOnStandards && !completedAnalysisMethods()) ||
+      (isReportingOnStandards && !hasProviderTypes)
+    ) {
+      return (
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        </Box>
+      );
+    }
+    return <></>;
   };
+
+  const addStandardsButton = (
+    <Button
+      sx={sx.bottomAddEntityButton}
+      leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
+      onClick={() => openRowDrawer()}
+      disabled={!hasProviderTypes || !completedAnalysisMethods()}
+    >
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
 
   return (
     <Box>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
-      {/* if there are no ILOS but there are plans added, display this message */}
-      {!hasIlos && entities?.length && (
-        <Box sx={sx.missingIlos}>
-          {parseCustomHtml(verbiage.missingIlosMessage || "")}
-        </Box>
-      )}
+      {displayErrorMessages()}
       {standardForm && (
         <Box sx={sx.standardForm}>
           <Form
@@ -237,31 +274,60 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         </Box>
       )}
       <Box>
-        <Heading as="h3" sx={sx.dashboardTitle}>
-          {verbiage.dashboardTitle}
-        </Heading>
-        {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
-          // if there are no plans and no ILOS added, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
-          </Box>
-        ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
-          !entities?.length ? (
-          // if not reporting on ILOS, but missing entities, display this message
-          <Box sx={sx.missingEntityMessage}>
-            {parseCustomHtml(verbiage.missingEntityMessage || "")}
+        {isReportingOnStandards ? (
+          // table of standards
+          <Box>
+            {addStandardsButton}
+            {/* standards table */}
+            <Box></Box>
+            {addStandardsButton}
           </Box>
         ) : (
-          entityRows(entities)
+          <Box>
+            <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
+              {parseCustomHtml(verbiage.dashboardTitle)}
+            </Heading>
+            {isMcparReport && reportingOnIlos && !hasPlans && !hasIlos ? (
+              // if there are no plans and no ILOS added, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
+              </Box>
+            ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+              !entities?.length ? (
+              // if not reporting on ILOS, but missing entities, display this message
+              <Box sx={sx.missingEntityMessage}>
+                {parseCustomHtml(verbiage.missingEntityMessage || "")}
+              </Box>
+            ) : (
+              <DrawerReportPageEntityRows
+                route={route}
+                entities={entities}
+                openRowDrawer={openRowDrawer}
+                openDeleteEntityModal={openDeleteEntityModal}
+                priorAuthDisabled={priorAuthDisabled}
+                patientAccessDisabled={patientAccessDisabled}
+              />
+            )}
+            {canAddEntities && hasPlans && (
+              <Button
+                variant={"outline"}
+                sx={sx.bottomAddEntityButton}
+                leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
+                onClick={() => openRowDrawer()}
+              >
+                {verbiage.addEntityButtonText}
+              </Button>
+            )}
+          </Box>
         )}
       </Box>
       <ReportDrawer
         selectedEntity={selectedEntity!}
         verbiage={{
-          drawerTitle: `${verbiage.drawerTitle} ${selectedEntity?.name}`,
+          drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={form}
+        form={selectedIsCustomEntity ? addEntityForm : form}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
@@ -270,6 +336,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         }}
         validateOnRender={validateOnRender}
         data-testid="report-drawer"
+      />
+      <DeleteEntityModal
+        entityType={entityType}
+        selectedEntity={selectedEntity}
+        verbiage={verbiage}
+        modalDisclosure={{
+          isOpen: deleteEntityModalIsOpen,
+          onClose: closeDeleteEntityModal,
+        }}
       />
       <ReportPageFooter />
     </Box>
@@ -281,36 +356,29 @@ interface Props {
   validateOnRender?: boolean;
 }
 
-const sx = {
-  statusIcon: {
-    height: "1.25rem",
-    position: "absolute",
-  },
-  dashboardTitle: {
+function dashboardTitleStyling(canAddEntities: boolean) {
+  return {
+    paddingLeft: canAddEntities && "3rem",
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
     color: "palette.gray_medium",
     fontSize: "lg",
     fontWeight: "bold",
-  },
-  entityRow: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "3.25rem",
-    padding: "0.5rem",
-    paddingLeft: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
-    "&:last-of-type": {
-      borderBottom: "none",
-    },
+  };
+}
+
+const sx = {
+  buttonIcons: {
+    height: "1rem",
   },
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+    paddingRight: "1rem",
   },
-  missingIlos: {
+  missingEntity: {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {
@@ -335,25 +403,11 @@ const sx = {
       paddingLeft: "1rem",
     },
   },
-  enterButton: {
-    width: "4.25rem",
-    height: "1.75rem",
-    fontSize: "md",
-    fontWeight: "normal",
-  },
-  disabledButton: {
-    width: "4.25rem",
-    height: "1.75rem",
-    fontSize: "md",
-    fontWeight: "normal",
-    color: "palette.gray_lighter",
-    borderColor: "palette.gray_lighter",
-    "&:hover": {
-      color: "palette.gray_lighter",
-      borderColor: "palette.gray_lighter",
-    },
-  },
   standardForm: {
     paddingBottom: "1rem",
+  },
+  bottomAddEntityButton: {
+    marginTop: "2rem",
+    marginBottom: "0",
   },
 };

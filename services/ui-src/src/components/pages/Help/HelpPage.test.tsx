@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
 import { HelpPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/help";
 
@@ -13,20 +13,10 @@ const helpView = (
   </RouterWrappedComponent>
 );
 
-describe("Test HelpPage", () => {
-  beforeEach(() => {
-    render(helpView);
-  });
-
+describe("<HelpPage />", () => {
   test("Check that HelpPage renders", () => {
+    render(helpView);
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
-});
-
-describe("Test HelpPage accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(helpView);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(helpView);
 });

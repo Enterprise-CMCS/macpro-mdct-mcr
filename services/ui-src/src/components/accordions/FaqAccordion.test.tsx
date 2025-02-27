@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 import userEvent from "@testing-library/user-event";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { FaqAccordion } from "components";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 const accordionItems = [
   {
@@ -19,7 +19,7 @@ const faqAccordionComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test FaqAccordion", () => {
+describe("<FaqAccordion />", () => {
   beforeEach(() => {
     render(faqAccordionComponent);
   });
@@ -41,12 +41,6 @@ describe("Test FaqAccordion", () => {
     expect(faqQuestion).toBeVisible();
     expect(screen.getByText(accordionItems[0].answer)).toBeVisible();
   });
-});
 
-describe("Test FaqAccordion accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(faqAccordionComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(faqAccordionComponent);
 });

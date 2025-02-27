@@ -1,26 +1,17 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { SpreadsheetWidget } from "components";
+import { testA11y } from "utils/testing/commonTests";
 
 const SpreadsheetWidgetComponent = (
   <SpreadsheetWidget description="mock-description" alt={"mock-alt-text"} />
 );
 
-describe("Test SpreadsheetWidget with all props", () => {
-  beforeEach(() => {
-    render(SpreadsheetWidgetComponent);
-  });
-
+describe("<SpreadsheetWidget />", () => {
   test("Component is visible", () => {
+    render(SpreadsheetWidgetComponent);
     expect(screen.getByText("mock-description")).toBeVisible();
   });
-});
 
-describe("Test SpreadsheetWidget accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(SpreadsheetWidgetComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(SpreadsheetWidgetComponent);
 });

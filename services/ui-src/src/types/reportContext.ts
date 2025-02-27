@@ -32,7 +32,6 @@ export interface ReportMetadataShape extends ReportKeys {
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
-  novMcparRelease?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {
@@ -50,7 +49,7 @@ export interface ReportContextMethods {
   fetchReport: Function;
   fetchReportsByState: Function;
   archiveReport: Function;
-  releaseReport?: Function;
+  releaseReport: Function;
   submitReport: Function;
   createReport: Function;
   updateReport: Function;

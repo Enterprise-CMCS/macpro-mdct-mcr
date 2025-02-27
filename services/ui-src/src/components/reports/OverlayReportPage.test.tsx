@@ -1,0 +1,366 @@
+import React from "react";
+import { act, render, screen } from "@testing-library/react";
+// components
+import { OverlayReportPage, ReportProvider } from "components";
+// utils
+import {
+  RouterWrappedComponent,
+  mockStateUserStore,
+  mockAdminUserStore,
+  mockEntityStore,
+  mockOverlayReportPageJson,
+  mockNaaarReportStore,
+  mockNAAREmptyFieldData,
+  mockNAARWithPlanCreated,
+} from "utils/testing/setupJest";
+import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
+import { testA11yAct } from "utils/testing/commonTests";
+import userEvent from "@testing-library/user-event";
+
+jest.mock("utils/state/useStore");
+jest.mock("utils/other/useBreakpoint");
+jest.mock("utils/tables/getEntityStatus");
+jest.spyOn(React, "useMemo").mockImplementation((fn) => fn());
+
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
+  typeof useBreakpoint
+>;
+const mockedGetEntityStatus = getEntityStatus as jest.MockedFunction<
+  typeof getEntityStatus
+>;
+
+const mockNaaarWithoutPlansStore = {
+  ...mockEntityStore,
+  ...mockNaaarReportStore,
+  report: {
+    ...mockNaaarReportStore.report,
+    fieldData: mockNAAREmptyFieldData,
+  },
+};
+
+const mockNaaarWithPlansStore = {
+  ...mockEntityStore,
+  ...mockNaaarReportStore,
+  report: {
+    ...mockNaaarReportStore.report,
+    fieldData: mockNAARWithPlanCreated,
+  },
+};
+
+const mockSetSidebarHidden = jest.fn();
+
+const overlayReportPageComponent = (route: any = mockOverlayReportPageJson) => (
+  <RouterWrappedComponent>
+    <UserProvider>
+      <ReportProvider>
+        <OverlayReportPage
+          route={route}
+          setSidebarHidden={mockSetSidebarHidden}
+        />
+      </ReportProvider>
+    </UserProvider>
+  </RouterWrappedComponent>
+);
+
+const verbiage = mockOverlayReportPageJson.verbiage;
+const planName = mockNaaarWithPlansStore.report.fieldData.plans[0].name;
+
+describe("<OverlayReportPage />", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+    mockedGetEntityStatus.mockReturnValue(false);
+  });
+
+  describe("Test OverlayReportPage (empty state)", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test("should render the initial view for a State user", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarWithoutPlansStore,
+      });
+      await act(async () => {
+        render(overlayReportPageComponent());
+      });
+
+      const h1 = screen.getByRole("heading", {
+        level: 1,
+        name: verbiage.intro.section,
+      });
+      const h2 = screen.getByRole("heading", {
+        level: 2,
+        name: verbiage.intro.subsection,
+      });
+      // Check if header is visible on load - H1
+      expect(h1).toBeVisible();
+      // Check if header is visible on load - H2
+      expect(h2).toBeVisible();
+
+      //TODO: Update this when logic surrounding standards has been updated!
+
+      // Check if missing Plans notice is displaying
+      const missingInformationMessage =
+        "This program is missing required information.";
+      expect(screen.getByText(missingInformationMessage)).toBeVisible();
+
+      // Check if missing Standards notice is NOT displaying
+      const missingStandardsMessage =
+        "This program is missing required standards.";
+      expect(screen.queryByText(missingStandardsMessage)).toBeNull();
+
+      // Check if Footer is display with a next button and previous button
+      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
+      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
+    });
+
+    test("should render the initial view for an Admin user", async () => {
+      // Set as Admin User
+      mockedUseStore.mockReturnValue({
+        ...mockAdminUserStore,
+        ...mockNaaarWithoutPlansStore,
+      });
+
+      await act(async () => {
+        render(overlayReportPageComponent());
+      });
+
+      const h1 = screen.getByRole("heading", {
+        level: 1,
+        name: verbiage.intro.section,
+      });
+      const h2 = screen.getByRole("heading", {
+        level: 2,
+        name: verbiage.intro.subsection,
+      });
+      // Check if header is visible on load - H1
+      expect(h1).toBeVisible();
+      // Check if header is visible on load - H2
+      expect(h2).toBeVisible();
+
+      //TODO: Update this when logic surrounding standards has been updated!
+
+      // Check if missing Plans notice is displaying
+      const missingInformationMessage =
+        "This program is missing required information.";
+      expect(screen.getByText(missingInformationMessage)).toBeVisible();
+
+      // Check if missing Standards notice is NOT displaying
+      const missingStandardsMessage =
+        "This program is missing required standards.";
+      expect(screen.queryByText(missingStandardsMessage)).toBeNull();
+
+      // Check if Footer is display with a next button and previous button
+      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
+      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
+    });
+  });
+
+  describe("Test OverlayReportPage (Plans Have Been Added)", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarWithPlansStore,
+      });
+    });
+
+    describe("<TablePage />", () => {
+      test("renders plans table", async () => {
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+        const entityTable = screen.getByRole("table");
+        const entityHeaders = screen.getByRole("row", {
+          name: `Status ${verbiage.tableHeader} Action`,
+        });
+        const entityCell = screen.getByRole("gridcell", {
+          name: `${planName} Select “Enter” to complete response.`,
+        });
+
+        expect(entityTable).toBeVisible();
+        expect(entityHeaders).toBeVisible();
+        expect(entityCell).toBeVisible();
+      });
+
+      test("renders plans table for mobile", async () => {
+        mockUseBreakpoint.mockReturnValue({
+          isMobile: true,
+          isTablet: false,
+        });
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+
+        const entityTable = screen.getByRole("table");
+        const entityHeaders = screen.getByRole("row", {
+          name: `Status ${verbiage.tableHeader}`,
+        });
+        const entityCell = screen.getByRole("gridcell", {
+          name: `${verbiage.tableHeader} ${planName} ${verbiage.enterEntityDetailsButtonText}`,
+        });
+
+        expect(entityTable).toBeVisible();
+        expect(entityHeaders).toBeVisible();
+        expect(entityCell).toBeVisible();
+      });
+    });
+
+    describe("<DetailsOverlay />", () => {
+      test("show details overlay", async () => {
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+        const h1 = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        const entityCell = screen.getByRole("gridcell", {
+          name: `${planName} Select “Enter” to complete response.`,
+        });
+        const enterButton = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+
+        expect(h1).toBeVisible();
+        expect(entityCell).toBeVisible();
+        await userEvent.click(enterButton);
+
+        const h1Requery = screen.queryByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        const h2 = screen.getByRole("heading", {
+          level: 2,
+          name: `Mock Details: ${planName}`,
+        });
+
+        expect(h1Requery).toBeNull();
+        expect(h2).toBeVisible();
+      });
+
+      test("submit details form", async () => {
+        mockedGetEntityStatus.mockReturnValue(true);
+
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+
+        const enterButton = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+        await userEvent.click(enterButton);
+
+        const h1 = screen.queryByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        expect(h1).toBeNull();
+
+        const radioButton = screen.getByRole("radio", { name: "Mock Yes" });
+        await userEvent.click(radioButton);
+
+        const submitButton = screen.getByRole("button", {
+          name: "Save & return",
+        });
+        await userEvent.click(submitButton);
+
+        const entityCell = screen.getByRole("gridcell", {
+          name: planName,
+        });
+        const h1Requery = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+
+        expect(entityCell).toBeVisible();
+        expect(h1Requery).toBeVisible();
+      });
+
+      test("close details overlay", async () => {
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+        const enterButton = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+        await userEvent.click(enterButton);
+
+        const h1 = screen.queryByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        expect(h1).toBeNull();
+
+        const closeButton = screen.getByRole("button", {
+          name: "Return to dashboard",
+        });
+        await userEvent.click(closeButton);
+
+        const h1Requery = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        expect(h1Requery).toBeVisible();
+      });
+
+      test("show nothing if no details", async () => {
+        const noDetails = { ...mockOverlayReportPageJson };
+        delete noDetails.details;
+
+        await act(async () => {
+          render(overlayReportPageComponent(noDetails));
+        });
+        const h1 = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        const enterButton = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+
+        expect(h1).toBeVisible();
+        await userEvent.click(enterButton);
+
+        const h1Requery = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        expect(h1Requery).toBeVisible();
+      });
+
+      test("show nothing if bad details", async () => {
+        const badDetails = { ...mockOverlayReportPageJson };
+        // @ts-expect-error: There's a safeguard in the UI so this won't happen, but need to cover it in test
+        badDetails.details = {};
+
+        await act(async () => {
+          render(overlayReportPageComponent(badDetails));
+        });
+        const h1 = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        const enterButton = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+
+        expect(h1).toBeVisible();
+        await userEvent.click(enterButton);
+
+        const h1Requery = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+        expect(h1Requery).toBeVisible();
+      });
+    });
+  });
+
+  testA11yAct(overlayReportPageComponent());
+});

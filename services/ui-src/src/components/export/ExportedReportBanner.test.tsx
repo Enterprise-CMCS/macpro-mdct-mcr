@@ -1,15 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Error } from "components/app/Error";
-import { axe } from "jest-axe";
+// components
+import { ExportedReportBanner } from "./ExportedReportBanner";
 // utils
 import { useStore } from "utils";
 import {
   mockMcparReportStore,
   mockMlrReportStore,
 } from "utils/testing/setupJest";
-// components
-import { ExportedReportBanner } from "./ExportedReportBanner";
+import { testA11y } from "utils/testing/commonTests";
 
 let mockPrint: any;
 
@@ -20,7 +20,7 @@ const errorComponent = <Error />;
 
 const reportBanner = <ExportedReportBanner />;
 
-describe("ExportedReportBanner", () => {
+describe("<ExportedReportBanner />", () => {
   // temporarily mock window.print for the testing environment
   beforeEach(() => {
     mockPrint = window.print;
@@ -79,15 +79,10 @@ describe("ExportedReportBanner", () => {
     const printButton = screen.queryByText("Download PDF");
     expect(printButton).toBeNull();
   });
-});
 
-describe("Test ExportedReportBanner accessibility", () => {
-  test("Should not have basic accessibility issues", async () => {
+  testA11y(reportBanner, () => {
     mockedUseStore.mockReturnValue({
       ...mockMlrReportStore,
     });
-    const { container } = render(reportBanner);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

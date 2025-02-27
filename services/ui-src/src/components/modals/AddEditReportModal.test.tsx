@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-//components
+// components
 import { AddEditReportModal, ReportContext } from "components";
+// utils
 import {
   mockMcparReport,
   mockMcparReportContext,
@@ -17,6 +17,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { convertDateUtcToEt, useStore } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
@@ -178,259 +179,258 @@ const naaarModalComponentWithSelectedReport = (
   </RouterWrappedComponent>
 );
 
-describe("Test AddEditProgramModal", () => {
-  beforeEach(async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMcparReportStore,
-    });
-    render(modalComponent);
-  });
-
+describe("<AddEditProgramModal />", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-
-  test("AddEditReportModal shows the contents", () => {
-    expect(screen.getByText("Add / Copy a MCPAR")).toBeTruthy();
-    expect(screen.getByText("Save")).toBeTruthy();
-  });
-
-  test("AddEditReportModal top close button can be clicked", () => {
-    fireEvent.click(screen.getByText("Close"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-
-  test("AddEditReportModal bottom cancel button can be clicked", () => {
-    fireEvent.click(screen.getByText("Cancel"));
-    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe("Test AddEditReportModal functionality for MCPAR", () => {
-  beforeEach(() => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMcparReportStore,
+  describe("Test AddEditProgramModal", () => {
+    beforeEach(async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
+      render(modalComponent);
     });
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 
-  const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
-    const startDateField = form.querySelector(
-      "[name='reportingPeriodStartDate']"
-    )!;
-    await userEvent.type(startDateField, "1/1/2022");
-    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
-    await userEvent.type(endDateField, "12/31/2022");
-    const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
-    if (!isPccmNo.disabled) {
-      await userEvent.click(isPccmNo);
-    }
-    const submitButton = screen.getByRole("button", { name: "Save" });
-    await userEvent.click(submitButton);
-  };
+    test("AddEditReportModal shows the contents", () => {
+      expect(screen.getByText("Add / Copy a MCPAR")).toBeTruthy();
+      expect(screen.getByText("Save")).toBeTruthy();
+    });
 
-  test("Adding a new report", async () => {
-    const result = render(modalComponent);
-    const form = result.getByTestId("add-edit-report-form");
-    const header = screen.getByRole("heading", { level: 1 });
+    test("AddEditReportModal top close button can be clicked", () => {
+      fireEvent.click(screen.getByText("Close"));
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
 
-    expect(header.textContent).toEqual("Add / Copy a MCPAR");
-
-    const copyFieldDataSourceId = form.querySelector(
-      "[name='copyFieldDataSourceId']"
-    )!;
-
-    expect(copyFieldDataSourceId).toHaveProperty("disabled", false);
-
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockCreateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+    test("AddEditReportModal bottom cancel button can be clicked", () => {
+      fireEvent.click(screen.getByText("Cancel"));
       expect(mockCloseHandler).toHaveBeenCalledTimes(1);
     });
   });
 
-  test("Edit modal hydrates with report info and disables fields", async () => {
-    const result = render(modalComponentWithSelectedReport);
-    const form = result.getByTestId("add-edit-report-form");
-    const copyFieldDataSourceId = form.querySelector(
-      "[name='copyFieldDataSourceId']"
-    )!;
-    const programIsPCCMField = form.querySelectorAll("[name='programIsPCCM']")!;
-
-    // yoy copy and pccm fields are disabled
-    expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
-    expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
-    expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
-
-    // hydrated values are in the modal
-    const programNameField = form.querySelector("[name='programName']")!;
-    const startDateField = form.querySelector(
-      "[name='reportingPeriodStartDate']"
-    )!;
-    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
-
-    expect(programNameField).toHaveProperty(
-      "value",
-      mockMcparReport.programName
-    );
-    expect(startDateField).toHaveProperty(
-      "value",
-      convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
-    );
-    expect(endDateField).toHaveProperty(
-      "value",
-      convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
-    );
-
-    await userEvent.click(screen.getByText("Cancel"));
-  });
-
-  test("Editing an existing report", async () => {
-    const result = render(modalComponentWithSelectedReport);
-    const form = result.getByTestId("add-edit-report-form");
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  describe("Test AddEditReportModal functionality for MCPAR", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMcparReportStore,
+      });
     });
-  });
-});
-
-describe("Test AddEditReportModal functionality for MLR", () => {
-  beforeEach(async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockMlrReportStore,
+    afterEach(() => {
+      jest.clearAllMocks();
     });
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
 
-  const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
-    const submitButton = screen.getByRole("button", { name: "Save" });
-    await userEvent.click(submitButton);
-  };
+    const fillForm = async (form: any) => {
+      const programNameField = form.querySelector("[name='programName']")!;
+      await userEvent.type(programNameField, "fake program name");
+      const startDateField = form.querySelector(
+        "[name='reportingPeriodStartDate']"
+      )!;
+      await userEvent.type(startDateField, "1/1/2022");
+      const endDateField = form.querySelector(
+        "[name='reportingPeriodEndDate']"
+      )!;
+      await userEvent.type(endDateField, "12/31/2022");
+      const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+      if (!isPccmNo.disabled) {
+        await userEvent.click(isPccmNo);
+      }
+      const submitButton = screen.getByRole("button", { name: "Save" });
+      await userEvent.click(submitButton);
+    };
 
-  test("Adding a new report", async () => {
-    const result = render(mlrModalComponent);
-    const form = result.getByTestId("add-edit-report-form");
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockCreateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    test("Adding a new report", async () => {
+      const result = render(modalComponent);
+      const form = result.getByTestId("add-edit-report-form");
+      const header = screen.getByRole("heading", { level: 1 });
+
+      expect(header.textContent).toEqual("Add / Copy a MCPAR");
+
+      const copyFieldDataSourceId = form.querySelector(
+        "[name='copyFieldDataSourceId']"
+      )!;
+
+      expect(copyFieldDataSourceId).toHaveProperty("disabled", false);
+
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockCreateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
     });
-  });
 
-  test("Editing an existing report", async () => {
-    const result = render(mlrModalComponentWithSelectedReport);
-    const form = result.getByTestId("add-edit-report-form");
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    test("Edit modal hydrates with report info and disables fields", async () => {
+      const result = render(modalComponentWithSelectedReport);
+      const form = result.getByTestId("add-edit-report-form");
+      const copyFieldDataSourceId = form.querySelector(
+        "[name='copyFieldDataSourceId']"
+      )!;
+      const programIsPCCMField = form.querySelectorAll(
+        "[name='programIsPCCM']"
+      )!;
+
+      // yoy copy and pccm fields are disabled
+      expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+      expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
+      expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
+
+      // hydrated values are in the modal
+      const programNameField = form.querySelector("[name='programName']")!;
+      const startDateField = form.querySelector(
+        "[name='reportingPeriodStartDate']"
+      )!;
+      const endDateField = form.querySelector(
+        "[name='reportingPeriodEndDate']"
+      )!;
+
+      expect(programNameField).toHaveProperty(
+        "value",
+        mockMcparReport.programName
+      );
+      expect(startDateField).toHaveProperty(
+        "value",
+        convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
+      );
+      expect(endDateField).toHaveProperty(
+        "value",
+        convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
+      );
+
+      await userEvent.click(screen.getByText("Cancel"));
     });
-  });
-});
 
-describe("Test AddEditReportModal functionality for NAAAR", () => {
-  beforeEach(async () => {
-    mockedUseStore.mockReturnValue({
-      ...mockStateUserStore,
-      ...mockNaaarReportStore,
-    });
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  const fillForm = async (form: any) => {
-    const programNameField = form.querySelector("[name='programName']")!;
-    await userEvent.type(programNameField, "fake program name");
-    const startDateField = form.querySelector(
-      "[name='reportingPeriodStartDate']"
-    )!;
-    await userEvent.type(startDateField, "1/1/2022");
-    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
-    await userEvent.type(endDateField, "12/31/2022");
-    const planTypeField = screen.getByLabelText("MCO") as HTMLInputElement;
-    await userEvent.click(planTypeField);
-    const submitButton = screen.getByRole("button", { name: "Save" });
-    await userEvent.click(submitButton);
-  };
-
-  test("Adding a new report", async () => {
-    const result = render(naaarModalComponent);
-    const form = result.getByTestId("add-edit-report-form");
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockCreateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    test("Editing an existing report", async () => {
+      const result = render(modalComponentWithSelectedReport);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
-  test("Edit modal hydrates with report info and disables fields", async () => {
-    const result = render(naaarModalComponentWithSelectedReport);
-    const form = result.getByTestId("add-edit-report-form");
-    const copyFieldDataSourceId = form.querySelector(
-      "[name='copyFieldDataSourceId']"
-    )!;
+  describe("Test AddEditReportModal functionality for MLR", () => {
+    beforeEach(async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrReportStore,
+      });
+    });
 
-    // yoy copy field is disabled
-    expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+    const fillForm = async (form: any) => {
+      const programNameField = form.querySelector("[name='programName']")!;
+      await userEvent.type(programNameField, "fake program name");
+      const submitButton = screen.getByRole("button", { name: "Save" });
+      await userEvent.click(submitButton);
+    };
 
-    // hydrated values are in the modal
-    const programNameField = form.querySelector("[name='programName']")!;
-    const startDateField = form.querySelector(
-      "[name='reportingPeriodStartDate']"
-    )!;
-    const endDateField = form.querySelector("[name='reportingPeriodEndDate']")!;
+    test("Adding a new report", async () => {
+      const result = render(mlrModalComponent);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockCreateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
+    });
 
-    expect(programNameField).toHaveProperty(
-      "value",
-      mockNaaarReport.programName
-    );
-    expect(startDateField).toHaveProperty(
-      "value",
-      convertDateUtcToEt(mockNaaarReport.reportingPeriodStartDate)
-    );
-    expect(endDateField).toHaveProperty(
-      "value",
-      convertDateUtcToEt(mockNaaarReport.reportingPeriodEndDate)
-    );
-
-    await userEvent.click(screen.getByText("Cancel"));
-  });
-
-  test("Editing an existing report", async () => {
-    const result = render(naaarModalComponentWithSelectedReport);
-    const form = result.getByTestId("add-edit-report-form");
-    await fillForm(form);
-    await waitFor(() => {
-      expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    test("Editing an existing report", async () => {
+      const result = render(mlrModalComponentWithSelectedReport);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
     });
   });
-});
 
-describe("Test AddEditReportModal accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(modalComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+  describe("Test AddEditReportModal functionality for NAAAR", () => {
+    beforeEach(async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+      });
+    });
+
+    const fillForm = async (form: any) => {
+      const programNameField = form.querySelector("[name='programName']")!;
+      await userEvent.type(programNameField, "fake program name");
+      const startDateField = form.querySelector(
+        "[name='reportingPeriodStartDate']"
+      )!;
+      await userEvent.type(startDateField, "1/1/2022");
+      const endDateField = form.querySelector(
+        "[name='reportingPeriodEndDate']"
+      )!;
+      await userEvent.type(endDateField, "12/31/2022");
+      const planTypeField = screen.getByLabelText("MCO") as HTMLInputElement;
+      await userEvent.click(planTypeField);
+      const submitButton = screen.getByRole("button", { name: "Save" });
+      await userEvent.click(submitButton);
+    };
+
+    test("Adding a new report", async () => {
+      const result = render(naaarModalComponent);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockCreateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test("Edit modal hydrates with report info and disables fields", async () => {
+      const result = render(naaarModalComponentWithSelectedReport);
+      const form = result.getByTestId("add-edit-report-form");
+      const copyFieldDataSourceId = form.querySelector(
+        "[name='copyFieldDataSourceId']"
+      )!;
+
+      // yoy copy field is disabled
+      expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+
+      // hydrated values are in the modal
+      const programNameField = form.querySelector("[name='programName']")!;
+      const startDateField = form.querySelector(
+        "[name='reportingPeriodStartDate']"
+      )!;
+      const endDateField = form.querySelector(
+        "[name='reportingPeriodEndDate']"
+      )!;
+
+      expect(programNameField).toHaveProperty(
+        "value",
+        mockNaaarReport.programName
+      );
+      expect(startDateField).toHaveProperty(
+        "value",
+        convertDateUtcToEt(mockNaaarReport.reportingPeriodStartDate)
+      );
+      expect(endDateField).toHaveProperty(
+        "value",
+        convertDateUtcToEt(mockNaaarReport.reportingPeriodEndDate)
+      );
+
+      await userEvent.click(screen.getByText("Cancel"));
+    });
+
+    test("Editing an existing report", async () => {
+      const result = render(naaarModalComponentWithSelectedReport);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form);
+      await waitFor(() => {
+        expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
+    });
   });
+
+  testA11y(modalComponent);
 });

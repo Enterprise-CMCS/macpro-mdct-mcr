@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { Alert } from "components";
+// types
 import { AlertTypes } from "types";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 const alertComponent = (
   <Alert
@@ -13,22 +15,13 @@ const alertComponent = (
   />
 );
 
-describe("Test Alert Item", () => {
-  beforeEach(() => {
-    render(alertComponent);
-  });
-
+describe("<Alert />", () => {
   test("Alert is visible", () => {
+    render(alertComponent);
     expect(screen.getByText("Test alert!")).toBeVisible();
     expect(screen.getByText("This is for testing.")).toBeVisible();
     expect(screen.getByText("test-link")).toBeVisible();
   });
-});
 
-describe("Test Alert accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(alertComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(alertComponent);
 });

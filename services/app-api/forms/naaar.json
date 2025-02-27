@@ -9,6 +9,9 @@
     },
     "analysisMethods": {
       "required": true
+    },
+    "standards": {
+      "required": true
     }
   },
   "routes": [
@@ -197,7 +200,8 @@
                 "type": "dynamic",
                 "validation": "dynamic",
                 "props": {
-                  "label": "Plan name"
+                  "label": "Plan name",
+                  "isRequired": true
                 }
               }
             ]
@@ -280,25 +284,39 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "States should use this section of the tab to report on the analyses that the state uses to assess plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
+                  "content": "States should use this section of the tab to report on the analyses that the state uses to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
                 }
               ]
             },
-            "dashboardTitle": "",
+            "dashboardTitle": "Analysis method <br/> Frequency and plan utilization",
             "addEntityButtonText": "Add other analysis method",
-            "editEntityButtonText": "",
-            "readOnlyEntityButtonText": "",
-            "tableHeader": "Analysis method <br/> Frequency and plan utilization",
-            "addEditModalAddTitle": "Analysis method: Add other",
-            "addEditModalEditTitle": "Analysis method: Edit other",
             "deleteEntityButtonAltText": "Delete other analysis method",
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",
             "deleteModalConfirmButtonText": "Yes, delete method",
             "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this analysis method in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-            "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
-            "enterEntityDetailsButtonText": "Enter",
-            "readOnlyEntityDetailsButtonText": "View",
-            "drawerTitle": "Analysis method: "
+            "drawerTitle": "Analysis method: ",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the managed care plans that serve enrollees in the program. "
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/naaar/state-and-program-information/add-plans"
+                    }
+                  },
+                  {
+                    "type": "html",
+                    "content": "."
+                  }
+                ]
+              }
+            ]
           },
           "drawerForm": {
             "id": "iam",
@@ -309,7 +327,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "Is this analysis method utilized to assess plan compliance?",
-                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
+                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
                   "choices": [
                     {
                       "id": "KHvMO9SzSrkBhqCobPBUOY",
@@ -382,14 +400,14 @@
                           "validation": {
                             "type": "checkbox",
                             "nested": true,
-                            "parentFieldName": "analysis_applicable"
+                            "parentFieldName": "analysis_applicable",
+                            "parentOptionId": "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB"
                           },
                           "props": {
                             "label": "Plans utilizing this method",
                             "choices": [
                               {
-                                "id": "tvCUw5CcaGUFSIMByAopjF",
-                                "label": "Fill in plans here"
+                                "label": "Plans"
                               }
                             ]
                           }
@@ -400,9 +418,789 @@
                 }
               }
             ]
+          },
+          "addEntityDrawerForm": {
+            "id": "iamnew",
+            "fields": [
+              {
+                "id": "custom_analysis_method_name",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "Analysis method",
+                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards that is not already listed in the system."
+                }
+              },
+              {
+                "id": "custom_analysis_method_description",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "Analysis method description",
+                  "hint": "Describe the method."
+                }
+              },
+              {
+                "id": "analysis_method_frequency",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "Frequency of analysis",
+                  "choices": [
+                    {
+                      "id": "Sol1W6HJCixyOVxw4vDgXQ",
+                      "label": "Weekly"
+                    },
+                    {
+                      "id": "YjI3qT3Ml9cZfP4a1RV6G9",
+                      "label": "Bi-weekly"
+                    },
+                    {
+                      "id": "L8q1N1DXEYv8LsDfGkdbOe",
+                      "label": "Monthly"
+                    },
+                    {
+                      "id": "05ThR4UN7kYDGpKaTWESOB",
+                      "label": "Bi-monthly"
+                    },
+                    {
+                      "id": "Y0Rkz7e3Kkxw0T4aFDb38j",
+                      "label": "Quarterly"
+                    },
+                    {
+                      "id": "mcn99pzTOqnEmr3uXiEOYs",
+                      "label": "Semi-annually"
+                    },
+                    {
+                      "id": "r938vpeMJxkPOqk53N7qW0",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "analysis_method_frequency-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "analysis_method_frequency"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "WkqIis4bGGtK8Nzzqa6rPl",
+                      "label": "Varies by plan"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "analysis_method_applicable_plans",
+                "type": "checkbox",
+                "validation": "checkbox",
+                "props": {
+                  "label": "Plans utilizing this method",
+                  "choices": [
+                    {
+                      "label": "Plans"
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]
+    },
+    {
+      "name": "II. Program-level access and network adequacy standards",
+      "path": "/naaar/program-level-access-and-network-adequacy-standards",
+      "pageType": "drawer",
+      "entityType": "standards",
+      "verbiage": {
+        "intro": {
+          "subsection": "II. Program-level access and network adequacy standards",
+          "info": "Report each standard included in managed care program contract for this program; select “Add standard” to report each unique standard."
+        },
+        "dashboardTitle": "Standard total count: ",
+        "countEntitiesInTitle": true,
+        "addEntityButtonText": "Add standard",
+        "drawerTitle": "Add access and network adequacy standard for ",
+        "missingEntityMessage": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing required information. You won’t be able to complete this section until you’ve completed all the required questions in section I. State and program information. Report on "
+              },
+              {
+                "type": "internalLink",
+                "content": "Provider type coverage",
+                "props": {
+                  "to": "/naaar/state-and-program-information/provider-type-coverage"
+                }
+              },
+              {
+                "type": "html",
+                "content": " and "
+              },
+              {
+                "type": "internalLink",
+                "content": "Analysis methods",
+                "props": {
+                  "to": "/naaar/state-and-program-information/analysis-methods"
+                }
+              },
+              {
+                "type": "html",
+                "content": "."
+              }
+            ]
+          }
+        ]
+      },
+      "drawerForm": {
+        "id": "danas",
+        "fields": [
+          {
+            "id": "standard_coreProviderTypeCoveredByStandard",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "Core provider type covered by standard",
+              "hint": "Enter the core provider type the standard applies to. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
+              "choices": []
+            }
+          },
+          {
+            "id": "standard_standardType",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "Standard type",
+              "hint": "What is the standard type? Select one.",
+              "choices": [
+                {
+                  "id": "kIrheUXLpOwF7OEypso8Ylhs",
+                  "label": "Maximum time to travel",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_2e6zA0mK1Qs93xSoyJXmW3AD",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_CL6r1vfwqen1VpNHmeiD0I9J",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "SDrVTHVxFa2YKrlBYjcqavbN",
+                  "label": "Maximum distance to travel",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_qjDGoXRR8qnuIztUS7rymsLP",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "SDrVTHVxFa2YKrlBYjcqavbN"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_DgpQz4w5HIaZfWVgVOzgMMjU",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "SDrVTHVxFa2YKrlBYjcqavbN"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "fFSst8ncbSukHlX66fqV0udO",
+                  "label": "Maximum time or distance",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_p2UjSQQTOHYWtLDqWXSxGFOP",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "fFSst8ncbSukHlX66fqV0udO"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_3i4wxqiunS8gGGXW7n2LWviu",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "fFSst8ncbSukHlX66fqV0udO"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "tcIQ324hNsgHwHteoDgfCh08",
+                  "label": "Ease of getting a timely appointment",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_rWrmasaJJ8V3PdVhZGf6bly3",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_p93DZshWnEs7ncVeNZe3tAzM",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "lG0CeH7LIO5iGxjpaKE8v37C",
+                  "label": "Appointment wait time",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_WCv5x1OePNjPWHdqog1Riv5s",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "lG0CeH7LIO5iGxjpaKE8v37C"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_5YldWkrQj5flwCcuvVHJVtcm",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "lG0CeH7LIO5iGxjpaKE8v37C"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "EuccyPRHBiaTVhF1HMHnkUcR",
+                  "label": "Hours of operation",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_l8KWEMUCqnOgRkYyBHvSYLPw",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_O94R81nE7jNr2RPAks2rwbtz",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "vGdzNKCsiudeNeUJZgU5qhdz",
+                  "label": "Provider to enrollee ratios",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_kKaVlFMA9VpbhVj2gSPloqBr",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_VXJ5Q1ROxf101ql7YDT22XrV",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hdz3tEHdEBvRIIdgaovgEjaa",
+                  "label": "Minimum number of network providers",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_Le1VoGTeVcMbskIiBSImlIMO",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_bVGAJEQUTOYJsX5ICErIepxP",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "9eion8H8PNrCP0AeiikpsKbx",
+                  "label": "Service fulfillment",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription_QVdykzW594MqR5xWTrAF8elY",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_SkNj86TXlLfJEJ9G9a1Dw16L",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "Uil8wXl6t3aBsI4W8pQZlO5P",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "standard_standardType-otherText",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType"
+                      }
+                    },
+                    {
+                      "id": "standard_standardDescription_QW4MxtOeD2vjcRHcgKGBXYyI",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType-otherText"
+                      },
+                      "props": {
+                        "label": "Standard description",
+                        "hint": "Describe the standard (for example, 15 days)."
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized_x7nthz0BMsPQ9Nvu8u1RBG5f",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "standard_populationCoveredByStandard",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "Population covered by standard",
+              "hint": "Enter the population that the standard applies to.",
+              "choices": [
+                {
+                  "id": "I71x1VFmmQJmKSUlFcJVS8cT",
+                  "label": "Adult"
+                },
+                {
+                  "id": "U0Y4jZ4z63WrUKgCH4gL2SNG",
+                  "label": "Pediatric"
+                },
+                {
+                  "id": "PiEUqV9EIj4C5jNHK9kx3guG",
+                  "label": "MLTSS"
+                },
+                {
+                  "id": "R9biNBHU0rqpWFncNKbsD7zQ",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "standard_populationCoveredByStandard-otherText",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_populationCoveredByStandard"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "standard_applicableRegion",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "Applicable region",
+              "hint": "Enter the region that the standard applies to.",
+              "choices": [
+                {
+                  "id": "KaDliEkRCXvPNlRS7DVjjt9q",
+                  "label": "Statewide"
+                },
+                {
+                  "id": "bXUThZe8ED78Q0CdZDfy6vWU",
+                  "label": "Large metro"
+                },
+                {
+                  "id": "LEBy7hX77pU9dDnQyiQxVbY3",
+                  "label": "Metro"
+                },
+                {
+                  "id": "nTsvcnVAkbz1YPXzrJGyuk57",
+                  "label": "Micro"
+                },
+                {
+                  "id": "vtr616uOBJzYTgak0yOS2X3Z",
+                  "label": "Rural"
+                },
+                {
+                  "id": "K72J3FGRlXMyIV2j43TDGs7R",
+                  "label": "Counties with Extreme Access Considerations (CEAC)"
+                },
+                {
+                  "id": "fbT7UNHncgylfEfa8PqDP80j",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "standard_applicableRegion-otherText",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_applicableRegion"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "III. Plan compliance",
+      "path": "/naaar/plan-compliance",
+      "pageType": "planOverlay",
+      "entityType": "plans",
+      "verbiage": {
+        "intro": {
+          "section": "",
+          "subsection": "III. Plan compliance",
+          "info": [
+            {
+              "type": "text",
+              "content": "States should use this section to report on plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
+            }
+          ]
+        },
+        "requiredMessages": {
+          "plans": [
+            {
+              "type": "p",
+              "children": [
+                {
+                  "type": "p",
+                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section "
+                },
+                {
+                  "type": "internalLink",
+                  "content": "I. State and program information",
+                  "props": {
+                    "to": "/naaar/state-and-program-information/state-information-and-reporting-scenario"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "."
+                }
+              ]
+            }
+          ],
+          "standards": [
+            {
+              "type": "p",
+              "children": [
+                {
+                  "type": "html",
+                  "content": "This program is missing standards. You won’t be able to access this section until you’ve added standards in section "
+                },
+                {
+                  "type": "internalLink",
+                  "content": "II. Program-level access and network adequacy standards",
+                  "props": {
+                    "to": "/naaar/program-level-access-and-network-adequacy-standards"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "."
+                }
+              ]
+            }
+          ]
+        },
+        "tableHeader": "Plan Name",
+        "enterEntityDetailsButtonText": "Enter"
+      },
+      "details": {
+        "verbiage": {
+          "backButton": "Return to plan compliance dashboard",
+          "intro": {
+            "info": "States should use this section to report on plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards for the plan listed above.",
+            "section": "",
+            "subsection": "III. Plan compliance data for {{planName}}"
+          }
+        },
+        "forms": [
+          {
+            "form": {
+              "id": "planCompliance43868",
+              "fields": [
+                {
+                  "id": "planCompliance43868_assurance",
+                  "type": "radio",
+                  "validation": "radio",
+                  "props": {
+                    "choices": [
+                      {
+                        "id": "Jtt1p8Z9HtpRWN2E8lxzni",
+                        "label": "Yes, the plan complies on all standards based on all analyses"
+                      },
+                      {
+                        "id": "dq36WGX8Ev8wmALi1rg3bv",
+                        "label": "No, the plan does not comply on all standards based on all analyses and/or exceptions granted"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "table": {
+              "bodyRows": [
+                [
+                  "",
+                  "Select non-compliant / exception standards and provide details for 438.68",
+                  ""
+                ]
+              ],
+              "caption": "",
+              "headRow": [
+                { "hiddenName": "Status" },
+                { "hiddenName": "Report section" },
+                { "hiddenName": "Action" }
+              ]
+            },
+            "verbiage": {
+              "heading": "Assurance of plan compliance for 438.68",
+              "hint": "Indicate whether the state assures that the plan complies with the state’s network adequacy standards based on each analysis the state conducted for the plan during the reporting period.",
+              "intro": {
+                "section": ""
+              }
+            }
+          },
+          {
+            "form": {
+              "id": "planCompliance438206",
+              "fields": [
+                {
+                  "id": "planCompliance438206_assurance",
+                  "type": "radio",
+                  "validation": "radio",
+                  "props": {
+                    "choices": [
+                      {
+                        "id": "a4BjUY8odfV5TSNKHtFVGd",
+                        "label": "Yes, the plan complies on all standards based on all analyses"
+                      },
+                      {
+                        "id": "zC8SPm68FS8xI9igWQ0BdP",
+                        "label": "No, the plan does not comply on all standards based on all analyses and/or exceptions granted"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "table": {
+              "bodyRows": [
+                [
+                  "",
+                  "Provide plan compliance details for 438.206",
+                  ""
+                ]
+              ],
+              "headRow": [
+                { "hiddenName": "Status" },
+                { "hiddenName": "Report section" },
+                { "hiddenName": "Action" }
+              ]
+            },
+            "verbiage": {
+              "accordion": {
+                "buttonLabel": "Assurance of 42 C.F.R. § 438.206",
+                "text": "<p>(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:</p><p>(1) Maintains and monitors a network of appropriate providers that is supported by written agreements and is sufficient to provide adequate access to all services covered under the contract for all enrollees, including those with limited English proficiency or physical or mental disabilities.</p><p>(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist.</p><p>(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee.</p><p>(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them.</p><p>(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network.</p><p>(6) Demonstrates that its network providers are credentialed as required by § 438.214.</p><p>(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services.</p><p>(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.</p><p>(1) <b>Timely access.</b> Each MCO, PIHP, and PAHP must do the following:</p><p>(i) Meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e).</p><p>(ii) Ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS, if the provider serves only Medicaid enrollees.</p><p>(iii) Make services included in the contract available 24 hours a day, 7 days a week, when medically necessary.</p><p>(iv) Establish mechanisms to ensure compliance by network providers.</p><p>(v) Monitor network providers regularly to determine compliance.</p><p>(vi) Take corrective action if there is a failure to comply by a network provider.</p><p>(2) Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes.</p><p>(3) Accessibility considerations. Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities.</p><p>(d) Applicability date. States will not be held out of compliance with the requirements of paragraphs (c)(1)(i) of this section prior to the first rating period that begins on or after 3 years after July 9, 2024, so long as they comply with the corresponding standard(s) codified in 42 CFR 438.2</p>"
+              },
+              "heading": "Assurance of plan compliance for 438.206",
+              "hint": "Indicate whether the state assures that the plan complies with the state’s network adequacy standards based on each analysis the state conducted for the plan during the reporting period."
+            }
+          }
+        ]
+      }
     },
     {
       "name": "Review & Submit",

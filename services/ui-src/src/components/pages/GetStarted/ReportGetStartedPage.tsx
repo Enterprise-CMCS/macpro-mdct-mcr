@@ -1,3 +1,4 @@
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 // components
 import {
   Box,
@@ -14,7 +15,6 @@ import {
   PageTemplate,
   SpreadsheetWidget,
 } from "components";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets

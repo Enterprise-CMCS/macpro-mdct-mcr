@@ -36,6 +36,7 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
 };
 
 interface Props {
+  label: string;
   children?: ReactChild | ReactChild[];
   [key: string]: any;
 }

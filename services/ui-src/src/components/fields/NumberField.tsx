@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+// types
+import { InputChangeEvent, AnyObject } from "types";
 // utils
 import {
   applyMask,
@@ -16,8 +17,6 @@ import {
   useStore,
   makeStringParseableForDatabase,
 } from "utils";
-// types
-import { InputChangeEvent, AnyObject } from "types";
 
 export const NumberField = ({
   name,

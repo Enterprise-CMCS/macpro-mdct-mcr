@@ -1,9 +1,10 @@
 // components
 import { Flex, Image, Link, Text } from "@chakra-ui/react";
 import { Card } from "components";
+// types
+import { AnyObject } from "types";
 // utils
 import { useBreakpoint } from "utils";
-import { AnyObject } from "types";
 import { createEmailLink } from "utils/other/email";
 // assets
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";

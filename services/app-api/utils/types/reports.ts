@@ -5,6 +5,7 @@ import {
   CustomHtmlElement,
   State,
   CompletionData,
+  ScreenReaderOnlyHeaderName,
 } from "./index";
 
 // REPORT TYPES
@@ -63,6 +64,7 @@ export interface DrawerReportPageShape extends ReportPageShapeBase {
   entityType: string;
   verbiage: DrawerReportPageVerbiage;
   drawerForm: FormJson;
+  addEntityDrawerForm?: FormJson;
   modalForm?: never;
   overlayForm?: never;
   form?: never;
@@ -73,6 +75,7 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
   verbiage: ModalDrawerReportPageVerbiage;
   modalForm: FormJson;
   drawerForm: FormJson;
+  addEntityDrawerForm?: never;
   overlayForm?: never;
   form?: never;
 }
@@ -84,6 +87,29 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   overlayForm?: FormJson;
   drawerForm?: never;
   form?: never;
+}
+
+export interface EntityDetailsMultiformShape {
+  form: FormJson;
+  table?: {
+    caption: string;
+    bodyRows: Array<[string]>;
+    headRow: Array<string | ScreenReaderOnlyHeaderName>;
+  };
+  verbiage?: EntityDetailsMultiformVerbiage;
+}
+
+export interface OverlayReportPageShape extends ReportPageShapeBase {
+  entityType: string;
+  verbiage: OverlayReportPageVerbiage;
+  overlayForm?: FormJson;
+  modalForm?: never;
+  drawerForm?: never;
+  form?: never;
+  details?: {
+    forms: [EntityDetailsMultiformShape];
+    verbiage: EntityDetailsMultiformVerbiage;
+  };
 }
 
 export interface ReportRouteWithoutForm extends ReportRouteBase {
@@ -115,6 +141,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   dashboardTitle: string;
   countEntitiesInTitle?: boolean;
   drawerTitle: string;
+  addEntityButtonText?: string;
   drawerInfo?: CustomHtmlElement[];
   missingEntityMessage?: CustomHtmlElement[];
   missingIlosMessage?: CustomHtmlElement[];
@@ -145,6 +172,25 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   tableHeader: string;
   addEditModalHint: string;
   emptyDashboardText: string;
+}
+
+export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
+  requiredMessages: {
+    [key: string]: CustomHtmlElement[] | undefined;
+  };
+  tableHeader: string;
+  emptyDashboardText: string;
+  enterEntityDetailsButtonText: string;
+}
+
+export interface EntityDetailsMultiformVerbiage extends ReportPageVerbiage {
+  backButton?: string;
+  heading?: string;
+  hint?: string;
+  accordion?: {
+    buttonLabel: string;
+    text: string;
+  };
 }
 
 // REPORT METADATA
@@ -182,7 +228,6 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
-  novMcparRelease: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

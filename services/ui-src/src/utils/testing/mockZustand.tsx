@@ -5,6 +5,7 @@ import {
   mockMLRLockedReport,
   mockMlrReport,
   mockNaaarReport,
+  mockNaaarReportWithAnalysisMethods,
   mockReportsByState,
 } from "./setupJest";
 // types
@@ -166,6 +167,18 @@ export const mockNaaarReportStore: McrReportState = {
   setLastSavedTime: () => {},
 };
 
+export const mockNaaarAnalysisMethodsReportStore: McrReportState = {
+  report: mockNaaarReportWithAnalysisMethods,
+  reportsByState: [mockNaaarReportWithAnalysisMethods],
+  copyEligibleReportsByState: mockReportsByState,
+  lastSavedTime: "1:58 PM",
+  setReport: () => {},
+  setReportsByState: () => {},
+  clearReportsByState: () => {},
+  setCopyEligibleReportsByState: () => {},
+  setLastSavedTime: () => {},
+};
+
 export const mockEmptyReportStore: McrReportState = {
   report: undefined,
   reportsByState: undefined,
@@ -201,6 +214,20 @@ export const mockEntityStore: McrEntityState = {
     ],
     report_reportingPeriodStartDate: "11/11/2011",
     report_reportingPeriodEndDate: "11/11/2011",
+  },
+  // ACTIONS
+  setSelectedEntity: () => {},
+  setEntityType: () => {},
+  setEntities: () => {},
+};
+
+export const mockAnalysisMethodEntityStore: McrEntityState = {
+  entities: [],
+  entityType: "analysisMethods",
+  selectedEntity: {
+    id: "k9t7YoOeTOAXX3s7qF6XfN33",
+    name: "Geomapping",
+    isRequired: true,
   },
   // ACTIONS
   setSelectedEntity: () => {},

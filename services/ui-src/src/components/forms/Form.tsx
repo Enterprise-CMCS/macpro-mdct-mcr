@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ForwardedRef, forwardRef, ReactNode, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -10,15 +10,6 @@ import { object as yupSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // components
 import { Box } from "@chakra-ui/react";
-// utils
-import {
-  compileValidationJsonFromFields,
-  formFieldFactory,
-  hydrateFormFields,
-  mapValidationTypesToSchema,
-  sortFormErrors,
-  useStore,
-} from "utils";
 // types
 import {
   AnyObject,
@@ -28,19 +19,31 @@ import {
   FormLayoutElement,
   ReportStatus,
 } from "types";
+// utils
+import {
+  compileValidationJsonFromFields,
+  formFieldFactory,
+  hydrateFormFields,
+  mapValidationTypesToSchema,
+  sortFormErrors,
+  useStore,
+} from "utils";
 
-export const Form = ({
-  id,
-  formJson,
-  onSubmit,
-  onError,
-  formData,
-  validateOnRender,
-  autosave,
-  dontReset,
-  children,
-  ...props
-}: Props) => {
+export const Form = forwardRef(function Form(
+  {
+    id,
+    formJson,
+    onSubmit,
+    onError,
+    formData,
+    validateOnRender,
+    autosave,
+    dontReset,
+    children,
+    ...props
+  }: Props,
+  ref?: ForwardedRef<HTMLFormElement>
+) {
   const { fields, options } = formJson;
 
   // determine if fields should be disabled (based on admin roles )
@@ -104,6 +107,7 @@ export const Form = ({
         id={id}
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
+        ref={ref}
         {...props}
       >
         <Box sx={sx}>{renderFormFields(fields)}</Box>
@@ -111,7 +115,7 @@ export const Form = ({
       </form>
     </FormProvider>
   );
-};
+});
 
 interface Props {
   id: string;

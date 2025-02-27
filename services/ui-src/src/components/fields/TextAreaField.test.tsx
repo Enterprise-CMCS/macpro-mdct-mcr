@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { TextAreaField } from "components";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -25,12 +26,6 @@ describe("Test TextAreaField component", () => {
     const textAreaField = screen.getByText("test-label");
     expect(textAreaField).toBeVisible();
   });
-});
 
-describe("Test TextAreaField accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(textAreaFieldComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(textAreaFieldComponent);
 });

@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-//components
+// components
 import { Menu } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { UserContext } from "utils";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockLogout = jest.fn();
 
@@ -25,7 +25,7 @@ const menuComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test Menu", () => {
+describe("<Menu />", () => {
   beforeEach(() => {
     render(menuComponent);
   });
@@ -39,12 +39,6 @@ describe("Test Menu", () => {
     await userEvent.click(logoutButton);
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
-});
 
-describe("Test Menu accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(menuComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(menuComponent);
 });

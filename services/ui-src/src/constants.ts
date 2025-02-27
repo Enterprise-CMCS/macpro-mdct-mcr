@@ -76,6 +76,15 @@ export enum States {
   WY = "Wyoming",
 }
 
+// ILOS
+export const PLAN_ILOS = [
+  {
+    id: "k9t7YoOeTOAXX3s7qF6XfN44",
+    name: "ilos",
+    isRequired: true,
+  },
+];
+
 // ANALYSIS METHODS (NAAAR)
 export const DEFAULT_ANALYSIS_METHODS = [
   {
@@ -114,6 +123,10 @@ export const DEFAULT_ANALYSIS_METHODS = [
     isRequired: true,
   },
 ];
+
+export function getDefaultAnalysisMethodIds() {
+  return DEFAULT_ANALYSIS_METHODS.map((method) => method.id);
+}
 
 // TIMEOUT PARAMS
 export const IDLE_WINDOW = 30 * 60 * 1000; // ms

@@ -53,6 +53,7 @@ export enum PageTypes {
   DRAWER = "drawer",
   MODAL_DRAWER = "modalDrawer",
   MODAL_OVERLAY = "modalOverlay",
+  PLAN_OVERLAY = "planOverlay",
   REVIEW_SUBMIT = "reviewSubmit",
 }
 
@@ -62,9 +63,21 @@ export interface ScreenReaderOnlyHeaderName {
   hiddenName: string;
 }
 
+export interface SortableHeadRow {
+  [key: string]: {
+    header: string;
+    admin?: boolean;
+    filter?: boolean;
+    hidden?: boolean;
+    sort?: boolean;
+    stateUser?: boolean;
+  };
+}
+
 export interface TableContentShape {
   caption?: string;
   headRow?: Array<string | ScreenReaderOnlyHeaderName>;
+  sortableHeadRow?: SortableHeadRow;
   bodyRows?: string[][];
 }
 

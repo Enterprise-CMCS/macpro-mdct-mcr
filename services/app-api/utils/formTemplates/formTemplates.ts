@@ -75,18 +75,12 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  isProgramPCCM: boolean,
-  novMcparRelease?: boolean
+  isProgramPCCM: boolean
 ) {
   let currentFormTemplate = formTemplateForReportType(reportType);
 
   if (isProgramPCCM) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
-  }
-
-  // if Nov MCPAR Release is not enabled, remove the fields from form template
-  if (!novMcparRelease) {
-    currentFormTemplate = handleTemplateForNovMcparRelease(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -325,17 +319,4 @@ const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
 
 export const filterByFlag = (route: ReportRoute, flag: string) => {
   return route?.flag !== flag;
-};
-
-const handleTemplateForNovMcparRelease = (originalReportTemplate: any) => {
-  const reportTemplate = structuredClone(originalReportTemplate);
-
-  for (let route of reportTemplate.routes) {
-    if (route?.children) {
-      route.children = route.children.filter((childRoute: ReportRoute) =>
-        filterByFlag(childRoute, "novMcparRelease")
-      );
-    }
-  }
-  return reportTemplate;
 };

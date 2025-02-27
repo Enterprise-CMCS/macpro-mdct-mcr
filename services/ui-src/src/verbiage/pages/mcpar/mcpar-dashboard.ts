@@ -40,6 +40,22 @@ export default {
         "#",
         { hiddenName: "Actions" },
       ],
+      sortableHeadRow: {
+        edit: {
+          header: "Edit report name and details",
+          hidden: true,
+          stateUser: true,
+        },
+        name: { header: "Program name" },
+        dueDate: { header: "Due date" },
+        lastAltered: { header: "Last edited" },
+        editedBy: { header: "Edited by" },
+        status: { header: "Status" },
+        submissionCount: { header: "#", admin: true },
+        actions: { header: "Actions", hidden: true },
+        adminRelease: { header: "Release", admin: true, hidden: true },
+        adminArchive: { header: "Archive", admin: true, hidden: true },
+      },
     },
     empty:
       "For this report, a managed care program is defined by a set of distinct benefits and eligibility criteria articulated in a contract between states and the state’s managed care plans",

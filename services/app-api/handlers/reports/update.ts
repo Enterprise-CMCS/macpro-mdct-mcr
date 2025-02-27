@@ -150,13 +150,14 @@ export const updateReport = handler(async (event, context) => {
   if (reportType === "NAAAR") {
     // this entity does not have validation specified in the form template
     validationSchema["analysisMethods"] = "objectArray";
+    validationSchema["standards"] = "objectArray";
   }
 
   // Validate passed field data
   let validatedFieldData;
   try {
     validatedFieldData = await validateFieldData(
-      formTemplate.validationJson,
+      validationSchema,
       unvalidatedFieldData
     );
   } catch {
@@ -184,7 +185,8 @@ export const updateReport = handler(async (event, context) => {
 
   const completionStatus = await calculateCompletionStatus(
     fieldData,
-    formTemplate
+    formTemplate,
+    validationSchema
   );
 
   // validate report metadata

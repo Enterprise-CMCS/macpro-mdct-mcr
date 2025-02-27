@@ -10,14 +10,14 @@ import {
   Tr,
   VisuallyHidden,
 } from "@chakra-ui/react";
-// utils
-import { sanitizeAndParseHtml } from "utils";
 // types
 import {
   AnyObject,
   ScreenReaderOnlyHeaderName,
   TableContentShape,
 } from "types";
+// utils
+import { sanitizeAndParseHtml } from "utils";
 
 export const Table = ({
   content,
@@ -132,5 +132,4 @@ const sx = {
       fontSize: "xs",
     },
   },
-  ".two-column &": {}, // TODO: add additional styling for two-column dynamic field tables if needed
 };

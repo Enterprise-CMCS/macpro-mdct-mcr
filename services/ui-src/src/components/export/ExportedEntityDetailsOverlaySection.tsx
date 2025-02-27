@@ -14,8 +14,8 @@ import {
 // utils
 import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
 // verbiage
-import mcparVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "../../verbiage/pages/mlr/mlr-export";
+import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 
 const exportVerbiageMap: { [key in ReportType]: any } = {
   MCPAR: mcparVerbiage,

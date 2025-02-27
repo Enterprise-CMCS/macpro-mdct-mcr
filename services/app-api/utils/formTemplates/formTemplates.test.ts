@@ -72,8 +72,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM,
-      true
+      programIsNotPCCM
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -103,8 +102,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsPCCM,
-      false
+      programIsPCCM
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -135,8 +133,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM,
-      false
+      programIsNotPCCM
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -175,8 +172,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM,
-      true
+      programIsNotPCCM
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -201,8 +197,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM,
-      true
+      programIsNotPCCM
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -242,8 +237,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM,
-      true
+      programIsNotPCCM
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -274,8 +268,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM,
-      false
+      programIsNotPCCM
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -314,8 +307,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM,
-      true
+      programIsNotPCCM
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();

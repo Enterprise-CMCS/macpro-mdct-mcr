@@ -1,18 +1,12 @@
 service: ui-src
 
-frameworkVersion: "3"
+frameworkVersion: "4"
 
 plugins:
   - serverless-plugin-scripts
   - serverless-s3-sync
   - serverless-stack-termination-protection
-  - serverless-s3-bucket-helper
   - serverless-cloudfront-invalidate
-
-s3BucketHelper:
-  loggingConfiguration:
-    destinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
-    logFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
 
 provider:
   name: aws
@@ -20,7 +14,7 @@ provider:
   region: us-east-1
   stackTags:
     PROJECT: ${self:custom.project}
-    SERVICE: ${self:service}  
+    SERVICE: ${self:service}
 
 custom:
   project: "mcr"
@@ -61,6 +55,7 @@ custom:
     hooks:
       # Build the static archive and populate the config
       package:initialize: |
+        cd services/ui-src/
         set -e
         SKIP_PREFLIGHT_CHECK=true yarn run build
         export API_REGION=${self:custom.api_region}
@@ -83,3 +78,10 @@ custom:
         export LOCAL_LOGIN=false
         ./scripts/configure-env.sh
         cp public/env-config.js build/env-config.js
+resources:
+  Resources:
+    Honk: # this is just because it won't deploy unless we have some resource being created
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Value: "honk"

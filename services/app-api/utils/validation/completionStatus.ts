@@ -1,4 +1,5 @@
 // types
+import { DEFAULT_ANALYSIS_METHODS } from "../constants/constants";
 import {
   AnyObject,
   CompletionData,
@@ -36,11 +37,11 @@ export const isComplete = (completionStatus: CompletionData): Boolean => {
 // Entry point for calculating completion status
 export const calculateCompletionStatus = async (
   fieldData: AnyObject,
-  formTemplate: AnyObject
+  formTemplate: AnyObject,
+  validationSchema?: AnyObject
 ) => {
   // Parent Dictionary for holding all route completion status
-
-  const validationJson = formTemplate.validationJson;
+  const validationJson = validationSchema ?? formTemplate.validationJson;
 
   const areFieldsValid = async (
     fieldsToBeValidated: Record<string, string>
@@ -203,6 +204,38 @@ export const calculateCompletionStatus = async (
         ) {
           routeCompletion = { [route.path]: true };
           return;
+        }
+        routeCompletion = {
+          [route.path]: await calculateEntityCompletion(
+            [route.drawerForm],
+            route.entityType
+          ),
+        };
+        // handle Analysis Methods case: this section allows users to add custom methods, which use different form questions
+        if (
+          route.path ===
+            "/naaar/state-and-program-information/analysis-methods" &&
+          route.addEntityDrawerForm
+        ) {
+          let areAllFormsComplete = true;
+          for (const entity of fieldData[route.entityType]) {
+            // get completion status for entity, using the correct form template
+            const applicableForm = DEFAULT_ANALYSIS_METHODS.includes(
+              entity.name
+            )
+              ? route.drawerForm
+              : route.addEntityDrawerForm;
+
+            areAllFormsComplete = await calculateFormCompletion(
+              applicableForm,
+              entity
+            );
+
+            // if any form is incomplete, exit loop and return false
+            if (!areAllFormsComplete) break;
+          }
+          routeCompletion = { [route.path]: areAllFormsComplete };
+          break;
         }
         routeCompletion = {
           [route.path]: await calculateEntityCompletion(
