@@ -75,6 +75,7 @@ export default class BasePage {
     await this.myAccountButton.click();
     await this.accountMenu.isVisible();
     await this.logoutButton.click();
+    await this.page.waitForResponse((response) => response.ok());
   }
 
   public async e2eA11y() {
@@ -87,7 +88,14 @@ export default class BasePage {
     for (const size of Object.values(breakpoints)) {
       this.page.setViewportSize({ width: size[0], height: size[1] });
       const results = await new AxeBuilder({ page: this.page })
-        .withTags(["wcag2a", "wcag2aa"])
+        .withTags([
+          "wcag2a",
+          "wcag2aa",
+          "wcag21a",
+          "wcag21aa",
+          "wcag22aa",
+          "best-practice",
+        ])
         .disableRules(["duplicate-id"])
         .analyze();
       expect(results.violations).toEqual([]);

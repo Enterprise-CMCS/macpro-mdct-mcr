@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 // components
 import {
@@ -12,14 +13,15 @@ import {
 } from "@chakra-ui/react";
 import { MenuOption } from "components";
 // utils
-import { useBreakpoint } from "utils";
+import { useBreakpoint, UserContext } from "utils";
 // assets
 import accountCircleIcon from "assets/icons/icon_account_circle.png";
 import chevronDownIcon from "assets/icons/icon_arrow_down.png";
 import editIcon from "assets/icons/icon_edit_square.png";
 import logoutIcon from "assets/icons/icon_arrow_right_square.png";
 
-export const Menu = ({ handleLogout }: Props) => {
+export const Menu = () => {
+  const { logout } = useContext(UserContext);
   const { isMobile } = useBreakpoint();
   return (
     <MenuRoot offset={[8, 20]}>
@@ -54,7 +56,7 @@ export const Menu = ({ handleLogout }: Props) => {
           </MenuItem>
         </Link>
         <MenuItem
-          onClick={handleLogout}
+          onClick={logout}
           sx={sx.menuItem}
           tabIndex={0}
           data-testid="header-menu-option-log-out"
@@ -65,10 +67,6 @@ export const Menu = ({ handleLogout }: Props) => {
     </MenuRoot>
   );
 };
-
-interface Props {
-  handleLogout: () => void;
-}
 
 const sx = {
   menuButton: {

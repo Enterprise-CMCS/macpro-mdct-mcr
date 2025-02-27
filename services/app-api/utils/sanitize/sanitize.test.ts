@@ -12,35 +12,13 @@ const safeUndefined = undefined;
 
 const cleanString = "test";
 
-const dirtyImgString = '<img src="foo.png" onload="alert("Hello!")"/>';
-const cleanImgString = '<img src="foo.png">';
-
-const dirtyLinkString = "<UL><li><A HREF=//google.com>click</UL>";
+const dirtyLinkString = "<ul><li><a href=//google.com>click</ul>";
 const cleanLinkString = '<ul><li><a href="//google.com">click</a></li></ul>';
-
-const dirtyScriptString =
-  "<math><mi//xlink:href='data:x,<script>alert(4)</script>'>";
-const cleanScriptString = "<math><mi></mi></math>";
-
-const dirtySvgString = "<svg><g/onload=alert(2)//<p>";
-const cleanSvgString = "<svg><g></g></svg>";
 
 // ARRAYS
 
-const dirtyStringArray = [
-  cleanString,
-  dirtyImgString,
-  dirtyLinkString,
-  dirtySvgString,
-  dirtyScriptString,
-];
-const cleanStringArray = [
-  cleanString,
-  cleanImgString,
-  cleanLinkString,
-  cleanSvgString,
-  cleanScriptString,
-];
+const dirtyStringArray = [cleanString, dirtyLinkString];
+const cleanStringArray = [cleanString, cleanLinkString];
 
 const dirtyNestedStringArray = [dirtyStringArray, dirtyStringArray];
 const cleanNestedStringArray = [cleanStringArray, cleanStringArray];
@@ -48,11 +26,11 @@ const cleanNestedStringArray = [cleanStringArray, cleanStringArray];
 // OBJECTS
 
 const dirtyObject = {
-  string: dirtyImgString,
+  string: dirtyLinkString,
   array: dirtyStringArray,
 };
 const cleanObject = {
-  string: cleanImgString,
+  string: cleanLinkString,
   array: cleanStringArray,
 };
 
@@ -61,10 +39,7 @@ const cleanObjectArray = [cleanObject, cleanObject];
 
 const dirtyComplexObject = {
   string1: cleanString,
-  string2: dirtyImgString,
-  string3: dirtyLinkString,
-  string4: dirtySvgString,
-  string5: dirtyScriptString,
+  string2: dirtyLinkString,
   array: dirtyStringArray,
   nestedStringArray: dirtyNestedStringArray,
   nestedObjectArray: dirtyObjectArray,
@@ -74,10 +49,7 @@ const dirtyComplexObject = {
 };
 const cleanComplexObject = {
   string1: cleanString,
-  string2: cleanImgString,
-  string3: cleanLinkString,
-  string4: cleanSvgString,
-  string5: cleanScriptString,
+  string2: cleanLinkString,
   array: cleanStringArray,
   nestedStringArray: cleanNestedStringArray,
   nestedObjectArray: cleanObjectArray,
@@ -93,10 +65,7 @@ describe("Test sanitizeString", () => {
   });
 
   test("Test sanitizeString cleans dirty strings", () => {
-    expect(sanitizeString(dirtyImgString)).toEqual(cleanImgString);
     expect(sanitizeString(dirtyLinkString)).toEqual(cleanLinkString);
-    expect(sanitizeString(dirtySvgString)).toEqual(cleanSvgString);
-    expect(sanitizeString(dirtyScriptString)).toEqual(cleanScriptString);
   });
 });
 

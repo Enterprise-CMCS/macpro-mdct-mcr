@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-//components
+// components
 import { Drawer } from "components";
 // constants
 import { closeText } from "../../constants";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupJest";
 
@@ -23,7 +24,7 @@ const drawerComponent = (
   />
 );
 
-describe("Test Drawer", () => {
+describe("<Drawer />", () => {
   beforeEach(() => {
     render(drawerComponent);
   });
@@ -33,22 +34,12 @@ describe("Test Drawer", () => {
       screen.getByText(mockModalDrawerReportPageVerbiage.drawerTitle)
     ).toBeVisible();
   });
-});
-
-describe("Test Drawer fill form and close", () => {
-  it("Drawer can be closed with close button", async () => {
-    render(drawerComponent);
+  test("Drawer can be closed with close button", async () => {
     const closeButton = screen.getByText(closeText);
     expect(closeButton).toBeVisible();
     await userEvent.click(closeButton);
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
-});
 
-describe("Test Drawer accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(drawerComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(drawerComponent);
 });

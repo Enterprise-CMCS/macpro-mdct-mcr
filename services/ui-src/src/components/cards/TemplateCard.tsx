@@ -1,11 +1,12 @@
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { useNavigate } from "react-router-dom";
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
-// utils
-import { useNavigate } from "react-router-dom";
-import { getSignedTemplateUrl, useBreakpoint } from "utils";
+// types
 import { AnyObject } from "types";
+// utils
+import { getSignedTemplateUrl, useBreakpoint } from "utils";
 // assets
 import downloadIcon from "assets/icons/icon_download.png";
 import nextIcon from "assets/icons/icon_next_white.png";

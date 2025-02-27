@@ -66,9 +66,10 @@ function unlockMLR(programName) {
   cy.get('button:contains("Go to Report Dashboard")').click();
 
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Unlock")')
       .as("mlrUnlockButton")
       .focus();
@@ -81,7 +82,7 @@ function unlockMLR(programName) {
     cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Unlock")')
       .should("be.disabled");
   });
@@ -95,9 +96,10 @@ function archiveReport(programName) {
   cy.get('button:contains("Go to Report Dashboard")').click();
 
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Archive")')
       .as("mlrArchiveButton")
       .focus();
@@ -107,9 +109,10 @@ function archiveReport(programName) {
 
 function verifyCannotUnlockReport(programName) {
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Unlock")')
       .should("be.disabled");
   });
@@ -118,9 +121,10 @@ function verifyCannotUnlockReport(programName) {
 function verifyFormIsFilledFromLastSubmission(programName) {
   cy.visit("/mlr");
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Edit")')
       .as("mlrVerifyEditButton")
       .focus();
@@ -145,9 +149,10 @@ function fillOutMLR(programName) {
 
   //Find our new program and open it
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Edit")')
       .as("mlrFillEditButton")
       .focus();

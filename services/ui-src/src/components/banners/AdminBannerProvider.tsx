@@ -1,9 +1,9 @@
 import { createContext, ReactNode, useMemo, useEffect } from "react";
-// utils
-import { AdminBannerData, AdminBannerMethods } from "types/banners";
+// constants
 import { bannerId } from "../../constants";
-import { bannerErrors } from "verbiage/errors";
-// api
+// types
+import { AdminBannerData, AdminBannerMethods } from "types/banners";
+// utils
 import {
   deleteBanner,
   getBanner,
@@ -11,6 +11,8 @@ import {
   useStore,
   checkDateRangeStatus,
 } from "utils";
+// verbiage
+import { bannerErrors } from "verbiage/errors";
 
 const ADMIN_BANNER_ID = bannerId;
 

@@ -1,7 +1,7 @@
 // components
 import { Box } from "@chakra-ui/react";
 import { ChoiceListField } from "components";
-// utils
+// types
 import { ChoiceFieldProps } from "types";
 
 export const RadioField = ({

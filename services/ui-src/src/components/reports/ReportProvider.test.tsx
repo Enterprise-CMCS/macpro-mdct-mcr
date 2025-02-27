@@ -19,7 +19,7 @@ import {
   mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { axe } from "jest-axe";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
@@ -52,7 +52,7 @@ const TestComponent = () => {
       <button onClick={() => context.archiveReport(mockReportKeys)}>
         Archive Report
       </button>
-      <button onClick={() => context.releaseReport!(mockReportKeys)}>
+      <button onClick={() => context.releaseReport(mockReportKeys)}>
         Release Report
       </button>
       <button onClick={() => context.submitReport(mockReportKeys)}>
@@ -205,32 +205,25 @@ describe("<ReportProvider />", () => {
     // verify storage is set to empty string
     expect(localStorage.getItem("selectedReport")).toBe("");
   });
-});
-
-describe("Test ReportProvider fetches when loading on report page", () => {
-  beforeEach(async () => {
-    localStorage.setItem("selectedReportType", "MCPAR");
-    localStorage.setItem("selectedState", "AB");
-    localStorage.setItem("selectedReport", "mock-report-id");
-    localStorage.setItem("selectedReportBasePath", "/mock");
-  });
-  afterEach(() => {
-    jest.clearAllMocks();
-    localStorage.clear();
-  });
-
-  test("getReport is called on load", async () => {
-    await act(async () => {
-      await render(testComponent);
+  describe("Test ReportProvider fetches when loading on report page", () => {
+    beforeEach(async () => {
+      localStorage.setItem("selectedReportType", "MCPAR");
+      localStorage.setItem("selectedState", "AB");
+      localStorage.setItem("selectedReport", "mock-report-id");
+      localStorage.setItem("selectedReportBasePath", "/mock");
     });
-    await waitFor(() => expect(getReport).toHaveBeenCalledTimes(1));
-  });
-});
+    afterEach(() => {
+      jest.clearAllMocks();
+      localStorage.clear();
+    });
 
-describe("Test Error view accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(testComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
+    test("getReport is called on load", async () => {
+      await act(async () => {
+        await render(testComponent);
+      });
+      await waitFor(() => expect(getReport).toHaveBeenCalledTimes(1));
+    });
   });
+
+  testA11y(testComponent);
 });

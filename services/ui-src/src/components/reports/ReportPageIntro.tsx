@@ -1,9 +1,10 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { Alert, InstructionsAccordion, SpreadsheetWidget } from "components";
+// types
+import { AlertTypes, AnyObject } from "types";
 // utils
 import { parseCustomHtml } from "utils";
-import { AlertTypes, AnyObject } from "types";
 
 export const ReportPageIntro = ({
   text,

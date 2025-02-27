@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
-import { CheckboxField } from "components";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
+// components
+import { CheckboxField } from "components";
+// utils
 import { mockChoices } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockSetValue = jest.fn();
@@ -35,7 +36,7 @@ const CheckboxFieldComponent = (
   />
 );
 
-describe("Test CheckboxField component", () => {
+describe("<CheckboxField />", () => {
   test("CheckboxField renders as Checkbox", () => {
     mockGetValues(undefined);
     render(CheckboxFieldComponent);
@@ -55,13 +56,8 @@ describe("Test CheckboxField component", () => {
       }
     );
   });
-});
 
-describe("Test CheckboxField accessibility", () => {
-  it("Should not have basic accessibility issues when given checkbox", async () => {
+  testA11y(CheckboxFieldComponent, () => {
     mockGetValues(undefined);
-    const { container } = render(CheckboxFieldComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
   });
 });

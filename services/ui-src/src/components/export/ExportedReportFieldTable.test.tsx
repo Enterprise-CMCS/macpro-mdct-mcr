@@ -1,5 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
+// components
+import { ExportedReportFieldTable } from "components";
+// types
+import { DrawerReportPageShape } from "types";
 // utils
 import {
   mockDrawerReportPageJson,
@@ -13,10 +16,7 @@ import {
   mockDrawerForm,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-// components
-import { ExportedReportFieldTable } from "components";
-// types
-import { DrawerReportPageShape } from "types";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -186,7 +186,7 @@ const noHintComponent = <ExportedReportFieldTable section={noHintJson} />;
 
 const hintComponent = <ExportedReportFieldTable section={hintJson} />;
 
-describe("ExportedReportFieldRow", () => {
+describe("<ExportedReportFieldRow />", () => {
   test("Is present", async () => {
     render(exportedStandardTableComponent);
     const row = screen.getByTestId("exportTable");
@@ -240,12 +240,6 @@ describe("ExportedReportFieldRow", () => {
     const hint = screen.queryByText(/Mock Hint Text/);
     expect(hint).not.toBeInTheDocument();
   });
-});
 
-describe("Test ExportedReportFieldRow accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(exportedStandardTableComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(exportedStandardTableComponent);
 });

@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 // components
+import { Box } from "@chakra-ui/react";
 import { ExportedReportFieldRow, Table } from "components";
 // types
 import {
@@ -15,11 +16,10 @@ import {
   ReportType,
   entityTypes,
 } from "types";
-// verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-export";
 // utils
 import { parseCustomHtml, useStore } from "utils";
-import { Box } from "@chakra-ui/react";
+// verbiage
+import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
 export const ExportedReportFieldTable = ({ section }: Props) => {
   const { report } = useStore();

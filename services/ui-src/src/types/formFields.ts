@@ -1,5 +1,5 @@
 import React from "react";
-import { AnyObject } from "types";
+import { AnyObject, DrawerReportPageShape, ReportShape } from "types";
 
 // FORM & FIELD STRUCTURE
 
@@ -15,6 +15,8 @@ export const entityTypes = [
   "sanctions",
   "program",
   "ilos",
+  "analysisMethods",
+  "standards",
 ] as const;
 
 /**
@@ -117,6 +119,7 @@ export interface ChoiceFieldProps {
 export interface Choice {
   key: string; // choice.name
   value: string; // choice.value
+  id?: string; // choice.id
 }
 
 export interface DropdownChoice {
@@ -135,6 +138,16 @@ export interface AutosaveField {
   defaultValue?: FieldValue;
   hydrationValue?: FieldValue;
   overrideCheck?: boolean;
+}
+
+export interface getFormParams {
+  route: DrawerReportPageShape;
+  report?: ReportShape;
+  isCustomEntityForm?: boolean;
+  isAnalysisMethodsPage?: boolean;
+  isReportingOnStandards?: boolean;
+  ilos?: AnyObject[];
+  reportingOnIlos?: boolean;
 }
 
 /**

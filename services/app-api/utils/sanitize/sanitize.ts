@@ -4,6 +4,22 @@ import { JSDOM } from "jsdom";
 const windowEmulator: any = new JSDOM("").window;
 const DOMPurify = createDOMPurify(windowEmulator);
 
+/*
+ * DOMPurify prevents all XSS attacks by default. With these settings, it also
+ * prevents "deception" attacks. If an attacker could put <div style="...">
+ * into the site's admin banner, they could make give the banner any appearance,
+ * overlaid anywhere on the page. For example, a fake "session expired" modal
+ * with a malicious link. Thus, this very strict DOMPurify config.
+ */
+DOMPurify.setConfig({
+  // Only these tags will be allowed through
+  ALLOWED_TAGS: ["ul", "ol", "li", "a", "#text"],
+  // On those tags, only these attributes are allowed
+  ALLOWED_ATTR: ["href", "alt"],
+  // If a tag is removed, so will all its child elements & text
+  KEEP_CONTENT: false,
+});
+
 // sanitize string
 export const sanitizeString = (string: string) => {
   if (DOMPurify.isSupported) {

@@ -65,13 +65,25 @@ const creationEvent: APIGatewayProxyEvent = {
   }),
 };
 
-const naaarCreationEvent: APIGatewayProxyEvent = {
+const naaarCreationDisabledEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
   pathParameters: { reportType: "NAAAR", state: "AL" },
   body: JSON.stringify({
     fieldData: {
       contactName: "Contact Name",
+      analysisMethods: [
+        {
+          id: "id1",
+          name: "Geomapping",
+          isRequired: true,
+        },
+        {
+          id: "id2",
+          name: "Plan Provider Directory Review",
+          isRequired: true,
+        },
+      ],
     },
     metadata: {
       reportType: "NAAAR",
@@ -83,6 +95,40 @@ const naaarCreationEvent: APIGatewayProxyEvent = {
       combinedData: false,
       lastAlteredBy: "Thelonious States",
       naaarReport: false,
+    },
+  }),
+};
+
+const naaarCreationEvent: APIGatewayProxyEvent = {
+  ...proxyEvent,
+  headers: { "cognito-identity-id": "test" },
+  pathParameters: { reportType: "NAAAR", state: "AL" },
+  body: JSON.stringify({
+    fieldData: {
+      contactName: "Contact Name",
+      analysisMethods: [
+        {
+          id: "id1",
+          name: "Geomapping",
+          isRequired: true,
+        },
+        {
+          id: "id2",
+          name: "Plan Provider Directory Review",
+          isRequired: true,
+        },
+      ],
+    },
+    metadata: {
+      reportType: "NAAAR",
+      contactName: "Contact Name",
+      status: "Not started",
+      reportingPeriodStartDate: 162515200000,
+      reportingPeriodEndDate: 168515200000,
+      dueDate: 168515200000,
+      combinedData: false,
+      lastAlteredBy: "Thelonious States",
+      naaarReport: true,
     },
   }),
 };
@@ -242,12 +288,12 @@ describe("Test createReport API method", () => {
   });
 
   test("Test NAAAR report creation when form is disabled throws 400 error", async () => {
-    const res = await createReport(naaarCreationEvent, null);
+    const res = await createReport(naaarCreationDisabledEvent, null);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
     expect(res.body).toContain(error.INVALID_DATA);
   });
 
-  test("Test successful run of report creation, not copied", async () => {
+  test("Test successful run of MCPAR report creation, not copied", async () => {
     dynamoClientMock.on(QueryCommand).resolves({
       Items: [],
     });
@@ -314,6 +360,26 @@ describe("Test createReport API method", () => {
       body.fieldData.state_statewideMedicaidManagedCareEnrollment
     ).toBeUndefined();
     expect(body.fieldData.programName).toBeUndefined();
+    expect(body.fieldData.plans).toBeUndefined();
+    expect(s3PutSpy).toHaveBeenCalled();
+  });
+
+  test("Test successful run of NAAAR report creation, not copied", async () => {
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const res = await createReport(naaarCreationEvent, null);
+
+    const body = JSON.parse(res.body!);
+    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(res.statusCode).toBe(StatusCodes.Created);
+    expect(body.status).toContain("Not started");
+    expect(body.fieldDataId).toBeDefined;
+    expect(body.formTemplateId).toBeDefined;
+    expect(body.fieldData.analysisMethods).toBeDefined();
+    expect(body.fieldData.analysisMethods.length).toBeGreaterThan(0);
     expect(body.fieldData.plans).toBeUndefined();
     expect(s3PutSpy).toHaveBeenCalled();
   });

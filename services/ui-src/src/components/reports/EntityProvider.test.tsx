@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useContext, useEffect } from "react";
+// components
 import { EntityContext, EntityProvider } from "./EntityProvider";
 
 const testEntities = [
@@ -60,7 +61,7 @@ const testComponentNoEntity = (
   </EntityProvider>
 );
 
-describe("Test update entities provider function", () => {
+describe("<EntityProvider />", () => {
   test("Should update entities if the selected entity is valid", async () => {
     const result = await render(testComponent);
     expect(

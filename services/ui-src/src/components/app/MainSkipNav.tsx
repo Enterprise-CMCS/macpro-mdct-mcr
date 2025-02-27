@@ -1,7 +1,6 @@
-// components
-import { ReportContext } from "components/reports/ReportProvider";
 import { useContext } from "react";
-import { SkipNav } from "components";
+// components
+import { ReportContext, SkipNav } from "components";
 
 /**
  * The app's main skip nav changes its target, if we are on a report route.

@@ -12,7 +12,9 @@
     "test": "cd tests && npm test && cd -",
     "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
-    "test:e2e-ui": "cd tests && yarn run test:e2e-ui"
+    "test:e2e-ui": "cd tests && yarn run test:e2e-ui",
+    "track-flags": "./scripts/track-flags.sh",
+    "track-todos": "./scripts/track-todos.sh"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,11 @@
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "fast-xml-parser": "4.5.0",
-    "loader-utils": "2.0.4"
+    "axios": "^1.7.9",
+    "fast-xml-parser": "4.5.1",
+    "loader-utils": "2.0.4",
+    "tar": "^6.2.1",
+    "webpack": "^5.97.1"
   },
   "devDependencies": {
     "@serverless/compose": "^1.3.0",
@@ -49,14 +54,12 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^2.4.1",
-    "serverless": "^3.39.0",
-    "serverless-bundle": "^6.0.0",
+    "serverless": "^4.4.18",
     "serverless-cloudfront-invalidate": "^1.11.0",
     "serverless-dotenv-plugin": "^3.0.0",
     "serverless-iam-helper": "github:Enterprise-CMCS/serverless-iam-helper",
-    "serverless-offline": "^13.5.0",
+    "serverless-offline": "^14.4.0",
     "serverless-plugin-scripts": "^1.0.2",
-    "serverless-s3-bucket-helper": "github:Enterprise-CMCS/serverless-s3-bucket-helper#master",
     "serverless-s3-sync": "^3.2.0",
     "serverless-stack-termination-protection": "^2.0.2",
     "typescript": "^4.6.3",

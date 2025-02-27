@@ -1,9 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { ErrorAlert } from "components";
-import { genericErrorContent } from "verbiage/errors";
+// types
 import { ErrorVerbiage } from "types";
+// utils
+import { testA11y } from "utils/testing/commonTests";
+// verbiage
+import { genericErrorContent } from "verbiage/errors";
 
 const error: ErrorVerbiage = {
   title: "We've run into a problem",
@@ -12,7 +15,7 @@ const error: ErrorVerbiage = {
 
 const errorAlertComponent = <ErrorAlert error={error} />;
 
-describe("Test ErrorAlert component", () => {
+describe("<ErrorAlert />", () => {
   beforeEach(() => {
     render(errorAlertComponent);
   });
@@ -24,12 +27,6 @@ describe("Test ErrorAlert component", () => {
   test("ErrorAlert description is visible", () => {
     expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
   });
-});
 
-describe("Test ErrorAlert accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(errorAlertComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(errorAlertComponent);
 });

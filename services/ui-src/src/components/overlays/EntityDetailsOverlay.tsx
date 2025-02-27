@@ -6,11 +6,11 @@ import { Form, ReportPageIntro } from "components";
 import { EntityShape, EntityType, FormJson } from "types";
 // utils
 import { useStore } from "utils";
+// verbiage
+import accordionVerbiage from "verbiage/pages/accordion";
+import overlayVerbiage from "verbiage/pages/overlays";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
-// verbiage
-import accordionVerbiage from "../../verbiage/pages/accordion";
-import overlayVerbiage from "../../verbiage/pages/overlays";
 
 export const EntityDetailsOverlay = ({
   closeEntityDetailsOverlay,
@@ -28,6 +28,10 @@ export const EntityDetailsOverlay = ({
   const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
   useEffect(() => {
+    setEntering(false);
+  }, []);
+
+  useEffect(() => {
     setSelectedEntity(selectedEntity);
     setEntityType(entityType);
     setEntities(entities);
@@ -36,8 +40,6 @@ export const EntityDetailsOverlay = ({
       setSelectedEntity(undefined);
     };
   }, [entityType, selectedEntity]);
-
-  setEntering(false);
 
   // Display Variables
   const {

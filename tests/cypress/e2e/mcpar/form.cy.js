@@ -70,7 +70,7 @@ function fillOutMCPAR() {
     cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Edit")')
       .as("mcparEditButton")
       .focus();
@@ -104,9 +104,10 @@ function fillOutPartialMCPAR() {
 
   //Find our new program and open it
   cy.get("table").within(() => {
+    cy.wait(2000);
     cy.get("td")
       .contains(programName)
-      .parent()
+      .parents("tr")
       .find('button:contains("Edit")')
       .as("mcparPartialEditButton")
       .focus();

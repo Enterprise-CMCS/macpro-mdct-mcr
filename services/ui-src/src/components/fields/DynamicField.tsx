@@ -9,6 +9,7 @@ import {
   TextField,
   EntityContext,
 } from "components";
+// styles
 import { svgFilters } from "styles/theme";
 // types
 import {
@@ -23,7 +24,7 @@ import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
-export const DynamicField = ({ name, label, ...props }: Props) => {
+export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, entities, entityType, selectedEntity } = useStore();
@@ -64,6 +65,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
     const currentEntityIndex = displayValues.indexOf(currentEntity!);
     const newDisplayValues = [...displayValues];
     newDisplayValues[currentEntityIndex].name = value;
+    if (isRequired) newDisplayValues[currentEntityIndex].isRequired = true;
     setDisplayValues(newDisplayValues);
   };
 
@@ -140,6 +142,19 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
         }
       );
 
+      // filter analysis methods to remove deleted plans
+      const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
+        (method: EntityShape) => {
+          if (method.analysis_method_applicable_plans?.length) {
+            method.analysis_method_applicable_plans =
+              method.analysis_method_applicable_plans.filter(
+                (plan: AnyObject) => plan.key !== selectedRecord.id
+              );
+          }
+          return method;
+        }
+      );
+
       // delete ILOS data from corresponding plans
       const filteredPlans =
         name === "plans"
@@ -188,6 +203,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
           sanctions: filteredSanctions,
           qualityMeasures: filteredQualityMeasures,
           plans: filteredPlans,
+          analysisMethods: filteredAnalysisMethods,
         },
       };
 
@@ -298,6 +314,7 @@ export const DynamicField = ({ name, label, ...props }: Props) => {
 interface Props {
   name: EntityType;
   label: string;
+  isRequired?: boolean;
   [key: string]: any;
 }
 

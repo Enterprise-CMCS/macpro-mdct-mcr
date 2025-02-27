@@ -1,7 +1,7 @@
 // components
 import { Accordion, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { AccordionItem, Table } from "components";
-// utils
+// types
 import { AnyObject } from "types";
 
 export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
@@ -15,7 +15,7 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
           sxOverride={sx.table}
         />
       )}
-      {verbiage.list && (
+      {verbiage.list?.length > 0 && (
         <UnorderedList sx={sx.list}>
           {verbiage.list.map((listItem: string, index: number) => (
             <ListItem key={index}>{listItem}</ListItem>

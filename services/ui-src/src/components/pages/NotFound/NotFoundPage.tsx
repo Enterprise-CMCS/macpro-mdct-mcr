@@ -3,10 +3,10 @@ import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { PageTemplate } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
-// assets
-import warningIcon from "assets/icons/icon_warning.png";
 // verbiage
 import verbiage from "verbiage/pages/not-found";
+// assets
+import warningIcon from "assets/icons/icon_warning.png";
 
 export const NotFoundPage = () => {
   const { header, subHeading, emailText, body } = verbiage;

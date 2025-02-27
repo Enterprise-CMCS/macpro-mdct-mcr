@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { Banner } from "components";
 // types
 import { AlertTypes } from "types";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 const bannerComponent = (
   <Banner
@@ -15,21 +16,12 @@ const bannerComponent = (
   />
 );
 
-describe("Test Banner Item", () => {
-  beforeEach(() => {
-    render(bannerComponent);
-  });
-
+describe("<Banner />", () => {
   test("Banner is visible", () => {
+    render(bannerComponent);
     expect(screen.getByText("Test banner!")).toBeVisible();
     expect(screen.getByText("This is for testing.")).toBeVisible();
   });
-});
 
-describe("Test Banner accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(bannerComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(bannerComponent);
 });

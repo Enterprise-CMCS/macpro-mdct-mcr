@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
-//components
+// components
 import { MainSkipNav, ReportContext } from "components";
+// types
 import { ReportContextShape } from "types";
+// utils
+import { testA11y } from "utils/testing/commonTests";
 
 const mainSkipNavOutsideReport = (
   <ReportContext.Provider
@@ -28,8 +30,8 @@ const mainSkipNavInsideReport = (
   </ReportContext.Provider>
 );
 
-describe("Test MainSkipNav", () => {
-  it("should be visible and focusable", async () => {
+describe("<MainSkipNav />", () => {
+  test("should be visible and focusable", async () => {
     render(mainSkipNavOutsideReport);
     const skipNav = document.getElementById("skip-nav-main")!;
     skipNav.focus();
@@ -39,7 +41,7 @@ describe("Test MainSkipNav", () => {
     await expect(skipNavLink).toBeVisible();
   });
 
-  it("should skip to report content when on a report page", async () => {
+  test("should skip to report content when on a report page", async () => {
     render(mainSkipNavInsideReport);
     const skipNav = document.getElementById("skip-nav-main")!;
     skipNav.focus();
@@ -48,12 +50,6 @@ describe("Test MainSkipNav", () => {
     await expect(skipNavLink).toHaveFocus();
     await expect(skipNavLink).toBeVisible();
   });
-});
 
-describe("Test MainSkipNav accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(mainSkipNavOutsideReport);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(mainSkipNavOutsideReport);
 });

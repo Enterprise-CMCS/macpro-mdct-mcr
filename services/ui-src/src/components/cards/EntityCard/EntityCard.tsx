@@ -5,16 +5,17 @@ import {
   EntityCardTopSection,
 } from "components";
 import { Box, Button, Image, Text } from "@chakra-ui/react";
+// styles
+import { svgFilters } from "styles/theme";
 // types
 import { AnyObject, EntityShape, ModalDrawerEntityTypes } from "types";
+// utils
+import { useStore } from "utils";
 // assets
-import { svgFilters } from "styles/theme";
 import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
-// utils
-import { useStore } from "utils";
 
 export const EntityCard = ({
   entity,
@@ -24,7 +25,7 @@ export const EntityCard = ({
   verbiage,
   openAddEditEntityModal,
   openDeleteEntityModal,
-  openDrawer,
+  openOverlayOrDrawer,
   printVersion,
   ...props
 }: Props) => {
@@ -170,12 +171,12 @@ export const EntityCard = ({
             {verbiage.entityUnfinishedMessage}
           </Text>
         )}
-        {openDrawer && (
+        {openOverlayOrDrawer && (
           <Button
             size="sm"
             sx={entityCompleted ? sx.editButton : sx.openDrawerButton}
             variant={entityCompleted ? "outline" : "primary"}
-            onClick={() => openDrawer(entity)}
+            onClick={() => openOverlayOrDrawer(entity)}
             data-testid={
               entityCompleted ? "edit-details-button" : "enter-details-button"
             }
@@ -203,7 +204,7 @@ interface Props {
   verbiage: AnyObject;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
-  openDrawer?: Function;
+  openOverlayOrDrawer?: Function;
   printVersion?: boolean;
   [key: string]: any;
 }

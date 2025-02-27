@@ -1,3 +1,9 @@
+import {
+  CustomHtmlElement,
+  OverlayReportPageShape,
+  OverlayReportPageVerbiage,
+} from "types";
+
 export const mockFormField = {
   id: "mock-text-field",
   type: "text",
@@ -195,6 +201,7 @@ export const mockVerbiageIntro = {
   ],
   editEntityButtonText: "Edit",
   enterReportText: "Enter Details",
+  tableHeader: "Mock table header",
 };
 
 export const mockStandardReportPageJson = {
@@ -243,6 +250,322 @@ export const mockNestedReportPageJson = {
   drawerForm: mockNestedForm,
 };
 
+export const mockMcparIlosPageJson = {
+  name: "mock-route",
+  path: "/mcpar/plan-level-indicators/ilos",
+  pageType: "drawer",
+  entityType: "ilos",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+  },
+  drawerForm: {
+    id: "dilos",
+    fields: [
+      {
+        id: "mock-field-id",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1 - ILOS",
+            },
+            {
+              id: "mock-choice-id-2",
+              label: "mock label 2",
+              children: [
+                {
+                  id: "mock-child-id-0",
+                  type: "radio",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "ilos",
+                  },
+                  props: {
+                    label: "ILOSs utilization by plan",
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-id-1",
+                  type: "checkbox",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "mock-field-id",
+                    parentOptionId: "mock-field-id-mock-choice-id-1",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+    ],
+  },
+};
+
+export const mockNaaarAnalysisMethodsPageJson = {
+  name: "mock-route",
+  path: "/naaar/analysis-methods",
+  pageType: "drawer",
+  entityType: "analysisMethods",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    addEntityButtonText: "Add other analysis method",
+    deleteModalTitle: "Are you sure you want to delete this analysis method?",
+    deleteModalConfirmButtonText: "Yes, delete method",
+  },
+  drawerForm: {
+    id: "am",
+    fields: [
+      {
+        id: "mock-field-id",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1",
+            },
+            {
+              id: "mock-choice-id-2",
+              label: "mock label 2",
+              children: [
+                {
+                  id: "mock-child-id-0",
+                  type: "radio",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "analysis_applicable",
+                  },
+                  props: {
+                    label: "Frequency of analysis",
+                    choices: [],
+                  },
+                },
+                {
+                  id: "mock-child-id-1",
+                  type: "checkbox",
+                  validation: {
+                    type: "radio",
+                    nested: true,
+                    parentFieldName: "mock-field-id",
+                    parentOptionId: "mock-field-id-mock-choice-id-1",
+                  },
+                  props: {
+                    label: "Plans utilizing this method",
+                    choices: [],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+    ],
+  },
+  addEntityDrawerForm: {
+    id: "am_custom",
+    fields: [
+      {
+        id: "mock_custom_analysis_method_name",
+        type: "text",
+        validation: "text",
+        props: {
+          label: "Analysis method",
+        },
+      },
+      {
+        id: "mock_custom_analysis_method_description",
+        type: "textarea",
+        validation: "textarea",
+        props: {
+          label: "description",
+        },
+      },
+      {
+        id: "mock_analysis_method_frequency",
+        type: "radio",
+        props: {
+          label: "Frequency of analysis",
+          choices: [
+            { id: "option1", label: "Weekly" },
+            { id: "option2", label: "Monthly" },
+          ],
+        },
+      },
+      {
+        id: "mock_analysis_method_applicable_plans",
+        type: "checkbox",
+        props: {
+          label: "Plans utilizing this method",
+          choices: [{ label: "Plan 1" }],
+        },
+      },
+    ],
+  },
+};
+
+export const mockNaaarStandardsPageJson = {
+  name: "mock-route",
+  path: "/naaar/program-level-access-and-network-adequacy-standards",
+  pageType: "drawer",
+  entityType: "standards",
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    countEntitiesInTitle: true,
+    addEntityButtonText: "Add standard",
+  },
+  drawerForm: {
+    id: "standards",
+    fields: [
+      {
+        id: "standards-mock-field-id-1",
+        type: "text",
+        validation: "text",
+        props: {
+          label: "mock field 1 label",
+          hint: "mock field 1 hint",
+        },
+      },
+      {
+        id: "standards-mock-field-id-2",
+        type: "radio",
+        validation: "radio",
+        props: {
+          choices: [
+            {
+              id: "standards-mock-choice-id-1-1",
+              label: "mock field 2 label 1",
+              children: [
+                {
+                  id: "standards-mock-child-1",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-1-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-1-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+                {
+                  id: "standards-mock-child-2",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-2-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-2-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+                {
+                  id: "standards-mock-child-3",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-3-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-3-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            {
+              id: "standards-mock-choice-id-1-2",
+              label: "mock field 2 label 2",
+              children: [
+                {
+                  id: "standards-mock-child-4",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-4-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-4-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+                {
+                  id: "standards-mock-child-5",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-5-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-5-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+                {
+                  id: "standards-mock-child-6",
+                  type: "radio",
+                  validation: "radio",
+                  props: {
+                    choices: [
+                      {
+                        id: "standards-mock-child-6-choice-1",
+                        label: "mock label 1",
+                      },
+                      {
+                        id: "standards-mock-child-6-choice-2",
+                        label: "mock label 2",
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
@@ -262,6 +585,7 @@ export const mockModalDrawerReportPageVerbiage = {
   editEntityDetailsButtonText: "Mock edit entity details button text",
   drawerTitle: "Mock drawer title",
   drawerNoFormMessage: "Mock no form fields here",
+  tableHeader: "Mock table header",
 };
 
 export const mockModalOverlayReportPageVerbiage = {
@@ -277,6 +601,37 @@ export const mockModalOverlayReportPageVerbiage = {
   deleteModalConfirmButtonText: "Mock delete modal confirm button text",
   deleteModalWarning: "Mock delete modal warning",
   enterReportText: "Mock enter report text",
+};
+
+export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
+  intro: mockVerbiageIntro,
+  requiredMessages: {
+    plans: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required information.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+    standards: [
+      {
+        type: "p",
+        children: [
+          {
+            type: "html",
+            content: "This program is missing required standards.",
+          },
+        ],
+      },
+    ] as CustomHtmlElement[],
+  },
+  tableHeader: "Mock table header",
+  emptyDashboardText: "No entities found",
+  enterEntityDetailsButtonText: "Mock Enter Button Text",
 };
 
 export const mockModalDrawerReportPageJson = {
@@ -307,6 +662,70 @@ export const mockModalOverlayReportPageWithOverlayJson = {
   verbiage: mockModalOverlayReportPageVerbiage,
   modalForm: mockModalOverlayForm,
   overlayForm: mockModalOverlayForm,
+};
+
+export const mockOverlayReportPageJson: OverlayReportPageShape = {
+  name: "mock-route-2d",
+  path: "/mock/mock-route-2d",
+  pageType: "modalOverlay",
+  entityType: "plans",
+  verbiage: mockOverlayReportPageVerbiage,
+  details: {
+    verbiage: {
+      intro: {
+        section: "",
+        subsection: "Mock Details: Example Plan",
+      },
+      backButton: "Return to dashboard",
+    },
+    forms: [
+      {
+        form: {
+          id: "mockMultiform",
+          fields: [
+            {
+              id: "mockMultiform_assurance",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label:
+                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["", "Mock Cell", ""]],
+          caption: "",
+          headRow: [
+            { hiddenName: "Status" },
+            "Mock table header",
+            { hiddenName: "Action" },
+          ],
+        },
+        verbiage: {
+          accordion: {
+            buttonLabel: "Mock Accordion",
+            text: "",
+          },
+          intro: {
+            section: "",
+          },
+          heading: "Mock heading",
+          hint: "Mock hint",
+        },
+      },
+    ],
+  },
 };
 
 export const mockReviewSubmitPageJson = {

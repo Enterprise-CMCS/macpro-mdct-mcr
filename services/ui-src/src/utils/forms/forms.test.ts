@@ -374,14 +374,13 @@ describe("Test setClearedEntriesToDefaultValue", () => {
       sanction_planName: {},
     });
   });
-  it("should return an empty string value for strings", () => {
+  it("should delete attribute for an empty string value for strings", () => {
     expect(
       setClearedEntriesToDefaultValue(mockSanctionsEntity, [
         "sanction_remediationDate",
       ])
     ).toEqual({
       ...mockSanctionsEntity,
-      sanction_remediationDate: "",
     });
   });
 });

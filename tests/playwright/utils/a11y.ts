@@ -14,7 +14,14 @@ export async function e2eA11y(page: Page, url: string) {
   for (const size of Object.values(breakpoints)) {
     page.setViewportSize({ width: size[0], height: size[1] });
     const results = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa"])
+      .withTags([
+        "wcag2a",
+        "wcag2aa",
+        "wcag21a",
+        "wcag21aa",
+        "wcag22aa",
+        "best-practice",
+      ])
       .disableRules(["duplicate-id"])
       .analyze();
     expect(results.violations).toEqual([]);

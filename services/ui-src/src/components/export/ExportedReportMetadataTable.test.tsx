@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
 import {
   ExportedReportMetadataTable,
@@ -8,15 +7,16 @@ import {
 } from "./ExportedReportMetadataTable";
 // types
 import { ReportShape, ReportStatus, ReportType } from "types";
-// verbaige
-import mcparExportVerbiage from "../../verbiage/pages/mcpar/mcpar-export";
-import mlrExportVerbiage from "../../verbiage/pages/mlr/mlr-export";
 // utils
 import { useStore } from "utils";
 import {
   mockMcparReportStore,
   mockMlrReportStore,
 } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
+// verbiage
+import mcparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import mlrExportVerbiage from "verbiage/pages/mlr/mlr-export";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -57,90 +57,84 @@ const metadataTableWithContext = (context: any) => {
   );
 };
 
-describe("ExportedReportMetadataTable renders", () => {
-  it("Should render visibly", () => {
+describe("<ExportedReportMetadataTable />", () => {
+  test("Should render visibly", () => {
     const { getByTestId } = render(metadataTableWithContext(mockMcparContext));
     const metadataTable = getByTestId("exportedReportMetadataTable");
     expect(metadataTable).toBeVisible();
   });
-});
 
-describe("Test ExportedReportMetadataTable accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(metadataTableWithContext(mockMcparContext));
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-});
-
-describe("ExportedReportMetadataTable displays the correct content", () => {
-  it("Should show the correct headers for MCPAR", () => {
-    render(metadataTableWithContext(mockMcparContext));
-    const headerTexts = Object.values(
-      mcparExportVerbiage.reportPage.metadataTableHeaders
-    );
-    for (let headerText of headerTexts) {
-      const headerCell = screen.getByText(headerText);
-      expect(headerCell).toBeVisible();
-    }
-  });
-  it("Should show the correct headers for MLR", () => {
-    render(metadataTableWithContext(mockMlrContext));
-    const headerTexts = Object.values(
-      mlrExportVerbiage.reportPage.metadataTableHeaders
-    );
-    for (let headerText of headerTexts) {
-      const headerCell = screen.getByText(headerText);
-      expect(headerCell).toBeVisible();
-    }
-  });
-
-  it("Should show the correct data for MCPAR", () => {
-    render(metadataTableWithContext(mockMcparContext));
-    const cellTexts = [
-      "05/05/1975",
-      "02/24/1975",
-      "Thelonious States",
-      "Not started",
-    ];
-    for (let cellText of cellTexts) {
-      const cell = screen.getByText(cellText);
-      expect(cell).toBeVisible();
-    }
-  });
-
-  it("Should show the correct data for MLR", () => {
-    mockedUseStore.mockReturnValue({
-      ...mockMlrReportStore,
+  describe("ExportedReportMetadataTable displays the correct content", () => {
+    test("Should show the correct headers for MCPAR", () => {
+      render(metadataTableWithContext(mockMcparContext));
+      const headerTexts = Object.values(
+        mcparExportVerbiage.reportPage.metadataTableHeaders
+      );
+      for (let headerText of headerTexts) {
+        const headerCell = screen.getByText(headerText);
+        expect(headerCell).toBeVisible();
+      }
     });
-    render(metadataTableWithContext(mockMlrContext));
-    const cellTexts = [
-      "testProgram",
-      "02/24/1975",
-      "Thelonious States",
-      "Not started",
-    ];
-    for (let cellText of cellTexts) {
-      const cell = screen.getByText(cellText);
-      expect(cell).toBeVisible();
-    }
-  });
-});
+    test("Should show the correct headers for MLR", () => {
+      render(metadataTableWithContext(mockMlrContext));
+      const headerTexts = Object.values(
+        mlrExportVerbiage.reportPage.metadataTableHeaders
+      );
+      for (let headerText of headerTexts) {
+        const headerCell = screen.getByText(headerText);
+        expect(headerCell).toBeVisible();
+      }
+    });
 
-describe("ExportedReportMetadataTable fails gracefully when appropriate", () => {
-  const unknownReportType = "some new report type" as ReportType;
+    test("Should show the correct data for MCPAR", () => {
+      render(metadataTableWithContext(mockMcparContext));
+      const cellTexts = [
+        "05/05/1975",
+        "02/24/1975",
+        "Thelonious States",
+        "Not started",
+      ];
+      for (let cellText of cellTexts) {
+        const cell = screen.getByText(cellText);
+        expect(cell).toBeVisible();
+      }
+    });
 
-  it("Should throw an error when rendering the header for an unknown report type", () => {
-    expect(() => headerRowLabels(unknownReportType, {})).toThrow(Error);
+    test("Should show the correct data for MLR", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockMlrReportStore,
+      });
+      render(metadataTableWithContext(mockMlrContext));
+      const cellTexts = [
+        "testProgram",
+        "02/24/1975",
+        "Thelonious States",
+        "Not started",
+      ];
+      for (let cellText of cellTexts) {
+        const cell = screen.getByText(cellText);
+        expect(cell).toBeVisible();
+      }
+    });
   });
-  it("Should throw an error when rendering the body for an unknown report type", () => {
-    expect(() => bodyRowContent(unknownReportType, {} as ReportShape)).toThrow(
-      Error
-    );
+
+  describe("ExportedReportMetadataTable fails gracefully when appropriate", () => {
+    const unknownReportType = "some new report type" as ReportType;
+
+    test("Should throw an error when rendering the header for an unknown report type", () => {
+      expect(() => headerRowLabels(unknownReportType, {})).toThrow(Error);
+    });
+    test("Should throw an error when rendering the body for an unknown report type", () => {
+      expect(() =>
+        bodyRowContent(unknownReportType, {} as ReportShape)
+      ).toThrow(Error);
+    });
+    test("Should render no data when not given a report", () => {
+      expect(
+        bodyRowContent(unknownReportType, null as any as ReportShape)
+      ).toEqual([[]]);
+    });
   });
-  it("Should render no data when not given a report", () => {
-    expect(
-      bodyRowContent(unknownReportType, null as any as ReportShape)
-    ).toEqual([[]]);
-  });
+
+  testA11y(metadataTableWithContext(mockMcparContext));
 });

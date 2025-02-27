@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { axe } from "jest-axe";
-//components
+// components
 import { LoginCognito } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 const mockLoginUser = jest.fn();
 
@@ -25,7 +25,7 @@ const loginCognitoComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test LoginCognito", () => {
+describe("<LoginCognito />", () => {
   test("LoginCognito login calls amplify auth login", async () => {
     render(loginCognitoComponent);
     const emailInput = screen.getByLabelText("Email");
@@ -37,12 +37,6 @@ describe("Test LoginCognito", () => {
     expect(mockLoginUser).toHaveBeenCalledWith("email@address.com", "test");
     expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
-});
 
-describe("Test LoginCognito accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(loginCognitoComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(loginCognitoComponent);
 });

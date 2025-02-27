@@ -26,12 +26,12 @@ describe("Sidebar integration tests", () => {
     cy.get('[name="combinedData"]').focused().click();
     cy.get('input[name="programIsPCCM"').check("No");
     cy.get("button[type=submit]").contains("Save").click();
-    cy.wait(2000);
     //Find our new program and open it
     cy.get("table").within(() => {
+      cy.wait(2000);
       cy.get("td")
         .contains(programName)
-        .parent()
+        .parents("tr")
         .find('button:contains("Edit")')
         .as("sidebarEditButton")
         .focus();

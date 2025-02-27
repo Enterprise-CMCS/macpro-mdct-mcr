@@ -73,15 +73,12 @@ export const createReport = handler(async (event, _context) => {
   const isProgramPCCM =
     unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  const novMcparRelease = unvalidatedMetadata?.novMcparRelease || false;
-
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
-      isProgramPCCM,
-      novMcparRelease
+      isProgramPCCM
     ));
   } catch (e) {
     throw e;
@@ -97,11 +94,17 @@ export const createReport = handler(async (event, _context) => {
   const fieldDataId: string = KSUID.randomSync().string;
   const formTemplateId: string = formTemplateVersion?.id;
 
+  const validationSchema = formTemplate.validationJson;
+  if (reportType === "NAAAR") {
+    // this entity does not have validation specified in the form template
+    validationSchema["analysisMethods"] = "objectArray";
+  }
+
   // Validate field data
   let validatedFieldData;
   try {
     validatedFieldData = await validateFieldData(
-      formTemplate.validationJson,
+      validationSchema,
       unvalidatedFieldData
     );
   } catch {

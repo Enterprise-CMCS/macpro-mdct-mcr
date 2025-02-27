@@ -3,93 +3,121 @@ import { useMemo } from "react";
 import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
 // types
-import { AnyObject, EntityShape } from "types";
+import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
-import { eligibilityGroup, getMlrEntityStatus, useStore } from "utils";
+import { eligibilityGroup, getEntityStatus, useStore } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
 export const EntityRow = ({
   entity,
+  entityType,
   verbiage,
   locked,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
-  openEntityDetailsOverlay,
-}: Props) => {
-  const { report_programName, report_planName } = entity;
+  openOverlayOrDrawer,
+}: EntityRowProps) => {
+  const { report_programName, report_planName, name } = entity;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
 
   const entityComplete = useMemo(() => {
-    return report ? getMlrEntityStatus(report, entity) : false;
+    return getEntityStatus(entity, report, entityType);
   }, [report]);
 
-  const programInfo = [
-    report_planName,
-    report_programName,
-    eligibilityGroup(entity),
-    reportingPeriod,
-  ];
+  const enterDetailsText = () => {
+    switch (report?.reportType) {
+      case ReportType.MLR:
+        return verbiage.enterReportText;
+      case ReportType.NAAAR:
+        return verbiage.enterEntityDetailsButtonText;
+      default:
+        return "Enter";
+    }
+  };
+
+  const entityFields = () => {
+    const fields: any[] =
+      report?.reportType === ReportType.MLR
+        ? [
+            report_planName,
+            report_programName,
+            eligibilityGroup(entity),
+            reportingPeriod,
+          ]
+        : [name];
+    return fields;
+  };
 
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity as EntityShape} />
+        <EntityStatusIcon entity={entity} entityType={entityType} />
       </Td>
-      <Td sx={sx.programInfo}>
+      <Td sx={sx.entityFields}>
         <ul>
-          {programInfo.map((field, index) => (
+          {entityFields().map((field, index) => (
             <li key={index}>{field}</li>
           ))}
         </ul>
-        {!entityComplete && report?.reportType === "MLR" && (
+        {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            Select “Enter MLR” to complete this report.
+            {report.reportType === ReportType.MLR &&
+              "Select “Enter MLR” to complete this report."}
+            {report.reportType === ReportType.NAAAR &&
+              "Select “Enter” to complete response."}
           </Text>
         )}
       </Td>
       <Td>
         <Flex sx={sx.actionContainer}>
-          <Button
-            sx={sx.editButton}
-            variant="none"
-            onClick={() => openAddEditEntityModal(entity)}
-          >
-            {verbiage.editEntityButtonText}
-          </Button>
-          <Button
-            sx={sx.enterButton}
-            onClick={() => openEntityDetailsOverlay(entity)}
-            variant="outline"
-            size="sm"
-          >
-            {entering ? <Spinner size="md" /> : verbiage.enterReportText}
-          </Button>
-          <Button
-            sx={sx.deleteButton}
-            data-testid="delete-entity"
-            onClick={() => openDeleteEntityModal(entity)}
-            disabled={locked || !userIsEndUser}
-          >
-            <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
-          </Button>
+          {!entity.isRequired && openAddEditEntityModal && (
+            <Button
+              sx={sx.editButton}
+              variant="none"
+              onClick={() => openAddEditEntityModal(entity)}
+            >
+              {verbiage.editEntityButtonText}
+            </Button>
+          )}
+          {openOverlayOrDrawer && (
+            <Button
+              sx={sx.enterButton}
+              onClick={() => openOverlayOrDrawer(entity)}
+              variant="outline"
+              size="sm"
+            >
+              {entering ? <Spinner size="md" /> : enterDetailsText()}
+            </Button>
+          )}
+          {!entity.isRequired && openDeleteEntityModal && (
+            <Button
+              sx={sx.deleteButton}
+              data-testid="delete-entity"
+              onClick={() => openDeleteEntityModal(entity)}
+              disabled={locked || !userIsEndUser}
+            >
+              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+            </Button>
+          )}
         </Flex>
       </Td>
     </Tr>
   );
 };
 
-interface Props {
+export interface EntityRowProps {
   entity: EntityShape;
+  entityType?: EntityType;
   verbiage: AnyObject;
   locked?: boolean;
-  entering: boolean;
-  openAddEditEntityModal: Function;
-  openDeleteEntityModal: Function;
-  openEntityDetailsOverlay: Function;
+  entering?: boolean;
+  openAddEditEntityModal?: Function;
+  openDeleteEntityModal?: Function;
+  openOverlayOrDrawer?: Function;
   [key: string]: any;
 }
 
@@ -110,7 +138,7 @@ const sx = {
     fontSize: "0.75rem",
     marginBottom: "0.75rem",
   },
-  programInfo: {
+  entityFields: {
     maxWidth: "18.75rem",
     ul: {
       margin: "0.5rem auto",
