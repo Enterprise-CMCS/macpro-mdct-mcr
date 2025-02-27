@@ -99,7 +99,7 @@ const availableItems = (items: AnyObject[], entityType: string) => {
         : entityType === "standards" && {
             children: [
               {
-                id: `standard_${item.id}-otherText`,
+                id: `${providerTypeFieldName}-otherText`,
                 type: "text",
                 validation: {
                   type: "textOptional",
