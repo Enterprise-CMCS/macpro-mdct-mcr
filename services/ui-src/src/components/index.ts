@@ -110,7 +110,7 @@ export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
 export { MobileEntityRow } from "./tables/MobileEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
-export { SortableDrawerReportPageTable } from "./tables/SortableDrawerReportPageTable";
+export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";

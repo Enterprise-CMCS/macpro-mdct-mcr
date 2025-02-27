@@ -9,7 +9,6 @@ import {
   ReportPageIntro,
   Form,
   DeleteEntityModal,
-  SortableDrawerReportPageTable,
 } from "components";
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
@@ -39,6 +38,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
+import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -77,7 +77,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     report,
     isAnalysisMethodsPage,
     isReportingOnStandards,
-
     ilos,
     reportingOnIlos,
   };
@@ -234,7 +233,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return <></>;
   };
 
-  const entityCount = verbiage.countEntitiesInTitle
+  const entityCount: string = verbiage.countEntitiesInTitle
     ? ` ${entities.length}`
     : "";
   const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
@@ -276,7 +275,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {addStandardsButton()}
             <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
             {existingStandards && (
-              <SortableDrawerReportPageTable entities={entities} />
+              <SortableNaaarStandardsTable entities={entities} />
             )}
             {entities.length > 0 && addStandardsButton()}
           </Box>

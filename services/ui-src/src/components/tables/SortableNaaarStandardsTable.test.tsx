@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // components
-import { SortableDrawerReportPageTable } from "components";
+import { SortableNaaarStandardsTable } from "components";
 // utils
 import { useStore } from "utils";
 import {
@@ -9,6 +8,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
+import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -39,21 +39,15 @@ const mockStandards = [
 
 const sortableTableComponent = (
   <RouterWrappedComponent>
-    <SortableDrawerReportPageTable entities={mockStandards} />
+    <SortableNaaarStandardsTable entities={mockStandards} />
   </RouterWrappedComponent>
 );
 
-describe("Test SortableDrawerReportPageTable component", () => {
+describe("Test SortableNaaarStandardsTable component", () => {
   test("Check that NAAAR table view renders", async () => {
     render(sortableTableComponent);
     expect(screen.getByText("mock-population")).toBeVisible;
   });
-});
 
-describe("Test SortableDrawerReportPageTable accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(sortableTableComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11y(sortableTableComponent);
 });

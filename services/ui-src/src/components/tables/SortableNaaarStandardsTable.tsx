@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 
-export const SortableDrawerReportPageTable = ({ entities }: Props) => {
+export const SortableNaaarStandardsTable = ({ entities }: Props) => {
   const actualData = useMemo(() => {
-    const result = entities.map((entity: any, index: number) => {
+    return entities.map((entity: any, index: number) => {
       const {
         standard_coreProviderTypeCoveredByStandard,
         standard_standardType,
@@ -56,8 +56,6 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
         region: standardRegion,
       };
     });
-
-    return result;
   }, [entities]);
 
   const customCells = (
@@ -102,8 +100,8 @@ export const SortableDrawerReportPageTable = ({ entities }: Props) => {
       header: "Pop.",
     },
     region: { header: "Region" },
-    edit: { header: "" },
-    delete: { header: "" },
+    edit: { header: "Edit" },
+    delete: { header: "Delete" },
   };
 
   const columns = generateColumns<DrawerReportPageTableShape>(
