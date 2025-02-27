@@ -19,6 +19,7 @@ mockedUseStore.mockReturnValue({
 
 const mockStandards = [
   {
+    id: "mock-id",
     standard_coreProviderTypeCoveredByStandard: [
       { key: "mock-key", value: "mock-provider" },
     ],
