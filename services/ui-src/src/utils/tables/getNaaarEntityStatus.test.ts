@@ -1,7 +1,7 @@
 // components
 import { getNaaarEntityStatus } from "./getNaaarEntityStatus";
 // types
-import { ReportShape, ReportType } from "types";
+import { EntityType, ReportShape, ReportType } from "types";
 
 describe("getNaaarEntityStatus()", () => {
   const report = { reportType: ReportType.NAAAR } as ReportShape;
@@ -10,7 +10,7 @@ describe("getNaaarEntityStatus()", () => {
     planCompliance438206_assurance: [],
     planCompliance43868_assurance: [],
   };
-  const entityType = "plans";
+  const entityType = EntityType.PLANS;
 
   test("returns false", () => {
     expect(getNaaarEntityStatus(entity, report)).toBe(false);

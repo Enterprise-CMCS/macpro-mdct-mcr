@@ -23,7 +23,7 @@ import {
   isFieldElement,
   InputChangeEvent,
   FormJson,
-  entityTypes,
+  EntityType,
   DrawerReportPageShape,
 } from "types";
 // utils
@@ -57,11 +57,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { entityType, verbiage, form: standardForm } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities =
-    !!addEntityDrawerForm.id || entityType === entityTypes[8];
+    !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
 
   const existingStandards =
-    entityType === entityTypes[8] && entities.length > 0;
+    entityType === EntityType.STANDARDS && entities.length > 0;
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");

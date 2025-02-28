@@ -10,6 +10,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { EntityType } from "types";
 
 const { details } = mockOverlayReportPageJson;
 const mockCloseEntityDetailsOverlay = jest.fn();
@@ -32,7 +33,7 @@ const entityDetailsMultiformOverlayComponent = (
     <EntityDetailsMultiformOverlay
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
-      entityType={"plans"}
+      entityType={EntityType.PLANS}
       forms={details!.forms}
       onSubmit={mockOnSubmit}
       selectedEntity={mockEntityStore.selectedEntity}

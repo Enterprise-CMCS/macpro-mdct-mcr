@@ -40,7 +40,7 @@ const mockedGetEntityStatus = getEntityStatus as jest.MockedFunction<
 
 const completeRowComponent = (
   context: any = mockMlrReportContext,
-  entity: EntityType = "program"
+  entity: EntityType = EntityType.PROGRAM
 ) => (
   <RouterWrappedComponent>
     <ReportContext.Provider value={context}>
@@ -153,7 +153,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Edit button opens the AddEditEntityModal", async () => {
-      render(completeRowComponent(mockNaaarReportContext, "plans"));
+      render(completeRowComponent(mockNaaarReportContext, EntityType.PLANS));
       const editButton = screen.getByRole("button", { name: "Edit" });
       expect(editButton).toBeVisible();
       await userEvent.click(editButton);
@@ -172,7 +172,7 @@ describe("<EntityRow />", () => {
     });
 
     test("MCPAR Enter Details button opens the Drawer", async () => {
-      render(completeRowComponent(mockMcparReportContext, "plans"));
+      render(completeRowComponent(mockMcparReportContext, EntityType.PLANS));
       const enterButton = screen.getByRole("button", { name: "Enter" });
       expect(enterButton).toBeVisible();
       await userEvent.click(enterButton);

@@ -1,7 +1,7 @@
 // components
 import { getEntityStatus } from "./getEntityStatus";
 // types
-import { ReportShape, ReportType } from "types";
+import { EntityType, ReportShape, ReportType } from "types";
 // utils
 import { getMlrEntityStatus, getNaaarEntityStatus } from "utils";
 
@@ -10,7 +10,7 @@ jest.mock("utils");
 describe("getEntityStatus()", () => {
   const report = { reportType: ReportType.MLR } as ReportShape;
   const entity = { id: "mock-entity" };
-  const entityType = "plans";
+  const entityType = EntityType.PLANS;
 
   test("calls getMlrEntityStatus() for MLR", () => {
     getEntityStatus(entity, report);

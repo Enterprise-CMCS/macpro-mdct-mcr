@@ -10,6 +10,7 @@ import {
   FormLayoutElement,
   ReportType,
   isFieldElement,
+  EntityType,
 } from "types";
 // utils
 import { useStore } from "utils";
@@ -26,7 +27,7 @@ export const ExportedEntityDetailsTable = ({
   const { report } = useStore();
   const { tableHeaders } = verbiage;
 
-  const entityType = "program";
+  const entityType = EntityType.PROGRAM;
 
   const threeColumnHeaderItems = [
     tableHeaders.number,
@@ -63,7 +64,7 @@ export const renderFieldTableBody = (
   report: ReportShape | undefined,
   showHintText: boolean,
   entityId: string,
-  entityType: string
+  entityType: EntityType
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows

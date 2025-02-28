@@ -1,7 +1,7 @@
 import {
   AdminBannerData,
-  EntityShape,
   EntityType,
+  EntityShape,
   ErrorVerbiage,
   MCRUser,
   ReportMetadataShape,

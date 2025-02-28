@@ -787,7 +787,7 @@ export const mockEntityDetailsContext = {
   ...mockEntityMethods,
   selectedEntity: undefined,
   entities: [],
-  entityType: "program" as EntityType,
+  entityType: EntityType.PROGRAM,
 };
 
 export const mockMLRLockedReportContext = {
