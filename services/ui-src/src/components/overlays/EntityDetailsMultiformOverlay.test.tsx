@@ -62,8 +62,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(accordion).toBeVisible();
 
     // Form
-    const radioButton = screen.getByRole("radio", { name: "Mock Yes" });
-    await userEvent.click(radioButton);
+    const radioButtonYes = screen.getByRole("radio", { name: "Mock Yes" });
+    await userEvent.click(radioButtonYes);
 
     // Table
     const entityTable = screen.getByRole("table");
@@ -71,12 +71,39 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       name: "Status Mock table header Action",
     });
     const entityCells = screen.getByRole("row", {
-      name: "warning icon Mock Cell Enter",
+      name: "Mock Cell Enter",
+    });
+    const enterButton = screen.getByRole("button", {
+      name: "Enter",
     });
 
     expect(entityTable).toBeVisible();
     expect(entityHeaders).toBeVisible();
     expect(entityCells).toBeVisible();
+    expect(enterButton).toBeDisabled();
+
+    const radioButtonNo = screen.getByRole("radio", {
+      name: "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+    });
+    await userEvent.click(radioButtonNo);
+
+    // Table
+    const updatedEntityCellsIncomplete = screen.getByRole("row", {
+      name: "warning icon Mock Cell Select “Enter” to complete response. Enter",
+    });
+    expect(updatedEntityCellsIncomplete).toBeVisible();
+
+    // Click Enter
+    const updatedEnterButton = screen.getByRole("button", {
+      name: "Enter",
+    });
+    await userEvent.click(updatedEnterButton);
+
+    // Status icon changed
+    const updatedEntityCellsComplete = screen.getByRole("row", {
+      name: "complete icon Mock Cell Enter",
+    });
+    expect(updatedEntityCellsComplete).toBeVisible();
 
     // Submit
     const submitButton = screen.getByRole("button", { name: "Save & return" });

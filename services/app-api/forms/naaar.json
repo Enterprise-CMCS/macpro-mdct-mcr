@@ -531,13 +531,24 @@
             "children": [
               {
                 "type": "html",
-                "content": "This program is missing required information. You won’t be able to complete this section until you’ve completed all the required questions in section "
+                "content": "This program is missing required information. You won’t be able to complete this section until you’ve completed all the required questions in section I. State and program information. Report on "
               },
               {
                 "type": "internalLink",
-                "content": "I. State and program information",
+                "content": "Provider type coverage",
                 "props": {
                   "to": "/naaar/state-and-program-information/provider-type-coverage"
+                }
+              },
+              {
+                "type": "html",
+                "content": " and "
+              },
+              {
+                "type": "internalLink",
+                "content": "Analysis methods",
+                "props": {
+                  "to": "/naaar/state-and-program-information/analysis-methods"
                 }
               },
               {
@@ -574,7 +585,7 @@
                   "label": "Maximum time to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_2e6zA0mK1Qs93xSoyJXmW3AD",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -588,7 +599,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_CL6r1vfwqen1VpNHmeiD0I9J",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -609,7 +620,7 @@
                   "label": "Maximum distance to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_qjDGoXRR8qnuIztUS7rymsLP",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -623,7 +634,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_DgpQz4w5HIaZfWVgVOzgMMjU",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -644,7 +655,7 @@
                   "label": "Maximum time or distance",
                   "children": [
                     {
-                      "id": "standard_standardDescription_p2UjSQQTOHYWtLDqWXSxGFOP",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -658,7 +669,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_3i4wxqiunS8gGGXW7n2LWviu",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -679,7 +690,7 @@
                   "label": "Ease of getting a timely appointment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_rWrmasaJJ8V3PdVhZGf6bly3",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -693,7 +704,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_p93DZshWnEs7ncVeNZe3tAzM",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -714,7 +725,7 @@
                   "label": "Appointment wait time",
                   "children": [
                     {
-                      "id": "standard_standardDescription_WCv5x1OePNjPWHdqog1Riv5s",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -728,7 +739,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_5YldWkrQj5flwCcuvVHJVtcm",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -749,7 +760,7 @@
                   "label": "Hours of operation",
                   "children": [
                     {
-                      "id": "standard_standardDescription_l8KWEMUCqnOgRkYyBHvSYLPw",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -763,7 +774,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_O94R81nE7jNr2RPAks2rwbtz",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -784,7 +795,7 @@
                   "label": "Provider to enrollee ratios",
                   "children": [
                     {
-                      "id": "standard_standardDescription_kKaVlFMA9VpbhVj2gSPloqBr",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -798,7 +809,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_VXJ5Q1ROxf101ql7YDT22XrV",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -819,7 +830,7 @@
                   "label": "Minimum number of network providers",
                   "children": [
                     {
-                      "id": "standard_standardDescription_Le1VoGTeVcMbskIiBSImlIMO",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -833,7 +844,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_bVGAJEQUTOYJsX5ICErIepxP",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -854,7 +865,7 @@
                   "label": "Service fulfillment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_QVdykzW594MqR5xWTrAF8elY",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -868,7 +879,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_SkNj86TXlLfJEJ9G9a1Dw16L",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -894,16 +905,18 @@
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_standardType"
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       }
                     },
                     {
-                      "id": "standard_standardDescription_QW4MxtOeD2vjcRHcgKGBXYyI",
+                      "id": "standard_standardDescription",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_standardType-otherText"
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
                         "label": "Standard description",
@@ -911,7 +924,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_x7nthz0BMsPQ9Nvu8u1RBG5f",
+                      "id": "standard_analysisMethodsUtilized",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -1089,7 +1102,7 @@
       "details": {
         "verbiage": {
           "backButton": "Return to plan compliance dashboard",
-          "intro" : {
+          "intro": {
             "info": "States should use this section to report on plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards for the plan listed above.",
             "section": "",
             "subsection": "III. Plan compliance data for {{planName}}"
@@ -1169,7 +1182,7 @@
               "bodyRows": [
                 [
                   "",
-                  "Select non-compliant / exception standards and provide details for 438.206",
+                  "Provide plan compliance details for 438.206",
                   ""
                 ]
               ],
@@ -1183,7 +1196,7 @@
               "accordion": {
                 "buttonLabel": "Assurance of 42 C.F.R. § 438.206",
                 "text": "<p>(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:</p><p>(1) Maintains and monitors a network of appropriate providers that is supported by written agreements and is sufficient to provide adequate access to all services covered under the contract for all enrollees, including those with limited English proficiency or physical or mental disabilities.</p><p>(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist.</p><p>(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee.</p><p>(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them.</p><p>(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network.</p><p>(6) Demonstrates that its network providers are credentialed as required by § 438.214.</p><p>(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services.</p><p>(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.</p><p>(1) <b>Timely access.</b> Each MCO, PIHP, and PAHP must do the following:</p><p>(i) Meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e).</p><p>(ii) Ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS, if the provider serves only Medicaid enrollees.</p><p>(iii) Make services included in the contract available 24 hours a day, 7 days a week, when medically necessary.</p><p>(iv) Establish mechanisms to ensure compliance by network providers.</p><p>(v) Monitor network providers regularly to determine compliance.</p><p>(vi) Take corrective action if there is a failure to comply by a network provider.</p><p>(2) Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes.</p><p>(3) Accessibility considerations. Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities.</p><p>(d) Applicability date. States will not be held out of compliance with the requirements of paragraphs (c)(1)(i) of this section prior to the first rating period that begins on or after 3 years after July 9, 2024, so long as they comply with the corresponding standard(s) codified in 42 CFR 438.2</p>"
-              },        
+              },
               "heading": "Assurance of plan compliance for 438.206",
               "hint": "Indicate whether the state assures that the plan complies with the state’s network adequacy standards based on each analysis the state conducted for the plan during the reporting period."
             }

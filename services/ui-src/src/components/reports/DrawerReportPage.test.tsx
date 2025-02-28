@@ -317,6 +317,12 @@ describe("<DrawerReportPage />", () => {
       expect(addStandardsButton).toBeDisabled();
     });
 
+    test("Test DrawerReportPage without standards should not render the table", async () => {
+      render(drawerReportPageWithNaaarRoutesEmptyState);
+      const standardsTable = screen.queryByRole("table");
+      expect(standardsTable).toBeNull();
+    });
+
     test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,

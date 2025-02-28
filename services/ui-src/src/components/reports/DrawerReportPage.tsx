@@ -11,17 +11,20 @@ import {
   DeleteEntityModal,
 } from "components";
 // constants
-import { getDefaultAnalysisMethodIds } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  getDefaultAnalysisMethodIds,
+} from "../../constants";
 // types
 import {
   AnyObject,
   EntityShape,
-  DrawerReportPageShape,
   ReportStatus,
   isFieldElement,
   InputChangeEvent,
   FormJson,
   EntityType,
+  DrawerReportPageShape,
 } from "types";
 // utils
 import {
@@ -38,6 +41,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
+import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -56,6 +60,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
 
+  const existingStandards =
+    entityType === EntityType.STANDARDS && entities.length > 0;
+
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
   const isAnalysisMethodsPage = route.path.includes("analysis-methods");
@@ -67,6 +74,15 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
   const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
+
+  const completedAnalysisMethods = () => {
+    const result = report?.fieldData["analysisMethods"]?.filter(
+      (analysisMethod: AnyObject) => {
+        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
+      }
+    );
+    return result?.length === DEFAULT_ANALYSIS_METHODS.length;
+  };
 
   const formParams = {
     route,
@@ -218,6 +234,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     } else if (
       (isAnalysisMethodsPage && !hasPlans) ||
+      (isReportingOnStandards && !completedAnalysisMethods()) ||
       (isReportingOnStandards && !hasProviderTypes)
     ) {
       return (
@@ -229,19 +246,24 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return <></>;
   };
 
+  const entityCount: string = verbiage.countEntitiesInTitle
+    ? ` ${entities.length}`
+    : "";
+  const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
+
   const addStandardsButton = (
     <Button
-      sx={sx.bottomAddEntityButton}
+      sx={sx.addEntityButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
-      disabled={!hasProviderTypes}
+      disabled={!hasProviderTypes || !completedAnalysisMethods()}
     >
       {verbiage.addEntityButtonText}
     </Button>
   );
 
   return (
-    <Box>
+    <Box sx={sx.tablePage}>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
@@ -262,12 +284,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       )}
       <Box>
         {isReportingOnStandards ? (
-          // table of standards
           <Box>
             {addStandardsButton}
-            {/* standards table */}
-            <Box></Box>
-            {addStandardsButton}
+            <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
+            {existingStandards && (
+              <SortableNaaarStandardsTable entities={entities} />
+            )}
+            {entities.length > 0 && addStandardsButton}
           </Box>
         ) : (
           <Box>
@@ -298,7 +321,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {canAddEntities && hasPlans && (
               <Button
                 variant={"outline"}
-                sx={sx.bottomAddEntityButton}
+                sx={sx.addEntityButton}
                 leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
                 onClick={() => openRowDrawer()}
               >
@@ -339,8 +362,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 };
 
 interface Props {
-  route: DrawerReportPageShape;
+  entities?: EntityShape[];
   validateOnRender?: boolean;
+  route: DrawerReportPageShape;
 }
 
 function dashboardTitleStyling(canAddEntities: boolean) {
@@ -355,6 +379,15 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 }
 
 const sx = {
+  tablePage: {
+    width: "fit-content",
+  },
+  dashboardTitle: {
+    marginBottom: "1.25rem",
+    fontSize: "md",
+    fontWeight: "bold",
+    color: "palette.gray_medium",
+  },
   buttonIcons: {
     height: "1rem",
   },
@@ -393,8 +426,12 @@ const sx = {
   standardForm: {
     paddingBottom: "1rem",
   },
-  bottomAddEntityButton: {
-    marginTop: "2rem",
+  addEntityButton: {
     marginBottom: "0",
+    marginTop: "2rem",
+    "&:first-of-type": {
+      marginBottom: "2rem",
+      marginTop: "0",
+    },
   },
 };
