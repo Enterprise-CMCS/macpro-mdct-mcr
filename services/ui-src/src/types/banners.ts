@@ -11,11 +11,11 @@ export interface AdminBannerData extends BannerData {
   key: string;
   startDate: number;
   endDate: number;
-  isActive?: boolean;
 }
 
 export interface AdminBannerMethods {
   fetchAdminBanner: Function;
+  fetchAllBanners: Function;
   writeAdminBanner: Function;
   deleteAdminBanner: Function;
 }

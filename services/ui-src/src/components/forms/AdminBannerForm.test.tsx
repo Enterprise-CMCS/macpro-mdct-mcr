@@ -2,8 +2,6 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { AdminBannerForm } from "components";
-// constants
-import { bannerId } from "../../constants";
 // utils
 import { convertDateTimeEtToUtc } from "utils";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
@@ -13,6 +11,11 @@ const mockWriteAdminBanner = jest.fn();
 const mockWriteAdminBannerWithError = jest.fn(() => {
   throw new Error();
 });
+
+jest.mock("react-uuid", () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue("mock-key"),
+}));
 
 const adminBannerFormComponent = (writeAdminBanner: Function) => (
   <RouterWrappedComponent>
@@ -51,7 +54,7 @@ describe("<AdminBannerForm />", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
-      key: bannerId,
+      key: "mock-key",
       title: "this is the title text",
       description: "this is the description text",
       link: undefined,
