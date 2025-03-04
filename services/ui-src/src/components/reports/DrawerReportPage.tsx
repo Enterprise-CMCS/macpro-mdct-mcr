@@ -254,7 +254,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const addStandardsButton = (
     <Button
-      sx={sx.addEntityButton}
+      sx={sx.addStandardButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
       disabled={!hasProviderTypes || !completedAnalysisMethods()}
@@ -289,7 +289,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
             {addStandardsButton}
             <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
             {existingStandards && (
-              <SortableNaaarStandardsTable entities={entities} />
+              <SortableNaaarStandardsTable
+                entities={entities}
+                openRowDrawer={openRowDrawer}
+                openDeleteEntityModal={openDeleteEntityModal}
+              />
             )}
             {entities.length > 0 && addStandardsButton}
           </Box>
@@ -428,11 +432,15 @@ const sx = {
     paddingBottom: "1rem",
   },
   addEntityButton: {
-    marginBottom: "0",
+    marginBottom: "2rem",
     marginTop: "2rem",
-    "&:first-of-type": {
-      marginBottom: "2rem",
-      marginTop: "0",
+  },
+  addStandardButton: {
+    marginBottom: "2rem",
+    marginTop: "0",
+    "&:nth-of-type(2)": {
+      marginBottom: "0",
+      marginTop: "2rem",
     },
   },
 };

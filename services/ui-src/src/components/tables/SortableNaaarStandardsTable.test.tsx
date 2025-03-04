@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 // components
 import { SortableNaaarStandardsTable } from "components";
 // utils
@@ -16,6 +17,9 @@ mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockNaaarReportStore,
 });
+
+const mockOpenDeleteEntityModal = jest.fn();
+const mockOpenRowDrawer = jest.fn();
 
 const mockStandards = [
   {
@@ -40,14 +44,32 @@ const mockStandards = [
 
 const sortableTableComponent = (
   <RouterWrappedComponent>
-    <SortableNaaarStandardsTable entities={mockStandards} />
+    <SortableNaaarStandardsTable
+      entities={mockStandards}
+      openRowDrawer={mockOpenRowDrawer}
+      openDeleteEntityModal={mockOpenDeleteEntityModal}
+    />
   </RouterWrappedComponent>
 );
 
 describe("Test SortableNaaarStandardsTable component", () => {
-  test("Check that NAAAR table view renders", async () => {
+  beforeEach(() => {
     render(sortableTableComponent);
+  });
+  test("Check that NAAAR table view renders", async () => {
     expect(screen.getByText("mock-population")).toBeVisible;
+  });
+
+  test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
+    const editButton = screen.getByTestId("edit-entity");
+    await userEvent.click(editButton);
+    expect(mockOpenRowDrawer).toBeCalledTimes(1);
+  });
+
+  test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
+    const deleteButton = screen.getByTestId("delete-entity");
+    await userEvent.click(deleteButton);
+    expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
   });
 
   testA11y(sortableTableComponent);
