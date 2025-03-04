@@ -5,7 +5,11 @@ import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityShape } from "types";
 
-export const SortableNaaarStandardsTable = ({ entities }: Props) => {
+export const SortableNaaarStandardsTable = ({
+  entities,
+  openRowDrawer,
+  openDeleteEntityModal,
+}: Props) => {
   const actualData = useMemo(() => {
     return entities.map((entity: any, index: number) => {
       const {
@@ -55,25 +59,37 @@ export const SortableNaaarStandardsTable = ({ entities }: Props) => {
         analysisMethods: extractMethods(standard_analysisMethodsUtilized),
         population: standardPopulation,
         region: standardRegion,
+        entity,
       };
     });
   }, [entities]);
 
   const customCells = (
     headKey: keyof DrawerReportPageTableShape,
-    value: any
+    value: any,
+    originalRowData: DrawerReportPageTableShape
   ) => {
+    const { entity } = originalRowData;
     switch (headKey) {
       case "edit": {
         return (
-          <Button variant="link" id={value}>
+          <Button
+            variant="link"
+            id={value}
+            onClick={() => openRowDrawer(entity)}
+          >
             Edit
           </Button>
         );
       }
       case "delete": {
         return (
-          <Button sx={sx.deleteButton} id={value}>
+          <Button
+            sx={sx.deleteButton}
+            id={value}
+            data-testid="delete-entity"
+            onClick={() => openDeleteEntityModal(entity)}
+          >
             <Image src={deleteIcon} alt="delete" boxSize="2xl" />
           </Button>
         );
@@ -137,6 +153,8 @@ const sx = {
 
 interface Props {
   entities: EntityShape[];
+  openRowDrawer: Function;
+  openDeleteEntityModal: Function;
 }
 
 interface DrawerReportPageTableShape {
@@ -147,6 +165,7 @@ interface DrawerReportPageTableShape {
   analysisMethods: string;
   population: string;
   region: string;
+  entity: EntityShape;
   edit?: null;
   delete?: null;
 }
