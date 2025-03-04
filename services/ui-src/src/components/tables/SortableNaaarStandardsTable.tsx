@@ -76,6 +76,7 @@ export const SortableNaaarStandardsTable = ({
           <Button
             variant="link"
             id={value}
+            data-testid="edit-entity"
             onClick={() => openRowDrawer(entity)}
           >
             Edit
