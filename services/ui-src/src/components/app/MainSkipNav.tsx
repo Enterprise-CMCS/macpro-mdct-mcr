@@ -1,11 +1,12 @@
 import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 // components
 import { ReportContext, SkipNav } from "components";
 
 /**
  * The app's main skip nav changes its target, if we are on a report route.
  *
- * Note this this behavior might not actually matter. It seeems that when
+ * Note this this behavior might not actually matter. It seems that when
  * there are multiple SkipNav components on the page, the last one takes
  * priority. And when we are on a report page, there will be a second SkipNav,
  * in the sidebar.
@@ -16,12 +17,16 @@ import { ReportContext, SkipNav } from "components";
  */
 export const MainSkipNav = () => {
   const { isReportPage } = useContext(ReportContext);
+  const { pathname } = useLocation();
+  const isExportPage = pathname.includes("/export");
+
+  const skipSidebarNav = isReportPage && !isExportPage;
 
   return (
     <SkipNav
       id="skip-nav-main"
-      href={isReportPage ? "#skip-nav-sidebar" : "#main-content"}
-      text={`Skip to ${isReportPage ? "report sidebar" : "main content"}`}
+      href={skipSidebarNav ? "#skip-nav-sidebar" : "#main-content"}
+      text={`Skip to ${skipSidebarNav ? "report sidebar" : "main content"}`}
       sxOverride={sx.skipnav}
     />
   );
