@@ -134,27 +134,48 @@
                     },
                     {
                       "id": "l7XDjKKDrwryEe5YgDTTmP",
-                      "label": "Scenario 3: Significant change - services"
-                    },
-                    {
-                      "id": "7ZtsZ25K0romDSTAIStzzY",
-                      "label": "Scenario 3: Significant change - benefits"
-                    },
-                    {
-                      "id": "ObbAyoYB97trcbVN0OFQ2X",
-                      "label": "Scenario 3: Significant change - geographic service area"
-                    },
-                    {
-                      "id": "FC9hagL8vz3i0bFoHsJYEw",
-                      "label": "Scenario 3: Significant change - composition of provider network"
-                    },
-                    {
-                      "id": "ziLQDOD5TucgEHzmlzOEn6",
-                      "label": "Scenario 3: Significant change - payments to provider network"
-                    },
-                    {
-                      "id": "TDkPWZJai0kwHIp4zm1ZVy",
-                      "label": "Scenario 3: Significant change - enrollment of new population"
+                      "label": "Scenario 3: Significant change",
+                      "children": [
+                        {
+                          "id": "reportingScenario_significantChange",
+                          "type": "checkbox",
+                          "validation": {
+                            "type": "checkbox",
+                            "nested": true,
+                            "parentFieldName": "reportingScenario",
+                            "parentOptionId": "l7XDjKKDrwryEe5YgDTTmP"
+                          },
+                          "props": {
+                            "hint": "Select all that apply.",
+                            "choices": [
+                              {
+                                "id": "vCV6gRjj2pbYTcsWhaJsy1",
+                                "label": "Services"
+                              },
+                              {
+                                "id": "3swTHronFtgFRzyL9ETh3F",
+                                "label": "Benefits"
+                              },
+                              {
+                                "id": "uTTqmN029vDhFMrnbe5ru9",
+                                "label": "Geographic service area"
+                              },
+                              {
+                                "id": "aSxQ1M0UXU8dTQvFSqrBYF",
+                                "label": "Composition of provider network"
+                              },
+                              {
+                                "id": "UR5cBIBBuPPDzKAhJ3lpSZ",
+                                "label": "Payments to provider network"
+                              },
+                              {
+                                "id": "WoqwKvq0cJpfkDE3e3f1Jj",
+                                "label": "Enrollment of new population"
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     },
                     {
                       "id": "IyPRlUA4k3bTkj5rF1E8zg",
