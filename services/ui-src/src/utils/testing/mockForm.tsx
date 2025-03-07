@@ -378,7 +378,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
     id: "am_custom",
     fields: [
       {
-        id: "mock_custom_analysis_method_name",
+        id: "custom_analysis_method_name",
         type: "text",
         validation: "text",
         props: {
@@ -386,7 +386,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
         },
       },
       {
-        id: "mock_custom_analysis_method_description",
+        id: "custom_analysis_method_description",
         type: "textarea",
         validation: "textarea",
         props: {
@@ -394,7 +394,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
         },
       },
       {
-        id: "mock_analysis_method_frequency",
+        id: "analysis_method_frequency",
         type: "radio",
         props: {
           label: "Frequency of analysis",
@@ -405,7 +405,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
         },
       },
       {
-        id: "mock_analysis_method_applicable_plans",
+        id: "analysis_method_applicable_plans",
         type: "checkbox",
         props: {
           label: "Plans utilizing this method",
