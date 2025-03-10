@@ -98,26 +98,30 @@ export const DrawerReportPageEntityRows = ({
           isIlosCompleted(reportingOnIlos, entity)
         : calculateEntityCompletion();
 
-      const entityHasDetailsToDisplay =
-        entity?.analysis_method_applicable_plans;
+      const AnalysisMethodsDetails = () => {
+        if (!isEntityCompleted) {
+          const incompleteText = "Select “Enter” to complete response.";
+          return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
+        }
 
-      const AnalysisMethodsDetails = isEntityCompleted ? (
-        entityHasDetailsToDisplay ? (
-          <Text>
-            {entity.analysis_method_frequency[0].value === "Other, specify"
+        const plans = entity?.analysis_method_applicable_plans;
+        let completeText = "Not utilized";
+
+        if (plans) {
+          const frequencyVal = entity.analysis_method_frequency[0].value;
+          const frequency =
+            frequencyVal === "Other, specify"
               ? entity["analysis_method_frequency-otherText"]
-              : entity.analysis_method_frequency[0].value}
-            :&nbsp;
-            {entity.analysis_method_applicable_plans
-              .map((entity: AnyObject) => entity.value)
-              .join(", ")}
-          </Text>
-        ) : (
-          <Text>Not utilized</Text>
-        )
-      ) : (
-        <Text sx={sx.incompleteText}>Select “Enter” to complete response.</Text>
-      );
+              : frequencyVal;
+          const utilizedPlans = plans
+            .map((entity: AnyObject) => entity.value)
+            .join(", ");
+
+          completeText = `${frequency}: ${utilizedPlans}`;
+        }
+
+        return <Text>{completeText}</Text>;
+      };
 
       return (
         <Flex
@@ -147,7 +151,7 @@ export const DrawerReportPageEntityRows = ({
             {entity.custom_analysis_method_description && (
               <Text>{entity.custom_analysis_method_description}</Text>
             )}
-            {isAnalysisMethodsPage ? AnalysisMethodsDetails : null}
+            {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
           </Flex>
           <Box sx={buttonBoxStyling(canAddEntities)}>
             {enterButton(entity, isEntityCompleted)}
