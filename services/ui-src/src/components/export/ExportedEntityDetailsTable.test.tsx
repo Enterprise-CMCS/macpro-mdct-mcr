@@ -21,6 +21,7 @@ const exportedEntityDetailsTableComponent = () => (
     fields={mockModalOverlayReportPageWithOverlayJson.overlayForm.fields}
     entity={mockMlrReportContext.report.fieldData.program[0]}
     data-testid="exportedEntityDetailsTable"
+    caption={"header content"}
   ></ExportedEntityDetailsTable>
 );
 describe("<ExportedEntityDetailsTable />", () => {

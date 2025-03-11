@@ -30,7 +30,7 @@ export default {
         tableHeading:
           "Excel workbook tabs are located in these sections in the online form:",
         table: {
-          caption: "Before you begin the MCPAR online form",
+          caption: "MCPAR online form overview",
           headRow: ["Excel Workbook Tab", "Location in MCPAR online form"],
           bodyRows: [
             ["A_Program_Info", "A: Program Information"],
