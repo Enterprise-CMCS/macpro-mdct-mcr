@@ -1354,7 +1354,7 @@
                   }
                 },
                 {
-                  "id": "planCompliance438206_planDeficiencies_description",
+                  "id": "planCompliance438206_planDeficiencies-description",
                   "type": "textarea",
                   "validation": "text",
                   "props": {
@@ -1363,7 +1363,7 @@
                   }
                 },
                 {
-                  "id": "planCompliance438206_plaplanDeficiencies-analyses",
+                  "id": "planCompliance438206_planDeficiencies-analyses",
                   "type": "textarea",
                   "validation": "text",
                   "props": {
