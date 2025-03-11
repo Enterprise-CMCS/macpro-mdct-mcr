@@ -9,6 +9,8 @@ import {
   ResponsiveEntityRow,
   Table,
 } from "components";
+// constants
+import { nonCompliantLabel } from "../../constants";
 // types
 import {
   AnyObject,
@@ -27,7 +29,6 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
-import { nonCompliantLabel } from "constants";
 
 export const OverlayReportPage = ({
   route,

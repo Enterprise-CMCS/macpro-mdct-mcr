@@ -26,6 +26,8 @@ import {
   ReportPageIntro,
   Table,
 } from "components";
+// constants
+import { nonCompliantLabel } from "../../constants";
 // types
 import {
   AnyObject,
@@ -36,10 +38,10 @@ import {
   EntityType,
   ScreenReaderOnlyHeaderName,
 } from "types";
+// utils
+import { translateVerbiage } from "utils";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
-import { translateVerbiage } from "utils";
-import { nonCompliantLabel } from "constants";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
