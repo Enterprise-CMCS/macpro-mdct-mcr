@@ -81,7 +81,6 @@ export const EntityDetailsMultiformOverlay = ({
       const updatedEntity = { ...selectedEntity, ...enteredData };
       onSubmit(enteredData, false);
       setSelectedEntity(updatedEntity);
-      setChildFormId(null);
     };
 
     return (
@@ -145,7 +144,7 @@ export const EntityDetailsMultiformOverlay = ({
 
       setFormEnableDetails(nonCompliantForms);
       setFormDetailsComplete(detailsCompleteForms);
-    }, [forms, childFormId]);
+    }, [forms]);
 
     useEffect(() => {
       if (formCount === formRefs.current.length) {
