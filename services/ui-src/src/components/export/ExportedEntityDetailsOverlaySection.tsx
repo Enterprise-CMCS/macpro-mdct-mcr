@@ -30,6 +30,8 @@ export const ExportedEntityDetailsOverlaySection = ({
   const { report } = useStore();
   const entityType = section.entityType;
 
+  // console.log(section.verbiage.intro);
+
   return (
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
@@ -146,6 +148,7 @@ export function getEntityTableComponents(
                 fields={filteredFields.slice(1) as FormField[]}
                 entity={entity}
                 showHintText={false}
+                caption={header.props?.content}
               />
             </Fragment>
           );

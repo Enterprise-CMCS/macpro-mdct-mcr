@@ -303,8 +303,12 @@ const entityTable = (
 ) => {
   const { isTablet, isMobile } = useBreakpoint();
   const tableHeaders = () => {
-    if (isTablet || isMobile) return { headRow: ["", ""] };
-    return { headRow: ["", verbiage.tableHeader!, ""] };
+    if (isTablet || isMobile)
+      return { caption: verbiage.tableHeader, headRow: ["", ""] };
+    return {
+      caption: verbiage.tableHeader,
+      headRow: ["", verbiage.tableHeader!, ""],
+    };
   };
   return (
     <Table sx={sx.table} content={tableHeaders()}>

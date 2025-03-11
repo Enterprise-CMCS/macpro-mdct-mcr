@@ -65,6 +65,7 @@ export const ExportedReportPage = () => {
               sx={sx.combinedDataTable}
               className="short"
               content={{
+                caption: "MCPAR CHIP Exclusion Indicator",
                 headRow: [tableHeaders.indicator, tableHeaders.response],
               }}
             >

@@ -11,6 +11,7 @@ export default {
       info: "Double check that everything in your NAAAR submission is accurate. You will be able to make edits after submitting, and resubmit. Once you’ve reviewed your report, certify that it’s in compliance with CFRs.",
     },
     table: {
+      caption: "Review & Submit",
       headRow: ["Section", "Status", { hiddenName: "Actions" }],
     },
     modal: {
