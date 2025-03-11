@@ -17,26 +17,23 @@ export function translate(text: string = "", keysToReplace: any = {}) {
 
 export const translateVerbiage = (
   replaceKey: string,
-  verbiage?: AnyObject,
+  verbiage: AnyObject = {},
   name?: string
 ) => {
-  const newVerbiage = { ...verbiage };
-  const verbiageKeys = Object.keys(newVerbiage);
-
-  verbiageKeys.forEach((key) => {
-    if (typeof newVerbiage[key] === "object") {
-      const childKeys = Object.keys(newVerbiage[key]);
-      childKeys.forEach((childKey) => {
-        newVerbiage[key][childKey] = translate(newVerbiage[key][childKey], {
-          [replaceKey]: name,
-        });
-      });
+  const translateRecursively = (value: any) => {
+    if (typeof value === "object" && value !== null) {
+      return Object.keys(value).reduce((acc, childKey) => {
+        acc[childKey] = translateRecursively(value[childKey]);
+        return acc;
+      }, {} as AnyObject);
     } else {
-      newVerbiage[key] = translate(newVerbiage[key], {
-        [replaceKey]: name,
-      });
+      return translate(value, { [replaceKey]: name });
     }
-  });
+  };
 
-  return newVerbiage;
+  return Object.keys(verbiage).reduce((acc, key) => {
+    const value = verbiage[key];
+    acc[key] = translateRecursively(value);
+    return acc;
+  }, {} as AnyObject);
 };
