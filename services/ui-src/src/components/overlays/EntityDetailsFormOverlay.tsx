@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from "react";
 // components
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
-import { Form, InstructionsAccordion, ReportPageIntro } from "components";
+import { Form, ReportPageIntro } from "components";
 // types
 import { EntityDetailsMultiformVerbiage, EntityShape, FormJson } from "types";
 // assets
@@ -28,11 +28,8 @@ export const EntityDetailsFormOverlay = ({
       <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
       {verbiage.backButton}
     </Button>
-    <ReportPageIntro text={verbiage.intro} />
-    {verbiage.accordion && (
-      <InstructionsAccordion verbiage={verbiage.accordion} />
-    )}
-    <Box>
+    <ReportPageIntro text={verbiage.intro} accordion={verbiage.accordion} />
+    <Box sx={sx.form}>
       <Form
         disabled={disabled}
         dontReset={true}
@@ -97,6 +94,11 @@ const sx = {
   },
   footerBox: {
     marginTop: "2rem",
+  },
+  form: {
+    "legend.ds-c-label": {
+      color: "palette.gray",
+    },
   },
   buttonFlex: {
     justifyContent: "end",
