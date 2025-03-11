@@ -254,7 +254,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const addStandardsButton = (
     <Button
-      sx={sx.addEntityButton}
+      sx={sx.addStandardsButton}
       leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
       onClick={() => openRowDrawer()}
       disabled={!hasProviderTypes || !completedAnalysisMethods()}
@@ -428,6 +428,10 @@ const sx = {
     paddingBottom: "1rem",
   },
   addEntityButton: {
+    marginBottom: "0",
+    marginTop: "2rem",
+  },
+  addStandardsButton: {
     marginBottom: "0",
     marginTop: "2rem",
     "&:first-of-type": {
