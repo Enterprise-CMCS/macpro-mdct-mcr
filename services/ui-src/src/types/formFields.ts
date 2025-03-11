@@ -74,12 +74,14 @@ export interface FormField {
   props?: AnyObject;
   choices?: FieldChoice[];
   repeat?: string;
+  groupId?: string;
 }
 
 export interface FormLayoutElement {
   id: string;
   type: string;
   props?: AnyObject;
+  groupId?: string;
 }
 
 export interface DropdownOptions {

@@ -38,7 +38,8 @@ export const OverlayReportPage = ({
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
-  const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
+  const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
+    useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
@@ -155,13 +156,13 @@ export const OverlayReportPage = ({
     const detailsVerbiage = { ...details.verbiage };
     // Replace {{planName}}
     detailsVerbiage.intro.subsection = translate(
-      detailsVerbiage.intro.subsection,
+      details.verbiage.intro.subsection,
       {
         planName: selectedEntity?.name,
       }
     );
 
-    const onSubmit = async (enteredData: AnyObject) => {
+    const onSubmit = async (enteredData: AnyObject, toggle: boolean = true) => {
       setSubmitting(true);
 
       const reportKeys = {
@@ -202,11 +203,12 @@ export const OverlayReportPage = ({
       }
 
       setSubmitting(false);
-      toggleOverlay();
+      if (toggle) toggleOverlay();
     };
 
     return (
       <EntityDetailsMultiformOverlay
+        childForms={details.childForms}
         closeEntityDetailsOverlay={() => toggleOverlay()}
         disabled={false}
         entityType={entityType as EntityType}

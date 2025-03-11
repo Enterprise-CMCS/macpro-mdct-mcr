@@ -45,8 +45,10 @@ export const compileValidationJsonFromFields = (
     ) {
       field.validation.parentOptionId = parentOption?.name;
     }
+    // Use groupId for a single validation across different field ids
+    const fieldId = field.groupId ?? field.id;
     // compile field's validation schema
-    validationSchema[field.id] = field.validation;
+    validationSchema[fieldId] = field.validation;
     // if field has choices/options (ie could have nested children)
     const fieldChoices = field.props?.choices;
     if (fieldChoices) {
