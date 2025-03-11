@@ -27,6 +27,7 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
+import { nonCompliantLabel } from "constants";
 
 export const OverlayReportPage = ({
   route,
@@ -178,6 +179,23 @@ export const OverlayReportPage = ({
         ...selectedEntity,
         ...enteredData,
       };
+
+      // Delete any previously entered details if plan is compliant
+      const assurances = Object.keys(newEntity).filter(
+        (key) =>
+          key.endsWith("assurance") &&
+          newEntity[key][0].value !== nonCompliantLabel
+      );
+
+      assurances.forEach((key) => {
+        const formId = key.split("_")[0];
+        const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
+          (key) => key.startsWith(formId) && !key.endsWith("assurance")
+        );
+        relatedFields.forEach((key) => {
+          delete newEntity[key];
+        });
+      });
 
       const newEntities = [...currentEntities];
       newEntities[selectedEntityIndex] = newEntity;

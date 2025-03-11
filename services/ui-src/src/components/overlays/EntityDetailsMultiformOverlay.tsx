@@ -39,6 +39,7 @@ import {
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 import { translateVerbiage } from "utils";
+import { nonCompliantLabel } from "constants";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -106,11 +107,6 @@ export const EntityDetailsMultiformOverlay = ({
     );
     const [formData, setFormData] = useState<AnyObject>({});
 
-    const COMPLIANT_LABEL =
-      "Yes, the plan complies on all standards based on all analyses";
-    const NON_COMPLIANT_LABEL =
-      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
-
     useEffect(() => {
       setEntering(false);
     }, []);
@@ -128,7 +124,7 @@ export const EntityDetailsMultiformOverlay = ({
         if (selectedEntity && selectedEntity[assuranceField]) {
           // Assurance has non-compliant answer
           assuranceNonCompliant =
-            selectedEntity[assuranceField][0]?.value === NON_COMPLIANT_LABEL;
+            selectedEntity[assuranceField][0]?.value === nonCompliantLabel;
 
           if (assuranceNonCompliant) {
             const complianceDetailFields = Object.keys(selectedEntity).filter(
@@ -148,30 +144,11 @@ export const EntityDetailsMultiformOverlay = ({
 
     useEffect(() => {
       if (formCount === formRefs.current.length) {
-        // Nullify any previously entered details if plan is compliant
-        const assurances = Object.keys(formData).filter(
-          (key) =>
-            key.endsWith("assurance") &&
-            formData[key][0].value === COMPLIANT_LABEL
-        );
-        const complianceDetails = {} as AnyObject;
-
-        assurances.forEach((key) => {
-          const formId = key.split("_")[0];
-          const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
-            (key) => key.startsWith(formId) && !key.endsWith("assurance")
-          );
-          relatedFields.forEach((key) => {
-            complianceDetails[key] = null;
-          });
-        });
-
-        const submissionData = { ...formData, ...complianceDetails };
         // Prevent UI from resetting while waiting for API
-        const updatedEntity = { ...selectedEntity, ...submissionData };
+        const updatedEntity = { ...selectedEntity, ...formData };
         setSelectedEntity(updatedEntity);
         // Submit to API
-        onSubmit(submissionData);
+        onSubmit(formData);
         // Reset
         setFormData({});
         setFormCount(0);
@@ -187,7 +164,7 @@ export const EntityDetailsMultiformOverlay = ({
       const updateEnableDetails = { ...formEnableDetails };
       const formId = event.target.id.split("_")[0];
       const inputId = event.target.id.split("-")[0];
-      updateEnableDetails[formId] = event.target.value === NON_COMPLIANT_LABEL;
+      updateEnableDetails[formId] = event.target.value === nonCompliantLabel;
       setFormEnableDetails(updateEnableDetails);
 
       const changedData = {
