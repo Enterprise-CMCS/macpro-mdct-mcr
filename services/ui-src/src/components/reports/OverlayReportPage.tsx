@@ -13,6 +13,7 @@ import {
 import {
   AnyObject,
   CustomHtmlElement,
+  EntityDetailsMultiformVerbiage,
   EntityShape,
   EntityType,
   OverlayReportPageShape,
@@ -22,7 +23,7 @@ import {
 import {
   entityWasUpdated,
   parseCustomHtml,
-  translate,
+  translateVerbiage,
   useBreakpoint,
   useStore,
 } from "utils";
@@ -153,13 +154,10 @@ export const OverlayReportPage = ({
       return <></>;
     }
 
-    const detailsVerbiage = { ...details.verbiage };
-    // Replace {{planName}}
-    detailsVerbiage.intro.subsection = translate(
-      details.verbiage.intro.subsection,
-      {
-        planName: selectedEntity?.name,
-      }
+    const detailsVerbiage = translateVerbiage(
+      "planName",
+      details.verbiage,
+      selectedEntity?.name
     );
 
     const onSubmit = async (enteredData: AnyObject, toggle: boolean = true) => {
@@ -219,7 +217,7 @@ export const OverlayReportPage = ({
         setSelectedEntity={setSelectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender}
-        verbiage={detailsVerbiage}
+        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
       />
     );
   };

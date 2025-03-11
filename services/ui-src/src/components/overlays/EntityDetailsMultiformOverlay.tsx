@@ -36,10 +36,9 @@ import {
   EntityType,
   ScreenReaderOnlyHeaderName,
 } from "types";
-// utils
-import { translate } from "utils";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
+import { translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -68,26 +67,19 @@ export const EntityDetailsMultiformOverlay = ({
     }
 
     const { form, verbiage } = formObject;
-    const detailsVerbiage = { ...verbiage } as EntityDetailsMultiformVerbiage;
-
-    // Replace {{planName}}
-    detailsVerbiage.backButton = translate(verbiage?.backButton, {
-      planName: selectedEntity?.name,
-    });
-    detailsVerbiage.intro.section = translate(verbiage?.intro.section, {
-      planName: selectedEntity?.name,
-    });
-    detailsVerbiage.intro.subsection = translate(verbiage?.intro.subsection, {
-      planName: selectedEntity?.name,
-    });
+    const detailsVerbiage = translateVerbiage(
+      "planName",
+      verbiage,
+      selectedEntity?.name
+    );
 
     const closeEntityDetailsOverlay = () => {
       setChildFormId(null);
     };
 
     const handleSubmit = (enteredData: AnyObject) => {
-      onSubmit(enteredData, false);
       const updatedEntity = { ...selectedEntity, ...enteredData };
+      onSubmit(enteredData, false);
       setSelectedEntity(updatedEntity);
       setChildFormId(null);
     };
@@ -101,7 +93,7 @@ export const EntityDetailsMultiformOverlay = ({
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}
-        verbiage={detailsVerbiage}
+        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
       />
     );
   };
