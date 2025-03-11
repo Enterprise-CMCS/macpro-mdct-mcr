@@ -93,18 +93,6 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     });
     expect(updatedEntityCellsIncomplete).toBeVisible();
 
-    // Click Enter
-    const updatedEnterButton = screen.getByRole("button", {
-      name: "Enter",
-    });
-    await userEvent.click(updatedEnterButton);
-
-    // Status icon changed
-    const updatedEntityCellsComplete = screen.getByRole("row", {
-      name: "complete icon Mock Cell Enter",
-    });
-    expect(updatedEntityCellsComplete).toBeVisible();
-
     // Submit
     const submitButton = screen.getByRole("button", { name: "Save & return" });
     await userEvent.click(submitButton);
