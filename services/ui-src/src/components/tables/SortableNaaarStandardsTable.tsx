@@ -89,6 +89,7 @@ export const SortableNaaarStandardsTable = ({
           <Button
             variant="link"
             id={value}
+            name="edit"
             onClick={() => openRowDrawer(entity)}
           >
             Edit
@@ -100,6 +101,7 @@ export const SortableNaaarStandardsTable = ({
           <Button
             sx={sx.deleteButton}
             id={value}
+            name="delete"
             onClick={() => openDeleteEntityModal(entity)}
           >
             <Image src={deleteIcon} alt="delete" boxSize="2xl" />
