@@ -726,6 +726,40 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         },
       },
     ],
+    childForms: [
+      {
+        parentForm: "mockMultiform",
+        verbiage: {
+          intro: {
+            section: "",
+            subsection: "Mock Child Form",
+          },
+          backButton: "Return to parent dashboard",
+        },
+        form: {
+          id: "mockMultiform_childForm",
+          fields: [
+            {
+              id: "mockMultiform_mockInput",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label: "Mock No",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
   },
 };
 

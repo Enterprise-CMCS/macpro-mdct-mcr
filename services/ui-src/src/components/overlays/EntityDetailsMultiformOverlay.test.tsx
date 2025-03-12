@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsMultiformOverlay } from "./EntityDetailsMultiformOverlay";
+// constants
+import { nonCompliantLabel } from "../../constants";
 // utils
 import {
   mockEntityStore,
@@ -31,6 +33,7 @@ const entityDetailsMultiformOverlayComponent = (
 ) => (
   <RouterWrappedComponent>
     <EntityDetailsMultiformOverlay
+      childForms={details!.childForms}
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
       entityType={EntityType.PLANS}
@@ -82,8 +85,19 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(entityCells).toBeVisible();
     expect(enterButton).toBeDisabled();
 
+    // Submit
+    const submitButton = screen.getByRole("button", { name: "Save & return" });
+    await userEvent.click(submitButton);
+
+    expect(mockOnSubmit).toBeCalled();
+  });
+
+  test("renders child form", async () => {
+    render(entityDetailsMultiformOverlayComponent());
+
+    // Form
     const radioButtonNo = screen.getByRole("radio", {
-      name: "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+      name: nonCompliantLabel,
     });
     await userEvent.click(radioButtonNo);
 
@@ -93,11 +107,17 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     });
     expect(updatedEntityCellsIncomplete).toBeVisible();
 
-    // Submit
-    const submitButton = screen.getByRole("button", { name: "Save & return" });
-    await userEvent.click(submitButton);
+    // Click Enter
+    const updatedEnterButton = screen.getByRole("button", {
+      name: "Enter",
+    });
+    await userEvent.click(updatedEnterButton);
 
-    expect(mockOnSubmit).toBeCalled();
+    // Child Form
+    const childForm = screen.getByRole("heading", {
+      name: "Mock Child Form",
+    });
+    expect(childForm).toBeVisible();
   });
 
   test("closes overlay", async () => {

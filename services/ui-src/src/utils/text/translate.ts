@@ -1,6 +1,9 @@
 import { AnyObject } from "types";
 
-export function translate(text: string = "", keysToReplace: any = {}) {
+export function translate(
+  text: string = "",
+  keysToReplace: { [key: string]: string } = {}
+) {
   const keys = Object.keys(keysToReplace);
   let translatedText = text;
 
@@ -16,18 +19,17 @@ export function translate(text: string = "", keysToReplace: any = {}) {
 }
 
 export const translateVerbiage = (
-  replaceKey: string,
   verbiage: AnyObject = {},
-  name?: string
+  keysToReplace: { [key: string]: string } = {}
 ) => {
-  const translateRecursively = (value: any) => {
+  const translateRecursively = (value: AnyObject) => {
     if (typeof value === "object" && value !== null) {
       return Object.keys(value).reduce((acc, childKey) => {
         acc[childKey] = translateRecursively(value[childKey]);
         return acc;
       }, {} as AnyObject);
     } else {
-      return translate(value, { [replaceKey]: name });
+      return translate(value, keysToReplace);
     }
   };
 

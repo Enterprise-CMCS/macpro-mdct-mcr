@@ -156,11 +156,9 @@ export const OverlayReportPage = ({
       return <></>;
     }
 
-    const detailsVerbiage = translateVerbiage(
-      "planName",
-      details.verbiage,
-      selectedEntity?.name
-    );
+    const detailsVerbiage = translateVerbiage(details.verbiage, {
+      planName: selectedEntity?.name,
+    });
 
     const onSubmit = async (enteredData: AnyObject, toggle: boolean = true) => {
       setSubmitting(true);

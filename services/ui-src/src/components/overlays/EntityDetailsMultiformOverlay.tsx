@@ -64,17 +64,20 @@ export const EntityDetailsMultiformOverlay = ({
       (form: EntityDetailsChildFormShape) => form.parentForm === childFormId
     );
 
+    useEffect(() => {
+      if (!formObject) {
+        setChildFormId(null);
+      }
+    }, [formObject]);
+
     if (!formObject) {
-      setChildFormId(null);
       return <></>;
     }
 
     const { form, verbiage } = formObject;
-    const detailsVerbiage = translateVerbiage(
-      "planName",
-      verbiage,
-      selectedEntity?.name
-    );
+    const detailsVerbiage = translateVerbiage(verbiage, {
+      planName: selectedEntity?.name,
+    });
 
     const closeEntityDetailsOverlay = () => {
       setChildFormId(null);
@@ -103,10 +106,12 @@ export const EntityDetailsMultiformOverlay = ({
   const ParentForms = () => {
     const formRefs = useRef<HTMLFormElement[]>([]);
     const [formCount, setFormCount] = useState<number>(0);
-    const [formEnableDetails, setFormEnableDetails] = useState<AnyObject>({});
-    const [formDetailsComplete, setFormDetailsComplete] = useState<AnyObject>(
-      {}
-    );
+    const [formEnableDetails, setFormEnableDetails] = useState<{
+      [key: string]: boolean;
+    }>({});
+    const [formHasComplianceDetails, setFormHasComplianceDetails] = useState<{
+      [key: string]: boolean;
+    }>({});
     const [formData, setFormData] = useState<AnyObject>({});
 
     useEffect(() => {
@@ -114,14 +119,14 @@ export const EntityDetailsMultiformOverlay = ({
     }, []);
 
     useEffect(() => {
-      const formIds = forms.map((form) => form.form.id);
-      const nonCompliantForms = {} as AnyObject;
-      const detailsCompleteForms = {} as AnyObject;
+      const formIds = forms.map((formObject) => formObject.form.id);
+      const nonCompliantForms = {} as { [key: string]: boolean };
+      const hasComplianceDetailsForms = {} as { [key: string]: boolean };
 
       formIds.forEach((formId) => {
         const assuranceField = `${formId}_assurance`;
         let assuranceNonCompliant = false;
-        detailsCompleteForms[formId] = false;
+        hasComplianceDetailsForms[formId] = false;
 
         if (selectedEntity && selectedEntity[assuranceField]) {
           // Assurance has non-compliant answer
@@ -133,7 +138,8 @@ export const EntityDetailsMultiformOverlay = ({
               (key) => key.startsWith(formId) && selectedEntity[key] !== null
             );
             // Should have multiple compliance details
-            detailsCompleteForms[formId] = complianceDetailFields.length > 1;
+            hasComplianceDetailsForms[formId] =
+              complianceDetailFields.length > 1;
           }
         }
 
@@ -141,7 +147,7 @@ export const EntityDetailsMultiformOverlay = ({
       });
 
       setFormEnableDetails(nonCompliantForms);
-      setFormDetailsComplete(detailsCompleteForms);
+      setFormHasComplianceDetails(hasComplianceDetailsForms);
     }, [forms]);
 
     useEffect(() => {
@@ -164,6 +170,7 @@ export const EntityDetailsMultiformOverlay = ({
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
       const updateEnableDetails = { ...formEnableDetails };
+      // Assuming id is in formId_fieldId-optionId format
       const formId = event.target.id.split("_")[0];
       const inputId = event.target.id.split("-")[0];
       updateEnableDetails[formId] = event.target.value === nonCompliantLabel;
@@ -226,7 +233,7 @@ export const EntityDetailsMultiformOverlay = ({
       const headerName =
         typeof header === "object" ? header.hiddenName : header;
       const isEnabled = formEnableDetails[formId];
-      const isComplete = formDetailsComplete[formId];
+      const isComplete = formHasComplianceDetails[formId];
 
       switch (headerName) {
         case "Status": {
@@ -273,7 +280,7 @@ export const EntityDetailsMultiformOverlay = ({
           sx={sx.backButton}
           variant="none"
           onClick={closeEntityDetailsOverlay as MouseEventHandler}
-          aria-label={`${verbiage.backButton}`}
+          aria-label={verbiage.backButton}
         >
           <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
           {verbiage.backButton}

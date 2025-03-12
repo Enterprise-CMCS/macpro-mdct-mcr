@@ -23,7 +23,7 @@ export const EntityDetailsFormOverlay = ({
       sx={sx.backButton}
       variant="none"
       onClick={closeEntityDetailsOverlay as MouseEventHandler}
-      aria-label={`${verbiage.backButton}`}
+      aria-label={verbiage.backButton}
     >
       <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
       {verbiage.backButton}
