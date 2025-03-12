@@ -14,12 +14,23 @@ export const SortableNaaarStandardsTable = ({
     return entities.map((entity: any, index: number) => {
       const {
         standard_coreProviderTypeCoveredByStandard,
-        standard_standardType,
-        standard_standardDescription,
-        standard_analysisMethodsUtilized,
         standard_populationCoveredByStandard,
         standard_applicableRegion,
+        standard_standardType,
       } = entity;
+
+      // extract the standard description attribute
+      const standardDescription = Object.keys(entity).find((key: string) => {
+        return key.startsWith("standard_standardDescription");
+      });
+
+      // extract corresponding standard choice id
+      const standardId = standardDescription?.substring(
+        standardDescription.indexOf("-")
+      );
+
+      // use the id to extract analysis method attribute
+      const analysisMethodsUtilized = `standard_analysisMethodsUtilized${standardId}`;
 
       const coreProviderType = entity[
         "standard_coreProviderTypeCoveredByStandard-otherText"
@@ -43,10 +54,8 @@ export const SortableNaaarStandardsTable = ({
           : standard_applicableRegion[0].value;
 
       // there are 7 analysis methods checkboxes
-      function extractMethods(
-        standard_analysisMethodsUtilized: { value: any }[]
-      ) {
-        return standard_analysisMethodsUtilized
+      function extractMethods(analysisMethodsUtilized: { value: any }[]) {
+        return analysisMethodsUtilized
           ?.map((method) => method.value)
           .join(", ");
       }
@@ -55,8 +64,10 @@ export const SortableNaaarStandardsTable = ({
         count: index + 1,
         provider: coreProviderType,
         standardType: standardType,
-        standardDescription: standard_standardDescription,
-        analysisMethods: extractMethods(standard_analysisMethodsUtilized),
+        standardDescription: entity[standardDescription as keyof EntityShape],
+        analysisMethods: extractMethods(
+          entity[analysisMethodsUtilized as keyof EntityShape]
+        ),
         population: standardPopulation,
         region: standardRegion,
         entity,
