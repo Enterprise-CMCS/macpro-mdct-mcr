@@ -203,6 +203,8 @@ export const mockVerbiageIntro = {
   editEntityButtonText: "Edit",
   enterReportText: "Enter Details",
   tableHeader: "Mock table header",
+  alert: "Mock alert",
+  hint: "Mock hint",
 };
 
 export const mockStandardReportPageJson = {

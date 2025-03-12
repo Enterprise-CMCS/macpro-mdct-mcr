@@ -1234,7 +1234,12 @@
               "backButton": "Return to plan compliance data for {{planName}} dashboard",
               "intro": {
                 "hint": "Report on 42 C.F.R. § 438.206 plan compliance during the reporting period",
-                "info": "<strong>Plan non-compliance for 438.206</strong><br>Report on how this plan is not in compliance with 42 C.F.R. § 438.206. Full details are located within the accordion above. Select all that apply.", 
+                "info": [
+                  {
+                    "type": "html",
+                    "content": "<strong>Plan non-compliance for 438.206</strong><br>Report on how this plan is not in compliance with 42 C.F.R. § 438.206. Full details are located within the accordion above. Select all that apply." 
+                  }
+                ],
                 "section": "III. Plan compliance data for {{planName}}",
                 "subsection": "{{planName}}: Provide plan compliance details for 438.206"
               }

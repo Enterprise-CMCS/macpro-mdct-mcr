@@ -64,9 +64,13 @@ export const EntityDetailsMultiformOverlay = ({
       (form: EntityDetailsChildFormShape) => form.parentForm === childFormId
     );
 
+    const closeEntityDetailsOverlay = () => {
+      setChildFormId(null);
+    };
+
     useEffect(() => {
       if (!formObject) {
-        setChildFormId(null);
+        closeEntityDetailsOverlay();
       }
     }, [formObject]);
 
@@ -78,10 +82,6 @@ export const EntityDetailsMultiformOverlay = ({
     const detailsVerbiage = translateVerbiage(verbiage, {
       planName: selectedEntity?.name,
     });
-
-    const closeEntityDetailsOverlay = () => {
-      setChildFormId(null);
-    };
 
     const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };

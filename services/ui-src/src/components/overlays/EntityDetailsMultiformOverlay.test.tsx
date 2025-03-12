@@ -29,11 +29,12 @@ mockedUseStore.mockReturnValue({
 
 const entityDetailsMultiformOverlayComponent = (
   disabled: boolean = false,
-  submitting = false
+  submitting: boolean = false,
+  chidForms: any = details!.childForms
 ) => (
   <RouterWrappedComponent>
     <EntityDetailsMultiformOverlay
-      childForms={details!.childForms}
+      childForms={chidForms}
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
       entityType={EntityType.PLANS}
@@ -118,6 +119,34 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       name: "Mock Child Form",
     });
     expect(childForm).toBeVisible();
+  });
+
+  test("renders nothing if no child form", async () => {
+    render(entityDetailsMultiformOverlayComponent(undefined, undefined, []));
+
+    // Form
+    const radioButtonNo = screen.getByRole("radio", {
+      name: nonCompliantLabel,
+    });
+    await userEvent.click(radioButtonNo);
+
+    // Table
+    const entityCellsIncomplete = screen.getByRole("row", {
+      name: "warning icon Mock Cell Select “Enter” to complete response. Enter",
+    });
+    expect(entityCellsIncomplete).toBeVisible();
+
+    // Click Enter
+    const updatedEnterButton = screen.getByRole("button", {
+      name: "Enter",
+    });
+    await userEvent.click(updatedEnterButton);
+
+    // Stays on Table
+    const childForm = screen.queryByRole("heading", {
+      name: "Mock Child Form",
+    });
+    expect(childForm).toBeNull();
   });
 
   test("closes overlay", async () => {

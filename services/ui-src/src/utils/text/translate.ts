@@ -24,18 +24,18 @@ export const translateVerbiage = (
 ) => {
   const translateRecursively = (value: AnyObject) => {
     if (typeof value === "object" && value !== null) {
-      return Object.keys(value).reduce((acc, childKey) => {
-        acc[childKey] = translateRecursively(value[childKey]);
-        return acc;
+      return Object.keys(value).reduce((verbiageObject, childKey) => {
+        verbiageObject[childKey] = translateRecursively(value[childKey]);
+        return verbiageObject;
       }, {} as AnyObject);
     } else {
       return translate(value, keysToReplace);
     }
   };
 
-  return Object.keys(verbiage).reduce((acc, key) => {
+  return Object.keys(verbiage).reduce((verbiageObject, key) => {
     const value = verbiage[key];
-    acc[key] = translateRecursively(value);
-    return acc;
+    verbiageObject[key] = translateRecursively(value);
+    return verbiageObject;
   }, {} as AnyObject);
 };
