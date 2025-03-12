@@ -61,7 +61,7 @@ describe("Test SortableNaaarStandardsTable component", () => {
   });
 
   test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
-    const editButton = screen.getByRole("button", { name: "edit" });
+    const editButton = screen.getByRole("button", { name: "Edit" });
     await userEvent.click(editButton);
     expect(mockOpenRowDrawer).toBeCalledTimes(1);
   });
