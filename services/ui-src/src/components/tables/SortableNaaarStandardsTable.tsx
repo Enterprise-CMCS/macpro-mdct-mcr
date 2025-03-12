@@ -25,12 +25,14 @@ export const SortableNaaarStandardsTable = ({
       });
 
       // extract corresponding standard choice id
-      const standardId = standardDescription?.substring(
-        standardDescription.indexOf("-")
-      );
+      const standardId = standardDescription?.includes("-")
+        ? standardDescription?.substring(standardDescription.indexOf("-"))
+        : "";
 
       // use the id to extract analysis method attribute
-      const analysisMethodsUtilized = `standard_analysisMethodsUtilized${standardId}`;
+      const analysisMethodsUtilized = standardId
+        ? `standard_analysisMethodsUtilized${standardId}`
+        : "";
 
       const coreProviderType = entity[
         "standard_coreProviderTypeCoveredByStandard-otherText"
@@ -87,7 +89,6 @@ export const SortableNaaarStandardsTable = ({
           <Button
             variant="link"
             id={value}
-            data-testid="edit-entity"
             onClick={() => openRowDrawer(entity)}
           >
             Edit
@@ -99,7 +100,6 @@ export const SortableNaaarStandardsTable = ({
           <Button
             sx={sx.deleteButton}
             id={value}
-            data-testid="delete-entity"
             onClick={() => openDeleteEntityModal(entity)}
           >
             <Image src={deleteIcon} alt="delete" boxSize="2xl" />

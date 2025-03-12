@@ -61,13 +61,13 @@ describe("Test SortableNaaarStandardsTable component", () => {
   });
 
   test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
-    const editButton = screen.getByTestId("edit-entity");
+    const editButton = screen.getByRole("button", { name: "edit" });
     await userEvent.click(editButton);
     expect(mockOpenRowDrawer).toBeCalledTimes(1);
   });
 
   test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
-    const deleteButton = screen.getByTestId("delete-entity");
+    const deleteButton = screen.getByRole("button", { name: "delete" });
     await userEvent.click(deleteButton);
     expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
   });
