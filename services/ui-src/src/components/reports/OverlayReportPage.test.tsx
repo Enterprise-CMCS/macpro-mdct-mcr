@@ -16,6 +16,7 @@ import {
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 import userEvent from "@testing-library/user-event";
+import { nonCompliantLabel } from "../../constants";
 
 jest.mock("utils/state/useStore");
 jest.mock("utils/other/useBreakpoint");
@@ -244,18 +245,20 @@ describe("<OverlayReportPage />", () => {
         expect(h2).toBeVisible();
       });
 
-      test("submit details form", async () => {
+      test("submit details form - Yes", async () => {
         mockedGetEntityStatus.mockReturnValue(true);
 
         await act(async () => {
           render(overlayReportPageComponent());
         });
 
+        // Table
         const enterButton = screen.getByRole("button", {
           name: verbiage.enterEntityDetailsButtonText,
         });
         await userEvent.click(enterButton);
 
+        // Parent Form
         const h1 = screen.queryByRole("heading", {
           level: 1,
           name: verbiage.intro.section,
@@ -270,6 +273,72 @@ describe("<OverlayReportPage />", () => {
         });
         await userEvent.click(submitButton);
 
+        // Back to Table
+        const entityCell = screen.getByRole("gridcell", {
+          name: planName,
+        });
+        const h1Requery = screen.getByRole("heading", {
+          level: 1,
+          name: verbiage.intro.section,
+        });
+
+        expect(entityCell).toBeVisible();
+        expect(h1Requery).toBeVisible();
+      });
+
+      test("submit details form - No", async () => {
+        mockedGetEntityStatus.mockReturnValue(true);
+
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+
+        // Table
+        const enterButtonTable = screen.getByRole("button", {
+          name: verbiage.enterEntityDetailsButtonText,
+        });
+        await userEvent.click(enterButtonTable);
+
+        // Parent Form
+        const radioButtonParentFormNo = screen.getByRole("radio", {
+          name: nonCompliantLabel,
+        });
+        await userEvent.click(radioButtonParentFormNo);
+
+        // Enter enabled only with "No"
+        const enterButtonParentForm = screen.getByRole("button", {
+          name: "Enter",
+        });
+        await userEvent.click(enterButtonParentForm);
+
+        // Child Form
+        const childForm = screen.getByRole("heading", {
+          name: "Mock Child Form",
+        });
+        expect(childForm).toBeVisible();
+
+        const radioButtonChildForm = screen.getByRole("radio", {
+          name: "Mock Yes",
+        });
+        await userEvent.click(radioButtonChildForm);
+
+        const submitButtonChildForm = screen.getByRole("button", {
+          name: "Save & return",
+        });
+        await userEvent.click(submitButtonChildForm);
+
+        // Back to Parent Form, Choose "Yes"
+        const radioButtonParentFormYes = screen.getByRole("radio", {
+          name: "Mock Yes",
+        });
+        await userEvent.click(radioButtonParentFormYes);
+
+        const submitButtonParentForm = screen.getByRole("button", {
+          name: "Save & return",
+        });
+        await userEvent.click(submitButtonParentForm);
+
+        // Back to Table
         const entityCell = screen.getByRole("gridcell", {
           name: planName,
         });

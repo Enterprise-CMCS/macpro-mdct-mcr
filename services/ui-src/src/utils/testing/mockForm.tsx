@@ -203,6 +203,8 @@ export const mockVerbiageIntro = {
   editEntityButtonText: "Edit",
   enterReportText: "Enter Details",
   tableHeader: "Mock table header",
+  alert: "Mock alert",
+  hint: "Mock hint",
 };
 
 export const mockStandardReportPageJson = {
@@ -723,6 +725,40 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
           },
           heading: "Mock heading",
           hint: "Mock hint",
+        },
+      },
+    ],
+    childForms: [
+      {
+        parentForm: "mockMultiform",
+        verbiage: {
+          intro: {
+            section: "",
+            subsection: "Mock Child Form",
+          },
+          backButton: "Return to parent dashboard",
+        },
+        form: {
+          id: "mockMultiform_childForm",
+          fields: [
+            {
+              id: "mockMultiform_mockInput",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label: "Mock No",
+                  },
+                ],
+              },
+            },
+          ],
         },
       },
     ],

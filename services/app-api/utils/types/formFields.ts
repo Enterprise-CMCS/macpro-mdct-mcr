@@ -74,6 +74,7 @@ export interface FormField {
   props?: AnyObject;
   choices?: FieldChoice[];
   repeat?: string;
+  groupId?: string;
 }
 
 export interface FormLayoutElement {
@@ -81,6 +82,7 @@ export interface FormLayoutElement {
   type: string;
   props?: AnyObject;
   repeat?: string;
+  groupId?: string;
 }
 
 export interface FieldChoice {
