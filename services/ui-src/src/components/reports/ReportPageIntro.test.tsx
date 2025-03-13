@@ -23,7 +23,7 @@ describe("<ReportPageIntro />", () => {
     expect(screen.getByText(mockVerbiageIntro.info[0].content)).toBeVisible();
   });
 
-  test("renders accodion", () => {
+  test("renders accordion", () => {
     const verbiage = { buttonLabel: "mock accordion", text: "" };
     render(<ReportPageIntro text={text} accordion={verbiage} />);
     expect(InstructionsAccordion).toHaveBeenCalledWith(
