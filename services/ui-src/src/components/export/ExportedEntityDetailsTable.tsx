@@ -44,7 +44,7 @@ export const ExportedEntityDetailsTable = ({
       {...props}
       sx={sx.root}
       content={{
-        caption: caption,
+        caption,
         headRow: threeColumnHeaderItems,
       }}
     >

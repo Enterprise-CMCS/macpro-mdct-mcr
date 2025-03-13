@@ -304,10 +304,17 @@ const entityTable = (
   const { isTablet, isMobile } = useBreakpoint();
   const tableHeaders = () => {
     if (isTablet || isMobile)
-      return { caption: verbiage.tableHeader, headRow: ["", ""] };
+      return {
+        caption: verbiage.tableHeader,
+        headRow: [{ hiddenName: "Status" }, { hiddenName: "Content" }],
+      };
     return {
       caption: verbiage.tableHeader,
-      headRow: ["", verbiage.tableHeader!, ""],
+      headRow: [
+        { hiddenName: "Status" },
+        verbiage.tableHeader!,
+        { hiddenName: "Action" },
+      ],
     };
   };
   return (

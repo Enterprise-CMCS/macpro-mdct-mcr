@@ -30,8 +30,6 @@ export const ExportedEntityDetailsOverlaySection = ({
   const { report } = useStore();
   const entityType = section.entityType;
 
-  // console.log(section.verbiage.intro);
-
   return (
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
