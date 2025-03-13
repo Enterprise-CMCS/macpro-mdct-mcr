@@ -85,8 +85,8 @@ export const EntityDetailsMultiformOverlay = ({
 
     const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
-      onSubmit(enteredData, false);
       setSelectedEntity(updatedEntity);
+      onSubmit(enteredData, false);
     };
 
     return (

@@ -11,8 +11,9 @@ export const EntityDetailsFormOverlay = ({
   closeEntityDetailsOverlay,
   disabled,
   form,
-  onSubmit,
   onChange,
+  onError,
+  onSubmit,
   selectedEntity,
   submitting,
   validateOnRender,
@@ -37,6 +38,7 @@ export const EntityDetailsFormOverlay = ({
         formJson={form}
         id={form.id}
         onChange={onChange}
+        onError={onError}
         onSubmit={onSubmit}
         validateOnRender={validateOnRender || false}
       />
@@ -65,6 +67,7 @@ interface Props {
   disabled: boolean;
   form: FormJson;
   onChange?: Function;
+  onError?: Function;
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
