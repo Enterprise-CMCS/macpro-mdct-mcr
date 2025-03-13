@@ -47,12 +47,25 @@ describe("utils/text/translate", () => {
         title:
           "{{stateName}} {{heading}} {{reportYear}} - Period {{reportPeriod}}",
       },
+      html: [
+        {
+          type: "p",
+          content:
+            "{{stateName}} {{heading}} {{reportYear}} - Period {{reportPeriod}}",
+        },
+      ],
     };
     const translatedVerbiage = {
       title: "State Name Heading 2024 - Period 1",
       sub: {
         title: "State Name Heading 2024 - Period 1",
       },
+      html: [
+        {
+          type: "p",
+          content: "State Name Heading 2024 - Period 1",
+        },
+      ],
     };
 
     test("returns translated verbiage", () => {
