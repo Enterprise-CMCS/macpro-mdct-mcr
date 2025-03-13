@@ -22,8 +22,10 @@ export const translateVerbiage = (
   verbiage: AnyObject = {},
   keysToReplace: { [key: string]: string } = {}
 ) => {
-  const translateRecursively = (value: AnyObject) => {
-    if (typeof value === "object" && value !== null) {
+  const translateRecursively = (value: AnyObject): AnyObject | string => {
+    if (Array.isArray(value)) {
+      return value.map((item) => translateRecursively(item));
+    } else if (typeof value === "object" && value !== null) {
       return Object.keys(value).reduce((verbiageObject, childKey) => {
         verbiageObject[childKey] = translateRecursively(value[childKey]);
         return verbiageObject;
