@@ -200,12 +200,10 @@ export const ChoiceListField = ({
         selectedOptions = selectedOptions.filter(
           (field) => field.key !== clickedOption.key
         );
-        const option = choices.find(
+        const option = choices.filter(
           (choice) => choice.id === clickedOption.key
         );
-        if (option) {
-          clearUncheckedNestedFields([option]);
-        }
+        clearUncheckedNestedFields(option);
       }
     }
 
