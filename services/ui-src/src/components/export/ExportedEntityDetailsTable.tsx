@@ -18,6 +18,7 @@ import { useStore } from "utils";
 import verbiage from "verbiage/pages/mlr/mlr-export";
 
 export const ExportedEntityDetailsTable = ({
+  caption,
   fields,
   entity,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -43,6 +44,7 @@ export const ExportedEntityDetailsTable = ({
       {...props}
       sx={sx.root}
       content={{
+        caption,
         headRow: threeColumnHeaderItems,
       }}
     >
@@ -122,6 +124,7 @@ export const renderFieldTableBody = (
 };
 
 export interface Props {
+  caption: string;
   fields: FormField[];
   entity: EntityShape;
   showHintText?: boolean;

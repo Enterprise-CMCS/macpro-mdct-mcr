@@ -67,6 +67,7 @@ export const OverlayReportPage = ({
     const tableHeaders = () => {
       if (isTablet || isMobile) {
         return {
+          caption: verbiage.tableHeader,
           headRow: [
             { hiddenName: "Status" },
             { hiddenName: verbiage.tableHeader },
@@ -75,6 +76,7 @@ export const OverlayReportPage = ({
       }
 
       return {
+        caption: verbiage.tableHeader,
         headRow: [
           { hiddenName: "Status" },
           verbiage.tableHeader,

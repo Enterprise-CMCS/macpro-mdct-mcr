@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 // components
 import { ExportedEntityDetailsTable } from "components";
 // utils
@@ -15,12 +15,17 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
   ...mockMlrReportStore,
 });
+jest.mock("./ExportedEntityDetailsTable", () => ({
+  ...jest.requireActual("./ExportedEntityDetailsTable"),
+  renderFieldRow: jest.fn(),
+}));
 
 const exportedEntityDetailsTableComponent = () => (
   <ExportedEntityDetailsTable
     fields={mockModalOverlayReportPageWithOverlayJson.overlayForm.fields}
     entity={mockMlrReportContext.report.fieldData.program[0]}
     data-testid="exportedEntityDetailsTable"
+    caption={"header content"}
   ></ExportedEntityDetailsTable>
 );
 describe("<ExportedEntityDetailsTable />", () => {
@@ -42,6 +47,7 @@ describe("<ExportedEntityDetailsTable />", () => {
         expect(element).toBeVisible();
       }
     }
+    expect(screen.getByText("header content")).toBeVisible();
   });
 
   testA11y(exportedEntityDetailsTableComponent());

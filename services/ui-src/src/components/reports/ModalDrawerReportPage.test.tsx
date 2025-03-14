@@ -190,6 +190,7 @@ describe("<ModalDrawerReportPage />", () => {
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
       const entityTable = screen.getByRole("table");
+      const entityCaption = entityTable.querySelector("caption");
       const entityHeader = screen.getByRole("columnheader", {
         name: "Mock table header",
       });
@@ -198,6 +199,7 @@ describe("<ModalDrawerReportPage />", () => {
       });
 
       expect(entityTable).toBeVisible();
+      expect(entityCaption).toHaveTextContent("Mock table header");
       expect(entityHeader).toBeVisible();
       expect(entityCell).toBeVisible();
     });
@@ -214,12 +216,14 @@ describe("<ModalDrawerReportPage />", () => {
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
       const entityTable = screen.getByRole("table");
+      const entityCaption = entityTable.querySelector("caption");
       const entityHeader = screen.queryByRole("columnheader", {
         name: "Mock table header",
       });
       const entityCell = screen.getByText("plan 1");
 
       expect(entityTable).toBeVisible();
+      expect(entityCaption).toHaveTextContent("Mock table header");
       expect(entityHeader).toBeNull();
       expect(entityCell).toBeVisible();
     });
