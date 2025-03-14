@@ -33,9 +33,7 @@ export const Header = () => {
 
   return (
     <Box sx={sx.root} id="header">
-      <Flex sx={sx.usaBannerContainer}>
-        <UsaBanner />
-      </Flex>
+      <UsaBanner />
       <Flex sx={sx.headerBar} role="navigation">
         <Container sx={sx.headerContainer}>
           <Flex sx={sx.headerFlex}>
@@ -110,15 +108,6 @@ const sx = {
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     "@media print": {
       display: "none",
-    },
-  },
-  usaBannerContainer: {
-    width: "100%",
-    flexDirection: "column",
-    alignItems: "center",
-    backgroundColor: "palette.gray_lightest",
-    ".desktop &": {
-      padding: "0 1rem",
     },
   },
   headerBar: {
