@@ -148,14 +148,10 @@ functions:
     handler: handlers/banners/fetch.fetchBanner
     events:
       - http:
-          path: banners/{bannerId}
+          path: banners
           method: get
           cors: true
           authorizer: aws_iam
-          request:
-            parameters:
-              paths:
-                bannerId: true
   createBanner:
     handler: handlers/banners/create.createBanner
     events:

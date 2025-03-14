@@ -1,9 +1,8 @@
 import { useState } from "react";
+import uuid from "react-uuid";
 // components
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
-// constants
-import { bannerId } from "../../constants";
 // types
 import { AlertTypes, ErrorVerbiage, FormJson } from "types";
 // utils
@@ -23,7 +22,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
   const onSubmit = async (formData: any) => {
     setSubmitting(true);
     const newBannerData = {
-      key: bannerId,
+      key: uuid(),
       title: formData["bannerTitle"],
       description: formData["bannerDescription"],
       link: formData["bannerLink"] || undefined,
@@ -60,7 +59,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>
-          {submitting ? <Spinner size="md" /> : "Replace Current Banner"}
+          {submitting ? <Spinner size="md" /> : "Create banner"}
         </Button>
       </Flex>
     </>
@@ -80,7 +79,7 @@ const sx = {
     flexDirection: "column",
   },
   replaceBannerButton: {
-    width: "14rem",
+    width: "10rem",
     marginTop: "1rem !important",
     alignSelf: "end",
   },
