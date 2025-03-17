@@ -418,6 +418,30 @@ describe("<ChoiceListField />", () => {
       );
     });
 
+    test("Unchecking choices in a CheckboxChoicelist with existing form values", async () => {
+      mockGetValues([{ key: "Choice 1", value: "Choice 1" }]);
+
+      // Create the Checkbox Component
+      const wrapper = render(CheckboxComponent);
+
+      const firstCheckbox = wrapper.getByRole("checkbox", { name: "Choice 1" });
+      const secondCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 2",
+      });
+
+      // Make sure default state is set correctly
+      expect(firstCheckbox).toBeChecked();
+      expect(secondCheckbox).not.toBeChecked();
+
+      // Select the first Checkbox and uncheck it
+      fireEvent.click(firstCheckbox);
+      expect(firstCheckbox).not.toBeChecked();
+
+      // Select the second Checkbox and check it
+      fireEvent.click(secondCheckbox);
+      expect(secondCheckbox).toBeChecked();
+    });
+
     test("Checking and unchecking choices in a RadioChoicelist are reflected correctly in the form", async () => {
       mockGetValues(undefined);
 
