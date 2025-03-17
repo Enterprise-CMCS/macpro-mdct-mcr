@@ -65,7 +65,9 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
               />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
-              <Heading sx={sx.title}>{reportJson.name}</Heading>
+              <Heading as="h1" sx={sx.title}>
+                {reportJson.name}
+              </Heading>
             </Box>
             <Box sx={sx.navSectionsBox} className="nav-sections-box">
               {reportJson.routes.map((section) => (
