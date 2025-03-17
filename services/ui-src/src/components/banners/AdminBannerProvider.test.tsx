@@ -16,6 +16,17 @@ jest.mock("utils/api/requestMethods/banner", () => ({
   writeBanner: jest.fn(() => {}),
 }));
 
+const mockMultiBannerData = [
+  {
+    ...mockBannerData,
+    createdAt: 1704085200000, // Jan 01 2024 00:00:00 UTC
+  },
+  {
+    ...mockBannerData,
+    createdAt: 1704171600000, // Jan 02 2024 00:00:00 UTC
+  },
+];
+
 const mockAPI = require("utils/api/requestMethods/banner");
 
 const TestComponent = () => {
@@ -66,6 +77,7 @@ describe("<AdminBannerProvider />", () => {
     });
 
     test("fetchAdminBanner method calls API getBanners method", async () => {
+      mockAPI.getBanners.mockImplementation(() => [mockBannerData]);
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
       await act(async () => {
         const fetchButton = screen.getByText("Fetch");
@@ -75,9 +87,7 @@ describe("<AdminBannerProvider />", () => {
       await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
     });
     test("fetchAdminBanner method calls API getBanners method and filters/sorts without error", async () => {
-      mockAPI.getBanners.mockImplementation(() => {
-        mockBannerData;
-      });
+      mockAPI.getBanners.mockImplementation(() => mockMultiBannerData);
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
       await act(async () => {
         const fetchButton = screen.getByText("Fetch");
