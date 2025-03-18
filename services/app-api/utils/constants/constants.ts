@@ -53,6 +53,9 @@ export const bucketTopics = {
   MCPAR: "mcpar-form",
   MLR: "mlr-form",
   NAAAR: "naaar-form",
+  MCPAR_TEMPLATE: "mcpar-form-template",
+  MLR_TEMPLATE: "mlr-form-template",
+  NAAAR_TEMPLATE: "naaar-form-template",
 };
 
 export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;

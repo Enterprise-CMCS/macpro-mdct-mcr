@@ -11,10 +11,13 @@ const condensedTopicList = [
     topics: [
       ".mcpar-reports",
       ".mcpar-form",
+      ".mcpar-form-template",
       ".mlr-reports",
       ".mlr-form",
+      ".mlr-form-template",
       ".naaar-reports",
       ".naaar-form",
+      ".naaar-form-template",
     ],
   },
 ];
