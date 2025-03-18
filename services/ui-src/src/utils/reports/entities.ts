@@ -1,33 +1,36 @@
 // utils
 import { AnyObject, EntityShape, EntityType } from "types";
-import { maskResponseData } from "utils";
+import { compareText, maskResponseData, otherSpecify } from "utils";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
-  return entity?.[label]?.[0].value !== "Other, specify"
-    ? entity?.[label]?.[0].value
-    : entity?.[label + "-otherText"];
+  return otherSpecify(
+    entity?.[label]?.[0].value,
+    entity?.[`${label}-otherText`]
+  );
 };
 
 const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
   return entity?.[label]?.map((method: AnyObject) =>
-    method.value === "Other, specify"
-      ? entity?.[label + "-otherText"]
-      : method.value
+    otherSpecify(method.value, entity?.[`${label}-otherText`])
   );
 };
 
 const getReportingRateType = (entity: EntityShape | undefined) => {
-  return entity?.qualityMeasure_reportingRateType?.[0]?.value ===
-    "Cross-program rate"
-    ? "Cross-program rate: " +
-        entity?.qualityMeasure_crossProgramReportingRateProgramList
-    : entity?.qualityMeasure_reportingRateType?.[0]?.value;
+  const matchText = `Cross-program rate: ${entity?.qualityMeasure_crossProgramReportingRateProgramList}`;
+  return compareText(
+    "Cross-program rate",
+    entity?.qualityMeasure_reportingRateType?.[0]?.value,
+    matchText
+  );
 };
 
 const getReportingPeriod = (entity: EntityShape | undefined) => {
-  return entity?.qualityMeasure_reportingPeriod?.[0]?.value === "No"
-    ? `No, ${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`
-    : entity?.qualityMeasure_reportingPeriod?.[0]?.value;
+  const matchText = `No, ${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`;
+  return compareText(
+    "No",
+    entity?.qualityMeasure_reportingPeriod?.[0]?.value,
+    matchText
+  );
 };
 
 // returns an array of { planName: string, response: string } or undefined
