@@ -30,7 +30,7 @@
       "validation": "urlOptional",
       "props": {
         "label": "Link",
-        "requirementLabel": "Optional"
+        "styleAsOptional": true
       }
     },
     {
