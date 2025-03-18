@@ -200,6 +200,7 @@ export const DropdownField = ({
         onBlur={onBlurHandler}
         value={displayValue?.value}
         className="ds-c-field"
+        {...props}
       >
         {formattedOptions.map((option: DropdownOptions) => (
           <option key={uuid()} value={option.value}>
