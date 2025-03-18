@@ -1,82 +1,100 @@
 import { compareText, otherSpecify } from "./compareText";
 
 describe("utils/text/otherText", () => {
+  const otherSpecifyText = "Other, specify";
+  const testText = "Test";
+  const matchText = "Matched";
+  const nonMatchText = "Not Matched";
+
   describe("otherSpecify()", () => {
-    test("returns matchText for textToCompare: Other, specify", () => {
-      const result = otherSpecify("Other, specify", "Matched", "Not Matched");
-      expect(result).toBe("Matched");
+    describe("matches", () => {
+      test("returns matchText", () => {
+        const result = otherSpecify(otherSpecifyText, matchText, nonMatchText);
+        expect(result).toBe(matchText);
+      });
+
+      test("returns null matchText", () => {
+        const result = otherSpecify(otherSpecifyText, null, nonMatchText);
+        expect(result).toBeNull();
+      });
     });
 
-    test("returns nonMatchText for textToCompare: Test", () => {
-      const result = otherSpecify("Test", "Matched", "Not Matched");
-      expect(result).toBe("Not Matched");
-    });
+    describe("non-matches", () => {
+      test("returns nonMatchText", () => {
+        const result = otherSpecify(testText, matchText, nonMatchText);
+        expect(result).toBe(nonMatchText);
+      });
 
-    test("returns nonMatchText for textToCompare: null", () => {
-      const result = otherSpecify(null, "Matched", "Not Matched");
-      expect(result).toBe("Not Matched");
-    });
+      test("returns null nonMatchText", () => {
+        const result = otherSpecify(testText, matchText, null);
+        expect(result).toBeNull();
+      });
 
-    test("returns nonMatchText for textToCompare: undefined", () => {
-      const result = otherSpecify(undefined, "Matched", "Not Matched");
-      expect(result).toBe("Not Matched");
-    });
+      test("returns textToCompare for undefined nonMatchText", () => {
+        const result = otherSpecify(testText, matchText);
+        expect(result).toBe(testText);
+      });
 
-    test("returns null for matchText", () => {
-      const result = otherSpecify("Other, specify", null, "Not Matched");
-      expect(result).toBeNull();
-    });
+      test("returns nonMatchText for null textToCompare", () => {
+        const result = otherSpecify(null, matchText, nonMatchText);
+        expect(result).toBe(nonMatchText);
+      });
 
-    test("returns null for nonMatchText", () => {
-      const result = otherSpecify("Test", "Matched", null);
-      expect(result).toBeNull();
-    });
-
-    test("returns textToCompare for undefined nonMatchText", () => {
-      const result = otherSpecify("Test", "Matched");
-      expect(result).toBe("Test");
+      test("returns nonMatchText for undefined textToCompare", () => {
+        const result = otherSpecify(undefined, matchText, nonMatchText);
+        expect(result).toBe(nonMatchText);
+      });
     });
   });
 
   describe("compareText()", () => {
-    test("returns matchText for textToMatch: Other, specify", () => {
-      const result = compareText(
-        "Other, specify",
-        "Other, specify",
-        "Matched",
-        "Not Matched"
-      );
-      expect(result).toBe("Matched");
+    describe("matches", () => {
+      test("returns ≈", () => {
+        const result = compareText(testText, testText, matchText, nonMatchText);
+        expect(result).toBe(matchText);
+      });
+
+      test("returns null matchText", () => {
+        const result = compareText(testText, testText, null, nonMatchText);
+        expect(result).toBeNull();
+      });
     });
 
-    test("returns nonMatchText for textToMatch: Test", () => {
-      const result = compareText(
-        "Test",
-        "Other, specify",
-        "Matched",
-        "Not Matched"
-      );
-      expect(result).toBe("Not Matched");
-    });
+    describe("non-matches", () => {
+      test("returns nonMatchText", () => {
+        const result = compareText(
+          testText,
+          otherSpecifyText,
+          matchText,
+          nonMatchText
+        );
+        expect(result).toBe(nonMatchText);
+      });
 
-    test("returns null for textToCompare: Other, specify", () => {
-      const result = compareText(
-        "Other, specify",
-        "Other, specify",
-        null,
-        "Not Matched"
-      );
-      expect(result).toBeNull();
-    });
+      test("returns null nonMatchText", () => {
+        const result = compareText(testText, otherSpecifyText, matchText, null);
+        expect(result).toBeNull();
+      });
 
-    test("returns null for textToCompare: Text", () => {
-      const result = compareText("Other, specify", "Test", "Matched", null);
-      expect(result).toBeNull();
-    });
+      test("returns textToCompare for undefined nonMatchText", () => {
+        const result = compareText(testText, otherSpecifyText, matchText);
+        expect(result).toBe(otherSpecifyText);
+      });
 
-    test("returns textToCompare for undefined nonMatchText", () => {
-      const result = compareText("Other, specify", "Test", "Matched");
-      expect(result).toBe("Test");
+      test("returns nonMatchText for undefined textToCompare", () => {
+        const result = compareText(
+          testText,
+          undefined,
+          matchText,
+          nonMatchText
+        );
+        expect(result).toBe(nonMatchText);
+      });
+
+      test("returns undefined nonMatchText for undefined textToCompare", () => {
+        const result = compareText(testText, undefined, matchText);
+        expect(result).toBe(undefined);
+      });
     });
   });
 });
