@@ -14,8 +14,13 @@ describe("utils/text/compareText", () => {
       });
 
       test("returns null matchText", () => {
-        const result = compareText(testText, testText, null, nonMatchText);
+        const result = compareText(testText, testText, null);
         expect(result).toBeNull();
+      });
+
+      test("returns undefined matchText", () => {
+        const result = compareText(testText, testText);
+        expect(result).toBeUndefined();
       });
     });
 
@@ -52,7 +57,7 @@ describe("utils/text/compareText", () => {
 
       test("returns undefined nonMatchText for undefined textToCompare", () => {
         const result = compareText(testText, undefined, matchText);
-        expect(result).toBe(undefined);
+        expect(result).toBeUndefined();
       });
     });
   });
@@ -65,8 +70,13 @@ describe("utils/text/compareText", () => {
       });
 
       test("returns null matchText", () => {
-        const result = otherSpecify(otherSpecifyText, null, nonMatchText);
+        const result = otherSpecify(otherSpecifyText, null);
         expect(result).toBeNull();
+      });
+
+      test("returns undefined matchText", () => {
+        const result = otherSpecify(otherSpecifyText);
+        expect(result).toBeUndefined();
       });
     });
 
