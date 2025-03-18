@@ -35,11 +35,6 @@ const mockStoreWithConflictingBanner = {
   bannerData: mockBannerOverlappingDates,
 };
 
-jest.mock("react-uuid", () => ({
-  __esModule: true,
-  default: jest.fn().mockReturnValue("mock-key"),
-}));
-
 const adminBannerFormComponent = (writeAdminBanner: Function) => (
   <RouterWrappedComponent>
     <AdminBannerForm
@@ -82,7 +77,6 @@ describe("<AdminBannerForm />", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
-      key: "mock-key",
       title: "this is the title text",
       description: "this is the description text",
       link: undefined,
@@ -105,7 +99,6 @@ describe("<AdminBannerForm />", () => {
     const submitButton = screen.getByRole("button");
     await userEvent.click(submitButton);
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
-      key: "mock-key",
       title: "this is the title text",
       description: "this is the description text",
       link: undefined,

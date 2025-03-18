@@ -32,6 +32,8 @@ const adminView = (context: any) => (
   </RouterWrappedComponent>
 );
 
+const deleteButtonText = "Delete banner";
+
 describe("<AdminPage />", () => {
   describe("Test AdminPage banner manipulation functionality", () => {
     test("Deletes current banner on delete button click", async () => {
@@ -39,7 +41,7 @@ describe("<AdminPage />", () => {
         mockedUseStore.mockReturnValue(mockBannerStore);
         await render(adminView(mockBannerMethods));
       });
-      const deleteButton = screen.getByText("Delete Banner");
+      const deleteButton = screen.getByText(deleteButtonText);
       await waitFor(async () => {
         await userEvent.click(deleteButton);
         expect(mockBannerMethods.deleteAdminBanner).toHaveBeenCalled();
@@ -89,7 +91,7 @@ describe("<AdminPage />", () => {
       const currentBannerStatus = screen.queryByText("Status:");
       expect(currentBannerStatus).toBeVisible();
 
-      const deleteButton = screen.getByText("Delete Banner");
+      const deleteButton = screen.getByText(deleteButtonText);
       expect(deleteButton).toBeVisible();
     });
 
@@ -169,7 +171,7 @@ describe("<AdminPage />", () => {
         await render(adminView(mockBannerMethods));
       });
 
-      const deleteButton = screen.getByText("Delete Banner");
+      const deleteButton = screen.getByText(deleteButtonText);
       await userEvent.click(deleteButton);
       expect(
         screen.getByText("Current banner could not be deleted")
