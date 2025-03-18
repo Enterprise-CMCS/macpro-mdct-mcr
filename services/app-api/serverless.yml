@@ -156,14 +156,10 @@ functions:
     handler: handlers/banners/create.createBanner
     events:
       - http:
-          path: banners/{bannerId}
+          path: banners
           method: post
           cors: true
           authorizer: aws_iam
-          request:
-            parameters:
-              paths:
-                bannerId: true
   deleteBanner:
     handler: handlers/banners/delete.deleteBanner
     events:

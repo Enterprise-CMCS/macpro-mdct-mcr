@@ -10,7 +10,7 @@ async function writeBanner(bannerData: AdminBannerData) {
   const options = {
     body: bannerData,
   };
-  const path = `/banners/${bannerData.key}`;
+  const path = `/banners`;
   return post<AdminBannerData>(path, options);
 }
 

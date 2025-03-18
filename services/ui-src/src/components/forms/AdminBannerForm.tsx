@@ -1,5 +1,4 @@
 import { useState } from "react";
-import uuid from "react-uuid";
 // components
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
@@ -61,7 +60,6 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
 
     setSubmitting(true);
     const newBannerData = {
-      key: uuid(),
       title: formData["bannerTitle"],
       description: formData["bannerDescription"],
       link: formData["bannerLink"] || undefined,
