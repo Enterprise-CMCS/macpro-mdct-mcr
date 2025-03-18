@@ -7,6 +7,8 @@ const bannerInputArray = [
   { name: "bannerEndDate", type: "text", value: "07/14/2026" },
 ];
 
+const deleteButton = "Delete banner";
+
 // delete existing banners before starting
 before(() => {
   // login as admin and go to banner page
@@ -18,7 +20,6 @@ before(() => {
    * Check if there are already banners, if so, delete
    * to ensure a clean test bed
    */
-  const deleteButton = "Delete Banner";
 
   cy.get("body").then(($body) => {
     if ($body.find(`button:contains(${deleteButton})`).length > 0) {
@@ -64,7 +65,6 @@ describe("Admin Page E2E Testing", () => {
     checkForErrors();
 
     // delete banner
-    const deleteButton = "Delete Banner";
     cy.contains(deleteButton).click();
 
     // verify banner is gone

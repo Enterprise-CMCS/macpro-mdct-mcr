@@ -72,7 +72,7 @@ export const AdminPage = () => {
             {bannerDeleting && banner.key === bannerToDelete ? (
               <Spinner size="md" />
             ) : (
-              "Delete Banner"
+              "Delete banner"
             )}
           </Button>
         </Flex>
@@ -87,7 +87,7 @@ export const AdminPage = () => {
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           {verbiage.intro.header}
         </Heading>
-        <Text>{parseCustomHtml(verbiage.intro.body)}</Text>
+        <Box>{parseCustomHtml(verbiage.intro.body)}</Box>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner(s)</Text>
