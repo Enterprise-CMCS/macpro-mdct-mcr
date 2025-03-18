@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // components
-import {
-  Box,
-  Collapse,
-  Flex,
-  Image,
-  Heading,
-  Link,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Collapse, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { SkipNav } from "components";
 // utils
 import { useBreakpoint, useStore } from "utils";
@@ -65,9 +57,7 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
               />
             </Box>
             <Box id="sidebar-title-box" sx={sx.topBox}>
-              <Heading as="h1" sx={sx.title}>
-                {reportJson.name}
-              </Heading>
+              <Text sx={sx.title}>{reportJson.name}</Text>
             </Box>
             <Box sx={sx.navSectionsBox} className="nav-sections-box">
               {reportJson.routes.map((section) => (
@@ -211,6 +201,7 @@ const sx = {
   title: {
     fontSize: "xl",
     fontWeight: "bold",
+    lineHeight: "1.33",
     width: "15rem",
     padding: "1rem 1rem",
     ".desktop &": {
