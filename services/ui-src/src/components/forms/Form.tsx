@@ -145,14 +145,14 @@ const sx = {
     color: "palette.gray",
   },
   // field hint
-  ".ds-c-field__hint": {
+  ".ds-c-hint": {
     marginBottom: "0.25rem",
   },
   // field hint and error message
-  ".ds-c-field__hint, .ds-c-field__error-message ": {
+  ".ds-c-hint, .ds-c-inline-error": {
     fontSize: "sm",
     ul: {
-      paddingLeft: "2rem",
+      gap: 0,
     },
     ol: {
       margin: "0.25rem 0.5rem",
