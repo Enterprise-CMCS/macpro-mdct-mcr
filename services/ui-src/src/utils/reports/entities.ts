@@ -16,18 +16,22 @@ const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
 };
 
 const getReportingRateType = (entity: EntityShape | undefined) => {
-  const matchText = `Cross-program rate: ${entity?.qualityMeasure_crossProgramReportingRateProgramList}`;
+  const textToMatch = "Cross-program rate";
+  const matchText = `${textToMatch}: ${entity?.qualityMeasure_crossProgramReportingRateProgramList}`;
+
   return compareText(
-    "Cross-program rate",
+    textToMatch,
     entity?.qualityMeasure_reportingRateType?.[0]?.value,
     matchText
   );
 };
 
 const getReportingPeriod = (entity: EntityShape | undefined) => {
-  const matchText = `No, ${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`;
+  const textToMatch = "No";
+  const matchText = `${textToMatch}, ${entity?.qualityMeasure_reportingPeriodStartDate} - ${entity?.qualityMeasure_reportingPeriodEndDate}`;
+
   return compareText(
-    "No",
+    textToMatch,
     entity?.qualityMeasure_reportingPeriod?.[0]?.value,
     matchText
   );
