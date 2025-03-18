@@ -19,7 +19,7 @@ import {
 // types
 import { AdminBannerData, AlertTypes } from "types";
 // utils
-import { convertDateUtcToEt, useStore } from "utils";
+import { convertDateUtcToEt, parseCustomHtml, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/admin";
 
@@ -87,7 +87,7 @@ export const AdminPage = () => {
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           {verbiage.intro.header}
         </Heading>
-        <Text>{verbiage.intro.body}</Text>
+        <Text>{parseCustomHtml(verbiage.intro.body)}</Text>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner(s)</Text>
