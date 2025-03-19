@@ -111,11 +111,11 @@ class KafkaSourceLib {
    * @param bucketArn - ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
    * @returns A formatted topic name with "-form" specified
    */
-  determineS3TopicName(bucketArn: string, s3Prefix?: string) {
+  determineS3TopicName(bucketArn: string) {
     for (const bucket of this.buckets) {
       if (bucketArn.includes(bucket.sourceName)) {
-        const bucketTopicName = s3Prefix
-          ? `${bucket.topicName}-${s3Prefix}`
+        const bucketTopicName = bucket.s3Prefix
+          ? `${bucket.topicName}-${bucket.s3Prefix}`
           : bucket.topicName;
         return this.topic(bucketTopicName);
       }
