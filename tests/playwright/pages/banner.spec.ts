@@ -2,19 +2,19 @@ import { expect, test } from "../utils/fixtures/base";
 import { BannerPage, stateUserAuth } from "../utils";
 
 test.describe("admin user banner page", () => {
+  test.beforeEach(async ({ bannerPage }) => {
+    await bannerPage.goto();
+    await bannerPage.deleteExistingBanners();
+  });
   test("Should see the correct banner page as an admin user", async ({
     bannerPage,
   }) => {
-    await bannerPage.goto();
-    await bannerPage.isReady();
     await expect(bannerPage.title).toBeVisible();
   });
 
   test("Should be able to create banner as an admin user", async ({
     bannerPage,
   }) => {
-    await bannerPage.goto();
-    await bannerPage.isReady();
     await bannerPage.createAdminBanner();
     await expect(bannerPage.deleteBannerButton).toBeVisible();
   });
@@ -22,8 +22,6 @@ test.describe("admin user banner page", () => {
   test("Should be able to delete banner as an admin user", async ({
     bannerPage,
   }) => {
-    await bannerPage.goto();
-    await bannerPage.isReady();
     await bannerPage.createAdminBanner();
     await bannerPage.deleteAdminBanner();
     await expect(bannerPage.deleteBannerButton).not.toBeVisible();
@@ -49,7 +47,6 @@ test.describe("admin user banner page", () => {
   test("Is accessible on all device types for admin user", async ({
     bannerPage,
   }) => {
-    await bannerPage.goto();
     await bannerPage.e2eA11y();
   });
 });
