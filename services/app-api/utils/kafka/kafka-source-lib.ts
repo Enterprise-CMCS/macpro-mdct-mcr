@@ -17,6 +17,7 @@ type KafkaPayload = {
 type SourceTopicMapping = {
   sourceName: string;
   topicName: string;
+  s3Prefix?: string;
 };
 
 let kafka: Kafka;
