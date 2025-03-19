@@ -100,6 +100,12 @@ export interface EntityDetailsMultiformShape {
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
+export interface EntityDetailsChildFormShape {
+  form: FormJson;
+  parentForm: string;
+  verbiage?: EntityDetailsMultiformVerbiage;
+}
+
 export interface OverlayReportPageShape extends ReportPageShapeBase {
   entityType: EntityType;
   verbiage: OverlayReportPageVerbiage;
@@ -108,6 +114,7 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   drawerForm?: never;
   form?: never;
   details?: {
+    childForms?: [EntityDetailsChildFormShape];
     forms: [EntityDetailsMultiformShape];
     verbiage: EntityDetailsMultiformVerbiage;
   };

@@ -35,6 +35,7 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
       <Table
         sx={sx.root}
         content={{
+          caption: "Reporting Overview",
           headRow: headerLabels,
         }}
         data-testid="exportTable"

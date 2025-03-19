@@ -5,17 +5,34 @@ import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityShape } from "types";
 
-export const SortableNaaarStandardsTable = ({ entities }: Props) => {
+export const SortableNaaarStandardsTable = ({
+  entities,
+  openRowDrawer,
+  openDeleteEntityModal,
+}: Props) => {
   const actualData = useMemo(() => {
     return entities.map((entity: any, index: number) => {
       const {
         standard_coreProviderTypeCoveredByStandard,
-        standard_standardType,
-        standard_standardDescription,
-        standard_analysisMethodsUtilized,
         standard_populationCoveredByStandard,
         standard_applicableRegion,
+        standard_standardType,
       } = entity;
+
+      // extract the standard description attribute
+      const standardDescription = Object.keys(entity).find((key: string) => {
+        return key.startsWith("standard_standardDescription");
+      });
+
+      // extract corresponding standard choice id
+      const standardId = standardDescription?.includes("-")
+        ? standardDescription?.substring(standardDescription.indexOf("-"))
+        : "";
+
+      // use the id to extract analysis method attribute
+      const analysisMethodsUtilized = standardId
+        ? `standard_analysisMethodsUtilized${standardId}`
+        : "";
 
       const coreProviderType = entity[
         "standard_coreProviderTypeCoveredByStandard-otherText"
@@ -39,10 +56,8 @@ export const SortableNaaarStandardsTable = ({ entities }: Props) => {
           : standard_applicableRegion[0].value;
 
       // there are 7 analysis methods checkboxes
-      function extractMethods(
-        standard_analysisMethodsUtilized: { value: any }[]
-      ) {
-        return standard_analysisMethodsUtilized
+      function extractMethods(analysisMethodsUtilized: { value: any }[]) {
+        return analysisMethodsUtilized
           ?.map((method) => method.value)
           .join(", ");
       }
@@ -51,29 +66,44 @@ export const SortableNaaarStandardsTable = ({ entities }: Props) => {
         count: index + 1,
         provider: coreProviderType,
         standardType: standardType,
-        standardDescription: standard_standardDescription,
-        analysisMethods: extractMethods(standard_analysisMethodsUtilized),
+        standardDescription: entity[standardDescription as keyof EntityShape],
+        analysisMethods: extractMethods(
+          entity[analysisMethodsUtilized as keyof EntityShape]
+        ),
         population: standardPopulation,
         region: standardRegion,
+        entity,
       };
     });
   }, [entities]);
 
   const customCells = (
     headKey: keyof DrawerReportPageTableShape,
-    value: any
+    value: any,
+    originalRowData: DrawerReportPageTableShape
   ) => {
+    const { entity } = originalRowData;
     switch (headKey) {
       case "edit": {
         return (
-          <Button variant="link" id={value}>
+          <Button
+            variant="link"
+            id={value}
+            name="edit"
+            onClick={() => openRowDrawer(entity)}
+          >
             Edit
           </Button>
         );
       }
       case "delete": {
         return (
-          <Button sx={sx.deleteButton} id={value}>
+          <Button
+            sx={sx.deleteButton}
+            id={value}
+            name="delete"
+            onClick={() => openDeleteEntityModal(entity)}
+          >
             <Image src={deleteIcon} alt="delete" boxSize="2xl" />
           </Button>
         );
@@ -137,6 +167,8 @@ const sx = {
 
 interface Props {
   entities: EntityShape[];
+  openRowDrawer: Function;
+  openDeleteEntityModal: Function;
 }
 
 interface DrawerReportPageTableShape {
@@ -147,6 +179,7 @@ interface DrawerReportPageTableShape {
   analysisMethods: string;
   population: string;
   region: string;
+  entity: EntityShape;
   edit?: null;
   delete?: null;
 }

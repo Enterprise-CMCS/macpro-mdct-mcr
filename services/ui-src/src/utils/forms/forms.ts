@@ -62,7 +62,8 @@ export const formFieldFactory = (
     const componentFieldType = fieldToComponentMap[field.type];
     const fieldProps = {
       key: field.id,
-      name: field.id,
+      // Use groupId for a single validation across different field ids
+      name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
       autoComplete: isFieldElement(field) ? "one-time-code" : undefined, // stops browsers from forcing autofill
       ...options,
@@ -94,8 +95,10 @@ export const hydrateFormFields = (
       // if no props on field, initialize props as empty object
       formFields[fieldFormIndex].props = {};
     }
+    // Use groupId for a single validation across different field ids
+    const fieldId = field.groupId ?? field.id;
     // set props.hydrate
-    const fieldHydrationValue = formData?.[field.id];
+    const fieldHydrationValue = formData?.[fieldId];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;
@@ -115,7 +118,9 @@ export const initializeChoiceListFields = (
         choice.value = choice.label;
         // if choice id has not already had parent field id appended, do so now
         if (!choice.id.includes("-")) {
-          choice.id = field.id + "-" + choice.id;
+          // Use groupId for a single validation across different field ids
+          const prefix = field.groupId ?? field.id;
+          choice.id = prefix + "-" + choice.id;
         }
         choice.name = choice.id;
         // initialize choice as controlled component in unchecked state

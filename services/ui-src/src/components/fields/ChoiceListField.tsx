@@ -179,35 +179,36 @@ export const ChoiceListField = ({
   const onChangeHandler = (event: InputChangeEvent) => {
     const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
-    const preChangeFieldValues = displayValue || [];
-    let selectedOptions = null;
+    let selectedOptions = [];
 
     // handle radio
     if (type === "radio") {
-      let everyOtherOption = choices.filter(
+      selectedOptions = [clickedOption];
+      const everyOtherOption = choices.filter(
         (choice) => choice.id != clickedOption.key
       );
       clearUncheckedNestedFields(everyOtherOption);
-      selectedOptions = [clickedOption];
-      setDisplayValue(selectedOptions);
-      form.setValue(name, selectedOptions, { shouldValidate: true });
     }
+
     // handle checkbox
     if (type === "checkbox") {
-      if (!isOptionChecked) {
-        let option = choices.find((choice) => choice.id == clickedOption.key);
-        clearUncheckedNestedFields([option!]);
+      selectedOptions = [...(form.getValues(name) || [])];
+
+      if (isOptionChecked) {
+        selectedOptions.push(clickedOption);
+      } else {
+        selectedOptions = selectedOptions.filter(
+          (field) => field.key !== clickedOption.key
+        );
+        const option = choices.filter(
+          (choice) => choice.id === clickedOption.key
+        );
+        clearUncheckedNestedFields(option);
       }
-      const checkedOptionValues = [...preChangeFieldValues, clickedOption];
-      const uncheckedOptionValues = preChangeFieldValues.filter(
-        (field) => field.value !== clickedOption.value
-      );
-      selectedOptions = isOptionChecked
-        ? checkedOptionValues
-        : uncheckedOptionValues;
-      setDisplayValue(selectedOptions);
-      form.setValue(name, selectedOptions, { shouldValidate: true });
     }
+
+    setDisplayValue(selectedOptions);
+    form.setValue(name, selectedOptions, { shouldValidate: true });
   };
 
   // if should autosave, submit field data to database on component blur

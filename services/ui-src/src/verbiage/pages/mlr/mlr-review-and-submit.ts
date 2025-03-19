@@ -35,6 +35,7 @@ export default {
       ],
     },
     table: {
+      caption: "Review & Submit",
       headRow: ["Section", "Status", { hiddenName: "Actions" }],
     },
     modal: {
