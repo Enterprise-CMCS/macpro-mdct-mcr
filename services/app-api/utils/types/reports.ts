@@ -7,6 +7,7 @@ import {
   CompletionData,
   EntityType,
   ScreenReaderOnlyHeaderName,
+  TableContentShape,
 } from "./index";
 
 // REPORT TYPES
@@ -100,9 +101,19 @@ export interface EntityDetailsMultiformShape {
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
+export interface EntityDetailsTableVerbiage
+  extends EntityDetailsMultiformVerbiage {
+  totals?: [string];
+}
+
+export interface EntityDetailsTableContentShape extends TableContentShape {
+  verbiage: EntityDetailsTableVerbiage;
+}
+
 export interface EntityDetailsChildFormShape {
   form: FormJson;
   parentForm: string;
+  table?: EntityDetailsTableContentShape;
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 

@@ -6,7 +6,9 @@ import {
   EntityType,
   FormJson,
   ScreenReaderOnlyHeaderName,
+  SortableHeadRow,
   State,
+  TableContentShape,
 } from "types";
 
 // REPORT TYPES
@@ -100,9 +102,23 @@ export interface EntityDetailsMultiformShape {
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
+export interface EntityDetailsTableVerbiage
+  extends EntityDetailsMultiformVerbiage {
+  totals?: [string];
+}
+
+export interface EntityDetailsTableContentShape extends TableContentShape {
+  verbiage: EntityDetailsTableVerbiage;
+}
+
 export interface EntityDetailsChildFormShape {
   form: FormJson;
   parentForm: string;
+  table?: {
+    caption: string;
+    sortableHeadRow: SortableHeadRow;
+    verbiage: EntityDetailsTableVerbiage;
+  };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 

@@ -23,7 +23,7 @@ export const EntityDetailsFormOverlay = ({
     <Button
       sx={sx.backButton}
       variant="none"
-      onClick={closeEntityDetailsOverlay as MouseEventHandler}
+      onClick={closeEntityDetailsOverlay}
       aria-label={verbiage.backButton}
     >
       <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
@@ -46,10 +46,7 @@ export const EntityDetailsFormOverlay = ({
     <Box sx={sx.footerBox}>
       <Flex sx={sx.buttonFlex}>
         {disabled ? (
-          <Button
-            variant="outline"
-            onClick={closeEntityDetailsOverlay as MouseEventHandler}
-          >
+          <Button variant="outline" onClick={closeEntityDetailsOverlay}>
             Return
           </Button>
         ) : (
@@ -63,7 +60,7 @@ export const EntityDetailsFormOverlay = ({
 );
 
 interface Props {
-  closeEntityDetailsOverlay: Function;
+  closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;
   onChange?: Function;
