@@ -184,6 +184,7 @@ class KafkaSourceLib {
       if (record["s3"]) {
         // Handle any S3 events
         const s3Record = record as S3EventRecord;
+        console.log("s3Record:", s3Record);
         const key: string = s3Record.s3.object.key;
         topicName = this.determineS3TopicName(s3Record.s3.bucket.arn, key);
 
@@ -227,6 +228,7 @@ class KafkaSourceLib {
     }
 
     // if dynamo
+    console.log("event.Record:", event.Record);
     const outboundEvents = await this.createOutboundEvents(event.Records);
 
     const topicMessages = Object.values(outboundEvents);
