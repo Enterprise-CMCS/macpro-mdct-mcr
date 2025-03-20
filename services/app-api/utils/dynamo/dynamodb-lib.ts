@@ -59,7 +59,7 @@ export default {
   },
   scanAll: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
     let items: AnyObject[] = [];
-    for await (let page of paginateScan({ client }, params)) {
+    for await (const page of paginateScan({ client }, params)) {
       items = items.concat(page.Items ?? []);
     }
 

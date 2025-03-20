@@ -55,7 +55,7 @@ export const AdminBannerProvider = ({ children }: Props) => {
   const fetchAdminBanner = async () => {
     setBannerLoading(true);
     try {
-      let currentBanners = await getBanners();
+      const currentBanners = await getBanners();
       // Find the most recent currently-active banner
       const currentBanner = currentBanners
         .sort((a, b) => b.createdAt - a.createdAt)

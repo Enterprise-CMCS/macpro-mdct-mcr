@@ -87,7 +87,9 @@ export const AdminPage = () => {
         <Heading as="h1" id="AdminHeader" tabIndex={-1} sx={sx.headerText}>
           {verbiage.intro.header}
         </Heading>
-        <Box>{parseCustomHtml(verbiage.intro.body)}</Box>
+        <Box sx={sx.introInstructions}>
+          {parseCustomHtml(verbiage.intro.body)}
+        </Box>
       </Box>
       <Box sx={sx.currentBannerSectionBox}>
         <Text sx={sx.sectionHeader}>Current Banner(s)</Text>
@@ -126,6 +128,13 @@ const sx = {
   introTextBox: {
     width: "100%",
     marginBottom: "2.25rem",
+  },
+  introInstructions: {
+    p: {
+      "&:first-of-type": {
+        marginBottom: "1.5rem",
+      },
+    },
   },
   headerText: {
     marginBottom: "1rem",

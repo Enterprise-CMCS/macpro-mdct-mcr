@@ -3,7 +3,7 @@ import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 // utils
 import { ok } from "../../utils/responses/response-lib";
 
-export const fetchBanner = handler(async (_event, _context) => {
+export const fetchBanner = handler(async () => {
   const scanParams = {
     TableName: process.env.BANNER_TABLE_NAME!,
   };
