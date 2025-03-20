@@ -118,6 +118,8 @@ class KafkaSourceLib {
    */
   determineS3TopicName(bucketArn: string, key: string) {
     for (const bucket of this.buckets) {
+      console.log("key:", key);
+      console.log("s3Prefix:", bucket.s3Prefix);
       if (
         bucketArn.includes(bucket.sourceName) &&
         key.startsWith(bucket.s3Prefix)
