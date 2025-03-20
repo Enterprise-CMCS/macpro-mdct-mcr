@@ -27,6 +27,7 @@ const table = { sourceName: `${stage}-aTable`, topicName: "aTable-reports" };
 const bucket = {
   sourceName: `database-${stage}-aBucket`,
   topicName: "aBucket-forms",
+  s3Prefix: "fieldData/",
 };
 const brokerString = "brokerA,brokerB,brokerC";
 const dynamoEvent = {
