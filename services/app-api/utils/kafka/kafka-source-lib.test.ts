@@ -189,7 +189,9 @@ describe("Test Kafka Lib", () => {
   });
 
   test("Does not pass through events from unrelated tables or buckets", async () => {
-    const badMaps = [{ sourceName: "bad", topicName: "bad" }];
+    const badMaps = [
+      { sourceName: "bad", topicName: "bad", s3Prefix: "fieldData/" },
+    ];
     const sourceLib = new KafkaSourceLib(
       "mcr",
       "v0",
