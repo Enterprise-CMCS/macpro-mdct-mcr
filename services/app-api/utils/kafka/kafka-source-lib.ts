@@ -118,8 +118,6 @@ class KafkaSourceLib {
    */
   determineS3TopicName(bucketArn: string, key: string) {
     for (const bucket of this.buckets) {
-      console.log("key:", key);
-      console.log("s3Prefix:", bucket.s3Prefix);
       if (
         bucketArn.includes(bucket.sourceName) &&
         key.startsWith(bucket.s3Prefix)
@@ -184,7 +182,6 @@ class KafkaSourceLib {
       if (record["s3"]) {
         // Handle any S3 events
         const s3Record = record as S3EventRecord;
-        console.log("s3Record:", s3Record);
         const key: string = s3Record.s3.object.key;
         topicName = this.determineS3TopicName(s3Record.s3.bucket.arn, key);
 
