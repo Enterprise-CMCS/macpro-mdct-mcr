@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import {
   EntityDetailsFormOverlay,
+  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
@@ -42,6 +43,7 @@ import {
 import { translateVerbiage } from "utils";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
+import { PlanComplianceTableVerbiage } from "./PlanComplianceTableOverlay";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -78,16 +80,43 @@ export const EntityDetailsMultiformOverlay = ({
       return <></>;
     }
 
-    const { form, verbiage } = formObject;
-    const detailsVerbiage = translateVerbiage(verbiage, {
+    const { form, table, verbiage } = formObject;
+    const tranlatedVerbiage = translateVerbiage(verbiage, {
       planName: selectedEntity?.name,
-    });
+    }) as EntityDetailsMultiformVerbiage;
 
     const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
     };
+
+    if (table) {
+      const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
+      const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
+        planName: selectedEntity?.name,
+      }) as PlanComplianceTableVerbiage;
+
+      const tableProps = {
+        caption,
+        sortableHeadRow,
+        verbiage: translatedTableVerbiage,
+      };
+
+      return (
+        <PlanComplianceTableOverlay
+          closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+          disabled={false}
+          form={form}
+          onSubmit={handleSubmit}
+          selectedEntity={selectedEntity}
+          submitting={submitting}
+          table={tableProps}
+          validateOnRender={validateOnRender || false}
+          verbiage={tranlatedVerbiage}
+        />
+      );
+    }
 
     return (
       <EntityDetailsFormOverlay
@@ -98,7 +127,7 @@ export const EntityDetailsMultiformOverlay = ({
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}
-        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
+        verbiage={tranlatedVerbiage}
       />
     );
   };
@@ -279,7 +308,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Button
           sx={sx.backButton}
           variant="none"
-          onClick={closeEntityDetailsOverlay as MouseEventHandler}
+          onClick={closeEntityDetailsOverlay}
           aria-label={verbiage.backButton}
         >
           <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
@@ -333,10 +362,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
             {disabled ? (
-              <Button
-                variant="outline"
-                onClick={closeEntityDetailsOverlay as MouseEventHandler}
-              >
+              <Button variant="outline" onClick={closeEntityDetailsOverlay}>
                 Return
               </Button>
             ) : (
@@ -355,7 +381,7 @@ export const EntityDetailsMultiformOverlay = ({
 
 interface Props {
   childForms?: [EntityDetailsChildFormShape];
-  closeEntityDetailsOverlay: Function;
+  closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   entityType: EntityType;
   forms: [EntityDetailsMultiformShape];
