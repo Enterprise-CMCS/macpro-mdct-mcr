@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { Dropdown as CmsdsDropdown } from "@cmsgov/design-system";
+import {
+  DropdownChangeObject,
+  Hint,
+  InlineError,
+  Label,
+} from "@cmsgov/design-system";
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // constants
@@ -12,7 +17,6 @@ import {
   DropdownChoice,
   DropdownOptions,
   EntityShape,
-  InputChangeEvent,
   SelectedOption,
   ReportMetadataShape,
 } from "types";
@@ -25,6 +29,7 @@ import {
   useStore,
   convertDateUtcToEt,
 } from "utils";
+import uuid from "react-uuid";
 
 export const DropdownField = ({
   name,
@@ -123,9 +128,9 @@ export const DropdownField = ({
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
   // update form data
-  const onChangeHandler = async (event: InputChangeEvent) => {
+  const onChangeHandler = async (event: DropdownChangeObject) => {
     const selectedOption: SelectedOption = {
-      label: event.target.id,
+      label: event.target.name,
       value: event.target.value,
     };
     setDisplayValue(selectedOption);
@@ -133,13 +138,13 @@ export const DropdownField = ({
   };
 
   // update form field data & database data on blur
-  const onBlurHandler = async (event: InputChangeEvent) => {
+  const onBlurHandler = async (event: DropdownChangeObject) => {
     const selectedOption = {
-      label: event.target.id,
+      label: event.target.name,
       value: event.target.value,
     };
     // if blanking field, trigger client-side field validation error
-    if (selectedOption === defaultValue) form.trigger(name);
+    if (displayValue === defaultValue) form.trigger(name);
     // submit field data to database
     if (autosave) {
       const fields = getAutosaveFields({
@@ -181,19 +186,28 @@ export const DropdownField = ({
 
   return (
     <Box sx={sxOverride} className={`${nestedChildClasses} ${labelClass}`}>
-      <CmsdsDropdown
+      <Label htmlFor={name} id={`${name}-label`}>
+        {labelText || ""}
+      </Label>
+      {parsedHint && <Hint id={name}>{parsedHint}</Hint>}
+      {errorMessage && <InlineError>{errorMessage}</InlineError>}
+      <select
         name={name}
         id={name}
-        label={labelText || ""}
-        ariaLabel={labelText ? undefined : name}
-        options={formattedOptions}
-        hint={parsedHint}
+        aria-label={labelText ? undefined : name}
+        aria-invalid="false"
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        errorMessage={errorMessage}
         value={displayValue?.value}
+        className="ds-c-field"
         {...props}
-      />
+      >
+        {formattedOptions.map((option: DropdownOptions) => (
+          <option key={uuid()} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </Box>
   );
 };
