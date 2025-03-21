@@ -116,8 +116,8 @@ export const initializeChoiceListFields = (
       field?.props?.choices.forEach((choice: FieldChoice) => {
         // set choice value to choice label string
         choice.value = choice.label;
-        // if choice id has not already had parent field id appended, do so now
-        if (!choice.id.includes("-")) {
+        // if choice id has not already had parent field id appended, do so now (does not apply to NAAAR)
+        if (field.id !== "providerTypes" && !choice.id.includes("-")) {
           // Use groupId for a single validation across different field ids
           const prefix = field.groupId ?? field.id;
           choice.id = prefix + "-" + choice.id;
