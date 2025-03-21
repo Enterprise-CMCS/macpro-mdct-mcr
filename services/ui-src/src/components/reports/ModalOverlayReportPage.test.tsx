@@ -14,7 +14,12 @@ import {
   mockEmptyReportStore,
   mockEntityStore,
 } from "utils/testing/setupJest";
-import { UserProvider, useStore } from "utils";
+import {
+  makeMediaQueryClasses,
+  useBreakpoint,
+  UserProvider,
+  useStore,
+} from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -29,6 +34,14 @@ const mockMlrEntityStartedStore = {
     fieldData: mockMLRReportEntityStartedFieldData,
   },
 };
+
+jest.mock("utils/other/useBreakpoint");
+const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
+  typeof useBreakpoint
+>;
+const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
+  typeof makeMediaQueryClasses
+>;
 
 const mockSetSidebarHidden = jest.fn();
 
@@ -46,6 +59,14 @@ const modalOverlayReportPageComponent = (
 );
 
 describe("<ModalOverlayReportPage />", () => {
+  beforeEach(() => {
+    mockUseBreakpoint.mockReturnValue({
+      isMobile: false,
+      isTablet: false,
+    });
+    mockMakeMediaQueryClasses.mockReturnValue("desktop");
+  });
+
   describe("Test ModalOverlayReportPage (empty state)", () => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -382,6 +403,34 @@ describe("<ModalOverlayReportPage />", () => {
       // And make sure we're back on the first page!
       expect(mockSetSidebarHidden).toBeCalledWith(false);
       expect(screen.getByText(dashboardTitle)).toBeVisible();
+    });
+  });
+
+  describe("mobile view", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockMlrEntityStartedStore,
+        ...mockEntityStore,
+      });
+      mockUseBreakpoint.mockReturnValue({
+        isMobile: true,
+      });
+      mockMakeMediaQueryClasses.mockReturnValue("mobile");
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    const verbiage = mockModalOverlayReportPageWithOverlayJson.verbiage;
+
+    test("mobile view", async () => {
+      await act(async () => {
+        render(modalOverlayReportPageComponent);
+      });
+      const headerAndCaptionArray = screen.getAllByText(verbiage.tableHeader);
+      expect(headerAndCaptionArray).toHaveLength(2);
     });
   });
 

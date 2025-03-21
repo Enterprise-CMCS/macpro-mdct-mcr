@@ -104,6 +104,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
           sx={sx.root}
           className={formHasOnlyDynamicFields ? "two-column" : ""}
           content={{
+            caption: section.name,
             headRow: headRowItems,
           }}
           data-testid="exportTable"
