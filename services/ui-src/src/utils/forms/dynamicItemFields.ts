@@ -52,7 +52,7 @@ export const generateAnalysisMethodChoices = (
     const idx = i === standardTypeField.length - 1 ? 2 : 1;
     standardTypeField[i].children[idx].props.choices = items.map((item) => {
       return {
-        id: `standard_${item.id}`,
+        id: `${item.id}`,
         label: item.name || item.custom_analysis_method_name,
       };
     });
@@ -99,7 +99,7 @@ const availableItems = (items: AnyObject[], entityType: string) => {
         : entityType === EntityType.STANDARDS && {
             children: [
               {
-                id: `${providerTypeFieldName}-otherText`,
+                id: `${providerTypeFieldName}-${item.id}-otherText`,
                 type: "text",
                 validation: {
                   type: "textOptional",
