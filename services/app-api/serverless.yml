@@ -336,7 +336,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.naaarFormBucket}
@@ -344,7 +343,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
   postMlrBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
@@ -366,7 +364,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.mlrFormBucket}
@@ -374,7 +371,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
   postMcparBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
@@ -396,7 +392,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.mcparFormBucket}
@@ -404,7 +399,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
 resources:
   Resources:
