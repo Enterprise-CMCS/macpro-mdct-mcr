@@ -43,4 +43,5 @@ export * from "./other/typing";
 // state management (zustand)
 export * from "./state/useStore";
 // text
+export * from "./text/compareText";
 export * from "./text/translate";

@@ -10,7 +10,7 @@ import { AnyObject } from "yup/lib/types";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
-import { getForm, isIlosCompleted, useStore } from "utils";
+import { getForm, isIlosCompleted, otherSpecify, useStore } from "utils";
 import { getDefaultAnalysisMethodIds } from "../../constants";
 
 export const DrawerReportPageEntityRows = ({
@@ -109,10 +109,10 @@ export const DrawerReportPageEntityRows = ({
 
         if (plans) {
           const frequencyVal = entity.analysis_method_frequency[0].value;
-          const frequency =
-            frequencyVal === "Other, specify"
-              ? entity["analysis_method_frequency-otherText"]
-              : frequencyVal;
+          const frequency = otherSpecify(
+            frequencyVal,
+            entity["analysis_method_frequency-otherText"]
+          );
           const utilizedPlans = plans
             .map((entity: AnyObject) => entity.value)
             .join(", ");
