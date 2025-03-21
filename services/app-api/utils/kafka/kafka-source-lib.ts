@@ -225,7 +225,6 @@ class KafkaSourceLib {
     }
 
     // if dynamo
-    console.log("event.Record:", event.Record);
     const outboundEvents = await this.createOutboundEvents(event.Records);
 
     const topicMessages = Object.values(outboundEvents);
