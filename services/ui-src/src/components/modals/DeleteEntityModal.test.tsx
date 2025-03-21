@@ -15,6 +15,7 @@ import {
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { EntityType } from "types";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
@@ -74,7 +75,7 @@ const mockDeletedEntityStore = {
 const modalComponent = (
   <ReportContext.Provider value={mockedReportContext}>
     <DeleteEntityModal
-      entityType="accessMeasures"
+      entityType={EntityType.ACCESS_MEASURES}
       selectedEntity={mockAccessMeasuresEntity}
       verbiage={mockModalDrawerReportPageVerbiage}
       modalDisclosure={{

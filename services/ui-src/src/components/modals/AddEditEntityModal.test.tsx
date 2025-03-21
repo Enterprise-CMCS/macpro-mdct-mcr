@@ -14,6 +14,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { EntityType } from "types";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
 
@@ -47,7 +48,7 @@ const modalComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedReportContext}>
       <AddEditEntityModal
-        entityType="accessMeasures"
+        entityType={EntityType.ACCESS_MEASURES}
         verbiage={mockModalDrawerReportPageVerbiage}
         form={mockModalForm}
         modalDisclosure={{

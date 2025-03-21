@@ -16,10 +16,9 @@ import {
 import {
   AnyObject,
   EntityShape,
-  EntityType,
   FormField,
   isFieldElement,
-  ModalDrawerEntityTypes,
+  EntityType,
   ModalDrawerReportPageShape,
   ModalDrawerReportPageVerbiage,
   ReportStatus,
@@ -57,7 +56,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   // check if there is at least one (1) plan prior to being able to enter Sanctions
   const checkForPlans = () => {
-    if (entityType === ModalDrawerEntityTypes.SANCTIONS) {
+    if (entityType === EntityType.SANCTIONS) {
       return report?.fieldData["plans"]?.length;
     }
     return true;
@@ -255,7 +254,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           }}
         />
         <ReportDrawer
-          entityType={entityType as EntityType}
+          entityType={entityType}
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,
@@ -304,8 +303,19 @@ const entityTable = (
 ) => {
   const { isTablet, isMobile } = useBreakpoint();
   const tableHeaders = () => {
-    if (isTablet || isMobile) return { headRow: ["", ""] };
-    return { headRow: ["", verbiage.tableHeader!, ""] };
+    if (isTablet || isMobile)
+      return {
+        caption: verbiage.tableHeader,
+        headRow: [{ hiddenName: "Status" }, { hiddenName: "Content" }],
+      };
+    return {
+      caption: verbiage.tableHeader,
+      headRow: [
+        { hiddenName: "Status" },
+        verbiage.tableHeader!,
+        { hiddenName: "Action" },
+      ],
+    };
   };
   return (
     <Table sx={sx.table} content={tableHeaders()}>

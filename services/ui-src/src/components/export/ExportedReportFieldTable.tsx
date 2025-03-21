@@ -14,7 +14,7 @@ import {
   FormLayoutElement,
   isFieldElement,
   ReportType,
-  entityTypes,
+  EntityType,
 } from "types";
 // utils
 import { parseCustomHtml, useStore } from "utils";
@@ -87,11 +87,11 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   return (
     // if there are no plans added, render the appropriate verbiage
     <Box>
-      {entityType === entityTypes[0] && missingPlansOrIlos ? (
+      {entityType === EntityType.PLANS && missingPlansOrIlos ? (
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(renderMissingEntityVerbiage() || "")}
         </Box>
-      ) : entityType === entityTypes[1] && !hasBss ? (
+      ) : entityType === EntityType.BSS_ENTITIES && !hasBss ? (
         // if there are no BSS entities added, render the appropriate verbiage
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(
@@ -104,6 +104,7 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
           sx={sx.root}
           className={formHasOnlyDynamicFields ? "two-column" : ""}
           content={{
+            caption: section.name,
             headRow: headRowItems,
           }}
           data-testid="exportTable"
@@ -126,7 +127,7 @@ export const renderFieldTableBody = (
   pageType: string,
   report: ReportShape | undefined,
   showHintText: boolean,
-  entityType?: string
+  entityType?: EntityType
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows

@@ -33,7 +33,7 @@ export const HomePage = () => {
   return (
     <>
       <Collapse in={showBanner}>
-        <Banner bannerData={bannerData} />
+        <Banner bannerData={bannerData} status={"info"} />
       </Collapse>
       <PageTemplate sx={sx.layout}>
         {/* show standard view to state users */}

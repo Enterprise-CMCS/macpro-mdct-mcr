@@ -134,27 +134,48 @@
                     },
                     {
                       "id": "l7XDjKKDrwryEe5YgDTTmP",
-                      "label": "Scenario 3: Significant change - services"
-                    },
-                    {
-                      "id": "7ZtsZ25K0romDSTAIStzzY",
-                      "label": "Scenario 3: Significant change - benefits"
-                    },
-                    {
-                      "id": "ObbAyoYB97trcbVN0OFQ2X",
-                      "label": "Scenario 3: Significant change - geographic service area"
-                    },
-                    {
-                      "id": "FC9hagL8vz3i0bFoHsJYEw",
-                      "label": "Scenario 3: Significant change - composition of provider network"
-                    },
-                    {
-                      "id": "ziLQDOD5TucgEHzmlzOEn6",
-                      "label": "Scenario 3: Significant change - payments to provider network"
-                    },
-                    {
-                      "id": "TDkPWZJai0kwHIp4zm1ZVy",
-                      "label": "Scenario 3: Significant change - enrollment of new population"
+                      "label": "Scenario 3: Significant change",
+                      "children": [
+                        {
+                          "id": "reportingScenario_significantChange",
+                          "type": "checkbox",
+                          "validation": {
+                            "type": "checkbox",
+                            "nested": true,
+                            "parentFieldName": "reportingScenario",
+                            "parentOptionId": "l7XDjKKDrwryEe5YgDTTmP"
+                          },
+                          "props": {
+                            "hint": "Select all that apply.",
+                            "choices": [
+                              {
+                                "id": "vCV6gRjj2pbYTcsWhaJsy1",
+                                "label": "Services"
+                              },
+                              {
+                                "id": "3swTHronFtgFRzyL9ETh3F",
+                                "label": "Benefits"
+                              },
+                              {
+                                "id": "uTTqmN029vDhFMrnbe5ru9",
+                                "label": "Geographic service area"
+                              },
+                              {
+                                "id": "aSxQ1M0UXU8dTQvFSqrBYF",
+                                "label": "Composition of provider network"
+                              },
+                              {
+                                "id": "UR5cBIBBuPPDzKAhJ3lpSZ",
+                                "label": "Payments to provider network"
+                              },
+                              {
+                                "id": "WoqwKvq0cJpfkDE3e3f1Jj",
+                                "label": "Enrollment of new population"
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     },
                     {
                       "id": "IyPRlUA4k3bTkj5rF1E8zg",
@@ -524,6 +545,10 @@
         "dashboardTitle": "Standard total count: ",
         "countEntitiesInTitle": true,
         "addEntityButtonText": "Add standard",
+        "deleteEntityButtonAltText": "Delete standard",
+        "deleteModalTitle": "Are you sure you want to delete this standard?",
+        "deleteModalConfirmButtonText": "Yes, delete standard",
+        "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
         "drawerTitle": "Add access and network adequacy standard for ",
         "missingEntityMessage": [
           {
@@ -585,7 +610,7 @@
                   "label": "Maximum time to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_2e6zA0mK1Qs93xSoyJXmW3AD",
+                      "id": "standard_standardDescription-kIrheUXLpOwF7OEypso8Ylhs",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -599,7 +624,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_CL6r1vfwqen1VpNHmeiD0I9J",
+                      "id": "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -620,7 +645,7 @@
                   "label": "Maximum distance to travel",
                   "children": [
                     {
-                      "id": "standard_standardDescription_qjDGoXRR8qnuIztUS7rymsLP",
+                      "id": "standard_standardDescription-SDrVTHVxFa2YKrlBYjcqavbN",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -634,7 +659,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_DgpQz4w5HIaZfWVgVOzgMMjU",
+                      "id": "standard_analysisMethodsUtilized-SDrVTHVxFa2YKrlBYjcqavbN",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -655,7 +680,7 @@
                   "label": "Maximum time or distance",
                   "children": [
                     {
-                      "id": "standard_standardDescription_p2UjSQQTOHYWtLDqWXSxGFOP",
+                      "id": "standard_standardDescription-fFSst8ncbSukHlX66fqV0udO",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -669,7 +694,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_3i4wxqiunS8gGGXW7n2LWviu",
+                      "id": "standard_analysisMethodsUtilized-fFSst8ncbSukHlX66fqV0udO",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -690,7 +715,7 @@
                   "label": "Ease of getting a timely appointment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_rWrmasaJJ8V3PdVhZGf6bly3",
+                      "id": "standard_standardDescription-tcIQ324hNsgHwHteoDgfCh08",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -704,7 +729,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_p93DZshWnEs7ncVeNZe3tAzM",
+                      "id": "standard_analysisMethodsUtilized-tcIQ324hNsgHwHteoDgfCh08",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -725,7 +750,7 @@
                   "label": "Appointment wait time",
                   "children": [
                     {
-                      "id": "standard_standardDescription_WCv5x1OePNjPWHdqog1Riv5s",
+                      "id": "standard_standardDescription-lG0CeH7LIO5iGxjpaKE8v37C",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -739,7 +764,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_5YldWkrQj5flwCcuvVHJVtcm",
+                      "id": "standard_analysisMethodsUtilized-lG0CeH7LIO5iGxjpaKE8v37C",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -760,7 +785,7 @@
                   "label": "Hours of operation",
                   "children": [
                     {
-                      "id": "standard_standardDescription_l8KWEMUCqnOgRkYyBHvSYLPw",
+                      "id": "standard_standardDescription-EuccyPRHBiaTVhF1HMHnkUcR",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -774,7 +799,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_O94R81nE7jNr2RPAks2rwbtz",
+                      "id": "standard_analysisMethodsUtilized-EuccyPRHBiaTVhF1HMHnkUcR",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -795,7 +820,7 @@
                   "label": "Provider to enrollee ratios",
                   "children": [
                     {
-                      "id": "standard_standardDescription_kKaVlFMA9VpbhVj2gSPloqBr",
+                      "id": "standard_standardDescription-vGdzNKCsiudeNeUJZgU5qhdz",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -809,7 +834,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_VXJ5Q1ROxf101ql7YDT22XrV",
+                      "id": "standard_analysisMethodsUtilized-vGdzNKCsiudeNeUJZgU5qhdz",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -830,7 +855,7 @@
                   "label": "Minimum number of network providers",
                   "children": [
                     {
-                      "id": "standard_standardDescription_Le1VoGTeVcMbskIiBSImlIMO",
+                      "id": "standard_standardDescription-hdz3tEHdEBvRIIdgaovgEjaa",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -844,7 +869,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_bVGAJEQUTOYJsX5ICErIepxP",
+                      "id": "standard_analysisMethodsUtilized-hdz3tEHdEBvRIIdgaovgEjaa",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -865,7 +890,7 @@
                   "label": "Service fulfillment",
                   "children": [
                     {
-                      "id": "standard_standardDescription_QVdykzW594MqR5xWTrAF8elY",
+                      "id": "standard_standardDescription-9eion8H8PNrCP0AeiikpsKbx",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
@@ -879,7 +904,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_SkNj86TXlLfJEJ9G9a1Dw16L",
+                      "id": "standard_analysisMethodsUtilized-9eion8H8PNrCP0AeiikpsKbx",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -905,16 +930,18 @@
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_standardType"
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       }
                     },
                     {
-                      "id": "standard_standardDescription_QW4MxtOeD2vjcRHcgKGBXYyI",
+                      "id": "standard_standardDescription-Uil8wXl6t3aBsI4W8pQZlO5P",
                       "type": "textarea",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_standardType-otherText"
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
                         "label": "Standard description",
@@ -922,7 +949,7 @@
                       }
                     },
                     {
-                      "id": "standard_analysisMethodsUtilized_x7nthz0BMsPQ9Nvu8u1RBG5f",
+                      "id": "standard_analysisMethodsUtilized-Uil8wXl6t3aBsI4W8pQZlO5P",
                       "type": "checkbox",
                       "validation": {
                         "type": "checkbox",
@@ -1178,11 +1205,7 @@
             },
             "table": {
               "bodyRows": [
-                [
-                  "",
-                  "Provide plan compliance details for 438.206",
-                  ""
-                ]
+                ["", "Provide plan compliance details for 438.206", ""]
               ],
               "headRow": [
                 { "hiddenName": "Status" },
@@ -1197,6 +1220,196 @@
               },
               "heading": "Assurance of plan compliance for 438.206",
               "hint": "Indicate whether the state assures that the plan complies with the state’s network adequacy standards based on each analysis the state conducted for the plan during the reporting period."
+            }
+          }
+        ],
+        "childForms": [
+          {
+            "parentForm": "planCompliance438206",
+            "verbiage": {
+              "accordion": {
+                "buttonLabel": "Assurance of 42 C.F.R. § 438.206",
+                "text": "<p>(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:</p><p>(1) Maintains and monitors a network of appropriate providers that is supported by written agreements and is sufficient to provide adequate access to all services covered under the contract for all enrollees, including those with limited English proficiency or physical or mental disabilities.</p><p>(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist.</p><p>(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee.</p><p>(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them.</p><p>(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network.</p><p>(6) Demonstrates that its network providers are credentialed as required by § 438.214.</p><p>(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services.</p><p>(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.</p><p>(1) <b>Timely access.</b> Each MCO, PIHP, and PAHP must do the following:</p><p>(i) Meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e).</p><p>(ii) Ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS, if the provider serves only Medicaid enrollees.</p><p>(iii) Make services included in the contract available 24 hours a day, 7 days a week, when medically necessary.</p><p>(iv) Establish mechanisms to ensure compliance by network providers.</p><p>(v) Monitor network providers regularly to determine compliance.</p><p>(vi) Take corrective action if there is a failure to comply by a network provider.</p><p>(2) Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes.</p><p>(3) Accessibility considerations. Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities.</p><p>(d) Applicability date. States will not be held out of compliance with the requirements of paragraphs (c)(1)(i) of this section prior to the first rating period that begins on or after 3 years after July 9, 2024, so long as they comply with the corresponding standard(s) codified in 42 CFR 438.2</p>"
+              },
+              "backButton": "Return to plan compliance data for {{planName}} dashboard",
+              "intro": {
+                "hint": "Report on 42 C.F.R. § 438.206 plan compliance during the reporting period",
+                "info": [
+                  {
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "<strong>Plan non-compliance for 438.206</strong><br>Report on how this plan is not in compliance with 42 C.F.R. § 438.206. Full details are located within the accordion above. Select all that apply."
+                      }
+                    ]
+                  }
+                ],
+                "section": "III. Plan compliance data for {{planName}}",
+                "subsection": "{{planName}}: Provide plan compliance details for 438.206"
+              }
+            },
+            "form": {
+              "id": "planCompliance438206_details",
+              "fields": [
+                {
+                  "groupId": "planCompliance438206_requirements",
+                  "id": "delivery",
+                  "type": "checkbox",
+                  "validation": "checkbox",
+                  "props": {
+                    "label": "Delivery network-related requirements:",
+                    "choices": [
+                      {
+                        "id": "lWYfZ8qpdK2vwNXXwy9b1l",
+                        "label": "Does not maintain and monitor a sufficient network of appropriate providers"
+                      },
+                      {
+                        "id": "sLldgKpZzVL6m6EgX2dir0",
+                        "label": "Does not provide female enrollees with direct access to a women’s health specialist within the provider network"
+                      },
+                      {
+                        "id": "Hd8vUiUgEpQ2VW6qPFgr7F",
+                        "label": "Does not provide for or arrange a no-cost-to-enrollee second opinion from an in-network or outside-network provider"
+                      },
+                      {
+                        "id": "gg7I3xv2SfzDNwzF2iZfGJ",
+                        "label": "Does not adequately and/or timely cover the enrollee’s MCO, PIHP, or PAHP services out of network"
+                      },
+                      {
+                        "id": "AYcV5e4k05D7qdIfwdBXZe",
+                        "label": "Does not require out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensure the cost to the enrollee is no greater than in-network services"
+                      },
+                      {
+                        "id": "lBkMiJbx86pvQebwYTmo8B",
+                        "label": "Does not demonstrate that its network providers are credentialed as required by § 438.214"
+                      },
+                      {
+                        "id": "FnJK7Kc8gGemirYpZi1zyk",
+                        "label": "Does not demonstrate that its network includes sufficient family planning providers to ensure timely access to covered services"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "groupId": "planCompliance438206_requirements",
+                  "id": "timely",
+                  "type": "checkbox",
+                  "validation": "checkbox",
+                  "props": {
+                    "label": "Furnishing of services; timely access-related requirements:",
+                    "choices": [
+                      {
+                        "id": "LR9DAx31NetMHZmnGNfP37",
+                        "label": "Does not meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e)."
+                      },
+                      {
+                        "id": "Tu7OYfKHnP0ZRa99wDeL6i",
+                        "label": "Does not ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS"
+                      },
+                      {
+                        "id": "3GzgglRDIwc9kBjdaakNzP",
+                        "label": "Does not make services included in the contract available 24 hours a day, 7 days a week, when medically necessary"
+                      },
+                      {
+                        "id": "w9rDCLPhOeyYKpAv0dXnsG",
+                        "label": "Does not establish mechanisms to ensure compliance by network providers"
+                      },
+                      {
+                        "id": "h5ryUU2XKw8JQOM1K5sHgG",
+                        "label": "Does not monitor network providers regularly to determine compliance"
+                      },
+                      {
+                        "id": "i6T9cJB3JdOcwvEBelchNU",
+                        "label": "Does not make corrective action if there is a failure to comply by a network provider"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "groupId": "planCompliance438206_requirements",
+                  "id": "other",
+                  "type": "checkbox",
+                  "validation": "checkbox",
+                  "props": {
+                    "label": "Other requirements:",
+                    "choices": [
+                      {
+                        "id": "TlP89DrzdEg5KQ1LXXFCUe",
+                        "label": "Does not take into account access and cultural considerations"
+                      },
+                      {
+                        "id": "ilvC7PazhMXTL6aL7LDRAE",
+                        "label": "Does not take into account accessibility considerations"
+                      },
+                      {
+                        "id": "yCleNTI4lSJCwNhuq59KmU",
+                        "label": "Does not adhere to applicability date"
+                      },                      
+                      {
+                        "id": "mrCzwGVdpvl81r5P0JDTSr",
+                        "label": "Other, specify",
+                        "children": [
+                          {
+                            "id": "planCompliance438206_requirements-otherText",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance438206_requirements"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "planCompliance438206_planDeficiencies-description",
+                  "type": "textarea",
+                  "validation": "text",
+                  "props": {
+                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 description",
+                    "hint": "Describe additional plan deficiencies identified during the reporting period."
+                  }
+                },
+                {
+                  "id": "planCompliance438206_planDeficiencies-analyses",
+                  "type": "textarea",
+                  "validation": "text",
+                  "props": {
+                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 analyses used to identify deficiencies",
+                    "hint": "Indicate which analyses uncovered the deficiencies."
+                  }
+                },
+                {
+                  "id": "planCompliance438206_planDeficiencies-compliance",
+                  "type": "textarea",
+                  "validation": "text",
+                  "props": {
+                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 description of what the plan will do to achieve compliance",
+                    "hint": "Describe what the plan will do to achieve compliance."
+                  }
+                },
+                {
+                  "id": "planCompliance438206_planDeficiencies-progress",
+                  "type": "textarea",
+                  "validation": "text",
+                  "props": {
+                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 monitoring progress",
+                    "hint": "Describe how the state will monitor the plan’s progress."
+                  }
+                },
+                {
+                  "id": "planCompliance438206_planDeficiencies-date",
+                  "type": "date",
+                  "validation": "date",
+                  "props": {
+                    "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.206",
+                    "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies."
+                  }
+                }
+              ]
             }
           }
         ]

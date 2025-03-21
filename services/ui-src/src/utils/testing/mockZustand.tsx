@@ -11,7 +11,7 @@ import {
 // types
 import {
   AdminBannerState,
-  entityTypes,
+  EntityType,
   McrEntityState,
   McrReportState,
   McrUserState,
@@ -105,6 +105,7 @@ export const mockAdminUserStore: McrUserState = {
 //  BANNER STATES / STORE
 
 export const mockBannerStore: AdminBannerState = {
+  allBanners: [mockBannerData],
   bannerData: mockBannerData,
   bannerActive: false,
   bannerLoading: false,
@@ -112,6 +113,7 @@ export const mockBannerStore: AdminBannerState = {
   bannerDeleting: false,
   setBannerData: () => {},
   clearAdminBanner: () => {},
+  setAllBanners: () => {},
   setBannerActive: () => {},
   setBannerLoading: () => {},
   setBannerErrorMessage: () => {},
@@ -194,10 +196,10 @@ export const mockEmptyReportStore: McrReportState = {
 // ENTITY STATES / STORE
 export const mockEntityStore: McrEntityState = {
   entities: [],
-  entityType: entityTypes[0],
+  entityType: EntityType.PLANS,
   selectedEntity: {
     id: "mock-plan-id-1",
-    type: entityTypes[0],
+    type: EntityType.PLANS,
     report_planName: "mock-plan",
     report_programName: "mock-programName",
     report_programType: [
@@ -223,7 +225,7 @@ export const mockEntityStore: McrEntityState = {
 
 export const mockAnalysisMethodEntityStore: McrEntityState = {
   entities: [],
-  entityType: "analysisMethods",
+  entityType: EntityType.ANALYSIS_METHODS,
   selectedEntity: {
     id: "k9t7YoOeTOAXX3s7qF6XfN33",
     name: "Geomapping",

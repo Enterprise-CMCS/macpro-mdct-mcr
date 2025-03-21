@@ -1,6 +1,3 @@
-// BANNERS
-export const bannerId = "admin-banner-id";
-
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
@@ -134,3 +131,7 @@ export const PROMPT_AT = 29 * 60 * 1000; //ms
 
 // REPORT ROUTES FOR FIRST SECTION OF A PROGRAM
 export const INITIAL_REPORT_ROUTES = ["/mcpar", "/mlr", "/naaar"];
+
+// NAAAR
+export const nonCompliantLabel =
+  "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";

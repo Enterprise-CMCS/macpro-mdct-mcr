@@ -10,6 +10,7 @@ import {
   FormLayoutElement,
   ReportType,
   isFieldElement,
+  EntityType,
 } from "types";
 // utils
 import { useStore } from "utils";
@@ -17,6 +18,7 @@ import { useStore } from "utils";
 import verbiage from "verbiage/pages/mlr/mlr-export";
 
 export const ExportedEntityDetailsTable = ({
+  caption,
   fields,
   entity,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,7 +28,7 @@ export const ExportedEntityDetailsTable = ({
   const { report } = useStore();
   const { tableHeaders } = verbiage;
 
-  const entityType = "program";
+  const entityType = EntityType.PROGRAM;
 
   const threeColumnHeaderItems = [
     tableHeaders.number,
@@ -42,6 +44,7 @@ export const ExportedEntityDetailsTable = ({
       {...props}
       sx={sx.root}
       content={{
+        caption,
         headRow: threeColumnHeaderItems,
       }}
     >
@@ -63,7 +66,7 @@ export const renderFieldTableBody = (
   report: ReportShape | undefined,
   showHintText: boolean,
   entityId: string,
-  entityType: string
+  entityType: EntityType
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
@@ -121,6 +124,7 @@ export const renderFieldTableBody = (
 };
 
 export interface Props {
+  caption: string;
   fields: FormField[];
   entity: EntityShape;
   showHintText?: boolean;

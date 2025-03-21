@@ -148,26 +148,18 @@ functions:
     handler: handlers/banners/fetch.fetchBanner
     events:
       - http:
-          path: banners/{bannerId}
+          path: banners
           method: get
           cors: true
           authorizer: aws_iam
-          request:
-            parameters:
-              paths:
-                bannerId: true
   createBanner:
     handler: handlers/banners/create.createBanner
     events:
       - http:
-          path: banners/{bannerId}
+          path: banners
           method: post
           cors: true
           authorizer: aws_iam
-          request:
-            parameters:
-              paths:
-                bannerId: true
   deleteBanner:
     handler: handlers/banners/delete.deleteBanner
     events:
@@ -344,7 +336,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.naaarFormBucket}
@@ -352,7 +343,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
   postMlrBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
@@ -374,7 +364,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.mlrFormBucket}
@@ -382,7 +371,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
   postMcparBucketData:
     handler: handlers/kafka/post/postKafkaData.handler
@@ -404,7 +392,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectCreated:*
           rules:
-            - prefix: fieldData/
             - suffix: .json
       - s3:
           bucket: ${self:custom.mcparFormBucket}
@@ -412,7 +399,6 @@ functions:
           forceDeploy: true
           event: s3:ObjectTagging:Put
           rules:
-            - prefix: fieldData/
             - suffix: .json
 resources:
   Resources:

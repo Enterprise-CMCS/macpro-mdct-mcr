@@ -8,6 +8,7 @@ import {
   Choice,
   FormField,
   ReportRoute,
+  EntityType,
 } from "../types";
 // utils
 import { validateFieldData } from "./completionValidation";
@@ -133,7 +134,7 @@ export const calculateCompletionStatus = async (
 
   const calculateEntityCompletion = async (
     nestedFormTemplates: FormJson[],
-    entityType: string
+    entityType: EntityType
   ) => {
     //value for holding combined result
     var areAllFormsComplete = true;

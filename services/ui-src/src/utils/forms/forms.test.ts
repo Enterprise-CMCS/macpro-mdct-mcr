@@ -10,7 +10,7 @@ import {
   sortFormErrors,
 } from "./forms";
 // types
-import { FormField, isEntityType } from "types";
+import { FormField } from "types";
 // utils
 import {
   mockDateField,
@@ -339,17 +339,6 @@ describe("Test sortFormErrors", () => {
     const sortedErrors = sortFormErrors(mockFormObject, mockErrorsObject);
     expect(sortedErrors.indexOf("stateName")).toEqual(-1);
     expect(sortedErrors).toEqual(sortedArray);
-  });
-});
-
-describe("Test form related type guards", () => {
-  describe("Entity Type type guard", () => {
-    it("should reject bad entity types", () => {
-      expect(isEntityType("foo")).toBeFalsy();
-    });
-    it("should accept good entity types", () => {
-      expect(isEntityType("program")).toBeTruthy();
-    });
   });
 });
 

@@ -15,6 +15,7 @@ export const ExportedReportMetadataTable = ({
       data-testid="exportedReportMetadataTable"
       sx={sx.metadataTable}
       content={{
+        caption: "Report Submission Information",
         headRow: headerRowLabels(reportType, verbiage),
         bodyRows: bodyRowContent(reportType, report),
       }}
