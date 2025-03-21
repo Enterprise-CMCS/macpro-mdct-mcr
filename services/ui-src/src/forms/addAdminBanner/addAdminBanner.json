@@ -20,6 +20,7 @@
       "validation": "text",
       "props": {
         "label": "Description text",
+        "hint": "Description text can be formatted for plain text and bulleted lists. To create a bulleted list, include HTML tags around the list and before and after each list item.",
         "placeholder": "New banner description"
       }
     },
@@ -29,7 +30,7 @@
       "validation": "urlOptional",
       "props": {
         "label": "Link",
-        "requirementLabel": "Optional"
+        "styleAsOptional": true
       }
     },
     {

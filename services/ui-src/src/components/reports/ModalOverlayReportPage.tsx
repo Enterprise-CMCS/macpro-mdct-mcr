@@ -16,7 +16,6 @@ import {
 import {
   AnyObject,
   EntityShape,
-  EntityType,
   isFieldElement,
   ModalOverlayReportPageShape,
   ReportStatus,
@@ -65,8 +64,19 @@ export const ModalOverlayReportPage = ({
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
-    if (isTablet || isMobile) return { headRow: ["", ""] };
-    return { headRow: ["", verbiage.tableHeader, ""] };
+    if (isTablet || isMobile)
+      return {
+        caption: verbiage.tableHeader,
+        headRow: [{ hiddenName: "Status" }, { hiddenName: "Content" }],
+      };
+    return {
+      caption: verbiage.tableHeader,
+      headRow: [
+        { hiddenName: "Status" },
+        verbiage.tableHeader,
+        { hiddenName: "Action" },
+      ],
+    };
   };
 
   // Add/edit entity modal disclosure and methods
@@ -177,7 +187,7 @@ export const ModalOverlayReportPage = ({
         <EntityProvider>
           <EntityDetailsOverlay
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
-            entityType={entityType as EntityType}
+            entityType={entityType}
             entities={report?.fieldData[entityType]}
             form={overlayForm}
             onSubmit={onSubmit}

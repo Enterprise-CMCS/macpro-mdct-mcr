@@ -7,6 +7,7 @@ import { Text, Spinner } from "@chakra-ui/react";
 import {
   AnyObject,
   EntityShape,
+  EntityType,
   FormJson,
   isFieldElement,
   ReportStatus,
@@ -137,7 +138,7 @@ export const AddEditEntityModal = ({
 };
 
 interface Props {
-  entityType: string;
+  entityType: EntityType;
   form: FormJson;
   verbiage: AnyObject;
   selectedEntity?: EntityShape;

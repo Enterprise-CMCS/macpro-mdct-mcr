@@ -146,6 +146,7 @@ export function getEntityTableComponents(
                 fields={filteredFields.slice(1) as FormField[]}
                 entity={entity}
                 showHintText={false}
+                caption={header.props?.content}
               />
             </Fragment>
           );

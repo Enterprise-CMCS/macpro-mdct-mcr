@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsMultiformOverlay } from "./EntityDetailsMultiformOverlay";
+// constants
+import { nonCompliantLabel } from "../../constants";
 // utils
 import {
   mockEntityStore,
@@ -10,6 +12,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+import { EntityType } from "types";
 
 const { details } = mockOverlayReportPageJson;
 const mockCloseEntityDetailsOverlay = jest.fn();
@@ -26,13 +29,15 @@ mockedUseStore.mockReturnValue({
 
 const entityDetailsMultiformOverlayComponent = (
   disabled: boolean = false,
-  submitting = false
+  submitting: boolean = false,
+  chidForms: any = details!.childForms
 ) => (
   <RouterWrappedComponent>
     <EntityDetailsMultiformOverlay
+      childForms={chidForms}
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
-      entityType={"plans"}
+      entityType={EntityType.PLANS}
       forms={details!.forms}
       onSubmit={mockOnSubmit}
       selectedEntity={mockEntityStore.selectedEntity}
@@ -81,8 +86,19 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(entityCells).toBeVisible();
     expect(enterButton).toBeDisabled();
 
+    // Submit
+    const submitButton = screen.getByRole("button", { name: "Save & return" });
+    await userEvent.click(submitButton);
+
+    expect(mockOnSubmit).toBeCalled();
+  });
+
+  test("renders child form", async () => {
+    render(entityDetailsMultiformOverlayComponent());
+
+    // Form
     const radioButtonNo = screen.getByRole("radio", {
-      name: "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+      name: nonCompliantLabel,
     });
     await userEvent.click(radioButtonNo);
 
@@ -98,17 +114,39 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     });
     await userEvent.click(updatedEnterButton);
 
-    // Status icon changed
-    const updatedEntityCellsComplete = screen.getByRole("row", {
-      name: "complete icon Mock Cell Enter",
+    // Child Form
+    const childForm = screen.getByRole("heading", {
+      name: "Mock Child Form",
     });
-    expect(updatedEntityCellsComplete).toBeVisible();
+    expect(childForm).toBeVisible();
+  });
 
-    // Submit
-    const submitButton = screen.getByRole("button", { name: "Save & return" });
-    await userEvent.click(submitButton);
+  test("renders nothing if no child form", async () => {
+    render(entityDetailsMultiformOverlayComponent(undefined, undefined, []));
 
-    expect(mockOnSubmit).toBeCalled();
+    // Form
+    const radioButtonNo = screen.getByRole("radio", {
+      name: nonCompliantLabel,
+    });
+    await userEvent.click(radioButtonNo);
+
+    // Table
+    const entityCellsIncomplete = screen.getByRole("row", {
+      name: "warning icon Mock Cell Select “Enter” to complete response. Enter",
+    });
+    expect(entityCellsIncomplete).toBeVisible();
+
+    // Click Enter
+    const updatedEnterButton = screen.getByRole("button", {
+      name: "Enter",
+    });
+    await userEvent.click(updatedEnterButton);
+
+    // Stays on Table
+    const childForm = screen.queryByRole("heading", {
+      name: "Mock Child Form",
+    });
+    expect(childForm).toBeNull();
   });
 
   test("closes overlay", async () => {

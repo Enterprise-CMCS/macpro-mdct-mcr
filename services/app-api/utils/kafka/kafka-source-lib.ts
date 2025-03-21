@@ -19,6 +19,12 @@ type SourceTopicMapping = {
   topicName: string;
 };
 
+type SourceBucketTopicMapping = {
+  sourceName: string;
+  topicName: string;
+  s3Prefix: string;
+};
+
 let kafka: Kafka;
 let producer: Producer;
 
@@ -39,7 +45,7 @@ class KafkaSourceLib {
   topicPrefix: string;
   version: string | null;
   tables: SourceTopicMapping[];
-  buckets: SourceTopicMapping[];
+  buckets: SourceBucketTopicMapping[];
   connected: boolean;
   topicNamespace: string;
   stage: string;
@@ -47,7 +53,7 @@ class KafkaSourceLib {
     topicPrefix: string,
     version: string | null,
     tables: SourceTopicMapping[],
-    buckets: SourceTopicMapping[]
+    buckets: SourceBucketTopicMapping[]
   ) {
     if (!process.env.BOOTSTRAP_BROKER_STRING_TLS) {
       throw new Error("Missing Broker Config. ");
@@ -110,9 +116,12 @@ class KafkaSourceLib {
    * @param bucketArn - ARN formatted like 'arn:aws:s3:::{stack}-{stage}-{bucket}' e.g. arn:aws:s3:::database-main-mcpar
    * @returns A formatted topic name with "-form" specified
    */
-  determineS3TopicName(bucketArn: string) {
+  determineS3TopicName(bucketArn: string, key: string) {
     for (const bucket of this.buckets) {
-      if (bucketArn.includes(bucket.sourceName)) {
+      if (
+        bucketArn.includes(bucket.sourceName) &&
+        key.startsWith(bucket.s3Prefix)
+      ) {
         return this.topic(bucket.topicName);
       }
     }
@@ -174,14 +183,10 @@ class KafkaSourceLib {
         // Handle any S3 events
         const s3Record = record as S3EventRecord;
         const key: string = s3Record.s3.object.key;
-        topicName = this.determineS3TopicName(s3Record.s3.bucket.arn);
+        topicName = this.determineS3TopicName(s3Record.s3.bucket.arn, key);
 
         // Filter for only the response info
-        if (
-          !topicName ||
-          !key.startsWith("fieldData/") ||
-          !key.includes(".json")
-        ) {
+        if (!topicName || !key.includes(".json")) {
           continue;
         }
         payload = await this.createS3Payload(record);

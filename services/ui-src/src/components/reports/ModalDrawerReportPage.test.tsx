@@ -16,7 +16,7 @@ import {
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { ModalDrawerReportPageShape } from "types";
+import { EntityType, ModalDrawerReportPageShape } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -185,11 +185,12 @@ describe("<ModalDrawerReportPage />", () => {
     test("renders Entity table for a NAAAR report", async () => {
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "plans",
+        entityType: EntityType.PLANS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
       const entityTable = screen.getByRole("table");
+      const entityCaption = entityTable.querySelector("caption");
       const entityHeader = screen.getByRole("columnheader", {
         name: "Mock table header",
       });
@@ -198,6 +199,7 @@ describe("<ModalDrawerReportPage />", () => {
       });
 
       expect(entityTable).toBeVisible();
+      expect(entityCaption).toHaveTextContent("Mock table header");
       expect(entityHeader).toBeVisible();
       expect(entityCell).toBeVisible();
     });
@@ -209,17 +211,19 @@ describe("<ModalDrawerReportPage />", () => {
       });
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "plans",
+        entityType: EntityType.PLANS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 
       const entityTable = screen.getByRole("table");
+      const entityCaption = entityTable.querySelector("caption");
       const entityHeader = screen.queryByRole("columnheader", {
         name: "Mock table header",
       });
       const entityCell = screen.getByText("plan 1");
 
       expect(entityTable).toBeVisible();
+      expect(entityCaption).toHaveTextContent("Mock table header");
       expect(entityHeader).toBeNull();
       expect(entityCell).toBeVisible();
     });
@@ -235,7 +239,7 @@ describe("<ModalDrawerReportPage />", () => {
 
       const naaarRoute = {
         ...mockModalDrawerReportPageJson,
-        entityType: "sanctions",
+        entityType: EntityType.SANCTIONS,
       };
       render(modalDrawerReportPageComponentWithEntities(naaarRoute));
 

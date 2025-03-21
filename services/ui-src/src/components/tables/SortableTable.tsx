@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 // components
 import {
   Box,
@@ -41,8 +41,12 @@ export const SortableTable = ({
   variant,
   ...props
 }: Props) => {
+  const headerRefs = useRef<{ [key: string]: HTMLElement }>({});
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [headerLabels, setHeaderLabels] = useState<{ [key: string]: string }>(
+    {}
+  );
   const table = useReactTable({
     columns,
     data,
@@ -56,6 +60,15 @@ export const SortableTable = ({
       sorting,
     },
   });
+
+  useEffect(() => {
+    const relKeys = Object.keys(headerRefs.current);
+    const refLabels = relKeys.reduce((obj, key) => {
+      obj[key] = headerRefs.current[key].textContent || "";
+      return obj;
+    }, {} as { [key: string]: string });
+    setHeaderLabels(refLabels);
+  }, [headerRefs.current]);
 
   return (
     <TableRoot
@@ -93,8 +106,14 @@ export const SortableTable = ({
                       p={0}
                       height={4}
                       variant="ghost"
+                      aria-label={headerLabels[header.id]}
                     >
-                      <Box as="span">
+                      <Box
+                        as="span"
+                        ref={(el) =>
+                          (headerRefs.current[header.id] = el as HTMLElement)
+                        }
+                      >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()

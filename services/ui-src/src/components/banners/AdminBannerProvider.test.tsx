@@ -12,9 +12,20 @@ import { bannerErrors } from "verbiage/errors";
 
 jest.mock("utils/api/requestMethods/banner", () => ({
   deleteBanner: jest.fn(() => {}),
-  getBanner: jest.fn(() => {}),
+  getBanners: jest.fn(() => {}),
   writeBanner: jest.fn(() => {}),
 }));
+
+const mockMultiBannerData = [
+  {
+    ...mockBannerData,
+    createdAt: 1704085200000, // Jan 01 2024 00:00:00 UTC
+  },
+  {
+    ...mockBannerData,
+    createdAt: 1704171600000, // Jan 02 2024 00:00:00 UTC
+  },
+];
 
 const mockAPI = require("utils/api/requestMethods/banner");
 
@@ -23,6 +34,7 @@ const TestComponent = () => {
   return (
     <div>
       <button onClick={() => context.fetchAdminBanner()}>Fetch</button>
+      <button onClick={() => context.fetchAllBanners()}>Fetch all</button>
       <button onClick={() => context.writeAdminBanner(mockBannerData)}>
         Write
       </button>
@@ -49,22 +61,43 @@ describe("<AdminBannerProvider />", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  describe("test fetch banner method", () => {
+  describe("test fetch banner methods", () => {
     test("fetchAdminBanner method is called on load", async () => {
-      expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
     });
 
-    test("fetchAdminBanner method calls API getBanner method", async () => {
-      expect(mockAPI.getBanner).toHaveBeenCalledTimes(1);
+    test("fetchAllBanners method calls API getBanners method", async () => {
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      await act(async () => {
+        const fetchButton = screen.getByText("Fetch all");
+        await userEvent.click(fetchButton);
+      });
+      // 1 call on render + 1 call on button click
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
+    });
+
+    test("fetchAdminBanner method calls API getBanners method", async () => {
+      mockAPI.getBanners.mockImplementation(() => [mockBannerData]);
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
       await act(async () => {
         const fetchButton = screen.getByText("Fetch");
         await userEvent.click(fetchButton);
       });
       // 1 call on render + 1 call on button click
-      await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
+    });
+    test("fetchAdminBanner method calls API getBanners method and filters/sorts without error", async () => {
+      mockAPI.getBanners.mockImplementation(() => mockMultiBannerData);
+      expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      await act(async () => {
+        const fetchButton = screen.getByText("Fetch");
+        await userEvent.click(fetchButton);
+      });
+      // 1 call on render + 1 call on button click
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(2));
     });
     test("Shows error if fetchBanner throws error", async () => {
-      mockAPI.getBanner.mockImplementation(() => {
+      mockAPI.getBanners.mockImplementation(() => {
         throw new Error();
       });
       await act(async () => {
@@ -85,7 +118,7 @@ describe("<AdminBannerProvider />", () => {
       expect(mockAPI.deleteBanner).toHaveBeenCalledWith(mockBannerData.key);
 
       // 1 call on render + 1 call on button click
-      await waitFor(() => expect(mockAPI.getBanner).toHaveBeenCalledTimes(2));
+      await waitFor(() => expect(mockAPI.getBanners).toHaveBeenCalledTimes(3));
     });
   });
 

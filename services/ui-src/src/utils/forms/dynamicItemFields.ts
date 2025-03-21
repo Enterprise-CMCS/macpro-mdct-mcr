@@ -1,10 +1,10 @@
-import { AnyObject, FormJson } from "types";
+import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
 export const generateDrawerItemFields = (
   form: FormJson,
   items: AnyObject[],
-  entityType: string
+  entityType: EntityType
 ) => {
   const fields = form.fields[0];
   return {
@@ -30,7 +30,7 @@ export const generateDrawerItemFields = (
 export const generateAddEntityDrawerItemFields = (
   form: FormJson,
   items: AnyObject[],
-  entityType: string
+  entityType: EntityType
 ) => {
   form.fields[3] = {
     ...form.fields[3],
@@ -65,7 +65,7 @@ const availableItems = (items: AnyObject[], entityType: string) => {
   const providerTypeFieldName = "standard_coreProviderTypeCoveredByStandard";
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
-    if (entityType === "standards") {
+    if (entityType === EntityType.STANDARDS) {
       item = {
         ...item,
         id: item.key,
@@ -78,7 +78,7 @@ const availableItems = (items: AnyObject[], entityType: string) => {
       ...item,
       label: item.name,
       checked: false,
-      ...(entityType === "ilos"
+      ...(entityType === EntityType.ILOS
         ? {
             children: [
               {
@@ -96,10 +96,10 @@ const availableItems = (items: AnyObject[], entityType: string) => {
               },
             ],
           }
-        : entityType === "standards" && {
+        : entityType === EntityType.STANDARDS && {
             children: [
               {
-                id: `standard_${item.id}-otherText`,
+                id: `${providerTypeFieldName}-otherText`,
                 type: "text",
                 validation: {
                   type: "textOptional",
@@ -121,10 +121,10 @@ const availableItems = (items: AnyObject[], entityType: string) => {
 const updatedItemChoiceList = (
   choices: AnyObject[],
   itemChoices: AnyObject[],
-  entityType: string
+  entityType: EntityType
 ) => {
   const updatedChoiceList: AnyObject[] = [];
-  if (entityType === "plan") {
+  if (entityType === EntityType.PLANS) {
     choices.map((choice: AnyObject) => {
       updatedChoiceList.push(
         choice.children
@@ -144,7 +144,7 @@ const updatedItemChoiceList = (
           : { ...choice }
       );
     });
-  } else if (entityType === "standards") {
+  } else if (entityType === EntityType.STANDARDS) {
     itemChoices.map((choice: AnyObject) => {
       updatedChoiceList.push({
         ...choice,

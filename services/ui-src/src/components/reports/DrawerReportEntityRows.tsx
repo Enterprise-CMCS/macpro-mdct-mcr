@@ -98,6 +98,31 @@ export const DrawerReportPageEntityRows = ({
           isIlosCompleted(reportingOnIlos, entity)
         : calculateEntityCompletion();
 
+      const AnalysisMethodsDetails = () => {
+        if (!isEntityCompleted) {
+          const incompleteText = "Select “Enter” to complete response.";
+          return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
+        }
+
+        const plans = entity?.analysis_method_applicable_plans;
+        let completeText = "Not utilized";
+
+        if (plans) {
+          const frequencyVal = entity.analysis_method_frequency[0].value;
+          const frequency =
+            frequencyVal === "Other, specify"
+              ? entity["analysis_method_frequency-otherText"]
+              : frequencyVal;
+          const utilizedPlans = plans
+            .map((entity: AnyObject) => entity.value)
+            .join(", ");
+
+          completeText = `${frequency}: ${utilizedPlans}`;
+        }
+
+        return <Text>{completeText}</Text>;
+      };
+
       return (
         <Flex
           key={entity.id}
@@ -119,29 +144,15 @@ export const DrawerReportPageEntityRows = ({
               />
             )
           )}
-          {isCustomEntity ? (
-            <Flex direction={"column"} sx={sx.customEntityRow}>
-              <Heading as="h4" sx={sx.customEntityName}>
-                {entity.custom_analysis_method_name}
-              </Heading>
-              {entity.custom_analysis_method_description && (
-                <Text>{entity.custom_analysis_method_description}</Text>
-              )}
-              {entity.analysis_method_frequency &&
-                entity.analysis_method_applicable_plans && (
-                  <Text>
-                    {entity.analysis_method_frequency[0].value}:&nbsp;
-                    {entity.analysis_method_applicable_plans
-                      .map((entity: AnyObject) => entity.value)
-                      .join(", ")}
-                  </Text>
-                )}
-            </Flex>
-          ) : (
+          <Flex direction={"column"} sx={sx.entityRow}>
             <Heading as="h4" sx={sx.entityName}>
-              {entity.name}
+              {entity.name ?? entity.custom_analysis_method_name}
             </Heading>
-          )}
+            {entity.custom_analysis_method_description && (
+              <Text>{entity.custom_analysis_method_description}</Text>
+            )}
+            {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
+          </Flex>
           <Box sx={buttonBoxStyling(canAddEntities)}>
             {enterButton(entity, isEntityCompleted)}
             {canAddEntities && !entity.isRequired && (
@@ -198,7 +209,7 @@ const sx = {
     height: "1.25rem",
     position: "absolute",
   },
-  customEntityRow: {
+  entityRow: {
     paddingLeft: "2.25rem",
     maxWidth: "32rem",
     gap: "4px",
@@ -207,13 +218,10 @@ const sx = {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
-    marginLeft: "2.25rem",
-    paddingRight: "1rem",
   },
-  customEntityName: {
-    fontSize: "lg",
-    fontWeight: "bold",
-    flexGrow: 1,
+  incompleteText: {
+    color: "palette.error_dark",
+    fontSize: "sm",
   },
   missingIlos: {
     fontWeight: "bold",

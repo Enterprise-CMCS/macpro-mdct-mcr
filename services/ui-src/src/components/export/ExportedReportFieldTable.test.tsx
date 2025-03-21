@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { ExportedReportFieldTable } from "components";
 // types
-import { DrawerReportPageShape } from "types";
+import { DrawerReportPageShape, EntityType } from "types";
 // utils
 import {
   mockDrawerReportPageJson,
@@ -109,7 +109,7 @@ const mockMissingPlansPageJson = {
   name: "mock-route-2a",
   path: "/mcpar/plan-level-indicators/ilos",
   pageType: "drawer",
-  entityType: "plans",
+  entityType: EntityType.PLANS,
   verbiage: {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",

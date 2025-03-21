@@ -76,8 +76,9 @@ export { Menu } from "./menus/Menu";
 export { MenuOption } from "./menus/MenuOption";
 export { Sidebar } from "./menus/Sidebar";
 // overlays
-export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
+export { EntityDetailsFormOverlay } from "./overlays/EntityDetailsFormOverlay";
 export { EntityDetailsMultiformOverlay } from "./overlays/EntityDetailsMultiformOverlay";
+export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
@@ -112,7 +113,8 @@ export { EntityRow } from "./tables/EntityRow";
 export { MobileEntityRow } from "./tables/MobileEntityRow";
 export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
-export { SortableTable } from "./tables/SortableTable";
+export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
+export { generateColumns, SortableTable } from "./tables/SortableTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
 // redirects

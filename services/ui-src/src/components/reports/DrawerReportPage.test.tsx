@@ -9,7 +9,7 @@ import {
   saveAndCloseText,
 } from "../../constants";
 // types
-import { McrEntityState } from "types";
+import { EntityType, McrEntityState } from "types";
 // utils
 import { useStore } from "utils";
 import {
@@ -151,7 +151,7 @@ describe("<DrawerReportPage />", () => {
         name: "mock-route",
         path: "/mcpar/plan-level-indicators/prior-authorization",
         pageType: "drawer",
-        entityType: "plans",
+        entityType: EntityType.PLANS,
         verbiage: {
           intro: mockVerbiageIntro,
           dashboardTitle: "Mock dashboard title",
@@ -204,7 +204,7 @@ describe("<DrawerReportPage />", () => {
         name: "mock-route",
         path: "/mcpar/plan-level-indicators/patient-access-api",
         pageType: "drawer",
-        entityType: "plans",
+        entityType: EntityType.PLANS,
         verbiage: {
           intro: mockVerbiageIntro,
           dashboardTitle: "Mock dashboard title",
@@ -317,6 +317,12 @@ describe("<DrawerReportPage />", () => {
       expect(addStandardsButton).toBeDisabled();
     });
 
+    test("Test DrawerReportPage without standards should not render the table", async () => {
+      render(drawerReportPageWithNaaarRoutesEmptyState);
+      const standardsTable = screen.queryByRole("table");
+      expect(standardsTable).toBeNull();
+    });
+
     test("Test DrawerReportPage for NAAAR standards (with provider types)", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
@@ -364,7 +370,7 @@ describe("<DrawerReportPage />", () => {
   describe("Test DrawerReportPage with custom entities", () => {
     const mockAnalysisMethodEntityStore: McrEntityState = {
       entities: [],
-      entityType: "analysisMethods",
+      entityType: EntityType.ANALYSIS_METHODS,
       selectedEntity: {
         id: "k9t7YoOeTOAXX3s7qF6XfN33",
         name: "Geomapping",
@@ -385,7 +391,7 @@ describe("<DrawerReportPage />", () => {
     // ilos
     const mockIlosEntityStore: McrEntityState = {
       entities: [],
-      entityType: "ilos",
+      entityType: EntityType.ILOS,
       selectedEntity: {
         id: "k9t7YoOeTOAXX3s7qF6XfN44",
         name: "Ilos",

@@ -9,10 +9,13 @@ import {
   ResponsiveEntityRow,
   Table,
 } from "components";
+// constants
+import { nonCompliantLabel } from "../../constants";
 // types
 import {
   AnyObject,
   CustomHtmlElement,
+  EntityDetailsMultiformVerbiage,
   EntityShape,
   EntityType,
   OverlayReportPageShape,
@@ -22,7 +25,7 @@ import {
 import {
   entityWasUpdated,
   parseCustomHtml,
-  translate,
+  translateVerbiage,
   useBreakpoint,
   useStore,
 } from "utils";
@@ -38,7 +41,8 @@ export const OverlayReportPage = ({
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
-  const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
+  const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
+    useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
@@ -67,6 +71,7 @@ export const OverlayReportPage = ({
     const tableHeaders = () => {
       if (isTablet || isMobile) {
         return {
+          caption: verbiage.tableHeader,
           headRow: [
             { hiddenName: "Status" },
             { hiddenName: verbiage.tableHeader },
@@ -75,6 +80,7 @@ export const OverlayReportPage = ({
       }
 
       return {
+        caption: verbiage.tableHeader,
         headRow: [
           { hiddenName: "Status" },
           verbiage.tableHeader,
@@ -152,16 +158,11 @@ export const OverlayReportPage = ({
       return <></>;
     }
 
-    const detailsVerbiage = { ...details.verbiage };
-    // Replace {{planName}}
-    detailsVerbiage.intro.subsection = translate(
-      detailsVerbiage.intro.subsection,
-      {
-        planName: selectedEntity?.name,
-      }
-    );
+    const detailsVerbiage = translateVerbiage(details.verbiage, {
+      planName: selectedEntity?.name,
+    });
 
-    const onSubmit = async (enteredData: AnyObject) => {
+    const onSubmit = async (enteredData: AnyObject, toggle: boolean = true) => {
       setSubmitting(true);
 
       const reportKeys = {
@@ -179,6 +180,23 @@ export const OverlayReportPage = ({
         ...selectedEntity,
         ...enteredData,
       };
+
+      // Delete any previously entered details if plan is compliant
+      const assurances = Object.keys(newEntity).filter(
+        (key) =>
+          key.endsWith("assurance") &&
+          newEntity[key][0].value !== nonCompliantLabel
+      );
+
+      assurances.forEach((key) => {
+        const formId = key.split("_")[0];
+        const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
+          (key) => key.startsWith(formId) && !key.endsWith("assurance")
+        );
+        relatedFields.forEach((key) => {
+          delete newEntity[key];
+        });
+      });
 
       const newEntities = [...currentEntities];
       newEntities[selectedEntityIndex] = newEntity;
@@ -202,11 +220,12 @@ export const OverlayReportPage = ({
       }
 
       setSubmitting(false);
-      toggleOverlay();
+      if (toggle) toggleOverlay();
     };
 
     return (
       <EntityDetailsMultiformOverlay
+        childForms={details.childForms}
         closeEntityDetailsOverlay={() => toggleOverlay()}
         disabled={false}
         entityType={entityType as EntityType}
@@ -217,7 +236,7 @@ export const OverlayReportPage = ({
         setSelectedEntity={setSelectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender}
-        verbiage={detailsVerbiage}
+        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
       />
     );
   };

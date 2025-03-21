@@ -55,6 +55,7 @@ const sx = {
   sectionHeading: {
     color: "palette.gray",
     fontSize: "md",
+    marginBottom: "0.5rem",
   },
   subsectionHeading: {
     fontWeight: "normal",
@@ -83,7 +84,7 @@ const sx = {
         color: "palette.primary_darker",
       },
     },
-    strong: {
+    "b, strong": {
       color: "palette.base",
     },
   },
