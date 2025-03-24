@@ -84,7 +84,7 @@ const sx = {
     fontSize: "md",
     marginTop: "1.5rem",
   },
-  ".ds-c-field__hint": {
+  ".ds-c-hint": {
     marginTop: "-.5rem",
     marginLeft: ".25rem",
   },
