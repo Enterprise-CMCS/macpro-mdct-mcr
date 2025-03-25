@@ -213,15 +213,19 @@ const sx = {
     paddingLeft: "2.25rem",
     maxWidth: "32rem",
     gap: "4px",
+    height: "3.25rem",
+    padding: "0.5rem",
   },
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
+    marginLeft: "2.25rem",
   },
   incompleteText: {
     color: "palette.error_dark",
     fontSize: "sm",
+    paddingLeft: "2.25rem",
   },
   missingIlos: {
     fontWeight: "bold",
