@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
-import { AlertTypes, AnyObject, ReportStatus } from "types";
+import { AlertTypes, AnyObject, ReportStatus, ReportType } from "types";
 // utils
 import { parseCustomHtml, useStore, utcDateToReadableDate } from "utils";
 // verbiage
@@ -135,7 +135,7 @@ export const ReviewSubmitPage = () => {
 const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   const { report } = useStore();
-  const reportType = report?.reportType === "MLR" ? "mlr" : "mcpar";
+  const reportType = (report?.reportType as ReportType).toLowerCase();
   const isSubmitted = report?.status === "Submitted";
   return (
     <Button
