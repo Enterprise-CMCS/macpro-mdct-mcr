@@ -14,6 +14,8 @@ export const EntityCardBottomSection = ({
       Not answered
     </Text>
   );
+
+  console.log("completed", formattedEntityData?.remediationCompleted);
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
@@ -128,9 +130,10 @@ export const EntityCardBottomSection = ({
                   }Remediation date non-compliance was corrected`}
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationDate ||
-                  formattedEntityData?.remediationCompleted
-                    ? `${formattedEntityData?.remediationCompleted} ${formattedEntityData?.remediationDate}`
+                  {formattedEntityData?.remediationCompleted
+                    ? `${formattedEntityData?.remediationCompleted} ${
+                        formattedEntityData?.remediationDate ?? ""
+                      }`
                     : printVersion && notAnswered}
                 </Text>
               </Box>
