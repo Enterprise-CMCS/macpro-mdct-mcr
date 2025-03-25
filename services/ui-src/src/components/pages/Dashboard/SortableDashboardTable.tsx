@@ -5,7 +5,7 @@ import { SortableTable } from "components";
 // types
 import { ReportMetadataShape, ReportStatus } from "types";
 // utils
-import { convertDateUtcToEt } from "utils";
+import { convertDateUtcToEt, otherSpecify } from "utils";
 import {
   AdminArchiveButton,
   AdminReleaseButton,
@@ -50,10 +50,10 @@ export const SortableDashboardTable = ({
           dueDate,
           lastAltered,
           editedBy: lastAlteredBy || "-",
-          planType:
-            report["planTypeIncludedInProgram"]?.[0].value === "Other, specify"
-              ? report["planTypeIncludedInProgram-otherText"]
-              : report.planTypeIncludedInProgram?.[0].value,
+          planType: otherSpecify(
+            report.planTypeIncludedInProgram?.[0].value,
+            report["planTypeIncludedInProgram-otherText"]
+          ),
           status: getStatus(status, report.archived, submissionCount),
           submissionCount: submissionCount === 0 ? 1 : submissionCount,
           // Original report shape to pass to cell buttons

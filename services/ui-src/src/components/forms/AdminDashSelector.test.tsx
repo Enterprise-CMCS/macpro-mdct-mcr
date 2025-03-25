@@ -42,7 +42,13 @@ describe("<AdminDashSelector />", () => {
 
     test("Check that submit button is disabled if no report type is selected", () => {
       render(adminDashSelectorView);
-      expect(screen.getByRole("button").hasAttribute("disabled")).toBeTruthy;
+      expect(
+        screen
+          .getByRole("button", {
+            name: "Go to Report Dashboard",
+          })
+          .hasAttribute("disabled")
+      ).toBeTruthy;
     });
 
     test("Form submits correctly", async () => {
@@ -52,7 +58,9 @@ describe("<AdminDashSelector />", () => {
       await fireEvent.change(dropdownInput, { target: { value: "CA" } });
       const reportInput = form.querySelector("[name='report']")!;
       fireEvent.click(reportInput, { target: { value: "MCPAR" } });
-      const submitButton = screen.getByRole("button");
+      const submitButton = screen.getByRole("button", {
+        name: "Go to Report Dashboard",
+      });
       await userEvent.click(submitButton);
       expect(window.location.pathname).toEqual("/mcpar");
     });

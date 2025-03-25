@@ -1,5 +1,4 @@
 const topics = require("../libs/topics-lib.js");
-import _ from "lodash";
 
 const condensedTopicList = [
   {
@@ -11,10 +10,13 @@ const condensedTopicList = [
     topics: [
       ".mcpar-reports",
       ".mcpar-form",
+      ".mcpar-form-template",
       ".mlr-reports",
       ".mlr-form",
+      ".mlr-form-template",
       ".naaar-reports",
       ".naaar-form",
+      ".naaar-form-template",
     ],
   },
 ];
@@ -32,13 +34,11 @@ exports.handler = async function (event, _context, _callback) {
   // Generate the complete topic list from the condensed version above.
   for (var element of condensedTopicList) {
     topicList.push(
-      ..._.map(element.topics, (topic) => {
-        return {
-          topic: `${element.topicPrefix}${topic}${element.version}`,
-          numPartitions: element.numPartitions,
-          replicationFactor: element.replicationFactor,
-        };
-      })
+      ...element.topics.map((topic) => ({
+        topic: `${element.topicPrefix}${topic}${element.version}`,
+        numPartitions: element.numPartitions,
+        replicationFactor: element.replicationFactor,
+      }))
     );
   }
 

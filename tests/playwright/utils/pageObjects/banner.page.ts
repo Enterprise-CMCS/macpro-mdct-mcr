@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import BasePage from "./base.page";
 
 export default class BannerPage extends BasePage {
@@ -6,7 +6,7 @@ export default class BannerPage extends BasePage {
 
   readonly page: Page;
   readonly title: Locator;
-  readonly replaceCurrentBannerButton: Locator;
+  readonly createBannerButton: Locator;
   readonly deleteBannerButton: Locator;
   readonly newBannerTitleInput: Locator;
   readonly newBannerDescriptionInput: Locator;
@@ -20,11 +20,11 @@ export default class BannerPage extends BasePage {
     this.title = page.getByRole("heading", {
       name: "Banner Admin",
     });
-    this.replaceCurrentBannerButton = this.page.getByRole("button", {
-      name: "Replace Current Banner",
+    this.createBannerButton = this.page.getByRole("button", {
+      name: "Create banner",
     });
     this.deleteBannerButton = this.page.getByRole("button", {
-      name: "Delete Current Banner",
+      name: "Delete banner",
     });
     this.newBannerTitleInput = this.page.getByPlaceholder("New banner title");
     this.newBannerDescriptionInput = this.page.getByPlaceholder(
@@ -40,12 +40,47 @@ export default class BannerPage extends BasePage {
     await this.newBannerDescriptionInput.fill("Banner Description Text");
     await this.newBannerStartDateInput.fill("10/10/2024");
     await this.newBannerEndDateInput.fill("12/10/2024");
-    await this.replaceCurrentBannerButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
+    await this.createBannerButton.click();
+    await this.page.waitForResponse(
+      (response) =>
+        response.status() == 201 && response.request().method() === "POST"
+    );
   }
 
   public async deleteAdminBanner() {
     await this.deleteBannerButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
+    await this.page.waitForResponse(
+      (response) =>
+        response.status() == 200 && response.request().method() === "DELETE"
+    );
+  }
+
+  public async deleteExistingBanners() {
+    // check for text indicating whether or not there are banners after load
+    const noBannerText = this.page.getByText("There are no existing banners");
+    const bannerText = this.page.getByText("Status");
+    await expect(noBannerText.or(bannerText).first()).toBeVisible();
+
+    // if text for no banners shows, exit
+    if (await noBannerText.isVisible()) return;
+
+    // find all banner delete buttons and click them
+    const deleteButtons = await this.page
+      .getByRole("button", {
+        name: "Delete banner",
+      })
+      .all();
+
+    if (deleteButtons.length > 0) {
+      for (const button of deleteButtons) {
+        await button.click();
+        await this.page.waitForResponse(
+          (response) =>
+            response.url().includes(`banners`) &&
+            response.request().method() === "DELETE" &&
+            response.status() == 200
+        );
+      }
+    }
   }
 }

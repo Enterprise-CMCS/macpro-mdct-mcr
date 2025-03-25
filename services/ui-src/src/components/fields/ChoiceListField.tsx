@@ -289,7 +289,7 @@ export const ChoiceListField = ({
       <CmsdsChoiceList
         name={name}
         type={type}
-        label={labelText || ""}
+        label={labelText || null}
         choices={formatChoices(choices)}
         hint={parsedHint}
         errorMessage={errorMessage}

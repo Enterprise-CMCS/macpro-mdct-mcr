@@ -9,6 +9,8 @@ import {
   QueryCommandInput,
   PutCommand,
   PutCommandInput,
+  ScanCommandInput,
+  paginateScan,
 } from "@aws-sdk/lib-dynamodb";
 // utils
 import { logger } from "../debugging/debug-lib";
@@ -52,6 +54,14 @@ export default {
       items = items.concat(result.Items ?? []);
       ExclusiveStartKey = result.LastEvaluatedKey;
     } while (ExclusiveStartKey);
+
+    return items;
+  },
+  scanAll: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
+    let items: AnyObject[] = [];
+    for await (const page of paginateScan({ client }, params)) {
+      items = items.concat(page.Items ?? []);
+    }
 
     return items;
   },

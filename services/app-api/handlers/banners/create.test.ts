@@ -20,14 +20,12 @@ const testEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"key":"mock-id","title":"test banner","description":"test description","link":"https://www.mocklink.com","startDate":1000,"endDate":2000}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { bannerId: "testKey" },
 };
 
 const testEventWithInvalidData: APIGatewayProxyEvent = {
   ...proxyEvent,
   body: `{"description":"test description","link":"test link","startDate":"1000","endDate":2000}`,
   headers: { "cognito-identity-id": "test" },
-  pathParameters: { bannerId: "testKey" },
 };
 
 const consoleSpy: {
@@ -71,25 +69,5 @@ describe("Test createBanner API method", () => {
   test("Test invalid data causes failure", async () => {
     const res = await createBanner(testEventWithInvalidData, null);
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-  });
-
-  test("Test bannerKey not provided throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
-      pathParameters: {},
-    };
-    const res = await createBanner(noKeyEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
-  });
-
-  test("Test bannerKey empty throws 400 error", async () => {
-    const noKeyEvent: APIGatewayProxyEvent = {
-      ...testEvent,
-      pathParameters: { bannerId: "" },
-    };
-    const res = await createBanner(noKeyEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.NO_KEY);
   });
 });

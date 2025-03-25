@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityShape } from "types";
+import { otherSpecify } from "utils";
 
 export const SortableNaaarStandardsTable = ({
   entities,
@@ -41,20 +42,18 @@ export const SortableNaaarStandardsTable = ({
         ? `${providerValue}; ${providerTypeOtherText}`
         : providerValue;
 
-      const standardType =
-        standard_standardType[0].value === "Other, specify"
-          ? entity["standard_standardType-otherText"]
-          : standard_standardType[0].value;
-
-      const standardPopulation =
-        standard_populationCoveredByStandard[0].value === "Other, specify"
-          ? entity["standard_populationCoveredByStandard-otherText"]
-          : standard_populationCoveredByStandard[0].value;
-
-      const standardRegion =
-        standard_applicableRegion[0].value === "Other, specify"
-          ? entity["standard_applicableRegion-otherText"]
-          : standard_applicableRegion[0].value;
+      const standardType = otherSpecify(
+        standard_standardType[0].value,
+        entity["standard_standardType-otherText"]
+      );
+      const standardPopulation = otherSpecify(
+        standard_populationCoveredByStandard[0].value,
+        entity["standard_populationCoveredByStandard-otherText"]
+      );
+      const standardRegion = otherSpecify(
+        standard_applicableRegion[0].value,
+        entity["standard_applicableRegion-otherText"]
+      );
 
       // there are 7 analysis methods checkboxes
       function extractMethods(analysisMethodsUtilized: { value: any }[]) {
