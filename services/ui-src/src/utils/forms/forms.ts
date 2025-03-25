@@ -116,12 +116,15 @@ export const initializeChoiceListFields = (
       field?.props?.choices.forEach((choice: FieldChoice) => {
         // set choice value to choice label string
         choice.value = choice.label;
-        // if choice id has not already had parent field id appended, do so now
-        if (!choice.id.includes("-")) {
-          // Use groupId for a single validation across different field ids
-          const prefix = field.groupId ?? field.id;
-          choice.id = prefix + "-" + choice.id;
+
+        const prefix = field.groupId ?? field.id;
+        const exemptions = ["providerTypes"];
+
+        // If choice id has not already had prefix prepended, do so now
+        if (!choice.id.startsWith(prefix) && !exemptions.includes(field.id)) {
+          choice.id = `${prefix}-${choice.id}`;
         }
+
         choice.name = choice.id;
         // initialize choice as controlled component in unchecked state
         if (choice.checked != true) choice.checked = false;

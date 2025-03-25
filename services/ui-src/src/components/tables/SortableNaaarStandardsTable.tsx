@@ -35,14 +35,12 @@ export const SortableNaaarStandardsTable = ({
         ? `standard_analysisMethodsUtilized${standardId}`
         : "";
 
-      const coreProviderTypeOther =
-        entity["standard_coreProviderTypeCoveredByStandard-otherText"];
-      const coreProviderTypeValue =
-        standard_coreProviderTypeCoveredByStandard[0].value;
-
-      const coreProviderType = coreProviderTypeOther
-        ? `${coreProviderTypeValue}; ${coreProviderTypeOther}`
-        : coreProviderTypeValue;
+      const providerType = standard_coreProviderTypeCoveredByStandard[0].key;
+      const providerValue = standard_coreProviderTypeCoveredByStandard[0].value;
+      const providerTypeOtherText = entity[`${providerType}-otherText`];
+      const coreProviderType = providerTypeOtherText
+        ? `${providerValue}; ${providerTypeOtherText}`
+        : providerValue;
 
       const standardType = otherSpecify(
         standard_standardType[0].value,
