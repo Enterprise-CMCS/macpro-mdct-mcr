@@ -78,6 +78,7 @@ export { Sidebar } from "./menus/Sidebar";
 // overlays
 export { EntityDetailsFormOverlay } from "./overlays/EntityDetailsFormOverlay";
 export { EntityDetailsMultiformOverlay } from "./overlays/EntityDetailsMultiformOverlay";
+export { PlanComplianceTableOverlay } from "./overlays/PlanComplianceTableOverlay";
 export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
 // modals
 export { Modal } from "./modals/Modal";

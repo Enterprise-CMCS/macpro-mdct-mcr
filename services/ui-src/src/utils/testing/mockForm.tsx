@@ -679,7 +679,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         section: "",
         subsection: "Mock Details: Example Plan",
       },
-      backButton: "Return to dashboard",
+      backButton: "Mock Back Button",
     },
     forms: [
       {
@@ -708,7 +708,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         },
         table: {
           bodyRows: [["", "Mock Cell", ""]],
-          caption: "",
+          caption: "Mock table",
           headRow: [
             { hiddenName: "Status" },
             "Mock table header",
@@ -722,6 +722,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
           },
           intro: {
             section: "",
+            subsection: "Mock Section",
           },
           heading: "Mock heading",
           hint: "Mock hint",
@@ -736,13 +737,118 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
             section: "",
             subsection: "Mock Child Form",
           },
-          backButton: "Return to parent dashboard",
+          backButton: "Mock Back Button",
         },
         form: {
           id: "mockMultiform_childForm",
           fields: [
             {
               id: "mockMultiform_mockInput",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes",
+                  },
+                  {
+                    id: "no",
+                    label: "Mock No",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
+  ...mockOverlayReportPageJson,
+  details: {
+    verbiage: mockOverlayReportPageJson.details!.verbiage,
+    forms: [
+      ...mockOverlayReportPageJson.details!.forms,
+      {
+        form: {
+          id: "mockMultiformWithTable",
+          fields: [
+            {
+              id: "mockMultiformWithTable_assurance",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "yes",
+                    label: "Mock Yes 2",
+                  },
+                  {
+                    id: "no",
+                    label:
+                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["", "Mock Cell 2", ""]],
+          caption: "Mock table 2",
+          headRow: [
+            { hiddenName: "Status" },
+            "Mock table header 2",
+            { hiddenName: "Action" },
+          ],
+        },
+        verbiage: {
+          accordion: {
+            buttonLabel: "Mock Accordion 2",
+            text: "",
+          },
+          backButton: "Mock Back Button Form 2",
+          intro: {
+            section: "",
+            subsection: "Mock Details: Form 2",
+          },
+          heading: "Mock heading 2",
+          hint: "Mock hint 2",
+        },
+      },
+    ],
+    childForms: [
+      ...mockOverlayReportPageJson.details!.childForms!,
+      {
+        parentForm: "mockMultiformWithTable",
+        verbiage: {
+          intro: {
+            section: "",
+          },
+          backButton: "Mock Back Button Form",
+        },
+        table: {
+          caption: "Mock Child Table",
+          sortableHeadRow: {
+            id: { header: "ID" },
+            actions: { header: "Actions", hidden: true },
+          },
+          verbiage: {
+            backButton: "Mock Back Button Table",
+            intro: {
+              section: "",
+              subsection: "Mock Details: Child Table",
+            },
+          },
+        },
+        form: {
+          id: "mockMultiformWithTable_childForm",
+          fields: [
+            {
+              id: "mockMultiformWithTable_mockInput",
               type: "radio",
               validation: "radio",
               props: {

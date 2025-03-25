@@ -10,6 +10,8 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { naaarStandardsData } from "./SortableNaaarStandardsTable";
+import { EntityShape } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -21,24 +23,27 @@ mockedUseStore.mockReturnValue({
 const mockOpenDeleteEntityModal = jest.fn();
 const mockOpenRowDrawer = jest.fn();
 
-const mockStandards = [
+const mockStandards: EntityShape[] = [
   {
-    id: "mock-id",
-    standard_coreProviderTypeCoveredByStandard: [
-      { key: "mock-key", value: "mock-provider" },
+    id: "mockStandard",
+    "standard_standardDescription-mockId": "Mock Description",
+    "standard_analysisMethodsUtilized-mockId": [
+      { key: "mockAnalysis1", value: "Mock Method 1" },
+      { key: "mockAnalysis2", value: "Mock Method 2" },
     ],
-    standard_standardType: [{ key: "mock-key", value: "mock-standard" }],
-    standard_standardDescription: "mock standard description",
-    standard_analysisMethodsUtilized: [
-      {
-        key: "mock-key",
-        value: "mock method",
-      },
+    standard_coreProviderTypeCoveredByStandard: [
+      { key: "mockProviderType-mockId", value: "Mock Provider" },
+    ],
+    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
+      "Mock Other Provider",
+    standard_standardType: [
+      { key: "mockStandardType", value: "Mock Standard Type" },
     ],
     standard_populationCoveredByStandard: [
-      { key: "mock-key", value: "mock-population" },
+      { key: "mockPopulation", value: "Mock Population" },
     ],
-    standard_applicableRegion: [{ key: "mock-key", value: "mock-region" }],
+    standard_applicableRegion: [{ key: "mockRegion", value: "Other, specify" }],
+    "standard_applicableRegion-otherText": "Mock Other Region",
   },
 ];
 
@@ -52,25 +57,80 @@ const sortableTableComponent = (
   </RouterWrappedComponent>
 );
 
-describe("Test SortableNaaarStandardsTable component", () => {
-  beforeEach(() => {
-    render(sortableTableComponent);
-  });
-  test("Check that NAAAR table view renders", async () => {
-    expect(screen.getByText("mock-population")).toBeVisible;
+describe("<SortableNaaarStandardsTable />", () => {
+  describe("Test SortableNaaarStandardsTable component", () => {
+    beforeEach(() => {
+      render(sortableTableComponent);
+    });
+    test("Check that NAAAR table view renders", async () => {
+      expect(
+        screen.getByRole("table", {
+          name: "Access and Network Adequacy Standards",
+        })
+      ).toBeVisible;
+    });
+
+    test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
+      const editButton = screen.getByRole("button", { name: "Edit" });
+      await userEvent.click(editButton);
+      expect(mockOpenRowDrawer).toBeCalledTimes(1);
+    });
+
+    test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
+      const deleteButton = screen.getByRole("button", { name: "delete" });
+      await userEvent.click(deleteButton);
+      expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
+    });
+
+    testA11y(sortableTableComponent);
   });
 
-  test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
-    const editButton = screen.getByRole("button", { name: "Edit" });
-    await userEvent.click(editButton);
-    expect(mockOpenRowDrawer).toBeCalledTimes(1);
-  });
+  describe("naaarStandardsData()", () => {
+    test("returns correct data shape", () => {
+      const tableData = naaarStandardsData(mockStandards);
+      const expectedData = [
+        {
+          count: 1,
+          provider: "Mock Provider; Mock Other Provider",
+          standardType: "Mock Standard Type",
+          description: "Mock Description",
+          analysisMethods: "Mock Method 1, Mock Method 2",
+          population: "Mock Population",
+          region: "Mock Other Region",
+          entity: mockStandards[0],
+        },
+      ];
 
-  test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
-    const deleteButton = screen.getByRole("button", { name: "delete" });
-    await userEvent.click(deleteButton);
-    expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
-  });
+      expect(tableData).toEqual(expectedData);
+    });
 
-  testA11y(sortableTableComponent);
+    test("omits undefined properties", () => {
+      const incompleteData: EntityShape[] = [
+        {
+          id: "mockStandard",
+          standard_coreProviderTypeCoveredByStandard: [
+            { key: "mockProviderType", value: "Mock Provider" },
+          ],
+          standard_standardType: [
+            { key: "mockStandardType", value: "Mock Standard Type" },
+          ],
+          standard_populationCoveredByStandard: [
+            { key: "mockPopulation", value: "Mock Population" },
+          ],
+        },
+      ];
+      const tableData = naaarStandardsData(incompleteData);
+      const expectedData = [
+        {
+          count: 1,
+          provider: "Mock Provider",
+          standardType: "Mock Standard Type",
+          population: "Mock Population",
+          entity: incompleteData[0],
+        },
+      ];
+
+      expect(tableData).toEqual(expectedData);
+    });
+  });
 });

@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import {
   EntityDetailsFormOverlay,
+  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
@@ -34,12 +35,13 @@ import {
   EntityDetailsChildFormShape,
   EntityDetailsMultiformShape,
   EntityDetailsMultiformVerbiage,
+  EntityDetailsTableVerbiage,
   EntityShape,
   EntityType,
   ScreenReaderOnlyHeaderName,
 } from "types";
 // utils
-import { translateVerbiage } from "utils";
+import { translateVerbiage, useStore } from "utils";
 // assets
 import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
 
@@ -78,16 +80,48 @@ export const EntityDetailsMultiformOverlay = ({
       return <></>;
     }
 
-    const { form, verbiage } = formObject;
-    const detailsVerbiage = translateVerbiage(verbiage, {
+    const { form, table, verbiage } = formObject;
+    const tranlatedVerbiage = translateVerbiage(verbiage, {
       planName: selectedEntity?.name,
-    });
+    }) as EntityDetailsMultiformVerbiage;
 
     const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
     };
+
+    if (table) {
+      const { report } = useStore();
+      const entities = report?.fieldData["standards"] || [];
+
+      const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
+      const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
+        planName: selectedEntity?.name,
+      }) as EntityDetailsTableVerbiage;
+
+      const tableProps = {
+        caption,
+        sortableHeadRow,
+        verbiage: translatedTableVerbiage,
+      };
+
+      // TODO: Handle submit
+      return (
+        <PlanComplianceTableOverlay
+          closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+          disabled={false}
+          entities={entities}
+          form={form}
+          onSubmit={() => {}}
+          selectedEntity={selectedEntity}
+          submitting={submitting}
+          table={tableProps}
+          validateOnRender={validateOnRender || false}
+          verbiage={tranlatedVerbiage}
+        />
+      );
+    }
 
     return (
       <EntityDetailsFormOverlay
@@ -98,7 +132,7 @@ export const EntityDetailsMultiformOverlay = ({
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}
-        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
+        verbiage={tranlatedVerbiage}
       />
     );
   };
@@ -279,7 +313,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Button
           sx={sx.backButton}
           variant="none"
-          onClick={closeEntityDetailsOverlay as MouseEventHandler}
+          onClick={closeEntityDetailsOverlay}
           aria-label={verbiage.backButton}
         >
           <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
@@ -296,6 +330,7 @@ export const EntityDetailsMultiformOverlay = ({
                 formData={selectedEntity}
                 formJson={formObject.form}
                 id={formObject.form.id}
+                name={formObject.form.id}
                 onChange={handleChange}
                 onSubmit={(data: AnyObject) => handleSubmit(data)}
                 ref={(el) => (formRefs.current[index] = el as HTMLFormElement)}
@@ -333,10 +368,7 @@ export const EntityDetailsMultiformOverlay = ({
         <Box sx={sx.footerBox}>
           <Flex sx={sx.buttonFlex}>
             {disabled ? (
-              <Button
-                variant="outline"
-                onClick={closeEntityDetailsOverlay as MouseEventHandler}
-              >
+              <Button variant="outline" onClick={closeEntityDetailsOverlay}>
                 Return
               </Button>
             ) : (
@@ -354,11 +386,11 @@ export const EntityDetailsMultiformOverlay = ({
 };
 
 interface Props {
-  childForms?: [EntityDetailsChildFormShape];
-  closeEntityDetailsOverlay: Function;
+  childForms?: EntityDetailsChildFormShape[];
+  closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   entityType: EntityType;
-  forms: [EntityDetailsMultiformShape];
+  forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
   selectedEntity?: EntityShape;
