@@ -22,6 +22,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  otherSpecify,
   useStore,
 } from "utils";
 
@@ -154,10 +155,11 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const planTypeIncludedInProgram = formData["planTypeIncludedInProgram"];
-    const planTypeOtherText =
-      planTypeIncludedInProgram[0].value === "Other, specify"
-        ? formData["planTypeIncludedInProgram-otherText"]
-        : null;
+    const planTypeOtherText = otherSpecify(
+      planTypeIncludedInProgram[0].value,
+      formData["planTypeIncludedInProgram-otherText"],
+      null
+    );
 
     return {
       metadata: {
