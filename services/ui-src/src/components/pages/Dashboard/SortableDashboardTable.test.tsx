@@ -158,7 +158,9 @@ describe("<SortableDashboardTable />", () => {
     test("Check that MCPAR Dashboard view renders", async () => {
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByText(`Minnesota ${mcparVerbiage.intro.header}`)
+        ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testProgram" })[0]
         ).toBeVisible();
@@ -176,7 +178,9 @@ describe("<SortableDashboardTable />", () => {
       });
       render(mlrDashboardViewWithReports);
       await waitFor(() => {
-        expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByText(`Minnesota ${mlrVerbiage.intro.header}`)
+        ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testSubmission" })[0]
         ).toBeVisible();
@@ -191,7 +195,9 @@ describe("<SortableDashboardTable />", () => {
       });
       render(naaarDashboardViewEmpty);
       await waitFor(() => {
-        expect(screen.getByText(naaarVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByText(`Minnesota ${naaarVerbiage.intro.header}`)
+        ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
     });
