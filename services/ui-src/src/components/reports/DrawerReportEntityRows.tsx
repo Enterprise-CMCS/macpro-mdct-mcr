@@ -144,7 +144,14 @@ export const DrawerReportPageEntityRows = ({
               />
             )
           )}
-          <Flex direction={"column"} sx={sx.entityRow}>
+          <Flex
+            direction={"column"}
+            sx={
+              entity.custom_analysis_method_description
+                ? sx.customEntityRow
+                : sx.entityRow
+            }
+          >
             <Heading as="h4" sx={sx.entityName}>
               {entity.name ?? entity.custom_analysis_method_name}
             </Heading>
@@ -213,7 +220,14 @@ const sx = {
   },
   entityRow: {
     paddingLeft: "2.25rem",
-    maxWidth: "32rem",
+    width: "32rem",
+    maxHeight: "3.75rem",
+    gap: "4px",
+    padding: "0.5rem",
+  },
+  customEntityRow: {
+    paddingLeft: "2.25rem",
+    width: "32rem",
     minHeight: "3.75rem",
     gap: "4px",
     padding: "0.5rem",
