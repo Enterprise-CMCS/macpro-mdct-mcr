@@ -121,7 +121,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     expect(h2).toBeVisible();
 
     const closeButton = screen.getByRole("button", {
-      name: "Mock Back Button Form 2",
+      name: "Mock Back Button: Form 2",
     });
     await userEvent.click(closeButton);
 
@@ -159,7 +159,7 @@ describe("<PlanComplianceTableOverlay />", () => {
   test("closes overlay", async () => {
     render(planComplianceTableOverlayComponent());
     const closeButton = screen.getByRole("button", {
-      name: "Mock Back Button Table",
+      name: "Mock Back Button: Table",
     });
     await userEvent.click(closeButton);
 

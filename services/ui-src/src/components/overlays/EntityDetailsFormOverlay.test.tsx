@@ -65,7 +65,7 @@ describe("<EntityDetailsFormOverlay />", () => {
   test("closes overlay", async () => {
     render(entityDetailsFormOverlayComponent());
     const closeButton = screen.getByRole("button", {
-      name: "Mock Back Button",
+      name: "Mock Back Button: Child",
     });
     await userEvent.click(closeButton);
 

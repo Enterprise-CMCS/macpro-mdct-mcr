@@ -72,7 +72,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       await waitFor(() => {
         const h3 = screen.getByRole("heading", {
           level: 3,
-          name: `Mock heading${formId}`,
+          name: `Mock Heading${formId}`,
         });
         const accordion = screen.getByText(`Mock Accordion${formId}`);
         expect(h3).toBeVisible();
@@ -80,10 +80,10 @@ describe("<EntityDetailsMultiformOverlay />", () => {
 
         // Tables
         const entityTable = screen.getByRole("table", {
-          name: `Mock table${formId}`,
+          name: `Mock Table${formId}`,
         });
         const entityHeaders = screen.getByRole("row", {
-          name: `Status Mock table header${formId} Action`,
+          name: `Status Mock Table Header${formId} Action`,
         });
         const entityCells = screen.getByRole("row", {
           name: `Mock Cell${formId} Enter`,
@@ -204,7 +204,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   test("closes overlay", async () => {
     render(entityDetailsMultiformOverlayComponent());
     const closeButton = screen.getByRole("button", {
-      name: "Mock Back Button",
+      name: "Mock Back Button: Main",
     });
     await userEvent.click(closeButton);
 

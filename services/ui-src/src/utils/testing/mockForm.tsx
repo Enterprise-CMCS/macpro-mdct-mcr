@@ -679,7 +679,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         section: "",
         subsection: "Mock Details: Example Plan",
       },
-      backButton: "Mock Back Button",
+      backButton: "Mock Back Button: Main",
     },
     forms: [
       {
@@ -708,10 +708,10 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
         },
         table: {
           bodyRows: [["", "Mock Cell", ""]],
-          caption: "Mock table",
+          caption: "Mock Table",
           headRow: [
             { hiddenName: "Status" },
-            "Mock table header",
+            "Mock Table Header",
             { hiddenName: "Action" },
           ],
         },
@@ -724,8 +724,8 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
             section: "",
             subsection: "Mock Section",
           },
-          heading: "Mock heading",
-          hint: "Mock hint",
+          heading: "Mock Heading",
+          hint: "Mock Hint",
         },
       },
     ],
@@ -737,7 +737,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
             section: "",
             subsection: "Mock Child Form",
           },
-          backButton: "Mock Back Button",
+          backButton: "Mock Back Button: Child",
         },
         form: {
           id: "mockMultiform_childForm",
@@ -798,10 +798,10 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
         },
         table: {
           bodyRows: [["", "Mock Cell 2", ""]],
-          caption: "Mock table 2",
+          caption: "Mock Table 2",
           headRow: [
             { hiddenName: "Status" },
-            "Mock table header 2",
+            "Mock Table Header 2",
             { hiddenName: "Action" },
           ],
         },
@@ -810,13 +810,13 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
             buttonLabel: "Mock Accordion 2",
             text: "",
           },
-          backButton: "Mock Back Button Form 2",
+          backButton: "Mock Back Button: Form 2",
           intro: {
             section: "",
             subsection: "Mock Details: Form 2",
           },
-          heading: "Mock heading 2",
-          hint: "Mock hint 2",
+          heading: "Mock Heading 2",
+          hint: "Mock Hint 2",
         },
       },
     ],
@@ -828,7 +828,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           intro: {
             section: "",
           },
-          backButton: "Mock Back Button Form",
+          backButton: "Mock Back Button: Form",
         },
         table: {
           caption: "Mock Child Table",
@@ -837,7 +837,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
             actions: { header: "Actions", hidden: true },
           },
           verbiage: {
-            backButton: "Mock Back Button Table",
+            backButton: "Mock Back Button: Table",
             intro: {
               section: "",
               subsection: "Mock Details: Child Table",
