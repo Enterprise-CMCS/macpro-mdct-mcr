@@ -135,10 +135,6 @@ interface Props {
 }
 
 const sx = {
-  overlayContainer: {
-    backgroundColor: "palette.white",
-    width: "100%",
-  },
   container: {
     maxWidth: "fit-content",
   },

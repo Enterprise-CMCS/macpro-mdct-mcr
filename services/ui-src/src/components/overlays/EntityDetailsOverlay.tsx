@@ -114,10 +114,6 @@ interface Props {
 }
 
 const sx = {
-  overlayContainer: {
-    backgroundColor: "palette.white",
-    width: "100%",
-  },
   textHeading: {
     fontWeight: "bold",
     lineHeight: "1.25rem",

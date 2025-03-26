@@ -64,10 +64,6 @@ interface Props {
 }
 
 const sx = {
-  overlayContainer: {
-    backgroundColor: "palette.white",
-    width: "100%",
-  },
   form: {
     "legend.ds-c-label": {
       color: "palette.gray",

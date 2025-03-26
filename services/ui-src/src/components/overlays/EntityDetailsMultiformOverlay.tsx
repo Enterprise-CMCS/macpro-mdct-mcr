@@ -234,9 +234,9 @@ export const EntityDetailsMultiformOverlay = ({
 
       return (
         <Box>
-          <Box sx={sx.plan.introContainer}>
+          <Box sx={sx.introContainer}>
             {heading && (
-              <Heading as="h3" sx={sx.plan.heading}>
+              <Heading as="h3" sx={sx.heading}>
                 {heading}
               </Heading>
             )}
@@ -279,7 +279,7 @@ export const EntityDetailsMultiformOverlay = ({
             <Button
               disabled={!isEnabled}
               onClick={() => getChildForm(formId)}
-              sx={sx.plan.tableButton}
+              sx={sx.tableButton}
               variant="outline"
             >
               {isComplete ? "Edit" : "Enter"}
@@ -289,9 +289,9 @@ export const EntityDetailsMultiformOverlay = ({
         default:
           return (
             <>
-              <Text sx={sx.plan.tableData}>{text}</Text>
+              <Text sx={sx.tableData}>{text}</Text>
               {isEnabled && !isComplete && (
-                <Text sx={sx.plan.errorText}>
+                <Text sx={sx.errorText}>
                   Select “Enter” to complete response.
                 </Text>
               )}
@@ -309,9 +309,9 @@ export const EntityDetailsMultiformOverlay = ({
         <ReportPageIntro text={verbiage.intro} />
         <Box>
           {forms.map((formObject: EntityDetailsMultiformShape, index) => (
-            <Box key={`${formObject.form.id}`} sx={sx.plan.container}>
+            <Box key={`${formObject.form.id}`} sx={sx.container}>
               {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
-              <Box sx={sx.plan.introContainer}>
+              <Box sx={sx.introContainer}>
                 <Form
                   disabled={disabled}
                   dontReset={true}
@@ -332,14 +332,14 @@ export const EntityDetailsMultiformOverlay = ({
                     headRow: formObject.table.headRow,
                     caption: formObject.table.caption,
                   }}
-                  sx={sx.plan.table}
+                  sx={sx.table}
                 >
                   {formObject.table.bodyRows.map((row, rowIndex) => (
                     <Tr key={`${formObject.form.id}-${rowIndex}`}>
                       {row.map((cell: string, cellIndex: number) => (
                         <Td
                           key={`${formObject.form.id}-${rowIndex}-${cellIndex}}`}
-                          sx={sx.plan.tableCell}
+                          sx={sx.tableCell}
                         >
                           <Cell
                             formId={formObject.form.id}
@@ -386,61 +386,55 @@ interface Props {
 }
 
 const sx = {
-  overlayContainer: {
-    backgroundColor: "palette.white",
-    width: "100%",
+  container: {
+    paddingTop: "1.75rem",
+    "&:first-of-type": {
+      borderTopColor: "palette.gray_lighter",
+      borderTopWidth: "1px",
+    },
   },
-  plan: {
-    container: {
-      paddingTop: "1.75rem",
-      "&:first-of-type": {
-        borderTopColor: "palette.gray_lighter",
-        borderTopWidth: "1px",
+  introContainer: {
+    width: "100%",
+    maxWidth: "30rem",
+  },
+  errorText: {
+    color: "palette.error_dark",
+    fontSize: "0.75rem",
+    marginTop: "0.25rem",
+  },
+  heading: {
+    fontSize: "1.3rem",
+  },
+  table: {
+    marginBottom: "1.5rem",
+    maxWidth: "36.125rem",
+    td: {
+      paddingRight: "0",
+    },
+    th: {
+      "&:nth-of-type(1)": {
+        width: "2.5rem",
+      },
+      "&:nth-of-type(3)": {
+        width: "8rem",
       },
     },
-    introContainer: {
-      width: "100%",
-      maxWidth: "30rem",
-    },
-    errorText: {
-      color: "palette.error_dark",
-      fontSize: "0.75rem",
-      marginTop: "0.25rem",
-    },
-    heading: {
-      fontSize: "1.3rem",
-    },
-    table: {
-      marginBottom: "1.5rem",
-      maxWidth: "36.125rem",
-      td: {
-        paddingRight: "0",
-      },
-      th: {
-        "&:nth-of-type(1)": {
-          width: "2.5rem",
-        },
-        "&:nth-of-type(3)": {
-          width: "8rem",
-        },
-      },
-    },
-    tableCell: {
+  },
+  tableCell: {
+    borderColor: "palette.gray_lighter",
+  },
+  tableData: {
+    display: "block",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    lineHeight: "1.5rem",
+    maxWidth: "19rem",
+  },
+  tableButton: {
+    width: "6rem",
+    "&:disabled": {
       borderColor: "palette.gray_lighter",
-    },
-    tableData: {
-      display: "block",
-      fontSize: "1rem",
-      fontWeight: "bold",
-      lineHeight: "1.5rem",
-      maxWidth: "19rem",
-    },
-    tableButton: {
-      width: "6rem",
-      "&:disabled": {
-        borderColor: "palette.gray_lighter",
-        color: "palette.gray_lighter",
-      },
+      color: "palette.gray_lighter",
     },
   },
 };
