@@ -15,7 +15,6 @@ export const EntityCardBottomSection = ({
     </Text>
   );
 
-  console.log("completed", formattedEntityData?.remediationCompleted);
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
@@ -130,11 +129,11 @@ export const EntityCardBottomSection = ({
                   }Remediation date non-compliance was corrected`}
                 </Text>
                 <Text sx={sx.subtext}>
-                  {formattedEntityData?.remediationCompleted
-                    ? `${formattedEntityData?.remediationCompleted} ${
-                        formattedEntityData?.remediationDate ?? ""
-                      }`
-                    : printVersion && notAnswered}
+                  {[
+                    formattedEntityData?.remediationCompleted,
+                    formattedEntityData?.remediationDate,
+                  ].join(" ") ||
+                    (printVersion && notAnswered)}
                 </Text>
               </Box>
             </Flex>
