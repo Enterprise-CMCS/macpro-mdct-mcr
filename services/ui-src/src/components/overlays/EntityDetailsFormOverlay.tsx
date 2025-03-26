@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import { MouseEventHandler } from "react";
 // components
 import { Box } from "@chakra-ui/react";
 import {

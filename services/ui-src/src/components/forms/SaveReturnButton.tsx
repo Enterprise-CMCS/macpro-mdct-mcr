@@ -1,8 +1,8 @@
+import { MouseEventHandler } from "react";
 // components
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
-import { MouseEventHandler } from "react";
 
 export const SaveReturnButton = ({
   border = true,

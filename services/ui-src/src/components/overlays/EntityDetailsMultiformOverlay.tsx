@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
@@ -71,7 +71,7 @@ export const EntityDetailsMultiformOverlay = ({
     }
 
     const { form, table, verbiage } = formObject;
-    const tranlatedVerbiage = translateVerbiage(verbiage, {
+    const translatedVerbiage = translateVerbiage(verbiage, {
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
@@ -108,7 +108,7 @@ export const EntityDetailsMultiformOverlay = ({
           submitting={submitting}
           table={tableProps}
           validateOnRender={validateOnRender || false}
-          verbiage={tranlatedVerbiage}
+          verbiage={translatedVerbiage}
         />
       );
     }
@@ -122,7 +122,7 @@ export const EntityDetailsMultiformOverlay = ({
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}
-        verbiage={tranlatedVerbiage}
+        verbiage={translatedVerbiage}
       />
     );
   };
