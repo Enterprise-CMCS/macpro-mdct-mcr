@@ -1,11 +1,13 @@
 import React, { MouseEventHandler, useMemo, useState } from "react";
 // components
-import { Box, Button, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import {
   EntityDetailsFormOverlay,
   generateColumns,
   ReportPageIntro,
   SortableTable,
+  SaveReturnButton,
+  BackButton,
 } from "components";
 // types
 import {
@@ -14,8 +16,7 @@ import {
   EntityShape,
   FormJson,
 } from "types";
-// assets
-import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
+// utils
 import {
   naaarStandardsData,
   NaaarStandardsTableShape,
@@ -72,6 +73,7 @@ export const PlanComplianceTableOverlay = ({
             <Button
               variant="outline"
               onClick={() => setIsEntityDetailsOpen(true)}
+              sx={sx.tableButton}
             >
               Enter
             </Button>
@@ -83,22 +85,16 @@ export const PlanComplianceTableOverlay = ({
     };
 
     const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
-
     const columns = generateColumns(sortableHeadRow, false, customCells);
     const content = { caption };
     const data = useMemo(() => naaarStandardsData(entities), [entities]);
 
     return (
       <Box sx={sx.container}>
-        <Button
-          sx={sx.backButton}
-          variant="none"
+        <BackButton
           onClick={closeEntityDetailsOverlay}
-          aria-label={tableVerbiage.backButton}
-        >
-          <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
-          {tableVerbiage.backButton}
-        </Button>
+          text={tableVerbiage.backButton}
+        />
         <ReportPageIntro
           text={tableVerbiage.intro}
           accordion={tableVerbiage.accordion}
@@ -113,7 +109,10 @@ export const PlanComplianceTableOverlay = ({
             {standardsTotalCount}
           </Text>
         </Box>
-        <SortableTable columns={columns} content={content} data={data} />
+        <Box sx={sx.tableContainer}>
+          <SortableTable columns={columns} content={content} data={data} />
+          <SaveReturnButton submitting={submitting} />
+        </Box>
       </Box>
     );
   };
@@ -143,26 +142,17 @@ const sx = {
   container: {
     maxWidth: "fit-content",
   },
-  backButton: {
-    padding: 0,
-    fontWeight: "normal",
-    color: "palette.primary",
-    display: "flex",
-    position: "relative",
-    right: "3rem",
-    marginBottom: "2rem",
-    marginTop: "-2rem",
-  },
-  backIcon: {
-    color: "palette.primary",
-    height: "1rem",
-    marginRight: "0.5rem",
-  },
   counts: {
     marginBottom: "2rem",
   },
   count: {
     color: "palette.gray_medium",
     fontWeight: "bold",
+  },
+  tableContainer: {
+    width: "fit-content",
+  },
+  tableButton: {
+    width: "6rem",
   },
 };
