@@ -33,6 +33,7 @@ export const Form = forwardRef(function Form(
   {
     id,
     formJson,
+    name,
     onSubmit,
     onError,
     formData,
@@ -107,6 +108,7 @@ export const Form = forwardRef(function Form(
         id={id}
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
+        name={name || id}
         ref={ref}
         {...props}
       >
@@ -123,6 +125,7 @@ interface Props {
   onSubmit: Function;
   validateOnRender: boolean;
   dontReset: boolean;
+  name?: string;
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
   autosave?: boolean;

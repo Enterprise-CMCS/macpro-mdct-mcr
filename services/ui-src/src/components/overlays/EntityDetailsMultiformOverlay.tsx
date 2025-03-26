@@ -318,7 +318,6 @@ export const EntityDetailsMultiformOverlay = ({
                   formData={selectedEntity}
                   formJson={formObject.form}
                   id={formObject.form.id}
-                  name={formObject.form.id}
                   onChange={handleChange}
                   onSubmit={(data: AnyObject) => handleSubmit(data)}
                   ref={(el) =>

@@ -88,6 +88,8 @@ export const PlanComplianceTableOverlay = ({
     const columns = generateColumns(sortableHeadRow, false, customCells);
     const content = { caption };
     const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
+    const displayCount = (label?: string, count: number = 0) =>
+      label && `${label}: ${count} of ${standardsTotalCount}`;
 
     return (
       <Box sx={sx.container}>
@@ -101,12 +103,10 @@ export const PlanComplianceTableOverlay = ({
         />
         <Box sx={sx.counts}>
           <Text sx={sx.count}>
-            {tableVerbiage.totals?.exceptions}: {exceptionsCount} of{" "}
-            {standardsTotalCount}
+            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
           </Text>
           <Text sx={sx.count}>
-            {tableVerbiage.totals?.standards}: {standardsCount} of{" "}
-            {standardsTotalCount}
+            {displayCount(tableVerbiage.totals?.standards, standardsCount)}
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>

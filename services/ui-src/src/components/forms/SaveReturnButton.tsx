@@ -12,6 +12,7 @@ export const SaveReturnButton = ({
   onClick,
   submitting = false,
 }: Props) => {
+  // formId is for a single form, onClick is for multiple forms/custom action
   const handlers = onClick ? { onClick } : { form: formId };
 
   return (

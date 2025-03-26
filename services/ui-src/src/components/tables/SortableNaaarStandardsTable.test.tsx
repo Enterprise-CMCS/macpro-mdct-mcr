@@ -2,16 +2,18 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { SortableNaaarStandardsTable } from "components";
+import { mapNaaarStandardsData } from "./SortableNaaarStandardsTable";
+// types
+import { EntityShape } from "types";
 // utils
 import { useStore } from "utils";
 import {
   mockNaaarReportStore,
+  mockNaaarStandards,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { mapNaaarStandardsData } from "./SortableNaaarStandardsTable";
-import { EntityShape } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -23,34 +25,10 @@ mockedUseStore.mockReturnValue({
 const mockOpenDeleteEntityModal = jest.fn();
 const mockOpenRowDrawer = jest.fn();
 
-const mockStandards: EntityShape[] = [
-  {
-    id: "mockStandard",
-    "standard_standardDescription-mockId": "Mock Description",
-    "standard_analysisMethodsUtilized-mockId": [
-      { key: "mockAnalysis1", value: "Mock Method 1" },
-      { key: "mockAnalysis2", value: "Mock Method 2" },
-    ],
-    standard_coreProviderTypeCoveredByStandard: [
-      { key: "mockProviderType-mockId", value: "Mock Provider" },
-    ],
-    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
-      "Mock Other Provider",
-    standard_standardType: [
-      { key: "mockStandardType", value: "Mock Standard Type" },
-    ],
-    standard_populationCoveredByStandard: [
-      { key: "mockPopulation", value: "Mock Population" },
-    ],
-    standard_applicableRegion: [{ key: "mockRegion", value: "Other, specify" }],
-    "standard_applicableRegion-otherText": "Mock Other Region",
-  },
-];
-
 const sortableTableComponent = (
   <RouterWrappedComponent>
     <SortableNaaarStandardsTable
-      entities={mockStandards}
+      entities={mockNaaarStandards}
       openRowDrawer={mockOpenRowDrawer}
       openDeleteEntityModal={mockOpenDeleteEntityModal}
     />
@@ -87,7 +65,7 @@ describe("<SortableNaaarStandardsTable />", () => {
 
   describe("mapNaaarStandardsData()", () => {
     test("returns correct data shape", () => {
-      const tableData = mapNaaarStandardsData(mockStandards);
+      const tableData = mapNaaarStandardsData(mockNaaarStandards);
       const expectedData = [
         {
           count: 1,
@@ -97,7 +75,7 @@ describe("<SortableNaaarStandardsTable />", () => {
           analysisMethods: "Mock Method 1, Mock Method 2",
           population: "Mock Population",
           region: "Mock Other Region",
-          entity: mockStandards[0],
+          entity: mockNaaarStandards[0],
         },
       ];
 

@@ -2,51 +2,21 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { PlanComplianceTableOverlay } from "./PlanComplianceTableOverlay";
+// types
+import {
+  EntityDetailsTableContentShape,
+  EntityDetailsTableVerbiage,
+  FormJson,
+} from "types";
 // utils
 import {
   mockEntityStore,
   mockEntityDetailsMultiformOverlayJson,
+  mockNaaarStandards,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import {
-  EntityDetailsTableContentShape,
-  EntityDetailsTableVerbiage,
-  EntityShape,
-  FormJson,
-} from "types";
-
-const { details } = mockEntityDetailsMultiformOverlayJson;
-const entities: EntityShape[] = [
-  {
-    id: "mockStandard",
-    "standard_standardDescription-mockId": "Mock Description",
-    "standard_analysisMethodsUtilized-mockId": [
-      { key: "mockAnalysis1", value: "Mock Method 1" },
-      { key: "mockAnalysis2", value: "Mock Method 2" },
-    ],
-    standard_coreProviderTypeCoveredByStandard: [
-      { key: "mockProviderType-mockId", value: "Mock Provider" },
-    ],
-    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
-      "Mock Other Provider",
-    standard_standardType: [
-      { key: "mockStandardType", value: "Mock Standard Type" },
-    ],
-    standard_populationCoveredByStandard: [
-      { key: "mockPopulation", value: "Mock Population" },
-    ],
-    standard_applicableRegion: [{ key: "mockRegion", value: "Other, specify" }],
-    "standard_applicableRegion-otherText": "Mock Other Region",
-  },
-];
-const form = details?.childForms![1].form as FormJson;
-const table = details?.childForms![1].table as EntityDetailsTableContentShape;
-const verbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
-
-const mockCloseEntityDetailsOverlay = jest.fn();
-const mockOnSubmit = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -54,6 +24,14 @@ mockedUseStore.mockReturnValue({
   ...mockStateUserStore,
   ...mockEntityStore,
 });
+
+const mockCloseEntityDetailsOverlay = jest.fn();
+const mockOnSubmit = jest.fn();
+
+const { details } = mockEntityDetailsMultiformOverlayJson;
+const form = details?.childForms![1].form as FormJson;
+const table = details?.childForms![1].table as EntityDetailsTableContentShape;
+const verbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
 
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
@@ -63,7 +41,7 @@ const planComplianceTableOverlayComponent = (
     <PlanComplianceTableOverlay
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
-      entities={entities}
+      entities={mockNaaarStandards}
       form={form}
       onSubmit={mockOnSubmit}
       selectedEntity={mockEntityStore.selectedEntity}
