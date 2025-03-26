@@ -178,7 +178,10 @@ describe("<DashboardTable />", () => {
       render(dashboardViewWithReports);
       await waitFor(() => {
         expect(
-          screen.getByText(`Minnesota ${mcparVerbiage.intro.header}`)
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${mcparVerbiage.intro.header}`,
+          })
         ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testProgram" })[0]
@@ -198,7 +201,10 @@ describe("<DashboardTable />", () => {
       render(mlrDashboardViewWithReports);
       await waitFor(() => {
         expect(
-          screen.getByText(`Minnesota ${mlrVerbiage.intro.header}`)
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${mlrVerbiage.intro.header}`,
+          })
         ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testSubmission" })[0]
@@ -215,7 +221,10 @@ describe("<DashboardTable />", () => {
       render(naaarDashboardViewEmpty);
       await waitFor(() => {
         expect(
-          screen.getByText(`Minnesota ${naaarVerbiage.intro.header}`)
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${naaarVerbiage.intro.header}`,
+          })
         ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
