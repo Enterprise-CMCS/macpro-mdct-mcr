@@ -18,7 +18,7 @@ import {
 } from "types";
 // utils
 import {
-  naaarStandardsData,
+  mapNaaarStandardsData,
   NaaarStandardsTableShape,
 } from "components/tables/SortableNaaarStandardsTable";
 
@@ -87,7 +87,7 @@ export const PlanComplianceTableOverlay = ({
     const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
     const columns = generateColumns(sortableHeadRow, false, customCells);
     const content = { caption };
-    const data = useMemo(() => naaarStandardsData(entities), [entities]);
+    const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
 
     return (
       <Box sx={sx.container}>

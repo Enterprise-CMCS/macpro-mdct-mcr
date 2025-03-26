@@ -10,7 +10,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { naaarStandardsData } from "./SortableNaaarStandardsTable";
+import { mapNaaarStandardsData } from "./SortableNaaarStandardsTable";
 import { EntityShape } from "types";
 
 jest.mock("utils/state/useStore");
@@ -85,9 +85,9 @@ describe("<SortableNaaarStandardsTable />", () => {
     testA11y(sortableTableComponent);
   });
 
-  describe("naaarStandardsData()", () => {
+  describe("mapNaaarStandardsData()", () => {
     test("returns correct data shape", () => {
-      const tableData = naaarStandardsData(mockStandards);
+      const tableData = mapNaaarStandardsData(mockStandards);
       const expectedData = [
         {
           count: 1,
@@ -119,7 +119,7 @@ describe("<SortableNaaarStandardsTable />", () => {
           ],
         },
       ];
-      const tableData = naaarStandardsData(incompleteData);
+      const tableData = mapNaaarStandardsData(incompleteData);
       const expectedData = [
         {
           count: 1,

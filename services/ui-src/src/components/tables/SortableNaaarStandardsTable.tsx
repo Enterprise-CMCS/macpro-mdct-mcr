@@ -11,7 +11,7 @@ export const SortableNaaarStandardsTable = ({
   openRowDrawer,
   openDeleteEntityModal,
 }: Props) => {
-  const data = useMemo(() => naaarStandardsData(entities), [entities]);
+  const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
 
   const customCells = (
     headKey: keyof NaaarStandardsTableShape,
@@ -80,7 +80,7 @@ export const SortableNaaarStandardsTable = ({
   );
 };
 
-export const naaarStandardsData = (entities: EntityShape[]) =>
+export const mapNaaarStandardsData = (entities: EntityShape[]) =>
   entities.map((entity, index) => {
     const [provider, standardType, population, region] = [
       "standard_coreProviderTypeCoveredByStandard",
