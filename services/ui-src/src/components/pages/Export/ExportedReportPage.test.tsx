@@ -61,6 +61,21 @@ describe("<ExportedReportPage />", () => {
       );
       expect(title).toBeVisible();
     });
+
+    test("Does the export page have the correct title for NAAAR reports", () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarReportStore,
+      });
+      mockNaaarReportStore.report!.formTemplate.routes = [
+        mockStandardReportPageJson,
+      ];
+      const page = render(exportedReportPage);
+      const title = page.getByText(
+        "Network Adequacy and Access Assurances (NAAAR) Report for TestState: testProgram"
+      );
+      expect(title).toBeVisible();
+    });
   });
 
   describe("ExportedReportPage fails gracefully when appropriate", () => {

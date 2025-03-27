@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsMultiformOverlay } from "./EntityDetailsMultiformOverlay";
@@ -7,14 +7,14 @@ import { nonCompliantLabel } from "../../constants";
 // utils
 import {
   mockEntityStore,
-  mockOverlayReportPageJson,
+  mockEntityDetailsMultiformOverlayJson,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { EntityType } from "types";
 
-const { details } = mockOverlayReportPageJson;
+const { details } = mockEntityDetailsMultiformOverlayJson;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
 const mockSelectedEntity = jest.fn();
@@ -30,11 +30,11 @@ mockedUseStore.mockReturnValue({
 const entityDetailsMultiformOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false,
-  chidForms: any = details!.childForms
+  childForms: any = details!.childForms
 ) => (
   <RouterWrappedComponent>
     <EntityDetailsMultiformOverlay
-      childForms={chidForms}
+      childForms={childForms}
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       disabled={disabled}
       entityType={EntityType.PLANS}
@@ -59,47 +59,62 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       level: 2,
       name: "Mock Details: Example Plan",
     });
-    const h3 = screen.getByRole("heading", { level: 3, name: "Mock heading" });
-    const accordion = screen.getByText("Mock Accordion");
+
     expect(h2).toBeVisible();
-    expect(h3).toBeVisible();
-    expect(accordion).toBeVisible();
 
-    // Form
-    const radioButtonYes = screen.getByRole("radio", { name: "Mock Yes" });
-    await userEvent.click(radioButtonYes);
+    // Forms
+    for (const formId of ["", " 2"]) {
+      const radioButtonYes = screen.getByRole("radio", {
+        name: `Mock Yes${formId}`,
+      });
+      await userEvent.click(radioButtonYes);
 
-    // Table
-    const entityTable = screen.getByRole("table");
-    const entityHeaders = screen.getByRole("row", {
-      name: "Status Mock table header Action",
-    });
-    const entityCells = screen.getByRole("row", {
-      name: "Mock Cell Enter",
-    });
-    const enterButton = screen.getByRole("button", {
-      name: "Enter",
-    });
+      await waitFor(() => {
+        const h3 = screen.getByRole("heading", {
+          level: 3,
+          name: `Mock Heading${formId}`,
+        });
+        const accordion = screen.getByText(`Mock Accordion${formId}`);
+        expect(h3).toBeVisible();
+        expect(accordion).toBeVisible();
 
-    expect(entityTable).toBeVisible();
-    expect(entityHeaders).toBeVisible();
-    expect(entityCells).toBeVisible();
-    expect(enterButton).toBeDisabled();
+        // Tables
+        const entityTable = screen.getByRole("table", {
+          name: `Mock Table${formId}`,
+        });
+        const entityHeaders = screen.getByRole("row", {
+          name: `Status Mock Table Header${formId} Action`,
+        });
+        const entityCells = screen.getByRole("row", {
+          name: `Mock Cell${formId} Enter`,
+        });
+        const enterButton = within(entityCells).getByRole("button", {
+          name: "Enter",
+        });
+
+        expect(entityTable).toBeVisible();
+        expect(entityHeaders).toBeVisible();
+        expect(entityCells).toBeVisible();
+        expect(enterButton).toBeDisabled();
+      });
+    }
 
     // Submit
     const submitButton = screen.getByRole("button", { name: "Save & return" });
     await userEvent.click(submitButton);
 
-    expect(mockOnSubmit).toBeCalled();
+    await waitFor(() => {
+      expect(mockOnSubmit).toBeCalled();
+    });
   });
 
   test("renders child form", async () => {
     render(entityDetailsMultiformOverlayComponent());
 
     // Form
-    const radioButtonNo = screen.getByRole("radio", {
+    const radioButtonNo = screen.getAllByRole("radio", {
       name: nonCompliantLabel,
-    });
+    })[0];
     await userEvent.click(radioButtonNo);
 
     // Table
@@ -109,9 +124,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(updatedEntityCellsIncomplete).toBeVisible();
 
     // Click Enter
-    const updatedEnterButton = screen.getByRole("button", {
-      name: "Enter",
-    });
+    const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
+      "button",
+      {
+        name: "Enter",
+      }
+    );
     await userEvent.click(updatedEnterButton);
 
     // Child Form
@@ -121,13 +139,44 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(childForm).toBeVisible();
   });
 
+  test("renders child table", async () => {
+    render(entityDetailsMultiformOverlayComponent());
+
+    // Form
+    const form = screen.getAllByRole("form")[1];
+    const radioButtonNo = within(form).getByRole("radio", {
+      name: nonCompliantLabel,
+    });
+    await userEvent.click(radioButtonNo);
+    // Table
+    const updatedEntityCellsIncomplete = screen.getByRole("row", {
+      name: "warning icon Mock Cell 2 Select “Enter” to complete response. Enter",
+    });
+    expect(updatedEntityCellsIncomplete).toBeVisible();
+
+    // Click Enter
+    const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
+      "button",
+      {
+        name: "Enter",
+      }
+    );
+    await userEvent.click(updatedEnterButton);
+
+    // Table
+    const childTable = screen.getByRole("table", {
+      name: "Mock Child Table",
+    });
+    expect(childTable).toBeVisible();
+  });
+
   test("renders nothing if no child form", async () => {
     render(entityDetailsMultiformOverlayComponent(undefined, undefined, []));
 
     // Form
-    const radioButtonNo = screen.getByRole("radio", {
+    const radioButtonNo = screen.getAllByRole("radio", {
       name: nonCompliantLabel,
-    });
+    })[0];
     await userEvent.click(radioButtonNo);
 
     // Table
@@ -137,9 +186,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     expect(entityCellsIncomplete).toBeVisible();
 
     // Click Enter
-    const updatedEnterButton = screen.getByRole("button", {
-      name: "Enter",
-    });
+    const updatedEnterButton = within(entityCellsIncomplete).getByRole(
+      "button",
+      {
+        name: "Enter",
+      }
+    );
     await userEvent.click(updatedEnterButton);
 
     // Stays on Table
@@ -152,7 +204,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   test("closes overlay", async () => {
     render(entityDetailsMultiformOverlayComponent());
     const closeButton = screen.getByRole("button", {
-      name: "Return to dashboard",
+      name: "Mock Back Button: Main",
     });
     await userEvent.click(closeButton);
 

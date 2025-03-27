@@ -4,83 +4,19 @@ import { useMemo } from "react";
 import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import { EntityShape } from "types";
+import { compareText, otherSpecify } from "utils";
 
 export const SortableNaaarStandardsTable = ({
   entities,
   openRowDrawer,
   openDeleteEntityModal,
 }: Props) => {
-  const actualData = useMemo(() => {
-    return entities.map((entity: any, index: number) => {
-      const {
-        standard_coreProviderTypeCoveredByStandard,
-        standard_populationCoveredByStandard,
-        standard_applicableRegion,
-        standard_standardType,
-      } = entity;
-
-      // extract the standard description attribute
-      const standardDescription = Object.keys(entity).find((key: string) => {
-        return key.startsWith("standard_standardDescription");
-      });
-
-      // extract corresponding standard choice id
-      const standardId = standardDescription?.includes("-")
-        ? standardDescription?.substring(standardDescription.indexOf("-"))
-        : "";
-
-      // use the id to extract analysis method attribute
-      const analysisMethodsUtilized = standardId
-        ? `standard_analysisMethodsUtilized${standardId}`
-        : "";
-
-      const coreProviderType = entity[
-        "standard_coreProviderTypeCoveredByStandard-otherText"
-      ]
-        ? `${standard_coreProviderTypeCoveredByStandard[0].value}; ${entity["standard_coreProviderTypeCoveredByStandard-otherText"]}`
-        : standard_coreProviderTypeCoveredByStandard[0].value;
-
-      const standardType =
-        standard_standardType[0].value === "Other, specify"
-          ? entity["standard_standardType-otherText"]
-          : standard_standardType[0].value;
-
-      const standardPopulation =
-        standard_populationCoveredByStandard[0].value === "Other, specify"
-          ? entity["standard_populationCoveredByStandard-otherText"]
-          : standard_populationCoveredByStandard[0].value;
-
-      const standardRegion =
-        standard_applicableRegion[0].value === "Other, specify"
-          ? entity["standard_applicableRegion-otherText"]
-          : standard_applicableRegion[0].value;
-
-      // there are 7 analysis methods checkboxes
-      function extractMethods(analysisMethodsUtilized: { value: any }[]) {
-        return analysisMethodsUtilized
-          ?.map((method) => method.value)
-          .join(", ");
-      }
-
-      return {
-        count: index + 1,
-        provider: coreProviderType,
-        standardType: standardType,
-        standardDescription: entity[standardDescription as keyof EntityShape],
-        analysisMethods: extractMethods(
-          entity[analysisMethodsUtilized as keyof EntityShape]
-        ),
-        population: standardPopulation,
-        region: standardRegion,
-        entity,
-      };
-    });
-  }, [entities]);
+  const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
 
   const customCells = (
-    headKey: keyof DrawerReportPageTableShape,
+    headKey: keyof NaaarStandardsTableShape,
     value: any,
-    originalRowData: DrawerReportPageTableShape
+    originalRowData: NaaarStandardsTableShape
   ) => {
     const { entity } = originalRowData;
     switch (headKey) {
@@ -115,27 +51,17 @@ export const SortableNaaarStandardsTable = ({
 
   const sortableHeadRow = {
     count: { header: "#" },
-    provider: {
-      header: "Provider",
-    },
-    standardType: {
-      header: "Standard Type",
-    },
-    standardDescription: {
-      header: "Standard Description",
-    },
-    analysisMethods: {
-      header: "Analysis Methods",
-    },
-    population: {
-      header: "Pop.",
-    },
+    provider: { header: "Provider" },
+    standardType: { header: "Standard Type" },
+    description: { header: "Standard Description" },
+    analysisMethods: { header: "Analysis Methods" },
+    population: { header: "Pop." },
     region: { header: "Region" },
     edit: { header: "Edit standard", hidden: true },
     delete: { header: "Delete standard", hidden: true },
   };
 
-  const columns = generateColumns<DrawerReportPageTableShape>(
+  const columns = generateColumns<NaaarStandardsTableShape>(
     sortableHeadRow,
     true,
     customCells
@@ -147,12 +73,65 @@ export const SortableNaaarStandardsTable = ({
     <SortableTable
       border={true}
       columns={columns}
-      data={actualData}
+      data={data}
       content={content}
       initialSorting={[{ id: "provider", desc: false }]}
     />
   );
 };
+
+export const mapNaaarStandardsData = (entities: EntityShape[]) =>
+  entities.map((entity, index) => {
+    const [provider, standardType, population, region] = [
+      "standard_coreProviderTypeCoveredByStandard",
+      "standard_standardType",
+      "standard_populationCoveredByStandard",
+      "standard_applicableRegion",
+    ].map((key: string) => {
+      const parentObj = entity[key] || [];
+      const value = parentObj[0]?.value;
+      let otherText = entity[`${key}-otherText`];
+
+      if (key === "standard_coreProviderTypeCoveredByStandard") {
+        const providerKey = parentObj[0].key;
+        const providerId = providerKey.split("-").pop();
+        otherText = entity[`${key}-${providerId}-otherText`];
+
+        const matchText = `${value}; ${otherText}`;
+
+        return compareText(true, !!otherText, matchText, value);
+      }
+
+      return otherSpecify(value, otherText);
+    });
+
+    // extract the standard description attribute
+    const standardDescriptionKey =
+      Object.keys(entity).find((key) => {
+        return key.startsWith("standard_standardDescription-");
+      }) || "";
+    const description = entity[standardDescriptionKey];
+    // extract corresponding standard choice id
+    const standardId = standardDescriptionKey.split("-").pop();
+    // use the id to extract analysis method attribute
+    const analysisMethodsUtilized =
+      entity[`standard_analysisMethodsUtilized-${standardId}`];
+    // there are 7 analysis methods checkboxes
+    const analysisMethods = analysisMethodsUtilized
+      ?.map((method: { key: string; value: string }) => method.value)
+      .join(", ");
+
+    return {
+      count: index + 1,
+      provider,
+      standardType,
+      description,
+      analysisMethods,
+      population,
+      region,
+      entity,
+    };
+  });
 
 const sx = {
   deleteButton: {
@@ -171,7 +150,7 @@ interface Props {
   openDeleteEntityModal: Function;
 }
 
-interface DrawerReportPageTableShape {
+export interface NaaarStandardsTableShape {
   count: number;
   provider: number;
   standardType: string;
@@ -182,4 +161,5 @@ interface DrawerReportPageTableShape {
   entity: EntityShape;
   edit?: null;
   delete?: null;
+  actions?: null;
 }

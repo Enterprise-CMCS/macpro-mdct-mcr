@@ -33,6 +33,7 @@ export const Form = forwardRef(function Form(
   {
     id,
     formJson,
+    name,
     onSubmit,
     onError,
     formData,
@@ -107,6 +108,7 @@ export const Form = forwardRef(function Form(
         id={id}
         autoComplete="off"
         onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
+        name={name || id}
         ref={ref}
         {...props}
       >
@@ -123,6 +125,7 @@ interface Props {
   onSubmit: Function;
   validateOnRender: boolean;
   dontReset: boolean;
+  name?: string;
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
   autosave?: boolean;
@@ -142,17 +145,17 @@ const sx = {
 
   // disabled field
   ".ds-c-field[disabled]": {
-    color: "palette.gray",
+    color: "palette.base",
   },
   // field hint
-  ".ds-c-field__hint": {
+  ".ds-c-hint": {
     marginBottom: "0.25rem",
   },
   // field hint and error message
-  ".ds-c-field__hint, .ds-c-field__error-message ": {
+  ".ds-c-hint, .ds-c-inline-error": {
     fontSize: "sm",
     ul: {
-      paddingLeft: "2rem",
+      gap: 0,
     },
     ol: {
       margin: "0.25rem 0.5rem",

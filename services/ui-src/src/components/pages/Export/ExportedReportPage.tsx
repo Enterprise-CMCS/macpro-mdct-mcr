@@ -20,6 +20,7 @@ import { assertExhaustive, useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import naaarVerbiage from "verbiage/pages/naaar/naaar-export";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -33,7 +34,7 @@ export const ExportedReportPage = () => {
   const exportVerbiageMap: { [key in ReportType]: any } = {
     MCPAR: mcparVerbiage,
     MLR: mlrVerbiage,
-    NAAAR: undefined,
+    NAAAR: naaarVerbiage,
   };
 
   const exportVerbiage = exportVerbiageMap[reportType];
@@ -101,6 +102,7 @@ export const reportTitle = (
     case ReportType.MCPAR:
       return `${reportPage.heading} ${report.fieldData.stateName}: ${report.programName}`;
     case ReportType.NAAAR:
+      return `${reportPage.heading} for ${report.fieldData.stateName}: ${report.programName}`;
     case ReportType.MLR:
       return `${report.fieldData.stateName}: ${reportPage.heading}`;
     default:

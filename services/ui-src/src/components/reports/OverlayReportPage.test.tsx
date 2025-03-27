@@ -367,7 +367,7 @@ describe("<OverlayReportPage />", () => {
         expect(h1).toBeNull();
 
         const closeButton = screen.getByRole("button", {
-          name: "Return to dashboard",
+          name: "Mock Back Button: Main",
         });
         await userEvent.click(closeButton);
 

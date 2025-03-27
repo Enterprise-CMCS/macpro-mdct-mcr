@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
@@ -7,24 +7,17 @@ import React, {
   useState,
 } from "react";
 // components
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Spinner,
-  Td,
-  Text,
-  Tr,
-} from "@chakra-ui/react";
+import { Box, Button, Heading, Td, Text, Tr } from "@chakra-ui/react";
 import {
   EntityDetailsFormOverlay,
+  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
   ReportPageIntro,
   Table,
+  SaveReturnButton,
+  BackButton,
 } from "components";
 // constants
 import { nonCompliantLabel } from "../../constants";
@@ -34,14 +27,13 @@ import {
   EntityDetailsChildFormShape,
   EntityDetailsMultiformShape,
   EntityDetailsMultiformVerbiage,
+  EntityDetailsTableVerbiage,
   EntityShape,
   EntityType,
   ScreenReaderOnlyHeaderName,
 } from "types";
 // utils
-import { translateVerbiage } from "utils";
-// assets
-import arrowLeftBlue from "assets/icons/icon_arrow_left_blue.png";
+import { translateVerbiage, useStore } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -78,16 +70,48 @@ export const EntityDetailsMultiformOverlay = ({
       return <></>;
     }
 
-    const { form, verbiage } = formObject;
-    const detailsVerbiage = translateVerbiage(verbiage, {
+    const { form, table, verbiage } = formObject;
+    const translatedVerbiage = translateVerbiage(verbiage, {
       planName: selectedEntity?.name,
-    });
+    }) as EntityDetailsMultiformVerbiage;
 
     const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
     };
+
+    if (table) {
+      const { report } = useStore();
+      const entities = report?.fieldData["standards"] || [];
+
+      const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
+      const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
+        planName: selectedEntity?.name,
+      }) as EntityDetailsTableVerbiage;
+
+      const tableProps = {
+        caption,
+        sortableHeadRow,
+        verbiage: translatedTableVerbiage,
+      };
+
+      // TODO: Handle submit
+      return (
+        <PlanComplianceTableOverlay
+          closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+          disabled={false}
+          entities={entities}
+          form={form}
+          onSubmit={() => {}}
+          selectedEntity={selectedEntity}
+          submitting={submitting}
+          table={tableProps}
+          validateOnRender={validateOnRender || false}
+          verbiage={translatedVerbiage}
+        />
+      );
+    }
 
     return (
       <EntityDetailsFormOverlay
@@ -98,7 +122,7 @@ export const EntityDetailsMultiformOverlay = ({
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}
-        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
+        verbiage={translatedVerbiage}
       />
     );
   };
@@ -210,12 +234,14 @@ export const EntityDetailsMultiformOverlay = ({
 
       return (
         <Box>
-          {heading && (
-            <Heading as="h3" sx={sx.plan.heading}>
-              {heading}
-            </Heading>
-          )}
-          {hint && <Text>{hint}</Text>}
+          <Box sx={sx.introContainer}>
+            {heading && (
+              <Heading as="h3" sx={sx.heading}>
+                {heading}
+              </Heading>
+            )}
+            {hint && <Text>{hint}</Text>}
+          </Box>
           {accordion && <InstructionsAccordion verbiage={accordion} />}
         </Box>
       );
@@ -253,7 +279,7 @@ export const EntityDetailsMultiformOverlay = ({
             <Button
               disabled={!isEnabled}
               onClick={() => getChildForm(formId)}
-              sx={sx.plan.tableButton}
+              sx={sx.tableButton}
               variant="outline"
             >
               {isComplete ? "Edit" : "Enter"}
@@ -263,9 +289,9 @@ export const EntityDetailsMultiformOverlay = ({
         default:
           return (
             <>
-              <Text sx={sx.plan.tableData}>{text}</Text>
+              <Text sx={sx.tableData}>{text}</Text>
               {isEnabled && !isComplete && (
-                <Text sx={sx.plan.errorText}>
+                <Text sx={sx.errorText}>
                   Select “Enter” to complete response.
                 </Text>
               )}
@@ -276,45 +302,44 @@ export const EntityDetailsMultiformOverlay = ({
 
     return (
       <Box>
-        <Button
-          sx={sx.backButton}
-          variant="none"
-          onClick={closeEntityDetailsOverlay as MouseEventHandler}
-          aria-label={verbiage.backButton}
-        >
-          <Image src={arrowLeftBlue} alt="Arrow left" sx={sx.backIcon} />
-          {verbiage.backButton}
-        </Button>
+        <BackButton
+          onClick={closeEntityDetailsOverlay}
+          text={verbiage.backButton}
+        />
         <ReportPageIntro text={verbiage.intro} />
         <Box>
           {forms.map((formObject: EntityDetailsMultiformShape, index) => (
-            <Box key={`${formObject.form.id}`} sx={sx.plan.container}>
+            <Box key={`${formObject.form.id}`} sx={sx.container}>
               {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
-              <Form
-                disabled={disabled}
-                dontReset={true}
-                formData={selectedEntity}
-                formJson={formObject.form}
-                id={formObject.form.id}
-                onChange={handleChange}
-                onSubmit={(data: AnyObject) => handleSubmit(data)}
-                ref={(el) => (formRefs.current[index] = el as HTMLFormElement)}
-                validateOnRender={validateOnRender || false}
-              />
+              <Box sx={sx.introContainer}>
+                <Form
+                  disabled={disabled}
+                  dontReset={true}
+                  formData={selectedEntity}
+                  formJson={formObject.form}
+                  id={formObject.form.id}
+                  onChange={handleChange}
+                  onSubmit={(data: AnyObject) => handleSubmit(data)}
+                  ref={(el) =>
+                    (formRefs.current[index] = el as HTMLFormElement)
+                  }
+                  validateOnRender={validateOnRender || false}
+                />
+              </Box>
               {formObject.table && (
                 <Table
                   content={{
                     headRow: formObject.table.headRow,
                     caption: formObject.table.caption,
                   }}
-                  sx={sx.plan.table}
+                  sx={sx.table}
                 >
                   {formObject.table.bodyRows.map((row, rowIndex) => (
                     <Tr key={`${formObject.form.id}-${rowIndex}`}>
                       {row.map((cell: string, cellIndex: number) => (
                         <Td
                           key={`${formObject.form.id}-${rowIndex}-${cellIndex}}`}
-                          sx={sx.plan.tableCell}
+                          sx={sx.tableCell}
                         >
                           <Cell
                             formId={formObject.form.id}
@@ -330,22 +355,13 @@ export const EntityDetailsMultiformOverlay = ({
             </Box>
           ))}
         </Box>
-        <Box sx={sx.footerBox}>
-          <Flex sx={sx.buttonFlex}>
-            {disabled ? (
-              <Button
-                variant="outline"
-                onClick={closeEntityDetailsOverlay as MouseEventHandler}
-              >
-                Return
-              </Button>
-            ) : (
-              <Button type="submit" sx={sx.saveButton} onClick={submitForms}>
-                {submitting ? <Spinner size="md" /> : "Save & return"}
-              </Button>
-            )}
-          </Flex>
-        </Box>
+        <SaveReturnButton
+          disabled={disabled}
+          disabledOnClick={closeEntityDetailsOverlay}
+          border={false}
+          onClick={submitForms}
+          submitting={submitting}
+        />
       </Box>
     );
   };
@@ -354,11 +370,11 @@ export const EntityDetailsMultiformOverlay = ({
 };
 
 interface Props {
-  childForms?: [EntityDetailsChildFormShape];
-  closeEntityDetailsOverlay: Function;
+  childForms?: EntityDetailsChildFormShape[];
+  closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   entityType: EntityType;
-  forms: [EntityDetailsMultiformShape];
+  forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
   selectedEntity?: EntityShape;
@@ -370,81 +386,55 @@ interface Props {
 }
 
 const sx = {
-  overlayContainer: {
-    backgroundColor: "palette.white",
+  container: {
+    paddingTop: "1.75rem",
+    "&:first-of-type": {
+      borderTopColor: "palette.gray_lighter",
+      borderTopWidth: "1px",
+    },
+  },
+  introContainer: {
     width: "100%",
+    maxWidth: "30rem",
   },
-  backButton: {
-    padding: 0,
-    fontWeight: "normal",
-    color: "palette.primary",
-    display: "flex",
-    position: "relative",
-    right: "3rem",
-    marginBottom: "2rem",
-    marginTop: "-2rem",
+  errorText: {
+    color: "palette.error_dark",
+    fontSize: "0.75rem",
+    marginTop: "0.25rem",
   },
-  backIcon: {
-    color: "palette.primary",
-    height: "1rem",
-    marginRight: "0.5rem",
+  heading: {
+    fontSize: "1.3rem",
   },
-  footerBox: {
-    marginTop: "2rem",
-  },
-  buttonFlex: {
-    justifyContent: "end",
-    marginY: "1.5rem",
-  },
-  saveButton: {
-    width: "8.25rem",
-  },
-  plan: {
-    container: {
-      paddingTop: "1.75rem",
-      "&:first-of-type": {
-        borderTopColor: "palette.gray_lighter",
-        borderTopWidth: "1px",
+  table: {
+    marginBottom: "1.5rem",
+    maxWidth: "36.125rem",
+    td: {
+      paddingRight: "0",
+    },
+    th: {
+      "&:nth-of-type(1)": {
+        width: "2.5rem",
+      },
+      "&:nth-of-type(3)": {
+        width: "8rem",
       },
     },
-    errorText: {
-      color: "palette.error_dark",
-      fontSize: "0.75rem",
-      marginTop: "0.25rem",
-    },
-    heading: {
-      fontSize: "1.3rem",
-    },
-    table: {
-      marginBottom: "1.5rem",
-      maxWidth: "36.125rem",
-      td: {
-        paddingRight: "0",
-      },
-      th: {
-        "&:nth-of-type(1)": {
-          width: "2.5rem",
-        },
-        "&:nth-of-type(3)": {
-          width: "8rem",
-        },
-      },
-    },
-    tableCell: {
+  },
+  tableCell: {
+    borderColor: "palette.gray_lighter",
+  },
+  tableData: {
+    display: "block",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    lineHeight: "1.5rem",
+    maxWidth: "19rem",
+  },
+  tableButton: {
+    width: "6rem",
+    "&:disabled": {
       borderColor: "palette.gray_lighter",
-    },
-    tableData: {
-      display: "block",
-      fontSize: "1rem",
-      fontWeight: "bold",
-      lineHeight: "1.5rem",
-      maxWidth: "19rem",
-    },
-    tableButton: {
-      "&:disabled": {
-        borderColor: "palette.gray_lighter",
-        color: "palette.gray_lighter",
-      },
+      color: "palette.gray_lighter",
     },
   },
 };
