@@ -37,6 +37,7 @@ const deleteButtonText = "Delete banner";
 describe("<AdminPage />", () => {
   describe("Test AdminPage banner manipulation functionality", () => {
     test("Deletes current banner on delete button click", async () => {
+      window.HTMLElement.prototype.scrollIntoView = jest.fn();
       await act(async () => {
         mockedUseStore.mockReturnValue(mockBannerStore);
         await render(adminView(mockBannerMethods));
