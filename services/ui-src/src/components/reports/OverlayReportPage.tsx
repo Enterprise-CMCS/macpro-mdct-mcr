@@ -41,8 +41,7 @@ export const OverlayReportPage = ({
   // Context Information
   const { isTablet, isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
-  const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
-    useState<boolean>(false);
+  const [isDashboardOpen, setIsDashboardOpen] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
   );
@@ -60,7 +59,7 @@ export const OverlayReportPage = ({
 
     setSelectedEntity(entity);
     setEntering(openOverlay);
-    setIsEntityDetailsOpen(openOverlay);
+    setIsDashboardOpen(openOverlay);
     setSidebarHidden(openOverlay);
   };
 
@@ -241,7 +240,7 @@ export const OverlayReportPage = ({
     );
   };
 
-  return isEntityDetailsOpen ? <DetailsOverlay /> : <TablePage />;
+  return isDashboardOpen ? <DetailsOverlay /> : <TablePage />;
 };
 
 interface Props {

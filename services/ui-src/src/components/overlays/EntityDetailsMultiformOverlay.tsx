@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -9,15 +10,16 @@ import {
 // components
 import { Box, Button, Heading, Td, Text, Tr } from "@chakra-ui/react";
 import {
+  BackButton,
   EntityDetailsFormOverlay,
-  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
+  OverlayContext,
+  PlanComplianceTableOverlay,
   ReportPageIntro,
-  Table,
   SaveReturnButton,
-  BackButton,
+  Table,
 } from "components";
 // constants
 import { nonCompliantLabel } from "../../constants";
@@ -49,7 +51,8 @@ export const EntityDetailsMultiformOverlay = ({
   validateOnRender,
   verbiage,
 }: Props) => {
-  const [childFormId, setChildFormId] = useState<string | null>(null);
+  const { childFormId, setChildFormId, setSelectedStandard } =
+    useContext(OverlayContext);
 
   const ChildForm = () => {
     const formObject = childForms?.find(
@@ -75,10 +78,11 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleSubmit = (enteredData: AnyObject) => {
+    const handleFormSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
+      closeEntityDetailsOverlay();
     };
 
     if (table) {
@@ -96,14 +100,20 @@ export const EntityDetailsMultiformOverlay = ({
         verbiage: translatedTableVerbiage,
       };
 
-      // TODO: Handle submit
+      const handleTableSubmit = (enteredData: AnyObject) => {
+        const updatedEntity = { ...selectedEntity, ...enteredData };
+        setSelectedEntity(updatedEntity);
+        onSubmit(enteredData, false);
+        setSelectedStandard(null);
+      };
+
       return (
         <PlanComplianceTableOverlay
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
           entities={entities}
           form={form}
-          onSubmit={() => {}}
+          onSubmit={handleTableSubmit}
           selectedEntity={selectedEntity}
           submitting={submitting}
           table={tableProps}
@@ -118,7 +128,7 @@ export const EntityDetailsMultiformOverlay = ({
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         selectedEntity={selectedEntity}
         submitting={submitting}
         validateOnRender={validateOnRender || false}

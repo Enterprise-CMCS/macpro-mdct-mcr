@@ -8,7 +8,12 @@ import {
   SaveReturnButton,
 } from "components";
 // types
-import { EntityDetailsMultiformVerbiage, EntityShape, FormJson } from "types";
+import {
+  EntityDetailsMultiformVerbiage,
+  EntityShape,
+  FormJson,
+  TableContentShape,
+} from "types";
 
 export const EntityDetailsFormOverlay = ({
   closeEntityDetailsOverlay,
@@ -19,36 +24,43 @@ export const EntityDetailsFormOverlay = ({
   onSubmit,
   selectedEntity,
   submitting,
+  table,
   validateOnRender,
   verbiage,
-}: Props) => (
-  <Box>
-    <BackButton
-      onClick={closeEntityDetailsOverlay}
-      text={verbiage.backButton}
-    />
-    <ReportPageIntro text={verbiage.intro} accordion={verbiage.accordion} />
-    <Box sx={sx.form}>
-      <Form
+}: Props) => {
+  return (
+    <Box>
+      <BackButton
+        onClick={closeEntityDetailsOverlay}
+        text={verbiage.backButton}
+      />
+      <ReportPageIntro
+        text={verbiage.intro}
+        accordion={verbiage.accordion}
+        table={table}
+      />
+      <Box sx={sx.form}>
+        <Form
+          disabled={disabled}
+          dontReset={true}
+          formData={selectedEntity}
+          formJson={form}
+          id={form.id}
+          onChange={onChange}
+          onError={onError}
+          onSubmit={onSubmit}
+          validateOnRender={validateOnRender || false}
+        />
+      </Box>
+      <SaveReturnButton
         disabled={disabled}
-        dontReset={true}
-        formData={selectedEntity}
-        formJson={form}
-        id={form.id}
-        onChange={onChange}
-        onError={onError}
-        onSubmit={onSubmit}
-        validateOnRender={validateOnRender || false}
+        disabledOnClick={closeEntityDetailsOverlay}
+        formId={form.id}
+        submitting={submitting}
       />
     </Box>
-    <SaveReturnButton
-      disabled={disabled}
-      disabledOnClick={closeEntityDetailsOverlay}
-      formId={form.id}
-      submitting={submitting}
-    />
-  </Box>
-);
+  );
+};
 
 interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;
@@ -59,6 +71,7 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
+  table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
 }
