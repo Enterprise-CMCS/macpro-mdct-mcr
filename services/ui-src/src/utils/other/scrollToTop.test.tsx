@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ScrollToTopComponent } from "./scrollToTop";
 
 const scrollToTopComponent = (
-  <Router>
+  <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
     <div data-testid="test-scroll-comp">
       <ScrollToTopComponent />
     </div>
