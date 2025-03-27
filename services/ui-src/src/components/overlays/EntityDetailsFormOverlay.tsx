@@ -27,40 +27,38 @@ export const EntityDetailsFormOverlay = ({
   table,
   validateOnRender,
   verbiage,
-}: Props) => {
-  return (
-    <Box>
-      <BackButton
-        onClick={closeEntityDetailsOverlay}
-        text={verbiage.backButton}
-      />
-      <ReportPageIntro
-        text={verbiage.intro}
-        accordion={verbiage.accordion}
-        table={table}
-      />
-      <Box sx={sx.form}>
-        <Form
-          disabled={disabled}
-          dontReset={true}
-          formData={selectedEntity}
-          formJson={form}
-          id={form.id}
-          onChange={onChange}
-          onError={onError}
-          onSubmit={onSubmit}
-          validateOnRender={validateOnRender || false}
-        />
-      </Box>
-      <SaveReturnButton
+}: Props) => (
+  <Box>
+    <BackButton
+      onClick={closeEntityDetailsOverlay}
+      text={verbiage.backButton}
+    />
+    <ReportPageIntro
+      text={verbiage.intro}
+      accordion={verbiage.accordion}
+      table={table}
+    />
+    <Box sx={sx.form}>
+      <Form
         disabled={disabled}
-        disabledOnClick={closeEntityDetailsOverlay}
-        formId={form.id}
-        submitting={submitting}
+        dontReset={true}
+        formData={selectedEntity}
+        formJson={form}
+        id={form.id}
+        onChange={onChange}
+        onError={onError}
+        onSubmit={onSubmit}
+        validateOnRender={validateOnRender || false}
       />
     </Box>
-  );
-};
+    <SaveReturnButton
+      disabled={disabled}
+      disabledOnClick={closeEntityDetailsOverlay}
+      formId={form.id}
+      submitting={submitting}
+    />
+  </Box>
+);
 
 interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;

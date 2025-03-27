@@ -24,6 +24,7 @@ import {
   mapNaaarStandardsData,
   NaaarStandardsTableShape,
 } from "components/tables/SortableNaaarStandardsTable";
+import { useStore } from "utils";
 
 export const PlanComplianceTableOverlay = ({
   closeEntityDetailsOverlay,
@@ -39,7 +40,6 @@ export const PlanComplianceTableOverlay = ({
   verbiage,
 }: Props) => {
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
-
   const standardsTotalCount = entities.length;
   const exceptionsCount = useMemo(() => {
     return 0;
@@ -48,6 +48,8 @@ export const PlanComplianceTableOverlay = ({
     return 0;
   }, [selectedEntity]);
 
+  const standardKeyPrefix = "planCompliance43868_standard";
+
   const DetailsOverlay = () => {
     const closeEntityDetailsFormOverlay = () => {
       setSelectedStandard(null);
@@ -55,35 +57,6 @@ export const PlanComplianceTableOverlay = ({
     let headRow = [] as ScreenReaderOnlyHeaderName[];
     const bodyRows = [];
     let formJson = { ...form };
-
-    function addStandardId(json: any, uuid: string) {
-      function traverse(formJson: any) {
-        if (Array.isArray(formJson)) {
-          formJson.forEach((item, index) => {
-            formJson[index] = traverse(item);
-          });
-        } else if (formJson !== null && typeof formJson === "object") {
-          Object.keys(formJson).forEach((key) => {
-            const parentKey = "planCompliance43868_standard";
-            const value = formJson[key];
-
-            if (typeof value === "string" && value.startsWith(parentKey)) {
-              const option = value.includes("-")
-                ? value.split("-").pop()
-                : undefined;
-              formJson[key] = [parentKey, uuid, option]
-                .filter((o) => o)
-                .join("-");
-            }
-            formJson[key] = traverse(formJson[key]);
-          });
-        }
-
-        return formJson;
-      }
-
-      return traverse(json);
-    }
 
     if (selectedStandard) {
       const { count, entity } = selectedStandard;
@@ -95,6 +68,7 @@ export const PlanComplianceTableOverlay = ({
         "Standard type",
         "Standard description",
         "Population",
+        "Analysis Methods",
         "Region",
       ];
       headRow = headers.map((hiddenName) => ({ hiddenName }));
@@ -107,7 +81,7 @@ export const PlanComplianceTableOverlay = ({
         region,
       ]);
 
-      formJson = addStandardId(formJson, entity.id);
+      formJson = addStandardId(formJson, entity.id, standardKeyPrefix);
       // TODO: Add analysis method checkboxes
     }
 
@@ -134,7 +108,7 @@ export const PlanComplianceTableOverlay = ({
   };
 
   const TableOverlay = () => {
-    const getStandardForm = (entity: any, count: number) => {
+    const getStandardForm = (entity: EntityShape, count: number) => {
       window.scrollTo(0, 0);
       setSelectedStandard({ count, entity });
     };
@@ -145,10 +119,7 @@ export const PlanComplianceTableOverlay = ({
       originalRowData: NaaarStandardsTableShape
     ) => {
       const { count, entity } = originalRowData;
-      // TODO: Check if planCompliance43868_standar-{{UUID}} keys exist
-      function hasDetails() {
-        return false;
-      }
+      const hasStandardDetails = true;
 
       switch (headKey) {
         case "standardType": {
@@ -165,7 +136,7 @@ export const PlanComplianceTableOverlay = ({
               onClick={() => getStandardForm(entity, count)}
               sx={sx.tableButton}
             >
-              {hasDetails() ? "Edit" : "Enter"}
+              {hasStandardDetails ? "Edit" : "Enter"}
             </Button>
           );
         }
@@ -177,7 +148,45 @@ export const PlanComplianceTableOverlay = ({
     const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
     const columns = generateColumns(sortableHeadRow, false, customCells);
     const content = { caption };
-    const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
+
+    const { report } = useStore();
+    const analysisMethods = report?.fieldData["analysisMethods"] || [];
+
+    const analysisMethodsUsedByPlan = analysisMethods
+      .filter((method: EntityShape) => {
+        const plansUsingMethod =
+          method.analysis_method_applicable_plans?.filter((plan: EntityShape) =>
+            plan.key.endsWith(selectedEntity?.id)
+          ) || [];
+        if (plansUsingMethod.length > 0) {
+          return method;
+        }
+
+        return;
+      })
+      .map((method: EntityShape) => method.id);
+
+    // Filter standards to only those with analysis methods used by plan
+    const standards = entities.filter((standard: EntityShape) => {
+      const key =
+        Object.keys(standard).find((key) =>
+          key.startsWith("standard_analysisMethodsUtilized")
+        ) || "";
+      const standardAnalysisMethods = standard[key].map((method: EntityShape) =>
+        method.key.split("-").pop()
+      );
+      const usedMethod = standardAnalysisMethods.some((method: string) =>
+        analysisMethodsUsedByPlan.includes(method)
+      );
+
+      if (usedMethod) {
+        return standard;
+      }
+
+      return;
+    });
+
+    const data = useMemo(() => mapNaaarStandardsData(standards), [standards]);
     const displayCount = (label?: string, count: number = 0) =>
       label && `${label}: ${count} of ${standardsTotalCount}`;
 
@@ -220,6 +229,36 @@ export const PlanComplianceTableOverlay = ({
   return selectedStandard ? <DetailsOverlay /> : <TableOverlay />;
 };
 
+export const addStandardId = (
+  formJson: FormJson,
+  uuid: string,
+  prefix: string
+) => {
+  function traverse(obj: any) {
+    if (Array.isArray(obj)) {
+      obj.forEach((item, index) => {
+        obj[index] = traverse(item);
+      });
+    } else if (obj !== null && typeof obj === "object") {
+      Object.keys(obj).forEach((key) => {
+        const value = obj[key];
+
+        if (typeof value === "string" && value.startsWith(prefix)) {
+          const option = value.includes("-")
+            ? value.split("-").pop()
+            : undefined;
+          obj[key] = [prefix, uuid, option].filter((f) => f).join("-");
+        }
+        obj[key] = traverse(obj[key]);
+      });
+    }
+
+    return obj;
+  }
+
+  return traverse(formJson);
+};
+
 interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
@@ -233,17 +272,6 @@ interface Props {
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
 }
-
-const sxOverride = {
-  table: {
-    th: {
-      borderBottomWidth: 0,
-    },
-    tbody: {
-      backgroundColor: "palette.secondary_lightest",
-    },
-  },
-};
 
 const sx = {
   container: {
@@ -266,5 +294,16 @@ const sx = {
   },
   bold: {
     fontWeight: "bold",
+  },
+};
+
+const sxOverride = {
+  table: {
+    th: {
+      borderBottomWidth: 0,
+    },
+    tbody: {
+      backgroundColor: "palette.secondary_lightest",
+    },
   },
 };

@@ -78,7 +78,7 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleFormSubmit = (enteredData: AnyObject) => {
+    const handleSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
@@ -101,9 +101,7 @@ export const EntityDetailsMultiformOverlay = ({
       };
 
       const handleTableSubmit = (enteredData: AnyObject) => {
-        const updatedEntity = { ...selectedEntity, ...enteredData };
-        setSelectedEntity(updatedEntity);
-        onSubmit(enteredData, false);
+        handleSubmit(enteredData);
         setSelectedStandard(null);
       };
 
@@ -122,6 +120,11 @@ export const EntityDetailsMultiformOverlay = ({
         />
       );
     }
+
+    const handleFormSubmit = (enteredData: AnyObject) => {
+      handleSubmit(enteredData);
+      closeEntityDetailsOverlay();
+    };
 
     return (
       <EntityDetailsFormOverlay
