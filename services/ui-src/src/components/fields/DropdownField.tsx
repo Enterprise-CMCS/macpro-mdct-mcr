@@ -34,6 +34,7 @@ import uuid from "react-uuid";
 export const DropdownField = ({
   name,
   label,
+  ariaLabel,
   options,
   hint,
   nested,
@@ -194,7 +195,7 @@ export const DropdownField = ({
       <select
         name={name}
         id={name}
-        aria-label={labelText ? undefined : name}
+        aria-label={ariaLabel ? ariaLabel : name}
         aria-invalid="false"
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
@@ -215,6 +216,7 @@ export const DropdownField = ({
 interface Props {
   name: string;
   label?: string;
+  ariaLabel?: string;
   hint?: any;
   options: DropdownOptions[] | string;
   nested?: boolean;
