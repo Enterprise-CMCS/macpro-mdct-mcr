@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
-import { PlanComplianceTableOverlay } from "./PlanComplianceTableOverlay";
+import { OverlayProvider, PlanComplianceTableOverlay } from "components";
 // types
 import {
   EntityDetailsTableContentShape,
@@ -38,18 +38,20 @@ const planComplianceTableOverlayComponent = (
   submitting: boolean = false
 ) => (
   <RouterWrappedComponent>
-    <PlanComplianceTableOverlay
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      disabled={disabled}
-      entities={mockNaaarStandards}
-      form={form}
-      onSubmit={mockOnSubmit}
-      selectedEntity={mockEntityStore.selectedEntity}
-      submitting={submitting}
-      table={table}
-      validateOnRender={false}
-      verbiage={verbiage}
-    />
+    <OverlayProvider>
+      <PlanComplianceTableOverlay
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        disabled={disabled}
+        entities={mockNaaarStandards}
+        form={form}
+        onSubmit={mockOnSubmit}
+        selectedEntity={mockEntityStore.selectedEntity}
+        submitting={submitting}
+        table={table}
+        validateOnRender={false}
+        verbiage={verbiage}
+      />
+    </OverlayProvider>
   </RouterWrappedComponent>
 );
 

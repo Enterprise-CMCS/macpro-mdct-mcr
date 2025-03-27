@@ -10,6 +10,7 @@ import {
   Sidebar,
   StandardReportPage,
   ModalOverlayReportPage,
+  OverlayProvider,
 } from "components";
 // types
 import {
@@ -79,11 +80,13 @@ export const ReportPageWrapper = () => {
         );
       case PageTypes.PLAN_OVERLAY:
         return (
-          <OverlayReportPage
-            route={route as OverlayReportPageShape}
-            setSidebarHidden={setSidebarHidden}
-            validateOnRender={locationState?.validateOnRender}
-          />
+          <OverlayProvider>
+            <OverlayReportPage
+              route={route as OverlayReportPageShape}
+              setSidebarHidden={setSidebarHidden}
+              validateOnRender={locationState?.validateOnRender}
+            />
+          </OverlayProvider>
         );
       case PageTypes.REVIEW_SUBMIT:
         showSidebar();

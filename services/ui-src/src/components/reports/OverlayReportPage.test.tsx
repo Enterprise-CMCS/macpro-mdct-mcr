@@ -1,7 +1,7 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
 // components
-import { OverlayReportPage, ReportProvider } from "components";
+import { OverlayProvider, OverlayReportPage, ReportProvider } from "components";
 // utils
 import {
   RouterWrappedComponent,
@@ -55,10 +55,12 @@ const overlayReportPageComponent = (route: any = mockOverlayReportPageJson) => (
   <RouterWrappedComponent>
     <UserProvider>
       <ReportProvider>
-        <OverlayReportPage
-          route={route}
-          setSidebarHidden={mockSetSidebarHidden}
-        />
+        <OverlayProvider>
+          <OverlayReportPage
+            route={route}
+            setSidebarHidden={mockSetSidebarHidden}
+          />
+        </OverlayProvider>
       </ReportProvider>
     </UserProvider>
   </RouterWrappedComponent>

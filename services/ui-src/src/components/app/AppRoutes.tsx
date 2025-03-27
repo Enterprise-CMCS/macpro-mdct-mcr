@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { Fragment, useContext } from "react";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 // components
 import {
   AdminBannerProvider,
@@ -30,7 +30,7 @@ export const AppRoutes = () => {
   const naaarReport = useFlags()?.naaarReport;
 
   return (
-    <main id="main-content" tabIndex={-1}>
+    <Box as="main" id="main-content" sx={sx.mainContainer} tabIndex={-1}>
       <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
@@ -149,11 +149,14 @@ export const AppRoutes = () => {
           )}
         </Routes>
       </AdminBannerProvider>
-    </main>
+    </Box>
   );
 };
 
 const sx = {
+  mainContainer: {
+    maxWidth: "100%",
+  },
   spinnerContainer: {
     alignItems: "center",
     width: "100%",

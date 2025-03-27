@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityDetailsMultiformOverlay } from "./EntityDetailsMultiformOverlay";
+import { EntityDetailsMultiformOverlay, OverlayProvider } from "components";
 // constants
 import { nonCompliantLabel } from "../../constants";
 // utils
@@ -17,7 +17,7 @@ import { EntityType } from "types";
 const { details } = mockEntityDetailsMultiformOverlayJson;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
-const mockSelectedEntity = jest.fn();
+const mockSetSelectedEntity = jest.fn();
 const mockSetEntering = jest.fn();
 
 jest.mock("utils/state/useStore");
@@ -33,20 +33,22 @@ const entityDetailsMultiformOverlayComponent = (
   childForms: any = details!.childForms
 ) => (
   <RouterWrappedComponent>
-    <EntityDetailsMultiformOverlay
-      childForms={childForms}
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      disabled={disabled}
-      entityType={EntityType.PLANS}
-      forms={details!.forms}
-      onSubmit={mockOnSubmit}
-      selectedEntity={mockEntityStore.selectedEntity}
-      setEntering={mockSetEntering}
-      setSelectedEntity={mockSelectedEntity}
-      submitting={submitting}
-      validateOnRender={false}
-      verbiage={details!.verbiage}
-    />
+    <OverlayProvider>
+      <EntityDetailsMultiformOverlay
+        childForms={childForms}
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        disabled={disabled}
+        entityType={EntityType.PLANS}
+        forms={details!.forms}
+        onSubmit={mockOnSubmit}
+        selectedEntity={mockEntityStore.selectedEntity}
+        setEntering={mockSetEntering}
+        setSelectedEntity={mockSetSelectedEntity}
+        submitting={submitting}
+        validateOnRender={false}
+        verbiage={details!.verbiage}
+      />
+    </OverlayProvider>
   </RouterWrappedComponent>
 );
 

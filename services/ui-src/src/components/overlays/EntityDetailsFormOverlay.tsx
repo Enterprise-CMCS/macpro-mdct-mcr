@@ -8,7 +8,12 @@ import {
   SaveReturnButton,
 } from "components";
 // types
-import { EntityDetailsMultiformVerbiage, EntityShape, FormJson } from "types";
+import {
+  EntityDetailsMultiformVerbiage,
+  EntityShape,
+  FormJson,
+  TableContentShape,
+} from "types";
 
 export const EntityDetailsFormOverlay = ({
   closeEntityDetailsOverlay,
@@ -19,6 +24,7 @@ export const EntityDetailsFormOverlay = ({
   onSubmit,
   selectedEntity,
   submitting,
+  table,
   validateOnRender,
   verbiage,
 }: Props) => (
@@ -27,7 +33,11 @@ export const EntityDetailsFormOverlay = ({
       onClick={closeEntityDetailsOverlay}
       text={verbiage.backButton}
     />
-    <ReportPageIntro text={verbiage.intro} accordion={verbiage.accordion} />
+    <ReportPageIntro
+      text={verbiage.intro}
+      accordion={verbiage.accordion}
+      table={table}
+    />
     <Box sx={sx.form}>
       <Form
         disabled={disabled}
@@ -59,6 +69,7 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
+  table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
 }
