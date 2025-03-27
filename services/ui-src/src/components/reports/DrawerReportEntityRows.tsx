@@ -120,7 +120,7 @@ export const DrawerReportPageEntityRows = ({
           completeText = `${frequency}: ${utilizedPlans}`;
         }
 
-        return <Text>{completeText}</Text>;
+        return <Text sx={sx.completeText}>{completeText}</Text>;
       };
 
       return (
@@ -144,12 +144,21 @@ export const DrawerReportPageEntityRows = ({
               />
             )
           )}
-          <Flex direction={"column"} sx={sx.entityRow}>
+          <Flex
+            direction={"column"}
+            sx={
+              entity.custom_analysis_method_description
+                ? sx.customEntityRow
+                : sx.entityRow
+            }
+          >
             <Heading as="h4" sx={sx.entityName}>
               {entity.name ?? entity.custom_analysis_method_name}
             </Heading>
             {entity.custom_analysis_method_description && (
-              <Text>{entity.custom_analysis_method_description}</Text>
+              <Text sx={sx.completeText}>
+                {entity.custom_analysis_method_description}
+              </Text>
             )}
             {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
           </Flex>
@@ -187,7 +196,7 @@ function entityRowStyling(canAddEntities: boolean) {
     alignItems: "center",
     minHeight: "3.25rem",
     padding: "0.5rem",
-    paddingLeft: "0.75rem",
+    paddingLeft: "1rem",
     borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
     "&:last-of-type": {
       borderBottom: canAddEntities ?? "none",
@@ -211,17 +220,32 @@ const sx = {
   },
   entityRow: {
     paddingLeft: "2.25rem",
-    maxWidth: "32rem",
+    width: "32rem",
+    maxHeight: "3.75rem",
     gap: "4px",
+    padding: "0.5rem",
+  },
+  customEntityRow: {
+    paddingLeft: "2.25rem",
+    width: "32rem",
+    minHeight: "3.75rem",
+    gap: "4px",
+    padding: "0.5rem",
   },
   entityName: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
+    marginLeft: "2.25rem",
   },
   incompleteText: {
     color: "palette.error_dark",
     fontSize: "sm",
+    paddingLeft: "2.25rem",
+  },
+  completeText: {
+    fontSize: "md",
+    paddingLeft: "2.25rem",
   },
   missingIlos: {
     fontWeight: "bold",
@@ -249,10 +273,10 @@ const sx = {
     },
   },
   enterButton: {
-    width: "4.25rem",
-    height: "1.75rem",
+    width: "5.75rem",
+    height: "2.5rem",
     fontSize: "md",
-    fontWeight: "normal",
+    fontWeight: "bold",
   },
   deleteButton: {
     marginRight: "-2.5rem",
@@ -263,10 +287,10 @@ const sx = {
     },
   },
   disabledButton: {
-    width: "4.25rem",
-    height: "1.75rem",
+    width: "5.75rem",
+    height: "2.5rem",
     fontSize: "md",
-    fontWeight: "normal",
+    fontWeight: "bold",
     color: "palette.gray_lighter",
     borderColor: "palette.gray_lighter",
     "&:hover": {
