@@ -7,6 +7,7 @@ import {
   CompletionData,
   EntityType,
   ScreenReaderOnlyHeaderName,
+  TableContentShape,
 } from "./index";
 
 // REPORT TYPES
@@ -94,15 +95,28 @@ export interface EntityDetailsMultiformShape {
   form: FormJson;
   table?: {
     caption: string;
-    bodyRows: Array<[string]>;
+    bodyRows: string[][];
     headRow: Array<string | ScreenReaderOnlyHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
+export interface EntityDetailsTableVerbiage
+  extends EntityDetailsMultiformVerbiage {
+  totals?: {
+    exceptions?: string;
+    standards?: string;
+  };
+}
+
+export interface EntityDetailsTableContentShape extends TableContentShape {
+  verbiage: EntityDetailsTableVerbiage;
+}
+
 export interface EntityDetailsChildFormShape {
   form: FormJson;
   parentForm: string;
+  table?: EntityDetailsTableContentShape;
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
@@ -114,8 +128,8 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   drawerForm?: never;
   form?: never;
   details?: {
-    childForms?: [EntityDetailsChildFormShape];
-    forms: [EntityDetailsMultiformShape];
+    childForms?: EntityDetailsChildFormShape[];
+    forms: EntityDetailsMultiformShape[];
     verbiage: EntityDetailsMultiformVerbiage;
   };
 }
@@ -136,6 +150,7 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
 export interface ReportPageVerbiage {
   intro: {
     alert?: string;
+    hint?: string;
     section: string;
     subsection?: string;
     spreadsheet?: string;

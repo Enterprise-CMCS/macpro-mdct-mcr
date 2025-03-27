@@ -6,7 +6,9 @@ import {
   EntityType,
   FormJson,
   ScreenReaderOnlyHeaderName,
+  SortableHeadRow,
   State,
+  TableContentShape,
 } from "types";
 
 // REPORT TYPES
@@ -94,15 +96,33 @@ export interface EntityDetailsMultiformShape {
   form: FormJson;
   table?: {
     caption: string;
-    bodyRows: [Array<string>];
+    bodyRows: string[][];
     headRow: Array<string | ScreenReaderOnlyHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
+export interface EntityDetailsTableVerbiage
+  extends EntityDetailsMultiformVerbiage {
+  totals?: {
+    exceptions?: string;
+    standards?: string;
+  };
+}
+
+export interface EntityDetailsTableContentShape extends TableContentShape {
+  sortableHeadRow: SortableHeadRow;
+  verbiage: EntityDetailsTableVerbiage;
+}
+
 export interface EntityDetailsChildFormShape {
   form: FormJson;
   parentForm: string;
+  table?: {
+    caption: string;
+    sortableHeadRow: SortableHeadRow;
+    verbiage: EntityDetailsTableVerbiage;
+  };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
@@ -114,8 +134,8 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   drawerForm?: never;
   form?: never;
   details?: {
-    childForms?: [EntityDetailsChildFormShape];
-    forms: [EntityDetailsMultiformShape];
+    childForms?: EntityDetailsChildFormShape[];
+    forms: EntityDetailsMultiformShape[];
     verbiage: EntityDetailsMultiformVerbiage;
   };
 }
@@ -136,6 +156,7 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
 export interface ReportPageVerbiage {
   intro: {
     alert?: string;
+    hint?: string;
     section: string;
     subsection?: string;
     spreadsheet?: string;

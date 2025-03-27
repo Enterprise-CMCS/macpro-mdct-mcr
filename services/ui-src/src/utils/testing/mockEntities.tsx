@@ -1,3 +1,5 @@
+import { EntityShape } from "types";
+
 export const mockAccessMeasuresEntity = {
   id: "mock-access-measures-id",
   accessMeasure_generalCategory: [{ value: "mock-category" }],
@@ -164,3 +166,27 @@ export const mockCompletedSanctionsFormattedEntityData = {
   remediationDate: "01/01/2001",
   correctiveActionPlan: "mock-answer",
 };
+
+export const mockNaaarStandards: EntityShape[] = [
+  {
+    id: "mockStandard",
+    "standard_standardDescription-mockId": "Mock Description",
+    "standard_analysisMethodsUtilized-mockId": [
+      { key: "mockAnalysis1", value: "Mock Method 1" },
+      { key: "mockAnalysis2", value: "Mock Method 2" },
+    ],
+    standard_coreProviderTypeCoveredByStandard: [
+      { key: "mockProviderType-mockId", value: "Mock Provider" },
+    ],
+    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
+      "Mock Other Provider",
+    standard_standardType: [
+      { key: "mockStandardType", value: "Mock Standard Type" },
+    ],
+    standard_populationCoveredByStandard: [
+      { key: "mockPopulation", value: "Mock Population" },
+    ],
+    standard_applicableRegion: [{ key: "mockRegion", value: "Other, specify" }],
+    "standard_applicableRegion-otherText": "Mock Other Region",
+  },
+];
