@@ -109,7 +109,13 @@ export const ReportPageWrapper = () => {
         {report ? (
           <>
             <Sidebar isHidden={sidebarHidden} />
-            <Flex id="report-content" sx={sx.reportContainer}>
+            <Flex
+              id="report-content"
+              sx={{
+                ...sx.reportContainer,
+                ...(sidebarHidden ? sx.reportWideWidth : sx.reportWidth),
+              }}
+            >
               {reportTemplate && renderPageSection(reportTemplate)}
             </Flex>
           </>
@@ -137,7 +143,6 @@ const sx = {
   reportContainer: {
     flexDirection: "column",
     width: "100%",
-    maxWidth: "reportPageWidth",
     marginY: "3.5rem",
     marginLeft: "3.5rem",
     ".mobile &": {
@@ -148,6 +153,12 @@ const sx = {
       fontSize: "lg",
       fontWeight: "bold",
     },
+  },
+  reportWidth: {
+    maxWidth: "reportPageWidth",
+  },
+  reportWideWidth: {
+    maxWidth: "45rem",
   },
   spinnerContainer: {
     alignItems: "center",

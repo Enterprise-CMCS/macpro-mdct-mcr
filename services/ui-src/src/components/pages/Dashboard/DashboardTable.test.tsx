@@ -177,7 +177,12 @@ describe("<DashboardTable />", () => {
     test("Check that MCPAR Dashboard view renders", async () => {
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${mcparVerbiage.intro.header}`,
+          })
+        ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testProgram" })[0]
         ).toBeVisible();
@@ -195,7 +200,12 @@ describe("<DashboardTable />", () => {
       });
       render(mlrDashboardViewWithReports);
       await waitFor(() => {
-        expect(screen.getByText(mlrVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${mlrVerbiage.intro.header}`,
+          })
+        ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", { name: "testSubmission" })[0]
         ).toBeVisible();
@@ -210,7 +220,12 @@ describe("<DashboardTable />", () => {
       });
       render(naaarDashboardViewEmpty);
       await waitFor(() => {
-        expect(screen.getByText(naaarVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${naaarVerbiage.intro.header}`,
+          })
+        ).toBeVisible();
         expect(screen.queryByText("Leave form")).not.toBeInTheDocument();
       });
     });

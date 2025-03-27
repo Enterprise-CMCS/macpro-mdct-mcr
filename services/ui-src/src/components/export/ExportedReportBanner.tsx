@@ -7,6 +7,7 @@ import { useStore } from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import naaarVerbiage from "verbiage/pages/naaar/naaar-export";
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 
@@ -18,7 +19,7 @@ export const ExportedReportBanner = () => {
   const verbiageMap: { [key in ReportType]: any } = {
     MCPAR: mcparVerbiage,
     MLR: mlrVerbiage,
-    NAAAR: undefined,
+    NAAAR: naaarVerbiage,
   };
 
   const verbiage = verbiageMap[reportType];

@@ -3,6 +3,7 @@ import { Button, Td, Tr, Spinner } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
+import { otherSpecify } from "utils";
 // utils
 import {
   AdminArchiveButton,
@@ -50,9 +51,10 @@ export const DashboardTable = ({
         {/* Plan type (NAAAR only) */}
         {report.reportType === ReportType.NAAAR && (
           <Td>
-            {report["planTypeIncludedInProgram"]?.[0].value === "Other, specify"
-              ? report["planTypeIncludedInProgram-otherText"]
-              : report.planTypeIncludedInProgram?.[0].value}
+            {otherSpecify(
+              report["planTypeIncludedInProgram"]?.[0].value,
+              report["planTypeIncludedInProgram-otherText"]
+            )}
           </Td>
         )}
         {/* Date Fields */}

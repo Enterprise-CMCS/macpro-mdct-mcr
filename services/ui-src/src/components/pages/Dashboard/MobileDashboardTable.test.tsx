@@ -155,7 +155,12 @@ describe("<MobileDashboardTable />", () => {
 
     test("MCPAR Dashboard view renders", async () => {
       await waitFor(() => {
-        expect(screen.getByText(mcparVerbiage.intro.header)).toBeVisible();
+        expect(
+          screen.getByRole("heading", {
+            level: 1,
+            name: `Minnesota ${mcparVerbiage.intro.header}`,
+          })
+        ).toBeVisible();
         expect(screen.getAllByTestId("mobile-row")[0]).toBeVisible();
         expect(
           screen.queryByText(mcparVerbiage.body.empty)

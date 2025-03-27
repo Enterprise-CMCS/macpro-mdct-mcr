@@ -1225,6 +1225,46 @@
         ],
         "childForms": [
           {
+            "parentForm": "planCompliance43868",
+            "verbiage": {
+              "backButton": "Return to {{planName}}: Select non-compliant / exception standards for 42 C.F.R. § 438.68 dashboard",
+              "intro": {
+                "hint": "Report on plan compliance with the state’s 42 C.F.R. § 438.68 standard during the reporting period. If this standard is fully compliant, return to the plan compliance dashboard.",
+                "section": "III. Plan compliance data for {{planName}}",
+                "subsection": "{{planName}}: Provide details about plan non-compliance and exceptions for this standard for 42 C.F.R. § 438.68"
+              }
+            },
+            "table": {
+              "caption": "42 C.F.R. § 438.68 standards",
+              "sortableHeadRow": {
+                "count": { "header": "#" },
+                "provider": { "header": "Provider type" },
+                "standardType": { "header": "Standard type" },
+                "description": { "header": "Standard description" },
+                "population": { "header": "Population" },
+                "region": { "header": "Region" },
+                "actions": { "header": "Actions", "hidden": true }  
+              },
+              "verbiage": {
+                "backButton": "Return to plan compliance data for {{planName}} dashboard",
+                "intro": {
+                  "hint": "Select “Enter” for all the standards that are not compliant or have an exception granted for the state’s 42 C.F.R. § 438.68 standards for the plan listed above. If a standard is fully compliant, you do not need to enter that standard.",
+                  "section": "III. Plan compliance data for {{planName}}",
+                  "subsection": "{{planName}}: Select non-compliant / exception standards and provide details for 438.68"
+                },
+                "totals": {
+                  "exceptions": "§438.68(d) exceptions granted total count",
+                  "standards": "§438.68 non-compliant standards total count"
+                }
+              }
+            },
+            "form": {
+              "id": "planCompliance43868_details",
+              "fields": [
+              ]
+            }
+          },
+          {
             "parentForm": "planCompliance438206",
             "verbiage": {
               "accordion": {

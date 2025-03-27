@@ -90,7 +90,10 @@ describe("<AppRoutes />", () => {
         await render(appRoutesComponent(history));
       });
       expect(
-        screen.getByText("Managed Care Program Annual Report (MCPAR)")
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Minnesota Managed Care Program Annual Report (MCPAR)",
+        })
       ).toBeVisible();
     });
 
@@ -106,7 +109,10 @@ describe("<AppRoutes />", () => {
         await render(appRoutesComponent(history));
       });
       expect(
-        screen.getByText("Medicaid Medical Loss Ratio (MLR)")
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Minnesota Medicaid Medical Loss Ratio (MLR)",
+        })
       ).toBeVisible();
     });
   });
@@ -145,9 +151,10 @@ describe("<AppRoutes />", () => {
         await render(appRoutesComponent(history));
       });
       expect(
-        screen.getByText(
-          "Network Adequacy and Access Assurances Report (NAAAR)"
-        )
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Minnesota Network Adequacy and Access Assurances Report (NAAAR)",
+        })
       ).toBeVisible();
     });
 
