@@ -51,6 +51,13 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     undefined
   );
 
+  const formattedEntityData = getFormattedEntityData(
+    entityType,
+    selectedEntity,
+    report?.fieldData
+  );
+  const addEditDrawerText = formattedEntityData.assessmentDate ? "Edit" : "Add";
+  const addEditDrawerTitle = addEditDrawerText + verbiage.drawerTitle;
   const { updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
@@ -258,6 +265,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,
+            drawerTitle: addEditDrawerTitle,
             drawerDetails: getFormattedEntityData(
               entityType,
               selectedEntity,
