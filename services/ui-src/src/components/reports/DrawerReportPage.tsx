@@ -215,14 +215,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const getDrawerTitle = () => {
+    let addOrEdit = "";
     let name =
       selectedEntity?.name ||
       selectedEntity?.custom_analysis_method_name ||
       "Add other";
     if (isReportingOnStandards && report) {
+      addOrEdit = selectedEntity ? "Edit " : "Add ";
       name = report?.programName;
     }
-    return `${verbiage.drawerTitle} ${name}`;
+    return `${addOrEdit}${verbiage.drawerTitle} ${name}`;
   };
 
   const displayErrorMessages = () => {

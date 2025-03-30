@@ -549,7 +549,7 @@
         "deleteModalTitle": "Are you sure you want to delete this standard?",
         "deleteModalConfirmButtonText": "Yes, delete standard",
         "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-        "drawerTitle": "Add access and network adequacy standard for ",
+        "drawerTitle": "access and network adequacy standard for ",
         "missingEntityMessage": [
           {
             "type": "p",
@@ -1345,7 +1345,7 @@
                       {
                         "id": "yCleNTI4lSJCwNhuq59KmU",
                         "label": "Does not adhere to applicability date"
-                      },                      
+                      },
                       {
                         "id": "mrCzwGVdpvl81r5P0JDTSr",
                         "label": "Other, specify",
