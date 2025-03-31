@@ -179,7 +179,7 @@ export const ChoiceListField = ({
   const onChangeHandler = (event: InputChangeEvent) => {
     const clickedOption = { key: event.target.id, value: event.target.value };
     const isOptionChecked = event.target.checked;
-    let selectedOptions = [];
+    let selectedOptions = displayValue || [];
 
     // handle radio
     if (type === "radio") {
@@ -189,13 +189,11 @@ export const ChoiceListField = ({
       );
       clearUncheckedNestedFields(everyOtherOption);
     }
-
     // handle checkbox
     if (type === "checkbox") {
-      selectedOptions = [...(form.getValues(name) || [])];
-
       if (isOptionChecked) {
-        selectedOptions.push(clickedOption);
+        // using selectedOptions.push() here was causing tests to fail
+        selectedOptions = [...selectedOptions, clickedOption];
       } else {
         selectedOptions = selectedOptions.filter(
           (field) => field.key !== clickedOption.key
