@@ -167,7 +167,11 @@ export const renderFieldTableBody = (
           (entity: EntityShape) => entity.id
         );
         // if choice is checked in any entity, and the choice has children to display, render them
-        if (entitiesWithCheckedChoice?.length > 0 && choice?.children) {
+        if (
+          entityType !== EntityType.ANALYSIS_METHODS &&
+          entitiesWithCheckedChoice?.length > 0 &&
+          choice?.children
+        ) {
           choice.children?.forEach((childField: FormField) =>
             renderFieldRow(childField, parentFieldCheckedChoiceIds)
           );
