@@ -34,6 +34,7 @@ import {
   getForm,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
+  translate,
   useStore,
 } from "utils";
 
@@ -224,7 +225,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       addOrEdit = selectedEntity ? "Edit " : "Add ";
       name = report?.programName;
     }
-    return `${addOrEdit}${verbiage.drawerTitle} ${name}`;
+    return translate(verbiage.drawerTitle, {
+      action: addOrEdit,
+      name,
+    });
   };
 
   const displayErrorMessages = () => {

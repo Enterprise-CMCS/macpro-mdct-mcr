@@ -1,6 +1,11 @@
 // utils
-import { AnyObject, EntityShape, EntityType } from "types";
-import { compareText, maskResponseData, otherSpecify } from "utils";
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  ModalDrawerReportPageVerbiage,
+} from "types";
+import { compareText, maskResponseData, otherSpecify, translate } from "utils";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -113,3 +118,31 @@ export const entityWasUpdated = (
   originalEntity: EntityShape,
   newEntity: AnyObject
 ) => JSON.stringify(originalEntity) !== JSON.stringify(newEntity);
+
+export const getAddEditDrawerText = (
+  entityType: EntityType,
+  formattedEntityData: AnyObject,
+  verbiage: ModalDrawerReportPageVerbiage
+) => {
+  let addEditDrawerText = "Add";
+  switch (entityType) {
+    case EntityType.ACCESS_MEASURES:
+      if (formattedEntityData.provider) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    case EntityType.QUALITY_MEASURES:
+      if (formattedEntityData.perPlanResponses) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    case EntityType.SANCTIONS:
+      if (formattedEntityData.assessmentDate) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    default:
+      break;
+  }
+  return translate(verbiage.drawerTitle, { action: addEditDrawerText });
+};

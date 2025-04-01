@@ -315,7 +315,7 @@
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",
             "deleteModalConfirmButtonText": "Yes, delete method",
             "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this analysis method in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-            "drawerTitle": "Analysis method: ",
+            "drawerTitle": "Analysis method: {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -549,7 +549,7 @@
         "deleteModalTitle": "Are you sure you want to delete this standard?",
         "deleteModalConfirmButtonText": "Yes, delete standard",
         "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-        "drawerTitle": "access and network adequacy standard for ",
+        "drawerTitle": "{{action}} access and network adequacy standard for {{name}}",
         "missingEntityMessage": [
           {
             "type": "p",

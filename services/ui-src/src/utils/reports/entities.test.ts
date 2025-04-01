@@ -1,4 +1,4 @@
-import { getFormattedEntityData } from "./entities";
+import { getAddEditDrawerText, getFormattedEntityData } from "./entities";
 import { EntityType } from "types";
 import {
   mockAccessMeasuresEntity,
@@ -12,6 +12,7 @@ import {
   mockReportFieldData,
   mockQualityMeasuresEntityMissingDetails,
   mockQualityMeasuresFormattedEntityDataMissingDetails,
+  mockModalDrawerReportPageVerbiage,
 } from "utils/testing/setupJest";
 
 describe("Test getFormattedEntityData", () => {
@@ -70,5 +71,43 @@ describe("Test getFormattedEntityData", () => {
       mockReportFieldData
     );
     expect(entityData).toEqual({});
+  });
+});
+
+describe("Test getFormattedEntityData", () => {
+  test("returns 'Add' when no conditions are met", () => {
+    const result = getAddEditDrawerText(
+      EntityType.ACCESS_MEASURES,
+      { provider: false },
+      mockModalDrawerReportPageVerbiage
+    );
+    expect(result).toBe("Add Mock drawer title");
+  });
+
+  test("returns 'Edit' when provider exists for ACCESS_MEASURES", () => {
+    const result = getAddEditDrawerText(
+      EntityType.ACCESS_MEASURES,
+      { provider: true },
+      mockModalDrawerReportPageVerbiage
+    );
+    expect(result).toBe("Edit Mock drawer title");
+  });
+
+  test("returns 'Edit' when perPlanResponses exists for QUALITY_MEASURES", () => {
+    const result = getAddEditDrawerText(
+      EntityType.QUALITY_MEASURES,
+      { perPlanResponses: true },
+      mockModalDrawerReportPageVerbiage
+    );
+    expect(result).toBe("Edit Mock drawer title");
+  });
+
+  test("returns 'Edit' when assessmentDate exists for SANCTIONS", () => {
+    const result = getAddEditDrawerText(
+      EntityType.SANCTIONS,
+      { assessmentDate: true },
+      mockModalDrawerReportPageVerbiage
+    );
+    expect(result).toBe("Edit Mock drawer title");
   });
 });

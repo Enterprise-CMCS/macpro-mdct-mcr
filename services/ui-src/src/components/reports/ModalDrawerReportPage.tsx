@@ -36,6 +36,7 @@ import {
   resetClearProp,
   parseCustomHtml,
   useBreakpoint,
+  getAddEditDrawerText,
 } from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
@@ -57,28 +58,6 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     report?.fieldData
   );
 
-  let addEditDrawerText = "Add ";
-  switch (entityType) {
-    case EntityType.ACCESS_MEASURES:
-      if (formattedEntityData.provider) {
-        addEditDrawerText = "Edit ";
-      }
-      break;
-    case EntityType.QUALITY_MEASURES:
-      if (formattedEntityData.perPlanResponses) {
-        addEditDrawerText = "Edit ";
-      }
-      break;
-    case EntityType.SANCTIONS:
-      if (formattedEntityData.assessmentDate) {
-        addEditDrawerText = "Edit ";
-      }
-      break;
-    default:
-      break;
-  }
-
-  const addEditDrawerTitle = addEditDrawerText + verbiage.drawerTitle;
   const { updateReport } = useContext(ReportContext);
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
 
@@ -286,7 +265,11 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,
-            drawerTitle: addEditDrawerTitle,
+            drawerTitle: getAddEditDrawerText(
+              entityType,
+              formattedEntityData,
+              verbiage
+            ),
             drawerDetails: getFormattedEntityData(
               entityType,
               selectedEntity,

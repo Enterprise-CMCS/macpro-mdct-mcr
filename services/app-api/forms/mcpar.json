@@ -1224,7 +1224,7 @@
                 "entityUnfinishedMessage": "Complete the remaining indicators for this access measure by entering details.",
                 "enterEntityDetailsButtonText": "Enter details",
                 "editEntityDetailsButtonText": "Edit details",
-                "drawerTitle": "details for access measure"
+                "drawerTitle": "{{action}} details for access measure"
               },
               "modalForm": {
                 "id": "cam-modal",
