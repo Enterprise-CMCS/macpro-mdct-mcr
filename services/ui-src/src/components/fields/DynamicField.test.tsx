@@ -39,11 +39,11 @@ jest.mock("react-router-dom", () => ({
 
 const mockHydrationPlans = [
   {
-    id: "mock-plan-id-1",
+    id: "mockPlanId1",
     name: "mock-plan-1",
   },
   {
-    id: "mock-plan-id-2",
+    id: "mockPlanId2",
     name: "mock-plan-2",
   },
 ];
@@ -255,7 +255,7 @@ describe("<DynamicField />", () => {
           fieldData: {
             plans: [
               {
-                id: "mock-plan-id-2",
+                id: "mockPlanId2",
                 name: "mock-plan-2",
               },
             ],
@@ -264,19 +264,19 @@ describe("<DynamicField />", () => {
                 ...mockSanctionsEntity,
                 sanction_planName: {
                   label: "sanction_planName",
-                  value: "mock-plan-id-2",
+                  value: "mockPlanId2",
                 },
               },
             ],
             qualityMeasures: [
               {
                 ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                qualityMeasure_plan_measureResults_mockPlanId2:
                   "mock-response-2",
               },
               {
                 ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
+                qualityMeasure_plan_measureResults_mockPlanId2:
                   "mock-response-2",
               },
             ],
@@ -307,12 +307,12 @@ describe("<DynamicField />", () => {
             ilos: [],
             plans: [
               {
-                id: "mock-plan-id-1",
+                id: "mockPlanId1",
                 "mock-drawer-text-field": "example-explanation",
                 name: "mock-plan-name-1",
               },
               {
-                id: "mock-plan-id-2",
+                id: "mockPlanId2",
                 name: "mock-plan-name-2",
                 plan_ilosOfferedByPlan: [
                   {
@@ -374,7 +374,7 @@ describe("<DynamicField />", () => {
           fieldData: {
             plans: [
               {
-                id: "mock-plan-id-2",
+                id: "mockPlanId2",
                 name: "mock-plan-2",
               },
             ],
@@ -383,7 +383,7 @@ describe("<DynamicField />", () => {
                 ...DEFAULT_ANALYSIS_METHODS[0],
                 analysis_method_applicable_plans: [
                   {
-                    key: "mock-plan-id-2",
+                    key: "mockPlanId2",
                     name: "mock-plan-2",
                   },
                 ],
@@ -544,11 +544,11 @@ describe("<DynamicField />", () => {
           fieldData: {
             plans: [
               {
-                id: "mock-plan-id-1",
+                id: "mockPlanId1",
                 name: "mock-plan-1",
               },
               {
-                id: "mock-plan-id-2",
+                id: "mockPlanId2",
                 name: "mock-plan-2",
               },
               { id: firstDynamicField.id, name: "123" },

@@ -82,7 +82,7 @@ export const mockUnfinishedQualityMeasuresFormattedEntityData = {
 export const mockQualityMeasuresEntityMissingReportingPeriodAndDetails = {
   ...mockQualityMeasuresEntity,
   qualityMeasure_reportingPeriod: undefined,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+  qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
 };
 
 export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails =
@@ -98,8 +98,8 @@ export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDeta
 export const mockQualityMeasuresEntityMissingReportingPeriod = {
   ...mockQualityMeasuresEntity,
   qualityMeasure_reportingPeriod: undefined,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-  "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
+  qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
+  qualityMeasure_plan_measureResults_mockPlanId2: "mock-response-2",
 };
 
 export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriod = {
@@ -113,7 +113,7 @@ export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriod = {
 
 export const mockQualityMeasuresEntityMissingDetails = {
   ...mockQualityMeasuresEntity,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+  qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
 };
 
 export const mockQualityMeasuresFormattedEntityDataMissingDetails = {
@@ -126,8 +126,8 @@ export const mockQualityMeasuresFormattedEntityDataMissingDetails = {
 
 export const mockCompletedQualityMeasuresEntity = {
   ...mockQualityMeasuresEntity,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-  "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
+  qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
+  qualityMeasure_plan_measureResults_mockPlanId2: "mock-response-2",
 };
 
 export const mockCompletedQualityMeasuresFormattedEntityData = {
@@ -142,7 +142,7 @@ export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "MCPAR" }],
   sanction_interventionTopic: [{ value: "mock-topic" }],
-  sanction_planName: { label: "sanction_planName", value: "mock-plan-id-1" },
+  sanction_planName: { label: "sanction_planName", value: "mockPlanId1" },
   sanction_interventionReason: "mock-reason",
   sanction_noncomplianceInstances: "1234567",
   sanction_dollarAmount: "1234.52",
@@ -167,18 +167,47 @@ export const mockCompletedSanctionsFormattedEntityData = {
   correctiveActionPlan: "mock-answer",
 };
 
+export const mockNaaarAnalysisMethods: EntityShape[] = [
+  {
+    id: "mockAnalysis1",
+    name: "Mock Method 1",
+    analysis_method_applicable_plans: [
+      {
+        key: "mockPlanId1",
+        name: "mock-plan-1",
+      },
+    ],
+  },
+  {
+    id: "mockAnalysis2",
+    name: "Mock Method 2",
+    analysis_method_applicable_plans: [
+      {
+        key: "mockPlanId1",
+        name: "mock-plan-1",
+      },
+    ],
+  },
+];
+
 export const mockNaaarStandards: EntityShape[] = [
   {
     id: "mockStandard",
-    "standard_standardDescription-mockId": "Mock Description",
-    "standard_analysisMethodsUtilized-mockId": [
-      { key: "mockAnalysis1", value: "Mock Method 1" },
-      { key: "mockAnalysis2", value: "Mock Method 2" },
+    "standard_standardDescription-mockPlanId1": "Mock Description",
+    "standard_analysisMethodsUtilized-mockPlanId1": [
+      {
+        key: "standard_analysisMethodsUtilized-mockPlanId1-mockAnalysis1",
+        value: "Mock Method 1",
+      },
+      {
+        key: "standard_analysisMethodsUtilized-mockPlanId1-mockAnalysis2",
+        value: "Mock Method 2",
+      },
     ],
     standard_coreProviderTypeCoveredByStandard: [
-      { key: "mockProviderType-mockId", value: "Mock Provider" },
+      { key: "mockProviderType-mockPlanId1", value: "Mock Provider" },
     ],
-    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
+    "standard_coreProviderTypeCoveredByStandard-mockPlanId1-otherText":
       "Mock Other Provider",
     standard_standardType: [
       { key: "mockStandardType", value: "Mock Standard Type" },

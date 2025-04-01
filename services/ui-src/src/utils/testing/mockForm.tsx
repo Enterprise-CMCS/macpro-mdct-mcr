@@ -834,6 +834,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           caption: "Mock Child Table",
           sortableHeadRow: {
             id: { header: "ID" },
+            standardType: { header: "Mock Standard Type Header" },
             actions: { header: "Actions", hidden: true },
           },
           verbiage: {
