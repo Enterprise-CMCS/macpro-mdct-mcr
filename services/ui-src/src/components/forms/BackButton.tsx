@@ -30,10 +30,13 @@ const sx = {
     fontWeight: "normal",
     color: "palette.primary",
     display: "flex",
-    position: "relative",
-    right: "3rem",
     marginBottom: "2rem",
+    marginLeft: "-3rem",
     marginTop: "-2rem",
+    ".mobile &": {
+      marginLeft: "0",
+      whiteSpace: "normal",
+    },
   },
   backIcon: {
     color: "palette.primary",
