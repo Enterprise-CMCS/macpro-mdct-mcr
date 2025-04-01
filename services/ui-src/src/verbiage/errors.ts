@@ -42,6 +42,7 @@ export const bannerErrors = {
 export const validationErrors = {
   REQUIRED_GENERIC: "A response is required",
   REQUIRED_CHECKBOX: "Select at least one response",
+  REQUIRED_ONE_CHECKBOX: "Select only one response",
   INVALID_GENERIC: "Response must be valid",
   INVALID_EMAIL: "Response must be a valid email address",
   INVALID_URL: "Response must be a valid hyperlink/URL",
