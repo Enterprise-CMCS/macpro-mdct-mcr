@@ -422,7 +422,6 @@ const sx = {
     ul: {
       listStyle: "none",
       ".entityResponse": {
-        paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
           fontSize: "sm",
@@ -430,7 +429,6 @@ const sx = {
       },
       p: {
         lineHeight: "1.25rem",
-        marginBottom: "0.5rem",
       },
     },
     "&:last-of-type": {
@@ -438,7 +436,6 @@ const sx = {
     },
   },
   entityName: {
-    marginBottom: "1rem",
     fontWeight: "bold",
   },
   noResponse: {
