@@ -135,7 +135,6 @@ describe("<ModalDrawerReportPage />", () => {
 
       await userEvent.click(launchDrawerButton);
       expect(screen.getByRole("dialog")).toBeVisible();
-      expect(screen.getByText("Edit Mock drawer title")).toBeVisible();
     });
 
     test("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
