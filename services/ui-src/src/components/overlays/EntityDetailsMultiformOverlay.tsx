@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -9,18 +10,23 @@ import {
 // components
 import { Box, Button, Heading, Td, Text, Tr } from "@chakra-ui/react";
 import {
+  BackButton,
   EntityDetailsFormOverlay,
-  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
+  OverlayContext,
+  PlanComplianceTableOverlay,
   ReportPageIntro,
-  Table,
   SaveReturnButton,
-  BackButton,
+  Table,
 } from "components";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import {
+  nonCompliantLabel,
+  planComplianceStandardExceptionsLabel,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import {
   AnyObject,
@@ -30,10 +36,11 @@ import {
   EntityDetailsTableVerbiage,
   EntityShape,
   EntityType,
+  ReportShape,
   ScreenReaderOnlyHeaderName,
 } from "types";
 // utils
-import { translateVerbiage, useStore } from "utils";
+import { translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -42,6 +49,7 @@ export const EntityDetailsMultiformOverlay = ({
   entityType,
   forms,
   onSubmit,
+  report,
   selectedEntity,
   setEntering,
   setSelectedEntity,
@@ -49,7 +57,8 @@ export const EntityDetailsMultiformOverlay = ({
   validateOnRender,
   verbiage,
 }: Props) => {
-  const [childFormId, setChildFormId] = useState<string | null>(null);
+  const { childFormId, selectedStandard, setChildFormId, setSelectedStandard } =
+    useContext(OverlayContext);
 
   const ChildForm = () => {
     const formObject = childForms?.find(
@@ -75,15 +84,15 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleSubmit = (enteredData: AnyObject) => {
+    const handleChildSubmit = (enteredData: AnyObject) => {
       const updatedEntity = { ...selectedEntity, ...enteredData };
       setSelectedEntity(updatedEntity);
       onSubmit(enteredData, false);
     };
 
     if (table) {
-      const { report } = useStore();
-      const entities = report?.fieldData["standards"] || [];
+      const analysisMethods = report?.fieldData["analysisMethods"] || [];
+      const standards = report?.fieldData["standards"] || [];
 
       const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
       const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
@@ -96,14 +105,55 @@ export const EntityDetailsMultiformOverlay = ({
         verbiage: translatedTableVerbiage,
       };
 
-      // TODO: Handle submit
+      const handleTableSubmit = (enteredData: AnyObject) => {
+        const standardId = selectedStandard?.entity.id;
+        const standardKeyPrefix = `${planComplianceStandardKey}-${standardId}`;
+        const allStandardKeys = Object.keys(selectedEntity || {}).filter(
+          (key) => key.startsWith(standardKeyPrefix)
+        );
+        const exceptionKeys = allStandardKeys.filter((key) =>
+          key.startsWith(`${standardKeyPrefix}-exceptions`)
+        );
+        const nonComplianceKeys = allStandardKeys.filter((key) =>
+          key.startsWith(`${standardKeyPrefix}-nonCompliance`)
+        );
+        const standardCompliance = enteredData[standardKeyPrefix] || [];
+        // No checkbox selected
+        const isCompliant = standardCompliance.length === 0;
+        const hasExceptions =
+          standardCompliance[0]?.value ===
+          planComplianceStandardExceptionsLabel;
+        const updatedData = { ...enteredData };
+
+        if (isCompliant) {
+          // Set all standard keys to undefined
+          allStandardKeys.forEach((key) => {
+            updatedData[key] = undefined;
+          });
+        } else if (hasExceptions) {
+          // Remove nonCompliance if there are exceptions
+          nonComplianceKeys.forEach((key) => {
+            updatedData[key] = undefined;
+          });
+        } else {
+          // Remove exceptions if there is nonCompliance
+          exceptionKeys.forEach((key) => {
+            updatedData[key] = undefined;
+          });
+        }
+
+        handleChildSubmit(updatedData);
+        setSelectedStandard(null);
+      };
+
       return (
         <PlanComplianceTableOverlay
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
-          entities={entities}
+          analysisMethods={analysisMethods}
+          standards={standards}
           form={form}
-          onSubmit={() => {}}
+          onSubmit={handleTableSubmit}
           selectedEntity={selectedEntity}
           submitting={submitting}
           table={tableProps}
@@ -113,14 +163,20 @@ export const EntityDetailsMultiformOverlay = ({
       );
     }
 
+    const handleFormSubmit = (enteredData: AnyObject) => {
+      handleChildSubmit(enteredData);
+      closeEntityDetailsOverlay();
+    };
+
     return (
       <EntityDetailsFormOverlay
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         selectedEntity={selectedEntity}
         submitting={submitting}
+        sxOverride={sxOverride}
         validateOnRender={validateOnRender || false}
         verbiage={translatedVerbiage}
       />
@@ -377,6 +433,7 @@ interface Props {
   forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
+  report?: ReportShape;
   selectedEntity?: EntityShape;
   setEntering: Function;
   setSelectedEntity: Function;
@@ -435,6 +492,14 @@ const sx = {
     "&:disabled": {
       borderColor: "palette.gray_lighter",
       color: "palette.gray_lighter",
+    },
+  },
+};
+
+const sxOverride = {
+  form: {
+    "legend.ds-c-label": {
+      color: "palette.gray",
     },
   },
 };

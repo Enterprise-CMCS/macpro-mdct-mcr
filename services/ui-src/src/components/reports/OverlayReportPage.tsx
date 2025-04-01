@@ -98,7 +98,6 @@ export const OverlayReportPage = ({
             {parseCustomHtml(errorMessage || "")}
           </Box>
         );
-        // TODO: Update this when working through the actual logic pertaining to Standards and how it'll be checked
       } else if (standardEntities.length === 0) {
         return (
           <Box sx={sx.missingEntityMessage}>
@@ -231,6 +230,7 @@ export const OverlayReportPage = ({
         entityType={entityType as EntityType}
         forms={details.forms}
         onSubmit={onSubmit}
+        report={report}
         selectedEntity={selectedEntity}
         setEntering={setEntering}
         setSelectedEntity={setSelectedEntity}

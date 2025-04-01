@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
-import { EntityDetailsMultiformOverlay } from "./EntityDetailsMultiformOverlay";
+import { EntityDetailsMultiformOverlay, OverlayProvider } from "components";
 // constants
 import { nonCompliantLabel } from "../../constants";
 // utils
@@ -10,15 +10,11 @@ import {
   mockEntityDetailsMultiformOverlayJson,
   mockStateUserStore,
   RouterWrappedComponent,
+  mockNaaarAnalysisMethods,
+  mockNaaarStandards,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { EntityType } from "types";
-
-const { details } = mockEntityDetailsMultiformOverlayJson;
-const mockCloseEntityDetailsOverlay = jest.fn();
-const mockOnSubmit = jest.fn();
-const mockSelectedEntity = jest.fn();
-const mockSetEntering = jest.fn();
+import { EntityType, ReportShape } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -27,26 +23,42 @@ mockedUseStore.mockReturnValue({
   ...mockEntityStore,
 });
 
+const { details } = mockEntityDetailsMultiformOverlayJson;
+const mockCloseEntityDetailsOverlay = jest.fn();
+const mockOnSubmit = jest.fn();
+const mockSetSelectedEntity = jest.fn();
+const mockSetEntering = jest.fn();
+const mockReport = {
+  fieldData: {
+    analysisMethods: mockNaaarAnalysisMethods,
+    standards: mockNaaarStandards,
+  },
+} as unknown as ReportShape;
+
 const entityDetailsMultiformOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false,
-  childForms: any = details!.childForms
+  childForms: any = details!.childForms,
+  selectedEntity: any = mockEntityStore.selectedEntity
 ) => (
   <RouterWrappedComponent>
-    <EntityDetailsMultiformOverlay
-      childForms={childForms}
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      disabled={disabled}
-      entityType={EntityType.PLANS}
-      forms={details!.forms}
-      onSubmit={mockOnSubmit}
-      selectedEntity={mockEntityStore.selectedEntity}
-      setEntering={mockSetEntering}
-      setSelectedEntity={mockSelectedEntity}
-      submitting={submitting}
-      validateOnRender={false}
-      verbiage={details!.verbiage}
-    />
+    <OverlayProvider>
+      <EntityDetailsMultiformOverlay
+        childForms={childForms}
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        disabled={disabled}
+        entityType={EntityType.PLANS}
+        forms={details!.forms}
+        onSubmit={mockOnSubmit}
+        report={mockReport}
+        selectedEntity={selectedEntity}
+        setEntering={mockSetEntering}
+        setSelectedEntity={mockSetSelectedEntity}
+        submitting={submitting}
+        validateOnRender={false}
+        verbiage={details!.verbiage}
+      />
+    </OverlayProvider>
   </RouterWrappedComponent>
 );
 
@@ -163,11 +175,32 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     );
     await userEvent.click(updatedEnterButton);
 
-    // Table
+    // Child Table
     const childTable = screen.getByRole("table", {
       name: "Mock Child Table",
     });
     expect(childTable).toBeVisible();
+
+    // Click Enter in Child Table
+    const updatedEnterTableButton = within(childTable).getByRole("button", {
+      name: "Enter",
+    });
+    await userEvent.click(updatedEnterTableButton);
+
+    // Child Form
+    const radioButtonYes = screen.getByRole("radio", {
+      name: "Mock Yes",
+    });
+    await userEvent.click(radioButtonYes);
+
+    const submitButton = screen.getByRole("button", {
+      name: "Save & return",
+    });
+    await userEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toBeCalled();
+    });
   });
 
   test("renders nothing if no child form", async () => {
