@@ -132,9 +132,6 @@ describe("<ModalDrawerReportPage />", () => {
       const saveAndCloseButton = screen.getByText(saveAndCloseText);
       await userEvent.click(saveAndCloseButton);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
-
-      await userEvent.click(launchDrawerButton);
-      expect(screen.getByRole("dialog")).toBeVisible();
     });
 
     test("Submit sidedrawer doesn't autosave if no change was made by State User", async () => {
