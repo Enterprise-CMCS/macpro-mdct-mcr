@@ -92,7 +92,9 @@ export const mapNaaarStandardEntity = (entity: EntityShape, index?: number) => {
 
     if (key === "standard_coreProviderTypeCoveredByStandard") {
       const providerKey = parentObj[0].key;
-      const providerId = providerKey.split("-").pop();
+      const providerId = providerKey
+        .split("standard_coreProviderTypeCoveredByStandard-")
+        .pop();
       otherText = entity[`${key}-${providerId}-otherText`];
 
       const matchText = `${value}; ${otherText}`;

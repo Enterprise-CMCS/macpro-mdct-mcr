@@ -198,7 +198,7 @@ export const mockEntityStore: McrEntityState = {
   entities: [],
   entityType: EntityType.PLANS,
   selectedEntity: {
-    id: "mockPlanId1",
+    id: "mock-plan-id-1",
     type: EntityType.PLANS,
     report_planName: "mock-plan",
     report_programName: "mock-programName",

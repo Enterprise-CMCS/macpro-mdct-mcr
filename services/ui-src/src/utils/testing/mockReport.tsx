@@ -190,12 +190,12 @@ export const mockReportFieldData = {
   stateName: "TestState",
   plans: [
     {
-      id: "mockPlanId1",
+      id: "mock-plan-id-1",
       name: "mock-plan-name-1",
       "mock-drawer-text-field": "example-explanation",
     },
     {
-      id: "mockPlanId2",
+      id: "mock-plan-id-2",
       name: "mock-plan-name-2",
       plan_ilosOfferedByPlan: [
         {
@@ -258,27 +258,27 @@ export const mockReportFieldData = {
       ...mockSanctionsEntity,
       sanction_planName: {
         label: "sanction_planName",
-        value: "mockPlanId1",
+        value: "mock-plan-id-1",
       },
     },
     {
       ...mockSanctionsEntity,
       sanction_planName: {
         label: "sanction_planName",
-        value: "mockPlanId2",
+        value: "mock-plan-id-2",
       },
     },
   ],
   qualityMeasures: [
     {
       ...mockQualityMeasuresEntity,
-      qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
-      qualityMeasure_plan_measureResults_mockPlanId2: "mock-response-2",
+      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
     },
     {
       ...mockQualityMeasuresEntity,
-      qualityMeasure_plan_measureResults_mockPlanId1: "mock-response-1",
-      qualityMeasure_plan_measureResults_mockPlanId2: "mock-response-2",
+      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
+      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
     },
   ],
 };
@@ -556,11 +556,11 @@ export const mockNaaarReportWithAnalysisMethods = {
         ...DEFAULT_ANALYSIS_METHODS[0],
         analysis_method_applicable_plans: [
           {
-            key: "mockPlanId1",
+            key: "mock-plan-id-1",
             name: "mock-plan-1",
           },
           {
-            key: "mockPlanId2",
+            key: "mock-plan-id-2",
             name: "mock-plan-2",
           },
         ],
@@ -708,7 +708,7 @@ export const mockNaaarWithPlanCreated = {
   ...mockNaaarEmptyFieldData,
   plans: [
     {
-      id: "mockPlanId1",
+      id: "mock-plan-id-1",
       name: "Example Plan",
       isRequired: true,
     },

@@ -180,12 +180,12 @@ export const mockReportFieldData = {
   stateName: "TestState",
   plans: [
     {
-      id: "mockPlanId1",
+      id: "mock-plan-id-1",
       name: "mock-plan-name-1",
       "mock-drawer-text-field": "example-explanation",
     },
     {
-      id: "mockPlanId2",
+      id: "mock-plan-id-2",
       name: "mock-plan-name-2",
     },
   ],
