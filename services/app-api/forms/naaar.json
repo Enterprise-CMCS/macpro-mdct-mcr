@@ -1293,7 +1293,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
+                              "hint": "Describe plan deficiencies identified during the reporting period.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
                             }                          
                           },
                           {
@@ -1305,7 +1306,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
+                              "hint": "Describe what the plan will do to achieve compliance.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description of what the plan will do to achieve compliance"
                             }
                           },
                           {
@@ -1317,7 +1319,21 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
+                              "hint": "Describe how the state will monitor the plan's progress.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 monitoring progress"
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceReassessmentDate",
+                            "type": "date",
+                            "validation": {
+                              "type": "date",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Indicate when the state will reassess the plan's network to determine whether the plan has remediated those deficiencies.",
+                              "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.68"
                             }
                           }
                         ]
