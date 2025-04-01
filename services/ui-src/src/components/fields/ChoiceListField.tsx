@@ -192,7 +192,7 @@ export const ChoiceListField = ({
 
     // handle checkbox
     if (type === "checkbox") {
-      selectedOptions = [...(form.getValues(name) || [])];
+      selectedOptions = [...(form.getValues(name) || displayValue || [])];
 
       if (isOptionChecked) {
         selectedOptions.push(clickedOption);
