@@ -1,4 +1,6 @@
+// types
 import { EntityShape } from "types";
+// utils
 import { compareText, otherSpecify } from "utils";
 
 export const mapNaaarStandardEntity = (entity: EntityShape, index?: number) => {

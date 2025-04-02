@@ -1,3 +1,4 @@
+// types
 import { EntityShape, FormJson } from "types";
 
 export const hasComplianceDetails = (
