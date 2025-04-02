@@ -1,3 +1,4 @@
+import { planComplianceStandardExceptionsLabel } from "../../constants";
 import {
   CustomHtmlElement,
   EntityType,
@@ -834,6 +835,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           caption: "Mock Child Table",
           sortableHeadRow: {
             id: { header: "ID" },
+            standardType: { header: "Mock Standard Type Header" },
             actions: { header: "Actions", hidden: true },
           },
           verbiage: {
@@ -848,9 +850,9 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           id: "mockMultiformWithTable_childForm",
           fields: [
             {
-              id: "mockMultiformWithTable_mockInput",
+              id: "planCompliance43868_standard-mockStandard",
               type: "radio",
-              validation: "radio",
+              validation: "radioOptional",
               props: {
                 choices: [
                   {
@@ -859,9 +861,25 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label: "Mock No",
+                    label: planComplianceStandardExceptionsLabel,
                   },
                 ],
+              },
+            },
+            {
+              id: "planCompliance43868_standard-mockStandard-exceptionsDescription",
+              type: "textarea",
+              validation: "textOptional",
+              props: {
+                label: "Mock Exception Description",
+              },
+            },
+            {
+              id: "planCompliance43868_standard-mockStandard-nonComplianceDescription",
+              type: "textarea",
+              validation: "textOptional",
+              props: {
+                label: "Mock Non-Compliance Description",
               },
             },
           ],

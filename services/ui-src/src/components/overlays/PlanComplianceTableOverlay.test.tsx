@@ -1,22 +1,26 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
-import { PlanComplianceTableOverlay } from "./PlanComplianceTableOverlay";
+import { OverlayProvider, PlanComplianceTableOverlay } from "components";
 // types
 import {
   EntityDetailsTableContentShape,
   EntityDetailsTableVerbiage,
+  EntityShape,
   FormJson,
 } from "types";
 // utils
 import {
-  mockEntityStore,
   mockEntityDetailsMultiformOverlayJson,
+  mockEntityStore,
+  mockNaaarAnalysisMethods,
   mockNaaarStandards,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
+
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -25,31 +29,41 @@ mockedUseStore.mockReturnValue({
   ...mockEntityStore,
 });
 
+const { details } = mockEntityDetailsMultiformOverlayJson;
+const mockForm = details?.childForms![1].form as FormJson;
+const mockTable = details?.childForms![1]
+  .table as EntityDetailsTableContentShape;
+const mockVerbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
+const mockSelectedEntity = {
+  ...mockEntityStore.selectedEntity,
+  "planCompliance43868_standard-standardTypeId-exceptionsDescription":
+    "Mock Description",
+  "planCompliance43868_standard-standardTypeId-nonComplianceDescription":
+    "Mock Description",
+} as EntityShape;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
-
-const { details } = mockEntityDetailsMultiformOverlayJson;
-const form = details?.childForms![1].form as FormJson;
-const table = details?.childForms![1].table as EntityDetailsTableContentShape;
-const verbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
 
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false
 ) => (
   <RouterWrappedComponent>
-    <PlanComplianceTableOverlay
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      disabled={disabled}
-      entities={mockNaaarStandards}
-      form={form}
-      onSubmit={mockOnSubmit}
-      selectedEntity={mockEntityStore.selectedEntity}
-      submitting={submitting}
-      table={table}
-      validateOnRender={false}
-      verbiage={verbiage}
-    />
+    <OverlayProvider>
+      <PlanComplianceTableOverlay
+        analysisMethods={mockNaaarAnalysisMethods}
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        disabled={disabled}
+        standards={mockNaaarStandards}
+        form={mockForm}
+        onSubmit={mockOnSubmit}
+        selectedEntity={mockSelectedEntity}
+        submitting={submitting}
+        table={mockTable}
+        validateOnRender={false}
+        verbiage={mockVerbiage}
+      />
+    </OverlayProvider>
   </RouterWrappedComponent>
 );
 
@@ -76,7 +90,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     expect(childTable).toBeVisible();
     expect(
       within(childTable).getByRole("row", {
-        name: "ID Actions",
+        name: "ID Mock Standard Type Header Actions",
       })
     ).toBeVisible();
   });
@@ -127,8 +141,15 @@ describe("<PlanComplianceTableOverlay />", () => {
     });
     await userEvent.click(radioButtonYes);
 
+    const nonComplianceTextbox = screen.getByRole("textbox", {
+      name: "Mock Non-Compliance Description",
+    });
+    await userEvent.type(nonComplianceTextbox, "Test value");
+
     // Submit
-    const submitButton = screen.getByRole("button", { name: "Save & return" });
+    const submitButton = screen.getByRole("button", {
+      name: "Save & return",
+    });
     await userEvent.click(submitButton);
 
     expect(mockOnSubmit).toBeCalled();

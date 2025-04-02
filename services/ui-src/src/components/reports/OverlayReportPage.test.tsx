@@ -1,7 +1,7 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
 // components
-import { OverlayReportPage, ReportProvider } from "components";
+import { OverlayProvider, OverlayReportPage, ReportProvider } from "components";
 // utils
 import {
   RouterWrappedComponent,
@@ -10,8 +10,8 @@ import {
   mockEntityStore,
   mockOverlayReportPageJson,
   mockNaaarReportStore,
-  mockNAAREmptyFieldData,
-  mockNAARWithPlanCreated,
+  mockNaaarEmptyFieldData,
+  mockNaaarWithPlanCreated,
 } from "utils/testing/setupJest";
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -36,7 +36,7 @@ const mockNaaarWithoutPlansStore = {
   ...mockNaaarReportStore,
   report: {
     ...mockNaaarReportStore.report,
-    fieldData: mockNAAREmptyFieldData,
+    fieldData: mockNaaarEmptyFieldData,
   },
 };
 
@@ -45,7 +45,7 @@ const mockNaaarWithPlansStore = {
   ...mockNaaarReportStore,
   report: {
     ...mockNaaarReportStore.report,
-    fieldData: mockNAARWithPlanCreated,
+    fieldData: mockNaaarWithPlanCreated,
   },
 };
 
@@ -55,10 +55,12 @@ const overlayReportPageComponent = (route: any = mockOverlayReportPageJson) => (
   <RouterWrappedComponent>
     <UserProvider>
       <ReportProvider>
-        <OverlayReportPage
-          route={route}
-          setSidebarHidden={mockSetSidebarHidden}
-        />
+        <OverlayProvider>
+          <OverlayReportPage
+            route={route}
+            setSidebarHidden={mockSetSidebarHidden}
+          />
+        </OverlayProvider>
       </ReportProvider>
     </UserProvider>
   </RouterWrappedComponent>
@@ -103,8 +105,6 @@ describe("<OverlayReportPage />", () => {
       // Check if header is visible on load - H2
       expect(h2).toBeVisible();
 
-      //TODO: Update this when logic surrounding standards has been updated!
-
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
         "This program is missing required information.";
@@ -143,8 +143,6 @@ describe("<OverlayReportPage />", () => {
       expect(h1).toBeVisible();
       // Check if header is visible on load - H2
       expect(h2).toBeVisible();
-
-      //TODO: Update this when logic surrounding standards has been updated!
 
       // Check if missing Plans notice is displaying
       const missingInformationMessage =

@@ -135,3 +135,6 @@ export const INITIAL_REPORT_ROUTES = ["/mcpar", "/mlr", "/naaar"];
 // NAAAR
 export const nonCompliantLabel =
   "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
+export const planComplianceStandardKey = "planCompliance43868_standard";
+export const planComplianceStandardExceptionsLabel =
+  "Exceptions granted under 42 C.F.R. § 438.68(d)";

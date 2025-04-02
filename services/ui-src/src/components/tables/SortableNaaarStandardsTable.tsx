@@ -3,8 +3,10 @@ import { useMemo } from "react";
 // components
 import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+// types
 import { EntityShape } from "types";
-import { compareText, otherSpecify } from "utils";
+// utils
+import { mapNaaarStandardsData } from "utils";
 
 export const SortableNaaarStandardsTable = ({
   entities,
@@ -75,73 +77,8 @@ export const SortableNaaarStandardsTable = ({
       columns={columns}
       data={data}
       content={content}
-      initialSorting={[{ id: "provider", desc: false }]}
     />
   );
-};
-
-export const mapNaaarStandardsData = (entities: EntityShape[]) =>
-  entities.map((entity, index) => {
-    const [provider, standardType, population, region] = [
-      "standard_coreProviderTypeCoveredByStandard",
-      "standard_standardType",
-      "standard_populationCoveredByStandard",
-      "standard_applicableRegion",
-    ].map((key: string) => {
-      const parentObj = entity[key] || [];
-      const value = parentObj[0]?.value;
-      let otherText = entity[`${key}-otherText`];
-
-      if (key === "standard_coreProviderTypeCoveredByStandard") {
-        const providerKey = parentObj[0].key;
-        const providerId = providerKey.split("-").pop();
-        otherText = entity[`${key}-${providerId}-otherText`];
-
-        const matchText = `${value}; ${otherText}`;
-
-        return compareText(true, !!otherText, matchText, value);
-      }
-
-      return otherSpecify(value, otherText);
-    });
-
-    // extract the standard description attribute
-    const standardDescriptionKey =
-      Object.keys(entity).find((key) => {
-        return key.startsWith("standard_standardDescription-");
-      }) || "";
-    const description = entity[standardDescriptionKey];
-    // extract corresponding standard choice id
-    const standardId = standardDescriptionKey.split("-").pop();
-    // use the id to extract analysis method attribute
-    const analysisMethodsUtilized =
-      entity[`standard_analysisMethodsUtilized-${standardId}`];
-    // there are 7 analysis methods checkboxes
-    const analysisMethods = analysisMethodsUtilized
-      ?.map((method: { key: string; value: string }) => method.value)
-      .join(", ");
-
-    return {
-      count: index + 1,
-      provider,
-      standardType,
-      description,
-      analysisMethods,
-      population,
-      region,
-      entity,
-    };
-  });
-
-const sx = {
-  deleteButton: {
-    marginRight: "-2.5rem",
-    padding: 0,
-    background: "white",
-    "&:hover, &:hover:disabled, :disabled": {
-      background: "white",
-    },
-  },
 };
 
 interface Props {
@@ -163,3 +100,14 @@ export interface NaaarStandardsTableShape {
   delete?: null;
   actions?: null;
 }
+
+const sx = {
+  deleteButton: {
+    marginRight: "-2.5rem",
+    padding: 0,
+    background: "white",
+    "&:hover, &:hover:disabled, :disabled": {
+      background: "white",
+    },
+  },
+};
