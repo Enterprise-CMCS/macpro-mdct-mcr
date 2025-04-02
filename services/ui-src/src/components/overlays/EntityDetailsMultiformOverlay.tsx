@@ -108,15 +108,22 @@ export const EntityDetailsMultiformOverlay = ({
       const handleTableSubmit = (enteredData: AnyObject) => {
         const standardId = selectedStandard?.entity.id;
         const standardKeyPrefix = `${planComplianceStandardKey}-${standardId}`;
-        const allStandardKeys = Object.keys(selectedEntity || {}).filter(
-          (key) => key.startsWith(standardKeyPrefix)
-        );
-        const exceptionKeys = allStandardKeys.filter((key) =>
-          key.startsWith(`${standardKeyPrefix}-exceptions`)
-        );
-        const nonComplianceKeys = allStandardKeys.filter((key) =>
-          key.startsWith(`${standardKeyPrefix}-nonCompliance`)
-        );
+        const allStandardKeys: string[] = [];
+        const exceptionKeys: string[] = [];
+        const nonComplianceKeys: string[] = [];
+
+        Object.keys(selectedEntity || {}).forEach((key) => {
+          if (key.startsWith(standardKeyPrefix)) {
+            allStandardKeys.push(key);
+
+            if (key.startsWith(`${standardKeyPrefix}-exceptions`)) {
+              exceptionKeys.push(key);
+            } else if (key.startsWith(`${standardKeyPrefix}-nonCompliance`)) {
+              nonComplianceKeys.push(key);
+            }
+          }
+        });
+
         const standardCompliance = enteredData[standardKeyPrefix] || [];
         // No checkbox selected
         const isCompliant = standardCompliance.length === 0;

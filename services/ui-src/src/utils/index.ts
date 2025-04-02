@@ -12,6 +12,7 @@ export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
 export * from "./forms/ilosFields";
+export * from "./forms/naaarPlanCompliance";
 export * from "./forms/priorAuthorization";
 // reports
 export * from "./reports/entities";
@@ -23,6 +24,7 @@ export * from "./statusing/getRouteStatus";
 export * from "./tables/getEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
+export * from "./tables/mapNaaarStandardsData";
 // tracking
 export * from "./tracking/tealium";
 // validation

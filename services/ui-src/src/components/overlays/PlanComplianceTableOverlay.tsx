@@ -24,13 +24,17 @@ import {
   FormJson,
   ScreenReaderOnlyHeaderName,
 } from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
+import { planComplianceStandardKey } from "../../constants";
 import {
+  addAnalysisMethods,
+  addStandardId,
+  filteredStandards,
+  hasComplianceDetails,
   mapNaaarStandardEntity,
   mapNaaarStandardsData,
-  NaaarStandardsTableShape,
-} from "components/tables/SortableNaaarStandardsTable";
-import { planComplianceStandardKey } from "../../constants";
+} from "utils";
 
 export const PlanComplianceTableOverlay = ({
   analysisMethods,
@@ -55,7 +59,7 @@ export const PlanComplianceTableOverlay = ({
     };
     let headRow = [] as ScreenReaderOnlyHeaderName[];
     const bodyRows = [];
-    let formJson = JSON.parse(JSON.stringify(form));
+    let formJson = structuredClone(form);
 
     if (selectedStandard) {
       const { count, entity } = selectedStandard;
@@ -141,15 +145,20 @@ export const PlanComplianceTableOverlay = ({
     }, [selectedEntity, standardKeyPrefix]);
 
     useEffect(() => {
-      const updatedExceptionsCount = exceptionsNonCompliance.filter((key) =>
-        key.endsWith("exceptionsDescription")
-      ).length;
+      const { updatedExceptionsCount, updatedNonComplianceCount } =
+        exceptionsNonCompliance.reduce(
+          (obj, key) => {
+            if (key.endsWith("exceptionsDescription")) {
+              obj.updatedExceptionsCount++;
+            } else if (key.endsWith("nonComplianceDescription")) {
+              obj.updatedNonComplianceCount++;
+            }
+            return obj;
+          },
+          { updatedExceptionsCount: 0, updatedNonComplianceCount: 0 }
+        );
+
       setExceptionsCount(updatedExceptionsCount);
-
-      const updatedNonComplianceCount = exceptionsNonCompliance.filter((key) =>
-        key.endsWith("nonComplianceDescription")
-      ).length;
-
       setNonComplianceCount(updatedNonComplianceCount);
     }, [exceptionsNonCompliance]);
 
@@ -242,103 +251,6 @@ export const PlanComplianceTableOverlay = ({
   };
 
   return selectedStandard ? <DetailsOverlay /> : <TableOverlay />;
-};
-
-export const hasComplianceDetails = (
-  exceptionsNonCompliance: string[],
-  standardKeyPrefix: string,
-  entityId: string
-) => {
-  return exceptionsNonCompliance.some((key) => {
-    const id = key.split(`${standardKeyPrefix}-`).pop();
-    return id?.startsWith(entityId);
-  });
-};
-
-export const filteredStandards = (
-  analysisMethods: EntityShape[] = [],
-  standards: EntityShape[] = [],
-  selectedEntity?: EntityShape
-) => {
-  const analysisMethodsUsedByPlan = analysisMethods
-    .filter((method: EntityShape) => {
-      const plansUsingMethod =
-        method.analysis_method_applicable_plans?.filter((plan: EntityShape) =>
-          plan.key.endsWith(selectedEntity?.id)
-        ) || [];
-
-      if (plansUsingMethod.length > 0) {
-        return method;
-      }
-
-      return;
-    })
-    .map((method: EntityShape) => method.id);
-
-  const standardsUsedByPlan = standards.filter((standard: EntityShape) => {
-    const key =
-      Object.keys(standard).find((key) =>
-        key.startsWith("standard_analysisMethodsUtilized-")
-      ) || "";
-
-    // Collect ids of standards in standard_analysisMethodsUtilized-*
-    const analysisMethodsUsedByStandard =
-      standard[key]?.map((method: EntityShape) =>
-        method.key.split("-").pop()
-      ) || [];
-    const isAnalysisMethodUsedByStandardAndPlan =
-      analysisMethodsUsedByStandard.some((method: string) =>
-        analysisMethodsUsedByPlan.includes(method)
-      );
-
-    if (isAnalysisMethodUsedByStandardAndPlan) return standard;
-    return;
-  });
-
-  return standardsUsedByPlan;
-};
-
-// TODO: Add analysis methods checkboxes used by standard
-export const addAnalysisMethods = (formJson: FormJson) => {
-  return formJson;
-};
-
-export const addStandardId = (
-  form: FormJson,
-  standardPrefix: string,
-  standardId: string
-) => {
-  const updatedForm = JSON.parse(JSON.stringify(form));
-
-  function needsStandardId(value: string) {
-    if (typeof value !== "string") return false;
-
-    return value.startsWith(standardPrefix) && !value.includes(standardId);
-  }
-
-  function updateRecursively(obj: any) {
-    if (obj && typeof obj === "object") {
-      Object.keys(obj).forEach((key) => {
-        const value = obj[key];
-
-        if (Array.isArray(value)) {
-          value.forEach(updateRecursively);
-        } else if (typeof value === "object") {
-          updateRecursively(value);
-        } else if (needsStandardId(value)) {
-          const option = value.includes("-")
-            ? value.split("-").pop()
-            : undefined;
-          obj[key] = [standardPrefix, standardId, option]
-            .filter((f) => f)
-            .join("-");
-        }
-      });
-    }
-  }
-
-  updateRecursively(updatedForm);
-  return updatedForm;
 };
 
 interface Props {

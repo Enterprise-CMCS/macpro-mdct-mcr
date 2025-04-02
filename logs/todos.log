@@ -3,7 +3,7 @@
 ./services/app-api/handlers/reports/fetch.ts:69: TODO: strict typing
 ./services/app-api/handlers/reports/fetch.ts:80: TODO: strict typing
 ./services/ui-src/src/components/layout/Timeout.tsx:36: TODO: When autosave is implemented, set up a callback function to listen to calls to update in authLifecycle
-./services/ui-src/src/components/overlays/PlanComplianceTableOverlay.tsx:301: TODO: Add analysis methods checkboxes used by standard
 ./services/ui-src/src/components/reports/ModalOverlayReportPage.test.tsx:170:todo Write a test to make sure admins can't click/change details?
 ./services/ui-src/src/utils/autosave/autosave.ts:193: TODO: modify DynamicField hydrationValue lifecycle so we can implement a stricter check,
+./services/ui-src/src/utils/forms/naaarPlanCompliance.ts:57: TODO: Add analysis methods checkboxes used by standard
 ./services/ui-src/src/utils/tables/getNaaarEntityStatus.ts:4: TODO: Update to actual logic

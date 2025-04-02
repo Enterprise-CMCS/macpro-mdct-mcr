@@ -16,6 +16,8 @@ import {
 import { useStore } from "utils";
 import { EntityType, ReportShape } from "types";
 
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
