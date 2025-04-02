@@ -3,7 +3,10 @@ import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsMultiformOverlay, OverlayProvider } from "components";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import {
+  nonCompliantLabel,
+  planComplianceStandardExceptionsLabel,
+} from "../../constants";
 // utils
 import {
   mockEntityStore,
@@ -17,6 +20,7 @@ import { useStore } from "utils";
 import { EntityType, ReportShape } from "types";
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -63,6 +67,58 @@ const entityDetailsMultiformOverlayComponent = (
     </OverlayProvider>
   </RouterWrappedComponent>
 );
+
+async function setupChildTableFormTest(
+  childButtonText: string = "Enter",
+  selectedEntity: any = mockEntityStore.selectedEntity
+) {
+  render(
+    entityDetailsMultiformOverlayComponent(
+      undefined,
+      undefined,
+      undefined,
+      selectedEntity
+    )
+  );
+
+  // Form
+  const form = screen.getAllByRole("form")[1];
+  const radioButtonNo = within(form).getByRole("radio", {
+    name: nonCompliantLabel,
+  });
+  await userEvent.click(radioButtonNo);
+
+  // Table
+  const updatedEntityCellsIncomplete = screen.getByRole("row", {
+    name: "warning icon Mock Cell 2 Select “Enter” to complete response. Enter",
+  });
+  expect(updatedEntityCellsIncomplete).toBeVisible();
+
+  // Click Enter
+  const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
+    "button",
+    { name: "Enter" }
+  );
+  await userEvent.click(updatedEnterButton);
+
+  // Child Table
+  const childTable = screen.getByRole("table", { name: "Mock Child Table" });
+  expect(childTable).toBeVisible();
+
+  // Click Enter in Child Table
+  const childTableButton = within(childTable).getByRole("button", {
+    name: childButtonText,
+  });
+  await userEvent.click(childTableButton);
+}
+
+async function submitChildForm() {
+  const submitButton = screen.getByRole("button", { name: "Save & return" });
+  await userEvent.click(submitButton);
+  await waitFor(() => {
+    expect(mockOnSubmit).toBeCalled();
+  });
+}
 
 describe("<EntityDetailsMultiformOverlay />", () => {
   test("renders form", async () => {
@@ -113,13 +169,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       });
     }
 
-    // Submit
-    const submitButton = screen.getByRole("button", { name: "Save & return" });
-    await userEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(mockOnSubmit).toBeCalled();
-    });
+    await submitChildForm();
   });
 
   test("renders child form", async () => {
@@ -154,55 +204,66 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   });
 
   test("renders child table", async () => {
-    render(entityDetailsMultiformOverlayComponent());
+    await setupChildTableFormTest();
+    await submitChildForm();
+  });
 
-    // Form
-    const form = screen.getAllByRole("form")[1];
-    const radioButtonNo = within(form).getByRole("radio", {
-      name: nonCompliantLabel,
+  test("renders child table - add exception", async () => {
+    const selectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-mockStandard-nonComplianceDescription":
+        "Mock Description",
+    };
+    await setupChildTableFormTest("Edit", selectedEntity);
+
+    // Child Form - add exception
+    const exceptionRadioButton = screen.getByRole("radio", {
+      name: planComplianceStandardExceptionsLabel,
     });
-    await userEvent.click(radioButtonNo);
-    // Table
-    const updatedEntityCellsIncomplete = screen.getByRole("row", {
-      name: "warning icon Mock Cell 2 Select “Enter” to complete response. Enter",
+
+    await userEvent.click(exceptionRadioButton);
+
+    const exceptionTextbox = screen.getByRole("textbox", {
+      name: "Mock Exception Description",
     });
-    expect(updatedEntityCellsIncomplete).toBeVisible();
+    await userEvent.type(exceptionTextbox, "Test value");
 
-    // Click Enter
-    const updatedEnterButton = within(updatedEntityCellsIncomplete).getByRole(
-      "button",
-      {
-        name: "Enter",
-      }
-    );
-    await userEvent.click(updatedEnterButton);
+    await submitChildForm();
+  });
 
-    // Child Table
-    const childTable = screen.getByRole("table", {
-      name: "Mock Child Table",
-    });
-    expect(childTable).toBeVisible();
+  test("renders child table - add non-Compliance", async () => {
+    const selectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-mockStandard-exceptionsDescription":
+        "Mock Description",
+    };
+    await setupChildTableFormTest("Edit", selectedEntity);
 
-    // Click Enter in Child Table
-    const updatedEnterTableButton = within(childTable).getByRole("button", {
-      name: "Enter",
-    });
-    await userEvent.click(updatedEnterTableButton);
-
-    // Child Form
+    // Child Form - add non-compliance
     const radioButtonYes = screen.getByRole("radio", {
       name: "Mock Yes",
     });
+
     await userEvent.click(radioButtonYes);
 
-    const submitButton = screen.getByRole("button", {
-      name: "Save & return",
+    const nonComplianceTextbox = screen.getByRole("textbox", {
+      name: "Mock Non-Compliance Description",
     });
-    await userEvent.click(submitButton);
+    await userEvent.type(nonComplianceTextbox, "Test value");
 
-    await waitFor(() => {
-      expect(mockOnSubmit).toBeCalled();
-    });
+    await submitChildForm();
+  });
+
+  test("renders child table - remove exceptions and non-compliance keys", async () => {
+    const selectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-mockStandard-exceptionsDescription":
+        "Mock Description",
+      "planCompliance43868_standard-mockStandard-nonComplianceDescription":
+        "Mock Description",
+    };
+    await setupChildTableFormTest("Edit", selectedEntity);
+    await submitChildForm();
   });
 
   test("renders nothing if no child form", async () => {

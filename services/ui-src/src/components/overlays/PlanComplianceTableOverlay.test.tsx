@@ -141,6 +141,11 @@ describe("<PlanComplianceTableOverlay />", () => {
     });
     await userEvent.click(radioButtonYes);
 
+    const nonComplianceTextbox = screen.getByRole("textbox", {
+      name: "Mock Non-Compliance Description",
+    });
+    await userEvent.type(nonComplianceTextbox, "Test value");
+
     // Submit
     const submitButton = screen.getByRole("button", {
       name: "Save & return",
