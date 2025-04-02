@@ -55,7 +55,7 @@ export const PlanComplianceTableOverlay = ({
     };
     let headRow = [] as ScreenReaderOnlyHeaderName[];
     const bodyRows = [];
-    let formJson = { ...form };
+    let formJson = JSON.parse(JSON.stringify(form));
 
     if (selectedStandard) {
       const { count, entity } = selectedStandard;
@@ -275,10 +275,10 @@ export const filteredStandards = (
     })
     .map((method: EntityShape) => method.id);
 
-  const filterStandards = standards.filter((standard: EntityShape) => {
+  const standardsUsedByPlan = standards.filter((standard: EntityShape) => {
     const key =
       Object.keys(standard).find((key) =>
-        key.startsWith("standard_analysisMethodsUtilized")
+        key.startsWith("standard_analysisMethodsUtilized-")
       ) || "";
 
     // Collect ids of standards in standard_analysisMethodsUtilized-*
@@ -295,7 +295,7 @@ export const filteredStandards = (
     return;
   });
 
-  return filterStandards;
+  return standardsUsedByPlan;
 };
 
 // TODO: Add analysis methods checkboxes used by standard
@@ -304,20 +304,28 @@ export const addAnalysisMethods = (formJson: FormJson) => {
 };
 
 export const addStandardId = (
-  formJson: FormJson,
+  form: FormJson,
   standardPrefix: string,
   standardId: string
 ) => {
-  function traverse(obj: any) {
-    if (Array.isArray(obj)) {
-      obj.forEach((item, index) => {
-        obj[index] = traverse(item);
-      });
-    } else if (obj !== null && typeof obj === "object") {
+  const updatedForm = JSON.parse(JSON.stringify(form));
+
+  function needsStandardId(value: string) {
+    if (typeof value !== "string") return false;
+
+    return value.startsWith(standardPrefix) && !value.includes(standardId);
+  }
+
+  function updateRecursively(obj: any) {
+    if (obj && typeof obj === "object") {
       Object.keys(obj).forEach((key) => {
         const value = obj[key];
 
-        if (typeof value === "string" && value.startsWith(standardPrefix)) {
+        if (Array.isArray(value)) {
+          value.forEach(updateRecursively);
+        } else if (typeof value === "object") {
+          updateRecursively(value);
+        } else if (needsStandardId(value)) {
           const option = value.includes("-")
             ? value.split("-").pop()
             : undefined;
@@ -325,14 +333,12 @@ export const addStandardId = (
             .filter((f) => f)
             .join("-");
         }
-        obj[key] = traverse(obj[key]);
       });
     }
-
-    return obj;
   }
 
-  return traverse(formJson);
+  updateRecursively(updatedForm);
+  return updatedForm;
 };
 
 interface Props {
