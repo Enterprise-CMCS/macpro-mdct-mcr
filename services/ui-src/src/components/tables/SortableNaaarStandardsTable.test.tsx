@@ -33,30 +33,28 @@ const sortableTableComponent = (
 );
 
 describe("<SortableNaaarStandardsTable />", () => {
-  describe("Test SortableNaaarStandardsTable component", () => {
-    beforeEach(() => {
-      render(sortableTableComponent);
-    });
-    test("Check that NAAAR table view renders", async () => {
-      expect(
-        screen.getByRole("table", {
-          name: "Access and Network Adequacy Standards",
-        })
-      ).toBeVisible;
-    });
-
-    test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
-      const editButton = screen.getByRole("button", { name: "Edit" });
-      await userEvent.click(editButton);
-      expect(mockOpenRowDrawer).toBeCalledTimes(1);
-    });
-
-    test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
-      const deleteButton = screen.getByRole("button", { name: "delete" });
-      await userEvent.click(deleteButton);
-      expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
-    });
-
-    testA11y(sortableTableComponent);
+  beforeEach(() => {
+    render(sortableTableComponent);
   });
+  test("Check that NAAAR table view renders", async () => {
+    expect(
+      screen.getByRole("table", {
+        name: "Access and Network Adequacy Standards",
+      })
+    ).toBeVisible;
+  });
+
+  test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
+    const editButton = screen.getByRole("button", { name: "Edit" });
+    await userEvent.click(editButton);
+    expect(mockOpenRowDrawer).toBeCalledTimes(1);
+  });
+
+  test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
+    const deleteButton = screen.getByRole("button", { name: "delete" });
+    await userEvent.click(deleteButton);
+    expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
+  });
+
+  testA11y(sortableTableComponent);
 });

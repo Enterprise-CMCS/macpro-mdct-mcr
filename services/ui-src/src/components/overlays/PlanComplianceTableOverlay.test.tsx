@@ -38,6 +38,8 @@ const mockSelectedEntity = {
   ...mockEntityStore.selectedEntity,
   "planCompliance43868_standard-standardTypeId-exceptionsDescription":
     "Mock Description",
+  "planCompliance43868_standard-standardTypeId-nonComplianceDescription":
+    "Mock Description",
 } as EntityShape;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
