@@ -96,7 +96,7 @@ describe("Test getFormattedEntityData", () => {
   test("returns 'Edit' when perPlanResponses exists for QUALITY_MEASURES", () => {
     const result = getAddEditDrawerText(
       EntityType.QUALITY_MEASURES,
-      { perPlanResponses: true },
+      { perPlanResponses: [{ name: "plan 1", response: "n/a" }] },
       mockModalDrawerReportPageVerbiage
     );
     expect(result).toBe("Edit Mock drawer title");

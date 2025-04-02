@@ -222,7 +222,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       selectedEntity?.custom_analysis_method_name ||
       "Add other";
     if (isReportingOnStandards && report) {
-      addOrEdit = selectedEntity ? "Edit " : "Add ";
+      addOrEdit = selectedEntity ? "Edit" : "Add";
       name = report?.programName;
     }
     return translate(verbiage.drawerTitle, {

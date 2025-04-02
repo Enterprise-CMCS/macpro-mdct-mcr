@@ -3313,7 +3313,7 @@
             "enterEntityDetailsButtonText": "Enter measure results",
             "editEntityDetailsButtonText": "Edit measure results",
             "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
-            "drawerTitle": "plan-level measure results",
+            "drawerTitle": "{{action}} plan-level measure results",
             "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
           },
           "modalForm": {
@@ -3578,7 +3578,7 @@
             "entityUnfinishedMessage": "Complete the remaining indicators for this plan sanction by selecting “Enter sanction details”.",
             "enterEntityDetailsButtonText": "Enter sanction details",
             "editEntityDetailsButtonText": "Edit sanction details",
-            "drawerTitle": "details for sanction",
+            "drawerTitle": "{{action}} details for sanction",
             "missingEntityMessage": [
               {
                 "type": "p",
