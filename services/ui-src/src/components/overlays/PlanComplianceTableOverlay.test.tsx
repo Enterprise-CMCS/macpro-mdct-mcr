@@ -3,7 +3,10 @@ import userEvent from "@testing-library/user-event";
 // components
 import { OverlayProvider, PlanComplianceTableOverlay } from "components";
 // constants
-import { exceptionsStatus } from "../../constants";
+import {
+  exceptionsNonComplianceStatusDisplay,
+  exceptionsStatus,
+} from "../../constants";
 // types
 import {
   EntityDetailsTableContentShape,
@@ -142,6 +145,9 @@ describe("<PlanComplianceTableOverlay />", () => {
       name: exceptionsStatus,
     });
     expect(exceptionsStatusCell).toBeVisible();
+    expect(exceptionsStatusCell.textContent).toBe(
+      exceptionsNonComplianceStatusDisplay[exceptionsStatus]
+    );
 
     const editButton = screen.getByRole("button", {
       name: "Edit",
