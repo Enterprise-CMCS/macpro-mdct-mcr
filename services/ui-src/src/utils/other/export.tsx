@@ -10,7 +10,12 @@ import {
   FormField,
 } from "types";
 // utils
-import { eligibilityGroup, maskResponseData } from "utils";
+import {
+  compareText,
+  eligibilityGroup,
+  maskResponseData,
+  otherSpecify,
+} from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -136,44 +141,68 @@ export const renderDrawerDataCell = (
     const fieldResponseData = entity[formField.id];
 
     // check for nested ILOS data
-    let nestedIlosResponses = [];
+    let nestedResponses = [];
     if (
       formField.id === "plan_ilosUtilizationByPlan" &&
       fieldResponseData?.length
     ) {
-      nestedIlosResponses = getNestedIlosResponses(fieldResponseData, entity);
+      nestedResponses = getNestedIlosResponses(fieldResponseData, entity);
+    }
+
+    // check for nested analysis methods data
+    if (
+      entity?.analysis_method_frequency &&
+      entity?.analysis_method_applicable_plans
+    ) {
+      nestedResponses = getNestedAnalysisMethodsResponses(entity);
+    }
+
+    // if analysis method, render custom text
+    let utilizedText;
+    if (entity?.analysis_applicable) {
+      const radioValue = entity?.analysis_applicable[0].value;
+      const textToMatch = "Yes";
+      utilizedText = compareText(
+        textToMatch,
+        radioValue,
+        "Utilized",
+        "Not utilized"
+      );
+    } else if (entity?.custom_analysis_method_name) {
+      utilizedText = "Utilized";
     }
 
     // check if this is the ILOS topic
     const isMissingPlansMessage =
       entity.name === verbiage.missingEntry.missingPlans;
 
+    const entityName = entity?.name || entity?.custom_analysis_method_name;
+
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
         <ul>
           <li>
             <Text sx={isMissingPlansMessage ? sx.noResponse : sx.entityName}>
-              {entity.name}
+              {entityName}
             </Text>
           </li>
           <li className="entityResponse">
-            {renderResponseData(
-              formField,
-              fieldResponseData,
-              entityResponseData,
-              pageType,
-              notApplicable,
-              index
-            )}
+            {utilizedText ??
+              renderResponseData(
+                formField,
+                fieldResponseData,
+                entityResponseData,
+                pageType,
+                notApplicable,
+                index
+              )}
           </li>
           {/* If there are nested ILOS responses available, render them here */}
-          {nestedIlosResponses.length > 0
-            ? nestedIlosResponses.map((response: AnyObject, index: number) => {
+          {nestedResponses.length > 0
+            ? nestedResponses.map((response: AnyObject, index: number) => {
                 return (
                   <li key={index}>
-                    <Box sx={sx.nestedIlos}>
-                      {response.key}: {response.value}
-                    </Box>
+                    {response.key}: {response.value}
                   </li>
                 );
               })
@@ -345,6 +374,40 @@ export const getNestedIlosResponses = (
   });
 };
 
+export const getNestedAnalysisMethodsResponses = (entity: EntityShape) => {
+  const frequencyVal = entity.analysis_method_frequency[0].value;
+  const frequency = otherSpecify(
+    frequencyVal,
+    entity["analysis_method_frequency-otherText"]
+  );
+
+  const plans = entity?.analysis_method_applicable_plans;
+  const utilizedPlans = plans
+    .map((entity: AnyObject) => entity.value)
+    .join(", ");
+
+  const response = [
+    {
+      key: "Frequency",
+      value: frequency,
+    },
+    {
+      key: "Plan(s)",
+      value: utilizedPlans,
+    },
+  ];
+
+  const description = entity?.custom_analysis_method_description;
+  if (description) {
+    response.unshift({
+      key: "Description",
+      value: description,
+    });
+  }
+
+  return response;
+};
+
 // style object for rendered elements
 const sx = {
   fieldChoice: {
@@ -359,7 +422,6 @@ const sx = {
     ul: {
       listStyle: "none",
       ".entityResponse": {
-        paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
           fontSize: "sm",
@@ -367,7 +429,6 @@ const sx = {
       },
       p: {
         lineHeight: "1.25rem",
-        marginBottom: "0.5rem",
       },
     },
     "&:last-of-type": {
@@ -375,7 +436,6 @@ const sx = {
     },
   },
   entityName: {
-    marginBottom: "1rem",
     fontWeight: "bold",
   },
   noResponse: {
@@ -386,9 +446,5 @@ const sx = {
   },
   notApplicable: {
     color: "palette.gray_medium",
-  },
-  nestedIlos: {
-    lineHeight: "1.25rem",
-    fontSize: "sm",
   },
 };
