@@ -13,7 +13,6 @@ import {
 import {
   mockEntityDetailsMultiformOverlayJson,
   mockEntityStore,
-  mockNaaarAnalysisMethods,
   mockNaaarStandards,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -34,30 +33,23 @@ const mockForm = details?.childForms![1].form as FormJson;
 const mockTable = details?.childForms![1]
   .table as EntityDetailsTableContentShape;
 const mockVerbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
-const mockSelectedEntity = {
-  ...mockEntityStore.selectedEntity,
-  "planCompliance43868_standard-standardTypeId-exceptionsDescription":
-    "Mock Description",
-  "planCompliance43868_standard-standardTypeId-nonComplianceDescription":
-    "Mock Description",
-} as EntityShape;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
 
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
-  submitting: boolean = false
+  submitting: boolean = false,
+  selectedEntity: any = mockEntityStore.selectedEntity
 ) => (
   <RouterWrappedComponent>
     <OverlayProvider>
       <PlanComplianceTableOverlay
-        analysisMethods={mockNaaarAnalysisMethods}
         closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
         disabled={disabled}
         standards={mockNaaarStandards}
         form={mockForm}
         onSubmit={mockOnSubmit}
-        selectedEntity={mockSelectedEntity}
+        selectedEntity={selectedEntity}
         submitting={submitting}
         table={mockTable}
         validateOnRender={false}
@@ -90,7 +82,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     expect(childTable).toBeVisible();
     expect(
       within(childTable).getByRole("row", {
-        name: "ID Mock Standard Type Header Actions",
+        name: "ID Mock N/E Mock Standard Type Header Actions",
       })
     ).toBeVisible();
   });
@@ -127,13 +119,33 @@ describe("<PlanComplianceTableOverlay />", () => {
   });
 
   test("submits form", async () => {
-    render(planComplianceTableOverlayComponent());
+    const mockSelectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-mockStandard-exceptionsDescription":
+        "Mock Description",
+      "planCompliance43868_standard-standardTypeId-nonComplianceDescription":
+        "Mock Description",
+    } as EntityShape;
+
+    render(
+      planComplianceTableOverlayComponent(
+        undefined,
+        undefined,
+        mockSelectedEntity
+      )
+    );
 
     // Table
-    const enterButton = screen.getByRole("button", {
-      name: "Enter",
+    const exceptionsStatusCell = screen.getByRole("gridcell", {
+      name: "Exceptions granted",
     });
-    await userEvent.click(enterButton);
+    expect(exceptionsStatusCell).toBeVisible();
+    expect(exceptionsStatusCell.textContent).toBe("E");
+
+    const editButton = screen.getByRole("button", {
+      name: "Edit",
+    });
+    await userEvent.click(editButton);
 
     // Form
     const radioButtonYes = screen.getByRole("radio", {
@@ -153,6 +165,36 @@ describe("<PlanComplianceTableOverlay />", () => {
     await userEvent.click(submitButton);
 
     expect(mockOnSubmit).toBeCalled();
+  });
+
+  test("has non-compliance", async () => {
+    const mockSelectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-standardTypeId-exceptionsDescription":
+        "Mock Description",
+      "planCompliance43868_standard-mockStandard-nonComplianceDescription":
+        "Mock Description",
+    } as EntityShape;
+
+    render(
+      planComplianceTableOverlayComponent(
+        undefined,
+        undefined,
+        mockSelectedEntity
+      )
+    );
+
+    // Table
+    const exceptionsStatusCell = screen.getByRole("gridcell", {
+      name: "Non-compliant",
+    });
+    expect(exceptionsStatusCell).toBeVisible();
+    expect(exceptionsStatusCell.textContent).toBe("N");
+    expect(
+      screen.getByRole("button", {
+        name: "Edit",
+      })
+    ).toBeVisible();
   });
 
   test("closes overlay", async () => {

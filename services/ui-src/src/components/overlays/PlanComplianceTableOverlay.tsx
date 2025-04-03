@@ -26,18 +26,20 @@ import {
 } from "types";
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
-import { planComplianceStandardKey } from "../../constants";
+import {
+  exceptionsNonComplianceStatusDisplay,
+  planComplianceStandardKey,
+} from "../../constants";
 import {
   addAnalysisMethods,
+  addExceptionsNonComplianceStatus,
   addStandardId,
-  filteredStandards,
   hasComplianceDetails,
   mapNaaarStandardEntity,
   mapNaaarStandardsData,
 } from "utils";
 
 export const PlanComplianceTableOverlay = ({
-  analysisMethods,
   closeEntityDetailsOverlay,
   disabled,
   form,
@@ -64,7 +66,7 @@ export const PlanComplianceTableOverlay = ({
     if (selectedStandard) {
       const { count, entity } = selectedStandard;
       const { provider, standardType, description, population, region } =
-        mapNaaarStandardEntity(entity);
+        mapNaaarStandardEntity<NaaarStandardsTableShape>(entity);
       const headers = [
         "Count",
         "Provider type",
@@ -76,7 +78,7 @@ export const PlanComplianceTableOverlay = ({
       ];
       headRow = headers.map((hiddenName) => ({ hiddenName }));
       bodyRows.push([
-        count,
+        `${count}`,
         provider,
         standardType,
         description,
@@ -117,19 +119,9 @@ export const PlanComplianceTableOverlay = ({
     >([]);
     const [exceptionsCount, setExceptionsCount] = useState<number>(0);
     const [nonComplianceCount, setNonComplianceCount] = useState<number>(0);
-    const [standardsData, setStandardsData] = useState<EntityShape[]>([]);
 
     const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
     const content = { caption };
-
-    useEffect(() => {
-      const filteredData = filteredStandards(
-        analysisMethods,
-        standards,
-        selectedEntity
-      );
-      setStandardsData(filteredData);
-    }, [analysisMethods, standards, selectedEntity]);
 
     useEffect(() => {
       if (selectedEntity) {
@@ -163,13 +155,18 @@ export const PlanComplianceTableOverlay = ({
     }, [exceptionsNonCompliance]);
 
     const data = useMemo(
-      () => mapNaaarStandardsData(standardsData),
-      [standardsData]
+      () =>
+        addExceptionsNonComplianceStatus(
+          mapNaaarStandardsData<NaaarStandardsTableShape>(standards),
+          exceptionsNonCompliance,
+          standardKeyPrefix
+        ),
+      [exceptionsNonCompliance, standardKeyPrefix, standards]
     );
     const standardsTotalCount = data.length;
 
     const displayCount = (label: string = "", count: number) =>
-      label && `${label}: ${count} of ${standardsTotalCount}`;
+      `${label}: ${count} of ${standardsTotalCount}`;
 
     const getStandardForm = (entity: EntityShape, count: number) => {
       window.scrollTo(0, 0);
@@ -184,6 +181,13 @@ export const PlanComplianceTableOverlay = ({
       const { count, entity } = originalRowData;
 
       switch (headKey) {
+        case "exceptionsNonCompliance": {
+          return value ? (
+            <Text as="span" sx={sx.exceptionsNonCompliance} aria-label={value}>
+              {exceptionsNonComplianceStatusDisplay[value]}
+            </Text>
+          ) : null;
+        }
         case "standardType": {
           return (
             <Text as="span" sx={sx.bold}>
@@ -254,7 +258,6 @@ export const PlanComplianceTableOverlay = ({
 };
 
 interface Props {
-  analysisMethods: EntityShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;
@@ -289,6 +292,11 @@ const sx = {
   },
   bold: {
     fontWeight: "bold",
+  },
+  exceptionsNonCompliance: {
+    color: "palette.primary_darker",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 };
 

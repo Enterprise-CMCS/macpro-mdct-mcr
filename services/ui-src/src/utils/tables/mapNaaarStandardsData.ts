@@ -3,7 +3,10 @@ import { EntityShape } from "types";
 // utils
 import { compareText, otherSpecify } from "utils";
 
-export const mapNaaarStandardEntity = (entity: EntityShape, index?: number) => {
+export const mapNaaarStandardEntity = <T>(
+  entity: EntityShape,
+  index?: number
+) => {
   const [provider, standardType, population, region] = [
     "standard_coreProviderTypeCoveredByStandard",
     "standard_standardType",
@@ -48,7 +51,7 @@ export const mapNaaarStandardEntity = (entity: EntityShape, index?: number) => {
     .join(", ");
 
   return {
-    count: index === undefined ? undefined : index + 1,
+    count: index === undefined ? 0 : index + 1,
     provider,
     standardType,
     description,
@@ -56,8 +59,8 @@ export const mapNaaarStandardEntity = (entity: EntityShape, index?: number) => {
     population,
     region,
     entity,
-  };
+  } as unknown as T;
 };
 
-export const mapNaaarStandardsData = (entities: EntityShape[]) =>
-  entities.map((entity, index) => mapNaaarStandardEntity(entity, index));
+export const mapNaaarStandardsData = <T>(entities: EntityShape[]) =>
+  entities.map((entity, index) => mapNaaarStandardEntity<T>(entity, index));

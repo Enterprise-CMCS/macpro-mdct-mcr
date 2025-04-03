@@ -6,7 +6,7 @@ import { mockNaaarStandards } from "utils/testing/setupJest";
 
 describe("mapNaaarStandardsData()", () => {
   test("returns correct data shape", () => {
-    const tableData = mapNaaarStandardsData(mockNaaarStandards);
+    const tableData = mapNaaarStandardsData<any>(mockNaaarStandards);
     const expectedData = [
       {
         count: 1,
@@ -38,7 +38,7 @@ describe("mapNaaarStandardsData()", () => {
         ],
       },
     ];
-    const tableData = mapNaaarStandardsData(incompleteData);
+    const tableData = mapNaaarStandardsData<any>(incompleteData);
     const expectedData = [
       {
         count: 1,

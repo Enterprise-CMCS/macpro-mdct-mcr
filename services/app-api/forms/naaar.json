@@ -1248,6 +1248,7 @@
             "table": {
               "caption": "42 C.F.R. § 438.68 standards",
               "sortableHeadRow": {
+                "exceptionsNonCompliance": { "header": "N/E" },
                 "count": { "header": "#" },
                 "provider": { "header": "Provider type" },
                 "standardType": { "header": "Standard type" },

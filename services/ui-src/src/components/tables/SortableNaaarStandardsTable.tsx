@@ -13,7 +13,10 @@ export const SortableNaaarStandardsTable = ({
   openRowDrawer,
   openDeleteEntityModal,
 }: Props) => {
-  const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
+  const data = useMemo(
+    () => mapNaaarStandardsData<NaaarStandardsTableShape>(entities),
+    [entities]
+  );
 
   const customCells = (
     headKey: keyof NaaarStandardsTableShape,
@@ -89,13 +92,14 @@ interface Props {
 
 export interface NaaarStandardsTableShape {
   count: number;
-  provider: number;
+  provider: string;
   standardType: string;
   description: string;
   analysisMethods: string;
   population: string;
   region: string;
   entity: EntityShape;
+  exceptionsNonCompliance?: string;
   edit?: null;
   delete?: null;
   actions?: null;

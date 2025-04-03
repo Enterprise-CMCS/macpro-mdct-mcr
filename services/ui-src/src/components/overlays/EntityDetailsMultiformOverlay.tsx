@@ -91,7 +91,6 @@ export const EntityDetailsMultiformOverlay = ({
     };
 
     if (table) {
-      const analysisMethods = report?.fieldData["analysisMethods"] || [];
       const standards = report?.fieldData["standards"] || [];
 
       const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
@@ -157,7 +156,6 @@ export const EntityDetailsMultiformOverlay = ({
         <PlanComplianceTableOverlay
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
-          analysisMethods={analysisMethods}
           standards={standards}
           form={form}
           onSubmit={handleTableSubmit}
