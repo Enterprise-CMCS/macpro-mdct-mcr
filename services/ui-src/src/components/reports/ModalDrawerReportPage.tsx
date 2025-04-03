@@ -36,6 +36,7 @@ import {
   resetClearProp,
   parseCustomHtml,
   useBreakpoint,
+  getAddEditDrawerText,
 } from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
@@ -49,6 +50,12 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
     undefined
+  );
+
+  const formattedEntityData = getFormattedEntityData(
+    entityType,
+    selectedEntity,
+    report?.fieldData
   );
 
   const { updateReport } = useContext(ReportContext);
@@ -258,6 +265,11 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           selectedEntity={selectedEntity!}
           verbiage={{
             ...verbiage,
+            drawerTitle: getAddEditDrawerText(
+              entityType,
+              formattedEntityData,
+              verbiage
+            ),
             drawerDetails: getFormattedEntityData(
               entityType,
               selectedEntity,

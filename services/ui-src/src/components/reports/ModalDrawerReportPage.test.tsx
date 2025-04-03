@@ -119,6 +119,7 @@ describe("<ModalDrawerReportPage />", () => {
       const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
       await userEvent.click(enterDetailsButton);
       expect(screen.getByRole("dialog")).toBeVisible();
+      expect(screen.getByText("Add Mock drawer title")).toBeVisible();
     });
 
     test("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {
