@@ -59,7 +59,7 @@ export const mapNaaarStandardEntity = <T>(
     population,
     region,
     entity,
-  } as T;
+  } as unknown as T;
 };
 
 export const mapNaaarStandardsData = <T>(entities: EntityShape[]) =>
