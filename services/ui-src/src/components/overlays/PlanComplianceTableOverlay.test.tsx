@@ -167,6 +167,36 @@ describe("<PlanComplianceTableOverlay />", () => {
     expect(mockOnSubmit).toBeCalled();
   });
 
+  test("has non-compliance", async () => {
+    const mockSelectedEntity = {
+      ...mockEntityStore.selectedEntity,
+      "planCompliance43868_standard-standardTypeId-exceptionsDescription":
+        "Mock Description",
+      "planCompliance43868_standard-mockStandard-nonComplianceDescription":
+        "Mock Description",
+    } as EntityShape;
+
+    render(
+      planComplianceTableOverlayComponent(
+        undefined,
+        undefined,
+        mockSelectedEntity
+      )
+    );
+
+    // Table
+    const exceptionsStatusCell = screen.getByRole("gridcell", {
+      name: "Non-compliant",
+    });
+    expect(exceptionsStatusCell).toBeVisible();
+    expect(exceptionsStatusCell.textContent).toBe("N");
+    expect(
+      screen.getByRole("button", {
+        name: "Edit",
+      })
+    ).toBeVisible();
+  });
+
   test("closes overlay", async () => {
     render(planComplianceTableOverlayComponent());
     const closeButton = screen.getByRole("button", {
