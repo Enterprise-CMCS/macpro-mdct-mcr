@@ -15,7 +15,9 @@ global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 describe("utils/forms/naaarPlanCompliance", () => {
   describe("hasComplianceDetails()", () => {
-    const exceptionsNonCompliance = ["mockPrefix-mockEntityId1-otherText"];
+    const exceptionsNonCompliance = [
+      "mockPrefix-mockEntityId1-nonComplianceDescription",
+    ];
     const standardPrefix = "mockPrefix";
 
     test("returns true", () => {

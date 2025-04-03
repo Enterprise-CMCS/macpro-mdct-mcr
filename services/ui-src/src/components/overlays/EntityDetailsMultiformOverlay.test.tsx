@@ -208,6 +208,11 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     await submitChildForm();
   });
 
+  test("renders child table - new entity", async () => {
+    await setupChildTableFormTest("Enter", null);
+    await submitChildForm();
+  });
+
   test("renders child table - add exception", async () => {
     const selectedEntity = {
       ...mockEntityStore.selectedEntity,
@@ -260,6 +265,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       "planCompliance43868_standard-mockStandard-exceptionsDescription":
         "Mock Description",
       "planCompliance43868_standard-mockStandard-nonComplianceDescription":
+        "Mock Description",
+      "planCompliance43868_standard-mockStandard-mockDescription":
         "Mock Description",
     };
     await setupChildTableFormTest("Edit", selectedEntity);

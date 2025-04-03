@@ -139,8 +139,8 @@ export const exceptionsStatus = "Exceptions granted";
 export const nonComplianceStatus = "Non-compliant";
 
 export const exceptionsNonComplianceStatusDisplay = {
-  "Exceptions granted": "E",
-  "Non-compliant": "N",
+  [exceptionsStatus]: "E",
+  [nonComplianceStatus]: "N",
 } as AnyObject;
 
 export const nonCompliantLabel =

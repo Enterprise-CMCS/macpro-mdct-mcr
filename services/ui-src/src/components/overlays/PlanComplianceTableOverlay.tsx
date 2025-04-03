@@ -166,7 +166,7 @@ export const PlanComplianceTableOverlay = ({
     const standardsTotalCount = data.length;
 
     const displayCount = (label: string = "", count: number) =>
-      label && `${label}: ${count} of ${standardsTotalCount}`;
+      `${label}: ${count} of ${standardsTotalCount}`;
 
     const getStandardForm = (entity: EntityShape, count: number) => {
       window.scrollTo(0, 0);
@@ -258,7 +258,6 @@ export const PlanComplianceTableOverlay = ({
 };
 
 interface Props {
-  analysisMethods: EntityShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;

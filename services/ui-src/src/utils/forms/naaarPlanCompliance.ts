@@ -2,7 +2,7 @@
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { FormJson } from "types";
+import { AnyObject, FormJson } from "types";
 
 export const hasComplianceDetails = (
   exceptionsNonCompliance: string[],
@@ -34,25 +34,21 @@ export const addStandardId = (
     return value.startsWith(standardPrefix) && !value.includes(standardId);
   }
 
-  function updateRecursively(obj: any) {
-    if (obj && typeof obj === "object") {
-      Object.keys(obj).forEach((key) => {
-        const value = obj[key];
+  function updateRecursively(obj: AnyObject) {
+    Object.keys(obj).forEach((key) => {
+      const value = obj[key];
 
-        if (Array.isArray(value)) {
-          value.forEach(updateRecursively);
-        } else if (typeof value === "object") {
-          updateRecursively(value);
-        } else if (needsStandardId(value)) {
-          const option = value.includes("-")
-            ? value.split("-").pop()
-            : undefined;
-          obj[key] = [standardPrefix, standardId, option]
-            .filter((f) => f)
-            .join("-");
-        }
-      });
-    }
+      if (Array.isArray(value)) {
+        value.forEach(updateRecursively);
+      } else if (typeof value === "object") {
+        updateRecursively(value);
+      } else if (needsStandardId(value)) {
+        const option = value.includes("-") ? value.split("-").pop() : undefined;
+        obj[key] = [standardPrefix, standardId, option]
+          .filter((f) => f)
+          .join("-");
+      }
+    });
   }
 
   updateRecursively(updatedForm);
@@ -65,31 +61,33 @@ export const exceptionsNonComplianceStatus = (
   entityId: string
 ) => {
   const complianceKeyPrefix = `${standardKeyPrefix}-${entityId}-`;
-  const exceptionOrNonCompliance = exceptionsNonCompliance.find((key) =>
-    key.startsWith(complianceKeyPrefix)
-  );
-  if (!exceptionOrNonCompliance) return;
+  const exceptionOrNonCompliance =
+    exceptionsNonCompliance.find((key) =>
+      key.startsWith(complianceKeyPrefix)
+    ) || "";
 
   if (exceptionOrNonCompliance.includes("exceptions")) {
     return exceptionsStatus;
+  } else if (exceptionOrNonCompliance.includes("nonCompliance")) {
+    return nonComplianceStatus;
   }
-  return nonComplianceStatus;
+  return;
 };
 
 export const addExceptionsNonComplianceStatus = (
-  entities: NaaarStandardsTableShape[],
+  standards: NaaarStandardsTableShape[],
   exceptionsNonCompliance: string[],
   standardKeyPrefix: string
 ) =>
-  entities.map((entity) => {
+  standards.map((standard) => {
     const exceptionsOrNonCompliance = exceptionsNonComplianceStatus(
       exceptionsNonCompliance,
       standardKeyPrefix,
-      entity.entity.id
+      standard.entity.id
     );
 
     return {
-      ...entity,
+      ...standard,
       exceptionsNonCompliance: exceptionsOrNonCompliance,
     };
   });
