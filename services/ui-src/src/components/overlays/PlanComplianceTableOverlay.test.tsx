@@ -2,11 +2,6 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { OverlayProvider, PlanComplianceTableOverlay } from "components";
-// constants
-import {
-  exceptionsNonComplianceStatusDisplay,
-  exceptionsStatus,
-} from "../../constants";
 // types
 import {
   EntityDetailsTableContentShape,
@@ -142,12 +137,10 @@ describe("<PlanComplianceTableOverlay />", () => {
 
     // Table
     const exceptionsStatusCell = screen.getByRole("gridcell", {
-      name: exceptionsStatus,
+      name: "Exceptions granted",
     });
     expect(exceptionsStatusCell).toBeVisible();
-    expect(exceptionsStatusCell.textContent).toBe(
-      exceptionsNonComplianceStatusDisplay[exceptionsStatus]
-    );
+    expect(exceptionsStatusCell.textContent).toBe("E");
 
     const editButton = screen.getByRole("button", {
       name: "Edit",
