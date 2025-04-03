@@ -1,3 +1,5 @@
+import { AnyObject } from "types";
+
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
@@ -133,8 +135,17 @@ export const PROMPT_AT = 29 * 60 * 1000; //ms
 export const INITIAL_REPORT_ROUTES = ["/mcpar", "/mlr", "/naaar"];
 
 // NAAAR
+export const exceptionsStatus = "Exceptions granted";
+export const nonComplianceStatus = "Non-compliant";
+
+export const exceptionsNonComplianceStatusDisplay = {
+  "Exceptions granted": "E",
+  "Non-compliant": "N",
+} as AnyObject;
+
 export const nonCompliantLabel =
   "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
+
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
   "Exceptions granted under 42 C.F.R. § 438.68(d)";

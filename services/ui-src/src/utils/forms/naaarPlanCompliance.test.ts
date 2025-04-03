@@ -1,7 +1,15 @@
+// constants
+import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
-import { EntityShape, FormJson } from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
+import { FormJson } from "types";
 // utils
-import { addStandardId, filteredStandards, hasComplianceDetails } from "utils";
+import {
+  addExceptionsNonComplianceStatus,
+  addStandardId,
+  exceptionsNonComplianceStatus,
+  hasComplianceDetails,
+} from "utils";
 
 global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
@@ -31,72 +39,6 @@ describe("utils/forms/naaarPlanCompliance", () => {
     });
   });
 
-  describe("filteredStandards()", () => {
-    test("returns standards used by plan", () => {
-      const plan = { id: "mockPlan1", value: "Mock Plan 1" } as EntityShape;
-
-      const analysisMethods = [
-        {
-          id: "mockAnalysisMethod1",
-          name: "Mock Analysis 1",
-          analysis_method_applicable_plans: [
-            {
-              key: "analysis_method_applicable_plans-mockPlan1",
-              value: "Mock Plan 1",
-            },
-          ],
-        },
-        {
-          id: "mockAnalysisMethod2",
-          name: "Mock Analysis 2",
-          analysis_method_applicable_plans: [
-            {
-              key: "analysis_method_applicable_plans-mockPlan2",
-              value: "Mock Plan 2",
-            },
-          ],
-        },
-      ] as EntityShape[];
-
-      const standards = [
-        {
-          id: "mockStandard1",
-          "standard_analysisMethodsUtilized-mockStandardTypeId1": [
-            {
-              key: "standard_analysisMethodsUtilized-mockStandardTypeId1-mockAnalysisMethod1",
-              value: "Mock Analysis 1",
-            },
-          ],
-        },
-        {
-          id: "mockStandard2",
-          "standard_analysisMethodsUtilized-mockStandardTypeId2": [
-            {
-              key: "standard_analysisMethodsUtilized-mockStandardTypeId2-mockAnalysisMethod2",
-              value: "Mock Analysis 2",
-            },
-          ],
-        },
-      ] as EntityShape[];
-
-      const standardsUsedByPlan = [
-        {
-          id: "mockStandard1",
-          "standard_analysisMethodsUtilized-mockStandardTypeId1": [
-            {
-              key: "standard_analysisMethodsUtilized-mockStandardTypeId1-mockAnalysisMethod1",
-              value: "Mock Analysis 1",
-            },
-          ],
-        },
-      ] as EntityShape[];
-
-      expect(filteredStandards(analysisMethods, standards, plan)).toEqual(
-        standardsUsedByPlan
-      );
-    });
-  });
-
   describe("addStandardId()", () => {
     const standardPrefix = "mockPrefix";
     const standardId = "mockId";
@@ -110,13 +52,113 @@ describe("utils/forms/naaarPlanCompliance", () => {
       );
     });
 
-    test("adds id to key with existing dash", () => {
-      const formJson = { id: "mockPrefix-something" } as FormJson;
-      const newFormJson = { id: "mockPrefix-mockId-something" } as FormJson;
+    test("adds id to key in nested objects", () => {
+      const formJson = {
+        id: "mockPrefix-something",
+        fields: [{ id: "mockPrefix-something", type: "mock" }],
+        options: { test: 0 },
+      } as FormJson;
+
+      const newFormJson = {
+        id: "mockPrefix-mockId-something",
+        fields: [{ id: "mockPrefix-mockId-something", type: "mock" }],
+        options: { test: 0 },
+      } as FormJson;
 
       expect(addStandardId(formJson, standardPrefix, standardId)).toEqual(
         newFormJson
       );
+    });
+  });
+
+  describe("exceptionsNonComplianceStatus()", () => {
+    const exceptions = ["mockPrefix-mockEntityId1-exceptionsDescription"];
+    const standardPrefix = "mockPrefix";
+
+    test("returns exceptionsStatus", () => {
+      expect(
+        exceptionsNonComplianceStatus(
+          exceptions,
+          standardPrefix,
+          "mockEntityId1"
+        )
+      ).toBe(exceptionsStatus);
+    });
+
+    test("returns nonComplianceStatus", () => {
+      const nonCompliance = [
+        "mockPrefix-mockEntityId2-nonComplianceDescription",
+      ];
+      expect(
+        exceptionsNonComplianceStatus(
+          nonCompliance,
+          standardPrefix,
+          "mockEntityId2"
+        )
+      ).toBe(nonComplianceStatus);
+    });
+
+    test("returns undefined", () => {
+      expect(
+        exceptionsNonComplianceStatus(
+          exceptions,
+          standardPrefix,
+          "mockEntityId2"
+        )
+      ).toBeUndefined();
+    });
+  });
+
+  describe("addExceptionsNonComplianceStatus()", () => {
+    const entities = [
+      {
+        entity: {
+          id: "mockEntityId1",
+          "mockPrefix-mockEntityId1-nonComplianceDescription": "Mock Value",
+        },
+      },
+      {
+        entity: {
+          id: "mockEntityId2",
+          "mockPrefix-mockEntityId2-exceptionsDescription": "Mock Value",
+        },
+      },
+      { entity: { id: "mockEntityId3" } },
+    ] as NaaarStandardsTableShape[];
+
+    const exceptionsNonCompliance = [
+      "mockPrefix-mockEntityId1-nonComplianceDescription",
+      "mockPrefix-mockEntityId2-exceptionsDescription",
+    ];
+
+    const standardPrefix = "mockPrefix";
+
+    const expectedEntities = [
+      {
+        entity: {
+          id: "mockEntityId1",
+          "mockPrefix-mockEntityId1-nonComplianceDescription": "Mock Value",
+        },
+        exceptionsNonCompliance: nonComplianceStatus,
+      },
+      {
+        entity: {
+          id: "mockEntityId2",
+          "mockPrefix-mockEntityId2-exceptionsDescription": "Mock Value",
+        },
+        exceptionsNonCompliance: exceptionsStatus,
+      },
+      { entity: { id: "mockEntityId3" } },
+    ];
+
+    test("adds exceptionsNonCompliance to data objects", () => {
+      expect(
+        addExceptionsNonComplianceStatus(
+          entities,
+          exceptionsNonCompliance,
+          standardPrefix
+        )
+      ).toEqual(expectedEntities);
     });
   });
 });

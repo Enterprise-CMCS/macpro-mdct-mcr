@@ -1,58 +1,19 @@
+// constants
+import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
-import { EntityShape, FormJson } from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
+import { FormJson } from "types";
 
 export const hasComplianceDetails = (
   exceptionsNonCompliance: string[],
   standardKeyPrefix: string,
   entityId: string
 ) => {
-  return exceptionsNonCompliance.some((key) => {
-    const id = key.split(`${standardKeyPrefix}-`).pop();
-    return id?.startsWith(entityId);
-  });
-};
-
-export const filteredStandards = (
-  analysisMethods: EntityShape[] = [],
-  standards: EntityShape[] = [],
-  selectedEntity?: EntityShape
-) => {
-  const analysisMethodsUsedByPlan = analysisMethods
-    .filter((method: EntityShape) => {
-      const plansUsingMethod =
-        method.analysis_method_applicable_plans?.filter((plan: EntityShape) =>
-          plan.key.endsWith(selectedEntity?.id)
-        ) || [];
-
-      if (plansUsingMethod.length > 0) {
-        return method;
-      }
-
-      return;
-    })
-    .map((method: EntityShape) => method.id);
-
-  const standardsUsedByPlan = standards.filter((standard: EntityShape) => {
-    const key =
-      Object.keys(standard).find((key) =>
-        key.startsWith("standard_analysisMethodsUtilized-")
-      ) || "";
-
-    // Collect ids of standards in standard_analysisMethodsUtilized-*
-    const analysisMethodsUsedByStandard =
-      standard[key]?.map((method: EntityShape) =>
-        method.key.split("-").pop()
-      ) || [];
-    const isAnalysisMethodUsedByStandardAndPlan =
-      analysisMethodsUsedByStandard.some((method: string) =>
-        analysisMethodsUsedByPlan.includes(method)
-      );
-
-    if (isAnalysisMethodUsedByStandardAndPlan) return standard;
-    return;
-  });
-
-  return standardsUsedByPlan;
+  return !!exceptionsNonComplianceStatus(
+    exceptionsNonCompliance,
+    standardKeyPrefix,
+    entityId
+  );
 };
 
 // TODO: Add analysis methods checkboxes used by standard
@@ -97,3 +58,38 @@ export const addStandardId = (
   updateRecursively(updatedForm);
   return updatedForm;
 };
+
+export const exceptionsNonComplianceStatus = (
+  exceptionsNonCompliance: string[],
+  standardKeyPrefix: string,
+  entityId: string
+) => {
+  const complianceKeyPrefix = `${standardKeyPrefix}-${entityId}-`;
+  const exceptionOrNonCompliance = exceptionsNonCompliance.find((key) =>
+    key.startsWith(complianceKeyPrefix)
+  );
+  if (!exceptionOrNonCompliance) return;
+
+  if (exceptionOrNonCompliance.includes("exceptions")) {
+    return exceptionsStatus;
+  }
+  return nonComplianceStatus;
+};
+
+export const addExceptionsNonComplianceStatus = (
+  entities: NaaarStandardsTableShape[],
+  exceptionsNonCompliance: string[],
+  standardKeyPrefix: string
+) =>
+  entities.map((entity) => {
+    const exceptionsOrNonCompliance = exceptionsNonComplianceStatus(
+      exceptionsNonCompliance,
+      standardKeyPrefix,
+      entity.entity.id
+    );
+
+    return {
+      ...entity,
+      exceptionsNonCompliance: exceptionsOrNonCompliance,
+    };
+  });

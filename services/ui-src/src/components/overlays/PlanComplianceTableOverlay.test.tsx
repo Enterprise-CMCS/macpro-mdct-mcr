@@ -90,7 +90,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     expect(childTable).toBeVisible();
     expect(
       within(childTable).getByRole("row", {
-        name: "ID Mock Standard Type Header Actions",
+        name: "ID Mock N/E Mock Standard Type Header Actions",
       })
     ).toBeVisible();
   });
