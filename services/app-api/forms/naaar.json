@@ -1255,7 +1255,7 @@
                 "description": { "header": "Standard description" },
                 "population": { "header": "Population" },
                 "region": { "header": "Region" },
-                "actions": { "header": "Actions", "hidden": true }  
+                "actions": { "header": "Actions", "hidden": true }
               },
               "verbiage": {
                 "backButton": "Return to plan compliance data for {{planName}} dashboard",
@@ -1296,7 +1296,22 @@
                             "props": {
                               "hint": "Describe plan deficiencies identified during the reporting period.",
                               "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
-                            }                          
+                            }
+                          },
+                          {
+                            "id": "analysis_method_applicable_plans",
+                            "type": "checkbox",
+                            "validation": {
+                              "type": "checkbox",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard",
+                              "parentOptionId": "l8yWzYniMtH5HQrBIjwApO"
+                            },
+                            "props": {
+                              "hint": "Indicate which analyses uncovered the deficiencies. If the analysis method does not appear here, go back to “Standards” and add it.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 analyses used to identify deficiencies",
+                              "choices": []
+                            }
                           },
                           {
                             "id": "planCompliance43868_standard-nonCompliancePlanToAchieveCompliance",

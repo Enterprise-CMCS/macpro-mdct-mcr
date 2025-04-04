@@ -17,8 +17,25 @@ export const hasComplianceDetails = (
 };
 
 // TODO: Add analysis methods checkboxes used by standard
-export const addAnalysisMethods = (formJson: FormJson) => {
-  return formJson;
+export const addAnalysisMethods = (form: FormJson, standards: any) => {
+  // analysis methods that are applicable, by plan
+  const updatedForm = structuredClone(form);
+  let analysisMethodsInPlan: AnyObject[] = [];
+  standards
+    .map((item: { [x: string]: any[] }) => {
+      const analysisMethodsKey = Object.keys(item).find((key) =>
+        key.startsWith("standard_analysisMethodsUtilized-")
+      );
+      if (analysisMethodsKey) {
+        return item[analysisMethodsKey].map(
+          (analysisMethod) => analysisMethod.value
+        );
+      }
+
+      return analysisMethodsInPlan;
+    })
+    .flat();
+  // return updatedForm
 };
 
 export const addStandardId = (

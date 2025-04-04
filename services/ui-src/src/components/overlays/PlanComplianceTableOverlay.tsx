@@ -54,6 +54,24 @@ export const PlanComplianceTableOverlay = ({
 }: Props) => {
   const standardKeyPrefix = planComplianceStandardKey;
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
+  let analysisMethodsInPlan: [] = [];
+
+  const analysisMethods = standards
+    .map((item: { [x: string]: any[] }) => {
+      const analysisMethodsKey = Object.keys(item).find((key) =>
+        key.startsWith("standard_analysisMethodsUtilized-")
+      );
+      if (analysisMethodsKey) {
+        return item[analysisMethodsKey].map(
+          (analysisMethod) => analysisMethod.value
+        );
+      }
+
+      return analysisMethodsInPlan;
+    })
+    .flat();
+
+  console.log(analysisMethods);
 
   const DetailsOverlay = () => {
     const closeEntityDetailsFormOverlay = () => {
@@ -87,7 +105,7 @@ export const PlanComplianceTableOverlay = ({
       ]);
 
       formJson = addStandardId(formJson, standardKeyPrefix, entity.id);
-      formJson = addAnalysisMethods(formJson);
+      // formJson = addAnalysisMethods(formJson, standards);
     }
 
     const table = {

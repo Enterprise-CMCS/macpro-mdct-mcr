@@ -172,3 +172,74 @@ const updatedItemChoiceList = (
   }
   return updatedChoiceList;
 };
+
+// dynamically generate fields for choices
+export const generateAnalysisMethodFields = (
+  form: FormJson,
+  items: AnyObject[]
+) => {
+  return {
+    ...form,
+    fields: [
+      {
+        ...form.fields[0],
+        props: {
+          ...form.fields[0].props,
+          choices: [
+            ...updatedAnalysisMethodsChoiceList(
+              availableAnalysisMethods(items)
+            ),
+          ],
+        },
+      },
+    ],
+  };
+};
+
+const availableAnalysisMethods = (items: AnyObject[]) => {
+  const analysisMethodsFieldName = "analysis_method_applicable_plans";
+  const updatedItemChoices: AnyObject[] = [];
+  items.forEach((item) => {
+    updatedItemChoices.push({
+      ...item,
+      label: item.name,
+      checked: false,
+      children: [
+        {
+          id: `${analysisMethodsFieldName}_${item.id}`,
+          type: "checkbox",
+          validation: {
+            type: "checkbox",
+            nested: true,
+            parentFieldName: `${analysisMethodsFieldName}`,
+            parentOptionId: item.id,
+          },
+          props: {
+            decimalPlacesToRoundTo: 0,
+          },
+        },
+      ],
+    });
+  });
+  return updatedItemChoices;
+};
+
+const updatedAnalysisMethodsChoiceList = (itemChoices: AnyObject[]) => {
+  const updatedChoiceList: AnyObject[] = [];
+
+  itemChoices.map((choice: AnyObject) => {
+    updatedChoiceList.push({
+      ...choice,
+      children: [
+        {
+          ...choice.children[0],
+          props: {
+            ...choice.children[0].props,
+            choices: [...itemChoices],
+          },
+        },
+      ],
+    });
+  });
+  return updatedChoiceList;
+};
