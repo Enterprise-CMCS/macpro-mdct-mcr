@@ -5,7 +5,7 @@ import {
   CustomHtmlElement,
   EntityType,
   FormJson,
-  ScreenReaderOnlyHeaderName,
+  ScreenReaderCustomHeaderName,
   SortableHeadRow,
   State,
   TableContentShape,
@@ -97,7 +97,7 @@ export interface EntityDetailsMultiformShape {
   table?: {
     caption: string;
     bodyRows: string[][];
-    headRow: Array<string | ScreenReaderOnlyHeaderName>;
+    headRow: Array<string | ScreenReaderCustomHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
