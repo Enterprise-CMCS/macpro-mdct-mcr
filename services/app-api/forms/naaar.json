@@ -1299,7 +1299,7 @@
                             }
                           },
                           {
-                            "id": "analysis_method_applicable_plans",
+                            "id": "analysis_method_applicable_standard-plans_nonComplianceAnalyses",
                             "type": "checkbox",
                             "validation": {
                               "type": "checkbox",

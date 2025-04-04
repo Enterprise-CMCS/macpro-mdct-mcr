@@ -178,68 +178,21 @@ export const generateAnalysisMethodFields = (
   form: FormJson,
   items: AnyObject[]
 ) => {
-  return {
-    ...form,
-    fields: [
-      {
-        ...form.fields[0],
-        props: {
-          ...form.fields[0].props,
-          choices: [
-            ...updatedAnalysisMethodsChoiceList(
-              availableAnalysisMethods(items)
-            ),
-          ],
-        },
-      },
-    ],
-  };
+  const choicesToInject = availableAnalysisMethods(items);
+  form!.fields[0]!.props!.choices[0].children[1].props.choices =
+    choicesToInject;
+  return form;
 };
 
 const availableAnalysisMethods = (items: AnyObject[]) => {
-  const analysisMethodsFieldName = "analysis_method_applicable_plans";
+  const analysisMethodsFieldName =
+    "analysis_method_applicable_standard-plans_nonComplianceAnalyses";
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     updatedItemChoices.push({
-      ...item,
-      label: item.name,
-      checked: false,
-      children: [
-        {
-          id: `${analysisMethodsFieldName}_${item.id}`,
-          type: "checkbox",
-          validation: {
-            type: "checkbox",
-            nested: true,
-            parentFieldName: `${analysisMethodsFieldName}`,
-            parentOptionId: item.id,
-          },
-          props: {
-            decimalPlacesToRoundTo: 0,
-          },
-        },
-      ],
+      id: `${analysisMethodsFieldName}_${item}`,
+      label: item,
     });
   });
   return updatedItemChoices;
-};
-
-const updatedAnalysisMethodsChoiceList = (itemChoices: AnyObject[]) => {
-  const updatedChoiceList: AnyObject[] = [];
-
-  itemChoices.map((choice: AnyObject) => {
-    updatedChoiceList.push({
-      ...choice,
-      children: [
-        {
-          ...choice.children[0],
-          props: {
-            ...choice.children[0].props,
-            choices: [...itemChoices],
-          },
-        },
-      ],
-    });
-  });
-  return updatedChoiceList;
 };
