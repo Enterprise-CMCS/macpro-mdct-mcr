@@ -3,6 +3,7 @@ import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 import { AnyObject, FormJson } from "types";
+import { generateAnalysisMethodFields } from "./dynamicItemFields";
 
 export const hasComplianceDetails = (
   exceptionsNonCompliance: string[],
@@ -16,9 +17,27 @@ export const hasComplianceDetails = (
   );
 };
 
-// TODO: Add analysis methods checkboxes used by standard
-export const addAnalysisMethods = (formJson: FormJson) => {
-  return formJson;
+// Add analysis methods checkboxes used by standard
+export const addAnalysisMethods = (form: FormJson, standards: any) => {
+  // analysis methods that are applicable, by plan
+  const updatedForm = structuredClone(form);
+
+  const analysisMethodsInPlan = standards
+    .map((item: { [x: string]: any[] }) => {
+      const analysisMethodsKey = Object.keys(item).find((key) =>
+        key.startsWith("standard_analysisMethodsUtilized-")
+      );
+      if (analysisMethodsKey) {
+        return item[analysisMethodsKey].map(
+          (analysisMethod) => analysisMethod.value
+        );
+      }
+
+      return [];
+    })
+    .flat();
+
+  return generateAnalysisMethodFields(updatedForm, analysisMethodsInPlan);
 };
 
 export const addStandardId = (

@@ -859,6 +859,23 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                   {
                     id: "yes",
                     label: "Mock Yes",
+                    children: [
+                      {
+                        id: "mock-Description",
+                        type: "textarea",
+                        validation: "textOptional",
+                      },
+                      {
+                        id: "analysis_method_applicable_standard-plans_nonComplianceAnalyses",
+                        type: "checkbox",
+                        validation: "checkboxOneOptional",
+                        props: {
+                          label:
+                            "Mock Plan deficiencies: analyses used to identify deficiencies",
+                          choices: [],
+                        },
+                      },
+                    ],
                   },
                   {
                     id: "no",

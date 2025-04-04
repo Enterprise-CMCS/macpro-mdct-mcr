@@ -172,3 +172,28 @@ const updatedItemChoiceList = (
   }
   return updatedChoiceList;
 };
+
+// dynamically generate fields for choices
+export const generateAnalysisMethodFields = (
+  form: FormJson,
+  items: AnyObject[]
+) => {
+  // generate analysis methods checkboxes in the non-compliance section of PlanCompliaceTableOverlay
+  const choicesToInject = availableAnalysisMethods(items);
+  form!.fields[0]!.props!.choices[0].children[1].props.choices =
+    choicesToInject;
+  return form;
+};
+
+const availableAnalysisMethods = (items: AnyObject[]) => {
+  const analysisMethodsFieldName =
+    "analysis_method_applicable_standard-plans_nonComplianceAnalyses";
+  const updatedItemChoices: AnyObject[] = [];
+  items.forEach((item) => {
+    updatedItemChoices.push({
+      id: `${analysisMethodsFieldName}_${item}`,
+      label: item,
+    });
+  });
+  return updatedItemChoices;
+};
