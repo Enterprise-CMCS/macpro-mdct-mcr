@@ -28,7 +28,7 @@
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
     "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "axios": "^1.7.9",
+    "axios": "^1.8.2",
     "fast-xml-parser": "4.5.1",
     "loader-utils": "2.0.4",
     "tar": "^6.2.1",
