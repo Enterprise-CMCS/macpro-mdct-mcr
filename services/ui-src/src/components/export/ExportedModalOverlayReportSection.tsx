@@ -33,22 +33,20 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
 
   const verbiage = exportVerbiageMap[report?.reportType as ReportType];
 
-  const { emptyEntityMessage, modalOverlayTableHeaders } = verbiage;
+  const { modalOverlayTableHeaders } = verbiage;
 
   const headerLabels = Object.values(
     modalOverlayTableHeaders as Record<string, string>
   );
 
-  const countDisplayText =
-    entityCount > 0
-      ? entityCount
-      : emptyEntityMessage[entityType as keyof typeof emptyEntityMessage];
-
   return (
-    <Box>
+    <Box data-testid="exportedModalOverlayReportSection">
       {entityType === EntityType.STANDARDS && (
-        <Text as="span" sx={sx.standardCount} data-testid="entityMessage">
-          Standard total count: {countDisplayText}
+        <Text sx={sx.standardCount}>
+          Standard total count:{" "}
+          {entityCount > 0
+            ? entityCount
+            : verbiage.emptyEntityMessage[entityType]}
         </Text>
       )}
       <Table
