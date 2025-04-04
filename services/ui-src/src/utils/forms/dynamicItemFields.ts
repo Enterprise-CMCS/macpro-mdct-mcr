@@ -178,6 +178,7 @@ export const generateAnalysisMethodFields = (
   form: FormJson,
   items: AnyObject[]
 ) => {
+  // generate analysis methods checkboxes in the non-compliance section of PlanCompliaceTableOverlay
   const choicesToInject = availableAnalysisMethods(items);
   form!.fields[0]!.props!.choices[0].children[1].props.choices =
     choicesToInject;

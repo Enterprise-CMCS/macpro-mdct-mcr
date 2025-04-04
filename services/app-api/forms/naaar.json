@@ -1308,8 +1308,24 @@
                               "parentOptionId": "l8yWzYniMtH5HQrBIjwApO"
                             },
                             "props": {
-                              "hint": "Indicate which analyses uncovered the deficiencies. If the analysis method does not appear here, go back to “Standards” and add it.",
                               "label": "Plan deficiencies: 42 C.F.R. § 438.68 analyses used to identify deficiencies",
+                              "hint": [
+                                {
+                                  "type": "html",
+                                  "content": "Indicate which analyses uncovered the deficiencies. If the analysis method does not appear here, go back to "
+                                },
+                                {
+                                  "type": "internalLink",
+                                  "content": "Standards",
+                                  "props": {
+                                    "to": "/naaar/program-level-access-and-network-adequacy-standards"
+                                  }
+                                },
+                                {
+                                  "type": "html",
+                                  "content": " and add it."
+                                }
+                              ],
                               "choices": []
                             }
                           },
