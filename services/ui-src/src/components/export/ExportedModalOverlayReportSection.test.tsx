@@ -5,12 +5,13 @@ import {
   renderModalOverlayTableBody,
 } from "./ExportedModalOverlayReportSection";
 // types
-import { ModalOverlayReportPageShape, ReportType } from "types";
+import { EntityType, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
 import {
   mockMlrReportContext,
   mockMlrReportStore,
   mockModalOverlayReportPageJson,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
@@ -22,13 +23,19 @@ const mockReportContextOther = Object.assign({}, mockReportContext);
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockMlrReportStore,
-});
 
 const exportedModalOverlayReportSectionComponent = (
   <ExportedModalOverlayReportSection
     section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+  />
+);
+
+const exportedNaaarStandardsComponent = (
+  <ExportedModalOverlayReportSection
+    section={{
+      ...(mockModalOverlayReportPageJson as ModalOverlayReportPageShape),
+      entityType: EntityType.STANDARDS,
+    }}
   />
 );
 
@@ -130,6 +137,12 @@ const exportedModalOverlayReportSectionComponentOther = (
 );
 
 describe("<ExportedModalOverlayReportSection />", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+  });
   test("ExportedModalOverlayReportSection renders", () => {
     const { getByTestId } = render(exportedModalOverlayReportSectionComponent);
     const section = getByTestId("exportTable");
@@ -137,10 +150,7 @@ describe("<ExportedModalOverlayReportSection />", () => {
   });
 
   describe("Test renderModalOverlayTableBody", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    test("Should render data correctly", async () => {
+    test("Should render data correctly for mlr", async () => {
       mockReportContext.report.fieldData.program = [mockMlrProgram];
       const { container, findByText } = render(
         exportedModalOverlayReportSectionComponent
@@ -194,6 +204,42 @@ describe("<ExportedModalOverlayReportSection />", () => {
 
       // Correct notes
       expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+    });
+
+    test("Should render data correctly for naaar", async () => {
+      mockedUseStore.mockReturnValue(mockNaaarReportStore);
+      const { container, findByText } = render(exportedNaaarStandardsComponent);
+
+      // All table headers are present
+      expect(container.querySelectorAll("th").length).toBe(7);
+
+      // Every entity has a row (+1 for header)
+      expect(container.querySelectorAll("tr").length).toBe(
+        mockNaaarReportStore.report?.fieldData.standards.length + 1
+      );
+
+      // index
+      expect(await findByText("1")).toBeVisible();
+
+      // provider type
+      expect(
+        await findByText("Mock Provider; mock provider details")
+      ).toBeVisible();
+
+      // standard type
+      expect(await findByText("mock standard type")).toBeVisible();
+
+      // description
+      expect(await findByText("description of standard")).toBeVisible();
+
+      // analysis methods, joined with a comma
+      expect(await findByText("Mock am 1, Mock am 2, Mock am 3")).toBeVisible();
+
+      // population
+      expect(await findByText("Mock population")).toBeVisible();
+
+      // region
+      expect(await findByText("Mock region")).toBeVisible();
     });
 
     test('Should render "other" explanations if they are filled.', async () => {

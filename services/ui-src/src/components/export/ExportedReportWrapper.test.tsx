@@ -9,8 +9,16 @@ import {
   mockNestedReportPageJson,
   mockStandardReportPageJson,
   mockMcparReportContext,
+  mockNaaarReportContext,
+  mockNaaarStandardsPageJson,
+  mockNaaarReportStore,
+  mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { useStore } from "utils";
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const exportedStandardReportWrapperComponent = (
   <ReportContext.Provider value={mockMcparReportContext}>
@@ -42,7 +50,16 @@ const exportedModalDrawerReportWrapperComponent = (
   </ReportContext.Provider>
 );
 
+const standardEntityReportWrapperComponent = (
+  <ReportContext.Provider value={mockNaaarReportContext}>
+    <ExportedReportWrapper section={mockNaaarStandardsPageJson} />
+  </ReportContext.Provider>
+);
+
 describe("<ExportedReportWrapper />", () => {
+  beforeEach(() => {
+    mockedUseStore.mockReturnValue(mockMcparReportStore);
+  });
   test("ExportedStandardReportSection renders", () => {
     render(exportedStandardReportWrapperComponent);
     expect(
@@ -75,6 +92,15 @@ describe("<ExportedReportWrapper />", () => {
     render(exportedModalDrawerReportWrapperComponent);
     expect(
       screen.getByTestId("exportedModalDrawerReportSection")
+    ).toBeInTheDocument();
+  });
+
+  // this is a drawer page in the normal report, but we use a different page for the pdf
+  test("Standards Entity renders ModalOverlay page in export", () => {
+    mockedUseStore.mockReturnValue(mockNaaarReportStore);
+    render(standardEntityReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedModalOverlayReportSection")
     ).toBeInTheDocument();
   });
 

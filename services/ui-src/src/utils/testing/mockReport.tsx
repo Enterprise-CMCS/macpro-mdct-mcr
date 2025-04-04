@@ -382,6 +382,52 @@ export const mockNaaarReportFieldData = {
       name: "provider2",
     },
   ],
+  standards: [
+    {
+      id: "mockId",
+      standard_coreProviderTypeCoveredByStandard: [
+        {
+          key: "standard_coreProviderTypeCoveredByStandard-mock-1",
+          value: "Mock Provider",
+        },
+      ],
+      standard_standardType: [
+        {
+          key: "standard_standardType-mock-1",
+          value: "mock standard type",
+        },
+      ],
+      standard_populationCoveredByStandard: [
+        {
+          key: "standard_populationCoveredByStandard-mock-1",
+          value: "Mock population",
+        },
+      ],
+      standard_applicableRegion: [
+        {
+          key: "standard_applicableRegion-mock-1",
+          value: "Mock region",
+        },
+      ],
+      "standard_coreProviderTypeCoveredByStandard-mock-1-otherText":
+        "mock provider details",
+      "standard_standardDescription-mock-1": "description of standard",
+      "standard_analysisMethodsUtilized-mock-1": [
+        {
+          key: "standard_analysisMethodsUtilized-mock-1",
+          value: "Mock am 1",
+        },
+        {
+          key: "standard_analysisMethodsUtilized-mock-2",
+          value: "Mock am 2",
+        },
+        {
+          key: "standard_analysisMethodsUtilized-mock-3",
+          value: "Mock am 3",
+        },
+      ],
+    },
+  ],
 };
 
 export const mockMcparReport = {

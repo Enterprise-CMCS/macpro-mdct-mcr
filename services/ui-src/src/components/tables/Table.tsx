@@ -13,7 +13,7 @@ import {
 // types
 import {
   AnyObject,
-  ScreenReaderOnlyHeaderName,
+  ScreenReaderCustomHeaderName,
   TableContentShape,
 } from "types";
 // utils
@@ -43,7 +43,7 @@ export const Table = ({
           <Tr>
             {content.headRow.map(
               (
-                headerCell: string | ScreenReaderOnlyHeaderName,
+                headerCell: string | ScreenReaderCustomHeaderName,
                 index: number
               ) => (
                 <Th
@@ -52,9 +52,12 @@ export const Table = ({
                   sx={{ ...sx.tableHeader, ...sxOverride }}
                 >
                   {typeof headerCell === "object" ? (
-                    <VisuallyHidden>
-                      {sanitizeAndParseHtml(headerCell.hiddenName)}
-                    </VisuallyHidden>
+                    <>
+                      <VisuallyHidden>
+                        {sanitizeAndParseHtml(headerCell.hiddenName)}
+                      </VisuallyHidden>
+                      {headerCell?.name ? headerCell.name : null}
+                    </>
                   ) : (
                     sanitizeAndParseHtml(headerCell)
                   )}
