@@ -36,7 +36,7 @@ export const addAnalysisMethods = (
    * Returns an array that looks like ['Geomapping', 'Plan Provider Directory Review', 'Secret Shopper: Network Participation']
    */
   const associatedAnalysisMethodsWithSelectedPlan =
-    createdAnalysisMethods.flatMap((analysisMethod: any) => {
+    createdAnalysisMethods?.flatMap((analysisMethod: any) => {
       if (!analysisMethod?.analysis_method_applicable_plans) return [];
       const methodName = analysisMethod.name;
       for (let method of analysisMethod.analysis_method_applicable_plans) {
@@ -53,7 +53,7 @@ export const addAnalysisMethods = (
    * Part 2: Program-level access and network adequacy standards.
    * Creates an array that looks like ['Geomapping', 'Plan Provider Directory Review']
    */
-  const utilizedAnalysisMethodsWithSelectedStandard = standards.flatMap(
+  const utilizedAnalysisMethodsWithSelectedStandard = standards?.flatMap(
     (item: { [x: string]: any[] }) => {
       const analysisMethodsKey = Object.keys(item).find((key) =>
         key.startsWith("standard_analysisMethodsUtilized-")
@@ -74,8 +74,8 @@ export const addAnalysisMethods = (
    * Since both those analysis methods are in both the plan and the standard.
    */
   const associatedMethodsBetweenStandardsAndPlan =
-    associatedAnalysisMethodsWithSelectedPlan.filter((value: any) =>
-      utilizedAnalysisMethodsWithSelectedStandard.includes(value)
+    associatedAnalysisMethodsWithSelectedPlan?.filter((value: any) =>
+      utilizedAnalysisMethodsWithSelectedStandard?.includes(value)
     );
 
   //Step 4, Go through and find any associated questions relating to the analysis methods and inject those choices into the form.
