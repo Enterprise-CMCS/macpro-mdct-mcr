@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 // components
 import {
   ExportedModalOverlayReportSection,
@@ -208,38 +208,54 @@ describe("<ExportedModalOverlayReportSection />", () => {
 
     test("Should render data correctly for naaar", async () => {
       mockedUseStore.mockReturnValue(mockNaaarReportStore);
-      const { container, findByText } = render(exportedNaaarStandardsComponent);
+      render(exportedNaaarStandardsComponent);
 
       // All table headers are present
-      expect(container.querySelectorAll("th").length).toBe(7);
+      expect(screen.getAllByRole("columnheader").length).toBe(7);
 
       // Every entity has a row (+1 for header)
-      expect(container.querySelectorAll("tr").length).toBe(
-        mockNaaarReportStore.report?.fieldData.standards.length + 1
+      const tbody = screen.getAllByRole("rowgroup")[1];
+      const rows = within(tbody).getAllByRole("row");
+      expect(rows.length).toBe(
+        mockNaaarReportStore.report?.fieldData.standards.length
       );
 
       // index
-      expect(await findByText("1")).toBeVisible();
+      expect(screen.getByRole("gridcell", { name: "1" })).toBeVisible();
 
       // provider type
       expect(
-        await findByText("Mock Provider; mock provider details")
+        screen.getByRole("gridcell", {
+          name: "Mock Provider; mock provider details",
+        })
       ).toBeVisible();
 
       // standard type
-      expect(await findByText("mock standard type")).toBeVisible();
+      expect(
+        screen.getByRole("gridcell", { name: "mock standard type" })
+      ).toBeVisible();
 
       // description
-      expect(await findByText("description of standard")).toBeVisible();
+      expect(
+        screen.getByRole("gridcell", { name: "description of standard" })
+      ).toBeVisible();
 
       // analysis methods, joined with a comma
-      expect(await findByText("Mock am 1, Mock am 2, Mock am 3")).toBeVisible();
+      expect(
+        screen.getByRole("gridcell", {
+          name: "Mock am 1, Mock am 2, Mock am 3",
+        })
+      ).toBeVisible();
 
       // population
-      expect(await findByText("Mock population")).toBeVisible();
+      expect(
+        screen.getByRole("gridcell", { name: "Mock population" })
+      ).toBeVisible();
 
       // region
-      expect(await findByText("Mock region")).toBeVisible();
+      expect(
+        screen.getByRole("gridcell", { name: "Mock region" })
+      ).toBeVisible();
     });
 
     test("Should render message for naaar with no standards", async () => {
@@ -248,17 +264,17 @@ describe("<ExportedModalOverlayReportSection />", () => {
       };
       mockEmptyStandardsNaaarStore.report!.fieldData.standards = undefined;
       mockedUseStore.mockReturnValue(mockEmptyStandardsNaaarStore);
-      const { container, findByText } = render(exportedNaaarStandardsComponent);
+      render(exportedNaaarStandardsComponent);
 
       // No table renders
-      expect(container.querySelectorAll("table").length).toBe(0);
+      expect(screen.queryByRole("table")).toBeNull();
 
       // region
       expect(
-        await findByText(
-          "Standard total count: 0 - No access standards entered"
-        )
-      ).toBeVisible();
+        screen.getByTestId("exportedModalOverlayReportSection")
+      ).toHaveTextContent(
+        "Standard total count: 0 - No access standards entered"
+      );
     });
 
     test('Should render "other" explanations if they are filled.', async () => {
