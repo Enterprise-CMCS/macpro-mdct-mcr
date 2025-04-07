@@ -176,7 +176,7 @@ const updatedItemChoiceList = (
 // dynamically filter by partialId to find the analysis methods
 export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
-  items: AnyObject[]
+  items: string[]
 ) => {
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {

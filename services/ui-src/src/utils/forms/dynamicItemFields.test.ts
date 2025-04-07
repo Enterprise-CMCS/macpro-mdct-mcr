@@ -4,6 +4,7 @@ import {
   mockNaaarStandardsPageJson,
 } from "utils/testing/mockForm";
 import {
+  availableAnalysisMethods,
   generateAddEntityDrawerItemFields,
   generateAnalysisMethodChoices,
   generateDrawerItemFields,
@@ -192,5 +193,24 @@ describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with cust
   );
   it("should generate checkboxes per each available plan", () => {
     expect(result.fields[3].props?.choices.length).toBe(2);
+  });
+});
+
+describe("availableAnalysisMethods for NAAAR plan compliance", () => {
+  it("should return the updated item choices", () => {
+    const mockObjectId =
+      "planCompliance43868_standard-id-nonComplianceAnalyses";
+    const mockItems = ["Geomapping", "Plan Provider Directory Review"];
+    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    expect(result).toEqual([
+      {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_Geomapping",
+        label: "Geomapping",
+      },
+      {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_Plan Provider Directory Review",
+        label: "Plan Provider Directory Review",
+      },
+    ]);
   });
 });
