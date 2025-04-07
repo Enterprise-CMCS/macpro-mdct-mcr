@@ -85,7 +85,6 @@ export const PlanComplianceTableOverlay = ({
         population,
         region,
       ]);
-
       formJson = addStandardId(formJson, standardKeyPrefix, entity.id);
       formJson = addAnalysisMethods(formJson, standards);
     }

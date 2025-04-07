@@ -1,4 +1,10 @@
-import { AnyObject, EntityType, FormJson } from "types";
+import {
+  AnyObject,
+  EntityType,
+  FormField,
+  FormJson,
+  FormLayoutElement,
+} from "types";
 
 // dynamically generate fields for choices
 export const generateDrawerItemFields = (
@@ -173,25 +179,61 @@ const updatedItemChoiceList = (
   return updatedChoiceList;
 };
 
-// dynamically generate fields for choices
+// dynamically filter by partialId to find the analysis methods
 export const generateAnalysisMethodFields = (
   form: FormJson,
   items: AnyObject[]
 ) => {
-  // generate analysis methods checkboxes in the non-compliance section of PlanCompliaceTableOverlay
-  const choicesToInject = availableAnalysisMethods(items);
-  form!.fields[0]!.props!.choices[0].children[1].props.choices =
-    choicesToInject;
+  function findFieldByEndOfId(
+    fields: (FormField | FormLayoutElement)[],
+    partialId: string
+  ) {
+    for (const field of fields) {
+      if (field.id && field.id.includes(partialId)) {
+        return field;
+      }
+
+      if (field.props?.choices) {
+        for (const choice of field.props.choices) {
+          if (choice.children) {
+            const nonComplianceAnalysisMethodsChoices: any = findFieldByEndOfId(
+              choice.children,
+              partialId
+            );
+            if (nonComplianceAnalysisMethodsChoices)
+              return nonComplianceAnalysisMethodsChoices;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  const endOfId = "nonComplianceAnalyses";
+  const nonComplianceAnalysesSection = findFieldByEndOfId(form.fields, endOfId);
+
+  // generate analysis methods checkboxes in the non-compliance section of PlanComplianceTableOverlay
+  const choicesToInject = availableAnalysisMethods(
+    items,
+    nonComplianceAnalysesSection.id
+  );
+
+  if (nonComplianceAnalysesSection && nonComplianceAnalysesSection.props) {
+    nonComplianceAnalysesSection.props.choices = choicesToInject;
+  }
+
   return form;
 };
 
-const availableAnalysisMethods = (items: AnyObject[]) => {
-  const analysisMethodsFieldName =
-    "analysis_method_applicable_standard-plans_nonComplianceAnalyses";
+const availableAnalysisMethods = (
+  items: AnyObject[],
+  analysisMethodsFieldId: string
+) => {
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     updatedItemChoices.push({
-      id: `${analysisMethodsFieldName}_${item}`,
+      id: `${analysisMethodsFieldId}_${item}`,
       label: item,
     });
   });

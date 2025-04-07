@@ -21,13 +21,13 @@ export const hasComplianceDetails = (
 export const addAnalysisMethods = (form: FormJson, standards: any) => {
   // analysis methods that are applicable, by plan
   const updatedForm = structuredClone(form);
-
   const analysisMethodsInPlan = standards
     .map((item: { [x: string]: any[] }) => {
       const analysisMethodsKey = Object.keys(item).find((key) =>
         key.startsWith("standard_analysisMethodsUtilized-")
       );
       if (analysisMethodsKey) {
+        // console.log(item[analysisMethodsKey]);
         return item[analysisMethodsKey].map(
           (analysisMethod) => analysisMethod.value
         );
