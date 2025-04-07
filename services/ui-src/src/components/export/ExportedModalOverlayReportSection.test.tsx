@@ -242,6 +242,25 @@ describe("<ExportedModalOverlayReportSection />", () => {
       expect(await findByText("Mock region")).toBeVisible();
     });
 
+    test("Should render message for naaar with no standards", async () => {
+      const mockEmptyStandardsNaaarStore = {
+        ...mockNaaarReportStore,
+      };
+      mockEmptyStandardsNaaarStore.report!.fieldData.standards = undefined;
+      mockedUseStore.mockReturnValue(mockEmptyStandardsNaaarStore);
+      const { container, findByText } = render(exportedNaaarStandardsComponent);
+
+      // No table renders
+      expect(container.querySelectorAll("table").length).toBe(0);
+
+      // region
+      expect(
+        await findByText(
+          "Standard total count: 0 - No access standards entered"
+        )
+      ).toBeVisible();
+    });
+
     test('Should render "other" explanations if they are filled.', async () => {
       mockReportContextOther.report.fieldData.program = [mockMlrProgramOther];
 

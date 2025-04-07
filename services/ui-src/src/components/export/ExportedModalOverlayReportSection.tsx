@@ -49,22 +49,26 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
             : verbiage.emptyEntityMessage[entityType]}
         </Text>
       )}
-      <Table
-        sx={sx.root}
-        content={{
-          caption: "Reporting Overview",
-          headRow: headerLabels,
-        }}
-        data-testid="exportTable"
-      >
-        {entities &&
-          renderModalOverlayTableBody(
-            report?.reportType as ReportType,
-            entities
+      {entityType === EntityType.STANDARDS && !entityCount ? null : (
+        <>
+          <Table
+            sx={sx.root}
+            content={{
+              caption: "Reporting Overview",
+              headRow: headerLabels,
+            }}
+            data-testid="exportTable"
+          >
+            {entities &&
+              renderModalOverlayTableBody(
+                report?.reportType as ReportType,
+                entities
+              )}
+          </Table>
+          {(!entities || entityCount === 0) && (
+            <Text sx={sx.emptyState}> No entities found.</Text>
           )}
-      </Table>
-      {(!entities || entityCount === 0) && (
-        <Text sx={sx.emptyState}> No entities found.</Text>
+        </>
       )}
     </Box>
   );
@@ -131,6 +135,7 @@ export function renderModalOverlayTableBody(
         );
       });
     case ReportType.NAAAR:
+      // render pattern for NAAAR Standards
       return entities.map((entity, idx) => {
         const {
           provider,
