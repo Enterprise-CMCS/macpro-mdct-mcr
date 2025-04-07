@@ -5,6 +5,7 @@ import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandar
 import { FormJson } from "types";
 // utils
 import {
+  addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
   exceptionsNonComplianceStatus,
@@ -161,6 +162,69 @@ describe("utils/forms/naaarPlanCompliance", () => {
           standardPrefix
         )
       ).toEqual(expectedEntities);
+    });
+  });
+
+  describe("addAnalysisMethods", () => {
+    test("should inject associated analysis methods into the correct form field", () => {
+      const mockForm = {
+        id: "mockId",
+        fields: [
+          {
+            id: "planCompliance43868-standard-id-nonComplianceAnalyses",
+            type: "checkbox",
+            props: {},
+          },
+        ],
+      };
+
+      const standardKeyPrefix = "planCompliance43868";
+      const entityId = "standard-id";
+      const selectedEntityName = "Plan 1";
+
+      const createdAnalysisMethods = [
+        {
+          name: "Geomapping",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          name: "Plan Provider Directory Review",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          name: "Secret Shopper",
+          analysis_method_applicable_plans: [{ value: "Plan 2" }],
+        },
+      ];
+
+      const analysisMethodsInStandards = [
+        {
+          [`standard_analysisMethodsUtilized-${entityId}`]: [
+            { value: "Geomapping" },
+            { value: "Plan Provider Directory Review" },
+          ],
+        },
+      ];
+
+      const result = addAnalysisMethods(
+        mockForm,
+        standardKeyPrefix,
+        entityId,
+        analysisMethodsInStandards,
+        createdAnalysisMethods,
+        selectedEntityName
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_Geomapping",
+          label: "Geomapping",
+        },
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_Plan Provider Directory Review",
+          label: "Plan Provider Directory Review",
+        },
+      ]);
     });
   });
 });
