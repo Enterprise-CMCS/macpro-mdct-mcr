@@ -401,8 +401,25 @@ export const mockNaaarReportFieldData = {
       ],
       analysis_method_applicable_plans: [
         {
-          key: "analysis_method_applicable_plans-mock-id",
+          key: "analysis_method_applicable_plans-mock-id1",
           value: "plan",
+        },
+      ],
+    },
+    {
+      id: "a61e850-53ba-bc3c-620-ce02436d74",
+      custom_analysis_method_name: "Unique",
+      custom_analysis_method_description: "mock description",
+      analysis_method_frequency: [
+        {
+          key: "analysis_method_frequency-mock-id",
+          value: "Weekly",
+        },
+      ],
+      analysis_method_applicable_plans: [
+        {
+          key: "analysis_method_applicable_plans-mock-id2",
+          value: "1",
         },
       ],
     },

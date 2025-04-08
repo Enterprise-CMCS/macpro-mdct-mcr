@@ -52,7 +52,11 @@ export const addAnalysisMethods = (
       if (!analysisMethod?.analysis_method_applicable_plans) return [];
       for (let method of analysisMethod.analysis_method_applicable_plans) {
         if (method.value == selectedEntityName) {
-          return { id: analysisMethod.id, name: analysisMethod.name };
+          return {
+            id: analysisMethod.id,
+            name:
+              analysisMethod.custom_analysis_method_name ?? analysisMethod.name,
+          };
         }
       }
       return [];
