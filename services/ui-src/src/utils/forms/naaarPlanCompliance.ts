@@ -2,7 +2,7 @@
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { AnyObject, FormJson } from "types";
+import { AnyObject, EntityShape, FormJson } from "types";
 import { availableAnalysisMethods } from "./dynamicItemFields";
 
 export const hasComplianceDetails = (
@@ -22,9 +22,12 @@ export const addAnalysisMethods = (
   form: FormJson,
   standardKeyPrefix: string,
   entityId: string,
-  standards: any,
-  createdAnalysisMethods: any,
-  selectedEntityName: string | undefined
+  standards: EntityShape[],
+  createdAnalysisMethods: {
+    analysis_method_applicable_plans: AnyObject[];
+    name: string;
+  }[],
+  selectedEntityName?: string
 ) => {
   //First we'll create a copy of the form to make future changes too.
   const updatedForm = structuredClone(form);
@@ -33,15 +36,23 @@ export const addAnalysisMethods = (
   /*
    * This is going to grab all of the Analysis Methods associated with the plan as selected on
    * Part 1: State and program information, Analysis Methods.
-   * Returns an array that looks like ['Geomapping', 'Plan Provider Directory Review', 'Secret Shopper: Network Participation']
+   * [
+   * {
+   *    "id": "mockUUID123",
+   *    "name": "Geomapping"
+   * },
+   * {
+   *    "id": "mockUUID456",
+   *     "name": "Plan Provider Directory Review"
+   * },
+   * ]
    */
   const associatedAnalysisMethodsWithSelectedPlan =
     createdAnalysisMethods?.flatMap((analysisMethod: any) => {
       if (!analysisMethod?.analysis_method_applicable_plans) return [];
-      const methodName = analysisMethod.name;
       for (let method of analysisMethod.analysis_method_applicable_plans) {
         if (method.value == selectedEntityName) {
-          return methodName;
+          return { id: analysisMethod.id, name: analysisMethod.name };
         }
       }
       return [];
@@ -51,31 +62,42 @@ export const addAnalysisMethods = (
   /*
    * This is going to grab all of the Analysis Methods associated with the standard as selected on
    * Part 2: Program-level access and network adequacy standards.
-   * Creates an array that looks like ['Geomapping', 'Plan Provider Directory Review']
+   * Creates an object that looks like:
+   *
+   * {
+   * "key": "standard_analysisMethodsUtilized-standardId-mockUUID123",
+   * "value": "Geomapping"
+   * }
    */
   const utilizedAnalysisMethodsWithSelectedStandard = standards?.flatMap(
-    (item: { [x: string]: any[] }) => {
-      const analysisMethodsKey = Object.keys(item).find((key) =>
+    (item: EntityShape) => {
+      const analysisMethodsKey: any = Object.keys(item).find((key) =>
         key.startsWith("standard_analysisMethodsUtilized-")
       );
       if (analysisMethodsKey) {
-        return item[analysisMethodsKey].map(
-          (analysisMethod) => analysisMethod.value
-        );
+        return item[analysisMethodsKey];
       }
       return [];
     }
   );
 
-  //Step 3, Grab the interesection of Analysis Methods associated with Plans and Standards
+  //Step 3, Grab the intersection of Analysis Methods associated with Plans and Standards
   /*
    * Compares the Analysis methods in the plan and the standard, and grabs the ones associated with both
-   * For example, given the array examples above it would return ['Geomapping', 'Plan Provider Directory Review']
-   * Since both those analysis methods are in both the plan and the standard.
+   * For example, given the array examples above it would return
+   * [
+   * {
+   *    "id": "mockUUID123",
+   *     "name": "Geomapping"
+   * },
+   * ]
+   * Since Geomapping is the analysis method in both the plan and the standard.
    */
   const associatedMethodsBetweenStandardsAndPlan =
-    associatedAnalysisMethodsWithSelectedPlan?.filter((value: any) =>
-      utilizedAnalysisMethodsWithSelectedStandard?.includes(value)
+    associatedAnalysisMethodsWithSelectedPlan?.filter((plan) =>
+      utilizedAnalysisMethodsWithSelectedStandard?.some((standard) =>
+        standard?.key?.endsWith(plan.id)
+      )
     );
 
   //Step 4, Go through and find any associated questions relating to the analysis methods and inject those choices into the form.
@@ -95,6 +117,7 @@ export const addAnalysisMethods = (
       } else if (
         value === `${standardKeyPrefix}-${entityId}-nonComplianceAnalyses`
       ) {
+        // creating and injecting the analysis method choices into the form
         obj.props.choices = availableAnalysisMethods(
           obj.id,
           associatedMethodsBetweenStandardsAndPlan

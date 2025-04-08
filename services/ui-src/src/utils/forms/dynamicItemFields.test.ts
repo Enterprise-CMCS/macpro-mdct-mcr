@@ -200,15 +200,18 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
   it("should return the updated item choices", () => {
     const mockObjectId =
       "planCompliance43868_standard-id-nonComplianceAnalyses";
-    const mockItems = ["Geomapping", "Plan Provider Directory Review"];
+    const mockItems = [
+      { id: "mockUUID1", name: "Geomapping" },
+      { id: "mockUUID2", name: "Plan Provider Directory Review" },
+    ];
     const result = availableAnalysisMethods(mockObjectId, mockItems);
     expect(result).toEqual([
       {
-        id: "planCompliance43868_standard-id-nonComplianceAnalyses_Geomapping",
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1",
         label: "Geomapping",
       },
       {
-        id: "planCompliance43868_standard-id-nonComplianceAnalyses_Plan Provider Directory Review",
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID2",
         label: "Plan Provider Directory Review",
       },
     ]);

@@ -13,6 +13,7 @@ import {
 import {
   mockEntityDetailsMultiformOverlayJson,
   mockEntityStore,
+  mockNaaarReport,
   mockNaaarStandards,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -55,6 +56,7 @@ const planComplianceTableOverlayComponent = (
         table={mockTable}
         validateOnRender={false}
         verbiage={mockVerbiage}
+        report={mockNaaarReport}
       />
     </OverlayProvider>
   </RouterWrappedComponent>
@@ -111,7 +113,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     await userEvent.click(closeButton);
 
     // Back to Table
-    const tableH2 = screen.getByRole("heading", {
+    const tableH2 = await screen.getByRole("heading", {
       level: 2,
       name: "Mock Details: Child Table",
     });
