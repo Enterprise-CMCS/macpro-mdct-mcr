@@ -6,8 +6,6 @@ services:
     path: services/topics
   ui:
     path: services/ui
-  uploads:
-    path: services/uploads
 
   # wave 2: depends on database
   app-api:
@@ -21,7 +19,6 @@ services:
       MlrReportTableStreamArn: ${database.MlrReportTableStreamArn}
       NaaarReportTableName: ${database.NaaarReportTableName}
       NaaarReportTableStreamArn: ${database.NaaarReportTableStreamArn}
-      AttachmentsBucketName: ${uploads.AttachmentsBucketName}
       McparFormBucketName: ${database.McparFormBucketName}
       MlrFormBucketName: ${database.MlrFormBucketName}
       NaaarFormBucketName: ${database.NaaarFormBucketName}
@@ -46,8 +43,6 @@ services:
       UserPoolClientId: ${ui-auth.UserPoolClientId}
       UserPoolClientDomain: ${ui-auth.UserPoolClientDomain}
       IdentityProvider: ${ui-auth.IdentityProvider}
-      AttachmentsBucketRegion: ${uploads.Region}
-      AttachmentsBucketName: ${uploads.AttachmentsBucketName}
       S3BucketName: ${ui.S3BucketName}
       CloudFrontDistributionId: ${ui.CloudFrontDistributionId}
       ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}

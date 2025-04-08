@@ -2,7 +2,7 @@
 
 # LaunchDarkly flags in components
 ./services/ui-src/src/components/app/AppRoutes.tsx:30:useFlags()?.naaarReport;
-./services/ui-src/src/components/cards/TemplateCard.tsx:34:useFlags()?.naaarReport;
+./services/ui-src/src/components/cards/TemplateCard.tsx:38:useFlags()?.naaarReport;
 ./services/ui-src/src/components/forms/AdminDashSelector.tsx:40:useFlags()?.naaarReport;
 ./services/ui-src/src/components/modals/AddEditReportModal.tsx:44:useFlags()?.naaarReport;
 ./services/ui-src/src/components/pages/Dashboard/DashboardPage.tsx:214:useFlags()?.sortableDashboardTable;
@@ -11,9 +11,9 @@
 ./services/ui-src/src/components/app/AppRoutes.test.tsx:147:mockLDFlags.set({ naaarReport: true });
 ./services/ui-src/src/components/app/AppRoutes.test.tsx:162:mockLDFlags.set({ naaarReport: false });
 ./services/ui-src/src/components/app/AppRoutes.test.tsx:25:mockLDFlags.setDefault({ naaarReport: false });
-./services/ui-src/src/components/cards/TemplateCard.test.tsx:145:mockLDFlags.set({ naaarReport: true });
-./services/ui-src/src/components/cards/TemplateCard.test.tsx:157:mockLDFlags.set({ naaarReport: false });
-./services/ui-src/src/components/cards/TemplateCard.test.tsx:60:mockLDFlags.setDefault({ naaarReport: true });
+./services/ui-src/src/components/cards/TemplateCard.test.tsx:155:mockLDFlags.set({ naaarReport: true });
+./services/ui-src/src/components/cards/TemplateCard.test.tsx:167:mockLDFlags.set({ naaarReport: false });
+./services/ui-src/src/components/cards/TemplateCard.test.tsx:54:mockLDFlags.setDefault({ naaarReport: true });
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:32:mockLDFlags.setDefault({ naaarReport: true });
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:71:mockLDFlags.set({ naaarReport: true });
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:81:mockLDFlags.set({ naaarReport: false });
