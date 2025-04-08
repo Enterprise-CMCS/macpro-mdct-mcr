@@ -31,11 +31,9 @@ export const ExportedReportWrapper = ({ section }: Props) => {
       // standards uses the table pattern from the modal overlay component
       if (section.entityType === EntityType.STANDARDS) {
         return (
-          <>
-            <ExportedModalOverlayReportSection
-              section={section as ModalOverlayReportPageShape}
-            />
-          </>
+          <ExportedModalOverlayReportSection
+            section={section as ModalOverlayReportPageShape}
+          />
         );
       }
       return (
