@@ -149,3 +149,298 @@ export const nonCompliantLabel =
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
   "Exceptions granted under 42 C.F.R. § 438.68(d)";
+
+export const FREQUENCY_OF_COMPLIANCE_FINDINGS = {
+  id: "mockId",
+  type: "checkbox",
+  validation: {
+    type: "checkbox",
+    nested: true,
+    parentFieldName: "parentMockId",
+    parentOptionId: "l8yWzYniMtH5HQrBIjwApO",
+  },
+  props: {
+    label:
+      "Plan deficiencies: 42 C.F.R. § 438.68 analyses used to identify deficiencies",
+    choices: [
+      {
+        id: "planCompliance43868_standard-843a5-850f-573a-6b2e-7aca3cea20-nonComplianceAnalyses_k9t7YoOeTOAXX3s7qF6XfN33",
+        label: "Geomapping",
+        props: {
+          choices: [
+            {
+              id: "474f45-210-8bf0-2760-17d16e8248",
+              label: "Nicks label",
+            },
+          ],
+        },
+        value: "Geomapping",
+        name: "planCompliance43868_standard-843a5-850f-573a-6b2e-7aca3cea20-nonComplianceAnalyses_k9t7YoOeTOAXX3s7qF6XfN33",
+        checked: false,
+      },
+    ],
+  },
+};
+
+export const testexample = [
+  {
+    id: "mockId",
+    type: "checkbox",
+    validation: "checkbox",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "mockChoiceId",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "mockId",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockChoiceq1",
+                    label: "Percent of enrollees that met the standard",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField2",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField3",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField4",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "mockChoiceq1",
+                    label: "Actual maximum time",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField2",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField3",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField4",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "mockChoiceq1",
+                    label: "Actual maximum distance",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField2",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField3",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockNumberField4",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          id: "mockChoiceId2",
+          label: "Report results annually",
+          children: [
+            {
+              id: "mockId",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockChoiceq1",
+                    label: "Percent of enrollees that met the standard",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockDateId",
+                        type: "date",
+                        validation: {
+                          type: "date",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "mockChoiceq1",
+                    label: "Actual maximum time",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockDateId",
+                        type: "date",
+                        validation: {
+                          type: "date",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "mockChoiceq1",
+                    label: "Actual maximum distance",
+                    children: [
+                      {
+                        id: "mockNumberField1",
+                        type: "number",
+                        validation: "number",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "mockDateId",
+                        type: "date",
+                        validation: {
+                          type: "date",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];

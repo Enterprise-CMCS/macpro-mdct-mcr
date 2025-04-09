@@ -1,3 +1,7 @@
+import { testexample } from "constants";
+import { DEFAULT_ANALYSIS_METHODS } from "constants";
+import { FREQUENCY_OF_COMPLIANCE_FINDINGS } from "constants";
+import uuid from "react-uuid";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -173,14 +177,42 @@ const updatedItemChoiceList = (
   return updatedChoiceList;
 };
 
+function createIDForChildrenOfAnalysisMethod(obj: AnyObject) {
+  Object.keys(obj).forEach((key) => {
+    const value = obj[key];
+    console.log(value);
+    if (Array.isArray(value)) {
+      value.forEach(createIDForChildrenOfAnalysisMethod);
+    } else if (typeof value === "object") {
+      createIDForChildrenOfAnalysisMethod(value);
+    }
+    // } else if (needsStandardId(value)) {
+    //   const option = value.includes("-") ? value.split("-").pop() : undefined;
+    //   obj[key] = [standardPrefix, standardId, option]
+    //     .filter((f) => f)
+    //     .join("-");
+    // }
+  });
+}
+
 // dynamically filter by partialId to find the analysis methods
 export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
-  const updatedItemChoices = items.map((item) => ({
-    id: `${analysisMethodsFieldId}_${item.id}`,
-    label: item.name,
-  }));
+  const updatedItemChoices = items.map((item) => {
+    if (item.name === "Geomapping") {
+      createIDForChildrenOfAnalysisMethod(testexample);
+      return {
+        id: `${analysisMethodsFieldId}_${item.id}`,
+        label: item.name,
+        children: testexample,
+      };
+    }
+    return {
+      id: `${analysisMethodsFieldId}_${item.id}`,
+      label: item.name,
+    };
+  });
   return updatedItemChoices;
 };
