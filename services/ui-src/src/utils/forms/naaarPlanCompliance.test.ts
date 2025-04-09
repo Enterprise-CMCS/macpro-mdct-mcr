@@ -5,6 +5,7 @@ import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandar
 import { FormJson } from "types";
 // utils
 import {
+  addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
   exceptionsNonComplianceStatus,
@@ -161,6 +162,79 @@ describe("utils/forms/naaarPlanCompliance", () => {
           standardPrefix
         )
       ).toEqual(expectedEntities);
+    });
+  });
+
+  describe("addAnalysisMethods", () => {
+    test("should inject associated analysis methods into the correct form field", () => {
+      const mockForm = {
+        id: "mockId",
+        fields: [
+          {
+            id: "planCompliance43868-standard-id-nonComplianceAnalyses",
+            type: "checkbox",
+            props: {},
+          },
+        ],
+      };
+
+      const standardKeyPrefix = "planCompliance43868";
+      const entityId = "standard-id";
+      const selectedEntityName = "Plan 1";
+
+      const createdAnalysisMethods = [
+        {
+          id: "mockUUID1",
+          name: "Geomapping",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          id: "mockUUID2",
+          name: "Plan Provider Directory Review",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          id: "mockUUID3",
+          name: "Secret Shopper",
+          analysis_method_applicable_plans: [{ value: "Plan 2" }],
+        },
+      ];
+
+      const analysisMethodsInStandards = [
+        {
+          id: "standard-id",
+          [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
+            {
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
+              value: "Geomapping",
+            },
+            {
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID2`,
+              value: "Plan Provider Directory Review",
+            },
+          ],
+        },
+      ];
+
+      const result = addAnalysisMethods(
+        mockForm,
+        standardKeyPrefix,
+        entityId,
+        analysisMethodsInStandards,
+        createdAnalysisMethods,
+        selectedEntityName
+      );
+
+      expect(result.fields[0]?.props?.choices).toEqual([
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
+          label: "Geomapping",
+        },
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID2",
+          label: "Plan Provider Directory Review",
+        },
+      ]);
     });
   });
 });

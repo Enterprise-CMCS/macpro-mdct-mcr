@@ -164,6 +164,7 @@ export const EntityDetailsMultiformOverlay = ({
           table={tableProps}
           validateOnRender={validateOnRender || false}
           verbiage={translatedVerbiage}
+          report={report}
         />
       );
     }

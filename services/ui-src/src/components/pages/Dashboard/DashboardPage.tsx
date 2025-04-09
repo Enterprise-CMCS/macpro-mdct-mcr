@@ -243,7 +243,9 @@ export const DashboardPage = ({ reportType }: Props) => {
             }
           />
         )}
-        {parseCustomHtml(intro.body)}
+        {userIsAdmin && intro?.adminBody
+          ? parseCustomHtml(intro.adminBody)
+          : parseCustomHtml(intro.body)}
       </Box>
       <Box sx={sx.bodyBox}>
         {reportsToDisplay ? (

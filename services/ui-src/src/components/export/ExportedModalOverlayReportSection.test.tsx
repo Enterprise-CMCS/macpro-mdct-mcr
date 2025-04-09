@@ -226,36 +226,32 @@ describe("<ExportedModalOverlayReportSection />", () => {
       // provider type
       expect(
         screen.getByRole("gridcell", {
-          name: "Mock Provider; mock provider details",
+          name: "Primary Care",
         })
       ).toBeVisible();
 
       // standard type
       expect(
-        screen.getByRole("gridcell", { name: "mock standard type" })
+        screen.getByRole("gridcell", { name: "Appointment wait time" })
       ).toBeVisible();
 
       // description
       expect(
-        screen.getByRole("gridcell", { name: "description of standard" })
+        screen.getByRole("gridcell", { name: "standard description" })
       ).toBeVisible();
 
       // analysis methods, joined with a comma
       expect(
         screen.getByRole("gridcell", {
-          name: "Mock am 1, Mock am 2, Mock am 3",
+          name: "Geomapping, Plan Provider Directory Review",
         })
       ).toBeVisible();
 
       // population
-      expect(
-        screen.getByRole("gridcell", { name: "Mock population" })
-      ).toBeVisible();
+      expect(screen.getByRole("gridcell", { name: "Pediatric" })).toBeVisible();
 
       // region
-      expect(
-        screen.getByRole("gridcell", { name: "Mock region" })
-      ).toBeVisible();
+      expect(screen.getByRole("gridcell", { name: "Metro" })).toBeVisible();
     });
 
     test("Should render message for naaar with no standards", async () => {
