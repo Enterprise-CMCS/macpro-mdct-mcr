@@ -382,6 +382,88 @@ export const mockNaaarReportFieldData = {
       name: "provider2",
     },
   ],
+  analysisMethods: [
+    {
+      id: "mockUUID1",
+      name: "Geomapping",
+      isRequired: true,
+      analysis_applicable: [
+        {
+          key: "analysis_applicable-mock-id",
+          value: "Yes",
+        },
+      ],
+      analysis_method_frequency: [
+        {
+          key: "analysis_method_frequency-mock-id",
+          value: "Weekly",
+        },
+      ],
+      analysis_method_applicable_plans: [
+        {
+          key: "analysis_method_applicable_plans-mock-id1",
+          value: "plan",
+        },
+      ],
+    },
+    {
+      id: "a61e850-53ba-bc3c-620-ce02436d74",
+      custom_analysis_method_name: "Unique",
+      custom_analysis_method_description: "mock description",
+      analysis_method_frequency: [
+        {
+          key: "analysis_method_frequency-mock-id",
+          value: "Weekly",
+        },
+      ],
+      analysis_method_applicable_plans: [
+        {
+          key: "analysis_method_applicable_plans-mock-id2",
+          value: "1",
+        },
+      ],
+    },
+  ],
+  standards: [
+    {
+      id: "e78c5-a830-541-ac6e-d567ea7d413",
+      standard_coreProviderTypeCoveredByStandard: [
+        {
+          key: "standard_coreProviderTypeCoveredByStandard-mock-id",
+          value: "Primary Care",
+        },
+      ],
+      standard_standardType: [
+        {
+          key: "standard_standardType-standard-id",
+          value: "Appointment wait time",
+        },
+      ],
+      standard_populationCoveredByStandard: [
+        {
+          key: "standard_populationCoveredByStandard-mock-id",
+          value: "Pediatric",
+        },
+      ],
+      standard_applicableRegion: [
+        {
+          key: "standard_applicableRegion-mock-id",
+          value: "Metro",
+        },
+      ],
+      "standard_standardDescription-standard-id": "5",
+      "standard_analysisMethodsUtilized-standard-id": [
+        {
+          key: "standard_analysisMethodsUtilized-standard-id-mockUUID1",
+          value: "Geomapping",
+        },
+        {
+          key: "standard_analysisMethodsUtilized-standard-id-mockUUID2",
+          value: "Plan Provider Directory Review",
+        },
+      ],
+    },
+  ],
 };
 
 export const mockMcparReport = {

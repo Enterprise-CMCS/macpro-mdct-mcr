@@ -22,6 +22,7 @@ import {
   EntityDetailsTableContentShape,
   EntityShape,
   FormJson,
+  ReportShape,
   ScreenReaderOnlyHeaderName,
 } from "types";
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
@@ -51,6 +52,7 @@ export const PlanComplianceTableOverlay = ({
   submitting,
   validateOnRender,
   verbiage,
+  report,
 }: Props) => {
   const standardKeyPrefix = planComplianceStandardKey;
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
@@ -85,9 +87,15 @@ export const PlanComplianceTableOverlay = ({
         population,
         region,
       ]);
-
       formJson = addStandardId(formJson, standardKeyPrefix, entity.id);
-      formJson = addAnalysisMethods(formJson);
+      formJson = addAnalysisMethods(
+        formJson,
+        standardKeyPrefix,
+        entity.id,
+        standards,
+        report?.fieldData.analysisMethods,
+        selectedEntity?.name
+      );
     }
 
     const table = {
@@ -269,6 +277,7 @@ interface Props {
   table: EntityDetailsTableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
+  report?: ReportShape;
 }
 
 const sx = {
