@@ -13,11 +13,11 @@ import nextIcon from "assets/icons/icon_next_white.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = (templateName: string) => {
-  const helpFiles: { [key: string]: string } = {
-    WP: "MFP-Work-Plan-Help-File",
-    SAR: "MFP-Semi-Annual-Rprt-Help-File",
+  const files: { [key: string]: string } = {
+    MCPAR: "MFP-Work-Plan-Help-File",
+    MLR: "MFP-Semi-Annual-Rprt-Help-File",
   };
-  const templateUrl = `/templates/${helpFiles[templateName]}.pdf`;
+  const templateUrl = `/templates/${files[templateName]}.pdf`;
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
   link.setAttribute("href", templateUrl);

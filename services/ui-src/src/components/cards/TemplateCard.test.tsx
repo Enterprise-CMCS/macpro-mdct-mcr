@@ -73,9 +73,9 @@ describe("<TemplateCard />", () => {
       });
     });
 
-    test("TemplateCard template download link is correct", async () => {
+    test("MCPAR TemplateCard download button resolves to the correct href", async () => {
       const mlrHeading = screen.getAllByRole("heading", {
-        name: mlrTemplateVerbiage.title,
+        name: mcparTemplateVerbiage.title,
       })[0];
       const mlrCard = mlrHeading.closest("div")!;
 
@@ -90,7 +90,7 @@ describe("<TemplateCard />", () => {
       ) as HTMLAnchorElement;
 
       expect(downloadLink).toBeVisible();
-      expect(downloadLink).toHaveAttribute("href", mlrTemplateVerbiage.link);
+      expect(downloadLink).toHaveAttribute("href", mcparTemplateVerbiage.link);
     });
 
     test("MCPAR TemplateCard image is visible on desktop", () => {
