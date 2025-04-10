@@ -27,7 +27,6 @@ services:
   ui-auth:
     path: services/ui-auth
     params:
-      AttachmentsBucketArn: ${uploads.AttachmentsBucketArn}
       ApiGatewayRestApiName: ${app-api.ApiGatewayRestApiName}
       ApplicationEndpointUrl: ${ui.ApplicationEndpointUrl}
       
