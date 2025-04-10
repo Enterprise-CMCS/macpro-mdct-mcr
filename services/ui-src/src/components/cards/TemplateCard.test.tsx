@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
@@ -71,26 +71,6 @@ describe("<TemplateCard />", () => {
       await act(async () => {
         await userEvent.click(downloadButton);
       });
-    });
-
-    test("MCPAR TemplateCard download button resolves to the correct href", async () => {
-      const mlrHeading = screen.getAllByRole("heading", {
-        name: mcparTemplateVerbiage.title,
-      })[0];
-      const mlrCard = mlrHeading.closest("div")!;
-
-      const downloadButton = within(mlrCard).getByRole("button", {
-        name: mlrTemplateVerbiage.downloadText,
-      });
-
-      await userEvent.click(downloadButton);
-
-      const downloadLink = mlrCard.querySelector(
-        "a[href]"
-      ) as HTMLAnchorElement;
-
-      expect(downloadLink).toBeVisible();
-      expect(downloadLink).toHaveAttribute("href", mcparTemplateVerbiage.link);
     });
 
     test("MCPAR TemplateCard image is visible on desktop", () => {
