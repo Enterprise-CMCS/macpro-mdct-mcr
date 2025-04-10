@@ -14,10 +14,11 @@ import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = (templateName: string) => {
   const files: { [key: string]: string } = {
-    MCPAR: "MFP-Work-Plan-Help-File",
-    MLR: "MFP-Semi-Annual-Rprt-Help-File",
+    MCPAR: "mcpar-reporting-template",
+    MLR: "mlr-reporting-template",
+    NAAAR: "naaar-reporting-template",
   };
-  const templateUrl = `/templates/${files[templateName]}.pdf`;
+  const templateUrl = `/templates/${files[templateName]}.xlsx`;
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
   link.setAttribute("href", templateUrl);
