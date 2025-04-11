@@ -185,17 +185,17 @@ describe("utils/forms/naaarPlanCompliance", () => {
       const createdAnalysisMethods = [
         {
           id: "mockUUID1",
-          name: "Geomapping",
+          name: "MockItem1",
           analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
         {
           id: "mockUUID2",
-          name: "Plan Provider Directory Review",
+          name: "MockItem2",
           analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
         {
           id: "mockUUID3",
-          name: "Secret Shopper",
+          name: "MockItem3",
           analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
       ];
@@ -206,11 +206,11 @@ describe("utils/forms/naaarPlanCompliance", () => {
           [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-              value: "Geomapping",
+              value: "MockItem1",
             },
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID2`,
-              value: "Plan Provider Directory Review",
+              value: "MockItem2",
             },
           ],
         },
@@ -228,11 +228,11 @@ describe("utils/forms/naaarPlanCompliance", () => {
       expect(result.fields[0]?.props?.choices).toEqual([
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
-          label: "Geomapping",
+          label: "MockItem1",
         },
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID2",
-          label: "Plan Provider Directory Review",
+          label: "MockItem2",
         },
       ]);
     });

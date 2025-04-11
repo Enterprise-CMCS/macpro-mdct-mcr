@@ -1,4 +1,4 @@
-import { GeomappingChildJson } from "constants";
+import { GeomappingChildJson } from "../../constants";
 import uuid from "react-uuid";
 import { AnyObject, EntityType, FormJson } from "types";
 
