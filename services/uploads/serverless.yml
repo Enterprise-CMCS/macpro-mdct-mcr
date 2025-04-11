@@ -1,0 +1,42 @@
+service: uploads
+
+frameworkVersion: "4"
+
+plugins:
+  - serverless-s3-local
+  - serverless-stack-termination-protection
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stackTags:
+    PROJECT: ${self:custom.project}
+    SERVICE: ${self:service}
+
+custom:
+  project: "mcr"
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  serverlessTerminationProtection:
+    stages:
+      - main
+      - val
+      - production
+  s3:
+    directory: ./local_buckets
+    cors: ./local_cors.xml
+    buckets:
+      - local-mcpar-form
+      - local-mlr-form
+      - local-naaar-form
+        # the serverless-s3-local plugin starts any bucket with a BucketName
+        # the attachments bucket has no name, so we need to make one up on our own
+
+resources:
+  Resources:
+    Honk: # this is just because it won't deploy unless we have some resource being created
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Value: "honk"
