@@ -1,4 +1,8 @@
-import { GeomappingChildJson } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  GeomappingChildJson,
+  SecretShopperAppointmentAvailabilityChildJson,
+} from "../../constants";
 import uuid from "react-uuid";
 import { AnyObject, EntityType, FormJson } from "types";
 
@@ -200,12 +204,29 @@ export const availableAnalysisMethods = (
 ) => {
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
-    if (item.name === "Geomapping") {
-      createIDForChildrenOfAnalysisMethod(GeomappingChildJson, id);
+    let analysisMethodChildJson: AnyObject = [];
+    let analysisMethodWithChildren = false;
+
+    switch (item.name) {
+      case DEFAULT_ANALYSIS_METHODS[0].name:
+        analysisMethodChildJson = GeomappingChildJson;
+        analysisMethodWithChildren = true;
+        break;
+      case DEFAULT_ANALYSIS_METHODS[3].name:
+        analysisMethodWithChildren = true;
+
+        analysisMethodChildJson = SecretShopperAppointmentAvailabilityChildJson;
+        break;
+      default:
+        break;
+    }
+
+    if (analysisMethodWithChildren) {
+      createIDForChildrenOfAnalysisMethod(analysisMethodChildJson, id);
       return {
         id: id,
         label: item.name,
-        children: GeomappingChildJson,
+        children: analysisMethodChildJson,
       };
     }
     return {

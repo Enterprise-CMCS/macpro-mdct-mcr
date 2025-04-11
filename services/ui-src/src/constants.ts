@@ -412,3 +412,89 @@ export const GeomappingChildJson = [
     },
   },
 ];
+
+export const SecretShopperAppointmentAvailabilityChildJson = [
+  {
+    id: "mockId",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "mockChoiceId",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "mockNumberField1",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q1 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "mockNumberField2",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q2 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "mockNumberField3",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q3 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "mockNumberField4",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q4 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+          ],
+        },
+        {
+          id: "mockChoiceId2",
+          label: "Report results annually",
+          children: [
+            {
+              id: "mockNumberField13",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Annual (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "mockDateId1",
+              type: "date",
+              validation: {
+                type: "date",
+              },
+              props: {
+                label: "Date of analysis of annual snapshot (optional)",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
