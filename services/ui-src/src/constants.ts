@@ -198,7 +198,7 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
+                          label: "Q3 (optional)",
                           mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
@@ -208,7 +208,7 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
+                          label: "Q4 (optional)",
                           mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
@@ -244,7 +244,7 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
+                          label: "Q3 (optional)",
                           mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
@@ -254,7 +254,7 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
+                          label: "Q4 (optional)",
                           mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
@@ -271,7 +271,7 @@ export const GeomappingChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q1 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -281,7 +281,7 @@ export const GeomappingChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -290,8 +290,8 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
-                          mask: "percentage",
+                          label: "Q3 (optional)",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -300,8 +300,8 @@ export const GeomappingChildJson = [
                         type: "number",
                         validation: "numberOptional",
                         props: {
-                          label: "Q2 (optional)",
-                          mask: "percentage",
+                          label: "Q4 (optional)",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
