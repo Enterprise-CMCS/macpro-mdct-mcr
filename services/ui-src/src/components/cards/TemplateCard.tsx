@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, TemplateKeys } from "types";
 // utils
 import { useBreakpoint } from "utils";
 // assets
@@ -13,15 +13,9 @@ import nextIcon from "assets/icons/icon_next_white.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
 const downloadTemplate = (templateName: string) => {
-  const files: { [key: string]: string } = {
-    MCPAR: "mcpar-reporting-template",
-    MLR: "mlr-reporting-template",
-    NAAAR: "naaar-reporting-template",
-  };
-  const templateUrl = `/templates/${files[templateName]}.xlsx`;
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
-  link.setAttribute("href", templateUrl);
+  link.setAttribute("href", TemplateKeys[templateName]);
   link.click();
   link.remove();
 };

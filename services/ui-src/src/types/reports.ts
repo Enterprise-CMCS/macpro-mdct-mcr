@@ -18,6 +18,13 @@ export enum ReportType {
   NAAAR = "NAAAR",
 }
 
+// REPORT TEMPLATES
+export const TemplateKeys: { [key: string]: string } = {
+  MCPAR: "/templates/mcpar-reporting-template.xlsx",
+  MLR: "/templates/mlr-reporting-template.xlsx",
+  NAAAR: "/templates/naaar-reporting-template.xlsx",
+};
+
 // REPORT STRUCTURE
 
 export interface ReportJson {
