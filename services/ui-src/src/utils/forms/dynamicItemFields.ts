@@ -1,6 +1,4 @@
-import { testexample } from "constants";
-import { DEFAULT_ANALYSIS_METHODS } from "constants";
-import { FREQUENCY_OF_COMPLIANCE_FINDINGS } from "constants";
+import { GeomappingChildJson } from "constants";
 import uuid from "react-uuid";
 import { AnyObject, EntityType, FormJson } from "types";
 
@@ -177,36 +175,37 @@ const updatedItemChoiceList = (
   return updatedChoiceList;
 };
 
-function createIDForChildrenOfAnalysisMethod(obj: AnyObject) {
+function createIDForChildrenOfAnalysisMethod(obj: AnyObject, parentId: string) {
   Object.keys(obj).forEach((key) => {
     const value = obj[key];
-    console.log(value);
-    if (Array.isArray(value)) {
-      value.forEach(createIDForChildrenOfAnalysisMethod);
-    } else if (typeof value === "object") {
-      createIDForChildrenOfAnalysisMethod(value);
+    if (key === "id") {
+      const newId = `${parentId}_${uuid()}`;
+      obj[key] = newId;
+      parentId = newId;
     }
-    // } else if (needsStandardId(value)) {
-    //   const option = value.includes("-") ? value.split("-").pop() : undefined;
-    //   obj[key] = [standardPrefix, standardId, option]
-    //     .filter((f) => f)
-    //     .join("-");
-    // }
+
+    if (Array.isArray(value)) {
+      for (let arrayObj of value) {
+        createIDForChildrenOfAnalysisMethod(arrayObj, parentId);
+      }
+    } else if (typeof value === "object") {
+      createIDForChildrenOfAnalysisMethod(value, parentId);
+    }
   });
 }
-
 // dynamically filter by partialId to find the analysis methods
 export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
   const updatedItemChoices = items.map((item) => {
+    const id = `${analysisMethodsFieldId}_${item.id}`;
     if (item.name === "Geomapping") {
-      createIDForChildrenOfAnalysisMethod(testexample);
+      createIDForChildrenOfAnalysisMethod(GeomappingChildJson, id);
       return {
-        id: `${analysisMethodsFieldId}_${item.id}`,
+        id: id,
         label: item.name,
-        children: testexample,
+        children: GeomappingChildJson,
       };
     }
     return {
