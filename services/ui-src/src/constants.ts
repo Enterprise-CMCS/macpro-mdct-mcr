@@ -154,7 +154,7 @@ export const GeomappingChildJson = [
   {
     id: "mockId",
     type: "checkbox",
-    validation: "checkbox",
+    validation: "checkboxOneOptional",
     props: {
       label: "Frequency of compliance findings (optional)",
       hint: "Instructions",
@@ -176,7 +176,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField1",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -186,7 +186,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField2",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -196,7 +196,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField3",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -206,7 +206,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField4",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -222,7 +222,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField1",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -232,7 +232,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField2",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -242,7 +242,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField3",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -252,7 +252,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField4",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -268,7 +268,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField1",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -278,7 +278,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField2",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -288,7 +288,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField3",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -298,7 +298,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField4",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -329,7 +329,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField1",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "percentage",
@@ -356,7 +356,7 @@ export const GeomappingChildJson = [
                       {
                         id: "mockNumberField1",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "comma-separated",
@@ -367,7 +367,7 @@ export const GeomappingChildJson = [
                         id: "mockDateId",
                         type: "date",
                         validation: {
-                          type: "date",
+                          type: "dateOptional",
                         },
                         props: {
                           label:
