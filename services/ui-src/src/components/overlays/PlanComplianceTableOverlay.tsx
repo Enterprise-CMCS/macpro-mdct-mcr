@@ -96,7 +96,6 @@ export const PlanComplianceTableOverlay = ({
         report?.fieldData.analysisMethods,
         selectedEntity?.name
       );
-      console.log("Form json", formJson);
     }
 
     const table = {
