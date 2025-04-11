@@ -34,7 +34,7 @@ export default {
       props: {
         label: "Select state to view reports:",
         options: dropdownOptions,
-        ariaLabel:
+        "aria-label":
           "List of states, including District of Columbia and Puerto Rico",
       },
     },

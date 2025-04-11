@@ -45,7 +45,6 @@ custom:
   mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, param:MlrReportTableStreamArn}
   naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, param:NaaarReportTableName}
   naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, param:NaaarReportTableStreamArn}
-  templateBucket: ${env:TEMPLATE_BUCKET, param:AttachmentsBucketName}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, param:McparFormBucketName}
   mlrFormBucket: ${env:MLR_FORM_BUCKET, param:MlrFormBucketName}
@@ -108,8 +107,6 @@ provider:
             - "s3:ListBucket"
             - "s3:PutObject"
           Resource:
-            - "arn:aws:s3:::${self:custom.templateBucket}"
-            - "arn:aws:s3:::${self:custom.templateBucket}/templates/*"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}/formTemplates/*"
             - "arn:aws:s3:::${self:custom.mcparFormBucket}/fieldData/*"
@@ -137,7 +134,6 @@ provider:
     MLR_REPORT_TABLE_NAME: ${self:custom.mlrReportTableName}
     NAAAR_REPORT_TABLE_NAME: ${self:custom.naaarReportTableName}
     FORM_TEMPLATE_TABLE_NAME: ${self:custom.formTemplateTableName}
-    TEMPLATE_BUCKET: ${self:custom.templateBucket}
     MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
     MLR_FORM_BUCKET: ${self:custom.mlrFormBucket}
     NAAAR_FORM_BUCKET: ${self:custom.naaarFormBucket}
@@ -272,18 +268,6 @@ functions:
                 reportType: true
                 state: true
                 id: true
-  fetchTemplate:
-    handler: handlers/templates/fetch.fetchTemplate
-    events:
-      - http:
-          path: templates/{templateName}
-          method: get
-          cors: true
-          authorizer: aws_iam
-          request:
-            parameters:
-              paths:
-                templateName: true
   postKafkaData:
     handler: handlers/kafka/post/postKafkaData.handler
     environment:
