@@ -152,7 +152,7 @@ export const planComplianceStandardExceptionsLabel =
 
 export const GeomappingChildJson = [
   {
-    id: "geomapping_complianceFrequency",
+    id: "geomappingComplianceFrequency",
     type: "checkbox",
     validation: "checkboxOneOptional",
     props: {
