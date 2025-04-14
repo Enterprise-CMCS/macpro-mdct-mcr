@@ -166,7 +166,7 @@ export const GeomappingChildJson = [
             {
               id: "geoEnrolleesMeetingStandard",
               type: "radio",
-              validation: "radio",
+              validation: "radioOptional",
               props: {
                 choices: [
                   {
@@ -319,7 +319,7 @@ export const GeomappingChildJson = [
             {
               id: "geoReportResultsAnnually",
               type: "radio",
-              validation: "radio",
+              validation: "radioOptional",
               props: {
                 choices: [
                   {
@@ -383,7 +383,7 @@ export const GeomappingChildJson = [
                       {
                         id: "geoActualMaxDistance",
                         type: "number",
-                        validation: "number",
+                        validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "comma-separated",
