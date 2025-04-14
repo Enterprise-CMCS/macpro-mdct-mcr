@@ -24,6 +24,7 @@ import {
   FormJson,
   ScreenReaderCustomHeaderName,
   ReportShape,
+  AnyObject,
 } from "types";
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
@@ -122,59 +123,15 @@ export const PlanComplianceTableOverlay = ({
   };
 
   const TableOverlay = () => {
-    const [exceptionsNonCompliance, setExceptionsNonCompliance] = useState<
-      string[]
-    >([]);
-    const [exceptionsCount, setExceptionsCount] = useState<number>(0);
-    const [nonComplianceCount, setNonComplianceCount] = useState<number>(0);
-
     const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
     const content = { caption };
 
-    useEffect(() => {
-      if (selectedEntity) {
-        const updatedExceptionsNonCompliance = Object.keys(
-          selectedEntity
-        ).filter(
-          (key) =>
-            key.startsWith(`${standardKeyPrefix}-`) &&
-            selectedEntity[key] !== undefined
-        );
-        setExceptionsNonCompliance(updatedExceptionsNonCompliance);
-      }
-    }, [selectedEntity, standardKeyPrefix]);
-
-    useEffect(() => {
-      const { updatedExceptionsCount, updatedNonComplianceCount } =
-        exceptionsNonCompliance.reduce(
-          (obj, key) => {
-            if (key.endsWith("exceptionsDescription")) {
-              obj.updatedExceptionsCount++;
-            } else if (key.endsWith("nonComplianceDescription")) {
-              obj.updatedNonComplianceCount++;
-            }
-            return obj;
-          },
-          { updatedExceptionsCount: 0, updatedNonComplianceCount: 0 }
-        );
-
-      setExceptionsCount(updatedExceptionsCount);
-      setNonComplianceCount(updatedNonComplianceCount);
-    }, [exceptionsNonCompliance]);
-
-    const data = useMemo(
-      () =>
-        addExceptionsNonComplianceStatus(
-          mapNaaarStandardsData<NaaarStandardsTableShape>(standards),
-          exceptionsNonCompliance,
-          standardKeyPrefix
-        ),
-      [exceptionsNonCompliance, standardKeyPrefix, standards]
-    );
-    const standardsTotalCount = data.length;
-
-    const displayCount = (label: string = "", count: number) =>
-      `${label}: ${count} of ${standardsTotalCount}`;
+    const {
+      exceptionsCountDisplayText,
+      nonComplianceCountDisplayText,
+      exceptionsNonCompliance,
+      data,
+    } = getCounts(selectedEntity, standardKeyPrefix, standards, tableVerbiage);
 
     const getStandardForm = (entity: EntityShape, count: number) => {
       window.scrollTo(0, 0);
@@ -238,12 +195,8 @@ export const PlanComplianceTableOverlay = ({
           text={tableVerbiage.intro}
         />
         <Box sx={sx.counts}>
-          <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
-          </Text>
-          <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.standards, nonComplianceCount)}
-          </Text>
+          <Text sx={sx.count}>{exceptionsCountDisplayText}</Text>
+          <Text sx={sx.count}>{nonComplianceCountDisplayText}</Text>
         </Box>
         <Box sx={sx.tableContainer}>
           <SortableTable
@@ -263,6 +216,75 @@ export const PlanComplianceTableOverlay = ({
   };
 
   return selectedStandard ? <DetailsOverlay /> : <TableOverlay />;
+};
+
+export const getCounts = (
+  selectedEntity: EntityShape | undefined,
+  standardKeyPrefix: string,
+  standards: EntityShape[],
+  tableVerbiage: AnyObject
+) => {
+  const [exceptionsNonCompliance, setExceptionsNonCompliance] = useState<
+    string[]
+  >([]);
+  const [exceptionsCount, setExceptionsCount] = useState<number>(0);
+  const [nonComplianceCount, setNonComplianceCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (selectedEntity) {
+      const updatedExceptionsNonCompliance = Object.keys(selectedEntity).filter(
+        (key) =>
+          key.startsWith(`${standardKeyPrefix}-`) &&
+          selectedEntity[key] !== undefined
+      );
+      setExceptionsNonCompliance(updatedExceptionsNonCompliance);
+    }
+  }, [selectedEntity, standardKeyPrefix]);
+
+  useEffect(() => {
+    const { updatedExceptionsCount, updatedNonComplianceCount } =
+      exceptionsNonCompliance.reduce(
+        (obj, key) => {
+          if (key.endsWith("exceptionsDescription")) {
+            obj.updatedExceptionsCount++;
+          } else if (key.endsWith("nonComplianceDescription")) {
+            obj.updatedNonComplianceCount++;
+          }
+          return obj;
+        },
+        { updatedExceptionsCount: 0, updatedNonComplianceCount: 0 }
+      );
+
+    setExceptionsCount(updatedExceptionsCount);
+    setNonComplianceCount(updatedNonComplianceCount);
+  }, [exceptionsNonCompliance]);
+
+  const data = useMemo(
+    () =>
+      addExceptionsNonComplianceStatus(
+        mapNaaarStandardsData<NaaarStandardsTableShape>(standards),
+        exceptionsNonCompliance,
+        standardKeyPrefix
+      ),
+    [exceptionsNonCompliance, standardKeyPrefix, standards]
+  );
+  const standardsTotalCount = data.length;
+
+  const displayCount = (label: string = "Total", count: number) =>
+    `${label}: ${count} of ${standardsTotalCount}`;
+
+  return {
+    exceptionsCountDisplayText: displayCount(
+      tableVerbiage.totals?.exceptions,
+      exceptionsCount
+    ),
+    nonComplianceCountDisplayText: displayCount(
+      tableVerbiage.totals?.standards,
+      nonComplianceCount
+    ),
+    exceptionsNonCompliance,
+    data,
+  };
 };
 
 interface Props {
