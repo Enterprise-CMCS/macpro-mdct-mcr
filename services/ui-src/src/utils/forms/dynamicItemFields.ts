@@ -3,7 +3,6 @@ import {
   GeomappingChildJson,
   SecretShopperAppointmentAvailabilityChildJson,
 } from "../../constants";
-import uuid from "react-uuid";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -183,7 +182,7 @@ function createIDForChildrenOfAnalysisMethod(obj: AnyObject, parentId: string) {
   Object.keys(obj).forEach((key) => {
     const value = obj[key];
     if (key === "id") {
-      const newId = `${parentId}_${uuid()}`;
+      const newId = `${parentId}_${value}`;
       obj[key] = newId;
       parentId = newId;
     }
@@ -214,7 +213,6 @@ export const availableAnalysisMethods = (
         break;
       case DEFAULT_ANALYSIS_METHODS[3].name:
         analysisMethodWithChildren = true;
-
         analysisMethodChildJson = SecretShopperAppointmentAvailabilityChildJson;
         break;
       default:
