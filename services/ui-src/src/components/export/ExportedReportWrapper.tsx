@@ -5,6 +5,7 @@ import {
   ExportedReportFieldTable,
   ExportedEntityDetailsOverlaySection,
   ExportedModalOverlayReportSection,
+  ExportedPlanOverlayReportSection,
 } from "components";
 // types
 import {
@@ -13,6 +14,7 @@ import {
   ModalDrawerReportPageShape,
   ModalOverlayReportPageShape,
   PageTypes,
+  PlanOverlayReportPageShape,
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
@@ -61,7 +63,11 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         </>
       );
     case PageTypes.PLAN_OVERLAY:
-      return <></>;
+      return (
+        <ExportedPlanOverlayReportSection
+          section={section as PlanOverlayReportPageShape}
+        />
+      );
     default:
       return <></>;
   }
