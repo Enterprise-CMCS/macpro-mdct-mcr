@@ -152,7 +152,7 @@ export const planComplianceStandardExceptionsLabel =
 
 export const GeomappingChildJson = [
   {
-    id: "mockId",
+    id: "geomapping_complianceFrequency",
     type: "checkbox",
     validation: "checkboxOneOptional",
     props: {
@@ -160,21 +160,21 @@ export const GeomappingChildJson = [
       hint: "Instructions",
       choices: [
         {
-          id: "mockChoiceId",
+          id: "c595832f837848118f",
           label: "Report results by quarter",
           children: [
             {
-              id: "mockId",
+              id: "geoEnrolleesMeetingStandard",
               type: "radio",
               validation: "radio",
               props: {
                 choices: [
                   {
-                    id: "mockChoiceq1",
+                    id: "1Bv4pXDFwPxCtfWnwQ3o4f",
                     label: "Percent of enrollees that met the standard",
                     children: [
                       {
-                        id: "mockNumberField1",
+                        id: "geoQ1PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -184,7 +184,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField2",
+                        id: "geoQ2PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -194,7 +194,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField3",
+                        id: "geoQ3PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -204,7 +204,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField4",
+                        id: "geoQ4PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -216,11 +216,11 @@ export const GeomappingChildJson = [
                     ],
                   },
                   {
-                    id: "mockChoiceq1",
+                    id: "oDBsJxz2uYsFEPJX5tsicD",
                     label: "Actual maximum time",
                     children: [
                       {
-                        id: "mockNumberField5",
+                        id: "geoQ1ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -230,7 +230,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField6",
+                        id: "geoQ2ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -240,7 +240,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField7",
+                        id: "geoQ3ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -250,7 +250,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField8",
+                        id: "geoQ4ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -262,11 +262,11 @@ export const GeomappingChildJson = [
                     ],
                   },
                   {
-                    id: "mockChoiceq1",
+                    id: "ckGB89dyJ9spyFn692tihL",
                     label: "Actual maximum distance",
                     children: [
                       {
-                        id: "mockNumberField9",
+                        id: "geoQ1ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -276,7 +276,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField10",
+                        id: "geoQ2ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -286,7 +286,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField11",
+                        id: "geoQ3ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -296,7 +296,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockNumberField12",
+                        id: "geoQ4ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -313,21 +313,21 @@ export const GeomappingChildJson = [
           ],
         },
         {
-          id: "mockChoiceId2",
+          id: "45PQX2mTtbVrsZtiR2ZFns",
           label: "Report results annually",
           children: [
             {
-              id: "mockId",
+              id: "geoReportResultsAnnually",
               type: "radio",
               validation: "radio",
               props: {
                 choices: [
                   {
-                    id: "mockChoiceq1",
+                    id: "8WCHVPuNhV9cK4nDh1syqX",
                     label: "Percent of enrollees that met the standard",
                     children: [
                       {
-                        id: "mockNumberField13",
+                        id: "geoAnnualPercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -337,7 +337,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockDateId1",
+                        id: "geoAnnualPercentMetStandardDate",
                         type: "date",
                         validation: {
                           type: "date",
@@ -350,11 +350,11 @@ export const GeomappingChildJson = [
                     ],
                   },
                   {
-                    id: "mockChoiceq1",
+                    id: "j44DG9RkDA1FwuYN3SM8zA",
                     label: "Actual maximum time",
                     children: [
                       {
-                        id: "mockNumberField14",
+                        id: "geoAnnualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -364,7 +364,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockDateId2",
+                        id: "geoAnnualMaxTimeDate",
                         type: "date",
                         validation: {
                           type: "dateOptional",
@@ -377,11 +377,11 @@ export const GeomappingChildJson = [
                     ],
                   },
                   {
-                    id: "mockChoiceq1",
+                    id: "qJ8FA2U5ri5mfuwe6PCJhP",
                     label: "Actual maximum distance",
                     children: [
                       {
-                        id: "mockNumberField15",
+                        id: "geoActualMaxDistance",
                         type: "number",
                         validation: "number",
                         props: {
@@ -391,7 +391,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "mockDateId3",
+                        id: "geoActualMaxDistanceDate",
                         type: "date",
                         validation: {
                           type: "date",
