@@ -149,3 +149,266 @@ export const nonCompliantLabel =
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
   "Exceptions granted under 42 C.F.R. § 438.68(d)";
+
+export const GeomappingChildJson = [
+  {
+    id: "geomappingComplianceFrequency",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "c595832f837848118f",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "geoEnrolleesMeetingStandard",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "1Bv4pXDFwPxCtfWnwQ3o4f",
+                    label: "Percent of enrollees that met the standard",
+                    children: [
+                      {
+                        id: "geoQ1PercentMetStandard",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ2PercentMetStandard",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ3PercentMetStandard",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ4PercentMetStandard",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "oDBsJxz2uYsFEPJX5tsicD",
+                    label: "Actual maximum time",
+                    children: [
+                      {
+                        id: "geoQ1ActualMaxTime",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ2ActualMaxTime",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ3ActualMaxTime",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ4ActualMaxTime",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "ckGB89dyJ9spyFn692tihL",
+                    label: "Actual maximum distance",
+                    children: [
+                      {
+                        id: "geoQ1ActualMaxDist",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ2ActualMaxDist",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ3ActualMaxDist",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoQ4ActualMaxDist",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          id: "45PQX2mTtbVrsZtiR2ZFns",
+          label: "Report results annually",
+          children: [
+            {
+              id: "geoReportResultsAnnually",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "8WCHVPuNhV9cK4nDh1syqX",
+                    label: "Percent of enrollees that met the standard",
+                    children: [
+                      {
+                        id: "geoAnnualPercentMetStandard",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoAnnualPercentMetStandardDate",
+                        type: "date",
+                        validation: {
+                          type: "date",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "j44DG9RkDA1FwuYN3SM8zA",
+                    label: "Actual maximum time",
+                    children: [
+                      {
+                        id: "geoAnnualMaxTime",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoAnnualMaxTimeDate",
+                        type: "date",
+                        validation: {
+                          type: "dateOptional",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "qJ8FA2U5ri5mfuwe6PCJhP",
+                    label: "Actual maximum distance",
+                    children: [
+                      {
+                        id: "geoActualMaxDistance",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "geoActualMaxDistanceDate",
+                        type: "date",
+                        validation: {
+                          type: "date",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
