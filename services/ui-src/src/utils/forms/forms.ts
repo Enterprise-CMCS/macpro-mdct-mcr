@@ -299,7 +299,8 @@ export const getForm = (params: getFormParams) => {
   );
   const analysisMethodsUsedByPlans = report?.fieldData?.analysisMethods?.filter(
     (analysisMethod: AnyObject) =>
-      analysisMethod.analysis_method_applicable_plans?.length > 0
+      analysisMethod.analysis_applicable?.[0].value === "Yes" ||
+      analysisMethod.custom_analysis_method_name
   );
   const reportType = report?.reportType;
 
