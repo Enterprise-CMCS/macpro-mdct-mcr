@@ -423,11 +423,11 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
       hint: "Instructions",
       choices: [
         {
-          id: "mockChoiceId",
+          id: "9QZMDvvbiWrXcjr5Z1zcuV",
           label: "Report results by quarter",
           children: [
             {
-              id: "mockNumberField1",
+              id: "ssaaQ1PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -437,7 +437,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "mockNumberField2",
+              id: "ssaaQ2PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -447,7 +447,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "mockNumberField3",
+              id: "ssaaQ3PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -457,7 +457,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "mockNumberField4",
+              id: "ssaaQ4PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -469,11 +469,11 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
           ],
         },
         {
-          id: "mockChoiceId2",
+          id: "hnKktBxFGNr9jB1AgWLPXf",
           label: "Report results annually",
           children: [
             {
-              id: "mockNumberField13",
+              id: "ssaaReportResultsAnnually",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -483,7 +483,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "mockDateId1",
+              id: "ssaaAnnualPercentMetStandardDate",
               type: "date",
               validation: {
                 type: "date",
