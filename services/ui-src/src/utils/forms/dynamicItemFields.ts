@@ -197,20 +197,15 @@ export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
+  const GeomappingJson = structuredClone(GeomappingChildJson);
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
+    const analysisMethod = { id, label: item.name };
     if (item.name === "Geomapping") {
-      createIDForChildrenOfAnalysisMethod(GeomappingChildJson, id);
-      return {
-        id: id,
-        label: item.name,
-        children: GeomappingChildJson,
-      };
+      createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
+      return { ...analysisMethod, children: GeomappingJson };
     }
-    return {
-      id: `${analysisMethodsFieldId}_${item.id}`,
-      label: item.name,
-    };
+    return analysisMethod;
   });
   return updatedItemChoices;
 };
