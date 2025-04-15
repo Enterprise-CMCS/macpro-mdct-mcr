@@ -451,7 +451,7 @@ export const mockNaaarReportFieldData = {
           value: "Metro",
         },
       ],
-      "standard_standardDescription-standard-id": "5",
+      "standard_standardDescription-standard-id": "standard description",
       "standard_analysisMethodsUtilized-standard-id": [
         {
           key: "standard_analysisMethodsUtilized-standard-id-mockUUID1",

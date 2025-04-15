@@ -33,7 +33,6 @@ exclude_patterns:
   - "services/ui-src/public/"
   - "services/ui-src/src/libs/"
   - "services/ui-auth/"
-  - "services/uploads/"
   - "services/ui-src/src/utils/testing/**"
   - "services/ui-src/src/utils/types/types.ts"
   - "tests/"

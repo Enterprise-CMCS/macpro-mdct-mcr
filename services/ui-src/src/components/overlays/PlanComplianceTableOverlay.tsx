@@ -22,8 +22,8 @@ import {
   EntityDetailsTableContentShape,
   EntityShape,
   FormJson,
+  ScreenReaderCustomHeaderName,
   ReportShape,
-  ScreenReaderOnlyHeaderName,
 } from "types";
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
@@ -61,7 +61,7 @@ export const PlanComplianceTableOverlay = ({
     const closeEntityDetailsFormOverlay = () => {
       setSelectedStandard(null);
     };
-    let headRow = [] as ScreenReaderOnlyHeaderName[];
+    let headRow = [] as ScreenReaderCustomHeaderName[];
     const bodyRows = [];
     let formJson = structuredClone(form);
 

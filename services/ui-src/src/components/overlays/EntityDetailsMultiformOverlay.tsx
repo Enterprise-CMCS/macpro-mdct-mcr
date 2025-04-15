@@ -37,7 +37,7 @@ import {
   EntityShape,
   EntityType,
   ReportShape,
-  ScreenReaderOnlyHeaderName,
+  ScreenReaderCustomHeaderName,
 } from "types";
 // utils
 import { translateVerbiage } from "utils";
@@ -315,7 +315,7 @@ export const EntityDetailsMultiformOverlay = ({
       text,
     }: {
       formId: string;
-      header?: string | ScreenReaderOnlyHeaderName;
+      header?: string | ScreenReaderCustomHeaderName;
       text: string;
     }) => {
       const headerName =

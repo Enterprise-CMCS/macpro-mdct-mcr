@@ -201,9 +201,10 @@ export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
+  let analysisMethodChildJson: AnyObject = [];
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
-    let analysisMethodChildJson: AnyObject = [];
+    const analysisMethod = { id, label: item.name };
     let analysisMethodWithChildren = false;
 
     switch (item.name) {
@@ -219,18 +220,13 @@ export const availableAnalysisMethods = (
         break;
     }
 
+    const injectedAnalysisMethodJson = structuredClone(analysisMethodChildJson);
+
     if (analysisMethodWithChildren) {
-      createIDForChildrenOfAnalysisMethod(analysisMethodChildJson, id);
-      return {
-        id: id,
-        label: item.name,
-        children: analysisMethodChildJson,
-      };
+      createIDForChildrenOfAnalysisMethod(injectedAnalysisMethodJson, id);
+      return { ...analysisMethod, children: injectedAnalysisMethodJson };
     }
-    return {
-      id: `${analysisMethodsFieldId}_${item.id}`,
-      label: item.name,
-    };
+    return analysisMethod;
   });
   return updatedItemChoices;
 };
