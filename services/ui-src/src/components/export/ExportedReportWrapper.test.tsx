@@ -13,6 +13,7 @@ import {
   mockNaaarStandardsPageJson,
   mockNaaarReportStore,
   mockMcparReportStore,
+  mockNaaarPlanCompliancePageJson,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 import { useStore } from "utils";
@@ -53,6 +54,12 @@ const exportedModalDrawerReportWrapperComponent = (
 const standardEntityReportWrapperComponent = (
   <ReportContext.Provider value={mockNaaarReportContext}>
     <ExportedReportWrapper section={mockNaaarStandardsPageJson} />
+  </ReportContext.Provider>
+);
+
+const exportedPlanOverlayReportWrapperComponent = (
+  <ReportContext.Provider value={mockNaaarReportContext}>
+    <ExportedReportWrapper section={mockNaaarPlanCompliancePageJson} />
   </ReportContext.Provider>
 );
 
@@ -101,6 +108,14 @@ describe("<ExportedReportWrapper />", () => {
     render(standardEntityReportWrapperComponent);
     expect(
       screen.getByTestId("exportedModalOverlayReportSection")
+    ).toBeInTheDocument();
+  });
+
+  test("Standards Entity renders ModalOverlay page in export", () => {
+    mockedUseStore.mockReturnValue(mockNaaarReportStore);
+    render(exportedPlanOverlayReportWrapperComponent);
+    expect(
+      screen.getByTestId("exportedPlanOverlayReportSection")
     ).toBeInTheDocument();
   });
 
