@@ -1,25 +1,58 @@
 import { screen, render } from "@testing-library/react";
 // components
-import { ReportContext } from "components";
 import { ExportedPlanOverlayReportSection } from "./ExportedPlanOverlayReportSection";
+// types
+import { EntityShape } from "types";
 // utils
 import { mockNaaarPlanCompliancePageJson } from "utils/testing/mockForm";
-import { mockNaaarReportContext } from "utils/testing/mockReport";
+import { mockNaaarReportStore } from "utils/testing/mockZustand";
+import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
 const exportedPlanOverlaySectionComponent = (
-  <ReportContext.Provider value={mockNaaarReportContext}>
-    <ExportedPlanOverlayReportSection
-      section={mockNaaarPlanCompliancePageJson}
-    />
-  </ReportContext.Provider>
+  <ExportedPlanOverlayReportSection section={mockNaaarPlanCompliancePageJson} />
 );
 
+const sectionName = mockNaaarPlanCompliancePageJson.name;
+const plans = mockNaaarReportStore.report!.fieldData.plans;
+const planNames = plans.map((plan: EntityShape) => plan.name);
+
 describe("<ExportedPlanOverlayReportSection />", () => {
-  test("ExportedPlanOverlayReportSection renders", () => {
-    const sectionName = mockNaaarPlanCompliancePageJson.name;
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedUseStore.mockReturnValue(mockNaaarReportStore);
+  });
+
+  test("ExportedPlanOverlayReportSection component renders nothing when no plans exist", () => {
+    const reportWithNoPlans = {
+      ...mockNaaarReportStore,
+      report: {
+        ...mockNaaarReportStore.report,
+        fieldData: {
+          ...mockNaaarReportStore.report!.fieldData,
+          plans: undefined,
+        },
+      },
+    };
+    mockedUseStore.mockReturnValue(reportWithNoPlans);
+
     render(exportedPlanOverlaySectionComponent);
-    expect(screen.getByText(sectionName)).toBeInTheDocument();
+    expect(screen.queryByText(sectionName)).not.toBeInTheDocument();
+    for (const planName of planNames) {
+      expect(screen.queryByText(planName)).not.toBeInTheDocument();
+    }
+  });
+
+  test("ExportedPlanOverlayReportSection displays report plans", () => {
+    render(exportedPlanOverlaySectionComponent);
+    for (const planName of planNames) {
+      expect(
+        screen.getByRole("heading", { name: planName })
+      ).toBeInTheDocument();
+    }
   });
 
   testA11y(exportedPlanOverlaySectionComponent);
