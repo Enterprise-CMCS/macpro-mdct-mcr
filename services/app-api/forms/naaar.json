@@ -1207,6 +1207,7 @@
               "bodyRows": [
                 ["", "Provide plan compliance details for 438.206", ""]
               ],
+              "caption": "",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
