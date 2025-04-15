@@ -339,9 +339,7 @@ export const GeomappingChildJson = [
                       {
                         id: "geoAnnualPercentMetStandardDate",
                         type: "date",
-                        validation: {
-                          type: "dateOptional",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
@@ -393,9 +391,7 @@ export const GeomappingChildJson = [
                       {
                         id: "geoActualMaxDistanceDate",
                         type: "date",
-                        validation: {
-                          type: "dateOptional",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
@@ -415,7 +411,7 @@ export const GeomappingChildJson = [
 
 export const SecretShopperAppointmentAvailabilityChildJson = [
   {
-    id: "mockId",
+    id: "ssaaComplianceFrequency",
     type: "checkbox",
     validation: "checkboxOneOptional",
     props: {
