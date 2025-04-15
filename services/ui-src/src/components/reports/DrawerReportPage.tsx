@@ -42,7 +42,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
-import addIconDark from "assets/icons/icon_add_gray.png";
+import addIconSVG from "assets/icons/icon_add_gray.svg";
 import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
@@ -267,7 +267,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       leftIcon={
         <Image
           sx={sx.buttonIcons}
-          src={isAddStandardsDisabled ? addIconDark : addIconWhite}
+          src={isAddStandardsDisabled ? addIconSVG : addIconWhite}
           alt="Add"
         />
       }
