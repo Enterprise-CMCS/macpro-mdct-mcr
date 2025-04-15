@@ -55,7 +55,8 @@ export type ReportRouteWithForm =
   | DrawerReportPageShape
   | ModalDrawerReportPageShape
   | ModalOverlayReportPageShape
-  | OverlayReportPageShape;
+  | OverlayReportPageShape
+  | PlanOverlayReportPageShape;
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
@@ -147,6 +148,39 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
   };
 }
 
+export interface PlanOverlayReportPageShape extends ReportPageShapeBase {
+  entityType: EntityType;
+  verbiage: PlanOverlayReportPageVerbiage;
+  overlayForm?: never;
+  modalForm?: never;
+  drawerForm?: never;
+  form?: never;
+  details: {
+    childForms: EntityDetailsChildFormShape[];
+    forms: PlanOverlayDetailsMultiformShape[];
+    verbiage: EntityDetailsMultiformVerbiage;
+  };
+}
+
+export interface PlanOverlayDetailsMultiformShape {
+  form: FormJson;
+  table: {
+    caption: string;
+    bodyRows: string[][];
+    headRow: Array<string | ScreenReaderCustomHeaderName>;
+  };
+  verbiage: PlanOverlayMultiformVerbiage;
+}
+
+export interface PlanOverlayMultiformVerbiage extends ReportPageVerbiage {
+  heading: string;
+  hint: string;
+  accordion?: {
+    buttonLabel: string;
+    text: string;
+  };
+}
+
 export interface ReportRouteWithoutForm extends ReportRouteBase {
   children?: ReportRoute[];
   pageType?: string;
@@ -217,6 +251,14 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   };
   tableHeader: string;
   emptyDashboardText: string;
+  enterEntityDetailsButtonText: string;
+}
+
+export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
+  requiredMessages: {
+    [key: string]: CustomHtmlElement[] | undefined;
+  };
+  tableHeader: string;
   enterEntityDetailsButtonText: string;
 }
 
