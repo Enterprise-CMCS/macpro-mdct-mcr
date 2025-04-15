@@ -201,32 +201,23 @@ export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
-  let analysisMethodChildJson: AnyObject = [];
+  const GeomappingJson = structuredClone(GeomappingChildJson);
+  const SecretShopperJson = structuredClone(
+    SecretShopperAppointmentAvailabilityChildJson
+  );
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
-    let analysisMethodWithChildren = false;
-
     switch (item.name) {
       case DEFAULT_ANALYSIS_METHODS[0].name:
-        analysisMethodWithChildren = true;
-        analysisMethodChildJson = structuredClone(GeomappingChildJson);
-        break;
+        createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
+        return { ...analysisMethod, children: GeomappingJson };
       case DEFAULT_ANALYSIS_METHODS[3].name:
-        analysisMethodWithChildren = true;
-        analysisMethodChildJson = structuredClone(
-          SecretShopperAppointmentAvailabilityChildJson
-        );
-        break;
+        createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
+        return { ...analysisMethod, children: SecretShopperJson };
       default:
-        break;
+        return analysisMethod;
     }
-
-    if (analysisMethodWithChildren) {
-      createIDForChildrenOfAnalysisMethod(analysisMethodChildJson, id);
-      return { ...analysisMethod, children: analysisMethodChildJson };
-    }
-    return analysisMethod;
   });
   return updatedItemChoices;
 };
