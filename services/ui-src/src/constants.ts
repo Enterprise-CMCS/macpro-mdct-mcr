@@ -328,7 +328,7 @@ export const GeomappingChildJson = [
                     children: [
                       {
                         id: "geoAnnualPercentMetStandard",
-                        type: "number",
+                        type: "numberOptional",
                         validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
@@ -339,9 +339,7 @@ export const GeomappingChildJson = [
                       {
                         id: "geoAnnualPercentMetStandardDate",
                         type: "date",
-                        validation: {
-                          type: "date",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
@@ -393,9 +391,7 @@ export const GeomappingChildJson = [
                       {
                         id: "geoActualMaxDistanceDate",
                         type: "date",
-                        validation: {
-                          type: "date",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
@@ -404,6 +400,90 @@ export const GeomappingChildJson = [
                     ],
                   },
                 ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+export const SecretShopperAppointmentAvailabilityChildJson = [
+  {
+    id: "ssaaComplianceFrequency",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "9QZMDvvbiWrXcjr5Z1zcuV",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "ssaaQ1PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q1 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "ssaaQ2PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q2 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "ssaaQ3PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q3 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "ssaaQ4PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q4 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+          ],
+        },
+        {
+          id: "hnKktBxFGNr9jB1AgWLPXf",
+          label: "Report results annually",
+          children: [
+            {
+              id: "ssaaReportResultsAnnually",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Annual (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "ssaaAnnualPercentMetStandardDate",
+              type: "date",
+              validation: "dateOptional",
+              props: {
+                label: "Date of analysis of annual snapshot (optional)",
               },
             },
           ],

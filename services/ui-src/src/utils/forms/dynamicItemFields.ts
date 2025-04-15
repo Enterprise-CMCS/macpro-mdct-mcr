@@ -1,4 +1,8 @@
-import { GeomappingChildJson } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  GeomappingChildJson,
+  SecretShopperAppointmentAvailabilityChildJson,
+} from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -198,14 +202,22 @@ export const availableAnalysisMethods = (
   items: AnyObject[]
 ) => {
   const GeomappingJson = structuredClone(GeomappingChildJson);
+  const SecretShopperJson = structuredClone(
+    SecretShopperAppointmentAvailabilityChildJson
+  );
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
-    if (item.name === "Geomapping") {
-      createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
-      return { ...analysisMethod, children: GeomappingJson };
+    switch (item.name) {
+      case DEFAULT_ANALYSIS_METHODS[0].name:
+        createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
+        return { ...analysisMethod, children: GeomappingJson };
+      case DEFAULT_ANALYSIS_METHODS[3].name:
+        createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
+        return { ...analysisMethod, children: SecretShopperJson };
+      default:
+        return analysisMethod;
     }
-    return analysisMethod;
   });
   return updatedItemChoices;
 };

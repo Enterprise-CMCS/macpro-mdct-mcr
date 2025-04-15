@@ -185,18 +185,18 @@ describe("utils/forms/naaarPlanCompliance", () => {
       const createdAnalysisMethods = [
         {
           id: "mockUUID1",
-          name: "MockItem1",
+          name: "Geomapping",
           analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
         {
           id: "mockUUID2",
           name: "MockItem2",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+          analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
         {
           id: "mockUUID3",
-          name: "MockItem3",
-          analysis_method_applicable_plans: [{ value: "Plan 2" }],
+          name: "Secret Shopper: Appointment Availability",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
       ];
 
@@ -206,11 +206,11 @@ describe("utils/forms/naaarPlanCompliance", () => {
           [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-              value: "MockItem1",
+              value: "Geomapping",
             },
             {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID2`,
-              value: "MockItem2",
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
+              value: "Secret Shopper: Appointment Availability",
             },
           ],
         },
@@ -228,11 +228,13 @@ describe("utils/forms/naaarPlanCompliance", () => {
       expect(result.fields[0]?.props?.choices).toEqual([
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
-          label: "MockItem1",
+          label: "Geomapping",
+          children: expect.any(Array),
         },
         {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID2",
-          label: "MockItem2",
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
+          label: "Secret Shopper: Appointment Availability",
+          children: expect.any(Array),
         },
       ]);
     });
