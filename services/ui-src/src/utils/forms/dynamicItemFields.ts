@@ -209,22 +209,22 @@ export const availableAnalysisMethods = (
 
     switch (item.name) {
       case DEFAULT_ANALYSIS_METHODS[0].name:
-        analysisMethodChildJson = GeomappingChildJson;
         analysisMethodWithChildren = true;
+        analysisMethodChildJson = structuredClone(GeomappingChildJson);
         break;
       case DEFAULT_ANALYSIS_METHODS[3].name:
         analysisMethodWithChildren = true;
-        analysisMethodChildJson = SecretShopperAppointmentAvailabilityChildJson;
+        analysisMethodChildJson = structuredClone(
+          SecretShopperAppointmentAvailabilityChildJson
+        );
         break;
       default:
         break;
     }
 
-    const injectedAnalysisMethodJson = structuredClone(analysisMethodChildJson);
-
     if (analysisMethodWithChildren) {
-      createIDForChildrenOfAnalysisMethod(injectedAnalysisMethodJson, id);
-      return { ...analysisMethod, children: injectedAnalysisMethodJson };
+      createIDForChildrenOfAnalysisMethod(analysisMethodChildJson, id);
+      return { ...analysisMethod, children: analysisMethodChildJson };
     }
     return analysisMethod;
   });

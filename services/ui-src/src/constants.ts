@@ -485,9 +485,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "ssaaAnnualPercentMetStandardDate",
               type: "date",
-              validation: {
-                type: "date",
-              },
+              validation: "date",
               props: {
                 label: "Date of analysis of annual snapshot (optional)",
               },
