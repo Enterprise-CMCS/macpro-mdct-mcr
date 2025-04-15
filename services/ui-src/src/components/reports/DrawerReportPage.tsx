@@ -42,6 +42,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
+import addIconDark from "assets/icons/icon_add_gray.png";
 import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
@@ -258,12 +259,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     : "";
   const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
 
+  const isAddStandardsDisabled =
+    !hasProviderTypes || !completedAnalysisMethods();
   const addStandardsButton = (
     <Button
       sx={sx.addStandardsButton}
-      leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
+      leftIcon={
+        <Image
+          sx={sx.buttonIcons}
+          src={isAddStandardsDisabled ? addIconDark : addIconWhite}
+          alt="Add"
+        />
+      }
       onClick={() => openRowDrawer()}
-      disabled={!hasProviderTypes || !completedAnalysisMethods()}
+      disabled={isAddStandardsDisabled}
     >
       {verbiage.addEntityButtonText}
     </Button>
