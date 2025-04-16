@@ -43,9 +43,8 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
 
   const displayPlansList = () => {
     return plans.map((plan: EntityShape) => {
-      const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value ?? "";
-      const answer438206 =
-        plan?.planCompliance438206_assurance?.[0]?.value ?? "";
+      const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value;
+      const answer438206 = plan?.planCompliance438206_assurance?.[0]?.value;
       const isNotCompliant43868 = answer43868 === nonCompliantLabel;
 
       // counts
@@ -131,7 +130,11 @@ const complianceTable = (
             <Text sx={sx.fieldLabel}>{heading}</Text>
             <Text sx={sx.fieldHint}>{parseCustomHtml(hint)}</Text>
           </Td>
-          <Td>{answer}</Td>
+          <Td>
+            <Text sx={!answer ? sx.notAnsweredStyling : {}}>
+              {answer ?? "Not answered"}
+            </Text>
+          </Td>
         </Tr>
       </Table>
     </>
@@ -151,6 +154,9 @@ const sx = {
   fieldHint: {
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  notAnsweredStyling: {
+    color: "palette.error_darker",
   },
   count: {
     color: "palette.gray_medium",
