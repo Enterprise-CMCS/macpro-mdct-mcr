@@ -570,6 +570,92 @@ export const mockNaaarStandardsPageJson = {
   },
 };
 
+export const mockNaaarPlanCompliancePageJson = {
+  name: "mock-route",
+  path: "/naaar/plan-compliance",
+  pageType: "planOverlay",
+  entityType: EntityType.PLANS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    requiredMessages: {
+      plans: [
+        {
+          type: "p",
+          content: "plans are required",
+        },
+      ],
+      standards: [
+        {
+          type: "p",
+          content: "standards are required",
+        },
+      ],
+    },
+    tableHeader: "Plan Name",
+    enterEntityDetailsButtonText: "Enter",
+  },
+  details: {
+    verbiage: {
+      intro: {
+        section: "mock section",
+      },
+    },
+    forms: [
+      {
+        form: {
+          id: "planComplianceMockForm1",
+          fields: [
+            {
+              id: "mockComplianceQuestion1",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row"]],
+          caption: "",
+          headRow: ["Mock head row"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading",
+          hint: "mock plan compliance hint",
+          intro: {
+            section: "",
+          },
+        },
+      },
+    ],
+    childForms: [
+      {
+        parentForm: "mockParentFormId",
+        form: {
+          id: "mockChildFormId1",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
