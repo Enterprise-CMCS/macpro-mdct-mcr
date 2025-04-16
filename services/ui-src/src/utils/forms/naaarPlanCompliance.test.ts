@@ -1,14 +1,20 @@
 // constants
-import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { FormJson } from "types";
+import { EntityShape, FormJson } from "types";
 // utils
 import {
   addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
   exceptionsNonComplianceStatus,
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
   hasComplianceDetails,
 } from "utils";
 
@@ -235,6 +241,45 @@ describe("utils/forms/naaarPlanCompliance", () => {
           label: "Plan Provider Directory Review",
         },
       ]);
+    });
+  });
+
+  describe("getExceptionsNonComplianceKeys()", () => {
+    const keyPrefix = planComplianceStandardKey;
+    const expectedKey = `${keyPrefix}-mock`;
+    const entity: EntityShape = {
+      id: "mockEntityId1",
+      [expectedKey]: "Mock Value",
+      "mock-nonmatching-key": "mock value",
+    };
+
+    const exceptionsNonCompliance = [expectedKey];
+
+    test("returns array of keys matching plan compliance constant", () => {
+      expect(getExceptionsNonComplianceKeys(entity)).toEqual(
+        exceptionsNonCompliance
+      );
+    });
+  });
+
+  describe("getExceptionsNonComplianceCounts()", () => {
+    const mockExceptionComplianceKeys = [
+      "mock-key-1",
+      "mock-exceptionsDescription",
+      "mock-nonComplianceDescription",
+    ];
+
+    test("returns counts of zero for empty array", () => {
+      expect(getExceptionsNonComplianceCounts([])).toEqual({
+        exceptionsCount: 0,
+        nonComplianceCount: 0,
+      });
+    });
+
+    test("returns counts of 1 for exception key and 1 for no non-compliance key", () => {
+      expect(
+        getExceptionsNonComplianceCounts(mockExceptionComplianceKeys)
+      ).toEqual({ exceptionsCount: 1, nonComplianceCount: 1 });
     });
   });
 });
