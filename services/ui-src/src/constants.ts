@@ -409,6 +409,194 @@ export const GeomappingChildJson = [
   },
 ];
 
+export const PlanProviderChildJson = [
+  {
+    id: "ppdrComplianceFrequency",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "sxC5M4JJz9qNCdNxJgQmJV",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "ppdrEnrolleesMeetingStandard",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "gRCpgad2dhXDrmucTw8cnu",
+                    label: "Minimum number of network providers",
+                    children: [
+                      {
+                        id: "ppdrQ1NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ2NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ3NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ4NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "a8kZrrUYcfUrnTM8UuHNmi",
+                    label: "Provider to enrollee ratio",
+                    children: [
+                      {
+                        id: "ppdrQ1ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ2ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ3ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrQ4ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          id: "wz9n6q8nuxdUKnaw7gWUoj",
+          label: "Report results annually",
+          children: [
+            {
+              id: "ppdaReportResultsAnnually",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "j4ch2jWhesE7SHQZYQmvJV",
+                    label: "Minimum number of Network Providers",
+                    children: [
+                      {
+                        id: "ppdrAnnualMinimumNumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrAnnualMinimumNumberOfNetworkProvidersDate",
+                        type: "date",
+                        validation: {
+                          type: "dateOptional",
+                        },
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "dSHQvqgfa7YYoRBvSKkahW",
+                    label: "Provider to enrollee ratio",
+                    children: [
+                      {
+                        id: "ppdrAnnualProvidertoEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "ppdrAnnualProvidertoEnrolleeRatioDate",
+                        type: "date",
+                        validation: "dateOptional",
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
 export const SecretShopperAppointmentAvailabilityChildJson = [
   {
     id: "ssaaComplianceFrequency",

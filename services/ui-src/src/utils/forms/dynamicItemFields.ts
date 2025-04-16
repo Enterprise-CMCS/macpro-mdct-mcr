@@ -1,6 +1,6 @@
 import {
-  DEFAULT_ANALYSIS_METHODS,
   GeomappingChildJson,
+  PlanProviderChildJson,
   SecretShopperAppointmentAvailabilityChildJson,
 } from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
@@ -205,14 +205,18 @@ export const availableAnalysisMethods = (
   const SecretShopperJson = structuredClone(
     SecretShopperAppointmentAvailabilityChildJson
   );
+  const PlanProviderJson = structuredClone(PlanProviderChildJson);
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
     switch (item.name) {
-      case DEFAULT_ANALYSIS_METHODS[0].name:
+      case "Geomapping":
         createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
         return { ...analysisMethod, children: GeomappingJson };
-      case DEFAULT_ANALYSIS_METHODS[3].name:
+      case "Plan Provider Directory Review":
+        createIDForChildrenOfAnalysisMethod(PlanProviderJson, id);
+        return { ...analysisMethod, children: PlanProviderJson };
+      case "Secret Shopper: Appointment Availability":
         createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
         return { ...analysisMethod, children: SecretShopperJson };
       default:
