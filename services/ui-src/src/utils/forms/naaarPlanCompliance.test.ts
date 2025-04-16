@@ -196,13 +196,13 @@ describe("utils/forms/naaarPlanCompliance", () => {
         },
         {
           id: "mockUUID2",
-          name: "Plan Provider Directory Review",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+          name: "MockItem2",
+          analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
         {
           id: "mockUUID3",
-          name: "Secret Shopper",
-          analysis_method_applicable_plans: [{ value: "Plan 2" }],
+          name: "Secret Shopper: Appointment Availability",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
       ];
 
@@ -215,8 +215,8 @@ describe("utils/forms/naaarPlanCompliance", () => {
               value: "Geomapping",
             },
             {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID2`,
-              value: "Plan Provider Directory Review",
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
+              value: "Secret Shopper: Appointment Availability",
             },
           ],
         },
@@ -235,10 +235,12 @@ describe("utils/forms/naaarPlanCompliance", () => {
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
           label: "Geomapping",
+          children: expect.any(Array),
         },
         {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID2",
-          label: "Plan Provider Directory Review",
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
+          label: "Secret Shopper: Appointment Availability",
+          children: expect.any(Array),
         },
       ]);
     });

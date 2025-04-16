@@ -131,6 +131,8 @@ const mockAnalysisMethods: AnyObject[] = [
   },
 ];
 
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
 describe("generateDrawerItemFields for ILOS", () => {
   const result = generateDrawerItemFields(
     mockIlosForm,
@@ -201,19 +203,34 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
     const mockObjectId =
       "planCompliance43868_standard-id-nonComplianceAnalyses";
     const mockItems = [
-      { id: "mockUUID1", name: "Geomapping" },
-      { id: "mockUUID2", name: "Plan Provider Directory Review" },
+      { id: "mockUUID1", name: "MockItem1" },
+      { id: "mockUUID2", name: "MockItem2" },
     ];
     const result = availableAnalysisMethods(mockObjectId, mockItems);
     expect(result).toEqual([
       {
         id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1",
-        label: "Geomapping",
+        label: "MockItem1",
       },
       {
         id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID2",
-        label: "Plan Provider Directory Review",
+        label: "MockItem2",
       },
     ]);
+  });
+  it("should append a child form if the item is Geomapping", () => {
+    const mockObjectId =
+      "planCompliance43868_standard-id-nonComplianceAnalyses";
+    const mockItems = [
+      { id: "mockUUID1", name: "Geomapping" },
+      { id: "mockUUID2", name: "MockItem2" },
+    ];
+    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    expect(Object.prototype.hasOwnProperty.call(result[0], "children")).toBe(
+      true
+    );
+    expect(Object.prototype.hasOwnProperty.call(result[1], "children")).toBe(
+      false
+    );
   });
 });

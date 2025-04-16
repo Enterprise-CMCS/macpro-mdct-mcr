@@ -1,3 +1,8 @@
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  GeomappingChildJson,
+  SecretShopperAppointmentAvailabilityChildJson,
+} from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -173,14 +178,46 @@ const updatedItemChoiceList = (
   return updatedChoiceList;
 };
 
+function createIDForChildrenOfAnalysisMethod(obj: AnyObject, parentId: string) {
+  Object.keys(obj).forEach((key) => {
+    const value = obj[key];
+    if (key === "id") {
+      const newId = `${parentId}_${value}`;
+      obj[key] = newId;
+      parentId = newId;
+    }
+
+    if (Array.isArray(value)) {
+      for (let arrayObj of value) {
+        createIDForChildrenOfAnalysisMethod(arrayObj, parentId);
+      }
+    } else if (typeof value === "object") {
+      createIDForChildrenOfAnalysisMethod(value, parentId);
+    }
+  });
+}
 // dynamically filter by partialId to find the analysis methods
 export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
   items: AnyObject[]
 ) => {
-  const updatedItemChoices = items.map((item) => ({
-    id: `${analysisMethodsFieldId}_${item.id}`,
-    label: item.name,
-  }));
+  const GeomappingJson = structuredClone(GeomappingChildJson);
+  const SecretShopperJson = structuredClone(
+    SecretShopperAppointmentAvailabilityChildJson
+  );
+  const updatedItemChoices = items.map((item) => {
+    const id = `${analysisMethodsFieldId}_${item.id}`;
+    const analysisMethod = { id, label: item.name };
+    switch (item.name) {
+      case DEFAULT_ANALYSIS_METHODS[0].name:
+        createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
+        return { ...analysisMethod, children: GeomappingJson };
+      case DEFAULT_ANALYSIS_METHODS[3].name:
+        createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
+        return { ...analysisMethod, children: SecretShopperJson };
+      default:
+        return analysisMethod;
+    }
+  });
   return updatedItemChoices;
 };
