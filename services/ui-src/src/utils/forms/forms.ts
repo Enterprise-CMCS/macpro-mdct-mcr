@@ -297,8 +297,10 @@ export const getForm = (params: getFormParams) => {
   const providerTypes = report?.fieldData?.providerTypes?.map(
     (providerType: { name: string }) => providerType
   );
-  const analysisMethods = report?.fieldData?.analysisMethods?.map(
-    (analysisMethod: { name: string }) => analysisMethod
+  const analysisMethodsUsedByPlans = report?.fieldData?.analysisMethods?.filter(
+    (analysisMethod: AnyObject) =>
+      analysisMethod.analysis_applicable?.[0].value === "Yes" ||
+      analysisMethod.custom_analysis_method_name
   );
   const reportType = report?.reportType;
 
@@ -321,7 +323,7 @@ export const getForm = (params: getFormParams) => {
           EntityType.STANDARDS
         );
         modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
-        generateAnalysisMethodChoices(drawerForm, analysisMethods);
+        generateAnalysisMethodChoices(drawerForm, analysisMethodsUsedByPlans);
       }
       break;
     case ReportType.MCPAR:
