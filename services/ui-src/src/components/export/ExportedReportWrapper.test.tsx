@@ -111,7 +111,7 @@ describe("<ExportedReportWrapper />", () => {
     ).toBeInTheDocument();
   });
 
-  test("Standards Entity renders ModalOverlay page in export", () => {
+  test("ExportedPlanOverlayReportSection renders", () => {
     mockedUseStore.mockReturnValue(mockNaaarReportStore);
     render(exportedPlanOverlayReportWrapperComponent);
     expect(
