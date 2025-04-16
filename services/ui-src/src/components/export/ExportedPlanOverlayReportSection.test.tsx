@@ -56,16 +56,17 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     }
   });
 
-  test("ExportedPlanOverlayReportSection displays compliance tables", () => {
+  test("ExportedPlanOverlayReportSection displays compliance tables with plans but no response", () => {
+    const notAnsweredText = "Not answered";
     render(exportedPlanOverlaySectionComponent);
     expect(
       screen.getAllByRole("row", {
-        name: `${mockFormHeading1} ${mockFormHint1}`,
+        name: `${mockFormHeading1} ${mockFormHint1} ${notAnsweredText}`,
       })[0]
     ).toBeInTheDocument();
     expect(
       screen.getAllByRole("row", {
-        name: `${mockFormHeading2} ${mockFormHint2}`,
+        name: `${mockFormHeading2} ${mockFormHint2} ${notAnsweredText}`,
       })[0]
     ).toBeInTheDocument();
   });
