@@ -29,6 +29,7 @@ export const MobileEntityRow = ({
   entityType,
   verbiage,
   locked,
+  requiresMoreData,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
@@ -106,6 +107,7 @@ export const MobileEntityRow = ({
               variant="outline"
               onClick={() => openOverlayOrDrawer(entity)}
               size="sm"
+              disabled={requiresMoreData}
               sx={sx.enterButton}
             >
               {entering ? <Spinner size="md" /> : enterDetailsText()}
