@@ -130,7 +130,7 @@ const complianceTable = (
             <Text sx={sx.fieldLabel}>{heading}</Text>
             <Text sx={sx.fieldHint}>{parseCustomHtml(hint)}</Text>
           </Td>
-          <Td>
+          <Td sx={sx.answerCell}>
             <Text sx={!answer ? sx.notAnsweredStyling : {}}>
               {answer ?? "Not answered"}
             </Text>
@@ -154,6 +154,9 @@ const sx = {
   fieldHint: {
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  answerCell: {
+    width: "50%",
   },
   notAnsweredStyling: {
     color: "palette.error_darker",
