@@ -8,7 +8,12 @@ import { exportTableSx } from "./ExportedReportFieldTable";
 // types
 import { EntityShape, PlanOverlayReportPageShape } from "types";
 // utils
-import { parseCustomHtml, useStore } from "utils";
+import {
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
+  parseCustomHtml,
+  useStore,
+} from "utils";
 
 /*
  * Designed originally for the plan compliance portion of the NAAAR report
@@ -18,6 +23,7 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
   const { report } = useStore();
 
   const plans = report?.fieldData?.plans;
+  const standards = report?.fieldData?.standards ?? [];
 
   if (!plans) {
     return null;
@@ -37,10 +43,17 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
 
   const displayPlansList = () => {
     return plans.map((plan: EntityShape) => {
-      const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value ?? "";
-      const answer438206 =
-        plan?.planCompliance438206_assurance?.[0]?.value ?? "";
+      const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value;
+      const answer438206 = plan?.planCompliance438206_assurance?.[0]?.value;
       const isNotCompliant43868 = answer43868 === nonCompliantLabel;
+
+      // counts
+      const exceptionsNonComplianceKeys = getExceptionsNonComplianceKeys(plan);
+      const { exceptionsCount, nonComplianceCount } =
+        getExceptionsNonComplianceCounts(exceptionsNonComplianceKeys);
+      const standardsTotalCount = standards.length;
+      const exceptionsCountText = `Total: ${exceptionsCount} of ${standardsTotalCount}`;
+      const nonComplianceCountText = `Total: ${nonComplianceCount} of ${standardsTotalCount}`;
 
       return (
         <Box key={plan.id}>
@@ -61,13 +74,11 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
               <Heading as="h5" sx={sx.h5}>
                 Non-compliant standards for 438.68
               </Heading>
-              {/* TODO: calculate counts */}
-              <Text sx={sx.count}>Total: 1 of 2</Text>
+              <Text sx={sx.count}>{nonComplianceCountText}</Text>
               <Heading as="h5" sx={sx.h5}>
                 Exceptions standards for 438.68
               </Heading>
-              {/* TODO: calculate counts */}
-              <Text sx={sx.count}>Total: 1 of 2</Text>
+              <Text sx={sx.count}>{exceptionsCountText}</Text>
             </>
           )}
           {complianceTable(
@@ -119,7 +130,11 @@ const complianceTable = (
             <Text sx={sx.fieldLabel}>{heading}</Text>
             <Text sx={sx.fieldHint}>{parseCustomHtml(hint)}</Text>
           </Td>
-          <Td>{answer}</Td>
+          <Td sx={sx.answerCell}>
+            <Text sx={!answer ? sx.notAnsweredStyling : {}}>
+              {answer ?? "Not answered"}
+            </Text>
+          </Td>
         </Tr>
       </Table>
     </>
@@ -139,6 +154,12 @@ const sx = {
   fieldHint: {
     lineHeight: "lg",
     color: "palette.gray_medium",
+  },
+  answerCell: {
+    width: "50%",
+  },
+  notAnsweredStyling: {
+    color: "palette.error_darker",
   },
   count: {
     color: "palette.gray_medium",
