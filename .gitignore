@@ -23,4 +23,6 @@ tests/test-results/
 tests/playwright-report/
 tests/playwright/.cache/
 .auth/
+/.cdk
+cdk.context.json
 /.serverless
