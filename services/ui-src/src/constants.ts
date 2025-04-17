@@ -438,7 +438,7 @@ export const PlanProviderChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q1 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -448,7 +448,7 @@ export const PlanProviderChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q2 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -458,7 +458,7 @@ export const PlanProviderChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q3 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -468,7 +468,7 @@ export const PlanProviderChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Q4 (optional)",
-                          mask: "percentage",
+                          mask: "comma-separated",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -530,14 +530,14 @@ export const PlanProviderChildJson = [
           label: "Report results annually",
           children: [
             {
-              id: "ppdaReportResultsAnnually",
+              id: "ppdrReportResultsAnnually",
               type: "radio",
               validation: "radioOptional",
               props: {
                 choices: [
                   {
                     id: "j4ch2jWhesE7SHQZYQmvJV",
-                    label: "Minimum number of Network Providers",
+                    label: "Minimum number of network providers",
                     children: [
                       {
                         id: "ppdrAnnualMinimumNumberOfNetworkProviders",
@@ -572,7 +572,7 @@ export const PlanProviderChildJson = [
                         validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
-                          mask: "comma-separated",
+                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
