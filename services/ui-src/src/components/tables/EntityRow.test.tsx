@@ -169,7 +169,6 @@ describe("<EntityRow />", () => {
       entity,
       entityType,
       verbiage: mockOverlayReportPageVerbiage,
-      hasStandards: false,
     };
 
     test("Edit button opens the AddEditEntityModal", async () => {
@@ -182,8 +181,8 @@ describe("<EntityRow />", () => {
       });
     });
 
-    test("Enter button should be disabled if there is an entity but hasStandards is passed", async () => {
-      render(completeRowComponent({ ...setupData, hasStandards: true }));
+    test("Enter button should be disabled if there is an entity but does not have a standard", async () => {
+      render(completeRowComponent({ ...setupData, hasStandards: false }));
       const enterButton = screen.getByRole("button", {
         name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
       });
@@ -191,7 +190,16 @@ describe("<EntityRow />", () => {
       expect(enterButton).toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards is false", () => {
+    test("Enter button should not disabled if there is an entity and hasStandards", () => {
+      render(completeRowComponent({ ...setupData, hasStandards: true }));
+      const enterButton = screen.getByRole("button", {
+        name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+      });
+      expect(enterButton).toBeVisible();
+      expect(enterButton).not.toBeDisabled();
+    });
+
+    test("Enter button should not disabled if there is an entity and hasStandards is not defined", () => {
       render(completeRowComponent(setupData));
       const enterButton = screen.getByRole("button", {
         name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
@@ -218,7 +226,6 @@ describe("<EntityRow />", () => {
       entity,
       entityType,
       verbiage: mockDrawerReportPageJson.verbiage,
-      hasStandards: false,
     };
 
     test("MCPAR Enter Details button opens the Drawer", async () => {

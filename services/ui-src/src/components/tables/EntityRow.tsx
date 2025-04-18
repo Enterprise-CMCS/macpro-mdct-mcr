@@ -90,7 +90,7 @@ export const EntityRow = ({
               onClick={() => openOverlayOrDrawer(entity)}
               variant="outline"
               size="sm"
-              disabled={!hasStandards}
+              disabled={!hasStandards && hasStandards !== undefined}
             >
               {entering ? <Spinner size="md" /> : enterDetailsText()}
             </Button>

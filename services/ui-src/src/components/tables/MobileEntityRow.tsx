@@ -107,7 +107,7 @@ export const MobileEntityRow = ({
               variant="outline"
               onClick={() => openOverlayOrDrawer(entity)}
               size="sm"
-              disabled={!hasStandards}
+              disabled={!hasStandards && hasStandards !== undefined}
               sx={sx.enterButton}
             >
               {entering ? <Spinner size="md" /> : enterDetailsText()}
