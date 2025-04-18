@@ -1287,19 +1287,6 @@
                         "label": "Standard is non-compliant for this plan",
                         "children": [
                           {
-                            "id": "planCompliance43868_standard-nonComplianceDescription",
-                            "type": "textarea",
-                            "validation": {
-                              "type": "text",
-                              "nested": true,
-                              "parentFieldName": "planCompliance43868_standard"
-                            },
-                            "props": {
-                              "hint": "Describe plan deficiencies identified during the reporting period.",
-                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
-                            }
-                          },
-                          {
                             "id": "planCompliance43868_standard-nonComplianceAnalyses",
                             "type": "checkbox",
                             "validation": {
@@ -1328,6 +1315,19 @@
                                 }
                               ],
                               "choices": []
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceDescription",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Describe plan deficiencies identified during the reporting period.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
                             }
                           },
                           {
