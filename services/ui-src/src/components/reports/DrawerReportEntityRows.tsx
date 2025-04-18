@@ -105,9 +105,12 @@ export const DrawerReportPageEntityRows = ({
         }
 
         const plans = entity?.analysis_method_applicable_plans;
+        const isUtilized =
+          entity?.analysis_applicable &&
+          entity?.analysis_applicable[0]?.value === "Yes";
         let completeText = "Not utilized";
 
-        if (plans) {
+        if (plans && isUtilized) {
           const frequencyVal = entity.analysis_method_frequency[0].value;
           const frequency = otherSpecify(
             frequencyVal,
