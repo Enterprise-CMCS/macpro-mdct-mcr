@@ -12,9 +12,9 @@ import {
   mockNaaarReportContext,
   mockNaaarReportStore,
   mockNaaarAnalysisMethodsPageJson,
+  mockAnalysisMethodEntityStore,
 } from "utils/testing/setupJest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
-import { EntityType, McrEntityState } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -60,20 +60,6 @@ describe("<DrawerReportEntityRow />", () => {
   });
 
   describe("Analysis methods custom logic", () => {
-    const mockAnalysisMethodEntityStore: McrEntityState = {
-      entities: [],
-      entityType: EntityType.ANALYSIS_METHODS,
-      selectedEntity: {
-        id: "k9t7YoOeTOAXX3s7qF6XfN33",
-        name: "Geomapping",
-        isRequired: true,
-      },
-      // ACTIONS
-      setSelectedEntity: () => {},
-      setEntityType: () => {},
-      setEntities: () => {},
-    };
-
     beforeEach(() => {
       const mockNaaarReportContextWithCustomAnalysisMethods: any =
         mockNaaarReportContext;
@@ -87,6 +73,12 @@ describe("<DrawerReportEntityRow />", () => {
           id: "mock-id",
           custom_analysis_method_name: "New Method",
           custom_analysis_method_description: "mock description",
+          analysis_applicable: [
+            {
+              key: "analysis_applicable",
+              value: "Yes",
+            },
+          ],
           analysis_method_frequency: [
             {
               key: "analysis_method_frequency",
