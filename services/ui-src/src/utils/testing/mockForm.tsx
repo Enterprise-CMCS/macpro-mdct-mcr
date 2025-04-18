@@ -237,6 +237,7 @@ export const mockDrawerReportPageJson = {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
+    editEntityButtonText: "Edit",
   },
   drawerForm: mockDrawerForm,
 };
@@ -757,6 +758,8 @@ export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
   },
   tableHeader: "Mock table header",
   emptyDashboardText: "No entities found",
+  enterReportText: "Enter Details",
+  editEntityButtonText: "Edit",
   enterEntityDetailsButtonText: "Mock Enter Button Text",
 };
 
