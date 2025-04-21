@@ -9,7 +9,6 @@ import {
   mockMcparReportStore,
   mockEntityStore,
   mockMcparIlosPageJson,
-  mockNaaarReportContext,
   mockNaaarReportStore,
   mockNaaarAnalysisMethodsPageJson,
   mockAnalysisMethodEntityStore,
@@ -70,86 +69,6 @@ describe("<DrawerReportEntityRow />", () => {
     });
   });
 
-  describe("Analysis methods custom logic", () => {
-    beforeEach(() => {
-      const mockNaaarReportContextWithCustomAnalysisMethods: any =
-        mockNaaarReportContext;
-
-      const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
-
-      // add custom entity to render special row type
-      report.fieldData["analysisMethods"] = [
-        DEFAULT_ANALYSIS_METHODS[0],
-        {
-          id: "mock-id",
-          custom_analysis_method_name: "New Method",
-          custom_analysis_method_description: "mock description",
-          analysis_applicable: [
-            {
-              key: "analysis_applicable",
-              value: "Yes",
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency",
-              value: "Weekly",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: "mock-id-1",
-              value: "Plan 1",
-            },
-            {
-              key: "mock-id-2",
-              value: "Plan 2",
-            },
-            {
-              key: "mock-id-3",
-              value: "Plan 3",
-            },
-          ],
-        },
-      ];
-
-      const mockCustomNaaarReportStore = {
-        ...mockNaaarReportStore,
-        report,
-        reportsByState: [report],
-      };
-
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockCustomNaaarReportStore,
-        ...mockAnalysisMethodEntityStore,
-      });
-
-      const drawerReportPageWithCustomEntities = (
-        <RouterWrappedComponent>
-          <ReportContext.Provider
-            value={mockNaaarReportContextWithCustomAnalysisMethods}
-          >
-            <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
-          </ReportContext.Provider>
-        </RouterWrappedComponent>
-      );
-
-      render(drawerReportPageWithCustomEntities);
-    });
-
-    test("Should display comma separated plans list", async () => {
-      const CommaSeparatedList = screen.getByText(
-        "Weekly: Plan 1, Plan 2, Plan 3",
-        {
-          trim: true,
-          collapseWhitespace: true,
-        }
-      );
-      expect(CommaSeparatedList).toBeVisible();
-    });
-  });
-
   describe("NAAAR Analysis Methods", () => {
     const incompleteAnalysisMethodsReport = {
       ...mockNaaarReportWithAnalysisMethods,
@@ -182,6 +101,73 @@ describe("<DrawerReportEntityRow />", () => {
       report: incompleteAnalysisMethodsReport,
       reportsByState: [incompleteAnalysisMethodsReport],
     };
+
+    const customAnalysisMethodsReport = {
+      ...mockNaaarReportWithAnalysisMethods,
+      fieldData: {
+        ...mockNaaarReportFieldData,
+        analysisMethods: [
+          DEFAULT_ANALYSIS_METHODS[0],
+          {
+            id: "mock-id",
+            custom_analysis_method_name: "New Method",
+            custom_analysis_method_description: "mock description",
+            analysis_applicable: [
+              {
+                key: "analysis_applicable",
+                value: "Yes",
+              },
+            ],
+            analysis_method_frequency: [
+              {
+                key: "analysis_method_frequency",
+                value: "Weekly",
+              },
+            ],
+            analysis_method_applicable_plans: [
+              {
+                key: "mock-id-1",
+                value: "Plan 1",
+              },
+              {
+                key: "mock-id-2",
+                value: "Plan 2",
+              },
+              {
+                key: "mock-id-3",
+                value: "Plan 3",
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const mockCustomAnalysisMethodsReportStore = {
+      ...mockNaaarReportStore,
+      report: customAnalysisMethodsReport,
+      reportsByState: [customAnalysisMethodsReport],
+    };
+
+    test("Should display comma separated plans list", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockCustomAnalysisMethodsReportStore,
+        ...mockAnalysisMethodEntityStore,
+      });
+
+      render(drawerReportPageWithAnalysisMethods);
+
+      const CommaSeparatedList = screen.getByText(
+        "Weekly: Plan 1, Plan 2, Plan 3",
+        {
+          trim: true,
+          collapseWhitespace: true,
+        }
+      );
+      expect(CommaSeparatedList).toBeVisible();
+    });
+
     test("should render rows when analysis methods are incomplete", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
