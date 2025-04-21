@@ -13,6 +13,9 @@ import {
   mockNaaarReportStore,
   mockNaaarAnalysisMethodsPageJson,
   mockAnalysisMethodEntityStore,
+  mockNaaarReportWithAnalysisMethods,
+  mockNaaarReportFieldData,
+  mockNaaarReportWithAnalysisMethodsContext,
 } from "utils/testing/setupJest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
@@ -34,6 +37,14 @@ const drawerReportPageWithEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockMcparReportContext}>
       <DrawerReportPage route={mockMcparIlosPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageWithAnalysisMethods = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
+      <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -136,6 +147,50 @@ describe("<DrawerReportEntityRow />", () => {
         }
       );
       expect(CommaSeparatedList).toBeVisible();
+    });
+  });
+
+  describe("NAAAR Analysis Methods", () => {
+    const incompleteAnalysisMethodsReport = {
+      ...mockNaaarReportWithAnalysisMethods,
+      fieldData: {
+        ...mockNaaarReportFieldData,
+        analysisMethods: [
+          {
+            ...DEFAULT_ANALYSIS_METHODS[0],
+            analysis_applicable: [
+              {
+                key: "analysis_applicable",
+                value: "No",
+              },
+            ],
+            analysis_method_frequency: [],
+            analysis_method_applicable_plans: [],
+          },
+        ],
+        providerTypes: [
+          {
+            key: "mock-key",
+            value: "mock-value",
+          },
+        ],
+      },
+    };
+
+    const mockIncompleteAnalysisMethodsReportStore = {
+      ...mockNaaarReportStore,
+      report: incompleteAnalysisMethodsReport,
+      reportsByState: [incompleteAnalysisMethodsReport],
+    };
+    test("should render rows when analysis methods are incomplete", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockIncompleteAnalysisMethodsReportStore,
+        ...mockAnalysisMethodEntityStore,
+      });
+      render(drawerReportPageWithAnalysisMethods);
+
+      expect(screen.getByText("Not utilized")).toBeVisible();
     });
   });
 });

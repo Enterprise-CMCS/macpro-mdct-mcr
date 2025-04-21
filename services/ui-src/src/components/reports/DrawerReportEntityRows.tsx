@@ -103,7 +103,6 @@ export const DrawerReportPageEntityRows = ({
           const incompleteText = "Select “Enter” to complete response.";
           return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
         }
-
         const plans = entity?.analysis_method_applicable_plans;
         const isUtilized =
           entity?.analysis_applicable &&

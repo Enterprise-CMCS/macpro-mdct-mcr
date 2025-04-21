@@ -330,7 +330,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
     id: "am",
     fields: [
       {
-        id: "mock-field-id",
+        id: "analysis_applicable",
         props: {
           choices: [
             {
