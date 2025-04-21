@@ -470,7 +470,7 @@ export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "MCPAR",
   formTemplate: mockReportJson,
-  programName: [{ key: "mock-key", value: "testProgram" }],
+  programName: "testProgram",
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
