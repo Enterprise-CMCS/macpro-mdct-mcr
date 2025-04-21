@@ -27,6 +27,7 @@ import {
   labelTextWithOptional,
   parseCustomHtml,
   useStore,
+  programList,
   convertDateUtcToEt,
 } from "utils";
 import uuid from "react-uuid";
@@ -76,6 +77,8 @@ export const DropdownField = ({
             value: report.fieldDataId,
           })) ?? [];
       }
+    } else if (options === "programList" && state) {
+      dropdownOptions = programList[state as keyof typeof programList];
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({

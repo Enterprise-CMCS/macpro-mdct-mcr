@@ -15,13 +15,16 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
+  InputChangeEvent,
   ReportStatus,
+  ReportType,
 } from "types";
 // utils
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  generateProgramListFields,
   otherSpecify,
   useStore,
 } from "utils";
@@ -40,6 +43,7 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [isOtherProgramName, setIsOtherProgramName] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
 
@@ -82,9 +86,29 @@ export const AddEditReportModal = ({
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
+  const onChange = (event: InputChangeEvent) => {
+    if (reportType === ReportType.MCPAR) {
+      // make deep copy of baseline form for customization
+      let customizedModalForm: FormJson = modalFormJson;
+
+      // user selects "Other" for the program name
+      if (
+        event.target.name === "programName" &&
+        event.target.value === "Other, specify"
+      ) {
+        setIsOtherProgramName(true);
+        generateProgramListFields(modalFormJson);
+        setForm(customizedModalForm);
+      }
+    }
+  };
+
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    // const programName = formData["programName"];
+    const programName = isOtherProgramName
+      ? formData["programName-otherText"]
+      : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -252,6 +276,7 @@ export const AddEditReportModal = ({
         id={form.id}
         formJson={form}
         formData={selectedReport?.fieldData}
+        onChange={onChange}
         onSubmit={writeReport}
         validateOnRender={false}
         dontReset={true}
