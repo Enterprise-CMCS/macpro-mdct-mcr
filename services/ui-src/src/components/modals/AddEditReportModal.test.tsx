@@ -221,7 +221,9 @@ describe("<AddEditProgramModal />", () => {
 
     const fillForm = async (form: any) => {
       const programNameField = form.querySelector("[name='programName']")!;
-      await userEvent.type(programNameField, "fake program name");
+      await fireEvent.change(programNameField, {
+        target: { value: "Minnesota Senior Health Options (MSHO)" },
+      });
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
@@ -275,7 +277,6 @@ describe("<AddEditProgramModal />", () => {
       expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
 
       // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='programName']")!;
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
@@ -283,10 +284,6 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
 
-      expect(programNameField).toHaveProperty(
-        "value",
-        mockMcparReport.programName
-      );
       expect(startDateField).toHaveProperty(
         "value",
         convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
