@@ -39,6 +39,10 @@ export const programList = {
       id: "24KxJzGtP4NxlUJZrhGJKYEf",
       label: "Alabama Integrated Care Network (ICN)",
     },
+    {
+      id: "",
+      label: "Other, specify",
+    },
   ],
   // Arkansas
   AR: [
@@ -361,6 +365,10 @@ export const programList = {
     {
       id: "YdKa3xY2iqdVAsQfHd7O5g6Y",
       label: "MinnesotaCare",
+    },
+    {
+      id: "testId",
+      label: "Other, specify",
     },
   ],
   // Mississippi
