@@ -26,6 +26,7 @@ import {
   convertDateUtcToEt,
   generateProgramListFields,
   otherSpecify,
+  resetJson,
   useStore,
 } from "utils";
 
@@ -89,7 +90,7 @@ export const AddEditReportModal = ({
   const onChange = (event: InputChangeEvent) => {
     if (reportType === ReportType.MCPAR) {
       // make deep copy of baseline form for customization
-      let customizedModalForm: FormJson = modalFormJson;
+      let customizedModalForm: FormJson = structuredClone(modalFormJson);
 
       // user selects "Other" for the program name
       if (
@@ -99,13 +100,15 @@ export const AddEditReportModal = ({
         setIsOtherProgramName(true);
         generateProgramListFields(modalFormJson);
         setForm(customizedModalForm);
+      } else {
+        setIsOtherProgramName(false);
+        resetJson(customizedModalForm);
       }
     }
   };
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    // const programName = formData["programName"];
     const programName = isOtherProgramName
       ? formData["programName-otherText"]
       : formData["programName"].value;

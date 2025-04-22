@@ -18,6 +18,15 @@ export const generateProgramListFields = (form: FormJson) => {
   };
 };
 
+export const resetJson = (form: FormJson) => {
+  const fields = form.fields;
+  fields.splice(1, 2);
+  return {
+    ...form,
+    fields: fields,
+  };
+};
+
 // ESP: program list (MCPAR)
 export const programList = {
   // Alabama
@@ -30,11 +39,6 @@ export const programList = {
       id: "24KxJzGtP4NxlUJZrhGJKYEf",
       label: "Alabama Integrated Care Network (ICN)",
     },
-    // other, specify
-    {
-      id: "247cNJEIfJ4gbGGrah1e9KPe",
-      label: "Other, specify",
-    },
   ],
   // Arkansas
   AR: [
@@ -45,11 +49,6 @@ export const programList = {
     {
       id: "zaAyFy8QjFIjkpVtQs7LNCVl",
       label: "Healthy Smiles",
-    },
-    // other, specify
-    {
-      id: "BIrw5tf4OvMVIYqYhYElKIvj",
-      label: "Other, specify",
     },
   ],
   // Arizona
@@ -76,11 +75,6 @@ export const programList = {
       id: "b92Tk23BTj5XbwA9L6Fvh7BC",
       label: "Comprehensive Health Plan (CHP)",
     },
-    // other, specify
-    {
-      id: "w9mYPNHSJeiNrO8tvYUJsfNA",
-      label: "Other, specify",
-    },
   ],
   // California
   CA: [
@@ -104,11 +98,6 @@ export const programList = {
       id: "MjfEADVBox5Aotq2idjeft6M",
       label: "Medi-Cal Managed Care program (MCMC)",
     },
-    // other, specify
-    {
-      id: "PrBUaXgaLC4O54zYCfxLlhIJ",
-      label: "Other, specify",
-    },
   ],
   // Colorado
   CO: [
@@ -124,22 +113,12 @@ export const programList = {
       id: "xtGIS3aubFMaiVCtspgb7P0q",
       label: "Child Health Plan Plus (CHP+) Dental Care",
     },
-    // other, specify
-    {
-      id: "JgKDJkKjZIxLzjvHeDHfjPVl",
-      label: "Other, specify",
-    },
   ],
   // Delaware
   DE: [
     {
       id: "IfwD2YzbQH2aUwZsD1pesohn",
       label: "Delaware State Health Plan/Delaware State Health Plan Plus",
-    },
-    // other, specify
-    {
-      id: "lG0y9oZWrw4NbtMLUwzTmqBS",
-      label: "Other, specify",
     },
   ],
   // Washington, DC
@@ -157,11 +136,6 @@ export const programList = {
       id: "MJxbwotStcthpiEg4Byc5KmI",
       label: "District of Columbia Healthy Families Program (DCHFP)",
     },
-    // other, specify
-    {
-      id: "AeNbjlXDRKAXdtjlrXdxVsDs",
-      label: "Other, specify",
-    },
   ],
   // Florida
   FL: [
@@ -172,11 +146,6 @@ export const programList = {
     {
       id: "YI4p6xUUkUVA7smiPuc1IPM7",
       label: "D-SNP",
-    },
-    // other, specify
-    {
-      id: "a9gUWcBi8mODgLkfZm66klBx",
-      label: "Other, specify",
     },
   ],
   // Georgia
@@ -197,11 +166,6 @@ export const programList = {
       id: "jjUAdivEbz7rbobt6Bna3jH0",
       label: "Pathways to Coverage",
     },
-    // other, specify
-    {
-      id: "8FFpjfAe1mRKC4IdlcAevRfB",
-      label: "Other, specify",
-    },
   ],
   // Hawaii
   HI: [
@@ -212,11 +176,6 @@ export const programList = {
     {
       id: "jHfU3f0ICuHeVeHE00MkCllx",
       label: "Community Care Services",
-    },
-    // other, specify
-    {
-      id: "9pAAE81qus7Owcgbg0QZlW4H",
-      label: "Other, specify",
     },
   ],
   // Idaho
@@ -237,11 +196,6 @@ export const programList = {
       id: "5BA11vA9v6QDT0j3q3g0DEfb",
       label: "Idaho Smiles",
     },
-    // other, specify
-    {
-      id: "TTyfJoAiJGm1DKPi5MN0ZA2M",
-      label: "Other, specify",
-    },
   ],
   // Illinois
   IL: [
@@ -252,11 +206,6 @@ export const programList = {
     {
       id: "fKn31H2YY88dGwTyfrXqHEcm",
       label: "Medicare-Medicaid Alignment Initiative (MMAI)",
-    },
-    // other, specify
-    {
-      id: "2hKL4ITbYjGI4RnowcdTGg1k",
-      label: "Other, specify",
     },
   ],
   // Indiana
@@ -277,11 +226,6 @@ export const programList = {
       id: "SVQtk1ZRIUTfioK9fOl9ikCU",
       label: "Pathways for Aging",
     },
-    // other, specify
-    {
-      id: "3jkELWHRR6bpSr2kqGopq0c4",
-      label: "Other, specify",
-    },
   ],
   // Iowa
   IA: [
@@ -297,11 +241,6 @@ export const programList = {
       id: "B4fFkG4xYiUS3RAf0azA1btz",
       label: "CHIP Hawki - Dental",
     },
-    // other, specify
-    {
-      id: "Slz6waXtSxBSv714jhxivE7U",
-      label: "Other, specify",
-    },
   ],
   // Kansas
   KS: [
@@ -309,22 +248,12 @@ export const programList = {
       id: "rOuZXLtZnmHwwKdVi6Gf6Fx6",
       label: "KanCare",
     },
-    // other, specify
-    {
-      id: "Frq92tjO6oYFxzoynPpUgFvr",
-      label: "Other, specify",
-    },
   ],
   // Kentucky
   KY: [
     {
       id: "OjOZW0vISP2monSyFzoEmEKo",
       label: "Kentucky Managed Care Organization Program (KYMCO)",
-    },
-    // other, specify
-    {
-      id: "Ynlwo3AGRjcFLwloMwLbVK8g",
-      label: "Other, specify",
     },
   ],
   // Louisiana
@@ -341,11 +270,6 @@ export const programList = {
       id: "eNURfrWCAVqJsKD8GHBgBnJ7",
       label: "Healthy Louisiana Coordinated System of Care Program (CSoC)",
     },
-    // other, specify
-    {
-      id: "FunB5i9r5lLQL0c7dts8FCWD",
-      label: "Other, specify",
-    },
   ],
   // Maine
   ME: [
@@ -357,22 +281,12 @@ export const programList = {
       id: "W2DGFiCmeXM7WuRhz6ugQNKg",
       label: "Accountable Communities",
     },
-    // other, specify
-    {
-      id: "d3YIc84MrhySa0Ghnkv9ZgBr",
-      label: "Other, specify",
-    },
   ],
   // Maryland
   MD: [
     {
       id: "yoAMiHu0i2T0lg4SNCvJSdrU",
       label: "HealthChoice",
-    },
-    // other, specify
-    {
-      id: "Bbc7nGA6L1neBMLLqX7jeKng",
-      label: "Other, specify",
     },
   ],
   // Massachusetts
@@ -402,11 +316,6 @@ export const programList = {
       id: "NeHtD99KiHVS2ZUWnUqfwBtO",
       label: "One Care",
     },
-    // other, specify
-    {
-      id: "TzQ5gXHd447kShbv5O5vPvzz",
-      label: "Other, specify",
-    },
   ],
   // Michigan
   MI: [
@@ -429,11 +338,6 @@ export const programList = {
     {
       id: "9j6moQolrYNkCzmzqsQKNBAg",
       label: "Health Link",
-    },
-    // other, specify
-    {
-      id: "wlQSt4zWT4acJulURMXhO1BV",
-      label: "Other, specify",
     },
   ],
   // Minnesotta
@@ -458,11 +362,6 @@ export const programList = {
       id: "YdKa3xY2iqdVAsQfHd7O5g6Y",
       label: "MinnesotaCare",
     },
-    // other, specify
-    {
-      id: "nAGVeiiax5tzBO7L9yOzkBu7",
-      label: "Other, specify",
-    },
   ],
   // Mississippi
   MS: [
@@ -474,11 +373,6 @@ export const programList = {
       id: "DmMnEfc3LDjokVJyWmydH1gU",
       label: "MississippiCHIP",
     },
-    // other, specify
-    {
-      id: "TnGgtIH1QJxMOyAGcSTsDnra",
-      label: "Other, specify",
-    },
   ],
   // Missouri
   MO: [
@@ -486,22 +380,12 @@ export const programList = {
       id: "fhnimink8wMG8YFKnSJFb9I7",
       label: "MO HealthNet Managed Care Plan",
     },
-    // other, specify
-    {
-      id: "2abumz9gJgrCavYxBkt3E0Br",
-      label: "Other, specify",
-    },
   ],
   // Montana
   MT: [
     {
       id: "Ykf5e7509dBfwaWu3ywQOctb",
       label: "Tribal Health Improvement Plan (T-HIP)",
-    },
-    // other, specify
-    {
-      id: "JaNWTNww6BjaMWBdWb6kZ0qr",
-      label: "Other, specify",
     },
   ],
   // Nebraska
@@ -518,11 +402,6 @@ export const programList = {
       id: "HLIEvPjm8smRb4qZNTGHQ2lE",
       label: "Substance Use Disorder Program",
     },
-    // other, specify
-    {
-      id: "BLpoHHgEADpIPNnUv7lDygIN",
-      label: "Other, specify",
-    },
   ],
   // Nevada
   NV: [
@@ -534,11 +413,6 @@ export const programList = {
       id: "qOMotuAh8DiLqfSOJz0JEyJS",
       label: "Nevada Mandatory Health Maintenance Program",
     },
-    // other, specify
-    {
-      id: "G16VkXOiJywLDqwHhLiHKHxL",
-      label: "Other, specify",
-    },
   ],
   // New Hampshire
   NH: [
@@ -549,11 +423,6 @@ export const programList = {
     {
       id: "OotA1OCKTrbmyA6eZUJ1DGqj",
       label: "MCM-Dental Services",
-    },
-    // other, specify
-    {
-      id: "vzofKeWUJgsceFrRAUAdDdJn",
-      label: "Other, specify",
     },
   ],
   // New Jersey
@@ -570,22 +439,12 @@ export const programList = {
       id: "9m5aU8E4zOp7l3hL0XVHRlXy",
       label: "NJ Family Care Acute Care",
     },
-    // other, specify
-    {
-      id: "m5Qv4mif4YMvJyivXUXVnqDu",
-      label: "Other, specify",
-    },
   ],
   // New Mexico
   NM: [
     {
       id: "eKwjZtIioFxg9mdrO1gA8Ymo",
       label: "New Mexico Turquoise Care",
-    },
-    // other, specify
-    {
-      id: "dZAV7nlbFhZSGkk7ANWdk5RJ",
-      label: "Other, specify",
     },
   ],
   // New York
@@ -615,11 +474,6 @@ export const programList = {
       id: "PoUqzdCA7hzGx2kKOCHEPMQn",
       label: "Mainstream Managed Care (MMC)",
     },
-    // other, specify
-    {
-      id: "HVfMP7YgVf9iTIkrH1jK13f3",
-      label: "Other, specify",
-    },
   ],
   // North Carolina
   NC: [
@@ -643,22 +497,12 @@ export const programList = {
       id: "hdWxSgcjxFcA34W5YnrGO4JE",
       label: "BH I/DD Tailored Plan",
     },
-    // other, specify
-    {
-      id: "POAdAMCEaDqZmMEluT7pz3bF",
-      label: "Other, specify",
-    },
   ],
   // North Dakota
   ND: [
     {
       id: "qnh3FrWp7qUnReQLr8Asb7Rt",
       label: "ND Medicaid Expansion",
-    },
-    // other, specify
-    {
-      id: "QJbJxyKEXRfTTON1U1qCyny0",
-      label: "Other, specify",
     },
   ],
   // Ohio
@@ -679,11 +523,6 @@ export const programList = {
       id: "fzzOnYSm5xvGrr7h3qXhXV2g",
       label: "Ohio RISE (Resilience through Integrated Systems and Excellence)",
     },
-    // other, specify
-    {
-      id: "Ts4tJlYZ1mUBFLIBhuzdY9Xr",
-      label: "Other, specify",
-    },
   ],
   // Oklahoma
   OK: [
@@ -699,22 +538,12 @@ export const programList = {
       id: "xXGZkdQpblavQztQwUE8kS86",
       label: "SoonerCare Choice",
     },
-    // other, specify
-    {
-      id: "RDJGPAEu0F2lft21vKoiI2Bf",
-      label: "Other, specify",
-    },
   ],
   // Oregon
   OR: [
     {
       id: "yHtx2dBNpIHLoUAFPUSw5ln4",
       label: "Coordinated Care Organization (CCO)",
-    },
-    // other, specify
-    {
-      id: "uhnoVUgjae0a6FnKIS44V2tE",
-      label: "Other, specify",
     },
   ],
   // Pennsylvania
@@ -739,11 +568,6 @@ export const programList = {
       id: "GEAeHfhMrDPZpjeDW2pkiOs7",
       label: "Children's Health Insurance Program (CHIP)",
     },
-    // other, specify
-    {
-      id: "S9RQCg9c2vmw2ekZxIjQPpzH",
-      label: "Other, specify",
-    },
   ],
   // Puerto Rico
   PR: [
@@ -754,11 +578,6 @@ export const programList = {
     {
       id: "AYc3s2y30BFQZoLlvR1enLDX",
       label: "The Vital Government Health Plan",
-    },
-    // other, specify
-    {
-      id: "QOOtQNdwnwi8WjsySmJTSBKX",
-      label: "Other, specify",
     },
   ],
   // Rhode Island
@@ -775,11 +594,6 @@ export const programList = {
       id: "XtLKxy0BCUkuJMwUOb7UaOw8",
       label: "Rhode Island Integrated Care Initiative",
     },
-    // other, specify
-    {
-      id: "FnSHq6bTkdFosmrE3YpSGGvw",
-      label: "Other, specify",
-    },
   ],
   // South Carolina
   SC: [
@@ -790,11 +604,6 @@ export const programList = {
     {
       id: "lsRPa82TNqiTCiD9n56RXflS",
       label: "Healthy Connections Prime",
-    },
-    // other, specify
-    {
-      id: "Yq8Kpj8NnoIXJDXrA4sTHWPI",
-      label: "Other, specify",
     },
   ],
   // Tennessee
@@ -814,11 +623,6 @@ export const programList = {
     {
       id: "mPtbliMlZ938gISzXR8in70S",
       label: "CoverKids Program",
-    },
-    // other, specify
-    {
-      id: "54HRrTaLqhmkXCYdo2IIDyhd",
-      label: "Other, specify",
     },
   ],
   // Texas
@@ -847,11 +651,6 @@ export const programList = {
       id: "rjAHRGiCmEUGK8H5A7YLoCud",
       label: "STAR+PLUS",
     },
-    // other, specify
-    {
-      id: "Mv29dEFxyQuLOAoqxWR74W0I",
-      label: "Other, specify",
-    },
   ],
   // Utah
   UT: [
@@ -879,11 +678,6 @@ export const programList = {
       id: "pG8qB66wy1cSauuc0sCGC7et",
       label: "UT CHIP Dental",
     },
-    // other, specify
-    {
-      id: "kGoq70Kc69j6MTR2mWSkuqI9",
-      label: "Other, specify",
-    },
   ],
   // Vermont
   VT: [
@@ -891,22 +685,12 @@ export const programList = {
       id: "opuhRIuGgj3pLNNCEDOZLNuv",
       label: "Vermont Global Commitment to Health",
     },
-    // other, specify
-    {
-      id: "xkOogq4Rs2m9QLnaP7j3YAtP",
-      label: "Other, specify",
-    },
   ],
   // Virginia
   VA: [
     {
       id: "lhgkAzmUxkKBRJpnTL1gwkoP",
       label: "Cardinal Care Managed Care",
-    },
-    // other, specify
-    {
-      id: "SKCuV62OFqEUekRCVpd5DSFa",
-      label: "Other, specify",
     },
   ],
   // Washington
@@ -923,11 +707,6 @@ export const programList = {
       id: "F5NiWADoBRlwatzj375oMwGq",
       label: "Behavioral Health Only Services (BHSO)",
     },
-    // other, specify
-    {
-      id: "r8mzhFiVZOe0DSCic74Z8Zu7",
-      label: "Other, specify",
-    },
   ],
   // West Virginia
   WV: [
@@ -942,11 +721,6 @@ export const programList = {
     {
       id: "ns6glVkHfwAKeOMQ2vXhcEFD",
       label: "WVCHIP (WVCHIP)",
-    },
-    // other, specify
-    {
-      id: "FxxDiMjpwH2InXkXQdsbG84s",
-      label: "Other, specify",
     },
   ],
   // Wisconsin
@@ -971,22 +745,12 @@ export const programList = {
       id: "pKMy2Ws5IT2iInUxfBd1e1LB",
       label: "SSI Managed Care (SSI)",
     },
-    // other, specify
-    {
-      id: "OkAVCgeSGs7qDhcpJdVxSwbO",
-      label: "Other, specify",
-    },
   ],
   // Wyoming
   WY: [
     {
       id: "chzp3SWGykXBcYPiuKomisN7",
       label: "Wyoming Medicaid's Care Management Entity (CME)",
-    },
-    // other, specify
-    {
-      id: "LuC43h8VZxCsYVRlhb8y8DdD",
-      label: "Other, specify",
     },
   ],
 };
