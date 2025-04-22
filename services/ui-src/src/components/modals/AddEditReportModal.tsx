@@ -26,7 +26,6 @@ import {
   convertDateUtcToEt,
   generateProgramListFields,
   otherSpecify,
-  resetJson,
   useStore,
 } from "utils";
 
@@ -98,11 +97,8 @@ export const AddEditReportModal = ({
         event.target.value === "Other, specify"
       ) {
         setIsOtherProgramName(true);
-        generateProgramListFields(modalFormJson);
+        generateProgramListFields(customizedModalForm);
         setForm(customizedModalForm);
-      } else {
-        setIsOtherProgramName(false);
-        resetJson(customizedModalForm);
       }
     }
   };
