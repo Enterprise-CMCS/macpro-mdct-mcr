@@ -97,15 +97,19 @@ export const AddEditReportModal = ({
       ) {
         generateProgramListFields(customizedModalForm);
         setForm(customizedModalForm);
+      } else if (
+        event.target.name === "programName" &&
+        event.target.value !== "Other, specify"
+      ) {
+        setForm(modalFormJson);
       }
     }
   };
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName-otherText"]
-      ? formData["programName-otherText"]
-      : formData["programName"].value;
+    const programName =
+      formData["programName-otherText"] ?? formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
