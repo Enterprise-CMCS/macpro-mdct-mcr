@@ -43,7 +43,6 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [isOtherProgramName, setIsOtherProgramName] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
 
@@ -96,7 +95,6 @@ export const AddEditReportModal = ({
         event.target.name === "programName" &&
         event.target.value === "Other, specify"
       ) {
-        setIsOtherProgramName(true);
         generateProgramListFields(customizedModalForm);
         setForm(customizedModalForm);
       }
@@ -105,7 +103,7 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = isOtherProgramName
+    const programName = formData["programName-otherText"]
       ? formData["programName-otherText"]
       : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
