@@ -34,19 +34,21 @@ async function main() {
     return;
   }
 
+  let correctParentStack;
   if (process.env.IMPORT_VARIANT == "empty") {
-    EmptyParentStack;
+    correctParentStack = EmptyParentStack;
   } else if (process.env.IMPORT_VARIANT == "imports_included") {
-    ImportsIncludedParentStack;
+    correctParentStack = ImportsIncludedParentStack;
   } else {
-    new ParentStack(app, `${config.project}-${stage}`, {
-      ...config,
-      env: {
-        account: process.env.CDK_DEFAULT_ACCOUNT,
-        region: "us-east-1",
-      },
-    });
+    correctParentStack = ParentStack;
   }
+  new correctParentStack(app, `${config.project}-${stage}`, {
+    ...config,
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: "us-east-1",
+    },
+  });
 }
 
 main();

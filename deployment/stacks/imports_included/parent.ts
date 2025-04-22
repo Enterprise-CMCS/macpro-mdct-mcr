@@ -26,7 +26,6 @@ export class ImportsIncludedParentStack extends Stack {
     createUiAuthComponents({
       scope: this,
       stage,
-      isDev,
     });
   }
 }

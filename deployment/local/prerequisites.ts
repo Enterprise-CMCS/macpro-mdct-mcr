@@ -29,7 +29,7 @@ export class LocalPrerequisiteStack extends Stack {
     });
 
     new secretsmanager.Secret(this, "DefaultSecret", {
-      secretName: "mcr-default", // pragma: allowlist-secret
+      secretName: "mcr-default", // pragma: allowlist secret
       secretObjectValue: {
         vpcName: SecretValue.unsafePlainText("localstack"),
         brokerString: SecretValue.unsafePlainText("localstack"),

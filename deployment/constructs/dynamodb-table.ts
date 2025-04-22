@@ -7,6 +7,11 @@ interface DynamoDBTableProps {
   readonly isDev: boolean;
   readonly name: string;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
+  readonly sortKey?: { name: string; type: dynamodb.AttributeType };
+  readonly lsi?: {
+    indexName: string;
+    sortKey: { name: string; type: dynamodb.AttributeType };
+  }[];
   readonly gsi?: {
     indexName: string;
     partitionKey: { name: string; type: dynamodb.AttributeType };
@@ -35,6 +40,7 @@ export class DynamoDBTable extends Construct {
     this.table = new dynamodb.Table(this, "Table", {
       tableName,
       partitionKey: props.partitionKey,
+      sortKey: props.sortKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
       pointInTimeRecoverySpecification: {
@@ -49,6 +55,16 @@ export class DynamoDBTable extends Construct {
       arn: this.table.tableArn,
       streamArn: this.table.tableStreamArn,
     };
+
+    if (props.lsi) {
+      props.lsi.forEach((index) => {
+        this.table.addLocalSecondaryIndex({
+          indexName: index.indexName,
+          sortKey: index.sortKey,
+          projectionType: dynamodb.ProjectionType.ALL,
+        });
+      });
+    }
 
     if (props.gsi) {
       this.table.addGlobalSecondaryIndex({

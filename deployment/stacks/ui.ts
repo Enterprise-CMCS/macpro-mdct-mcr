@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_certificatemanager as acm,
@@ -10,7 +11,7 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
+import { addIamPropertiesToBucketRole } from "../utils/s3";
 import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
@@ -25,6 +26,7 @@ interface CreateUiComponentsProps {
   cloudfrontDomainName?: string;
   vpnIpSetArn?: string;
   vpnIpv6SetArn?: string;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {
@@ -37,10 +39,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     iamPath,
     cloudfrontCertificateArn,
     cloudfrontDomainName,
-    /*
-     * vpnIpSetArn,
-     * vpnIpv6SetArn,
-     */
+    // vpnIpSetArn,
+    // vpnIpv6SetArn,
+    loggingBucket,
   } = props;
 
   const uiBucket = new s3.Bucket(scope, "uiBucket", {
@@ -49,6 +50,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     autoDeleteObjects: true,
     enforceSSL: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    versioned: true,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
   const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
@@ -94,12 +98,21 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         },
         contentSecurityPolicy: {
           contentSecurityPolicy:
-            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' maxcdn.bootstrapcdn.com fonts.googleapis.com 'unsafe-inline'; font-src 'self' maxcdn.bootstrapcdn.com fonts.gstatic.com; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+          override: true,
+        },
+        xssProtection: {
+          protection: false,
           override: true,
         },
       },
     }
   );
+
+  const cachePolicy = new cloudfront.CachePolicy(scope, "CustomCachePolicy", {
+    queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+    cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+  });
 
   const distribution = new cloudfront.Distribution(
     scope,
@@ -118,7 +131,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           cloudfrontOrigins.S3BucketOrigin.withOriginAccessControl(uiBucket),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+        cachePolicy,
         compress: true,
         responseHeadersPolicy: securityHeadersPolicy,
       },
@@ -148,17 +161,16 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
 
-  addIamPropertiesToBucketAutoDeleteRole(
+  addIamPropertiesToBucketRole(
     scope,
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
     iamPermissionsBoundary.managedPolicyArn,
     iamPath
   );
 
   return {
-    cloudfrontDistributionId: distribution.distributionId,
     distribution,
     applicationEndpointUrl,
-    s3BucketName: uiBucket.bucketName,
     uiBucket,
   };
 }
@@ -167,10 +179,8 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string
-  /*
-   * vpnIpSetArn?: string,
-   * vpnIpv6SetArn?: string,
-   */
+  // vpnIpSetArn?: string,
+  // vpnIpv6SetArn?: string,
 ) {
   return new WafConstruct(
     scope,
@@ -181,64 +191,52 @@ function setupWaf(
     },
     "CLOUDFRONT"
   );
-  /*
-   * Additional Rules for this WAF only if CMS asks to have the application made vpn only
-   * const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
-   */
+  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
+  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
 
-  /*
-   * const defaultAction = vpnIpSetArn
-   *   ? { block: {} }
-   *   : { allow: {} };
-   */
+  // const defaultAction = vpnIpSetArn
+  //   ? { block: {} }
+  //   : { allow: {} };
 
-  /*
-   * if (vpnIpSetArn) {
-   *   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
-   *     name: `${stage}-gh-ipset`,
-   *     scope: "CLOUDFRONT",
-   *     addresses: [],
-   *     ipAddressVersion: "IPV4",
-   *   });
-   */
+  // if (vpnIpSetArn) {
+  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
+  //     name: `${stage}-gh-ipset`,
+  //     scope: "CLOUDFRONT",
+  //     addresses: [],
+  //     ipAddressVersion: "IPV4",
+  //   });
 
-  /*
-   *   const statements = [
-   *     {
-   *       ipSetReferenceStatement: { arn: vpnIpSetArn },
-   *     },
-   *     {
-   *       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-   *     },
-   *   ];
-   */
+  //   const statements = [
+  //     {
+  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
+  //     },
+  //     {
+  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
+  //     },
+  //   ];
 
-  /*
-   *   if (vpnIpv6SetArn) {
-   *     statements.push({
-   *       ipSetReferenceStatement: {
-   *         arn: vpnIpv6SetArn,
-   *       },
-   *     });
-   *   }
-   */
+  //   if (vpnIpv6SetArn) {
+  //     statements.push({
+  //       ipSetReferenceStatement: {
+  //         arn: vpnIpv6SetArn,
+  //       },
+  //     });
+  //   }
 
-  /*
-   *   wafRules.push({
-   *     name: "vpn-only",
-   *     priority: 0,
-   *     action: { allow: {} },
-   *     visibilityConfig: {
-   *       cloudWatchMetricsEnabled: true,
-   *       metricName: `${project}-${stage}-webacl-vpn-only`,
-   *       sampledRequestsEnabled: true,
-   *     },
-   *     statement: {
-   *       orStatement: {
-   *         statements,
-   *       },
-   *     },
-   *   });
-   * }
-   */
+  //   wafRules.push({
+  //     name: "vpn-only",
+  //     priority: 0,
+  //     action: { allow: {} },
+  //     visibilityConfig: {
+  //       cloudWatchMetricsEnabled: true,
+  //       metricName: `${project}-${stage}-webacl-vpn-only`,
+  //       sampledRequestsEnabled: true,
+  //     },
+  //     statement: {
+  //       orStatement: {
+  //         statements,
+  //       },
+  //     },
+  //   });
+  // }
 }

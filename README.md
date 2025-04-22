@@ -60,7 +60,8 @@ Before starting the project we're going to install some tools. We recommend havi
 **If you have run the MDCT Setup Script this section can be skipped**
 
 1. Clone the repo: `git clone https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git`
-2. In the root directory run `pre-commit install`
+2. Ensure you either have a 1Password account and have 1Password CLI installed. Alternatively, reach out to the team for an example of .env files
+3. In the root directory run `pre-commit install`
 
 ### Running the project locally
 

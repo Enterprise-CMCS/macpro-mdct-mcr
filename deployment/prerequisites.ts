@@ -46,7 +46,7 @@ export class PrerequisiteStack extends Stack {
         path: "/delegatedadmin/developer/",
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AmazonAPIGatewayPushToCloudWatchLogs" // pragma: allowlist-secret
+            "service-role/AmazonAPIGatewayPushToCloudWatchLogs" // pragma: allowlist secret
           ),
         ],
       }

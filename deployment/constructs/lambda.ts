@@ -25,10 +25,12 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;
   method?: string;
   stackName: string;
-  api: apigateway.RestApi;
+  api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
   iamPermissionsBoundary: IManagedPolicy;
   iamPath: string;
+  requestParameters?: string[];
+  requestValidator?: apigateway.IRequestValidator;
 }
 
 export class Lambda extends Construct {
@@ -41,7 +43,6 @@ export class Lambda extends Construct {
       handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      // brokerString = "",
       environment = {},
       api,
       path,
@@ -50,6 +51,8 @@ export class Lambda extends Construct {
       iamPath,
       iamPermissionsBoundary,
       stackName,
+      requestParameters,
+      requestValidator,
       ...restProps
     } = props;
 
@@ -90,12 +93,13 @@ export class Lambda extends Construct {
       bundling: {
         minify: true,
         sourceMap: true,
+        nodeModules: ["jsdom"],
       },
       environment,
       ...restProps,
     });
 
-    if (path && method) {
+    if (api && path && method) {
       const resource = api.root.resourceForPath(path);
       resource.addMethod(
         method,
@@ -104,6 +108,15 @@ export class Lambda extends Construct {
           authorizationType: isLocalStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
+          requestParameters: requestParameters
+            ? Object.fromEntries(
+                requestParameters.map((item) => [
+                  `method.request.path.${item}`,
+                  true,
+                ])
+              )
+            : {},
+          requestValidator,
         }
       );
     }
