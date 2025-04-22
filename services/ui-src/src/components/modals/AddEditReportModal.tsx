@@ -86,23 +86,17 @@ export const AddEditReportModal = ({
   }, [selectedReport, copyEligibleReportsByState]);
 
   const onChange = (event: InputChangeEvent) => {
-    if (reportType === ReportType.MCPAR) {
-      // make deep copy of baseline form for customization
-      let customizedModalForm: FormJson = structuredClone(modalFormJson);
+    if (
+      reportType === ReportType.MCPAR &&
+      event.target.name === "programName"
+    ) {
+      const customizedModalForm = structuredClone(modalFormJson);
 
-      // user selects "Other" for the program name
-      if (
-        event.target.name === "programName" &&
-        event.target.value === "Other, specify"
-      ) {
+      if (event.target.value === "Other, specify") {
         generateProgramListFields(customizedModalForm);
-        setForm(customizedModalForm);
-      } else if (
-        event.target.name === "programName" &&
-        event.target.value !== "Other, specify"
-      ) {
-        setForm(modalFormJson);
       }
+
+      setForm(customizedModalForm);
     }
   };
 

@@ -72,7 +72,7 @@ export const bodyRowContent = (
     case ReportType.NAAAR:
       return [
         [
-          report?.programName ?? "",
+          report?.programName.toString() ?? "",
           convertDateUtcToEt(report?.lastAltered),
           report?.lastAlteredBy,
           report?.status,
