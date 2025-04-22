@@ -83,7 +83,6 @@ export const Header = () => {
                   to={report?.formTemplate.basePath || "/"}
                   sx={sx.leaveFormLink}
                   variant="unstyled"
-                  tabIndex={-1}
                 >
                   {!isMobile ? (
                     <Text sx={sx.leaveFormText}>Leave form</Text>
