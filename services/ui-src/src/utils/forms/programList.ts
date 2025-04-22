@@ -18,15 +18,6 @@ export const generateProgramListFields = (form: FormJson) => {
   };
 };
 
-export const resetJson = (form: FormJson) => {
-  const fields = form.fields;
-  fields.splice(1, 2);
-  return {
-    ...form,
-    fields: fields,
-  };
-};
-
 // ESP: program list (MCPAR)
 export const programList = {
   // Alabama
