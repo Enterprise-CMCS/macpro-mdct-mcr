@@ -1,6 +1,7 @@
 // types
 import { EntityShape, EntityType, ReportShape } from "types";
 
+// TODO: Update to actual logic
 export const getNaaarEntityStatus = (
   entity: EntityShape,
   report: ReportShape,
