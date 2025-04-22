@@ -115,6 +115,7 @@ export const DrawerReportPageEntityRows = ({
           );
           const utilizedPlans = plans
             .map((entity: AnyObject) => entity.value)
+            .sort()
             .join(", ");
 
           completeText = `${frequency}: ${utilizedPlans}`;
