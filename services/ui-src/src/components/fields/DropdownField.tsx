@@ -84,6 +84,10 @@ export const DropdownField = ({
           value: option.label,
         })
       );
+      dropdownOptions.push({
+        label: "Other, specify",
+        value: "Other, specify",
+      });
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
