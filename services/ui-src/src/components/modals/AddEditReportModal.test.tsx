@@ -219,11 +219,21 @@ describe("<AddEditProgramModal />", () => {
       jest.clearAllMocks();
     });
 
-    const fillForm = async (form: any) => {
+    const fillForm = async (form: any, otherSpecify?: boolean) => {
       const programNameField = form.querySelector("[name='programName']")!;
-      await fireEvent.change(programNameField, {
-        target: { value: "Minnesota Senior Health Options (MSHO)" },
-      });
+      if (otherSpecify) {
+        await fireEvent.change(programNameField, {
+          target: { value: "Other, specify" },
+        });
+        const programNameOtherTextField = form.querySelector(
+          "[name='programName-otherText']"
+        )!;
+        await userEvent.type(programNameOtherTextField, "Mock program name");
+      } else {
+        await fireEvent.change(programNameField, {
+          target: { value: "Minnesota Senior Health Options (MSHO)" },
+        });
+      }
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
@@ -302,6 +312,17 @@ describe("<AddEditProgramModal />", () => {
       await fillForm(form);
       await waitFor(() => {
         expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    test("Selecting 'Other, specify' from program list dropdown", async () => {
+      const result = render(modalComponent);
+      const form = result.getByTestId("add-edit-report-form");
+      await fillForm(form, true);
+      await waitFor(() => {
+        expect(mockCreateReport).toHaveBeenCalledTimes(1);
         expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
         expect(mockCloseHandler).toHaveBeenCalledTimes(1);
       });
