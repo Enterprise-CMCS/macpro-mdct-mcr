@@ -12,8 +12,6 @@ import {
   hasComplianceDetails,
 } from "utils";
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 describe("utils/forms/naaarPlanCompliance", () => {
   describe("hasComplianceDetails()", () => {
     const exceptionsNonCompliance = [

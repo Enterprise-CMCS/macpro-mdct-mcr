@@ -51,8 +51,6 @@ const mockedNaaarReportContext = {
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 const modalComponent = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockedMcparReportContext}>
@@ -216,9 +214,6 @@ describe("<AddEditProgramModal />", () => {
         ...mockStateUserStore,
         ...mockMcparReportStore,
       });
-    });
-    afterEach(() => {
-      jest.clearAllMocks();
     });
 
     const fillForm = async (form: any, otherSpecify?: boolean) => {
