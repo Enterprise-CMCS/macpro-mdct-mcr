@@ -223,7 +223,7 @@ const sx = {
   },
   entityRow: {
     paddingLeft: "2.25rem",
-    width: "30rem",
+    maxWidth: "30rem",
     minHeight: "3.75rem",
     gap: "4px",
     padding: "0.5rem",
