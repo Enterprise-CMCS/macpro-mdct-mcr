@@ -47,13 +47,13 @@ exclude_patterns = [
   "src/",
   "services/.sechub/",
   "services/database/",
+  "services/topics/",
   "services/ui/",
   "services/ui-src/public/",
   "services/ui-src/src/libs/",
   "services/ui-auth/",
   "services/ui-src/src/utils/testing/**",
   "services/ui-src/src/utils/types/types.ts",
-  "services/topics/",
   "tests/",
   "**/*.test.tsx",
   "**/*.scss",
@@ -85,9 +85,6 @@ enabled = true
 [smells.file_complexity]
 enabled = false
 
-[smells.nested_control_flow]
-enabled = false
-
 [smells.function_complexity]
 enabled = true
 threshold = 20
@@ -95,5 +92,16 @@ threshold = 20
 [smells.function_parameters]
 enabled = false
 
+[smells.nested_control_flow]
+enabled = false
+
 [smells.return_statements]
 enabled = false
+
+[[source]]
+name = "default"
+default = true
+
+[[plugin]]
+name = "ripgrep"
+mode = "comment"
