@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
@@ -53,7 +53,7 @@ export const AddEditReportModal = ({
   const [form, setForm] = useState<FormJson>(modalFormJson);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const onOpen = () => {
+  useEffect(() => {
     // make deep copy of baseline form for customization
     let customizedModalForm: FormJson = JSON.parse(
       JSON.stringify(modalFormJson)
@@ -83,8 +83,7 @@ export const AddEditReportModal = ({
     }
 
     setForm(customizedModalForm);
-    modalDisclosure.onOpen();
-  };
+  }, [selectedReport, copyEligibleReportsByState]);
 
   const onChange = (event: InputChangeEvent) => {
     if (
@@ -261,7 +260,7 @@ export const AddEditReportModal = ({
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
-      modalDisclosure={{ ...modalDisclosure, onOpen: onOpen }}
+      modalDisclosure={modalDisclosure}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
@@ -290,7 +289,6 @@ interface Props {
   selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
-    onOpen: any;
     onClose: any;
   };
 }
