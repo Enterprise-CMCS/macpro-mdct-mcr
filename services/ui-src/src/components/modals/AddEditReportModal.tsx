@@ -15,7 +15,6 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
-  InputChangeEvent,
   ReportStatus,
 } from "types";
 // utils
@@ -85,28 +84,12 @@ export const AddEditReportModal = ({
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
-  const onChange = (event: InputChangeEvent) => {
-    if (
-      event.target.name === "programName" &&
-      event.target.value === "Other, specify"
-    ) {
-      const programNameOtherTextFieldIndex = form.fields.findIndex(
-        (field: FormField | FormLayoutElement) =>
-          field.id === "programName-otherText"
-      );
-      modalFormJson.fields[programNameOtherTextFieldIndex].props!.disabled =
-        false;
-      modalFormJson.fields[programNameOtherTextFieldIndex].props!.validation =
-        "text";
-    }
-
-    setForm(modalFormJson);
-  };
-
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName =
-      formData["programName-otherText"] ?? formData["programName"].value;
+      formData["isOtherProgramName"].value === "Yes"
+        ? formData["programName-otherText"]
+        : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -274,7 +257,6 @@ export const AddEditReportModal = ({
         id={form.id}
         formJson={form}
         formData={selectedReport?.fieldData}
-        onChange={onChange}
         onSubmit={writeReport}
         validateOnRender={false}
         dontReset={true}
@@ -289,6 +271,7 @@ interface Props {
   selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
+    onOpen: any;
     onClose: any;
   };
 }
