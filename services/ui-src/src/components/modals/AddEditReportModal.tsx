@@ -15,13 +15,16 @@ import {
   FormField,
   FormJson,
   FormLayoutElement,
+  InputChangeEvent,
   ReportStatus,
+  ReportType,
 } from "types";
 // utils
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  generateProgramListFields,
   otherSpecify,
   useStore,
 } from "utils";
@@ -54,9 +57,7 @@ export const AddEditReportModal = ({
 
   useEffect(() => {
     // make deep copy of baseline form for customization
-    let customizedModalForm: FormJson = JSON.parse(
-      JSON.stringify(modalFormJson)
-    );
+    const customizedModalForm: FormJson = structuredClone(form);
 
     // check if yoy copy field exists in form
     const yoyCopyFieldIndex = form.fields.findIndex(
@@ -80,16 +81,27 @@ export const AddEditReportModal = ({
       customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
         true;
     }
-
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
+
+  const onChange = (event: InputChangeEvent) => {
+    if (
+      reportType === ReportType.MCPAR &&
+      event.target.name === "programName"
+    ) {
+      let customizedModalForm = structuredClone(form);
+
+      if (event.target.value === "Other, specify") {
+        customizedModalForm = generateProgramListFields(customizedModalForm);
+      }
+      setForm(customizedModalForm);
+    }
+  };
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName =
-      formData["isOtherProgramName"].value === "Yes"
-        ? formData["programName-otherText"]
-        : formData["programName"].value;
+      formData["programName-otherText"] ?? formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -257,6 +269,7 @@ export const AddEditReportModal = ({
         id={form.id}
         formJson={form}
         formData={selectedReport?.fieldData}
+        onChange={onChange}
         onSubmit={writeReport}
         validateOnRender={false}
         dontReset={true}
@@ -271,7 +284,6 @@ interface Props {
   selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
-    onOpen?: any;
     onClose: any;
   };
 }

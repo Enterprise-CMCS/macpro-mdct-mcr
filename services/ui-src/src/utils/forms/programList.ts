@@ -1,3 +1,22 @@
+import { FormJson } from "types";
+
+export const generateProgramListFields = (form: FormJson) => {
+  const fields = form.fields;
+  const programNameOtherText = {
+    id: "programName-otherText",
+    type: "text",
+    validation: "text",
+    props: { label: "Specify a new program name" },
+  };
+
+  fields.splice(1, 0, programNameOtherText);
+
+  return {
+    ...form,
+    fields: fields,
+  };
+};
+
 // ESP: program list (MCPAR)
 export const programList = {
   // Alabama

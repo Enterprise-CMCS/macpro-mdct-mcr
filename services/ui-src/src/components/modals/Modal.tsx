@@ -94,7 +94,6 @@ export const Modal = ({
 interface Props {
   modalDisclosure: {
     isOpen: boolean;
-    onOpen?: any;
     onClose: any;
   };
   content: {

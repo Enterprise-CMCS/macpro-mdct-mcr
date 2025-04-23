@@ -20,33 +20,6 @@
       }
     },
     {
-      "id": "isOtherProgramName",
-      "type": "radio",
-      "validation": "radio",
-      "props": {
-        "label": "Do you need to add a new program?",
-        "hint": "Select “Yes” if your program is not listed above, then enter a new program name.",
-        "choices": [
-          {
-            "id": "LAxLQ8mvotpI6Bvkiflul8CJ",
-            "label": "Yes",
-            "children": [
-              {
-                "id": "programName-otherText",
-                "type": "text",
-                "validation": "text",
-                "props": { "label": "Specify a new program name" }
-              }
-            ]
-          },
-          {
-            "id": "wkC8jS2Hp6vjuHEu6WnZfHcF",
-            "label": "No"
-          }
-        ]
-      }
-    },
-    {
       "id": "copyFieldDataSourceId",
       "type": "dropdown",
       "props": {
