@@ -271,7 +271,7 @@ interface Props {
   selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
-    onOpen: any;
+    onOpen?: any;
     onClose: any;
   };
 }
