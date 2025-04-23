@@ -308,6 +308,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         reportType={reportType}
         modalDisclosure={{
           isOpen: addEditReportModalIsOpen,
+          onOpen: addEditReportModalOnOpenHandler,
           onClose: addEditReportModalOnCloseHandler,
         }}
       />

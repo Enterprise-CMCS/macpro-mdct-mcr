@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
@@ -17,14 +17,12 @@ import {
   FormLayoutElement,
   InputChangeEvent,
   ReportStatus,
-  ReportType,
 } from "types";
 // utils
 import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
-  generateProgramListFields,
   otherSpecify,
   useStore,
 } from "utils";
@@ -55,7 +53,7 @@ export const AddEditReportModal = ({
   const [form, setForm] = useState<FormJson>(modalFormJson);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  useEffect(() => {
+  const onOpen = () => {
     // make deep copy of baseline form for customization
     let customizedModalForm: FormJson = JSON.parse(
       JSON.stringify(modalFormJson)
@@ -83,23 +81,27 @@ export const AddEditReportModal = ({
       customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
         true;
     }
+
     setForm(customizedModalForm);
-  }, [selectedReport, copyEligibleReportsByState]);
+    modalDisclosure.onOpen();
+  };
 
   const onChange = (event: InputChangeEvent) => {
     if (
-      reportType === ReportType.MCPAR &&
-      event.target.name === "programName"
+      event.target.name === "programName" &&
+      event.target.value === "Other, specify"
     ) {
-      const customizedModalForm = structuredClone(modalFormJson);
-
-      if (event.target.value === "Other, specify") {
-        const programListForm = generateProgramListFields(customizedModalForm);
-        setForm(programListForm);
-      } else {
-        setForm(customizedModalForm);
-      }
+      const programNameOtherTextFieldIndex = form.fields.findIndex(
+        (field: FormField | FormLayoutElement) =>
+          field.id === "programName-otherText"
+      );
+      modalFormJson.fields[programNameOtherTextFieldIndex].props!.disabled =
+        false;
+      modalFormJson.fields[programNameOtherTextFieldIndex].props!.validation =
+        "text";
     }
+
+    setForm(modalFormJson);
   };
 
   // MCPAR report payload
@@ -259,7 +261,7 @@ export const AddEditReportModal = ({
     <Modal
       data-testid="add-edit-report-modal"
       formId={form.id}
-      modalDisclosure={modalDisclosure}
+      modalDisclosure={{ ...modalDisclosure, onOpen: onOpen }}
       content={{
         heading: selectedReport?.id ? form.heading?.edit : form.heading?.add,
         subheading: selectedReport?.id ? "" : form.heading?.subheading,
@@ -288,6 +290,7 @@ interface Props {
   selectedReport?: AnyObject;
   modalDisclosure: {
     isOpen: boolean;
+    onOpen: any;
     onClose: any;
   };
 }

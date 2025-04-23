@@ -20,6 +20,15 @@
       }
     },
     {
+      "id": "programName-otherText",
+      "type": "text",
+      "validation": "text",
+      "props": {
+        "label": "Specify a new program name (if applicable)",
+        "disabled": true
+      }
+    },
+    {
       "id": "copyFieldDataSourceId",
       "type": "dropdown",
       "props": {
