@@ -24,3 +24,5 @@ tests/playwright-report/
 tests/playwright/.cache/
 .auth/
 /.serverless
+.qlty/*
+!.qlty/qlty.toml
