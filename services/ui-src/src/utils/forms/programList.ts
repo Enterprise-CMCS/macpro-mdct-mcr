@@ -1,19 +1,29 @@
-import { FormJson } from "types";
+import { FormField, FormJson, FormLayoutElement } from "types";
 
-export const generateProgramListFields = (form: FormJson) => {
-  const fields = form.fields;
+const PROGRAM_OTHER_NAME_ID = "programName-otherText";
+
+export const addProgramNameTextField = (form: FormJson) => {
   const programNameOtherText = {
-    id: "programName-otherText",
+    id: PROGRAM_OTHER_NAME_ID,
     type: "text",
     validation: "text",
     props: { label: "Specify a new program name" },
   };
 
-  fields.splice(1, 0, programNameOtherText);
+  form.fields.splice(1, 0, programNameOtherText);
+
+  return form;
+};
+
+export const removeProgramNameTextField = (form: FormJson) => {
+  // remove other text field
+  const filteredFields = form.fields.filter(
+    (field: FormField | FormLayoutElement) => field.id !== PROGRAM_OTHER_NAME_ID
+  );
 
   return {
     ...form,
-    fields: fields,
+    fields: filteredFields,
   };
 };
 

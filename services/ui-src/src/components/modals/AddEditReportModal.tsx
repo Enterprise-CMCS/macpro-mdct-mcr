@@ -21,11 +21,12 @@ import {
 } from "types";
 // utils
 import {
+  addProgramNameTextField,
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
-  generateProgramListFields,
   otherSpecify,
+  removeProgramNameTextField,
   useStore,
 } from "utils";
 
@@ -56,6 +57,10 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
+    if (reportType !== ReportType.MCPAR) {
+      return;
+    }
+
     // make deep copy of baseline form for customization
     const customizedModalForm: FormJson = structuredClone(form);
 
@@ -92,7 +97,9 @@ export const AddEditReportModal = ({
       let customizedModalForm = structuredClone(form);
 
       if (event.target.value === "Other, specify") {
-        customizedModalForm = generateProgramListFields(customizedModalForm);
+        customizedModalForm = addProgramNameTextField(customizedModalForm);
+      } else {
+        customizedModalForm = removeProgramNameTextField(customizedModalForm);
       }
       setForm(customizedModalForm);
     }
