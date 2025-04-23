@@ -85,8 +85,8 @@ export const DropdownField = ({
         })
       );
       dropdownOptions.push({
-        label: "Other, specify",
-        value: "Other, specify",
+        label: "Program not listed",
+        value: "Program not listed",
       });
     } else if (typeof options === "string") {
       dropdownOptions =
