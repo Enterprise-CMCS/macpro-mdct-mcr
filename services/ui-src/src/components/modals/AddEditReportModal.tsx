@@ -42,8 +42,6 @@ export const AddEditReportModal = ({
   const { full_name } = useStore().user ?? {};
   const { copyEligibleReportsByState } = useStore();
 
-  const [submitting, setSubmitting] = useState<boolean>(false);
-
   const naaarReport = useFlags()?.naaarReport;
 
   // get correct form
@@ -55,12 +53,14 @@ export const AddEditReportModal = ({
 
   const modalFormJson = modalFormJsonMap[reportType]!;
   const [form, setForm] = useState<FormJson>(modalFormJson);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     // make deep copy of baseline form for customization
     let customizedModalForm: FormJson = JSON.parse(
       JSON.stringify(modalFormJson)
     );
+
     // check if yoy copy field exists in form
     const yoyCopyFieldIndex = form.fields.findIndex(
       (field: FormField | FormLayoutElement) =>
@@ -77,6 +77,7 @@ export const AddEditReportModal = ({
     const programIsPCCMFieldIndex = form.fields.findIndex(
       (field: FormField | FormLayoutElement) => field.id === "programIsPCCM"
     );
+
     // if programIsPCCMField is in form && not creating new report
     if (programIsPCCMFieldIndex > -1 && selectedReport?.id) {
       customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
@@ -93,10 +94,11 @@ export const AddEditReportModal = ({
       const customizedModalForm = structuredClone(modalFormJson);
 
       if (event.target.value === "Other, specify") {
-        generateProgramListFields(customizedModalForm);
+        const programListForm = generateProgramListFields(customizedModalForm);
+        setForm(programListForm);
+      } else {
+        setForm(customizedModalForm);
       }
-
-      setForm(customizedModalForm);
     }
   };
 
