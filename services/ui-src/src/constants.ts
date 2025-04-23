@@ -678,3 +678,87 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
     },
   },
 ];
+
+export const testForPR = [
+  {
+    id: "ssaaComplianceFrequency",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "9QZMDvvbiWrXcjr5Z1zcuV",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "q1PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q1 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "q2PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q2 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "q3PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q3 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "q4PercentMetStandard",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Q4 (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+          ],
+        },
+        {
+          id: "hnKktBxFGNr9jB1AgWLPXf",
+          label: "Report results annually",
+          children: [
+            {
+              id: "reportResultsAnnually",
+              type: "number",
+              validation: "numberOptional",
+              props: {
+                label: "Annual (optional)",
+                mask: "percentage",
+                decimalPlacesToRoundTo: 0,
+              },
+            },
+            {
+              id: "annualPercentMetStandardDate",
+              type: "date",
+              validation: "dateOptional",
+              props: {
+                label: "Date of analysis of annual snapshot (optional)",
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
