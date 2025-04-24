@@ -34,7 +34,6 @@ jest.mock("utils/other/useBreakpoint");
 const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
   typeof useBreakpoint
 >;
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const {
   addEntityButtonText,

@@ -36,7 +36,6 @@ const mockTable = details?.childForms![1]
 const mockVerbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
