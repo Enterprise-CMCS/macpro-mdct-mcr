@@ -87,7 +87,7 @@ export const AddEditReportModal = ({
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const programName =
-      formData["isOtherProgramName"].value === "Yes"
+      formData["isOtherProgramName"][0].value === "Yes"
         ? formData["programName-otherText"]
         : formData["programName"].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];

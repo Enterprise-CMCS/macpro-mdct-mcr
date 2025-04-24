@@ -34,7 +34,11 @@
               {
                 "id": "programName-otherText",
                 "type": "text",
-                "validation": "text",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "isOtherProgramName"
+                },
                 "props": { "label": "Specify a new program name" }
               }
             ]
