@@ -19,8 +19,6 @@ import {
 import { useStore } from "utils";
 import { EntityType, ReportShape } from "types";
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({

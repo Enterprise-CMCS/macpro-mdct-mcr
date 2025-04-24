@@ -115,7 +115,6 @@ describe("<AdminBannerForm />", () => {
 
   test("Form does not submit and displays error if dates overlap with existing banner", async () => {
     mockedUseStore.mockReturnValue(mockStoreWithConflictingBanner);
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(adminBannerFormComponent(mockWriteAdminBanner));
     const form = result.container;
     await fillOutForm(form);
@@ -132,7 +131,6 @@ describe("<AdminBannerForm />", () => {
 
   test("Shows error if writeBanner throws error", async () => {
     mockedUseStore.mockReturnValue(emptyBannerStore);
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(
       adminBannerFormComponent(mockWriteAdminBannerWithError)
     );
