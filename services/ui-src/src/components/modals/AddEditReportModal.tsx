@@ -22,6 +22,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  generateProgramList,
   otherSpecify,
   useStore,
 } from "utils";
@@ -45,7 +46,7 @@ export const AddEditReportModal = ({
 
   // get correct form
   const modalFormJsonMap: any = {
-    MCPAR: mcparFormJson,
+    MCPAR: generateProgramList(mcparFormJson, activeState),
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,
   };
@@ -84,7 +85,8 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const programName =
+      formData["programName-otherText"] ?? formData["programName"][0].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;

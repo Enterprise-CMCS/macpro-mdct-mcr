@@ -11,10 +11,12 @@
   "fields": [
     {
       "id": "programName",
-      "type": "text",
-      "validation": "text",
+      "type": "radio",
+      "validation": "radio",
       "props": {
-        "label": "Program name (for new MCPAR)"
+        "label": "Program name (for new MCPAR)",
+        "hint": "Select from an existing program name. If you need to add a new program, select “Other, specify”.",
+        "choices": []
       }
     },
     {
