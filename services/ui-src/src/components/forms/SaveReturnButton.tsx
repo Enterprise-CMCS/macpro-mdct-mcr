@@ -3,6 +3,7 @@ import { MouseEventHandler } from "react";
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
 // assets
 import nextIcon from "assets/icons/icon_next_white.png";
+import { useStore } from "utils";
 
 export const SaveReturnButton = ({
   border = true,
@@ -12,9 +13,18 @@ export const SaveReturnButton = ({
   onClick,
   submitting = false,
 }: Props) => {
+  const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
   // formId is for a single form, onClick is for multiple forms/custom action
-  const handlers = onClick ? { onClick } : { form: formId };
 
+  const handlers =
+    // prevent submit for admin or read-only user
+    userIsAdmin || userIsReadOnly
+      ? { onClick: disabledOnClick }
+      : onClick
+      ? { onClick }
+      : { form: formId! };
+
+  const buttonText = userIsAdmin || userIsReadOnly ? "Return" : "Save & return";
   return (
     <Box sx={{ ...sx.footerBox, ...(border && sx.footerBoxBorder) }}>
       <Flex sx={sx.buttonFlex}>
@@ -34,7 +44,7 @@ export const SaveReturnButton = ({
             type="submit"
             {...handlers}
           >
-            {submitting ? <Spinner size="md" /> : "Save & return"}
+            {submitting ? <Spinner size="md" /> : buttonText}
           </Button>
         )}
       </Flex>
