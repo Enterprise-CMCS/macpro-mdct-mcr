@@ -105,8 +105,7 @@ export const DrawerReportPageEntityRows = ({
         }
         const plans = entity?.analysis_method_applicable_plans;
         const isUtilized =
-          entity?.analysis_applicable &&
-          entity?.analysis_applicable[0]?.value === "Yes";
+          entity?.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
         let completeText = "Not utilized";
 
         if (plans && isUtilized) {
