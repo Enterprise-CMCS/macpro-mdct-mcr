@@ -6,3 +6,4 @@
 ./services/ui-src/src/components/reports/ModalOverlayReportPage.test.tsx:170:todo Write a test to make sure admins can't click/change details?
 ./services/ui-src/src/utils/autosave/autosave.ts:193: TODO: modify DynamicField hydrationValue lifecycle so we can implement a stricter check,
 ./services/ui-src/src/utils/tables/getNaaarEntityStatus.ts:4: TODO: Update to actual logic
+./tests/cypress/e2e/mcpar/dashboard.cy.js:51: TODO: hydration
