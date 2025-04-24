@@ -5,6 +5,7 @@ import "jest-axe/extend-expect";
 // GLOBALS
 
 global.React = React;
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
 Object.defineProperty(window, "matchMedia", {
