@@ -225,8 +225,12 @@ describe("<AddEditProgramModal />", () => {
       const programNameField = form.querySelector("[name='programName']")!;
       if (otherSpecify) {
         await fireEvent.change(programNameField, {
-          target: { value: "Other, specify" },
+          target: { value: "Program not listed" },
         });
+        const isOtherProgramYes = screen.getAllByLabelText(
+          "Yes"
+        )[0] as HTMLInputElement;
+        await userEvent.click(isOtherProgramYes);
         const programNameOtherTextField = form.querySelector(
           "[name='programName-otherText']"
         )!;
@@ -235,6 +239,10 @@ describe("<AddEditProgramModal />", () => {
         await fireEvent.change(programNameField, {
           target: { value: "Minnesota Senior Health Options (MSHO)" },
         });
+        const isOtherProgramNo = screen.getAllByLabelText(
+          "No"
+        )[0] as HTMLInputElement;
+        await userEvent.click(isOtherProgramNo);
       }
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
@@ -244,7 +252,7 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
       await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+      const isPccmNo = screen.getAllByLabelText("No")[1] as HTMLInputElement;
       if (!isPccmNo.disabled) {
         await userEvent.click(isPccmNo);
       }
