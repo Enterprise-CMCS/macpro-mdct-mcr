@@ -133,9 +133,10 @@ describe("<DrawerReportEntityRow />", () => {
                 key: "mock-id-2",
                 value: "Plan 2",
               },
+              // add plan that will be alphabetized differently to verify sort
               {
                 key: "mock-id-3",
-                value: "Plan 3",
+                value: "A third plan",
               },
             ],
           },
@@ -149,7 +150,7 @@ describe("<DrawerReportEntityRow />", () => {
       reportsByState: [customAnalysisMethodsReport],
     };
 
-    test("Should display comma separated plans list", async () => {
+    test("Should display comma separated alphabetized plans list", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockCustomAnalysisMethodsReportStore,
@@ -159,7 +160,7 @@ describe("<DrawerReportEntityRow />", () => {
       render(drawerReportPageWithAnalysisMethods);
 
       const CommaSeparatedList = screen.getByText(
-        "Weekly: Plan 1, Plan 2, Plan 3",
+        "Weekly: A third plan, Plan 1, Plan 2",
         {
           trim: true,
           collapseWhitespace: true,

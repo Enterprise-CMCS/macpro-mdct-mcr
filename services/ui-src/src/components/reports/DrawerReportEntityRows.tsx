@@ -117,6 +117,7 @@ export const DrawerReportPageEntityRows = ({
           );
           const utilizedPlans = plans
             .map((entity: AnyObject) => entity.value)
+            .sort()
             .join(", ");
 
           completeText = `${frequency}: ${utilizedPlans}`;
@@ -146,14 +147,7 @@ export const DrawerReportPageEntityRows = ({
               />
             )
           )}
-          <Flex
-            direction={"column"}
-            sx={
-              entity.custom_analysis_method_description
-                ? sx.customEntityRow
-                : sx.entityRow
-            }
-          >
+          <Flex direction={"column"} sx={sx.entityRow}>
             <Heading as="h4" sx={sx.entityName}>
               {entity.name ?? entity.custom_analysis_method_name}
             </Heading>
@@ -222,14 +216,7 @@ const sx = {
   },
   entityRow: {
     paddingLeft: "2.25rem",
-    width: "32rem",
-    maxHeight: "3.75rem",
-    gap: "4px",
-    padding: "0.5rem",
-  },
-  customEntityRow: {
-    paddingLeft: "2.25rem",
-    width: "32rem",
+    maxWidth: "30rem",
     minHeight: "3.75rem",
     gap: "4px",
     padding: "0.5rem",
@@ -248,6 +235,7 @@ const sx = {
   completeText: {
     fontSize: "md",
     paddingLeft: "2.25rem",
+    wordBreak: "break-word",
   },
   missingIlos: {
     fontWeight: "bold",
