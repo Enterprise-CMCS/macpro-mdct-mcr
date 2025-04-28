@@ -78,16 +78,19 @@ export const DropdownField = ({
           })) ?? [];
       }
     } else if (options === "programList" && state) {
-      dropdownOptions = programList[state as keyof typeof programList].map(
+      const statePrograms = programList[state as keyof typeof programList].map(
         (option) => ({
           label: option.label,
           value: option.label,
         })
       );
-      dropdownOptions.push({
-        label: "Program not listed",
-        value: "Program not listed",
-      });
+      dropdownOptions = [
+        ...statePrograms,
+        {
+          label: "Program not listed",
+          value: "Program not listed",
+        },
+      ];
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({

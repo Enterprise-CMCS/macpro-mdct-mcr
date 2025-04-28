@@ -147,9 +147,22 @@ export const DashboardPage = ({ reportType }: Props) => {
       if (report.submittedOnDate) {
         submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
+
+      let selectedProgramName = undefined;
+
+      if (report.programNameOtherText) {
+        selectedProgramName = {
+          label: "Program not listed",
+          value: "Program not listed",
+        };
+      } else {
+        selectedProgramName = report.programNameOption;
+      }
+
       formData = {
         fieldData: {
           programName: report.programName,
+          programNameOption: selectedProgramName,
           reportingPeriodEndDate: convertDateUtcToEt(
             report.reportingPeriodEndDate
           ),
@@ -158,10 +171,12 @@ export const DashboardPage = ({ reportType }: Props) => {
           ),
           combinedData: report.combinedData,
           copyFieldDataSourceId,
-          programIsPCCM: report?.programIsPCCM,
-          planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
+          programIsPCCM: report.programIsPCCM,
+          isOtherProgramName: report.isOtherProgramName,
+          "programName-otherText": report.programNameOtherText,
+          planTypeIncludedInProgram: report.planTypeIncludedInProgram,
           "planTypeIncludedInProgram-otherText":
-            report?.["planTypeIncludedInProgram-otherText"],
+            report["planTypeIncludedInProgram-otherText"],
         },
         state: report.state,
         id: report.id,
@@ -170,6 +185,7 @@ export const DashboardPage = ({ reportType }: Props) => {
         submittedOnDate: submittedOnDate,
       };
     }
+
     setSelectedReport(formData);
 
     // use disclosure to open modal

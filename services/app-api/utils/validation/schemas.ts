@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { radioOptional, textOptional } from "./completionSchemas";
+import { dropdown, radioOptional, textOptional } from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
   programName: yup.string(),
@@ -11,6 +11,7 @@ export const metadataValidationSchema = yup.object().shape({
   dueDate: yup.number(),
   combinedData: yup.boolean(),
   programIsPCCM: radioOptional(),
+  isOtherProgramName: radioOptional(),
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
@@ -21,4 +22,6 @@ export const metadataValidationSchema = yup.object().shape({
   copyFieldDataSourceId: yup.string(),
   planTypeIncludedInProgram: radioOptional(),
   "planTypeIncludedInProgram-otherText": textOptional(),
+  programNameOtherText: textOptional(),
+  programNameOption: dropdown(),
 });

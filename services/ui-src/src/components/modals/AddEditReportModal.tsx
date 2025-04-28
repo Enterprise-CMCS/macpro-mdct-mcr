@@ -63,6 +63,7 @@ export const AddEditReportModal = ({
       (field: FormField | FormLayoutElement) =>
         field.id === "copyFieldDataSourceId"
     );
+
     // if yoyCopyField is in form && (not creating new report || no reports eligible for copy)
     if (
       yoyCopyFieldIndex > -1 &&
@@ -89,7 +90,11 @@ export const AddEditReportModal = ({
     const programName =
       formData["isOtherProgramName"][0].value === "Yes"
         ? formData["programName-otherText"]
-        : formData["programName"].value;
+        : formData["programNameOption"].value;
+
+    const programNameOption = formData["programNameOption"];
+    const isOtherProgramName = formData["isOtherProgramName"];
+    const programNameOtherText = formData["programName-otherText"];
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -104,6 +109,7 @@ export const AddEditReportModal = ({
     return {
       metadata: {
         programName,
+        programNameOption,
         reportingPeriodStartDate,
         reportingPeriodEndDate,
         dueDate,
@@ -111,6 +117,8 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         programIsPCCM,
+        isOtherProgramName,
+        programNameOtherText: programNameOtherText,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
@@ -119,6 +127,7 @@ export const AddEditReportModal = ({
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
         reportingPeriodEndDate: convertDateUtcToEt(reportingPeriodEndDate),
         programName,
+        programNameOtherText: programNameOtherText,
       },
     };
   };
