@@ -1,5 +1,9 @@
 // constants
-import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 import { AnyObject, EntityShape, FormJson } from "types";
@@ -204,3 +208,27 @@ export const addExceptionsNonComplianceStatus = (
       exceptionsNonCompliance: exceptionsOrNonCompliance,
     };
   });
+
+export const getExceptionsNonComplianceKeys = (selectedEntity: EntityShape) => {
+  return Object.keys(selectedEntity).filter(
+    (key) =>
+      key.startsWith(`${planComplianceStandardKey}-`) &&
+      selectedEntity[key] !== undefined
+  );
+};
+
+export const getExceptionsNonComplianceCounts = (
+  exceptionsNonComplianceKeys: string[]
+) => {
+  return exceptionsNonComplianceKeys.reduce(
+    (obj, key) => {
+      if (key.endsWith("exceptionsDescription")) {
+        obj.exceptionsCount++;
+      } else if (key.endsWith("nonComplianceDescription")) {
+        obj.nonComplianceCount++;
+      }
+      return obj;
+    },
+    { exceptionsCount: 0, nonComplianceCount: 0 }
+  );
+};

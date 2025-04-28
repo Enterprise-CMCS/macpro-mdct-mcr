@@ -1,4 +1,8 @@
-import { GeomappingChildJson } from "../../constants";
+import {
+  GeomappingChildJson,
+  PlanProviderChildJson,
+  SecretShopperAppointmentAvailabilityChildJson,
+} from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -198,14 +202,26 @@ export const availableAnalysisMethods = (
   items: AnyObject[]
 ) => {
   const GeomappingJson = structuredClone(GeomappingChildJson);
+  const SecretShopperJson = structuredClone(
+    SecretShopperAppointmentAvailabilityChildJson
+  );
+  const PlanProviderJson = structuredClone(PlanProviderChildJson);
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
-    if (item.name === "Geomapping") {
-      createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
-      return { ...analysisMethod, children: GeomappingJson };
+    switch (item.name) {
+      case "Geomapping":
+        createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
+        return { ...analysisMethod, children: GeomappingJson };
+      case "Plan Provider Directory Review":
+        createIDForChildrenOfAnalysisMethod(PlanProviderJson, id);
+        return { ...analysisMethod, children: PlanProviderJson };
+      case "Secret Shopper: Appointment Availability":
+        createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
+        return { ...analysisMethod, children: SecretShopperJson };
+      default:
+        return analysisMethod;
     }
-    return analysisMethod;
   });
   return updatedItemChoices;
 };

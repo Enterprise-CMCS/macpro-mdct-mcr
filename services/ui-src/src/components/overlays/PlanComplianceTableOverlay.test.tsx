@@ -20,8 +20,6 @@ import {
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue({
@@ -36,7 +34,6 @@ const mockTable = details?.childForms![1]
 const mockVerbiage = details?.forms![1].verbiage as EntityDetailsTableVerbiage;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,

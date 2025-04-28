@@ -1,18 +1,22 @@
 // constants
-import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { FormJson } from "types";
+import { EntityShape, FormJson } from "types";
 // utils
 import {
   addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
   exceptionsNonComplianceStatus,
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
   hasComplianceDetails,
 } from "utils";
-
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 describe("utils/forms/naaarPlanCompliance", () => {
   describe("hasComplianceDetails()", () => {
@@ -185,18 +189,23 @@ describe("utils/forms/naaarPlanCompliance", () => {
       const createdAnalysisMethods = [
         {
           id: "mockUUID1",
-          name: "MockItem1",
+          name: "Geomapping",
           analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
         {
           id: "mockUUID2",
           name: "MockItem2",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+          analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
         {
           id: "mockUUID3",
-          name: "MockItem3",
-          analysis_method_applicable_plans: [{ value: "Plan 2" }],
+          name: "Plan Provider Directory Review",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          id: "mockUUID4",
+          name: "Secret Shopper: Appointment Availability",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
       ];
 
@@ -206,11 +215,15 @@ describe("utils/forms/naaarPlanCompliance", () => {
           [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-              value: "MockItem1",
+              value: "Geomapping",
             },
             {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID2`,
-              value: "MockItem2",
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
+              value: "Plan Provider Directory Review",
+            },
+            {
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID4`,
+              value: "Secret Shopper: Appointment Availability",
             },
           ],
         },
@@ -228,13 +241,59 @@ describe("utils/forms/naaarPlanCompliance", () => {
       expect(result.fields[0]?.props?.choices).toEqual([
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
-          label: "MockItem1",
+          label: "Geomapping",
+          children: expect.any(Array),
         },
         {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID2",
-          label: "MockItem2",
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
+          label: "Plan Provider Directory Review",
+          children: expect.any(Array),
+        },
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID4",
+          label: "Secret Shopper: Appointment Availability",
+          children: expect.any(Array),
         },
       ]);
+    });
+  });
+
+  describe("getExceptionsNonComplianceKeys()", () => {
+    const keyPrefix = planComplianceStandardKey;
+    const expectedKey = `${keyPrefix}-mock`;
+    const entity: EntityShape = {
+      id: "mockEntityId1",
+      [expectedKey]: "Mock Value",
+      "mock-nonmatching-key": "mock value",
+    };
+
+    const exceptionsNonCompliance = [expectedKey];
+
+    test("returns array of keys matching plan compliance constant", () => {
+      expect(getExceptionsNonComplianceKeys(entity)).toEqual(
+        exceptionsNonCompliance
+      );
+    });
+  });
+
+  describe("getExceptionsNonComplianceCounts()", () => {
+    const mockExceptionComplianceKeys = [
+      "mock-key-1",
+      "mock-exceptionsDescription",
+      "mock-nonComplianceDescription",
+    ];
+
+    test("returns counts of zero for empty array", () => {
+      expect(getExceptionsNonComplianceCounts([])).toEqual({
+        exceptionsCount: 0,
+        nonComplianceCount: 0,
+      });
+    });
+
+    test("returns counts of 1 for exception key and 1 for no non-compliance key", () => {
+      expect(
+        getExceptionsNonComplianceCounts(mockExceptionComplianceKeys)
+      ).toEqual({ exceptionsCount: 1, nonComplianceCount: 1 });
     });
   });
 });

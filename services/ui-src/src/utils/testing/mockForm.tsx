@@ -237,6 +237,7 @@ export const mockDrawerReportPageJson = {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
+    editEntityButtonText: "Edit",
   },
   drawerForm: mockDrawerForm,
 };
@@ -330,7 +331,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
     id: "am",
     fields: [
       {
-        id: "mock-field-id",
+        id: "analysis_applicable",
         props: {
           choices: [
             {
@@ -570,6 +571,128 @@ export const mockNaaarStandardsPageJson = {
   },
 };
 
+export const mockNaaarPlanCompliancePageJson = {
+  name: "mock-route",
+  path: "/naaar/plan-compliance",
+  pageType: "planOverlay",
+  entityType: EntityType.PLANS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    requiredMessages: {
+      plans: [
+        {
+          type: "p",
+          content: "plans are required",
+        },
+      ],
+      standards: [
+        {
+          type: "p",
+          content: "standards are required",
+        },
+      ],
+    },
+    tableHeader: "Plan Name",
+    enterEntityDetailsButtonText: "Enter",
+  },
+  details: {
+    verbiage: {
+      intro: {
+        section: "mock section",
+      },
+    },
+    forms: [
+      {
+        form: {
+          id: "planComplianceMockForm1",
+          fields: [
+            {
+              id: "mockComplianceQuestion1",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row 1"]],
+          caption: "",
+          headRow: ["Mock head row 1"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading 1",
+          hint: "mock plan compliance hint 1",
+          intro: {
+            section: "",
+          },
+        },
+      },
+      {
+        form: {
+          id: "planComplianceMockForm2",
+          fields: [
+            {
+              id: "mockComplianceQuestion2",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row 2"]],
+          caption: "",
+          headRow: ["Mock head row 2"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading 2",
+          hint: "mock plan compliance hint 2",
+          intro: {
+            section: "",
+          },
+        },
+      },
+    ],
+    childForms: [
+      {
+        parentForm: "mockParentFormId",
+        form: {
+          id: "mockChildFormId1",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
@@ -635,6 +758,8 @@ export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
   },
   tableHeader: "Mock table header",
   emptyDashboardText: "No entities found",
+  enterReportText: "Enter Details",
+  editEntityButtonText: "Edit",
   enterEntityDetailsButtonText: "Mock Enter Button Text",
 };
 
