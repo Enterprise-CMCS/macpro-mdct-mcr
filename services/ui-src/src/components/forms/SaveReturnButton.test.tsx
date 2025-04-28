@@ -14,7 +14,7 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 describe("<SaveReturnButton />", () => {
-  describe("<SaveReturnButton />", () => {
+  describe("<SaveReturnButton /> for state user", () => {
     beforeEach(async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,

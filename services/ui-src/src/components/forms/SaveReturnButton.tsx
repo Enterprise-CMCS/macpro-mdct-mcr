@@ -13,18 +13,18 @@ export const SaveReturnButton = ({
   onClick,
   submitting = false,
 }: Props) => {
-  const { userIsAdmin, userIsReadOnly } = useStore().user ?? {};
+  const { userIsEndUser } = useStore().user ?? {};
   // formId is for a single form, onClick is for multiple forms/custom action
 
   const handlers =
     // prevent submit for admin or read-only user
-    userIsAdmin || userIsReadOnly
+    !userIsEndUser
       ? { onClick: disabledOnClick }
       : onClick
       ? { onClick }
       : { form: formId! };
 
-  const buttonText = userIsAdmin || userIsReadOnly ? "Return" : "Save & return";
+  const buttonText = !userIsEndUser ? "Return" : "Save & return";
   return (
     <Box sx={{ ...sx.footerBox, ...(border && sx.footerBoxBorder) }}>
       <Flex sx={sx.buttonFlex}>
