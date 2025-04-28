@@ -3,6 +3,7 @@ import { radioOptional, textOptional } from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
   programName: yup.string(),
+  isOtherProgramName: radioOptional(),
   reportType: yup.string(),
   locked: yup.bool(),
   status: yup.string(),

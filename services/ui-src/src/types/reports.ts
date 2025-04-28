@@ -303,6 +303,7 @@ export interface MLRReportMetadata extends ReportMetadata {
 
 export interface MCPARReportMetadata extends ReportMetadata {
   programName: string;
+  isOtherProgramName?: Choice[];
   reportType: "MCPAR";
   reportingPeriodStartDate: number;
   reportingPeriodEndDate: number;

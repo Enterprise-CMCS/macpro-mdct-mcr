@@ -144,12 +144,26 @@ export const DashboardPage = ({ reportType }: Props) => {
             value: copySourceReport.fieldDataId,
           }
         : undefined;
+
       if (report.submittedOnDate) {
         submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
+
+      const hasCustomProgramName = report.isOtherProgramName
+        ? report.isOtherProgramName[0].value === "Yes"
+        : false;
+      const programNameOtherText = hasCustomProgramName
+        ? report.programName
+        : undefined;
+      const programNameValue = programNameOtherText
+        ? "Program not listed"
+        : report.programName;
+
       formData = {
         fieldData: {
-          programName: report.programName,
+          programName: { label: "programName", value: programNameValue },
+          isOtherProgramName: report.isOtherProgramName,
+          "programName-otherText": programNameOtherText,
           reportingPeriodEndDate: convertDateUtcToEt(
             report.reportingPeriodEndDate
           ),

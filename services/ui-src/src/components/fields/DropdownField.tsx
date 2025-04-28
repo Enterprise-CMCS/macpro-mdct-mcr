@@ -189,7 +189,7 @@ export const DropdownField = ({
 
   // prepare error message, hint, and classes
   const formErrorState: AnyObject = form?.formState?.errors;
-  const errorMessage = formErrorState?.[name]?.value.message;
+  const errorMessage = formErrorState?.[name]?.value?.message;
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
