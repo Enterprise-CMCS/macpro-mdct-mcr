@@ -89,11 +89,14 @@ export const renderOverlayEntityDataCell = (
   formField: FormField,
   entityResponseData: EntityShape[],
   entityId: string,
-  parentFieldCheckedChoiceIds?: string[]
+  parentFieldCheckedChoiceIds?: string[],
+  entityIndex?: number
 ) => {
   const entity = entityResponseData.find((ent) => ent.id === entityId);
 
-  if (!entity || !entity[formField.id]) {
+  const fieldId = formField.groupId ?? formField.id;
+
+  if (!entity || !entity[fieldId]) {
     const validationType =
       typeof formField.validation === "object"
         ? formField.validation.type
@@ -118,10 +121,11 @@ export const renderOverlayEntityDataCell = (
       <Text>
         {renderResponseData(
           formField,
-          entity[formField.id],
+          entity[fieldId],
           entityResponseData,
           "modalOverlay",
-          notApplicable
+          notApplicable,
+          entityIndex
         )}
       </Text>
     </Box>
@@ -289,9 +293,9 @@ export const renderChoiceListFieldResponse = (
     const shouldDisplayRelatedOtherTextEntry =
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry =
-      pageType === "drawer"
-        ? widerResponseData[entityIndex]?.[firstChildId]
-        : widerResponseData?.[firstChildId];
+      widerResponseData?.[entityIndex]?.[firstChildId] ??
+      widerResponseData?.[firstChildId];
+
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
         {choice.label}

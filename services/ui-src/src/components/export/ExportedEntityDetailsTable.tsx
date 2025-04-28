@@ -28,7 +28,7 @@ export const ExportedEntityDetailsTable = ({
   const { report } = useStore();
   const { tableHeaders } = verbiage;
 
-  const entityType = EntityType.PROGRAM;
+  const entityType = props?.entityType ?? EntityType.PROGRAM;
 
   const threeColumnHeaderItems = [
     tableHeaders.number,
@@ -54,7 +54,8 @@ export const ExportedEntityDetailsTable = ({
         report,
         !hideHintText,
         entity.id,
-        entityType
+        entityType,
+        props?.entityIndex
       )}
     </Table>
   );
@@ -66,7 +67,8 @@ export const renderFieldTableBody = (
   report: ReportShape | undefined,
   showHintText: boolean,
   entityId: string,
-  entityType: EntityType
+  entityType: EntityType,
+  entityIndex: number
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
@@ -91,6 +93,7 @@ export const renderFieldTableBody = (
         showHintText={showHintText}
         entityId={entityId}
         optional={optional}
+        entityIndex={entityIndex}
       />
     );
 
@@ -102,13 +105,7 @@ export const renderFieldTableBody = (
     if (isFieldElement(formField) && formField.props?.choices) {
       formField.props.choices.forEach((choice: FieldChoice) => {
         // If choice has been selected
-        if (
-          entity &&
-          entity[formField.id] &&
-          Array.isArray(entity[formField.id]) &&
-          entity[formField.id].length > 0 &&
-          entity[formField.id][0].key?.endsWith(choice.id)
-        ) {
+        if (entity?.[formField.id]?.[0]?.key?.endsWith(choice.id)) {
           if (choice.children) {
             choice.children.forEach((c) => renderFieldRow(c));
           }
@@ -128,6 +125,7 @@ export interface Props {
   fields: FormField[];
   entity: EntityShape;
   showHintText?: boolean;
+  [key: string]: any;
 }
 
 const sx = {
