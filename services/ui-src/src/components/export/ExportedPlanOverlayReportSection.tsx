@@ -40,15 +40,15 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
   const complianceAssuranceHint43868 = formVerbiage43868.hint;
   const nonCompliantDetailsHeading43868 =
     section.details.forms[0].table.bodyRows[0][1];
-  const nonCompliantDetailsHeading438206 =
-    section.details.forms[1].table.bodyRows[0][1];
-  const nonCompliantDetailsChildForm438206 =
-    section.details.childForms[1].form.fields;
 
   // 438.206 display text
   const formVerbiage438206 = section.details.forms[1].verbiage;
   const complianceAssuranceHeading438206 = formVerbiage438206.heading;
   const complianceAssuranceHint438206 = formVerbiage438206.hint;
+  const nonCompliantDetailsHeading438206 =
+    section.details.forms[1].table.bodyRows[0][1];
+  const nonCompliantDetailsChildForm438206 =
+    section.details.childForms[1].form.fields;
 
   const displayPlansList = () => {
     return plans.map((plan: EntityShape, index: number) => {

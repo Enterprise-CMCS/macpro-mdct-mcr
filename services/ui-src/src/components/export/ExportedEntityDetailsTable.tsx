@@ -68,7 +68,7 @@ export const renderFieldTableBody = (
   showHintText: boolean,
   entityId: string,
   entityType: EntityType,
-  entityIndex: number
+  entityIndex?: number
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
@@ -105,7 +105,13 @@ export const renderFieldTableBody = (
     if (isFieldElement(formField) && formField.props?.choices) {
       formField.props.choices.forEach((choice: FieldChoice) => {
         // If choice has been selected
-        if (entity?.[formField.id]?.[0]?.key?.endsWith(choice.id)) {
+        if (
+          entity &&
+          entity[formField.id] &&
+          Array.isArray(entity[formField.id]) &&
+          entity[formField.id].length > 0 &&
+          entity[formField.id][0].key?.endsWith(choice.id)
+        ) {
           if (choice.children) {
             choice.children.forEach((c) => renderFieldRow(c));
           }
