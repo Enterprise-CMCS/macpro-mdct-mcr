@@ -6,7 +6,8 @@ import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 // types
 import { EntityShape } from "types";
 // utils
-import { mapNaaarStandardsData } from "utils";
+import { mapNaaarStandardsData, useBreakpoint } from "utils";
+import { MobileStandardsTable } from "./MobileStandardsTable";
 
 export const SortableNaaarStandardsTable = ({
   entities,
@@ -17,6 +18,7 @@ export const SortableNaaarStandardsTable = ({
     () => mapNaaarStandardsData<NaaarStandardsTableShape>(entities),
     [entities]
   );
+  const { isTablet, isMobile } = useBreakpoint();
 
   const customCells = (
     headKey: keyof NaaarStandardsTableShape,
@@ -74,7 +76,9 @@ export const SortableNaaarStandardsTable = ({
 
   const content = { caption: "Access and Network Adequacy Standards" };
 
-  return (
+  return isTablet || isMobile ? (
+    <MobileStandardsTable columns={columns} data={data} />
+  ) : (
     <SortableTable
       border={true}
       columns={columns}
