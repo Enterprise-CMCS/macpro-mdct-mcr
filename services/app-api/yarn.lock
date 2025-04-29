@@ -2008,10 +2008,10 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==
 
-aws-jwt-verify@^3.1.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/aws-jwt-verify/-/aws-jwt-verify-3.4.0.tgz#64830790c27a71fe5a52ee0270460fa8e025bbad"
-  integrity sha512-GmcJZ3jd3adDvVpiAY5S223z1Bz+fOfqHpOdRnDJFeS5Kt5ERggdUPa3PmHdsO/tYaqrkl3Tm15frLa84sQ8Mw==
+aws-jwt-verify@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/aws-jwt-verify/-/aws-jwt-verify-5.0.0.tgz#95a70a59dc8cc6c0e7155a8b6500bab4c82d52bc"
+  integrity sha512-FQM5EYEm7AnVJ3oeTpvBZQm7hYnpI067Em1oopHBs7cCNAcw8Aw8NFbojFjkNXifsOzyYe1ks+bg7Q9fMsTZSA==
 
 aws-sdk-client-mock@^3.0.1:
   version "3.1.0"
