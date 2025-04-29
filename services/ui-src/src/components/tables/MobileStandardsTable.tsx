@@ -22,7 +22,7 @@ export const MobileStandardsTable = ({ columns, data }: Props) => {
                 <Box sx={sx.headers}>
                   {flexRender(cell.column.columnDef.header, cell.getContext())}
                 </Box>
-                <Box sx={sx.cells}>
+                <Box>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </Box>
               </Box>
@@ -46,5 +46,4 @@ const sx = {
   headers: {
     fontWeight: "semibold",
   },
-  cells: {},
 };
