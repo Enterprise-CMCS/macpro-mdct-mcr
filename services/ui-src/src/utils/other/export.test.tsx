@@ -1,16 +1,21 @@
 import { render, screen } from "@testing-library/react";
 // types
-import { FormField, AnyObject } from "types";
+import { FormField, AnyObject, ReportType } from "types";
 // utils
 import {
   parseFormFieldInfo,
   renderResponseData,
   renderDefaultFieldResponse,
   getNestedIlosResponses,
+  getVerbiage,
   renderDrawerDataCell,
   renderDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
+// verbiage
+import McparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import MlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import NaaarVerbiage from "verbiage/pages/naaar/naaar-export";
 
 const emailInput: FormField = {
   id: "email-field-id",
@@ -376,5 +381,34 @@ describe("Test renderDefaultFieldResponse", () => {
       "1.10" as unknown as AnyObject
     );
     expect(textField.props.children).toBe("$1.10");
+  });
+});
+
+describe("getVerbiage()", () => {
+  afterEach(() => {
+    localStorage.setItem("selectedReportType", "");
+  });
+  test("Returns MLR when matching", () => {
+    localStorage.setItem("selectedReportType", ReportType.MLR);
+    const verbiage = getVerbiage();
+    expect(verbiage.metadata.subject).toBe(MlrVerbiage.metadata.subject);
+  });
+
+  test("Returns NAAAR when matching", () => {
+    localStorage.setItem("selectedReportType", ReportType.NAAAR);
+    const verbiage = getVerbiage();
+    expect(verbiage.metadata.subject).toBe(NaaarVerbiage.metadata.subject);
+  });
+
+  test("Returns MCPAR when matching", () => {
+    localStorage.setItem("selectedReportType", ReportType.MCPAR);
+    const verbiage = getVerbiage();
+    expect(verbiage.metadata.subject).toBe(McparVerbiage.metadata.subject);
+  });
+
+  test("Returns MCPAR as default", () => {
+    localStorage.setItem("selectedReportType", "");
+    const verbiage = getVerbiage();
+    expect(verbiage.metadata.subject).toBe(McparVerbiage.metadata.subject);
   });
 });

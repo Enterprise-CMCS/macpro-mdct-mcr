@@ -8,6 +8,7 @@ import {
   EntityType,
   FieldChoice,
   FormField,
+  ReportType,
 } from "types";
 // utils
 import {
@@ -17,7 +18,22 @@ import {
   otherSpecify,
 } from "utils";
 // verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-export";
+import McparVerbiage from "verbiage/pages/mcpar/mcpar-export";
+import MlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import NaaarVerbiage from "verbiage/pages/naaar/naaar-export";
+
+export const getVerbiage = () => {
+  const reportType = localStorage.getItem("selectedReportType");
+  switch (reportType) {
+    case ReportType.MLR:
+      return MlrVerbiage;
+    case ReportType.NAAAR:
+      return NaaarVerbiage;
+    case ReportType.MCPAR:
+    default:
+      return McparVerbiage;
+  }
+};
 
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
@@ -39,7 +55,7 @@ export const renderDataCell = (
       entityResponseData = [
         {
           id: uuid(),
-          name: verbiage.missingEntry.missingPlans,
+          name: McparVerbiage.missingEntry.missingPlans,
         },
       ];
     } else {
@@ -103,12 +119,10 @@ export const renderOverlayEntityDataCell = (
         : formField.validation;
 
     if (validationType.includes("Optional")) {
-      return <Text>{verbiage.missingEntry.noResponse}, optional</Text>;
+      return <Text>{getVerbiage().missingEntry.noResponseOptional}</Text>;
     } else {
       return (
-        <Text sx={sx.noResponse}>
-          {verbiage.missingEntry.noResponse}; required
-        </Text>
+        <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>
       );
     }
   }
@@ -178,7 +192,7 @@ export const renderDrawerDataCell = (
 
     // check if this is the ILOS topic
     const isMissingPlansMessage =
-      entity.name === verbiage.missingEntry.missingPlans;
+      entity.name === McparVerbiage.missingEntry.missingPlans;
 
     const entityName = entity?.name || entity?.custom_analysis_method_name;
 
@@ -214,20 +228,20 @@ export const renderDrawerDataCell = (
               !("plan_ilosOfferedByPlan" in entity) && (
                 // there are plans added, but no responses for its nested ILOS
                 <Text sx={sx.noResponse}>
-                  {verbiage.missingEntry.noResponse}
+                  {McparVerbiage.missingEntry.noResponse}
                 </Text>
               )}
         </ul>
       </Box>
     );
-  }) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
+  }) ?? <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>;
 
 export const renderDynamicDataCell = (fieldResponseData: AnyObject) =>
   fieldResponseData?.map((entity: EntityShape) => (
     <Text key={entity.id} sx={sx.dynamicItem}>
       {entity.name}
     </Text>
-  )) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
+  )) ?? <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>;
 
 export const renderResponseData = (
   formField: FormField,
@@ -244,8 +258,8 @@ export const renderResponseData = (
     : fieldResponseData;
 
   const missingEntryVerbiage = notApplicable
-    ? verbiage.missingEntry.notApplicable
-    : verbiage.missingEntry.noResponse;
+    ? getVerbiage().missingEntry.notApplicable
+    : getVerbiage().missingEntry.noResponse;
 
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 
