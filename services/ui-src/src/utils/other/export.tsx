@@ -118,7 +118,7 @@ export const renderOverlayEntityDataCell = (
         ? formField.validation.type
         : formField.validation;
 
-    if (validationType.includes("Optional")) {
+    if (validationType.includes("Optional") || formField?.groupId) {
       return <Text>{getVerbiage().missingEntry.noResponseOptional}</Text>;
     } else {
       return (
