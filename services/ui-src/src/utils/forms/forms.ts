@@ -98,7 +98,10 @@ export const hydrateFormFields = (
     // Use groupId for a single validation across different field ids
     const fieldId = field.groupId ?? field.id;
     // set props.hydrate
-    const fieldHydrationValue = formData?.[fieldId];
+    const fieldHydrationValue =
+      fieldId === "programName"
+        ? formData?.[fieldId].value
+        : formData?.[fieldId];
     formFields[fieldFormIndex].props!.hydrate = fieldHydrationValue;
   });
   return formFields;
