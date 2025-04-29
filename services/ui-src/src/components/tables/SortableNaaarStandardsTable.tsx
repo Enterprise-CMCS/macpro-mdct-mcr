@@ -1,12 +1,13 @@
 import { Button, Image, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 // components
-import { generateColumns, SortableTable, MobileTable } from "components";
+import { generateColumns, SortableTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 // types
 import { EntityShape, NaaarStandardsTableShape } from "types";
 // utils
 import { mapNaaarStandardsData, useBreakpoint } from "utils";
+import { MobileStandardsTable } from "./MobileStandardsTable";
 
 export const SortableNaaarStandardsTable = ({
   entities,
@@ -84,7 +85,7 @@ export const SortableNaaarStandardsTable = ({
   const content = { caption: "Access and Network Adequacy Standards" };
 
   return isTablet || isMobile ? (
-    <MobileTable columns={columns} data={data} />
+    <MobileStandardsTable columns={columns} data={data} />
   ) : (
     <SortableTable
       border={true}
