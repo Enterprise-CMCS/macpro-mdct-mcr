@@ -143,7 +143,7 @@ const complianceTable = (
         {heading}
       </Heading>
       <Table
-        sx={exportTableSx}
+        sx={{ ...exportTableSx, ...sx.tableHeader }}
         className={"two-column"}
         content={{
           caption: sectionName,
@@ -168,6 +168,15 @@ const complianceTable = (
 };
 
 const sx = {
+  tableHeader: {
+    ".desktop &": {
+      "&.two-column": {
+        "th:first-of-type": {
+          paddingLeft: "5rem",
+        },
+      },
+    },
+  },
   planNameHeading: {
     fontSize: "xl",
     paddingBottom: "1.5rem",
@@ -182,7 +191,7 @@ const sx = {
     color: "palette.gray_medium",
   },
   answerCell: {
-    width: "50%",
+    width: "51%",
   },
   notAnsweredStyling: {
     color: "palette.error_darker",
