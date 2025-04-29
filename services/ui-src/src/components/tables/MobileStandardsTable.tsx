@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import {
+  Cell,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -12,19 +13,35 @@ export const MobileStandardsTable = ({ columns, data }: Props) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  // cells with a hidden header will get inline styling
+  const isInline = (cell: Cell<any, unknown>) => {
+    if (cell.column.getCanSort() === true) {
+      return {};
+    }
+
+    return sx.inline;
+  };
+
   return (
     <Box>
       {table.getRowModel().rows.map((row) => (
         <Box key={row.id}>
-          {row.getVisibleCells().map((cell) => {
+          {row.getVisibleCells().map((cell, index) => {
+            const isStandardType = index === 2;
+
             return (
-              <Box key={cell.id} sx={sx.rows}>
-                <Box sx={sx.headers}>
+              <Box key={cell.id} sx={{ ...sx.rows, ...isInline(cell) }}>
+                <Box sx={{ ...sx.headers, ...isInline(cell) }}>
                   {flexRender(cell.column.columnDef.header, cell.getContext())}
                 </Box>
-                <Box>
+                <Text
+                  sx={{
+                    ...isInline(cell),
+                    ...(isStandardType && { fontWeight: "bold" }),
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Box>
+                </Text>
               </Box>
             );
           })}
@@ -45,5 +62,8 @@ const sx = {
   },
   headers: {
     fontWeight: "semibold",
+  },
+  inline: {
+    display: "inline",
   },
 };
