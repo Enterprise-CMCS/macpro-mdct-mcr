@@ -245,6 +245,7 @@ export const PlanComplianceTableOverlay = ({
             border={false}
             onClick={closeEntityDetailsOverlay}
             submitting={submitting}
+            disabledOnClick={closeEntityDetailsOverlay}
           />
         </Box>
       </Box>
