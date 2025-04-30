@@ -33,7 +33,7 @@ const updatedProgramListChoices = (choices: AnyObject[]) => {
       },
     ],
   };
-  choices.map((choice: AnyObject) => {
+  choices?.map((choice: AnyObject) => {
     updatedChoiceList.push({
       ...choice,
     });
