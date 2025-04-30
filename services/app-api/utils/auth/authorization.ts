@@ -1,11 +1,11 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import { SimpleFetcher } from "aws-jwt-verify/https";
 // types
 import { APIGatewayProxyEvent, UserRoles } from "../types";
 import { logger } from "../debugging/debug-lib";
-import { SimpleJwksCache } from "aws-jwt-verify/jwk";
-import { SimpleFetcher } from "aws-jwt-verify/https";
 
 interface DecodedToken {
   "custom:cms_roles": UserRoles;
