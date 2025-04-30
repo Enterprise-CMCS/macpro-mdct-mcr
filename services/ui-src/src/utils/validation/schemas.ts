@@ -145,16 +145,7 @@ export const date = () =>
     });
 
 export const dateOptional = () =>
-  string()
-    .nullable()
-    .test({
-      message: error.INVALID_DATE,
-      test: (value) =>
-        value === null ||
-        value === undefined ||
-        isWhitespaceString(value) ||
-        dateFormatRegex.test(value),
-    });
+  string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
 
 export const endDate = (startDateField: string) =>
   date().test(
@@ -235,3 +226,5 @@ export const nested = (
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
+export const optionalDateFormatRegex =
+  /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$|^$/;

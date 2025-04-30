@@ -83,6 +83,7 @@ describe("Schemas", () => {
     "1/1/2",
     "0/0/99",
     "0/01/2023",
+    "42/42/4242",
   ];
 
   const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
