@@ -1,4 +1,4 @@
-import { Button, Image } from "@chakra-ui/react";
+import { Button, Image, Text } from "@chakra-ui/react";
 import { useMemo } from "react";
 // components
 import { generateColumns, SortableTable } from "components";
@@ -27,6 +27,9 @@ export const SortableNaaarStandardsTable = ({
   ) => {
     const { entity } = originalRowData;
     switch (headKey) {
+      case "standardType": {
+        return <Text sx={sx.bold}>{value}</Text>;
+      }
       case "edit": {
         return (
           <Button
@@ -117,5 +120,8 @@ const sx = {
     "&:hover, &:hover:disabled, :disabled": {
       background: "white",
     },
+  },
+  bold: {
+    fontWeight: "bold",
   },
 };

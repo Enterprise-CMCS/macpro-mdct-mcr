@@ -25,10 +25,8 @@ export const MobileStandardsTable = ({ columns, data }: Props) => {
   return (
     <Box>
       {table.getRowModel().rows.map((row) => (
-        <Box key={row.id}>
-          {row.getVisibleCells().map((cell, index) => {
-            const isStandardType = index === 2;
-
+        <Box key={row.id} sx={sx.border}>
+          {row.getVisibleCells().map((cell) => {
             return (
               <Box key={cell.id} sx={{ ...sx.rows, ...isInline(cell) }}>
                 <Box sx={{ ...sx.headers, ...isInline(cell) }}>
@@ -37,7 +35,6 @@ export const MobileStandardsTable = ({ columns, data }: Props) => {
                 <Text
                   sx={{
                     ...isInline(cell),
-                    ...(isStandardType && { fontWeight: "bold" }),
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -65,5 +62,10 @@ const sx = {
   },
   inline: {
     display: "inline",
+  },
+  border: {
+    borderBottom: "1px solid",
+    borderColor: "palette.gray_lighter",
+    padding: "1rem 0",
   },
 };
