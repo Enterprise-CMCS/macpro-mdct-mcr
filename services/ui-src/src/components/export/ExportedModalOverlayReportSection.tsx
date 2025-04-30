@@ -10,20 +10,15 @@ import {
 } from "types";
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
-import { getEntityDetailsMLR, mapNaaarStandardsData, useStore } from "utils";
-// verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-import naaarVerbiage from "verbiage/pages/naaar/naaar-export";
+import {
+  getEntityDetailsMLR,
+  getReportVerbiage,
+  mapNaaarStandardsData,
+  useStore,
+} from "utils";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
-
-const exportVerbiageMap: { [key in ReportType]: any } = {
-  MCPAR: mcparVerbiage,
-  MLR: mlrVerbiage,
-  NAAAR: naaarVerbiage,
-};
 
 export const ExportedModalOverlayReportSection = ({ section }: Props) => {
   const { report } = useStore();
@@ -31,9 +26,11 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;
 
-  const verbiage = exportVerbiageMap[report?.reportType as ReportType];
+  const { exportVerbiage } = getReportVerbiage(
+    report?.reportType as ReportType
+  );
 
-  const { modalOverlayTableHeaders } = verbiage;
+  const { emptyEntityMessage, modalOverlayTableHeaders } = exportVerbiage;
 
   const headerLabels = Object.values(
     modalOverlayTableHeaders as Record<string, string>
@@ -44,9 +41,7 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
       {entityType === EntityType.STANDARDS && (
         <Text sx={sx.standardCount}>
           Standard total count:{" "}
-          {entityCount > 0
-            ? entityCount
-            : verbiage.emptyEntityMessage[entityType]}
+          {entityCount > 0 ? entityCount : emptyEntityMessage[entityType]}
         </Text>
       )}
       {entityType === EntityType.STANDARDS && !entityCount ? null : (
