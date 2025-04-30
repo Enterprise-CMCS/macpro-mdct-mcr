@@ -10,7 +10,7 @@
   },
   "fields": [
     {
-      "id": "programName",
+      "id": "programListSelection",
       "type": "radio",
       "validation": "radio",
       "props": {

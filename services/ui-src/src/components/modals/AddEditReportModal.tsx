@@ -85,8 +85,10 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
+    const programListSelection = formData["programListSelection"];
     const programName =
-      formData["programName-otherText"] ?? formData["programName"][0].value;
+      formData["programListSelection-otherText"] ??
+      formData["programListSelection"][0].value;
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -100,6 +102,7 @@ export const AddEditReportModal = ({
 
     return {
       metadata: {
+        programListSelection,
         programName,
         reportingPeriodStartDate,
         reportingPeriodEndDate,

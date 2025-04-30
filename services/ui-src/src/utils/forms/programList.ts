@@ -23,12 +23,12 @@ const updatedProgramListChoices = (choices: AnyObject[]) => {
     label: "Other, specify",
     children: [
       {
-        id: "programName-otherText",
+        id: "programListSelection-otherText",
         type: "text",
         validation: {
           type: "text",
           nested: true,
-          parentFieldName: "programName",
+          parentFieldName: "programListSelection",
         },
       },
     ],
