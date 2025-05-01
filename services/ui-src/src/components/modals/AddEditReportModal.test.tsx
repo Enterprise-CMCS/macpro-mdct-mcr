@@ -222,7 +222,9 @@ describe("<AddEditProgramModal />", () => {
     });
 
     const fillForm = async (form: any, otherSpecify?: boolean) => {
-      const programNameField = form.querySelector("[name='programName']")!;
+      const programNameField = form.querySelector(
+        "[name='programNameSelection']"
+      )!;
       if (otherSpecify) {
         await fireEvent.change(programNameField, {
           target: { value: "Program not listed" },
