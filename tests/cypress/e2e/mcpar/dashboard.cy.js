@@ -4,7 +4,11 @@ import { fillFormField, verifyElementsArePrefilled } from "../../support";
 const currentDate = new Date().toISOString();
 
 const newReportInputArray = [
-  { name: "programName", type: "dropdown", value: "Program not listed" },
+  {
+    name: "programNameSelection",
+    type: "dropdown",
+    value: "Program not listed",
+  },
   { name: "isOtherProgramName", type: "radio", value: "Yes" },
   {
     name: "programName-otherText",
@@ -47,10 +51,8 @@ describe("MCPAR Dashboard Page - Program Creation/Editing/Archiving", () => {
     cy.contains(`automated test - ${currentDate}`, {
       matchCase: true,
     }).should("be.visible");
-    /*
-     * TODO: hydration
-     * verifyElementsArePrefilled(newReportInputArray);
-     */
+
+    verifyElementsArePrefilled(newReportInputArray);
 
     // edit report name
     cy.get(`[name='programName-otherText']`)
