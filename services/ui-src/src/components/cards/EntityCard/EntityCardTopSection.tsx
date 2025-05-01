@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // components
-import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, EntityType } from "types";
 
@@ -136,8 +136,14 @@ export const EntityCardTopSection = ({
     case EntityType.STANDARDS:
       return (
         <>
-          <Text sx={sx.standardHeading}>
-            {formattedEntityData.standardType}
+          <Flex>
+            <Text sx={sx.standardCount}>{formattedEntityData.count}</Text>
+            <Text sx={sx.standardHeading}>
+              {formattedEntityData.standardType}
+            </Text>
+          </Flex>
+          <Text sx={sx.standardDescription}>
+            {formattedEntityData.description}
           </Text>
         </>
       );
@@ -188,9 +194,18 @@ const sx = {
       color: "palette.error_darker",
     },
   },
+  standardCount: {
+    width: "44px",
+    fontWeight: "bold",
+    fontSize: "sm",
+    color: "palette.gray_medium",
+  },
   standardHeading: {
     fontWeight: "bold",
     fontSize: "md",
+  },
+  standardDescription: {
+    marginTop: "1rem",
   },
   planHeading: {
     marginTop: "1rem",
