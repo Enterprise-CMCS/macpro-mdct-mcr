@@ -11,6 +11,7 @@ export interface ReportKeys {
 export interface ReportMetadataShape extends ReportKeys {
   submissionCount: number;
   reportType: string;
+  programNameSelection?: Choice[];
   programName: string;
   isOtherProgramName?: Choice[];
   submissionName?: string;

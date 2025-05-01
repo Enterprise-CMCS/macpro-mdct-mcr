@@ -161,7 +161,11 @@ export const DashboardPage = ({ reportType }: Props) => {
 
       formData = {
         fieldData: {
-          programName: { label: "programName", value: programNameValue },
+          programNameSelection: {
+            label: "programNameSelection",
+            value: programNameValue,
+          },
+          programName: programNameValue,
           isOtherProgramName: report.isOtherProgramName,
           "programName-otherText": programNameOtherText,
           reportingPeriodEndDate: convertDateUtcToEt(
