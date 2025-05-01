@@ -51,10 +51,11 @@ function fillOutMCPAR() {
   const lastYear = new Date();
   lastYear.setFullYear(today.getFullYear() - 1);
   const programName = "automated test - " + today.toISOString();
-  cy.get('input[name="isOtherProgramName"]').check("No");
   cy.visit("/mcpar");
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"]').type(programName);
+  cy.get('select[name="programNameSelection"]').select("Program not listed");
+  cy.get('input[name="isOtherProgramName"]').check("Yes");
+  cy.get('input[name="programName-otherText"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
