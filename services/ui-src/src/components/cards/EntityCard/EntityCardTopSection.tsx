@@ -136,7 +136,9 @@ export const EntityCardTopSection = ({
     case EntityType.STANDARDS:
       return (
         <>
-          <Text sx={sx.standardHeading}>{formattedEntityData.provider}</Text>
+          <Text sx={sx.standardHeading}>
+            {formattedEntityData.standardType}
+          </Text>
         </>
       );
     case EntityType.PLANS:

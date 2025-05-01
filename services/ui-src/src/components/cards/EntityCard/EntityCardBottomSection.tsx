@@ -187,7 +187,7 @@ export const EntityCardBottomSection = ({
           <Text fontWeight={"bold"} fontSize={"xs"}>
             Provider type(s)
           </Text>
-          <Text fontSize={"sm"}>{formattedEntityData.standardType}</Text>
+          <Text fontSize={"sm"}>{formattedEntityData.provider}</Text>
         </Box>
       );
     default:
