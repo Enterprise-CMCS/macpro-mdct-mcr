@@ -65,6 +65,10 @@ export const mockDynamoData = {
 export const mockDynamoDataCompleted: MCPARReportMetadata = {
   ...mockReportKeys,
   reportType: "MCPAR",
+  programNameSelection: {
+    label: "testProgram",
+    value: "testProgram",
+  },
   programName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
