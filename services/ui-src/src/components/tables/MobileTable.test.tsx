@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { MobileTable } from "components";
 import { generateColumns } from "./SortableTable";
+import { testA11y } from "utils/testing/commonTests";
 
 interface TestDataShape {
   id: string;
@@ -51,11 +51,5 @@ describe("<MobileTable />", () => {
     ).toBeTruthy();
   });
 
-  describe("Test MobileTable accessibility", () => {
-    it("Should not have basic accessibility issues", async () => {
-      const { container } = render(MobileTableComponent);
-      const results = await axe(container);
-      expect(results).toHaveNoViolations();
-    });
-  });
+  testA11y(MobileTableComponent);
 });
