@@ -1,12 +1,17 @@
 // components
 import { Box, Heading, Td, Text, Tr } from "@chakra-ui/react";
-import { Table } from "components";
+import { Table, ExportedEntityDetailsTable } from "components";
 // constants
 import { nonCompliantLabel } from "../../constants";
 // styling
 import { exportTableSx } from "./ExportedReportFieldTable";
 // types
-import { EntityShape, PlanOverlayReportPageShape } from "types";
+import {
+  EntityShape,
+  EntityType,
+  FormField,
+  PlanOverlayReportPageShape,
+} from "types";
 // utils
 import {
   getExceptionsNonComplianceCounts,
@@ -40,12 +45,17 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
   const formVerbiage438206 = section.details.forms[1].verbiage;
   const complianceAssuranceHeading438206 = formVerbiage438206.heading;
   const complianceAssuranceHint438206 = formVerbiage438206.hint;
+  const nonCompliantDetailsHeading438206 =
+    section.details.forms[1].table.bodyRows[0][1];
+  const nonCompliantDetailsChildForm438206 =
+    section.details.childForms[1].form.fields;
 
   const displayPlansList = () => {
-    return plans.map((plan: EntityShape) => {
+    return plans.map((plan: EntityShape, index: number) => {
       const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value;
       const answer438206 = plan?.planCompliance438206_assurance?.[0]?.value;
       const isNotCompliant43868 = answer43868 === nonCompliantLabel;
+      const isNotCompliant438206 = answer438206 === nonCompliantLabel;
 
       // counts
       const exceptionsNonComplianceKeys = getExceptionsNonComplianceKeys(plan);
@@ -87,6 +97,22 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
             complianceAssuranceHint438206,
             answer438206
           )}
+          {isNotCompliant438206 && (
+            <>
+              <Heading as="h4" sx={sx.h4}>
+                {nonCompliantDetailsHeading438206}
+              </Heading>
+              <ExportedEntityDetailsTable
+                key={`table-${plan.id}`}
+                fields={nonCompliantDetailsChildForm438206 as FormField[]}
+                entity={plan}
+                showHintText={false}
+                caption={nonCompliantDetailsHeading438206}
+                entityType={EntityType.PLANS}
+                entityIndex={index}
+              />
+            </>
+          )}
         </Box>
       );
     });
@@ -117,7 +143,7 @@ const complianceTable = (
         {heading}
       </Heading>
       <Table
-        sx={exportTableSx}
+        sx={{ ...exportTableSx, ...sx.tableHeader }}
         className={"two-column"}
         content={{
           caption: sectionName,
@@ -142,6 +168,15 @@ const complianceTable = (
 };
 
 const sx = {
+  tableHeader: {
+    ".desktop &": {
+      "&.two-column": {
+        "th:first-of-type": {
+          paddingLeft: "5rem",
+        },
+      },
+    },
+  },
   planNameHeading: {
     fontSize: "xl",
     paddingBottom: "1.5rem",
@@ -156,7 +191,7 @@ const sx = {
     color: "palette.gray_medium",
   },
   answerCell: {
-    width: "50%",
+    width: "51%",
   },
   notAnsweredStyling: {
     color: "palette.error_darker",

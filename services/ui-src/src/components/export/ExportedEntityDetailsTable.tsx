@@ -28,7 +28,7 @@ export const ExportedEntityDetailsTable = ({
   const { report } = useStore();
   const { tableHeaders } = verbiage;
 
-  const entityType = EntityType.PROGRAM;
+  const entityType = props?.entityType ?? EntityType.PROGRAM;
 
   const threeColumnHeaderItems = [
     tableHeaders.number,
@@ -54,7 +54,8 @@ export const ExportedEntityDetailsTable = ({
         report,
         !hideHintText,
         entity.id,
-        entityType
+        entityType,
+        props?.entityIndex
       )}
     </Table>
   );
@@ -66,7 +67,8 @@ export const renderFieldTableBody = (
   report: ReportShape | undefined,
   showHintText: boolean,
   entityId: string,
-  entityType: EntityType
+  entityType: EntityType,
+  entityIndex?: number
 ) => {
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
@@ -91,6 +93,7 @@ export const renderFieldTableBody = (
         showHintText={showHintText}
         entityId={entityId}
         optional={optional}
+        entityIndex={entityIndex}
       />
     );
 
@@ -128,6 +131,7 @@ export interface Props {
   fields: FormField[];
   entity: EntityShape;
   showHintText?: boolean;
+  [key: string]: any;
 }
 
 const sx = {

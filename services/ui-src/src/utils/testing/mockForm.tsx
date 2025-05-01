@@ -677,9 +677,22 @@ export const mockNaaarPlanCompliancePageJson = {
     ],
     childForms: [
       {
-        parentForm: "mockParentFormId",
+        parentForm: "mockParentFormId1",
         form: {
           id: "mockChildFormId1",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+      {
+        parentForm: "mockParentFormId2",
+        form: {
+          id: "mockChildFormId2",
           fields: [
             {
               id: "mockChildFormFieldId1",
