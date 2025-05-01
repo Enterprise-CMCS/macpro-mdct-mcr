@@ -8,6 +8,7 @@ import {
   EntityType,
   ScreenReaderCustomHeaderName,
   TableContentShape,
+  SelectedOption,
 } from "./index";
 
 // REPORT TYPES
@@ -244,7 +245,7 @@ export interface MLRReportMetadata extends ReportMetadata {
 }
 
 export interface MCPARReportMetadata extends ReportMetadata {
-  programNameSelection: Choice[];
+  programNameSelection: SelectedOption;
   programName: string;
   isOtherProgramName?: Choice[];
   reportType: "MCPAR";

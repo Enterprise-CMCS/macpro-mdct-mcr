@@ -1,6 +1,12 @@
 // REPORT PROVIDER/CONTEXT
 
-import { AnyObject, Choice, ErrorVerbiage, ReportJson } from "types";
+import {
+  AnyObject,
+  Choice,
+  ErrorVerbiage,
+  ReportJson,
+  SelectedOption,
+} from "types";
 
 export interface ReportKeys {
   reportType: string;
@@ -11,7 +17,7 @@ export interface ReportKeys {
 export interface ReportMetadataShape extends ReportKeys {
   submissionCount: number;
   reportType: string;
-  programNameSelection?: Choice[];
+  programNameSelection?: SelectedOption;
   programName: string;
   isOtherProgramName?: Choice[];
   submissionName?: string;

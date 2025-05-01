@@ -217,6 +217,7 @@ export const dropdown = () =>
   object({ label: textSchema(), value: textSchema() }).required(
     error.REQUIRED_GENERIC
   );
+export const dropdownOptional = () => object().notRequired().nullable();
 
 // CHECKBOX
 export const checkbox = () =>
