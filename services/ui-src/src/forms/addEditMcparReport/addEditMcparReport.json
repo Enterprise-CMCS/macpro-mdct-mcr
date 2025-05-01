@@ -10,7 +10,7 @@
   },
   "fields": [
     {
-      "id": "programName",
+      "id": "programNameSelection",
       "type": "dropdown",
       "validation": "dropdown",
       "props": {

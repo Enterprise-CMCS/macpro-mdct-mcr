@@ -6,6 +6,7 @@ import {
   EntityType,
   FormJson,
   ScreenReaderCustomHeaderName,
+  SelectedOption,
   SortableHeadRow,
   State,
   TableContentShape,
@@ -303,6 +304,7 @@ export interface MLRReportMetadata extends ReportMetadata {
 
 export interface MCPARReportMetadata extends ReportMetadata {
   programName: string;
+  programNameOption: SelectedOption;
   isOtherProgramName?: Choice[];
   reportType: "MCPAR";
   reportingPeriodStartDate: number;
