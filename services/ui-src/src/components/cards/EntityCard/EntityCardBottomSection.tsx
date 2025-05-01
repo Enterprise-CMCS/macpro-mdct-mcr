@@ -184,10 +184,22 @@ export const EntityCardBottomSection = ({
     case EntityType.STANDARDS:
       return (
         <Box sx={{ ...sx.highlightContainer, padding: "0.5rem" }}>
-          <Text fontWeight={"bold"} fontSize={"xs"}>
-            Provider type(s)
-          </Text>
-          <Text fontSize={"sm"}>{formattedEntityData.provider}</Text>
+          <Text sx={{ ...sx.subtitle, marginTop: "0" }}>Provider type(s)</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.provider}</Text>
+          <Flex>
+            <Box sx={sx.standardDetailsBoxes}>
+              <Text sx={sx.subtitle}>Analysis method(s)</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.analysisMethods}</Text>
+            </Box>
+            <Box sx={sx.standardDetailsBoxes}>
+              <Text sx={sx.subtitle}>Region</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.region}</Text>
+            </Box>
+            <Box sx={sx.standardDetailsBoxes}>
+              <Text sx={sx.subtitle}>Population</Text>
+              <Text sx={sx.subtext}>{formattedEntityData.population}</Text>
+            </Box>
+          </Flex>
         </Box>
       );
     default:
@@ -248,5 +260,9 @@ const sx = {
   notAnswered: {
     fontSize: "sm",
     color: "palette.error_darker",
+  },
+  standardDetailsBoxes: {
+    width: "10.5rem",
+    marginRight: "3rem",
   },
 };
