@@ -133,6 +133,20 @@ export const EntityCardTopSection = ({
           <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
         </>
       );
+    case EntityType.STANDARDS:
+      return (
+        <>
+          <Text sx={sx.standardHeading}>{formattedEntityData.provider}</Text>
+        </>
+      );
+    case EntityType.PLANS:
+      return (
+        <>
+          <Text sx={sx.planHeading}>
+            Plan deficiencies for {formattedEntityData.name}: 42 C.F.R. § 438.68
+          </Text>
+        </>
+      );
     default:
       return <Text>{entityType}</Text>;
   }
@@ -171,5 +185,17 @@ const sx = {
     "&.pdf-color": {
       color: "palette.error_darker",
     },
+  },
+  standardHeading: {
+    fontWeight: "bold",
+    fontSize: "md",
+  },
+  planHeading: {
+    marginTop: "1rem",
+    paddingTop: "1rem",
+    borderTop: "1px solid",
+    borderTopColor: "palette.gray_lighter",
+    fontWeight: "bold",
+    fontSize: "md",
   },
 };

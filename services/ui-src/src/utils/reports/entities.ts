@@ -109,6 +109,10 @@ export const getFormattedEntityData = (
         description: entity?.qualityMeasure_description,
         perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
       };
+    case EntityType.PLANS:
+      return {
+        name: entity?.name,
+      };
     default:
       return {};
   }

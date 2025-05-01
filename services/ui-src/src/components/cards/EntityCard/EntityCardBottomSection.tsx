@@ -181,6 +181,15 @@ export const EntityCardBottomSection = ({
           )}
         </>
       );
+    case EntityType.STANDARDS:
+      return (
+        <Box sx={{ ...sx.highlightContainer, padding: "0.5rem" }}>
+          <Text fontWeight={"bold"} fontSize={"xs"}>
+            Provider type(s)
+          </Text>
+          <Text fontSize={"sm"}>{formattedEntityData.standardType}</Text>
+        </Box>
+      );
     default:
       return <Text>{entityType}</Text>;
   }
