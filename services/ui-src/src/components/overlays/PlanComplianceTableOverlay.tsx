@@ -1,4 +1,10 @@
-import { MouseEventHandler, useMemo, useState } from "react";
+import {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 // components
 import { Box, Button, Text } from "@chakra-ui/react";
 import {
@@ -8,6 +14,7 @@ import {
   SortableTable,
   SaveReturnButton,
   BackButton,
+  OverlayContext,
 } from "components";
 // types
 import {
@@ -15,47 +22,101 @@ import {
   EntityDetailsTableContentShape,
   EntityShape,
   FormJson,
+  ScreenReaderCustomHeaderName,
+  ReportShape,
 } from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
+  exceptionsNonComplianceStatusDisplay,
+  planComplianceStandardKey,
+} from "../../constants";
+import {
+  addAnalysisMethods,
+  addExceptionsNonComplianceStatus,
+  addStandardId,
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
+  hasComplianceDetails,
+  mapNaaarStandardEntity,
   mapNaaarStandardsData,
-  NaaarStandardsTableShape,
-} from "components/tables/SortableNaaarStandardsTable";
+} from "utils";
 
 export const PlanComplianceTableOverlay = ({
   closeEntityDetailsOverlay,
   disabled,
-  entities,
   form,
   onChange,
   table,
   onSubmit,
   selectedEntity,
+  standards,
   submitting,
   validateOnRender,
   verbiage,
+  report,
 }: Props) => {
-  const standardsTotalCount = entities.length;
-  // TODO: Set up counts
-  const exceptionsCount = 0;
-  const standardsCount = 0;
-
-  const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
-    useState<boolean>(false);
+  const standardKeyPrefix = planComplianceStandardKey;
+  const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
 
   const DetailsOverlay = () => {
     const closeEntityDetailsFormOverlay = () => {
-      setIsEntityDetailsOpen(false);
+      setSelectedStandard(null);
     };
+    let headRow = [] as ScreenReaderCustomHeaderName[];
+    const bodyRows = [];
+    let formJson = structuredClone(form);
+
+    if (selectedStandard) {
+      const { count, entity } = selectedStandard;
+      const { provider, standardType, description, population, region } =
+        mapNaaarStandardEntity<NaaarStandardsTableShape>(entity);
+      const headers = [
+        "Count",
+        "Provider type",
+        "Standard type",
+        "Standard description",
+        "Population",
+        "Analysis Methods",
+        "Region",
+      ];
+      headRow = headers.map((hiddenName) => ({ hiddenName }));
+      bodyRows.push([
+        `${count}`,
+        provider,
+        standardType,
+        description,
+        population,
+        region,
+      ]);
+      formJson = addStandardId(formJson, standardKeyPrefix, entity.id);
+      formJson = addAnalysisMethods(
+        formJson,
+        standardKeyPrefix,
+        entity.id,
+        standards,
+        report?.fieldData.analysisMethods,
+        selectedEntity?.name
+      );
+    }
+
+    const table = {
+      caption: "Standard",
+      headRow,
+      bodyRows,
+    };
+
     return (
       <EntityDetailsFormOverlay
         closeEntityDetailsOverlay={closeEntityDetailsFormOverlay}
         disabled={disabled}
-        form={form}
+        form={formJson}
         onChange={onChange}
         onSubmit={onSubmit}
         selectedEntity={selectedEntity}
         submitting={submitting}
+        sxOverride={sxOverride}
+        table={table}
         validateOnRender={validateOnRender || false}
         verbiage={verbiage}
       />
@@ -63,19 +124,88 @@ export const PlanComplianceTableOverlay = ({
   };
 
   const TableOverlay = () => {
+    const [exceptionsNonCompliance, setExceptionsNonCompliance] = useState<
+      string[]
+    >([]);
+    const [exceptionsCount, setExceptionsCount] = useState<number>(0);
+    const [nonComplianceCount, setNonComplianceCount] = useState<number>(0);
+
+    const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
+    const content = { caption };
+
+    useEffect(() => {
+      if (selectedEntity) {
+        setExceptionsNonCompliance(
+          getExceptionsNonComplianceKeys(selectedEntity)
+        );
+      }
+    }, [selectedEntity]);
+
+    useEffect(() => {
+      const {
+        exceptionsCount: updatedExceptionsCount,
+        nonComplianceCount: updatedNonComplianceCount,
+      } = getExceptionsNonComplianceCounts(exceptionsNonCompliance);
+
+      setExceptionsCount(updatedExceptionsCount);
+      setNonComplianceCount(updatedNonComplianceCount);
+    }, [exceptionsNonCompliance]);
+
+    const data = useMemo(
+      () =>
+        addExceptionsNonComplianceStatus(
+          mapNaaarStandardsData<NaaarStandardsTableShape>(standards),
+          exceptionsNonCompliance,
+          standardKeyPrefix
+        ),
+      [exceptionsNonCompliance, standardKeyPrefix, standards]
+    );
+    const standardsTotalCount = data.length;
+
+    const displayCount = (label: string = "", count: number) =>
+      `${label}: ${count} of ${standardsTotalCount}`;
+
+    const getStandardForm = (entity: EntityShape, count: number) => {
+      window.scrollTo(0, 0);
+      setSelectedStandard({ count, entity });
+    };
+
     const customCells = (
       headKey: keyof NaaarStandardsTableShape,
-      value: any
+      value: any,
+      originalRowData: NaaarStandardsTableShape
     ) => {
+      const { count, entity } = originalRowData;
+
       switch (headKey) {
+        case "exceptionsNonCompliance": {
+          return value ? (
+            <Text as="span" sx={sx.exceptionsNonCompliance} aria-label={value}>
+              {exceptionsNonComplianceStatusDisplay[value]}
+            </Text>
+          ) : null;
+        }
+        case "standardType": {
+          return (
+            <Text as="span" sx={sx.bold}>
+              {value}
+            </Text>
+          );
+        }
         case "actions": {
           return (
             <Button
               variant="outline"
-              onClick={() => setIsEntityDetailsOpen(true)}
+              onClick={() => getStandardForm(entity, count)}
               sx={sx.tableButton}
             >
-              Enter
+              {hasComplianceDetails(
+                exceptionsNonCompliance,
+                standardKeyPrefix,
+                entity.id
+              )
+                ? "Edit"
+                : "Enter"}
             </Button>
           );
         }
@@ -84,12 +214,7 @@ export const PlanComplianceTableOverlay = ({
       }
     };
 
-    const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
     const columns = generateColumns(sortableHeadRow, false, customCells);
-    const content = { caption };
-    const data = useMemo(() => mapNaaarStandardsData(entities), [entities]);
-    const displayCount = (label?: string, count: number = 0) =>
-      label && `${label}: ${count} of ${standardsTotalCount}`;
 
     return (
       <Box sx={sx.container}>
@@ -98,40 +223,51 @@ export const PlanComplianceTableOverlay = ({
           text={tableVerbiage.backButton}
         />
         <ReportPageIntro
-          text={tableVerbiage.intro}
           accordion={tableVerbiage.accordion}
+          text={tableVerbiage.intro}
         />
         <Box sx={sx.counts}>
           <Text sx={sx.count}>
             {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
           </Text>
           <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.standards, standardsCount)}
+            {displayCount(tableVerbiage.totals?.standards, nonComplianceCount)}
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>
-          <SortableTable columns={columns} content={content} data={data} />
-          <SaveReturnButton submitting={submitting} />
+          <SortableTable
+            border={true}
+            columns={columns}
+            content={content}
+            data={data}
+          />
+          <SaveReturnButton
+            border={false}
+            onClick={closeEntityDetailsOverlay}
+            submitting={submitting}
+            disabledOnClick={closeEntityDetailsOverlay}
+          />
         </Box>
       </Box>
     );
   };
 
-  return isEntityDetailsOpen ? <DetailsOverlay /> : <TableOverlay />;
+  return selectedStandard ? <DetailsOverlay /> : <TableOverlay />;
 };
 
 interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
-  entities: EntityShape[];
   form: FormJson;
   onChange?: Function;
   onSubmit: Function;
   selectedEntity?: EntityShape;
+  standards: EntityShape[];
   submitting: boolean;
   table: EntityDetailsTableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
+  report?: ReportShape;
 }
 
 const sx = {
@@ -146,9 +282,30 @@ const sx = {
     fontWeight: "bold",
   },
   tableContainer: {
+    maxWidth: "53rem",
     width: "fit-content",
   },
   tableButton: {
+    marginX: "1rem",
     width: "6rem",
+  },
+  bold: {
+    fontWeight: "bold",
+  },
+  exceptionsNonCompliance: {
+    color: "palette.primary_darker",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+};
+
+const sxOverride = {
+  table: {
+    th: {
+      borderBottomWidth: 0,
+    },
+    tbody: {
+      backgroundColor: "palette.secondary_lightest",
+    },
   },
 };

@@ -35,8 +35,6 @@ const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 const programIsPCCM = true;
 const programIsNotPCCM = false;
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 const currentMLRFormHash = createHash("md5")
   .update(JSON.stringify(mlr))
   .digest("hex");

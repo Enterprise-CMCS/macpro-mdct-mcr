@@ -59,8 +59,9 @@ export enum PageTypes {
 
 export interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
 
-export interface ScreenReaderOnlyHeaderName {
+export interface ScreenReaderCustomHeaderName {
   hiddenName: string;
+  name?: string;
 }
 
 export interface SortableHeadRow {
@@ -76,7 +77,7 @@ export interface SortableHeadRow {
 
 export interface TableContentShape {
   caption?: string;
-  headRow?: Array<string | ScreenReaderOnlyHeaderName>;
+  headRow?: Array<string | ScreenReaderCustomHeaderName>;
   sortableHeadRow?: SortableHeadRow;
   bodyRows?: string[][];
 }

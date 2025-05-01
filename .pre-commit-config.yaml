@@ -3,6 +3,11 @@ repos:
     rev: v4.0.1
     hooks:
       - id: check-added-large-files
+        exclude: |
+          (?x)(
+              ^services/ui-src/public/templates/mlr-reporting-template\.xlsx$|
+              ^services/ui-src/public/templates/mcpar-reporting-template\.xlsx$
+          )
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v8.56.0
     hooks:
@@ -48,10 +53,4 @@ repos:
         entry: yarn track-flags
         language: system
         files: '\.tsx?$'
-        pass_filenames: false
-      - id: track-todos
-        name: track-todos
-        entry: yarn track-todos
-        language: system
-        exclude: 'logs/.*'
         pass_filenames: false

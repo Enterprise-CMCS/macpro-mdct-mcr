@@ -67,6 +67,7 @@ export const OverlayReportPage = ({
   const TablePage = () => {
     const entityData = report?.fieldData[entityType] || [];
     const standardEntities = report?.fieldData["standards"] || [];
+    const hasStandards = standardEntities.length > 0;
 
     const tableHeaders = () => {
       if (isTablet || isMobile) {
@@ -98,8 +99,7 @@ export const OverlayReportPage = ({
             {parseCustomHtml(errorMessage || "")}
           </Box>
         );
-        // TODO: Update this when working through the actual logic pertaining to Standards and how it'll be checked
-      } else if (standardEntities.length === 0) {
+      } else if (!hasStandards) {
         return (
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.requiredMessages.standards || "")}
@@ -135,6 +135,7 @@ export const OverlayReportPage = ({
                   entityType={entityType as EntityType}
                   key={entity.id}
                   locked={undefined}
+                  hasStandards={hasStandards}
                   openOverlayOrDrawer={() => toggleOverlay(entity)}
                   verbiage={verbiage}
                 />
@@ -231,6 +232,7 @@ export const OverlayReportPage = ({
         entityType={entityType as EntityType}
         forms={details.forms}
         onSubmit={onSubmit}
+        report={report}
         selectedEntity={selectedEntity}
         setEntering={setEntering}
         setSelectedEntity={setSelectedEntity}

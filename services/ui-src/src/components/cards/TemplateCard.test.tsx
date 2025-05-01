@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
@@ -13,12 +13,6 @@ import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
-
-const mockGetSignedTemplateUrl = jest.fn();
-
-jest.mock("utils/api/requestMethods/getTemplateUrl", () => ({
-  getSignedTemplateUrl: () => mockGetSignedTemplateUrl(),
-}));
 
 jest.mock("utils/other/useBreakpoint", () => ({
   useBreakpoint: jest.fn(() => ({
@@ -77,9 +71,6 @@ describe("<TemplateCard />", () => {
       await act(async () => {
         await userEvent.click(downloadButton);
       });
-      await waitFor(() =>
-        expect(mockGetSignedTemplateUrl).toHaveBeenCalledTimes(1)
-      );
     });
 
     test("MCPAR TemplateCard image is visible on desktop", () => {
@@ -118,7 +109,6 @@ describe("<TemplateCard />", () => {
       await act(async () => {
         await userEvent.click(downloadButton);
       });
-      await waitFor(() => expect(mockGetSignedTemplateUrl).toHaveBeenCalled());
     });
 
     test("MLR TemplateCard image is visible on desktop", () => {

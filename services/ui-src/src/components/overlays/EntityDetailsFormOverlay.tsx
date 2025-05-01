@@ -8,7 +8,13 @@ import {
   SaveReturnButton,
 } from "components";
 // types
-import { EntityDetailsMultiformVerbiage, EntityShape, FormJson } from "types";
+import {
+  AnyObject,
+  EntityDetailsMultiformVerbiage,
+  EntityShape,
+  FormJson,
+  TableContentShape,
+} from "types";
 
 export const EntityDetailsFormOverlay = ({
   closeEntityDetailsOverlay,
@@ -19,6 +25,8 @@ export const EntityDetailsFormOverlay = ({
   onSubmit,
   selectedEntity,
   submitting,
+  sxOverride,
+  table,
   validateOnRender,
   verbiage,
 }: Props) => (
@@ -27,8 +35,13 @@ export const EntityDetailsFormOverlay = ({
       onClick={closeEntityDetailsOverlay}
       text={verbiage.backButton}
     />
-    <ReportPageIntro text={verbiage.intro} accordion={verbiage.accordion} />
-    <Box sx={sx.form}>
+    <ReportPageIntro
+      accordion={verbiage.accordion}
+      table={table}
+      sxOverride={sxOverride}
+      text={verbiage.intro}
+    />
+    <Box sx={{ ...sxOverride?.form }}>
       <Form
         disabled={disabled}
         dontReset={true}
@@ -59,14 +72,8 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
+  sxOverride?: AnyObject;
+  table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
 }
-
-const sx = {
-  form: {
-    "legend.ds-c-label": {
-      color: "palette.gray",
-    },
-  },
-};

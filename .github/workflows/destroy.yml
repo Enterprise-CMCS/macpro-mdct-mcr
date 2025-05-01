@@ -63,6 +63,7 @@ jobs:
         run: |
           ./run destroy --stage $branch_name --verify false --service app-api
           ./run destroy --stage $branch_name --verify false
+          serverless reconcile
 
   # Notify the integrations channel when a destroy action fails
   notify_on_destroy_failure:

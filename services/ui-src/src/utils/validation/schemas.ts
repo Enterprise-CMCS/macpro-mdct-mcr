@@ -178,6 +178,12 @@ export const checkbox = () =>
     .min(1, error.REQUIRED_CHECKBOX)
     .of(object({ key: text(), value: text() }))
     .required(error.REQUIRED_CHECKBOX);
+export const checkboxOneOptional = () =>
+  array()
+    .max(1, error.REQUIRED_ONE_CHECKBOX)
+    .of(object({ key: text(), value: text() }))
+    .notRequired()
+    .nullable();
 export const checkboxOptional = () => checkbox().notRequired();
 export const checkboxSingle = () => boolean();
 
