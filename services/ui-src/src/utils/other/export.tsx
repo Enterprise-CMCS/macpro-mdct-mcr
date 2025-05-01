@@ -14,26 +14,10 @@ import {
 import {
   compareText,
   eligibilityGroup,
+  getReportVerbiage,
   maskResponseData,
   otherSpecify,
 } from "utils";
-// verbiage
-import McparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import MlrVerbiage from "verbiage/pages/mlr/mlr-export";
-import NaaarVerbiage from "verbiage/pages/naaar/naaar-export";
-
-export const getVerbiage = () => {
-  const reportType = localStorage.getItem("selectedReportType");
-  switch (reportType) {
-    case ReportType.MLR:
-      return MlrVerbiage;
-    case ReportType.NAAAR:
-      return NaaarVerbiage;
-    case ReportType.MCPAR:
-    default:
-      return McparVerbiage;
-  }
-};
 
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
@@ -52,10 +36,14 @@ export const renderDataCell = (
       formField.id === "plan_ilosOfferedByPlan" &&
       !allResponseData["plans"]?.length
     ) {
+      // ilos only exists for mcpar report
+      const { exportVerbiage: mcparExportVerbiage } = getReportVerbiage(
+        ReportType.MCPAR
+      );
       entityResponseData = [
         {
           id: uuid(),
-          name: McparVerbiage.missingEntry.missingPlans,
+          name: mcparExportVerbiage.missingEntry.missingPlans,
         },
       ];
     } else {
@@ -113,16 +101,17 @@ export const renderOverlayEntityDataCell = (
   const fieldId = formField.groupId ?? formField.id;
 
   if (!entity || !entity[fieldId]) {
+    const { exportVerbiage } = getReportVerbiage();
     const validationType =
       typeof formField.validation === "object"
         ? formField.validation.type
         : formField.validation;
 
     if (validationType.includes("Optional") || formField?.groupId) {
-      return <Text>{getVerbiage().missingEntry.noResponseOptional}</Text>;
+      return <Text>{exportVerbiage.missingEntry.noResponseOptional}</Text>;
     } else {
       return (
-        <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>
+        <Text sx={sx.noResponse}>{exportVerbiage.missingEntry.noResponse}</Text>
       );
     }
   }
@@ -151,8 +140,17 @@ export const renderDrawerDataCell = (
   entityResponseData: AnyObject | undefined,
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
-) =>
-  entityResponseData?.map((entity: EntityShape, index: number) => {
+) => {
+  if (!entityResponseData) {
+    const { exportVerbiage: genericVerbiage } = getReportVerbiage();
+    return (
+      <Text sx={sx.noResponse}>{genericVerbiage.missingEntry.noResponse}</Text>
+    );
+  }
+
+  const { exportVerbiage } = getReportVerbiage(ReportType.MCPAR);
+
+  return entityResponseData.map((entity: EntityShape, index: number) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
@@ -192,7 +190,7 @@ export const renderDrawerDataCell = (
 
     // check if this is the ILOS topic
     const isMissingPlansMessage =
-      entity.name === McparVerbiage.missingEntry.missingPlans;
+      entity.name === exportVerbiage.missingEntry.missingPlans;
 
     const entityName = entity?.name || entity?.custom_analysis_method_name;
 
@@ -228,20 +226,27 @@ export const renderDrawerDataCell = (
               !("plan_ilosOfferedByPlan" in entity) && (
                 // there are plans added, but no responses for its nested ILOS
                 <Text sx={sx.noResponse}>
-                  {McparVerbiage.missingEntry.noResponse}
+                  {exportVerbiage.missingEntry.noResponse}
                 </Text>
               )}
         </ul>
       </Box>
     );
-  }) ?? <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>;
+  });
+};
 
-export const renderDynamicDataCell = (fieldResponseData: AnyObject) =>
-  fieldResponseData?.map((entity: EntityShape) => (
-    <Text key={entity.id} sx={sx.dynamicItem}>
-      {entity.name}
-    </Text>
-  )) ?? <Text sx={sx.noResponse}>{getVerbiage().missingEntry.noResponse}</Text>;
+export const renderDynamicDataCell = (fieldResponseData: AnyObject) => {
+  const { exportVerbiage } = getReportVerbiage();
+  return (
+    fieldResponseData?.map((entity: EntityShape) => (
+      <Text key={entity.id} sx={sx.dynamicItem}>
+        {entity.name}
+      </Text>
+    )) ?? (
+      <Text sx={sx.noResponse}>{exportVerbiage.missingEntry.noResponse}</Text>
+    )
+  );
+};
 
 export const renderResponseData = (
   formField: FormField,
@@ -251,6 +256,7 @@ export const renderResponseData = (
   notApplicable?: boolean,
   entityIndex?: number
 ) => {
+  const { exportVerbiage } = getReportVerbiage();
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
   const hasResponse: boolean = isChoiceListField
@@ -258,8 +264,8 @@ export const renderResponseData = (
     : fieldResponseData;
 
   const missingEntryVerbiage = notApplicable
-    ? getVerbiage().missingEntry.notApplicable
-    : getVerbiage().missingEntry.noResponse;
+    ? exportVerbiage.missingEntry.notApplicable
+    : exportVerbiage.missingEntry.noResponse;
 
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 

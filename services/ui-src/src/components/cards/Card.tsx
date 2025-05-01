@@ -4,7 +4,7 @@ import { Box } from "@chakra-ui/react";
 
 export const Card = ({ children, ...props }: Props) => {
   return (
-    <Box {...props} sx={sx.root}>
+    <Box {...props} sx={{ ...sx.root, ...props?.sxOverride }}>
       {children}
     </Box>
   );

@@ -1,8 +1,17 @@
 // components
 import { Box, Heading, Td, Text, Tr } from "@chakra-ui/react";
-import { Table, ExportedEntityDetailsTable } from "components";
+import {
+  Table,
+  ExportedEntityDetailsTable,
+  ExportedPlanComplianceCard,
+} from "components";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  nonCompliantLabel,
+  planComplianceStandardKey,
+} from "../../constants";
 // styling
 import { exportTableSx } from "./ExportedReportFieldTable";
 // types
@@ -12,13 +21,19 @@ import {
   FormField,
   PlanOverlayReportPageShape,
 } from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
+  addExceptionsNonComplianceStatus,
   getExceptionsNonComplianceCounts,
   getExceptionsNonComplianceKeys,
+  getFormattedEntityData,
+  mapNaaarStandardsData,
   parseCustomHtml,
   useStore,
 } from "utils";
+// verbiage
+import exportVerbiage from "verbiage/pages/naaar/naaar-export";
 
 /*
  * Designed originally for the plan compliance portion of the NAAAR report
@@ -33,6 +48,9 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
   if (!plans) {
     return null;
   }
+
+  const standardsData =
+    mapNaaarStandardsData<NaaarStandardsTableShape>(standards);
 
   // 438.68 display text
   const formVerbiage43868 = section.details.forms[0].verbiage;
@@ -65,6 +83,32 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
       const exceptionsCountText = `Total: ${exceptionsCount} of ${standardsTotalCount}`;
       const nonComplianceCountText = `Total: ${nonComplianceCount} of ${standardsTotalCount}`;
 
+      const standardsWithStatuses = addExceptionsNonComplianceStatus(
+        standardsData,
+        exceptionsNonComplianceKeys,
+        planComplianceStandardKey
+      );
+
+      const nonCompliantStandards = standardsWithStatuses.filter(
+        (standard) => standard?.exceptionsNonCompliance === nonComplianceStatus
+      );
+      const exceptionsStandards = standardsWithStatuses.filter(
+        (standard) => standard?.exceptionsNonCompliance === exceptionsStatus
+      );
+
+      const nonComplianceDetails = (standardData: NaaarStandardsTableShape) => (
+        <ExportedPlanComplianceCard
+          key={plan.id}
+          standardData={standardData}
+          planData={getFormattedEntityData(
+            EntityType.PLANS,
+            plan,
+            report?.fieldData
+          )}
+          verbiage={exportVerbiage}
+        />
+      );
+
       return (
         <Box key={plan.id}>
           <Heading as="h3" sx={sx.planNameHeading}>
@@ -85,10 +129,18 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
                 Non-compliant standards for 438.68
               </Heading>
               <Text sx={sx.count}>{nonComplianceCountText}</Text>
+              {nonCompliantStandards.map(
+                (standardData: NaaarStandardsTableShape) =>
+                  nonComplianceDetails(standardData)
+              )}
               <Heading as="h5" sx={sx.h5}>
                 Exceptions standards for 438.68
               </Heading>
               <Text sx={sx.count}>{exceptionsCountText}</Text>
+              {exceptionsStandards.map(
+                (standardData: NaaarStandardsTableShape) =>
+                  nonComplianceDetails(standardData)
+              )}
             </>
           )}
           {complianceTable(
@@ -199,7 +251,6 @@ const sx = {
   count: {
     color: "palette.gray_medium",
     fontWeight: "bold",
-    paddingBottom: "1.5rem",
   },
   h4: {
     fontSize: "lg",
