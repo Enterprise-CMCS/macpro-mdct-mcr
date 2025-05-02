@@ -1,6 +1,7 @@
 import { ReactChild } from "react";
 // components
 import { Box } from "@chakra-ui/react";
+// types
 import { AnyObject } from "types";
 
 export const Card = ({ children, sxOverride, ...props }: Props) => {
