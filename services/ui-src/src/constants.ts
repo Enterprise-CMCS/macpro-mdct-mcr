@@ -364,9 +364,7 @@ export const GeomappingChildJson = [
                       {
                         id: "annualMaxTimeDate",
                         type: "date",
-                        validation: {
-                          type: "dateOptional",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
