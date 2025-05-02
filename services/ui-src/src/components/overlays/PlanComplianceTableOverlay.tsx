@@ -15,6 +15,7 @@ import {
   SaveReturnButton,
   BackButton,
   OverlayContext,
+  MobileTable,
 } from "components";
 // types
 import {
@@ -40,6 +41,7 @@ import {
   hasComplianceDetails,
   mapNaaarStandardEntity,
   mapNaaarStandardsData,
+  useBreakpoint,
 } from "utils";
 
 export const PlanComplianceTableOverlay = ({
@@ -58,6 +60,7 @@ export const PlanComplianceTableOverlay = ({
 }: Props) => {
   const standardKeyPrefix = planComplianceStandardKey;
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
+  const { isTablet, isMobile } = useBreakpoint();
 
   const DetailsOverlay = () => {
     const closeEntityDetailsFormOverlay = () => {
@@ -235,12 +238,16 @@ export const PlanComplianceTableOverlay = ({
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>
-          <SortableTable
-            border={true}
-            columns={columns}
-            content={content}
-            data={data}
-          />
+          {isTablet || isMobile ? (
+            <MobileTable columns={columns} data={data} />
+          ) : (
+            <SortableTable
+              border={true}
+              columns={columns}
+              content={content}
+              data={data}
+            />
+          )}
           <SaveReturnButton
             border={false}
             onClick={closeEntityDetailsOverlay}
