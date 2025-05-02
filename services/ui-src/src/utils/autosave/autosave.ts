@@ -179,7 +179,7 @@ export const autosaveFieldData = async ({
       for (const analysisMethod of analysisMethods) {
         const applicablePlans = analysisMethod.analysis_method_applicable_plans;
 
-        if (Array.isArray(applicablePlans)) {
+        if (applicablePlans) {
           analysisMethod.analysis_method_applicable_plans = applicablePlans
             .map((plan: AnyObject) => {
               // Look up plan name
