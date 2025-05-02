@@ -10,6 +10,69 @@
   },
   "fields": [
     {
+      "id": "todoProgramNameSelection",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Is this MCPAR for an existing or new program?",
+        "hint": "Select from an existing program or add a new program.",
+        "choices": [
+          {
+            "id": "yes_todoProgramNameSelection",
+            "label": "Existing Program",
+            "children": [
+              {
+                "id": "yes_todoProgramNameSelectionDropdown",
+                "type": "dropdown",
+                "validation": {
+                  "type": "dropdown",
+                  "nested": true,
+                  "parentFieldName": "todoProgramNameSelection"
+                },
+                "props": {
+                  "label": "Program name",
+                  "hint": "Select from an existing program name.",
+                  "options": "programList"
+                }
+              },
+              {
+                "id": "yes_todoProgramNameSelectionRename",
+                "type": "text",
+                "validation": {
+                  "type": "textOptional",
+                  "nested": true,
+                  "parentFieldName": "todoProgramNameSelection"
+                },
+                "props": {
+                  "label": "Rename selected program (optional)",
+                  "hint": "If you need to replace or rename the selected program, enter its new name. Note: this will not change the name of the program in this report. CMS will update it for a future report."
+                }
+              }
+            ]
+          },
+          {
+            "id": "no_todoProgramNameSelection",
+            "label": "Add new program",
+            "children": [
+              {
+                "id": "no_todoProgramNameSelectionNewProgramName",
+                "type": "text",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "todoProgramNameSelection"
+                },
+                "props": {
+                  "label": "Specify new program name",
+                  "hint": ""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "programName",
       "type": "text",
       "validation": "text",
