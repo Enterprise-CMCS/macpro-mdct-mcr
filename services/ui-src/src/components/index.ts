@@ -120,6 +120,7 @@ export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";
+export { MobileTable } from "./tables/MobileTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
 // redirects
