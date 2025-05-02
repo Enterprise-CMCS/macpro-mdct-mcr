@@ -88,9 +88,9 @@ export const AddEditReportModal = ({
     const yes_todoProgramNameSelectionDropdown =
       formData["yes_todoProgramNameSelectionDropdown"];
     const yes_todoProgramNameSelectionRename =
-      formData["yes_todoProgramNameSelectionRename"];
+      formData["yes_todoProgramNameSelectionRename"] || "";
     const no_todoProgramNameSelectionNewProgramName =
-      formData["no_todoProgramNameSelectionNewProgramName"];
+      formData["no_todoProgramNameSelectionNewProgramName"] || "";
 
     const programName = formData["programName"];
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];

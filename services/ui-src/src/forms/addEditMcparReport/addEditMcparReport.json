@@ -24,11 +24,7 @@
               {
                 "id": "yes_todoProgramNameSelectionDropdown",
                 "type": "dropdown",
-                "validation": {
-                  "type": "dropdown",
-                  "nested": true,
-                  "parentFieldName": "todoProgramNameSelection"
-                },
+                "validation": "dropdownOptional",
                 "props": {
                   "label": "Program name",
                   "hint": "Select from an existing program name.",

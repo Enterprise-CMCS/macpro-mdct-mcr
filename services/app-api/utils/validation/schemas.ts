@@ -8,8 +8,8 @@ import {
 export const metadataValidationSchema = yup.object().shape({
   todoProgramNameSelection: radioOptional(),
   yes_todoProgramNameSelectionDropdown: dropdownOptional(),
-  yes_todoProgramNameSelectionRename: textOptional(),
-  no_todoProgramNameSelectionNewProgramName: textOptional(),
+  yes_todoProgramNameSelectionRename: yup.string(),
+  no_todoProgramNameSelectionNewProgramName: yup.string(),
   programName: yup.string(),
   reportType: yup.string(),
   locked: yup.bool(),

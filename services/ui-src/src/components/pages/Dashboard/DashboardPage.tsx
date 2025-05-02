@@ -162,6 +162,13 @@ export const DashboardPage = ({ reportType }: Props) => {
           planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
           "planTypeIncludedInProgram-otherText":
             report?.["planTypeIncludedInProgram-otherText"],
+          todoProgramNameSelection: report.todoProgramNameSelection,
+          yes_todoProgramNameSelectionDropdown:
+            report?.yes_todoProgramNameSelectionDropdown,
+          yes_todoProgramNameSelectionRename:
+            report?.yes_todoProgramNameSelectionRename,
+          no_todoProgramNameSelectionNewProgramName:
+            report?.no_todoProgramNameSelectionNewProgramName,
         },
         state: report.state,
         id: report.id,

@@ -162,6 +162,8 @@ export const endDate = (startDateField: string) =>
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
+export const dropdownOptional = () =>
+  object({ label: text(), value: text() }).notRequired();
 
 // CHECKBOX
 export const checkbox = () =>
