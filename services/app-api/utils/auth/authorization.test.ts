@@ -19,6 +19,14 @@ jest.mock("aws-jwt-verify", () => ({
   },
 }));
 
+jest.mock("aws-jwt-verify/jwk", () => ({ SimpleJwksCache: jest.fn() }), {
+  virtual: true,
+});
+
+jest.mock("aws-jwt-verify/https", () => ({ SimpleFetcher: jest.fn() }), {
+  virtual: true,
+});
+
 const ssmClientMock = mockClient(SSMClient);
 const mockSsmResponse = {
   Parameter: {

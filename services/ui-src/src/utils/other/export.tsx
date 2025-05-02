@@ -141,110 +141,112 @@ export const renderDrawerDataCell = (
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
 ) => {
-  const { exportVerbiage } = getReportVerbiage();
-  const { exportVerbiage: mcparExportVerbiage } = getReportVerbiage(
-    ReportType.MCPAR
-  );
+  if (!entityResponseData) {
+    const { exportVerbiage: genericVerbiage } = getReportVerbiage();
+    return (
+      <Text sx={sx.noResponse}>{genericVerbiage.missingEntry.noResponse}</Text>
+    );
+  }
 
-  return (
-    entityResponseData?.map((entity: EntityShape, index: number) => {
-      const notApplicable =
-        parentFieldCheckedChoiceIds &&
-        !parentFieldCheckedChoiceIds?.includes(entity.id);
-      const fieldResponseData = entity[formField.id];
+  const { exportVerbiage } = getReportVerbiage(ReportType.MCPAR);
 
-      // check for nested ILOS data
-      let nestedResponses = [];
-      if (
-        formField.id === "plan_ilosUtilizationByPlan" &&
-        fieldResponseData?.length
-      ) {
-        nestedResponses = getNestedIlosResponses(fieldResponseData, entity);
-      }
+  return entityResponseData.map((entity: EntityShape, index: number) => {
+    const notApplicable =
+      parentFieldCheckedChoiceIds &&
+      !parentFieldCheckedChoiceIds?.includes(entity.id);
+    const fieldResponseData = entity[formField.id];
 
-      // check for nested analysis methods data
-      if (
-        entity?.analysis_method_frequency &&
-        entity?.analysis_method_applicable_plans
-      ) {
-        nestedResponses = getNestedAnalysisMethodsResponses(entity);
-      }
+    // check for nested ILOS data
+    let nestedResponses = [];
+    if (
+      formField.id === "plan_ilosUtilizationByPlan" &&
+      fieldResponseData?.length
+    ) {
+      nestedResponses = getNestedIlosResponses(fieldResponseData, entity);
+    }
 
-      // if analysis method, render custom text
-      let utilizedText;
-      if (entity?.analysis_applicable) {
-        const radioValue = entity?.analysis_applicable[0].value;
-        const textToMatch = "Yes";
-        utilizedText = compareText(
-          textToMatch,
-          radioValue,
-          "Utilized",
-          "Not utilized"
-        );
-      } else if (entity?.custom_analysis_method_name) {
-        utilizedText = "Utilized";
-      }
+    // check for nested analysis methods data
+    if (
+      entity?.analysis_method_frequency &&
+      entity?.analysis_method_applicable_plans
+    ) {
+      nestedResponses = getNestedAnalysisMethodsResponses(entity);
+    }
 
-      // check if this is the ILOS topic
-      const isMissingPlansMessage =
-        entity.name === mcparExportVerbiage.missingEntry.missingPlans;
-
-      const entityName = entity?.name || entity?.custom_analysis_method_name;
-
-      return (
-        <Box key={entity.id + formField.id} sx={sx.entityBox}>
-          <ul>
-            <li>
-              <Text sx={isMissingPlansMessage ? sx.noResponse : sx.entityName}>
-                {entityName}
-              </Text>
-            </li>
-            <li className="entityResponse">
-              {utilizedText ??
-                renderResponseData(
-                  formField,
-                  fieldResponseData,
-                  entityResponseData,
-                  pageType,
-                  notApplicable,
-                  index
-                )}
-            </li>
-            {/* If there are nested ILOS responses available, render them here */}
-            {nestedResponses.length > 0
-              ? nestedResponses.map((response: AnyObject, index: number) => {
-                  return (
-                    <li key={index}>
-                      {response.key}: {response.value}
-                    </li>
-                  );
-                })
-              : formField.id === "plan_ilosOfferedByPlan" &&
-                !("plan_ilosOfferedByPlan" in entity) && (
-                  // there are plans added, but no responses for its nested ILOS
-                  <Text sx={sx.noResponse}>
-                    {exportVerbiage.missingEntry.noResponse}
-                  </Text>
-                )}
-          </ul>
-        </Box>
+    // if analysis method, render custom text
+    let utilizedText;
+    if (entity?.analysis_applicable) {
+      const radioValue = entity?.analysis_applicable[0].value;
+      const textToMatch = "Yes";
+      utilizedText = compareText(
+        textToMatch,
+        radioValue,
+        "Utilized",
+        "Not utilized"
       );
-    }) ?? (
+    } else if (entity?.custom_analysis_method_name) {
+      utilizedText = "Utilized";
+    }
+
+    // check if this is the ILOS topic
+    const isMissingPlansMessage =
+      entity.name === exportVerbiage.missingEntry.missingPlans;
+
+    const entityName = entity?.name || entity?.custom_analysis_method_name;
+
+    return (
+      <Box key={entity.id + formField.id} sx={sx.entityBox}>
+        <ul>
+          <li>
+            <Text sx={isMissingPlansMessage ? sx.noResponse : sx.entityName}>
+              {entityName}
+            </Text>
+          </li>
+          <li className="entityResponse">
+            {utilizedText ??
+              renderResponseData(
+                formField,
+                fieldResponseData,
+                entityResponseData,
+                pageType,
+                notApplicable,
+                index
+              )}
+          </li>
+          {/* If there are nested ILOS responses available, render them here */}
+          {nestedResponses.length > 0
+            ? nestedResponses.map((response: AnyObject, index: number) => {
+                return (
+                  <li key={index}>
+                    {response.key}: {response.value}
+                  </li>
+                );
+              })
+            : formField.id === "plan_ilosOfferedByPlan" &&
+              !("plan_ilosOfferedByPlan" in entity) && (
+                // there are plans added, but no responses for its nested ILOS
+                <Text sx={sx.noResponse}>
+                  {exportVerbiage.missingEntry.noResponse}
+                </Text>
+              )}
+        </ul>
+      </Box>
+    );
+  });
+};
+
+export const renderDynamicDataCell = (fieldResponseData: AnyObject) => {
+  const { exportVerbiage } = getReportVerbiage();
+  return (
+    fieldResponseData?.map((entity: EntityShape) => (
+      <Text key={entity.id} sx={sx.dynamicItem}>
+        {entity.name}
+      </Text>
+    )) ?? (
       <Text sx={sx.noResponse}>{exportVerbiage.missingEntry.noResponse}</Text>
     )
   );
 };
-
-export const renderDynamicDataCell = (fieldResponseData: AnyObject) =>
-  fieldResponseData?.map((entity: EntityShape) => (
-    <Text key={entity.id} sx={sx.dynamicItem}>
-      {entity.name}
-    </Text>
-  )) ?? (
-    <Text sx={sx.noResponse}>
-      {getReportVerbiage().exportVerbiage.missingEntry.noResponse}
-    </Text>
-  );
 
 export const renderResponseData = (
   formField: FormField,

@@ -26,9 +26,7 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
   const entities = report?.fieldData?.[entityType];
   const entityCount = entities?.length;
 
-  const { exportVerbiage } = getReportVerbiage(
-    report?.reportType as ReportType
-  );
+  const { exportVerbiage } = getReportVerbiage(report?.reportType);
 
   const { emptyEntityMessage, modalOverlayTableHeaders } = exportVerbiage;
 
