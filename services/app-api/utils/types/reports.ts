@@ -8,6 +8,7 @@ import {
   EntityType,
   ScreenReaderCustomHeaderName,
   TableContentShape,
+  SelectedOption,
 } from "./index";
 
 // REPORT TYPES
@@ -251,6 +252,10 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  todoProgramNameSelection: Choice[];
+  yes_todoProgramNameSelectionDropdown?: SelectedOption;
+  yes_todoProgramNameSelectionRename?: string;
+  no_todoProgramNameSelectionNewProgramName?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

@@ -84,6 +84,14 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
+    const todoProgramNameSelection = formData["todoProgramNameSelection"];
+    const yes_todoProgramNameSelectionDropdown =
+      formData["yes_todoProgramNameSelectionDropdown"];
+    const yes_todoProgramNameSelectionRename =
+      formData["yes_todoProgramNameSelectionRename"];
+    const no_todoProgramNameSelectionNewProgramName =
+      formData["no_todoProgramNameSelectionNewProgramName"];
+
     const programName = formData["programName"];
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
@@ -109,6 +117,10 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        todoProgramNameSelection,
+        yes_todoProgramNameSelectionDropdown,
+        yes_todoProgramNameSelectionRename,
+        no_todoProgramNameSelectionNewProgramName,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

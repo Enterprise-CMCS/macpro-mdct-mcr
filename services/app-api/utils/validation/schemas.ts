@@ -1,7 +1,15 @@
 import * as yup from "yup";
-import { radioOptional, textOptional } from "./completionSchemas";
+import {
+  dropdownOptional,
+  radioOptional,
+  textOptional,
+} from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
+  todoProgramNameSelection: radioOptional(),
+  yes_todoProgramNameSelectionDropdown: dropdownOptional(),
+  yes_todoProgramNameSelectionRename: textOptional(),
+  no_todoProgramNameSelectionNewProgramName: textOptional(),
   programName: yup.string(),
   reportType: yup.string(),
   locked: yup.bool(),
