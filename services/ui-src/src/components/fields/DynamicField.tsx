@@ -86,6 +86,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       id: report?.id,
       reportType: report?.reportType,
       updateReport,
+      fieldData: report?.fieldData,
     };
     const user = { userName: full_name, state };
     // no need to check "autosave" prop; dynamic fields should always autosave
@@ -148,7 +149,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans =
               method.analysis_method_applicable_plans.filter(
-                (plan: AnyObject) => plan.key !== selectedRecord.id
+                (plan: AnyObject) => !plan.key.includes(selectedRecord.id)
               );
           }
           return method;
