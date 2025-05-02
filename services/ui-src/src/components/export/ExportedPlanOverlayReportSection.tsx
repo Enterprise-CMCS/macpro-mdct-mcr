@@ -32,8 +32,6 @@ import {
   parseCustomHtml,
   useStore,
 } from "utils";
-// verbiage
-import exportVerbiage from "verbiage/pages/naaar/naaar-export";
 
 /*
  * Designed originally for the plan compliance portion of the NAAAR report
@@ -105,7 +103,6 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
             plan,
             report?.fieldData
           )}
-          verbiage={exportVerbiage}
         />
       );
 
