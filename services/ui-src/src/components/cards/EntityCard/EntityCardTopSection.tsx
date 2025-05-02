@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // components
-import { Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, EntityType } from "types";
 
@@ -150,9 +150,15 @@ export const EntityCardTopSection = ({
     case EntityType.PLANS:
       return (
         <>
-          <Text sx={sx.planHeading}>
-            Plan deficiencies for {formattedEntityData.name}: 42 C.F.R. § 438.68
-          </Text>
+          <Text sx={sx.planHeading}>{formattedEntityData.heading}</Text>
+          {formattedEntityData?.questions?.map((q: AnyObject) => {
+            return (
+              <Box key={`${q.question} ${q.answer}`}>
+                <Text sx={sx.subtitle}>{q.question}</Text>
+                <Text sx={sx.subtext}>{q.answer}</Text>
+              </Box>
+            );
+          })}
         </>
       );
     default:
