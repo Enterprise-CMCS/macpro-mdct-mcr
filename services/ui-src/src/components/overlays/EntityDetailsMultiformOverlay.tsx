@@ -335,7 +335,7 @@ export const EntityDetailsMultiformOverlay = ({
 
       switch (headerName) {
         case "Status": {
-          if (!isComplete) {
+          if (isEnabled && !isComplete) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
