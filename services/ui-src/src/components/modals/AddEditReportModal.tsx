@@ -22,6 +22,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  defineProgramName,
   otherSpecify,
   useStore,
 } from "utils";
@@ -92,7 +93,12 @@ export const AddEditReportModal = ({
     const no_todoProgramNameSelectionNewProgramName =
       formData["no_todoProgramNameSelectionNewProgramName"] || "";
 
-    const programName = formData["programName"];
+    const programName = defineProgramName(
+      todoProgramNameSelection,
+      yes_todoProgramNameSelectionDropdown,
+      yes_todoProgramNameSelectionRename,
+      no_todoProgramNameSelectionNewProgramName
+    );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;

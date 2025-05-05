@@ -69,14 +69,6 @@
       }
     },
     {
-      "id": "programName",
-      "type": "text",
-      "validation": "text",
-      "props": {
-        "label": "Program name (for new MCPAR)"
-      }
-    },
-    {
       "id": "copyFieldDataSourceId",
       "type": "dropdown",
       "props": {
