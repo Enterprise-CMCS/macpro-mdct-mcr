@@ -1,3 +1,4 @@
+import { Choice } from "types";
 import {
   calculateDueDate,
   calculateRemainingSeconds,
@@ -6,6 +7,7 @@ import {
   convertDateEtToUtc,
   convertDateTimeEtToUtc,
   convertDateUtcToEt,
+  defineProgramName,
   getLocalHourMinuteTime,
   midnight,
   noon,
@@ -131,5 +133,84 @@ describe("Test calculateTimeLeft", () => {
   it("something else", () => {
     const expirationTime = "2050-11-18T12:53:11-05:00";
     expect(calculateRemainingSeconds(expirationTime)).toBeGreaterThan(0);
+  });
+});
+
+describe("Test defineProgramName", () => {
+  describe("Happy Path", () => {
+    test("Existing Program Name", () => {
+      const newOrExistingProgram: Choice[] = [
+        {
+          key: "mockkey",
+          value: "Existing program",
+        },
+      ];
+      const existingProgramNameSelection = {
+        label: "existingProgramNameSelection",
+        value: "Accountable Care Organization Partnership Plan (ACPP)",
+      };
+
+      expect(
+        defineProgramName(newOrExistingProgram, existingProgramNameSelection)
+      ).toEqual(existingProgramNameSelection.value);
+    });
+
+    test("New Program Name", () => {
+      const newOrExistingProgram: Choice[] = [
+        {
+          key: "mockkey",
+          value: "Add new program",
+        },
+      ];
+      const newProgramName = "MockProgramName";
+
+      expect(
+        defineProgramName(newOrExistingProgram, undefined, newProgramName)
+      ).toEqual(newProgramName);
+    });
+  });
+  describe("Potential Error States", () => {
+    test("Choice not given", () => {
+      const newOrExistingProgram: Choice[] = [];
+      const existingProgramNameSelection = {
+        label: "existingProgramNameSelection",
+        value: "Accountable Care Organization Partnership Plan (ACPP)",
+      };
+      expect(() =>
+        defineProgramName(newOrExistingProgram, existingProgramNameSelection)
+      ).toThrow();
+    });
+
+    test("existingProgramNameSelection did not pass a value", () => {
+      const newOrExistingProgram: Choice[] = [
+        {
+          key: "mockkey",
+          value: "Existing program",
+        },
+      ];
+      const existingProgramNameSelection = {
+        label: "",
+        value: "",
+      };
+      expect(() =>
+        defineProgramName(newOrExistingProgram, existingProgramNameSelection)
+      ).toThrow();
+    });
+
+    test("newOrExistingProgram selected an unsupported value", () => {
+      const newOrExistingProgram: Choice[] = [
+        {
+          key: "mockkey",
+          value: "unsupportedValue",
+        },
+      ];
+      const existingProgramNameSelection = {
+        label: "existingProgramNameSelection",
+        value: "Accountable Care Organization Partnership Plan (ACPP)",
+      };
+      expect(() =>
+        defineProgramName(newOrExistingProgram, existingProgramNameSelection)
+      ).toThrow();
+    });
   });
 });

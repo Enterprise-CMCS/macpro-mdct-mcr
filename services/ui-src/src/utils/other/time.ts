@@ -169,8 +169,6 @@ export const defineProgramName = (
   newProgramName?: string
 ) => {
   //TODO - Seek clarity on this function and how it should operate.
-
-  //If a choice wasn't selected, or a name change happens, how do we handle that?
   if (!newOrExistingProgram?.[0] || !newOrExistingProgram?.[0].value)
     throw new Error(
       "Program name radio field was not selected as an existing or new report"
