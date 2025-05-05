@@ -6,10 +6,10 @@ import {
 } from "./completionSchemas";
 
 export const metadataValidationSchema = yup.object().shape({
-  todoProgramNameSelection: radioOptional(),
-  yes_todoProgramNameSelectionDropdown: dropdownOptional(),
-  yes_todoProgramNameSelectionRename: yup.string(),
-  no_todoProgramNameSelectionNewProgramName: yup.string(),
+  newOrExistingProgram: radioOptional(),
+  existingProgramNameSelection: dropdownOptional(),
+  existingProgramNameSuggestion: yup.string(),
+  newProgramName: yup.string(),
   programName: yup.string(),
   reportType: yup.string(),
   locked: yup.bool(),

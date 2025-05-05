@@ -53,10 +53,8 @@ function fillOutMCPAR() {
   const programName = "automated test - " + today.toISOString();
   cy.visit("/mcpar");
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="todoProgramNameSelection"]').check("Add new program");
-  cy.get('input[name="no_todoProgramNameSelectionNewProgramName"]').type(
-    programName
-  );
+  cy.get('input[name="newOrExistingProgram"]').check("Add new program");
+  cy.get('input[name="newProgramName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -93,10 +91,8 @@ function fillOutPartialMCPAR() {
   const programName = "automated test - " + today.toISOString();
   cy.visit("/mcpar");
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="todoProgramNameSelection"]').check("Add new program");
-  cy.get('input[name="no_todoProgramNameSelectionNewProgramName"]').type(
-    programName
-  );
+  cy.get('input[name="newOrExistingProgram"]').check("Add new program");
+  cy.get('input[name="newProgramName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );

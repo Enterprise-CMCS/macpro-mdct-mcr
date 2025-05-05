@@ -15,10 +15,10 @@ export interface ReportKeys {
 }
 
 export interface ReportMetadataShape extends ReportKeys {
-  todoProgramNameSelection: Choice[];
-  yes_todoProgramNameSelectionDropdown?: SelectedOption;
-  yes_todoProgramNameSelectionRename?: string;
-  no_todoProgramNameSelectionNewProgramName?: string;
+  newOrExistingProgram: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
   submissionCount: number;
   reportType: string;
   programName: string;

@@ -38,10 +38,10 @@ export interface ReportMetadataShape extends ReportKeys {
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
-  todoProgramNameSelection?: Choice[];
-  yes_todoProgramNameSelectionDropdown?: SelectedOption;
-  yes_todoProgramNameSelectionRename?: string;
-  no_todoProgramNameSelectionNewProgramName?: string;
+  newOrExistingProgram?: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

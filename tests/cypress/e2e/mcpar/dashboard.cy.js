@@ -4,12 +4,12 @@ const currentDate = new Date().toISOString();
 
 const newReportInputArray = [
   {
-    name: "todoProgramNameSelection",
+    name: "newOrExistingProgram",
     type: "radio",
     value: "Add new program",
   },
   {
-    name: "no_todoProgramNameSelectionNewProgramName",
+    name: "newProgramName",
     type: "text",
     value: `automated test - ${currentDate}`,
   },
@@ -52,7 +52,7 @@ describe("MCPAR Dashboard Page - Program Creation/Editing/Archiving", () => {
     verifyElementsArePrefilled(newReportInputArray);
 
     // edit report name
-    cy.get(`[name='no_todoProgramNameSelectionNewProgramName']`)
+    cy.get(`[name='newProgramName']`)
       .clear()
       .type(`Edited Program - ${currentDate}`);
     cy.get("button[type=submit]").contains("Save").click();

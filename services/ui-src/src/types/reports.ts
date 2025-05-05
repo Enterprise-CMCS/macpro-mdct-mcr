@@ -310,10 +310,10 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
-  todoProgramNameSelection: Choice[];
-  yes_todoProgramNameSelectionDropdown?: SelectedOption;
-  yes_todoProgramNameSelectionRename?: string;
-  no_todoProgramNameSelectionNewProgramName?: string;
+  newOrExistingProgram: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

@@ -471,10 +471,10 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
-  no_todoProgramNameSelectionNewProgramName: "testProgram",
-  todoProgramNameSelection: [
+  newProgramName: "testProgram",
+  newOrExistingProgram: [
     {
-      key: "todoProgramNameSelection-no_todoProgramNameSelection",
+      key: "newOrExistingProgram-isNewProgram",
       value: "Add new program",
     },
   ],

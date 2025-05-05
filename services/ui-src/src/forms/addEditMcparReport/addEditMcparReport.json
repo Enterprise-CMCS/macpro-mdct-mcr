@@ -10,7 +10,7 @@
   },
   "fields": [
     {
-      "id": "todoProgramNameSelection",
+      "id": "newOrExistingProgram",
       "type": "radio",
       "validation": "radio",
       "props": {
@@ -18,16 +18,16 @@
         "hint": "Select from an existing program or add a new program.",
         "choices": [
           {
-            "id": "yes_todoProgramNameSelection",
+            "id": "isExistingProgram",
             "label": "Existing program",
             "children": [
               {
-                "id": "yes_todoProgramNameSelectionDropdown",
+                "id": "existingProgramNameSelection",
                 "type": "dropdown",
                 "validation": {
                   "type": "dropdown",
                   "nested": true,
-                  "parentFieldName": "todoProgramNameSelection"
+                  "parentFieldName": "newOrExistingProgram"
                 },
                 "props": {
                   "label": "Program name",
@@ -36,12 +36,12 @@
                 }
               },
               {
-                "id": "yes_todoProgramNameSelectionRename",
+                "id": "existingProgramNameSuggestion",
                 "type": "text",
                 "validation": {
                   "type": "textOptional",
                   "nested": true,
-                  "parentFieldName": "todoProgramNameSelection"
+                  "parentFieldName": "newOrExistingProgram"
                 },
                 "props": {
                   "label": "Rename selected program (optional)",
@@ -51,16 +51,16 @@
             ]
           },
           {
-            "id": "no_todoProgramNameSelection",
+            "id": "isNewProgram",
             "label": "Add new program",
             "children": [
               {
-                "id": "no_todoProgramNameSelectionNewProgramName",
+                "id": "newProgramName",
                 "type": "text",
                 "validation": {
                   "type": "text",
                   "nested": true,
-                  "parentFieldName": "todoProgramNameSelection"
+                  "parentFieldName": "newOrExistingProgram"
                 },
                 "props": {
                   "label": "Specify new program name",

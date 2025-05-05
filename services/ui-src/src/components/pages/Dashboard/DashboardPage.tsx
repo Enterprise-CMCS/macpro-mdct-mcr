@@ -168,13 +168,10 @@ export const DashboardPage = ({ reportType }: Props) => {
           planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
           "planTypeIncludedInProgram-otherText":
             report?.["planTypeIncludedInProgram-otherText"],
-          todoProgramNameSelection: report.todoProgramNameSelection,
-          yes_todoProgramNameSelectionDropdown:
-            report?.yes_todoProgramNameSelectionDropdown,
-          yes_todoProgramNameSelectionRename:
-            report?.yes_todoProgramNameSelectionRename,
-          no_todoProgramNameSelectionNewProgramName:
-            report?.no_todoProgramNameSelectionNewProgramName,
+          newOrExistingProgram: report.newOrExistingProgram,
+          existingProgramNameSelection: report?.existingProgramNameSelection,
+          existingProgramNameSuggestion: report?.existingProgramNameSuggestion,
+          newProgramName: report?.newProgramName,
         },
         state: report.state,
         id: report.id,
@@ -190,9 +187,9 @@ export const DashboardPage = ({ reportType }: Props) => {
        */
       formData = {
         fieldData: {
-          todoProgramNameSelection: [
+          newOrExistingProgram: [
             {
-              key: "todoProgramNameSelection-yes_todoProgramNameSelection",
+              key: "newOrExistingProgram-isExistingProgram",
               value: "Existing program",
             },
           ],

@@ -89,22 +89,21 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const todoProgramNameSelection = formData["todoProgramNameSelection"];
-    const yes_todoProgramNameSelectionDropdown = formData[
-      "yes_todoProgramNameSelectionDropdown"
+    const newOrExistingProgram = formData["newOrExistingProgram"];
+    const existingProgramNameSelection = formData[
+      "existingProgramNameSelection"
     ] || {
       label: dropdownDefaultOptionText,
       value: "",
     };
-    const yes_todoProgramNameSelectionRename =
-      formData["yes_todoProgramNameSelectionRename"] || "";
-    const no_todoProgramNameSelectionNewProgramName =
-      formData["no_todoProgramNameSelectionNewProgramName"] || "";
+    const existingProgramNameSuggestion =
+      formData["existingProgramNameSuggestion"] || "";
+    const newProgramName = formData["newProgramName"] || "";
 
     const programName = defineProgramName(
-      todoProgramNameSelection,
-      yes_todoProgramNameSelectionDropdown,
-      no_todoProgramNameSelectionNewProgramName
+      newOrExistingProgram,
+      existingProgramNameSelection,
+      newProgramName
     );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
@@ -130,10 +129,10 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
-        todoProgramNameSelection,
-        yes_todoProgramNameSelectionDropdown,
-        yes_todoProgramNameSelectionRename,
-        no_todoProgramNameSelectionNewProgramName,
+        newOrExistingProgram,
+        existingProgramNameSelection,
+        existingProgramNameSuggestion,
+        newProgramName,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

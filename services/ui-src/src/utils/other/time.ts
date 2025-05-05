@@ -164,26 +164,26 @@ export const calculateRemainingSeconds = (expiresAt?: any) => {
 };
 
 export const defineProgramName = (
-  todoProgramNameSelection: Choice[],
-  yes_todoProgramNameSelectionDropdown?: DropdownChoice,
-  no_todoProgramNameSelectionNewProgramName?: string
+  newOrExistingProgram: Choice[],
+  existingProgramNameSelection?: DropdownChoice,
+  newProgramName?: string
 ) => {
   //TODO - Seek clarity on this function and how it should operate.
 
   //If a choice wasn't selected, or a name change happens, how do we handle that?
-  if (!todoProgramNameSelection?.[0] || !todoProgramNameSelection?.[0].value)
+  if (!newOrExistingProgram?.[0] || !newOrExistingProgram?.[0].value)
     throw new Error(
       "Program name radio field was not selected as an existing or new report"
     );
 
-  if (todoProgramNameSelection[0].value === "Existing program") {
-    if (!yes_todoProgramNameSelectionDropdown?.value)
+  if (newOrExistingProgram[0].value === "Existing program") {
+    if (!existingProgramNameSelection?.value)
       throw new Error(
         "Program name dropdown selection did not have a value. Please double check the field is working properly."
       );
-    return yes_todoProgramNameSelectionDropdown.value;
-  } else if (todoProgramNameSelection[0].value === "Add new program") {
-    return no_todoProgramNameSelectionNewProgramName;
+    return existingProgramNameSelection.value;
+  } else if (newOrExistingProgram[0].value === "Add new program") {
+    return newProgramName;
   } else {
     throw new Error(
       "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
