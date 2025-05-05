@@ -332,15 +332,16 @@ export const EntityDetailsMultiformOverlay = ({
         typeof header === "object" ? header.hiddenName : header;
       const isEnabled = formEnableDetails[formId];
       const isComplete = formHasComplianceDetails[formId];
+      const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
         case "Status": {
-          if (isEnabled && !isComplete) {
+          if (is438206Form || (isEnabled && !isComplete)) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
                 entityType={entityType}
-                override={isComplete}
+                override={isComplete || (is438206Form && !isEnabled)}
               />
             );
           }
