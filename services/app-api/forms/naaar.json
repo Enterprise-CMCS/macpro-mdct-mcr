@@ -589,12 +589,51 @@
         "fields": [
           {
             "id": "standard_coreProviderTypeCoveredByStandard",
-            "type": "radio",
-            "validation": "radio",
+            "type": "checkbox",
+            "validation": "checkbox",
             "props": {
               "label": "Core provider type covered by standard",
               "hint": "Enter the core provider type the standard applies to. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
-              "choices": []
+              "choices": [
+                {
+                  "id": "standard_UZK4hxPVnuYGcIgNzYFHCk",
+                  "label": "Primary Care"
+                },
+                {
+                  "id": "standard_uITThePQiXntwGGViPTD62",
+                  "label": "Specialist",
+                  "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                },
+                {
+                  "id": "standard_9kBoKCLD1dYizieU5psnJi",
+                  "label": "Mental health",
+                  "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                },
+                {
+                  "id": "standard_kV7553HIWXekySIFLiMXLW",
+                  "label": "OB/GYN"
+                },
+                {
+                  "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
+                  "label": "Hospital"
+                },
+                {
+                  "id": "standard_cb4y58UmsRXVITpWL7l9up",
+                  "label": "Pharmacy"
+                },
+                {
+                  "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
+                  "label": "Dental"
+                },
+                {
+                  "id": "standard_WrMpSdivds4c0XfN2RPlRd",
+                  "label": "LTSS"
+                },
+                {
+                  "id": "standard_qbR8X0YAh8vObedJPx6QTJ",
+                  "label": "Substance Use Disorder (SUD)"
+                }
+              ]
             }
           },
           {

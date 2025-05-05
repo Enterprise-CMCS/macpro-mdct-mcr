@@ -294,9 +294,6 @@ export const getForm = (params: getFormParams) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];
-  const providerTypes = report?.fieldData?.providerTypes?.map(
-    (providerType: { name: string }) => providerType
-  );
   const analysisMethodsUsedByPlans = report?.fieldData?.analysisMethods?.filter(
     (analysisMethod: AnyObject) =>
       analysisMethod.analysis_applicable?.[0].value === "Yes" ||
@@ -316,13 +313,14 @@ export const getForm = (params: getFormParams) => {
             )
           : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
       }
-      if (isReportingOnStandards && providerTypes?.length > 0) {
-        const providerTypeFields = generateDrawerItemFields(
-          drawerForm,
-          providerTypes,
-          EntityType.STANDARDS
-        );
-        modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
+      if (isReportingOnStandards) {
+        // const providerTypeFields = generateDrawerItemFields(
+        //   drawerForm,
+        //   providerTypes,
+        //   EntityType.STANDARDS
+        // );
+        // modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
+
         generateAnalysisMethodChoices(drawerForm, analysisMethodsUsedByPlans);
       }
       break;

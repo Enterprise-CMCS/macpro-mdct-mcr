@@ -75,7 +75,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasPlans = plans?.length > 0;
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
-  const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
+  // const hasProviderTypes = report?.fieldData?.["providerTypes"]?.length > 0;
 
   // check if user has completed default analysis methods (NAAAR)
   const completedAnalysisMethods = () => {
@@ -242,8 +242,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     } else if (
       (isAnalysisMethodsPage && !hasPlans) ||
-      (isReportingOnStandards && !completedAnalysisMethods()) ||
-      (isReportingOnStandards && !hasProviderTypes)
+      (isReportingOnStandards && !completedAnalysisMethods())
     ) {
       return (
         <Box sx={sx.missingEntity}>
@@ -259,8 +258,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     : "";
   const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
 
-  const isAddStandardsDisabled =
-    !hasProviderTypes || !completedAnalysisMethods();
+  const isAddStandardsDisabled = !completedAnalysisMethods();
   const addStandardsButton = (
     <Button
       sx={sx.addStandardsButton}
