@@ -236,6 +236,10 @@ export const EntityDetailsMultiformOverlay = ({
             // Should have multiple compliance details
             hasComplianceDetailsForms[formId] =
               complianceDetailFields.length > 1;
+          } else {
+            // is complete if they answer Yes to compliance
+            hasComplianceDetailsForms[formId] =
+              selectedEntity[assuranceField][0]?.value?.includes("Yes");
           }
         }
 
@@ -336,12 +340,12 @@ export const EntityDetailsMultiformOverlay = ({
 
       switch (headerName) {
         case "Status": {
-          if (is438206Form || (isEnabled && !isComplete)) {
+          if (is438206Form || !isComplete) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
                 entityType={entityType}
-                override={isComplete || (is438206Form && !isEnabled)}
+                override={isComplete}
               />
             );
           }
