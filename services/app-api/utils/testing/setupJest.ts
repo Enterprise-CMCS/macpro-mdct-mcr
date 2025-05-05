@@ -66,6 +66,13 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   ...mockReportKeys,
   reportType: "MCPAR",
   programName: "testProgram",
+  todoProgramNameSelection: [
+    {
+      value: "Add new program",
+      key: "todoProgramNameSelection-no_todoProgramNameSelection",
+    },
+  ],
+  no_todoProgramNameSelectionNewProgramName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
   reportingPeriodEndDate: 168515200000,
