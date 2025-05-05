@@ -166,10 +166,9 @@ export const calculateRemainingSeconds = (expiresAt?: any) => {
 export const defineProgramName = (
   todoProgramNameSelection: Choice[],
   yes_todoProgramNameSelectionDropdown?: DropdownChoice,
-  yes_todoProgramNameSelectionRename?: string,
   no_todoProgramNameSelectionNewProgramName?: string
 ) => {
-  //TODO - Seek clarity on this function and how it should operate. Also fix existing program and add new program capitalization
+  //TODO - Seek clarity on this function and how it should operate.
 
   //If a choice wasn't selected, or a name change happens, how do we handle that?
   if (!todoProgramNameSelection?.[0] || !todoProgramNameSelection?.[0].value)
@@ -177,7 +176,7 @@ export const defineProgramName = (
       "Program name radio field was not selected as an existing or new report"
     );
 
-  if (todoProgramNameSelection[0].value === "Existing Program") {
+  if (todoProgramNameSelection[0].value === "Existing program") {
     if (!yes_todoProgramNameSelectionDropdown?.value)
       throw new Error(
         "Program name dropdown selection did not have a value. Please double check the field is working properly."

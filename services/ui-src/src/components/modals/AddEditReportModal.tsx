@@ -104,7 +104,6 @@ export const AddEditReportModal = ({
     const programName = defineProgramName(
       todoProgramNameSelection,
       yes_todoProgramNameSelectionDropdown,
-      yes_todoProgramNameSelectionRename,
       no_todoProgramNameSelectionNewProgramName
     );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];

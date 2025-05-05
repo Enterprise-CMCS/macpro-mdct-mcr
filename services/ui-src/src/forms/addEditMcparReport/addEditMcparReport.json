@@ -19,7 +19,7 @@
         "choices": [
           {
             "id": "yes_todoProgramNameSelection",
-            "label": "Existing Program",
+            "label": "Existing program",
             "children": [
               {
                 "id": "yes_todoProgramNameSelectionDropdown",
