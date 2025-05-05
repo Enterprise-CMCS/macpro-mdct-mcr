@@ -218,10 +218,21 @@ export const dropdown = () =>
     error.REQUIRED_GENERIC
   );
 export const dropdownOptional = () =>
-  object({ label: textSchema(), value: textSchema() })
-    .notRequired()
-    .nullable()
-    .default({});
+  mixed().test({
+    message: error.INVALID_GENERIC,
+    test: (val) => {
+      switch (typeof val) {
+        case "object":
+          return object({ label: textSchema(), value: textSchema() })
+            .required()
+            .isValid(val);
+        case "undefined":
+          return true;
+        default:
+          return false;
+      }
+    },
+  });
 
 // CHECKBOX
 export const checkbox = () =>
