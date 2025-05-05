@@ -24,7 +24,13 @@ import {
   SortableDashboardTable,
 } from "components";
 // types
-import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
+import {
+  AnyObject,
+  ReportMetadataShape,
+  ReportKeys,
+  ReportShape,
+  ReportType,
+} from "types";
 // utils
 import {
   convertDateUtcToEt,
@@ -175,6 +181,22 @@ export const DashboardPage = ({ reportType }: Props) => {
         submittedBy: report.submittedBy,
         submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
+      };
+    } else if (reportType == ReportType.MCPAR) {
+      /*
+       * This elseif is used when a user is creating a brand new report on MCPAR
+       * specifically. We want the program name choicelist to default to an
+       * existing program name. This will hydrate it as such.
+       */
+      formData = {
+        fieldData: {
+          todoProgramNameSelection: [
+            {
+              key: "todoProgramNameSelection-yes_todoProgramNameSelection",
+              value: "Existing program",
+            },
+          ],
+        },
       };
     }
     setSelectedReport(formData);
