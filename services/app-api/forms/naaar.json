@@ -589,49 +589,182 @@
         "fields": [
           {
             "id": "standard_coreProviderTypeCoveredByStandard",
-            "type": "checkbox",
-            "validation": "checkbox",
+            "type": "radio",
+            "validation": "radio",
             "props": {
               "label": "Core provider type covered by standard",
               "hint": "Enter the core provider type the standard applies to. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
               "choices": [
                 {
                   "id": "standard_UZK4hxPVnuYGcIgNzYFHCk",
-                  "label": "Primary Care"
+                  "label": "Primary Care",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_UZK4hxPVnuYGcIgNzYFHCk",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_uITThePQiXntwGGViPTD62",
                   "label": "Specialist",
-                  "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_uITThePQiXntwGGViPTD62",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_9kBoKCLD1dYizieU5psnJi",
                   "label": "Mental health",
-                  "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_9kBoKCLD1dYizieU5psnJi",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_kV7553HIWXekySIFLiMXLW",
-                  "label": "OB/GYN"
+                  "label": "OB/GYN",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_kV7553HIWXekySIFLiMXLW",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
-                  "label": "Hospital"
+                  "label": "Hospital",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_nzmRTbJeqBCoAabR4oHrrh",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_cb4y58UmsRXVITpWL7l9up",
-                  "label": "Pharmacy"
+                  "label": "Pharmacy",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_cb4y58UmsRXVITpWL7l9up",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
-                  "label": "Dental"
+                  "label": "Dental",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_tlzAMYfH4I7iIl5pjqAm7R",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_WrMpSdivds4c0XfN2RPlRd",
-                  "label": "LTSS"
+                  "label": "LTSS",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_WrMpSdivds4c0XfN2RPlRd",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 },
                 {
                   "id": "standard_qbR8X0YAh8vObedJPx6QTJ",
-                  "label": "Substance Use Disorder (SUD)"
+                  "label": "Substance Use Disorder (SUD)",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-standard_qbR8X0YAh8vObedJPx6QTJ",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
                 }
               ]
             }

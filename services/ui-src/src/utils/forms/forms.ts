@@ -314,13 +314,6 @@ export const getForm = (params: getFormParams) => {
           : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
       }
       if (isReportingOnStandards) {
-        // const providerTypeFields = generateDrawerItemFields(
-        //   drawerForm,
-        //   providerTypes,
-        //   EntityType.STANDARDS
-        // );
-        // modifiedForm.fields.splice(0, 1, providerTypeFields.fields[0]);
-
         generateAnalysisMethodChoices(drawerForm, analysisMethodsUsedByPlans);
       }
       break;
