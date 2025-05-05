@@ -223,7 +223,7 @@ export const dropdownOptional = () =>
     test: (val) => {
       switch (typeof val) {
         case "object":
-          return object({ label: textSchema(), value: textSchema() })
+          return object({ label: textSchema(), value: string() })
             .required()
             .isValid(val);
         case "undefined":

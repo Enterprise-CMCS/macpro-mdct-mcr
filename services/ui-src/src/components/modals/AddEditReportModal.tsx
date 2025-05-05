@@ -4,7 +4,11 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // constants
-import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  dropdownDefaultOptionText,
+  States,
+} from "../../constants";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
@@ -86,8 +90,12 @@ export const AddEditReportModal = ({
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
     const todoProgramNameSelection = formData["todoProgramNameSelection"];
-    const yes_todoProgramNameSelectionDropdown =
-      formData["yes_todoProgramNameSelectionDropdown"];
+    const yes_todoProgramNameSelectionDropdown = formData[
+      "yes_todoProgramNameSelectionDropdown"
+    ] || {
+      label: dropdownDefaultOptionText,
+      value: "",
+    };
     const yes_todoProgramNameSelectionRename =
       formData["yes_todoProgramNameSelectionRename"] || "";
     const no_todoProgramNameSelectionNewProgramName =
