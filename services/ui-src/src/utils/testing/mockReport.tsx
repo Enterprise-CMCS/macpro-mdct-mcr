@@ -471,6 +471,13 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  no_todoProgramNameSelectionNewProgramName: "testProgram",
+  todoProgramNameSelection: [
+    {
+      key: "todoProgramNameSelection-no_todoProgramNameSelection",
+      value: "Add new program",
+    },
+  ],
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
