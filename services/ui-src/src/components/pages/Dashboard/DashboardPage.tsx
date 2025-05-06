@@ -168,7 +168,7 @@ export const DashboardPage = ({ reportType }: Props) => {
           planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
           "planTypeIncludedInProgram-otherText":
             report?.["planTypeIncludedInProgram-otherText"],
-          newOrExistingProgram: report.newOrExistingProgram,
+          newOrExistingProgram: report?.newOrExistingProgram,
           existingProgramNameSelection: report?.existingProgramNameSelection,
           existingProgramNameSuggestion: report?.existingProgramNameSuggestion,
           newProgramName: report?.newProgramName,

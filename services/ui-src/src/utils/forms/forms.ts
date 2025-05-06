@@ -348,7 +348,7 @@ export const defineProgramName = (
   newProgramName?: string
 ) => {
   //TODO - Seek clarity on this function and how it should operate.
-  if (!newOrExistingProgram?.[0] || !newOrExistingProgram?.[0].value)
+  if (!newOrExistingProgram?.[0]?.value)
     throw new Error(
       "Program name radio field was not selected as an existing or new report"
     );
