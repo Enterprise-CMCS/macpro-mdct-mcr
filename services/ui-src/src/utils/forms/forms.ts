@@ -347,23 +347,23 @@ export const defineProgramName = (
   existingProgramNameSelection?: DropdownChoice,
   newProgramName?: string
 ) => {
-  //TODO - Seek clarity on this function and how it should operate.
   if (!newOrExistingProgram?.[0]?.value)
     throw new Error(
       "Program name radio field was not selected as an existing or new report"
     );
 
-  if (newOrExistingProgram[0].value === "Existing program") {
-    if (!existingProgramNameSelection?.value)
+  switch (newOrExistingProgram[0].value) {
+    case "Existing program":
+      if (!existingProgramNameSelection?.value)
+        throw new Error(
+          "Program name dropdown selection did not have a value. Please double check the field is working properly."
+        );
+      return existingProgramNameSelection.value;
+    case "Add new program":
+      return newProgramName;
+    default:
       throw new Error(
-        "Program name dropdown selection did not have a value. Please double check the field is working properly."
+        "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
       );
-    return existingProgramNameSelection.value;
-  } else if (newOrExistingProgram[0].value === "Add new program") {
-    return newProgramName;
-  } else {
-    throw new Error(
-      "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
-    );
   }
 };
