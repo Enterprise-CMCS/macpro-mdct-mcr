@@ -11,7 +11,6 @@ import { AnyObject, EntityType } from "types";
 export const ExportedPlanComplianceCard = ({
   standardData,
   planData,
-  verbiage,
 }: Props) => {
   return (
     <Card sxOverride={sx.card} data-testid="exportedPlanComplianceCard">
@@ -23,7 +22,6 @@ export const ExportedPlanComplianceCard = ({
         />
         <EntityCardBottomSection
           entityType={EntityType.STANDARDS}
-          verbiage={verbiage}
           formattedEntityData={standardData}
           printVersion={true}
         />
@@ -40,7 +38,6 @@ export const ExportedPlanComplianceCard = ({
 interface Props {
   standardData: AnyObject;
   planData: AnyObject;
-  verbiage: AnyObject;
 }
 
 const sx = {
