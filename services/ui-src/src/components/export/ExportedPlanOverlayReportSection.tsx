@@ -115,7 +115,6 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
             key={plan.id}
             standardData={standardData}
             planData={planData}
-            verbiage={exportVerbiage}
           />
         );
       };
