@@ -23,12 +23,14 @@ export const ExportedEntityDetailsTable = ({
   entity,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   showHintText,
+  entityType: passedEntityType,
+  entityIndex,
   ...props
 }: Props) => {
   const { report } = useStore();
   const { tableHeaders } = verbiage;
 
-  const entityType = props?.entityType ?? EntityType.PROGRAM;
+  const entityType = passedEntityType ?? EntityType.PROGRAM;
 
   const threeColumnHeaderItems = [
     tableHeaders.number,
@@ -55,7 +57,7 @@ export const ExportedEntityDetailsTable = ({
         !hideHintText,
         entity.id,
         entityType,
-        props?.entityIndex
+        entityIndex
       )}
     </Table>
   );
@@ -131,6 +133,8 @@ export interface Props {
   fields: FormField[];
   entity: EntityShape;
   showHintText?: boolean;
+  entityType?: EntityType;
+  entityIndex?: number;
   [key: string]: any;
 }
 
