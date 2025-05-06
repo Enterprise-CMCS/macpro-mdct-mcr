@@ -84,9 +84,12 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleChildSubmit = (enteredData: AnyObject) => {
-      const updatedEntity = { ...selectedEntity, ...enteredData };
-      setSelectedEntity(updatedEntity);
+    const handleChildSubmit = (
+      enteredData: AnyObject,
+      updatedEntity?: AnyObject
+    ) => {
+      const entity = updatedEntity ?? selectedEntity;
+      setSelectedEntity({ ...entity, ...enteredData });
       onSubmit(enteredData, false);
     };
 
@@ -111,13 +114,16 @@ export const EntityDetailsMultiformOverlay = ({
         const exceptionKeys: string[] = [];
         const nonComplianceKeys: string[] = [];
 
-        Object.keys(selectedEntity || {}).forEach((key) => {
-          if (key.startsWith(standardKeyPrefix)) {
+        // look through existing and new keys, because we may need to delete either
+        const combinedData = { ...selectedEntity, ...enteredData };
+
+        Object.keys(combinedData || {}).forEach((key) => {
+          if (key.includes(standardKeyPrefix)) {
             allStandardKeys.push(key);
 
-            if (key.startsWith(`${standardKeyPrefix}-exceptions`)) {
+            if (key.includes(`${standardKeyPrefix}-exceptions`)) {
               exceptionKeys.push(key);
-            } else if (key.startsWith(`${standardKeyPrefix}-nonCompliance`)) {
+            } else if (key.includes(`${standardKeyPrefix}-nonCompliance`)) {
               nonComplianceKeys.push(key);
             }
           }
@@ -132,23 +138,27 @@ export const EntityDetailsMultiformOverlay = ({
         const updatedData = { ...enteredData };
 
         if (isCompliant) {
-          // Set all standard keys to undefined
+          // delete all standard keys
           allStandardKeys.forEach((key) => {
-            updatedData[key] = undefined;
+            delete selectedEntity?.[key];
+            delete updatedData[key];
           });
         } else if (hasExceptions) {
-          // Remove nonCompliance if there are exceptions
+          // delete nonCompliance if there are exceptions
           nonComplianceKeys.forEach((key) => {
-            updatedData[key] = undefined;
+            delete selectedEntity?.[key];
+            delete updatedData[key];
           });
         } else {
-          // Remove exceptions if there is nonCompliance
+          // delete exceptions if there is nonCompliance
           exceptionKeys.forEach((key) => {
-            updatedData[key] = undefined;
+            delete selectedEntity?.[key];
+            delete updatedData[key];
           });
         }
 
-        handleChildSubmit(updatedData);
+        // return new data and updated entity (in case we deleted keys from the entity)
+        handleChildSubmit(updatedData, selectedEntity);
         setSelectedStandard(null);
       };
 
@@ -226,6 +236,10 @@ export const EntityDetailsMultiformOverlay = ({
             // Should have multiple compliance details
             hasComplianceDetailsForms[formId] =
               complianceDetailFields.length > 1;
+          } else {
+            // is complete if they answer Yes to compliance
+            hasComplianceDetailsForms[formId] =
+              selectedEntity[assuranceField][0]?.value?.includes("Yes");
           }
         }
 
@@ -322,10 +336,11 @@ export const EntityDetailsMultiformOverlay = ({
         typeof header === "object" ? header.hiddenName : header;
       const isEnabled = formEnableDetails[formId];
       const isComplete = formHasComplianceDetails[formId];
+      const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
         case "Status": {
-          if (isEnabled) {
+          if (is438206Form || !isComplete) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
