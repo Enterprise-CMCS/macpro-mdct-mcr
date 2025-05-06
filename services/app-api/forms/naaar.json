@@ -588,7 +588,7 @@
         "id": "danas",
         "fields": [
           {
-            "id": "standard_coreProviderTypeCoveredByStandard",
+            "id": "standard_coreProviderType",
             "type": "radio",
             "validation": "radio",
             "props": {
@@ -600,12 +600,12 @@
                   "label": "Primary Care",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-UZK4hxPVnuYGcIgNzYFHCk",
+                      "id": "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
                       },
                       "props": {
@@ -619,12 +619,12 @@
                   "label": "Specialist",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-uITThePQiXntwGGViPTD62",
+                      "id": "standard_coreProviderType_details-uITThePQiXntwGGViPTD62",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
                       },
                       "props": {
@@ -638,12 +638,12 @@
                   "label": "Mental health",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-9kBoKCLD1dYizieU5psnJi",
+                      "id": "standard_coreProviderType_details-9kBoKCLD1dYizieU5psnJi",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
                       },
                       "props": {
@@ -657,12 +657,12 @@
                   "label": "OB/GYN",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-kV7553HIWXekySIFLiMXLW",
+                      "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
                       },
                       "props": {
@@ -676,12 +676,12 @@
                   "label": "Hospital",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-nzmRTbJeqBCoAabR4oHrrh",
+                      "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
                       },
                       "props": {
@@ -695,12 +695,12 @@
                   "label": "Pharmacy",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-cb4y58UmsRXVITpWL7l9up",
+                      "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
                       },
                       "props": {
@@ -714,12 +714,12 @@
                   "label": "Dental",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-tlzAMYfH4I7iIl5pjqAm7R",
+                      "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
                       },
                       "props": {
@@ -733,12 +733,12 @@
                   "label": "LTSS",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-WrMpSdivds4c0XfN2RPlRd",
+                      "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
                       },
                       "props": {
@@ -752,12 +752,12 @@
                   "label": "Substance Use Disorder (SUD)",
                   "children": [
                     {
-                      "id": "standard_coreProviderTypeCoveredByStandard-qbR8X0YAh8vObedJPx6QTJ",
+                      "id": "standard_coreProviderType_details-qbR8X0YAh8vObedJPx6QTJ",
                       "type": "text",
                       "validation": {
                         "type": "text",
                         "nested": true,
-                        "parentFieldName": "standard_coreProviderTypeCoveredByStandard",
+                        "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
                       },
                       "props": {

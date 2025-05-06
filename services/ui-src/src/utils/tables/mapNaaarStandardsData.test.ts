@@ -27,7 +27,7 @@ describe("mapNaaarStandardsData()", () => {
     const incompleteData: EntityShape[] = [
       {
         id: "mockStandard",
-        standard_coreProviderTypeCoveredByStandard: [
+        standard_coreProviderType: [
           { key: "mockProviderType", value: "Mock Provider" },
         ],
         standard_standardType: [
