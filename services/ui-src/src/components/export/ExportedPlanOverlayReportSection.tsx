@@ -94,17 +94,31 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
         (standard) => standard?.exceptionsNonCompliance === exceptionsStatus
       );
 
-      const nonComplianceDetails = (standardData: NaaarStandardsTableShape) => (
-        <ExportedPlanComplianceCard
-          key={plan.id}
-          standardData={standardData}
-          planData={getFormattedEntityData(
-            EntityType.PLANS,
-            plan,
-            report?.fieldData
-          )}
-        />
-      );
+      const nonComplianceDetails = (standardData: NaaarStandardsTableShape) => {
+        // filter plan data to just this standard's
+        const standardRelatedPlanData = Object.entries(plan).filter(
+          ([key, _]) => key.includes(standardData.id)
+        );
+        const planDataToFormat: EntityShape = {
+          ...Object.fromEntries(standardRelatedPlanData),
+          id: plan.id,
+          name: plan.name,
+          exceptionsNonCompliance: standardData.exceptionsNonCompliance,
+        };
+        const planData = getFormattedEntityData(
+          EntityType.PLANS,
+          planDataToFormat
+        );
+
+        return (
+          <ExportedPlanComplianceCard
+            key={plan.id}
+            standardData={standardData}
+            planData={planData}
+            verbiage={exportVerbiage}
+          />
+        );
+      };
 
       return (
         <Box key={plan.id}>
