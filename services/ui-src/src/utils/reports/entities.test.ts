@@ -216,14 +216,11 @@ describe("getFormattedEntityData()", () => {
 
       expect(entityData).toEqual(expectedData);
     });
-  });
 
-  test("Returns empty array when no entity provided", () => {
-    const entityData = getFormattedEntityData(
-      EntityType.PLANS, // could be any type
-      undefined
-    );
-    expect(entityData).toEqual({});
+    test("Returns empty array when no entity provided", () => {
+      const entityData = getFormattedEntityData(EntityType.PLANS, undefined);
+      expect(entityData).toEqual({});
+    });
   });
 
   test("Returns empty object if invalid entity type is passed", () => {

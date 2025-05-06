@@ -57,9 +57,6 @@ export const getFormattedEntityData = (
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
-  if (!entity) {
-    return {};
-  }
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return {
@@ -116,6 +113,9 @@ export const getFormattedEntityData = (
         perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
       };
     case EntityType.PLANS:
+      if (!entity) {
+        return {};
+      }
       const plan = entity; // eslint-disable-line no-case-declarations
 
       // display information for non-compliant standards
