@@ -15,10 +15,6 @@ export interface ReportKeys {
 }
 
 export interface ReportMetadataShape extends ReportKeys {
-  newOrExistingProgram: Choice[];
-  existingProgramNameSelection?: SelectedOption;
-  existingProgramNameSuggestion?: string;
-  newProgramName?: string;
   submissionCount: number;
   reportType: string;
   programName: string;
@@ -42,6 +38,10 @@ export interface ReportMetadataShape extends ReportKeys {
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
+  newOrExistingProgram?: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {
