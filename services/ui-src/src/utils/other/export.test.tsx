@@ -11,6 +11,8 @@ import {
   renderDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
+// verbiage
+import McparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 
 const emailInput: FormField = {
   id: "email-field-id",
@@ -84,6 +86,33 @@ describe("Test rendering methods", () => {
     );
 
     expect(result[0].props.children).toBe("plan 1");
+  });
+
+  test("renders an error for ilos field when missing plans", () => {
+    const dynamicFormField = {
+      id: "plan_ilosOfferedByPlan",
+      type: "dynamic",
+      validation: "dynamic",
+      props: {
+        label: "Plan name",
+      },
+    };
+
+    const mockFieldResponseData = {
+      plans: [],
+    };
+
+    const result = renderDataCell(
+      dynamicFormField,
+      mockFieldResponseData,
+      "drawer"
+    );
+
+    render(result);
+
+    expect(
+      screen.getByText(McparExportVerbiage.missingEntry.missingPlans)
+    ).toBeVisible();
   });
 
   // Analysis methods rendering

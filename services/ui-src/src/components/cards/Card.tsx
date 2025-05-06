@@ -1,10 +1,12 @@
 import { ReactChild } from "react";
 // components
 import { Box } from "@chakra-ui/react";
+// types
+import { AnyObject } from "types";
 
-export const Card = ({ children, ...props }: Props) => {
+export const Card = ({ children, sxOverride, ...props }: Props) => {
   return (
-    <Box {...props} sx={{ ...sx.root, ...props?.sxOverride }}>
+    <Box {...props} sx={{ ...sx.root, ...sxOverride }}>
       {children}
     </Box>
   );
@@ -12,6 +14,7 @@ export const Card = ({ children, ...props }: Props) => {
 
 interface Props {
   children?: ReactChild | ReactChild[];
+  sxOverride?: AnyObject;
   [key: string]: any;
 }
 
