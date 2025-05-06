@@ -1,130 +1,113 @@
 import { Construct } from "constructs";
 import {
-  // aws_dynamodb as dynamodb,
-  aws_iam as iam,
-  aws_lambda as lambda,
-  aws_lambda_nodejs as lambda_nodejs,
-  custom_resources as cr,
-  CfnOutput,
-  Duration,
+  aws_dynamodb as dynamodb,
+  aws_s3 as s3,
+  Aws,
+  RemovalPolicy,
 } from "aws-cdk-lib";
-// import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 
 interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
-  customResourceRole: iam.Role;
+  loggingBucket: s3.IBucket;
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const {
-    scope,
-    stage,
-    isDev,
-    iamPermissionsBoundary,
-    iamPath,
-    customResourceRole,
-  } = props;
+  const { scope, stage, isDev, loggingBucket } = props;
 
-  const tables = [];
+  const tables = [
+    new DynamoDBTable(scope, "Banner", {
+      stage,
+      isDev,
+      name: "banners",
+      partitionKey: { name: "key", type: dynamodb.AttributeType.STRING },
+    }).identifiers,
+    new DynamoDBTable(scope, "FormTemplateVersions", {
+      stage,
+      isDev,
+      name: "form-template-versions",
+      partitionKey: { name: "reportType", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "versionNumber", type: dynamodb.AttributeType.NUMBER },
+      lsi: [
+        {
+          indexName: "LastAlteredIndex",
+          sortKey: { name: "lastAltered", type: dynamodb.AttributeType.STRING },
+        },
+        {
+          indexName: "IdIndex",
+          sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
+        },
+        {
+          indexName: "HashIndex",
+          sortKey: { name: "md5Hash", type: dynamodb.AttributeType.STRING },
+        },
+      ],
+    }).identifiers,
+    new DynamoDBTable(scope, "McparReports", {
+      stage,
+      isDev,
+      name: "mcpar-reports",
+      partitionKey: { name: "state", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
+    }).identifiers,
+    new DynamoDBTable(scope, "MlrReports", {
+      stage,
+      isDev,
+      name: "mlr-reports",
+      partitionKey: { name: "state", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
+    }).identifiers,
+    new DynamoDBTable(scope, "NaaarReports", {
+      stage,
+      isDev,
+      name: "naaar-reports",
+      partitionKey: { name: "state", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
+    }).identifiers,
+  ];
 
-  // seed data
-  const lambdaApiRole = new iam.Role(scope, "SeedDataLambdaApiRole", {
-    assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    managedPolicies: [
-      iam.ManagedPolicy.fromAwsManagedPolicyName(
-        "service-role/AWSLambdaVPCAccessExecutionRole"
-      ),
-    ],
-    inlinePolicies: {
-      DynamoPolicy: new iam.PolicyDocument({
-        statements: [
-          new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            actions: [
-              "dynamodb:DescribeTable",
-              "dynamodb:Query",
-              "dynamodb:Scan",
-              "dynamodb:GetItem",
-              "dynamodb:PutItem",
-              "dynamodb:UpdateItem",
-              "dynamodb:DeleteItem",
-            ],
-            resources: ["*"],
-          }),
-        ],
-      }),
-    },
-    permissionsBoundary: iamPermissionsBoundary,
-    path: iamPath,
+  const mcparFormBucket = new s3.Bucket(scope, "McparFormBucket", {
+    bucketName: `database-${stage}-mcpar`,
+    encryption: s3.BucketEncryption.S3_MANAGED,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+    versioned: true,
+    enforceSSL: true,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    autoDeleteObjects: isDev,
   });
 
-  const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {
-    entry: "services/database/handlers/seed/seed.js",
-    handler: "handler",
-    runtime: lambda.Runtime.NODEJS_20_X,
-    timeout: Duration.seconds(900),
-    role: lambdaApiRole,
-    environment: {
-      dynamoPrefix: stage,
-      seedData: isDev.toString(),
-    },
-    bundling: {
-      commandHooks: {
-        beforeBundling(inputDir: string, outputDir: string): string[] {
-          return [
-            `mkdir -p ${outputDir}/data/initial_data_load/`,
-            `cp -r ${inputDir}/services/database/data/initial_data_load/* ${outputDir}/data/initial_data_load/`,
-          ];
-        },
-        afterBundling() {
-          return [];
-        },
-        beforeInstall() {
-          return [];
-        },
-      },
-    },
+  const mlrFormBucket = new s3.Bucket(scope, "MlrFormBucket", {
+    bucketName: `database-${stage}-mlr`,
+    encryption: s3.BucketEncryption.S3_MANAGED,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+    versioned: true,
+    enforceSSL: true,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    autoDeleteObjects: isDev,
   });
 
-  const seedDataInvoke = new cr.AwsCustomResource(
-    scope,
-    "InvokeSeedDataFunction",
-    {
-      onCreate: {
-        service: "Lambda",
-        action: "invoke",
-        parameters: {
-          FunctionName: seedDataFunction.functionName,
-          InvocationType: "Event",
-          Payload: JSON.stringify({}),
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvokeSeedDataFunction-${stage}`
-        ),
-      },
-      onUpdate: undefined,
-      onDelete: undefined,
-      policy: cr.AwsCustomResourcePolicy.fromStatements([
-        new iam.PolicyStatement({
-          actions: ["lambda:InvokeFunction"],
-          resources: [seedDataFunction.functionArn],
-        }),
-      ]),
-      role: customResourceRole,
-      resourceType: "Custom::InvokeSeedDataFunction",
-    }
-  );
-
-  new CfnOutput(scope, "SeedDataFunctionName", {
-    value: seedDataFunction.functionName,
+  const naaarFormBucket = new s3.Bucket(scope, "NaaarFormBucket", {
+    bucketName: `database-${stage}-naaar`,
+    encryption: s3.BucketEncryption.S3_MANAGED,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    serverAccessLogsBucket: loggingBucket,
+    serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+    versioned: true,
+    enforceSSL: true,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    autoDeleteObjects: isDev,
   });
 
-  seedDataInvoke.node.addDependency(seedDataFunction);
-
-  return { tables };
+  return {
+    tables,
+    mcparFormBucket,
+    mlrFormBucket,
+    naaarFormBucket,
+  };
 }

@@ -24,6 +24,8 @@ interface DeployFrontendProps {
   iamPermissionsBoundary: iam.IManagedPolicy;
   iamPath: string;
   customResourceRole: iam.Role;
+  launchDarklyClient: string;
+  redirectSignout: string;
 }
 
 export function deployFrontend(props: DeployFrontendProps) {
@@ -40,13 +42,15 @@ export function deployFrontend(props: DeployFrontendProps) {
     iamPermissionsBoundary,
     iamPath,
     uiBucket,
+    launchDarklyClient,
+    redirectSignout,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
   const buildOutputPath = path.join(reactAppPath, "build");
   const fullPath = path.resolve(reactAppPath);
 
-  execSync("yarn run build", {
+  execSync("SKIP_PREFLIGHT_CHECK=true yarn run build", {
     cwd: fullPath,
     stdio: "inherit",
   });
@@ -106,7 +110,6 @@ export function deployFrontend(props: DeployFrontendProps) {
       destinationKey: "env-config.js",
       source: path.join("./deployment/stacks/", "env-config.template.js"),
       substitutions: {
-        stage,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
         identityPoolId,
@@ -114,6 +117,8 @@ export function deployFrontend(props: DeployFrontendProps) {
         userPoolClientId,
         userPoolClientDomain,
         timestamp: new Date().toISOString(),
+        launchDarklyClient,
+        redirectSignout,
       },
     }
   );
