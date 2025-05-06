@@ -13,7 +13,7 @@ export const ExportedPlanComplianceCard = ({
   planData,
 }: Props) => {
   return (
-    <Card sxOverride={sx.card} data-testid="exportedPlanComplianceCard">
+    <Card sxOverride={sx.card}>
       <Box>
         <EntityCardTopSection
           entityType={EntityType.STANDARDS}

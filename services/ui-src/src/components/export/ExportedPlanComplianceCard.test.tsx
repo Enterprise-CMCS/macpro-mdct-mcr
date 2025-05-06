@@ -23,7 +23,17 @@ const mockStandardFormattedData = {
 };
 
 const mockPlanFormattedData = {
-  name: "mock plan",
+  heading: "mock plan heading",
+  questions: [
+    {
+      question: "mock question 1",
+      answer: "mock answer 1",
+    },
+    {
+      question: "mock question 2",
+      answer: "mock answer 2",
+    },
+  ],
 };
 
 const ExportedPlanComplianceCardComponent = (
@@ -60,10 +70,13 @@ describe("<ExportedPlanComplianceCard />", () => {
       expect(screen.getByText(population)).toBeVisible();
 
       // plans
+      const { heading, questions } = mockPlanFormattedData;
 
-      // TODO: add back when other plan info is merged
-
-      // expect(screen.getByText(mockPlanFormattedData.name)).toBeVisible();
+      expect(screen.getByText(heading)).toBeVisible();
+      for (const q of questions) {
+        expect(screen.getByText(q.question)).toBeVisible();
+        expect(screen.getByText(q.answer)).toBeVisible();
+      }
     });
   });
 
