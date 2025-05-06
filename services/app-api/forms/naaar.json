@@ -600,7 +600,7 @@
                   "label": "Primary Care",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_UZK4hxPVnuYGcIgNzYFHCk",
+                      "id": "standard_coreProviderTypeCoveredByStandard-UZK4hxPVnuYGcIgNzYFHCk",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -619,7 +619,7 @@
                   "label": "Specialist",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_uITThePQiXntwGGViPTD62",
+                      "id": "standard_coreProviderTypeCoveredByStandard-uITThePQiXntwGGViPTD62",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -638,7 +638,7 @@
                   "label": "Mental health",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_9kBoKCLD1dYizieU5psnJi",
+                      "id": "standard_coreProviderTypeCoveredByStandard-9kBoKCLD1dYizieU5psnJi",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -657,7 +657,7 @@
                   "label": "OB/GYN",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_kV7553HIWXekySIFLiMXLW",
+                      "id": "standard_coreProviderTypeCoveredByStandard-kV7553HIWXekySIFLiMXLW",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -676,7 +676,7 @@
                   "label": "Hospital",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_nzmRTbJeqBCoAabR4oHrrh",
+                      "id": "standard_coreProviderTypeCoveredByStandard-nzmRTbJeqBCoAabR4oHrrh",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -695,7 +695,7 @@
                   "label": "Pharmacy",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_cb4y58UmsRXVITpWL7l9up",
+                      "id": "standard_coreProviderTypeCoveredByStandard-cb4y58UmsRXVITpWL7l9up",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -714,7 +714,7 @@
                   "label": "Dental",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_tlzAMYfH4I7iIl5pjqAm7R",
+                      "id": "standard_coreProviderTypeCoveredByStandard-tlzAMYfH4I7iIl5pjqAm7R",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -733,7 +733,7 @@
                   "label": "LTSS",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_WrMpSdivds4c0XfN2RPlRd",
+                      "id": "standard_coreProviderTypeCoveredByStandard-WrMpSdivds4c0XfN2RPlRd",
                       "type": "text",
                       "validation": {
                         "type": "text",
@@ -752,7 +752,7 @@
                   "label": "Substance Use Disorder (SUD)",
                   "children": [
                     {
-                      "id": "standard_standardDescription-standard_qbR8X0YAh8vObedJPx6QTJ",
+                      "id": "standard_coreProviderTypeCoveredByStandard-qbR8X0YAh8vObedJPx6QTJ",
                       "type": "text",
                       "validation": {
                         "type": "text",
