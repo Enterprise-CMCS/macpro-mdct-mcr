@@ -186,6 +186,11 @@ export const isEndDateAfterStartDate = (
 
 // DROPDOWN
 export const dropdown = () => object({ label: text(), value: text() });
+export const dropdownOptional = () =>
+  object({
+    label: text().notRequired().nullable(),
+    value: text().notRequired().nullable(),
+  });
 
 // CHECKBOX
 export const checkbox = () =>
@@ -251,6 +256,7 @@ export const schemaMap: any = {
   date: date(),
   dateOptional: dateOptional(),
   dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
   email: email(),

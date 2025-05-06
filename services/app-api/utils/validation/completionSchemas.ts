@@ -217,6 +217,22 @@ export const dropdown = () =>
   object({ label: textSchema(), value: textSchema() }).required(
     error.REQUIRED_GENERIC
   );
+export const dropdownOptional = () =>
+  mixed().test({
+    message: error.INVALID_GENERIC,
+    test: (val) => {
+      switch (typeof val) {
+        case "object":
+          return object({ label: textSchema(), value: string() })
+            .required()
+            .isValid(val);
+        case "undefined":
+          return true;
+        default:
+          return false;
+      }
+    },
+  });
 
 // CHECKBOX
 export const checkbox = () =>

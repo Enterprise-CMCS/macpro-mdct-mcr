@@ -11,6 +11,7 @@ import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // constants
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
+import { mcparProgramList } from "forms/addEditMcparReport/mcparProgramList";
 // types
 import {
   AnyObject,
@@ -76,6 +77,13 @@ export const DropdownField = ({
             value: report.fieldDataId,
           })) ?? [];
       }
+    } else if (options === "programList") {
+      dropdownOptions = mcparProgramList[
+        state as keyof typeof mcparProgramList
+      ].map((option) => ({
+        label: option.label,
+        value: option.label,
+      }));
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({
