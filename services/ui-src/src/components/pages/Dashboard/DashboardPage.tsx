@@ -24,7 +24,13 @@ import {
   SortableDashboardTable,
 } from "components";
 // types
-import { AnyObject, ReportMetadataShape, ReportKeys, ReportShape } from "types";
+import {
+  AnyObject,
+  ReportMetadataShape,
+  ReportKeys,
+  ReportShape,
+  ReportType,
+} from "types";
 // utils
 import {
   convertDateUtcToEt,
@@ -162,12 +168,32 @@ export const DashboardPage = ({ reportType }: Props) => {
           planTypeIncludedInProgram: report?.planTypeIncludedInProgram,
           "planTypeIncludedInProgram-otherText":
             report?.["planTypeIncludedInProgram-otherText"],
+          newOrExistingProgram: report?.newOrExistingProgram,
+          existingProgramNameSelection: report?.existingProgramNameSelection,
+          existingProgramNameSuggestion: report?.existingProgramNameSuggestion,
+          newProgramName: report?.newProgramName,
         },
         state: report.state,
         id: report.id,
         submittedBy: report.submittedBy,
         submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
+      };
+    } else if (reportType == ReportType.MCPAR) {
+      /*
+       * This elseif is used when a user is creating a brand new report on MCPAR
+       * specifically. We want the program name choicelist to default to an
+       * existing program name. This will hydrate it as such.
+       */
+      formData = {
+        fieldData: {
+          newOrExistingProgram: [
+            {
+              key: "newOrExistingProgram-isExistingProgram",
+              value: "Existing program",
+            },
+          ],
+        },
       };
     }
     setSelectedReport(formData);

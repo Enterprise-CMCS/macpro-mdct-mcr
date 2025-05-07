@@ -71,6 +71,8 @@ const modalComponent = (
 const mockSelectedMcparReport = {
   ...mockMcparReport,
   fieldData: {
+    newProgramName: mockMcparReport.programName,
+    newOrExistingProgram: mockMcparReport.newOrExistingProgram,
     programName: mockMcparReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
       mockMcparReport.reportingPeriodEndDate
@@ -220,7 +222,11 @@ describe("<AddEditProgramModal />", () => {
     });
 
     const fillForm = async (form: any) => {
-      const programNameField = form.querySelector("[name='programName']")!;
+      const isNewProgram = screen.getByLabelText(
+        "Add new program"
+      ) as HTMLInputElement;
+      await userEvent.click(isNewProgram);
+      const programNameField = form.querySelector("[name='newProgramName']")!;
       await userEvent.type(programNameField, "fake program name");
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
@@ -269,13 +275,20 @@ describe("<AddEditProgramModal />", () => {
         "[name='programIsPCCM']"
       )!;
 
+      const newOrExistingProgram = form.querySelectorAll(
+        "[name='newOrExistingProgram']"
+      )!;
+
+      expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
+      expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
+
       // yoy copy and pccm fields are disabled
       expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
       expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
       expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
 
       // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='programName']")!;
+      const programNameField = form.querySelector("[name='newProgramName']")!;
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;

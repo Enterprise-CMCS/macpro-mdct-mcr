@@ -6,6 +6,7 @@ import {
   EntityType,
   FormJson,
   ScreenReaderCustomHeaderName,
+  SelectedOption,
   SortableHeadRow,
   State,
   TableContentShape,
@@ -309,6 +310,10 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  newOrExistingProgram: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

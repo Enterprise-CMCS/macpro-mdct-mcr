@@ -4,7 +4,11 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // constants
-import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  dropdownDefaultOptionText,
+  States,
+} from "../../constants";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
@@ -22,6 +26,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  defineProgramName,
   otherSpecify,
   useStore,
 } from "utils";
@@ -84,7 +89,22 @@ export const AddEditReportModal = ({
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const newOrExistingProgram = formData["newOrExistingProgram"];
+    const existingProgramNameSelection = formData[
+      "existingProgramNameSelection"
+    ] || {
+      label: dropdownDefaultOptionText,
+      value: "",
+    };
+    const existingProgramNameSuggestion =
+      formData["existingProgramNameSuggestion"] || "";
+    const newProgramName = formData["newProgramName"] || "";
+
+    const programName = defineProgramName(
+      newOrExistingProgram,
+      existingProgramNameSelection,
+      newProgramName
+    );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -109,6 +129,10 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        newOrExistingProgram,
+        existingProgramNameSelection,
+        existingProgramNameSuggestion,
+        newProgramName,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),
