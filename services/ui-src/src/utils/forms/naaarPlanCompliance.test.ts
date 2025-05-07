@@ -301,7 +301,7 @@ describe("utils/forms/naaarPlanCompliance", () => {
   });
 
   describe("isComplianceFormComplete()", () => {
-    test("returns true if planCompliance43868 is complete", () => {
+    test("returns true if planCompliance43868 is complete with Yes", () => {
       const formId = "planCompliance43868";
       const mockEntity = {
         id: "mockEntity",
@@ -311,11 +311,44 @@ describe("utils/forms/naaarPlanCompliance", () => {
       expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
     });
 
-    test("returns true if planCompliance438206 is complete", () => {
+    test("returns true if planCompliance438206 is complete with Yes", () => {
       const formId = "planCompliance438206";
       const mockEntity = {
         id: "mockEntity",
         [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
+      };
+
+      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
+    });
+
+    test("returns true if planCompliance43868 is complete with exceptions", () => {
+      const formId = "planCompliance43868";
+      const mockEntity = {
+        id: "mockEntity",
+        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        [`${formId}_standard-exceptionsDescription`]: "Mock Value",
+      };
+
+      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
+    });
+
+    test("returns true if planCompliance43868 is complete with non-compliance", () => {
+      const formId = "planCompliance43868";
+      const mockEntity = {
+        id: "mockEntity",
+        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        [`${formId}_standard-nonComplianceDescription`]: "Mock Value",
+      };
+
+      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
+    });
+
+    test("returns true if planCompliance438206 is complete with non-compliance", () => {
+      const formId = "planCompliance438206";
+      const mockEntity = {
+        id: "mockEntity",
+        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        [`${formId}_description`]: "Mock Value",
       };
 
       expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
@@ -352,7 +385,7 @@ describe("utils/forms/naaarPlanCompliance", () => {
   });
 
   describe("isPlanComplete()", () => {
-    test("returns true", () => {
+    test("returns true if plan compliance is complete", () => {
       const mockEntity = {
         id: "mockEntity",
         planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
