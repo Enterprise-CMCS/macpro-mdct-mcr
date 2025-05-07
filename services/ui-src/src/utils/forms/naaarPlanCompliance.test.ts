@@ -301,119 +301,117 @@ describe("utils/forms/naaarPlanCompliance", () => {
   });
 
   describe("isComplianceFormComplete()", () => {
-    test("returns true if planCompliance43868 is complete with Yes", () => {
-      const formId = "planCompliance43868";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
-    });
-
-    test("returns true if planCompliance438206 is complete with Yes", () => {
-      const formId = "planCompliance438206";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
-    });
-
-    test("returns true if planCompliance43868 is complete with exceptions", () => {
-      const formId = "planCompliance43868";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
-        [`${formId}_standard-exceptionsDescription`]: "Mock Value",
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
-    });
-
-    test("returns true if planCompliance43868 is complete with non-compliance", () => {
-      const formId = "planCompliance43868";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
-        [`${formId}_standard-nonComplianceDescription`]: "Mock Value",
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
-    });
-
-    test("returns true if planCompliance438206 is complete with non-compliance", () => {
-      const formId = "planCompliance438206";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
-        [`${formId}_description`]: "Mock Value",
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(true);
-    });
-
-    test("returns false if planCompliance43868 is not complete", () => {
-      const formId = "planCompliance43868";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(false);
-    });
-
-    test("returns false if planCompliance438206 is not complete", () => {
-      const formId = "planCompliance438206";
-      const mockEntity = {
-        id: "mockEntity",
-        [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
-      };
-
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(false);
-    });
-
     test("returns false by default", () => {
-      const mockEntity = {
-        id: "mockEntity",
-      };
+      const entity = { id: "mockEntityId" };
       const formId = "mockFormId";
 
-      expect(isComplianceFormComplete(mockEntity, formId)).toBe(false);
+      expect(isComplianceFormComplete(entity, formId)).toBe(false);
+    });
+
+    describe("plan compliance 438.68", () => {
+      const formId = "planCompliance43868";
+      test("returns true if planCompliance43868 is complete with Yes", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance43868 is complete with exceptions", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_standard-exceptionsDescription`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance43868 is complete with non-compliance", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_standard-nonComplianceDescription`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns false if planCompliance43868 is not complete", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(false);
+      });
+    });
+
+    describe("plan compliance 438.206", () => {
+      const formId = "planCompliance438206";
+
+      test("returns true if planCompliance438206 is complete with Yes", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance438206 is complete with non-compliance", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_description`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns false if planCompliance438206 is not complete", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(false);
+      });
     });
   });
 
   describe("isPlanComplete()", () => {
     test("returns true if plan compliance is complete", () => {
-      const mockEntity = {
-        id: "mockEntity",
+      const entity = {
+        id: "mockEntityId",
         planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
         planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
       };
-      expect(isPlanComplete(mockEntity)).toBe(true);
+      expect(isPlanComplete(entity)).toBe(true);
     });
 
     test("returns false if planCompliance43868 is not complete", () => {
-      const mockEntity = {
-        id: "mockEntity",
+      const entity = {
+        id: "mockEntityId",
         planCompliance43868_assurance: [
           { id: "mockNo", value: nonCompliantLabel },
         ],
         planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
       };
-      expect(isPlanComplete(mockEntity)).toBe(false);
+      expect(isPlanComplete(entity)).toBe(false);
     });
 
     test("returns false if planCompliance438206 is not complete", () => {
-      const mockEntity = {
-        id: "mockEntity",
+      const entity = {
+        id: "mockEntityId",
         planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
         planCompliance438206_assurance: [
           { id: "mockNo", value: nonCompliantLabel },
         ],
       };
-      expect(isPlanComplete(mockEntity)).toBe(false);
+      expect(isPlanComplete(entity)).toBe(false);
     });
   });
 });
