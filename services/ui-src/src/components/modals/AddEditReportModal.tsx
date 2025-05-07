@@ -28,9 +28,9 @@ import {
   convertDateUtcToEt,
   defineProgramName,
   otherSpecify,
+  resetProgramList,
   useStore,
 } from "utils";
-import { resetProgramList } from "forms/addEditMcparReport/mcparProgramList";
 
 export const AddEditReportModal = ({
   activeState,

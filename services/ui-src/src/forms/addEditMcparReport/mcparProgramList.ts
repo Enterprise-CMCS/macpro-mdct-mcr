@@ -1,26 +1,3 @@
-import { AnyObject } from "types";
-
-export const resetProgramList = (form: AnyObject) => {
-  const fields = form.fields;
-  const programName = {
-    id: "programName",
-    type: "text",
-    validation: "text",
-    props: {
-      label: "Program name (for new MCPAR)",
-    },
-  };
-  const idx = fields.findIndex((field: AnyObject) => {
-    return field.id === "newOrExistingProgram";
-  });
-  fields.splice(idx, 1, programName);
-  form = {
-    ...form,
-    fields: fields,
-  };
-  return form;
-};
-
 // ESP: program list (MCPAR)
 export const mcparProgramList = {
   // Alabama
