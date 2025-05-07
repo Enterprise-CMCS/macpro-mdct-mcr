@@ -30,6 +30,7 @@ import {
   otherSpecify,
   useStore,
 } from "utils";
+import { resetProgramList } from "forms/addEditMcparReport/mcparProgramList";
 
 export const AddEditReportModal = ({
   activeState,
@@ -47,10 +48,11 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
+  const mcparProgramList = useFlags()?.mcparProgramList;
 
   // get correct form
   const modalFormJsonMap: any = {
-    MCPAR: mcparFormJson,
+    MCPAR: mcparProgramList ? mcparFormJson : resetProgramList(mcparFormJson),
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,
   };
