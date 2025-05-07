@@ -34,15 +34,13 @@ import {
 // utils
 import {
   convertDateUtcToEt,
+  getReportVerbiage,
   parseCustomHtml,
   useBreakpoint,
   useStore,
 } from "utils";
 import { States } from "../../../constants";
 // verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
-import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
@@ -81,13 +79,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     undefined
   );
 
-  const dashboardVerbiageMap: any = {
-    MCPAR: mcparVerbiage,
-    MLR: mlrVerbiage,
-    NAAAR: naaarVerbiage,
-  };
-
-  const dashboardVerbiage = dashboardVerbiageMap[reportType]!;
+  const { dashboardVerbiage } = getReportVerbiage(reportType);
   const { intro, body } = dashboardVerbiage;
 
   // if an admin or a read-only user has selected a state, retrieve it from local storage

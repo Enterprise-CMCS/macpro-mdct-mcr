@@ -67,7 +67,7 @@ export const formFieldFactory = (
       // Use groupId for a single validation across different field ids
       name: field.groupId ?? field.id,
       hydrate: field.props?.hydrate,
-      autoComplete: isFieldElement(field) ? "one-time-code" : undefined, // stops browsers from forcing autofill
+      autoComplete: isFieldElement(field) ? "off" : undefined, // stops browsers from forcing autofill
       ...options,
       ...field?.props,
     };

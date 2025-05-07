@@ -6,7 +6,7 @@
 ./services/ui-src/src/components/forms/AdminDashSelector.tsx:40:useFlags()?.naaarReport;
 ./services/ui-src/src/components/modals/AddEditReportModal.tsx:50:useFlags()?.naaarReport;
 ./services/ui-src/src/components/modals/AddEditReportModal.tsx:51:useFlags()?.mcparProgramList;
-./services/ui-src/src/components/pages/Dashboard/DashboardPage.tsx:240:useFlags()?.sortableDashboardTable;
+./services/ui-src/src/components/pages/Dashboard/DashboardPage.tsx:232:useFlags()?.sortableDashboardTable;
 
 # LaunchDarkly flags in tests
 ./services/ui-src/src/components/app/AppRoutes.test.tsx:142:mockLDFlags.set({ naaarReport: true });

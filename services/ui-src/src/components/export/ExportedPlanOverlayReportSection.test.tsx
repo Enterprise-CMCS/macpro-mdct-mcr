@@ -2,7 +2,12 @@ import { screen, render } from "@testing-library/react";
 // components
 import { ExportedPlanOverlayReportSection } from "./ExportedPlanOverlayReportSection";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  nonCompliantLabel,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import { EntityShape } from "types";
 // utils
@@ -13,6 +18,12 @@ import { testA11y } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
+jest.mock("../../utils/reports/entities", () => ({
+  getFormattedEntityData: jest
+    .fn()
+    .mockReturnValue({ heading: "mock heading" }),
+}));
 
 const exportedPlanOverlaySectionComponent = (
   <ExportedPlanOverlayReportSection section={mockNaaarPlanCompliancePageJson} />
@@ -75,13 +86,37 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     const reportWithComplianceAnswers = JSON.parse(
       JSON.stringify(mockNaaarReportStore)
     );
-    reportWithComplianceAnswers.report.fieldData.plans[0].planCompliance43868_assurance =
-      [
+    // set up standards
+    const standards = reportWithComplianceAnswers.report.fieldData.standards;
+    standards[0].exceptionsNonCompliance = nonComplianceStatus;
+    standards.push({
+      ...standards[0],
+      id: `${standards[0].id}-2`,
+      exceptionsNonCompliance: exceptionsStatus,
+    });
+
+    // mark plan non-compliant for 438.68 and 438.206
+    const plans = reportWithComplianceAnswers.report.fieldData.plans;
+    plans[0] = {
+      ...plans[0],
+      planCompliance43868_assurance: [
         {
           key: "mockPlanComplianceAssuranceKey1",
           value: nonCompliantLabel,
         },
-      ];
+      ],
+      planCompliance438206_assurance: [
+        {
+          key: "mockPlanComplianceAssuranceKey2",
+          value: nonCompliantLabel,
+        },
+      ],
+      [`${planComplianceStandardKey}-${standards[0].id}-mock-nonCompliance`]:
+        "any value",
+      [`${planComplianceStandardKey}-${standards[1].id}-mock-exceptions`]:
+        "any value",
+    };
+
     mockedUseStore.mockReturnValue(reportWithComplianceAnswers);
 
     render(exportedPlanOverlaySectionComponent);
@@ -99,10 +134,19 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     const reportWithComplianceAnswers = JSON.parse(
       JSON.stringify(mockNaaarReportStore)
     );
+    // mark plans compliant for 438.68
     reportWithComplianceAnswers.report.fieldData.plans[0].planCompliance43868_assurance =
       [
         {
           key: "mockPlanComplianceAssuranceKey1",
+          value: "Yes, it is compliant",
+        },
+      ];
+    // mark plans compliant for 438.206
+    reportWithComplianceAnswers.report.fieldData.plans[0].planCompliance438206_assurance =
+      [
+        {
+          key: "mockPlanComplianceAssuranceKey2",
           value: "Yes, it is compliant",
         },
       ];
