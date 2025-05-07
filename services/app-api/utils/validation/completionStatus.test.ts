@@ -92,7 +92,7 @@ describe("Completion Status Tests", () => {
         ],
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toStrictEqual({
+      expect(result).toMatchObject({
         "/mcpar/program-information": {
           "/mcpar/program-information/point-of-contact": false,
         },
@@ -150,14 +150,22 @@ describe("Completion Status Tests", () => {
         {},
         { routes: entitiesRoutes }
       );
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/program-information": {
+          "/mcpar/plan-level-indicators/encounter-data-report": undefined,
+        },
+      });
     });
     test("Incomplete entities does not cause an exception", async () => {
       const result = await calculateCompletionStatus(
         {},
         { entities: {}, routes: entitiesRoutes }
       );
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/program-information": {
+          "/mcpar/plan-level-indicators/encounter-data-report": true,
+        },
+      });
     });
 
     test("Missing nested fields does not cause an exception", async () => {
@@ -172,7 +180,11 @@ describe("Completion Status Tests", () => {
         },
         { entities: { plans: { required: true } }, routes: entitiesRoutes }
       );
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/program-information": {
+          "/mcpar/plan-level-indicators/encounter-data-report": false,
+        },
+      });
     });
 
     test("If user has not added an ILOS, they're not required to complete that section", async () => {
@@ -198,7 +210,9 @@ describe("Completion Status Tests", () => {
         ],
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/plan-level-indicators": {},
+      });
     });
 
     test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
@@ -230,7 +244,11 @@ describe("Completion Status Tests", () => {
         ],
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/state-level-indicators": {
+          "/mcpar/state-level-indicators/prior-authorization": false,
+        },
+      });
     });
 
     test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
@@ -267,7 +285,9 @@ describe("Completion Status Tests", () => {
         ],
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/plan-level-indicators": {},
+      });
     });
 
     test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
@@ -304,7 +324,9 @@ describe("Completion Status Tests", () => {
         ],
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({});
+      expect(result).toMatchObject({
+        "/mcpar/plan-level-indicators": {},
+      });
     });
   });
 
@@ -354,7 +376,88 @@ describe("Completion Status Tests", () => {
       ],
     };
     const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({});
+    expect(result).toMatchObject({
+      "/naaar/state-and-program-information": {
+        "/naaar/state-and-program-information/analysis-methods": false,
+      },
+    });
+  });
+
+  test("Test planOverlay with complete fieldData", async () => {
+    const testData = {
+      plans: [
+        {
+          id: "mockPlanId",
+          name: "Mock Plan",
+          isComplete: true,
+        },
+      ],
+    };
+    const formTemplate = {
+      routes: [
+        {
+          name: "Mock Plan Overlay Page",
+          path: "/naaar/mock-plan-overlay",
+          pageType: "planOverlay",
+          entityType: "plans",
+        },
+        {
+          name: "Plan compliance",
+          path: "/naaar/plan-compliance",
+          pageType: "planOverlay",
+          entityType: "plans",
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toMatchObject({
+      "/naaar/mock-plan-overlay": false,
+      "/naaar/plan-compliance": true,
+    });
+  });
+
+  test("Test planOverlay with incomplete fieldData", async () => {
+    const testData = {
+      plans: [
+        {
+          id: "mockPlanId",
+          name: "Mock Plan",
+          isComplete: false,
+        },
+      ],
+    };
+    const formTemplate = {
+      routes: [
+        {
+          name: "Plan compliance",
+          path: "/naaar/plan-compliance",
+          pageType: "planOverlay",
+          entityType: "plans",
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toMatchObject({
+      "/naaar/plan-compliance": false,
+    });
+  });
+
+  test("Test planOverlay with no fieldData", async () => {
+    const testData = {};
+    const formTemplate = {
+      routes: [
+        {
+          name: "Plan compliance",
+          path: "/naaar/plan-compliance",
+          pageType: "planOverlay",
+          entityType: "plans",
+        },
+      ],
+    };
+    const result = await calculateCompletionStatus(testData, formTemplate);
+    expect(result).toMatchObject({
+      "/naaar/plan-compliance": false,
+    });
   });
 
   describe("Fixture Testing", () => {

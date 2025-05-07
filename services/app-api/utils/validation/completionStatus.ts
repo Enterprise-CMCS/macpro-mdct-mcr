@@ -263,6 +263,19 @@ export const calculateCompletionStatus = async (
           ),
         };
         break;
+      case "planOverlay": {
+        let isComplete = false;
+
+        if (route.path === "/naaar/plan-compliance") {
+          const plans = fieldData.plans || [];
+          isComplete =
+            plans.length > 0 &&
+            plans.every((plan: AnyObject) => plan.isComplete === true);
+        }
+
+        routeCompletion = { [route.path]: isComplete };
+        break;
+      }
       case "reviewSubmit":
         // Don't evaluate the review and submit page
         break;

@@ -40,7 +40,7 @@ import {
   ScreenReaderCustomHeaderName,
 } from "types";
 // utils
-import { translateVerbiage } from "utils";
+import { isComplianceFormComplete, translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -205,7 +205,7 @@ export const EntityDetailsMultiformOverlay = ({
     const [formEnableDetails, setFormEnableDetails] = useState<{
       [key: string]: boolean;
     }>({});
-    const [formHasComplianceDetails, setFormHasComplianceDetails] = useState<{
+    const [formCompletion, setFormCompletion] = useState<{
       [key: string]: boolean;
     }>({});
     const [formData, setFormData] = useState<AnyObject>({});
@@ -215,39 +215,28 @@ export const EntityDetailsMultiformOverlay = ({
     }, []);
 
     useEffect(() => {
-      const formIds = forms.map((formObject) => formObject.form.id);
       const nonCompliantForms = {} as { [key: string]: boolean };
-      const hasComplianceDetailsForms = {} as { [key: string]: boolean };
+      const completedForms = {} as { [key: string]: boolean };
 
-      formIds.forEach((formId) => {
+      for (const { form } of forms) {
+        const formId = form.id;
         const assuranceField = `${formId}_assurance`;
-        let assuranceNonCompliant = false;
-        hasComplianceDetailsForms[formId] = false;
+        let isNonCompliant = false;
+        let isFormComplete = false;
 
-        if (selectedEntity && selectedEntity[assuranceField]) {
-          // Assurance has non-compliant answer
-          assuranceNonCompliant =
+        if (selectedEntity?.[assuranceField]) {
+          // Assurance has non-compliant answer, enable Enter button
+          isNonCompliant =
             selectedEntity[assuranceField][0]?.value === nonCompliantLabel;
-
-          if (assuranceNonCompliant) {
-            const complianceDetailFields = Object.keys(selectedEntity).filter(
-              (key) => key.startsWith(formId) && selectedEntity[key] !== null
-            );
-            // Should have multiple compliance details
-            hasComplianceDetailsForms[formId] =
-              complianceDetailFields.length > 1;
-          } else {
-            // is complete if they answer Yes to compliance
-            hasComplianceDetailsForms[formId] =
-              selectedEntity[assuranceField][0]?.value?.includes("Yes");
-          }
+          isFormComplete = isComplianceFormComplete(selectedEntity, formId);
         }
 
-        nonCompliantForms[formId] = assuranceNonCompliant;
-      });
+        completedForms[formId] = isFormComplete;
+        nonCompliantForms[formId] = isNonCompliant;
+      }
 
       setFormEnableDetails(nonCompliantForms);
-      setFormHasComplianceDetails(hasComplianceDetailsForms);
+      setFormCompletion(completedForms);
     }, [forms]);
 
     useEffect(() => {
@@ -334,13 +323,13 @@ export const EntityDetailsMultiformOverlay = ({
     }) => {
       const headerName =
         typeof header === "object" ? header.hiddenName : header;
-      const isEnabled = formEnableDetails[formId];
-      const isComplete = formHasComplianceDetails[formId];
+      const hasDetailsEnabled = formEnableDetails[formId];
+      const isComplete = formCompletion[formId];
       const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
         case "Status": {
-          if (is438206Form || !isComplete) {
+          if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
@@ -354,7 +343,7 @@ export const EntityDetailsMultiformOverlay = ({
         case "Action": {
           return (
             <Button
-              disabled={!isEnabled}
+              disabled={!hasDetailsEnabled}
               onClick={() => getChildForm(formId)}
               sx={sx.tableButton}
               variant="outline"
@@ -367,7 +356,7 @@ export const EntityDetailsMultiformOverlay = ({
           return (
             <>
               <Text sx={sx.tableData}>{text}</Text>
-              {isEnabled && !isComplete && (
+              {hasDetailsEnabled && !isComplete && (
                 <Text sx={sx.errorText}>
                   Select “Enter” to complete response.
                 </Text>

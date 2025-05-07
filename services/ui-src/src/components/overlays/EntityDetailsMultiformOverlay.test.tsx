@@ -152,9 +152,8 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         const entityHeaders = screen.getByRole("row", {
           name: `Status Mock Table Header${formId} Action`,
         });
-        // getByRole checks for accessible name, so the icon alt text shows up here
         const entityCells = screen.getByRole("row", {
-          name: `warning icon Mock Cell${formId} Enter`,
+          name: `Mock Cell${formId} Enter`,
         });
         const enterButton = within(entityCells).getByRole("button", {
           name: "Enter",
