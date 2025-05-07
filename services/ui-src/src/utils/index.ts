@@ -46,3 +46,5 @@ export * from "./state/useStore";
 // text
 export * from "./text/compareText";
 export * from "./text/translate";
+// verbiage
+export * from "./verbiage/verbiage";
