@@ -319,6 +319,9 @@ const sx = {
     ol: {
       paddingLeft: "1rem",
     },
+    ul: {
+      display: "contents",
+    },
     li: {
       marginLeft: "2rem",
       lineHeight: "2rem",
