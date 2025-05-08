@@ -28,7 +28,6 @@ import {
   convertDateUtcToEt,
   defineProgramName,
   otherSpecify,
-  resetProgramList,
   useStore,
 } from "utils";
 
@@ -48,11 +47,10 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
-  const mcparProgramList = useFlags()?.mcparProgramList;
 
   // get correct form
   const modalFormJsonMap: any = {
-    MCPAR: mcparProgramList ? mcparFormJson : resetProgramList(mcparFormJson),
+    MCPAR: mcparFormJson,
     MLR: mlrFormJson,
     NAAAR: naaarFormJson,
   };

@@ -8,9 +8,7 @@ import {
   generateAddEntityDrawerItemFields,
   generateAnalysisMethodChoices,
   generateDrawerItemFields,
-  resetProgramList,
 } from "./dynamicItemFields";
-import mcparFormJson from "../../forms/addEditMcparReport/addEditMcparReport.json";
 
 const mockIlosForm: FormJson = {
   id: "mock-id",
@@ -232,12 +230,5 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
     expect(Object.prototype.hasOwnProperty.call(result[1], "children")).toBe(
       false
     );
-  });
-});
-
-describe("resetProgramList for MCPAR", () => {
-  it("should replace the program list field with a simple text field for program name", () => {
-    const result = resetProgramList(mcparFormJson);
-    expect(result.fields[0].id).toBe("programName");
   });
 });

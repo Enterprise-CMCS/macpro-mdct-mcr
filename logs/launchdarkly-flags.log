@@ -4,8 +4,7 @@
 ./services/ui-src/src/components/app/AppRoutes.tsx:30:useFlags()?.naaarReport;
 ./services/ui-src/src/components/cards/TemplateCard.tsx:33:useFlags()?.naaarReport;
 ./services/ui-src/src/components/forms/AdminDashSelector.tsx:40:useFlags()?.naaarReport;
-./services/ui-src/src/components/modals/AddEditReportModal.tsx:50:useFlags()?.naaarReport;
-./services/ui-src/src/components/modals/AddEditReportModal.tsx:51:useFlags()?.mcparProgramList;
+./services/ui-src/src/components/modals/AddEditReportModal.tsx:49:useFlags()?.naaarReport;
 ./services/ui-src/src/components/pages/Dashboard/DashboardPage.tsx:232:useFlags()?.sortableDashboardTable;
 
 # LaunchDarkly flags in tests
@@ -18,7 +17,6 @@
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:32:mockLDFlags.setDefault({ naaarReport: true });
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:71:mockLDFlags.set({ naaarReport: true });
 ./services/ui-src/src/components/forms/AdminDashSelector.test.tsx:81:mockLDFlags.set({ naaarReport: false });
-./services/ui-src/src/components/modals/AddEditReportModal.test.tsx:221:mockLDFlags.set({ mcparProgramList: true });
 ./services/ui-src/src/components/pages/Dashboard/SortableDashboardTable.test.tsx:141:mockLDFlags.set({ sortableDashboardTable: true });
 ./services/ui-src/src/components/pages/Dashboard/SortableDashboardTable.test.tsx:292:mockLDFlags.set({ sortableDashboardTable: true });
 ./services/ui-src/src/components/pages/Dashboard/SortableDashboardTable.test.tsx:310:mockLDFlags.set({ sortableDashboardTable: true });

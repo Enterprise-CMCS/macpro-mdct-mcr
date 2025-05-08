@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { AddEditReportModal, ReportContext } from "components";
 // utils
 import {
-  mockLDFlags,
   mockMcparReport,
   mockMcparReportContext,
   mockMcparReportStore,
@@ -218,7 +217,6 @@ describe("<AddEditProgramModal />", () => {
         ...mockMcparReportStore,
       });
     });
-    mockLDFlags.set({ mcparProgramList: true });
     afterEach(() => {
       jest.clearAllMocks();
     });
