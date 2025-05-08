@@ -145,12 +145,29 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
         (method: EntityShape) => {
+          const analysisApplicable = method.analysis_applicable?.[0]?.value;
+
           if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans =
               method.analysis_method_applicable_plans.filter(
-                (plan: AnyObject) => plan.key !== selectedRecord.id
+                (plan: AnyObject) => {
+                  const planKey: string = plan.key
+                    .split("analysis_method_applicable_plans-")
+                    .pop();
+                  return planKey !== selectedRecord.id;
+                }
               );
           }
+
+          if (
+            method.analysis_method_applicable_plans?.length === 0 ||
+            analysisApplicable === "No"
+          ) {
+            delete method.analysis_applicable;
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          }
+
           return method;
         }
       );

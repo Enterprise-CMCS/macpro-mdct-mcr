@@ -103,11 +103,11 @@ export const DrawerReportPageEntityRows = ({
           const incompleteText = "Select “Enter” to complete response.";
           return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
         }
-        const plans = entity?.analysis_method_applicable_plans;
         const isUtilized =
           entity?.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
         let completeText = "Not utilized";
 
+        const plans = entity?.analysis_method_applicable_plans;
         if (plans && isUtilized) {
           const frequencyVal = entity.analysis_method_frequency[0].value;
           const frequency = otherSpecify(
