@@ -1078,22 +1078,47 @@
         "requiredMessages": {
           "plans": [
             {
-              "type": "p",
+              "type": "ul",
               "children": [
                 {
                   "type": "p",
-                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section "
+                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section I."
                 },
                 {
-                  "type": "internalLink",
-                  "content": "I. State and program information",
-                  "props": {
-                    "to": "/naaar/state-and-program-information/state-information-and-reporting-scenario"
-                  }
+                  "type": "li",
+                  "children": [
+                    {
+                      "type": "internalLink",
+                      "content": "Add plans",
+                      "props": {
+                        "to": "/naaar/state-and-program-information/add-plans"
+                      }
+                    }
+                  ]
                 },
                 {
-                  "type": "span",
-                  "content": "."
+                  "type": "li",
+                  "children": [
+                    {
+                      "type": "internalLink",
+                      "content": "Provider type coverage",
+                      "props": {
+                        "to": "/naaar/state-and-program-information/provider-type-coverage"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "li",
+                  "children": [
+                    {
+                      "type": "internalLink",
+                      "content": "Analysis methods",
+                      "props": {
+                        "to": "/naaar/state-and-program-information/analysis-methods"
+                      }
+                    }
+                  ]
                 }
               ]
             }
