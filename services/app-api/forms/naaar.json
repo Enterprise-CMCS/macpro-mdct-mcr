@@ -1078,10 +1078,10 @@
         "requiredMessages": {
           "plans": [
             {
-              "type": "p",
+              "type": "div",
               "children": [
                 {
-                  "type": "span",
+                  "type": "p",
                   "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section I."
                 },
                 {
