@@ -2,6 +2,7 @@
 import {
   exceptionsStatus,
   nonComplianceStatus,
+  nonCompliantLabel,
   planComplianceStandardKey,
 } from "../../constants";
 // types
@@ -209,11 +210,12 @@ export const addExceptionsNonComplianceStatus = (
     };
   });
 
-export const getExceptionsNonComplianceKeys = (selectedEntity: EntityShape) => {
+export const getExceptionsNonComplianceKeys = (
+  selectedEntity: EntityShape,
+  keyPrefix: string = `${planComplianceStandardKey}-`
+) => {
   return Object.keys(selectedEntity).filter(
-    (key) =>
-      key.startsWith(`${planComplianceStandardKey}-`) &&
-      selectedEntity[key] !== undefined
+    (key) => key.startsWith(keyPrefix) && selectedEntity[key] !== undefined
   );
 };
 
@@ -231,4 +233,38 @@ export const getExceptionsNonComplianceCounts = (
     },
     { exceptionsCount: 0, nonComplianceCount: 0 }
   );
+};
+
+export const isComplianceFormComplete = (
+  entity: EntityShape,
+  formId: string
+) => {
+  const assuranceField = entity[`${formId}_assurance`];
+  // Form is complete if compliance answer is Yes
+  if (assuranceField && assuranceField[0]?.value !== nonCompliantLabel) {
+    return true;
+  }
+
+  if (formId === "planCompliance43868") {
+    const keys = getExceptionsNonComplianceKeys(entity);
+    const counts = getExceptionsNonComplianceCounts(keys);
+    const hasExceptionsOrNonCompliance = Object.values(counts).some(
+      (count) => count > 0
+    );
+
+    return hasExceptionsOrNonCompliance;
+  }
+
+  if (formId === "planCompliance438206") {
+    const keys = getExceptionsNonComplianceKeys(entity, formId);
+    // Should have multiple compliance details
+    return keys.length > 1;
+  }
+
+  return false;
+};
+
+export const isPlanComplete = (entity: EntityShape) => {
+  const planKeys = ["planCompliance43868", "planCompliance438206"];
+  return planKeys.every((planKey) => isComplianceFormComplete(entity, planKey));
 };
