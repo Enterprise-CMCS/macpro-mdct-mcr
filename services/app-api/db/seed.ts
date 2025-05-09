@@ -33,9 +33,7 @@ const seed = async (): Promise<void> => {
         ["MCPAR", "MLR", "NAAAR"].includes(prev) ? "select" : null,
       name: "task",
       message: "Task",
-      choices: (prev: string) => {
-        return generateChoices(prev) as Choice[];
-      },
+      choices: (prev: string) => generateChoices(prev) as Choice[],
     },
     {
       type: (prev: string) => (prev === "banners" ? "select" : null),
@@ -75,9 +73,7 @@ const seed = async (): Promise<void> => {
   ): Promise<void> => {
     switch (prompt.name) {
       case "exit": {
-        if (answer === false) {
-          seed();
-        }
+        if (answer === false) seed();
         break;
       }
       default:
