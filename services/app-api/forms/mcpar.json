@@ -4563,6 +4563,33 @@
                   "label": "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
                   "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
+              },
+              {
+                "id": "plan_urlForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.3 URL for Patient Access API",
+                  "hint": "Provide the URL where the plan posts Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.4 URL patient educational resources for Patient Access API",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.5 Provider Access and Payer-to-Payer API patient educational resources URL",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Provider Access and Payer-to-Payer API."
+                }
               }
             ]
           }
