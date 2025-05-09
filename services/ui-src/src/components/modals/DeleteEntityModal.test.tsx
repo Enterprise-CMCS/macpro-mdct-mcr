@@ -3,6 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 // components
 import { DeleteEntityModal, ReportContext } from "components";
+// constants
+import { planComplianceStandardKey } from "../../constants";
 // utils
 import {
   mockModalDrawerReportPageVerbiage,
@@ -12,6 +14,10 @@ import {
   mockAccessMeasuresEntity,
   mockStateUserStore,
   mockMcparReportStore,
+  mockNaaarStandards,
+  mockNaaarReportStore,
+  mockNaaarReportContext,
+  mockNaaarReport,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
@@ -162,6 +168,89 @@ describe("<DeleteEntityModal />", () => {
         mockUpdateCallPayload
       );
       await expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Test NAAAR deletion cases", () => {
+    const naaarMockPlan = {
+      id: "mockPlanId",
+      [`${planComplianceStandardKey}-${mockNaaarStandards[0].id}`]:
+        "Remove Value",
+      [`${planComplianceStandardKey}-otherId`]: "Keep Value",
+    };
+
+    const naaarMockedReportContext = {
+      ...mockNaaarReportContext,
+      updateReport: mockUpdateReport,
+      report: {
+        ...mockNaaarReport,
+        fieldData: {
+          standards: mockNaaarStandards,
+          plans: [naaarMockPlan],
+        },
+      },
+    };
+
+    const naaarMockUpdateCallBaseline = {
+      fieldData: naaarMockedReportContext.report.fieldData,
+      metadata: {
+        lastAlteredBy: "Thelonious States",
+        status: "In progress",
+      },
+    };
+
+    const naaarMockDeletedEntityStore = {
+      ...mockNaaarReportStore,
+      ...(mockNaaarReportStore.report!.fieldData = {
+        standards: mockNaaarStandards,
+        plans: [naaarMockPlan],
+      }),
+    };
+
+    const naaarMockReportKeys = {
+      ...mockReportKeys,
+      reportType: "NAAAR",
+    };
+
+    const naaarModalComponent = (
+      <ReportContext.Provider value={naaarMockedReportContext}>
+        <DeleteEntityModal
+          entityType={EntityType.STANDARDS}
+          selectedEntity={mockNaaarStandards[0]}
+          verbiage={mockModalDrawerReportPageVerbiage}
+          modalDisclosure={{
+            isOpen: true,
+            onClose: mockCloseHandler,
+          }}
+        />
+      </ReportContext.Provider>
+    );
+
+    test("handles deleting standards and standards in plans", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...naaarMockDeletedEntityStore,
+      });
+
+      render(naaarModalComponent);
+
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
+
+      const mockUpdateCallPayload = naaarMockUpdateCallBaseline;
+      mockUpdateCallPayload.fieldData.standards = [];
+      mockUpdateCallPayload.fieldData.plans = [
+        {
+          id: "mockPlanId",
+          [`${planComplianceStandardKey}-otherId`]: "Keep Value",
+        },
+      ];
+
+      expect(mockUpdateReport).toHaveBeenCalledWith(
+        naaarMockReportKeys,
+        mockUpdateCallPayload
+      );
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
     });
   });
 
