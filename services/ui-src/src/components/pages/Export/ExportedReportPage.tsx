@@ -30,6 +30,20 @@ export const ExportedReportPage = () => {
   const { exportVerbiage } = getReportVerbiage(reportType);
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
 
+  const naaarSubmissionDate = () => {
+    if (
+      report?.naaarSubmissionForThisProgram?.[0].value === "Yes, I submitted it"
+    ) {
+      return `Submitted on ${report.naaarSubmissionDate}`;
+    } else if (
+      report?.naaarSubmissionForThisProgram?.[0].value ===
+      "Yes, I plan on submitting it"
+    ) {
+      return `Will be submitting on ${report.naaarSubmissionDate}`;
+    }
+    return;
+  };
+
   return (
     <Box sx={sx.container}>
       {(report && routesToRender && (
@@ -53,7 +67,7 @@ export const ExportedReportPage = () => {
           {/* combined data table */}
           {reportType === ReportType.MCPAR && (
             <Table
-              sx={sx.combinedDataTable}
+              sx={sx.combinedDataAndNaaarSubmissionTable}
               className="short"
               content={{
                 caption: "MCPAR CHIP Exclusion Indicator",
@@ -62,12 +76,24 @@ export const ExportedReportPage = () => {
             >
               <Tr>
                 <Td>
-                  <Text className="combined-data-title">
+                  <Text className="combined-data-and-naaar-title">
                     {reportPage.combinedDataTable.title}
                   </Text>
                   <Text>{reportPage.combinedDataTable.subtitle}</Text>
                 </Td>
                 <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  <Text className="combined-data-and-naaar-title">
+                    {reportPage.naaarSubmissionTable.title}
+                  </Text>
+                  <Text>{reportPage.naaarSubmissionTable.subtitle}</Text>
+                </Td>
+                <Td>
+                  <Text>{report.naaarSubmissionForThisProgram?.[0].value}</Text>
+                  <Text>{naaarSubmissionDate()}</Text>
+                </Td>
               </Tr>
             </Table>
           )}
@@ -158,9 +184,9 @@ export const sx = {
     lineHeight: "lineHeights.heading",
     fontSize: "4xl",
   },
-  combinedDataTable: {
+  combinedDataAndNaaarSubmissionTable: {
     marginBottom: "1rem",
-    ".combined-data-title": {
+    ".combined-data-and-naaar-title": {
       display: "inline-block",
       marginBottom: "0.5rem",
       fontSize: "md",
