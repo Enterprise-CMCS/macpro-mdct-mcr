@@ -1338,35 +1338,90 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.4 Provider type",
-                      "hint": "What is the provider type? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the core provider type the standard applies to. If the standard applies to multiple provider types, create a measure for each those provider types. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
                       "choices": [
                         {
                           "id": "7z1m6zajqUupPe89o3dAGQ",
-                          "label": "Primary care"
+                          "label": "Primary care",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-primaryCareDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "7z1m6zajqUupPe89o3dAGQ"
+                              },
+                              "props": {
+                                "label": "Primary care specialist details (optional)",
+                                "hint": "e.g. Nurse Practitioner"
+                              }
+                            }
+                          ]
                         },
                         {
-                          "id": "SxG3KStEU0SGAXtk6u9pCw",
-                          "label": "Behavioral health"
+                          "id": "5FfW1zf3rK1tb8DcuYuqc9",
+                          "label": "Specialist",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-specialistDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "5FfW1zf3rK1tb8DcuYuqc9"
+                              },
+                              "props": {
+                                "label": "Specialist details (optional)",
+                                "hint": "e.g. Cardiologist, endocrinologist"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "id": "1sEWHEKgjwhjmtAyWoVhfW",
+                          "label": "Mental health",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-mentalHealthDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "1sEWHEKgjwhjmtAyWoVhfW"
+                              },
+                              "props": {
+                                "label": "Mental health specialist details (optional)"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "id": "uF9g4CAo5Fwofxt8PYfLaQ",
+                          "label": "Substance Use Disorder (SUD)"
+                        },
+                        {
+                          "id": "vJePJt3T4mXyLfhEVhZujs",
+                          "label": "OB/GYN"
                         },
                         {
                           "id": "KQtY7LuWG02dXq3ECotrVw",
                           "label": "Hospital"
                         },
                         {
-                          "id": "DXiAww8WU0O6ULJMhUmo2w",
-                          "label": "LTSS-personal care assistant"
+                          "id": "n6KU5rXnvbvH6K6DzN26vV",
+                          "label": "Pharmacy"
                         },
                         {
-                          "id": "YjMjhj37OEaVb5GZvCjRdQ",
-                          "label": "LTSS assistive technology"
+                          "id": "eepgjQEj4WhfSSLmEtp977",
+                          "label": "Dental"
                         },
                         {
-                          "id": "QHcE4coTX0GTAGP9HyZb4g",
-                          "label": "LTSS-adult day care"
-                        },
-                        {
-                          "id": "RkTGG5vb1UaNcFkLG3OfHw",
-                          "label": "LTSS-SNF"
+                          "id": "hqeJ3uJaUndRUEqNECsU3w",
+                          "label": "LTSS"
                         },
                         {
                           "id": "XfgRX33Ot02GGMoqcMVn4w",
@@ -1392,23 +1447,31 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.5 Applicable region(s)",
-                      "hint": "What is the applicable region? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. If the standard is statewide but results are analyzed by region type, create a measure for each applicable region.",
                       "choices": [
                         {
-                          "id": "X47v2Ee5kkaBERBjXFWGXw",
-                          "label": "Urban"
+                          "id": "aZ4JmR9kfLKZEqQje3N1R1",
+                          "label": "Statewide"
+                        },
+                        {
+                          "id": "qBvku8G3wwxCdmhPaEjR24",
+                          "label": "Large Metro"
+                        },
+                        {
+                          "id": "bN865rwbefg1CVAw1tBDKw",
+                          "label": "Metro"
+                        },
+                        {
+                          "id": "6MMBiFws9Erv9fVRRpjUXL",
+                          "label": "Micro"
                         },
                         {
                           "id": "H4Ldb3YGZ0OmBRYceGKDcA",
                           "label": "Rural"
                         },
                         {
-                          "id": "2fuO6QbLo06yGNAcrwVhCg",
-                          "label": "Large counties"
-                        },
-                        {
-                          "id": "B1dVVXG9qUudAeuiVkzKrQ",
-                          "label": "Small counties"
+                          "id": "eFMYKR5Xoi7xGChQfvDVA9",
+                          "label": "Counties with Extreme Access Considerations (CEAC)"
                         },
                         {
                           "id": "XkGi9vuc506VhzDCR5oAkg",
@@ -1434,7 +1497,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.6 Population",
-                      "hint": "What is the population? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the population that the standard applies to. If the standard applies to multiple populations, create a measure for each of those populations.",
                       "choices": [
                         {
                           "id": "YtRX5yx7NEWkGfU9vDI03g",
@@ -1449,8 +1512,8 @@
                           "label": "Adult and pediatric"
                         },
                         {
-                          "id": "cMLq1Y2YKkuVRPecSTdkHg",
-                          "label": "MLTSS"
+                          "id": "cLwf5gMv2odDfN3CY4nhuu",
+                          "label": "LTSS"
                         },
                         {
                           "id": "ENItdUNlUkGlvoBtAPH6Tw",
@@ -1476,34 +1539,38 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”.",
+                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select \"Custom Method\" and add details.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
                           "label": "Geomapping"
                         },
                         {
-                          "id": "G7GxcYWmhEqjrEQDBWRl3w",
-                          "label": "Plan provider roster review"
+                          "id": "8CMLyb311Nu2jAvjH2Shix",
+                          "label": "Plan Provider Directory Review"
                         },
                         {
-                          "id": "e14gKX61FkqBjIBeFDO7oA",
-                          "label": "Secret shopper calls"
+                          "id": "jV4HPfW1m52sQBPf626zYS",
+                          "label": "Secret Shopper: Network Participation"
                         },
                         {
-                          "id": "cMhP8Jp6SUS9XvezaPLvLg",
-                          "label": "EVV data analysis"
+                          "id": "oPzVpoNQMKGjBZNv5rHwMx",
+                          "label": "Secret Shopper: Appointment Availability"
                         },
                         {
                           "id": "bmQ1FmFPGk6S1g70ntAEcw",
-                          "label": "Review of grievances related to access"
+                          "label": "Review of Grievances Related to Access"
+                        },
+                        {
+                          "id": "r6FPy3varm5HbcBA44DjQ8",
+                          "label": "Encounter Data Analysis"
                         },
                         {
                           "id": "ozFC7ZVX7EWXZiNB2Ajj3g",
-                          "label": "Other, specify",
+                          "label": "Custom method",
                           "children": [
                             {
-                              "id": "accessMeasure_monitoringMethods-otherText",
+                              "id": "accessMeasure_monitoringMethods-customMethod",
                               "type": "textarea",
                               "validation": {
                                 "type": "text",
@@ -1522,19 +1589,30 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.8 Frequency of oversight methods",
-                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
-                          "id": "tOF04LLPa026mJlHmk0RaA",
-                          "label": "At procurement"
+                          "id": "vtAjpZENepsmacGCddGdyt",
+                          "label": "Weekly"
+                        },
+                        {
+                          "id": "mbp348RqaieKqyrCsLhLi2",
+                          "label": "Bi-weekly"
                         },
                         {
                           "id": "HrS3f4scOUCGvDQTc0ff8g",
                           "label": "Monthly"
                         },
                         {
+                          "id": "jtJNpYg7E2wXw9mv9BEtzf",
+                          "label": "Bi-monthly"
+                        },
+                        {
                           "id": "FA7SekH1aEO3pJtjugSGLA",
                           "label": "Quarterly"
+                        },
+                        {
+                          "id": "scpt9nHDfxf9gvSJdKzwpu",
+                          "label": "Semi-annually"
                         },
                         {
                           "id": "GiwsJsL2MUmmy735jGmGKA",
@@ -1558,6 +1636,10 @@
                               }
                             }
                           ]
+                        },
+                        {
+                          "id": "hqPoC1DF7cKy39f7fWKPrt",
+                          "label": "Varies by plan"
                         }
                       ]
                     }
