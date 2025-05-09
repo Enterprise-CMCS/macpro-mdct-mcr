@@ -236,10 +236,14 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
       await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+      const isPccmNo = screen.getAllByLabelText("No")[0] as HTMLInputElement;
       if (!isPccmNo.disabled) {
         await userEvent.click(isPccmNo);
       }
+      const naaarSubmissionForThisProgram = screen.getAllByLabelText(
+        "No"
+      )[1] as HTMLInputElement;
+      await userEvent.click(naaarSubmissionForThisProgram);
       const submitButton = screen.getByRole("button", { name: "Save" });
       await userEvent.click(submitButton);
     };
