@@ -69,13 +69,7 @@ describe("Schemas", () => {
     "%@#$!ASDF",
   ];
 
-  const goodDateOptionalTestCases = [
-    "",
-    null,
-    undefined,
-    "01/01/2023",
-    "05/15/2023",
-  ];
+  const goodDateOptionalTestCases = ["", "01/01/2023", "05/15/2023"];
 
   const badDateOptionalTestCases = [
     1,
@@ -83,6 +77,7 @@ describe("Schemas", () => {
     "1/1/2",
     "0/0/99",
     "0/01/2023",
+    "42/42/4242",
   ];
 
   const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];

@@ -14,6 +14,7 @@ export const EntityRow = ({
   entityType,
   verbiage,
   locked,
+  hasStandards,
   entering,
   openAddEditEntityModal,
   openDeleteEntityModal,
@@ -89,6 +90,7 @@ export const EntityRow = ({
               onClick={() => openOverlayOrDrawer(entity)}
               variant="outline"
               size="sm"
+              disabled={!hasStandards && hasStandards !== undefined}
             >
               {entering ? <Spinner size="md" /> : enterDetailsText()}
             </Button>
@@ -115,6 +117,7 @@ export interface EntityRowProps {
   verbiage: AnyObject;
   locked?: boolean;
   entering?: boolean;
+  hasStandards?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openOverlayOrDrawer?: Function;

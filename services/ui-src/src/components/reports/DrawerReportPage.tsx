@@ -400,7 +400,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 
 const sx = {
   tablePage: {
-    width: "fit-content",
+    width: "100%",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",

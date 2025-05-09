@@ -15,6 +15,7 @@ import {
   SaveReturnButton,
   BackButton,
   OverlayContext,
+  MobileTable,
 } from "components";
 // types
 import {
@@ -35,9 +36,12 @@ import {
   addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
   hasComplianceDetails,
   mapNaaarStandardEntity,
   mapNaaarStandardsData,
+  useBreakpoint,
 } from "utils";
 
 export const PlanComplianceTableOverlay = ({
@@ -56,6 +60,7 @@ export const PlanComplianceTableOverlay = ({
 }: Props) => {
   const standardKeyPrefix = planComplianceStandardKey;
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
+  const { isTablet, isMobile } = useBreakpoint();
 
   const DetailsOverlay = () => {
     const closeEntityDetailsFormOverlay = () => {
@@ -133,30 +138,17 @@ export const PlanComplianceTableOverlay = ({
 
     useEffect(() => {
       if (selectedEntity) {
-        const updatedExceptionsNonCompliance = Object.keys(
-          selectedEntity
-        ).filter(
-          (key) =>
-            key.startsWith(`${standardKeyPrefix}-`) &&
-            selectedEntity[key] !== undefined
+        setExceptionsNonCompliance(
+          getExceptionsNonComplianceKeys(selectedEntity)
         );
-        setExceptionsNonCompliance(updatedExceptionsNonCompliance);
       }
-    }, [selectedEntity, standardKeyPrefix]);
+    }, [selectedEntity]);
 
     useEffect(() => {
-      const { updatedExceptionsCount, updatedNonComplianceCount } =
-        exceptionsNonCompliance.reduce(
-          (obj, key) => {
-            if (key.endsWith("exceptionsDescription")) {
-              obj.updatedExceptionsCount++;
-            } else if (key.endsWith("nonComplianceDescription")) {
-              obj.updatedNonComplianceCount++;
-            }
-            return obj;
-          },
-          { updatedExceptionsCount: 0, updatedNonComplianceCount: 0 }
-        );
+      const {
+        exceptionsCount: updatedExceptionsCount,
+        nonComplianceCount: updatedNonComplianceCount,
+      } = getExceptionsNonComplianceCounts(exceptionsNonCompliance);
 
       setExceptionsCount(updatedExceptionsCount);
       setNonComplianceCount(updatedNonComplianceCount);
@@ -246,16 +238,21 @@ export const PlanComplianceTableOverlay = ({
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>
-          <SortableTable
-            border={true}
-            columns={columns}
-            content={content}
-            data={data}
-          />
+          {isTablet || isMobile ? (
+            <MobileTable columns={columns} data={data} />
+          ) : (
+            <SortableTable
+              border={true}
+              columns={columns}
+              content={content}
+              data={data}
+            />
+          )}
           <SaveReturnButton
             border={false}
             onClick={closeEntityDetailsOverlay}
             submitting={submitting}
+            disabledOnClick={closeEntityDetailsOverlay}
           />
         </Box>
       </Box>

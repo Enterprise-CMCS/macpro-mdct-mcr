@@ -237,6 +237,7 @@ export const mockDrawerReportPageJson = {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
+    editEntityButtonText: "Edit",
   },
   drawerForm: mockDrawerForm,
 };
@@ -330,7 +331,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
     id: "am",
     fields: [
       {
-        id: "mock-field-id",
+        id: "analysis_applicable",
         props: {
           choices: [
             {
@@ -625,13 +626,49 @@ export const mockNaaarPlanCompliancePageJson = {
           ],
         },
         table: {
-          bodyRows: [["Mock body row"]],
+          bodyRows: [["Mock body row 1"]],
           caption: "",
-          headRow: ["Mock head row"],
+          headRow: ["Mock head row 1"],
         },
         verbiage: {
-          heading: "mock plan compliance heading",
-          hint: "mock plan compliance hint",
+          heading: "mock plan compliance heading 1",
+          hint: "mock plan compliance hint 1",
+          intro: {
+            section: "",
+          },
+        },
+      },
+      {
+        form: {
+          id: "planComplianceMockForm2",
+          fields: [
+            {
+              id: "mockComplianceQuestion2",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row 2"]],
+          caption: "",
+          headRow: ["Mock head row 2"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading 2",
+          hint: "mock plan compliance hint 2",
           intro: {
             section: "",
           },
@@ -640,9 +677,22 @@ export const mockNaaarPlanCompliancePageJson = {
     ],
     childForms: [
       {
-        parentForm: "mockParentFormId",
+        parentForm: "mockParentFormId1",
         form: {
           id: "mockChildFormId1",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+      {
+        parentForm: "mockParentFormId2",
+        form: {
+          id: "mockChildFormId2",
           fields: [
             {
               id: "mockChildFormFieldId1",
@@ -721,6 +771,8 @@ export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
   },
   tableHeader: "Mock table header",
   emptyDashboardText: "No entities found",
+  enterReportText: "Enter Details",
+  editEntityButtonText: "Edit",
   enterEntityDetailsButtonText: "Mock Enter Button Text",
 };
 

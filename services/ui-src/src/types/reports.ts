@@ -251,7 +251,9 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   };
   tableHeader: string;
   emptyDashboardText: string;
-  enterEntityDetailsButtonText: string;
+  editEntityButtonText: string;
+  enterReportText?: string;
+  enterEntityDetailsButtonText?: string;
 }
 
 export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {

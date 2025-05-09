@@ -54,9 +54,3 @@ repos:
         language: system
         files: '\.tsx?$'
         pass_filenames: false
-      - id: track-todos
-        name: track-todos
-        entry: yarn track-todos
-        language: system
-        exclude: 'logs/.*'
-        pass_filenames: false

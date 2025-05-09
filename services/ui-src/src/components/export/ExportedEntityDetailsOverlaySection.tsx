@@ -13,15 +13,6 @@ import {
 } from "types";
 // utils
 import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
-// verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-
-const exportVerbiageMap: { [key in ReportType]: any } = {
-  MCPAR: mcparVerbiage,
-  MLR: mlrVerbiage,
-  NAAAR: undefined,
-};
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
@@ -33,7 +24,6 @@ export const ExportedEntityDetailsOverlaySection = ({
   return (
     <Box sx={sx.sectionHeading} {...props}>
       <ExportedSectionHeading
-        heading={exportVerbiageMap[report?.reportType as ReportType]}
         verbiage={{
           ...section.verbiage,
           intro: {
