@@ -121,7 +121,7 @@ export const AddEditReportModal = ({
       naaarSubmissionForThisProgram[0].value.startsWith("Yes")
         ? formData["naaarSubmissionDate"] ??
           formData["naaarExpectedSubmissionDate"]
-        : undefined;
+        : "";
 
     return {
       metadata: {
