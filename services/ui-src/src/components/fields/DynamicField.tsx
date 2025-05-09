@@ -145,8 +145,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
         (method: EntityShape) => {
-          const analysisApplicable = method.analysis_applicable?.[0]?.value;
-
           if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans =
               method.analysis_method_applicable_plans.filter(
@@ -158,12 +156,25 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
                 }
               );
           }
+          const analysisMethodNotUtilized =
+            method.analysis_applicable?.[0]?.value === "No";
 
-          if (
-            method.analysis_method_applicable_plans?.length === 0 ||
-            analysisApplicable === "No"
-          ) {
+          const analysisMethodUtilizedWithoutPlans =
+            method.analysis_applicable?.[0]?.value === "Yes" &&
+            method.analysis_method_applicable_plans?.length === 0;
+
+          const reportPlans = report.fieldData?.plans.filter(
+            (plan: AnyObject) => {
+              return plan.id !== selectedRecord.id;
+            }
+          );
+
+          if (analysisMethodUtilizedWithoutPlans) {
             delete method.analysis_applicable;
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          } else if (analysisMethodNotUtilized) {
+            if (reportPlans.length === 0) delete method.analysis_applicable;
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
           }
