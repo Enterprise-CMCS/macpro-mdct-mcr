@@ -115,6 +115,13 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const programIsPCCM = formData["programIsPCCM"];
+    const naaarSubmissionForThisProgram =
+      formData["naaarSubmissionForThisProgram"];
+    const naaarSubmissionDate =
+      naaarSubmissionForThisProgram[0].value.startsWith("Yes")
+        ? formData["naaarSubmissionDate"] ??
+          formData["naaarExpectedSubmissionDate"]
+        : undefined;
 
     return {
       metadata: {
@@ -126,6 +133,8 @@ export const AddEditReportModal = ({
         lastAlteredBy: full_name,
         copyFieldDataSourceId: copyFieldDataSourceId?.value,
         programIsPCCM,
+        naaarSubmissionForThisProgram,
+        naaarSubmissionDate,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
