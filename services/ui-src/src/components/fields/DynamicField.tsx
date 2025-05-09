@@ -174,6 +174,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
           } else if (analysisMethodNotUtilized) {
+            // revert not utilized analysis methods to unanswered state if there are no plans
             if (reportPlans.length === 0) delete method.analysis_applicable;
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
