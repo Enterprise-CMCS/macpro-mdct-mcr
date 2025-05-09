@@ -40,7 +40,7 @@ export const OverlayReportPage = ({
   const { verbiage, entityType, details } = route;
 
   // Context Information
-  const { isTablet, isMobile } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
     useState<boolean>(false);
@@ -71,7 +71,7 @@ export const OverlayReportPage = ({
     const hasStandards = standardEntities.length > 0;
 
     const tableHeaders = () => {
-      if (isTablet || isMobile) {
+      if (isMobile) {
         return {
           caption: verbiage.tableHeader,
           headRow: [
@@ -287,7 +287,10 @@ const sx = {
       paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
-      ".tablet &, .mobile &": {
+      color: "palette.gray_medium",
+      fontSize: "lg",
+      fontWeight: "bold",
+      ".mobile &": {
         border: "none",
       },
       "&:nth-of-type(1)": {
