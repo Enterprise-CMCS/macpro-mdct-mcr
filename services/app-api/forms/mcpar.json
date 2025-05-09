@@ -3875,16 +3875,6 @@
                 }
               },
               {
-                "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
-                }
-              },
-              {
                 "id": "plan_resolvedProgramIntegrityInvestigations",
                 "type": "number",
                 "validation": "number",
@@ -3893,16 +3883,6 @@
                   "hint": "How many program integrity investigations were resolved by the plan during the reporting year?",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
@@ -3998,16 +3978,6 @@
                       ]
                     }
                   ]
-                }
-              },
-              {
-                "id": "plan_programIntegrityReferralsPerThousandBeneficiaries",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.8 Ratio of program integrity referral to the state",
-                  "hint": "What is the ratio of program integrity referrals listed in indicator D1.X.7 made to the state during the reporting year to the number of enrollees? For number of enrollees, use the average number of individuals enrolled in the plan per month during the reporting year (reported in indicator D1.I.1). Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
