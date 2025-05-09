@@ -2772,7 +2772,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.8a State Fair Hearing requests",
-                      "hint": "Enter the total number of State Fair Hearing requests filed during the reporting year with the plan that issued an adverse benefit determination.",
+                      "hint": "Enter the total number of State Fair Hearing requests resolved during the reporting year with the plan that issued an adverse benefit determination.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
