@@ -1242,14 +1242,6 @@
                           "label": "General quantitative availability and accessibility standard"
                         },
                         {
-                          "id": "shBE5icoJ0qQV6yYwhMePg",
-                          "label": "LTSS-related standard: provider travels to the enrollee"
-                        },
-                        {
-                          "id": "L8WhTwcfDUqlXCb9kCLUcA",
-                          "label": "LTSS-related standard: enrollee travels to the provider"
-                        },
-                        {
                           "id": "aSzsso583qbijUdXJnz8CS",
                           "label": "Exception to quantitative standard"
                         }
@@ -1262,7 +1254,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C2.V.2 Measure standard",
-                      "hint": "What is the standard for your program-level indicators? Add a description."
+                      "hint": "Describe the standard (e.g., 1 provider within 30 min or 30 miles)."
                     }
                   },
                   {
@@ -1271,7 +1263,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.3 Standard type",
-                      "hint": "What is the standard type? Select one or add free text if you select “Other”.",
+                      "hint": "What is the standard type? Select one",
                       "choices": [
                         {
                           "id": "kBady0XnCUG8nxXWSHHeBg",
