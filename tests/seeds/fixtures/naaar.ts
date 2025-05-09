@@ -3,8 +3,11 @@ import {
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
+import { DEFAULT_ANALYSIS_METHODS } from "../../../services/ui-src/src/constants";
 import { dateFormat, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
+
+const analysisMethods = DEFAULT_ANALYSIS_METHODS;
 
 export const newNaaar = (stateName: string): SeedNewReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
@@ -58,43 +61,7 @@ export const newNaaar = (stateName: string): SeedNewReportShape => {
       submissionCount: 0,
     },
     fieldData: {
-      analysisMethods: [
-        {
-          id: "k9t7YoOeTOAXX3s7qF6XfN33",
-          name: "Geomapping",
-          isRequired: true,
-        },
-        {
-          id: "rklEpKXz8jDefWdCtzI7c7oQ",
-          name: "Plan Provider Directory Review",
-          isRequired: true,
-        },
-        {
-          id: "lWbEf22iUIwylv0D8f73LvNK",
-          name: "Secret Shopper: Network Participation",
-          isRequired: true,
-        },
-        {
-          id: "KPCPdKzBefj4BqwKVAmMnvUj",
-          name: "Secret Shopper: Appointment Availability",
-          isRequired: true,
-        },
-        {
-          id: "fPrkUzYKDISHITjusb9WyqTg",
-          name: "EVV Data Analysis",
-          isRequired: true,
-        },
-        {
-          id: "2wrlQNlvY8d3qZ6pwmH4pqYA",
-          name: "Review of Grievances Related to Access",
-          isRequired: true,
-        },
-        {
-          id: "j9XspYm012nfntIjHWr4mjly",
-          name: "Encounter Data Analysis",
-          isRequired: true,
-        },
-      ],
+      analysisMethods,
       stateName,
     },
   };
@@ -123,169 +90,7 @@ export const fillNaaar = (): SeedFillReportShape => {
       ],
       "reportingScenario-otherText": "",
       reportingScenario_significantChange: [],
-      analysisMethods: [
-        {
-          id: "k9t7YoOeTOAXX3s7qF6XfN33",
-          name: "Geomapping",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "rklEpKXz8jDefWdCtzI7c7oQ",
-          name: "Plan Provider Directory Review",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "lWbEf22iUIwylv0D8f73LvNK",
-          name: "Secret Shopper: Network Participation",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "KPCPdKzBefj4BqwKVAmMnvUj",
-          name: "Secret Shopper: Appointment Availability",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "fPrkUzYKDISHITjusb9WyqTg",
-          name: "EVV Data Analysis",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "2wrlQNlvY8d3qZ6pwmH4pqYA",
-          name: "Review of Grievances Related to Access",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-        {
-          id: "j9XspYm012nfntIjHWr4mjly",
-          name: "Encounter Data Analysis",
-          isRequired: true,
-          analysis_applicable: [
-            {
-              key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
-              value: "Yes",
-            },
-          ],
-          analysis_method_applicable_plans: [
-            {
-              key: `analysis_method_applicable_plans-${planId}`,
-              value: planName,
-            },
-          ],
-          analysis_method_frequency: [
-            {
-              key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
-              value: "Weekly",
-            },
-          ],
-        },
-      ],
+      analysisMethods: analysisMethodsWithPlans(planId, planName),
       plans: [
         {
           id: planId,
@@ -418,3 +223,27 @@ export const fillNaaar = (): SeedFillReportShape => {
     },
   };
 };
+
+const analysisMethodsWithPlans = (planId: string, planName: string) =>
+  analysisMethods.map((am) => ({
+    ...am,
+    analysis_applicable: [
+      {
+        key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
+        value: "Yes",
+      },
+    ],
+    analysis_method_applicable_plans: [
+      {
+        key: `analysis_method_applicable_plans-${planId}`,
+        value: planName,
+      },
+    ],
+    analysis_method_frequency: [
+      {
+        key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
+        value: "Weekly",
+      },
+    ],
+    isRequired: true,
+  }));
