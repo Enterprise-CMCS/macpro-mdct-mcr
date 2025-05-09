@@ -310,6 +310,8 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  naaarSubmissionForThisProgram: Choice[];
+  naaarSubmissionDate?: string;
   newOrExistingProgram: Choice[];
   existingProgramNameSelection?: SelectedOption;
   existingProgramNameSuggestion?: string;

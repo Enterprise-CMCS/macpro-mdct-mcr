@@ -130,6 +130,61 @@
           }
         ]
       }
+    },
+    {
+      "id": "naaarSubmissionForThisProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Did you submit or do you plan on submitting a Network Adequacy and Access Assurances (NAAAR) Report for this program for this reporting period through the MDCT online tool?",
+        "hint": "If No”, please complete the following questions under each plan.",
+        "choices": [
+          {
+            "id": "nuz4aeFfVmUR7MdeRY0S7Qzt",
+            "label": "Yes, I submitted it",
+            "children": [
+              {
+                "id": "naaarSubmissionDate",
+                "type": "date",
+                "validation": {
+                  "type": "date",
+                  "nested": true,
+                  "parentFieldName": "naaarSubmissionForThisProgram",
+                  "parentOptionId": "nuz4aeFfVmUR7MdeRY0S7Qzt"
+                },
+                "props": {
+                  "label": "NAAAR submission date",
+                  "hint": "Provide the date of the NAAAR submission."
+                }
+              }
+            ]
+          },
+          {
+            "id": "txnygqnbQCYtaNRPUJ510b2M",
+            "label": "Yes, I plan on submitting it",
+            "children": [
+              {
+                "id": "naaarExpectedSubmissionDate",
+                "type": "date",
+                "validation": {
+                  "type": "date",
+                  "nested": true,
+                  "parentFieldName": "naaarSubmissionForThisProgram",
+                  "parentOptionId": "txnygqnbQCYtaNRPUJ510b2M"
+                },
+                "props": {
+                  "label": "NAAAR submission date",
+                  "hint": "Provide the expected date of the NAAAR submission."
+                }
+              }
+            ]
+          },
+          {
+            "id": "EFqJ0pdLiSIVSp1GWWG1FGnT",
+            "label": "No"
+          }
+        ]
+      }
     }
   ]
 }
