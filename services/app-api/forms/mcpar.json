@@ -1263,7 +1263,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.3 Standard type",
-                      "hint": "What is the standard type? Select one",
+                      "hint": "What is the standard type? Select one.",
                       "choices": [
                         {
                           "id": "kBady0XnCUG8nxXWSHHeBg",
