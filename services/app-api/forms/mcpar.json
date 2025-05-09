@@ -1558,6 +1558,10 @@
                           "label": "Secret Shopper: Appointment Availability"
                         },
                         {
+                          "id": "x7YAgoGbPfMRpZWcGSnjyf",
+                          "label": "Electronic Visit Verification Data Analysis"
+                        },
+                        {
                           "id": "bmQ1FmFPGk6S1g70ntAEcw",
                           "label": "Review of Grievances Related to Access"
                         },
@@ -1617,10 +1621,6 @@
                         {
                           "id": "GiwsJsL2MUmmy735jGmGKA",
                           "label": "Annually"
-                        },
-                        {
-                          "id": "qrkmFNIPFkyuR1UcJ8vorA",
-                          "label": "Less than annually"
                         },
                         {
                           "id": "RpBmNYucH0ugYLa9RGbLdA",
