@@ -490,7 +490,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.4 Description of overpayment contract standard",
-                  "hint": "Briefly describe the overpayment standard selected in indicator B.X.2"
+                  "hint": "Briefly describe the overpayment standard selected in indicator B.X.2."
                 }
               },
               {
