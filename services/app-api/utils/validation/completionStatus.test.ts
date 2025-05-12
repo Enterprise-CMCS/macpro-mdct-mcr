@@ -233,8 +233,8 @@ describe("Completion Status Tests", () => {
               {
                 name: "Prior Authorization",
                 path: "/mcpar/state-level-indicators/prior-authorization",
-                pageType: "standard",
-                form: {
+                pageType: "drawer",
+                drawerForm: {
                   id: "bpi",
                   fields: [],
                 },
@@ -245,9 +245,7 @@ describe("Completion Status Tests", () => {
       };
       const result = await calculateCompletionStatus(testData, formTemplate);
       expect(result).toMatchObject({
-        "/mcpar/state-level-indicators": {
-          "/mcpar/state-level-indicators/prior-authorization": false,
-        },
+        "/mcpar/state-level-indicators": {},
       });
     });
 
