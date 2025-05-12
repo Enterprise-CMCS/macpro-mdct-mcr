@@ -97,6 +97,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
+  // error alert appears if analysis methods are completed without any utilized
+  useEffect(() => {
+    if (
+      completedAnalysisMethods() &&
+      !atLeastOneRequiredAnalysisMethodIsUtilized
+    ) {
+      setPageError(analysisMethodError);
+    } else {
+      setPageError(undefined);
+    }
+  }, [completedAnalysisMethods, atLeastOneRequiredAnalysisMethodIsUtilized]);
+
   const formParams = {
     route,
     report,
@@ -241,18 +253,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       name,
     });
   };
-
-  // error alert appears if analysis methods are completed without any utilized
-  useEffect(() => {
-    if (
-      completedAnalysisMethods() &&
-      !atLeastOneRequiredAnalysisMethodIsUtilized
-    ) {
-      setPageError(analysisMethodError);
-    } else {
-      setPageError(undefined);
-    }
-  }, [atLeastOneRequiredAnalysisMethodIsUtilized]);
 
   const displayErrorMessages = () => {
     // if there are no ILOS but there are plans added, display this message
