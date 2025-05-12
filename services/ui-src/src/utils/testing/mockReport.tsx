@@ -498,6 +498,7 @@ export const mockMcparReport = {
       value: "No",
     },
   ],
+  naaarSubmissionDate: "",
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
   fieldDataId: "mockFieldDataId",
