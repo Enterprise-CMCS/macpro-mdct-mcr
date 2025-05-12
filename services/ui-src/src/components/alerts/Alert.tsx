@@ -16,7 +16,7 @@ import { parseCustomHtml } from "utils";
 // assets
 import alertIcon from "assets/icons/icon_info_circle.png";
 import warningIcon from "assets/icons/icon_warning.png";
-import errorIcon from "assets/icons/icon_error_circle.png";
+import errorIcon from "assets/icons/icon_alert_circle.png";
 
 export const Alert = ({
   status,
@@ -113,9 +113,9 @@ const sx = {
   icon: {
     position: "absolute",
     color: "palette.base",
-    marginTop: "0.5rem",
+    marginTop: "0rem",
     marginBottom: "1.75rem",
-    width: "1.25rem",
+    width: "1.5rem",
   },
   contentBox: {
     marginLeft: "2rem",

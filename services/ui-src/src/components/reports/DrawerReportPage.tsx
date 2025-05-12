@@ -9,6 +9,7 @@ import {
   ReportPageIntro,
   Form,
   DeleteEntityModal,
+  ErrorAlert,
 } from "components";
 // constants
 import {
@@ -25,6 +26,7 @@ import {
   FormJson,
   EntityType,
   DrawerReportPageShape,
+  ErrorVerbiage,
 } from "types";
 // utils
 import {
@@ -44,9 +46,11 @@ import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
 import addIconSVG from "assets/icons/icon_add_gray.svg";
 import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
+import { analysisMethodError } from "verbiage/errors";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const [pageError, setPageError] = useState<ErrorVerbiage>();
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -75,6 +79,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const hasPlans = plans?.length > 0;
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
+
+  const atLeastOneRequiredAnalysisMethodIsUtilized = report?.fieldData[
+    "analysisMethods"
+  ]?.some(
+    (analysisMethod: AnyObject) =>
+      analysisMethod.analysis_applicable?.[0]?.value === "Yes"
+  );
 
   // check if user has completed default analysis methods (NAAAR)
   const completedAnalysisMethods = () => {
@@ -231,6 +242,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     });
   };
 
+  // error alert appears if analysis methods are completed without any utilized
+  useEffect(() => {
+    if (
+      completedAnalysisMethods() &&
+      !atLeastOneRequiredAnalysisMethodIsUtilized
+    ) {
+      setPageError(analysisMethodError);
+    } else {
+      setPageError(undefined);
+    }
+  }, [atLeastOneRequiredAnalysisMethodIsUtilized]);
+
   const displayErrorMessages = () => {
     // if there are no ILOS but there are plans added, display this message
     if (reportingOnIlos && !hasIlos && entities.length > 0) {
@@ -263,12 +286,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       leftIcon={
         <Image
           sx={sx.buttonIcons}
-          src={completedAnalysisMethods() ? addIconWhite : addIconSVG}
+          src={
+            atLeastOneRequiredAnalysisMethodIsUtilized
+              ? addIconWhite
+              : addIconSVG
+          }
           alt="Add"
         />
       }
       onClick={() => openRowDrawer()}
-      disabled={!completedAnalysisMethods()}
+      disabled={!atLeastOneRequiredAnalysisMethodIsUtilized}
     >
       {verbiage.addEntityButtonText}
     </Button>
@@ -278,6 +305,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     <Box sx={sx.tablePage}>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
+      )}
+      {isAnalysisMethodsPage && (
+        <ErrorAlert error={pageError} sx={sx.pageErrorAlert} showIcon />
       )}
       {displayErrorMessages()}
       {standardForm && (
@@ -453,5 +483,9 @@ const sx = {
       marginBottom: "2rem",
       marginTop: "0",
     },
+  },
+  pageErrorAlert: {
+    marginBottom: "1.5rem",
+    background: "palette.error_lightest",
   },
 };
