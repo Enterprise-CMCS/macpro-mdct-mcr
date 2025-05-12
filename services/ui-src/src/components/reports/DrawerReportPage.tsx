@@ -307,7 +307,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {isAnalysisMethodsPage && (
-        <ErrorAlert error={pageError} sx={sx.pageErrorAlert} showIcon />
+        <ErrorAlert error={pageError} sxOverride={sx.pageErrorAlert} showIcon />
       )}
       {displayErrorMessages()}
       {standardForm && (
@@ -485,7 +485,6 @@ const sx = {
     },
   },
   pageErrorAlert: {
-    marginBottom: "1.5rem",
-    background: "palette.error_lightest",
+    marginBottom: "2rem",
   },
 };

@@ -24,15 +24,15 @@ export const Alert = ({
   description,
   link,
   showIcon = true,
-  ...props
+  sxOverride,
+  className,
 }: Props) => {
   return (
     <AlertRoot
       status={status}
       variant="left-accent"
-      sx={sx.root}
-      className={status}
-      {...props}
+      sx={{ ...sx.root, ...sxOverride?.root }}
+      className={className || status}
     >
       <Flex>
         {showIcon && (
