@@ -90,6 +90,7 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
       value: "No",
     },
   ],
+  naaarSubmissionDate: "",
   lastAlteredBy: "Thelonious States",
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
