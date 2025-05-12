@@ -24,6 +24,7 @@ import {
 // utils
 import {
   entityWasUpdated,
+  isPlanComplete,
   parseCustomHtml,
   translateVerbiage,
   useBreakpoint,
@@ -180,24 +181,30 @@ export const OverlayReportPage = ({
       const newEntity = {
         ...selectedEntity,
         ...enteredData,
-      };
+      } as EntityShape;
 
-      // Delete any previously entered details if plan is compliant
-      const assurances = Object.keys(newEntity).filter(
-        (key) =>
-          key.endsWith("assurance") &&
-          newEntity[key][0].value !== nonCompliantLabel
-      );
-
-      assurances.forEach((key) => {
-        const formId = key.split("_")[0];
-        const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
-          (key) => key.startsWith(formId) && !key.endsWith("assurance")
+      // Updates only for plans
+      if (entityType === EntityType.PLANS) {
+        // Delete any previously entered details if plan is compliant
+        const assurances = Object.keys(newEntity).filter(
+          (key) =>
+            key.endsWith("assurance") &&
+            newEntity[key][0].value !== nonCompliantLabel
         );
-        relatedFields.forEach((key) => {
-          delete newEntity[key];
+
+        assurances.forEach((key) => {
+          const formId = key.split("_")[0];
+          const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
+            (key) => key.startsWith(formId) && !key.endsWith("assurance")
+          );
+          relatedFields.forEach((key) => {
+            delete newEntity[key];
+          });
         });
-      });
+
+        // isComplete attribute used in API completionStatus validation
+        newEntity.isComplete = isPlanComplete(newEntity);
+      }
 
       const newEntities = [...currentEntities];
       newEntities[selectedEntityIndex] = newEntity;
@@ -311,6 +318,16 @@ const sx = {
     },
     ol: {
       paddingLeft: "1rem",
+    },
+    ul: {
+      display: "contents",
+    },
+    li: {
+      marginLeft: "2rem",
+      lineHeight: "2rem",
+      "&:first-of-type": {
+        paddingTop: "0.75rem",
+      },
     },
   },
 };

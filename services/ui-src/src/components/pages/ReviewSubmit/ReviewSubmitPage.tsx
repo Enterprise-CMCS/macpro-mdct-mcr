@@ -14,11 +14,12 @@ import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
 import { AlertTypes, AnyObject, ReportStatus, ReportType } from "types";
 // utils
-import { parseCustomHtml, useStore, utcDateToReadableDate } from "utils";
-// verbiage
-import MCPARVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
-import MLRVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
-import NAAARverbiage from "verbiage/pages/naaar/naaar-review-and-submit";
+import {
+  getReportVerbiage,
+  parseCustomHtml,
+  useStore,
+  utcDateToReadableDate,
+} from "utils";
 // assets
 import checkIcon from "assets/icons/icon_check_circle.png";
 import iconSearchDefault from "assets/icons/icon_search_blue.png";
@@ -49,20 +50,9 @@ export const ReviewSubmitPage = () => {
     id: reportId,
   };
 
-  let reviewVerbiage;
-  switch (reportType) {
-    case "MCPAR":
-      reviewVerbiage = MCPARVerbiage;
-      break;
-    case "MLR":
-      reviewVerbiage = MLRVerbiage;
-      break;
-    default:
-      // we cannot get to the review page without a report in the store, so assume the remaining type
-      reviewVerbiage = NAAARverbiage;
-  }
+  const { reviewAndSubmitVerbiage } = getReportVerbiage(report?.reportType);
 
-  const { alertBox } = reviewVerbiage;
+  const { alertBox } = reviewAndSubmitVerbiage;
 
   useEffect(() => {
     if (report?.id) {
@@ -113,7 +103,7 @@ export const ReviewSubmitPage = () => {
             name={report.submissionName || report.programName}
             date={report?.submittedOnDate}
             submittedBy={report?.submittedBy}
-            reviewVerbiage={reviewVerbiage}
+            reviewVerbiage={reviewAndSubmitVerbiage}
             stateName={report.fieldData.stateName!}
           />
         ) : (
@@ -124,7 +114,7 @@ export const ReviewSubmitPage = () => {
             onClose={onClose}
             submitting={submitting}
             isPermittedToSubmit={isPermittedToSubmit}
-            reviewVerbiage={reviewVerbiage}
+            reviewVerbiage={reviewAndSubmitVerbiage}
           />
         )}
       </Flex>

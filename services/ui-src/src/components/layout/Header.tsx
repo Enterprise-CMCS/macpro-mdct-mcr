@@ -108,6 +108,9 @@ const sx = {
     "@media print": {
       display: "none",
     },
+    ".tablet &, .mobile &": {
+      position: "static",
+    },
   },
   headerBar: {
     minHeight: "4rem",

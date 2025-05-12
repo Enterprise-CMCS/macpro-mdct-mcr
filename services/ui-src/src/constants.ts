@@ -328,7 +328,7 @@ export const GeomappingChildJson = [
                     children: [
                       {
                         id: "annualPercentMetStandard",
-                        type: "numberOptional",
+                        type: "number",
                         validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
