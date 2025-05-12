@@ -456,6 +456,21 @@
                     {
                       "id": "jlIZKSPaf0GSVGmJbRUBzg",
                       "label": "State has established a hybrid system"
+                    },
+                    {
+                      "id": "rZMeuRrGMR5viQxX79ZKKE",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "state_overpaymentStandard-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "state_overpaymentStandard"
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -475,7 +490,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.4 Description of overpayment contract standard",
-                  "hint": "Briefly describe the overpayment standard (for example, details on whether the state allows plans to retain overpayments, requires the plans to return overpayments, or administers a hybrid system) selected in indicator B.X.2."
+                  "hint": "Briefly describe the overpayment standard selected in indicator B.X.2."
                 }
               },
               {
