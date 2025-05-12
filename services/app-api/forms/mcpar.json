@@ -1539,7 +1539,7 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select \"Custom Method\" and add details.",
+                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select “Custom Method“ and add details.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
