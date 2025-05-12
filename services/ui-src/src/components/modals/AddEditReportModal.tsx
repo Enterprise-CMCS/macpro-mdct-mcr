@@ -118,9 +118,12 @@ export const AddEditReportModal = ({
     const naaarSubmissionForThisProgram =
       formData["naaarSubmissionForThisProgram"];
     const naaarSubmissionDate =
-      naaarSubmissionForThisProgram[0].value.startsWith("Yes")
-        ? formData["naaarSubmissionDate"] ??
-          formData["naaarExpectedSubmissionDate"]
+      naaarSubmissionForThisProgram[0].value === "Yes, I submitted it"
+        ? formData["naaarSubmissionDate"]
+        : "";
+    const naaarExpectedSubmissionDate =
+      naaarSubmissionForThisProgram[0].value === "Yes, I plan on submitting it"
+        ? formData["naaarExpectedSubmissionDate"]
         : "";
 
     return {
@@ -135,6 +138,7 @@ export const AddEditReportModal = ({
         programIsPCCM,
         naaarSubmissionForThisProgram,
         naaarSubmissionDate,
+        naaarExpectedSubmissionDate,
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
