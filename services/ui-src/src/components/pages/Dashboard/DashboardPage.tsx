@@ -145,6 +145,7 @@ export const DashboardPage = ({ reportType }: Props) => {
       if (report.submittedOnDate) {
         submittedOnDate = convertDateUtcToEt(report.submittedOnDate);
       }
+
       formData = {
         fieldData: {
           programName: report.programName,

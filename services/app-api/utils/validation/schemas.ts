@@ -21,6 +21,7 @@ export const metadataValidationSchema = yup.object().shape({
   programIsPCCM: radioOptional(),
   naaarSubmissionForThisProgram: radioOptional(),
   naaarSubmissionDate: yup.string(),
+  naaarExpectedSubmissionDate: yup.string(),
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.string(),
