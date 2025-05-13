@@ -233,7 +233,12 @@ describe("Completion Status Tests", () => {
               {
                 name: "Prior Authorization",
                 path: "/mcpar/state-level-indicators/prior-authorization",
+                entityType: "plans",
                 pageType: "drawer",
+                form: {
+                  id: "pa",
+                  fields: [],
+                },
                 drawerForm: {
                   id: "bpi",
                   fields: [],
