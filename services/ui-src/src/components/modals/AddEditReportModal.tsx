@@ -117,9 +117,9 @@ export const AddEditReportModal = ({
     const programIsPCCM = formData["programIsPCCM"];
     const naaarSubmissionForThisProgram =
       formData["naaarSubmissionForThisProgram"];
-    const naaarSubmissionDate = formData["naaarSubmissionDate"] ?? undefined;
+    const naaarSubmissionDate = formData["naaarSubmissionDate"] || "";
     const naaarExpectedSubmissionDate =
-      formData["naaarExpectedSubmissionDate"] ?? undefined;
+      formData["naaarExpectedSubmissionDate"] || "";
 
     return {
       metadata: {
