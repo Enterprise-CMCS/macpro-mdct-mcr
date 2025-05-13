@@ -39,7 +39,7 @@ export const ExportedReportPage = () => {
       report?.naaarSubmissionForThisProgram?.[0].value ===
       "Yes, I plan on submitting it"
     ) {
-      return `Will be submitting on ${report.naaarSubmissionDate}`;
+      return `Will be submitting on ${report.naaarExpectedSubmissionDate}`;
     }
     return;
   };

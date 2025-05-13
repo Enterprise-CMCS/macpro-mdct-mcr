@@ -499,6 +499,7 @@ export const mockMcparReport = {
     },
   ],
   naaarSubmissionDate: "",
+  naaarExpectedSubmissionDate: "",
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
   fieldDataId: "mockFieldDataId",
@@ -529,6 +530,13 @@ export const mockMcparReportCombinedData = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  newProgramName: "testProgram",
+  newOrExistingProgram: [
+    {
+      key: "newOrExistingProgram-isNewProgram",
+      value: "Add new program",
+    },
+  ],
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
