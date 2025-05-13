@@ -29,4 +29,7 @@ export const metadataValidationSchema = yup.object().shape({
   copyFieldDataSourceId: yup.string(),
   planTypeIncludedInProgram: radioOptional(),
   "planTypeIncludedInProgram-otherText": textOptional(),
+  naaarSubmissionForThisProgram: radioOptional(),
+  naaarSubmissionDate: yup.string(),
+  naaarExpectedSubmissionDate: yup.string(),
 });

@@ -256,6 +256,9 @@ export interface MCPARReportMetadata extends ReportMetadata {
   existingProgramNameSelection?: SelectedOption;
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
+  naaarSubmissionForThisProgram: Choice[];
+  naaarSubmissionDate?: string;
+  naaarExpectedSubmissionDate?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

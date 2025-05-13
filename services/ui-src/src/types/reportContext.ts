@@ -42,6 +42,9 @@ export interface ReportMetadataShape extends ReportKeys {
   existingProgramNameSelection?: SelectedOption;
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
+  naaarSubmissionForThisProgram?: Choice[];
+  naaarSubmissionDate?: string;
+  naaarExpectedSubmissionDate?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

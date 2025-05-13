@@ -82,6 +82,8 @@ const mockSelectedMcparReport = {
     ),
     combinedData: mockMcparReport.combinedData,
     programIsPCCM: mockMcparReport?.programIsPCCM,
+    naaarSubmissionForThisProgram:
+      mockMcparReport.naaarSubmissionForThisProgram,
   },
 };
 
