@@ -71,7 +71,7 @@ const modalComponent = (
 const mockSelectedMcparReport = {
   ...mockMcparReport,
   fieldData: {
-    newProgramName: mockMcparReport.programName,
+    newProgramName: mockMcparReport.newProgramName,
     newOrExistingProgram: mockMcparReport.newOrExistingProgram,
     programName: mockMcparReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
