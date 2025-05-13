@@ -456,6 +456,21 @@
                     {
                       "id": "jlIZKSPaf0GSVGmJbRUBzg",
                       "label": "State has established a hybrid system"
+                    },
+                    {
+                      "id": "rZMeuRrGMR5viQxX79ZKKE",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "state_overpaymentStandard-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "state_overpaymentStandard"
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -475,7 +490,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.4 Description of overpayment contract standard",
-                  "hint": "Briefly describe the overpayment standard (for example, details on whether the state allows plans to retain overpayments, requires the plans to return overpayments, or administers a hybrid system) selected in indicator B.X.2."
+                  "hint": "Briefly describe the overpayment standard selected in indicator B.X.2."
                 }
               },
               {
@@ -1242,14 +1257,6 @@
                           "label": "General quantitative availability and accessibility standard"
                         },
                         {
-                          "id": "shBE5icoJ0qQV6yYwhMePg",
-                          "label": "LTSS-related standard: provider travels to the enrollee"
-                        },
-                        {
-                          "id": "L8WhTwcfDUqlXCb9kCLUcA",
-                          "label": "LTSS-related standard: enrollee travels to the provider"
-                        },
-                        {
                           "id": "aSzsso583qbijUdXJnz8CS",
                           "label": "Exception to quantitative standard"
                         }
@@ -1262,7 +1269,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C2.V.2 Measure standard",
-                      "hint": "What is the standard for your program-level indicators? Add a description."
+                      "hint": "Describe the standard (e.g., 1 provider within 30 min or 30 miles)."
                     }
                   },
                   {
@@ -1271,7 +1278,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.3 Standard type",
-                      "hint": "What is the standard type? Select one or add free text if you select “Other”.",
+                      "hint": "What is the standard type? Select one.",
                       "choices": [
                         {
                           "id": "kBady0XnCUG8nxXWSHHeBg",
@@ -2772,7 +2779,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.8a State Fair Hearing requests",
-                      "hint": "Enter the total number of State Fair Hearing requests filed during the reporting year with the plan that issued an adverse benefit determination.",
+                      "hint": "Enter the total number of State Fair Hearing requests resolved during the reporting year with the plan that issued an adverse benefit determination.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3875,16 +3882,6 @@
                 }
               },
               {
-                "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
-                }
-              },
-              {
                 "id": "plan_resolvedProgramIntegrityInvestigations",
                 "type": "number",
                 "validation": "number",
@@ -3893,16 +3890,6 @@
                   "hint": "How many program integrity investigations were resolved by the plan during the reporting year?",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
@@ -3998,16 +3985,6 @@
                       ]
                     }
                   ]
-                }
-              },
-              {
-                "id": "plan_programIntegrityReferralsPerThousandBeneficiaries",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.8 Ratio of program integrity referral to the state",
-                  "hint": "What is the ratio of program integrity referrals listed in indicator D1.X.7 made to the state during the reporting year to the number of enrollees? For number of enrollees, use the average number of individuals enrolled in the plan per month during the reporting year (reported in indicator D1.I.1). Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
@@ -4562,6 +4539,33 @@
                 "props": {
                   "label": "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
                   "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
+                }
+              },
+              {
+                "id": "plan_urlForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.3 URL for Patient Access API",
+                  "hint": "Provide the URL where the plan posts Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.4 URL patient educational resources for Patient Access API",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.5 Provider Access and Payer-to-Payer API patient educational resources URL",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Provider Access and Payer-to-Payer API."
                 }
               }
             ]
