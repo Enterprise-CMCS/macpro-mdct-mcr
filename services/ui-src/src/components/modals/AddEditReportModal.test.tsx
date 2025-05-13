@@ -219,6 +219,9 @@ describe("<AddEditProgramModal />", () => {
         ...mockMcparReportStore,
       });
     });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
     const fillForm = async (form: any) => {
       const isNewProgram = screen.getByLabelText(
