@@ -304,7 +304,7 @@ describe("<AddEditProgramModal />", () => {
 
       expect(programNameField).toHaveProperty(
         "value",
-        mockMcparReport.programName
+        mockMcparReport.newProgramName
       );
       expect(startDateField).toHaveProperty(
         "value",
