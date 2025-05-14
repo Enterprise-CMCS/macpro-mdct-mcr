@@ -65,7 +65,9 @@ describe("<Header />", () => {
       render(reportComponent);
     });
     test("Report Data is visible", () => {
-      expect(screen.getByText("Program: testProgram")).toBeVisible();
+      expect(
+        screen.getByText("Program: Minnesota Senior Health Options (MSHO)")
+      ).toBeVisible();
       expect(screen.getByText("Last saved 1:58 PM")).toBeVisible();
     });
 
