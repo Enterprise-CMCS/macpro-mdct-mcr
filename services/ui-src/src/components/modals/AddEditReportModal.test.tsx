@@ -224,12 +224,15 @@ describe("<AddEditProgramModal />", () => {
     });
 
     const fillForm = async (form: any) => {
-      const isNewProgram = screen.getByLabelText(
-        "Add new program"
+      const existingProgram = screen.getByLabelText(
+        "Existing program"
       ) as HTMLInputElement;
-      await userEvent.click(isNewProgram);
-      const programNameField = form.querySelector("[name='newProgramName']")!;
-      await userEvent.type(programNameField, "fake program name");
+      await userEvent.click(existingProgram);
+      // const programName = screen.getByRole("option");
+      await userEvent.selectOptions(
+        screen.getAllByRole("combobox")[0],
+        "Minnesota Senior Health Options (MSHO)"
+      );
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
