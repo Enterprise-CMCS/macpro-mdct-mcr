@@ -2634,8 +2634,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.7b Resolved appeals related to general outpatient services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
+                      "label": "D1.IV.7b Resolved appeals related to all other general outpatient services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to all other general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
