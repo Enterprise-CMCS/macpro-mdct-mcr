@@ -137,7 +137,7 @@
       "validation": "radio",
       "props": {
         "label": "Did you submit or do you plan on submitting a Network Adequacy and Access Assurances (NAAAR) Report for this program for this reporting period through the MDCT online tool?",
-        "hint": "If No”, please complete the following questions under each plan.",
+        "hint": "If “No”, please complete the following questions under each plan.",
         "choices": [
           {
             "id": "nuz4aeFfVmUR7MdeRY0S7Qzt",
