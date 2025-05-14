@@ -470,12 +470,12 @@ export const mockMcparReport = {
   ...mockReportKeys,
   reportType: "MCPAR",
   formTemplate: mockReportJson,
-  programName: "testProgram",
-  newProgramName: "testProgram",
+  programName: "",
+  newProgramName: "",
   newOrExistingProgram: [
     {
-      key: "newOrExistingProgram-isNewProgram",
-      value: "Add new program",
+      key: "newOrExistingProgram-isExistingProgram",
+      value: "Existing program",
     },
   ],
   status: ReportStatus.NOT_STARTED,
