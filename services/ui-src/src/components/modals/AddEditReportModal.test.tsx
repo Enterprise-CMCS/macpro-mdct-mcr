@@ -287,8 +287,8 @@ describe("<AddEditProgramModal />", () => {
         "[name='newOrExistingProgram']"
       )!;
 
-      expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
-      expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
+      expect(newOrExistingProgram[0]).toHaveProperty("checked", true);
+      expect(newOrExistingProgram[1]).toHaveProperty("checked", false);
 
       // yoy copy and pccm fields are disabled
       expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
