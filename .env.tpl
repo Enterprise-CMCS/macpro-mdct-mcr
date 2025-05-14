@@ -47,4 +47,12 @@ TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD 
 TEST_STATE=DC
 TEST_STATE_NAME="District of Columbia"
 
+# db:seed
+SEED_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_EMAIL
+SEED_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_PASSWORD # pragma: allowlist secret
+SEED_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_STATE_USER_EMAIL
+SEED_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_STATE_USER_PASSWORD # pragma: allowlist secret
+SEED_STATE=op://mdct_devs/mcr_secrets/SEED_STATE
+SEED_STATE_NAME=op://mdct_devs/mcr_secrets/SEED_STATE_NAME
+
 SERVERLESS_LICENSE_KEY=op://mdct_devs/mcr_secrets/SERVERLESS_LICENSE_KEY
