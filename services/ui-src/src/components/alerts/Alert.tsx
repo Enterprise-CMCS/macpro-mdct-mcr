@@ -31,7 +31,7 @@ export const Alert = ({
     <AlertRoot
       status={status}
       variant="left-accent"
-      sx={{ ...sx.root, ...sxOverride?.root }}
+      sx={{ ...sx.root, ...sxOverride }}
       className={className || status}
     >
       <Flex>

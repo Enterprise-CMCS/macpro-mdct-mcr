@@ -28,7 +28,7 @@ export const ErrorAlert = ({
             description={error.description}
             showIcon={showIcon}
             className={variant}
-            sxOverride={{ ...sx, ...sxOverride }}
+            sxOverride={{ ...sx.root, ...sxOverride }}
           />
         )}
       </Collapse>
