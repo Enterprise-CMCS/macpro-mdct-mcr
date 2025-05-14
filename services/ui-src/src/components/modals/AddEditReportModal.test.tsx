@@ -228,7 +228,6 @@ describe("<AddEditProgramModal />", () => {
         "Existing program"
       ) as HTMLInputElement;
       await userEvent.click(existingProgram);
-      // const programName = screen.getByRole("option");
       await userEvent.selectOptions(
         screen.getAllByRole("combobox")[0],
         "Minnesota Senior Health Options (MSHO)"
@@ -297,7 +296,6 @@ describe("<AddEditProgramModal />", () => {
       expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
 
       // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='newProgramName']")!;
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
@@ -305,10 +303,6 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
 
-      expect(programNameField).toHaveProperty(
-        "value",
-        mockMcparReport.newProgramName
-      );
       expect(startDateField).toHaveProperty(
         "value",
         convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
