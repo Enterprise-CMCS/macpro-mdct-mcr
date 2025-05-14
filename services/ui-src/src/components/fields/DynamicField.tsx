@@ -180,6 +180,11 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             delete method.analysis_method_frequency;
           }
 
+          if ("custom_analysis_method_name" in method) {
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          }
+
           return method;
         }
       );
