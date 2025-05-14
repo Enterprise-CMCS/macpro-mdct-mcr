@@ -163,7 +163,9 @@ describe("<SortableDashboardTable />", () => {
           })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("gridcell", { name: "testProgram" })[0]
+          screen.getAllByRole("gridcell", {
+            name: "Minnesota Senior Health Options (MSHO)",
+          })[0]
         ).toBeVisible();
         expect(
           screen.queryByText(mcparVerbiage.body.empty)

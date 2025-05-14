@@ -471,7 +471,7 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "Minnesota Senior Health Options (MSHO)",
-  newProgramName: "",
+  newProgramName: "Minnesota Senior Health Options (MSHO)",
   newOrExistingProgram: [
     {
       key: "newOrExistingProgram-isExistingProgram",
