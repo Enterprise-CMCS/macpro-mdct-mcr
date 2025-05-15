@@ -279,8 +279,11 @@ export const ChoiceListField = ({
   const parsedHint = hint && parseCustomHtml(hint);
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
-  const labelText =
-    label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const labelText = label
+    ? styleAsOptional
+      ? labelTextWithOptional(label)
+      : parseCustomHtml(label)
+    : "";
 
   return (
     <Box

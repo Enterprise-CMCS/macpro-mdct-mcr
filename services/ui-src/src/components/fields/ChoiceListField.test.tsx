@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceListField, ReportContext } from "components";
@@ -69,11 +75,12 @@ const RadioComponentWithNestedChildren = (
   />
 );
 
-const RadioComponent = (
+const RadioComponent = (styleAsOptional = false) => (
   <ChoiceListField
     choices={mockChoices}
-    label="Radio example"
+    label="<b>Radio example</b>"
     name="radioField"
+    styleAsOptional={styleAsOptional}
     type="radio"
   />
 );
@@ -82,9 +89,33 @@ describe("<ChoiceListField />", () => {
   describe("Test ChoiceListField component rendering", () => {
     test("ChoiceList should render a normal Radiofield that doesn't have children", () => {
       mockGetValues([]);
-      render(RadioComponent);
+      render(RadioComponent());
       expect(screen.getByText("Choice 1")).toBeVisible();
       expect(screen.getByText("Choice 2")).toBeVisible();
+    });
+
+    test("ChoiceList should render a label with html", () => {
+      mockGetValues([]);
+      render(RadioComponent());
+
+      const label = screen.getByText("Radio example");
+      expect(label.tagName).toBe("B");
+    });
+
+    test("ChoiceList should render a label with optional text", () => {
+      mockGetValues([]);
+      render(RadioComponent(true));
+
+      const legend = screen.getByRole("radiogroup", {
+        name: "Radio example (optional)",
+      });
+      const label = within(legend).getByText("Radio example");
+      const optional = within(legend).getByText("(optional)");
+
+      expect(legend).toBeVisible();
+      expect(label.tagName).toBe("B");
+      expect(optional.tagName).toBe("SPAN");
+      expect(optional).toHaveClass("optional-text");
     });
 
     test("ChoiceList should render a normal Checkbox that doesn't have children", () => {
@@ -446,7 +477,7 @@ describe("<ChoiceListField />", () => {
       mockGetValues(undefined);
 
       // Create the Radio Component
-      const wrapper = render(RadioComponent);
+      const wrapper = render(RadioComponent());
 
       const firstRadioOption = wrapper.getByRole("radio", { name: "Choice 1" });
       const secondRadioOption = wrapper.getByRole("radio", {
@@ -803,7 +834,7 @@ describe("<ChoiceListField />", () => {
 
     testA11y(CheckboxComponent);
     testA11y(CheckboxComponentWithNestedChildren);
-    testA11y(RadioComponent);
+    testA11y(RadioComponent());
     testA11y(RadioComponentWithNestedChildren);
   });
 });
