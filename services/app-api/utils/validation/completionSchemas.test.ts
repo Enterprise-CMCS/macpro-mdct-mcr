@@ -6,6 +6,7 @@ import {
   numberNotLessThanOne,
   numberNotLessThanZero,
   validNAValues,
+  dropdownOptional,
 } from "./completionSchemas";
 
 describe("Schemas", () => {
@@ -69,72 +70,74 @@ describe("Schemas", () => {
 
   const badValidNumberTestCases = ["N/A", "number", "foo"];
 
-  const testNumberSchema = (
+  const testSchema = async (
     schemaToUse: MixedSchema,
-    testCases: Array<string>,
+    testCases: Array<any>,
     expectedReturn: boolean
   ) => {
     for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
-  };
-
-  const testValidNumber = (
-    schemaToUse: MixedSchema,
-    testCases: Array<string | number>,
-    expectedReturn: boolean
-  ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
+      let test = await schemaToUse.isValid(testCase);
       expect(test).toEqual(expectedReturn);
     }
   };
 
   test("Evaluate Number Schema using number scheme", () => {
-    testNumberSchema(number(), goodNumberTestCases, true);
-    testNumberSchema(number(), badNumberTestCases, false);
+    testSchema(number(), goodNumberTestCases, true);
+    testSchema(number(), badNumberTestCases, false);
   });
 
   // testing numberNotLessThanOne scheme
   test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
-    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+    testSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testSchema(numberNotLessThanOne(), badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+    testSchema(numberNotLessThanOne(), zeroTest, false);
   });
 
   test("Test negative values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+    testSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
   });
 
   // testing numberNotLessThanZero scheme
   test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
-    testNumberSchema(
-      numberNotLessThanZero(),
-      goodPositiveNumberTestCases,
-      true
-    );
-    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+    testSchema(numberNotLessThanZero(), goodPositiveNumberTestCases, true);
+    testSchema(numberNotLessThanZero(), badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+    testSchema(numberNotLessThanZero(), zeroTest, true);
   });
 
   test("Test negative values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+    testSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
-    testNumberSchema(ratio(), goodRatioTestCases, true);
-    testNumberSchema(ratio(), badRatioTestCases, false);
+    testSchema(ratio(), goodRatioTestCases, true);
+    testSchema(ratio(), badRatioTestCases, false);
   });
 
   test("Test validNumber schema", () => {
-    testValidNumber(validNumber(), goodValidNumberTestCases, true);
-    testValidNumber(validNumber(), badValidNumberTestCases, false);
+    testSchema(validNumber(), goodValidNumberTestCases, true);
+    testSchema(validNumber(), badValidNumberTestCases, false);
+  });
+
+  test("Test DropdownOptional schema", () => {
+    const goodDropdownTestCases = [
+      undefined,
+      { label: "Select", value: "" },
+      { label: "Select", value: "Actual value" },
+    ];
+    const badDropdownTestCases = [
+      "",
+      { label: "", value: "" },
+      { label: "", value: "Actual value" },
+      1,
+      null,
+    ];
+    testSchema(dropdownOptional(), goodDropdownTestCases, true);
+    testSchema(dropdownOptional(), badDropdownTestCases, false);
   });
 });

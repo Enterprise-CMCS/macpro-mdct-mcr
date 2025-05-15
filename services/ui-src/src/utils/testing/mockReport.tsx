@@ -471,6 +471,19 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  newProgramName: "testProgram",
+  newOrExistingProgram: [
+    {
+      key: "newOrExistingProgram-existingProgram",
+      value: "Existing program",
+    },
+  ],
+  existingProgramNameSelection: [
+    {
+      key: "existingProgramNameSelection",
+      value: "testProgram",
+    },
+  ],
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
