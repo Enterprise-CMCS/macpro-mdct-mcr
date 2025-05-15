@@ -238,7 +238,7 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
       await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getAllByLabelText("No")[0] as HTMLInputElement;
+      const isPccmNo = form.querySelector("[name='programIsPCCM']");
       if (!isPccmNo.disabled) {
         await userEvent.click(isPccmNo);
       }
