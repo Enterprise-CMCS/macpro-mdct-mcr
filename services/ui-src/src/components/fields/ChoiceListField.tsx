@@ -276,24 +276,32 @@ export const ChoiceListField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-  const parsedHint = hint && parseCustomHtml(hint);
-  const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
-  const labelClass = !label ? "no-label" : "";
-  const labelText = label
-    ? styleAsOptional
+  const parsedHint = hint ? parseCustomHtml(hint) : undefined;
+  let parsedLabel = null;
+  const containerClassNames = [];
+
+  if (label) {
+    parsedLabel = styleAsOptional
       ? labelTextWithOptional(label)
-      : parseCustomHtml(label)
-    : "";
+      : parseCustomHtml(label);
+  } else {
+    containerClassNames.push("no-label");
+  }
+
+  if (nested) {
+    containerClassNames.push("nested");
+    containerClassNames.push("ds-c-choice__checkedChild");
+  }
 
   return (
     <Box
       sx={{ ...sx, ...sxOverride }}
-      className={`${nestedChildClasses} ${labelClass}`}
+      className={containerClassNames.join(" ")}
     >
       <CmsdsChoiceList
         name={name}
         type={type}
-        label={labelText || null}
+        label={parsedLabel}
         choices={formatChoices(choices)}
         hint={parsedHint}
         errorMessage={errorMessage}

@@ -14,7 +14,7 @@
       "type": "radio",
       "validation": "radio",
       "props": {
-        "label": "Is this MCPAR for an <i>existing</i> or <i>new program</i>?",
+        "label": "Is this MCPAR for an existing or new program?",
         "hint": "Select from an existing program or add a new program.",
         "choices": [
           {
