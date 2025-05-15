@@ -1,5 +1,5 @@
 // components
-import { Button, Td, Tr, Spinner } from "@chakra-ui/react";
+import { Td, Tr } from "@chakra-ui/react";
 import { Table } from "components";
 // types
 import { ReportMetadataShape, ReportType } from "types";
@@ -11,6 +11,7 @@ import {
   DashboardTableProps,
   DateFields,
   EditReportButton,
+  ActionButton,
   getStatus,
   tableBody,
 } from "./DashboardTableUtils";
@@ -39,6 +40,7 @@ export const DashboardTable = ({
           {isStateLevelUser && !report?.locked && (
             <EditReportButton
               report={report}
+              reportType={report.reportType}
               openAddEditReportModal={openAddEditReportModal}
               sxOverride={sxOverride}
             />
@@ -71,20 +73,14 @@ export const DashboardTable = ({
         )}
         {/* Action Buttons */}
         <Td sx={sxOverride.editReportButtonCell}>
-          <Button
-            variant="outline"
-            data-testid="enter-report"
-            onClick={() => enterSelectedReport(report)}
-            isDisabled={report?.archived}
-          >
-            {entering && reportId == report.id ? (
-              <Spinner size="md" />
-            ) : isStateLevelUser && !report?.locked ? (
-              "Edit"
-            ) : (
-              "View"
-            )}
-          </Button>
+          <ActionButton
+            report={report}
+            reportType={reportType}
+            reportId={reportId}
+            isStateLevelUser={isStateLevelUser}
+            entering={entering}
+            enterSelectedReport={enterSelectedReport}
+          />
         </Td>
         {isAdmin && (
           <Td>
