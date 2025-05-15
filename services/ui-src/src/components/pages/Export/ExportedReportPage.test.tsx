@@ -31,7 +31,7 @@ describe("<ExportedReportPage />", () => {
       ];
       const page = render(exportedReportPage);
       const title = page.getByText(
-        "Managed Care Program Annual Report (MCPAR) for TestState: Minnesota Senior Health Options (MSHO)"
+        "Managed Care Program Annual Report (MCPAR) for TestState: fake program"
       );
       expect(title).toBeVisible();
     });
