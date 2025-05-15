@@ -67,7 +67,6 @@ export const generateAnalysisMethodChoices = (
 
 const availableItems = (items: AnyObject[], entityType: string) => {
   const ilosFieldName = "plan_ilosUtilizationByPlan";
-  const providerTypeFieldName = "standard_coreProviderTypeCoveredByStandard";
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     if (entityType === EntityType.STANDARDS) {
@@ -83,41 +82,23 @@ const availableItems = (items: AnyObject[], entityType: string) => {
       ...item,
       label: item.name,
       checked: false,
-      ...(entityType === EntityType.ILOS
-        ? {
-            children: [
-              {
-                id: `${ilosFieldName}_${item.id}`,
-                type: "number",
-                validation: {
-                  type: "number",
-                  nested: true,
-                  parentFieldName: `${ilosFieldName}`,
-                  parentOptionId: item.id,
-                },
-                props: {
-                  decimalPlacesToRoundTo: 0,
-                },
-              },
-            ],
-          }
-        : entityType === EntityType.STANDARDS && {
-            children: [
-              {
-                id: `${providerTypeFieldName}-${item.id}-otherText`,
-                type: "text",
-                validation: {
-                  type: "textOptional",
-                  nested: true,
-                  parentFieldName: `${providerTypeFieldName}`,
-                  parentOptionId: item.id,
-                },
-                props: {
-                  label: "Specialist details (optional)",
-                },
-              },
-            ],
-          }),
+      ...(entityType === EntityType.ILOS && {
+        children: [
+          {
+            id: `${ilosFieldName}_${item.id}`,
+            type: "number",
+            validation: {
+              type: "number",
+              nested: true,
+              parentFieldName: `${ilosFieldName}`,
+              parentOptionId: item.id,
+            },
+            props: {
+              decimalPlacesToRoundTo: 0,
+            },
+          },
+        ],
+      }),
     });
   });
   return updatedItemChoices;

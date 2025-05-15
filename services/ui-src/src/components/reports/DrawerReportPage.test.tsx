@@ -547,6 +547,107 @@ describe("<DrawerReportPage />", () => {
           expect(addCustomMethod).toBeVisible();
         });
       });
+      describe("All required analysis methods are completed but none are utilized", () => {
+        beforeEach(() => {
+          const mockNaaarReportContextWithCustomAnalysisMethods: any =
+            mockNaaarReportContext;
+
+          const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
+
+          report.fieldData["analysisMethods"] = [
+            {
+              ...DEFAULT_ANALYSIS_METHODS[0],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[1],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[2],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[3],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[4],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[5],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+            {
+              ...DEFAULT_ANALYSIS_METHODS[6],
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable",
+                  value: "No",
+                },
+              ],
+            },
+          ];
+
+          const mockCustomNaaarReportStore = {
+            ...mockNaaarReportStore,
+            report,
+            reportsByState: [report],
+          };
+
+          mockedUseStore.mockReturnValue({
+            ...mockStateUserStore,
+            ...mockCustomNaaarReportStore,
+            ...mockAnalysisMethodEntityStore,
+          });
+
+          render(drawerReportPageWithCustomEntities);
+        });
+
+        test("DrawerReportPage displays error", async () => {
+          expect(
+            screen.getByText(
+              /you must have at least one analysis method used by a program/i
+            )
+          ).toBeInTheDocument();
+        });
+        test("DrawerReportPage add standard button is disabled", async () => {
+          render(drawerReportPageWithNaaarRoutes);
+          const addStandardsButton = screen.getAllByText("Add standard")[0];
+          expect(addStandardsButton).toBeDisabled();
+        });
+      });
     });
 
     testA11y(drawerReportPageWithEntities, () => {

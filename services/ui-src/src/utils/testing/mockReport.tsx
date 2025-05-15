@@ -427,9 +427,9 @@ export const mockNaaarReportFieldData = {
   standards: [
     {
       id: "e78c5-a830-541-ac6e-d567ea7d413",
-      standard_coreProviderTypeCoveredByStandard: [
+      standard_coreProviderType: [
         {
-          key: "standard_coreProviderTypeCoveredByStandard-mock-id",
+          key: "standard_coreProviderType-mock-id",
           value: "Primary Care",
         },
       ],
