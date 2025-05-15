@@ -49,6 +49,7 @@ export const mapNaaarStandardEntity = <T>(
     .join(", ");
 
   return {
+    id: entity.id,
     count: index === undefined ? 0 : index + 1,
     provider,
     standardType,

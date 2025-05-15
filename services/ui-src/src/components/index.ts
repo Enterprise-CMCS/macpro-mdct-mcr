@@ -48,6 +48,7 @@ export { ExportedEntityDetailsOverlaySection } from "./export/ExportedEntityDeta
 export { ExportedEntityDetailsTable } from "./export/ExportedEntityDetailsTable";
 export { ExportedEntityDetailsTableRow } from "./export/ExportedEntityDetailsTableRow";
 export { ExportedPlanOverlayReportSection } from "./export/ExportedPlanOverlayReportSection";
+export { ExportedPlanComplianceCard } from "./export/ExportedPlanComplianceCard";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";

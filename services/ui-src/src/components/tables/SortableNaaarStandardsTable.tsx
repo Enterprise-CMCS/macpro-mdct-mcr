@@ -97,6 +97,7 @@ interface Props {
 }
 
 export interface NaaarStandardsTableShape {
+  id: string;
   count: number;
   provider: string;
   standardType: string;

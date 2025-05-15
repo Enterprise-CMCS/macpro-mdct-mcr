@@ -81,7 +81,7 @@ describe("<Form />", () => {
 
     const testField = form.querySelector("[name='mock-text-field']")!;
     expect(testField.hasAttribute("autocomplete")).toBeTruthy();
-    expect(testField.getAttribute("autocomplete")).toEqual("one-time-code");
+    expect(testField.getAttribute("autocomplete")).toEqual("off");
     await expect(testField).toHaveFocus();
   });
 

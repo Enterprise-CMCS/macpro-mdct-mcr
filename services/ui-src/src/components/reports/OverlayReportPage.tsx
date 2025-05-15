@@ -24,6 +24,7 @@ import {
 // utils
 import {
   entityWasUpdated,
+  isPlanComplete,
   parseCustomHtml,
   translateVerbiage,
   useBreakpoint,
@@ -39,7 +40,7 @@ export const OverlayReportPage = ({
   const { verbiage, entityType, details } = route;
 
   // Context Information
-  const { isTablet, isMobile } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
     useState<boolean>(false);
@@ -70,7 +71,7 @@ export const OverlayReportPage = ({
     const hasStandards = standardEntities.length > 0;
 
     const tableHeaders = () => {
-      if (isTablet || isMobile) {
+      if (isMobile) {
         return {
           caption: verbiage.tableHeader,
           headRow: [
@@ -180,24 +181,30 @@ export const OverlayReportPage = ({
       const newEntity = {
         ...selectedEntity,
         ...enteredData,
-      };
+      } as EntityShape;
 
-      // Delete any previously entered details if plan is compliant
-      const assurances = Object.keys(newEntity).filter(
-        (key) =>
-          key.endsWith("assurance") &&
-          newEntity[key][0].value !== nonCompliantLabel
-      );
-
-      assurances.forEach((key) => {
-        const formId = key.split("_")[0];
-        const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
-          (key) => key.startsWith(formId) && !key.endsWith("assurance")
+      // Updates only for plans
+      if (entityType === EntityType.PLANS) {
+        // Delete any previously entered details if plan is compliant
+        const assurances = Object.keys(newEntity).filter(
+          (key) =>
+            key.endsWith("assurance") &&
+            newEntity[key][0].value !== nonCompliantLabel
         );
-        relatedFields.forEach((key) => {
-          delete newEntity[key];
+
+        assurances.forEach((key) => {
+          const formId = key.split("_")[0];
+          const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
+            (key) => key.startsWith(formId) && !key.endsWith("assurance")
+          );
+          relatedFields.forEach((key) => {
+            delete newEntity[key];
+          });
         });
-      });
+
+        // isComplete attribute used in API completionStatus validation
+        newEntity.isComplete = isPlanComplete(newEntity);
+      }
 
       const newEntities = [...currentEntities];
       newEntities[selectedEntityIndex] = newEntity;
@@ -280,7 +287,10 @@ const sx = {
       paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_lighter",
-      ".tablet &, .mobile &": {
+      color: "palette.gray_medium",
+      fontSize: "lg",
+      fontWeight: "bold",
+      ".mobile &": {
         border: "none",
       },
       "&:nth-of-type(1)": {
@@ -311,6 +321,16 @@ const sx = {
     },
     ol: {
       paddingLeft: "1rem",
+    },
+    ul: {
+      display: "contents",
+    },
+    li: {
+      marginLeft: "2rem",
+      lineHeight: "2rem",
+      "&:first-of-type": {
+        paddingTop: "0.75rem",
+      },
     },
   },
 };
