@@ -22,6 +22,7 @@ import {
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
   mockAnalysisMethodEntityStore,
+  mockNaaarReportWithAnalysisMethods,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -437,6 +438,89 @@ describe("<DynamicField />", () => {
       await userEvent.click(deleteButton);
 
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    });
+
+    test("Deleting the only existing plan will revert analysis methods to unanswered state", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarAnalysisMethodsReportStore,
+        ...mockAnalysisMethodEntityStore,
+      });
+
+      const mockedReportContext = {
+        ...mockNaaarReportWithAnalysisMethodsContext,
+        updateReport: mockUpdateReport,
+        report: {
+          ...mockNaaarReportWithAnalysisMethods,
+          fieldData: {
+            ...mockNaaarReportWithAnalysisMethods.fieldData,
+            plans: [{ id: "mock-plan-id-1", name: "mock-plan-1" }],
+            analysisMethods: [
+              {
+                id: "mock-analysis-method-1-id",
+                name: "mock-analysis-method",
+                analysis_applicable: [
+                  {
+                    id: "mock-analysis-applicable",
+                    value: "Yes",
+                  },
+                ],
+                analysis_method_frequency: [
+                  {
+                    key: "mock-freq",
+                    value: "Weekly",
+                  },
+                ],
+                analysis_method_applicable_plans: [
+                  {
+                    key: "mock-plan-id-1",
+                    name: "mock-plan-1",
+                  },
+                ],
+              },
+              {
+                id: "mock-analysis-method-2-id",
+                name: "mock-analysis-method2",
+                analysis_applicable: [
+                  {
+                    id: "mock-analysis-applicable",
+                    value: "No",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+
+      await act(async () => {
+        render(dynamicFieldComponent(mockHydrationPlans, mockedReportContext));
+      });
+
+      // delete plan
+      const removeButton = screen.getByRole("button", {
+        name: "Delete mock-plan-1",
+      });
+      await userEvent.click(removeButton);
+      const deleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
+      await userEvent.click(deleteButton);
+
+      expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+
+      const updateArg = mockUpdateReport.mock.calls[0][1];
+      const updatedMethods = updateArg.fieldData.analysisMethods;
+
+      const utilizedMethod = updatedMethods.find(
+        (m: { id: string }) => m.id === "mock-analysis-method-1-id"
+      );
+      const notUtilizedMethod = updatedMethods.find(
+        (m: { id: string }) => m.id === "mock-analysis-method-2-id"
+      );
+      // reverting analysis methods to unanswered state will result in undefined
+      expect(notUtilizedMethod).toBeUndefined();
+      expect(utilizedMethod).toBeUndefined();
     });
 
     test("Admin users can't delete plans", async () => {

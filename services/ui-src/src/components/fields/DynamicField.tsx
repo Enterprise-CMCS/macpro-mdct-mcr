@@ -148,9 +148,43 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans =
               method.analysis_method_applicable_plans.filter(
-                (plan: AnyObject) => plan.key !== selectedRecord.id
+                (plan: AnyObject) => {
+                  const planKey: string = plan.key
+                    .split("analysis_method_applicable_plans-")
+                    .pop();
+                  return planKey !== selectedRecord.id;
+                }
               );
           }
+          const analysisMethodNotUtilized =
+            method.analysis_applicable?.[0]?.value === "No";
+
+          const analysisMethodUtilizedWithoutPlans =
+            method.analysis_applicable?.[0]?.value === "Yes" &&
+            method.analysis_method_applicable_plans?.length === 0;
+
+          const reportPlans = report.fieldData?.plans.filter(
+            (plan: AnyObject) => {
+              return plan.id !== selectedRecord.id;
+            }
+          );
+
+          if (analysisMethodUtilizedWithoutPlans) {
+            delete method.analysis_applicable;
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          } else if (analysisMethodNotUtilized) {
+            // revert not utilized analysis methods to unanswered state if there are no plans
+            if (reportPlans.length === 0) delete method.analysis_applicable;
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          }
+
+          if ("custom_analysis_method_name" in method) {
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+          }
+
           return method;
         }
       );
