@@ -164,7 +164,7 @@ describe("<SortableDashboardTable />", () => {
         ).toBeVisible();
         expect(
           screen.getAllByRole("gridcell", {
-            name: "Minnesota Senior Health Options (MSHO)",
+            name: "fake program",
           })[0]
         ).toBeVisible();
         expect(
