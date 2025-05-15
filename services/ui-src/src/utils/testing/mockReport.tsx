@@ -474,8 +474,14 @@ export const mockMcparReport = {
   newProgramName: "testProgram",
   newOrExistingProgram: [
     {
-      key: "newOrExistingProgram-isNewProgram",
-      value: "Add new program",
+      key: "newOrExistingProgram-existingProgram",
+      value: "Existing program",
+    },
+  ],
+  existingProgramNameSelection: [
+    {
+      key: "existingProgramNameSelection",
+      value: "testProgram",
     },
   ],
   status: ReportStatus.NOT_STARTED,

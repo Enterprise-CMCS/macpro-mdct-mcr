@@ -73,6 +73,7 @@ const mockSelectedMcparReport = {
   fieldData: {
     newProgramName: mockMcparReport.programName,
     newOrExistingProgram: mockMcparReport.newOrExistingProgram,
+    existingProgramNameSelection: mockMcparReport.existingProgramNameSelection,
     programName: mockMcparReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
       mockMcparReport.reportingPeriodEndDate
@@ -222,12 +223,12 @@ describe("<AddEditProgramModal />", () => {
     });
 
     const fillForm = async (form: any) => {
-      const isNewProgram = screen.getByLabelText(
-        "Add new program"
+      const existingProgram = screen.getByLabelText(
+        "Existing program"
       ) as HTMLInputElement;
-      await userEvent.click(isNewProgram);
-      const programNameField = form.querySelector("[name='newProgramName']")!;
-      await userEvent.type(programNameField, "fake program name");
+      if (!existingProgram.disabled) {
+        await userEvent.click(existingProgram);
+      }
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
@@ -279,8 +280,8 @@ describe("<AddEditProgramModal />", () => {
         "[name='newOrExistingProgram']"
       )!;
 
-      expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
-      expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
+      expect(newOrExistingProgram[0]).toHaveProperty("checked", true);
+      expect(newOrExistingProgram[1]).toHaveProperty("checked", false);
 
       // yoy copy and pccm fields are disabled
       expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
@@ -288,18 +289,12 @@ describe("<AddEditProgramModal />", () => {
       expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
 
       // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='newProgramName']")!;
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
       const endDateField = form.querySelector(
         "[name='reportingPeriodEndDate']"
       )!;
-
-      expect(programNameField).toHaveProperty(
-        "value",
-        mockMcparReport.programName
-      );
       expect(startDateField).toHaveProperty(
         "value",
         convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
