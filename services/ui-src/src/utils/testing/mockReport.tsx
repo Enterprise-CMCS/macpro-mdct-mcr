@@ -471,7 +471,7 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
-  newProgramName: "testProgram",
+  newProgramName: "testNewProgram",
   newOrExistingProgram: [
     {
       key: "newOrExistingProgram-isNewProgram",
