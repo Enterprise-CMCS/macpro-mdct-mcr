@@ -138,7 +138,7 @@ const sx = {
   },
   errorText: {
     color: "palette.error_dark",
-    fontSize: "0.75rem",
+    fontSize: "sm",
     marginBottom: "0.75rem",
   },
   entityFields: {
@@ -153,7 +153,7 @@ const sx = {
         whiteSpace: "break-spaces",
         "&:first-of-type": {
           fontWeight: "bold",
-          fontSize: "md",
+          fontSize: "lg",
         },
       },
     },
@@ -169,9 +169,10 @@ const sx = {
     color: "palette.primary",
   },
   enterButton: {
-    padding: 0,
-    fontWeight: "normal",
-    width: "6.5rem",
+    width: "5.75rem",
+    height: "2.5rem",
+    fontSize: "md",
+    fontWeight: "bold",
   },
   deleteButton: {
     height: "1.875rem",
