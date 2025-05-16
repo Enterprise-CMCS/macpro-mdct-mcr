@@ -163,7 +163,9 @@ describe("<SortableDashboardTable />", () => {
           })
         ).toBeVisible();
         expect(
-          screen.getAllByRole("gridcell", { name: "testProgram" })[0]
+          screen.getAllByRole("gridcell", {
+            name: "fake program",
+          })[0]
         ).toBeVisible();
         expect(
           screen.queryByText(mcparVerbiage.body.empty)

@@ -31,7 +31,7 @@ describe("<ExportedReportPage />", () => {
       ];
       const page = render(exportedReportPage);
       const title = page.getByText(
-        "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
+        "Managed Care Program Annual Report (MCPAR) for TestState: fake program"
       );
       expect(title).toBeVisible();
     });
@@ -42,7 +42,7 @@ describe("<ExportedReportPage />", () => {
       ];
       const page = render(exportedReportPage);
       const title = page.getByText(
-        "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
+        "Managed Care Program Annual Report (MCPAR) for TestState: fake program"
       );
       expect(title).toBeVisible();
     });

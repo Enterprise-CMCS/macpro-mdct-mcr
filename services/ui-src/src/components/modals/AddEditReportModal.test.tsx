@@ -71,7 +71,7 @@ const modalComponent = (
 const mockSelectedMcparReport = {
   ...mockMcparReport,
   fieldData: {
-    newProgramName: mockMcparReport.programName,
+    newProgramName: mockMcparReport.newProgramName,
     newOrExistingProgram: mockMcparReport.newOrExistingProgram,
     programName: mockMcparReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
@@ -82,6 +82,8 @@ const mockSelectedMcparReport = {
     ),
     combinedData: mockMcparReport.combinedData,
     programIsPCCM: mockMcparReport?.programIsPCCM,
+    naaarSubmissionForThisProgram:
+      mockMcparReport.naaarSubmissionForThisProgram,
   },
 };
 
@@ -236,10 +238,14 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
       await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+      const isPccmNo = form.querySelector("[name='programIsPCCM']");
       if (!isPccmNo.disabled) {
         await userEvent.click(isPccmNo);
       }
+      const naaarSubmissionForThisProgram = screen.getAllByLabelText(
+        "No"
+      )[1] as HTMLInputElement;
+      await userEvent.click(naaarSubmissionForThisProgram);
       const submitButton = screen.getByRole("button", { name: "Save" });
       await userEvent.click(submitButton);
     };
@@ -298,7 +304,7 @@ describe("<AddEditProgramModal />", () => {
 
       expect(programNameField).toHaveProperty(
         "value",
-        mockMcparReport.programName
+        mockMcparReport.newProgramName
       );
       expect(startDateField).toHaveProperty(
         "value",
