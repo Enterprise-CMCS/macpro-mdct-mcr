@@ -31,7 +31,7 @@
                 },
                 "props": {
                   "label": "Program name",
-                  "hint": "Select from an existing program name.",
+                  "hint": "Select an existing program from the options below. This list was compiled using official program names submitted to CMS by states.",
                   "options": "programList"
                 }
               },
@@ -45,7 +45,7 @@
                 },
                 "props": {
                   "label": "Rename selected program (optional)",
-                  "hint": "If you need to replace or rename the selected program, enter its new name. Note: this will not change the name of the program in this report. CMS will update it for a future report."
+                  "hint": "If you need to replace or rename the selected program, enter its new name in the blank field below. Note: this will not change the name of the program in this report. CMS will update it for a future report."
                 }
               }
             ]
