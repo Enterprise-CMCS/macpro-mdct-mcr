@@ -75,11 +75,16 @@ const RadioComponentWithNestedChildren = (
   />
 );
 
-const RadioComponent = (styleAsOptional = false) => (
+const RadioComponent = (
+  nested = false,
+  styleAsOptional = false,
+  label = "<b>Radio example</b>"
+) => (
   <ChoiceListField
     choices={mockChoices}
-    label="<b>Radio example</b>"
+    label={label}
     name="radioField"
+    nested={nested}
     styleAsOptional={styleAsOptional}
     type="radio"
   />
@@ -104,18 +109,28 @@ describe("<ChoiceListField />", () => {
 
     test("ChoiceList should render a label with optional text", () => {
       mockGetValues([]);
-      render(RadioComponent(true));
-
+      const { container } = render(RadioComponent(true, true));
       const legend = screen.getByRole("radiogroup", {
         name: "Radio example (optional)",
       });
       const label = within(legend).getByText("Radio example");
       const optional = within(legend).getByText("(optional)");
 
+      expect(container.firstChild).not.toHaveClass("no-label");
+      expect(container.firstChild).toHaveClass("nested");
+      expect(container.firstChild).toHaveClass("ds-c-choice__checkedChild");
       expect(legend).toBeVisible();
       expect(label.tagName).toBe("B");
       expect(optional.tagName).toBe("SPAN");
       expect(optional).toHaveClass("optional-text");
+    });
+
+    test("ChoiceList should render without a label", () => {
+      mockGetValues([]);
+      const { container } = render(RadioComponent(false, false, ""));
+      expect(container.firstChild).toHaveClass("no-label");
+      expect(container.firstChild).not.toHaveClass("nested");
+      expect(container.firstChild).not.toHaveClass("ds-c-choice__checkedChild");
     });
 
     test("ChoiceList should render a normal Checkbox that doesn't have children", () => {
