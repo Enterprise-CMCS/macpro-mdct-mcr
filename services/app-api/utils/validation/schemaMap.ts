@@ -194,6 +194,12 @@ export const checkbox = () =>
     .of(object({ key: text(), value: text() }));
 export const checkboxOptional = () => checkbox();
 export const checkboxSingle = () => boolean();
+export const checkboxOneOptional = () =>
+  array()
+    .max(1)
+    .of(object({ key: text(), value: text() }))
+    .notRequired()
+    .nullable();
 
 // RADIO
 export const radio = () =>
@@ -239,6 +245,7 @@ export const dateFormatRegex =
 // SCHEMA MAP
 export const schemaMap: any = {
   checkbox: checkbox(),
+  checkboxOneOptional: checkboxOneOptional(),
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
   date: date(),

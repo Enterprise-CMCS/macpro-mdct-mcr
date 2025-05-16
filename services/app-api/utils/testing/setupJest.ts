@@ -3,6 +3,12 @@ import sign from "jwt-encode";
 import { MCPARReportMetadata, MLRReportMetadata } from "../types";
 import { mockReportRoutes } from "./mocks/mockReport";
 
+// GLOBALS
+
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
+// MOCKS
+
 export const mockS3PutObjectCommandOutput = {
   $metadata: { attempts: 1 },
   ETag: "some etag value",

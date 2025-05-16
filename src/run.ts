@@ -10,7 +10,6 @@ dotenv.config();
 
 const deployedServices = [
   "database",
-  "uploads",
   "topics",
   "app-api",
   "ui",

@@ -26,8 +26,6 @@ jest.mock("../../utils/auth/authorization", () => ({
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 const mockProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },

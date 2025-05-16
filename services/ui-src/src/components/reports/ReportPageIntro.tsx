@@ -1,8 +1,13 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
-import { Alert, InstructionsAccordion, SpreadsheetWidget } from "components";
+import {
+  Alert,
+  InstructionsAccordion,
+  SpreadsheetWidget,
+  Table,
+} from "components";
 // types
-import { AlertTypes, AnyObject } from "types";
+import { AlertTypes, AnyObject, TableContentShape } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 
@@ -11,11 +16,14 @@ export const ReportPageIntro = ({
   accordion,
   reportType,
   hasIlos,
+  sxOverride,
+  table,
   ...props
 }: Props) => {
   const { section, subsection, hint, info, spreadsheet, alert } = text;
   const sectionDForIlos = subsection === "Topic XI. ILOS";
   const showAlert = sectionDForIlos ? !hasIlos : alert;
+
   return (
     <Box sx={sx.introBox} {...props}>
       <Heading as="h1" sx={sx.sectionHeading}>
@@ -24,7 +32,10 @@ export const ReportPageIntro = ({
       <Heading as="h2" sx={sx.subsectionHeading}>
         {subsection}
       </Heading>
-      {hint && <Box sx={sx.hintTextBox}>{hint}</Box>}
+      {table && (
+        <Table content={table} sx={{ ...sx.table, ...sxOverride?.table }} />
+      )}
+      {hint && <Box sx={sx.hintTextBox}>{parseCustomHtml(hint)}</Box>}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
@@ -45,6 +56,7 @@ interface Props {
   accordion?: AnyObject;
   reportType?: string;
   hasIlos?: boolean;
+  table?: TableContentShape;
   [key: string]: any;
 }
 
@@ -87,5 +99,8 @@ const sx = {
     "b, strong": {
       color: "palette.base",
     },
+  },
+  table: {
+    marginTop: "1.5rem",
   },
 };

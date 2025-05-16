@@ -1,6 +1,7 @@
 export default {
   missingEntry: {
-    noResponse: "Not answered",
+    noResponse: "Not answered; required",
+    noResponseOptional: "Not answered, optional",
     notApplicable: "Not applicable",
   },
   reportBanner: {

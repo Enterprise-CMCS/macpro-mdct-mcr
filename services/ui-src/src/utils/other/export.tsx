@@ -8,11 +8,16 @@ import {
   EntityType,
   FieldChoice,
   FormField,
+  ReportType,
 } from "types";
 // utils
-import { eligibilityGroup, maskResponseData } from "utils";
-// verbiage
-import verbiage from "verbiage/pages/mcpar/mcpar-export";
+import {
+  compareText,
+  eligibilityGroup,
+  getReportVerbiage,
+  maskResponseData,
+  otherSpecify,
+} from "utils";
 
 // checks for type of data cell to be render and calls the appropriate renderer
 export const renderDataCell = (
@@ -31,10 +36,14 @@ export const renderDataCell = (
       formField.id === "plan_ilosOfferedByPlan" &&
       !allResponseData["plans"]?.length
     ) {
+      // ilos only exists for mcpar report
+      const { exportVerbiage: mcparExportVerbiage } = getReportVerbiage(
+        ReportType.MCPAR
+      );
       entityResponseData = [
         {
           id: uuid(),
-          name: verbiage.missingEntry.missingPlans,
+          name: mcparExportVerbiage.missingEntry.missingPlans,
         },
       ];
     } else {
@@ -84,23 +93,25 @@ export const renderOverlayEntityDataCell = (
   formField: FormField,
   entityResponseData: EntityShape[],
   entityId: string,
-  parentFieldCheckedChoiceIds?: string[]
+  parentFieldCheckedChoiceIds?: string[],
+  entityIndex?: number
 ) => {
   const entity = entityResponseData.find((ent) => ent.id === entityId);
 
-  if (!entity || !entity[formField.id]) {
+  const fieldId = formField.groupId ?? formField.id;
+
+  if (!entity || !entity[fieldId]) {
+    const { exportVerbiage } = getReportVerbiage();
     const validationType =
       typeof formField.validation === "object"
         ? formField.validation.type
         : formField.validation;
 
-    if (validationType.includes("Optional")) {
-      return <Text>{verbiage.missingEntry.noResponse}, optional</Text>;
+    if (validationType.includes("Optional") || formField?.groupId) {
+      return <Text>{exportVerbiage.missingEntry.noResponseOptional}</Text>;
     } else {
       return (
-        <Text sx={sx.noResponse}>
-          {verbiage.missingEntry.noResponse}; required
-        </Text>
+        <Text sx={sx.noResponse}>{exportVerbiage.missingEntry.noResponse}</Text>
       );
     }
   }
@@ -113,10 +124,11 @@ export const renderOverlayEntityDataCell = (
       <Text>
         {renderResponseData(
           formField,
-          entity[formField.id],
+          entity[fieldId],
           entityResponseData,
           "modalOverlay",
-          notApplicable
+          notApplicable,
+          entityIndex
         )}
       </Text>
     </Box>
@@ -128,52 +140,85 @@ export const renderDrawerDataCell = (
   entityResponseData: AnyObject | undefined,
   pageType: string,
   parentFieldCheckedChoiceIds?: string[]
-) =>
-  entityResponseData?.map((entity: EntityShape, index: number) => {
+) => {
+  if (!entityResponseData) {
+    const { exportVerbiage: genericVerbiage } = getReportVerbiage();
+    return (
+      <Text sx={sx.noResponse}>{genericVerbiage.missingEntry.noResponse}</Text>
+    );
+  }
+
+  const { exportVerbiage } = getReportVerbiage(ReportType.MCPAR);
+
+  return entityResponseData.map((entity: EntityShape, index: number) => {
     const notApplicable =
       parentFieldCheckedChoiceIds &&
       !parentFieldCheckedChoiceIds?.includes(entity.id);
     const fieldResponseData = entity[formField.id];
 
     // check for nested ILOS data
-    let nestedIlosResponses = [];
+    let nestedResponses = [];
     if (
       formField.id === "plan_ilosUtilizationByPlan" &&
       fieldResponseData?.length
     ) {
-      nestedIlosResponses = getNestedIlosResponses(fieldResponseData, entity);
+      nestedResponses = getNestedIlosResponses(fieldResponseData, entity);
+    }
+
+    // check for nested analysis methods data
+    if (
+      entity?.analysis_method_frequency &&
+      entity?.analysis_method_applicable_plans
+    ) {
+      nestedResponses = getNestedAnalysisMethodsResponses(entity);
+    }
+
+    // if analysis method, render custom text
+    let utilizedText;
+    if (entity?.analysis_applicable) {
+      const radioValue = entity?.analysis_applicable[0].value;
+      const textToMatch = "Yes";
+      utilizedText = compareText(
+        textToMatch,
+        radioValue,
+        "Utilized",
+        "Not utilized"
+      );
+    } else if (entity?.custom_analysis_method_name) {
+      utilizedText = "Utilized";
     }
 
     // check if this is the ILOS topic
     const isMissingPlansMessage =
-      entity.name === verbiage.missingEntry.missingPlans;
+      entity.name === exportVerbiage.missingEntry.missingPlans;
+
+    const entityName = entity?.name || entity?.custom_analysis_method_name;
 
     return (
       <Box key={entity.id + formField.id} sx={sx.entityBox}>
         <ul>
           <li>
             <Text sx={isMissingPlansMessage ? sx.noResponse : sx.entityName}>
-              {entity.name}
+              {entityName}
             </Text>
           </li>
           <li className="entityResponse">
-            {renderResponseData(
-              formField,
-              fieldResponseData,
-              entityResponseData,
-              pageType,
-              notApplicable,
-              index
-            )}
+            {utilizedText ??
+              renderResponseData(
+                formField,
+                fieldResponseData,
+                entityResponseData,
+                pageType,
+                notApplicable,
+                index
+              )}
           </li>
           {/* If there are nested ILOS responses available, render them here */}
-          {nestedIlosResponses.length > 0
-            ? nestedIlosResponses.map((response: AnyObject, index: number) => {
+          {nestedResponses.length > 0
+            ? nestedResponses.map((response: AnyObject, index: number) => {
                 return (
                   <li key={index}>
-                    <Box sx={sx.nestedIlos}>
-                      {response.key}: {response.value}
-                    </Box>
+                    {response.key}: {response.value}
                   </li>
                 );
               })
@@ -181,20 +226,27 @@ export const renderDrawerDataCell = (
               !("plan_ilosOfferedByPlan" in entity) && (
                 // there are plans added, but no responses for its nested ILOS
                 <Text sx={sx.noResponse}>
-                  {verbiage.missingEntry.noResponse}
+                  {exportVerbiage.missingEntry.noResponse}
                 </Text>
               )}
         </ul>
       </Box>
     );
-  }) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
+  });
+};
 
-export const renderDynamicDataCell = (fieldResponseData: AnyObject) =>
-  fieldResponseData?.map((entity: EntityShape) => (
-    <Text key={entity.id} sx={sx.dynamicItem}>
-      {entity.name}
-    </Text>
-  )) ?? <Text sx={sx.noResponse}>{verbiage.missingEntry.noResponse}</Text>;
+export const renderDynamicDataCell = (fieldResponseData: AnyObject) => {
+  const { exportVerbiage } = getReportVerbiage();
+  return (
+    fieldResponseData?.map((entity: EntityShape) => (
+      <Text key={entity.id} sx={sx.dynamicItem}>
+        {entity.name}
+      </Text>
+    )) ?? (
+      <Text sx={sx.noResponse}>{exportVerbiage.missingEntry.noResponse}</Text>
+    )
+  );
+};
 
 export const renderResponseData = (
   formField: FormField,
@@ -204,6 +256,7 @@ export const renderResponseData = (
   notApplicable?: boolean,
   entityIndex?: number
 ) => {
+  const { exportVerbiage } = getReportVerbiage();
   const isChoiceListField = ["checkbox", "radio"].includes(formField.type);
   // check for and handle no response
   const hasResponse: boolean = isChoiceListField
@@ -211,8 +264,8 @@ export const renderResponseData = (
     : fieldResponseData;
 
   const missingEntryVerbiage = notApplicable
-    ? verbiage.missingEntry.notApplicable
-    : verbiage.missingEntry.noResponse;
+    ? exportVerbiage.missingEntry.notApplicable
+    : exportVerbiage.missingEntry.noResponse;
 
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 
@@ -260,9 +313,9 @@ export const renderChoiceListFieldResponse = (
     const shouldDisplayRelatedOtherTextEntry =
       choice.children?.[0]?.id.endsWith("-otherText");
     const relatedOtherTextEntry =
-      pageType === "drawer"
-        ? widerResponseData[entityIndex]?.[firstChildId]
-        : widerResponseData?.[firstChildId];
+      widerResponseData?.[entityIndex]?.[firstChildId] ??
+      widerResponseData?.[firstChildId];
+
     return (
       <Text key={choice.id} sx={sx.fieldChoice}>
         {choice.label}
@@ -345,6 +398,40 @@ export const getNestedIlosResponses = (
   });
 };
 
+export const getNestedAnalysisMethodsResponses = (entity: EntityShape) => {
+  const frequencyVal = entity.analysis_method_frequency[0].value;
+  const frequency = otherSpecify(
+    frequencyVal,
+    entity["analysis_method_frequency-otherText"]
+  );
+
+  const plans = entity?.analysis_method_applicable_plans;
+  const utilizedPlans = plans
+    .map((entity: AnyObject) => entity.value)
+    .join(", ");
+
+  const response = [
+    {
+      key: "Frequency",
+      value: frequency,
+    },
+    {
+      key: "Plan(s)",
+      value: utilizedPlans,
+    },
+  ];
+
+  const description = entity?.custom_analysis_method_description;
+  if (description) {
+    response.unshift({
+      key: "Description",
+      value: description,
+    });
+  }
+
+  return response;
+};
+
 // style object for rendered elements
 const sx = {
   fieldChoice: {
@@ -359,7 +446,6 @@ const sx = {
     ul: {
       listStyle: "none",
       ".entityResponse": {
-        paddingBottom: "0.5rem",
         p: {
           lineHeight: "1.25rem",
           fontSize: "sm",
@@ -367,7 +453,6 @@ const sx = {
       },
       p: {
         lineHeight: "1.25rem",
-        marginBottom: "0.5rem",
       },
     },
     "&:last-of-type": {
@@ -375,7 +460,6 @@ const sx = {
     },
   },
   entityName: {
-    marginBottom: "1rem",
     fontWeight: "bold",
   },
   noResponse: {
@@ -386,9 +470,5 @@ const sx = {
   },
   notApplicable: {
     color: "palette.gray_medium",
-  },
-  nestedIlos: {
-    lineHeight: "1.25rem",
-    fontSize: "sm",
   },
 };

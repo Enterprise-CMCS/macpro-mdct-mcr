@@ -1,29 +1,17 @@
 // components
 import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
 // types
-import { ReportRoute, ReportType } from "types";
+import { ReportRoute } from "types";
 // utils
-import { useStore } from "utils";
-// verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-import naaarVerbiage from "verbiage/pages/naaar/naaar-export";
+import { getReportVerbiage, useStore } from "utils";
 // assets
 import pdfIcon from "assets/icons/icon_pdf_white.png";
 
 export const ExportedReportBanner = () => {
   const { report } = useStore();
-  const reportType = (report?.reportType ||
-    localStorage.getItem("selectedReportType")) as ReportType;
 
-  const verbiageMap: { [key in ReportType]: any } = {
-    MCPAR: mcparVerbiage,
-    MLR: mlrVerbiage,
-    NAAAR: naaarVerbiage,
-  };
-
-  const verbiage = verbiageMap[reportType];
-  const { reportBanner } = verbiage;
+  const { exportVerbiage } = getReportVerbiage(report?.reportType);
+  const { reportBanner } = exportVerbiage;
 
   const routesToRender = report?.formTemplate.routes.filter(
     (route: ReportRoute) => route

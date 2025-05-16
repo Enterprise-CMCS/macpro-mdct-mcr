@@ -1,7 +1,7 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
 // components
-import { OverlayReportPage, ReportProvider } from "components";
+import { OverlayProvider, OverlayReportPage, ReportProvider } from "components";
 // utils
 import {
   RouterWrappedComponent,
@@ -10,8 +10,10 @@ import {
   mockEntityStore,
   mockOverlayReportPageJson,
   mockNaaarReportStore,
-  mockNAAREmptyFieldData,
-  mockNAARWithPlanCreated,
+  mockNaaarEmptyFieldData,
+  mockNaaarWithPlanCreated,
+  mockNaaarStandards,
+  mockOverlayReportPageVerbiage,
 } from "utils/testing/setupJest";
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -36,7 +38,7 @@ const mockNaaarWithoutPlansStore = {
   ...mockNaaarReportStore,
   report: {
     ...mockNaaarReportStore.report,
-    fieldData: mockNAAREmptyFieldData,
+    fieldData: mockNaaarEmptyFieldData,
   },
 };
 
@@ -45,7 +47,16 @@ const mockNaaarWithPlansStore = {
   ...mockNaaarReportStore,
   report: {
     ...mockNaaarReportStore.report,
-    fieldData: mockNAARWithPlanCreated,
+    fieldData: mockNaaarWithPlanCreated,
+  },
+};
+
+const mockNaaarWithPlansAndStandardsStore = {
+  ...mockEntityStore,
+  ...mockNaaarReportStore,
+  report: {
+    ...mockNaaarReportStore.report,
+    fieldData: { ...mockNaaarWithPlanCreated, standards: mockNaaarStandards },
   },
 };
 
@@ -55,10 +66,12 @@ const overlayReportPageComponent = (route: any = mockOverlayReportPageJson) => (
   <RouterWrappedComponent>
     <UserProvider>
       <ReportProvider>
-        <OverlayReportPage
-          route={route}
-          setSidebarHidden={mockSetSidebarHidden}
-        />
+        <OverlayProvider>
+          <OverlayReportPage
+            route={route}
+            setSidebarHidden={mockSetSidebarHidden}
+          />
+        </OverlayProvider>
       </ReportProvider>
     </UserProvider>
   </RouterWrappedComponent>
@@ -103,8 +116,6 @@ describe("<OverlayReportPage />", () => {
       // Check if header is visible on load - H2
       expect(h2).toBeVisible();
 
-      //TODO: Update this when logic surrounding standards has been updated!
-
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
         "This program is missing required information.";
@@ -144,8 +155,6 @@ describe("<OverlayReportPage />", () => {
       // Check if header is visible on load - H2
       expect(h2).toBeVisible();
 
-      //TODO: Update this when logic surrounding standards has been updated!
-
       // Check if missing Plans notice is displaying
       const missingInformationMessage =
         "This program is missing required information.";
@@ -168,6 +177,69 @@ describe("<OverlayReportPage />", () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockNaaarWithPlansStore,
+      });
+    });
+
+    describe("<TablePage />", () => {
+      test("renders plans table with enter button disabled", async () => {
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+        const entityTable = screen.getByRole("table");
+        const entityHeaders = screen.getByRole("row", {
+          name: `Status ${verbiage.tableHeader} Action`,
+        });
+        const entityCell = screen.getByRole("gridcell", {
+          name: `${planName} Select “Enter” to complete response.`,
+        });
+
+        expect(entityTable).toBeVisible();
+        expect(entityHeaders).toBeVisible();
+        expect(entityCell).toBeVisible();
+
+        const enterButton = screen.getByRole("button", {
+          name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+        });
+        expect(enterButton).toBeVisible();
+        expect(enterButton).toBeDisabled();
+      });
+
+      test("renders plans table for mobile with enter button disabled", async () => {
+        mockUseBreakpoint.mockReturnValue({
+          isMobile: true,
+          isTablet: false,
+        });
+        await act(async () => {
+          render(overlayReportPageComponent());
+        });
+
+        const entityTable = screen.getByRole("table");
+        const entityHeaders = screen.getByRole("row", {
+          name: `Status ${verbiage.tableHeader}`,
+        });
+        const entityCell = screen.getByRole("gridcell", {
+          name: `${verbiage.tableHeader} ${planName} ${verbiage.enterEntityDetailsButtonText}`,
+        });
+
+        expect(entityTable).toBeVisible();
+        expect(entityHeaders).toBeVisible();
+        expect(entityCell).toBeVisible();
+
+        const enterButton = screen.getByRole("button", {
+          name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+        });
+        expect(enterButton).toBeVisible();
+        expect(enterButton).toBeDisabled();
+      });
+    });
+  });
+
+  describe("Test OverlayReportPage (Plans And Standards Have Been Added)", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarWithPlansAndStandardsStore,
       });
     });
 

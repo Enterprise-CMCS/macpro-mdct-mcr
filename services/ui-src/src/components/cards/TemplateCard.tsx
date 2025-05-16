@@ -4,19 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { Card, TemplateCardAccordion } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, TemplateKeys } from "types";
 // utils
-import { getSignedTemplateUrl, useBreakpoint } from "utils";
+import { useBreakpoint } from "utils";
 // assets
 import downloadIcon from "assets/icons/icon_download.png";
 import nextIcon from "assets/icons/icon_next_white.png";
 import spreadsheetIcon from "assets/icons/icon_spreadsheet.png";
 
-const downloadTemplate = async (templateName: string) => {
-  const signedUrl = await getSignedTemplateUrl(templateName);
+const downloadTemplate = (templateName: string) => {
   const link = document.createElement("a");
   link.setAttribute("target", "_blank");
-  link.setAttribute("href", signedUrl);
+  link.setAttribute("href", TemplateKeys[templateName]);
   link.click();
   link.remove();
 };

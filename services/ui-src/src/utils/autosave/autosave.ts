@@ -5,6 +5,7 @@ import {
   EntityType,
   EntityShape,
   ReportStatus,
+  ReportType,
 } from "types";
 import { deletePlanData } from "utils/forms/priorAuthorization";
 
@@ -121,7 +122,7 @@ export const autosaveFieldData = async ({
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
-    let dataToWrite = {};
+    let dataToWrite = {} as AnyObject;
     if (
       entityContext &&
       entityContext.selectedEntity &&
@@ -158,6 +159,46 @@ export const autosaveFieldData = async ({
           fieldData: { ...fieldData, plans: filteredFieldData },
         };
       }
+    }
+
+    // NAAAR plans were edited
+    if (
+      reportKeys.reportType === ReportType.NAAAR &&
+      dataToWrite.fieldData.plans
+    ) {
+      // All plans are submitted on individual edits
+      const plans = dataToWrite.fieldData.plans;
+      const planNames = Object.fromEntries(
+        plans.map((plan: AnyObject) => [
+          `analysis_method_applicable_plans-${plan.id}`,
+          plan.name,
+        ])
+      );
+      const analysisMethods = reportFieldData?.analysisMethods || [];
+
+      for (const analysisMethod of analysisMethods) {
+        const applicablePlans = analysisMethod.analysis_method_applicable_plans;
+
+        if (applicablePlans) {
+          analysisMethod.analysis_method_applicable_plans = applicablePlans
+            .map((plan: AnyObject) => {
+              // Look up plan name
+              const name = planNames[plan.key];
+              // If plan name isn't in object, it was deleted
+              return name ? { key: plan.key, value: name } : undefined;
+            })
+            // Remove undefined plans from array
+            .filter(Boolean);
+        }
+      }
+
+      dataToWrite = {
+        ...dataToWrite,
+        fieldData: {
+          ...dataToWrite.fieldData,
+          analysisMethods,
+        },
+      };
     }
 
     await updateReport(reportKeys, dataToWrite);

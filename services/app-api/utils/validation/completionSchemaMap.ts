@@ -16,6 +16,7 @@ export const completionSchemaMap: any = {
   dateOptional: schema.dateOptional(),
   dropdown: schema.dropdown(),
   checkbox: schema.checkbox(),
+  checkboxOneOptional: schema.checkboxOneOptional(),
   checkboxOptional: schema.checkboxOptional(),
   checkboxSingle: schema.checkboxSingle(),
   radio: schema.radio(),

@@ -5,6 +5,7 @@ import "jest-axe/extend-expect";
 // GLOBALS
 
 global.React = React;
+global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 /* Mocks window.matchMedia (https://bit.ly/3Qs4ZrV) */
 Object.defineProperty(window, "matchMedia", {
@@ -21,6 +22,7 @@ Object.defineProperty(window, "matchMedia", {
 
 window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 /* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
 jest.mock("@chakra-ui/transition", () => ({

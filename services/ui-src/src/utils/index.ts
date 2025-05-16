@@ -2,7 +2,6 @@
 export * from "./api/apiLib";
 export * from "./api/providers/ApiProvider";
 export * from "./api/requestMethods/banner";
-export * from "./api/requestMethods/getTemplateUrl";
 export * from "./api/requestMethods/report";
 // auth
 export * from "./auth/UserProvider";
@@ -12,6 +11,7 @@ export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
 export * from "./forms/ilosFields";
+export * from "./forms/naaarPlanCompliance";
 export * from "./forms/priorAuthorization";
 // reports
 export * from "./reports/entities";
@@ -23,6 +23,7 @@ export * from "./statusing/getRouteStatus";
 export * from "./tables/getEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
+export * from "./tables/mapNaaarStandardsData";
 // tracking
 export * from "./tracking/tealium";
 // validation
@@ -45,3 +46,5 @@ export * from "./state/useStore";
 // text
 export * from "./text/compareText";
 export * from "./text/translate";
+// verbiage
+export * from "./verbiage/verbiage";

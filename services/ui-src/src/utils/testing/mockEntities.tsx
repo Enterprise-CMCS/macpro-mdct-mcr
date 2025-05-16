@@ -167,18 +167,50 @@ export const mockCompletedSanctionsFormattedEntityData = {
   correctiveActionPlan: "mock-answer",
 };
 
+export const mockNaaarAnalysisMethods: EntityShape[] = [
+  {
+    id: "mockAnalysis1",
+    name: "Mock Method 1",
+    analysis_method_applicable_plans: [
+      {
+        key: "mock-plan-id-1",
+        name: "mock-plan-1",
+      },
+    ],
+  },
+  {
+    id: "mockAnalysis2",
+    name: "Mock Method 2",
+    analysis_method_applicable_plans: [
+      {
+        key: "mock-plan-id-1",
+        name: "mock-plan-1",
+      },
+    ],
+  },
+];
+
 export const mockNaaarStandards: EntityShape[] = [
   {
     id: "mockStandard",
-    "standard_standardDescription-mockId": "Mock Description",
-    "standard_analysisMethodsUtilized-mockId": [
-      { key: "mockAnalysis1", value: "Mock Method 1" },
-      { key: "mockAnalysis2", value: "Mock Method 2" },
+    "standard_standardDescription-mock-plan-id-1": "Mock Description",
+    "standard_analysisMethodsUtilized-mock-plan-id-1": [
+      {
+        key: "standard_analysisMethodsUtilized-mock-plan-id-1-mockAnalysis1",
+        value: "Mock Method 1",
+      },
+      {
+        key: "standard_analysisMethodsUtilized-mock-plan-id-1-mockAnalysis2",
+        value: "Mock Method 2",
+      },
     ],
     standard_coreProviderTypeCoveredByStandard: [
-      { key: "mockProviderType-mockId", value: "Mock Provider" },
+      {
+        key: "standard_coreProviderTypeCoveredByStandard-mock-plan-id-1",
+        value: "Mock Provider",
+      },
     ],
-    "standard_coreProviderTypeCoveredByStandard-mockId-otherText":
+    "standard_coreProviderTypeCoveredByStandard-mock-plan-id-1-otherText":
       "Mock Other Provider",
     standard_standardType: [
       { key: "mockStandardType", value: "Mock Standard Type" },

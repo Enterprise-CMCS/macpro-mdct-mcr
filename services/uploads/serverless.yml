@@ -1,13 +1,10 @@
-# Refer to the README.md file in within this service directory to configure all ssm parameters required for this service.
 service: uploads
 
 frameworkVersion: "4"
 
 plugins:
-  - serverless-plugin-scripts
   - serverless-s3-local
   - serverless-stack-termination-protection
-  - serverless-iam-helper
 
 provider:
   name: aws
@@ -16,19 +13,6 @@ provider:
   stackTags:
     PROJECT: ${self:custom.project}
     SERVICE: ${self:service}
-  iam:
-    role:
-      path: /delegatedadmin/developer/
-      permissionsBoundary: !Sub arn:aws:iam::${AWS::AccountId}:policy/cms-cloud-admin/developer-boundary-policy
-      statements:
-        - Sid: ScanUploads
-          Effect: "Allow"
-          Action:
-            - s3:GetObject*
-            - s3:PutObjectTagging
-            - s3:PutObjectVersionTagging
-          Resource:
-            - !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}/*
 
 custom:
   project: "mcr"
@@ -39,18 +23,6 @@ custom:
       - main
       - val
       - production
-  scripts:
-    hooks:
-      # This script is run locally when running 'serverless deploy'
-      package:initialize: |
-        set -e
-        curl -L --output lambda_layer.zip https://github.com/CMSgov/lambda-clamav-layer/releases/download/0.7/lambda_layer.zip
-        cp lambda_layer.zip services/uploads/lambda_layer.zip
-      deploy:finalize: |
-        rm lambda_layer.zip services/uploads/lambda_layer.zip
-        aws lambda invoke --region ${self:provider.region} --function-name ${self:service}-${self:custom.stage}-avDownloadDefinitions --invocation-type Event response.json
-        cat response.json
-        rm response.json
   s3:
     directory: ./local_buckets
     cors: ./local_cors.xml
@@ -58,193 +30,13 @@ custom:
       - local-mcpar-form
       - local-mlr-form
       - local-naaar-form
-      - local-uploads # This is a little silly, but I've spent enough time on it.
         # the serverless-s3-local plugin starts any bucket with a BucketName
         # the attachments bucket has no name, so we need to make one up on our own
-layers:
-  clamDefs:
-    package:
-      artifact: lambda_layer.zip
-functions:
-  avScan:
-    handler: src/antivirus.lambdaHandleEvent
-    name: ${self:service}-${self:custom.stage}-avScan
-    timeout: 300 # 300 seconds = 5 minutes. Average scan is 25 seconds.
-    memorySize: 3008
-    layers:
-      - !Ref ClamDefsLambdaLayer
-    environment:
-      CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
-      PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
-  avDownloadDefinitions:
-    handler: src/download-definitions.lambdaHandleEvent
-    events:
-      - schedule: cron(15 1 * * ? *)
-    timeout: 300 # 300 seconds = 5 minutes
-    memorySize: 3072
-    layers:
-      - !Ref ClamDefsLambdaLayer
-    environment:
-      CLAMAV_BUCKET_NAME: !Ref ClamDefsBucket
-      PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions"
 
 resources:
   Resources:
-    AttachmentsBucket:
-      Type: AWS::S3::Bucket
+    Honk: # this is just because it won't deploy unless we have some resource being created
+      Type: AWS::SSM::Parameter
       Properties:
-        BucketName: !Sub ${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}
-        BucketEncryption:
-          ServerSideEncryptionConfiguration:
-            - ServerSideEncryptionByDefault:
-                SSEAlgorithm: AES256
-        PublicAccessBlockConfiguration:
-          BlockPublicAcls: true
-          BlockPublicPolicy: true
-          IgnorePublicAcls: true
-          RestrictPublicBuckets: true
-        VersioningConfiguration:
-          Status: Enabled
-        LoggingConfiguration:
-          DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
-          LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
-        CorsConfiguration: # Set the CORS policy
-          CorsRules:
-            - AllowedOrigins:
-                - "*"
-              AllowedHeaders:
-                - "*"
-              AllowedMethods:
-                - GET
-                - PUT
-                - POST
-                - DELETE
-                - HEAD
-              MaxAge: 3000
-              ExposedHeaders:
-                - ETag
-        NotificationConfiguration:
-          LambdaConfigurations:
-            - Event: s3:ObjectCreated:Put
-              Function: !GetAtt AvScanLambdaFunction.Arn
-      DependsOn: LambdaInvokePermission
-    AVBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: !Ref ClamDefsBucket
-        PolicyDocument:
-          Statement:
-            - Action:
-                - "s3:PutObject"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}/*
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
-                - "s3:GetBucketLocation"
-                - "s3:ListBucket"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Action:
-                - "s3:GetObject"
-              Effect: "Allow"
-              Resource: !Sub ${ClamDefsBucket.Arn}/*
-              Principal:
-                AWS: !GetAtt IamRoleLambdaExecution.Arn
-            - Sid: "AllowSSLRequestsOnly"
-              Effect: Deny
-              Action: "s3:*"
-              Principal: "*"
-              Resource:
-                - !Sub arn:aws:s3:::${ClamDefsBucket}/*
-                - !Sub arn:aws:s3:::${ClamDefsBucket}
-              Condition:
-                Bool:
-                  aws:SecureTransport: false
-    AttachmentsBucketPolicy:
-      Type: AWS::S3::BucketPolicy
-      Properties:
-        Bucket: !Ref AttachmentsBucket
-        PolicyDocument:
-          Statement:
-            - Action:
-                - "s3:GetObject"
-              Effect: "Deny"
-              Resource: !Sub ${AttachmentsBucket.Arn}/*
-              Principal: "*"
-              Condition:
-                StringNotEquals:
-                  s3:ExistingObjectTag/virusScanStatus:
-                    - "CLEAN"
-                  aws:PrincipalArn: !GetAtt IamRoleLambdaExecution.Arn
-            - Action: "s3:PutObject"
-              Effect: Deny
-              Principal: "*"
-              NotResource:
-                - !Sub ${AttachmentsBucket.Arn}/*.jpg
-                - !Sub ${AttachmentsBucket.Arn}/*.png
-                - !Sub ${AttachmentsBucket.Arn}/*.gif
-                - !Sub ${AttachmentsBucket.Arn}/*.jpeg
-                - !Sub ${AttachmentsBucket.Arn}/*.bmp
-                - !Sub ${AttachmentsBucket.Arn}/*.csv
-                - !Sub ${AttachmentsBucket.Arn}/*.doc
-                - !Sub ${AttachmentsBucket.Arn}/*.docx
-                - !Sub ${AttachmentsBucket.Arn}/*.odp
-                - !Sub ${AttachmentsBucket.Arn}/*.ods
-                - !Sub ${AttachmentsBucket.Arn}/*.odt
-                - !Sub ${AttachmentsBucket.Arn}/*.pdf
-                - !Sub ${AttachmentsBucket.Arn}/*.ppt
-                - !Sub ${AttachmentsBucket.Arn}/*.pptx
-                - !Sub ${AttachmentsBucket.Arn}/*.rtf
-                - !Sub ${AttachmentsBucket.Arn}/*.tif
-                - !Sub ${AttachmentsBucket.Arn}/*.tiff
-                - !Sub ${AttachmentsBucket.Arn}/*.txt
-                - !Sub ${AttachmentsBucket.Arn}/*.xls
-                - !Sub ${AttachmentsBucket.Arn}/*.xlsx
-                - !Sub ${AttachmentsBucket.Arn}/*.json
-            - Sid: "AllowSSLRequestsOnly"
-              Effect: Deny
-              Action: "s3:*"
-              Principal: "*"
-              Resource:
-                - !Sub arn:aws:s3:::${AttachmentsBucket}/*
-                - !Sub arn:aws:s3:::${AttachmentsBucket}
-              Condition:
-                Bool:
-                  aws:SecureTransport: false
-    LambdaInvokePermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: !GetAtt AvScanLambdaFunction.Arn
-        Action: lambda:InvokeFunction
-        Principal: s3.amazonaws.com
-        SourceAccount: !Sub ${AWS::AccountId}
-        SourceArn: !Sub arn:aws:s3:::${self:service}-${self:custom.stage}-attachments-${AWS::AccountId}
-    ClamDefsBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: !Sub ${self:service}-${self:custom.stage}-avscan-${AWS::AccountId}
-        BucketEncryption:
-          ServerSideEncryptionConfiguration:
-            - ServerSideEncryptionByDefault:
-                SSEAlgorithm: AES256
-        PublicAccessBlockConfiguration:
-          BlockPublicAcls: true
-          BlockPublicPolicy: true
-          IgnorePublicAcls: true
-          RestrictPublicBuckets: true
-        VersioningConfiguration:
-          Status: Enabled
-        LoggingConfiguration:
-          DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
-          LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
-        AccessControl: Private
-  Outputs:
-    AttachmentsBucketName: # Print out the name of the bucket that is created
-      Value: !Ref AttachmentsBucket
-    AttachmentsBucketArn:
-      Value: !GetAtt AttachmentsBucket.Arn
-    Region:
-      Value: !Sub ${AWS::Region}
+        Type: String
+        Value: "honk"

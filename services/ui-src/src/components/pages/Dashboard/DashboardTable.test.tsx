@@ -33,8 +33,6 @@ import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 

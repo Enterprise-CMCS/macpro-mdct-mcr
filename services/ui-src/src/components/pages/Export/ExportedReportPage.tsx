@@ -16,11 +16,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, useStore } from "utils";
-// verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
-import naaarVerbiage from "verbiage/pages/naaar/naaar-export";
+import { assertExhaustive, getReportVerbiage, useStore } from "utils";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
@@ -31,13 +27,7 @@ export const ExportedReportPage = () => {
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
 
-  const exportVerbiageMap: { [key in ReportType]: any } = {
-    MCPAR: mcparVerbiage,
-    MLR: mlrVerbiage,
-    NAAAR: naaarVerbiage,
-  };
-
-  const exportVerbiage = exportVerbiageMap[reportType];
+  const { exportVerbiage } = getReportVerbiage(reportType);
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
 
   return (

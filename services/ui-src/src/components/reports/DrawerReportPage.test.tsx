@@ -45,8 +45,6 @@ jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 mockedUseStore.mockReturnValue(mockStateUserStore);
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 const mockReportContextWithoutEntities = {
   ...mockMcparReportContext,
   report: undefined,

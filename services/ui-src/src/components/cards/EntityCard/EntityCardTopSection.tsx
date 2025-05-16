@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // components
-import { Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, EntityType } from "types";
 
@@ -133,6 +133,34 @@ export const EntityCardTopSection = ({
           <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
         </>
       );
+    case EntityType.STANDARDS:
+      return (
+        <>
+          <Flex>
+            <Text sx={sx.standardCount}>{formattedEntityData.count}</Text>
+            <Text sx={sx.standardHeading}>
+              {formattedEntityData.standardType}
+            </Text>
+          </Flex>
+          <Text sx={sx.standardDescription}>
+            {formattedEntityData.description}
+          </Text>
+        </>
+      );
+    case EntityType.PLANS:
+      return (
+        <>
+          <Text sx={sx.planHeading}>{formattedEntityData.heading}</Text>
+          {formattedEntityData?.questions?.map((q: AnyObject) => {
+            return (
+              <Box key={`${q.question} ${q.answer}`}>
+                <Text sx={sx.subtitle}>{q.question}</Text>
+                <Text sx={sx.subtext}>{q.answer}</Text>
+              </Box>
+            );
+          })}
+        </>
+      );
     default:
       return <Text>{entityType}</Text>;
   }
@@ -171,5 +199,26 @@ const sx = {
     "&.pdf-color": {
       color: "palette.error_darker",
     },
+  },
+  standardCount: {
+    width: "44px",
+    fontWeight: "bold",
+    fontSize: "sm",
+    color: "palette.gray_medium",
+  },
+  standardHeading: {
+    fontWeight: "bold",
+    fontSize: "md",
+  },
+  standardDescription: {
+    marginTop: "1rem",
+  },
+  planHeading: {
+    marginTop: "1rem",
+    paddingTop: "1rem",
+    borderTop: "1px solid",
+    borderTopColor: "palette.gray_lighter",
+    fontWeight: "bold",
+    fontSize: "md",
   },
 };

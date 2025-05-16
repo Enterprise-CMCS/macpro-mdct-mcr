@@ -22,6 +22,7 @@ export const ExportedEntityDetailsTableRow = ({
   showHintText = true,
   entityId,
   optional,
+  entityIndex,
 }: Props) => {
   const { report } = useStore();
   const reportData = report?.fieldData;
@@ -82,7 +83,8 @@ export const ExportedEntityDetailsTableRow = ({
             formField,
             reportData[entityType],
             entityId,
-            parentFieldCheckedChoiceIds
+            parentFieldCheckedChoiceIds,
+            entityIndex
           )}
       </Td>
     </Tr>
@@ -97,6 +99,7 @@ export interface Props {
   parentFieldCheckedChoiceIds?: string[];
   showHintText?: boolean;
   optional?: boolean;
+  entityIndex?: number;
 }
 
 const sx = {

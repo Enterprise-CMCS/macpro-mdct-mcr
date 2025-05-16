@@ -34,6 +34,7 @@ import {
   getForm,
   parseCustomHtml,
   setClearedEntriesToDefaultValue,
+  translate,
   useStore,
 } from "utils";
 
@@ -41,6 +42,7 @@ import {
 import addIcon from "assets/icons/icon_add_blue.png";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
+import addIconSVG from "assets/icons/icon_add_gray.svg";
 import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
@@ -215,14 +217,19 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   };
 
   const getDrawerTitle = () => {
+    let addOrEdit = "";
     let name =
       selectedEntity?.name ||
       selectedEntity?.custom_analysis_method_name ||
       "Add other";
     if (isReportingOnStandards && report) {
+      addOrEdit = selectedEntity ? "Edit" : "Add";
       name = report?.programName;
     }
-    return `${verbiage.drawerTitle} ${name}`;
+    return translate(verbiage.drawerTitle, {
+      action: addOrEdit,
+      name,
+    });
   };
 
   const displayErrorMessages = () => {
@@ -252,12 +259,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     : "";
   const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
 
+  const isAddStandardsDisabled =
+    !hasProviderTypes || !completedAnalysisMethods();
   const addStandardsButton = (
     <Button
       sx={sx.addStandardsButton}
-      leftIcon={<Image sx={sx.buttonIcons} src={addIconWhite} alt="Add" />}
+      leftIcon={
+        <Image
+          sx={sx.buttonIcons}
+          src={isAddStandardsDisabled ? addIconSVG : addIconWhite}
+          alt="Add"
+        />
+      }
       onClick={() => openRowDrawer()}
-      disabled={!hasProviderTypes || !completedAnalysisMethods()}
+      disabled={isAddStandardsDisabled}
     >
       {verbiage.addEntityButtonText}
     </Button>
@@ -385,7 +400,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 
 const sx = {
   tablePage: {
-    width: "fit-content",
+    width: "100%",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",

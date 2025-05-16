@@ -4,6 +4,7 @@ import {
   mockNaaarStandardsPageJson,
 } from "utils/testing/mockForm";
 import {
+  availableAnalysisMethods,
   generateAddEntityDrawerItemFields,
   generateAnalysisMethodChoices,
   generateDrawerItemFields,
@@ -192,5 +193,42 @@ describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with cust
   );
   it("should generate checkboxes per each available plan", () => {
     expect(result.fields[3].props?.choices.length).toBe(2);
+  });
+});
+
+describe("availableAnalysisMethods for NAAAR plan compliance", () => {
+  it("should return the updated item choices", () => {
+    const mockObjectId =
+      "planCompliance43868_standard-id-nonComplianceAnalyses";
+    const mockItems = [
+      { id: "mockUUID1", name: "MockItem1" },
+      { id: "mockUUID2", name: "MockItem2" },
+    ];
+    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    expect(result).toEqual([
+      {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1",
+        label: "MockItem1",
+      },
+      {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID2",
+        label: "MockItem2",
+      },
+    ]);
+  });
+  it("should append a child form if the item is Geomapping", () => {
+    const mockObjectId =
+      "planCompliance43868_standard-id-nonComplianceAnalyses";
+    const mockItems = [
+      { id: "mockUUID1", name: "Geomapping" },
+      { id: "mockUUID2", name: "MockItem2" },
+    ];
+    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    expect(Object.prototype.hasOwnProperty.call(result[0], "children")).toBe(
+      true
+    );
+    expect(Object.prototype.hasOwnProperty.call(result[1], "children")).toBe(
+      false
+    );
   });
 });

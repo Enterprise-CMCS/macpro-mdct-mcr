@@ -50,7 +50,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
 };
 
 export interface Props {
-  heading: string;
+  heading?: string;
   verbiage?: ReportPageVerbiage;
 }
 

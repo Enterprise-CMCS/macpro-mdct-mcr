@@ -184,6 +184,107 @@ describe("autosaveFieldData", () => {
   });
 });
 
+it("should handle NAAAR plans use case", async () => {
+  const planFields = [
+    {
+      name: "plans",
+      type: "dynamic",
+      value: [
+        {
+          id: "mockPlanId",
+          name: "New Plan Name",
+        },
+      ],
+      hydrationValue: [
+        {
+          id: "mockPlanId",
+          name: "New Plan Name",
+        },
+      ],
+      overrideCheck: true,
+    },
+  ];
+  const reportWithAnalysisMethods = {
+    id: "reportId",
+    reportType: "NAAAR",
+    fieldData: {
+      plans: [
+        {
+          id: "mockPlanId",
+          name: "Old Plan Name",
+        },
+      ],
+      analysisMethods: [
+        {
+          id: "mockAnalysisMethod-plan",
+          analysis_method_applicable_plans: [
+            {
+              key: "analysis_method_applicable_plans-mockPlanId",
+              value: "Old Plan Name",
+            },
+          ],
+        },
+        {
+          id: "mockAnalysisMethod-badPlan",
+          analysis_method_applicable_plans: [
+            {
+              key: "analysis_method_applicable_plans-badPlanId",
+              value: "Bad Plan Name",
+            },
+          ],
+        },
+        {
+          id: "mockAnalysisMethod-noPlan",
+        },
+      ],
+    },
+    updateReport: jest.fn().mockResolvedValue(true),
+  };
+  mockTrigger.mockResolvedValue(true);
+  await autosaveFieldData({
+    form: mockForm,
+    fields: planFields,
+    report: reportWithAnalysisMethods,
+    user,
+  });
+  expect(mockForm.trigger).toHaveBeenCalledWith("plans");
+  expect(reportWithAnalysisMethods.updateReport).toHaveBeenCalledWith(
+    { reportType: "NAAAR", id: "reportId", state: "MN" },
+    {
+      metadata: {
+        status: "In progress",
+        lastAlteredBy: "stateuser@test.com",
+      },
+      fieldData: {
+        plans: [
+          {
+            id: "mockPlanId",
+            name: "New Plan Name",
+          },
+        ],
+        analysisMethods: [
+          {
+            id: "mockAnalysisMethod-plan",
+            analysis_method_applicable_plans: [
+              {
+                key: "analysis_method_applicable_plans-mockPlanId",
+                value: "New Plan Name",
+              },
+            ],
+          },
+          {
+            id: "mockAnalysisMethod-badPlan",
+            analysis_method_applicable_plans: [],
+          },
+          {
+            id: "mockAnalysisMethod-noPlan",
+          },
+        ],
+      },
+    }
+  );
+});
+
 describe("ifFieldWasUpdated", () => {
   it("should return 2 if dynamic field has value and is different from hydrationValue", () => {
     const dynamicField = {

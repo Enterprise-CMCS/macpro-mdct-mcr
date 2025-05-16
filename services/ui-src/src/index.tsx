@@ -15,12 +15,6 @@ import theme from "styles/theme";
 import "./styles/index.scss";
 
 Amplify.configure({
-  Storage: {
-    S3: {
-      region: config.s3.REGION,
-      bucket: config.s3.BUCKET,
-    },
-  },
   Auth: {
     Cognito: {
       userPoolId: config.cognito.USER_POOL_ID,

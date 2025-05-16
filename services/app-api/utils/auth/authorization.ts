@@ -1,6 +1,8 @@
 import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
 import jwt_decode from "jwt-decode";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
+import { SimpleJwksCache } from "aws-jwt-verify/jwk";
+import { SimpleFetcher } from "aws-jwt-verify/https";
 // types
 import { APIGatewayProxyEvent, UserRoles } from "../types";
 import { logger } from "../debugging/debug-lib";
@@ -44,12 +46,22 @@ const loadCognitoValues = async () => {
 export const isAuthenticated = async (event: APIGatewayProxyEvent) => {
   const cognitoValues = await loadCognitoValues();
   // Verifier that expects valid access tokens:
-  const verifier = CognitoJwtVerifier.create({
-    userPoolId: cognitoValues.userPoolId,
-    tokenUse: "id",
-    clientId: cognitoValues.userPoolClientId,
-  });
-
+  const verifier = CognitoJwtVerifier.create(
+    {
+      userPoolId: cognitoValues.userPoolId,
+      tokenUse: "id",
+      clientId: cognitoValues.userPoolClientId,
+    },
+    {
+      jwksCache: new SimpleJwksCache({
+        fetcher: new SimpleFetcher({
+          defaultRequestOptions: {
+            responseTimeout: 6000,
+          },
+        }),
+      }),
+    }
+  );
   try {
     await verifier.verify(event?.headers?.["x-api-key"]!);
     return true;

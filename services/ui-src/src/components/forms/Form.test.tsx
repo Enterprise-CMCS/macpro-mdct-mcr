@@ -74,7 +74,6 @@ describe("<Form />", () => {
   });
 
   test("Submission fails on invalid fill; focuses first errored field", async () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const result = render(formComponent);
     const form = result.container;
     const submitButton = screen.getByRole("button");
@@ -82,7 +81,7 @@ describe("<Form />", () => {
 
     const testField = form.querySelector("[name='mock-text-field']")!;
     expect(testField.hasAttribute("autocomplete")).toBeTruthy();
-    expect(testField.getAttribute("autocomplete")).toEqual("one-time-code");
+    expect(testField.getAttribute("autocomplete")).toEqual("off");
     await expect(testField).toHaveFocus();
   });
 

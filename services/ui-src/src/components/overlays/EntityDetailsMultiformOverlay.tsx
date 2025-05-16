@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -9,18 +10,23 @@ import {
 // components
 import { Box, Button, Heading, Td, Text, Tr } from "@chakra-ui/react";
 import {
+  BackButton,
   EntityDetailsFormOverlay,
-  PlanComplianceTableOverlay,
   EntityStatusIcon,
   Form,
   InstructionsAccordion,
+  OverlayContext,
+  PlanComplianceTableOverlay,
   ReportPageIntro,
-  Table,
   SaveReturnButton,
-  BackButton,
+  Table,
 } from "components";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import {
+  nonCompliantLabel,
+  planComplianceStandardExceptionsLabel,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import {
   AnyObject,
@@ -30,10 +36,11 @@ import {
   EntityDetailsTableVerbiage,
   EntityShape,
   EntityType,
-  ScreenReaderOnlyHeaderName,
+  ReportShape,
+  ScreenReaderCustomHeaderName,
 } from "types";
 // utils
-import { translateVerbiage, useStore } from "utils";
+import { isComplianceFormComplete, translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
   childForms,
@@ -42,6 +49,7 @@ export const EntityDetailsMultiformOverlay = ({
   entityType,
   forms,
   onSubmit,
+  report,
   selectedEntity,
   setEntering,
   setSelectedEntity,
@@ -49,7 +57,8 @@ export const EntityDetailsMultiformOverlay = ({
   validateOnRender,
   verbiage,
 }: Props) => {
-  const [childFormId, setChildFormId] = useState<string | null>(null);
+  const { childFormId, selectedStandard, setChildFormId, setSelectedStandard } =
+    useContext(OverlayContext);
 
   const ChildForm = () => {
     const formObject = childForms?.find(
@@ -75,15 +84,17 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleSubmit = (enteredData: AnyObject) => {
-      const updatedEntity = { ...selectedEntity, ...enteredData };
-      setSelectedEntity(updatedEntity);
+    const handleChildSubmit = (
+      enteredData: AnyObject,
+      updatedEntity?: AnyObject
+    ) => {
+      const entity = updatedEntity ?? selectedEntity;
+      setSelectedEntity({ ...entity, ...enteredData });
       onSubmit(enteredData, false);
     };
 
     if (table) {
-      const { report } = useStore();
-      const entities = report?.fieldData["standards"] || [];
+      const standards = report?.fieldData["standards"] || [];
 
       const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
       const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
@@ -96,31 +107,92 @@ export const EntityDetailsMultiformOverlay = ({
         verbiage: translatedTableVerbiage,
       };
 
-      // TODO: Handle submit
+      const handleTableSubmit = (enteredData: AnyObject) => {
+        const standardId = selectedStandard?.entity.id;
+        const standardKeyPrefix = `${planComplianceStandardKey}-${standardId}`;
+        const allStandardKeys: string[] = [];
+        const exceptionKeys: string[] = [];
+        const nonComplianceKeys: string[] = [];
+
+        // look through existing and new keys, because we may need to delete either
+        const combinedData = { ...selectedEntity, ...enteredData };
+
+        Object.keys(combinedData || {}).forEach((key) => {
+          if (key.includes(standardKeyPrefix)) {
+            allStandardKeys.push(key);
+
+            if (key.includes(`${standardKeyPrefix}-exceptions`)) {
+              exceptionKeys.push(key);
+            } else if (key.includes(`${standardKeyPrefix}-nonCompliance`)) {
+              nonComplianceKeys.push(key);
+            }
+          }
+        });
+
+        const standardCompliance = enteredData[standardKeyPrefix] || [];
+        // No checkbox selected
+        const isCompliant = standardCompliance.length === 0;
+        const hasExceptions =
+          standardCompliance[0]?.value ===
+          planComplianceStandardExceptionsLabel;
+        const updatedData = { ...enteredData };
+
+        if (isCompliant) {
+          // delete all standard keys
+          allStandardKeys.forEach((key) => {
+            delete selectedEntity?.[key];
+            delete updatedData[key];
+          });
+        } else if (hasExceptions) {
+          // delete nonCompliance if there are exceptions
+          nonComplianceKeys.forEach((key) => {
+            delete selectedEntity?.[key];
+            delete updatedData[key];
+          });
+        } else {
+          // delete exceptions if there is nonCompliance
+          exceptionKeys.forEach((key) => {
+            delete selectedEntity?.[key];
+            delete updatedData[key];
+          });
+        }
+
+        // return new data and updated entity (in case we deleted keys from the entity)
+        handleChildSubmit(updatedData, selectedEntity);
+        setSelectedStandard(null);
+      };
+
       return (
         <PlanComplianceTableOverlay
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
-          entities={entities}
+          standards={standards}
           form={form}
-          onSubmit={() => {}}
+          onSubmit={handleTableSubmit}
           selectedEntity={selectedEntity}
           submitting={submitting}
           table={tableProps}
           validateOnRender={validateOnRender || false}
           verbiage={translatedVerbiage}
+          report={report}
         />
       );
     }
+
+    const handleFormSubmit = (enteredData: AnyObject) => {
+      handleChildSubmit(enteredData);
+      closeEntityDetailsOverlay();
+    };
 
     return (
       <EntityDetailsFormOverlay
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         selectedEntity={selectedEntity}
         submitting={submitting}
+        sxOverride={sxOverride}
         validateOnRender={validateOnRender || false}
         verbiage={translatedVerbiage}
       />
@@ -133,7 +205,7 @@ export const EntityDetailsMultiformOverlay = ({
     const [formEnableDetails, setFormEnableDetails] = useState<{
       [key: string]: boolean;
     }>({});
-    const [formHasComplianceDetails, setFormHasComplianceDetails] = useState<{
+    const [formCompletion, setFormCompletion] = useState<{
       [key: string]: boolean;
     }>({});
     const [formData, setFormData] = useState<AnyObject>({});
@@ -143,35 +215,28 @@ export const EntityDetailsMultiformOverlay = ({
     }, []);
 
     useEffect(() => {
-      const formIds = forms.map((formObject) => formObject.form.id);
       const nonCompliantForms = {} as { [key: string]: boolean };
-      const hasComplianceDetailsForms = {} as { [key: string]: boolean };
+      const completedForms = {} as { [key: string]: boolean };
 
-      formIds.forEach((formId) => {
+      for (const { form } of forms) {
+        const formId = form.id;
         const assuranceField = `${formId}_assurance`;
-        let assuranceNonCompliant = false;
-        hasComplianceDetailsForms[formId] = false;
+        let isNonCompliant = false;
+        let isFormComplete = false;
 
-        if (selectedEntity && selectedEntity[assuranceField]) {
-          // Assurance has non-compliant answer
-          assuranceNonCompliant =
+        if (selectedEntity?.[assuranceField]) {
+          // Assurance has non-compliant answer, enable Enter button
+          isNonCompliant =
             selectedEntity[assuranceField][0]?.value === nonCompliantLabel;
-
-          if (assuranceNonCompliant) {
-            const complianceDetailFields = Object.keys(selectedEntity).filter(
-              (key) => key.startsWith(formId) && selectedEntity[key] !== null
-            );
-            // Should have multiple compliance details
-            hasComplianceDetailsForms[formId] =
-              complianceDetailFields.length > 1;
-          }
+          isFormComplete = isComplianceFormComplete(selectedEntity, formId);
         }
 
-        nonCompliantForms[formId] = assuranceNonCompliant;
-      });
+        completedForms[formId] = isFormComplete;
+        nonCompliantForms[formId] = isNonCompliant;
+      }
 
       setFormEnableDetails(nonCompliantForms);
-      setFormHasComplianceDetails(hasComplianceDetailsForms);
+      setFormCompletion(completedForms);
     }, [forms]);
 
     useEffect(() => {
@@ -253,17 +318,18 @@ export const EntityDetailsMultiformOverlay = ({
       text,
     }: {
       formId: string;
-      header?: string | ScreenReaderOnlyHeaderName;
+      header?: string | ScreenReaderCustomHeaderName;
       text: string;
     }) => {
       const headerName =
         typeof header === "object" ? header.hiddenName : header;
-      const isEnabled = formEnableDetails[formId];
-      const isComplete = formHasComplianceDetails[formId];
+      const hasDetailsEnabled = formEnableDetails[formId];
+      const isComplete = formCompletion[formId];
+      const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
         case "Status": {
-          if (isEnabled) {
+          if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return (
               <EntityStatusIcon
                 entity={selectedEntity as EntityShape}
@@ -277,7 +343,7 @@ export const EntityDetailsMultiformOverlay = ({
         case "Action": {
           return (
             <Button
-              disabled={!isEnabled}
+              disabled={!hasDetailsEnabled}
               onClick={() => getChildForm(formId)}
               sx={sx.tableButton}
               variant="outline"
@@ -290,7 +356,7 @@ export const EntityDetailsMultiformOverlay = ({
           return (
             <>
               <Text sx={sx.tableData}>{text}</Text>
-              {isEnabled && !isComplete && (
+              {hasDetailsEnabled && !isComplete && (
                 <Text sx={sx.errorText}>
                   Select “Enter” to complete response.
                 </Text>
@@ -377,6 +443,7 @@ interface Props {
   forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
+  report?: ReportShape;
   selectedEntity?: EntityShape;
   setEntering: Function;
   setSelectedEntity: Function;
@@ -435,6 +502,14 @@ const sx = {
     "&:disabled": {
       borderColor: "palette.gray_lighter",
       color: "palette.gray_lighter",
+    },
+  },
+};
+
+const sxOverride = {
+  form: {
+    "legend.ds-c-label": {
+      color: "palette.gray",
     },
   },
 };

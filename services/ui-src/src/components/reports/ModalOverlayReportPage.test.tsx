@@ -331,8 +331,6 @@ describe("<ModalOverlayReportPage />", () => {
     });
 
     test("should submit the form when a State user opens an entity and adds information", async () => {
-      window.HTMLElement.prototype.scrollIntoView = function () {};
-
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockMlrEntityStartedStore,

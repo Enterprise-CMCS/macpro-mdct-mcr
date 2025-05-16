@@ -5,7 +5,7 @@ import {
   CustomHtmlElement,
   EntityType,
   FormJson,
-  ScreenReaderOnlyHeaderName,
+  ScreenReaderCustomHeaderName,
   SortableHeadRow,
   State,
   TableContentShape,
@@ -17,6 +17,13 @@ export enum ReportType {
   MLR = "MLR",
   NAAAR = "NAAAR",
 }
+
+// REPORT TEMPLATES
+export const TemplateKeys: { [key: string]: string } = {
+  MCPAR: "/templates/mcpar-reporting-template.xlsx",
+  MLR: "/templates/mlr-reporting-template.xlsx",
+  NAAAR: "/templates/naaar-reporting-template.xlsx",
+};
 
 // REPORT STRUCTURE
 
@@ -48,7 +55,8 @@ export type ReportRouteWithForm =
   | DrawerReportPageShape
   | ModalDrawerReportPageShape
   | ModalOverlayReportPageShape
-  | OverlayReportPageShape;
+  | OverlayReportPageShape
+  | PlanOverlayReportPageShape;
 
 export interface ReportPageShapeBase extends ReportRouteBase {
   children?: never;
@@ -97,7 +105,7 @@ export interface EntityDetailsMultiformShape {
   table?: {
     caption: string;
     bodyRows: string[][];
-    headRow: Array<string | ScreenReaderOnlyHeaderName>;
+    headRow: Array<string | ScreenReaderCustomHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }
@@ -137,6 +145,39 @@ export interface OverlayReportPageShape extends ReportPageShapeBase {
     childForms?: EntityDetailsChildFormShape[];
     forms: EntityDetailsMultiformShape[];
     verbiage: EntityDetailsMultiformVerbiage;
+  };
+}
+
+export interface PlanOverlayReportPageShape extends ReportPageShapeBase {
+  entityType: EntityType;
+  verbiage: PlanOverlayReportPageVerbiage;
+  overlayForm?: never;
+  modalForm?: never;
+  drawerForm?: never;
+  form?: never;
+  details: {
+    childForms: EntityDetailsChildFormShape[];
+    forms: PlanOverlayDetailsMultiformShape[];
+    verbiage: EntityDetailsMultiformVerbiage;
+  };
+}
+
+export interface PlanOverlayDetailsMultiformShape {
+  form: FormJson;
+  table: {
+    caption: string;
+    bodyRows: string[][];
+    headRow: Array<string | ScreenReaderCustomHeaderName>;
+  };
+  verbiage: PlanOverlayMultiformVerbiage;
+}
+
+export interface PlanOverlayMultiformVerbiage extends ReportPageVerbiage {
+  heading: string;
+  hint: string;
+  accordion?: {
+    buttonLabel: string;
+    text: string;
   };
 }
 
@@ -210,6 +251,16 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   };
   tableHeader: string;
   emptyDashboardText: string;
+  editEntityButtonText: string;
+  enterReportText?: string;
+  enterEntityDetailsButtonText?: string;
+}
+
+export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {
+  requiredMessages: {
+    [key: string]: CustomHtmlElement[] | undefined;
+  };
+  tableHeader: string;
   enterEntityDetailsButtonText: string;
 }
 

@@ -42,15 +42,13 @@ jobs:
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
       - name: run unit tests
         run: ./scripts/test-unit.sh
-      - name: publish test coverage to code climate
-        if: env.CODE_CLIMATE_ID != ''
-        uses: paambaati/codeclimate-action@v6
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+      - name: publish test coverage to qlty
+        uses: qltysh/qlty-action/coverage@v1
         with:
-          coverageLocations: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info:lcov
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info:lcov
+          oidc: true
+          files: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
       - name: Store unit test results
         if: failure()
         uses: actions/upload-artifact@v4
