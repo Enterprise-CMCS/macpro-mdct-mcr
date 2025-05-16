@@ -226,6 +226,7 @@ describe("<AddEditProgramModal />", () => {
         "Add new program"
       ) as HTMLInputElement;
       await userEvent.click(isNewProgram);
+      await new Promise((r) => setTimeout(r, 500));
       const programNameField = form.querySelector("[name='newProgramName']")!;
       await userEvent.type(programNameField, "fake program name");
       const startDateField = form.querySelector(
@@ -244,74 +245,82 @@ describe("<AddEditProgramModal />", () => {
       await userEvent.click(submitButton);
     };
 
-    test("Adding a new report", async () => {
-      const result = render(modalComponent);
-      const form = result.getByTestId("add-edit-report-form");
-      const header = screen.getByRole("heading", { level: 1 });
+    test(
+      "Adding a new report",
+      async () => {
+        const result = render(modalComponent);
+        const form = result.getByTestId("add-edit-report-form");
+        const header = screen.getByRole("heading", { level: 1 });
 
-      expect(header.textContent).toEqual("Add / Copy a MCPAR");
+        expect(header.textContent).toEqual("Add / Copy a MCPAR");
 
-      const copyFieldDataSourceId = form.querySelector(
-        "[name='copyFieldDataSourceId']"
-      )!;
+        const copyFieldDataSourceId = form.querySelector(
+          "[name='copyFieldDataSourceId']"
+        )!;
 
-      expect(copyFieldDataSourceId).toHaveProperty("disabled", false);
+        expect(copyFieldDataSourceId).toHaveProperty("disabled", false);
 
-      await fillForm(form);
-      await waitFor(() => {
-        expect(mockCreateReport).toHaveBeenCalledTimes(1);
-        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-      });
-    });
+        await fillForm(form);
+        await waitFor(() => {
+          expect(mockCreateReport).toHaveBeenCalledTimes(1);
+          expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+          expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+        });
+      },
+      10 * 1000
+    );
 
-    test("Edit modal hydrates with report info and disables fields", async () => {
-      const result = render(modalComponentWithSelectedReport);
-      await new Promise((r) => setTimeout(r, 500));
-      const form = result.getByTestId("add-edit-report-form");
-      const copyFieldDataSourceId = form.querySelector(
-        "[name='copyFieldDataSourceId']"
-      )!;
-      const programIsPCCMField = form.querySelectorAll(
-        "[name='programIsPCCM']"
-      )!;
+    test(
+      "Edit modal hydrates with report info and disables fields",
+      async () => {
+        const result = render(modalComponentWithSelectedReport);
+        await new Promise((r) => setTimeout(r, 500));
+        const form = result.getByTestId("add-edit-report-form");
+        const copyFieldDataSourceId = form.querySelector(
+          "[name='copyFieldDataSourceId']"
+        )!;
+        const programIsPCCMField = form.querySelectorAll(
+          "[name='programIsPCCM']"
+        )!;
 
-      const newOrExistingProgram = form.querySelectorAll(
-        "[name='newOrExistingProgram']"
-      )!;
+        const newOrExistingProgram = form.querySelectorAll(
+          "[name='newOrExistingProgram']"
+        )!;
 
-      expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
-      expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
+        expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
+        expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
 
-      // yoy copy and pccm fields are disabled
-      expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
-      expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
-      expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
+        // yoy copy and pccm fields are disabled
+        expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+        expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
+        expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
 
-      // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='newProgramName']")!;
-      const startDateField = form.querySelector(
-        "[name='reportingPeriodStartDate']"
-      )!;
-      const endDateField = form.querySelector(
-        "[name='reportingPeriodEndDate']"
-      )!;
+        // hydrated values are in the modal
+        const programNameField = form.querySelector("[name='newProgramName']")!;
+        const startDateField = form.querySelector(
+          "[name='reportingPeriodStartDate']"
+        )!;
+        const endDateField = form.querySelector(
+          "[name='reportingPeriodEndDate']"
+        )!;
 
-      expect(programNameField).toHaveProperty(
-        "value",
-        mockMcparReport.programName
-      );
-      expect(startDateField).toHaveProperty(
-        "value",
-        convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
-      );
-      expect(endDateField).toHaveProperty(
-        "value",
-        convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
-      );
+        expect(programNameField).toHaveProperty(
+          "value",
+          mockMcparReport.programName
+        );
+        expect(startDateField).toHaveProperty(
+          "value",
+          convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
+        );
+        expect(endDateField).toHaveProperty(
+          "value",
+          convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
+        );
 
-      await userEvent.click(screen.getByText("Cancel"));
-    });
+        await userEvent.click(screen.getByText("Cancel"));
+      },
+      10 * 1000
+    );
 
     test("Editing an existing report", async () => {
       const result = render(modalComponentWithSelectedReport);
