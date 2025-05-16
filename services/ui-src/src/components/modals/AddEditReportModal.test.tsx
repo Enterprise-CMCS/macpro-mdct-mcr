@@ -181,7 +181,7 @@ const naaarModalComponentWithSelectedReport = (
   </RouterWrappedComponent>
 );
 
-describe("<AddEditProgramModal />", () => {
+describe.only("<AddEditProgramModal />", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

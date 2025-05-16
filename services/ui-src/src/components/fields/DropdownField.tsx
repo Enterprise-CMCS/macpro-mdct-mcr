@@ -100,6 +100,8 @@ export const DropdownField = ({
         value: "",
       });
     }
+
+    console.log("dropdownOptions", dropdownOptions);
     return dropdownOptions;
   };
 
