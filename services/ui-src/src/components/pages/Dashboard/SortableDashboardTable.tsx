@@ -75,6 +75,7 @@ export const SortableDashboardTable = ({
         return isStateLevelUser && !report.locked ? (
           <EditReportButton
             report={report}
+            reportType={reportType}
             openAddEditReportModal={openAddEditReportModal}
             sxOverride={sxOverride}
           />

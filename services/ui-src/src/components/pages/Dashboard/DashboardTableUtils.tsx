@@ -31,8 +31,18 @@ export interface DashboardTableProps {
 
 export interface EditReportProps {
   report: ReportMetadataShape;
+  reportType: string;
   openAddEditReportModal: Function;
   sxOverride: AnyObject;
+}
+
+export interface ActionButtonProps {
+  report: ReportMetadataShape;
+  reportType: string;
+  reportId: string | undefined;
+  isStateLevelUser: boolean;
+  entering: boolean;
+  enterSelectedReport: Function;
 }
 
 export interface DateFieldProps {
@@ -88,15 +98,54 @@ export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
 
 export const EditReportButton = ({
   report,
+  reportType,
   openAddEditReportModal,
   sxOverride,
 }: EditReportProps) => {
   return (
     <Box display="inline" sx={sxOverride.editReport}>
       <button onClick={() => openAddEditReportModal(report)}>
-        <Image src={editIcon} alt="Edit Report" />
+        <Image
+          src={editIcon}
+          alt={
+            reportType !== ReportType.MLR
+              ? `Edit ${report.programName} due ${convertDateUtcToEt(
+                  report.dueDate
+                )} report submission set-up information`
+              : `Edit ${report.programName} report submission set-up information`
+          }
+        />
       </button>
     </Box>
+  );
+};
+
+export const ActionButton = ({
+  report,
+  reportType,
+  reportId,
+  isStateLevelUser,
+  entering,
+  enterSelectedReport,
+}: ActionButtonProps) => {
+  const editOrView = isStateLevelUser && !report?.locked ? "Edit" : "View";
+
+  return (
+    <Button
+      variant="outline"
+      aria-label={
+        reportType !== ReportType.MLR
+          ? `${editOrView} ${report.programName} due ${convertDateUtcToEt(
+              report.dueDate
+            )} report`
+          : `${editOrView} ${report.programName} report`
+      }
+      data-testid="enter-report"
+      onClick={() => enterSelectedReport(report)}
+      isDisabled={report?.archived}
+    >
+      {entering && reportId == report.id ? <Spinner size="md" /> : editOrView}
+    </Button>
   );
 };
 
