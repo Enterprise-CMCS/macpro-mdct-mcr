@@ -1,5 +1,3 @@
-import { AnyObject } from "types";
-
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
@@ -141,7 +139,7 @@ export const nonComplianceStatus = "Non-compliant";
 export const exceptionsNonComplianceStatusDisplay = {
   [exceptionsStatus]: "E",
   [nonComplianceStatus]: "N",
-} as AnyObject;
+} as { [key: string]: string };
 
 export const nonCompliantLabel =
   "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
@@ -328,7 +326,7 @@ export const GeomappingChildJson = [
                     children: [
                       {
                         id: "annualPercentMetStandard",
-                        type: "numberOptional",
+                        type: "number",
                         validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
@@ -364,9 +362,7 @@ export const GeomappingChildJson = [
                       {
                         id: "annualMaxTimeDate",
                         type: "date",
-                        validation: {
-                          type: "dateOptional",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",

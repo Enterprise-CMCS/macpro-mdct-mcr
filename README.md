@@ -1,8 +1,8 @@
 # MDCT-MCR
 
 [![CodeQL](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/actions/workflows/codeql-analysis.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/maintainability)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/eccb27f030053ade69a0/test_coverage)](https://codeclimate.com/repos/644971a20bd7db00dfeaf21a/test_coverage)
+[![Maintainability](https://qlty.sh/badges/50ad2dab-ff4f-4248-aa8e-3303cdb4ce38/maintainability.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-mcr)
+[![Code Coverage](https://qlty.sh/badges/50ad2dab-ff4f-4248-aa8e-3303cdb4ce38/test_coverage.svg)](https://qlty.sh/gh/Enterprise-CMCS/projects/macpro-mdct-mcr)
 
 ### Integration Environment Deploy Status:
 | Branch  | Build Status |

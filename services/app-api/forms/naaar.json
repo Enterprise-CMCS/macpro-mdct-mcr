@@ -548,7 +548,7 @@
         "deleteEntityButtonAltText": "Delete standard",
         "deleteModalTitle": "Are you sure you want to delete this standard?",
         "deleteModalConfirmButtonText": "Yes, delete standard",
-        "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
+        "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard and within ‘Plan compliance’ in the NAAAR. The standard will remain in previously submitted NAAAR reports if applicable.",
         "drawerTitle": "{{action}} access and network adequacy standard for {{name}}",
         "missingEntityMessage": [
           {
@@ -1078,22 +1078,52 @@
         "requiredMessages": {
           "plans": [
             {
-              "type": "p",
+              "type": "div",
               "children": [
                 {
                   "type": "p",
-                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section "
+                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section I."
                 },
                 {
-                  "type": "internalLink",
-                  "content": "I. State and program information",
-                  "props": {
-                    "to": "/naaar/state-and-program-information/state-information-and-reporting-scenario"
-                  }
-                },
-                {
-                  "type": "span",
-                  "content": "."
+                  "type": "ul",
+                  "children": [
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Add plans",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/add-plans"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Provider type coverage",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/provider-type-coverage"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Analysis methods",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/analysis-methods"
+                          }
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }

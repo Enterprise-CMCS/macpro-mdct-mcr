@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 // components
 import { ExportedEntityDetailsTable } from "components";
+// types
+import { ReportType } from "types";
 // utils
 import {
   mockMlrReportContext,
@@ -29,6 +31,12 @@ const exportedEntityDetailsTableComponent = () => (
   ></ExportedEntityDetailsTable>
 );
 describe("<ExportedEntityDetailsTable />", () => {
+  beforeAll(() => {
+    localStorage.setItem("selectedReportType", ReportType.MLR);
+  });
+  afterAll(() => {
+    localStorage.setItem("selectedReportType", "");
+  });
   test("renders successfully", async () => {
     const { findAllByText, findByTestId } = render(
       exportedEntityDetailsTableComponent()

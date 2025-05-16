@@ -6,11 +6,7 @@ import { EntityRowProps } from "./EntityRow";
 import { useBreakpoint } from "utils";
 
 export const ResponsiveEntityRow = (props: EntityRowProps) => {
-  const { isTablet, isMobile } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
 
-  return isMobile || isTablet ? (
-    <MobileEntityRow {...props} />
-  ) : (
-    <EntityRow {...props} />
-  );
+  return isMobile ? <MobileEntityRow {...props} /> : <EntityRow {...props} />;
 };

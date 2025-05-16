@@ -1,4 +1,9 @@
 export default {
+  missingEntry: {
+    noResponse: "Not answered",
+    noResponseOptional: "Not answered, optional",
+    notApplicable: "Not applicable",
+  },
   reportBanner: {
     intro: "Click below to export or print NAAAR Report shown here",
     pdfButton: "Download PDF",
