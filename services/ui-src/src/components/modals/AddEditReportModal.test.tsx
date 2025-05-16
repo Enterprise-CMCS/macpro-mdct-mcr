@@ -226,7 +226,7 @@ describe("<AddEditProgramModal />", () => {
         "Add new program"
       ) as HTMLInputElement;
       await userEvent.click(isNewProgram);
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const programNameField = form.querySelector("[name='newProgramName']")!;
       await userEvent.type(programNameField, "fake program name");
       const startDateField = form.querySelector(
@@ -267,14 +267,14 @@ describe("<AddEditProgramModal />", () => {
           expect(mockCloseHandler).toHaveBeenCalledTimes(1);
         });
       },
-      10 * 1000
+      10 * 1000 // Allow 10 seconds for this test() to run
     );
 
     test(
       "Edit modal hydrates with report info and disables fields",
       async () => {
         const result = render(modalComponentWithSelectedReport);
-        await new Promise((r) => setTimeout(r, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
         const form = result.getByTestId("add-edit-report-form");
         const copyFieldDataSourceId = form.querySelector(
           "[name='copyFieldDataSourceId']"
