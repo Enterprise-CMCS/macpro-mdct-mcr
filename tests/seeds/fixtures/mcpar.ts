@@ -417,7 +417,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
             numberFloat(),
           plan_populationSpecificMedicalLossRatioDescription: numberInt(),
-          plan_programIntegrityInvestigationsToEnrolleesRatio: "1:1",
           plan_programIntegrityReferralPath: [
             {
               key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -425,7 +424,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
                 "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
             },
           ],
-          plan_programIntegrityReferralsPerThousandBeneficiaries: "1:1",
           plan_resolvedAbuseNeglectExploitationGrievances: numberInt(),
           plan_resolvedAccessToCareGrievances: numberInt(),
           plan_resolvedAppeals: numberInt(),
@@ -436,11 +434,14 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedDenialOfExpeditedAppealGrievances: numberInt(),
           plan_resolvedDentalServiceAppeals: numberInt(),
           plan_resolvedDentalServiceGrievances: numberInt(),
+          plan_resolvedDmeAndSuppliesAppeals: numberInt(),
+          plan_resolvedEmergencyServicesAppeals: numberInt(),
           plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
           plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
           plan_resolvedGrievances: numberInt(),
+          plan_resolvedHomeHealthAppeals: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
           plan_resolvedLtssServiceAppeals: numberInt(),
@@ -457,7 +458,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedPostServiceAuthorizationDenialAppeals: numberInt(),
           plan_resolvedPreServiceAuthorizationDenialAppeals: numberInt(),
           plan_resolvedProgramIntegrityInvestigations: numberInt(),
-          plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio: "1:1",
           plan_resolvedQualityOfCareGrievances: numberInt(),
           plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals:
             numberInt(),
@@ -468,6 +468,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedSnfServiceAppeals: numberInt(),
           plan_resolvedSnfServiceGrievances: numberInt(),
           plan_resolvedSuspectedFraudGrievances: numberInt(),
+          plan_resolvedTherapiesAppeals: numberInt(),
           plan_resolvedUntimelyResponseAppeals: numberInt(),
           plan_resolvedUntimelyResponseGrievances: numberInt(),
           plan_stateFairHearingRequestsFiled: numberInt(),
@@ -486,6 +487,10 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             numberInt(),
           plan_totalStandardPriorAuthorizationRequestsReceived: numberInt(),
           plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+            faker.internet.url(),
+          plan_urlForPatientAccessApi: faker.internet.url(),
+          plan_urlForPatientResourcesForPatientAccessApi: faker.internet.url(),
+          plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi:
             faker.internet.url(),
           plan_urlForPriorAuthorizationDataOnPlanWebsite: faker.internet.url(),
           program_encounterDataSubmissionTimelinessStandardDefinition:
