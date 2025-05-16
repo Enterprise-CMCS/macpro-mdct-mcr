@@ -1483,7 +1483,7 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”.",
+                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select “Custom method” and add details.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
@@ -1491,27 +1491,35 @@
                         },
                         {
                           "id": "G7GxcYWmhEqjrEQDBWRl3w",
-                          "label": "Plan provider roster review"
+                          "label": "Plan Provider Directory Review"
                         },
                         {
-                          "id": "e14gKX61FkqBjIBeFDO7oA",
-                          "label": "Secret shopper calls"
+                          "id": "WZYsy13Kv3GZWpZcqyfmsAha",
+                          "label": "Secret Shopper: Network Participation"
+                        },
+                        {
+                          "id": "wtGWKuNsBxZ43NTZ45sZF5y7",
+                          "label": "Secret Shopper: Appointment Availability"
                         },
                         {
                           "id": "cMhP8Jp6SUS9XvezaPLvLg",
-                          "label": "EVV data analysis"
+                          "label": "Electronic Visit Verification Data Analysis"
+                        },
+                        {
+                          "id": "h64Pn0WAtuQIpmIvlPKGqwR4",
+                          "label": "Encounter Data Analysis"
                         },
                         {
                           "id": "bmQ1FmFPGk6S1g70ntAEcw",
-                          "label": "Review of grievances related to access"
+                          "label": "Review of Grievances Related to Access"
                         },
                         {
                           "id": "ozFC7ZVX7EWXZiNB2Ajj3g",
-                          "label": "Other, specify",
+                          "label": "Custom method",
                           "children": [
                             {
                               "id": "accessMeasure_monitoringMethods-otherText",
-                              "type": "textarea",
+                              "type": "text",
                               "validation": {
                                 "type": "text",
                                 "nested": true,
