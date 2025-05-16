@@ -267,6 +267,7 @@ describe("<AddEditProgramModal />", () => {
 
     test("Edit modal hydrates with report info and disables fields", async () => {
       const result = render(modalComponentWithSelectedReport);
+      await new Promise((r) => setTimeout(r, 2000));
       const form = result.getByTestId("add-edit-report-form");
       const copyFieldDataSourceId = form.querySelector(
         "[name='copyFieldDataSourceId']"
@@ -400,7 +401,6 @@ describe("<AddEditProgramModal />", () => {
 
     test("Edit modal hydrates with report info and disables fields", async () => {
       const result = render(naaarModalComponentWithSelectedReport);
-      await new Promise((r) => setTimeout(r, 2000));
       const form = result.getByTestId("add-edit-report-form");
       const copyFieldDataSourceId = form.querySelector(
         "[name='copyFieldDataSourceId']"
