@@ -1574,7 +1574,7 @@
                           "label": "Custom method",
                           "children": [
                             {
-                              "id": "accessMeasure_monitoringMethods-customMethod",
+                              "id": "accessMeasure_monitoringMethods-otherText",
                               "type": "textarea",
                               "validation": {
                                 "type": "text",
