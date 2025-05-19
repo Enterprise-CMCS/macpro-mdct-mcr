@@ -554,71 +554,17 @@ describe("<DrawerReportPage />", () => {
 
           const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
 
-          report.fieldData["analysisMethods"] = [
-            {
-              ...DEFAULT_ANALYSIS_METHODS[0],
+          report.fieldData["analysisMethods"] = DEFAULT_ANALYSIS_METHODS.map(
+            (method) => ({
+              ...method,
               analysis_applicable: [
                 {
                   key: "analysis_applicable",
                   value: "No",
                 },
               ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[1],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[2],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[3],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[4],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[5],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-            {
-              ...DEFAULT_ANALYSIS_METHODS[6],
-              analysis_applicable: [
-                {
-                  key: "analysis_applicable",
-                  value: "No",
-                },
-              ],
-            },
-          ];
+            })
+          );
 
           const mockCustomNaaarReportStore = {
             ...mockNaaarReportStore,

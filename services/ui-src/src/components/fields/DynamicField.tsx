@@ -171,22 +171,21 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             }
           );
 
-          if (analysisMethodUtilizedWithoutPlans) {
+          // revert not utilized analysis methods to unanswered state if there are no plans
+          if (
+            analysisMethodUtilizedWithoutPlans ||
+            (analysisMethodNotUtilized && reportPlans.length === 0)
+          ) {
             delete method.analysis_applicable;
-            delete method.analysis_method_applicable_plans;
-            delete method.analysis_method_frequency;
-            delete method["analysis_method_frequency-otherText"];
-          } else if (analysisMethodNotUtilized) {
-            // revert not utilized analysis methods to unanswered state if there are no plans
-            if (reportPlans.length === 0) delete method.analysis_applicable;
-            delete method.analysis_method_applicable_plans;
-            delete method.analysis_method_frequency;
-            delete method["analysis_method_frequency-otherText"];
           }
 
-          if (
+          const isCustomMethodWithNoPlans =
             "custom_analysis_method_name" in method &&
-            method.analysis_method_applicable_plans?.length === 0
+            method.analysis_method_applicable_plans?.length === 0;
+          if (
+            analysisMethodUtilizedWithoutPlans ||
+            analysisMethodNotUtilized ||
+            isCustomMethodWithNoPlans
           ) {
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;

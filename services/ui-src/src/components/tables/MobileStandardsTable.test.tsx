@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-// utils
-import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { MobileStandardsTable } from "./MobileStandardsTable";
 import { generateColumns } from "./SortableTable";
+// utils
+import { RouterWrappedComponent } from "utils/testing/setupJest";
 
 interface TestDataShape {
   id: string;

@@ -113,7 +113,7 @@ const sx = {
   icon: {
     position: "absolute",
     color: "palette.base",
-    marginTop: "0rem",
+    marginTop: "0",
     marginBottom: "1.75rem",
     width: "1.5rem",
   },
