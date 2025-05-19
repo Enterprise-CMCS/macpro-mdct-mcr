@@ -17,9 +17,18 @@ const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   );
 };
 
-const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
+const getCheckboxValues = (
+  entity: EntityShape | undefined,
+  label: string,
+  customLabel?: string
+) => {
   return entity?.[label]?.map((method: AnyObject) =>
-    otherSpecify(method.value, entity?.[`${label}-otherText`])
+    otherSpecify(
+      method.value,
+      entity?.[`${label}-otherText`],
+      undefined,
+      customLabel
+    )
   );
 };
 
@@ -64,11 +73,16 @@ export const getFormattedEntityData = (
         standardDescription: entity?.accessMeasure_standardDescription,
         standardType: getRadioValue(entity, "accessMeasure_standardType"),
         provider: getRadioValue(entity, "accessMeasure_providerType"),
+        providerDetails:
+          entity?.["accessMeasure_providerType-primaryCareDetails"] ||
+          entity?.["accessMeasure_providerType-specialistDetails"] ||
+          entity?.["accessMeasure_providerType-mentalHealthDetails"],
         region: getRadioValue(entity, "accessMeasure_applicableRegion"),
         population: getRadioValue(entity, "accessMeasure_population"),
         monitoringMethods: getCheckboxValues(
           entity,
-          "accessMeasure_monitoringMethods"
+          "accessMeasure_monitoringMethods",
+          "Custom method"
         ),
         methodFrequency: getRadioValue(
           entity,

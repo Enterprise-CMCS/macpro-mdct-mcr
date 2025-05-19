@@ -42,7 +42,7 @@ export const ModalOverlayReportPage = ({
   const { entityType, verbiage, modalForm, overlayForm } = route;
 
   // Context Information
-  const { isTablet, isMobile } = useBreakpoint();
+  const { isMobile } = useBreakpoint();
   const { updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] = useState<boolean>();
   const [currentEntity, setCurrentEntity] = useState<EntityShape | undefined>(
@@ -64,7 +64,7 @@ export const ModalOverlayReportPage = ({
   const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
-    if (isTablet || isMobile)
+    if (isMobile)
       return {
         caption: verbiage.tableHeader,
         headRow: [{ hiddenName: "Status" }, { hiddenName: "Content" }],
@@ -311,7 +311,7 @@ const sx = {
       paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "palette.gray_light",
-      ".tablet &, .mobile &": {
+      ".mobile &": {
         border: "none",
       },
       "&:nth-of-type(1)": {
