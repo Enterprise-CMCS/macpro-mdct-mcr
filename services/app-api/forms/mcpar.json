@@ -4328,7 +4328,7 @@
               {
                 "id": "plan_ilosOfferedByPlan",
                 "type": "radio",
-                "validation": "radio",
+                "validation": "radioOptional",
                 "props": {
                   "label": "D4.XI.1 ILOSs offered by plan",
                   "hint": "Indicate whether this plan offered any ILOS to their enrollees.",

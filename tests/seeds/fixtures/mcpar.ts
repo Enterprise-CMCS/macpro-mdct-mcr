@@ -60,6 +60,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
   }
 
   const ilosId = crypto.randomUUID();
+  const ilosName = faker.animal.dog();
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -356,7 +357,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             },
           ],
           plan_ilosUtilizationByPlan: [
-            { key: `plan_ilosUtilizationByPlan-${ilosId}`, value: "ILOS" },
+            { key: `plan_ilosUtilizationByPlan-${ilosId}`, value: ilosName },
           ],
           [`plan_ilosUtilizationByPlan_${ilosId}`]: numberInt(),
           plan_ltssUserFieldGrievances: numberInt(),
@@ -518,7 +519,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
       ilos: [
         {
           id: ilosId,
-          name: faker.animal.dog(),
+          name: ilosName,
         },
       ],
       qualityMeasures: [
