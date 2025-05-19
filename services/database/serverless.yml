@@ -95,6 +95,22 @@ resources:
         LoggingConfiguration:
           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
+    McparFormPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref McparFormBucket
+        PolicyDocument:
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${McparFormBucket}/*
+                - !Sub arn:aws:s3:::${McparFormBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
     MlrReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -132,6 +148,22 @@ resources:
         LoggingConfiguration:
           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
+    MlrFormPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref MlrFormBucket
+        PolicyDocument:
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${MlrFormBucket}/*
+                - !Sub arn:aws:s3:::${MlrFormBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
     NaaarReportTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -169,6 +201,22 @@ resources:
         LoggingConfiguration:
           DestinationBucketName: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsBucket, ssm:/configuration/default/s3/accessLogsBucket}
           LogFilePrefix: ${env:LOGGING_BUCKET, ssm:/configuration/${self:custom.stage}/s3/accessLogsPrefix, ssm:/configuration/default/s3/accessLogsPrefix}
+    NaaarFormPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref NaaarFormBucket
+        PolicyDocument:
+          Statement:
+            - Sid: "AllowSSLRequestsOnly"
+              Effect: Deny
+              Action: "s3:*"
+              Principal: "*"
+              Resource:
+                - !Sub arn:aws:s3:::${NaaarFormBucket}/*
+                - !Sub arn:aws:s3:::${NaaarFormBucket}
+              Condition:
+                Bool:
+                  aws:SecureTransport: false
     FormTemplateVersionsTable:
       Type: AWS::DynamoDB::Table
       Properties:

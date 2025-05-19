@@ -2,53 +2,66 @@
 import { EntityStatusIcon, Table } from "components";
 import { Box, Image, Td, Text, Tr } from "@chakra-ui/react";
 // types
-import { EntityShape, ModalOverlayReportPageShape, ReportType } from "types";
+import {
+  EntityShape,
+  EntityType,
+  ModalOverlayReportPageShape,
+  ReportType,
+} from "types";
+import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
-// verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-export";
-import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
+import {
+  getEntityDetailsMLR,
+  getReportVerbiage,
+  mapNaaarStandardsData,
+  useStore,
+} from "utils";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
 
-const exportVerbiageMap: { [key in ReportType]: any } = {
-  MCPAR: mcparVerbiage,
-  MLR: mlrVerbiage,
-  NAAAR: undefined,
-};
-
 export const ExportedModalOverlayReportSection = ({ section }: Props) => {
   const { report } = useStore();
   const entityType = section.entityType;
+  const entities = report?.fieldData?.[entityType];
+  const entityCount = entities?.length;
 
-  const verbiage = exportVerbiageMap[report?.reportType as ReportType];
+  const { exportVerbiage } = getReportVerbiage(report?.reportType);
 
-  const { modalOverlayTableHeaders } = verbiage;
+  const { emptyEntityMessage, modalOverlayTableHeaders } = exportVerbiage;
 
   const headerLabels = Object.values(
     modalOverlayTableHeaders as Record<string, string>
   );
 
   return (
-    <Box>
-      <Table
-        sx={sx.root}
-        content={{
-          caption: "Reporting Overview",
-          headRow: headerLabels,
-        }}
-        data-testid="exportTable"
-      >
-        {report?.fieldData[entityType] &&
-          renderModalOverlayTableBody(
-            report?.reportType as ReportType,
-            report?.fieldData[entityType]
+    <Box data-testid="exportedModalOverlayReportSection">
+      {entityType === EntityType.STANDARDS && (
+        <Text sx={sx.standardCount}>
+          Standard total count:{" "}
+          {entityCount > 0 ? entityCount : emptyEntityMessage[entityType]}
+        </Text>
+      )}
+      {entityType === EntityType.STANDARDS && !entityCount ? null : (
+        <>
+          <Table
+            sx={sx.root}
+            content={{
+              caption: "Reporting Overview",
+              headRow: headerLabels,
+            }}
+            data-testid="exportTable"
+          >
+            {entities &&
+              renderModalOverlayTableBody(
+                report?.reportType as ReportType,
+                entities
+              )}
+          </Table>
+          {(!entities || entityCount === 0) && (
+            <Text sx={sx.emptyState}> No entities found.</Text>
           )}
-      </Table>
-      {(!report?.fieldData[entityType] ||
-        report?.fieldData[entityType].length === 0) && (
-        <Text sx={sx.emptyState}> No entities found.</Text>
+        </>
       )}
     </Box>
   );
@@ -114,13 +127,38 @@ export function renderModalOverlayTableBody(
           </Tr>
         );
       });
-    case ReportType.MCPAR:
     case ReportType.NAAAR:
-      throw new Error(
-        `The modal overlay table headers for report type '${reportType}' have not been implemented.`
-      );
+      // render pattern for NAAAR Standards
+      return entities.map((entity, idx) => {
+        const {
+          provider,
+          standardType,
+          description,
+          analysisMethods,
+          population,
+          region,
+        } = mapNaaarStandardsData<NaaarStandardsTableShape>([entity])[0];
+        return (
+          <Tr key={idx}>
+            <Td>
+              <Text sx={sx.tableIndex}>{idx + 1}</Text>
+            </Td>
+            {[
+              provider,
+              standardType,
+              description,
+              analysisMethods,
+              population,
+              region,
+            ].map((value) => (
+              <Td>
+                <Text>{value}</Text>
+              </Td>
+            ))}
+          </Tr>
+        );
+      });
     default:
-      assertExhaustive(reportType);
       throw new Error(
         `The modal overlay table headers for report type '${reportType}' have not been implemented.`
       );
@@ -182,6 +220,12 @@ const sx = {
         },
       },
     },
+  },
+  standardCount: {
+    display: "block",
+    fontSize: "md",
+    fontWeight: "bold",
+    marginTop: "0.5rem",
   },
   entityList: {
     wordBreak: "break-word",

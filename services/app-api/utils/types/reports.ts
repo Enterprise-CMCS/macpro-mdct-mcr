@@ -6,7 +6,7 @@ import {
   State,
   CompletionData,
   EntityType,
-  ScreenReaderOnlyHeaderName,
+  ScreenReaderCustomHeaderName,
   TableContentShape,
 } from "./index";
 
@@ -96,7 +96,7 @@ export interface EntityDetailsMultiformShape {
   table?: {
     caption: string;
     bodyRows: string[][];
-    headRow: Array<string | ScreenReaderOnlyHeaderName>;
+    headRow: Array<string | ScreenReaderCustomHeaderName>;
   };
   verbiage?: EntityDetailsMultiformVerbiage;
 }

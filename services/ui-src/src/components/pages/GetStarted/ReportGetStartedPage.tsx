@@ -16,7 +16,7 @@ import {
   SpreadsheetWidget,
 } from "components";
 // verbiage
-import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
+import mcparGetStartedVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 import nextIcon from "assets/icons/icon_next_white.png";
@@ -26,12 +26,7 @@ import NavigationSectionsSubmissionImage from "assets/other/nav_sections_review_
 export const ReportGetStartedPage = ({ reportType }: Props) => {
   const navigate = useNavigate();
 
-  const getStartedVerbiageMap: any = {
-    MCPAR: mcparVerbiage,
-  };
-
-  const getStartedVerbiage = getStartedVerbiageMap[reportType]!;
-  const { intro, body, pageLink } = getStartedVerbiage;
+  const { intro, body, pageLink } = mcparGetStartedVerbiage;
 
   const [section1, section2, section3] = body.sections;
 

@@ -11,6 +11,8 @@ import {
   renderDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
+// verbiage
+import McparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 
 const emailInput: FormField = {
   id: "email-field-id",
@@ -84,6 +86,193 @@ describe("Test rendering methods", () => {
     );
 
     expect(result[0].props.children).toBe("plan 1");
+  });
+
+  test("renders an error for ilos field when missing plans", () => {
+    const dynamicFormField = {
+      id: "plan_ilosOfferedByPlan",
+      type: "dynamic",
+      validation: "dynamic",
+      props: {
+        label: "Plan name",
+      },
+    };
+
+    const mockFieldResponseData = {
+      plans: [],
+    };
+
+    const result = renderDataCell(
+      dynamicFormField,
+      mockFieldResponseData,
+      "drawer"
+    );
+
+    render(result);
+
+    expect(
+      screen.getByText(McparExportVerbiage.missingEntry.missingPlans)
+    ).toBeVisible();
+  });
+
+  // Analysis methods rendering
+  test("renderDrawerDataCell renders analysis methods responses for utilized plan", () => {
+    const mockFormField: FormField = {
+      id: "analysis_applicable",
+      props: {
+        choices: [],
+      },
+      type: "radio",
+      validation: "radio",
+    };
+
+    const mockAnalysisMethods: AnyObject = [
+      {
+        name: "Test Method",
+        analysis_method_applicable_plans: [
+          {
+            key: "mock-plan-id-1",
+            value: "mock-plan-1",
+          },
+          {
+            key: "mock-plan-id-2",
+            value: "mock-plan-2",
+          },
+        ],
+        analysis_method_frequency: [
+          {
+            key: "mock-frequency",
+            value: "Weekly",
+          },
+        ],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+      },
+    ];
+
+    const cells = renderDrawerDataCell(
+      mockFormField,
+      mockAnalysisMethods,
+      "drawer"
+    );
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(4);
+    expect(container.querySelectorAll("li")[0]).toHaveTextContent(
+      "Test Method"
+    );
+    expect(container.querySelectorAll("li")[1]).toHaveTextContent("Utilized");
+    expect(container.querySelectorAll("li")[2]).toHaveTextContent(
+      "Frequency: Weekly"
+    );
+    expect(container.querySelectorAll("li")[3]).toHaveTextContent(
+      "Plan(s): mock-plan-1, mock-plan-2"
+    );
+  });
+
+  test("renderDrawerDataCell renders custom analysis methods responses", () => {
+    const mockFormField: FormField = {
+      id: "analysis_applicable",
+      props: {
+        choices: [],
+      },
+      type: "radio",
+      validation: "radio",
+    };
+
+    const mockAnalysisMethods: AnyObject = [
+      {
+        custom_analysis_method_name: "Custom Test Method",
+        custom_analysis_method_description:
+          "custom analysis method description",
+        analysis_method_applicable_plans: [
+          {
+            key: "mock-plan-id-1",
+            value: "mock-plan-1",
+          },
+          {
+            key: "mock-plan-id-2",
+            value: "mock-plan-2",
+          },
+        ],
+        analysis_method_frequency: [
+          {
+            key: "mock-frequency",
+            value: "Weekly",
+          },
+        ],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+      },
+    ];
+
+    const cells = renderDrawerDataCell(
+      mockFormField,
+      mockAnalysisMethods,
+      "drawer"
+    );
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(5);
+    expect(container.querySelectorAll("li")[0]).toHaveTextContent(
+      "Test Method"
+    );
+    expect(container.querySelectorAll("li")[1]).toHaveTextContent("Utilized");
+    expect(container.querySelectorAll("li")[2]).toHaveTextContent(
+      "Description: custom analysis method description"
+    );
+    expect(container.querySelectorAll("li")[3]).toHaveTextContent(
+      "Frequency: Weekly"
+    );
+    expect(container.querySelectorAll("li")[4]).toHaveTextContent(
+      "Plan(s): mock-plan-1, mock-plan-2"
+    );
+  });
+
+  test("renderDrawerDataCell renders analysis methods responses for not utilized plan", () => {
+    const mockFormField: FormField = {
+      id: "analysis_applicable",
+      props: {
+        choices: [],
+      },
+      type: "radio",
+      validation: "radio",
+    };
+
+    const mockAnalysisMethods: AnyObject = [
+      {
+        name: "Test Method",
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "No",
+          },
+        ],
+      },
+    ];
+
+    const cells = renderDrawerDataCell(
+      mockFormField,
+      mockAnalysisMethods,
+      "drawer"
+    );
+    const Component = () => cells[0];
+    const { container } = render(<Component />);
+    expect(container.querySelectorAll("li").length).toBe(2);
+    expect(container.querySelectorAll("li")[0]).toHaveTextContent(
+      "Test Method"
+    );
+    expect(container.querySelectorAll("li")[1]).toHaveTextContent(
+      "Not utilized"
+    );
   });
 
   // ILOS rendering

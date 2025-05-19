@@ -17,10 +17,8 @@ MLR_REPORT_TABLE_NAME=local-mlr-reports
 NAAAR_REPORT_TABLE_NAME=local-naaar-reports
 NAAAR_FORM_BUCKET=op://mdct_devs/mcr_secrets/NAAAR_FORM_BUCKET
 FORM_TEMPLATE_TABLE_NAME=local-form-template-versions
-S3_ATTACHMENTS_BUCKET_NAME=op://mdct_devs/mcr_secrets/S3_ATTACHMENTS_BUCKET_NAME
 S3_LOCAL_ENDPOINT=http://localhost:4569
 SKIP_PREFLIGHT_CHECK=true
-TEMPLATE_BUCKET=local-uploads
 LOGGING_BUCKET=op://mdct_devs/mcr_secrets/LOGGING_BUCKET
 WARMUP_SCHEDULE=60
 WARMUP_CONCURRENCY=5
@@ -48,5 +46,13 @@ TEST_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_EMAIL
 TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/CYPRESS_STATE_USER_PASSWORD # pragma: allowlist secret
 TEST_STATE=DC
 TEST_STATE_NAME="District of Columbia"
+
+# db:seed
+SEED_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_EMAIL
+SEED_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_PASSWORD # pragma: allowlist secret
+SEED_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_STATE_USER_EMAIL
+SEED_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_STATE_USER_PASSWORD # pragma: allowlist secret
+SEED_STATE=op://mdct_devs/mcr_secrets/SEED_STATE
+SEED_STATE_NAME=op://mdct_devs/mcr_secrets/SEED_STATE_NAME
 
 SERVERLESS_LICENSE_KEY=op://mdct_devs/mcr_secrets/SERVERLESS_LICENSE_KEY

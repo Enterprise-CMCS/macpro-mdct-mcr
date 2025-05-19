@@ -34,7 +34,6 @@ jest.mock("utils/other/useBreakpoint");
 const mockUseBreakpoint = useBreakpoint as jest.MockedFunction<
   typeof useBreakpoint
 >;
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
 const {
   addEntityButtonText,
@@ -119,6 +118,7 @@ describe("<ModalDrawerReportPage />", () => {
       const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
       await userEvent.click(enterDetailsButton);
       expect(screen.getByRole("dialog")).toBeVisible();
+      expect(screen.getByText("Add Mock drawer title")).toBeVisible();
     });
 
     test("ModalDrawerReportPage sidedrawer opens and saves for state user", async () => {

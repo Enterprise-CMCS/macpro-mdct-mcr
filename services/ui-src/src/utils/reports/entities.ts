@@ -1,6 +1,14 @@
+// constants
+import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+// types
+import {
+  AnyObject,
+  EntityShape,
+  EntityType,
+  ModalDrawerReportPageVerbiage,
+} from "types";
 // utils
-import { AnyObject, EntityShape, EntityType } from "types";
-import { compareText, maskResponseData, otherSpecify } from "utils";
+import { compareText, maskResponseData, otherSpecify, translate } from "utils";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -104,6 +112,95 @@ export const getFormattedEntityData = (
         description: entity?.qualityMeasure_description,
         perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
       };
+    case EntityType.PLANS:
+      if (!entity) {
+        return {};
+      }
+      const plan = entity; // eslint-disable-line no-case-declarations
+
+      // display information for non-compliant standards
+      if (plan?.exceptionsNonCompliance === nonComplianceStatus) {
+        const planKeys = Object.keys(plan);
+        const nonComplianceDescriptionKey: any = planKeys.find((key: string) =>
+          key.endsWith("-nonComplianceDescription")
+        );
+        const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
+          key.endsWith("-nonComplianceAnalyses")
+        );
+        const nonCompliancePlanToAchieveComplianceKey: any = planKeys.find(
+          (key: string) => key.endsWith("-nonCompliancePlanToAchieveCompliance")
+        );
+        const nonComplianceMonitoringProgressKey: any = planKeys.find(
+          (key: string) => key.endsWith("-nonComplianceMonitoringProgress")
+        );
+        const nonComplianceReassessmentDateKey: any = planKeys.find(
+          (key: string) => key.endsWith("-nonComplianceReassessmentDate")
+        );
+
+        const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
+          (method: EntityShape) => method.value
+        );
+
+        return {
+          heading: `Plan deficiencies for ${
+            plan?.name || "plan"
+          }: 42 C.F.R. § 438.68`,
+          questions: [
+            {
+              question: "Description",
+              answer: plan[nonComplianceDescriptionKey],
+            },
+            {
+              question: "Analyses used to identify deficiencies",
+              answer: analysisMethodsUsed.join(", "),
+            },
+            {
+              question: "What the plan will do to achieve compliance",
+              answer: plan[nonCompliancePlanToAchieveComplianceKey],
+            },
+            {
+              question: "Monitoring progress",
+              answer: plan[nonComplianceMonitoringProgressKey],
+            },
+            {
+              question: "Reassessment date",
+              answer: plan[nonComplianceReassessmentDateKey],
+            },
+          ],
+        };
+      }
+
+      // display information for exceptions standards
+      if (plan?.exceptionsNonCompliance === exceptionsStatus) {
+        const planKeys = Object.keys(plan);
+        const exceptionsDescriptionKey: any = planKeys.find((key: string) =>
+          key.endsWith("-exceptionsDescription")
+        );
+        const exceptionsJustificationKey: any = planKeys.find((key: string) =>
+          key.endsWith("-exceptionsJustification")
+        );
+
+        return {
+          heading: `Exceptions granted for ${
+            plan?.name || "plan"
+          } under 42 C.F.R. § 438.68(d)`,
+          questions: [
+            {
+              question:
+                "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+              answer: plan[exceptionsDescriptionKey],
+            },
+            {
+              question:
+                "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+              answer: plan[exceptionsJustificationKey],
+            },
+          ],
+        };
+      }
+      return {
+        heading: `Problem displaying data for ${plan?.name || "plan"}`,
+      };
     default:
       return {};
   }
@@ -113,3 +210,31 @@ export const entityWasUpdated = (
   originalEntity: EntityShape,
   newEntity: AnyObject
 ) => JSON.stringify(originalEntity) !== JSON.stringify(newEntity);
+
+export const getAddEditDrawerText = (
+  entityType: EntityType,
+  formattedEntityData: AnyObject,
+  verbiage: ModalDrawerReportPageVerbiage
+) => {
+  let addEditDrawerText = "Add";
+  switch (entityType) {
+    case EntityType.ACCESS_MEASURES:
+      if (formattedEntityData.provider) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    case EntityType.QUALITY_MEASURES:
+      if (formattedEntityData.perPlanResponses[0].response) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    case EntityType.SANCTIONS:
+      if (formattedEntityData.assessmentDate) {
+        addEditDrawerText = "Edit";
+      }
+      break;
+    default:
+      break;
+  }
+  return translate(verbiage.drawerTitle, { action: addEditDrawerText });
+};

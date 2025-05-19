@@ -5,13 +5,16 @@ import {
   ExportedReportFieldTable,
   ExportedEntityDetailsOverlaySection,
   ExportedModalOverlayReportSection,
+  ExportedPlanOverlayReportSection,
 } from "components";
 // types
 import {
   DrawerReportPageShape,
+  EntityType,
   ModalDrawerReportPageShape,
   ModalOverlayReportPageShape,
   PageTypes,
+  PlanOverlayReportPageShape,
   ReportRouteWithForm,
   StandardReportPageShape,
 } from "types";
@@ -27,6 +30,14 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         </Box>
       );
     case PageTypes.DRAWER:
+      // standards uses the table pattern from the modal overlay component
+      if (section.entityType === EntityType.STANDARDS) {
+        return (
+          <ExportedModalOverlayReportSection
+            section={section as ModalOverlayReportPageShape}
+          />
+        );
+      }
       return (
         <Box data-testid="exportedDrawerReportSection" mt="2rem">
           <ExportedReportFieldTable
@@ -52,7 +63,11 @@ export const ExportedReportWrapper = ({ section }: Props) => {
         </>
       );
     case PageTypes.PLAN_OVERLAY:
-      return <></>;
+      return (
+        <ExportedPlanOverlayReportSection
+          section={section as PlanOverlayReportPageShape}
+        />
+      );
     default:
       return <></>;
   }

@@ -315,7 +315,7 @@
             "deleteModalTitle": "Are you sure you want to delete this analysis method?",
             "deleteModalConfirmButtonText": "Yes, delete method",
             "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this analysis method in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-            "drawerTitle": "Analysis method: ",
+            "drawerTitle": "Analysis method: {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -548,8 +548,8 @@
         "deleteEntityButtonAltText": "Delete standard",
         "deleteModalTitle": "Are you sure you want to delete this standard?",
         "deleteModalConfirmButtonText": "Yes, delete standard",
-        "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard in the NAAAR. The method will remain in previously submitted NAAAR reports if applicable.",
-        "drawerTitle": "Add access and network adequacy standard for ",
+        "deleteModalWarning": "Are you sure you want to proceed? You will lose all information entered for this standard and within ‘Plan compliance’ in the NAAAR. The standard will remain in previously submitted NAAAR reports if applicable.",
+        "drawerTitle": "{{action}} access and network adequacy standard for {{name}}",
         "missingEntityMessage": [
           {
             "type": "p",
@@ -1078,22 +1078,52 @@
         "requiredMessages": {
           "plans": [
             {
-              "type": "p",
+              "type": "div",
               "children": [
                 {
                   "type": "p",
-                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section "
+                  "content": "This program is missing required information. You won’t be able to access this section until you’ve completed all the required questions in section I."
                 },
                 {
-                  "type": "internalLink",
-                  "content": "I. State and program information",
-                  "props": {
-                    "to": "/naaar/state-and-program-information/state-information-and-reporting-scenario"
-                  }
-                },
-                {
-                  "type": "span",
-                  "content": "."
+                  "type": "ul",
+                  "children": [
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Add plans",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/add-plans"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Provider type coverage",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/provider-type-coverage"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "li",
+                      "children": [
+                        {
+                          "type": "internalLink",
+                          "content": "Analysis methods",
+                          "props": {
+                            "to": "/naaar/state-and-program-information/analysis-methods"
+                          }
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -1207,6 +1237,7 @@
               "bodyRows": [
                 ["", "Provide plan compliance details for 438.206", ""]
               ],
+              "caption": "",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
@@ -1230,6 +1261,17 @@
               "backButton": "Return to {{planName}}: Select non-compliant / exception standards for 42 C.F.R. § 438.68 dashboard",
               "intro": {
                 "hint": "Report on plan compliance with the state’s 42 C.F.R. § 438.68 standard during the reporting period. If this standard is fully compliant, return to the plan compliance dashboard.",
+                "info": [
+                  {
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "<strong>42 C.F.R. § 438.68 compliance</strong>"
+                      }
+                    ]
+                  }
+                ],
                 "section": "III. Plan compliance data for {{planName}}",
                 "subsection": "{{planName}}: Provide details about plan non-compliance and exceptions for this standard for 42 C.F.R. § 438.68"
               }
@@ -1237,13 +1279,14 @@
             "table": {
               "caption": "42 C.F.R. § 438.68 standards",
               "sortableHeadRow": {
+                "exceptionsNonCompliance": { "header": "N/E" },
                 "count": { "header": "#" },
                 "provider": { "header": "Provider type" },
                 "standardType": { "header": "Standard type" },
                 "description": { "header": "Standard description" },
                 "population": { "header": "Population" },
                 "region": { "header": "Region" },
-                "actions": { "header": "Actions", "hidden": true }  
+                "actions": { "header": "Actions", "hidden": true }
               },
               "verbiage": {
                 "backButton": "Return to plan compliance data for {{planName}} dashboard",
@@ -1261,6 +1304,137 @@
             "form": {
               "id": "planCompliance43868_details",
               "fields": [
+                {
+                  "id": "planCompliance43868_standard",
+                  "type": "checkbox",
+                  "validation": "checkboxOneOptional",
+                  "props": {
+                    "label": "This standard does not meet 42 C.F.R. § 438.68 compliance",
+                    "hint": "Select if this standard does not fully comply.",
+                    "choices": [
+                      {
+                        "id": "l8yWzYniMtH5HQrBIjwApO",
+                        "label": "Standard is non-compliant for this plan",
+                        "children": [
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceAnalyses",
+                            "type": "checkbox",
+                            "validation": {
+                              "type": "checkbox",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard",
+                              "parentOptionId": "l8yWzYniMtH5HQrBIjwApO"
+                            },
+                            "props": {
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 analyses used to identify deficiencies",
+                              "hint": [
+                                {
+                                  "type": "html",
+                                  "content": "Indicate which analyses uncovered the deficiencies. If the analysis method does not appear here, go back to "
+                                },
+                                {
+                                  "type": "internalLink",
+                                  "content": "Standards",
+                                  "props": {
+                                    "to": "/naaar/program-level-access-and-network-adequacy-standards"
+                                  }
+                                },
+                                {
+                                  "type": "html",
+                                  "content": " and add it."
+                                }
+                              ],
+                              "choices": []
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceDescription",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Describe plan deficiencies identified during the reporting period.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonCompliancePlanToAchieveCompliance",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Describe what the plan will do to achieve compliance.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description of what the plan will do to achieve compliance"
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceMonitoringProgress",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Describe how the state will monitor the plan's progress.",
+                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 monitoring progress"
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-nonComplianceReassessmentDate",
+                            "type": "date",
+                            "validation": {
+                              "type": "date",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "hint": "Indicate when the state will reassess the plan's network to determine whether the plan has remediated those deficiencies.",
+                              "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.68"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "id": "qynBP00OCjrE196bwX3n67",
+                        "label": "Exceptions granted under 42 C.F.R. § 438.68(d)",
+                        "children": [
+                          {
+                            "id": "planCompliance43868_standard-exceptionsDescription",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "label": "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
+                            }
+                          },
+                          {
+                            "id": "planCompliance43868_standard-exceptionsJustification",
+                            "type": "textarea",
+                            "validation": {
+                              "type": "text",
+                              "nested": true,
+                              "parentFieldName": "planCompliance43868_standard"
+                            },
+                            "props": {
+                              "label": "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+                              "hint": "Describe the state’s justification for granting the exception(s)."
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
               ]
             }
           },
@@ -1385,7 +1559,7 @@
                       {
                         "id": "yCleNTI4lSJCwNhuq59KmU",
                         "label": "Does not adhere to applicability date"
-                      },                      
+                      },
                       {
                         "id": "mrCzwGVdpvl81r5P0JDTSr",
                         "label": "Other, specify",

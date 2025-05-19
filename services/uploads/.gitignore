@@ -6,10 +6,3 @@ jspm_packages
 
 # Serverless directories
 .serverless
-
-# ClamAV
-*.so.*
-*.so*
-clamscan
-freshclam
-*.chk*

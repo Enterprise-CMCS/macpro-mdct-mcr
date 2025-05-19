@@ -47,6 +47,8 @@ export { ExportedModalOverlayReportSection } from "./export/ExportedModalOverlay
 export { ExportedEntityDetailsOverlaySection } from "./export/ExportedEntityDetailsOverlaySection";
 export { ExportedEntityDetailsTable } from "./export/ExportedEntityDetailsTable";
 export { ExportedEntityDetailsTableRow } from "./export/ExportedEntityDetailsTableRow";
+export { ExportedPlanOverlayReportSection } from "./export/ExportedPlanOverlayReportSection";
+export { ExportedPlanComplianceCard } from "./export/ExportedPlanComplianceCard";
 // fields
 export { CheckboxField } from "./fields/CheckboxField";
 export { ChoiceField } from "./fields/ChoiceField";
@@ -104,6 +106,7 @@ export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
+export { OverlayContext, OverlayProvider } from "./reports/OverlayProvider";
 export { OverlayReportPage } from "./reports/OverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
@@ -118,6 +121,7 @@ export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";
+export { MobileTable } from "./tables/MobileTable";
 // widgets
 export { SpreadsheetWidget } from "./widgets/SpreadsheetWidget";
 // redirects

@@ -1,16 +1,17 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 // components
 import {
   ExportedModalOverlayReportSection,
   renderModalOverlayTableBody,
 } from "./ExportedModalOverlayReportSection";
 // types
-import { ModalOverlayReportPageShape, ReportType } from "types";
+import { EntityType, ModalOverlayReportPageShape, ReportType } from "types";
 // utils
 import {
   mockMlrReportContext,
   mockMlrReportStore,
   mockModalOverlayReportPageJson,
+  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
@@ -22,13 +23,19 @@ const mockReportContextOther = Object.assign({}, mockReportContext);
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-mockedUseStore.mockReturnValue({
-  ...mockMlrReportStore,
-});
 
 const exportedModalOverlayReportSectionComponent = (
   <ExportedModalOverlayReportSection
     section={mockModalOverlayReportPageJson as ModalOverlayReportPageShape}
+  />
+);
+
+const exportedNaaarStandardsComponent = (
+  <ExportedModalOverlayReportSection
+    section={{
+      ...(mockModalOverlayReportPageJson as ModalOverlayReportPageShape),
+      entityType: EntityType.STANDARDS,
+    }}
   />
 );
 
@@ -130,6 +137,12 @@ const exportedModalOverlayReportSectionComponentOther = (
 );
 
 describe("<ExportedModalOverlayReportSection />", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockedUseStore.mockReturnValue({
+      ...mockMlrReportStore,
+    });
+  });
   test("ExportedModalOverlayReportSection renders", () => {
     const { getByTestId } = render(exportedModalOverlayReportSectionComponent);
     const section = getByTestId("exportTable");
@@ -137,10 +150,7 @@ describe("<ExportedModalOverlayReportSection />", () => {
   });
 
   describe("Test renderModalOverlayTableBody", () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-    test("Should render data correctly", async () => {
+    test("Should render data correctly for mlr", async () => {
       mockReportContext.report.fieldData.program = [mockMlrProgram];
       const { container, findByText } = render(
         exportedModalOverlayReportSectionComponent
@@ -194,6 +204,73 @@ describe("<ExportedModalOverlayReportSection />", () => {
 
       // Correct notes
       expect(await findByText(mockMlrProgram.report_miscellaneousNotes));
+    });
+
+    test("Should render data correctly for naaar", async () => {
+      mockedUseStore.mockReturnValue(mockNaaarReportStore);
+      render(exportedNaaarStandardsComponent);
+
+      // All table headers are present
+      expect(screen.getAllByRole("columnheader").length).toBe(7);
+
+      // Every entity has a row (+1 for header)
+      const tbody = screen.getAllByRole("rowgroup")[1];
+      const rows = within(tbody).getAllByRole("row");
+      expect(rows.length).toBe(
+        mockNaaarReportStore.report?.fieldData.standards.length
+      );
+
+      // index
+      expect(screen.getByRole("gridcell", { name: "1" })).toBeVisible();
+
+      // provider type
+      expect(
+        screen.getByRole("gridcell", {
+          name: "Primary Care",
+        })
+      ).toBeVisible();
+
+      // standard type
+      expect(
+        screen.getByRole("gridcell", { name: "Appointment wait time" })
+      ).toBeVisible();
+
+      // description
+      expect(
+        screen.getByRole("gridcell", { name: "standard description" })
+      ).toBeVisible();
+
+      // analysis methods, joined with a comma
+      expect(
+        screen.getByRole("gridcell", {
+          name: "Geomapping, Plan Provider Directory Review",
+        })
+      ).toBeVisible();
+
+      // population
+      expect(screen.getByRole("gridcell", { name: "Pediatric" })).toBeVisible();
+
+      // region
+      expect(screen.getByRole("gridcell", { name: "Metro" })).toBeVisible();
+    });
+
+    test("Should render message for naaar with no standards", async () => {
+      const mockEmptyStandardsNaaarStore = {
+        ...mockNaaarReportStore,
+      };
+      mockEmptyStandardsNaaarStore.report!.fieldData.standards = undefined;
+      mockedUseStore.mockReturnValue(mockEmptyStandardsNaaarStore);
+      render(exportedNaaarStandardsComponent);
+
+      // No table renders
+      expect(screen.queryByRole("table")).toBeNull();
+
+      // region
+      expect(
+        screen.getByTestId("exportedModalOverlayReportSection")
+      ).toHaveTextContent(
+        "Standard total count: 0 - No access standards entered"
+      );
     });
 
     test('Should render "other" explanations if they are filled.', async () => {

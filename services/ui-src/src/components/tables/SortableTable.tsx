@@ -245,25 +245,16 @@ const sx = {
     borderColor: "palette.gray_lighter",
     textTransform: "none",
     letterSpacing: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
   },
   tableCell: {
     padding: "0.75rem 0.5rem",
     borderStyle: "none",
     fontWeight: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
   },
   tableCellBorder: {
     padding: "0.75rem 0.5rem",
     borderBottom: "1px solid",
     borderColor: "palette.gray_lighter",
     fontWeight: "normal",
-    ".mobile &": {
-      fontSize: "xs",
-    },
   },
 };

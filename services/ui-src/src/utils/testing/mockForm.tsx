@@ -1,3 +1,4 @@
+import { planComplianceStandardExceptionsLabel } from "../../constants";
 import {
   CustomHtmlElement,
   EntityType,
@@ -236,6 +237,7 @@ export const mockDrawerReportPageJson = {
     intro: mockVerbiageIntro,
     dashboardTitle: "Mock dashboard title",
     drawerTitle: "Mock drawer title",
+    editEntityButtonText: "Edit",
   },
   drawerForm: mockDrawerForm,
 };
@@ -329,7 +331,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
     id: "am",
     fields: [
       {
-        id: "mock-field-id",
+        id: "analysis_applicable",
         props: {
           choices: [
             {
@@ -569,6 +571,141 @@ export const mockNaaarStandardsPageJson = {
   },
 };
 
+export const mockNaaarPlanCompliancePageJson = {
+  name: "mock-route",
+  path: "/naaar/plan-compliance",
+  pageType: "planOverlay",
+  entityType: EntityType.PLANS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    requiredMessages: {
+      plans: [
+        {
+          type: "p",
+          content: "plans are required",
+        },
+      ],
+      standards: [
+        {
+          type: "p",
+          content: "standards are required",
+        },
+      ],
+    },
+    tableHeader: "Plan Name",
+    enterEntityDetailsButtonText: "Enter",
+  },
+  details: {
+    verbiage: {
+      intro: {
+        section: "mock section",
+      },
+    },
+    forms: [
+      {
+        form: {
+          id: "planComplianceMockForm1",
+          fields: [
+            {
+              id: "mockComplianceQuestion1",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row 1"]],
+          caption: "",
+          headRow: ["Mock head row 1"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading 1",
+          hint: "mock plan compliance hint 1",
+          intro: {
+            section: "",
+          },
+        },
+      },
+      {
+        form: {
+          id: "planComplianceMockForm2",
+          fields: [
+            {
+              id: "mockComplianceQuestion2",
+              type: "radio",
+              validation: "radio",
+              props: {
+                choices: [
+                  {
+                    id: "mockComplianceOption1",
+                    label: "Yes, is compliant",
+                  },
+                  {
+                    id: "mockComplianceOption2",
+                    label: "No, is not compliant",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        table: {
+          bodyRows: [["Mock body row 2"]],
+          caption: "",
+          headRow: ["Mock head row 2"],
+        },
+        verbiage: {
+          heading: "mock plan compliance heading 2",
+          hint: "mock plan compliance hint 2",
+          intro: {
+            section: "",
+          },
+        },
+      },
+    ],
+    childForms: [
+      {
+        parentForm: "mockParentFormId1",
+        form: {
+          id: "mockChildFormId1",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+      {
+        parentForm: "mockParentFormId2",
+        form: {
+          id: "mockChildFormId2",
+          fields: [
+            {
+              id: "mockChildFormFieldId1",
+              type: "textarea",
+              validation: "text",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 export const mockModalDrawerReportPageVerbiage = {
   intro: mockVerbiageIntro,
   dashboardTitle: "Mock dashboard title",
@@ -586,7 +723,7 @@ export const mockModalDrawerReportPageVerbiage = {
   entityUnfinishedMessage: "Mock entity unfinished messsage",
   enterEntityDetailsButtonText: "Mock enter entity details button text",
   editEntityDetailsButtonText: "Mock edit entity details button text",
-  drawerTitle: "Mock drawer title",
+  drawerTitle: "{{action}} Mock drawer title",
   drawerNoFormMessage: "Mock no form fields here",
   tableHeader: "Mock table header",
 };
@@ -634,6 +771,8 @@ export const mockOverlayReportPageVerbiage: OverlayReportPageVerbiage = {
   },
   tableHeader: "Mock table header",
   emptyDashboardText: "No entities found",
+  enterReportText: "Enter Details",
+  editEntityButtonText: "Edit",
   enterEntityDetailsButtonText: "Mock Enter Button Text",
 };
 
@@ -834,6 +973,8 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           caption: "Mock Child Table",
           sortableHeadRow: {
             id: { header: "ID" },
+            exceptionsNonCompliance: { header: "Mock N/E" },
+            standardType: { header: "Mock Standard Type Header" },
             actions: { header: "Actions", hidden: true },
           },
           verbiage: {
@@ -848,20 +989,53 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
           id: "mockMultiformWithTable_childForm",
           fields: [
             {
-              id: "mockMultiformWithTable_mockInput",
+              id: "planCompliance43868_standard-mockStandard",
               type: "radio",
-              validation: "radio",
+              validation: "radioOptional",
               props: {
                 choices: [
                   {
                     id: "yes",
                     label: "Mock Yes",
+                    children: [
+                      {
+                        id: "mock-Description",
+                        type: "textarea",
+                        validation: "textOptional",
+                      },
+                      {
+                        id: "planCompliance43868_standard-mockStandard-nonComplianceAnalyses",
+                        type: "checkbox",
+                        validation: "checkboxOneOptional",
+                        props: {
+                          label:
+                            "Mock Plan deficiencies: analyses used to identify deficiencies",
+                          choices: [],
+                        },
+                      },
+                    ],
                   },
                   {
                     id: "no",
-                    label: "Mock No",
+                    label: planComplianceStandardExceptionsLabel,
                   },
                 ],
+              },
+            },
+            {
+              id: "planCompliance43868_standard-mockStandard-exceptionsDescription",
+              type: "textarea",
+              validation: "textOptional",
+              props: {
+                label: "Mock Exception Description",
+              },
+            },
+            {
+              id: "planCompliance43868_standard-mockStandard-nonComplianceDescription",
+              type: "textarea",
+              validation: "textOptional",
+              props: {
+                label: "Mock Non-Compliance Description",
               },
             },
           ],

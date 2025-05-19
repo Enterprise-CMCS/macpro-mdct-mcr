@@ -33,12 +33,10 @@ const appRoutesComponent = (history: any) => (
 );
 
 let history: any;
-const tempScroll = window.HTMLElement.prototype.scrollIntoView;
 
 describe("<AppRoutes />", () => {
   describe("Test AppRoutes for admin-specific routes", () => {
     beforeEach(async () => {
-      window.HTMLElement.prototype.scrollIntoView = function () {};
       mockedUseStore.mockReturnValue({
         ...mockAdminUserStore,
         ...mockBannerStore,
@@ -48,9 +46,6 @@ describe("<AppRoutes />", () => {
       await act(async () => {
         await render(appRoutesComponent(history));
       });
-    });
-    afterEach(async () => {
-      window.HTMLElement.prototype.scrollIntoView = tempScroll;
     });
     test("/admin is visible for admin user", async () => {
       const currentPath = history.location.pathname;
