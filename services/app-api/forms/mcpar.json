@@ -2160,8 +2160,8 @@
             "fields": [
               {
                 "id": "plan_enrollment",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.1 Plan enrollment",
                   "hint": "Enter the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months).",
@@ -2171,8 +2171,8 @@
               },
               {
                 "id": "plan_medicaidEnrollmentSharePercentage",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.2 Plan share of Medicaid",
                   "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
@@ -2181,8 +2181,8 @@
               },
               {
                 "id": "plan_medicaidManagedCareEnrollmentSharePercentage",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.3 Plan share of any Medicaid managed care",
                   "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
