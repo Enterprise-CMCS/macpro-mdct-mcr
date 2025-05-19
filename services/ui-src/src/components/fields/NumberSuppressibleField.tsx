@@ -23,13 +23,8 @@ export const NumberSuppressibleField = ({
   };
 
   useEffect(() => {
-    if (hydrate === suppressionText) {
-      setIsSuppressed(true);
-      setNumberHydrate(hydrate);
-    } else {
-      setIsSuppressed(false);
-      setNumberHydrate(hydrate);
-    }
+    setIsSuppressed(hydrate === suppressionText);
+    setNumberHydrate(hydrate);
   }, [hydrate]);
 
   return (
