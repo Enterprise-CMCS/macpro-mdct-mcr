@@ -3229,6 +3229,50 @@
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
+                  },
+                  {
+                    "id": "plan_resolvedDMEGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15k Resolved grievances related to durable medical equipment (DME) & supplies",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to DME and/or supplies. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedHomeHealthGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15l Resolved grievances related to home health / hospice",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to home health and/or hospice. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedEmergencyServicesGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15m Resolved grievances related to emergency services / emergency department",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to emergency services and/or provided in the emergency department. Do not include grievances related to emergency outpatient behavioral health - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedTherapyGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15n Resolved grievances related to therapies",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to speech language pathology services or occupational, physical, or respiratory therapy services. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
                   }
                 ]
               }
