@@ -3137,7 +3137,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15b Resolved grievances related to all other general outpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to all other general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services – those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to all other general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
