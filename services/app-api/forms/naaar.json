@@ -603,7 +603,7 @@
                       "id": "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
@@ -622,7 +622,7 @@
                       "id": "standard_coreProviderType_details-uITThePQiXntwGGViPTD62",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
@@ -641,7 +641,7 @@
                       "id": "standard_coreProviderType_details-9kBoKCLD1dYizieU5psnJi",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
@@ -660,7 +660,7 @@
                       "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
@@ -679,7 +679,7 @@
                       "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
@@ -698,7 +698,7 @@
                       "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
@@ -717,7 +717,7 @@
                       "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
@@ -736,7 +736,7 @@
                       "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
@@ -755,7 +755,7 @@
                       "id": "standard_coreProviderType_details-qbR8X0YAh8vObedJPx6QTJ",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"

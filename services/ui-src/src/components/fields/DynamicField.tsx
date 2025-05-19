@@ -145,7 +145,9 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
 
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
-        (method: EntityShape) => {
+        (originalMethod: EntityShape) => {
+          const method = structuredClone(originalMethod);
+
           if (method.analysis_method_applicable_plans?.length) {
             method.analysis_method_applicable_plans = (
               method.analysis_method_applicable_plans || []
@@ -173,11 +175,13 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             delete method.analysis_applicable;
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
+            delete method["analysis_method_frequency-otherText"];
           } else if (analysisMethodNotUtilized) {
             // revert not utilized analysis methods to unanswered state if there are no plans
             if (reportPlans.length === 0) delete method.analysis_applicable;
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
+            delete method["analysis_method_frequency-otherText"];
           }
 
           if (
@@ -186,6 +190,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           ) {
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
+            delete method["analysis_method_frequency-otherText"];
           }
 
           return method;
