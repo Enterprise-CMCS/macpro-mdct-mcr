@@ -147,15 +147,14 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
         (method: EntityShape) => {
           if (method.analysis_method_applicable_plans?.length) {
-            method.analysis_method_applicable_plans =
-              method.analysis_method_applicable_plans.filter(
-                (plan: AnyObject) => {
-                  const planKey: string = plan.key
-                    .split("analysis_method_applicable_plans-")
-                    .pop();
-                  return planKey !== selectedRecord.id;
-                }
-              );
+            method.analysis_method_applicable_plans = (
+              method.analysis_method_applicable_plans || []
+            ).filter((plan: AnyObject) => {
+              const planKey: string = plan.key
+                .split("analysis_method_applicable_plans-")
+                .pop();
+              return planKey !== selectedRecord.id;
+            });
           }
           const analysisMethodNotUtilized =
             method.analysis_applicable?.[0]?.value === "No";
@@ -181,7 +180,10 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             delete method.analysis_method_frequency;
           }
 
-          if ("custom_analysis_method_name" in method) {
+          if (
+            "custom_analysis_method_name" in method &&
+            method.analysis_method_applicable_plans?.length === 0
+          ) {
             delete method.analysis_method_applicable_plans;
             delete method.analysis_method_frequency;
           }
