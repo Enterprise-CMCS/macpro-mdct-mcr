@@ -267,6 +267,9 @@ const processField = (field) => {
           processField(childField)
         );
         break;
+      case "numberSuppressible":
+        cy.get(`[name="${field.id}-suppressed"]`).check();
+        break;
     }
   }
 };
