@@ -6,6 +6,9 @@ import {
   string,
   number as yupNumber,
 } from "yup";
+// constants
+import { suppressionText } from "../constants/constants";
+// types
 import { Choice } from "../types";
 
 export const error = {
@@ -114,6 +117,19 @@ const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
 
 export const number = () => numberSchema().required();
 export const numberOptional = () => numberSchema().notRequired().nullable();
+
+export const numberSuppressible = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (value === suppressionText) {
+          return true;
+        }
+        return value ? validNumberRegex.test(value) : false;
+      },
+      message: error.INVALID_NUMBER,
+    });
 
 const validNumberSchema = () =>
   string().test({

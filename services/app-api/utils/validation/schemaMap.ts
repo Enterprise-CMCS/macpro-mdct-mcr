@@ -7,6 +7,8 @@ import {
   string,
   StringSchema,
 } from "yup";
+// constants
+import { suppressionText } from "../constants/constants";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -88,6 +90,19 @@ export const numberNotLessThanZero = () =>
     });
 
 export const numberOptional = () => number();
+
+export const numberSuppressible = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (value === suppressionText) {
+          return true;
+        }
+        return value ? validNumberRegex.test(value) : false;
+      },
+      message: error.INVALID_NUMBER,
+    });
 
 const validNumberSchema = () =>
   string().test({
@@ -264,6 +279,7 @@ export const schemaMap: any = {
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberOptional: numberOptional(),
+  numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),
   radio: radio(),
   radioOptional: radioOptional(),

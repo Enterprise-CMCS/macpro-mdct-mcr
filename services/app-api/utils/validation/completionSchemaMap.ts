@@ -7,6 +7,7 @@ export const completionSchemaMap: any = {
   numberOptional: schema.numberOptional(),
   numberNotLessThanOne: schema.numberNotLessThanOne(),
   numberNotLessThanZero: schema.numberNotLessThanZero(),
+  numberSuppressible: schema.numberSuppressible(),
   ratio: schema.ratio(),
   email: schema.email(),
   emailOptional: schema.emailOptional(),
