@@ -3689,7 +3689,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions."
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. The state should include all sanctions the state issued regardless of what entity identified the non-compliance (e.g. the state, an auditing body, the plan, a contracted entity like an external quality review organization)."
                 },
                 {
                   "type": "p",
