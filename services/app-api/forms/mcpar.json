@@ -1546,26 +1546,26 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select “Custom Method“ and add details.",
+                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select “Custom method” and add details.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
                           "label": "Geomapping"
                         },
                         {
-                          "id": "8CMLyb311Nu2jAvjH2Shix",
+                          "id": "G7GxcYWmhEqjrEQDBWRl3w",
                           "label": "Plan Provider Directory Review"
                         },
                         {
-                          "id": "jV4HPfW1m52sQBPf626zYS",
+                          "id": "WZYsy13Kv3GZWpZcqyfmsAha",
                           "label": "Secret Shopper: Network Participation"
                         },
                         {
-                          "id": "oPzVpoNQMKGjBZNv5rHwMx",
+                          "id": "wtGWKuNsBxZ43NTZ45sZF5y7",
                           "label": "Secret Shopper: Appointment Availability"
                         },
                         {
-                          "id": "x7YAgoGbPfMRpZWcGSnjyf",
+                          "id": "cMhP8Jp6SUS9XvezaPLvLg",
                           "label": "Electronic Visit Verification Data Analysis"
                         },
                         {
@@ -1573,7 +1573,7 @@
                           "label": "Review of Grievances Related to Access"
                         },
                         {
-                          "id": "r6FPy3varm5HbcBA44DjQ8",
+                          "id": "h64Pn0WAtuQIpmIvlPKGqwR4",
                           "label": "Encounter Data Analysis"
                         },
                         {
@@ -1582,7 +1582,7 @@
                           "children": [
                             {
                               "id": "accessMeasure_monitoringMethods-otherText",
-                              "type": "textarea",
+                              "type": "text",
                               "validation": {
                                 "type": "text",
                                 "nested": true,
