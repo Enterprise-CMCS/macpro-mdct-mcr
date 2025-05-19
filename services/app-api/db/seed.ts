@@ -23,6 +23,9 @@ const seed = async (): Promise<void> => {
       message: "Type",
       choices: [
         { title: "MCPAR", value: "MCPAR" },
+        { title: "MCPAR - PCCM", value: "MCPAR-PCCM" },
+        { title: "MCPAR - New Program", value: "MCPAR-newProgram" },
+        { title: "MCPAR - New Program PCCM", value: "MCPAR-newProgramPCCM" },
         { title: "MLR", value: "MLR" },
         { title: "NAAAR", value: "NAAAR" },
         { title: "Banners", value: "banners" },
@@ -30,7 +33,16 @@ const seed = async (): Promise<void> => {
     },
     {
       type: (prev: string) =>
-        ["MCPAR", "MLR", "NAAAR"].includes(prev) ? "select" : null,
+        [
+          "MCPAR",
+          "MCPAR-newProgram",
+          "MCPAR-newProgramPCCM",
+          "MCPAR-PCCM",
+          "MLR",
+          "NAAAR",
+        ].includes(prev)
+          ? "select"
+          : null,
       name: "task",
       message: "Task",
       choices: (prev: string) => generateChoices(prev) as Choice[],
@@ -85,6 +97,9 @@ const seed = async (): Promise<void> => {
         seed();
         break;
       case "createMCPAR":
+      case "createMCPAR-newProgram":
+      case "createMCPAR-newProgramPCCM":
+      case "createMCPAR-PCCM":
       case "createMLR":
       case "createNAAAR": {
         const reportType = answer.replace("create", "");
@@ -92,6 +107,9 @@ const seed = async (): Promise<void> => {
         break;
       }
       case "createFilledMCPAR":
+      case "createFilledMCPAR-newProgram":
+      case "createFilledMCPAR-newProgramPCCM":
+      case "createFilledMCPAR-PCCM":
       case "createFilledMLR":
       case "createFilledNAAAR": {
         const reportType = answer.replace("createFilled", "");
@@ -99,6 +117,9 @@ const seed = async (): Promise<void> => {
         break;
       }
       case "createSubmittedMCPAR":
+      case "createSubmittedMCPAR-newProgram":
+      case "createSubmittedMCPAR-newProgramPCCM":
+      case "createSubmittedMCPAR-PCCM":
       case "createSubmittedMLR":
       case "createSubmittedNAAAR": {
         const reportType = answer.replace("createSubmitted", "");
@@ -110,6 +131,9 @@ const seed = async (): Promise<void> => {
         break;
       }
       case "createArchivedMCPAR":
+      case "createArchivedMCPAR-newProgram":
+      case "createArchivedMCPAR-PCCM":
+      case "createArchivedMCPAR-newProgramPCCM":
       case "createArchivedMLR":
       case "createArchivedNAAAR": {
         const reportType = answer.replace("createArchived", "");

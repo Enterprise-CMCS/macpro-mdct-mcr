@@ -5,6 +5,9 @@ import {
   fillNaaar,
   newBanner,
   newMcpar,
+  newMcparNewProgram,
+  newMcparNewProgramPCCM,
+  newMcparPCCM,
   newMlr,
   newNaaar,
 } from "./fixtures";
@@ -35,12 +38,16 @@ export const createReport = async (
 ): Promise<SeedReportShape> => {
   const newReport = {
     MCPAR: newMcpar,
+    "MCPAR-newProgram": newMcparNewProgram,
+    "MCPAR-newProgramPCCM": newMcparNewProgramPCCM,
+    "MCPAR-PCCM": newMcparPCCM,
     MLR: newMlr,
     NAAAR: newNaaar,
   } as { [key: string]: Function };
-  const data = newReport[reportType](stateName);
+  const data = newReport[reportType](stateName, state);
+  const baseReportType = reportType.split("-")[0];
   const report = await postApi(
-    `/reports/${reportType}/${state}`,
+    `/reports/${baseReportType}/${state}`,
     headers,
     data
   );
@@ -51,7 +58,8 @@ export const createFilledReport = async (
   reportType: string
 ): Promise<SeedReportShape> => {
   const { id, programIsPCCM } = await createReport(reportType);
-  const report = await updateFillReport(id, reportType, programIsPCCM);
+  const baseReportType = reportType.split("-")[0];
+  const report = await updateFillReport(id, baseReportType, programIsPCCM);
   return report;
 };
 
@@ -78,7 +86,8 @@ export const createSubmittedReport = async (
   reportType: string
 ): Promise<SeedReportShape> => {
   const { id } = await createFilledReport(reportType);
-  const report = await updateSubmitReport(id, reportType);
+  const baseReportType = reportType.split("-")[0];
+  const report = await updateSubmitReport(id, baseReportType);
   return report;
 };
 
@@ -98,7 +107,8 @@ export const createArchivedReport = async (
   reportType: string
 ): Promise<SeedReportShape> => {
   const { id } = await createSubmittedReport(reportType);
-  const report = await updateArchiveReport(id, reportType);
+  const baseReportType = reportType.split("-")[0];
+  const report = await updateArchiveReport(id, baseReportType);
   return report;
 };
 
