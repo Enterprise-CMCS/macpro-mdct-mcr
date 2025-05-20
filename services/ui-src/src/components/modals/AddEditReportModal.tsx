@@ -115,6 +115,12 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const programIsPCCM = formData["programIsPCCM"];
+    const naaarSubmissionForThisProgram =
+      formData["naaarSubmissionForThisProgram"];
+    const naaarSubmissionDateForThisProgram =
+      formData["naaarSubmissionDateForThisProgram"] || undefined;
+    const naaarExpectedSubmissionDateForThisProgram =
+      formData["naaarExpectedSubmissionDateForThisProgram"] || undefined;
 
     return {
       metadata: {
@@ -133,6 +139,9 @@ export const AddEditReportModal = ({
         existingProgramNameSelection,
         existingProgramNameSuggestion,
         newProgramName,
+        naaarSubmissionForThisProgram,
+        naaarSubmissionDateForThisProgram,
+        naaarExpectedSubmissionDateForThisProgram,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

@@ -84,6 +84,12 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
       value: "No",
     },
   ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
+      value: "No",
+    },
+  ],
   lastAlteredBy: "Thelonious States",
   fieldDataId: "mockReportFieldData",
   formTemplateId: "mockReportJson",
@@ -182,6 +188,12 @@ export const mockMcparReport = {
     programIsPCCM: [
       {
         key: "programIsPCCM-no_programIsNotPCCM",
+        value: "No",
+      },
+    ],
+    naaarSubmissionForThisProgram: [
+      {
+        key: "naaarSubmissionForThisProgram-mockId",
         value: "No",
       },
     ],

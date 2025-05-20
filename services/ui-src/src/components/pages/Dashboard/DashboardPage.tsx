@@ -164,6 +164,11 @@ export const DashboardPage = ({ reportType }: Props) => {
           existingProgramNameSelection: report?.existingProgramNameSelection,
           existingProgramNameSuggestion: report?.existingProgramNameSuggestion,
           newProgramName: report?.newProgramName,
+          naaarSubmissionForThisProgram: report?.naaarSubmissionForThisProgram,
+          naaarSubmissionDateForThisProgram:
+            report?.naaarSubmissionDateForThisProgram,
+          naaarExpectedSubmissionDateForThisProgram:
+            report?.naaarExpectedSubmissionDateForThisProgram,
         },
         state: report.state,
         id: report.id,

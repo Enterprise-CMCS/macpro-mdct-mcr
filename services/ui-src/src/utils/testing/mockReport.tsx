@@ -492,6 +492,12 @@ export const mockMcparReport = {
       value: "No",
     },
   ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
+      value: "No",
+    },
+  ],
   submittedOnDate: Date.now(),
   fieldData: mockReportFieldData,
   fieldDataId: "mockFieldDataId",
@@ -533,6 +539,12 @@ export const mockMcparReportCombinedData = {
   programIsPCCM: [
     {
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
       value: "No",
     },
   ],

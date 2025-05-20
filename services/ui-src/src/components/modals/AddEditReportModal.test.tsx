@@ -82,6 +82,8 @@ const mockSelectedMcparReport = {
     ),
     combinedData: mockMcparReport.combinedData,
     programIsPCCM: mockMcparReport?.programIsPCCM,
+    naaarSubmissionForThisProgram:
+      mockMcparReport?.naaarSubmissionForThisProgram,
   },
 };
 
@@ -237,10 +239,14 @@ describe("<AddEditProgramModal />", () => {
         "[name='reportingPeriodEndDate']"
       )!;
       await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getByLabelText("No") as HTMLInputElement;
+      const isPccmNo = screen.getAllByLabelText("No")[0] as HTMLInputElement;
       if (!isPccmNo.disabled) {
         await userEvent.click(isPccmNo);
       }
+      const naaarSubmissionNo = screen.getAllByLabelText(
+        "No"
+      )[1] as HTMLInputElement;
+      await userEvent.click(naaarSubmissionNo);
       const submitButton = screen.getByRole("button", { name: "Save" });
       await userEvent.click(submitButton);
     };
@@ -322,16 +328,20 @@ describe("<AddEditProgramModal />", () => {
       10 * 1000
     );
 
-    test("Editing an existing report", async () => {
-      const result = render(modalComponentWithSelectedReport);
-      const form = result.getByTestId("add-edit-report-form");
-      await fillForm(form);
-      await waitFor(() => {
-        expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-      });
-    });
+    test(
+      "Editing an existing report",
+      async () => {
+        const result = render(modalComponentWithSelectedReport);
+        const form = result.getByTestId("add-edit-report-form");
+        await fillForm(form);
+        await waitFor(() => {
+          expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+          expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+          expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+        });
+      },
+      10 * 1000
+    );
   });
 
   describe("Test AddEditReportModal functionality for MLR", () => {
