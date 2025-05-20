@@ -28,6 +28,12 @@ export default {
       subtitle:
         "Enrollees in separate CHIP programs funded under Title XXI should not be reported in the MCPAR. Please check this box if the state is unable to remove information about Separate CHIP enrollees from its reporting on this program.",
     },
+    naaarSubmissionTable: {
+      title:
+        "Did you submit or do you plan on submitting a Network Adequacy and Access Assurances (NAAAR) Report for this program for this reporting period through the MDCT online tool?",
+      subtitle:
+        "If “No”,  please complete the following questions under each plan.",
+    },
   },
   tableHeaders: {
     number: "Number",

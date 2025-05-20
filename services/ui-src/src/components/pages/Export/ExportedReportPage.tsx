@@ -69,6 +69,15 @@ export const ExportedReportPage = () => {
                 </Td>
                 <Td>{report.combinedData ? "Selected" : "Not Selected"}</Td>
               </Tr>
+              <Tr>
+                <Td>
+                  <Text className="combined-data-title">
+                    {reportPage.naaarSubmissionTable.title}
+                  </Text>
+                  <Text>{reportPage.naaarSubmissionTable.subtitle}</Text>
+                </Td>
+                <Td>{getNaaarSubmissionDate(report)}</Td>
+              </Tr>
             </Table>
           )}
           {/* report sections */}
@@ -100,6 +109,18 @@ export const reportTitle = (
       throw new Error(
         `The title for report type ${reportType} has not been implemented.`
       );
+  }
+};
+
+const getNaaarSubmissionDate = (report: ReportShape) => {
+  const naaarSubmission = report.naaarSubmissionForThisProgram?.[0].value;
+  switch (naaarSubmission) {
+    case "Yes, I submitted it":
+      return `Submitted on ${report.naaarSubmissionDateForThisProgram}`;
+    case "Yes, I plan on submitting it":
+      return `Plan to submit on ${report.naaarExpectedSubmissionDateForThisProgram}`;
+    default:
+      return naaarSubmission;
   }
 };
 
