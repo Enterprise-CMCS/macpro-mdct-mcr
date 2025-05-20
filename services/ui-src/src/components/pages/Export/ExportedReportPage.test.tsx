@@ -1,5 +1,9 @@
 import { render } from "@testing-library/react";
-import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
+import {
+  ExportedReportPage,
+  reportTitle,
+  getNaaarSubmissionDate,
+} from "./ExportedReportPage";
 // types
 import { ReportShape, ReportType } from "types";
 // utils
@@ -45,6 +49,11 @@ describe("<ExportedReportPage />", () => {
         "Managed Care Program Annual Report (MCPAR) for TestState: testProgram"
       );
       expect(title).toBeVisible();
+    });
+
+    test("getNaaarSubmissionDate returns the correct date", async () => {
+      const result = getNaaarSubmissionDate(mockMcparReportStore.report!);
+      expect(result).toBe("No");
     });
 
     test("Does the export page have the correct title for MLR reports", () => {

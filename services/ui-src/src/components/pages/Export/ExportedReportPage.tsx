@@ -112,7 +112,7 @@ export const reportTitle = (
   }
 };
 
-const getNaaarSubmissionDate = (report: ReportShape) => {
+export const getNaaarSubmissionDate = (report: ReportShape) => {
   const naaarSubmission = report.naaarSubmissionForThisProgram?.[0].value;
   switch (naaarSubmission) {
     case "Yes, I submitted it":
