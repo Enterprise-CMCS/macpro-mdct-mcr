@@ -35,6 +35,7 @@ export interface ReportMetadataShape extends ReportKeys {
   fieldDataId: string;
   copyFieldDataSourceId?: string;
   programIsPCCM?: Choice[];
+  naaarSubmissionForThisProgram?: Choice[];
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
@@ -42,6 +43,8 @@ export interface ReportMetadataShape extends ReportKeys {
   existingProgramNameSelection?: SelectedOption;
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
+  naaarSubmissionDateForThisProgram?: string;
+  naaarExpectedSubmissionDateForThisProgram?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

@@ -311,9 +311,11 @@ export interface MCPARReportMetadata extends ReportMetadata {
   combinedData: boolean;
   programIsPCCM: Choice[];
   newOrExistingProgram: Choice[];
+  naaarSubmissionForThisProgram: Choice[];
   existingProgramNameSelection?: SelectedOption;
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
+  naaarSubmissionDateForThisProgram?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {
