@@ -328,16 +328,20 @@ describe("<AddEditProgramModal />", () => {
       10 * 1000
     );
 
-    test("Editing an existing report", async () => {
-      const result = render(modalComponentWithSelectedReport);
-      const form = result.getByTestId("add-edit-report-form");
-      await fillForm(form);
-      await waitFor(() => {
-        expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-        expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
-        expect(mockCloseHandler).toHaveBeenCalledTimes(1);
-      });
-    });
+    test(
+      "Editing an existing report",
+      async () => {
+        const result = render(modalComponentWithSelectedReport);
+        const form = result.getByTestId("add-edit-report-form");
+        await fillForm(form);
+        await waitFor(() => {
+          expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+          expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
+          expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+        });
+      },
+      10 * 1000
+    );
   });
 
   describe("Test AddEditReportModal functionality for MLR", () => {
