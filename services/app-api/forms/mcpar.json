@@ -3804,7 +3804,7 @@
                     },
                     {
                       "id": "AexbMuj1y0KnY6UqkW5o0Q",
-                      "label": "Compliance letter"
+                      "label": "All compliance-related notices or letters (e.g. warnings, non-compliance)"
                     },
                     {
                       "id": "d45iDfmlk0S3u8AYTttYXA",
@@ -3850,19 +3850,27 @@
                     },
                     {
                       "id": "kB2nkoh27EG74eGG44pBrg",
-                      "label": "Reporting"
+                      "label": "Reporting (timeliness, completeness, accuracy)"
                     },
                     {
                       "id": "MXaon6GrskylPnGm2QHnJw",
-                      "label": "Performance improvement"
+                      "label": "Quality measure performance (e.g., failure to meet benchmarks or make progress on performance improvement projects)"
                     },
                     {
                       "id": "Ru46dEgst0eXi5s6bUA4Jg",
-                      "label": "Timely access"
+                      "label": "Timely access to care"
                     },
                     {
                       "id": "GuYmG53wQ2sWmGlVnBIxnIof",
                       "label": "Mental Health and Substance Use Disorder Parity compliance"
+                    },
+                    {
+                      "id": "0AmKeqywuQrFOItpTRLxu5KG",
+                      "label": "Timely payments to providers"
+                    },
+                    {
+                      "id": "1J5jsCbue8SyfkP8JqQv1piw",
+                      "label": "Network adequacy"
                     },
                     {
                       "id": "uFRKwEVzfE21KzEotYRkUw",
