@@ -3,17 +3,13 @@ import { aws_iam as iam } from "aws-cdk-lib";
 
 interface CreateCustomResourceRoleProps {
   scope: Construct;
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
 }
 
 export function createCustomResourceRole(props: CreateCustomResourceRoleProps) {
-  const { scope, iamPermissionsBoundary, iamPath } = props;
+  const { scope } = props;
 
   return new iam.Role(scope, "CustomResourceRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    path: iamPath,
-    permissionsBoundary: iamPermissionsBoundary,
     inlinePolicies: {
       InlinePolicy: new iam.PolicyDocument({
         statements: [

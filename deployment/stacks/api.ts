@@ -31,8 +31,6 @@ interface CreateApiComponentsProps {
   kafkaAuthorizedSubnetIds: string;
   tables: DynamoDBTableIdentifiers[];
   brokerString: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -53,8 +51,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
      * tables,
      * brokerString,
      */
-    iamPermissionsBoundary,
-    iamPath,
   } = props;
 
   const service = "app-api";
@@ -197,8 +193,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
    *   api,
    *   environment,
    *   additionalPolicies,
-   *   iamPermissionsBoundary,
-   *   iamPath,
    * };
    */
 
@@ -218,12 +212,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       webAclArn: waf.webAcl.attrArn,
     });
   }
-
-  addIamPropertiesToBucketAutoDeleteRole(
-    scope,
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   const apiGatewayRestApiUrl = api.url.slice(0, -1);
 

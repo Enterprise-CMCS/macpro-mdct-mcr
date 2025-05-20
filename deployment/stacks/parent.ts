@@ -22,18 +22,9 @@ export class ParentStack extends Stack {
       terminationProtection: !isDev,
     });
 
-    const iamPermissionsBoundaryArn = `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/cms-cloud-admin/developer-boundary-policy`;
-    const iamPath = "/delegatedadmin/developer/";
-
     const commonProps = {
       scope: this,
       ...props,
-      iamPermissionsBoundary: iam.ManagedPolicy.fromManagedPolicyArn(
-        this,
-        "iamPermissionsBoundary",
-        iamPermissionsBoundaryArn
-      ),
-      iamPath,
     };
 
     const customResourceRole = createCustomResourceRole({ ...commonProps });

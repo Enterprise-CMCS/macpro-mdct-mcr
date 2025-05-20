@@ -11,7 +11,6 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
 interface CreateUiAuthComponentsProps {
@@ -21,8 +20,6 @@ interface CreateUiAuthComponentsProps {
   isDev: boolean;
   applicationEndpointUrl: string;
   customResourceRole: iam.Role;
-  iamPath: string;
-  iamPermissionsBoundary: IManagedPolicy;
   oktaMetadataUrl: string;
   bootstrapUsersPassword?: string;
   secureCloudfrontDomainName?: string;
@@ -37,8 +34,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     isDev,
     applicationEndpointUrl,
     customResourceRole,
-    iamPath,
-    iamPermissionsBoundary,
     oktaMetadataUrl,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
@@ -166,8 +161,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   if (bootstrapUsersPassword) {
     const lambdaApiRole = new iam.Role(scope, "BootstrapUsersLambdaApiRole", {
-      permissionsBoundary: iamPermissionsBoundary,
-      path: iamPath,
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
@@ -262,8 +255,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
 
   function createAuthRole(restApiId: string) {
     const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
-      permissionsBoundary: iamPermissionsBoundary,
-      path: iamPath,
       assumedBy: new iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
         {

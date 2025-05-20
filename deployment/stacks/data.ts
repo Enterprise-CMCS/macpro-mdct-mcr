@@ -15,8 +15,6 @@ interface CreateDataComponentsProps {
   scope: Construct;
   stage: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   customResourceRole: iam.Role;
 }
 
@@ -25,8 +23,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     scope,
     stage,
     isDev,
-    iamPermissionsBoundary,
-    iamPath,
     customResourceRole,
   } = props;
 
@@ -59,8 +55,6 @@ export function createDataComponents(props: CreateDataComponentsProps) {
         ],
       }),
     },
-    permissionsBoundary: iamPermissionsBoundary,
-    path: iamPath,
   });
 
   const seedDataFunction = new lambda_nodejs.NodejsFunction(scope, "seedData", {
