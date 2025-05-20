@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
 // components
 import { AddEditReportModal, ReportContext } from "components";
@@ -279,51 +280,55 @@ describe("<AddEditProgramModal />", () => {
     test(
       "Edit modal hydrates with report info and disables fields",
       async () => {
-        const result = render(modalComponentWithSelectedReport);
+        await act(async () => {
+          const result = await render(modalComponentWithSelectedReport);
+          const form = result.getByTestId("add-edit-report-form");
+          const copyFieldDataSourceId = form.querySelector(
+            "[name='copyFieldDataSourceId']"
+          )!;
+          const programIsPCCMField = form.querySelectorAll(
+            "[name='programIsPCCM']"
+          )!;
+
+          const newOrExistingProgram = form.querySelectorAll(
+            "[name='newOrExistingProgram']"
+          )!;
+
+          expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
+          expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
+
+          // yoy copy and pccm fields are disabled
+          expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
+          expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
+          expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
+
+          // hydrated values are in the modal
+          const programNameField = form.querySelector(
+            "[name='newProgramName']"
+          )!;
+          const startDateField = form.querySelector(
+            "[name='reportingPeriodStartDate']"
+          )!;
+          const endDateField = form.querySelector(
+            "[name='reportingPeriodEndDate']"
+          )!;
+
+          expect(programNameField).toHaveProperty(
+            "value",
+            mockMcparReport.programName
+          );
+          expect(startDateField).toHaveProperty(
+            "value",
+            convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
+          );
+          expect(endDateField).toHaveProperty(
+            "value",
+            convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
+          );
+
+          await userEvent.click(screen.getByText("Cancel"));
+        });
         await new Promise((resolve) => setTimeout(resolve, 500));
-        const form = result.getByTestId("add-edit-report-form");
-        const copyFieldDataSourceId = form.querySelector(
-          "[name='copyFieldDataSourceId']"
-        )!;
-        const programIsPCCMField = form.querySelectorAll(
-          "[name='programIsPCCM']"
-        )!;
-
-        const newOrExistingProgram = form.querySelectorAll(
-          "[name='newOrExistingProgram']"
-        )!;
-
-        expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
-        expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
-
-        // yoy copy and pccm fields are disabled
-        expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
-        expect(programIsPCCMField[0]).toHaveProperty("disabled", true);
-        expect(programIsPCCMField[1]).toHaveProperty("disabled", true);
-
-        // hydrated values are in the modal
-        const programNameField = form.querySelector("[name='newProgramName']")!;
-        const startDateField = form.querySelector(
-          "[name='reportingPeriodStartDate']"
-        )!;
-        const endDateField = form.querySelector(
-          "[name='reportingPeriodEndDate']"
-        )!;
-
-        expect(programNameField).toHaveProperty(
-          "value",
-          mockMcparReport.programName
-        );
-        expect(startDateField).toHaveProperty(
-          "value",
-          convertDateUtcToEt(mockMcparReport.reportingPeriodStartDate)
-        );
-        expect(endDateField).toHaveProperty(
-          "value",
-          convertDateUtcToEt(mockMcparReport.reportingPeriodEndDate)
-        );
-
-        await userEvent.click(screen.getByText("Cancel"));
       },
       10 * 1000
     );
