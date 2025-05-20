@@ -44,7 +44,7 @@ describe("MCPAR Dashboard Page - Program Creation/Editing/Archiving", () => {
     }).should("be.visible");
 
     // edit the report
-    cy.get('[alt="Edit Report"]').last().click();
+    cy.get('[alt^="Edit"]').last().click();
 
     cy.contains(`automated test - ${currentDate}`, {
       matchCase: true,

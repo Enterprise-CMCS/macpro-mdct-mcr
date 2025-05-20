@@ -86,7 +86,8 @@ export default class BasePage {
     };
 
     for (const size of Object.values(breakpoints)) {
-      this.page.setViewportSize({ width: size[0], height: size[1] });
+      await this.page.setViewportSize({ width: size[0], height: size[1] });
+      await this.title.waitFor({ state: "visible" });
       const results = await new AxeBuilder({ page: this.page })
         .withTags([
           "wcag2a",
