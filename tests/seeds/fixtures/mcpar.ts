@@ -4,10 +4,15 @@ import {
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
+import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
-export const newMcpar = (stateName: string): SeedNewReportShape => {
+export const newMcpar = (
+  stateName: string,
+  state: string,
+  options: { [key: string]: boolean } = {}
+): SeedNewReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -24,16 +29,49 @@ export const newMcpar = (stateName: string): SeedNewReportShape => {
       value: "No",
     },
   ];
-  const pccmIndex = randomIndex(programIsPCCM.length);
-  const programName = `${pccmIndex === 0 ? "PCCM: " : ""}${faker.book.title()}`;
+  const newOrExistingProgram = [
+    {
+      value: "Add new program",
+      key: "newOrExistingProgram-isNewProgram",
+    },
+    {
+      value: "Existing program",
+      key: "newOrExistingProgram-isExistingProgram",
+    },
+  ];
+  const existingPrograms =
+    mcparProgramList[state as keyof typeof mcparProgramList];
+  const existingProgramIndex = randomIndex(existingPrograms.length);
+  const existingProgramName = existingPrograms[existingProgramIndex].label;
+
+  const newProgramIndex = options.isNewProgram === true ? 0 : 1;
+  const pccmIndex = options.isPccm === true ? 0 : 1;
+
+  const randomProgramName = `${
+    options.isPccm ? "PCCM: " : ""
+  }${faker.book.title()}`;
+  const programName = options.isNewProgram
+    ? randomProgramName
+    : existingProgramName;
+  const newProgramName = options.isNewProgram ? programName : undefined;
+  const existingProgramNameSelection = options.isNewProgram
+    ? undefined
+    : {
+        value: existingProgramName,
+        label: "existingProgramNameSelection",
+      };
 
   return {
     metadata: {
       combinedData: faker.datatype.boolean(),
       copyFieldDataSourceId: "",
       dueDate: reportingPeriodEndDate,
+      existingProgramNameSelection,
+      existingProgramNameSuggestion: "",
       lastAlteredBy: faker.person.fullName(),
       locked: false,
+      newOrExistingProgram: [newOrExistingProgram[newProgramIndex]],
+      newProgramName,
       previousRevisions: [],
       programIsPCCM: [programIsPCCM[pccmIndex]],
       programName,
@@ -50,6 +88,18 @@ export const newMcpar = (stateName: string): SeedNewReportShape => {
       stateName,
     },
   };
+};
+
+export const newMcparNewProgram = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isNewProgram: true });
+};
+
+export const newMcparNewProgramPCCM = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isNewProgram: true, isPccm: true });
+};
+
+export const newMcparPCCM = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isPccm: true });
 };
 
 export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
