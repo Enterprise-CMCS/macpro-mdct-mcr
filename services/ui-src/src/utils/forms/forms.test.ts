@@ -1,4 +1,5 @@
 import {
+  cleanSuppressed,
   createRepeatedFields,
   defineProgramName,
   filterFormData,
@@ -11,6 +12,8 @@ import {
   setClearedEntriesToDefaultValue,
   sortFormErrors,
 } from "./forms";
+// constants
+import { suppressionText } from "../../constants";
 // types
 import { Choice, FormField } from "types";
 // utils
@@ -412,6 +415,21 @@ describe("utils/forms", () => {
         mockNestedFormField,
       ]);
       expect(result).toEqual(["mock-nested-field", "mock-text-field"]);
+    });
+  });
+
+  describe("cleanSuppressed()", () => {
+    it("removes suppressed keys from submitted data", () => {
+      const enteredData = {
+        mockFieldToSuppress: "123",
+        "mockFieldToSuppress-suppressed": true,
+      };
+      const expectedResult = {
+        mockFieldToSuppress: suppressionText,
+      };
+
+      const result = cleanSuppressed(enteredData);
+      expect(result).toEqual(expectedResult);
     });
   });
 });

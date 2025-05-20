@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
   Choice,
   ReportStatus,
@@ -399,7 +400,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_encounterDataSubmissionHipaaCompliancePercentage: numberInt(),
           plan_encounterDataSubmissionTimelinessCompliancePercentage:
             numberInt(),
-          plan_enrollment: numberInt(),
+          plan_enrollment: suppressionText,
           plan_ilosOfferedByPlan: [
             {
               key: "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU",
@@ -419,8 +420,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
             numberFloat(),
           plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
-          plan_medicaidEnrollmentSharePercentage: numberInt(),
-          plan_medicaidManagedCareEnrollmentSharePercentage: numberInt(),
+          plan_medicaidEnrollmentSharePercentage: suppressionText,
+          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
           plan_medicalLossRatioPercentage: numberFloat(),
           plan_medicalLossRatioPercentageAggregationLevel: [
             {
@@ -642,9 +643,9 @@ export const fillMcparPCCM = (planId: string): SeedFillReportShape => {
         {
           id: planId,
           name: faker.animal.cat(),
-          plan_enrollment: numberInt(),
-          plan_medicaidEnrollmentSharePercentage: numberInt(),
-          plan_medicaidManagedCareEnrollmentSharePercentage: numberInt(),
+          plan_enrollment: suppressionText,
+          plan_medicaidEnrollmentSharePercentage: suppressionText,
+          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
         },
       ],
       sanctions: [createSanction(planId)],

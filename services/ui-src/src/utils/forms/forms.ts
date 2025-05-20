@@ -6,11 +6,14 @@ import {
   DropdownField,
   DynamicField,
   NumberField,
+  NumberSuppressibleField,
   RadioField,
   TextField,
   TextAreaField,
   ChoiceField,
 } from "components";
+// constants
+import { suppressionText } from "../../constants";
 // types
 import {
   AnyObject,
@@ -25,6 +28,7 @@ import {
   isFieldElement,
   ReportType,
 } from "types";
+// utils
 import {
   SectionContent,
   SectionHeader,
@@ -53,6 +57,7 @@ export const formFieldFactory = (
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
+    numberSuppressible: NumberSuppressibleField,
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
@@ -366,4 +371,20 @@ export const defineProgramName = (
         "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
       );
   }
+};
+
+export const cleanSuppressed = (enteredData: AnyObject) => {
+  for (const [key, value] of Object.entries(enteredData)) {
+    if (!key.endsWith("-suppressed")) continue;
+
+    const fieldToSuppress = key.split("-suppressed")[0];
+    // Suppressed checkbox was checked, set text value to suppressionText
+    if (value === true) {
+      enteredData[fieldToSuppress] = suppressionText;
+    }
+    // Suppressed key is not saved
+    delete enteredData[key];
+  }
+
+  return enteredData;
 };
