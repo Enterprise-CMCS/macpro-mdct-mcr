@@ -11,7 +11,7 @@ Due to restrictions in our AWS accounts, the standard CDK bootstrap template can
 To bootstrap an AWS account using our custom template, run the following command:
 
 ````bash
-PROJECT=mcr cdk bootstrap aws://671853096380/us-east-1 --template deployment/bootstrap-template.yaml --context stage=bootstrap
+PROJECT=mcr cdk bootstrap aws://<account number>/us-east-1 --template deployment/bootstrap-template.yaml --context stage=bootstrap
 ./   ```
 
 Replace `<account number>` with the target AWS account number.
