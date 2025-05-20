@@ -273,6 +273,7 @@ const routesToIncludeInPCCM = {
   "B: State-Level Indicators": ["I: Program Characteristics"],
   "C: Program-Level Indicators": ["I: Program Characteristics"],
   "D: Plan-Level Indicators": ["I: Program Characteristics", "VIII: Sanctions"],
+  "F: Notes": [],
   "Review & Submit": [],
 } as { [key: string]: string[] };
 
