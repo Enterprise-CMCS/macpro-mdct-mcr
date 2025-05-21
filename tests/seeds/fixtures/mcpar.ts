@@ -30,6 +30,20 @@ export const newMcpar = (
       value: "No",
     },
   ];
+  const naaarSubmissionForThisProgram = [
+    {
+      key: "naaarSubmissionForThisProgram-Oidjp5sYMuMEmkVYjNxZ5aDV",
+      value: "Yes, I submitted it",
+    },
+    {
+      key: "naaarSubmissionForThisProgram-Z9Ysnff8zxb1IVjxQgoG9ndW",
+      value: "Yes, I plan on submitting it",
+    },
+    {
+      key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
+      value: "No",
+    },
+  ];
   const newOrExistingProgram = [
     {
       value: "Add new program",
@@ -47,6 +61,9 @@ export const newMcpar = (
 
   const newProgramIndex = options.isNewProgram === true ? 0 : 1;
   const pccmIndex = options.isPccm === true ? 0 : 1;
+  let naaarIndex = 2;
+  if (options.hasNaaarSubmission === true) naaarIndex = 0;
+  if (options.hasExpectedNaaarSubmission === true) naaarIndex = 1;
 
   const randomProgramName = `${
     options.isPccm ? "PCCM: " : ""
@@ -61,6 +78,13 @@ export const newMcpar = (
         value: existingProgramName,
         label: "existingProgramNameSelection",
       };
+  const naaarSubmissionDateForThisProgram = options.hasNaaarSubmission
+    ? dateFormat.format(faker.date.recent())
+    : undefined;
+  const naaarExpectedSubmissionDateForThisProgram =
+    options.hasExpectedNaaarSubmission
+      ? dateFormat.format(faker.date.future())
+      : undefined;
 
   return {
     metadata: {
@@ -71,6 +95,11 @@ export const newMcpar = (
       existingProgramNameSuggestion: "",
       lastAlteredBy: faker.person.fullName(),
       locked: false,
+      naaarExpectedSubmissionDateForThisProgram,
+      naaarSubmissionDateForThisProgram,
+      naaarSubmissionForThisProgram: [
+        naaarSubmissionForThisProgram[naaarIndex],
+      ],
       newOrExistingProgram: [newOrExistingProgram[newProgramIndex]],
       newProgramName,
       previousRevisions: [],
@@ -89,6 +118,20 @@ export const newMcpar = (
       stateName,
     },
   };
+};
+
+export const newMcparHasNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasNaaarSubmission: true });
+};
+
+export const newMcparHasExpectedNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasExpectedNaaarSubmission: true });
 };
 
 export const newMcparNewProgram = (stateName: string, state: string) => {
@@ -487,23 +530,22 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedDentalServiceAppeals: numberInt(),
           plan_resolvedDentalServiceGrievances: numberInt(),
           plan_resolvedDmeAndSuppliesAppeals: numberInt(),
+          plan_resolvedDmeGrievances: numberInt(),
           plan_resolvedEmergencyServicesAppeals: numberInt(),
+          plan_resolvedEmergencyServicesGrievances: numberInt(),
           plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
           plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
           plan_resolvedGrievances: numberInt(),
           plan_resolvedHomeHealthAppeals: numberInt(),
+          plan_resolvedHomeHealthGrievances: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
           plan_resolvedLtssServiceAppeals: numberInt(),
           plan_resolvedLtssServiceGrievances: numberInt(),
           plan_resolvedNemtAppeals: numberInt(),
           plan_resolvedNemtGrievances: numberInt(),
-          plan_resolvedDmeGrievances: numberInt(),
-          plan_resolvedHomeHealthGrievances: numberInt(),
-          plan_resolvedEmergencyServicesGrievances: numberInt(),
-          plan_resolvedTherapyGrievances: numberInt(),
           plan_resolvedOtherGrievances: numberInt(),
           plan_resolvedOtherServiceAppeals: numberInt(),
           plan_resolvedOtherServiceGrievances: numberInt(),
@@ -525,6 +567,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedSnfServiceGrievances: numberInt(),
           plan_resolvedSuspectedFraudGrievances: numberInt(),
           plan_resolvedTherapiesAppeals: numberInt(),
+          plan_resolvedTherapyGrievances: numberInt(),
           plan_resolvedUntimelyResponseAppeals: numberInt(),
           plan_resolvedUntimelyResponseGrievances: numberInt(),
           plan_stateFairHearingRequestsFiled: numberInt(),

@@ -70,15 +70,18 @@ export const createReport = handler(async (event, _context) => {
 
   let formTemplate, formTemplateVersion;
 
-  const isProgramPCCM =
-    unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
+  const hasNaaarSubmission =
+    unvalidatedMetadata?.naaarSubmissionForThisProgram?.[0]?.value.includes(
+      "Yes"
+    );
+  const isPccm = unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
-      isProgramPCCM
+      { hasNaaarSubmission, isPccm }
     ));
   } catch (e) {
     throw e;
@@ -134,7 +137,7 @@ export const createReport = handler(async (event, _context) => {
   }
 
   // make necessary modifications for PCCM
-  if (isProgramPCCM) {
+  if (isPccm) {
     newFieldData = makePCCMModifications(newFieldData);
   }
 

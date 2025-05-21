@@ -5,6 +5,8 @@ import {
   fillNaaar,
   newBanner,
   newMcpar,
+  newMcparHasExpectedNaaarSubmission,
+  newMcparHasNaaarSubmission,
   newMcparNewProgram,
   newMcparNewProgramPCCM,
   newMcparPCCM,
@@ -38,6 +40,8 @@ export const createReport = async (
 ): Promise<SeedReportShape> => {
   const newReport = {
     MCPAR: newMcpar,
+    "MCPAR-hasExpectedNaaarSubmission": newMcparHasExpectedNaaarSubmission,
+    "MCPAR-hasNaaarSubmission": newMcparHasNaaarSubmission,
     "MCPAR-newProgram": newMcparNewProgram,
     "MCPAR-newProgramPCCM": newMcparNewProgramPCCM,
     "MCPAR-PCCM": newMcparPCCM,

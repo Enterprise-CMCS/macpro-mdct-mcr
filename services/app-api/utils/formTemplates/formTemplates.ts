@@ -59,11 +59,11 @@ export async function getTemplateVersionByHash(
 export const formTemplateForReportType = (reportType: ReportType) => {
   switch (reportType) {
     case ReportType.MCPAR:
-      return mcparForm as ReportJson;
+      return mcparForm;
     case ReportType.MLR:
-      return mlrForm as ReportJson;
+      return mlrForm;
     case ReportType.NAAAR:
-      return naaarForm as ReportJson;
+      return naaarForm;
     default:
       assertExhaustive(reportType);
       throw new Error(
@@ -75,12 +75,20 @@ export const formTemplateForReportType = (reportType: ReportType) => {
 export async function getOrCreateFormTemplate(
   reportBucket: string,
   reportType: ReportType,
-  isProgramPCCM: boolean
+  options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = formTemplateForReportType(reportType);
+  let currentFormTemplate = formTemplateForReportType(reportType) as ReportJson;
 
-  if (isProgramPCCM) {
+  if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
+  }
+
+  if (options.hasNaaarSubmission) {
+    currentFormTemplate = generateModifiedTemplate(
+      currentFormTemplate,
+      ["Access Measures"],
+      ["accessMeasures"]
+    );
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -264,22 +272,34 @@ export function getPossibleFieldsFromFormTemplate(reportJson: ReportJson) {
   return Object.keys(getValidationFromFormTemplate(reportJson));
 }
 
-const routesToIncludeInPCCM = {
-  "A: Program Information": [
-    "Point of Contact",
-    "Reporting Period",
-    "Add Plans",
-  ],
-  "B: State-Level Indicators": ["I: Program Characteristics"],
-  "C: Program-Level Indicators": ["I: Program Characteristics"],
-  "D: Plan-Level Indicators": ["I: Program Characteristics", "VIII: Sanctions"],
-  "F: Notes": [],
-  "Review & Submit": [],
-} as { [key: string]: string[] };
+export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
+  const routesToIncludeInPCCM = {
+    "A: Program Information": [
+      "Point of Contact",
+      "Reporting Period",
+      "Add Plans",
+    ],
+    "B: State-Level Indicators": ["I: Program Characteristics"],
+    "C: Program-Level Indicators": ["I: Program Characteristics"],
+    "D: Plan-Level Indicators": [
+      "I: Program Characteristics",
+      "VIII: Sanctions",
+    ],
+    "Review & Submit": [],
+  } as { [key: string]: string[] };
 
-const entitiesToIncludeInPCCM = ["plans", "sanctions"];
+  const entitiesToIncludeInPCCM = ["plans", "sanctions"];
 
-export const generatePCCMTemplate = (originalReportTemplate: any) => {
+  const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
+    // Find Question C1.I.3 Program type in Section C.I and disable it
+    const programTypeQuestion =
+      reportTemplate.routes[2].children![0].form!.fields[3];
+    if (programTypeQuestion.id !== "program_type") {
+      throw new Error("Update PCCM logic!");
+    }
+    programTypeQuestion.props!.disabled = true;
+  };
+
   const reportTemplate = structuredClone(originalReportTemplate);
   // remove top level sections not in include list
   reportTemplate.routes = reportTemplate.routes.filter(
@@ -308,14 +328,38 @@ export const generatePCCMTemplate = (originalReportTemplate: any) => {
   return reportTemplate;
 };
 
-const makePCCMTemplateModifications = (reportTemplate: ReportJson) => {
-  // Find Question C1.I.3 Program type in Section C.I and disable it
-  const programTypeQuestion =
-    reportTemplate.routes[2].children![0].form!.fields[3];
-  if (programTypeQuestion.id !== "program_type") {
-    throw new Error("Update PCCM logic!");
-  }
-  programTypeQuestion.props!.disabled = true;
+export const generateModifiedTemplate = (
+  originalReportTemplate: ReportJson,
+  routesToRemove: string[],
+  entitiesToRemove: string[]
+) => {
+  const filterRoutesByName = (
+    routes: ReportRoute[],
+    routesToRemove: string[]
+  ) => {
+    return routes
+      .map((route) => {
+        if (route.children) {
+          route.children = filterRoutesByName(route.children, routesToRemove);
+        }
+        return route;
+      })
+      .filter((route) => !routesToRemove.includes(route.name));
+  };
+
+  const filterEntitiesByName = (
+    entities: { [key: string]: { [key: string]: boolean } },
+    entitiesToRemove: string[]
+  ) => {
+    entitiesToRemove.forEach((key) => {
+      delete entities[key];
+    });
+  };
+
+  const reportTemplate = structuredClone(originalReportTemplate);
+  filterRoutesByName(reportTemplate.routes, routesToRemove);
+  filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
+  return reportTemplate;
 };
 
 export const filterByFlag = (route: ReportRoute, flag: string) => {

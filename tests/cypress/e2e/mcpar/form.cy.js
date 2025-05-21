@@ -64,6 +64,7 @@ function fillOutMCPAR() {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -102,6 +103,7 @@ function fillOutPartialMCPAR() {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it

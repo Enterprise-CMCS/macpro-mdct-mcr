@@ -16,6 +16,7 @@ import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
 // types
 import {
   AnyObject,
+  FieldChoice,
   FormField,
   FormJson,
   FormLayoutElement,
@@ -60,7 +61,7 @@ export const AddEditReportModal = ({
 
   useEffect(() => {
     // make deep copy of baseline form for customization
-    let customizedModalForm: FormJson = JSON.parse(
+    const customizedModalForm: FormJson = JSON.parse(
       JSON.stringify(modalFormJson)
     );
     // check if yoy copy field exists in form
@@ -75,15 +76,38 @@ export const AddEditReportModal = ({
     ) {
       customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;
     }
-    // check if program is PCCM field exists in form
-    const programIsPCCMFieldIndex = form.fields.findIndex(
-      (field: FormField | FormLayoutElement) => field.id === "programIsPCCM"
-    );
-    // if programIsPCCMField is in form && not creating new report
-    if (programIsPCCMFieldIndex > -1 && selectedReport?.id) {
-      customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
-        true;
+
+    const fieldsToDisableForEdit = [
+      "programIsPCCM",
+      "naaarExpectedSubmissionDateForThisProgram",
+      "naaarSubmissionDateForThisProgram",
+      "naaarSubmissionForThisProgram",
+    ];
+
+    // Not a new report
+    if (selectedReport?.id) {
+      fieldsToDisableForEdit.forEach((fieldId) => {
+        const fieldIndex = form.fields.findIndex(
+          (field) => field.id === fieldId
+        );
+        if (fieldIndex === -1) return;
+
+        const fieldToDisable = customizedModalForm.fields[fieldIndex];
+        if (fieldToDisable.props) {
+          // Disable parent field
+          fieldToDisable.props.disabled = true;
+
+          const choices = fieldToDisable.props.choices;
+          // Disable child fields
+          choices?.forEach((choice: FieldChoice) => {
+            choice.children?.forEach((child) => {
+              if (child.props) child.props.disabled = true;
+            });
+          });
+        }
+      });
     }
+
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 

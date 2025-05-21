@@ -26,6 +26,7 @@ describe("Sidebar integration tests", () => {
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
     cy.get('[name="combinedData"]').focused().click();
     cy.get('input[name="programIsPCCM"').check("No");
+    cy.get('input[name="naaarSubmissionForThisProgram"').check("No");
     cy.get("button[type=submit]").contains("Save").click();
     //Find our new program and open it
     cy.get("table").within(() => {

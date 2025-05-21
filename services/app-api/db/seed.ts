@@ -22,19 +22,51 @@ const seed = async (): Promise<void> => {
       name: "type",
       message: "Type",
       choices: [
-        { title: "MCPAR", value: "MCPAR" },
-        { title: "MCPAR - PCCM", value: "MCPAR-PCCM" },
-        { title: "MCPAR - New Program", value: "MCPAR-newProgram" },
-        { title: "MCPAR - New Program PCCM", value: "MCPAR-newProgramPCCM" },
+        { title: "MCPAR", value: "mcparMenu" },
         { title: "MLR", value: "MLR" },
         { title: "NAAAR", value: "NAAAR" },
         { title: "Banners", value: "banners" },
       ],
     },
     {
+      type: (prev: string) => (prev === "mcparMenu" ? "select" : null),
+      name: "task",
+      message: "Task",
+      choices: [
+        { title: "MCPAR - Default", value: "MCPAR" },
+        { title: "MCPAR - PCCM", value: "MCPAR-PCCM" },
+        {
+          title: "MCPAR - Has NAAAR Submission",
+          value: "mcparNaaarSubmissionMenu",
+        },
+        { title: "MCPAR - New Program", value: "MCPAR-newProgram" },
+        { title: "MCPAR - New Program PCCM", value: "MCPAR-newProgramPCCM" },
+        backToMenu,
+      ],
+    },
+    {
+      type: (prev: string) =>
+        prev === "mcparNaaarSubmissionMenu" ? "select" : null,
+      name: "task",
+      message: "Task",
+      choices: [
+        {
+          title: "MCPAR - Has Submitted NAAAR Submission",
+          value: "MCPAR-hasNaaarSubmission",
+        },
+        {
+          title: "MCPAR - Has Expected NAAAR Submission",
+          value: "MCPAR-hasExpectedNaaarSubmission",
+        },
+        backToMenu,
+      ],
+    },
+    {
       type: (prev: string) =>
         [
           "MCPAR",
+          "MCPAR-hasExpectedNaaarSubmission",
+          "MCPAR-hasNaaarSubmission",
           "MCPAR-newProgram",
           "MCPAR-newProgramPCCM",
           "MCPAR-PCCM",
@@ -92,37 +124,22 @@ const seed = async (): Promise<void> => {
         break;
     }
 
-    switch (answer) {
-      case "back":
+    switch (true) {
+      case answer === "back":
         seed();
         break;
-      case "createMCPAR":
-      case "createMCPAR-newProgram":
-      case "createMCPAR-newProgramPCCM":
-      case "createMCPAR-PCCM":
-      case "createMLR":
-      case "createNAAAR": {
-        const reportType = answer.replace("create", "");
-        createdLog(await createReport(reportType), "Base", reportType);
-        break;
-      }
-      case "createFilledMCPAR":
-      case "createFilledMCPAR-newProgram":
-      case "createFilledMCPAR-newProgramPCCM":
-      case "createFilledMCPAR-PCCM":
-      case "createFilledMLR":
-      case "createFilledNAAAR": {
-        const reportType = answer.replace("createFilled", "");
+      case answer.toString().startsWith("createFilled"): {
+        const reportType = answer.toString().replace("createFilled", "");
         createdLog(await createFilledReport(reportType), "Filled", reportType);
         break;
       }
-      case "createSubmittedMCPAR":
-      case "createSubmittedMCPAR-newProgram":
-      case "createSubmittedMCPAR-newProgramPCCM":
-      case "createSubmittedMCPAR-PCCM":
-      case "createSubmittedMLR":
-      case "createSubmittedNAAAR": {
-        const reportType = answer.replace("createSubmitted", "");
+      case answer.toString().startsWith("create"): {
+        const reportType = answer.toString().replace("create", "");
+        createdLog(await createReport(reportType), "Base", reportType);
+        break;
+      }
+      case answer.toString().startsWith("createSubmitted"): {
+        const reportType = answer.toString().replace("createSubmitted", "");
         createdLog(
           await createSubmittedReport(reportType),
           "Submitted",
@@ -130,13 +147,8 @@ const seed = async (): Promise<void> => {
         );
         break;
       }
-      case "createArchivedMCPAR":
-      case "createArchivedMCPAR-newProgram":
-      case "createArchivedMCPAR-PCCM":
-      case "createArchivedMCPAR-newProgramPCCM":
-      case "createArchivedMLR":
-      case "createArchivedNAAAR": {
-        const reportType = answer.replace("createArchived", "");
+      case answer.toString().startsWith("createArchived"): {
+        const reportType = answer.toString().replace("createArchived", "");
         createdLog(
           await createArchivedReport(reportType),
           "Archived",
@@ -144,10 +156,8 @@ const seed = async (): Promise<void> => {
         );
         break;
       }
-      case "createBannerActive":
-      case "createBannerInactive":
-      case "createBannerScheduled": {
-        const bannerType = answer.replace("createBanner", "");
+      case answer.toString().startsWith("createBanner"): {
+        const bannerType = answer.toString().replace("createBanner", "");
         createdLog(
           await createBanner(bannerType.toLowerCase()),
           bannerType,
@@ -155,10 +165,10 @@ const seed = async (): Promise<void> => {
         );
         break;
       }
-      case "getBanners":
+      case answer === "getBanners":
         expandedLog(await getBanners());
         break;
-      case "deleteBanners": {
+      case answer === "deleteBanners": {
         await deleteBanners();
         console.log("Banners deleted.");
         break;
