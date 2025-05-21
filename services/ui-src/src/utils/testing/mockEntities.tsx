@@ -6,6 +6,7 @@ export const mockAccessMeasuresEntity = {
   accessMeasure_standardDescription: "mock-description",
   accessMeasure_standardType: [{ value: "mock-standard-type" }],
   "accessMeasure_standardType-otherText": "",
+  "accessMeasure_monitoringMethods-otherText": "mock-other-text",
   accessMeasure_providerType: [{ value: "mock-provider-type" }],
   accessMeasure_applicableRegion: [{ value: "Other, specify" }],
   "accessMeasure_applicableRegion-otherText": "mock-region-other-text",
@@ -31,7 +32,11 @@ export const mockCompletedAccessMeasuresFormattedEntityData = {
   provider: "mock-provider-type",
   region: "mock-region-other-text",
   population: "mock-population",
-  monitoringMethods: ["mock-monitoring-method-1", "mock-monitoring-method-2"],
+  monitoringMethods: [
+    "mock-monitoring-method-1",
+    "mock-monitoring-method-2",
+    "Custom method - mock-other-text",
+  ],
   methodFrequency: "mock-oversight-method-frequency",
 };
 
