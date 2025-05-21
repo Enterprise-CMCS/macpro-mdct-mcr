@@ -96,6 +96,46 @@ describe("<ExportedReportPage />", () => {
     });
   });
 
+  describe("getNaaarSubmissionDate()", () => {
+    test("returns submitted text", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I submitted it",
+          },
+        ],
+        naaarSubmissionDateForThisProgram: "1/1/2025",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Submitted on 1/1/2025");
+    });
+
+    test("returns expected submission text", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I plan on submitting it",
+          },
+        ],
+        naaarExpectedSubmissionDateForThisProgram: "1/1/2025",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Plan to submit on 1/1/2025");
+    });
+
+    test("returns submission", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "No",
+          },
+        ],
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toEqual("No");
+    });
+  });
+
   // MCPAR Report
   testA11yAct(exportedReportPage, () => {
     mockMcparReportStore.report!.formTemplate.routes = [
