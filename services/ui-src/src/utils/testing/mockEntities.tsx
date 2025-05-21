@@ -13,6 +13,7 @@ export const mockAccessMeasuresEntity = {
   accessMeasure_monitoringMethods: [
     { value: "mock-monitoring-method-1" },
     { value: "mock-monitoring-method-2" },
+    { value: "Custom method" },
   ],
   accessMeasure_oversightMethodFrequency: [
     { value: "mock-oversight-method-frequency" },
