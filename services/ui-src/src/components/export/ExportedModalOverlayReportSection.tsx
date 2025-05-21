@@ -151,7 +151,7 @@ export function renderModalOverlayTableBody(
               population,
               region,
             ].map((value) => (
-              <Td>
+              <Td key={`${value}-${idx}`}>
                 <Text>{value}</Text>
               </Td>
             ))}
