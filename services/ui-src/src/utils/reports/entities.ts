@@ -22,14 +22,17 @@ const getCheckboxValues = (
   label: string,
   customLabel?: string
 ) => {
-  return entity?.[label]?.map((method: AnyObject) =>
-    otherSpecify(
+  return entity?.[label]?.map((method: AnyObject) => {
+    if (method.value === "Custom method") {
+      return `Custom method - ${entity?.[`${label}-otherText`]}`;
+    }
+    return otherSpecify(
       method.value,
       entity?.[`${label}-otherText`],
       undefined,
       customLabel
-    )
-  );
+    );
+  });
 };
 
 const getReportingRateType = (entity: EntityShape | undefined) => {
