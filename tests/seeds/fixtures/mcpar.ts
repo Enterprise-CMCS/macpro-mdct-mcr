@@ -20,47 +20,74 @@ export const newMcpar = (
   });
   const reportingPeriodStartDate = newReportingPeriodStartDate.getTime();
   const reportingPeriodEndDate = newReportingPeriodEndDate.getTime();
-  const programIsPCCM = [
-    {
-      key: "programIsPCCM-yes_programIsPCCM",
-      value: "Yes",
-    },
-    {
-      key: "programIsPCCM-no_programIsNotPCCM",
-      value: "No",
-    },
+
+  const enums = {
+    programIsPCCM: [
+      { key: "programIsPCCM-yes_programIsPCCM", value: "Yes" },
+      { key: "programIsPCCM-no_programIsNotPCCM", value: "No" },
+    ],
+    naaarSubmission: [
+      {
+        key: "naaarSubmissionForThisProgram-Oidjp5sYMuMEmkVYjNxZ5aDV",
+        value: "Yes, I submitted it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-Z9Ysnff8zxb1IVjxQgoG9ndW",
+        value: "Yes, I plan on submitting it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
+        value: "No",
+      },
+    ],
+    newOrExistingProgram: [
+      { key: "newOrExistingProgram-isNewProgram", value: "Add new program" },
+      {
+        key: "newOrExistingProgram-isExistingProgram",
+        value: "Existing program",
+      },
+    ],
+  };
+
+  const {
+    hasExpectedNaaarSubmission,
+    hasNaaarSubmission,
+    isPccm,
+    isNewProgram,
+  } = options;
+
+  // Has NAAAR submission
+  const naaarSubmissionDateForThisProgram = hasNaaarSubmission
+    ? dateFormat.format(faker.date.recent())
+    : undefined;
+  const naaarExpectedSubmissionDateForThisProgram = hasExpectedNaaarSubmission
+    ? dateFormat.format(faker.date.future())
+    : undefined;
+  const naaarSubmissionForThisProgram = [
+    enums.naaarSubmission[
+      hasNaaarSubmission ? 0 : hasExpectedNaaarSubmission ? 1 : 2
+    ],
   ];
-  const newOrExistingProgram = [
-    {
-      value: "Add new program",
-      key: "newOrExistingProgram-isNewProgram",
-    },
-    {
-      value: "Existing program",
-      key: "newOrExistingProgram-isExistingProgram",
-    },
-  ];
+
+  // PCCM
+  const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+
+  // Pick an existing program name
   const existingPrograms =
     mcparProgramList[state as keyof typeof mcparProgramList];
-  const existingProgramIndex = randomIndex(existingPrograms.length);
-  const existingProgramName = existingPrograms[existingProgramIndex].label;
+  const existingProgramName =
+    existingPrograms[randomIndex(existingPrograms.length)].label;
 
-  const newProgramIndex = options.isNewProgram === true ? 0 : 1;
-  const pccmIndex = options.isPccm === true ? 0 : 1;
-
-  const randomProgramName = `${
-    options.isPccm ? "PCCM: " : ""
-  }${faker.book.title()}`;
-  const programName = options.isNewProgram
-    ? randomProgramName
-    : existingProgramName;
-  const newProgramName = options.isNewProgram ? programName : undefined;
-  const existingProgramNameSelection = options.isNewProgram
+  // Check for new program name
+  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const existingProgramNameSelection = isNewProgram
     ? undefined
-    : {
-        value: existingProgramName,
-        label: "existingProgramNameSelection",
-      };
+    : { value: existingProgramName, label: "existingProgramNameSelection" };
+  const newOrExistingProgram = [
+    enums.newOrExistingProgram[isNewProgram ? 0 : 1],
+  ];
+  const newProgramName = isNewProgram ? programName : undefined;
 
   return {
     metadata: {
@@ -71,10 +98,13 @@ export const newMcpar = (
       existingProgramNameSuggestion: "",
       lastAlteredBy: faker.person.fullName(),
       locked: false,
-      newOrExistingProgram: [newOrExistingProgram[newProgramIndex]],
+      naaarExpectedSubmissionDateForThisProgram,
+      naaarSubmissionDateForThisProgram,
+      naaarSubmissionForThisProgram,
+      newOrExistingProgram,
       newProgramName,
       previousRevisions: [],
-      programIsPCCM: [programIsPCCM[pccmIndex]],
+      programIsPCCM,
       programName,
       reportType: ReportType.MCPAR,
       reportingPeriodEndDate,
@@ -89,6 +119,20 @@ export const newMcpar = (
       stateName,
     },
   };
+};
+
+export const newMcparHasNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasNaaarSubmission: true });
+};
+
+export const newMcparHasExpectedNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasExpectedNaaarSubmission: true });
 };
 
 export const newMcparNewProgram = (stateName: string, state: string) => {
@@ -487,23 +531,22 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedDentalServiceAppeals: numberInt(),
           plan_resolvedDentalServiceGrievances: numberInt(),
           plan_resolvedDmeAndSuppliesAppeals: numberInt(),
+          plan_resolvedDmeGrievances: numberInt(),
           plan_resolvedEmergencyServicesAppeals: numberInt(),
+          plan_resolvedEmergencyServicesGrievances: numberInt(),
           plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
           plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
           plan_resolvedGrievances: numberInt(),
           plan_resolvedHomeHealthAppeals: numberInt(),
+          plan_resolvedHomeHealthGrievances: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
           plan_resolvedLtssServiceAppeals: numberInt(),
           plan_resolvedLtssServiceGrievances: numberInt(),
           plan_resolvedNemtAppeals: numberInt(),
           plan_resolvedNemtGrievances: numberInt(),
-          plan_resolvedDmeGrievances: numberInt(),
-          plan_resolvedHomeHealthGrievances: numberInt(),
-          plan_resolvedEmergencyServicesGrievances: numberInt(),
-          plan_resolvedTherapyGrievances: numberInt(),
           plan_resolvedOtherGrievances: numberInt(),
           plan_resolvedOtherServiceAppeals: numberInt(),
           plan_resolvedOtherServiceGrievances: numberInt(),
@@ -525,6 +568,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedSnfServiceGrievances: numberInt(),
           plan_resolvedSuspectedFraudGrievances: numberInt(),
           plan_resolvedTherapiesAppeals: numberInt(),
+          plan_resolvedTherapyGrievances: numberInt(),
           plan_resolvedUntimelyResponseAppeals: numberInt(),
           plan_resolvedUntimelyResponseGrievances: numberInt(),
           plan_stateFairHearingRequestsFiled: numberInt(),
