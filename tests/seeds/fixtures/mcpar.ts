@@ -20,71 +20,74 @@ export const newMcpar = (
   });
   const reportingPeriodStartDate = newReportingPeriodStartDate.getTime();
   const reportingPeriodEndDate = newReportingPeriodEndDate.getTime();
-  const programIsPCCM = [
-    {
-      key: "programIsPCCM-yes_programIsPCCM",
-      value: "Yes",
-    },
-    {
-      key: "programIsPCCM-no_programIsNotPCCM",
-      value: "No",
-    },
-  ];
-  const naaarSubmissionForThisProgram = [
-    {
-      key: "naaarSubmissionForThisProgram-Oidjp5sYMuMEmkVYjNxZ5aDV",
-      value: "Yes, I submitted it",
-    },
-    {
-      key: "naaarSubmissionForThisProgram-Z9Ysnff8zxb1IVjxQgoG9ndW",
-      value: "Yes, I plan on submitting it",
-    },
-    {
-      key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
-      value: "No",
-    },
-  ];
-  const newOrExistingProgram = [
-    {
-      value: "Add new program",
-      key: "newOrExistingProgram-isNewProgram",
-    },
-    {
-      value: "Existing program",
-      key: "newOrExistingProgram-isExistingProgram",
-    },
-  ];
-  const existingPrograms =
-    mcparProgramList[state as keyof typeof mcparProgramList];
-  const existingProgramIndex = randomIndex(existingPrograms.length);
-  const existingProgramName = existingPrograms[existingProgramIndex].label;
 
-  const newProgramIndex = options.isNewProgram === true ? 0 : 1;
-  const pccmIndex = options.isPccm === true ? 0 : 1;
-  let naaarIndex = 2;
-  if (options.hasNaaarSubmission === true) naaarIndex = 0;
-  if (options.hasExpectedNaaarSubmission === true) naaarIndex = 1;
+  const enums = {
+    programIsPCCM: [
+      { key: "programIsPCCM-yes_programIsPCCM", value: "Yes" },
+      { key: "programIsPCCM-no_programIsNotPCCM", value: "No" },
+    ],
+    naaarSubmission: [
+      {
+        key: "naaarSubmissionForThisProgram-Oidjp5sYMuMEmkVYjNxZ5aDV",
+        value: "Yes, I submitted it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-Z9Ysnff8zxb1IVjxQgoG9ndW",
+        value: "Yes, I plan on submitting it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
+        value: "No",
+      },
+    ],
+    newOrExistingProgram: [
+      { key: "newOrExistingProgram-isNewProgram", value: "Add new program" },
+      {
+        key: "newOrExistingProgram-isExistingProgram",
+        value: "Existing program",
+      },
+    ],
+  };
 
-  const randomProgramName = `${
-    options.isPccm ? "PCCM: " : ""
-  }${faker.book.title()}`;
-  const programName = options.isNewProgram
-    ? randomProgramName
-    : existingProgramName;
-  const newProgramName = options.isNewProgram ? programName : undefined;
-  const existingProgramNameSelection = options.isNewProgram
-    ? undefined
-    : {
-        value: existingProgramName,
-        label: "existingProgramNameSelection",
-      };
-  const naaarSubmissionDateForThisProgram = options.hasNaaarSubmission
+  const {
+    hasExpectedNaaarSubmission,
+    hasNaaarSubmission,
+    isPccm,
+    isNewProgram,
+  } = options;
+
+  // Has NAAAR submission
+  const naaarSubmissionDateForThisProgram = hasNaaarSubmission
     ? dateFormat.format(faker.date.recent())
     : undefined;
-  const naaarExpectedSubmissionDateForThisProgram =
-    options.hasExpectedNaaarSubmission
-      ? dateFormat.format(faker.date.future())
-      : undefined;
+  const naaarExpectedSubmissionDateForThisProgram = hasExpectedNaaarSubmission
+    ? dateFormat.format(faker.date.future())
+    : undefined;
+  const naaarSubmissionForThisProgram = [
+    enums.naaarSubmission[
+      hasNaaarSubmission ? 0 : hasExpectedNaaarSubmission ? 1 : 2
+    ],
+  ];
+
+  // PCCM
+  const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+
+  // Pick an existing program name
+  const existingPrograms =
+    mcparProgramList[state as keyof typeof mcparProgramList];
+  const existingProgramName =
+    existingPrograms[randomIndex(existingPrograms.length)].label;
+
+  // Check for new program name
+  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const existingProgramNameSelection = isNewProgram
+    ? undefined
+    : { value: existingProgramName, label: "existingProgramNameSelection" };
+  const newOrExistingProgram = [
+    enums.newOrExistingProgram[isNewProgram ? 0 : 1],
+  ];
+  const newProgramName = isNewProgram ? programName : undefined;
 
   return {
     metadata: {
@@ -97,13 +100,11 @@ export const newMcpar = (
       locked: false,
       naaarExpectedSubmissionDateForThisProgram,
       naaarSubmissionDateForThisProgram,
-      naaarSubmissionForThisProgram: [
-        naaarSubmissionForThisProgram[naaarIndex],
-      ],
-      newOrExistingProgram: [newOrExistingProgram[newProgramIndex]],
+      naaarSubmissionForThisProgram,
+      newOrExistingProgram,
       newProgramName,
       previousRevisions: [],
-      programIsPCCM: [programIsPCCM[pccmIndex]],
+      programIsPCCM,
       programName,
       reportType: ReportType.MCPAR,
       reportingPeriodEndDate,

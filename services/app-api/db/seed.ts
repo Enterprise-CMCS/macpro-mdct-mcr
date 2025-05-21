@@ -128,14 +128,28 @@ const seed = async (): Promise<void> => {
       case answer === "back":
         seed();
         break;
+      // Banners
+      case answer.toString().startsWith("createBanner"): {
+        const bannerType = answer.toString().replace("createBanner", "");
+        createdLog(
+          await createBanner(bannerType.toLowerCase()),
+          bannerType,
+          "Banner"
+        );
+        break;
+      }
+      case answer === "getBanners":
+        expandedLog(await getBanners());
+        break;
+      case answer === "deleteBanners": {
+        await deleteBanners();
+        console.log("Banners deleted.");
+        break;
+      }
+      // Reports
       case answer.toString().startsWith("createFilled"): {
         const reportType = answer.toString().replace("createFilled", "");
         createdLog(await createFilledReport(reportType), "Filled", reportType);
-        break;
-      }
-      case answer.toString().startsWith("create"): {
-        const reportType = answer.toString().replace("create", "");
-        createdLog(await createReport(reportType), "Base", reportType);
         break;
       }
       case answer.toString().startsWith("createSubmitted"): {
@@ -156,21 +170,9 @@ const seed = async (): Promise<void> => {
         );
         break;
       }
-      case answer.toString().startsWith("createBanner"): {
-        const bannerType = answer.toString().replace("createBanner", "");
-        createdLog(
-          await createBanner(bannerType.toLowerCase()),
-          bannerType,
-          "Banner"
-        );
-        break;
-      }
-      case answer === "getBanners":
-        expandedLog(await getBanners());
-        break;
-      case answer === "deleteBanners": {
-        await deleteBanners();
-        console.log("Banners deleted.");
+      case answer.toString().startsWith("create"): {
+        const reportType = answer.toString().replace("create", "");
+        createdLog(await createReport(reportType), "Base", reportType);
         break;
       }
       default:
