@@ -2020,6 +2020,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.42.0.tgz#484a1d638de2911e6f5a30c12f49c7e4a3270fb6"
   integrity sha512-6SWlXpWU5AvId8Ac7zjzmIOqMOba/JWY8XZ4A7q7Gn1Vlfg/SFFIlrtHXt9nPn4op9ZPAkl91Jao+QQv3r/ukw==
 
+"@faker-js/faker@^9.7.0":
+  version "9.7.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-9.7.0.tgz#1cf1fecfcad5e2da2332140bf3b5f23cc1c2a7f4"
+  integrity sha512-aozo5vqjCmDoXLNUJarFZx2IN/GgGaogY4TMJ6so/WLZOWpSV7fvj2dmrV6sEAnUm1O7aCrhTibjpzeDFgNqbg==
+
 "@hapi/accept@^6.0.3":
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-6.0.3.tgz#eef0800a4f89cd969da8e5d0311dc877c37279ab"
@@ -4450,6 +4455,13 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.9.0:
     fast-uri "^3.0.1"
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
+
+amazon-user-pool-srp-client@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/amazon-user-pool-srp-client/-/amazon-user-pool-srp-client-1.0.4.tgz#41b3cd927ce3c1a4b88bc5dbe2053a5ad2c51267"
+  integrity sha512-N+AYTuq8453pONVeoGhGaHaJ4CDRwlhsfoqZKzBXDLNVz9aHRVVfvEZ0O3HInAK+Ei5xdkE0X2dSzrv5ahL6tA==
+  dependencies:
+    sjcl-aws "^1.0.8"
 
 ansi-align@^3.0.1:
   version "3.0.1"
@@ -8397,6 +8409,11 @@ signal-exit@^4.0.1, signal-exit@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
+
+sjcl-aws@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/sjcl-aws/-/sjcl-aws-1.0.8.tgz#3ea17c8289c5e6be841779ab4d2cf98409eccd59"
+  integrity sha512-n80Oa+JiH/eIVUyiiSAi8zukQFt/XdZwvx1WcbDbfT5JWIaBp4K5suSMSr6ny1M9bu2MGs7R6Ae24UpTZGk/Ag==
 
 slash@^3.0.0:
   version "3.0.0"

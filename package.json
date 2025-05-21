@@ -9,6 +9,7 @@
     "test": "tests"
   },
   "scripts": {
+    "db:seed": "cd services/app-api && yarn run db:seed",
     "test": "cd tests && npm test && cd -",
     "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
@@ -42,6 +43,7 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
     "@serverless/compose": "^1.3.0",
     "@stratiformdigital/serverless-stage-destroyer": "^2.1.1",
     "@types/dotenv": "^8.2.0",
@@ -53,6 +55,7 @@
     "aws-cdk": "^2.1002.0",
     "aws-cdk-local": "^2.19.2",
     "chromedriver": ">=88.0.0",
+    "amazon-user-pool-srp-client": "^1.0.4",
     "dotenv": "^8.2.0",
     "eslint": "^8.33.0",
     "eslint-config-airbnb": "^19.0.4",
