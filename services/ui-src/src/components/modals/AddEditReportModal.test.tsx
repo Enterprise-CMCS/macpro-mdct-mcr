@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { AddEditReportModal, ReportContext } from "components";
@@ -279,9 +285,11 @@ describe("<AddEditProgramModal />", () => {
     test(
       "Edit modal hydrates with report info and disables fields",
       async () => {
-        const result = render(modalComponentWithSelectedReport);
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const form = result.getByTestId("add-edit-report-form");
+        await act(async () => {
+          await render(modalComponentWithSelectedReport);
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        });
+        const form = screen.getByTestId("add-edit-report-form");
         const copyFieldDataSourceId = form.querySelector(
           "[name='copyFieldDataSourceId']"
         )!;
