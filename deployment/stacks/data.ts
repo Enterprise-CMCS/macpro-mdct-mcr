@@ -19,12 +19,7 @@ interface CreateDataComponentsProps {
 }
 
 export function createDataComponents(props: CreateDataComponentsProps) {
-  const {
-    scope,
-    stage,
-    isDev,
-    customResourceRole,
-  } = props;
+  const { scope, stage, isDev, customResourceRole } = props;
 
   const tables = [];
 
