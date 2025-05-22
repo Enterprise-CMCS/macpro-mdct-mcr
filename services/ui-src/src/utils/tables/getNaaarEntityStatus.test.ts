@@ -7,16 +7,16 @@ describe("getNaaarEntityStatus()", () => {
   const report = { reportType: ReportType.NAAAR } as ReportShape;
   const entity = {
     id: "mock-entity",
-    planCompliance438206_assurance: [],
-    planCompliance43868_assurance: [],
+    planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
+    planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
   };
   const entityType = EntityType.PLANS;
 
-  test("returns false", () => {
-    expect(getNaaarEntityStatus(entity, report)).toBe(false);
+  test("returns true for plans", () => {
+    expect(getNaaarEntityStatus(entity, report, entityType)).toBe(true);
   });
 
-  test("returns true", () => {
-    expect(getNaaarEntityStatus(entity, report, entityType)).toBe(true);
+  test("returns false by default", () => {
+    expect(getNaaarEntityStatus(entity, report)).toBe(false);
   });
 });

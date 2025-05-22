@@ -131,8 +131,6 @@ const mockAnalysisMethods: AnyObject[] = [
   },
 ];
 
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
-
 describe("generateDrawerItemFields for ILOS", () => {
   const result = generateDrawerItemFields(
     mockIlosForm,

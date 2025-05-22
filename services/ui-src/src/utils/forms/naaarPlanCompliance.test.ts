@@ -1,18 +1,25 @@
 // constants
-import { exceptionsStatus, nonComplianceStatus } from "../../constants";
+import {
+  exceptionsStatus,
+  nonComplianceStatus,
+  nonCompliantLabel,
+  planComplianceStandardKey,
+} from "../../constants";
 // types
 import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { FormJson } from "types";
+import { EntityShape, FormJson } from "types";
 // utils
 import {
   addAnalysisMethods,
   addExceptionsNonComplianceStatus,
   addStandardId,
   exceptionsNonComplianceStatus,
+  getExceptionsNonComplianceCounts,
+  getExceptionsNonComplianceKeys,
   hasComplianceDetails,
+  isComplianceFormComplete,
+  isPlanComplete,
 } from "utils";
-
-global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
 describe("utils/forms/naaarPlanCompliance", () => {
   describe("hasComplianceDetails()", () => {
@@ -195,6 +202,11 @@ describe("utils/forms/naaarPlanCompliance", () => {
         },
         {
           id: "mockUUID3",
+          name: "Plan Provider Directory Review",
+          analysis_method_applicable_plans: [{ value: "Plan 1" }],
+        },
+        {
+          id: "mockUUID4",
           name: "Secret Shopper: Appointment Availability",
           analysis_method_applicable_plans: [{ value: "Plan 1" }],
         },
@@ -210,6 +222,10 @@ describe("utils/forms/naaarPlanCompliance", () => {
             },
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
+              value: "Plan Provider Directory Review",
+            },
+            {
+              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID4`,
               value: "Secret Shopper: Appointment Availability",
             },
           ],
@@ -233,10 +249,169 @@ describe("utils/forms/naaarPlanCompliance", () => {
         },
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
+          label: "Plan Provider Directory Review",
+          children: expect.any(Array),
+        },
+        {
+          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID4",
           label: "Secret Shopper: Appointment Availability",
           children: expect.any(Array),
         },
       ]);
+    });
+  });
+
+  describe("getExceptionsNonComplianceKeys()", () => {
+    const keyPrefix = planComplianceStandardKey;
+    const expectedKey = `${keyPrefix}-mock`;
+    const entity: EntityShape = {
+      id: "mockEntityId1",
+      [expectedKey]: "Mock Value",
+      "mock-nonmatching-key": "mock value",
+    };
+
+    const exceptionsNonCompliance = [expectedKey];
+
+    test("returns array of keys matching plan compliance constant", () => {
+      expect(getExceptionsNonComplianceKeys(entity)).toEqual(
+        exceptionsNonCompliance
+      );
+    });
+  });
+
+  describe("getExceptionsNonComplianceCounts()", () => {
+    const mockExceptionComplianceKeys = [
+      "mock-key-1",
+      "mock-exceptionsDescription",
+      "mock-nonComplianceDescription",
+    ];
+
+    test("returns counts of zero for empty array", () => {
+      expect(getExceptionsNonComplianceCounts([])).toEqual({
+        exceptionsCount: 0,
+        nonComplianceCount: 0,
+      });
+    });
+
+    test("returns counts of 1 for exception key and 1 for no non-compliance key", () => {
+      expect(
+        getExceptionsNonComplianceCounts(mockExceptionComplianceKeys)
+      ).toEqual({ exceptionsCount: 1, nonComplianceCount: 1 });
+    });
+  });
+
+  describe("isComplianceFormComplete()", () => {
+    test("returns false by default", () => {
+      const entity = { id: "mockEntityId" };
+      const formId = "mockFormId";
+
+      expect(isComplianceFormComplete(entity, formId)).toBe(false);
+    });
+
+    describe("plan compliance 438.68", () => {
+      const formId = "planCompliance43868";
+      test("returns true if planCompliance43868 is complete with Yes", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance43868 is complete with exceptions", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_standard-exceptionsDescription`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance43868 is complete with non-compliance", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_standard-nonComplianceDescription`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns false if planCompliance43868 is not complete", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(false);
+      });
+    });
+
+    describe("plan compliance 438.206", () => {
+      const formId = "planCompliance438206";
+
+      test("returns true if planCompliance438206 is complete with Yes", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockYes", value: "Mock Yes" }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns true if planCompliance438206 is complete with non-compliance", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_description`]: "Mock Value",
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(true);
+      });
+
+      test("returns false if planCompliance438206 is not complete", () => {
+        const entity = {
+          id: "mockEntityId",
+          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+        };
+
+        expect(isComplianceFormComplete(entity, formId)).toBe(false);
+      });
+    });
+  });
+
+  describe("isPlanComplete()", () => {
+    test("returns true if plan compliance is complete", () => {
+      const entity = {
+        id: "mockEntityId",
+        planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
+        planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
+      };
+      expect(isPlanComplete(entity)).toBe(true);
+    });
+
+    test("returns false if planCompliance43868 is not complete", () => {
+      const entity = {
+        id: "mockEntityId",
+        planCompliance43868_assurance: [
+          { id: "mockNo", value: nonCompliantLabel },
+        ],
+        planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
+      };
+      expect(isPlanComplete(entity)).toBe(false);
+    });
+
+    test("returns false if planCompliance438206 is not complete", () => {
+      const entity = {
+        id: "mockEntityId",
+        planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
+        planCompliance438206_assurance: [
+          { id: "mockNo", value: nonCompliantLabel },
+        ],
+      };
+      expect(isPlanComplete(entity)).toBe(false);
     });
   });
 });

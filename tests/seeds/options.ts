@@ -1,0 +1,136 @@
+import { Choice } from "../../services/app-api/utils/types";
+import {
+  fillMcpar,
+  fillMlr,
+  fillNaaar,
+  newBanner,
+  newMcpar,
+  newMlr,
+  newNaaar,
+} from "./fixtures";
+import { deleteApi, getApi, login, postApi, putApi } from "./helpers";
+import { AwsHeaders, SeedBannerShape, SeedReportShape } from "./types";
+
+const adminUser: string | undefined = process.env.SEED_ADMIN_USER_EMAIL;
+const adminPassword: string | undefined = process.env.SEED_ADMIN_USER_PASSWORD;
+const stateUser: string | undefined = process.env.SEED_STATE_USER_EMAIL;
+const statePassword: string | undefined = process.env.SEED_STATE_USER_PASSWORD;
+export const state: string = process.env.SEED_STATE || "MN";
+const stateName: string = process.env.SEED_STATE_NAME || "Minnesota";
+
+let headers: AwsHeaders = {};
+let adminHeaders: AwsHeaders = {};
+
+export const loginSeedUsers = async (): Promise<void> => {
+  const adminLogin = await login(adminUser, adminPassword);
+  const stateLogin = await login(stateUser, statePassword);
+
+  headers["x-api-key"] = stateLogin.IdToken;
+  adminHeaders["x-api-key"] = adminLogin.IdToken;
+};
+
+// Reports
+export const createReport = async (
+  reportType: string
+): Promise<SeedReportShape> => {
+  const newReport = {
+    MCPAR: newMcpar,
+    MLR: newMlr,
+    NAAAR: newNaaar,
+  } as { [key: string]: Function };
+  const data = newReport[reportType](stateName);
+  const report = await postApi(
+    `/reports/${reportType}/${state}`,
+    headers,
+    data
+  );
+  return report;
+};
+
+export const createFilledReport = async (
+  reportType: string
+): Promise<SeedReportShape> => {
+  const { id, programIsPCCM } = await createReport(reportType);
+  const report = await updateFillReport(id, reportType, programIsPCCM);
+  return report;
+};
+
+export const updateFillReport = async (
+  id: string,
+  reportType: string,
+  programIsPCCM?: Choice[]
+): Promise<SeedReportShape> => {
+  const fillReport = {
+    MCPAR: fillMcpar,
+    MLR: fillMlr,
+    NAAAR: fillNaaar,
+  } as { [key: string]: Function };
+  const data = fillReport[reportType](programIsPCCM);
+  const report = await putApi(
+    `/reports/${reportType}/${state}/${id}`,
+    headers,
+    data
+  );
+  return report;
+};
+
+export const createSubmittedReport = async (
+  reportType: string
+): Promise<SeedReportShape> => {
+  const { id } = await createFilledReport(reportType);
+  const report = await updateSubmitReport(id, reportType);
+  return report;
+};
+
+export const updateSubmitReport = async (
+  id: string,
+  reportType: string
+): Promise<SeedReportShape> => {
+  const report = await postApi(
+    `/reports/submit/${reportType}/${state}/${id}`,
+    headers,
+    {}
+  );
+  return report;
+};
+
+export const createArchivedReport = async (
+  reportType: string
+): Promise<SeedReportShape> => {
+  const { id } = await createSubmittedReport(reportType);
+  const report = await updateArchiveReport(id, reportType);
+  return report;
+};
+
+export const updateArchiveReport = async (
+  id: string,
+  reportType: string
+): Promise<SeedReportShape> => {
+  const report = await putApi(
+    `/reports/archive/${reportType}/${state}/${id}`,
+    adminHeaders,
+    {}
+  );
+  return report;
+};
+
+// Banners
+export const createBanner = async (
+  status: string
+): Promise<SeedBannerShape> => {
+  const banner = await postApi(`/banners`, adminHeaders, newBanner(status));
+  return banner;
+};
+
+export const getBanners = async (): Promise<SeedBannerShape[]> => {
+  const banners = await getApi(`/banners`, adminHeaders);
+  return banners;
+};
+
+export const deleteBanners = async (): Promise<void> => {
+  const banners = await getBanners();
+
+  banners.map(async (banner: SeedBannerShape) => {
+    await deleteApi(`/banners/${banner.key}`, adminHeaders);
+  });
+};

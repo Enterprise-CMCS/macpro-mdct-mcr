@@ -33,8 +33,6 @@ import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import mlrVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 import naaarVerbiage from "verbiage/pages/naaar/naaar-dashboard";
 
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
@@ -233,9 +231,7 @@ describe("<DashboardTable />", () => {
     test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
       render(dashboardViewWithReports);
       mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
-      const enterReportButton = screen.getAllByRole("button", {
-        name: "Edit",
-      })[0];
+      const enterReportButton = screen.getAllByTestId("enter-report")[0];
       expect(enterReportButton).toBeVisible();
       await userEvent.click(enterReportButton);
       await waitFor(async () => {
@@ -257,9 +253,9 @@ describe("<DashboardTable />", () => {
       });
     });
 
-    test("Clicking 'Edit Report' icon opens the AddEditProgramModal", async () => {
+    test("Clicking the edit icon opens the AddEditProgramModal", async () => {
       render(dashboardViewWithReports);
-      const addReportButton = screen.getAllByAltText("Edit Report")[0];
+      const addReportButton = screen.getAllByAltText(/^Edit/)[0];
       expect(addReportButton).toBeVisible();
       await userEvent.click(addReportButton);
       await waitFor(async () => {
@@ -274,7 +270,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithLockedReport);
       await waitFor(() => {
-        const addReportButtons = screen.queryAllByAltText("Edit Report");
+        const addReportButtons = screen.queryAllByAltText(/^Edit/);
         expect(addReportButtons).toHaveLength(0);
       });
     });

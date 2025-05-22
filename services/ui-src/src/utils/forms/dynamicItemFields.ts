@@ -1,6 +1,6 @@
 import {
-  DEFAULT_ANALYSIS_METHODS,
   GeomappingChildJson,
+  PlanProviderChildJson,
   SecretShopperAppointmentAvailabilityChildJson,
 } from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
@@ -67,7 +67,6 @@ export const generateAnalysisMethodChoices = (
 
 const availableItems = (items: AnyObject[], entityType: string) => {
   const ilosFieldName = "plan_ilosUtilizationByPlan";
-  const providerTypeFieldName = "standard_coreProviderTypeCoveredByStandard";
   const updatedItemChoices: AnyObject[] = [];
   items.forEach((item) => {
     if (entityType === EntityType.STANDARDS) {
@@ -83,41 +82,23 @@ const availableItems = (items: AnyObject[], entityType: string) => {
       ...item,
       label: item.name,
       checked: false,
-      ...(entityType === EntityType.ILOS
-        ? {
-            children: [
-              {
-                id: `${ilosFieldName}_${item.id}`,
-                type: "number",
-                validation: {
-                  type: "number",
-                  nested: true,
-                  parentFieldName: `${ilosFieldName}`,
-                  parentOptionId: item.id,
-                },
-                props: {
-                  decimalPlacesToRoundTo: 0,
-                },
-              },
-            ],
-          }
-        : entityType === EntityType.STANDARDS && {
-            children: [
-              {
-                id: `${providerTypeFieldName}-${item.id}-otherText`,
-                type: "text",
-                validation: {
-                  type: "textOptional",
-                  nested: true,
-                  parentFieldName: `${providerTypeFieldName}`,
-                  parentOptionId: item.id,
-                },
-                props: {
-                  label: "Specialist details (optional)",
-                },
-              },
-            ],
-          }),
+      ...(entityType === EntityType.ILOS && {
+        children: [
+          {
+            id: `${ilosFieldName}_${item.id}`,
+            type: "number",
+            validation: {
+              type: "number",
+              nested: true,
+              parentFieldName: `${ilosFieldName}`,
+              parentOptionId: item.id,
+            },
+            props: {
+              decimalPlacesToRoundTo: 0,
+            },
+          },
+        ],
+      }),
     });
   });
   return updatedItemChoices;
@@ -205,14 +186,18 @@ export const availableAnalysisMethods = (
   const SecretShopperJson = structuredClone(
     SecretShopperAppointmentAvailabilityChildJson
   );
+  const PlanProviderJson = structuredClone(PlanProviderChildJson);
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
     switch (item.name) {
-      case DEFAULT_ANALYSIS_METHODS[0].name:
+      case "Geomapping":
         createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
         return { ...analysisMethod, children: GeomappingJson };
-      case DEFAULT_ANALYSIS_METHODS[3].name:
+      case "Plan Provider Directory Review":
+        createIDForChildrenOfAnalysisMethod(PlanProviderJson, id);
+        return { ...analysisMethod, children: PlanProviderJson };
+      case "Secret Shopper: Appointment Availability":
         createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
         return { ...analysisMethod, children: SecretShopperJson };
       default:

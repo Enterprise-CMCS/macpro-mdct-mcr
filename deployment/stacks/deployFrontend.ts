@@ -21,11 +21,7 @@ interface DeployFrontendProps {
   userPoolId: string;
   userPoolClientId: string;
   userPoolClientDomain: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
-  iamPath: string;
   customResourceRole: iam.Role;
-  launchDarklyClient: string;
-  redirectSignout: string;
 }
 
 export function deployFrontend(props: DeployFrontendProps) {
@@ -39,26 +35,20 @@ export function deployFrontend(props: DeployFrontendProps) {
     userPoolId,
     userPoolClientId,
     userPoolClientDomain,
-    iamPermissionsBoundary,
-    iamPath,
     uiBucket,
-    launchDarklyClient,
-    redirectSignout,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
   const buildOutputPath = path.join(reactAppPath, "build");
   const fullPath = path.resolve(reactAppPath);
 
-  execSync("SKIP_PREFLIGHT_CHECK=true yarn run build", {
+  execSync("yarn run build", {
     cwd: fullPath,
     stdio: "inherit",
   });
 
   const deploymentRole = new iam.Role(scope, "BucketDeploymentRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-    path: iamPath,
-    permissionsBoundary: iamPermissionsBoundary,
     inlinePolicies: {
       InlinePolicy: new iam.PolicyDocument({
         statements: [
@@ -110,6 +100,7 @@ export function deployFrontend(props: DeployFrontendProps) {
       destinationKey: "env-config.js",
       source: path.join("./deployment/stacks/", "env-config.template.js"),
       substitutions: {
+        stage,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
         identityPoolId,
@@ -117,8 +108,6 @@ export function deployFrontend(props: DeployFrontendProps) {
         userPoolClientId,
         userPoolClientDomain,
         timestamp: new Date().toISOString(),
-        launchDarklyClient,
-        redirectSignout,
       },
     }
   );

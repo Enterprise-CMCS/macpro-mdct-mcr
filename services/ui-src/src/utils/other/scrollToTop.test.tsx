@@ -1,15 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "jest-axe";
-import { BrowserRouter as Router } from "react-router-dom";
-// // utils
+// components
 import { ScrollToTopComponent } from "./scrollToTop";
+// utils
+import { RouterWrappedComponent } from "utils/testing/mockRouter";
 
 const scrollToTopComponent = (
-  <Router>
+  <RouterWrappedComponent>
     <div data-testid="test-scroll-comp">
       <ScrollToTopComponent />
     </div>
-  </Router>
+  </RouterWrappedComponent>
 );
 
 describe("Test scrollToTop Component", () => {

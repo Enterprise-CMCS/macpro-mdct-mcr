@@ -8,7 +8,7 @@ export const mapNaaarStandardEntity = <T>(
   index?: number
 ) => {
   const [provider, standardType, population, region] = [
-    "standard_coreProviderTypeCoveredByStandard",
+    "standard_coreProviderType",
     "standard_standardType",
     "standard_populationCoveredByStandard",
     "standard_applicableRegion",
@@ -17,11 +17,9 @@ export const mapNaaarStandardEntity = <T>(
     const value = parentObj[0]?.value;
     let otherText = entity[`${key}-otherText`];
 
-    if (key === "standard_coreProviderTypeCoveredByStandard") {
+    if (key === "standard_coreProviderType") {
       const providerKey = parentObj[0].key;
-      const providerId = providerKey
-        .split("standard_coreProviderTypeCoveredByStandard-")
-        .pop();
+      const providerId = providerKey.split("standard_coreProviderType-").pop();
       otherText = entity[`${key}-${providerId}-otherText`];
 
       const matchText = `${value}; ${otherText}`;
@@ -51,6 +49,7 @@ export const mapNaaarStandardEntity = <T>(
     .join(", ");
 
   return {
+    id: entity.id,
     count: index === undefined ? 0 : index + 1,
     provider,
     standardType,

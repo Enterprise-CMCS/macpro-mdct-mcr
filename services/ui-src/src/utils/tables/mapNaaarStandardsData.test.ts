@@ -9,6 +9,7 @@ describe("mapNaaarStandardsData()", () => {
     const tableData = mapNaaarStandardsData<any>(mockNaaarStandards);
     const expectedData = [
       {
+        id: "mockStandard",
         count: 1,
         provider: "Mock Provider; Mock Other Provider",
         standardType: "Mock Standard Type",
@@ -27,7 +28,7 @@ describe("mapNaaarStandardsData()", () => {
     const incompleteData: EntityShape[] = [
       {
         id: "mockStandard",
-        standard_coreProviderTypeCoveredByStandard: [
+        standard_coreProviderType: [
           { key: "mockProviderType", value: "Mock Provider" },
         ],
         standard_standardType: [
@@ -41,6 +42,7 @@ describe("mapNaaarStandardsData()", () => {
     const tableData = mapNaaarStandardsData<any>(incompleteData);
     const expectedData = [
       {
+        id: "mockStandard",
         count: 1,
         provider: "Mock Provider",
         standardType: "Mock Standard Type",

@@ -86,6 +86,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       id: report?.id,
       reportType: report?.reportType,
       updateReport,
+      fieldData: report?.fieldData,
     };
     const user = { userName: full_name, state };
     // no need to check "autosave" prop; dynamic fields should always autosave
@@ -144,13 +145,53 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
 
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
-        (method: EntityShape) => {
+        (originalMethod: EntityShape) => {
+          const method = structuredClone(originalMethod);
+
           if (method.analysis_method_applicable_plans?.length) {
-            method.analysis_method_applicable_plans =
-              method.analysis_method_applicable_plans.filter(
-                (plan: AnyObject) => plan.key !== selectedRecord.id
-              );
+            method.analysis_method_applicable_plans = (
+              method.analysis_method_applicable_plans || []
+            ).filter((plan: AnyObject) => {
+              const planKey: string = plan.key
+                .split("analysis_method_applicable_plans-")
+                .pop();
+              return planKey !== selectedRecord.id;
+            });
           }
+          const analysisMethodNotUtilized =
+            method.analysis_applicable?.[0]?.value === "No";
+
+          const analysisMethodUtilizedWithoutPlans =
+            method.analysis_applicable?.[0]?.value === "Yes" &&
+            method.analysis_method_applicable_plans?.length === 0;
+
+          const reportPlans = report.fieldData?.plans.filter(
+            (plan: AnyObject) => {
+              return plan.id !== selectedRecord.id;
+            }
+          );
+
+          // revert not utilized analysis methods to unanswered state if there are no plans
+          if (
+            analysisMethodUtilizedWithoutPlans ||
+            (analysisMethodNotUtilized && reportPlans.length === 0)
+          ) {
+            delete method.analysis_applicable;
+          }
+
+          const isCustomMethodWithNoPlans =
+            "custom_analysis_method_name" in method &&
+            method.analysis_method_applicable_plans?.length === 0;
+          if (
+            analysisMethodUtilizedWithoutPlans ||
+            analysisMethodNotUtilized ||
+            isCustomMethodWithNoPlans
+          ) {
+            delete method.analysis_method_applicable_plans;
+            delete method.analysis_method_frequency;
+            delete method["analysis_method_frequency-otherText"];
+          }
+
           return method;
         }
       );

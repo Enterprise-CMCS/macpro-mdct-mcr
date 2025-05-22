@@ -1,4 +1,4 @@
-import React, { ReactChild } from "react";
+import React, { ReactNode } from "react";
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
@@ -27,7 +27,7 @@ interface Props {
     header: string;
     body: string;
   };
-  children?: ReactChild | ReactChild[];
+  children?: ReactNode | ReactNode[];
   [key: string]: any;
 }
 

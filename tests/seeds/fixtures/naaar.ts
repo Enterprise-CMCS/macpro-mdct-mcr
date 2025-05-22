@@ -1,0 +1,249 @@
+import { faker } from "@faker-js/faker";
+import {
+  ReportStatus,
+  ReportType,
+} from "../../../services/app-api/utils/types";
+import { DEFAULT_ANALYSIS_METHODS } from "../../../services/ui-src/src/constants";
+import { dateFormat, randomIndex } from "../helpers";
+import { SeedFillReportShape, SeedNewReportShape } from "../types";
+
+const analysisMethods = DEFAULT_ANALYSIS_METHODS;
+
+export const newNaaar = (stateName: string): SeedNewReportShape => {
+  const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
+  const newReportingPeriodEndDate = faker.date.future({
+    refDate: newReportingPeriodStartDate,
+  });
+  const reportingPeriodStartDate = newReportingPeriodStartDate.getTime();
+  const reportingPeriodEndDate = newReportingPeriodEndDate.getTime();
+  const planTypeIncludedInProgram = [
+    {
+      key: "planTypeIncludedInProgram-NHAbx1VBdvZkHgG2HTfexemq",
+      value: "MCO",
+    },
+    {
+      key: "planTypeIncludedInProgram-MiyW1eKfcetIG8k2eyT5dbhw",
+      value: "PIHP",
+    },
+    {
+      key: "planTypeIncludedInProgram-QASeuhF5cDBrRpWbmYBndH2v",
+      value: "PAHP",
+    },
+    {
+      key: "planTypeIncludedInProgram-U4dg782RHft2Fs53fOpcbocr",
+      value: "MMP",
+    },
+    {
+      key: "planTypeIncludedInProgram-ZRH5GgCnJSlnCdieekgh67sv",
+      value: "Other, specify",
+    },
+  ];
+  const planIndex = randomIndex(planTypeIncludedInProgram.length);
+
+  return {
+    metadata: {
+      copyFieldDataSourceId: "",
+      dueDate: reportingPeriodEndDate,
+      lastAlteredBy: faker.person.fullName(),
+      locked: false,
+      naaarReport: true,
+      planTypeIncludedInProgram: [planTypeIncludedInProgram[planIndex]],
+      "planTypeIncludedInProgram-otherText":
+        planIndex === planTypeIncludedInProgram.length - 1
+          ? faker.hacker.abbreviation()
+          : undefined,
+      previousRevisions: [],
+      programName: `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`,
+      reportType: ReportType.NAAAR,
+      reportingPeriodEndDate,
+      reportingPeriodStartDate,
+      status: ReportStatus.NOT_STARTED,
+      submissionCount: 0,
+    },
+    fieldData: {
+      analysisMethods,
+      stateName,
+    },
+  };
+};
+
+export const fillNaaar = (): SeedFillReportShape => {
+  const planId = crypto.randomUUID();
+  const standardId = crypto.randomUUID();
+  const planName = faker.animal.cat();
+  const providerTypeId = "UZK4hxPVnuYGcIgNzYFHCk";
+  const standardTypeId = "kIrheUXLpOwF7OEypso8Ylhs";
+
+  return {
+    metadata: {
+      lastAlteredBy: faker.person.fullName(),
+      status: ReportStatus.IN_PROGRESS,
+    },
+    fieldData: {
+      contactName: faker.person.fullName(),
+      contactEmailAddress: faker.internet.email(),
+      reportingScenario: [
+        {
+          key: "reportingScenario-g3B64XNZhZCZ017er2Y6hJ",
+          value: "Scenario 1: New contract",
+        },
+      ],
+      "reportingScenario-otherText": "",
+      reportingScenario_significantChange: [],
+      analysisMethods: analysisMethodsWithPlans(planId, planName),
+      plans: [
+        {
+          id: planId,
+          name: planName,
+          isComplete: true,
+          isRequired: true,
+          planCompliance43868_assurance: [
+            {
+              key: "planCompliance43868_assurance-dq36WGX8Ev8wmALi1rg3bv",
+              value:
+                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+            },
+          ],
+          [`planCompliance43868_standard-${standardId}`]: [
+            {
+              key: `planCompliance43868_standard-${standardId}-qynBP00OCjrE196bwX3n67`,
+              value: "Exceptions granted under 42 C.F.R. § 438.68(d)",
+            },
+          ],
+          [`planCompliance43868_standard-${standardId}-exceptionsDescription`]:
+            faker.lorem.sentence(),
+          [`planCompliance43868_standard-${standardId}-exceptionsJustification`]:
+            faker.lorem.sentence(),
+          planCompliance438206_assurance: [
+            {
+              key: "planCompliance438206_assurance-zC8SPm68FS8xI9igWQ0BdP",
+              value:
+                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+            },
+          ],
+          "planCompliance438206_planDeficiencies-analyses":
+            faker.lorem.sentence(),
+          "planCompliance438206_planDeficiencies-compliance":
+            faker.lorem.sentence(),
+          "planCompliance438206_planDeficiencies-date": dateFormat.format(
+            faker.date.future()
+          ),
+          "planCompliance438206_planDeficiencies-description":
+            faker.lorem.sentence(),
+          "planCompliance438206_planDeficiencies-progress":
+            faker.lorem.sentence(),
+          planCompliance438206_requirements: [
+            {
+              key: "planCompliance438206_requirements-lWYfZ8qpdK2vwNXXwy9b1l",
+              value:
+                "Does not maintain and monitor a sufficient network of appropriate providers",
+            },
+            {
+              key: "planCompliance438206_requirements-LR9DAx31NetMHZmnGNfP37",
+              value:
+                "Does not meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e).",
+            },
+            {
+              key: "planCompliance438206_requirements-TlP89DrzdEg5KQ1LXXFCUe",
+              value:
+                "Does not take into account access and cultural considerations",
+            },
+          ],
+        },
+      ],
+      providerTypes: [
+        {
+          key: providerTypeId,
+          value: "Primary Care",
+        },
+      ],
+      standards: [
+        {
+          id: standardId,
+          [`standard_analysisMethodsUtilized-${standardTypeId}`]: [
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-k9t7YoOeTOAXX3s7qF6XfN33",
+              value: "Geomapping",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-rklEpKXz8jDefWdCtzI7c7oQ",
+              value: "Plan Provider Directory Review",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-lWbEf22iUIwylv0D8f73LvNK",
+              value: "Secret Shopper: Network Participation",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-KPCPdKzBefj4BqwKVAmMnvUj",
+              value: "Secret Shopper: Appointment Availability",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-fPrkUzYKDISHITjusb9WyqTg",
+              value: "EVV Data Analysis",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-2wrlQNlvY8d3qZ6pwmH4pqYA",
+              value: "Review of Grievances Related to Access",
+            },
+            {
+              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-j9XspYm012nfntIjHWr4mjly",
+              value: "Encounter Data Analysis",
+            },
+          ],
+          standard_applicableRegion: [
+            {
+              key: "standard_applicableRegion-KaDliEkRCXvPNlRS7DVjjt9q",
+              value: "Statewide",
+            },
+          ],
+          standard_coreProviderType: [
+            {
+              key: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
+              value: "Primary Care",
+            },
+          ],
+          [`standard_coreProviderType-${providerTypeId}-otherText`]:
+            faker.lorem.sentence(),
+          standard_populationCoveredByStandard: [
+            {
+              key: "standard_populationCoveredByStandard-I71x1VFmmQJmKSUlFcJVS8cT",
+              value: "Adult",
+            },
+          ],
+          [`standard_standardDescription-${standardTypeId}`]:
+            faker.lorem.sentence(),
+          standard_standardType: [
+            {
+              key: "standard_standardType-kIrheUXLpOwF7OEypso8Ylhs",
+              value: "Maximum time to travel",
+            },
+          ],
+        },
+      ],
+    },
+  };
+};
+
+const analysisMethodsWithPlans = (planId: string, planName: string) =>
+  analysisMethods.map((am) => ({
+    ...am,
+    analysis_applicable: [
+      {
+        key: "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB",
+        value: "Yes",
+      },
+    ],
+    analysis_method_applicable_plans: [
+      {
+        key: `analysis_method_applicable_plans-${planId}`,
+        value: planName,
+      },
+    ],
+    analysis_method_frequency: [
+      {
+        key: "analysis_method_frequency-Sol1W6HJCixyOVxw4vDgXQ",
+        value: "Weekly",
+      },
+    ],
+    isRequired: true,
+  }));

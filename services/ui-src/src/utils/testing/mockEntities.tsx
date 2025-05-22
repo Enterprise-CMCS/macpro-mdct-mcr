@@ -204,14 +204,13 @@ export const mockNaaarStandards: EntityShape[] = [
         value: "Mock Method 2",
       },
     ],
-    standard_coreProviderTypeCoveredByStandard: [
+    standard_coreProviderType: [
       {
-        key: "standard_coreProviderTypeCoveredByStandard-mock-plan-id-1",
+        key: "standard_coreProviderType-mock-plan-id-1",
         value: "Mock Provider",
       },
     ],
-    "standard_coreProviderTypeCoveredByStandard-mock-plan-id-1-otherText":
-      "Mock Other Provider",
+    "standard_coreProviderType-mock-plan-id-1-otherText": "Mock Other Provider",
     standard_standardType: [
       { key: "mockStandardType", value: "Mock Standard Type" },
     ],

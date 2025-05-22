@@ -1,5 +1,3 @@
-import { AnyObject } from "types";
-
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
@@ -141,7 +139,7 @@ export const nonComplianceStatus = "Non-compliant";
 export const exceptionsNonComplianceStatusDisplay = {
   [exceptionsStatus]: "E",
   [nonComplianceStatus]: "N",
-} as AnyObject;
+} as { [key: string]: string };
 
 export const nonCompliantLabel =
   "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
@@ -164,7 +162,7 @@ export const GeomappingChildJson = [
           label: "Report results by quarter",
           children: [
             {
-              id: "geoEnrolleesMeetingStandard",
+              id: "enrolleesMeetingStandard",
               type: "radio",
               validation: "radioOptional",
               props: {
@@ -174,7 +172,7 @@ export const GeomappingChildJson = [
                     label: "Percent of enrollees that met the standard",
                     children: [
                       {
-                        id: "geoQ1PercentMetStandard",
+                        id: "q1PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -184,7 +182,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ2PercentMetStandard",
+                        id: "q2PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -194,7 +192,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ3PercentMetStandard",
+                        id: "q3PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -204,7 +202,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ4PercentMetStandard",
+                        id: "q4PercentMetStandard",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -220,7 +218,7 @@ export const GeomappingChildJson = [
                     label: "Actual maximum time",
                     children: [
                       {
-                        id: "geoQ1ActualMaxTime",
+                        id: "q1ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -230,7 +228,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ2ActualMaxTime",
+                        id: "q2ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -240,7 +238,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ3ActualMaxTime",
+                        id: "q3ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -250,7 +248,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ4ActualMaxTime",
+                        id: "q4ActualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -266,7 +264,7 @@ export const GeomappingChildJson = [
                     label: "Actual maximum distance",
                     children: [
                       {
-                        id: "geoQ1ActualMaxDist",
+                        id: "q1ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -276,7 +274,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ2ActualMaxDist",
+                        id: "q2ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -286,7 +284,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ3ActualMaxDist",
+                        id: "q3ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -296,7 +294,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoQ4ActualMaxDist",
+                        id: "q4ActualMaxDist",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -317,7 +315,7 @@ export const GeomappingChildJson = [
           label: "Report results annually",
           children: [
             {
-              id: "geoReportResultsAnnually",
+              id: "reportResultsAnnually",
               type: "radio",
               validation: "radioOptional",
               props: {
@@ -327,8 +325,8 @@ export const GeomappingChildJson = [
                     label: "Percent of enrollees that met the standard",
                     children: [
                       {
-                        id: "geoAnnualPercentMetStandard",
-                        type: "numberOptional",
+                        id: "annualPercentMetStandard",
+                        type: "number",
                         validation: "numberOptional",
                         props: {
                           label: "Annual (optional)",
@@ -337,7 +335,7 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoAnnualPercentMetStandardDate",
+                        id: "annualPercentMetStandardDate",
                         type: "date",
                         validation: "dateOptional",
                         props: {
@@ -352,7 +350,7 @@ export const GeomappingChildJson = [
                     label: "Actual maximum time",
                     children: [
                       {
-                        id: "geoAnnualMaxTime",
+                        id: "annualMaxTime",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -362,11 +360,9 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoAnnualMaxTimeDate",
+                        id: "annualMaxTimeDate",
                         type: "date",
-                        validation: {
-                          type: "dateOptional",
-                        },
+                        validation: "dateOptional",
                         props: {
                           label:
                             "Date of analysis of annual snapshot (optional)",
@@ -379,7 +375,7 @@ export const GeomappingChildJson = [
                     label: "Actual maximum distance",
                     children: [
                       {
-                        id: "geoActualMaxDistance",
+                        id: "actualMaxDistance",
                         type: "number",
                         validation: "numberOptional",
                         props: {
@@ -389,7 +385,193 @@ export const GeomappingChildJson = [
                         },
                       },
                       {
-                        id: "geoActualMaxDistanceDate",
+                        id: "actualMaxDistanceDate",
+                        type: "date",
+                        validation: "dateOptional",
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+export const PlanProviderChildJson = [
+  {
+    id: "ppdrComplianceFrequency",
+    type: "checkbox",
+    validation: "checkboxOneOptional",
+    props: {
+      label: "Frequency of compliance findings (optional)",
+      hint: "Instructions",
+      choices: [
+        {
+          id: "sxC5M4JJz9qNCdNxJgQmJV",
+          label: "Report results by quarter",
+          children: [
+            {
+              id: "enrolleesMeetingStandard",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "gRCpgad2dhXDrmucTw8cnu",
+                    label: "Minimum number of network providers",
+                    children: [
+                      {
+                        id: "q1NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q2NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q3NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q4NumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "a8kZrrUYcfUrnTM8UuHNmi",
+                    label: "Provider to enrollee ratio",
+                    children: [
+                      {
+                        id: "q1ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q1 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q2ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q2 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q3ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q3 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "q4ProviderToEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Q4 (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          id: "wz9n6q8nuxdUKnaw7gWUoj",
+          label: "Report results annually",
+          children: [
+            {
+              id: "reportResultsAnnually",
+              type: "radio",
+              validation: "radioOptional",
+              props: {
+                choices: [
+                  {
+                    id: "j4ch2jWhesE7SHQZYQmvJV",
+                    label: "Minimum number of network providers",
+                    children: [
+                      {
+                        id: "annualMinimumNumberOfNetworkProviders",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "comma-separated",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "annualMinimumNumberOfNetworkProvidersDate",
+                        type: "date",
+                        validation: "dateOptional",
+                        props: {
+                          label:
+                            "Date of analysis of annual snapshot (optional)",
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    id: "dSHQvqgfa7YYoRBvSKkahW",
+                    label: "Provider to enrollee ratio",
+                    children: [
+                      {
+                        id: "annualProvidertoEnrolleeRatio",
+                        type: "number",
+                        validation: "numberOptional",
+                        props: {
+                          label: "Annual (optional)",
+                          mask: "percentage",
+                          decimalPlacesToRoundTo: 0,
+                        },
+                      },
+                      {
+                        id: "annualProvidertoEnrolleeRatioDate",
                         type: "date",
                         validation: "dateOptional",
                         props: {
@@ -423,7 +605,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
           label: "Report results by quarter",
           children: [
             {
-              id: "ssaaQ1PercentMetStandard",
+              id: "q1PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -433,7 +615,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "ssaaQ2PercentMetStandard",
+              id: "q2PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -443,7 +625,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "ssaaQ3PercentMetStandard",
+              id: "q3PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -453,7 +635,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "ssaaQ4PercentMetStandard",
+              id: "q4PercentMetStandard",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -469,7 +651,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
           label: "Report results annually",
           children: [
             {
-              id: "ssaaReportResultsAnnually",
+              id: "reportResultsAnnually",
               type: "number",
               validation: "numberOptional",
               props: {
@@ -479,7 +661,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "ssaaAnnualPercentMetStandardDate",
+              id: "annualPercentMetStandardDate",
               type: "date",
               validation: "dateOptional",
               props: {

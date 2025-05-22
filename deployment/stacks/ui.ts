@@ -11,8 +11,6 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketRole } from "../utils/s3";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
 interface CreateUiComponentsProps {
@@ -20,8 +18,6 @@ interface CreateUiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  iamPermissionsBoundary: IManagedPolicy;
-  iamPath: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
   vpnIpSetArn?: string;
@@ -35,12 +31,10 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     stage,
     project,
     isDev,
-    iamPermissionsBoundary,
-    iamPath,
     cloudfrontCertificateArn,
     cloudfrontDomainName,
-    vpnIpSetArn,
-    vpnIpv6SetArn,
+    // vpnIpSetArn,
+    // vpnIpv6SetArn,
     loggingBucket,
   } = props;
 
@@ -55,37 +49,26 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
-  let loggingConfig:
-    | { enableLogging: boolean; logBucket: s3.Bucket; logFilePrefix: string }
-    | undefined;
-  if (!isDev) {
-    const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
-      bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      autoDeleteObjects: isDev,
-      enforceSSL: true,
-      versioned: true,
-    });
+  const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+    bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
+    encryption: s3.BucketEncryption.S3_MANAGED,
+    publicReadAccess: false,
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
+    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    autoDeleteObjects: isDev,
+    enforceSSL: true,
+    versioned: true,
+  });
 
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-        actions: ["s3:PutObject"],
-        resources: [`${logBucket.bucketArn}/*`],
-      })
-    );
-
-    loggingConfig = {
-      enableLogging: true,
-      logBucket,
-      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
-    };
-  }
+  logBucket.addToResourcePolicy(
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
+      actions: ["s3:PutObject"],
+      resources: [`${logBucket.bucketArn}/*`],
+    })
+  );
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
@@ -109,7 +92,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         },
         contentSecurityPolicy: {
           contentSecurityPolicy:
-            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
           override: true,
         },
         xssProtection: {
@@ -147,7 +130,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         responseHeadersPolicy: securityHeadersPolicy,
       },
       defaultRootObject: "index.html",
-      ...loggingConfig,
+      enableLogging: true,
+      logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
@@ -169,13 +154,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   }
 
   const applicationEndpointUrl = `https://${distribution.distributionDomainName}/`;
-
-  addIamPropertiesToBucketRole(
-    scope,
-    "Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
-    iamPermissionsBoundary.managedPolicyArn,
-    iamPath
-  );
 
   return {
     distribution,

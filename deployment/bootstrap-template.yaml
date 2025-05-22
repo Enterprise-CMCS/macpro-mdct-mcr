@@ -222,9 +222,6 @@ Resources:
   FilePublishingRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /delegatedadmin/developer/
-      PermissionsBoundary:
-        Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/cms-cloud-admin/ct-ado-poweruser-permissions-boundary-policy
       AssumeRolePolicyDocument:
         Statement:
           # allows this role to be assumed with session tags.
@@ -255,9 +252,6 @@ Resources:
   LookupRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /delegatedadmin/developer/
-      PermissionsBoundary:
-        Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/cms-cloud-admin/ct-ado-poweruser-permissions-boundary-policy
       AssumeRolePolicyDocument:
         Statement:
           # allows this role to be assumed with session tags.
@@ -346,9 +340,6 @@ Resources:
   DeploymentActionRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /delegatedadmin/developer/
-      PermissionsBoundary:
-        Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/cms-cloud-admin/ct-ado-poweruser-permissions-boundary-policy
       AssumeRolePolicyDocument:
         Statement:
           # allows this role to be assumed with session tags.
@@ -465,9 +456,6 @@ Resources:
   CloudFormationExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      Path: /delegatedadmin/developer/
-      PermissionsBoundary:
-        Fn::Sub: arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/cms-cloud-admin/ct-ado-poweruser-permissions-boundary-policy
       AssumeRolePolicyDocument:
         Statement:
           - Action: sts:AssumeRole

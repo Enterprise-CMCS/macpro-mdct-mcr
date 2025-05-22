@@ -31,7 +31,7 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - .*test\.json
+          - .*test\.json|^tests/seeds/fixtures/
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.0.272
@@ -53,10 +53,4 @@ repos:
         entry: yarn track-flags
         language: system
         files: '\.tsx?$'
-        pass_filenames: false
-      - id: track-todos
-        name: track-todos
-        entry: yarn track-todos
-        language: system
-        exclude: 'logs/.*'
         pass_filenames: false

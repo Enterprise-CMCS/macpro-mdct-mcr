@@ -162,7 +162,6 @@ describe("<AdminPage />", () => {
 
   describe("Test AdminPage delete banner error handling", () => {
     test("Displays error if deleteBanner throws error", async () => {
-      window.HTMLElement.prototype.scrollIntoView = jest.fn();
       await act(async () => {
         mockedUseStore.mockReturnValue({
           ...mockBannerStore,

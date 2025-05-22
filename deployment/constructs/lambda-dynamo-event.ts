@@ -11,8 +11,6 @@ interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   brokerString?: string;
-  iamPath: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
   stackName: string;
   tables: DynamoDBTableIdentifiers[];
 }
@@ -30,8 +28,6 @@ export class LambdaDynamoEventSource extends Construct {
       handler,
       memorySize = 1024,
       tables,
-      iamPermissionsBoundary,
-      iamPath,
       stackName,
       timeout = Duration.seconds(6),
       ...restProps
@@ -44,8 +40,6 @@ export class LambdaDynamoEventSource extends Construct {
           "service-role/AWSLambdaVPCAccessExecutionRole"
         ),
       ],
-      permissionsBoundary: iamPermissionsBoundary,
-      path: iamPath,
       inlinePolicies: {
         LambdaPolicy: new iam.PolicyDocument({
           statements: [
