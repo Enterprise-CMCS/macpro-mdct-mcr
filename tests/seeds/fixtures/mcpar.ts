@@ -377,8 +377,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           id: crypto.randomUUID(),
           accessMeasure_applicableRegion: [
             {
-              key: "accessMeasure_applicableRegion-X47v2Ee5kkaBERBjXFWGXw",
-              value: "Urban",
+              key: "accessMeasure_applicableRegion-aZ4JmR9kfLKZEqQje3N1R1",
+              value: "Statewide",
             },
           ],
           accessMeasure_generalCategory: [
@@ -396,8 +396,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           ],
           accessMeasure_oversightMethodFrequency: [
             {
-              key: "accessMeasure_oversightMethodFrequency-tOF04LLPa026mJlHmk0RaA",
-              value: "At procurement",
+              key: "accessMeasure_oversightMethodFrequency-vtAjpZENepsmacGCddGdyt",
+              value: "Weekly",
             },
           ],
           accessMeasure_population: [
