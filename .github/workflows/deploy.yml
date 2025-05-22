@@ -110,7 +110,7 @@ jobs:
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
         working-directory: services
     outputs:
-      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint}}
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
       BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
       BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
 
@@ -158,7 +158,7 @@ jobs:
         id: get-gha-cidrs
         shell: bash
         run: |
-          #! /bin/bash
+          #!/bin/bash
           GHA_RESP=$(curl --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/meta)
           echo "Response for GHA runner CIDR blocks:  $GHA_RESP"
           IPV4_CIDR_ARR=($(echo $GHA_RESP | jq -r '.actions | .[]' | grep -v ':'))
