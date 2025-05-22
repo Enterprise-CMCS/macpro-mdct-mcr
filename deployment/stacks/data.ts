@@ -9,7 +9,6 @@ import {
   Duration,
 } from "aws-cdk-lib";
 // import { DynamoDBTable } from "../constructs/dynamodb-table";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 
 interface CreateDataComponentsProps {
   scope: Construct;

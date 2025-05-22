@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { Aws, aws_iam as iam, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import { Aws, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";

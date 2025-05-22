@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
   // aws_ec2 as ec2,
-  aws_iam as iam,
   aws_logs as logs,
   aws_wafv2 as wafv2,
   CfnOutput,
@@ -11,7 +10,6 @@ import {
 } from "aws-cdk-lib";
 // import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { addIamPropertiesToBucketAutoDeleteRole } from "../utils/s3";
 /*
  * import { getSubnets } from "../utils/vpc";
  * import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";

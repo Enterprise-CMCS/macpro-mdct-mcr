@@ -2,7 +2,6 @@
 import "source-map-support/register";
 import {
   App,
-  Aws,
   aws_apigateway as apigateway,
   aws_iam as iam,
   DefaultStackSynthesizer,
@@ -13,7 +12,6 @@ import {
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
-import { isLocalStack } from "./local/util";
 
 interface PrerequisiteConfigProps {
   project: string;

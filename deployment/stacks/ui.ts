@@ -11,7 +11,6 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { WafConstruct } from "../constructs/waf";
-import { IManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { isLocalStack } from "../local/util";
 
 interface CreateUiComponentsProps {

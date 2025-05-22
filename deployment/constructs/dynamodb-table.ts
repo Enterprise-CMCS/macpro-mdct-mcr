@@ -35,16 +35,7 @@ export class DynamoDBTable extends Construct {
 
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
-    const {
-      stage,
-      isDev,
-      name,
-      partitionKey,
-      sortKey,
-      lsi,
-      gsi,
-      streamable = true,
-    } = props;
+    const { stage, isDev, name, partitionKey, sortKey, lsi, gsi } = props;
 
     const tableName = `${stage}-${name}`;
     this.table = new dynamodb.Table(this, "Table", {
