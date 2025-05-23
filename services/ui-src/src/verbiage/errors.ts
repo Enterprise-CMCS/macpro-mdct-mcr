@@ -88,3 +88,13 @@ export const analysisMethodError = {
   description:
     "To correct this, select “Edit” and respond with “Yes” to at least one analysis method.",
 };
+
+export const loginError = {
+  title: "Something went wrong on our end.",
+  description: "Please try again or contact support",
+};
+
+export const loginCredentialsError = {
+  title: "Invalid email or password",
+  description: "Please try again or contact support",
+};
