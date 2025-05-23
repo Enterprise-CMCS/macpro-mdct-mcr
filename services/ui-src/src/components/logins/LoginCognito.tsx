@@ -39,8 +39,13 @@ export const LoginCognito = () => {
       await loginUser(fields.email, fields.password);
       navigate("/");
     } catch (error: any) {
-      // the error name here comes from Cognito
-      if (error.name === "NotAuthorizedException") {
+      // the error names here come from Cognito
+      if (
+        // typically throws for valid email but invalid password
+        error.name === "NotAuthorizedException" ||
+        // typically throws for invalid email
+        error.name === "UserNotFoundException"
+      ) {
         setError(loginCredentialsError);
       } else {
         setError(loginError);
