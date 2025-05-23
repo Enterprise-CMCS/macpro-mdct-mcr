@@ -30,6 +30,7 @@ import {
 } from "types";
 // utils
 import {
+  cleanSuppressed,
   entityWasUpdated,
   filterFormData,
   getEntriesToClear,
@@ -176,6 +177,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         state,
         id: report?.id,
       };
+
+      // Check if form has suppressed fields
+      cleanSuppressed(enteredData);
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
       let selectedEntityIndex = currentEntities.findIndex(

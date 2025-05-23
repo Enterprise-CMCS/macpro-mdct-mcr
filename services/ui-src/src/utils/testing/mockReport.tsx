@@ -471,6 +471,13 @@ export const mockMcparReport = {
   reportType: "MCPAR",
   formTemplate: mockReportJson,
   programName: "testProgram",
+  newProgramName: "testProgram",
+  newOrExistingProgram: [
+    {
+      key: "newOrExistingProgram-isNewProgram",
+      value: "Add new program",
+    },
+  ],
   status: ReportStatus.NOT_STARTED,
   dueDate: 168515200000,
   reportingPeriodStartDate: 162515200000,
@@ -482,6 +489,12 @@ export const mockMcparReport = {
   programIsPCCM: [
     {
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
       value: "No",
     },
   ],
@@ -526,6 +539,12 @@ export const mockMcparReportCombinedData = {
   programIsPCCM: [
     {
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
       value: "No",
     },
   ],

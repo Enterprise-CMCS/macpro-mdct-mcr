@@ -674,3 +674,5 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
     },
   },
 ];
+
+export const suppressionText = "Suppressed for data privacy purposes";

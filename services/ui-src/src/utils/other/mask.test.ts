@@ -1,9 +1,12 @@
+import { maskMap, applyMask } from "./mask";
+// constants
+import { suppressionText } from "../../constants";
+// utils
 import {
   convertToThousandsSeparatedString,
   convertToThousandsSeparatedRatioString,
   maskResponseData,
 } from "utils";
-import { maskMap, applyMask } from "./mask";
 
 const thousandsSeparatedMaskAcceptableTestCases = [
   // valid input, masked
@@ -166,6 +169,11 @@ describe("Test convertToCommaSeparatedRatioString", () => {
 });
 
 describe("Test maskResponseData", () => {
+  test("Don't mask suppressionText", () => {
+    const result = maskResponseData(suppressionText, "percentage");
+    expect(result).toEqual(suppressionText);
+  });
+
   test("Percentage mask works correctly", () => {
     const result = maskResponseData("12", "percentage");
     expect(result).toEqual("12%");
