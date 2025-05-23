@@ -285,6 +285,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
       "I: Program Characteristics",
       "VIII: Sanctions",
     ],
+    "F: Notes": [],
     "Review & Submit": [],
   } as { [key: string]: string[] };
 
