@@ -23,6 +23,7 @@ import {
 import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { filterStandardsAfterPlanDeletion } from "utils/forms/standards";
 
 export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   // state management
@@ -196,58 +197,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
         }
       );
 
-      /**
-       * if an analysis method is being used in a standard and it's not being
-       * utilized anymore in the report then the standard should be deleted
-       *
-       * Loop through the standards array.
-       * Find all keys that start with standard_analysisMethodsUtilized-.
-       * For each of those keys, extract the last segment (the analysis method id).
-       * Compare that id against the list returned from ApplicableIds
-       */
-
-      const filterStandardsByApplicableAnalysisMethods = () => {
-        //because I was getting a typescript error
-        if (!report?.fieldData) return [];
-
-        const applicableIds =
-          report.fieldData.analysisMethods
-            ?.filter(
-              (method: { analysis_method_applicable_plans: string | any[] }) =>
-                Array.isArray(method.analysis_method_applicable_plans) &&
-                method.analysis_method_applicable_plans.length > 0
-            )
-            //if analysis methods applicable plans is missing or empty, this will be an empty array
-            .map((method: { id: any }) => method.id) ?? [];
-
-        //if standards is empty, this will be an empty array
-        const filteredStandards = (report.fieldData.standards ?? []).filter(
-          (standard: { [x: string]: any[] }) => {
-            return Object.keys(standard).some((key) => {
-              if (
-                key.startsWith("standard_analysisMethodsUtilized-") &&
-                Array.isArray(standard[key])
-              ) {
-                /**
-                 * For each standard_analysisMethodsUtilized- array, check if it contains at least one
-                 * where the id extracted from the key is in applicableIds
-                 */
-                return standard[key].some((entry: { key: string }) => {
-                  const id = entry.key.split("-").pop();
-                  return applicableIds.includes(id);
-                });
-              }
-              //If no key matches or no ids inside those arrays are applicable, some() returns false, so the standard will be filtered out
-              return false;
-            });
-          }
-        );
-
-        report.fieldData.standards = filteredStandards;
-
-        return filteredStandards;
-      };
-
       // delete ILOS data from corresponding plans
       const filteredPlans =
         name === "plans"
@@ -286,6 +235,12 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
               return newEntity;
             });
 
+      // filter Standards after deletion of any plans
+      const filteredStandards = filterStandardsAfterPlanDeletion(
+        report?.fieldData?.standards,
+        filteredAnalysisMethods
+      );
+
       const dataToWrite = {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
@@ -297,7 +252,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           qualityMeasures: filteredQualityMeasures,
           plans: filteredPlans,
           analysisMethods: filteredAnalysisMethods,
-          standards: filterStandardsByApplicableAnalysisMethods(),
+          standards: filteredStandards,
         },
       };
 
