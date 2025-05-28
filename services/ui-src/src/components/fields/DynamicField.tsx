@@ -196,7 +196,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           return method;
         }
       );
-
       // delete ILOS data from corresponding plans
       const filteredPlans =
         name === "plans"
@@ -236,9 +235,14 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             });
 
       // filter Standards after deletion of any plans
+      const remainingPlanIds = report?.fieldData.plans.map(
+        (plan: { id: any }) => plan.id
+      );
+
       const filteredStandards = filterStandardsAfterPlanDeletion(
         report?.fieldData?.standards,
-        filteredAnalysisMethods
+        filteredAnalysisMethods,
+        remainingPlanIds
       );
 
       const dataToWrite = {

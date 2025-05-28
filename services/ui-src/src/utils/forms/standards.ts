@@ -43,15 +43,25 @@ export const filterStandardsByUtilizedAnalysisMethods = (
 
 export const filterStandardsAfterPlanDeletion = (
   standards: EntityShape[] = [],
-  analysisMethods: EntityShape[] = []
+  analysisMethods: EntityShape[] = [],
+  remainingPlanIds: string[] = []
 ): EntityShape[] => {
   // ids of analysis methods that have at least one applicable plan
   const stillUtilizedMethodIds = analysisMethods
-    .filter(
-      (method) =>
-        method.analysis_applicable?.[0]?.value === "Yes" &&
-        method.analysis_method_applicable_plans?.length > 0
-    )
+    .filter((method) => {
+      const isRequiredMethodUltilized =
+        method.analysis_applicable?.[0]?.value === "Yes";
+      const isCustomMethod = !!method.custom_analysis_method_name;
+
+      const hasRemainingPlans = (
+        method.analysis_method_applicable_plans || []
+      ).some((plan: { key: string }) => {
+        const planId =
+          plan.key.split("analysis_method_applicable_plans-").pop() || "";
+        return remainingPlanIds.includes(planId);
+      });
+      return (isRequiredMethodUltilized || isCustomMethod) && hasRemainingPlans;
+    })
     .map((method) => method.id);
 
   return standards
