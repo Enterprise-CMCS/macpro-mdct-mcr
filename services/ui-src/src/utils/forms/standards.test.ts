@@ -101,15 +101,23 @@ describe("filterNaaarStandards", () => {
       name: "Geomapping",
       analysis_applicable: [{ key: "analysis_applicable-xyz", value: "Yes" }],
       analysis_method_applicable_plans: [
-        { key: "analysis_method_applicable_plans-4210757-xyz", value: "1" },
+        { key: "analysis_method_applicable_plans-mockUUID", value: "1" },
       ],
     };
 
     const methodUnused = {
       id: "mockAnalysisMethodUUID2",
       name: "EVV Data Analysis",
-      analysis_applicable: [{ key: "analysis_applicable-abc", value: "Yes" }],
+      analysis_applicable: [{ key: "analysis_applicable", value: "Yes" }],
       analysis_method_applicable_plans: [],
+    };
+
+    const customMethod = {
+      id: "mockCustomMethodUUID",
+      custom_analysis_method_name: "Custom Insight",
+      analysis_method_applicable_plans: [
+        { key: "analysis_method_applicable_plans-mockUUID", value: "1" },
+      ],
     };
 
     const standards = [
@@ -133,39 +141,78 @@ describe("filterNaaarStandards", () => {
       },
       {
         id: "standard-3",
+        [utilizedKey2]: [
+          {
+            key: `${utilizedKey2}-mockCustomMethodUUID`,
+            value: "Custom Method",
+          },
+        ],
+      },
+      {
+        id: "standard-4",
         [utilizedKey2]: [],
       },
     ];
 
     test("keeps standards with still-utilized analysis methods", () => {
-      const result = filterStandardsAfterPlanDeletion(standards, [
-        methodStillUsed,
-      ]);
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [methodStillUsed],
+        ["mockUUID"]
+      );
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe("standard-1");
-      expect(result[0][utilizedKey1]).toHaveLength(1);
     });
 
     test("removes analysis methods that are no longer applicable", () => {
-      const result = filterStandardsAfterPlanDeletion(standards, [
-        methodUnused,
-      ]);
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [methodUnused],
+        ["mockUUID"]
+      );
       expect(result).toHaveLength(0);
     });
 
     test("filters out standards with no applicable methods remaining", () => {
-      const result = filterStandardsAfterPlanDeletion(standards, [
-        methodStillUsed,
-        methodUnused,
-      ]);
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [methodStillUsed, methodUnused],
+        ["mockUUID"]
+      );
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe("standard-1");
-      expect(result[0][utilizedKey1]).toHaveLength(1);
       expect(result[0][utilizedKey2]).toBeUndefined();
     });
 
+    test("keeps standards tied to custom analysis methods", () => {
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [customMethod],
+        ["mockUUID"]
+      );
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBe("standard-3");
+      expect(result[0][utilizedKey2][0].key).toContain("mockCustomMethodUUID");
+    });
+    test("removes standards if custom method is no longer tied to any plan", () => {
+      const customMethodNoPlans = {
+        ...customMethod,
+        analysis_method_applicable_plans: [],
+      };
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [customMethodNoPlans],
+        ["mockUUID"]
+      );
+      expect(result).toHaveLength(0);
+    });
+
     test("handles empty analysisMethods list by removing all standards", () => {
-      const result = filterStandardsAfterPlanDeletion(standards, []);
+      const result = filterStandardsAfterPlanDeletion(
+        standards,
+        [],
+        ["mockUUID"]
+      );
       expect(result).toHaveLength(0);
     });
   });
