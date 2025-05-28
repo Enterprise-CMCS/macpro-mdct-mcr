@@ -5,6 +5,7 @@ on:
     branches:
       - "*"
       - "!skipci*"
+      - "!code-json-*"
 
 concurrency:
   group: ${{ github.ref_name }}
