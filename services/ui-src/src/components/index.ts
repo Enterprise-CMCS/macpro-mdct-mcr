@@ -30,7 +30,6 @@ export { TemplateCard } from "./cards/TemplateCard";
 export { DashboardPage } from "./pages/Dashboard/DashboardPage";
 export { DashboardTable } from "./pages/Dashboard/DashboardTable";
 export { MobileDashboardTable } from "./pages/Dashboard/MobileDashboardTable";
-export { SortableDashboardTable } from "./pages/Dashboard/SortableDashboardTable";
 // drawers
 export { Drawer } from "./drawers/Drawer";
 export { ReportDrawer } from "./drawers/ReportDrawer";

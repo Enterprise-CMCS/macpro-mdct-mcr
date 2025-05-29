@@ -1,4 +1,3 @@
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // components
@@ -21,7 +20,6 @@ import {
   MobileDashboardTable,
   PageTemplate,
   ReportContext,
-  SortableDashboardTable,
 } from "components";
 // types
 import {
@@ -44,7 +42,6 @@ import { States } from "../../../constants";
 import accordion from "verbiage/pages/accordion";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
-import { DashboardTableProps } from "./DashboardTableUtils";
 
 export const DashboardPage = ({ reportType }: Props) => {
   const {
@@ -234,16 +231,6 @@ export const DashboardPage = ({ reportType }: Props) => {
     setReleasing(false);
   };
 
-  const sortableTable = useFlags()?.sortableDashboardTable;
-
-  const DesktopDashboardTable = (props: DashboardTableProps) => {
-    return sortableTable ? (
-      <SortableDashboardTable {...props} />
-    ) : (
-      <DashboardTable {...props} />
-    );
-  };
-
   const fullStateName = States[activeState as keyof typeof States];
 
   return (
@@ -289,7 +276,7 @@ export const DashboardPage = ({ reportType }: Props) => {
               sxOverride={sxChildStyles}
             />
           ) : (
-            <DesktopDashboardTable
+            <DashboardTable
               reportsByState={reportsToDisplay}
               reportType={reportType}
               reportId={reportId}
