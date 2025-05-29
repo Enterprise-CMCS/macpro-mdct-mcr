@@ -254,5 +254,107 @@ describe("<DeleteEntityModal />", () => {
     });
   });
 
+  describe("Test NAAAR custom analysis method deletion", () => {
+    test("handles deleting a custom analysis method and filters standards", async () => {
+      const mockCustomAnalysisMethodId = "mockCustomAnalysisMethodId";
+
+      const mockStandard = {
+        id: "mockStandard",
+        [`standard_analysisMethodsUtilized-mockStandard`]: [
+          {
+            key: `standard_analysisMethodsUtilized-mockStandard-${mockCustomAnalysisMethodId}`,
+            value: "Custom Method A",
+          },
+        ],
+      };
+
+      const naaarMockedCustomReportContext = {
+        ...mockNaaarReportContext,
+        updateReport: mockUpdateReport,
+        report: {
+          ...mockNaaarReport,
+          fieldData: {
+            standards: [mockStandard],
+            analysisMethods: [
+              {
+                id: mockCustomAnalysisMethodId,
+                name: "Custom Method A",
+              },
+            ],
+            plans: [
+              {
+                id: "mockPlanId",
+              },
+            ],
+          },
+        },
+      };
+
+      const naaarCustomMockDeletedEntityStore = {
+        ...mockNaaarReportStore,
+        ...(mockNaaarReportStore.report!.fieldData = {
+          standards: [mockStandard],
+          analysisMethods: [],
+          plans: [
+            {
+              id: "mockPlanId",
+            },
+          ],
+        }),
+      };
+
+      const naaarMockReportKeys = {
+        ...mockReportKeys,
+        reportType: "NAAAR",
+      };
+
+      const naaarCustomModalComponent = (
+        <ReportContext.Provider value={naaarMockedCustomReportContext}>
+          <DeleteEntityModal
+            entityType={EntityType.ANALYSIS_METHODS}
+            selectedEntity={{
+              id: mockCustomAnalysisMethodId,
+              name: "Custom Method A",
+            }}
+            verbiage={mockModalDrawerReportPageVerbiage}
+            modalDisclosure={{
+              isOpen: true,
+              onClose: mockCloseHandler,
+            }}
+          />
+        </ReportContext.Provider>
+      );
+
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...naaarCustomMockDeletedEntityStore,
+      });
+
+      render(naaarCustomModalComponent);
+
+      const submitButton = screen.getByText(deleteModalConfirmButtonText);
+      await userEvent.click(submitButton);
+
+      const expectedFilteredStandards: never[] = [];
+
+      const expectedUpdatePayload = {
+        fieldData: {
+          standards: expectedFilteredStandards,
+          analysisMethods: [],
+        },
+        metadata: {
+          lastAlteredBy: "Thelonious States",
+          status: "In progress",
+        },
+      };
+
+      expect(mockUpdateReport).toHaveBeenCalledWith(
+        naaarMockReportKeys,
+        expectedUpdatePayload
+      );
+      expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+    });
+  });
+
   testA11y(modalComponent);
 });
