@@ -9,6 +9,7 @@ import {
   text,
   textOptional,
   validNAValues,
+  numberNotLessThanZeroOptional,
 } from "./schemas";
 
 describe("Schemas", () => {
@@ -172,6 +173,32 @@ describe("Schemas", () => {
 
   test("Test negative values using numberNotLessThanZero scheme", () => {
     testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+  });
+
+  // testing numberNotLessThanZeroOptional scheme
+  test("Evaluate Number Schema using numberNotLessThanZeroOptional scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(
+      numberNotLessThanZeroOptional(),
+      badNumberTestCases,
+      false
+    );
+  });
+
+  test("Test zero values using numberNotLessThanZeroOptional scheme", () => {
+    testNumberSchema(numberNotLessThanZeroOptional(), zeroTest, true);
+  });
+
+  test("Test negative values using numberNotLessThanZeroOptional scheme", () => {
+    testNumberSchema(
+      numberNotLessThanZeroOptional(),
+      negativeNumberTestCases,
+      false
+    );
   });
 
   test("Test dateOptional schema", () => {
