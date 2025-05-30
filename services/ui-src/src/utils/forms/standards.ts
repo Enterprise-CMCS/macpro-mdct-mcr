@@ -49,7 +49,7 @@ export const filterStandardsAfterPlanDeletion = (
   // ids of analysis methods that have at least one applicable plan
   const stillUtilizedMethodIds = analysisMethods
     .filter((method) => {
-      const isRequiredMethodUltilized =
+      const isRequiredMethodUtilized =
         method.analysis_applicable?.[0]?.value === "Yes";
       const isCustomMethod = !!method.custom_analysis_method_name;
 
@@ -60,7 +60,7 @@ export const filterStandardsAfterPlanDeletion = (
           plan.key.split("analysis_method_applicable_plans-").pop() || "";
         return remainingPlanIds.includes(planId);
       });
-      return (isRequiredMethodUltilized || isCustomMethod) && hasRemainingPlans;
+      return (isRequiredMethodUtilized || isCustomMethod) && hasRemainingPlans;
     })
     .map((method) => method.id);
 
