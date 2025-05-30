@@ -15,6 +15,7 @@ parserOptions:
     modules: true
 extends:
   - "eslint:recommended"
+  - "plugin:cypress/recommended"
 
 rules:
   no-const-assign: error
