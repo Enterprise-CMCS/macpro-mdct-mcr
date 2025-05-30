@@ -8,7 +8,7 @@ import { ErrorVerbiage } from "types";
 // utils
 import { loginUser } from "utils";
 // verbiage
-import { loginCredentialsError, loginError } from "verbiage/errors";
+import { loginError } from "verbiage/errors";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -39,17 +39,7 @@ export const LoginCognito = () => {
       await loginUser(fields.email, fields.password);
       navigate("/");
     } catch (error: any) {
-      // the error names here come from Cognito
-      if (
-        // typically throws for valid email but invalid password
-        error.name === "NotAuthorizedException" ||
-        // typically throws for invalid email
-        error.name === "UserNotFoundException"
-      ) {
-        setError(loginCredentialsError);
-      } else {
-        setError(loginError);
-      }
+      setError(loginError);
     }
   };
 

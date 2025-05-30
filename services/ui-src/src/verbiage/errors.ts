@@ -90,11 +90,6 @@ export const analysisMethodError = {
 };
 
 export const loginError = {
-  title: "Something went wrong on our end.",
-  description: "Please try again or contact support",
-};
-
-export const loginCredentialsError = {
-  title: "Invalid email or password",
-  description: "Please try again or contact support",
+  title: "There was an issue logging in.",
+  description: "Verify credentials and try again or contact support.",
 };

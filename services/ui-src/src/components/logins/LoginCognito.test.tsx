@@ -5,7 +5,7 @@ import { LoginCognito } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { loginCredentialsError, loginError } from "verbiage/errors";
+import { loginError } from "verbiage/errors";
 
 const mockLoginUser = jest.fn();
 
@@ -44,31 +44,7 @@ describe("<LoginCognito />", () => {
     expect(mockUseNavigate).toHaveBeenCalledWith("/");
   });
 
-  test("LoginCognito shows error alert for invalid password", async () => {
-    mockLoginUser.mockRejectedValue({
-      name: "NotAuthorizedException",
-    });
-    render(loginCognitoComponent);
-    await enterCredentialsAndLogIn("email@address.com", "wrongpwd");
-
-    expect(mockLoginUser).toHaveBeenCalledWith("email@address.com", "wrongpwd");
-    expect(screen.getByText(loginCredentialsError.title)).toBeVisible();
-    expect(screen.getByText(loginCredentialsError.description)).toBeVisible();
-  });
-
-  test("LoginCognito shows error alert for email not found", async () => {
-    mockLoginUser.mockRejectedValue({
-      name: "UserNotFoundException",
-    });
-    render(loginCognitoComponent);
-    await enterCredentialsAndLogIn("not-a-user", "test");
-
-    expect(mockLoginUser).toHaveBeenCalledWith("not-a-user", "test");
-    expect(screen.getByText(loginCredentialsError.title)).toBeVisible();
-    expect(screen.getByText(loginCredentialsError.description)).toBeVisible();
-  });
-
-  test("LoginCognito shows generic error alert for other login error", async () => {
+  test("LoginCognito shows error alert for login error", async () => {
     mockLoginUser.mockRejectedValue({
       name: "SomethingWentWrong",
     });
