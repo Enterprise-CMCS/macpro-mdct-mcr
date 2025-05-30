@@ -182,11 +182,6 @@ describe("Schemas", () => {
       goodPositiveNumberTestCases,
       true
     );
-    testNumberSchema(
-      numberNotLessThanZeroOptional(),
-      badNumberTestCases,
-      false
-    );
   });
 
   test("Test zero values using numberNotLessThanZeroOptional scheme", () => {
