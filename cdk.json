@@ -1,0 +1,31 @@
+{
+  "app": "npx tsx deployment/app.ts",
+  "requireApproval": "never",
+  "output": ".cdk/cdk.out",
+  "watch": {
+    "hot": true,
+    "include": ["**"],
+    "exclude": [
+      "deployment/stacks/deployFrontend.ts",
+      "*.md",
+      "cdk*.json",
+      "**/*.d.ts",
+      "tsconfig.json",
+      "package*.json",
+      "yarn.lock",
+      "node_modules",
+      "test",
+      "services/ui-src/src/**",
+      "services/ui-src/build/**"
+    ]
+  },
+  "context": {
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/core:target-partitions": ["aws"],
+    "@aws-cdk/aws-apigateway:authorizerChangeDeploymentLogicalId": true,
+    "@aws-cdk/aws-secretsmanager:useAttachedSecretResourcePolicyForSecretTargetAttachments": true,
+    "@aws-cdk/aws-apigateway:requestValidatorUniqueId": true,
+    "@aws-cdk/core:includePrefixInUniqueNameGeneration": true,
+    "@aws-cdk/customresources:installLatestAwsSdkDefault": false
+  }
+}
