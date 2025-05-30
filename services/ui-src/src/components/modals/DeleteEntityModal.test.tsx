@@ -335,11 +335,9 @@ describe("<DeleteEntityModal />", () => {
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
       await userEvent.click(submitButton);
 
-      const expectedFilteredStandards: never[] = [];
-
       const expectedUpdatePayload = {
         fieldData: {
-          standards: expectedFilteredStandards,
+          standards: [],
           analysisMethods: [],
         },
         metadata: {

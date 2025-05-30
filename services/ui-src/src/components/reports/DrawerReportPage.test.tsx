@@ -30,6 +30,8 @@ import {
   mockNaaarStandardsPageJson,
   mockNaaarReportContext,
   mockNaaarReportStore,
+  mockTestNaaarAnalysisMethodsPageJson,
+  mockAnalysisMethodEntityStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -78,6 +80,14 @@ const drawerReportPageWithCustomEntities = (
   <RouterWrappedComponent>
     <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
       <DrawerReportPage route={mockNaaarAnalysisMethodsPageJson} />
+    </ReportContext.Provider>
+  </RouterWrappedComponent>
+);
+
+const drawerReportPageTest = (
+  <RouterWrappedComponent>
+    <ReportContext.Provider value={mockNaaarReportWithAnalysisMethodsContext}>
+      <DrawerReportPage route={mockTestNaaarAnalysisMethodsPageJson} />
     </ReportContext.Provider>
   </RouterWrappedComponent>
 );
@@ -595,12 +605,111 @@ describe("<DrawerReportPage />", () => {
         });
       });
     });
+  });
 
-    testA11y(drawerReportPageWithEntities, () => {
+  describe("Modifying analysis methods", () => {
+    const mockNaaarReportContextWithAnalysisMethods: any =
+      mockNaaarReportContext;
+    mockNaaarReportContextWithAnalysisMethods.report.fieldData[
+      "analysisMethods"
+    ] = [DEFAULT_ANALYSIS_METHODS[0]];
+    beforeEach(() => {
+      const mockNaaarReportContextWithCustomAnalysisMethods: any =
+        mockNaaarReportContext;
+
+      const { report } = mockNaaarReportContextWithCustomAnalysisMethods;
+
+      // Utilize first default analysis method
+      report.fieldData["analysisMethods"] = DEFAULT_ANALYSIS_METHODS.map(
+        (method, index) => {
+          if (index === 0) {
+            return {
+              ...method,
+              analysis_applicable: [
+                {
+                  key: "analysis_applicable-mockId",
+                  value: "Yes",
+                },
+              ],
+              analysis_method_frequency: [
+                {
+                  key: "analysis_method_frequency-mockFrequencyId",
+                  value: "Monthly",
+                },
+              ],
+              analysis_method_applicable_plans: [
+                {
+                  key: "analysis_method_applicable_plans-mockPlansId",
+                  value: "1",
+                },
+              ],
+            };
+          }
+          return method;
+        }
+      );
+
+      // add a standard that utilizes the first analysis method
+      const utilizedMethod = report.fieldData["analysisMethods"][0];
+
+      const mockStandard = {
+        id: "mockStandard",
+        standard_coreProviderType: [
+          {
+            key: "standard_coreProviderType-provider123",
+            value: "Some Provider",
+          },
+        ],
+        [`standard_analysisMethodsUtilized-mockStandard`]: [
+          {
+            key: `standard_analysisMethodsUtilized-mockStandard-${utilizedMethod.id}`,
+            value: utilizedMethod.name,
+          },
+        ],
+      };
+
+      // Add the standard to the report
+      report.fieldData["standards"] = [mockStandard];
+
+      const mockCustomNaaarReportStore = {
+        ...mockNaaarReportStore,
+        report,
+        reportsByState: [report],
+      };
+
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
-        ...mockMcparReportStore,
+        ...mockCustomNaaarReportStore,
+        ...mockAnalysisMethodEntityStore,
       });
+
+      render(drawerReportPageTest);
+    });
+
+    test("changing an analysis method to not utilized will affect the associated standard", async () => {
+      const launchDrawerButton = screen.getAllByText("Edit")[0];
+      await userEvent.click(launchDrawerButton);
+      expect(screen.getByRole("dialog")).toBeVisible();
+      const noButton = screen.getByLabelText("mock label 2 No");
+      await userEvent.click(noButton);
+      const saveMethod = screen.getByText("Save & close");
+      await userEvent.click(saveMethod);
+
+      const mockUpdate = mockNaaarReportContextWithAnalysisMethods.updateReport;
+
+      expect(mockUpdate).toHaveBeenCalledTimes(1);
+
+      const updateArg = mockUpdate.mock.calls[0][1];
+      const updatedStandards = updateArg.fieldData.standards;
+
+      expect(updatedStandards).toEqual([]);
+    });
+  });
+
+  testA11y(drawerReportPageWithEntities, () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
     });
   });
 });

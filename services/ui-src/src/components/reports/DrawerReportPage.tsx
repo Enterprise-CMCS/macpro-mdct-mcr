@@ -212,7 +212,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
       if (entityType === EntityType.ANALYSIS_METHODS && selectedEntity?.id) {
         const isNotApplicable =
-          newEntity.analysis_applicable?.[0]?.value === "No";
+          newEntity.analysis_applicable?.[0]?.value.includes("No");
 
         if (isNotApplicable) {
           const currentStandards = report?.fieldData.standards || [];
