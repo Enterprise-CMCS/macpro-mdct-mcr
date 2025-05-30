@@ -129,6 +129,17 @@ export const numberNotLessThanZero = () =>
     message: error.NUMBER_LESS_THAN_ZERO,
   });
 
+export const numberNotLessThanZeroOptional = () =>
+  numberOptional().test({
+    test: (value) => {
+      if (!value) return true;
+      const isValidString = validNAValues.includes(value);
+      const isGreaterThanZero = parseFloat(value) >= 0;
+      return isValidString || isGreaterThanZero;
+    },
+    message: error.NUMBER_LESS_THAN_ZERO,
+  });
+
 // Number - Ratio
 export const ratio = () =>
   mixed()
