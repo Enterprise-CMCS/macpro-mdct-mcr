@@ -13,7 +13,7 @@
   "license": "CC0-1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
+    "url": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr.git"
   },
   "devDependencies": {
     "@types/dompurify": "^2.3.4",

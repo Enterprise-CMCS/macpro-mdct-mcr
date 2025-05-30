@@ -174,7 +174,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q1PercentMetStandard",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -184,7 +184,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q2PercentMetStandard",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -194,7 +194,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q3PercentMetStandard",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
                           mask: "percentage",
@@ -204,7 +204,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q4PercentMetStandard",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
                           mask: "percentage",
@@ -220,7 +220,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q1ActualMaxTime",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -230,7 +230,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q2ActualMaxTime",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -240,7 +240,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q3ActualMaxTime",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
                           mask: "percentage",
@@ -250,7 +250,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q4ActualMaxTime",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
                           mask: "percentage",
@@ -266,7 +266,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q1ActualMaxDist",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "comma-separated",
@@ -276,7 +276,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q2ActualMaxDist",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "comma-separated",
@@ -286,7 +286,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q3ActualMaxDist",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
                           mask: "comma-separated",
@@ -296,7 +296,7 @@ export const GeomappingChildJson = [
                       {
                         id: "q4ActualMaxDist",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
                           mask: "comma-separated",
@@ -327,7 +327,7 @@ export const GeomappingChildJson = [
                       {
                         id: "annualPercentMetStandard",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "percentage",
@@ -352,7 +352,7 @@ export const GeomappingChildJson = [
                       {
                         id: "annualMaxTime",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "comma-separated",
@@ -377,7 +377,7 @@ export const GeomappingChildJson = [
                       {
                         id: "actualMaxDistance",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "comma-separated",
@@ -431,7 +431,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q1NumberOfNetworkProviders",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "comma-separated",
@@ -441,7 +441,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q2NumberOfNetworkProviders",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "comma-separated",
@@ -451,7 +451,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q3NumberOfNetworkProviders",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
                           mask: "comma-separated",
@@ -461,7 +461,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q4NumberOfNetworkProviders",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
                           mask: "comma-separated",
@@ -477,7 +477,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q1ProviderToEnrolleeRatio",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
                           mask: "percentage",
@@ -487,7 +487,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q2ProviderToEnrolleeRatio",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
                           mask: "percentage",
@@ -497,7 +497,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q3ProviderToEnrolleeRatio",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
                           mask: "percentage",
@@ -507,7 +507,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "q4ProviderToEnrolleeRatio",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
                           mask: "percentage",
@@ -538,7 +538,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "annualMinimumNumberOfNetworkProviders",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "comma-separated",
@@ -563,7 +563,7 @@ export const PlanProviderChildJson = [
                       {
                         id: "annualProvidertoEnrolleeRatio",
                         type: "number",
-                        validation: "numberOptional",
+                        validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Annual (optional)",
                           mask: "percentage",
@@ -607,7 +607,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "q1PercentMetStandard",
               type: "number",
-              validation: "numberOptional",
+              validation: "numberNotLessThanZeroOptional",
               props: {
                 label: "Q1 (optional)",
                 mask: "percentage",
@@ -617,7 +617,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "q2PercentMetStandard",
               type: "number",
-              validation: "numberOptional",
+              validation: "numberNotLessThanZeroOptional",
               props: {
                 label: "Q2 (optional)",
                 mask: "percentage",
@@ -627,7 +627,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "q3PercentMetStandard",
               type: "number",
-              validation: "numberOptional",
+              validation: "numberNotLessThanZeroOptional",
               props: {
                 label: "Q3 (optional)",
                 mask: "percentage",
@@ -637,7 +637,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "q4PercentMetStandard",
               type: "number",
-              validation: "numberOptional",
+              validation: "numberNotLessThanZeroOptional",
               props: {
                 label: "Q4 (optional)",
                 mask: "percentage",
@@ -653,7 +653,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
             {
               id: "reportResultsAnnually",
               type: "number",
-              validation: "numberOptional",
+              validation: "numberNotLessThanZeroOptional",
               props: {
                 label: "Annual (optional)",
                 mask: "percentage",

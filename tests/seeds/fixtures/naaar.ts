@@ -196,13 +196,13 @@ export const fillNaaar = (): SeedFillReportShape => {
               value: "Statewide",
             },
           ],
-          standard_coreProviderTypeCoveredByStandard: [
+          standard_coreProviderType: [
             {
-              key: "standard_coreProviderTypeCoveredByStandard-UZK4hxPVnuYGcIgNzYFHCk",
+              key: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
               value: "Primary Care",
             },
           ],
-          [`standard_coreProviderTypeCoveredByStandard-${providerTypeId}-otherText`]:
+          [`standard_coreProviderType-${providerTypeId}-otherText`]:
             faker.lorem.sentence(),
           standard_populationCoveredByStandard: [
             {

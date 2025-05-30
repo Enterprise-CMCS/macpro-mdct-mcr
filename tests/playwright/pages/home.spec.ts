@@ -2,11 +2,14 @@ import { expect, test } from "../utils/fixtures/base";
 import { BasePage } from "../utils";
 
 test.describe("state user home page", () => {
+  test.beforeEach(async ({ stateHomePage }) => {
+    await stateHomePage.goto();
+    await stateHomePage.isReady();
+  });
+
   test("Should see the correct home page as a state user", async ({
     stateHomePage,
   }) => {
-    await stateHomePage.goto();
-    await stateHomePage.isReady();
     await expect(stateHomePage.mcparButton).toBeVisible();
     await expect(stateHomePage.mlrButton).toBeVisible();
     await expect(stateHomePage.naaarButton).toBeVisible();
@@ -15,24 +18,25 @@ test.describe("state user home page", () => {
   test("Is accessible on all device types for state user", async ({
     stateHomePage,
   }) => {
-    await stateHomePage.goto();
     await stateHomePage.e2eA11y();
   });
 });
 
 test.describe("admin user home page", () => {
+  test.beforeEach(async ({ adminHomePage }) => {
+    await adminHomePage.goto();
+    await adminHomePage.isReady();
+  });
+
   test("Should see the correct home page as an admin user", async ({
     adminHomePage,
   }) => {
-    await adminHomePage.goto();
-    await adminHomePage.isReady();
     await expect(adminHomePage.dropdown).toBeVisible();
   });
 
   test("Is accessible on all device types for admin user", async ({
     adminHomePage,
   }) => {
-    await adminHomePage.goto();
     await adminHomePage.e2eA11y();
   });
 });

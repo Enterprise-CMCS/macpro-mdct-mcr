@@ -7,6 +7,8 @@ import { ErrorAlert } from "components";
 import { ErrorVerbiage } from "types";
 // utils
 import { loginUser } from "utils";
+// verbiage
+import { loginError } from "verbiage/errors";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -36,8 +38,8 @@ export const LoginCognito = () => {
     try {
       await loginUser(fields.email, fields.password);
       navigate("/");
-    } catch (error: any) {
-      setError(error.message);
+    } catch {
+      setError(loginError);
     }
   };
 
@@ -46,7 +48,7 @@ export const LoginCognito = () => {
       <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} sx={sx.error} />
+      <ErrorAlert error={error} sxOverride={sx.error} />
       <form onSubmit={(event) => handleLogin(event)}>
         <Box sx={sx.label}>
           <label>

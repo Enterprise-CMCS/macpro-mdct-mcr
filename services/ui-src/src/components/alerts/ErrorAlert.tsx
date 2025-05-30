@@ -9,7 +9,7 @@ export const ErrorAlert = ({
   error,
   variant = "inline",
   sxOverride,
-  ...props
+  showIcon = false,
 }: Props) => {
   // Focus the alert when an error is given
   const ref = useRef<HTMLDivElement>(null);
@@ -26,10 +26,9 @@ export const ErrorAlert = ({
             status={AlertTypes.ERROR}
             title={error.title}
             description={error.description}
-            showIcon={false}
+            showIcon={showIcon}
             className={variant}
-            sx={sx.root}
-            {...props}
+            sxOverride={{ ...sx.root, ...sxOverride }}
           />
         )}
       </Collapse>

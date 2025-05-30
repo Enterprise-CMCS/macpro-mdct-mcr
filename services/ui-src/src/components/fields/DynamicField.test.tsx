@@ -22,6 +22,8 @@ import {
   mockNaaarReportWithAnalysisMethodsContext,
   mockNaaarAnalysisMethodsReportStore,
   mockAnalysisMethodEntityStore,
+  mockNaaarReportWithAnalysisMethods,
+  mockNaaarReportWithCustomAnalysisMethodsContext,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
 
@@ -45,6 +47,13 @@ const mockHydrationPlans = [
   {
     id: "mock-plan-id-2",
     name: "mock-plan-2",
+  },
+];
+
+const mockHydrationPlan = [
+  {
+    id: "mock-plan-id-1",
+    name: "mock-plan-1",
   },
 ];
 
@@ -332,81 +341,6 @@ describe("<DynamicField />", () => {
       );
     });
 
-    test("Deletes plan and associated analysis methods plan in NAAAR if state user", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockNaaarAnalysisMethodsReportStore,
-        ...mockAnalysisMethodEntityStore,
-      });
-
-      const mockedReportContext = {
-        ...mockNaaarReportWithAnalysisMethodsContext,
-        updateReport: mockUpdateReport,
-        report: mockNaaarReportWithAnalysisMethodsContext.report,
-      };
-
-      await act(async () => {
-        await render(
-          dynamicFieldComponent(mockHydrationPlans, mockedReportContext)
-        );
-      });
-      // delete mock-plan-1
-      const removeButton = screen.getByRole("button", {
-        name: "Delete mock-plan-1",
-      });
-      await userEvent.click(removeButton);
-      const deleteButton = screen.getByRole("button", {
-        name: "Yes, delete plan",
-      });
-      await userEvent.click(deleteButton);
-
-      expect(mockUpdateReport).toHaveBeenCalledWith(
-        {
-          ...mockReportKeys,
-          reportType: "NAAAR",
-          state: mockStateUserStore.user?.state,
-        },
-        {
-          metadata: {
-            status: ReportStatus.IN_PROGRESS,
-            lastAlteredBy: mockStateUserStore.user?.full_name,
-          },
-          fieldData: {
-            plans: [
-              {
-                id: "mock-plan-id-2",
-                name: "mock-plan-2",
-              },
-            ],
-            analysisMethods: [
-              {
-                ...DEFAULT_ANALYSIS_METHODS[0],
-                analysis_method_applicable_plans: [
-                  {
-                    key: "mock-plan-id-2",
-                    name: "mock-plan-2",
-                  },
-                ],
-              },
-              {
-                ...DEFAULT_ANALYSIS_METHODS[1],
-                analysis_applicable: [
-                  {
-                    id: "mock-analysis-applicable",
-                    value: "Yes",
-                  },
-                ],
-              },
-              {
-                id: "custom_entity",
-                name: "custom entity",
-              },
-            ],
-          },
-        }
-      );
-    });
-
     test("If there's no ILOS entities left, associated plan responses are cleared from field data", async () => {
       const mcparReportWithoutIlos = {
         ...mockMcparReport,
@@ -437,6 +371,123 @@ describe("<DynamicField />", () => {
       await userEvent.click(deleteButton);
 
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
+    });
+
+    test("Deletes plan and associated analysis methods plan in NAAAR if state user", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarAnalysisMethodsReportStore,
+        report: mockNaaarReportWithCustomAnalysisMethodsContext.report,
+
+        ...mockAnalysisMethodEntityStore,
+      });
+
+      await act(async () => {
+        await render(
+          dynamicFieldComponent(mockHydrationPlan, mockedReportContext)
+        );
+      });
+
+      // delete mock-plan-1
+      const removeButton = screen.getByRole("button", {
+        name: "Delete mock-plan-1",
+      });
+      await userEvent.click(removeButton);
+      const deleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
+      await userEvent.click(deleteButton);
+
+      expect(mockUpdateReport).toHaveBeenCalledWith(
+        {
+          ...mockReportKeys,
+          reportType: "NAAAR",
+          state: mockStateUserStore.user?.state,
+        },
+        {
+          metadata: {
+            status: ReportStatus.IN_PROGRESS,
+            lastAlteredBy: mockStateUserStore.user?.full_name,
+          },
+          fieldData: {
+            plans: [],
+            analysisMethods: [
+              {
+                ...DEFAULT_ANALYSIS_METHODS[0],
+              },
+              {
+                ...DEFAULT_ANALYSIS_METHODS[1],
+              },
+              {
+                id: "custom-method",
+                custom_analysis_method_name: "Custom Method",
+              },
+            ],
+          },
+        }
+      );
+    });
+
+    test("Removes utilized analysis method properties when applicable plan is deleted", async () => {
+      const plan = {
+        id: "mock-plan-id-1",
+        name: "Plan A",
+      };
+      const context = {
+        ...mockNaaarReportWithAnalysisMethodsContext,
+        updateReport: mockUpdateReport,
+        report: {
+          ...mockNaaarReportWithAnalysisMethods,
+          fieldData: {
+            plans: [plan],
+            analysisMethods: [
+              {
+                id: "analysis_method_applicable_plans-mock-plan-id-1",
+                name: "Utilized Method",
+                analysis_applicable: [
+                  { id: "mock-analysis-applicable", value: "Yes" },
+                ],
+                analysis_method_frequency: [
+                  { key: "mock-freq", value: "Monthly" },
+                ],
+                analysis_method_applicable_plans: [
+                  {
+                    key: plan.id,
+                    name: plan.name,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockNaaarAnalysisMethodsReportStore,
+        report: context.report,
+        ...mockAnalysisMethodEntityStore,
+      });
+
+      await act(async () => {
+        render(dynamicFieldComponent([plan], context));
+      });
+
+      await userEvent.click(
+        screen.getByRole("button", { name: `Delete ${plan.name}` })
+      );
+      await userEvent.click(
+        screen.getByRole("button", { name: "Yes, delete plan" })
+      );
+
+      const updateArg = mockUpdateReport.mock.calls[0][1];
+      const updatedMethods = updateArg.fieldData.analysisMethods;
+
+      const updated = updatedMethods.find(
+        (method: { id: string }) => method.id === "mock-analysis-method-1-id"
+      );
+
+      expect(updated).toBeUndefined();
     });
 
     test("Admin users can't delete plans", async () => {
