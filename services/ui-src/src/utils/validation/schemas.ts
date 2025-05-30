@@ -1,10 +1,15 @@
 import { array, boolean, mixed, object, string } from "yup";
-import { validationErrors as error } from "verbiage/errors";
+// constants
+import { suppressionText } from "../../constants";
+// types
 import { Choice } from "types";
+// utils
 import {
   checkStandardNumberInputAgainstRegexes,
   checkRatioInputAgainstRegexes,
 } from "utils/other/checkInputValidity";
+// verbiage
+import { validationErrors as error } from "verbiage/errors";
 
 // TEXT - Helpers
 const stringHasLength = (value?: string) => value?.length != 0;
@@ -65,6 +70,19 @@ export const number = () =>
     });
 
 export const numberOptional = () => numberSchema().notRequired().nullable();
+
+export const numberSuppressible = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (value === suppressionText) {
+          return true;
+        }
+        return value ? checkStandardNumberInputAgainstRegexes(value) : false;
+      },
+      message: error.INVALID_NUMBER,
+    });
 
 const validNumberSchema = () =>
   string().test({

@@ -14,7 +14,13 @@ export function compareText(
 export function otherSpecify(
   textToCompare?: string | null,
   matchText?: string | null,
-  nonMatchText?: string | null
+  nonMatchText?: string | null,
+  customLabel?: string | null
 ) {
-  return compareText("Other, specify", textToCompare, matchText, nonMatchText);
+  return compareText(
+    customLabel || "Other, specify",
+    textToCompare,
+    matchText,
+    nonMatchText
+  );
 }
