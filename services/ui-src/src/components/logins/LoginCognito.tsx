@@ -38,7 +38,7 @@ export const LoginCognito = () => {
     try {
       await loginUser(fields.email, fields.password);
       navigate("/");
-    } catch (error: any) {
+    } catch {
       setError(loginError);
     }
   };
