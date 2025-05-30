@@ -277,6 +277,7 @@ describe("<DynamicField />", () => {
                 },
               },
             ],
+            standards: [],
             qualityMeasures: [
               {
                 ...mockQualityMeasuresEntity,
@@ -336,6 +337,7 @@ describe("<DynamicField />", () => {
               ...mockMcparReportStore.report!.fieldData.qualityMeasures,
             ],
             sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
+            standards: [],
           },
         }
       );
@@ -423,6 +425,7 @@ describe("<DynamicField />", () => {
                 custom_analysis_method_name: "Custom Method",
               },
             ],
+            standards: [],
           },
         }
       );
