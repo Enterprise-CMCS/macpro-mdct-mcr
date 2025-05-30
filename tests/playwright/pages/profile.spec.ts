@@ -6,6 +6,7 @@ let adminPage: Page;
 let userPage: Page;
 let adminContext: BrowserContext;
 let userContext: BrowserContext;
+let profilePage: ProfilePage;
 
 test.beforeAll(async ({ browser }) => {
   adminContext = await browser.newContext({
@@ -25,36 +26,40 @@ test.afterAll(async () => {
 });
 
 test.describe("Admin profile", () => {
-  test("admin profile should have banner edit button", async () => {
-    const profilePage = new ProfilePage(adminPage);
+  test.beforeEach(async () => {
+    profilePage = new ProfilePage(adminPage);
     await profilePage.goto();
     await profilePage.isReady();
+  });
+
+  test("admin profile should have banner edit button", async () => {
     await expect(profilePage.bannerEditorButton).toBeVisible();
   });
+
   test(
     "Is accessible on all device types for admin user",
     { tag: "@admin" },
     async () => {
-      const profilePage = new ProfilePage(adminPage);
-      await profilePage.goto();
       await profilePage.e2eA11y();
     }
   );
 });
 
 test.describe("State user profile", async () => {
-  test("state user profile should not have banner edit button", async () => {
-    const profilePage = new ProfilePage(userPage);
+  test.beforeEach(async () => {
+    profilePage = new ProfilePage(userPage);
     await profilePage.goto();
     await profilePage.isReady();
+  });
+
+  test("state user profile should not have banner edit button", async () => {
     await expect(profilePage.bannerEditorButton).not.toBeVisible();
   });
+
   test(
     "Is accessible on all device types for state user",
     { tag: "@user" },
     async () => {
-      const profilePage = new ProfilePage(userPage);
-      await profilePage.goto();
       await profilePage.e2eA11y();
     }
   );

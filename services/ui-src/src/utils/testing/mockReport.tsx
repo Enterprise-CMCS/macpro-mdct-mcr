@@ -427,9 +427,9 @@ export const mockNaaarReportFieldData = {
   standards: [
     {
       id: "e78c5-a830-541-ac6e-d567ea7d413",
-      standard_coreProviderTypeCoveredByStandard: [
+      standard_coreProviderType: [
         {
-          key: "standard_coreProviderTypeCoveredByStandard-mock-id",
+          key: "standard_coreProviderType-mock-id",
           value: "Primary Care",
         },
       ],
@@ -659,6 +659,86 @@ export const mockNaaarReportWithAnalysisMethods = {
       {
         id: "custom_entity",
         name: "custom entity",
+      },
+    ],
+    providerTypes: [
+      {
+        key: "mock-key",
+        value: "mock-value",
+      },
+    ],
+  },
+  locked: false,
+  fieldDataId: "mockFieldDataId",
+  planTypeIncludedInProgram: [
+    {
+      key: "mock-key",
+      value: "MCO",
+    },
+  ],
+  submissionCount: 0,
+  previousRevisions: [],
+};
+
+export const mockNaaarReportWithCustomAnalysisMethods = {
+  ...mockReportKeys,
+  reportType: "NAAAR",
+  formTemplate: mockReportJson,
+  programName: "testProgram",
+  status: ReportStatus.NOT_STARTED,
+  dueDate: 168515200000,
+  reportingPeriodStartDate: 162515200000,
+  reportingPeriodEndDate: 168515200000,
+  createdAt: 162515200000,
+  lastAltered: 162515200000,
+  lastAlteredBy: "Thelonious States",
+  combinedData: false,
+  submittedOnDate: Date.now(),
+  fieldData: {
+    stateName: "TestState",
+    text: "text-input",
+    number: 0,
+    radio: ["option1"],
+    checkbox: ["option1", "option2"],
+    dropdown: "dropdown-selection",
+    plans: [
+      {
+        id: "mock-plan-id-1",
+        name: "mock-plan-1",
+      },
+    ],
+    analysisMethods: [
+      {
+        ...DEFAULT_ANALYSIS_METHODS[0],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "Yes",
+          },
+        ],
+        analysis_method_applicable_plans: [
+          {
+            key: "mock-plan-id-1",
+            name: "mock-plan-1",
+          },
+        ],
+        analysis_method_frequency: "Monthly",
+      },
+      {
+        ...DEFAULT_ANALYSIS_METHODS[1],
+        analysis_applicable: [
+          {
+            id: "mock-analysis-applicable",
+            value: "No",
+          },
+        ],
+        analysis_method_applicable_plans: [],
+      },
+      {
+        id: "custom-method",
+        custom_analysis_method_name: "Custom Method",
+        analysis_method_applicable_plans: [],
+        analysis_method_frequency: "Yearly",
       },
     ],
     providerTypes: [
@@ -910,6 +990,15 @@ export const mockNaaarReportContext = {
 export const mockNaaarReportWithAnalysisMethodsContext = {
   ...mockReportMethods,
   report: mockNaaarReportWithAnalysisMethods,
+  reportsByState: [],
+  copyEligibleReportsByState: [],
+  errorMessage: mockErrorMessage,
+  lastSavedTime: "1:58 PM",
+};
+
+export const mockNaaarReportWithCustomAnalysisMethodsContext = {
+  ...mockReportMethods,
+  report: mockNaaarReportWithCustomAnalysisMethods,
   reportsByState: [],
   copyEligibleReportsByState: [],
   errorMessage: mockErrorMessage,
