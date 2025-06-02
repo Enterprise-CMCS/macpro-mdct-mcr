@@ -48,6 +48,7 @@ import addIconWhite from "assets/icons/icon_add.png";
 import addIconSVG from "assets/icons/icon_add_gray.svg";
 import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
 import { analysisMethodError } from "verbiage/errors";
+import { filterStandardsByUtilizedAnalysisMethods } from "utils/forms/standards";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -210,12 +211,33 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ...filteredFormData,
       };
 
+      // filter standards after changes to analysis methods
+      const otherEntitiesToUpdate: { [key: string]: EntityShape[] } = {};
+
+      if (entityType === EntityType.ANALYSIS_METHODS && selectedEntity?.id) {
+        const isNotApplicable =
+          newEntity.analysis_applicable?.[0]?.value.includes("No");
+
+        if (isNotApplicable) {
+          const currentStandards = report?.fieldData.standards || [];
+
+          const filteredStandards = filterStandardsByUtilizedAnalysisMethods(
+            currentStandards,
+            selectedEntity.id
+          );
+
+          otherEntitiesToUpdate[EntityType.STANDARDS as string] =
+            filteredStandards;
+        }
+      }
+
       const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
         newEntities[selectedEntityIndex],
         entriesToClear
       );
+
       const shouldSave = entityWasUpdated(
         entities[selectedEntityIndex],
         newEntity
@@ -228,6 +250,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           },
           fieldData: {
             [entityType]: newEntities,
+            ...otherEntitiesToUpdate,
           },
         };
         await updateReport(reportKeys, dataToWrite);
