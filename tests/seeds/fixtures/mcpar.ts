@@ -466,6 +466,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
           plan_medicaidEnrollmentSharePercentage: suppressionText,
           plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+          plan_parentOrganization: faker.lorem.sentence(),
           plan_medicalLossRatioPercentage: numberFloat(),
           plan_medicalLossRatioPercentageAggregationLevel: [
             {
@@ -690,6 +691,7 @@ export const fillMcparPCCM = (planId: string): SeedFillReportShape => {
           plan_enrollment: suppressionText,
           plan_medicaidEnrollmentSharePercentage: suppressionText,
           plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+          plan_parentOrganization: faker.lorem.sentence(),
         },
       ],
       sanctions: [createSanction(planId)],
