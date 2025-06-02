@@ -223,7 +223,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -233,7 +232,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -243,7 +241,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -253,7 +250,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
