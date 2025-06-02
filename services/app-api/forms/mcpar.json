@@ -2099,6 +2099,15 @@
                   "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
                   "mask": "percentage"
                 }
+              },
+              {
+                "id": "plan_parentOrganization",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D1.I.4: Parent Organization: The name of the national health care entity that controls the Medicaid Managed Care Plan.",
+                  "hint": "If the managed care plan is controlled by a separate national health care entity, report the name of that national health care entity. If the managed care plan is not controlled by a separate national health care entity, please report the managed care plan name in this field."
+                }
               }
             ]
           }
