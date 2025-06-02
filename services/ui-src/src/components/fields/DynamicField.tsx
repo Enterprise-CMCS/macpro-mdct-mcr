@@ -23,6 +23,7 @@ import {
 import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import { filterStandardsAfterPlanDeletion } from "utils/forms/standards";
 
 export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   // state management
@@ -195,7 +196,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           return method;
         }
       );
-
       // delete ILOS data from corresponding plans
       const filteredPlans =
         name === "plans"
@@ -234,6 +234,17 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
               return newEntity;
             });
 
+      // filter Standards after deletion of any plans
+      const remainingPlanIds = report?.fieldData.plans.map(
+        (plan: { id: any }) => plan.id
+      );
+
+      const filteredStandards = filterStandardsAfterPlanDeletion(
+        report?.fieldData?.standards,
+        filteredAnalysisMethods,
+        remainingPlanIds
+      );
+
       const dataToWrite = {
         metadata: {
           status: ReportStatus.IN_PROGRESS,
@@ -245,6 +256,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           qualityMeasures: filteredQualityMeasures,
           plans: filteredPlans,
           analysisMethods: filteredAnalysisMethods,
+          standards: filteredStandards,
         },
       };
 

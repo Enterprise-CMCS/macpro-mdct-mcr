@@ -14,6 +14,7 @@ import {
 } from "types";
 // utils
 import { useStore } from "utils";
+import { filterStandardsByUtilizedAnalysisMethods } from "utils/forms/standards";
 
 export const DeleteEntityModal = ({
   entityType,
@@ -45,6 +46,24 @@ export const DeleteEntityModal = ({
     const updatedFieldData = {
       [entityType]: updatedEntities,
     };
+
+    /**
+     * When deleting a custom analysis method, filter standards to remove it
+     * If it's the only analysis method on a standard,
+     * the standard should be deleted
+     */
+    if (
+      reportKeys.reportType === ReportType.NAAAR &&
+      entityType === EntityType.ANALYSIS_METHODS &&
+      selectedEntity?.id
+    ) {
+      const currentStandards = report?.fieldData?.standards || [];
+      const filteredStandards = filterStandardsByUtilizedAnalysisMethods(
+        currentStandards,
+        selectedEntity.id
+      );
+      updatedFieldData.standards = filteredStandards;
+    }
 
     // If NAAAR standard is deleted, also remove it from plans
     if (
