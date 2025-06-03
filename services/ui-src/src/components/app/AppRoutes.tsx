@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useFlags } from "launchdarkly-react-client-sdk";
 import { Fragment, useContext } from "react";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
@@ -24,13 +24,24 @@ import { ScrollToTopComponent, useStore } from "utils";
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
   const { report } = useStore();
-  const { contextIsLoaded } = useContext(ReportContext);
+  const { contextIsLoaded, isReportPage } = useContext(ReportContext);
+
+  const { pathname } = useLocation();
+  const isExportPage = pathname.includes("/export");
+  const hasNav = isReportPage && !isExportPage;
+  const boxElement = hasNav ? "div" : "main";
 
   // LaunchDarkly
   const naaarReport = useFlags()?.naaarReport;
 
   return (
-    <Box as="main" id="main-content" sx={sx.mainContainer} tabIndex={-1}>
+    <Box
+      as={boxElement}
+      id="main-content"
+      data-testid="main-content"
+      sx={sx.mainContainer}
+      tabIndex={-1}
+    >
       <ScrollToTopComponent />
       <AdminBannerProvider>
         <Routes>
