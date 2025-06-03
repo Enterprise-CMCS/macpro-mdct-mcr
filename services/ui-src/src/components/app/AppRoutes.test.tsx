@@ -139,7 +139,7 @@ describe("<AppRoutes />", () => {
   });
 
   describe("Test AppRoutes box container", () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
         ...mockBannerStore,
