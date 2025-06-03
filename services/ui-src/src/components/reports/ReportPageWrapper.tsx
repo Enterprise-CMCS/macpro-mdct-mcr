@@ -107,7 +107,7 @@ export const ReportPageWrapper = () => {
   );
 
   return (
-    <PageTemplate as="div" type="report">
+    <PageTemplate section={false} type="report">
       <Flex sx={sx.pageContainer}>
         {report ? (
           <>
