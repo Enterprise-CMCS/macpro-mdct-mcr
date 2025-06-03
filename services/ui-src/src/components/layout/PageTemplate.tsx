@@ -5,19 +5,20 @@ import { Box, Flex } from "@chakra-ui/react";
 import { AnyObject } from "types";
 
 export const PageTemplate = ({
+  as = "section",
   type = "standard",
   children,
   sxOverride,
   ...props
 }: Props) => {
   return (
-    <section>
+    <Box as={as}>
       <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
         <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
           {children}
         </Flex>
       </Box>
-    </section>
+    </Box>
   );
 };
 

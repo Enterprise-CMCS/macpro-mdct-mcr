@@ -107,12 +107,13 @@ export const ReportPageWrapper = () => {
   );
 
   return (
-    <PageTemplate type="report">
+    <PageTemplate as="div" type="report">
       <Flex sx={sx.pageContainer}>
         {report ? (
           <>
             <Sidebar isHidden={sidebarHidden} />
             <Flex
+              as="main"
               id="report-content"
               sx={{
                 ...sx.reportContainer,
