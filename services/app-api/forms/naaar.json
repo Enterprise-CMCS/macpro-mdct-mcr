@@ -67,7 +67,7 @@
                 "validation": "email",
                 "props": {
                   "label": "I.A.2 Contact email address",
-                  "hint": "Enter email address. Department or program-wide email addresses ok."
+                  "hint": "Enter email address. Department or program-wide email addresses are permitted."
                 }
               },
               {
