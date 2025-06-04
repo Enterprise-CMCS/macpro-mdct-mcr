@@ -36,6 +36,7 @@ export const SortableNaaarStandardsTable = ({
             id={value}
             name="edit"
             onClick={() => openRowDrawer(entity)}
+            aria-label={`Edit standard ${originalRowData.count}`}
           >
             Edit
           </Button>
@@ -49,7 +50,11 @@ export const SortableNaaarStandardsTable = ({
             name="delete"
             onClick={() => openDeleteEntityModal(entity)}
           >
-            <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+            <Image
+              alt={`Delete standard ${originalRowData.count}`}
+              src={deleteIcon}
+              boxSize="2xl"
+            />
           </Button>
         );
       }
