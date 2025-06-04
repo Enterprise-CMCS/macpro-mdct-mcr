@@ -32,7 +32,11 @@ export const DrawerReportPageEntityRows = ({
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
 
-  const enterButton = (entity: EntityShape, isEntityCompleted: boolean) => {
+  const enterButton = (
+    entity: EntityShape,
+    entityName: string,
+    isEntityCompleted: boolean
+  ) => {
     let disabled = false;
     let style = sx.enterButton;
     const buttonText = userIsEndUser
@@ -40,6 +44,7 @@ export const DrawerReportPageEntityRows = ({
         ? "Edit"
         : "Enter"
       : "View";
+    const ariaLabel = `${buttonText} ${entityName}`;
 
     if (
       (route.path === "/mcpar/plan-level-indicators/ilos" && !hasIlos) ||
@@ -59,6 +64,7 @@ export const DrawerReportPageEntityRows = ({
         onClick={() => openRowDrawer(entity)}
         variant="outline"
         disabled={disabled}
+        aria-label={ariaLabel}
       >
         {buttonText}
       </Button>
@@ -125,6 +131,8 @@ export const DrawerReportPageEntityRows = ({
         return <Text sx={sx.completeText}>{completeText}</Text>;
       };
 
+      const entityName = entity.name ?? entity.custom_analysis_method_name;
+
       return (
         <Flex
           key={entity.id}
@@ -148,7 +156,7 @@ export const DrawerReportPageEntityRows = ({
           )}
           <Flex direction={"column"} sx={sx.entityRow}>
             <Heading as="h4" sx={sx.entityName}>
-              {entity.name ?? entity.custom_analysis_method_name}
+              {entityName}
             </Heading>
             {entity.custom_analysis_method_description && (
               <Text sx={sx.completeText}>
@@ -158,14 +166,18 @@ export const DrawerReportPageEntityRows = ({
             {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
           </Flex>
           <Box sx={buttonBoxStyling(canAddEntities)}>
-            {enterButton(entity, isEntityCompleted)}
+            {enterButton(entity, entityName, isEntityCompleted)}
             {canAddEntities && !entity.isRequired && (
               <Button
                 sx={sx.deleteButton}
                 data-testid="delete-entity"
                 onClick={() => openDeleteEntityModal(entity)}
               >
-                <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+                <Image
+                  src={deleteIcon}
+                  alt={`Delete ${entityName}`}
+                  boxSize="2xl"
+                />
               </Button>
             )}
           </Box>

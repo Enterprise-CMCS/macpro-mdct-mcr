@@ -1,20 +1,22 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useStore } from "utils";
 import { DrawerReportPage } from "./DrawerReportPage";
 import { ReportContext } from "./ReportProvider";
 import {
-  mockMcparReportContext,
-  mockStateUserStore,
-  RouterWrappedComponent,
-  mockMcparReportStore,
+  mockAdminUserStore,
+  mockAnalysisMethodEntityStore,
   mockEntityStore,
   mockMcparIlosPageJson,
-  mockNaaarReportStore,
+  mockMcparReportContext,
+  mockMcparReportStore,
   mockNaaarAnalysisMethodsPageJson,
-  mockAnalysisMethodEntityStore,
-  mockNaaarReportWithAnalysisMethods,
   mockNaaarReportFieldData,
+  mockNaaarReportStore,
+  mockNaaarReportWithAnalysisMethods,
   mockNaaarReportWithAnalysisMethodsContext,
+  mockStateUserStore,
+  RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
@@ -148,34 +150,95 @@ describe("<DrawerReportEntityRow />", () => {
       reportsByState: [customAnalysisMethodsReport],
     };
 
-    test("Should display comma separated alphabetized plans list", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockCustomAnalysisMethodsReportStore,
-        ...mockAnalysisMethodEntityStore,
+    describe("state user with custom analysis method", () => {
+      beforeEach(() => {
+        mockedUseStore.mockReturnValue({
+          ...mockStateUserStore,
+          ...mockCustomAnalysisMethodsReportStore,
+          ...mockAnalysisMethodEntityStore,
+        });
+
+        render(drawerReportPageWithAnalysisMethods);
       });
 
-      render(drawerReportPageWithAnalysisMethods);
+      test("Should display comma separated alphabetized plans list", () => {
+        const CommaSeparatedList = screen.getByText(
+          "Weekly: A third plan, Plan 1, Plan 2",
+          {
+            trim: true,
+            collapseWhitespace: true,
+          }
+        );
+        expect(CommaSeparatedList).toBeVisible();
+      });
 
-      const CommaSeparatedList = screen.getByText(
-        "Weekly: A third plan, Plan 1, Plan 2",
-        {
-          trim: true,
-          collapseWhitespace: true,
-        }
-      );
-      expect(CommaSeparatedList).toBeVisible();
+      test("renders enter button for unanswered analysis method", () => {
+        expect(
+          screen.getByRole("button", { name: "Enter Geomapping" })
+        ).toBeVisible();
+      });
+
+      test("renders delete button for custom analysis method", () => {
+        expect(
+          screen.getByRole("button", { name: "Delete New Method" })
+        ).toBeVisible();
+      });
     });
 
-    test("should render rows when analysis methods are incomplete", async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockIncompleteAnalysisMethodsReportStore,
-        ...mockAnalysisMethodEntityStore,
+    describe("state user with not utilized analysis methods", () => {
+      beforeEach(() => {
+        mockedUseStore.mockReturnValue({
+          ...mockStateUserStore,
+          ...mockIncompleteAnalysisMethodsReportStore,
+          ...mockAnalysisMethodEntityStore,
+        });
+        render(drawerReportPageWithAnalysisMethods);
       });
-      render(drawerReportPageWithAnalysisMethods);
 
-      expect(screen.getByText("Not utilized")).toBeVisible();
+      test("renders edit button for answered analysis method", () => {
+        expect(
+          screen.getByRole("button", { name: "Edit Geomapping" })
+        ).toBeVisible();
+      });
+
+      test("renders not utilized text", () => {
+        expect(screen.getByText("Not utilized")).toBeVisible();
+      });
+    });
+
+    describe("admin user", () => {
+      beforeEach(() => {
+        mockedUseStore.mockReturnValue({
+          ...mockAdminUserStore,
+          ...mockCustomAnalysisMethodsReportStore,
+          ...mockAnalysisMethodEntityStore,
+        });
+        render(drawerReportPageWithAnalysisMethods);
+      });
+
+      test("renders view buttons", () => {
+        expect(
+          screen.getByRole("button", { name: "View Geomapping" })
+        ).toBeVisible();
+        expect(
+          screen.getByRole("button", { name: "View New Method" })
+        ).toBeVisible();
+      });
+
+      test("disables delete button", async () => {
+        const button = screen.getByRole("button", {
+          name: "Delete New Method",
+        });
+        await userEvent.click(button);
+        expect(
+          screen.getByRole("dialog", {
+            name: "Are you sure you want to delete this analysis method?",
+          })
+        ).toBeVisible();
+        expect(
+          screen.getByRole("button", { name: "Yes, delete method" })
+        ).toBeDisabled();
+      });
     });
   });
 });
