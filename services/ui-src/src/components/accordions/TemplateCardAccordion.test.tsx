@@ -9,6 +9,9 @@ import { testA11y } from "utils/testing/commonTests";
 export const mockAccordion = {
   buttonLabel: "mock accordion button",
   text: "Mock information text inside accordion",
+  introText: "Mock intro text",
+  orderedList: ["First item", "Second item", "Third item"],
+  followUpText: "Mock follow up text",
 };
 
 const accordionComponent = (
@@ -38,6 +41,11 @@ describe("<TemplateCardAccordion />", () => {
     await userEvent.click(accordionQuestion);
     expect(accordionQuestion).toBeVisible();
     expect(screen.getByText(mockAccordion.text)).toBeVisible();
+    expect(screen.getByText(mockAccordion.introText)).toBeVisible();
+    mockAccordion.orderedList.forEach((item) => {
+      expect(screen.getByText(item)).toBeVisible();
+    });
+    expect(screen.getByText(mockAccordion.followUpText)).toBeVisible();
   });
 
   testA11y(accordionComponent);
