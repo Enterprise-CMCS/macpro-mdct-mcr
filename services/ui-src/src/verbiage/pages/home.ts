@@ -62,9 +62,9 @@ export default {
       title: "Network Adequacy and Access Assurances Report (NAAAR)",
       body: {
         available:
-          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. Beginning on or after August 2025, all States submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
+          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. Beginning on or after August 2025, all states submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
         unavailable:
-          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. Beginning on or after August 2025, all States submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
+          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. Beginning on or after August 2025, all states submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
       },
       downloadText: "Download NAAAR Template",
       link: {
