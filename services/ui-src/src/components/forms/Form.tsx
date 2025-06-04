@@ -178,4 +178,7 @@ const sx = {
   ".optional-text": {
     fontWeight: "lighter",
   },
+  p: {
+    paddingTop: "0.25rem",
+  },
 };
