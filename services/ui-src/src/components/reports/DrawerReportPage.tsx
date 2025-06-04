@@ -393,7 +393,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
                 sx={sx.addEntityButton}
                 leftIcon={<Image sx={sx.buttonIcons} src={addIcon} alt="Add" />}
                 onClick={() => openRowDrawer()}
-                aria-label={verbiage.addEntityButtonText}
               >
                 {verbiage.addEntityButtonText}
               </Button>

@@ -49,9 +49,12 @@ export const SortableNaaarStandardsTable = ({
             id={value}
             name="delete"
             onClick={() => openDeleteEntityModal(entity)}
-            aria-label={`Delete standard ${originalRowData.count}`}
           >
-            <Image src={deleteIcon} alt="delete" boxSize="2xl" />
+            <Image
+              alt={`Delete standard ${originalRowData.count}`}
+              src={deleteIcon}
+              boxSize="2xl"
+            />
           </Button>
         );
       }
