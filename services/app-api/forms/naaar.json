@@ -210,7 +210,7 @@
             "intro": {
               "section": "I. State and program information",
               "subsection": "Add plans",
-              "info": "Enter the name of each plan that participates in the program for which the state is reporting data."
+              "info": "Enter the name of each plan that participates in the program for which the state is reporting data. If the state is submitting this form because it’s entering into a contract with a plan or because there’s a significant change in a plan’s operations, include only the name of the applicable plan. Plan names should match the plan names used in your Managed Care Plan Annual Report (MCPAR) for this program for the same reporting period."
             }
           },
           "form": {
@@ -1554,7 +1554,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Describe how the state will monitor the plan's progress.",
+                              "hint": "Describe how the state will monitor the plan’s progress.",
                               "label": "Plan deficiencies: 42 C.F.R. § 438.68 monitoring progress"
                             }
                           },
@@ -1567,7 +1567,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Indicate when the state will reassess the plan's network to determine whether the plan has remediated those deficiencies.",
+                              "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies.",
                               "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.68"
                             }
                           }
