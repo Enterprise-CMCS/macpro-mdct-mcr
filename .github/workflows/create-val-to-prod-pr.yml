@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
@@ -56,7 +58,7 @@ jobs:
       if: steps.pr_body.outputs.skip != 'true'
       run: |
         current_date=$(date '+%-d %B %Y')
-        title="MCR production release (${current_date})"
+        title="MFP production release (${current_date})"
         body=$(echo "${{ steps.pr_body.outputs.body }}" | sed 's/%25/%/g; s/%0A/\n/g; s/%0D/\r/g')
 
         if [ "${{ steps.check_pr.outputs.exists }}" == "true" ]; then
