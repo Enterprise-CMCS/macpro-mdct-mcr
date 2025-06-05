@@ -2,12 +2,6 @@
 
 HEAD="${1}"
 BASE="${2}"
-HEAD_NORMALIZED=$HEAD
-BASE_NORMALIZED=$BASE
-
-# Normalize "production" to "prod"
-[ "$HEAD" = "production" ] && HEAD_NORMALIZED="prod"
-[ "$BASE" = "production" ] && BASE_NORMALIZED="prod"
 
 git fetch origin $HEAD >/dev/null 2>&1
 git fetch origin $BASE >/dev/null 2>&1
@@ -18,17 +12,29 @@ COMMIT_LOG=$(git log origin/$BASE..origin/$HEAD --no-merges --pretty=format:"%s"
     orig_line = $0;
     line = tolower($0);
 
-    # Find if ticket is in commit, case-insensitive
+    # Find ticket in commit message, case-insensitive
     match(line, /cmdct[ -]?[0-9]+/);
 
     if (RSTART > 0) {
+      ticket = substr(orig_line, RSTART, RLENGTH);
       ref = substr(line, RSTART, RLENGTH);
 
       # Extract number after "cmdct"
       gsub(/[^0-9]/, "", ref);
-      num = ref;
-      printf "- %s (CMDCT-%s)\n", orig_line, num;
+
+      # Remove original ticket
+      gsub(ticket, "", orig_line);
+
+      # Remove empty square brackets
+      gsub(/\[\]/, "", orig_line);
+
+      # Trim leading/trailing spaces, dashes, and colons
+      gsub(/^[ \-:]+|[ \-:]+$/, "", orig_line);
+
+      # Add ticket to the end
+      printf "- %s (CMDCT-%s)\n", orig_line, ref;
     } else {
+      # Add placeholder if no ticket in commit message
       printf "- %s (CMDCT-)\n", orig_line;
     }
   }')
@@ -38,16 +44,16 @@ if [ -z "$COMMIT_LOG" ]; then
   exit 1
 fi
 
-TEMPLATE_PATH=".github/PULL_REQUEST_TEMPLATE/${HEAD_NORMALIZED}-to-${BASE_NORMALIZED}-deployment.md"
-DEFAULT_TEMPLATE=".github/PULL_REQUEST_TEMPLATE/main-to-val-deployment.md"
+TEMPLATE_PATH=".github/PULL_REQUEST_TEMPLATE/${BASE}-deployment.md"
+DEFAULT_TEMPLATE=".github/PULL_REQUEST_TEMPLATE/val-deployment.md"
 
 if [ -f "$TEMPLATE_PATH" ]; then
   TEMPLATE=$(cat "$TEMPLATE_PATH")
 else
   TEMPLATE=$(cat "$DEFAULT_TEMPLATE")
   # Replace PR heading
-  SEARCH="## main → val"
-  REPLACEMENT="## ${HEAD} → ${BASE}"
+  SEARCH="## val release"
+  REPLACEMENT="## ${BASE} release"
 
   # Escape slashes and other special characters for sed
   ESCAPED_REPLACEMENT=$(printf '%s\n' "$REPLACEMENT" | sed 's/[\/&]/\\&/g')
@@ -123,10 +129,10 @@ for FILE in $YARN_LOCK_FILES; do
 done
 
 if [ -z "$TABLE_BODY" ]; then
-  # Remove section entirely
+  # Remove dependency section entirely if table is empty
   BODY=$(echo "$BODY" | perl -0777 -pe 's/^### Dependency updates\b.*?(?=^### |\z)//sm')
 else
-  # Insert table in section
+  # Insert table in dependency section
   REPLACEMENT=$(cat <<EOF
 ### Dependency updates
 

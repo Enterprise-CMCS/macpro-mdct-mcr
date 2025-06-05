@@ -44,4 +44,4 @@ _If either of the following are true, notify the team's ISSO (Information System
 ---
 
 <!-- If deploying to val or prod, click 'Preview' and select template -->
-_convert to a different template: [main → val](?expand=1&template=main-to-val-deployment.md)_ | _[val → prod](?expand=1&template=val-to-prod-deployment.md)_
+_convert to a different template: [val release](?expand=1&template=val-deployment.md)_ | _[production release](?expand=1&template=production-deployment.md)_
