@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - val
-      - bs-auto-prs
   workflow_dispatch:
 
 permissions:
