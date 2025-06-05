@@ -32,7 +32,7 @@
       "validation": "date",
       "props": {
         "label": "Reporting period start date",
-        "hint": "For items below, indicate the reporting period for the analysis and compliance information entered into this report. CMS expects states to enter a reporting period end date that is no more than one year prior to the submission of this report. <p>If submitting because of a new contract or significant change in plan operations, the reporting period may cover less than one year.<p/> <p>If submitting an annual report, the reporting period should cover one year.<p/> <p>Enter start date of the reporting period represented in the report.</p>",
+        "hint": "For items below, indicate the reporting period for the analysis and compliance information entered into this report. CMS expects states to enter a reporting period end date that is no more than one year prior to the submission of this report. <span>If submitting because of a new contract or significant change in plan operations, the reporting period may cover less than one year.<span/> <span>If submitting an annual report, the reporting period should cover one year.<span/> <span>Enter start date of the reporting period represented in the report.</span>",
         "timetype": "startDate"
       }
     },
@@ -55,7 +55,7 @@
       "validation": "radio",
       "props": {
         "label": "Plan type included in program",
-        "hint": "Indicate the managed care plan type (MCO, PIHP, PAHP, or Other, specify) that contracts with the state in each program.",
+        "hint": "Indicate the managed care plan type (MCO, PIHP, PAHP, MMP or Other, specify) that contracts with the state in each program.",
         "choices": [
           {
             "id": "NHAbx1VBdvZkHgG2HTfexemq",
