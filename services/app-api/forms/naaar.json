@@ -30,7 +30,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "Who should CMS contact with questions regarding information reported in the NAAAR? Follow up communications related to this report will be made to the primary contact."
+                  "content": "Who should CMS contact with questions regarding information reported in the NAAAR? Follow-on communications related to this report will be made to the primary contact."
                 },
                 {
                   "type": "p",
@@ -58,7 +58,7 @@
                 "validation": "text",
                 "props": {
                   "label": "I.A.1 Contact name",
-                  "hint": "First and last name of the contact person. "
+                  "hint": "First and last name of the contact person."
                 }
               },
               {
@@ -67,7 +67,7 @@
                 "validation": "email",
                 "props": {
                   "label": "I.A.2 Contact email address",
-                  "hint": "Enter email address. Department or program-wide email addresses ok."
+                  "hint": "Enter email address. Department or program-wide email addresses are permitted."
                 }
               },
               {
@@ -1367,7 +1367,7 @@
                   ""
                 ]
               ],
-              "caption": "",
+              "caption": "Assurance of plan compliance for 438.68",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
@@ -1409,7 +1409,7 @@
               "bodyRows": [
                 ["", "Provide plan compliance details for 438.206", ""]
               ],
-              "caption": "",
+              "caption": "Assurance of plan compliance for 438.206",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
