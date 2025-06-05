@@ -22,24 +22,42 @@ const mockGetValues = (returnValue: any) =>
     ...mockRhfMethods,
     getValues: jest.fn().mockReturnValue(returnValue),
   }));
+const mockOnChange = jest.fn();
 
-const ChoiceFieldComponent = (
-  <ChoiceField name="checkbox_choice" label="Checkbox A" hint="checkbox a" />
+const ChoiceFieldComponent = (inline = false) => (
+  <ChoiceField
+    name="checkbox_choice"
+    label="Checkbox A"
+    hint="checkbox a"
+    inline={inline}
+    onChange={mockOnChange}
+  />
 );
 
 describe("<ChoiceField />", () => {
-  test("ChoiceField renders as Checkbox", () => {
-    render(ChoiceFieldComponent);
-    const choice = screen.getByLabelText("Checkbox A");
+  test("ChoiceField renders as Checkbox with p tag", () => {
+    render(ChoiceFieldComponent());
+    const label = screen.getByText("Checkbox A");
+    const choice = screen.getByRole("checkbox", { name: "Checkbox A" });
+    expect(label.tagName).toBe("P");
+    expect(choice).toHaveAttribute("aria-labelledby", "checkbox_choice");
+  });
+
+  test("ChoiceField renders as Checkbox with label tag", () => {
+    render(ChoiceFieldComponent(true));
+    const label = screen.getByText("Checkbox A");
+    const choice = screen.getByRole("checkbox", { name: "Checkbox A" });
+    expect(label.tagName).toBe("LABEL");
     expect(choice).toBeVisible();
   });
 
   test("ChoiceField calls onChange function successfully", async () => {
-    render(ChoiceFieldComponent);
+    render(ChoiceFieldComponent());
     const choice = screen.getByLabelText("Checkbox A") as HTMLInputElement;
     expect(choice.checked).toBe(false);
     await userEvent.click(choice);
     expect(choice.checked).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
 
   describe("Test ChoiceField hydration functionality", () => {
@@ -56,7 +74,7 @@ describe("<ChoiceField />", () => {
 
     test("If only formFieldValue exists, displayValue is set to it", () => {
       mockGetValues(mockFormFieldValue);
-      render(ChoiceFieldComponent);
+      render(ChoiceFieldComponent());
       const choiceField: HTMLInputElement = screen.getByLabelText("Checkbox A");
       const displayValue = choiceField.value;
       expect(displayValue).toBeTruthy();
@@ -70,5 +88,5 @@ describe("<ChoiceField />", () => {
       expect(displayValue).toBeTruthy();
     });
   });
-  testA11y(ChoiceFieldComponent);
+  testA11y(ChoiceFieldComponent());
 });
