@@ -10,7 +10,9 @@ import {
   Form,
   DeleteEntityModal,
   ErrorAlert,
+  SortableNaaarStandardsTable,
 } from "components";
+import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,
@@ -32,6 +34,7 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
   parseCustomHtml,
@@ -39,15 +42,12 @@ import {
   translate,
   useStore,
 } from "utils";
-
+//verbiage
+import { analysisMethodError } from "verbiage/errors";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
 import addIconSVG from "assets/icons/icon_add_gray.svg";
-import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
-import { analysisMethodError } from "verbiage/errors";
-import { filterStandardsByUtilizedAnalysisMethods } from "utils/forms/standards";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);

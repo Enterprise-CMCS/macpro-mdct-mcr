@@ -20,10 +20,14 @@ import {
   ReportStatus,
 } from "types";
 // utils
-import { autosaveFieldData, getAutosaveFields, useStore } from "utils";
+import {
+  autosaveFieldData,
+  filterStandardsAfterPlanDeletion,
+  getAutosaveFields,
+  useStore,
+} from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
-import { filterStandardsAfterPlanDeletion } from "utils/forms/standards";
 
 export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   // state management
