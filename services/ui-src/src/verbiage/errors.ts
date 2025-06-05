@@ -82,3 +82,14 @@ export const reportErrors = {
     description: genericErrorContent,
   },
 };
+
+export const analysisMethodError = {
+  title: "You must have at least one analysis method used by a program.",
+  description:
+    "To correct this, select “Edit” and respond with “Yes” to at least one analysis method.",
+};
+
+export const loginError = {
+  title: "There was an issue logging in.",
+  description: "Verify credentials and try again or contact support.",
+};

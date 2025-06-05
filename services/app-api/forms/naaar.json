@@ -588,13 +588,185 @@
         "id": "danas",
         "fields": [
           {
-            "id": "standard_coreProviderTypeCoveredByStandard",
+            "id": "standard_coreProviderType",
             "type": "radio",
             "validation": "radio",
             "props": {
               "label": "Core provider type covered by standard",
               "hint": "Enter the core provider type the standard applies to. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
-              "choices": []
+              "choices": [
+                {
+                  "id": "standard_UZK4hxPVnuYGcIgNzYFHCk",
+                  "label": "Primary Care",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_uITThePQiXntwGGViPTD62",
+                  "label": "Specialist",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-uITThePQiXntwGGViPTD62",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_9kBoKCLD1dYizieU5psnJi",
+                  "label": "Mental health",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-9kBoKCLD1dYizieU5psnJi",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_kV7553HIWXekySIFLiMXLW",
+                  "label": "OB/GYN",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
+                  "label": "Hospital",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_cb4y58UmsRXVITpWL7l9up",
+                  "label": "Pharmacy",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
+                  "label": "Dental",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_WrMpSdivds4c0XfN2RPlRd",
+                  "label": "LTSS",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_qbR8X0YAh8vObedJPx6QTJ",
+                  "label": "Substance Use Disorder (SUD)",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-qbR8X0YAh8vObedJPx6QTJ",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
+                      },
+                      "props": {
+                        "label": "Specialist details (optional)"
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           },
           {
