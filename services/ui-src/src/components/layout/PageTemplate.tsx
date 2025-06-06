@@ -5,20 +5,21 @@ import { Box, Flex } from "@chakra-ui/react";
 import { AnyObject } from "types";
 
 export const PageTemplate = ({
+  section = true,
   type = "standard",
   children,
   sxOverride,
   ...props
 }: Props) => {
-  return (
-    <section>
-      <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
-        <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
-          {children}
-        </Flex>
-      </Box>
-    </section>
+  const content = (
+    <Box sx={{ ...sx.contentBox, ...sxOverride }} className={type} {...props}>
+      <Flex sx={sx.contentFlex} className={`contentFlex ${type}`}>
+        {children}
+      </Flex>
+    </Box>
   );
+
+  return section ? <Box as="section">{content}</Box> : <>{content}</>;
 };
 
 interface Props {

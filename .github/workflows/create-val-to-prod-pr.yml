@@ -1,0 +1,79 @@
+name: Create val to prod PR
+
+on:
+  push:
+    branches:
+      - val
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+    - name: Set branch variables
+      id: set-vars
+      run: |
+        echo "HEAD_BRANCH=val" >> $GITHUB_ENV
+        echo "BASE_BRANCH=production" >> $GITHUB_ENV
+    - name: Generate PR body
+      id: pr_body
+      run: |
+        body=$(.github/commit-log.sh "$HEAD_BRANCH" "$BASE_BRANCH") || exit_code=$?
+        if [ "$exit_code" == "1" ]; then
+          echo "No commits. Skipping PR."
+          echo "skip=true" >> $GITHUB_OUTPUT
+          exit 0
+        fi
+        echo "$body"
+        body="${body//'%'/'%25'}"
+        body="${body//$'\n'/'%0A'}"
+        body="${body//$'\r'/'%0D'}"
+        echo "body=$body" >> $GITHUB_OUTPUT
+        echo "skip=false" >> $GITHUB_OUTPUT
+    - name: Check if PR already exists
+      if: steps.pr_body.outputs.skip != 'true'
+      id: check_pr
+      run: |
+        pr_number=$(gh pr list --head "$HEAD_BRANCH" --base "$BASE_BRANCH" --json number --jq '.[0].number')
+        if [ -n "$pr_number" ]; then
+          echo "PR already exists: #$pr_number"
+          echo "exists=true" >> $GITHUB_OUTPUT
+          echo "number=$pr_number" >> $GITHUB_OUTPUT
+        else
+          echo "exists=false" >> $GITHUB_OUTPUT
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create or update PR
+      if: steps.pr_body.outputs.skip != 'true'
+      run: |
+        current_date=$(date '+%-d %B %Y')
+        title="MCR production release (${current_date})"
+        body=$(echo "${{ steps.pr_body.outputs.body }}" | sed 's/%25/%/g; s/%0A/\n/g; s/%0D/\r/g')
+
+        if [ "${{ steps.check_pr.outputs.exists }}" == "true" ]; then
+          echo "Updating existing PR #${{ steps.check_pr.outputs.number }}"
+          gh pr edit ${{ steps.check_pr.outputs.number }} \
+            --title "$title" \
+            --body "$body"
+        else
+          echo "Creating new PR"
+          gh pr create \
+            --head "$HEAD_BRANCH" \
+            --base "$BASE_BRANCH" \
+            --title "$title" \
+            --body "$body" \
+            --draft
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
