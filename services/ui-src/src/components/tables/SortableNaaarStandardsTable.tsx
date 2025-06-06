@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { generateColumns, SortableTable, MobileTable } from "components";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 // types
-import { EntityShape } from "types";
+import { EntityShape, NaaarStandardsTableShape } from "types";
 // utils
 import { mapNaaarStandardsData, useBreakpoint } from "utils";
 
@@ -99,22 +99,6 @@ interface Props {
   entities: EntityShape[];
   openRowDrawer: Function;
   openDeleteEntityModal: Function;
-}
-
-export interface NaaarStandardsTableShape {
-  id: string;
-  count: number;
-  provider: string;
-  standardType: string;
-  description: string;
-  analysisMethods: string;
-  population: string;
-  region: string;
-  entity: EntityShape;
-  exceptionsNonCompliance?: string;
-  edit?: null;
-  delete?: null;
-  actions?: null;
 }
 
 const sx = {
