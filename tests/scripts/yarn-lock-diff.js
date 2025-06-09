@@ -40,7 +40,7 @@ const compareLockFiles = (oldLockFile, newLockFile) => {
   const packages = [];
 
   for (const key of keys) {
-    const package = getPackageName(key);
+    const packageName = getPackageName(key);
     const priorEntry = oldLockFile[key];
     const upgradedEntry = newLockFile[key];
 
@@ -55,7 +55,9 @@ const compareLockFiles = (oldLockFile, newLockFile) => {
     // Skip unchanged packages
     if (status === "unchanged") continue;
 
-    const packageIndex = packages.findIndex((pkg) => pkg.package === package);
+    const packageIndex = packages.findIndex(
+      (pkg) => pkg.package === packageName
+    );
 
     // Package has multiple entries, so combine them
     if (packageIndex > -1) {
@@ -67,7 +69,7 @@ const compareLockFiles = (oldLockFile, newLockFile) => {
       }
     } else {
       const pkg = {
-        package,
+        package: packageName,
         priorVersion,
         upgradedVersion,
       };
