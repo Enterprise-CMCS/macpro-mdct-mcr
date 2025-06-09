@@ -1,4 +1,4 @@
-import { McparFieldsToCopy } from "../constants/constants";
+import { McparFieldsToCopy, NaaarFieldsToCopy } from "../constants/constants";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import { AnyObject, ReportType, State } from "../types";
@@ -19,8 +19,11 @@ export async function copyFieldDataFromSource(
   validatedFieldData: AnyObject,
   reportType: ReportType
 ) {
-  // Year-over-year copy is currently only supported for MCPAR
-  if (reportType !== ReportType.MCPAR) {
+  // Year-over-year copy is currently only supported for MCPAR and NAAAR
+  let fieldsToCopy: AnyObject = McparFieldsToCopy;
+  if (reportType === ReportType.NAAAR) {
+    fieldsToCopy = NaaarFieldsToCopy;
+  } else if (reportType !== ReportType.MCPAR) {
     return validatedFieldData;
   }
 
@@ -37,19 +40,19 @@ export async function copyFieldDataFromSource(
   // All fields in the current form template are valid. Additionally, entities have IDs and names that should be copied.
   const allowableFieldIds = getPossibleFieldsFromFormTemplate(
     formTemplate
-  ).concat("id", "name");
+  ).concat("id", "name", "isRequired");
   const rootFieldsToCopy = new Set(
-    McparFieldsToCopy.root.filter((f) => allowableFieldIds.includes(f))
+    fieldsToCopy.root.filter((f) => allowableFieldIds.includes(f))
   );
 
   for (const [rootKey, rootValue] of Object.entries(sourceFieldData)) {
     if (rootFieldsToCopy.has(rootKey)) {
       // If this is a root field, copy it directly
       validatedFieldData[rootKey] = rootValue;
-    } else if (isEntity(rootKey)) {
+    } else if (Array.isArray(fieldsToCopy[rootKey])) {
       // If this is an entity array, copy each entity
-      const entityFieldsToCopy = new Set(
-        McparFieldsToCopy[rootKey].filter((f) => allowableFieldIds.includes(f))
+      const entityFieldsToCopy = new Set<string>(
+        fieldsToCopy[rootKey].filter((f) => allowableFieldIds.includes(f))
       );
       const copiedEntities = (rootValue as AnyObject[])
         .map((entity) => copyEntityData(entity, entityFieldsToCopy))
@@ -73,10 +76,6 @@ function copyEntityData(
     entityFieldsToCopy.has(key)
   );
   return Object.fromEntries(copyableEntries);
-}
-
-function isEntity(rootKey: string): rootKey is keyof typeof McparFieldsToCopy {
-  return rootKey !== "root" && Object.keys(McparFieldsToCopy).includes(rootKey);
 }
 
 function nonEmptyObject(obj: AnyObject) {
