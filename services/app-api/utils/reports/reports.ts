@@ -42,7 +42,7 @@ export async function copyFieldDataFromSource(
     formTemplate
   ).concat("id", "name", "isRequired");
   const rootFieldsToCopy = new Set(
-    fieldsToCopy.root.filter((f) => allowableFieldIds.includes(f))
+    fieldsToCopy.root.filter((f: string) => allowableFieldIds.includes(f))
   );
 
   for (const [rootKey, rootValue] of Object.entries(sourceFieldData)) {
@@ -52,7 +52,9 @@ export async function copyFieldDataFromSource(
     } else if (Array.isArray(fieldsToCopy[rootKey])) {
       // If this is an entity array, copy each entity
       const entityFieldsToCopy = new Set<string>(
-        fieldsToCopy[rootKey].filter((f) => allowableFieldIds.includes(f))
+        fieldsToCopy[rootKey].filter((f: string) =>
+          allowableFieldIds.includes(f)
+        )
       );
       const copiedEntities = (rootValue as AnyObject[])
         .map((entity) => copyEntityData(entity, entityFieldsToCopy))
