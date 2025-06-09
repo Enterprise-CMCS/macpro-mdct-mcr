@@ -162,6 +162,73 @@ export const McparFieldsToCopy = {
   // sanctions are never copied from year to year.
 };
 
+export const NaaarFieldsToCopy = {
+  root: [
+    "contactName",
+    "contactEmailAddress",
+    "reportingScenario",
+    "reportingScenario_significantChange",
+    "reportingScenario-otherText",
+    "stateName",
+    "providerTypes",
+  ],
+  analysisMethods: [
+    "id",
+    "name",
+    "isRequired",
+    "analysis_applicable",
+    "analysis_method_applicable_plans",
+    "analysis_method_frequency",
+    "analysis_method_frequency-otherText",
+    "custom_analysis_method_name",
+    "custom_analysis_method_description",
+  ],
+  plans: ["id", "name"],
+  standards: [
+    "id",
+    // analysis methods utilized per standard type
+    "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-SDrVTHVxFa2YKrlBYjcqavbN", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-fFSst8ncbSukHlX66fqV0udO", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-tcIQ324hNsgHwHteoDgfCh08", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-lG0CeH7LIO5iGxjpaKE8v37C", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-EuccyPRHBiaTVhF1HMHnkUcR", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-vGdzNKCsiudeNeUJZgU5qhdz", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-hdz3tEHdEBvRIIdgaovgEjaa", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-9eion8H8PNrCP0AeiikpsKbx", // pragma: allowlist secret
+    "standard_analysisMethodsUtilized-Uil8wXl6t3aBsI4W8pQZlO5P", // pragma: allowlist secret
+    // standard description per standard type
+    "standard_standardDescription-kIrheUXLpOwF7OEypso8Ylhs", // pragma: allowlist secret
+    "standard_standardDescription-SDrVTHVxFa2YKrlBYjcqavbN", // pragma: allowlist secret
+    "standard_standardDescription-fFSst8ncbSukHlX66fqV0udO", // pragma: allowlist secret
+    "standard_standardDescription-tcIQ324hNsgHwHteoDgfCh08", // pragma: allowlist secret
+    "standard_standardDescription-lG0CeH7LIO5iGxjpaKE8v37C", // pragma: allowlist secret
+    "standard_standardDescription-EuccyPRHBiaTVhF1HMHnkUcR", // pragma: allowlist secret
+    "standard_standardDescription-vGdzNKCsiudeNeUJZgU5qhdz", // pragma: allowlist secret
+    "standard_standardDescription-hdz3tEHdEBvRIIdgaovgEjaa", // pragma: allowlist secret
+    "standard_standardDescription-9eion8H8PNrCP0AeiikpsKbx", // pragma: allowlist secret
+    "standard_standardDescription-Uil8wXl6t3aBsI4W8pQZlO5P", // pragma: allowlist secret
+    // core provider type details per provider type
+    "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk", // pragma: allowlist secret
+    "standard_coreProviderType_details-uITThePQiXntwGGViPTD62", // pragma: allowlist secret
+    "standard_coreProviderType_details-9kBoKCLD1dYizieU5psnJi", // pragma: allowlist secret
+    "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW", // pragma: allowlist secret
+    "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh", // pragma: allowlist secret
+    "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up", // pragma: allowlist secret
+    "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R", // pragma: allowlist secret
+    "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd", // pragma: allowlist secret
+    "standard_coreProviderType_details-qbR8X0YAh8vObedJPx6QTJ", // pragma: allowlist secret
+    // non-duplicated fields
+    "standard_applicableRegion",
+    "standard_applicableRegion-otherText",
+    "standard_coreProviderType",
+    "standard_populationCoveredByStandard",
+    "standard_populationCoveredByStandard-otherText",
+    "standard_standardType",
+    "standard_standardType-otherText",
+  ],
+};
+
 // ANALYSIS METHODS (NAAAR)
 export const DEFAULT_ANALYSIS_METHODS = [
   "Geomapping",
