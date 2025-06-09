@@ -305,7 +305,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "States should use this section of the tab to report on the analyses that the state uses to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
+                  "content": "States should use this section of the tab to report on the analyses that are used to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards."
                 }
               ]
             },
@@ -322,7 +322,7 @@
                 "children": [
                   {
                     "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the managed care plans that serve enrollees in the program. "
+                    "content": "This program is missing plan names. This section cannot be completed until all managed care plan names that are contracted for the program are added. "
                   },
                   {
                     "type": "internalLink",
@@ -347,8 +347,8 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "Is this analysis method utilized to assess plan compliance?",
-                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards.",
+                  "label": "Is this analysis method used to assess plan compliance?",
+                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state's standards, as required at 42 C.F.R. § 438.68.",
                   "choices": [
                     {
                       "id": "KHvMO9SzSrkBhqCobPBUOY",
@@ -425,7 +425,7 @@
                             "parentOptionId": "analysis_applicable-Br7jPULxsYgbiuHV9zwyIB"
                           },
                           "props": {
-                            "label": "Plans utilizing this method",
+                            "label": "Plans using this method",
                             "choices": [
                               {
                                 "label": "Plans"
@@ -491,6 +491,10 @@
                     {
                       "id": "mcn99pzTOqnEmr3uXiEOYs",
                       "label": "Semi-annually"
+                    },
+                    {
+                      "id": "tDWWkfuHigkFOi1ADUUHVb",
+                      "label": "Annually"
                     },
                     {
                       "id": "r938vpeMJxkPOqk53N7qW0",

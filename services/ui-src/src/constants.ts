@@ -106,7 +106,7 @@ export const DEFAULT_ANALYSIS_METHODS = [
   },
   {
     id: "fPrkUzYKDISHITjusb9WyqTg",
-    name: "EVV Data Analysis",
+    name: "Electronic Visit Verification Data Analysis",
     isRequired: true,
   },
   {
