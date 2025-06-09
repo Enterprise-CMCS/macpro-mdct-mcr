@@ -20,6 +20,8 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
+    - name: Prepare for yarn-lock-diff
+      run: yarn install --frozen-lockfile
     - name: Set branch variables
       id: set-vars
       run: |
@@ -44,11 +46,11 @@ jobs:
       if: steps.pr_body.outputs.skip != 'true'
       id: check_pr
       run: |
-        pr_number=$(gh pr list --head "$HEAD_BRANCH" --base "$BASE_BRANCH" --json number --jq '.[0].number')
+        pr_number=$(gh pr list --head "$HEAD_BRANCH" --base "$BASE_BRANCH" --json number --jq '.[0].number' || echo "")
         if [ -n "$pr_number" ]; then
           echo "PR already exists: #$pr_number"
           echo "exists=true" >> $GITHUB_OUTPUT
-          echo "number=$pr_number" >> $GITHUB_OUTPUT
+          echo "number=${pr_number}" >> $GITHUB_OUTPUT
         else
           echo "exists=false" >> $GITHUB_OUTPUT
         fi
@@ -57,23 +59,35 @@ jobs:
     - name: Create or update PR
       if: steps.pr_body.outputs.skip != 'true'
       run: |
+        set -euo pipefail
+ 
         current_date=$(date '+%-d %B %Y')
         title="MCR val release (${current_date})"
-        body=$(echo "${{ steps.pr_body.outputs.body }}" | sed 's/%25/%/g; s/%0A/\n/g; s/%0D/\r/g')
 
-        if [ "${{ steps.check_pr.outputs.exists }}" == "true" ]; then
-          echo "Updating existing PR #${{ steps.check_pr.outputs.number }}"
-          gh pr edit ${{ steps.check_pr.outputs.number }} \
+        decoded_body="${RAW_BODY//%25/%}"
+        decoded_body="${decoded_body//%0A/__NEWLINE__}"
+        decoded_body="${decoded_body//%0D/__CARRIAGERETURN__}"
+        decoded_body="$(printf '%s' "$decoded_body" | sed 's/__NEWLINE__/\n/g; s/__CARRIAGERETURN__/\r/g')"
+
+        tmpfile=$(mktemp)
+        printf '%s\n' "$decoded_body" > "$tmpfile"
+
+        if [ "$PR_EXISTS" == "true" ]; then
+          echo "Updating existing PR #$PR_NUMBER"
+          gh pr edit $PR_NUMBER \
             --title "$title" \
-            --body "$body"
+            --body-file "$tmpfile"
         else
           echo "Creating new PR"
           gh pr create \
             --head "$HEAD_BRANCH" \
             --base "$BASE_BRANCH" \
             --title "$title" \
-            --body "$body" \
+            --body-file "$tmpfile" \
             --draft
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR_EXISTS: ${{ steps.check_pr.outputs.exists }}
+        PR_NUMBER: ${{ steps.check_pr.outputs.number }}
+        RAW_BODY: ${{ steps.pr_body.outputs.body }}
