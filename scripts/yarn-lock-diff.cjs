@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /*
  * Usage:
- *   node ./tests/scripts/yarn-lock-diff.js \
+ *   node ./scripts/yarn-lock-diff.cjs \
  *     yarn.lock.new \
  *     yarn.lock.old \
  *     package.json.new \
