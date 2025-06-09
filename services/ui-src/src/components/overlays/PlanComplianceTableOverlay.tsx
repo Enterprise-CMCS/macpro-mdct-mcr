@@ -23,10 +23,10 @@ import {
   EntityDetailsTableContentShape,
   EntityShape,
   FormJson,
+  NaaarStandardsTableShape,
   ScreenReaderCustomHeaderName,
   ReportShape,
 } from "types";
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
   exceptionsNonComplianceStatusDisplay,

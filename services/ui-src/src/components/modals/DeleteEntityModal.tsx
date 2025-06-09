@@ -13,8 +13,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { useStore } from "utils";
-import { filterStandardsByUtilizedAnalysisMethods } from "utils/forms/standards";
+import { filterStandardsByUtilizedAnalysisMethods, useStore } from "utils";
 
 export const DeleteEntityModal = ({
   entityType,

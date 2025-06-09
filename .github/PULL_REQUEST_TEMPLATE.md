@@ -1,23 +1,22 @@
 ### Description
 <!-- Detailed description of changes and related context -->
 
-
 ### Related ticket(s)
 <!-- Link to related ticket(s) or issue(s) -->
 <!-- Hint: Type CMDCT-<ticket-number> for autolinking -->
 CMDCT-
 
 ---
+
 ### How to test
 <!-- Step-by-step instructions on how to test, if necessary -->
-
 
 ### Notes
 <!-- Changed dependencies, .env files, configs, etc. -->
 <!-- Instructions for local dev, e.g. requires new installs in directories -->
 
-
 ---
+
 ### Pre-review checklist
 <!-- Complete the following steps before opening for review -->
 - [ ] I have added [thorough](https://shorturl.at/aejkF) tests, if necessary
@@ -26,19 +25,23 @@ CMDCT-
 - [ ] I have manually tested this PR in the deployed cloud environment
 
 ---
+
 ### Pre-merge checklist
 <!-- Complete the following steps before merging -->
 
 #### Review
+
 - [ ] Design: This work has been reviewed and approved by design, if necessary
 - [ ] Product: This work has been reviewed and approved by product owner, if necessary
 
 #### Security
+
 _If either of the following are true, notify the team's ISSO (Information System Security Officer)._
 
 - [ ] These changes are significant enough to require an update to the SIA.
 - [ ] These changes are significant enough to require a penetration test.
+
 ---
 
 <!-- If deploying to val or prod, click 'Preview' and select template -->
-_convert to a different template: [test → val](?expand=1&template=test-to-val-deployment.md)_ | _[val → prod](?expand=1&template=val-to-prod-deployment.md)_
+_convert to a different template: [val release](?expand=1&template=val-deployment.md)_ | _[production release](?expand=1&template=production-deployment.md)_

@@ -1,4 +1,5 @@
 import React from "react";
+import { EntityShape } from "./formFields";
 
 // GLOBAL
 
@@ -80,6 +81,22 @@ export interface TableContentShape {
   headRow?: Array<string | ScreenReaderCustomHeaderName>;
   sortableHeadRow?: SortableHeadRow;
   bodyRows?: string[][];
+}
+
+export interface NaaarStandardsTableShape {
+  id: string;
+  count: number;
+  provider: string;
+  standardType: string;
+  description: string;
+  analysisMethods: string;
+  population: string;
+  region: string;
+  entity: EntityShape;
+  exceptionsNonCompliance?: string;
+  edit?: null;
+  delete?: null;
+  actions?: null;
 }
 
 export interface ErrorVerbiage {
