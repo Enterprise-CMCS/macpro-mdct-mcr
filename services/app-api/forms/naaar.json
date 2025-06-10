@@ -348,7 +348,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "Is this analysis method used to assess plan compliance?",
-                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state's standards, as required at 42 C.F.R. § 438.68.",
+                  "hint": "Select “Yes” if the method is utilized to assess plan compliance with the state’s standards, as required at 42 C.F.R. § 438.68.",
                   "choices": [
                     {
                       "id": "KHvMO9SzSrkBhqCobPBUOY",
