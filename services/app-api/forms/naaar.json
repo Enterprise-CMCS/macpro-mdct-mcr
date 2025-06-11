@@ -236,7 +236,7 @@
             "intro": {
               "section": "I. State and program information",
               "subsection": "Provider type coverage",
-              "info": "Instructions will be here for for how to best classify provider types to the categories shown. If your standards include more specific providers, select the core provider type category closest to the provider type and you can provide it as a subcategory when creating standards later in the form."
+              "info": "If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section II. Program-level access and network adequacy standards under “Provider type covered by standard”."
             }
           },
           "form": {
@@ -256,12 +256,16 @@
                     {
                       "id": "uITThePQiXntwGGViPTD62",
                       "label": "Specialist",
-                      "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                      "hint": "Include all specialists (except for Mental health) within this category."
                     },
                     {
                       "id": "9kBoKCLD1dYizieU5psnJi",
                       "label": "Mental health",
-                      "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                      "hint": "Include all mental health specialists within this category."
+                    },
+                    {
+                      "id": "qbR8X0YAh8vObedJPx6QTJ",
+                      "label": "Substance Use Disorder (SUD)"
                     },
                     {
                       "id": "kV7553HIWXekySIFLiMXLW",
@@ -282,10 +286,6 @@
                     {
                       "id": "WrMpSdivds4c0XfN2RPlRd",
                       "label": "LTSS"
-                    },
-                    {
-                      "id": "qbR8X0YAh8vObedJPx6QTJ",
-                      "label": "Substance Use Disorder (SUD)"
                     }
                   ]
                 }
