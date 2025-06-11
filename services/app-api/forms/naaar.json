@@ -236,7 +236,7 @@
             "intro": {
               "section": "I. State and program information",
               "subsection": "Provider type coverage",
-              "info": "Instructions will be here for for how to best classify provider types to the categories shown. If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section XXXX."
+              "info": "If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section II. Program-level access and network adequacy standards under “Provider type covered by standard”."
             }
           },
           "form": {
@@ -264,6 +264,10 @@
                       "hint": "Include all mental health specialists within this category."
                     },
                     {
+                      "id": "qbR8X0YAh8vObedJPx6QTJ",
+                      "label": "Substance Use Disorder (SUD)"
+                    },
+                    {
                       "id": "kV7553HIWXekySIFLiMXLW",
                       "label": "OB/GYN"
                     },
@@ -282,10 +286,6 @@
                     {
                       "id": "WrMpSdivds4c0XfN2RPlRd",
                       "label": "LTSS"
-                    },
-                    {
-                      "id": "qbR8X0YAh8vObedJPx6QTJ",
-                      "label": "Substance Use Disorder (SUD)"
                     }
                   ]
                 }
