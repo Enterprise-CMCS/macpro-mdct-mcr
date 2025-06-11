@@ -10,33 +10,39 @@ COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%
   sed -E 's/ *\(#[0-9]+\)*//g' | \
   awk '{
     orig_line = $0;
-    line = tolower($0);
+    lowercased_line = tolower($0);
+    tickets = "";
+    output_line = orig_line;
 
-    # Find ticket in commit message, case-insensitive
-    match(line, /cmdct[ -]?[0-9]+/);
+    # Remove original ticket(s)
+    gsub(/[Cc][Mm][Dd][Cc][Tt][ -]?[0-9]+/, "", output_line);
 
-    if (RSTART > 0) {
-      ticket = substr(orig_line, RSTART, RLENGTH);
-      ref = substr(line, RSTART, RLENGTH);
+    # Remove square brackets and contents leftover from ticket removal
+    gsub(/\[[^]]*\]/, "", output_line);
 
-      # Extract number after "cmdct"
+    # Match all tickets using the lowercased line
+    while (match(lowercased_line, /cmdct[ -]?[0-9]+/)) {
+      ticket = substr(lowercased_line, RSTART, RLENGTH);
+      ref = ticket;
+
+      # Normalize ticket number
       gsub(/[^0-9]/, "", ref);
+      ticket_str = "CMDCT-" ref;
 
-      # Remove original ticket
-      gsub(ticket, "", orig_line);
+      # Create a tickets string
+      if (tickets !~ ticket_str) {
+        tickets = tickets ? tickets ", " ticket_str : ticket_str;
+      }
 
-      # Remove empty square brackets
-      gsub(/\[\]/, "", orig_line);
-
-      # Trim leading/trailing spaces, dashes, and colons
-      gsub(/^[ \-:]+|[ \-:]+$/, "", orig_line);
-
-      # Add ticket to the end
-      printf "- %s (CMDCT-%s)\n", orig_line, ref;
-    } else {
-      # Add placeholder if no ticket in commit message
-      printf "- %s (CMDCT-)\n", orig_line;
+      # Remove matched ticket, on to next match
+      lowercased_line = substr(lowercased_line, RSTART + RLENGTH);
     }
+
+    # Trim leading/trailing spaces, dashes, commas, and colons
+    gsub(/^[ \t\-:,]+|[ \t\-:,]+$/, "", output_line);
+
+    # Append tickets or placeholder to the output
+    printf "- %s (%s)\n", output_line, tickets ? tickets : "CMDCT-";
   }')
 
 # No diff between branches, so exit
@@ -64,7 +70,8 @@ fi
 TEMPLATE=$(echo "$TEMPLATE" | perl -0777 -pe 's/^[ \t]*<!--.*?-->[ \t]*\n?//gm')
 
 # Replace commits placeholder
-BODY="${TEMPLATE//- Description of work (CMDCT-)/$COMMIT_LOG}"
+export COMMIT_LOG
+BODY=$(perl -pe 'BEGIN { undef $/; $commit = $ENV{"COMMIT_LOG"} } s/- Description of work \(CMDCT-\)/$commit/' <<< "$TEMPLATE")
 
 # Create dependency updates table
 TABLE_HEADERS="| directory | package | prior version | upgraded version |
