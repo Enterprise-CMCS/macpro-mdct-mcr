@@ -11,83 +11,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  create-pr:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v4
-      with:
-        node-version-file: ".nvmrc"
-    - name: Prepare for yarn-lock-diff
-      run: yarn install --frozen-lockfile
-    - name: Set branch variables
-      id: set-vars
-      run: |
-        echo "HEAD_BRANCH=main" >> $GITHUB_ENV
-        echo "BASE_BRANCH=val" >> $GITHUB_ENV
-    - name: Generate PR body
-      id: pr_body
-      run: |
-        body=$(.github/commit-log.sh "$HEAD_BRANCH" "$BASE_BRANCH") || exit_code=$?
-        if [ "$exit_code" == "1" ]; then
-          echo "No commits. Skipping PR."
-          echo "skip=true" >> $GITHUB_OUTPUT
-          exit 0
-        fi
-        echo "$body"
-        body="${body//'%'/'%25'}"
-        body="${body//$'\n'/'%0A'}"
-        body="${body//$'\r'/'%0D'}"
-        echo "body=$body" >> $GITHUB_OUTPUT
-        echo "skip=false" >> $GITHUB_OUTPUT
-    - name: Check if PR already exists
-      if: steps.pr_body.outputs.skip != 'true'
-      id: check_pr
-      run: |
-        pr_number=$(gh pr list --head "$HEAD_BRANCH" --base "$BASE_BRANCH" --json number --jq '.[0].number' || echo "")
-        if [ -n "$pr_number" ]; then
-          echo "PR already exists: #$pr_number"
-          echo "exists=true" >> $GITHUB_OUTPUT
-          echo "number=${pr_number}" >> $GITHUB_OUTPUT
-        else
-          echo "exists=false" >> $GITHUB_OUTPUT
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Create or update PR
-      if: steps.pr_body.outputs.skip != 'true'
-      run: |
-        set -euo pipefail
- 
-        current_date=$(date '+%-d %B %Y')
-        title="MCR val release (${current_date})"
-
-        decoded_body="${RAW_BODY//%25/%}"
-        decoded_body="${decoded_body//%0A/__NEWLINE__}"
-        decoded_body="${decoded_body//%0D/__CARRIAGERETURN__}"
-        decoded_body="$(printf '%s' "$decoded_body" | sed 's/__NEWLINE__/\n/g; s/__CARRIAGERETURN__/\r/g')"
-
-        tmpfile=$(mktemp)
-        printf '%s\n' "$decoded_body" > "$tmpfile"
-
-        if [ "$PR_EXISTS" == "true" ]; then
-          echo "Updating existing PR #$PR_NUMBER"
-          gh pr edit $PR_NUMBER \
-            --title "$title" \
-            --body-file "$tmpfile"
-        else
-          echo "Creating new PR"
-          gh pr create \
-            --head "$HEAD_BRANCH" \
-            --base "$BASE_BRANCH" \
-            --title "$title" \
-            --body-file "$tmpfile" \
-            --draft
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PR_EXISTS: ${{ steps.check_pr.outputs.exists }}
-        PR_NUMBER: ${{ steps.check_pr.outputs.number }}
-        RAW_BODY: ${{ steps.pr_body.outputs.body }}
+  call-create-pr:
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      head_branch: main
+      base_branch: val
+      pr_title: "MCR val release"
