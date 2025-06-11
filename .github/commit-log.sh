@@ -38,8 +38,8 @@ COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%
       lowercased_line = substr(lowercased_line, RSTART + RLENGTH);
     }
 
-    # Trim leading/trailing spaces, dashes, commas, and colons
-    gsub(/^[ \t\-:,]+|[ \t\-:,]+$/, "", output_line);
+    # Trim leading/trailing spaces and non-alphanumeric characters, except parentheses
+    gsub(/^[^[:alnum:]()]+|[^[:alnum:]()]+$/, "", output_line);
 
     # Append tickets or placeholder to the output
     printf "- %s (%s)\n", output_line, tickets ? tickets : "CMDCT-";
