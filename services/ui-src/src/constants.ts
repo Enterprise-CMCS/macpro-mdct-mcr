@@ -8,7 +8,7 @@ export const dropdownNoReports = "No reports eligible for copy";
 export const closeText = "Close";
 export const saveAndCloseText = "Save & close";
 export const drawerReminderText =
-  "Complete all fields and select the Save & close button to save this section.";
+  "Complete all fields and select the “Save & close” button to save this section.";
 
 // STATES
 export enum States {
