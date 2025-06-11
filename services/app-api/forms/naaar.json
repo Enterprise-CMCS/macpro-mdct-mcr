@@ -453,7 +453,7 @@
                 "validation": "text",
                 "props": {
                   "label": "Analysis method",
-                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards that is not already listed in the system."
+                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 standards that is not already listed in the system."
                 }
               },
               {
