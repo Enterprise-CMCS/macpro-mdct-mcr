@@ -107,7 +107,7 @@ describe("filterNaaarStandards", () => {
 
     const methodUnused = {
       id: "mockAnalysisMethodUUID2",
-      name: "EVV Data Analysis",
+      name: "Electronic Visit Verification Data Analysis",
       analysis_applicable: [{ key: "analysis_applicable", value: "Yes" }],
       analysis_method_applicable_plans: [],
     };
@@ -135,7 +135,7 @@ describe("filterNaaarStandards", () => {
         [utilizedKey2]: [
           {
             key: `${utilizedKey2}-mockAnalysisMethodUUID2`,
-            value: "EVV Data Analysis",
+            value: "Electronic Visit Verification Data Analysis",
           },
         ],
       },
