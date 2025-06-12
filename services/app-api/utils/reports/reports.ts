@@ -1,4 +1,4 @@
-import { McparFieldsToCopy, NaaarFieldsToCopy } from "../constants/constants";
+import { mcparFieldsToCopy, naaarFieldsToCopy } from "../constants/copyover";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
 import { AnyObject, ReportType, State } from "../types";
@@ -20,9 +20,9 @@ export async function copyFieldDataFromSource(
   reportType: ReportType
 ) {
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
-  let fieldsToCopy: AnyObject = McparFieldsToCopy;
+  let fieldsToCopy: AnyObject = mcparFieldsToCopy;
   if (reportType === ReportType.NAAAR) {
-    fieldsToCopy = NaaarFieldsToCopy;
+    fieldsToCopy = naaarFieldsToCopy;
   } else if (reportType !== ReportType.MCPAR) {
     return validatedFieldData;
   }
