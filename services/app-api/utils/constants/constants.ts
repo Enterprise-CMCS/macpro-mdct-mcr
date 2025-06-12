@@ -235,7 +235,7 @@ export const DEFAULT_ANALYSIS_METHODS = [
   "Plan Provider Directory Review",
   "Secret Shopper: Network Participation",
   "Secret Shopper: Appointment Availability",
-  "EVV Data Analysis",
+  "Electronic Visit Verification Data Analysis",
   "Review of Grievances Related to Access",
   "Encounter Data Analysis",
 ];

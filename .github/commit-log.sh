@@ -3,10 +3,10 @@
 HEAD="${1}"
 BASE="${2}"
 
-git fetch origin $HEAD >/dev/null 2>&1
-git fetch origin $BASE >/dev/null 2>&1
+git fetch origin "$HEAD" >/dev/null 2>&1
+git fetch origin "$BASE" >/dev/null 2>&1
 
-COMMIT_LOG=$(git log origin/$BASE..origin/$HEAD --no-merges --pretty=format:"%s" | \
+COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%s" | \
   sed -E 's/ *\(#[0-9]+\)*//g' | \
   awk '{
     orig_line = $0;
@@ -39,7 +39,7 @@ COMMIT_LOG=$(git log origin/$BASE..origin/$HEAD --no-merges --pretty=format:"%s"
     }
   }')
 
-# No commits
+# No diff between branches, so exit
 if [ -z "$COMMIT_LOG" ]; then
   exit 1
 fi
@@ -67,81 +67,68 @@ TEMPLATE=$(echo "$TEMPLATE" | perl -0777 -pe 's/^[ \t]*<!--.*?-->[ \t]*\n?//gm')
 BODY="${TEMPLATE//- Description of work (CMDCT-)/$COMMIT_LOG}"
 
 # Create dependency updates table
-YARN_LOCK_FILES=$(git diff --name-only origin/$BASE..origin/$HEAD -- '*.yarn.lock' '*/yarn.lock')
-
-TABLE_HEADERS="| package | prior version | upgraded version |\n|-|-|-|"
+TABLE_HEADERS="| directory | package | prior version | upgraded version |
+|-|-|-|-|"
 TABLE_BODY=""
 
+# Check for yarn.lock files in diff
+YARN_LOCK_FILES=$(
+  git diff --name-only "origin/$BASE..origin/$HEAD" \
+    -- "**/yarn.lock" "yarn.lock"
+)
+
 for FILE in $YARN_LOCK_FILES; do
-  DIFF=$(git diff origin/$BASE..origin/$HEAD -- "$FILE")
+  DIRNAME=$(dirname "$FILE")
 
-  PARSED=$(echo "$DIFF" | awk '
-    function print_diff() {
-      # Before overwriting pkg, if previous pkg and versions differ, print
-      if (pkg != "" && old != "" && new != "" && old != new) {
-        printf "| %s | %s | %s |\n", pkg, old, new;
-      }
-    }
+  # Create temp copies of yarn.lock and package.json files
+  TEMP_DIR=$(mktemp -d)
+  trap 'rm -Rf "$TEMP_DIR"' EXIT
+  git show "origin/$BASE:$FILE" > "$TEMP_DIR/yarn.lock.new"
+  git show "origin/$HEAD:$FILE" > "$TEMP_DIR/yarn.lock.old"
+  git show "origin/$BASE:$DIRNAME/package.json" > "$TEMP_DIR/package.json.new"
+  git show "origin/$HEAD:$DIRNAME/package.json" > "$TEMP_DIR/package.json.old"
 
-    BEGIN {
-      pkg = "";
-      old = "";
-      new = "";
-    }
-    {
-      # Get package name
-      if ($0 ~ /^[^+-].*:\s*$/) {
-        print_diff();
+  # Run diff script
+  DIFF_OUTPUT=$(
+    node ./scripts/yarn-lock-diff.cjs \
+      "$TEMP_DIR/yarn.lock.new" \
+      "$TEMP_DIR/yarn.lock.old" \
+      "$TEMP_DIR/package.json.new" \
+      "$TEMP_DIR/package.json.old"
+  )
 
-        pkg_line = $0;
-        sub(/:\s*$/, "", pkg_line);
-        sub(/@.*$/, "", pkg_line);
-        gsub(/^[ \t]+|[ \t]+$/, "", pkg_line);
-        pkg = pkg_line;
-        old = "";
-        new = "";
-      }
-      # Get old version number
-      else if ($0 ~ /^-  version /) {
-        old_line = $0;
-        sub(/^-  version "?/, "", old_line);
-        sub(/"?$/, "", old_line);
-        old = old_line;
-      }
-      # Get new version number
-      else if ($0 ~ /^\+  version /) {
-        new_line = $0;
-        sub(/^\+  version "?/, "", new_line);
-        sub(/"?$/, "", new_line);
-        new = new_line;
-      }
-    }
-    END {
-      print_diff();
-    }
-  ')
-
-  while IFS= read -r line; do
-    if ! echo "$TABLE_BODY" | grep -Fxq "$line"; then
-      TABLE_BODY+="$line"
+  if [[ -n "$DIFF_OUTPUT" && "$DIFF_OUTPUT" != "[]" ]]; then
+    if [ "$DIRNAME" = "." ]; then
+      DIRECTORY="/"
+    else
+      DIRECTORY="/$DIRNAME"
     fi
-  done <<< "$PARSED"
+
+    ADD_DIRNAME=$(
+      echo "$DIFF_OUTPUT" | jq --arg d "$DIRECTORY" '
+        .[] |= . + {directory: $d}
+      '
+    )
+    PARSED_ROW=$(
+      echo "$ADD_DIRNAME" | jq -r '
+        .[] |
+        "| `\(.directory)` | `\(.package)` | \(.priorVersion) | \(.upgradedVersion) |"
+      '
+    )
+    TABLE_BODY+="$PARSED_ROW"$'\n'
+  fi
 done
 
-if [ -z "$TABLE_BODY" ]; then
-  # Remove dependency section entirely if table is empty
-  BODY=$(echo "$BODY" | perl -0777 -pe 's/^### Dependency updates\b.*?(?=^### |\z)//sm')
-else
-  # Insert table in dependency section
-  REPLACEMENT=$(cat <<EOF
-### Dependency updates
+# Remove dependency updates placeholder
+BODY=$(echo "$BODY" | perl -0777 -pe 's/^### Dependency updates\b.*?(?=^### |\z)//sm')
 
-$TABLE_HEADERS
-$TABLE_BODY
+if [ -n "$TABLE_BODY" ]; then
+  TABLE_BODY=$(echo "$TABLE_BODY" | sort -u)
 
-EOF
-)
-  BODY=$(echo "$BODY" | perl -0777 -pe 's/^### Dependency updates\b.*?(?=^### |\z)/'"$REPLACEMENT"'/sm')
+  # Insert dependency updates table
+  BODY+=$'\n\n### Dependency updates\n\n'
+  BODY+="$TABLE_HEADERS"
+  BODY+="$TABLE_BODY"
 fi
 
 echo "$BODY"
