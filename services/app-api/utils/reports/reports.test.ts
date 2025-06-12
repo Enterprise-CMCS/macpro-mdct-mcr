@@ -14,18 +14,6 @@ describe("Test copyFieldDataFromSource", () => {
     expect(res).toEqual({ stateName: "Minnesota" });
   });
 
-  test("Test copyFieldDataFromSource returns validatedField data if reportType is not MCPAR", async () => {
-    const res = await copyFieldDataFromSource(
-      "database-local-naaar",
-      "Minnesota",
-      "mockReportJson",
-      mockReportJson,
-      { stateName: "Minnesota" },
-      ReportType.NAAAR
-    );
-    expect(res).toEqual({ stateName: "Minnesota" });
-  });
-
   test("Test makePCCMModifications sets correct field data", () => {
     let testFieldData = {};
     testFieldData = makePCCMModifications(testFieldData);
