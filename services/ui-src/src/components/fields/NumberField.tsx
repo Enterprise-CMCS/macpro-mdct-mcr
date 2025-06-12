@@ -4,6 +4,8 @@ import { useFormContext } from "react-hook-form";
 import { Box } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
+// constants
+import { suppressionText } from "../../constants";
 // types
 import { InputChangeEvent, AnyObject } from "types";
 // utils
@@ -31,8 +33,12 @@ export const NumberField = ({
   styleAsOptional,
   clear,
   decimalPlacesToRoundTo,
+  disabled,
+  suppressed,
+  suppressible,
+  onChange,
   ...props
-}: Props) => {
+}: NumberFieldProps) => {
   const defaultValue = "";
   const [displayValue, setDisplayValue] = useState(defaultValue);
   // state management
@@ -90,11 +96,23 @@ export const NumberField = ({
     }
   }, [hydrationValue]); // only runs on hydrationValue fetch/update
 
+  useEffect(() => {
+    if (!suppressible) return;
+
+    const unsuppressedText =
+      hydrationValue === suppressionText ? "" : hydrationValue;
+    // Don't hydrate suppressionText in text field if suppressed is false
+    const value = suppressed === true ? suppressionText : unsuppressedText;
+    setDisplayValue(value);
+    form.setValue(name, value, { shouldValidate: false });
+  }, [hydrationValue, suppressed, suppressible]);
+
   // update form data on change, but do not mask
   const onChangeHandler = async (e: InputChangeEvent) => {
     const { name, value } = e.target;
     setDisplayValue(value);
     form.setValue(name, value, { shouldValidate: true });
+    if (onChange) onChange(value);
   };
 
   // update display value with masked value; if should autosave, submit field data to database on blur
@@ -165,21 +183,22 @@ export const NumberField = ({
           placeholder={placeholder}
           onChange={onChangeHandler}
           onBlur={onBlurHandler}
-          value={displayValue}
+          value={suppressed ? "" : displayValue}
           errorMessage={errorMessage}
+          disabled={disabled || suppressed}
           {...props}
         />
         <SymbolOverlay
           fieldMask={mask}
           nested={nested}
-          disabled={props?.disabled}
+          disabled={disabled || suppressed}
         />
       </Box>
     </Box>
   );
 };
 
-interface Props {
+export interface NumberFieldProps {
   name: string;
   label?: string;
   placeholder?: string;
@@ -190,6 +209,9 @@ interface Props {
   validateOnRender?: boolean;
   clear?: boolean;
   decimalPlacesToRoundTo?: number;
+  suppressed?: boolean;
+  suppressible?: boolean;
+  onChange?: Function;
   [key: string]: any;
 }
 

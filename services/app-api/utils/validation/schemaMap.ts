@@ -7,6 +7,8 @@ import {
   string,
   StringSchema,
 } from "yup";
+// constants
+import { suppressionText } from "../constants/constants";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -92,6 +94,19 @@ export const numberNotLessThanZeroOptional = () => {
 };
 
 export const numberOptional = () => number();
+
+export const numberSuppressible = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (value === suppressionText) {
+          return true;
+        }
+        return value ? validNumberRegex.test(value) : false;
+      },
+      message: error.INVALID_NUMBER,
+    });
 
 const validNumberSchema = () =>
   string().test({
@@ -190,6 +205,11 @@ export const isEndDateAfterStartDate = (
 
 // DROPDOWN
 export const dropdown = () => object({ label: text(), value: text() });
+export const dropdownOptional = () =>
+  object({
+    label: text().notRequired().nullable(),
+    value: text().notRequired().nullable(),
+  });
 
 // CHECKBOX
 export const checkbox = () =>
@@ -255,6 +275,7 @@ export const schemaMap: any = {
   date: date(),
   dateOptional: dateOptional(),
   dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
   email: email(),
@@ -263,6 +284,7 @@ export const schemaMap: any = {
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
+  numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),
   radio: radio(),
   radioOptional: radioOptional(),
