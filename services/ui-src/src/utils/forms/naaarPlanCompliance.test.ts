@@ -6,8 +6,7 @@ import {
   planComplianceStandardKey,
 } from "../../constants";
 // types
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { EntityShape, FormJson } from "types";
+import { EntityShape, FormJson, NaaarStandardsTableShape } from "types";
 // utils
 import {
   addAnalysisMethods,

@@ -8,7 +8,7 @@ export const dropdownNoReports = "No reports eligible for copy";
 export const closeText = "Close";
 export const saveAndCloseText = "Save & close";
 export const drawerReminderText =
-  "Complete all fields and select the Save & close button to save this section.";
+  "Complete all fields and select the “Save & close” button to save this section.";
 
 // STATES
 export enum States {
@@ -106,7 +106,7 @@ export const DEFAULT_ANALYSIS_METHODS = [
   },
   {
     id: "fPrkUzYKDISHITjusb9WyqTg",
-    name: "EVV Data Analysis",
+    name: "Electronic Visit Verification Data Analysis",
     isRequired: true,
   },
   {
@@ -223,7 +223,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q1 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -233,7 +232,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q2 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -243,7 +241,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q3 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },
@@ -253,7 +250,6 @@ export const GeomappingChildJson = [
                         validation: "numberNotLessThanZeroOptional",
                         props: {
                           label: "Q4 (optional)",
-                          mask: "percentage",
                           decimalPlacesToRoundTo: 0,
                         },
                       },

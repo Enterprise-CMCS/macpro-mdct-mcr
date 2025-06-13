@@ -19,9 +19,9 @@ import {
   EntityShape,
   EntityType,
   FormField,
+  NaaarStandardsTableShape,
   PlanOverlayReportPageShape,
 } from "types";
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
   addExceptionsNonComplianceStatus,

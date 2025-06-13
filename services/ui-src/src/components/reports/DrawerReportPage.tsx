@@ -10,7 +10,9 @@ import {
   Form,
   DeleteEntityModal,
   ErrorAlert,
+  SortableNaaarStandardsTable,
 } from "components";
+import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,
@@ -32,6 +34,7 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
   parseCustomHtml,
@@ -39,14 +42,12 @@ import {
   translate,
   useStore,
 } from "utils";
-
+//verbiage
+import { analysisMethodError } from "verbiage/errors";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 import addIconWhite from "assets/icons/icon_add.png";
 import addIconSVG from "assets/icons/icon_add_gray.svg";
-import { SortableNaaarStandardsTable } from "components/tables/SortableNaaarStandardsTable";
-import { analysisMethodError } from "verbiage/errors";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -206,12 +207,33 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         ...filteredFormData,
       };
 
+      // filter standards after changes to analysis methods
+      const otherEntitiesToUpdate: { [key: string]: EntityShape[] } = {};
+
+      if (entityType === EntityType.ANALYSIS_METHODS && selectedEntity?.id) {
+        const isNotApplicable =
+          newEntity.analysis_applicable?.[0]?.value.includes("No");
+
+        if (isNotApplicable) {
+          const currentStandards = report?.fieldData.standards || [];
+
+          const filteredStandards = filterStandardsByUtilizedAnalysisMethods(
+            currentStandards,
+            selectedEntity.id
+          );
+
+          otherEntitiesToUpdate[EntityType.STANDARDS as string] =
+            filteredStandards;
+        }
+      }
+
       const newEntities = currentEntities;
       newEntities[selectedEntityIndex] = newEntity;
       newEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
         newEntities[selectedEntityIndex],
         entriesToClear
       );
+
       const shouldSave = entityWasUpdated(
         entities[selectedEntityIndex],
         newEntity
@@ -224,6 +246,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           },
           fieldData: {
             [entityType]: newEntities,
+            ...otherEntitiesToUpdate,
           },
         };
         await updateReport(reportKeys, dataToWrite);
