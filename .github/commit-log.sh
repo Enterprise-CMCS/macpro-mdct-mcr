@@ -3,11 +3,14 @@
 HEAD="${1}"
 BASE="${2}"
 
+# Fetch branches to compare, don't show output
 git fetch origin "$HEAD" >/dev/null 2>&1
 git fetch origin "$BASE" >/dev/null 2>&1
 
+# Create log without merge commits
 COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%s" | \
-  sed -E 's/ *\(#[0-9]+\)*//g' | \
+  # Remove PR link appended on merge by GitHub, e.g. (#123)
+  sed -E 's| \(#[0-9]+\)$||g' | \
   awk '{
     orig_line = $0;
     lowercased_line = tolower($0);
@@ -61,17 +64,22 @@ else
   SEARCH="## val release"
   REPLACEMENT="## ${BASE} release"
 
-  # Escape slashes and other special characters for sed
-  ESCAPED_REPLACEMENT=$(printf '%s\n' "$REPLACEMENT" | sed 's/[\/&]/\\&/g')
-  TEMPLATE=$(echo "$TEMPLATE" | sed "s|^$SEARCH|$ESCAPED_REPLACEMENT|")
+  # Escape special character `&` for sed
+  ESCAPED_REPLACEMENT=$(printf '%s\n' "$REPLACEMENT" | sed -E 's|[&]|\\&|g')
+  TEMPLATE=$(echo "$TEMPLATE" | sed -E "s|^$SEARCH|$ESCAPED_REPLACEMENT|")
 fi
-
-# Strip comments
-TEMPLATE=$(echo "$TEMPLATE" | perl -0777 -pe 's/^[ \t]*<!--.*?-->[ \t]*\n?//gm')
 
 # Replace commits placeholder
 export COMMIT_LOG
-BODY=$(perl -pe 'BEGIN { undef $/; $commit = $ENV{"COMMIT_LOG"} } s/- Description of work \(CMDCT-\)/$commit/' <<< "$TEMPLATE")
+BODY=$(
+  perl -0777 -pe '
+    BEGIN {
+      $commit = $ENV{"COMMIT_LOG"};
+    }
+
+    s/- Description of work \(CMDCT-\)/$commit/
+  ' <<< "$TEMPLATE"
+)
 
 # Create dependency updates table
 TABLE_HEADERS="| directory | package | prior version | upgraded version |
