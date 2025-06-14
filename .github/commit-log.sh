@@ -1,14 +1,43 @@
 #!/bin/bash
 
+# Usage:
+#   ./.github/commit-log.sh head_branch base_branch
+#   ./.github/commit-log.sh head_branch base_branch --local
+# 
+# Use --local to compare local branches
+
 HEAD="${1}"
 BASE="${2}"
+IS_LOCAL=false
 
-# Fetch branches to compare, don't show output
-git fetch origin "$HEAD" >/dev/null 2>&1
-git fetch origin "$BASE" >/dev/null 2>&1
+if [[ "$3" == "--local" ]]; then
+  IS_LOCAL=true
+fi
+
+if [ "$IS_LOCAL" = false ]; then
+  PREFIX="origin/"
+else
+  PREFIX=""
+fi
+
+# Validate branches
+if ! git rev-parse --verify "${PREFIX}${HEAD}" >/dev/null 2>&1; then
+  echo "Branch ${PREFIX}${HEAD} not found"
+  # Use code 2 in GitHub Action for message output
+  exit 2
+fi
+
+if ! git rev-parse --verify "${PREFIX}${BASE}" >/dev/null 2>&1; then
+  echo "Branch ${PREFIX}${BASE} not found"
+  # Use code 3 in GitHub Action for message output
+  exit 3
+fi
+
+HEAD_REF="${PREFIX}${HEAD}"
+BASE_REF="${PREFIX}${BASE}"
 
 # Create log without merge commits
-COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%s" | \
+COMMIT_LOG=$(git log "$BASE_REF..$HEAD_REF" --no-merges --pretty=format:"%s" | \
   # Remove PR link appended on merge by GitHub, e.g. (#123)
   sed -E 's| \(#[0-9]+\)$||g' | \
   awk '{
@@ -50,6 +79,8 @@ COMMIT_LOG=$(git log "origin/$BASE..origin/$HEAD" --no-merges --pretty=format:"%
 
 # No diff between branches, so exit
 if [ -z "$COMMIT_LOG" ]; then
+  echo "No commits between ${HEAD_REF} and ${BASE_REF}"
+  # Use code 1 in GitHub Action for message output
   exit 1
 fi
 
@@ -98,10 +129,10 @@ for FILE in $YARN_LOCK_FILES; do
   # Create temp copies of yarn.lock and package.json files
   TEMP_DIR=$(mktemp -d)
   trap 'rm -Rf "$TEMP_DIR"' EXIT
-  git show "origin/$BASE:$FILE" > "$TEMP_DIR/yarn.lock.new"
-  git show "origin/$HEAD:$FILE" > "$TEMP_DIR/yarn.lock.old"
-  git show "origin/$BASE:$DIRNAME/package.json" > "$TEMP_DIR/package.json.new"
-  git show "origin/$HEAD:$DIRNAME/package.json" > "$TEMP_DIR/package.json.old"
+  git show "$BASE_REF:$FILE" > "$TEMP_DIR/yarn.lock.new"
+  git show "$HEAD_REF:$FILE" > "$TEMP_DIR/yarn.lock.old"
+  git show "$BASE_REF:$DIRNAME/package.json" > "$TEMP_DIR/package.json.new"
+  git show "$HEAD_REF:$DIRNAME/package.json" > "$TEMP_DIR/package.json.old"
 
   # Run diff script
   DIFF_OUTPUT=$(

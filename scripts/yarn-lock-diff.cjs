@@ -61,8 +61,8 @@ const compareLockFiles = (oldLockFile, newLockFile) => {
     );
 
     /**
-     * A package could have multiple entries in JSON, so combine the
-     * output.
+     * A package could have multiple entries in JSON, so combine
+     * the output.
      * 
      * This happens when the version is updated in package.json,
      * creating a new key, rather than keeping the prior key
