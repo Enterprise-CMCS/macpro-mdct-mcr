@@ -70,8 +70,9 @@ COMMIT_LOG=$(git log "$BASE_REF..$HEAD_REF" --no-merges --pretty=format:"%s" | \
       lowercased_line = substr(lowercased_line, RSTART + RLENGTH);
     }
 
-    # Trim leading/trailing non-alphanumeric characters, except parentheses
-    gsub(/^[^[:alnum:]()]+|[^[:alnum:]()]+$/, "", output_line);
+    # Trim leading/trailing non-alphanumeric characters,
+    # except parentheses and double quotes
+    gsub(/^[^[:alnum:]()"]+|[^[:alnum:]()"]+$/, "", output_line);
 
     # Append tickets or placeholder to the output
     printf "- %s (%s)\n", output_line, tickets ? tickets : "CMDCT-";
