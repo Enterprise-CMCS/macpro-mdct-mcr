@@ -10,16 +10,19 @@ import {
   textOptional,
   numberSuppressible,
   numberNotLessThanZeroOptional,
+  futureDate,
 } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
 import {
   badDateOptionalTestCases,
+  badFutureDateTestCases,
   badNumberTestCases,
   badRatioTestCases,
   badRequiredTextTestCases,
   badValidNumberTestCases,
   goodDateOptionalTestCases,
+  goodFutureDateTestCases,
   goodNumberTestCases,
   goodOptionalTextTestCases,
   goodPositiveNumberTestCases,
@@ -50,7 +53,7 @@ describe("Schemas", () => {
     testSchema<string>(schemaToUse, testCases, expectedReturn);
   };
 
-  const testDateOptional = (
+  const testDate = (
     schemaToUse: MixedSchema,
     testCases: Array<string | null | undefined | number>,
     expectedReturn: boolean
@@ -142,8 +145,13 @@ describe("Schemas", () => {
   });
 
   test("Test dateOptional schema", () => {
-    testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
-    testDateOptional(dateOptional(), badDateOptionalTestCases, false);
+    testDate(dateOptional(), goodDateOptionalTestCases, true);
+    testDate(dateOptional(), badDateOptionalTestCases, false);
+  });
+
+  test("Test futureDate schema", () => {
+    testDate(futureDate(), goodFutureDateTestCases, true);
+    testDate(futureDate(), badFutureDateTestCases, false);
   });
 
   test("Test validNumber schema", () => {
