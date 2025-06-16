@@ -236,7 +236,7 @@
             "intro": {
               "section": "I. State and program information",
               "subsection": "Provider type coverage",
-              "info": "Instructions will be here for for how to best classify provider types to the categories shown. If your standards include more specific providers, select the core provider type category closest to the provider type and you can provide it as a subcategory when creating standards later in the form."
+              "info": "If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section II. Program-level access and network adequacy standards under “Provider type covered by standard”."
             }
           },
           "form": {
@@ -256,12 +256,16 @@
                     {
                       "id": "uITThePQiXntwGGViPTD62",
                       "label": "Specialist",
-                      "hint": "Include all specialists (except for Mental health) within this category. You’ll be able to specify them when creating standards."
+                      "hint": "Include all specialists (except for Mental health) within this category."
                     },
                     {
                       "id": "9kBoKCLD1dYizieU5psnJi",
                       "label": "Mental health",
-                      "hint": "Include all mental health specialists within this category. You’ll be able to specify them when creating standards."
+                      "hint": "Include all mental health specialists within this category."
+                    },
+                    {
+                      "id": "qbR8X0YAh8vObedJPx6QTJ",
+                      "label": "Substance Use Disorder (SUD)"
                     },
                     {
                       "id": "kV7553HIWXekySIFLiMXLW",
@@ -282,10 +286,6 @@
                     {
                       "id": "WrMpSdivds4c0XfN2RPlRd",
                       "label": "LTSS"
-                    },
-                    {
-                      "id": "qbR8X0YAh8vObedJPx6QTJ",
-                      "label": "Substance Use Disorder (SUD)"
                     }
                   ]
                 }
@@ -453,7 +453,7 @@
                 "validation": "text",
                 "props": {
                   "label": "Analysis method",
-                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards that is not already listed in the system."
+                  "hint": "Enter an analysis method utilized to assess plan compliance with the state’s 42 C.F.R. § 438.68 standards that is not already listed in the system."
                 }
               },
               {
@@ -601,11 +601,11 @@
             "validation": "radio",
             "props": {
               "label": "Core provider type covered by standard",
-              "hint": "Enter the core provider type the standard applies to. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
+              "hint": "Enter the provider type the standard applies to. If you wish to further specify the provider type, select the core type most suitable and then add the more specific provider type under “Additional specialty details”, which will appear as an optional text field after the provider type is selected. Do not use this section to indicate populations associated with this provider type (e.g., adult, pediatric, LTSS); these details should be entered in the dedicated population fields below.",
               "choices": [
                 {
                   "id": "standard_UZK4hxPVnuYGcIgNzYFHCk",
-                  "label": "Primary Care",
+                  "label": "Primary care",
                   "children": [
                     {
                       "id": "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk",
@@ -617,7 +617,8 @@
                         "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
                       },
                       "props": {
-                        "label": "Specialist details (optional)"
+                        "label": "Primary care specialist details (optional)",
+                        "hint": "e.g., nurse practitioner"
                       }
                     }
                   ]
@@ -636,7 +637,8 @@
                         "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
                       },
                       "props": {
-                        "label": "Specialist details (optional)"
+                        "label": "Specialty details (optional)",
+                        "hint": "Include all specialties (except for Mental health) within this category, e.g., cardiologist, endocrinologist."
                       }
                     }
                   ]
@@ -655,102 +657,7 @@
                         "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
                       },
                       "props": {
-                        "label": "Specialist details (optional)"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "standard_kV7553HIWXekySIFLiMXLW",
-                  "label": "OB/GYN",
-                  "children": [
-                    {
-                      "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
-                      "type": "text",
-                      "validation": {
-                        "type": "textOptional",
-                        "nested": true,
-                        "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
-                      },
-                      "props": {
-                        "label": "Specialist details (optional)"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
-                  "label": "Hospital",
-                  "children": [
-                    {
-                      "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
-                      "type": "text",
-                      "validation": {
-                        "type": "textOptional",
-                        "nested": true,
-                        "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
-                      },
-                      "props": {
-                        "label": "Specialist details (optional)"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "standard_cb4y58UmsRXVITpWL7l9up",
-                  "label": "Pharmacy",
-                  "children": [
-                    {
-                      "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
-                      "type": "text",
-                      "validation": {
-                        "type": "textOptional",
-                        "nested": true,
-                        "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
-                      },
-                      "props": {
-                        "label": "Specialist details (optional)"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
-                  "label": "Dental",
-                  "children": [
-                    {
-                      "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
-                      "type": "text",
-                      "validation": {
-                        "type": "textOptional",
-                        "nested": true,
-                        "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
-                      },
-                      "props": {
-                        "label": "Specialist details (optional)"
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "standard_WrMpSdivds4c0XfN2RPlRd",
-                  "label": "LTSS",
-                  "children": [
-                    {
-                      "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
-                      "type": "text",
-                      "validation": {
-                        "type": "textOptional",
-                        "nested": true,
-                        "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
-                      },
-                      "props": {
-                        "label": "Specialist details (optional)"
+                        "label": "Mental health specialty details (optional)"
                       }
                     }
                   ]
@@ -769,7 +676,102 @@
                         "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
                       },
                       "props": {
-                        "label": "Specialist details (optional)"
+                        "label": "Substance Use Disorder (SUD) specialty details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_kV7553HIWXekySIFLiMXLW",
+                  "label": "OB/GYN",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
+                      },
+                      "props": {
+                        "label": "OB/GYN specialty details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
+                  "label": "Hospital",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
+                      },
+                      "props": {
+                        "label": "Hospital specialty details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_cb4y58UmsRXVITpWL7l9up",
+                  "label": "Pharmacy",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
+                      },
+                      "props": {
+                        "label": "Pharmacy specialty details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
+                  "label": "Dental",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
+                      },
+                      "props": {
+                        "label": "Dental specialty details (optional)"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "standard_WrMpSdivds4c0XfN2RPlRd",
+                  "label": "LTSS",
+                  "children": [
+                    {
+                      "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
+                      "type": "text",
+                      "validation": {
+                        "type": "textOptional",
+                        "nested": true,
+                        "parentFieldName": "standard_coreProviderType",
+                        "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
+                      },
+                      "props": {
+                        "label": "LTSS specialty details (optional)"
                       }
                     }
                   ]
@@ -783,7 +785,7 @@
             "validation": "radio",
             "props": {
               "label": "Standard type",
-              "hint": "What is the standard type? Select one.",
+              "hint": "What is the standard type? Select one. Select the category that most closely represents the standard type.",
               "choices": [
                 {
                   "id": "kIrheUXLpOwF7OEypso8Ylhs",
@@ -799,8 +801,7 @@
                         "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -813,8 +814,8 @@
                         "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -835,7 +836,7 @@
                       },
                       "props": {
                         "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "hint": "e.g., 15 days"
                       }
                     },
                     {
@@ -848,8 +849,8 @@
                         "parentOptionId": "SDrVTHVxFa2YKrlBYjcqavbN"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -870,7 +871,7 @@
                       },
                       "props": {
                         "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "hint": "e.g., 1 provider within 30 min or 30 miles"
                       }
                     },
                     {
@@ -883,43 +884,8 @@
                         "parentOptionId": "fFSst8ncbSukHlX66fqV0udO"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
-                        "choices": []
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "tcIQ324hNsgHwHteoDgfCh08",
-                  "label": "Ease of getting a timely appointment",
-                  "children": [
-                    {
-                      "id": "standard_standardDescription-tcIQ324hNsgHwHteoDgfCh08",
-                      "type": "textarea",
-                      "validation": {
-                        "type": "text",
-                        "nested": true,
-                        "parentFieldName": "standard_standardType",
-                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
-                      },
-                      "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
-                      }
-                    },
-                    {
-                      "id": "standard_analysisMethodsUtilized-tcIQ324hNsgHwHteoDgfCh08",
-                      "type": "checkbox",
-                      "validation": {
-                        "type": "checkbox",
-                        "nested": true,
-                        "parentFieldName": "standard_standardType",
-                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
-                      },
-                      "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -939,8 +905,7 @@
                         "parentOptionId": "lG0CeH7LIO5iGxjpaKE8v37C"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -954,42 +919,7 @@
                       },
                       "props": {
                         "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
-                        "choices": []
-                      }
-                    }
-                  ]
-                },
-                {
-                  "id": "EuccyPRHBiaTVhF1HMHnkUcR",
-                  "label": "Hours of operation",
-                  "children": [
-                    {
-                      "id": "standard_standardDescription-EuccyPRHBiaTVhF1HMHnkUcR",
-                      "type": "textarea",
-                      "validation": {
-                        "type": "text",
-                        "nested": true,
-                        "parentFieldName": "standard_standardType",
-                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
-                      },
-                      "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
-                      }
-                    },
-                    {
-                      "id": "standard_analysisMethodsUtilized-EuccyPRHBiaTVhF1HMHnkUcR",
-                      "type": "checkbox",
-                      "validation": {
-                        "type": "checkbox",
-                        "nested": true,
-                        "parentFieldName": "standard_standardType",
-                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
-                      },
-                      "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -1009,8 +939,7 @@
                         "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -1023,8 +952,8 @@
                         "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -1044,8 +973,7 @@
                         "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -1058,8 +986,76 @@
                         "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "EuccyPRHBiaTVhF1HMHnkUcR",
+                  "label": "Hours of operation",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-EuccyPRHBiaTVhF1HMHnkUcR",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
+                      },
+                      "props": {
+                        "label": "Standard description"
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized-EuccyPRHBiaTVhF1HMHnkUcR",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "choices": []
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "tcIQ324hNsgHwHteoDgfCh08",
+                  "label": "Ease of getting a timely appointment",
+                  "children": [
+                    {
+                      "id": "standard_standardDescription-tcIQ324hNsgHwHteoDgfCh08",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
+                      },
+                      "props": {
+                        "label": "Standard description"
+                      }
+                    },
+                    {
+                      "id": "standard_analysisMethodsUtilized-tcIQ324hNsgHwHteoDgfCh08",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "standard_standardType",
+                        "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
+                      },
+                      "props": {
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -1079,8 +1075,7 @@
                         "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -1093,8 +1088,8 @@
                         "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }
@@ -1124,8 +1119,7 @@
                         "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
-                        "label": "Standard description",
-                        "hint": "Describe the standard (for example, 15 days)."
+                        "label": "Standard description"
                       }
                     },
                     {
@@ -1138,8 +1132,8 @@
                         "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
-                        "hint": "Select the method(s) utilized to assess compliance with the state’s 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed here, add it in the “Analysis Methods” section.",
+                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
                     }

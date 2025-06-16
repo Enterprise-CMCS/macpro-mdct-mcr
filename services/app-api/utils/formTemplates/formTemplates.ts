@@ -241,6 +241,11 @@ export const compileValidationJsonFromRoutes = (
     // if drawer form present, add validation to schema
     const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
+    // if add entity drawer form present, add validation to schema
+    const addEntityDrawerFormFields =
+      route.addEntityDrawerForm?.fields.filter(isFieldElement);
+    if (addEntityDrawerFormFields)
+      addValidationToAccumulator(addEntityDrawerFormFields);
     if (route.pageType === "modalOverlay") {
       const overlayFormFields = (
         route as ModalOverlayReportPageShape
