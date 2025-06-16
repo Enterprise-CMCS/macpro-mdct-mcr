@@ -1616,8 +1616,111 @@
             "parentForm": "planCompliance438206",
             "verbiage": {
               "accordion": {
-                "buttonLabel": "Assurance of 42 C.F.R. § 438.206",
-                "text": "<p>(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:</p><p>(1) Maintains and monitors a network of appropriate providers that is supported by written agreements and is sufficient to provide adequate access to all services covered under the contract for all enrollees, including those with limited English proficiency or physical or mental disabilities.</p><p>(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist.</p><p>(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee.</p><p>(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them.</p><p>(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network.</p><p>(6) Demonstrates that its network providers are credentialed as required by § 438.214.</p><p>(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services.</p><p>(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.</p><p>(1) <b>Timely access.</b> Each MCO, PIHP, and PAHP must do the following:</p><p>(i) Meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e).</p><p>(ii) Ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS, if the provider serves only Medicaid enrollees.</p><p>(iii) Make services included in the contract available 24 hours a day, 7 days a week, when medically necessary.</p><p>(iv) Establish mechanisms to ensure compliance by network providers.</p><p>(v) Monitor network providers regularly to determine compliance.</p><p>(vi) Take corrective action if there is a failure to comply by a network provider.</p><p>(2) Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes.</p><p>(3) Accessibility considerations. Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities.</p><p>(d) Applicability date. States will not be held out of compliance with the requirements of paragraphs (c)(1)(i) of this section prior to the first rating period that begins on or after 3 years after July 9, 2024, so long as they comply with the corresponding standard(s) codified in 42 CFR 438.2</p>"
+                "buttonLabel": "Review the availability of services requirements at 42 C.F.R. § 438.206",
+                "text": [
+                  {
+                    "type": "p",
+                    "content": "The following is an excerpt from the current regulations in effect at 438.206(b)-(c):"
+                  },
+                  {
+                    "type": "p",
+                    "content": "438.206(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:"
+                  },
+                  {
+                    "type": "p",
+                    "content": "(1) Maintains and monitors a network of appropriate providers that is supported by written agreements and is sufficient to provide adequate access to all services covered under the contract for all enrollees, including those with limited English proficiency or physical or mental disabilities."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(2) Provides female enrollees with direct access to a women's health specialist within the provider network for covered care necessary to provide women's routine and preventive health care services. This is in addition to the enrollee's designated source of primary care if that source is not a women's health specialist."
+                  },
+                  {
+                    "type": "ol",
+                    "props": {
+                      "className": "marker-normal"
+                    },
+                    "children": [
+                      {
+                        "type": "li",
+                        "content": "Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee."
+                      },
+                      {
+                        "type": "li",
+                        "content": "ii. If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP's provider network is unable to provide them."
+                      },
+                      {
+                        "type": "li",
+                        "content": "Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
+                      },
+                      {
+                        "type": "li",
+                        "content": "Demonstrates that its network providers are credentialed as required by § 438.214."
+                      },
+                      {
+                        "type": "li",
+                        "content": "Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services."
+                      }
+                    ]
+                  },
+                  {
+                    "type": "p",
+                    "content": "(c) Furnishing of services. The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements."
+                  },
+                  {
+                    "type": "ol",
+                    "children": [
+                      {
+                        "type": "li",
+                        "children": [
+                          {
+                            "type": "html",
+                            "content": "<b>Timely access.</b> Each MCO, PIHP, and PAHP must do the following:"
+                          },
+                          {
+                            "type": "ol",
+                            "props": {
+                              "className": "marker-normal"
+                            },
+                            "children": [
+                              {
+                                "type": "li",
+                                "content": "Meet and require its network providers to meet State standards for timely access to care and services, taking into account the urgency of the need for services."
+                              },
+                              {
+                                "type": "li",
+                                "content": "Ensure that the network providers offer hours of operation that are no less than the hours of operation offered to commercial enrollees or comparable to Medicaid FFS, if the provider serves only Medicaid enrollees."
+                              },
+                              {
+                                "type": "li",
+                                "content": "Make services included in the contract available 24 hours a day, 7 days a week, when medically necessary."
+                              },
+                              {
+                                "type": "li",
+                                "content": "Establish mechanisms to ensure compliance by network providers."
+                              },
+                              {
+                                "type": "li",
+                                "content": "Monitor network providers regularly to determine compliance."
+                              },
+                              {
+                                "type": "li",
+                                "content": "Take corrective action if there is a failure to comply by a network provider."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "li",
+                        "content": "Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State's efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
+                      },
+                      {
+                        "type": "li",
+                        "content": "Accessibility considerations. Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities."
+                      }
+                    ]
+                  }
+                ]
               },
               "backButton": "Return to plan compliance data for {{planName}} dashboard",
               "intro": {
@@ -1628,7 +1731,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "<strong>Plan non-compliance for 438.206</strong><br>Report on how this plan is not in compliance with 42 C.F.R. § 438.206. Full details are located within the accordion above. Select all that apply."
+                        "content": "<strong>Plan non-compliance for 438.206</strong><br>Report on how this plan is not in compliance with 42 C.F.R. § 438.206. Full details are available above; click on the “+” to view. Select all that apply."
                       }
                     ]
                   }
@@ -1728,7 +1831,7 @@
                       },
                       {
                         "id": "ilvC7PazhMXTL6aL7LDRAE",
-                        "label": "Does not take into account accessibility considerations"
+                        "label": "Does not ensure that network providers provide physical access, reasonable accommodations, and accessible equipment"
                       },
                       {
                         "id": "yCleNTI4lSJCwNhuq59KmU",
