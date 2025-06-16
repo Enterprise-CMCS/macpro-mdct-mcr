@@ -1465,13 +1465,13 @@
               "verbiage": {
                 "backButton": "Return to plan compliance data for {{planName}} dashboard",
                 "intro": {
-                  "hint": "Select “Enter” for all the standards that are not compliant or have an exception granted for the state’s 42 C.F.R. § 438.68 standards for the plan listed above. If a standard is fully compliant, you do not need to enter that standard.",
+                  "hint": "Select “Enter” for all of the standards that are not compliant or have an exception granted for the state’s 42 C.F.R. § 438.68 standards for the plan listed above. If a standard is fully compliant, you do not need to enter any additional information for that standard.",
                   "section": "III. Plan compliance data for {{planName}}",
-                  "subsection": "{{planName}}: Select non-compliant / exception standards and provide details for 438.68"
+                  "subsection": "Select non-compliant or exception standards for 42 C.F.R. § 438.68"
                 },
                 "totals": {
-                  "exceptions": "§438.68(d) exceptions granted total count",
-                  "standards": "§438.68 non-compliant standards total count"
+                  "exceptions": "“N” indicates a standard for which the plan is non-compliant. Total count:",
+                  "standards": "“E” indicates a standard for which the plan has been granted an exception. Total count:"
                 }
               }
             },
