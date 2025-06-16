@@ -1724,7 +1724,7 @@
               },
               "backButton": "Return to plan compliance data for {{planName}} dashboard",
               "intro": {
-                "hint": "Report on 42 C.F.R. § 438.206 plan compliance during the reporting period",
+                "hint": "Report on 42 C.F.R. § 438.206 plan compliance during the reporting period.",
                 "info": [
                   {
                     "type": "p",
