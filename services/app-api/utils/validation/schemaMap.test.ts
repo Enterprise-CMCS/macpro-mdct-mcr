@@ -9,6 +9,7 @@ import {
   numberNotLessThanOne,
   numberNotLessThanZero,
   numberSuppressible,
+  futureDate,
 } from "./schemaMap";
 import {} from "./validation";
 // constants
@@ -16,10 +17,12 @@ import { suppressionText } from "../constants/constants";
 // utils
 import {
   badDateTestCases,
+  badFutureDateTestCases,
   badNumberTestCases,
   badRatioTestCases,
   badValidNumberTestCases,
   goodDateTestCases,
+  goodFutureDateTestCases,
   goodNumberTestCases,
   goodPositiveNumberTestCases,
   goodRatioTestCases,
@@ -64,6 +67,18 @@ describe("Schemas", () => {
     expectedReturn: boolean
   ) => {
     testSchema<string | undefined>(schemaToUse, testCases, expectedReturn);
+  };
+
+  const testDate = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | null | undefined | number>,
+    expectedReturn: boolean
+  ) => {
+    testSchema<string | null | undefined | number>(
+      schemaToUse,
+      testCases,
+      expectedReturn
+    );
   };
 
   const testValidNumber = (
@@ -117,8 +132,13 @@ describe("Schemas", () => {
   });
 
   test("Evaluate Date Schema using date scheme", () => {
-    testNumberSchema(date(), goodDateTestCases, true);
-    testNumberSchema(date(), badDateTestCases, false);
+    testDate(date(), goodDateTestCases, true);
+    testDate(date(), badDateTestCases, false);
+  });
+
+  test("Test futureDate schema", () => {
+    testDate(futureDate(), goodFutureDateTestCases, true);
+    testDate(futureDate(), badFutureDateTestCases, false);
   });
 
   test("Evaluate End Date Schema using date scheme", () => {
