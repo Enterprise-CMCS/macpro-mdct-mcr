@@ -16,6 +16,7 @@ export const schemaMap: any = {
   urlOptional: schema.urlOptional(),
   date: schema.date(),
   dateOptional: schema.dateOptional(),
+  futureDate: schema.futureDate(),
   dropdown: schema.dropdown(),
   checkbox: schema.checkbox(),
   checkboxOneOptional: schema.checkboxOneOptional(),
