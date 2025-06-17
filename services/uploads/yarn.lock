@@ -2462,7 +2462,7 @@ serverless-offline@^13.0.0:
     velocityjs "^2.0.6"
     ws "^8.18.0"
 
-serverless-s3-local@^0.8.4:
+serverless-s3-local@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/serverless-s3-local/-/serverless-s3-local-0.8.5.tgz#283923d8e2050fbdfb375de7fe316894faa8fe6b"
   integrity sha512-lkXhgnX/v/U+9oJ6hZanUbsUSevSTPR3HUrllNjA2l/YxTncfFShIULyaUduipjPA4Lov946Xmrulh8mOKryhg==
