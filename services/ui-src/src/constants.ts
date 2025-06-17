@@ -594,11 +594,12 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
     validation: "checkboxOneOptional",
     props: {
       label: "Frequency of compliance findings (optional)",
-      hint: "Instructions",
+      hint: "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these  methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
       choices: [
         {
           id: "9QZMDvvbiWrXcjr5Z1zcuV",
           label: "Report results by quarter",
+          hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
               id: "q1PercentMetStandard",
@@ -645,6 +646,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
         {
           id: "hnKktBxFGNr9jB1AgWLPXf",
           label: "Report results annually",
+          hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
               id: "reportResultsAnnually",
