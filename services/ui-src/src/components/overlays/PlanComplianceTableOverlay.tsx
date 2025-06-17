@@ -166,7 +166,7 @@ export const PlanComplianceTableOverlay = ({
     const standardsTotalCount = data.length;
 
     const displayCount = (label: string = "", count: number) =>
-      `${label}: ${count} of ${standardsTotalCount}`;
+      `${label} ${count} of ${standardsTotalCount}`;
 
     const getStandardForm = (entity: EntityShape, count: number) => {
       window.scrollTo(0, 0);
@@ -287,6 +287,10 @@ const sx = {
   count: {
     color: "palette.gray_medium",
     fontWeight: "bold",
+    whiteSpace: "nowrap",
+    ".tablet &, .mobile &": {
+      whiteSpace: "normal",
+    },
   },
   tableContainer: {
     maxWidth: "53rem",
