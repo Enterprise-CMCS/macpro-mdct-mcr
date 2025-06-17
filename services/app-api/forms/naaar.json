@@ -1486,9 +1486,6 @@
                           },
                           {
                             "type": "ol",
-                            "props": {
-                              "className": "marker-normal"
-                            },
                             "children": [
                               {
                                 "type": "li",
