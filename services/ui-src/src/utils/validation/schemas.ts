@@ -188,6 +188,18 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const futureDate = () =>
+  date().test(
+    "is-after-current-date",
+    error.INVALID_FUTURE_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate >= todaysDate;
+    }
+  );
+
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);

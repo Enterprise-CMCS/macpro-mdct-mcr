@@ -168,7 +168,7 @@
                 "id": "naaarExpectedSubmissionDateForThisProgram",
                 "type": "date",
                 "validation": {
-                  "type": "date",
+                  "type": "futureDate",
                   "nested": true,
                   "parentFieldName": "naaarSubmissionForThisProgram",
                   "parentOptionId": "Z9Ysnff8zxb1IVjxQgoG9ndW"

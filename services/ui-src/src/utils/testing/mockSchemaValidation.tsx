@@ -68,6 +68,28 @@ export const badDateOptionalTestCases = [
   "42/42/4242",
 ];
 
+//Creates dates in the format of mm/dd/yyyy
+const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
+  month: "2-digit",
+  day: "2-digit",
+  year: "numeric",
+});
+
+export const goodFutureDateTestCases = [
+  dateTimeFormat.format(new Date()), //Todays Date
+  dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() + 1))), //Tomorrows Date
+  "12/29/2095", //Will eventually fail in 70 years but if it does we've got bigger problems.
+];
+
+export const badFutureDateTestCases = [
+  "",
+  "1/2",
+  "0/0/99",
+  "0/01/2023",
+  "42/42/4242",
+  dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() - 1))), //Yesterdays Date
+];
+
 export const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
 
 export const badValidNumberTestCases = ["N/A", "number", "foo"];
