@@ -7,6 +7,8 @@ import {
   string,
   StringSchema,
 } from "yup";
+// constants
+import { suppressionText } from "../constants/constants";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -14,6 +16,7 @@ const error = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
+  INVALID_FUTURE_DATE: "Response must be today's date or in the future",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
   INVALID_NUMBER: "Response must be a valid number",
@@ -92,6 +95,19 @@ export const numberNotLessThanZeroOptional = () => {
 };
 
 export const numberOptional = () => number();
+
+export const numberSuppressible = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (value === suppressionText) {
+          return true;
+        }
+        return value ? validNumberRegex.test(value) : false;
+      },
+      message: error.INVALID_NUMBER,
+    });
 
 const validNumberSchema = () =>
   string().test({
@@ -179,6 +195,18 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const futureDate = () =>
+  date().test(
+    "is-after-current-date",
+    error.INVALID_FUTURE_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate >= todaysDate;
+    }
+  );
+
 export const isEndDateAfterStartDate = (
   startDateString: string,
   endDateString: string
@@ -190,6 +218,11 @@ export const isEndDateAfterStartDate = (
 
 // DROPDOWN
 export const dropdown = () => object({ label: text(), value: text() });
+export const dropdownOptional = () =>
+  object({
+    label: text().notRequired().nullable(),
+    value: text().notRequired().nullable(),
+  });
 
 // CHECKBOX
 export const checkbox = () =>
@@ -254,7 +287,9 @@ export const schemaMap: any = {
   checkboxSingle: checkboxSingle(),
   date: date(),
   dateOptional: dateOptional(),
+  futureDate: futureDate(),
   dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
   dynamic: dynamic(),
   dynamicOptional: dynamicOptional(),
   email: email(),
@@ -263,6 +298,7 @@ export const schemaMap: any = {
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
+  numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),
   radio: radio(),
   radioOptional: radioOptional(),
