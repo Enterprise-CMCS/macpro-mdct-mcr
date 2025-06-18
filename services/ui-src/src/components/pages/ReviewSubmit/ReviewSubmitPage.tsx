@@ -234,7 +234,7 @@ export const SuccessMessageGenerator = (
       const postSubmissionMessage = ` ${submittedDate} by ${submittersName}.`;
       return [preSubmissionMessage, reportTitle, postSubmissionMessage];
     }
-    return `${reportType} report for ${name} was submitted on ${submittedDate} by ${submittersName}.`;
+    return `${reportType} report for ${name} ${submittedDate} by ${submittersName}.`;
   }
   return `${reportType} report for ${name} was submitted.`;
 };
