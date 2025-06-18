@@ -296,7 +296,7 @@ describe("<ReviewSubmitPage />", () => {
           submittersName
         )
       ).toBe(
-        `${reportType} report for ${programName} was submitted on Wednesday, September 14, 2022 by ${submittersName}.`
+        `${reportType} report for ${programName} Wednesday, September 14, 2022 by ${submittersName}.`
       );
     });
 
