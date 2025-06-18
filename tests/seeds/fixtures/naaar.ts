@@ -101,7 +101,7 @@ export const fillNaaar = (): SeedFillReportShape => {
             {
               key: "planCompliance43868_assurance-dq36WGX8Ev8wmALi1rg3bv",
               value:
-                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                "No, the plan does not comply with all standards based on all analyses or exceptions granted",
             },
           ],
           [`planCompliance43868_standard-${standardId}`]: [
@@ -118,7 +118,7 @@ export const fillNaaar = (): SeedFillReportShape => {
             {
               key: "planCompliance438206_assurance-zC8SPm68FS8xI9igWQ0BdP",
               value:
-                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                "No, the plan does not comply with all standards based on all analyses or exceptions granted",
             },
           ],
           "planCompliance438206_planDeficiencies-analyses":
