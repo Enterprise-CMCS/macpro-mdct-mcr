@@ -106,5 +106,13 @@ const filteredDiff = diff.filter((pkg) =>
   packageJsonDependencies.has(pkg.package)
 );
 
+/** 
+ * Filter to only changed versions. This can happen if package.json
+ * and yarn.lock are synced and the package was not actually updated.
+ */ 
+const filteredPackages = filteredDiff.filter((pkg) =>
+  pkg.priorVersion !== pkg.upgradedVersion
+);
+
 // Print diff
-console.log(JSON.stringify(filteredDiff, null, 2));
+console.log(JSON.stringify(filteredPackages, null, 2));
