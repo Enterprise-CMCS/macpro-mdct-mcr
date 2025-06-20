@@ -1345,7 +1345,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.4 Provider type",
-                      "hint": "Enter the core provider type the standard applies to. If the standard applies to multiple provider types, create a measure for each those provider types. If you wish to specify the provider type, select the core type most suitable and then add the more specific provider type under “Specialist details”.",
+                      "hint": "Enter the core provider type the standard applies to. If the standard applies to multiple provider types, create a measure for each provider type. If you wish to specify the provider type, select the core type most suitable and then write in the more specific provider type.",
                       "choices": [
                         {
                           "id": "7z1m6zajqUupPe89o3dAGQ",
@@ -1429,21 +1429,6 @@
                         {
                           "id": "hqeJ3uJaUndRUEqNECsU3w",
                           "label": "LTSS"
-                        },
-                        {
-                          "id": "XfgRX33Ot02GGMoqcMVn4w",
-                          "label": "Other, specify",
-                          "children": [
-                            {
-                              "id": "accessMeasure_providerType-otherText",
-                              "type": "textarea",
-                              "validation": {
-                                "type": "text",
-                                "nested": true,
-                                "parentFieldName": "accessMeasure_providerType"
-                              }
-                            }
-                          ]
                         }
                       ]
                     }
@@ -2135,7 +2120,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
-            "drawerTitle": "Report program characteristics & enrollment for",
+            "drawerTitle": "Report program characteristics & enrollment for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2194,8 +2179,8 @@
                 "type": "text",
                 "validation": "text",
                 "props": {
-                  "label": "D1.I.4: Parent Organization: The name of the national health care entity that controls the Medicaid Managed Care Plan.",
-                  "hint": "If the managed care plan is controlled by a separate national health care entity, report the name of that national health care entity. If the managed care plan is not controlled by a separate national health care entity, please report the managed care plan name in this field."
+                  "label": "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",
+                  "hint": "If the managed care plan is owned or controlled by a separate entity (parent), report the name of that entity. If the managed care plan is not controlled by a separate entity, please report the managed care plan name in this field."
                 }
               }
             ]
@@ -2213,7 +2198,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for",
+            "drawerTitle": "Report financial performance for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2361,7 +2346,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on encounter data for each plan",
-            "drawerTitle": "Report encounter data for",
+            "drawerTitle": "Report encounter data for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2430,7 +2415,6 @@
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
                   "spreadsheet": "D1_Plan_Set",
-                  "alert": "<strong>Beginning June 2025, Indicators D1.IV.1a-c must be completed. Submission of this data before June 2025 is optional; if you choose not to respond prior to June 2025, enter “N/A”.</strong>",
                   "info": [
                     {
                       "type": "heading",
@@ -2440,7 +2424,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals for each plan",
-                "drawerTitle": "Report on appeals for",
+                "drawerTitle": "Report on appeals for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -2486,7 +2470,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1a Appeals denied",
-                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2497,7 +2481,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1b Appeals resolved in partial favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2508,7 +2492,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1c Appeals resolved in favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2686,7 +2670,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
-                "drawerTitle": "Report appeals by service for",
+                "drawerTitle": "Report appeals by service for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -2725,8 +2709,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.7b Resolved appeals related to all other general outpatient services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to all other general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
+                      "label": "D1.IV.7b Resolved appeals related to general outpatient services",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2809,17 +2793,6 @@
                     }
                   },
                   {
-                    "id": "plan_resolvedOtherServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7j Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
                     "id": "plan_resolvedDmeAndSuppliesAppeals",
                     "type": "number",
                     "validation": "number",
@@ -2862,6 +2835,17 @@
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
+                  },
+                  {
+                    "id": "plan_resolvedOtherServiceAppeals",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.7o Resolved appeals related to other service types",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
                   }
                 ]
               }
@@ -2885,7 +2869,7 @@
                   ]
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
-                "drawerTitle": "Report state fair hearings and external medical reviews for",
+                "drawerTitle": "Report state fair hearings and external medical reviews for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -2996,7 +2980,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances for each plan",
-                "drawerTitle": "Report on grievances for",
+                "drawerTitle": "Report on grievances for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -3100,7 +3084,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report on grievances by service for",
+                "drawerTitle": "Report on grievances by service for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -3145,8 +3129,8 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.15b Resolved grievances related to all other general outpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to all other general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "label": "D1.IV.15b Resolved grievances related to general outpatient services",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3229,17 +3213,6 @@
                     }
                   },
                   {
-                    "id": "plan_resolvedOtherServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15j Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
                     "id": "plan_resolvedDmeGrievances",
                     "type": "number",
                     "validation": "number",
@@ -3282,6 +3255,17 @@
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
+                  },
+                  {
+                    "id": "plan_resolvedOtherServiceGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15o Resolved grievances related to other service types",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
                   }
                 ]
               }
@@ -3309,7 +3293,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by reason for each plan",
-                "drawerTitle": "Report on grievances by reason for",
+                "drawerTitle": "Report on grievances by reason for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -3843,7 +3827,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "D3.VIII.2 Plan performance issue",
-                  "hint": "What area of plan performance was associated with the intervention? Select one.",
+                  "hint": "What area of plan performance was primarily associated with the intervention? Select one.",
                   "choices": [
                     {
                       "id": "x6Cwd4oSrki6De4SnpjrMQ",
@@ -4024,7 +4008,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on program integrity for each plan",
-            "drawerTitle": "Program integrity for",
+            "drawerTitle": "Program integrity for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -4442,7 +4426,7 @@
               "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-15 must be completed. Submission of this data including partial reporting on some but not all plans, before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on prior authorization requests received for each plan",
-            "drawerTitle": "Prior authorization for ",
+            "drawerTitle": "Prior authorization for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -4663,7 +4647,7 @@
               "alert": "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on Patient Access API (Application Programming Interface) Usage for each plan",
-            "drawerTitle": "Patient Access Application Programming Interface (API) Usage for ",
+            "drawerTitle": "Patient Access Application Programming Interface (API) Usage for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -4742,7 +4726,7 @@
                 "type": "text",
                 "validation": "url",
                 "props": {
-                  "label": "D1.XIV.4 URL patient educational resources for Patient Access API",
+                  "label": "D1.XIV.4 URL for patient educational resources for Patient Access API",
                   "hint": "Provide the URL where the plan posts patient educational resources for the Patient Access API."
                 }
               },
@@ -4794,7 +4778,7 @@
           ]
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
-        "drawerTitle": "Report on",
+        "drawerTitle": "Report on {{name}}",
         "missingEntityMessage": [
           {
             "type": "p",
