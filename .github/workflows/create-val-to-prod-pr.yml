@@ -1,0 +1,19 @@
+name: Create val to prod PR
+
+on:
+  push:
+    branches:
+      - val
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  call-create-pr:
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      head_branch: val
+      base_branch: production
+      pr_title: "MCR production release"

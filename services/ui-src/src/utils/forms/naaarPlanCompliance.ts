@@ -6,8 +6,12 @@ import {
   planComplianceStandardKey,
 } from "../../constants";
 // types
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { AnyObject, EntityShape, FormJson } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  NaaarStandardsTableShape,
+} from "types";
 import { availableAnalysisMethods } from "./dynamicItemFields";
 
 export const hasComplianceDetails = (

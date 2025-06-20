@@ -19,7 +19,7 @@ export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
             ))}
           </UnorderedList>
         )}
-        {text && <Box sx={sx.textBox}>{sanitizeAndParseHtml(text)}</Box>}
+        {text && <Box sx={sx.textBox}>{parseCustomHtml(text)}</Box>}
       </AccordionItem>
     </Accordion>
   );
@@ -52,9 +52,17 @@ const sx = {
         marginTop: 0,
       },
     },
-  },
-  text: {
-    marginBottom: "1rem",
+    li: {
+      marginBottom: "1.25rem",
+    },
+    ".marker-normal > li::marker": {
+      fontWeight: "normal",
+    },
+    "ol > li > ol": {
+      listStyleType: "lower-roman",
+      marginInlineStart: "2.75rem",
+      marginTop: "1.25rem",
+    },
   },
   list: {
     paddingLeft: "1rem",
