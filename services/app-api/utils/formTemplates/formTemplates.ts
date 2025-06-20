@@ -22,7 +22,7 @@ import {
   ReportType,
 } from "../types";
 // utils
-import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+// import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -96,69 +96,66 @@ export async function getOrCreateFormTemplate(
     .update(stringifiedTemplate)
     .digest("hex");
 
-  const matchingTemplateMetadata = await getTemplateVersionByHash(
-    reportType,
-    currentTemplateHash
-  );
+  // const matchingTemplateMetadata = await getTemplateVersionByHash(
+  //   reportType,
+  //   currentTemplateHash
+  // );
 
-  if (matchingTemplateMetadata) {
-    return {
-      formTemplate: await getTemplate(
-        reportBucket,
-        getFormTemplateKey(matchingTemplateMetadata?.id)
-      ),
-      formTemplateVersion: matchingTemplateMetadata,
-    };
-  } else {
-    const newFormTemplateId = KSUID.randomSync().string;
-    const formTemplateWithValidationJson = {
-      ...currentFormTemplate,
-      validationJson: getValidationFromFormTemplate(currentFormTemplate),
-    };
-    try {
-      await s3Lib.put({
-        Key: getFormTemplateKey(newFormTemplateId),
-        Body: JSON.stringify(formTemplateWithValidationJson),
-        ContentType: "application/json",
-        Bucket: reportBucket,
-      });
-    } catch (err) {
-      logger.error(err, "Error uploading new form template to S3");
-      throw err;
-    }
-
-    const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
-
-    // If we didn't find any form templates, start version at 1.
-    const newFormTemplateVersionItem: FormTemplate = {
-      versionNumber: newestTemplateMetadata?.versionNumber
-        ? (newestTemplateMetadata.versionNumber += 1)
-        : 1,
-      md5Hash: currentTemplateHash,
-      id: newFormTemplateId,
-      lastAltered: new Date().toISOString(),
-      reportType,
-    };
-
-    try {
-      await dynamodbLib.put({
-        TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
-        Item: newFormTemplateVersionItem,
-      });
-    } catch (err) {
-      logger.error(
-        err,
-        "Error writing a new form template version to DynamoDB."
-      );
-      throw err;
-    }
-
-    return {
-      formTemplate: formTemplateWithValidationJson,
-      formTemplateVersion: newFormTemplateVersionItem,
-    };
+  // if (matchingTemplateMetadata) {
+  //   return {
+  //     formTemplate: await getTemplate(
+  //       reportBucket,
+  //       getFormTemplateKey(matchingTemplateMetadata?.id)
+  //     ),
+  //     formTemplateVersion: matchingTemplateMetadata,
+  //   };
+  // } else {
+  const newFormTemplateId = KSUID.randomSync().string;
+  const formTemplateWithValidationJson = {
+    ...currentFormTemplate,
+    validationJson: getValidationFromFormTemplate(currentFormTemplate),
+  };
+  try {
+    await s3Lib.put({
+      Key: getFormTemplateKey(newFormTemplateId),
+      Body: JSON.stringify(formTemplateWithValidationJson),
+      ContentType: "application/json",
+      Bucket: reportBucket,
+    });
+  } catch (err) {
+    logger.error(err, "Error uploading new form template to S3");
+    throw err;
   }
+
+  const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
+
+  // If we didn't find any form templates, start version at 1.
+  const newFormTemplateVersionItem: FormTemplate = {
+    versionNumber: newestTemplateMetadata?.versionNumber
+      ? (newestTemplateMetadata.versionNumber += 1)
+      : 1,
+    md5Hash: currentTemplateHash,
+    id: newFormTemplateId,
+    lastAltered: new Date().toISOString(),
+    reportType,
+  };
+
+  try {
+    await dynamodbLib.put({
+      TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+      Item: newFormTemplateVersionItem,
+    });
+  } catch (err) {
+    logger.error(err, "Error writing a new form template version to DynamoDB.");
+    throw err;
+  }
+
+  return {
+    formTemplate: formTemplateWithValidationJson,
+    formTemplateVersion: newFormTemplateVersionItem,
+  };
 }
+// }
 
 // returns flattened array of valid routes for given reportJson
 export const flattenReportRoutesArray = (

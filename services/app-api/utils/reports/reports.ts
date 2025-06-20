@@ -56,9 +56,33 @@ export async function copyFieldDataFromSource(
           allowableFieldIds.includes(f)
         )
       );
-      const copiedEntities = (rootValue as AnyObject[])
+      let copiedEntities = (rootValue as AnyObject[])
         .map((entity) => copyEntityData(entity, entityFieldsToCopy))
         .filter(nonEmptyObject);
+      if (rootKey === "accessMeasures") {
+        // "accessMeasure_monitoringMethods"
+        copiedEntities = copiedEntities.map((entity: AnyObject) => {
+          entity.accessMeasure_monitoringMethods =
+            entity?.accessMeasure_monitoringMethods.map((method: AnyObject) => {
+              let updatedValue = method.value;
+              if (method.value === "Plan Provider thingy") {
+                updatedValue = "Plan Provider Directory Review";
+              }
+              if (method.value === "EVV Data Analysis") {
+                updatedValue = "Electronic Visit Verification Data Analysis";
+              }
+              if (method.value === "Review of grievances related to access") {
+                updatedValue = "Review of Grievances Related to Access";
+              }
+              return {
+                key: method.key,
+                value: updatedValue,
+              };
+            });
+          return entity;
+        });
+      }
+
       if (copiedEntities.length > 0) {
         // Don't copy empty arrays
         validatedFieldData[rootKey] = copiedEntities;
