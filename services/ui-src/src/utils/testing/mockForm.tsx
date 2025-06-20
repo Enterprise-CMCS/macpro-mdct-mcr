@@ -1006,8 +1006,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label:
-                      "No, the plan does not comply with all standards based on all analyses or exceptions granted",
+                    label: nonCompliantLabels["438.206"],
                   },
                 ],
               },
