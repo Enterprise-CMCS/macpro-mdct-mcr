@@ -13,6 +13,9 @@ on:
         required: true
         type: string
 
+concurrency:
+  group: ${{ github.ref_name }}
+
 permissions:
   contents: write
   pull-requests: write
