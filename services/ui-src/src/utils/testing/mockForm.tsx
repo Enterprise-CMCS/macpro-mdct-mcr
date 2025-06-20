@@ -1,4 +1,7 @@
-import { planComplianceStandardExceptionsLabel } from "../../constants";
+import {
+  nonCompliantLabels,
+  planComplianceStandardExceptionsLabel,
+} from "../../constants";
 import {
   CustomHtmlElement,
   EntityType,
@@ -914,8 +917,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label:
-                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                    label: nonCompliantLabels["438.206"],
                   },
                 ],
               },
@@ -1004,8 +1006,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label:
-                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                    label: nonCompliantLabels["438.206"],
                   },
                 ],
               },

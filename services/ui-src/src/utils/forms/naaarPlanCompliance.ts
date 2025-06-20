@@ -2,7 +2,7 @@
 import {
   exceptionsStatus,
   nonComplianceStatus,
-  nonCompliantLabel,
+  nonCompliantValues,
   planComplianceStandardKey,
 } from "../../constants";
 // types
@@ -245,7 +245,7 @@ export const isComplianceFormComplete = (
 ) => {
   const assuranceField = entity[`${formId}_assurance`];
   // Form is complete if compliance answer is Yes
-  if (assuranceField && assuranceField[0]?.value !== nonCompliantLabel) {
+  if (assuranceField && !nonCompliantValues.has(assuranceField[0]?.value)) {
     return true;
   }
 
