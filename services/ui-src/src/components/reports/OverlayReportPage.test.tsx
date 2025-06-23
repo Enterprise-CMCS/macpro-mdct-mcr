@@ -18,7 +18,7 @@ import {
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 import userEvent from "@testing-library/user-event";
-import { nonCompliantLabel } from "../../constants";
+import { nonCompliantLabels } from "../../constants";
 
 jest.mock("utils/state/useStore");
 jest.mock("utils/other/useBreakpoint");
@@ -373,7 +373,7 @@ describe("<OverlayReportPage />", () => {
 
         // Parent Form
         const radioButtonParentFormNo = screen.getByRole("radio", {
-          name: nonCompliantLabel,
+          name: nonCompliantLabels["438.206"],
         });
         await userEvent.click(radioButtonParentFormNo);
 

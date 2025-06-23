@@ -141,8 +141,14 @@ export const exceptionsNonComplianceStatusDisplay = {
   [nonComplianceStatus]: "N",
 } as { [key: string]: string };
 
-export const nonCompliantLabel =
-  "No, the plan does not comply on all standards based on all analyses and/or exceptions granted";
+export const nonCompliantLabels = {
+  "438.68":
+    "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+  "438.206":
+    "No, the plan does not comply with all standards based on all analyses or exceptions granted",
+};
+
+export const nonCompliantValues = new Set(Object.values(nonCompliantLabels));
 
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
@@ -155,7 +161,7 @@ export const GeomappingChildJson = [
     validation: "checkboxOneOptional",
     props: {
       label: "Frequency of compliance findings (optional)",
-      hint: "Instructions",
+      hint: "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these  methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
       choices: [
         {
           id: "c595832f837848118f",
@@ -408,7 +414,7 @@ export const PlanProviderChildJson = [
     validation: "checkboxOneOptional",
     props: {
       label: "Frequency of compliance findings (optional)",
-      hint: "Instructions",
+      hint: "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
       choices: [
         {
           id: "sxC5M4JJz9qNCdNxJgQmJV",
@@ -423,6 +429,7 @@ export const PlanProviderChildJson = [
                   {
                     id: "gRCpgad2dhXDrmucTw8cnu",
                     label: "Minimum number of network providers",
+                    hint: "Report the minimum number of plan network providers.",
                     children: [
                       {
                         id: "q1NumberOfNetworkProviders",
@@ -469,6 +476,7 @@ export const PlanProviderChildJson = [
                   {
                     id: "a8kZrrUYcfUrnTM8UuHNmi",
                     label: "Provider to enrollee ratio",
+                    hint: "Report the calculated plan provider to enrollee ratio.",
                     children: [
                       {
                         id: "q1ProviderToEnrolleeRatio",
@@ -530,6 +538,7 @@ export const PlanProviderChildJson = [
                   {
                     id: "j4ch2jWhesE7SHQZYQmvJV",
                     label: "Minimum number of network providers",
+                    hint: "Report the minimum number of plan network providers.",
                     children: [
                       {
                         id: "annualMinimumNumberOfNetworkProviders",
@@ -555,6 +564,7 @@ export const PlanProviderChildJson = [
                   {
                     id: "dSHQvqgfa7YYoRBvSKkahW",
                     label: "Provider to enrollee ratio",
+                    hint: "Report findings on the calculated plan provider to enrollee ratio.",
                     children: [
                       {
                         id: "annualProvidertoEnrolleeRatio",
@@ -594,11 +604,12 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
     validation: "checkboxOneOptional",
     props: {
       label: "Frequency of compliance findings (optional)",
-      hint: "Instructions",
+      hint: "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these  methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
       choices: [
         {
           id: "9QZMDvvbiWrXcjr5Z1zcuV",
           label: "Report results by quarter",
+          hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
               id: "q1PercentMetStandard",
@@ -645,6 +656,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
         {
           id: "hnKktBxFGNr9jB1AgWLPXf",
           label: "Report results annually",
+          hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
               id: "reportResultsAnnually",

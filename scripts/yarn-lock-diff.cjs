@@ -47,25 +47,33 @@ const compareLockFiles = (oldLockFile, newLockFile) => {
     const priorVersion = priorEntry?.version || "-";
     const upgradedVersion = upgradedEntry?.version || "-";
 
-    let status = "";
-    if (!priorEntry && upgradedEntry) status = "added";
-    else if (priorEntry && !upgradedEntry) status = "removed";
-    else if (priorEntry.version === upgradedEntry.version) status = "unchanged";
-
     // Skip unchanged packages
-    if (status === "unchanged") continue;
+    if (
+      priorEntry &&
+      upgradedEntry &&
+      priorEntry.version === upgradedEntry.version
+    ) {
+      continue;
+    }
 
-    const packageIndex = packages.findIndex(
+    const existingPackage = packages.find(
       (pkg) => pkg.package === packageName
     );
 
-    // Package has multiple entries, so combine them
-    if (packageIndex > -1) {
-      if (status === "added") {
-        packages[packageIndex].upgradedVersion = upgradedVersion;
+    /**
+     * A package could have multiple entries in JSON, so combine
+     * the output.
+     * 
+     * This happens when the version is updated in package.json,
+     * creating a new key, rather than keeping the prior key
+     * and doing a version upgrade in yarn.lock only.
+     */
+    if (existingPackage) {
+      if (!priorEntry) {
+        existingPackage.upgradedVersion = upgradedVersion;
       }
-      if (status === "removed") {
-        packages[packageIndex].priorVersion = priorVersion;
+      if (!upgradedEntry) {
+        existingPackage.priorVersion = priorVersion;
       }
     } else {
       const pkg = {
@@ -98,5 +106,13 @@ const filteredDiff = diff.filter((pkg) =>
   packageJsonDependencies.has(pkg.package)
 );
 
+/** 
+ * Filter to only changed versions. This can happen if package.json
+ * and yarn.lock are synced and the package was not actually updated.
+ */ 
+const filteredPackages = filteredDiff.filter((pkg) =>
+  pkg.priorVersion !== pkg.upgradedVersion
+);
+
 // Print diff
-console.log(JSON.stringify(filteredDiff, null, 2));
+console.log(JSON.stringify(filteredPackages, null, 2));
