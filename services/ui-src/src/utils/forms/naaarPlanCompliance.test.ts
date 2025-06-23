@@ -2,12 +2,11 @@
 import {
   exceptionsStatus,
   nonComplianceStatus,
-  nonCompliantLabel,
+  nonCompliantLabels,
   planComplianceStandardKey,
 } from "../../constants";
 // types
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { EntityShape, FormJson } from "types";
+import { EntityShape, FormJson, NaaarStandardsTableShape } from "types";
 // utils
 import {
   addAnalysisMethods,
@@ -322,7 +321,9 @@ describe("utils/forms/naaarPlanCompliance", () => {
       test("returns true if planCompliance43868 is complete with exceptions", () => {
         const entity = {
           id: "mockEntityId",
-          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_assurance`]: [
+            { id: "mockNo", value: nonCompliantLabels["438.68"] },
+          ],
           [`${formId}_standard-exceptionsDescription`]: "Mock Value",
         };
 
@@ -332,7 +333,9 @@ describe("utils/forms/naaarPlanCompliance", () => {
       test("returns true if planCompliance43868 is complete with non-compliance", () => {
         const entity = {
           id: "mockEntityId",
-          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_assurance`]: [
+            { id: "mockNo", value: nonCompliantLabels["438.68"] },
+          ],
           [`${formId}_standard-nonComplianceDescription`]: "Mock Value",
         };
 
@@ -342,7 +345,9 @@ describe("utils/forms/naaarPlanCompliance", () => {
       test("returns false if planCompliance43868 is not complete", () => {
         const entity = {
           id: "mockEntityId",
-          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_assurance`]: [
+            { id: "mockNo", value: nonCompliantLabels["438.68"] },
+          ],
         };
 
         expect(isComplianceFormComplete(entity, formId)).toBe(false);
@@ -364,7 +369,9 @@ describe("utils/forms/naaarPlanCompliance", () => {
       test("returns true if planCompliance438206 is complete with non-compliance", () => {
         const entity = {
           id: "mockEntityId",
-          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_assurance`]: [
+            { id: "mockNo", value: nonCompliantLabels["438.206"] },
+          ],
           [`${formId}_description`]: "Mock Value",
         };
 
@@ -374,7 +381,9 @@ describe("utils/forms/naaarPlanCompliance", () => {
       test("returns false if planCompliance438206 is not complete", () => {
         const entity = {
           id: "mockEntityId",
-          [`${formId}_assurance`]: [{ id: "mockNo", value: nonCompliantLabel }],
+          [`${formId}_assurance`]: [
+            { id: "mockNo", value: nonCompliantLabels["438.206"] },
+          ],
         };
 
         expect(isComplianceFormComplete(entity, formId)).toBe(false);
@@ -396,7 +405,7 @@ describe("utils/forms/naaarPlanCompliance", () => {
       const entity = {
         id: "mockEntityId",
         planCompliance43868_assurance: [
-          { id: "mockNo", value: nonCompliantLabel },
+          { id: "mockNo", value: nonCompliantLabels["438.68"] },
         ],
         planCompliance438206_assurance: [{ id: "mockYes", value: "Mock Yes" }],
       };
@@ -408,7 +417,7 @@ describe("utils/forms/naaarPlanCompliance", () => {
         id: "mockEntityId",
         planCompliance43868_assurance: [{ id: "mockYes", value: "Mock Yes" }],
         planCompliance438206_assurance: [
-          { id: "mockNo", value: nonCompliantLabel },
+          { id: "mockNo", value: nonCompliantLabels["438.206"] },
         ],
       };
       expect(isPlanComplete(entity)).toBe(false);

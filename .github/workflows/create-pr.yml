@@ -1,0 +1,153 @@
+name: Create branch-to-branch PR
+
+on:
+  workflow_call:
+    inputs:
+      head_branch:
+        required: true
+        type: string
+      base_branch:
+        required: true
+        type: string
+      pr_title:
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.ref_name }}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - name: Prepare for yarn-lock-diff
+        run: yarn install --frozen-lockfile
+      - name: Set branch variables
+        run: |
+          echo "HEAD_BRANCH=${{ inputs.head_branch }}" >> $GITHUB_ENV
+          echo "BASE_BRANCH=${{ inputs.base_branch }}" >> $GITHUB_ENV
+      - name: Generate PR body
+        id: pr_body
+        run: |
+          body=$(.github/commit-log.sh "$HEAD_BRANCH" "$BASE_BRANCH")
+          exit_code=$?
+
+          if [ "$exit_code" == "1" ]; then
+            echo "No commits between $HEAD_BRANCH and $BASE_BRANCH. Skipping PR creation."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "$exit_code" == "2" ]; then
+            echo "$HEAD_BRANCH branch not found. Skipping PR creation."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          if [ "$exit_code" == "3" ]; then
+            echo "$BASE_BRANCH branch not found. Skipping PR creation."
+            echo "skip=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Show original output in log
+          echo "$body"
+
+          # Escape `%` characters
+          body="${body//'%'/'%25'}"
+
+          # Escape new line characters
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+
+          # Send escaped body to be used in a future step
+          echo "body=$body" >> $GITHUB_OUTPUT
+          echo "skip=false" >> $GITHUB_OUTPUT
+      - name: Generate PR title
+        if: steps.pr_body.outputs.skip != 'true'
+        id: pr_title
+        run: |
+          current_date=$(date '+%-d %B %Y')
+          title="${{ inputs.pr_title }} (${current_date})"
+
+          # Show title output in log
+          echo "$title"
+
+          # Send title to be used in a future step
+          echo "title=$title" >> $GITHUB_OUTPUT
+      - name: Check if PR already exists
+        if: steps.pr_body.outputs.skip != 'true'
+        id: check_pr
+        run: |
+          # Check if a PR between branches exists, extract the PR number
+          pr_number=$(
+            gh pr list \
+              --head "$HEAD_BRANCH" \
+              --base "$BASE_BRANCH" \
+              --json number \
+              --jq '.[0].number' || echo ""
+          )
+
+          if [ -n "$pr_number" ]; then
+            echo "PR already exists: #$pr_number"
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "number=${pr_number}" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create or update PR
+        if: steps.pr_body.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+
+          # Unescape `%` in PR body
+          decoded_body="${RAW_BODY//%25/%}"
+
+          # Unescape newlines in PR body to temp variables
+          decoded_body="${decoded_body//%0A/__NEWLINE__}"
+          decoded_body="${decoded_body//%0D/__CARRIAGERETURN__}"
+
+          # Replace temp variables safely with sed
+          decoded_body="$(
+            printf '%s' "$decoded_body" | \
+            sed -E 's|__NEWLINE__|\n|g; s|__CARRIAGERETURN__|\r|g'
+          )"
+
+          # Create a temp file with PR body
+          tmpfile=$(mktemp)
+
+          # Use with body-file in `gh pr` for better multiline support
+          printf '%s\n' "$decoded_body" > "$tmpfile"
+
+          if [ "$PR_EXISTS" == "true" ]; then
+            echo "Updating existing PR #$PR_NUMBER"
+            gh pr edit $PR_NUMBER \
+              --title "$PR_TITLE" \
+              --body-file "$tmpfile"
+          else
+            echo "Creating new PR"
+            gh pr create \
+              --head "$HEAD_BRANCH" \
+              --base "$BASE_BRANCH" \
+              --title "$PR_TITLE" \
+              --body-file "$tmpfile" \
+              --draft
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_EXISTS: ${{ steps.check_pr.outputs.exists }}
+          PR_NUMBER: ${{ steps.check_pr.outputs.number }}
+          PR_TITLE: ${{ steps.pr_title.outputs.title }}
+          RAW_BODY: ${{ steps.pr_body.outputs.body }}

@@ -19,12 +19,16 @@
   "repositoryHost": "github.com/Enterprise-CMCS",
   "repositoryVisibility": "public",
   "vcs": "git",
-  "laborHours": 14594,
+  "laborHours": 14598,
   "reuseFrequency": {
     "forks": 3
   },
-  "platforms": ["web"],
-  "categories": ["data-collection"],
+  "platforms": [
+    "web"
+  ],
+  "categories": [
+    "data-collection"
+  ],
   "softwareType": "standalone/web",
   "languages": [
     "TypeScript",
@@ -39,10 +43,12 @@
   "contractNumber": "75FCMC24F0027",
   "date": {
     "created": "2022-03-04T14:51:19Z",
-    "lastModified": "2025-05-28T15:54:55Z",
-    "metaDataLastUpdated": "2025-05-28T18:22:03.981Z"
+    "lastModified": "2025-05-30T19:15:13Z",
+    "metaDataLastUpdated": "2025-06-01T00:19:56.282Z"
   },
-  "tags": ["mdct"],
+  "tags": [
+    "mdct"
+  ],
   "contact": {
     "email": "brendan.myers@coforma.com",
     "name": "Brendan Myers"
@@ -55,10 +61,16 @@
   "userInput": true,
   "fismaLevel": "Moderate",
   "group": "MDCT",
-  "projects": ["MDCT"],
+  "projects": [
+    "MDCT"
+  ],
   "systems": [],
   "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/network/dependencies",
-  "subsetInHealthcare": ["Medicaid"],
-  "userType": ["Government"],
+  "subsetInHealthcare": [
+    "Medicaid"
+  ],
+  "userType": [
+    "Government"
+  ],
   "maturityModelTier": 3
 }

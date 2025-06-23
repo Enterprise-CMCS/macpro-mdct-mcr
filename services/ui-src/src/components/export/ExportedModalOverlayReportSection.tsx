@@ -6,9 +6,9 @@ import {
   EntityShape,
   EntityType,
   ModalOverlayReportPageShape,
+  NaaarStandardsTableShape,
   ReportType,
 } from "types";
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
   getEntityDetailsMLR,
