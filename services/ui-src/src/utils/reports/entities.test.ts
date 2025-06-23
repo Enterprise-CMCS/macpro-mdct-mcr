@@ -155,7 +155,7 @@ describe("getFormattedEntityData()", () => {
           },
           {
             question: "Analyses used to identify deficiencies",
-            answer: "mock analysis method 1, mock analysis method 2",
+            answer: ["mock analysis method 1", "mock analysis method 2"],
           },
           {
             question: "What the plan will do to achieve compliance",

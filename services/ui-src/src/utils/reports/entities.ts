@@ -141,6 +141,195 @@ export const getFormattedEntityData = (
           (method: EntityShape) => method.value
         );
 
+        const notAnsweredOptional = "Not answered; optional";
+
+        const findNestedData = (keys: any[], keyMatchText: string) => {
+          // compliance frequency and type
+          const dataKey: string = keys.find((key: string) =>
+            key.endsWith(keyMatchText)
+          );
+          if (dataKey) {
+            if (Array.isArray(plan[dataKey])) {
+              const value = plan[dataKey]?.[0]?.value;
+              return value ?? notAnsweredOptional;
+            }
+            return `${plan[dataKey]}` ?? notAnsweredOptional;
+          }
+          return;
+        };
+
+        const indexOfGeomapping = analysisMethodsUsed.indexOf("Geomapping");
+        if (indexOfGeomapping >= 0) {
+          const geomappingInfo: any[] = [];
+          const geomappingKeys: any = planKeys.filter((key: string) =>
+            key.includes("_geomappingComplianceFrequency")
+          );
+
+          // compliance frequency and type
+          const geomappingComplianceFrequency = findNestedData(
+            geomappingKeys,
+            "_geomappingComplianceFrequency"
+          );
+          const geomappingEnrolleesMeetingStandard = findNestedData(
+            geomappingKeys,
+            "_enrolleesMeetingStandard"
+          );
+          // show second if first is not notansweredOptional
+          let geomappingComplianceFrequencyDisplayText = `Frequency of compliance findings (optional):`;
+          if (geomappingComplianceFrequency !== notAnsweredOptional) {
+            geomappingComplianceFrequencyDisplayText = `${geomappingComplianceFrequencyDisplayText} ${geomappingComplianceFrequency}: ${geomappingEnrolleesMeetingStandard}`;
+          }
+          if (geomappingEnrolleesMeetingStandard !== notAnsweredOptional) {
+            geomappingComplianceFrequencyDisplayText = `${geomappingComplianceFrequencyDisplayText}:`;
+          }
+          geomappingInfo.push(geomappingComplianceFrequencyDisplayText);
+
+          // percent of enrollees quarterly
+          findNestedData(geomappingKeys, "_q1PercentMetStandard") &&
+            geomappingInfo.push(
+              `Q1 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q1PercentMetStandard"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q2PercentMetStandard") &&
+            geomappingInfo.push(
+              `Q2 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q2PercentMetStandard"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q3PercentMetStandard") &&
+            geomappingInfo.push(
+              `Q3 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q3PercentMetStandard"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q4PercentMetStandard") &&
+            geomappingInfo.push(
+              `Q4 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q4PercentMetStandard"
+              )}`
+            );
+
+          // actual max time quarterly
+          findNestedData(geomappingKeys, "_q1ActualMaxTime") &&
+            geomappingInfo.push(
+              `Q1 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q1ActualMaxTime"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q2ActualMaxTime") &&
+            geomappingInfo.push(
+              `Q2 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q2ActualMaxTime"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q3ActualMaxTime") &&
+            geomappingInfo.push(
+              `Q3 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q3ActualMaxTime"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q4ActualMaxTime") &&
+            geomappingInfo.push(
+              `Q4 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q4ActualMaxTime"
+              )}`
+            );
+
+          // actual max distance quarterly
+          findNestedData(geomappingKeys, "_q1ActualMaxDist") &&
+            geomappingInfo.push(
+              `Q1 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q1ActualMaxDist"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q2ActualMaxDist") &&
+            geomappingInfo.push(
+              `Q2 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q2ActualMaxDist"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q3ActualMaxDist") &&
+            geomappingInfo.push(
+              `Q3 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q3ActualMaxDist"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_q4ActualMaxDist") &&
+            geomappingInfo.push(
+              `Q4 (optional): ${findNestedData(
+                geomappingKeys,
+                "_q4ActualMaxDist"
+              )}`
+            );
+
+          // percent of enrollees annually
+          findNestedData(geomappingKeys, "_annualPercentMetStandard") &&
+            geomappingInfo.push(
+              `Annual (optional): ${findNestedData(
+                geomappingKeys,
+                "_annualPercentMetStandard"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_annualPercentMetStandardDate") &&
+            geomappingInfo.push(
+              `Date of analysis of annual snapshot (optional): ${findNestedData(
+                geomappingKeys,
+                "_annualPercentMetStandardDate"
+              )}`
+            );
+
+          // actual max time annually
+          findNestedData(geomappingKeys, "_annualMaxTime") &&
+            geomappingInfo.push(
+              `Annual (optional): ${findNestedData(
+                geomappingKeys,
+                "_annualMaxTime"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_annualMaxTimeDate") &&
+            geomappingInfo.push(
+              `Date of analysis of annual snapshot (optional): ${findNestedData(
+                geomappingKeys,
+                "_annualMaxTimeDate"
+              )}`
+            );
+
+          // actual max distance annually
+          findNestedData(geomappingKeys, "_actualMaxDistance") &&
+            geomappingInfo.push(
+              `Annual (optional): ${findNestedData(
+                geomappingKeys,
+                "_actualMaxDistance"
+              )}`
+            );
+          findNestedData(geomappingKeys, "_actualMaxDistanceDate") &&
+            geomappingInfo.push(
+              `Date of analysis of annual snapshot (optional): ${findNestedData(
+                geomappingKeys,
+                "_actualMaxDistanceDate"
+              )}`
+            );
+
+          // add in to analysis methods array
+          analysisMethodsUsed.splice(
+            indexOfGeomapping + 1,
+            0,
+            ...geomappingInfo
+          );
+        }
+
         return {
           heading: `Plan deficiencies for ${
             plan?.name || "plan"
@@ -152,7 +341,7 @@ export const getFormattedEntityData = (
             },
             {
               question: "Analyses used to identify deficiencies",
-              answer: analysisMethodsUsed.join(", "),
+              answer: analysisMethodsUsed,
             },
             {
               question: "What the plan will do to achieve compliance",

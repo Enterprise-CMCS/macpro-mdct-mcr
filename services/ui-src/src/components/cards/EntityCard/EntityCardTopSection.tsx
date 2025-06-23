@@ -155,7 +155,13 @@ export const EntityCardTopSection = ({
             return (
               <Box key={`${q.question} ${q.answer}`}>
                 <Text sx={sx.subtitle}>{q.question}</Text>
-                <Text sx={sx.subtext}>{q.answer}</Text>
+                {Array.isArray(q.answer) ? (
+                  q.answer.map((answer) => (
+                    <Text sx={sx.subtext}>{answer}</Text>
+                  ))
+                ) : (
+                  <Text sx={sx.subtext}>{q.answer}</Text>
+                )}
               </Box>
             );
           })}
