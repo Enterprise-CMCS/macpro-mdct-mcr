@@ -17,6 +17,7 @@ Managed Care is a health care delivery system organized to manage cost, utilizat
 
 States submit three reports:
 
+
 - MCPAR (Managed Care Program Annual Report): A report for states to complete annually for each Medicaid managed care program
 - MLR (Medical Loss Ratio): A report for states to complete annually or when contract terms change
 - NAAAR (Network Adequacy and Access Assurances Report): A report that focuses on determining assurance of compliance to CMS that the each MCO, PIHP, and PAHP meets the state’s requirement for availability of services
