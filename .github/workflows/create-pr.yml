@@ -9,6 +9,9 @@ on:
       base_branch:
         required: true
         type: string
+      pr_label:
+        required: false
+        type: string
       pr_title:
         required: true
         type: string
@@ -36,6 +39,7 @@ jobs:
         run: |
           echo "HEAD_BRANCH=${{ inputs.head_branch }}" >> $GITHUB_ENV
           echo "BASE_BRANCH=${{ inputs.base_branch }}" >> $GITHUB_ENV
+          echo "PR_LABEL=${{ inputs.pr_label || '' }}" >> $GITHUB_ENV
       - name: Generate PR body
         id: pr_body
         run: |
@@ -151,3 +155,13 @@ jobs:
           PR_NUMBER: ${{ steps.check_pr.outputs.number }}
           PR_TITLE: ${{ steps.pr_title.outputs.title }}
           RAW_BODY: ${{ steps.pr_body.outputs.body }}
+      - name: Add label to PR
+        if: steps.pr_body.outputs.skip != 'true' && inputs.pr_label != ''
+        run: |
+          echo "Labeling PR #$PR_NUMBER"
+          gh pr edit $PR_NUMBER --add-label "$PR_LABEL"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.check_pr.outputs.number }}
+          PR_LABEL: ${{ inputs.pr_label }}
+
