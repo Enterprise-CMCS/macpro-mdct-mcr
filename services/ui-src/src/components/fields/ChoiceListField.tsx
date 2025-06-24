@@ -180,7 +180,7 @@ export const ChoiceListField = ({
 
   const setCheckedOrUnchecked = (choice: FieldChoice) => {
     const checkedState = displayValue?.find(
-      (option) => option.value === choice.value
+      (option) => option.value === choice.value || option.key === choice.id
     );
     choice.checked = !!checkedState;
   };

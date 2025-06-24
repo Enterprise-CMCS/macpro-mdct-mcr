@@ -198,6 +198,28 @@ describe("<ChoiceListField />", () => {
       </ReportContext.Provider>
     );
 
+    const CheckboxHydrationIDKeyComponent = (
+      <ReportContext.Provider value={mockMcparReportContext}>
+        <ChoiceListField
+          choices={[
+            ...mockChoices,
+            {
+              id: "Choice 3",
+              name: "Choice 3",
+              label: "Choice 3",
+              value: "Different value",
+              checked: false,
+            },
+          ]}
+          label="Checkbox Hydration Example"
+          name="checkboxHydrationField"
+          type="checkbox"
+          hydrate={[{ key: "Choice 3", value: "Choice 3" }]}
+          autosave
+        />
+      </ReportContext.Provider>
+    );
+
     const RadioHydrationComponent = (
       <ReportContext.Provider value={mockMcparReportContext}>
         <ChoiceListField
@@ -252,6 +274,24 @@ describe("<ChoiceListField />", () => {
       // Confirm hydration successfully made the first value checked
       expect(firstCheckbox).not.toBeChecked();
       expect(secondCheckbox).toBeChecked();
+    });
+
+    test("Checkbox Choicelist hydrates as long as key is the same as ID", () => {
+      /*
+       * Set the mock of form.GetValues to return a users choice of the first checkbox being checked
+       * so that even though hydration is passed as having Choice 1 as checked, the users input is respected instead
+       */
+      mockGetValues(undefined);
+
+      // Create the Checkbox Component
+      const wrapper = render(CheckboxHydrationIDKeyComponent);
+      const thirdCheckbox = wrapper.getByRole("checkbox", { name: "Choice 3" });
+      const secondCheckbox = wrapper.getByRole("checkbox", {
+        name: "Choice 2",
+      });
+
+      expect(thirdCheckbox).toBeChecked();
+      expect(secondCheckbox).not.toBeChecked();
     });
 
     test("Checkbox Choicelist correctly clearing nested checkbox values if clear prop is set to true", () => {
