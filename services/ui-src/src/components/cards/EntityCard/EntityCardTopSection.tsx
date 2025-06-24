@@ -152,16 +152,13 @@ export const EntityCardTopSection = ({
         <>
           <Text sx={sx.planHeading}>{formattedEntityData.heading}</Text>
           {formattedEntityData?.questions?.map((q: AnyObject) => {
+            const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
             return (
               <Box key={`${q.question} ${q.answer}`}>
                 <Text sx={sx.subtitle}>{q.question}</Text>
-                {Array.isArray(q.answer) ? (
-                  q.answer.map((answer) => (
-                    <Text sx={sx.subtext}>{answer}</Text>
-                  ))
-                ) : (
-                  <Text sx={sx.subtext}>{q.answer}</Text>
-                )}
+                {answers.map((answer) => (
+                  <Text sx={sx.subtext}>{answer}</Text>
+                ))}
               </Box>
             );
           })}

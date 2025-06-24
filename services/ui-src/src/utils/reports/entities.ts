@@ -10,6 +10,28 @@ import {
 // utils
 import { compareText, maskResponseData, otherSpecify, translate } from "utils";
 
+const notAnsweredOptionalText = "Not answered, optional";
+
+const findEntityDataByKey = (
+  keys: any[],
+  keyMatchText: string,
+  entity: EntityShape
+) => {
+  // find matching key in field data keys
+  const dataKey: string = keys.find((key: string) =>
+    key.endsWith(keyMatchText)
+  );
+
+  if (!dataKey) return;
+
+  if (Array.isArray(entity[dataKey])) {
+    if (entity[dataKey].length < 1) return;
+    return entity[dataKey]?.[0]?.value;
+  }
+  if (entity[dataKey] === "") return;
+  return entity[dataKey];
+};
+
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
     entity?.[label]?.[0].value,
@@ -120,215 +142,242 @@ export const getFormattedEntityData = (
 
       // display information for non-compliant standards
       if (plan?.exceptionsNonCompliance === nonComplianceStatus) {
+        // get all analysis methods selected in plan non-compliance
         const planKeys = Object.keys(plan);
-        const nonComplianceDescriptionKey: any = planKeys.find((key: string) =>
-          key.endsWith("-nonComplianceDescription")
-        );
         const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
           key.endsWith("-nonComplianceAnalyses")
         );
-        const nonCompliancePlanToAchieveComplianceKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonCompliancePlanToAchieveCompliance")
-        );
-        const nonComplianceMonitoringProgressKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonComplianceMonitoringProgress")
-        );
-        const nonComplianceReassessmentDateKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonComplianceReassessmentDate")
-        );
-
         const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
           (method: EntityShape) => method.value
         );
 
-        const notAnsweredOptional = "Not answered; optional";
-
-        const findNestedData = (keys: any[], keyMatchText: string) => {
-          // compliance frequency and type
-          const dataKey: string = keys.find((key: string) =>
-            key.endsWith(keyMatchText)
-          );
-          if (dataKey) {
-            if (Array.isArray(plan[dataKey])) {
-              const value = plan[dataKey]?.[0]?.value;
-              return value ?? notAnsweredOptional;
-            }
-            return `${plan[dataKey]}` ?? notAnsweredOptional;
-          }
-          return;
-        };
-
+        // find geomapping data for display
         const indexOfGeomapping = analysisMethodsUsed.indexOf("Geomapping");
-        if (indexOfGeomapping >= 0) {
-          const geomappingInfo: any[] = [];
+        if (indexOfGeomapping > -1) {
+          const geomappingDisplayInfo: any[] = [];
           const geomappingKeys: any = planKeys.filter((key: string) =>
             key.includes("_geomappingComplianceFrequency")
           );
 
           // compliance frequency and type
-          const geomappingComplianceFrequency = findNestedData(
+          const geomappingComplianceFrequency = findEntityDataByKey(
             geomappingKeys,
-            "_geomappingComplianceFrequency"
+            "_geomappingComplianceFrequency",
+            plan
           );
-          const geomappingEnrolleesMeetingStandard = findNestedData(
+          const geomappingEnrolleesMeetingStandard = findEntityDataByKey(
             geomappingKeys,
-            "_enrolleesMeetingStandard"
+            "_enrolleesMeetingStandard",
+            plan
           );
-          // show second if first is not notansweredOptional
-          let geomappingComplianceFrequencyDisplayText = `Frequency of compliance findings (optional):`;
-          if (geomappingComplianceFrequency !== notAnsweredOptional) {
-            geomappingComplianceFrequencyDisplayText = `${geomappingComplianceFrequencyDisplayText} ${geomappingComplianceFrequency}: ${geomappingEnrolleesMeetingStandard}`;
+          // show second if first is not notansweredOptionalText
+          let geomappingComplianceFrequencyDisplayText =
+            "Frequency of compliance findings (optional): ";
+          if (!geomappingComplianceFrequency) {
+            geomappingComplianceFrequencyDisplayText += notAnsweredOptionalText;
+          } else if (!geomappingEnrolleesMeetingStandard) {
+            geomappingComplianceFrequencyDisplayText += `${geomappingComplianceFrequency}: ${notAnsweredOptionalText}`;
+          } else {
+            geomappingComplianceFrequencyDisplayText += `${geomappingComplianceFrequency}: ${geomappingEnrolleesMeetingStandard}:`;
           }
-          if (geomappingEnrolleesMeetingStandard !== notAnsweredOptional) {
-            geomappingComplianceFrequencyDisplayText = `${geomappingComplianceFrequencyDisplayText}:`;
+          geomappingDisplayInfo.push(geomappingComplianceFrequencyDisplayText);
+
+          const geomappingData = [
+            // percent of enrollees quarterly
+            { label: "Q1 (optional)", key: "_q1PercentMetStandard" },
+            { label: "Q2 (optional)", key: "_q2PercentMetStandard" },
+            { label: "Q3 (optional)", key: "_q3PercentMetStandard" },
+            { label: "Q4 (optional)", key: "_q4PercentMetStandard" },
+            // actual max time quarterly
+            { label: "Q1 (optional)", key: "_q1ActualMaxTime" },
+            { label: "Q2 (optional)", key: "_q2ActualMaxTime" },
+            { label: "Q3 (optional)", key: "_q3ActualMaxTime" },
+            { label: "Q4 (optional)", key: "_q4ActualMaxTime" },
+            // actual max distance quarterly
+            { label: "Q1 (optional)", key: "_q1ActualMaxDist" },
+            { label: "Q2 (optional)", key: "_q2ActualMaxDist" },
+            { label: "Q3 (optional)", key: "_q3ActualMaxDist" },
+            { label: "Q4 (optional)", key: "_q4ActualMaxDist" },
+            // percent of enrollees annually
+            { label: "Annual (optional)", key: "_annualPercentMetStandard" },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_annualPercentMetStandardDate",
+            },
+            // actual max time annually
+            { label: "Annual (optional)", key: "_annualMaxTime" },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_annualMaxTimeDate",
+            },
+            // actual max distance annually
+            { label: "Annual (optional)", key: "_actualMaxDistance" },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_actualMaxDistanceDate",
+            },
+          ];
+
+          for (const { label, key } of geomappingData) {
+            const value = findEntityDataByKey(geomappingKeys, key, plan);
+            if (value) {
+              geomappingDisplayInfo.push(`${label}: ${value}`);
+            }
           }
-          geomappingInfo.push(geomappingComplianceFrequencyDisplayText);
-
-          // percent of enrollees quarterly
-          findNestedData(geomappingKeys, "_q1PercentMetStandard") &&
-            geomappingInfo.push(
-              `Q1 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q1PercentMetStandard"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q2PercentMetStandard") &&
-            geomappingInfo.push(
-              `Q2 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q2PercentMetStandard"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q3PercentMetStandard") &&
-            geomappingInfo.push(
-              `Q3 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q3PercentMetStandard"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q4PercentMetStandard") &&
-            geomappingInfo.push(
-              `Q4 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q4PercentMetStandard"
-              )}`
-            );
-
-          // actual max time quarterly
-          findNestedData(geomappingKeys, "_q1ActualMaxTime") &&
-            geomappingInfo.push(
-              `Q1 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q1ActualMaxTime"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q2ActualMaxTime") &&
-            geomappingInfo.push(
-              `Q2 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q2ActualMaxTime"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q3ActualMaxTime") &&
-            geomappingInfo.push(
-              `Q3 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q3ActualMaxTime"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q4ActualMaxTime") &&
-            geomappingInfo.push(
-              `Q4 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q4ActualMaxTime"
-              )}`
-            );
-
-          // actual max distance quarterly
-          findNestedData(geomappingKeys, "_q1ActualMaxDist") &&
-            geomappingInfo.push(
-              `Q1 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q1ActualMaxDist"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q2ActualMaxDist") &&
-            geomappingInfo.push(
-              `Q2 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q2ActualMaxDist"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q3ActualMaxDist") &&
-            geomappingInfo.push(
-              `Q3 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q3ActualMaxDist"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_q4ActualMaxDist") &&
-            geomappingInfo.push(
-              `Q4 (optional): ${findNestedData(
-                geomappingKeys,
-                "_q4ActualMaxDist"
-              )}`
-            );
-
-          // percent of enrollees annually
-          findNestedData(geomappingKeys, "_annualPercentMetStandard") &&
-            geomappingInfo.push(
-              `Annual (optional): ${findNestedData(
-                geomappingKeys,
-                "_annualPercentMetStandard"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_annualPercentMetStandardDate") &&
-            geomappingInfo.push(
-              `Date of analysis of annual snapshot (optional): ${findNestedData(
-                geomappingKeys,
-                "_annualPercentMetStandardDate"
-              )}`
-            );
-
-          // actual max time annually
-          findNestedData(geomappingKeys, "_annualMaxTime") &&
-            geomappingInfo.push(
-              `Annual (optional): ${findNestedData(
-                geomappingKeys,
-                "_annualMaxTime"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_annualMaxTimeDate") &&
-            geomappingInfo.push(
-              `Date of analysis of annual snapshot (optional): ${findNestedData(
-                geomappingKeys,
-                "_annualMaxTimeDate"
-              )}`
-            );
-
-          // actual max distance annually
-          findNestedData(geomappingKeys, "_actualMaxDistance") &&
-            geomappingInfo.push(
-              `Annual (optional): ${findNestedData(
-                geomappingKeys,
-                "_actualMaxDistance"
-              )}`
-            );
-          findNestedData(geomappingKeys, "_actualMaxDistanceDate") &&
-            geomappingInfo.push(
-              `Date of analysis of annual snapshot (optional): ${findNestedData(
-                geomappingKeys,
-                "_actualMaxDistanceDate"
-              )}`
-            );
 
           // add in to analysis methods array
           analysisMethodsUsed.splice(
             indexOfGeomapping + 1,
             0,
-            ...geomappingInfo
+            ...geomappingDisplayInfo
           );
         }
+
+        // find plan provider directory review data for display
+        const indexOfPpdr = analysisMethodsUsed.indexOf(
+          "Plan Provider Directory Review"
+        );
+        if (indexOfPpdr > -1) {
+          const ppdrDisplayInfo: any[] = [];
+          const ppdrKeys: any = planKeys.filter((key: string) =>
+            key.includes("_ppdrComplianceFrequency")
+          );
+
+          // compliance frequency and type
+          const ppdrComplianceFrequency = findEntityDataByKey(
+            ppdrKeys,
+            "_ppdrComplianceFrequency",
+            plan
+          );
+          const ppdrEnrolleesMeetingStandard = findEntityDataByKey(
+            ppdrKeys,
+            "_enrolleesMeetingStandard",
+            plan
+          );
+          // show second if first is not notansweredOptionalText
+          let ppdrComplianceFrequencyDisplayText =
+            "Frequency of compliance findings (optional): ";
+          if (!ppdrComplianceFrequency) {
+            ppdrComplianceFrequencyDisplayText += notAnsweredOptionalText;
+          } else if (!ppdrEnrolleesMeetingStandard) {
+            ppdrComplianceFrequencyDisplayText += `${ppdrComplianceFrequency}: ${notAnsweredOptionalText}`;
+          } else {
+            ppdrComplianceFrequencyDisplayText += `${ppdrComplianceFrequency}: ${ppdrEnrolleesMeetingStandard}:`;
+          }
+          ppdrDisplayInfo.push(ppdrComplianceFrequencyDisplayText);
+
+          const ppdrData = [
+            // number of network providers quarterly
+            { label: "Q1 (optional)", key: "_q1NumberOfNetworkProviders" },
+            { label: "Q2 (optional)", key: "_q2NumberOfNetworkProviders" },
+            { label: "Q3 (optional)", key: "_q3NumberOfNetworkProviders" },
+            { label: "Q4 (optional)", key: "_q4NumberOfNetworkProviders" },
+            // provider to enrollee ratio quarterly
+            { label: "Q1 (optional)", key: "_q1ProviderToEnrolleeRatio" },
+            { label: "Q2 (optional)", key: "_q2ProviderToEnrolleeRatio" },
+            { label: "Q3 (optional)", key: "_q3ProviderToEnrolleeRatio" },
+            { label: "Q4 (optional)", key: "_q4ProviderToEnrolleeRatio" },
+            // number of network providers annually
+            {
+              label: "Annual (optional)",
+              key: "_annualMinimumNumberOfNetworkProviders",
+            },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_annualMinimumNumberOfNetworkProvidersDate",
+            },
+            // provider to enrollee ratio annually
+            {
+              label: "Annual (optional)",
+              key: "_annualProviderToEnrolleeRatio",
+            },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_annualProviderToEnrolleeRatioDate",
+            },
+          ];
+
+          for (const { label, key } of ppdrData) {
+            const value = findEntityDataByKey(ppdrKeys, key, plan);
+            if (value) {
+              ppdrDisplayInfo.push(`${label}: ${value}`);
+            }
+          }
+
+          // add in to analysis methods array
+          analysisMethodsUsed.splice(indexOfPpdr + 1, 0, ...ppdrDisplayInfo);
+        }
+
+        // find secret shopper: appointment availability data for display
+        const indexOfSsaa = analysisMethodsUsed.indexOf(
+          "Secret Shopper: Appointment Availability"
+        );
+        if (indexOfSsaa > -1) {
+          const ssaaDisplayInfo: any[] = [];
+          const ssaaKeys: any = planKeys.filter((key: string) =>
+            key.includes("_ssaaComplianceFrequency")
+          );
+
+          // compliance frequency
+          const ssaaComplianceFrequency = findEntityDataByKey(
+            ssaaKeys,
+            "_ssaaComplianceFrequency",
+            plan
+          );
+
+          let ssaaComplianceFrequencyDisplayText = `Frequency of compliance findings (optional): `;
+          if (!ssaaComplianceFrequency) {
+            ssaaComplianceFrequencyDisplayText += notAnsweredOptionalText;
+          } else {
+            ssaaComplianceFrequencyDisplayText += `${ssaaComplianceFrequency}:`;
+          }
+          ssaaDisplayInfo.push(ssaaComplianceFrequencyDisplayText);
+
+          const ssaaData = [
+            // quarterly
+            { label: "Q1 (optional)", key: "_q1Ssaa" },
+            { label: "Q2 (optional)", key: "_q2Ssaa" },
+            { label: "Q3 (optional)", key: "_q3Ssaa" },
+            { label: "Q4 (optional)", key: "_q4Ssaa" },
+            // number of network providers annually
+            { label: "Annual (optional)", key: "_annualSsaa" },
+            {
+              label: "Date of analysis of annual snapshot (optional)",
+              key: "_annualDateSsaa",
+            },
+          ];
+
+          for (const { label, key } of ssaaData) {
+            const value = findEntityDataByKey(ssaaKeys, key, plan);
+            if (value) {
+              ssaaDisplayInfo.push(`${label}: ${value}`);
+            }
+          }
+
+          // add in to analysis methods array
+          analysisMethodsUsed.splice(indexOfSsaa + 1, 0, ...ssaaDisplayInfo);
+        }
+
+        const nonCompliancePlanToAchieveCompliance = findEntityDataByKey(
+          planKeys,
+          "-nonCompliancePlanToAchieveCompliance",
+          plan
+        );
+        const nonComplianceMonitoringProgress = findEntityDataByKey(
+          planKeys,
+          "-nonComplianceMonitoringProgress",
+          plan
+        );
+        const nonComplianceReassessmentDate = findEntityDataByKey(
+          planKeys,
+          "-nonComplianceReassessmentDate",
+          plan
+        );
+        const nonComplianceDescription = findEntityDataByKey(
+          planKeys,
+          "-nonComplianceDescription",
+          plan
+        );
 
         return {
           heading: `Plan deficiencies for ${
@@ -337,7 +386,7 @@ export const getFormattedEntityData = (
           questions: [
             {
               question: "Description",
-              answer: plan[nonComplianceDescriptionKey],
+              answer: nonComplianceDescription,
             },
             {
               question: "Analyses used to identify deficiencies",
@@ -345,15 +394,15 @@ export const getFormattedEntityData = (
             },
             {
               question: "What the plan will do to achieve compliance",
-              answer: plan[nonCompliancePlanToAchieveComplianceKey],
+              answer: nonCompliancePlanToAchieveCompliance,
             },
             {
               question: "Monitoring progress",
-              answer: plan[nonComplianceMonitoringProgressKey],
+              answer: nonComplianceMonitoringProgress,
             },
             {
               question: "Reassessment date",
-              answer: plan[nonComplianceReassessmentDateKey],
+              answer: nonComplianceReassessmentDate,
             },
           ],
         };
@@ -362,11 +411,15 @@ export const getFormattedEntityData = (
       // display information for exceptions standards
       if (plan?.exceptionsNonCompliance === exceptionsStatus) {
         const planKeys = Object.keys(plan);
-        const exceptionsDescriptionKey: any = planKeys.find((key: string) =>
-          key.endsWith("-exceptionsDescription")
+        const exceptionsDescription = findEntityDataByKey(
+          planKeys,
+          "-exceptionsDescription",
+          plan
         );
-        const exceptionsJustificationKey: any = planKeys.find((key: string) =>
-          key.endsWith("-exceptionsJustification")
+        const exceptionsJustification = findEntityDataByKey(
+          planKeys,
+          "-exceptionsJustification",
+          plan
         );
 
         return {
@@ -377,12 +430,12 @@ export const getFormattedEntityData = (
             {
               question:
                 "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
-              answer: plan[exceptionsDescriptionKey],
+              answer: exceptionsDescription,
             },
             {
               question:
                 "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
-              answer: plan[exceptionsJustificationKey],
+              answer: exceptionsJustification,
             },
           ],
         };

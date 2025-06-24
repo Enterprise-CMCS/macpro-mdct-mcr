@@ -567,7 +567,7 @@ export const PlanProviderChildJson = [
                     hint: "Report findings on the calculated plan provider to enrollee ratio.",
                     children: [
                       {
-                        id: "annualProvidertoEnrolleeRatio",
+                        id: "annualProviderToEnrolleeRatio",
                         type: "number",
                         validation: "numberNotLessThanZeroOptional",
                         props: {
@@ -577,7 +577,7 @@ export const PlanProviderChildJson = [
                         },
                       },
                       {
-                        id: "annualProvidertoEnrolleeRatioDate",
+                        id: "annualProviderToEnrolleeRatioDate",
                         type: "date",
                         validation: "dateOptional",
                         props: {
@@ -612,7 +612,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
           hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
-              id: "q1PercentMetStandard",
+              id: "q1Ssaa",
               type: "number",
               validation: "numberNotLessThanZeroOptional",
               props: {
@@ -622,7 +622,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "q2PercentMetStandard",
+              id: "q2Ssaa",
               type: "number",
               validation: "numberNotLessThanZeroOptional",
               props: {
@@ -632,7 +632,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "q3PercentMetStandard",
+              id: "q3Ssaa",
               type: "number",
               validation: "numberNotLessThanZeroOptional",
               props: {
@@ -642,7 +642,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "q4PercentMetStandard",
+              id: "q4Ssaa",
               type: "number",
               validation: "numberNotLessThanZeroOptional",
               props: {
@@ -659,7 +659,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
           hint: "Report findings on the percent of plan providers that met the appointment wait time standard.",
           children: [
             {
-              id: "reportResultsAnnually",
+              id: "annualSsaa",
               type: "number",
               validation: "numberNotLessThanZeroOptional",
               props: {
@@ -669,7 +669,7 @@ export const SecretShopperAppointmentAvailabilityChildJson = [
               },
             },
             {
-              id: "annualPercentMetStandardDate",
+              id: "annualDateSsaa",
               type: "date",
               validation: "dateOptional",
               props: {
