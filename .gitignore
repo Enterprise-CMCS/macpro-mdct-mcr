@@ -24,7 +24,6 @@ tests/playwright/.cache/
 .auth/
 /.cdk
 cdk.context.json
-/.serverless
 /.cdk
 cdk.context.json
 .qlty/*

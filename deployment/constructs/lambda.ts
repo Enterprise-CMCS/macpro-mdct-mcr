@@ -20,7 +20,6 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   handler: string;
   timeout?: Duration;
   memorySize?: number;
-  brokerString?: string;
   path?: string;
   method?: string;
   stackName: string;

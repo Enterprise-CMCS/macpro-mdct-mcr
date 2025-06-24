@@ -2,9 +2,7 @@
 import yargs from "yargs";
 import * as dotenv from "dotenv";
 import LabeledProcessRunner from "./runner.js";
-import { ServerlessStageDestroyer } from "@stratiformdigital/serverless-stage-destroyer";
 import { execSync } from "child_process";
-import { addSlsBucketPolicies } from "./slsV4BucketPolicies.js";
 import readline from "node:readline";
 import {
   CloudFormationClient,
@@ -12,10 +10,7 @@ import {
   DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
-/*
- * import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
- * import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
- */
+import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
 dotenv.config();
@@ -78,15 +73,7 @@ function updateEnvFiles() {
     execSync("op inject --in-file .env.tpl --out-file .env --force", {
       stdio: "inherit",
     });
-
-    execSync(
-      "op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f",
-      { stdio: "inherit" }
-    );
     execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
-    execSync(
-      "sed -i '' -e 's/# pragma: allowlist secret//g' services/ui-src/.env"
-    );
   } catch {
     // eslint-disable-next-line no-console
     console.error("Failed to update .env files using 1Password CLI.");
@@ -94,195 +81,58 @@ function updateEnvFiles() {
   }
 }
 
-// run_db_locally runs the local db
-async function run_db_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "db yarn",
-    ["yarn", "install"],
-    "services/database"
-  );
-  await runner.run_command_and_output(
-    "db svls",
-    ["serverless", "dynamodb", "install", "--stage", "local"],
-    "services/database"
-  );
-  runner.run_command_and_output(
-    "db",
-    [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
-      "local",
-      "--lambdaPort",
-      "3003",
-    ],
-    "services/database"
-  );
-}
-
-// run_api_locally uses the serverless-offline plugin to run the api lambdas locally
-async function run_api_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "api deps",
-    ["yarn", "install"],
-    "services/app-api"
-  );
-  runner.run_command_and_output(
-    "api",
-    [
-      "serverless",
-      "offline",
-      "start",
-      "--stage",
-      "local",
-      "--region",
-      "us-east-1",
-      "--httpPort",
-      "3030",
-    ],
-    "services/app-api"
-  );
-}
-
-// run_s3_locally runs s3 locally
-async function run_s3_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "s3 yarn",
-    ["yarn", "install"],
-    "services/uploads"
-  );
-  runner.run_command_and_output(
-    "s3",
-    ["serverless", "s3", "start", "--stage", "local"],
-    "services/uploads"
-  );
-}
-
-/*
- * run_fe_locally runs the frontend and its dependencies locally
- * @ts-ignore
- */
 async function run_fe_locally(runner: LabeledProcessRunner) {
-  await runner.run_command_and_output(
-    "ui deps",
-    ["yarn", "install"],
-    "services/ui-src"
+  const apiUrl = await getCloudFormationStackOutputValue(
+    "mcr-localstack",
+    "ApiUrl"
   );
-  await runner.run_command_and_output(
-    "ui conf",
-    ["./scripts/configure-env.sh", "local"],
-    "services/ui-src"
-  );
-  /*
-   * const apiUrl = await getCloudFormationStackOutputValue(
-   *   "mcr-localstack",
-   *   "ApiUrl"
-   * );
-   */
 
-  // await writeLocalUiEnvFile(apiUrl!);
-
+  await writeLocalUiEnvFile(apiUrl!);
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
-}
-
-// run_all_locally runs all of our services locally
-async function run_all_locally() {
-  const runner = new LabeledProcessRunner();
-
-  run_db_locally(runner);
-  run_s3_locally(runner);
-  run_api_locally(runner);
-  run_fe_locally(runner);
-}
-
-async function install_deps_for_services(runner: LabeledProcessRunner) {
-  for (const service of deployedServices) {
-    await runner.run_command_and_output(
-      "Installing Dependencies",
-      ["yarn", "install", "--frozen-lockfile"],
-      `services/${service}`
-    );
-  }
-}
-
-async function deploy(options: { stage: string }) {
-  const runner = new LabeledProcessRunner();
-  await install_deps_for_services(runner);
-  const deployCmd = ["sls", "deploy", "--stage", options.stage];
-  await runner.run_command_and_output("SLS Deploy", deployCmd, ".");
-  await addSlsBucketPolicies();
-}
-
-async function destroy_stage(options: {
-  stage: string;
-  service: string | undefined;
-  wait: boolean;
-  verify: boolean;
-}) {
-  let destroyer = new ServerlessStageDestroyer();
-  let filters = [
-    {
-      Key: "PROJECT",
-      Value: `${process.env.PROJECT}`,
-    },
-  ];
-  if (options.service) {
-    filters.push({
-      Key: "SERVICE",
-      Value: `${options.service}`,
-    });
-  }
-
-  await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
-    wait: options.wait,
-    filters: filters,
-    verify: options.verify,
-  });
-
-  await delete_topics(options);
 }
 
 async function delete_topics(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
-  await install_deps_for_services(runner);
-  let data = { project: "mcr", stage: options.stage };
-  const deployCmd = [
-    "sls",
-    "invoke",
-    "--stage",
-    "main",
-    "--function",
-    "deleteTopics",
-    "--data",
-    JSON.stringify(data),
-  ];
-  await runner.run_command_and_output(
-    "Remove topics",
-    deployCmd,
-    "services/topics"
+  await prepare_services(runner);
+
+  const lambdaClient = new LambdaClient({ region });
+  const functionName = await getCloudFormationStackOutputValue(
+    `${project}-${options.stage}`,
+    "DeleteTopicsFunctionName"
   );
+
+  const payload = JSON.stringify({ project, stage: options.stage });
+
+  const command = new InvokeCommand({
+    FunctionName: functionName,
+    Payload: Buffer.from(payload),
+  });
+
+  const response = await lambdaClient.send(command);
+  const result = Buffer.from(response.Payload || []).toString();
+  console.log("deleteTopics response:", result);
 }
 
 async function list_topics(options: { stage: string | undefined }) {
   const runner = new LabeledProcessRunner();
-  await install_deps_for_services(runner);
-  let data = { stage: options.stage };
-  const deployCmd = [
-    "sls",
-    "invoke",
-    "--stage",
-    "main",
-    "--function",
-    "listTopics",
-    "--data",
-    JSON.stringify(data),
-  ];
-  await runner.run_command_and_output(
-    "List topics",
-    deployCmd,
-    "services/topics"
+  await prepare_services(runner);
+
+  const lambdaClient = new LambdaClient({ region });
+  const functionName = await getCloudFormationStackOutputValue(
+    `${project}-${options.stage}`,
+    "ListTopicsFunctionName"
   );
+
+  const payload = JSON.stringify({ stage: options.stage });
+
+  const command = new InvokeCommand({
+    FunctionName: functionName,
+    Payload: Buffer.from(payload),
+  });
+
+  const response = await lambdaClient.send(command);
+  const result = Buffer.from(response.Payload || []).toString();
+  console.log("listTopics response:", result);
 }
 
 async function run_cdk_watch(
@@ -326,7 +176,7 @@ function isLocalStackRunning() {
   }
 }
 
-async function run_watch_cdk(options: { stage: string }) {
+async function run_watch(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
@@ -334,21 +184,19 @@ async function run_watch_cdk(options: { stage: string }) {
   run_fe_locally(runner);
 }
 
-/*
- * async function getCloudFormationStackOutputValue(
- *   stackName: string,
- *   outputName: string
- * ) {
- *   const cloudFormationClient = new CloudFormationClient({ region });
- *   const command = new DescribeStacksCommand({ StackName: stackName });
- *   const response = await cloudFormationClient.send(command);
- *   return response.Stacks?.[0]?.Outputs?.find(
- *     (output) => output.OutputKey === outputName
- *   )?.OutputValue;
- * }
- */
+async function getCloudFormationStackOutputValue(
+  stackName: string,
+  outputName: string
+) {
+  const cloudFormationClient = new CloudFormationClient({ region });
+  const command = new DescribeStacksCommand({ StackName: stackName });
+  const response = await cloudFormationClient.send(command);
+  return response.Stacks?.[0]?.Outputs?.find(
+    (output) => output.OutputKey === outputName
+  )?.OutputValue;
+}
 
-async function run_local_cdk() {
+async function run_local() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
 
@@ -420,23 +268,6 @@ async function run_local_cdk() {
     "."
   );
 
-  /*
-   * const seedDataFunctionName = await getCloudFormationStackOutputValue(
-   *   "mcr-localstack",
-   *   "SeedDataFunctionName"
-   * );
-   */
-
-  /*
-   * const lambdaClient = new LambdaClient({ region: "us-east-1" });
-   * const lambdaCommand = new InvokeCommand({
-   *   FunctionName: seedDataFunctionName,
-   *   InvocationType: "Event",
-   *   Payload: Buffer.from(JSON.stringify({})),
-   * });
-   * await lambdaClient.send(lambdaCommand);
-   */
-
   runner.run_command_and_output(
     "CDK local watch",
     [
@@ -466,7 +297,7 @@ async function prepare_services(runner: LabeledProcessRunner) {
   }
 }
 
-async function deploy_cdk_prerequisites() {
+async function deploy_prerequisites() {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   const deployPrequisitesCmd = [
@@ -493,7 +324,7 @@ const stackExists = async (stackName: string): Promise<boolean> => {
   }
 };
 
-async function deploy_cdk(options: { stage: string }) {
+async function deploy(options: { stage: string }) {
   const runner = new LabeledProcessRunner();
   await prepare_services(runner);
   if (await stackExists("mcr-prerequisites")) {
@@ -527,7 +358,7 @@ const waitForStackDeleteComplete = async (
   );
 };
 
-async function destroy_cdk({
+async function destroy({
   stage,
   wait,
   verify,
@@ -544,6 +375,8 @@ async function destroy_cdk({
   }
 
   if (verify) await confirmDestroyCommand(stackName);
+
+  await delete_topics({ stage });
 
   const client = new CloudFormationClient({ region });
   await client.send(new DeleteStackCommand({ StackName: stackName }));
@@ -569,69 +402,43 @@ async function destroy_cdk({
  * All valid arguments to dev should be enumerated here, this is the entrypoint to the script
  */
 yargs(process.argv.slice(2))
-  .command("local", "run system locally", {}, run_all_locally)
   .command(
-    "watch-cdk",
+    "watch",
     "run cdk watch and react together",
     { stage: { type: "string", demandOption: true } },
-    run_watch_cdk
+    run_watch
   )
   .command(
-    "local-cdk",
+    "local",
     "run our app via cdk deployment to localstack locally and react locally together",
     {},
-    run_local_cdk
+    run_local
   )
   .command(
-    "deploy-cdk-prerequisites",
+    "deploy-prerequisites",
     "deploy the app's AWS account prerequisites with cdk to the cloud",
     () => {},
-    deploy_cdk_prerequisites
+    deploy_prerequisites
   )
   .command(
     "deploy",
-    "deploy the app with serverless compose to the cloud",
+    "deploy the app with cdk to the cloud",
     { stage: { type: "string", demandOption: true } },
     deploy
   )
   .command(
     "destroy",
-    "destroy serverless stage",
-    {
-      stage: { type: "string", demandOption: true },
-      service: { type: "string", demandOption: false },
-      wait: { type: "boolean", demandOption: false, default: true },
-      verify: { type: "boolean", demandOption: false, default: true },
-    },
-    destroy_stage
-  )
-  .command(
-    "local_cdk",
-    "run our app via cdk deployment to localstack locally and react locally together",
-    {},
-    run_local_cdk
-  )
-  .command(
-    "deploy_cdk",
-    "deploy the app with cdk to the cloud",
-    {
-      stage: { type: "string", demandOption: true },
-    },
-    deploy_cdk
-  )
-  .command(
-    "destroy_cdk",
     "destroy a cdk stage in AWS",
     {
       stage: { type: "string", demandOption: true },
       wait: { type: "boolean", demandOption: false, default: true },
       verify: { type: "boolean", demandOption: false, default: true },
     },
-    destroy_cdk
+    destroy
   )
   .command(
     "delete-topics",
-    "delete topics tied to serverless stage",
+    "delete topics tied to stage",
     {
       stage: { type: "string", demandOption: true },
     },

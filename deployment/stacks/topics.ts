@@ -10,8 +10,6 @@ import { Lambda } from "../constructs/lambda";
 
 interface CreateTopicsComponentsProps {
   brokerString: string;
-  iamPath: string;
-  iamPermissionsBoundary: iam.IManagedPolicy;
   customResourceRole: iam.Role;
   isDev: boolean;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
@@ -24,8 +22,6 @@ interface CreateTopicsComponentsProps {
 export function createTopicsComponents(props: CreateTopicsComponentsProps) {
   const {
     brokerString,
-    iamPath,
-    iamPermissionsBoundary,
     isDev,
     kafkaAuthorizedSubnets,
     customResourceRole,
@@ -56,8 +52,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       brokerString,
       project,
     },
-    iamPermissionsBoundary,
-    iamPath,
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [lambdaSecurityGroup],
@@ -67,6 +61,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     entry: "services/topics/handlers/createTopics.js",
     handler: "handler",
     timeout: Duration.seconds(60),
+    retryAttempts: 0,
     ...commonProps,
     environment: {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
@@ -93,6 +88,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     entry: "services/topics/handlers/listTopics.js",
     handler: "handler",
     timeout: Duration.seconds(300),
+    retryAttempts: 0,
     ...commonProps,
   });
 

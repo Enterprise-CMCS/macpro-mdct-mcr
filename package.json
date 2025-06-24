@@ -14,7 +14,10 @@
     "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
     "test:e2e-ui": "cd tests && yarn run test:e2e-ui",
-    "track-flags": "./scripts/track-flags.sh"
+    "track-flags": "./scripts/track-flags.sh",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk"
   },
   "repository": {
     "type": "git",
@@ -27,20 +30,20 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "axios": "^1.7.9",
-    "fast-xml-parser": "4.5.1",
-    "loader-utils": "2.0.4",
-    "tar": "^6.2.1",
-    "webpack": "^5.97.1",
     "@aws-sdk/client-cloudformation": "^3.758.0",
     "@aws-sdk/client-cloudfront": "^3.758.0",
     "@aws-sdk/client-lambda": "^3.758.0",
     "@aws-sdk/client-s3": "^3.758.0",
     "@aws-sdk/client-secrets-manager": "^3.758.0",
+    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
     "aws-cdk-lib": "^2.185.0",
+    "axios": "^1.7.9",
     "constructs": "^10.3.0",
-    "source-map-support": "^0.5.21"
+    "fast-xml-parser": "4.5.1",
+    "loader-utils": "2.0.4",
+    "source-map-support": "^0.5.21",
+    "tar": "^6.2.1",
+    "webpack": "^5.97.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
@@ -65,7 +68,7 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest-environment-jsdom": "^29.7.0",
-    "prettier": "^2.4.1",
+    "prettier": "^3.6.1",
     "serverless": "^4.4.18",
     "serverless-cloudfront-invalidate": "^1.11.0",
     "serverless-dotenv-plugin": "^3.0.0",

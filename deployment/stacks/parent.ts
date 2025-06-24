@@ -1,5 +1,12 @@
 import { Construct } from "constructs";
-import { Aws, CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import {
+  Aws,
+  CfnOutput,
+  Stack,
+  StackProps,
+  aws_ec2 as ec2,
+  aws_s3 as s3,
+} from "aws-cdk-lib";
 import { DeploymentConfigProperties } from "../deployment-config";
 import { createDataComponents } from "./data";
 import { createUiAuthComponents } from "./ui-auth";
@@ -8,6 +15,8 @@ import { createApiComponents } from "./api";
 import { deployFrontend } from "./deployFrontend";
 import { createCustomResourceRole } from "./customResourceRole";
 import { isLocalStack } from "../local/util";
+import { getSubnets } from "../utils/vpc";
+import { createTopicsComponents } from "./topics";
 
 export class ParentStack extends Stack {
   constructor(
@@ -15,7 +24,12 @@ export class ParentStack extends Stack {
     id: string,
     props: StackProps & DeploymentConfigProperties
   ) {
-    const { isDev, secureCloudfrontDomainName } = props;
+    const {
+      isDev,
+      secureCloudfrontDomainName,
+      vpcName,
+      kafkaAuthorizedSubnetIds,
+    } = props;
 
     super(scope, id, {
       ...props,
@@ -25,14 +39,25 @@ export class ParentStack extends Stack {
     const commonProps = {
       scope: this,
       ...props,
+      isDev,
     };
 
-    const customResourceRole = createCustomResourceRole({ ...commonProps });
+    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+    const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
-    const { tables } = createDataComponents({
-      ...commonProps,
-      customResourceRole,
-    });
+    const customResourceRole = createCustomResourceRole(commonProps);
+
+    const loggingBucket = s3.Bucket.fromBucketName(
+      this,
+      "LoggingBucket",
+      `cms-cloud-${Aws.ACCOUNT_ID}-${Aws.REGION}`
+    );
+
+    const { tables, mcparFormBucket, mlrFormBucket, naaarFormBucket } =
+      createDataComponents({
+        ...commonProps,
+        loggingBucket,
+      });
 
     if (isLocalStack) {
       createApiComponents({
@@ -51,6 +76,7 @@ export class ParentStack extends Stack {
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({
         ...commonProps,
+        loggingBucket,
       });
 
     const {
@@ -70,26 +96,38 @@ export class ParentStack extends Stack {
       userPoolId,
       userPoolClientId,
       tables,
+      vpc,
+      kafkaAuthorizedSubnets,
+      mcparFormBucket,
+      mlrFormBucket,
+      naaarFormBucket,
     });
 
     createAuthRole(restApiId);
 
-    deployFrontend({
-      ...commonProps,
-      uiBucket,
-      distribution,
-      apiGatewayRestApiUrl,
-      applicationEndpointUrl:
-        secureCloudfrontDomainName ?? applicationEndpointUrl,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-      customResourceRole,
-    });
+    // deployFrontend({
+    //   ...commonProps,
+    //   uiBucket,
+    //   distribution,
+    //   apiGatewayRestApiUrl,
+    //   applicationEndpointUrl:
+    //     secureCloudfrontDomainName ?? applicationEndpointUrl,
+    //   identityPoolId,
+    //   userPoolId,
+    //   userPoolClientId,
+    //   userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+    //   customResourceRole,
+    // });
 
-    new CfnOutput(this, "CloudFrontUrl", {
-      value: applicationEndpointUrl,
+    // new CfnOutput(this, "CloudFrontUrl", {
+    //   value: applicationEndpointUrl,
+    // });
+
+    createTopicsComponents({
+      ...commonProps,
+      vpc,
+      kafkaAuthorizedSubnets,
+      customResourceRole,
     });
   }
 }

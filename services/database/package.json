@@ -10,7 +10,6 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "aws-dynamodb-local": "^0.0.10",
-    "serverless-dynamodb": "^0.2.53"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.758.0",

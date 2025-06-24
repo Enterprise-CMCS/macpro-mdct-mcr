@@ -11,13 +11,13 @@ export REGION_A=us-east-1
 export PROJECT=mcr
 
 # check node exists
-if ! which node > /dev/null ; then
+if ! which node >/dev/null; then
     echo "node not found on the system. Install version in .nvmrc based on instructions in README"
     exit 1
 fi
 
 # check node version
-if ! diff .nvmrc <(node -v) > /dev/null ; then
+if ! diff .nvmrc <(node -v) >/dev/null; then
     echo "Uh Oh! The current node version does not match the version required in .nvmrc"
     echo "If you have installed nvm, simply running 'nvm use' in this directory should solve the problem"
     echo "If you don't have nvm yet, the instructions in the README should sort you."
@@ -26,16 +26,9 @@ if ! diff .nvmrc <(node -v) > /dev/null ; then
 fi
 
 # check yarn exists
-if ! which yarn > /dev/null ; then
+if ! which yarn >/dev/null; then
     echo "yarn not found on the system. On macOS, you can install it with 'brew install yarn'"
     exit 1
-fi
-
-# check serverless is installed globally.
-if ! which serverless > /dev/null || ! serverless --version 2>&1 | grep -q "Framework 4."; then
-    echo "installing serverless v4 globally"
-    yarn global add serverless@4.4.18
-    export PATH="$PATH:$(yarn global bin)"
 fi
 
 # have to ensure that yarn install is up to date.
@@ -47,6 +40,7 @@ fi
 
 # Parse arguments
 UPDATE_ENV=false
+LOCAL=false
 ARGS=()
 
 for arg in "$@"; do
@@ -54,24 +48,46 @@ for arg in "$@"; do
     update-env)
         UPDATE_ENV=true
         ;;
+    local)
+        LOCAL=true
+        ;;
     esac
     ARGS+=("$arg")
 done
 
 if [ "$UPDATE_ENV" = true ]; then
-    if ! which op > /dev/null; then
+    if ! which op >/dev/null; then
         echo "The MDCT team uses 1Password to store and retrieve development credentials. On macOS, you can install it with 'brew install --cask 1password-cli'"
         exit 1
     fi
-
-    # call 1password vault to retrieve secrets
-    op inject -i .env.tpl -o .env -f
-    op inject -i services/ui-src/.env.tpl -o services/ui-src/.env -f
-    sed -i "" -e "s/# pragma: allowlist secret//g" .env
-    sed -i "" -e "s/# pragma: allowlist secret//g" services/ui-src/.env
 fi
 
-yarn
+if [ "$LOCAL" = true ]; then
+    if ! which docker >/dev/null; then
+        echo "docker not found on the system. On macOS, you can install it with 'brew install docker'"
+        exit 1
+    fi
+
+    if ! which colima >/dev/null; then
+        echo "colima not found on the system. On macOS, you can install it with 'brew install colima'"
+        exit 1
+    fi
+
+    if ! which localstack >/dev/null; then
+        echo "localstack not found on the system. On macOS, you can install it with 'brew install localstack/tap/localstack-cli'"
+        exit 1
+    fi
+
+    if ! colima status 2>&1 | grep -q "colima is running"; then
+        echo "colima installed but not running. We'll start it up for you now."
+        colima start --cpu 4 --memory 10
+    fi
+
+    if ! localstack status | grep -q "running"; then
+        echo "localstack is installed but not running. We'll start it up for you now."
+        localstack start >/dev/null 2>&1 &
+    fi
+fi
 
 # build and run run.ts
 # tsc is configured to build what we expect in tsconfig.json
