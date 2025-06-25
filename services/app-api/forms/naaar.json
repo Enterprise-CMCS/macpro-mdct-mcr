@@ -1195,7 +1195,7 @@
             "validation": "radio",
             "props": {
               "label": "Applicable region",
-              "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. if the standard is statewide but results are analyzed by region type, create a standard for each applicable region.",
+              "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. If the standard is statewide but results are analyzed by region type, create a standard for each applicable region.",
               "choices": [
                 {
                   "id": "KaDliEkRCXvPNlRS7DVjjt9q",
@@ -1386,7 +1386,7 @@
               ]
             },
             "verbiage": {
-              "heading": "Assurance of plan compliance with 42 C.F.R. § 438.68",
+              "heading": "A. Assurance of plan compliance for 438.68",
               "hint": "Indicate whether the state assures that the plan complies with the state’s standards, as required at § 42 C.F.R. 438.68 (i.e. the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
               "intro": {
                 "section": ""
@@ -1536,7 +1536,7 @@
                   }
                 ]
               },
-              "heading": "Assurance of plan compliance with 42 C.F.R. § 438.206",
+              "heading": "B. Assurance of plan compliance for 438.206",
               "hint": "Indicate whether the state assures that the plan complies with the availability of services standards outlined in 42 C.F.R. § 438.206 the analyses the state conducted for the plan during the reporting period."
             }
           }
