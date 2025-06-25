@@ -20,7 +20,7 @@
       "path": "/naaar/state-and-program-information",
       "children": [
         {
-          "name": "State information and reporting scenario",
+          "name": "A. State information and reporting scenario",
           "path": "/naaar/state-and-program-information/state-information-and-reporting-scenario",
           "pageType": "standard",
           "verbiage": {
@@ -203,7 +203,7 @@
           }
         },
         {
-          "name": "Add plans",
+          "name": "B. Add plans",
           "path": "/naaar/state-and-program-information/add-plans",
           "pageType": "standard",
           "verbiage": {
@@ -238,7 +238,7 @@
           }
         },
         {
-          "name": "Provider type coverage",
+          "name": "C. Provider type coverage",
           "path": "/naaar/state-and-program-information/provider-type-coverage",
           "pageType": "standard",
           "verbiage": {
@@ -303,7 +303,7 @@
           }
         },
         {
-          "name": "Analysis methods",
+          "name": "D. Analysis methods",
           "path": "/naaar/state-and-program-information/analysis-methods",
           "pageType": "drawer",
           "entityType": "analysisMethods",
@@ -1378,7 +1378,7 @@
                   ""
                 ]
               ],
-              "caption": "Assurance of plan compliance for 438.68",
+              "caption": "A. Assurance of plan compliance for 438.68",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
@@ -1424,7 +1424,7 @@
                   ""
                 ]
               ],
-              "caption": "Assurance of plan compliance for 438.206",
+              "caption": "B. Assurance of plan compliance for 438.206",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
