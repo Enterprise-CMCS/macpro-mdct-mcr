@@ -331,7 +331,7 @@ export const GeomappingChildJson = [
                     id: "8WCHVPuNhV9cK4nDh1syqX",
                     label:
                       "Percent of enrollees that can access this provider type within the standard",
-                    hint: "",
+                    hint: "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
                     children: [
                       {
                         id: "annualPercentMetStandard",
