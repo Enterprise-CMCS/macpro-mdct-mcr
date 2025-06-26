@@ -31,7 +31,7 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - .*test\.json|^tests/seeds/fixtures/
+          - .*test\.json|^tests/seeds/fixtures/|^services/app-api/utils/constants/copyover.ts
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.0.272

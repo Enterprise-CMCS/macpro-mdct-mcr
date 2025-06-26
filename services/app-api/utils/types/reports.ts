@@ -59,6 +59,7 @@ export interface StandardReportPageShape extends ReportPageShapeBase {
   modalForm?: never;
   overlayForm?: never;
   drawerForm?: never;
+  addEntityDrawerForm?: never;
   entityType?: never;
 }
 
@@ -88,6 +89,7 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   modalForm: FormJson;
   overlayForm?: FormJson;
   drawerForm?: never;
+  addEntityDrawerForm?: never;
   form?: never;
 }
 
@@ -142,6 +144,7 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
   modalForm?: never;
   overlayForm?: never;
   drawerForm?: never;
+  addEntityDrawerForm?: never;
   form?: never;
 }
 

@@ -52,6 +52,7 @@ export const EntityRow = ({
         : [name];
     return fields;
   };
+  const ariaName = name || report_planName;
 
   return (
     <Tr sx={sx.content}>
@@ -79,6 +80,7 @@ export const EntityRow = ({
             <Button
               sx={sx.editButton}
               variant="none"
+              aria-label={`${verbiage.editEntityButtonText} ${ariaName}`}
               onClick={() => openAddEditEntityModal(entity)}
             >
               {verbiage.editEntityButtonText}
@@ -88,6 +90,7 @@ export const EntityRow = ({
             <Button
               sx={sx.enterButton}
               onClick={() => openOverlayOrDrawer(entity)}
+              aria-label={entering ? "" : `${enterDetailsText()} ${ariaName}`}
               variant="outline"
               size="sm"
               disabled={!hasStandards && hasStandards !== undefined}
@@ -102,7 +105,11 @@ export const EntityRow = ({
               onClick={() => openDeleteEntityModal(entity)}
               disabled={locked || !userIsEndUser}
             >
-              <Image src={deleteIcon} alt="delete icon" boxSize="3xl" />
+              <Image
+                src={deleteIcon}
+                alt={`Delete ${ariaName}`}
+                boxSize="3xl"
+              />
             </Button>
           )}
         </Flex>

@@ -118,7 +118,7 @@ export const fillNaaar = (): SeedFillReportShape => {
             {
               key: "planCompliance438206_assurance-zC8SPm68FS8xI9igWQ0BdP",
               value:
-                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                "No, the plan does not comply with all standards based on all analyses or exceptions granted",
             },
           ],
           "planCompliance438206_planDeficiencies-analyses":
@@ -179,7 +179,7 @@ export const fillNaaar = (): SeedFillReportShape => {
             },
             {
               key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-fPrkUzYKDISHITjusb9WyqTg",
-              value: "EVV Data Analysis",
+              value: "Electronic Visit Verification Data Analysis",
             },
             {
               key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-2wrlQNlvY8d3qZ6pwmH4pqYA",
