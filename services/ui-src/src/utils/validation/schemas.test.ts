@@ -8,107 +8,61 @@ import {
   numberNotLessThanZero,
   text,
   textOptional,
-  validNAValues,
+  numberSuppressible,
   numberNotLessThanZeroOptional,
+  futureDate,
 } from "./schemas";
+// constants
+import { suppressionText } from "../../constants";
+import {
+  badDateOptionalTestCases,
+  badFutureDateTestCases,
+  badNumberTestCases,
+  badRatioTestCases,
+  badRequiredTextTestCases,
+  badValidNumberTestCases,
+  goodDateOptionalTestCases,
+  goodFutureDateTestCases,
+  goodNumberTestCases,
+  goodOptionalTextTestCases,
+  goodPositiveNumberTestCases,
+  goodRatioTestCases,
+  goodRequiredTextTestCases,
+  goodValidNumberTestCases,
+  negativeNumberTestCases,
+  zeroTest,
+} from "utils/testing/mockSchemaValidation";
 
 describe("Schemas", () => {
-  const goodNumberTestCases = [
-    "123",
-    "123.00",
-    "123.00",
-    "1,230",
-    "1,2,30",
-    "1230",
-    "123450123,,,.123123123123",
-    ...validNAValues,
-  ];
-
-  const goodPositiveNumberTestCases = [
-    "123",
-    "123.00",
-    "123.00",
-    "1,230",
-    "1,2,30",
-    "1230",
-    "123450123,,,.123123123123",
-    ...validNAValues,
-  ];
-
-  const negativeNumberTestCases = [
-    "-123",
-    "-123.00",
-    "-123.00",
-    "-1,230",
-    "-1,2,30",
-    "-1230",
-    "-123450123,,,.123123123123",
-  ];
-
-  const zeroTest = ["0", "0.0"];
-
-  const badNumberTestCases = ["abc", "N", "", "!@#!@%"];
-
-  const goodRatioTestCases = [
-    "1:1",
-    "123:123",
-    "1,234:1.12",
-    "0:1",
-    "1:10,000",
-  ];
-  const badRatioTestCases = [
-    ":",
-    ":1",
-    "1:",
-    "1",
-    "1234",
-    "abc",
-    "N/A",
-    "abc:abc",
-    ":abc",
-    "abc:",
-    "%@#$!ASDF",
-  ];
-
-  const goodDateOptionalTestCases = ["", "01/01/2023", "05/15/2023"];
-
-  const badDateOptionalTestCases = [
-    1,
-    "Hello!",
-    "1/1/2",
-    "0/0/99",
-    "0/01/2023",
-    "42/42/4242",
-  ];
-
-  const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
-
-  const badValidNumberTestCases = ["N/A", "number", "foo"];
-
-  const goodRequiredTextTestCases = ["a", " a ", ".", "string"];
-  const goodOptionalTextTestCases = ["", ...goodRequiredTextTestCases];
-  const badRequiredTextTestCases = ["", "   ", undefined];
-
-  const testNumberSchema = (
+  const testSchema = <T>(
     schemaToUse: MixedSchema,
-    testCases: Array<string>,
+    testCases: T[],
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
+    for (const testCase of testCases) {
+      const test = schemaToUse.isValidSync(testCase);
       expect(test).toEqual(expectedReturn);
     }
   };
 
-  const testDateOptional = (
+  const testNumberSchema = (
+    schemaToUse: MixedSchema,
+    testCases: string[],
+    expectedReturn: boolean
+  ) => {
+    testSchema<string>(schemaToUse, testCases, expectedReturn);
+  };
+
+  const testDate = (
     schemaToUse: MixedSchema,
     testCases: Array<string | null | undefined | number>,
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
+    testSchema<string | null | undefined | number>(
+      schemaToUse,
+      testCases,
+      expectedReturn
+    );
   };
 
   const testValidNumber = (
@@ -116,21 +70,15 @@ describe("Schemas", () => {
     testCases: Array<string | number>,
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
+    testSchema<string | number>(schemaToUse, testCases, expectedReturn);
   };
 
-  const testText = (
+  const testTextSchema = (
     schemaToUse: MixedSchema,
     testCases: Array<string | undefined>,
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
+    testSchema<string | undefined>(schemaToUse, testCases, expectedReturn);
   };
 
   test("Evaluate Number Schema using number scheme", () => {
@@ -197,8 +145,13 @@ describe("Schemas", () => {
   });
 
   test("Test dateOptional schema", () => {
-    testDateOptional(dateOptional(), goodDateOptionalTestCases, true);
-    testDateOptional(dateOptional(), badDateOptionalTestCases, false);
+    testDate(dateOptional(), goodDateOptionalTestCases, true);
+    testDate(dateOptional(), badDateOptionalTestCases, false);
+  });
+
+  test("Test futureDate schema", () => {
+    testDate(futureDate(), goodFutureDateTestCases, true);
+    testDate(futureDate(), badFutureDateTestCases, false);
   });
 
   test("Test validNumber schema", () => {
@@ -207,12 +160,19 @@ describe("Schemas", () => {
   });
 
   test("Test text schema", () => {
-    testText(text(), goodRequiredTextTestCases, true);
-    testText(text(), badRequiredTextTestCases, false);
+    testTextSchema(text(), goodRequiredTextTestCases, true);
+    testTextSchema(text(), badRequiredTextTestCases, false);
   });
 
   test("Test textOptional schema", () => {
-    testText(textOptional(), goodOptionalTextTestCases, true);
-    testText(textOptional(), ["   "], false);
+    testTextSchema(textOptional(), goodOptionalTextTestCases, true);
+    testTextSchema(textOptional(), ["   "], false);
+  });
+
+  test("Test numberSuppressible schema", () => {
+    testValidNumber(numberSuppressible(), goodValidNumberTestCases, true);
+    testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
+    testTextSchema(numberSuppressible(), [suppressionText], true);
+    testTextSchema(numberSuppressible(), ["badText", undefined], false);
   });
 });
