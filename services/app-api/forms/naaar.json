@@ -20,7 +20,7 @@
       "path": "/naaar/state-and-program-information",
       "children": [
         {
-          "name": "State information and reporting scenario",
+          "name": "A. State information and reporting scenario",
           "path": "/naaar/state-and-program-information/state-information-and-reporting-scenario",
           "pageType": "standard",
           "verbiage": {
@@ -57,7 +57,7 @@
                 "type": "text",
                 "validation": "text",
                 "props": {
-                  "label": "I.A.1 Contact name",
+                  "label": "Contact name",
                   "hint": "First and last name of the contact person."
                 }
               },
@@ -66,7 +66,7 @@
                 "type": "text",
                 "validation": "email",
                 "props": {
-                  "label": "I.A.2 Contact email address",
+                  "label": "Contact email address",
                   "hint": "Enter email address. Department or program-wide email addresses are permitted."
                 }
               },
@@ -75,7 +75,7 @@
                 "type": "text",
                 "validation": "textOptional",
                 "props": {
-                  "label": "I.A.3 State or territory",
+                  "label": "State or territory",
                   "hint": "Auto-populates from your account profile.",
                   "disabled": true
                 }
@@ -85,7 +85,7 @@
                 "type": "date",
                 "validation": "textOptional",
                 "props": {
-                  "label": "I.A.4 Date of report submission",
+                  "label": "Date of report submission",
                   "hint": "CMS receives this date upon submission of this report.",
                   "disabled": true
                 }
@@ -95,7 +95,7 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "1.A.5 Reporting scenario",
+                  "label": "Reporting scenario",
                   "hint": [
                     {
                       "type": "p",
@@ -203,7 +203,7 @@
           }
         },
         {
-          "name": "Add plans",
+          "name": "B. Add plans",
           "path": "/naaar/state-and-program-information/add-plans",
           "pageType": "standard",
           "verbiage": {
@@ -238,7 +238,7 @@
           }
         },
         {
-          "name": "Provider type coverage",
+          "name": "C. Provider type coverage",
           "path": "/naaar/state-and-program-information/provider-type-coverage",
           "pageType": "standard",
           "verbiage": {
@@ -303,7 +303,7 @@
           }
         },
         {
-          "name": "Analysis methods",
+          "name": "D. Analysis methods",
           "path": "/naaar/state-and-program-information/analysis-methods",
           "pageType": "drawer",
           "entityType": "analysisMethods",
@@ -1195,7 +1195,7 @@
             "validation": "radio",
             "props": {
               "label": "Applicable region",
-              "hint": "Enter the region that the standard applies to.",
+              "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. If the standard is statewide but results are analyzed by region type, create a standard for each applicable region.",
               "choices": [
                 {
                   "id": "KaDliEkRCXvPNlRS7DVjjt9q",
@@ -1378,7 +1378,7 @@
                   ""
                 ]
               ],
-              "caption": "Assurance of plan compliance for 438.68",
+              "caption": "A. Assurance of plan compliance for 438.68",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
@@ -1386,7 +1386,7 @@
               ]
             },
             "verbiage": {
-              "heading": "Assurance of plan compliance with 42 C.F.R. § 438.68",
+              "heading": "A. Assurance of plan compliance for 438.68",
               "hint": "Indicate whether the state assures that the plan complies with the state’s standards, as required at § 42 C.F.R. 438.68 (i.e. the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
               "intro": {
                 "section": ""
@@ -1424,7 +1424,7 @@
                   ""
                 ]
               ],
-              "caption": "Assurance of plan compliance for 438.206",
+              "caption": "B. Assurance of plan compliance for 438.206",
               "headRow": [
                 { "hiddenName": "Status" },
                 { "hiddenName": "Report section" },
@@ -1536,7 +1536,7 @@
                   }
                 ]
               },
-              "heading": "Assurance of plan compliance with 42 C.F.R. § 438.206",
+              "heading": "B. Assurance of plan compliance for 438.206",
               "hint": "Indicate whether the state assures that the plan complies with the availability of services standards outlined in 42 C.F.R. § 438.206 the analyses the state conducted for the plan during the reporting period."
             }
           }
@@ -1547,7 +1547,7 @@
             "verbiage": {
               "backButton": "Return to {{planName}}: Select non-compliant / exception standards for 42 C.F.R. § 438.68 dashboard",
               "intro": {
-                "hint": "Report on plan compliance with the state’s 42 C.F.R. § 438.68 standard during the reporting period. If this standard is fully compliant, return to the plan compliance dashboard.",
+                "hint": "Report details on this standard by selecting whether the plan was non-compliant with the standard listed above during the reporting period and if an exception was granted. If the plan is fully compliant with this standard, do not complete this section and return to the plan compliance dashboard.",
                 "info": [
                   {
                     "type": "p",
@@ -1597,7 +1597,7 @@
                   "validation": "checkboxOneOptional",
                   "props": {
                     "label": "This standard does not meet 42 C.F.R. § 438.68 compliance",
-                    "hint": "Select if this standard does not fully comply.",
+                    "hint": "Select if this standard does not fully comply based on at least one analysis conducted within the reporting period or if an exception was granted.",
                     "choices": [
                       {
                         "id": "l8yWzYniMtH5HQrBIjwApO",
@@ -1631,7 +1631,545 @@
                                   "content": " and add it."
                                 }
                               ],
-                              "choices": []
+                              "choices": [
+                                {
+                                  "label": "Geomapping",
+                                  "children": [
+                                    {
+                                      "id": "geomappingComplianceFrequency",
+                                      "type": "checkbox",
+                                      "validation": "checkboxOneOptional",
+                                      "props": {
+                                        "label": "Frequency of compliance findings (optional)",
+                                        "hint": "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
+                                        "choices": [
+                                          {
+                                            "id": "c595832f837848118f",
+                                            "label": "Report results by quarter",
+                                            "children": [
+                                              {
+                                                "id": "enrolleesMeetingStandard",
+                                                "type": "radio",
+                                                "validation": "radioOptional",
+                                                "props": {
+                                                  "choices": [
+                                                    {
+                                                      "id": "1Bv4pXDFwPxCtfWnwQ3o4f",
+                                                      "label": "Percent of enrollees that can access this provider type within the standard",
+                                                      "hint": "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
+                                                      "children": [
+                                                        {
+                                                          "id": "q1PercentMetStandard",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q1 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q2PercentMetStandard",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q2 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q3PercentMetStandard",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q3 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q4PercentMetStandard",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q4 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "oDBsJxz2uYsFEPJX5tsicD",
+                                                      "label": "Maximum travel time",
+                                                      "hint": "Report findings from geomapping on the actual maximum travel time, in minutes, between plan enrollees and network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "q1ActualMaxTime",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q1 (optional)",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q2ActualMaxTime",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q2 (optional)",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q3ActualMaxTime",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q3 (optional)",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q4ActualMaxTime",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q4 (optional)",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "ckGB89dyJ9spyFn692tihL",
+                                                      "label": "Maximum travel distance",
+                                                      "hint": "Report from geomapping on the actual maximum travel distance, in miles, between plan enrollees and network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "q1ActualMaxDist",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q1 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q2ActualMaxDist",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q2 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q3ActualMaxDist",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q3 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q4ActualMaxDist",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q4 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "45PQX2mTtbVrsZtiR2ZFns",
+                                            "label": "Report results annually",
+                                            "hint": "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
+                                            "children": [
+                                              {
+                                                "id": "reportResultsAnnually",
+                                                "type": "radio",
+                                                "validation": "radioOptional",
+                                                "props": {
+                                                  "choices": [
+                                                    {
+                                                      "id": "8WCHVPuNhV9cK4nDh1syqX",
+                                                      "label": "Percent of enrollees that can access this provider type within the standard",
+                                                      "hint": "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
+                                                      "children": [
+                                                        {
+                                                          "id": "annualPercentMetStandard",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Annual (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "annualPercentMetStandardDate",
+                                                          "type": "date",
+                                                          "validation": "dateOptional",
+                                                          "props": {
+                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "j44DG9RkDA1FwuYN3SM8zA",
+                                                      "label": "Maximum travel time",
+                                                      "hint": "Report findings from geomapping on the actual maximum travel time, in minutes, between plan enrollees and network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "annualMaxTime",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Annual (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "annualMaxTimeDate",
+                                                          "type": "date",
+                                                          "validation": "dateOptional",
+                                                          "props": {
+                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "qJ8FA2U5ri5mfuwe6PCJhP",
+                                                      "label": "Maximum travel distance",
+                                                      "hint": "Report from geomapping on the actual maximum travel distance, in miles, between plan enrollees and network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "actualMaxDistance",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Annual (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "actualMaxDistanceDate",
+                                                          "type": "date",
+                                                          "validation": "dateOptional",
+                                                          "props": {
+                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "label": "Plan Provider Directory Review",
+                                  "children": [
+                                    {
+                                      "id": "ppdrComplianceFrequency",
+                                      "type": "checkbox",
+                                      "validation": "checkboxOneOptional",
+                                      "props": {
+                                        "label": "Frequency of compliance findings (optional)",
+                                        "hint": "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
+                                        "choices": [
+                                          {
+                                            "id": "sxC5M4JJz9qNCdNxJgQmJV",
+                                            "label": "Report results by quarter",
+                                            "children": [
+                                              {
+                                                "id": "enrolleesMeetingStandard",
+                                                "type": "radio",
+                                                "validation": "radioOptional",
+                                                "props": {
+                                                  "choices": [
+                                                    {
+                                                      "id": "gRCpgad2dhXDrmucTw8cnu",
+                                                      "label": "Minimum number of network providers",
+                                                      "hint": "Report the minimum number of plan network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "q1NumberOfNetworkProviders",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q1 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q2NumberOfNetworkProviders",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q2 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q3NumberOfNetworkProviders",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q3 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q4NumberOfNetworkProviders",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q4 (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "a8kZrrUYcfUrnTM8UuHNmi",
+                                                      "label": "Provider to enrollee ratio",
+                                                      "hint": "Report the calculated plan provider to enrollee ratio.",
+                                                      "children": [
+                                                        {
+                                                          "id": "q1ProviderToEnrolleeRatio",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q1 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q2ProviderToEnrolleeRatio",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q2 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q3ProviderToEnrolleeRatio",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q3 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "q4ProviderToEnrolleeRatio",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Q4 (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "wz9n6q8nuxdUKnaw7gWUoj",
+                                            "label": "Report results annually",
+                                            "children": [
+                                              {
+                                                "id": "reportResultsAnnually",
+                                                "type": "radio",
+                                                "validation": "radioOptional",
+                                                "props": {
+                                                  "choices": [
+                                                    {
+                                                      "id": "j4ch2jWhesE7SHQZYQmvJV",
+                                                      "label": "Minimum number of network providers",
+                                                      "hint": "Report the minimum number of plan network providers.",
+                                                      "children": [
+                                                        {
+                                                          "id": "annualMinimumNumberOfNetworkProviders",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Annual (optional)",
+                                                            "mask": "comma-separated",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "annualMinimumNumberOfNetworkProvidersDate",
+                                                          "type": "date",
+                                                          "validation": "dateOptional",
+                                                          "props": {
+                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    {
+                                                      "id": "dSHQvqgfa7YYoRBvSKkahW",
+                                                      "label": "Provider to enrollee ratio",
+                                                      "hint": "Report findings on the calculated plan provider to enrollee ratio.",
+                                                      "children": [
+                                                        {
+                                                          "id": "annualProviderToEnrolleeRatio",
+                                                          "type": "number",
+                                                          "validation": "numberNotLessThanZeroOptional",
+                                                          "props": {
+                                                            "label": "Annual (optional)",
+                                                            "mask": "percentage",
+                                                            "decimalPlacesToRoundTo": 0
+                                                          }
+                                                        },
+                                                        {
+                                                          "id": "annualProviderToEnrolleeRatioDate",
+                                                          "type": "date",
+                                                          "validation": "dateOptional",
+                                                          "props": {
+                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                {
+                                  "label": "Secret Shopper: Appointment Availability",
+                                  "children": [
+                                    {
+                                      "id": "ssaaComplianceFrequency",
+                                      "type": "checkbox",
+                                      "validation": "checkboxOneOptional",
+                                      "props": {
+                                        "label": "Frequency of compliance findings (optional)",
+                                        "hint": "States may report additional details on the results produced from using geomapping, plan provider directory reviews, and secret shopper results. If the state uses one of these methods to determine compliance, additional fields will be provided to report results by quarter or year. If the results fields provided are not applicable to the state’s compliance findings for this standard, or if the state uses different analyses methods for this standard, you can leave these fields and use the “Plan Deficiencies Description” free text box in the next question to describe the results of the analyses.",
+                                        "choices": [
+                                          {
+                                            "id": "9QZMDvvbiWrXcjr5Z1zcuV",
+                                            "label": "Report results by quarter",
+                                            "hint": "Report findings on the percent of plan providers that met the appointment wait time standard.",
+                                            "children": [
+                                              {
+                                                "id": "q1Ssaa",
+                                                "type": "number",
+                                                "validation": "numberNotLessThanZeroOptional",
+                                                "props": {
+                                                  "label": "Q1 (optional)",
+                                                  "mask": "percentage",
+                                                  "decimalPlacesToRoundTo": 0
+                                                }
+                                              },
+                                              {
+                                                "id": "q2Ssaa",
+                                                "type": "number",
+                                                "validation": "numberNotLessThanZeroOptional",
+                                                "props": {
+                                                  "label": "Q2 (optional)",
+                                                  "mask": "percentage",
+                                                  "decimalPlacesToRoundTo": 0
+                                                }
+                                              },
+                                              {
+                                                "id": "q3Ssaa",
+                                                "type": "number",
+                                                "validation": "numberNotLessThanZeroOptional",
+                                                "props": {
+                                                  "label": "Q3 (optional)",
+                                                  "mask": "percentage",
+                                                  "decimalPlacesToRoundTo": 0
+                                                }
+                                              },
+                                              {
+                                                "id": "q4Ssaa",
+                                                "type": "number",
+                                                "validation": "numberNotLessThanZeroOptional",
+                                                "props": {
+                                                  "label": "Q4 (optional)",
+                                                  "mask": "percentage",
+                                                  "decimalPlacesToRoundTo": 0
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "id": "hnKktBxFGNr9jB1AgWLPXf",
+                                            "label": "Report results annually",
+                                            "hint": "Report findings on the percent of plan providers that met the appointment wait time standard.",
+                                            "children": [
+                                              {
+                                                "id": "annualSsaa",
+                                                "type": "number",
+                                                "validation": "numberNotLessThanZeroOptional",
+                                                "props": {
+                                                  "label": "Annual (optional)",
+                                                  "mask": "percentage",
+                                                  "decimalPlacesToRoundTo": 0
+                                                }
+                                              },
+                                              {
+                                                "id": "annualDateSsaa",
+                                                "type": "date",
+                                                "validation": "dateOptional",
+                                                "props": {
+                                                  "label": "Date of analysis of annual snapshot (optional)"
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           },
                           {
@@ -1643,8 +2181,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Describe plan deficiencies identified during the reporting period.",
-                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description"
+                              "label": "Plan deficiencies: description",
+                              "hint": "Describe plan deficiencies identified if results were not previously detailed (note that additional fields will appear for entering results if the state uses geomapping, plan provider directory reviews or secret shopper results to uncover standard deficiencies). You can also use this section to provide any additional context on the plan deficiencies or results provided above."
                             }
                           },
                           {
@@ -1656,8 +2194,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Describe what the plan will do to achieve compliance.",
-                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 description of what the plan will do to achieve compliance"
+                              "label": "Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
+                              "hint": "Describe what the plan will do to achieve compliance specific to this standard."
                             }
                           },
                           {
@@ -1669,8 +2207,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Describe how the state will monitor the plan’s progress.",
-                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 monitoring progress"
+                              "label": "Plan deficiencies: monitoring progress",
+                              "hint": "Describe how the state will monitor the plan’s progress with this standard."
                             }
                           },
                           {
@@ -1682,8 +2220,8 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies.",
-                              "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.68"
+                              "label": "Reassessment for plan deficiencies",
+                              "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies with this standard."
                             }
                           }
                         ]
@@ -1745,7 +2283,7 @@
                   },
                   {
                     "type": "p",
-                    "content": "(2) Provides female enrollees with direct access to a women's health specialist within the provider network for covered care necessary to provide women's routine and preventive health care services. This is in addition to the enrollee's designated source of primary care if that source is not a women's health specialist."
+                    "content": "(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist."
                   },
                   {
                     "type": "ol",
@@ -1759,7 +2297,7 @@
                       },
                       {
                         "type": "li",
-                        "content": "ii. If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP's provider network is unable to provide them."
+                        "content": "ii. If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
                       },
                       {
                         "type": "li",
@@ -1825,7 +2363,7 @@
                       },
                       {
                         "type": "li",
-                        "content": "Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State's efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
+                        "content": "Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
                       },
                       {
                         "type": "li",
