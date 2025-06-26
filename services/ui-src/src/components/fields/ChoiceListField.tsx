@@ -100,14 +100,23 @@ export const ChoiceListField = ({
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
     return choices.map((choice: FieldChoice) => {
-      const { id, name, label, value, checked, children, checkedChildren } =
-        choice;
+      const {
+        id,
+        name,
+        label,
+        hint,
+        value,
+        checked,
+        children,
+        checkedChildren,
+      } = choice;
 
       // Limit format props to those allowed on DOM elements (defined in FieldChoice)
       const choiceObject: FieldChoice = {
         id,
         name,
         label,
+        hint,
         value,
         checked,
         children,

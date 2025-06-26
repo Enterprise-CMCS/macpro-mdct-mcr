@@ -197,6 +197,13 @@ describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with cust
 });
 
 describe("availableAnalysisMethods for NAAAR plan compliance", () => {
+  const mockNestedForms = [
+    {
+      label: "Geomapping",
+      children: [],
+    },
+  ];
+
   it("should return the updated item choices", () => {
     const mockObjectId =
       "planCompliance43868_standard-id-nonComplianceAnalyses";
@@ -204,7 +211,11 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       { id: "mockUUID1", name: "MockItem1" },
       { id: "mockUUID2", name: "MockItem2" },
     ];
-    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    const result = availableAnalysisMethods(
+      mockObjectId,
+      mockItems,
+      mockNestedForms
+    );
     expect(result).toEqual([
       {
         id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1",
@@ -223,7 +234,11 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       { id: "mockUUID1", name: "Geomapping" },
       { id: "mockUUID2", name: "MockItem2" },
     ];
-    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    const result = availableAnalysisMethods(
+      mockObjectId,
+      mockItems,
+      mockNestedForms
+    );
     expect(Object.prototype.hasOwnProperty.call(result[0], "children")).toBe(
       true
     );

@@ -8,7 +8,7 @@ export default {
     intro: {
       header: "Review & Submit",
       infoHeader: "Ready to Submit?",
-      info: "Double check that everything in your NAAAR submission is accurate. You will be able to make edits after submitting, and resubmit. Once you’ve reviewed your report, certify that it’s in compliance with CFRs.",
+      info: "Double check that everything in your NAAAR Report is accurate. You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report. Once you’ve reviewed your report, certify that it’s in compliance with CFRs.",
     },
     table: {
       caption: "Review & Submit",

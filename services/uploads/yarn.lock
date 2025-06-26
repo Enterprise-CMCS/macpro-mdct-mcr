@@ -1470,9 +1470,9 @@ boxen@^7.1.1:
     wrap-ansi "^8.1.0"
 
 brace-expansion@^1.1.7:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
-  integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.12.tgz#ab9b454466e5a8cc3a187beaad580412a9c5b843"
+  integrity sha512-9T9UjW3r0UW5c1Q7GTwllptXwhvYmEzFhzMfZ9H7FQWt+uZePjZPjBP/W1ZEyZ1twGWom5/56TF4lPcqjnDHcg==
   dependencies:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
@@ -2462,7 +2462,7 @@ serverless-offline@^13.0.0:
     velocityjs "^2.0.6"
     ws "^8.18.0"
 
-serverless-s3-local@^0.8.4:
+serverless-s3-local@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/serverless-s3-local/-/serverless-s3-local-0.8.5.tgz#283923d8e2050fbdfb375de7fe316894faa8fe6b"
   integrity sha512-lkXhgnX/v/U+9oJ6hZanUbsUSevSTPR3HUrllNjA2l/YxTncfFShIULyaUduipjPA4Lov946Xmrulh8mOKryhg==

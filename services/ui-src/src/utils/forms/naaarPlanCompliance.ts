@@ -2,12 +2,16 @@
 import {
   exceptionsStatus,
   nonComplianceStatus,
-  nonCompliantLabel,
+  nonCompliantValues,
   planComplianceStandardKey,
 } from "../../constants";
 // types
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
-import { AnyObject, EntityShape, FormJson } from "types";
+import {
+  AnyObject,
+  EntityShape,
+  FormJson,
+  NaaarStandardsTableShape,
+} from "types";
 import { availableAnalysisMethods } from "./dynamicItemFields";
 
 export const hasComplianceDetails = (
@@ -129,7 +133,8 @@ export const addAnalysisMethods = (
         // creating and injecting the analysis method choices into the form
         obj.props.choices = availableAnalysisMethods(
           obj.id,
-          associatedMethodsBetweenStandardsAndPlan
+          associatedMethodsBetweenStandardsAndPlan,
+          obj.props.choices
         );
       }
     });
@@ -241,7 +246,7 @@ export const isComplianceFormComplete = (
 ) => {
   const assuranceField = entity[`${formId}_assurance`];
   // Form is complete if compliance answer is Yes
-  if (assuranceField && assuranceField[0]?.value !== nonCompliantLabel) {
+  if (assuranceField && !nonCompliantValues.has(assuranceField[0]?.value)) {
     return true;
   }
 
