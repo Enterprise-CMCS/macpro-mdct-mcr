@@ -16,4 +16,5 @@ jobs:
     with:
       head_branch: val
       base_branch: production
+      pr_label: "prod release"
       pr_title: "MCR production release"
