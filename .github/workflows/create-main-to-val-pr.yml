@@ -16,4 +16,5 @@ jobs:
     with:
       head_branch: main
       base_branch: val
+      pr_label: "val release"
       pr_title: "MCR val release"

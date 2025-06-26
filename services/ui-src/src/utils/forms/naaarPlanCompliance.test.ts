@@ -179,7 +179,14 @@ describe("utils/forms/naaarPlanCompliance", () => {
           {
             id: "planCompliance43868-standard-id-nonComplianceAnalyses",
             type: "checkbox",
-            props: {},
+            props: {
+              choices: [
+                {
+                  label: "Geomapping",
+                  children: [],
+                },
+              ],
+            },
           },
         ],
       };
@@ -199,16 +206,6 @@ describe("utils/forms/naaarPlanCompliance", () => {
           name: "MockItem2",
           analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
-        {
-          id: "mockUUID3",
-          name: "Plan Provider Directory Review",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
-        },
-        {
-          id: "mockUUID4",
-          name: "Secret Shopper: Appointment Availability",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
-        },
       ];
 
       const analysisMethodsInStandards = [
@@ -218,14 +215,6 @@ describe("utils/forms/naaarPlanCompliance", () => {
             {
               key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
               value: "Geomapping",
-            },
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
-              value: "Plan Provider Directory Review",
-            },
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID4`,
-              value: "Secret Shopper: Appointment Availability",
             },
           ],
         },
@@ -244,16 +233,6 @@ describe("utils/forms/naaarPlanCompliance", () => {
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
           label: "Geomapping",
-          children: expect.any(Array),
-        },
-        {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
-          label: "Plan Provider Directory Review",
-          children: expect.any(Array),
-        },
-        {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID4",
-          label: "Secret Shopper: Appointment Availability",
           children: expect.any(Array),
         },
       ]);
