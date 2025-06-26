@@ -175,7 +175,9 @@ export const GeomappingChildJson = [
                 choices: [
                   {
                     id: "1Bv4pXDFwPxCtfWnwQ3o4f",
-                    label: "Percent of enrollees that met the standard",
+                    label:
+                      "Percent of enrollees that can access this provider type within the standard",
+                    hint: "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
                     children: [
                       {
                         id: "q1PercentMetStandard",
@@ -221,7 +223,8 @@ export const GeomappingChildJson = [
                   },
                   {
                     id: "oDBsJxz2uYsFEPJX5tsicD",
-                    label: "Actual maximum time",
+                    label: "Maximum travel time",
+                    hint: "Report findings from geomapping on the actual maximum travel time, in minutes, between plan enrollees and network providers.",
                     children: [
                       {
                         id: "q1ActualMaxTime",
@@ -263,7 +266,8 @@ export const GeomappingChildJson = [
                   },
                   {
                     id: "ckGB89dyJ9spyFn692tihL",
-                    label: "Actual maximum distance",
+                    label: "Maximum travel distance",
+                    hint: "Report from geomapping on the actual maximum travel distance, in miles, between plan enrollees and network providers.",
                     children: [
                       {
                         id: "q1ActualMaxDist",
@@ -315,6 +319,7 @@ export const GeomappingChildJson = [
         {
           id: "45PQX2mTtbVrsZtiR2ZFns",
           label: "Report results annually",
+          hint: "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
           children: [
             {
               id: "reportResultsAnnually",
@@ -324,7 +329,9 @@ export const GeomappingChildJson = [
                 choices: [
                   {
                     id: "8WCHVPuNhV9cK4nDh1syqX",
-                    label: "Percent of enrollees that met the standard",
+                    label:
+                      "Percent of enrollees that can access this provider type within the standard",
+                    hint: "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
                     children: [
                       {
                         id: "annualPercentMetStandard",
@@ -349,7 +356,8 @@ export const GeomappingChildJson = [
                   },
                   {
                     id: "j44DG9RkDA1FwuYN3SM8zA",
-                    label: "Actual maximum time",
+                    label: "Maximum travel time",
+                    hint: "Report findings from geomapping on the actual maximum travel time, in minutes, between plan enrollees and network providers.",
                     children: [
                       {
                         id: "annualMaxTime",
@@ -374,7 +382,8 @@ export const GeomappingChildJson = [
                   },
                   {
                     id: "qJ8FA2U5ri5mfuwe6PCJhP",
-                    label: "Actual maximum distance",
+                    label: "Maximum travel distance",
+                    hint: "Report from geomapping on the actual maximum travel distance, in miles, between plan enrollees and network providers.",
                     children: [
                       {
                         id: "actualMaxDistance",
