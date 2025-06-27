@@ -10,6 +10,26 @@ import {
 // utils
 import { compareText, maskResponseData, otherSpecify, translate } from "utils";
 
+const notAnsweredOptionalText = "Not answered, optional";
+
+const findEntityDataByKey = (
+  entity: EntityShape,
+  keys: any[],
+  keyMatchText: string
+) => {
+  // find matching key in field data keys
+  const dataKey = keys.find((key: string) => key.endsWith(keyMatchText));
+
+  if (!dataKey) return;
+
+  if (Array.isArray(entity[dataKey])) {
+    if (entity[dataKey].length < 1) return;
+    return entity[dataKey]?.[0]?.value;
+  }
+  if (entity[dataKey] === "") return;
+  return entity[dataKey];
+};
+
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
     entity?.[label]?.[0].value,
@@ -112,98 +132,295 @@ export const getFormattedEntityData = (
         description: entity?.qualityMeasure_description,
         perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
       };
-    case EntityType.PLANS:
-      if (!entity) {
-        return {};
-      }
-      const plan = entity; // eslint-disable-line no-case-declarations
-
-      // display information for non-compliant standards
-      if (plan?.exceptionsNonCompliance === nonComplianceStatus) {
-        const planKeys = Object.keys(plan);
-        const nonComplianceDescriptionKey: any = planKeys.find((key: string) =>
-          key.endsWith("-nonComplianceDescription")
-        );
-        const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
-          key.endsWith("-nonComplianceAnalyses")
-        );
-        const nonCompliancePlanToAchieveComplianceKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonCompliancePlanToAchieveCompliance")
-        );
-        const nonComplianceMonitoringProgressKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonComplianceMonitoringProgress")
-        );
-        const nonComplianceReassessmentDateKey: any = planKeys.find(
-          (key: string) => key.endsWith("-nonComplianceReassessmentDate")
-        );
-
-        const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
-          (method: EntityShape) => method.value
-        );
-
-        return {
-          heading: `Plan deficiencies for ${
-            plan?.name || "plan"
-          }: 42 C.F.R. § 438.68`,
-          questions: [
-            {
-              question: "Description",
-              answer: plan[nonComplianceDescriptionKey],
-            },
-            {
-              question: "Analyses used to identify deficiencies",
-              answer: analysisMethodsUsed.join(", "),
-            },
-            {
-              question: "What the plan will do to achieve compliance",
-              answer: plan[nonCompliancePlanToAchieveComplianceKey],
-            },
-            {
-              question: "Monitoring progress",
-              answer: plan[nonComplianceMonitoringProgressKey],
-            },
-            {
-              question: "Reassessment date",
-              answer: plan[nonComplianceReassessmentDateKey],
-            },
-          ],
-        };
-      }
-
-      // display information for exceptions standards
-      if (plan?.exceptionsNonCompliance === exceptionsStatus) {
-        const planKeys = Object.keys(plan);
-        const exceptionsDescriptionKey: any = planKeys.find((key: string) =>
-          key.endsWith("-exceptionsDescription")
-        );
-        const exceptionsJustificationKey: any = planKeys.find((key: string) =>
-          key.endsWith("-exceptionsJustification")
-        );
-
-        return {
-          heading: `Exceptions granted for ${
-            plan?.name || "plan"
-          } under 42 C.F.R. § 438.68(d)`,
-          questions: [
-            {
-              question:
-                "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
-              answer: plan[exceptionsDescriptionKey],
-            },
-            {
-              question:
-                "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
-              answer: plan[exceptionsJustificationKey],
-            },
-          ],
-        };
-      }
-      return {
-        heading: `Problem displaying data for ${plan?.name || "plan"}`,
-      };
+    case EntityType.PLANS: {
+      if (!entity) return {};
+      const data = getFormattedPlanData(entity);
+      return (
+        data ?? {
+          heading: `Problem displaying data for ${entity?.name || "plan"}`,
+        }
+      );
+    }
     default:
       return {};
   }
+};
+
+const analysisMethodKeys = [
+  { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
+  {
+    method: "Plan Provider Directory Review",
+    filterKey: "_ppdrComplianceFrequency",
+  },
+  {
+    method: "Secret Shopper: Appointment Availability",
+    filterKey: "_ssaaComplianceFrequency",
+  },
+];
+
+const analysisMethodData = {
+  Geomapping: [
+    // percent of enrollees quarterly
+    { label: "Q1 (optional)", key: "_q1PercentMetStandard" },
+    { label: "Q2 (optional)", key: "_q2PercentMetStandard" },
+    { label: "Q3 (optional)", key: "_q3PercentMetStandard" },
+    { label: "Q4 (optional)", key: "_q4PercentMetStandard" },
+    // actual max time quarterly
+    { label: "Q1 (optional)", key: "_q1ActualMaxTime" },
+    { label: "Q2 (optional)", key: "_q2ActualMaxTime" },
+    { label: "Q3 (optional)", key: "_q3ActualMaxTime" },
+    { label: "Q4 (optional)", key: "_q4ActualMaxTime" },
+    // actual max distance quarterly
+    { label: "Q1 (optional)", key: "_q1ActualMaxDist" },
+    { label: "Q2 (optional)", key: "_q2ActualMaxDist" },
+    { label: "Q3 (optional)", key: "_q3ActualMaxDist" },
+    { label: "Q4 (optional)", key: "_q4ActualMaxDist" },
+    // percent of enrollees annually
+    { label: "Annual (optional)", key: "_annualPercentMetStandard" },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_annualPercentMetStandardDate",
+    },
+    // actual max time annually
+    { label: "Annual (optional)", key: "_annualMaxTime" },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_annualMaxTimeDate",
+    },
+    // actual max distance annually
+    { label: "Annual (optional)", key: "_actualMaxDistance" },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_actualMaxDistanceDate",
+    },
+  ],
+  "Plan Provider Directory Review": [
+    // number of network providers quarterly
+    { label: "Q1 (optional)", key: "_q1NumberOfNetworkProviders" },
+    { label: "Q2 (optional)", key: "_q2NumberOfNetworkProviders" },
+    { label: "Q3 (optional)", key: "_q3NumberOfNetworkProviders" },
+    { label: "Q4 (optional)", key: "_q4NumberOfNetworkProviders" },
+    // provider to enrollee ratio quarterly
+    { label: "Q1 (optional)", key: "_q1ProviderToEnrolleeRatio" },
+    { label: "Q2 (optional)", key: "_q2ProviderToEnrolleeRatio" },
+    { label: "Q3 (optional)", key: "_q3ProviderToEnrolleeRatio" },
+    { label: "Q4 (optional)", key: "_q4ProviderToEnrolleeRatio" },
+    // number of network providers annually
+    {
+      label: "Annual (optional)",
+      key: "_annualMinimumNumberOfNetworkProviders",
+    },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_annualMinimumNumberOfNetworkProvidersDate",
+    },
+    // provider to enrollee ratio annually
+    {
+      label: "Annual (optional)",
+      key: "_annualProviderToEnrolleeRatio",
+    },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_annualProviderToEnrolleeRatioDate",
+    },
+  ],
+  "Secret Shopper: Appointment Availability": [
+    // quarterly
+    { label: "Q1 (optional)", key: "_q1Ssaa" },
+    { label: "Q2 (optional)", key: "_q2Ssaa" },
+    { label: "Q3 (optional)", key: "_q3Ssaa" },
+    { label: "Q4 (optional)", key: "_q4Ssaa" },
+    // number of network providers annually
+    { label: "Annual (optional)", key: "_annualSsaa" },
+    {
+      label: "Date of analysis of annual snapshot (optional)",
+      key: "_annualDateSsaa",
+    },
+  ],
+};
+
+const getFormattedPlanData = (plan: EntityShape) => {
+  // display information for non-compliant standards
+  if (plan?.exceptionsNonCompliance === nonComplianceStatus) {
+    // get all analysis methods selected in plan non-compliance
+    const planKeys = Object.keys(plan);
+    const nonComplianceAnalysesKey: any = planKeys.find((key: string) =>
+      key.endsWith("-nonComplianceAnalyses")
+    );
+    const analysisMethodsUsed = plan[nonComplianceAnalysesKey].map(
+      (method: EntityShape) => method.value
+    );
+
+    // get all nested analysis method data
+    analysisMethodKeys.forEach((analysisMethod: AnyObject) => {
+      const { method, filterKey } = analysisMethod;
+      const methodIndex = analysisMethodsUsed.indexOf(method);
+
+      if (methodIndex < 0) return;
+
+      const displayInfo = [];
+      const methodKeys = planKeys.filter((key: string) =>
+        key.includes(filterKey)
+      );
+
+      // get frequency display text for each method type
+      let frequencyDisplayText =
+        "Frequency of compliance findings (optional): ";
+      if (method === "Geomapping") {
+        // compliance frequency and type
+        const geomappingComplianceFrequency = findEntityDataByKey(
+          plan,
+          methodKeys,
+          "_geomappingComplianceFrequency"
+        );
+        const geomappingEnrolleesMeetingStandard = findEntityDataByKey(
+          plan,
+          methodKeys,
+          "EnrolleesMeetingStandard"
+        );
+        // show second if first is not notansweredOptionalText
+        if (!geomappingComplianceFrequency) {
+          frequencyDisplayText += notAnsweredOptionalText;
+        } else if (!geomappingEnrolleesMeetingStandard) {
+          frequencyDisplayText += `${geomappingComplianceFrequency}: ${notAnsweredOptionalText}`;
+        } else {
+          frequencyDisplayText += `${geomappingComplianceFrequency}: ${geomappingEnrolleesMeetingStandard}:`;
+        }
+        displayInfo.push(frequencyDisplayText);
+      } else if (method === "Plan Provider Directory Review") {
+        // compliance frequency and type
+        const ppdrComplianceFrequency = findEntityDataByKey(
+          plan,
+          methodKeys,
+          "_ppdrComplianceFrequency"
+        );
+        const ppdrEnrolleesMeetingStandard = findEntityDataByKey(
+          plan,
+          methodKeys,
+          "EnrolleesMeetingStandard"
+        );
+        // show second if first is not notansweredOptionalText
+        if (!ppdrComplianceFrequency) {
+          frequencyDisplayText += notAnsweredOptionalText;
+        } else if (!ppdrEnrolleesMeetingStandard) {
+          frequencyDisplayText += `${ppdrComplianceFrequency}: ${notAnsweredOptionalText}`;
+        } else {
+          frequencyDisplayText += `${ppdrComplianceFrequency}: ${ppdrEnrolleesMeetingStandard}:`;
+        }
+        displayInfo.push(frequencyDisplayText);
+      } else if (method === "Secret Shopper: Appointment Availability") {
+        // compliance frequency
+        const ssaaComplianceFrequency = findEntityDataByKey(
+          plan,
+          methodKeys,
+          "_ssaaComplianceFrequency"
+        );
+
+        if (!ssaaComplianceFrequency) {
+          frequencyDisplayText += notAnsweredOptionalText;
+        } else {
+          frequencyDisplayText += `${ssaaComplianceFrequency}:`;
+        }
+        displayInfo.push(frequencyDisplayText);
+      }
+
+      // get the rest of the nested data entered
+      for (const { label, key } of analysisMethodData[
+        method as keyof typeof analysisMethodData
+      ]) {
+        const value = findEntityDataByKey(plan, methodKeys, key);
+        if (value) {
+          displayInfo.push(`${label}: ${value}`);
+        }
+      }
+
+      // add to analysis methods array for display
+      analysisMethodsUsed.splice(methodIndex + 1, 0, ...displayInfo);
+    });
+
+    const nonCompliancePlanToAchieveCompliance = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-nonCompliancePlanToAchieveCompliance"
+    );
+    const nonComplianceMonitoringProgress = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-nonComplianceMonitoringProgress"
+    );
+    const nonComplianceReassessmentDate = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-nonComplianceReassessmentDate"
+    );
+    const nonComplianceDescription = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-nonComplianceDescription"
+    );
+
+    return {
+      heading: `Plan deficiencies for ${
+        plan?.name || "plan"
+      }: 42 C.F.R. § 438.68`,
+      questions: [
+        {
+          question: "Description",
+          answer: nonComplianceDescription,
+        },
+        {
+          question: "Analyses used to identify deficiencies",
+          answer: analysisMethodsUsed,
+        },
+        {
+          question: "What the plan will do to achieve compliance",
+          answer: nonCompliancePlanToAchieveCompliance,
+        },
+        {
+          question: "Monitoring progress",
+          answer: nonComplianceMonitoringProgress,
+        },
+        {
+          question: "Reassessment date",
+          answer: nonComplianceReassessmentDate,
+        },
+      ],
+    };
+  }
+
+  // display information for exceptions standards
+  if (plan?.exceptionsNonCompliance === exceptionsStatus) {
+    const planKeys = Object.keys(plan);
+    const exceptionsDescription = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-exceptionsDescription"
+    );
+    const exceptionsJustification = findEntityDataByKey(
+      plan,
+      planKeys,
+      "-exceptionsJustification"
+    );
+
+    return {
+      heading: `Exceptions granted for ${
+        plan?.name || "plan"
+      } under 42 C.F.R. § 438.68(d)`,
+      questions: [
+        {
+          question:
+            "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d).",
+          answer: exceptionsDescription,
+        },
+        {
+          question:
+            "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+          answer: exceptionsJustification,
+        },
+      ],
+    };
+  }
+  return;
 };
 
 export const entityWasUpdated = (
