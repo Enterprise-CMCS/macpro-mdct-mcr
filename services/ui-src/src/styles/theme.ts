@@ -17,6 +17,9 @@ export const svgFilters = {
 
 const theme = extendTheme({
   ...foundation,
+  config: {
+    cssVarPrefix: "mdct",
+  },
   components: {
     Accordion: {
       baseStyle: {
