@@ -276,7 +276,7 @@ const getFormattedPlanData = (plan: EntityShape) => {
         const geomappingEnrolleesMeetingStandard = findEntityDataByKey(
           plan,
           methodKeys,
-          "_enrolleesMeetingStandard"
+          "EnrolleesMeetingStandard"
         );
         // show second if first is not notansweredOptionalText
         if (!geomappingComplianceFrequency) {
@@ -297,7 +297,7 @@ const getFormattedPlanData = (plan: EntityShape) => {
         const ppdrEnrolleesMeetingStandard = findEntityDataByKey(
           plan,
           methodKeys,
-          "_enrolleesMeetingStandard"
+          "EnrolleesMeetingStandard"
         );
         // show second if first is not notansweredOptionalText
         if (!ppdrComplianceFrequency) {
