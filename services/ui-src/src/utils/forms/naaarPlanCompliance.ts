@@ -133,7 +133,8 @@ export const addAnalysisMethods = (
         // creating and injecting the analysis method choices into the form
         obj.props.choices = availableAnalysisMethods(
           obj.id,
-          associatedMethodsBetweenStandardsAndPlan
+          associatedMethodsBetweenStandardsAndPlan,
+          obj.props.choices
         );
       }
     });
