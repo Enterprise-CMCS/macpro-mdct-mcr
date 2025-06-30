@@ -89,6 +89,7 @@ export const submitReport = handler(async (event, _context) => {
     ...reportMetadata,
     submittedBy: fullName,
     submittedOnDate: date,
+    submittedOnDates: [...(reportMetadata.submittedOnDates || []), date],
     status: ReportStatus.SUBMITTED,
     locked: true,
     submissionCount: reportMetadata.submissionCount + 1,

@@ -90,7 +90,9 @@ export const getStatus = (
 export const tableBody = (body: TableContentShape, isAdmin: boolean) => {
   const tableContent = { ...body };
   if (!isAdmin && tableContent.headRow) {
-    tableContent.headRow = tableContent.headRow.filter((e) => e !== "#");
+    tableContent.headRow = tableContent.headRow.filter(
+      (e) => !["Submitted", "#"].includes(e as string)
+    );
     return tableContent;
   }
   return body;

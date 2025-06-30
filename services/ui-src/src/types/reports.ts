@@ -292,6 +292,7 @@ export interface ReportMetadata {
   completionStatus?: CompletionData;
   previousRevisions: string[];
   submissionCount: number;
+  submittedOnDates?: number[];
   locked: boolean;
   archived?: boolean;
 }
