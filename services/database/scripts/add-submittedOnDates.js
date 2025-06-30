@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *    DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
- *  Branch:
- *    branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *   DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ * Branch:
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
  */
 
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");
