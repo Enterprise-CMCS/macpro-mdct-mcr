@@ -55,8 +55,8 @@ export const addAnalysisMethods = (
    * },
    * ]
    */
-  const associatedAnalysisMethodsWithSelectedPlan = createdAnalysisMethods?.map(
-    (analysisMethod: AnyObject) => {
+  const associatedAnalysisMethodsWithSelectedPlan: AnyObject[] =
+    createdAnalysisMethods?.map((analysisMethod: AnyObject) => {
       if (!analysisMethod?.analysis_method_applicable_plans) return [];
       for (const method of analysisMethod.analysis_method_applicable_plans) {
         if (method.value == selectedPlanName) {
@@ -68,8 +68,7 @@ export const addAnalysisMethods = (
         }
       }
       return [];
-    }
-  );
+    });
 
   // Step 2: Grab all the Analysis Methods associated with the selected Standard
   /*
