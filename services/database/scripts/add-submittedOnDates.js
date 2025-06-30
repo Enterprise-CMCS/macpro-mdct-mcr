@@ -14,7 +14,7 @@ const branch = isLocal ? "local" : process.env.branchPrefix;
 const reportType = process.argv[2] || "mcpar";
 const tableName = `${branch}-${reportType}-reports`;
 const bucketName = isLocal
-  ? `local-${reportType}-form`
+  ? `${branch}-${reportType}-form`
   : `database-${branch}-${reportType}`;
 
 async function handler() {
@@ -55,26 +55,31 @@ async function getDbItems() {
 }
 
 function filterDb(items) {
+  // Submitted reports that don't have submittedOnDates values
   return items.filter(
     (item) =>
       item.submittedOnDate &&
-      (!item.submittedOnDates || item.submittedOnDates.length < 1)
+      (!item.submittedOnDates || item.submittedOnDates.length === 0)
   );
 }
 
 async function updateDbItems(reports) {
+  const transformedItems = await transformDbItems(reports);
+  await update(tableName, transformedItems);
+  console.log(
+    `\n== Touched ${transformedItems.length} report(s) in table ${tableName} ==\n`
+  );
+}
+
+async function transformDbItems(reports) {
   buildS3Client();
 
-  const transformedItems = await Promise.all(
+  return await Promise.all(
     reports.map(async (report) => {
-      const { id, previousRevisions, state, submissionCount, submittedOnDate } =
-        report;
+      const { id, previousRevisions, state, submittedOnDate } = report;
       let submittedOnDates = [submittedOnDate];
 
-      if (
-        previousRevisions.length > 0 &&
-        previousRevisions.length !== submissionCount
-      ) {
+      if (previousRevisions.length > 0) {
         const allObjects = await list({
           Bucket: bucketName,
           Prefix: `fieldData/${state}`,
@@ -82,10 +87,11 @@ async function updateDbItems(reports) {
         const fieldDataObjects = filterS3(allObjects, previousRevisions);
 
         if (fieldDataObjects.length > 0) {
-          const fieldSubmittedDates = fieldDataObjects.map((obj) =>
+          const fieldDataModifiedDates = fieldDataObjects.map((obj) =>
+            // LastModified would approximate submission date
             new Date(obj.LastModified).getTime()
           );
-          submittedOnDates = [...fieldSubmittedDates, submittedOnDate];
+          submittedOnDates = [...fieldDataModifiedDates, ...submittedOnDates];
         } else {
           console.log(`\n== No S3 objects found for ${id} ==\n`);
         }
@@ -97,16 +103,11 @@ async function updateDbItems(reports) {
       };
     })
   );
-
-  await update(tableName, transformedItems);
-  console.log(
-    `\n== Touched ${transformedItems.length} report(s) in table ${tableName} ==\n`
-  );
 }
 
 function filterS3(bucketObjects, fieldDataIds) {
   return bucketObjects.filter((obj) => {
-    // Key is in fieldData/state/uuid.json format, extract uuid
+    // Key is fieldData/state/uuid.json format, extract uuid
     const key = obj.Key.split("/");
     const keyId = key[key.length - 1].split(".")[0];
 
