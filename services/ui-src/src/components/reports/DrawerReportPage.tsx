@@ -3,6 +3,7 @@ import uuid from "react-uuid";
 // components
 import { Box, Button, Image, Heading, useDisclosure } from "@chakra-ui/react";
 import {
+  NaaarStandardsPage,
   ReportDrawer,
   ReportContext,
   ReportPageFooter,
@@ -10,7 +11,6 @@ import {
   Form,
   DeleteEntityModal,
   ErrorAlert,
-  SortableNaaarStandardsTable,
 } from "components";
 import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 // constants
@@ -42,16 +42,16 @@ import {
   translate,
   useStore,
 } from "utils";
-//verbiage
+// verbiage
 import { analysisMethodError } from "verbiage/errors";
 // assets
 import addIcon from "assets/icons/icon_add_blue.png";
-import addIconWhite from "assets/icons/icon_add.png";
-import addIconSVG from "assets/icons/icon_add_gray.svg";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [pageError, setPageError] = useState<ErrorVerbiage>();
+  const [analysisMethodsError, setAnalysisMethodsError] =
+    useState<ErrorVerbiage>();
+  const [canAddStandards, setCanAddStandards] = useState<boolean>(false);
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -66,9 +66,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const canAddEntities =
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
-
-  const existingStandards =
-    entityType === EntityType.STANDARDS && entities.length > 0;
+  const analysisMethods =
+    report?.fieldData?.[EntityType.ANALYSIS_METHODS] || [];
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -81,34 +80,29 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
-  const atLeastOneRequiredAnalysisMethodIsUtilized = report?.fieldData[
-    "analysisMethods"
-  ]?.some(
-    (analysisMethod: AnyObject) =>
-      analysisMethod.analysis_applicable?.[0]?.value === "Yes"
+  const atLeastOneRequiredAnalysisMethodUtilized = analysisMethods.some(
+    (method: AnyObject) => method.analysis_applicable?.[0]?.value === "Yes"
   );
 
   // check if user has completed default analysis methods (NAAAR)
-  const completedAnalysisMethods = () => {
-    const result = report?.fieldData["analysisMethods"]?.filter(
-      (analysisMethod: AnyObject) => {
-        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
-      }
-    );
+  const analysisMethodsComplete = () => {
+    const result = analysisMethods.filter((method: AnyObject) => {
+      return method.analysis_applicable && method.isRequired;
+    });
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
   // error alert appears if analysis methods are completed without any utilized
   useEffect(() => {
     if (
-      completedAnalysisMethods() &&
-      !atLeastOneRequiredAnalysisMethodIsUtilized
+      analysisMethodsComplete() &&
+      !atLeastOneRequiredAnalysisMethodUtilized
     ) {
-      setPageError(analysisMethodError);
+      setAnalysisMethodsError(analysisMethodError);
     } else {
-      setPageError(undefined);
+      setAnalysisMethodsError(undefined);
     }
-  }, [completedAnalysisMethods, atLeastOneRequiredAnalysisMethodIsUtilized]);
+  }, [atLeastOneRequiredAnalysisMethodUtilized]);
 
   const formParams = {
     route,
@@ -287,7 +281,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     } else if (
       (isAnalysisMethodsPage && !hasPlans) ||
-      (isReportingOnStandards && !completedAnalysisMethods())
+      (isReportingOnStandards && !canAddStandards)
     ) {
       return (
         <Box sx={sx.missingEntity}>
@@ -298,39 +292,17 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return <></>;
   };
 
-  const entityCount: string = verbiage.countEntitiesInTitle
-    ? ` ${entities.length}`
-    : "";
-  const dashTitle = `${verbiage.dashboardTitle}${entityCount}`;
-
-  const addStandardsButton = (
-    <Button
-      sx={sx.addStandardsButton}
-      leftIcon={
-        <Image
-          sx={sx.buttonIcons}
-          src={
-            atLeastOneRequiredAnalysisMethodIsUtilized
-              ? addIconWhite
-              : addIconSVG
-          }
-          alt="Add"
-        />
-      }
-      onClick={() => openRowDrawer()}
-      disabled={!atLeastOneRequiredAnalysisMethodIsUtilized}
-    >
-      {verbiage.addEntityButtonText}
-    </Button>
-  );
-
   return (
     <Box sx={sx.tablePage}>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {isAnalysisMethodsPage && (
-        <ErrorAlert error={pageError} sxOverride={sx.pageErrorAlert} showIcon />
+        <ErrorAlert
+          error={analysisMethodsError}
+          sxOverride={sx.pageErrorAlert}
+          showIcon
+        />
       )}
       {displayErrorMessages()}
       {standardForm && (
@@ -349,18 +321,18 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       )}
       <Box>
         {isReportingOnStandards ? (
-          <Box>
-            {addStandardsButton}
-            <Heading sx={sx.dashboardTitle}>{dashTitle}</Heading>
-            {existingStandards && (
-              <SortableNaaarStandardsTable
-                entities={entities}
-                openRowDrawer={openRowDrawer}
-                openDeleteEntityModal={openDeleteEntityModal}
-              />
-            )}
-            {entities.length > 0 && addStandardsButton}
-          </Box>
+          <NaaarStandardsPage
+            atLeastOneRequiredAnalysisMethodUtilized={
+              atLeastOneRequiredAnalysisMethodUtilized
+            }
+            analysisMethodsComplete={analysisMethodsComplete}
+            openDeleteEntityModal={openDeleteEntityModal}
+            openRowDrawer={openRowDrawer}
+            canAddStandards={canAddStandards}
+            setCanAddStandards={setCanAddStandards}
+            sxOverride={sx}
+            verbiage={verbiage}
+          />
         ) : (
           <Box>
             <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
@@ -498,14 +470,6 @@ const sx = {
   addEntityButton: {
     marginBottom: "2rem",
     marginTop: "2rem",
-  },
-  addStandardsButton: {
-    marginBottom: "0",
-    marginTop: "2rem",
-    "&:first-of-type": {
-      marginBottom: "2rem",
-      marginTop: "0",
-    },
   },
   pageErrorAlert: {
     marginBottom: "2rem",

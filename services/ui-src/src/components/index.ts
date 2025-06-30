@@ -105,6 +105,7 @@ export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
+export { NaaarStandardsPage } from "./reports/NaaarStandardsPage";
 export { OverlayContext, OverlayProvider } from "./reports/OverlayProvider";
 export { OverlayReportPage } from "./reports/OverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
