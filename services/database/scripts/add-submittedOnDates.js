@@ -32,11 +32,13 @@ async function handler() {
     const reports = await getDbItems();
 
     console.log(
-      `\n== Found ${reports.length} reports without submittedOnDates in table ${tableName} ==\n`
+      `\n==${isTest ? " [TEST]" : ""} Found ${
+        reports.length
+      } reports without submittedOnDates in table ${tableName} ==\n`
     );
 
     if (reports.length === 0) return;
-    if (!isTest) await updateDbItems(reports);
+    await updateDbItems(reports);
 
     return {
       statusCode: 200,
@@ -69,9 +71,11 @@ function filterDb(items) {
 
 async function updateDbItems(reports) {
   const transformedItems = await transformDbItems(reports);
-  await update(tableName, transformedItems);
+  if (!isTest) await update(tableName, transformedItems);
   console.log(
-    `\n== Touched ${transformedItems.length} reports in table ${tableName} ==\n`
+    `\n==${isTest ? " [TEST]" : ""} Touched ${
+      transformedItems.length
+    } reports in table ${tableName} ==\n`
   );
 }
 
@@ -99,7 +103,7 @@ async function transformDbItems(reports) {
   return await Promise.all(
     reports.map(async (report) => {
       const { id, previousRevisions, state, submittedOnDate } = report;
-      // Some older reports have submittedOnDate as a string
+      // Some older reports have submittedOnDate as a string, so convert to number
       let submittedOnDates = [Number(submittedOnDate)];
 
       if (previousRevisions.length > 0) {
