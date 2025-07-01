@@ -62,7 +62,12 @@ export class ParentStack extends Stack {
     if (isLocalStack) {
       createApiComponents({
         ...commonProps,
+        vpc,
         tables,
+        kafkaAuthorizedSubnets,
+        mcparFormBucket,
+        mlrFormBucket,
+        naaarFormBucket,
       });
       /*
        * For local dev, the LocalStack container will host the database and API.
@@ -105,23 +110,23 @@ export class ParentStack extends Stack {
 
     createAuthRole(restApiId);
 
-    // deployFrontend({
-    //   ...commonProps,
-    //   uiBucket,
-    //   distribution,
-    //   apiGatewayRestApiUrl,
-    //   applicationEndpointUrl:
-    //     secureCloudfrontDomainName ?? applicationEndpointUrl,
-    //   identityPoolId,
-    //   userPoolId,
-    //   userPoolClientId,
-    //   userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-    //   customResourceRole,
-    // });
+    deployFrontend({
+      ...commonProps,
+      uiBucket,
+      distribution,
+      apiGatewayRestApiUrl,
+      applicationEndpointUrl:
+        secureCloudfrontDomainName ?? applicationEndpointUrl,
+      identityPoolId,
+      userPoolId,
+      userPoolClientId,
+      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+      customResourceRole,
+    });
 
-    // new CfnOutput(this, "CloudFrontUrl", {
-    //   value: applicationEndpointUrl,
-    // });
+    new CfnOutput(this, "CloudFrontUrl", {
+      value: applicationEndpointUrl,
+    });
 
     createTopicsComponents({
       ...commonProps,

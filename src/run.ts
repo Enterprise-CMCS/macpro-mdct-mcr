@@ -10,6 +10,7 @@ import {
   DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
+import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 
 // load .env
@@ -219,7 +220,7 @@ async function run_local() {
       "yarn",
       "cdklocal",
       "bootstrap",
-      "aws://000000000000/us-east-1",
+      "aws://000000000000/us-east-1", // LocalStack uses the default dummy account ID 000000000000
       "--context",
       "stage=bootstrap",
     ],
@@ -448,7 +449,7 @@ yargs(process.argv.slice(2))
     "list-topics",
     "list topics for the project or for the stage",
     {
-      stage: { type: "string", demandOption: false },
+      stage: { type: "string", demandOption: true },
     },
     list_topics
   )
