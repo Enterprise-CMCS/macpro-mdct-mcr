@@ -4,12 +4,20 @@
  *   DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
  * Branch:
  *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *
+ * To run the script without updating reports, use test=true:
+ *
+ * Local:
+ *   test=true DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ * Branch:
+ *   test=true branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
  */
 
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");
 const { buildS3Client, list } = require("./utils/s3.js");
 
 const isLocal = !!process.env.DYNAMODB_URL;
+const isTest = !!process.env.test;
 const branch = isLocal ? "local" : process.env.branchPrefix;
 const reportType = process.argv[2] || "mcpar";
 const tableName = `${branch}-${reportType}-reports`;
@@ -19,20 +27,16 @@ const bucketName = isLocal
 
 async function handler() {
   try {
-    console.log("\n== Fetching report ==\n");
+    console.log("\n== Fetching reports ==\n");
 
     const reports = await getDbItems();
 
-    if (reports.length < 1) {
-      console.log(`\n== No reports need updating in table ${tableName} ==\n`);
-      return;
-    } else {
-      console.log(
-        `\n== Found ${reports.length} report(s) needing updates in table ${tableName} ==\n`
-      );
-    }
+    console.log(
+      `\n== Found ${reports.length} reports without submittedOnDates in table ${tableName} ==\n`
+    );
 
-    await updateDbItems(reports);
+    if (reports.length === 0) return;
+    if (!isTest) await updateDbItems(reports);
 
     return {
       statusCode: 200,
@@ -67,24 +71,40 @@ async function updateDbItems(reports) {
   const transformedItems = await transformDbItems(reports);
   await update(tableName, transformedItems);
   console.log(
-    `\n== Touched ${transformedItems.length} report(s) in table ${tableName} ==\n`
+    `\n== Touched ${transformedItems.length} reports in table ${tableName} ==\n`
   );
 }
 
 async function transformDbItems(reports) {
   buildS3Client();
 
+  const fieldData = {};
+
+  // Group reports by state
+  const reportsByState = reports.reduce((acc, report) => {
+    if (!acc[report.state]) acc[report.state] = [];
+    acc[report.state].push(report);
+    return acc;
+  }, {});
+
+  // Fetch fieldData for each state only once
+  for (const state of Object.keys(reportsByState)) {
+    const bucketObjects = await list({
+      Bucket: bucketName,
+      Prefix: `fieldData/${state}`,
+    });
+    fieldData[state] = bucketObjects;
+  }
+
   return await Promise.all(
     reports.map(async (report) => {
       const { id, previousRevisions, state, submittedOnDate } = report;
-      let submittedOnDates = [submittedOnDate];
+      // Some older reports have submittedOnDate as a string
+      let submittedOnDates = [Number(submittedOnDate)];
 
       if (previousRevisions.length > 0) {
-        const allObjects = await list({
-          Bucket: bucketName,
-          Prefix: `fieldData/${state}`,
-        });
-        const fieldDataObjects = filterS3(allObjects, previousRevisions);
+        const bucketObjects = fieldData[state];
+        const fieldDataObjects = filterS3(bucketObjects, previousRevisions);
 
         if (fieldDataObjects.length > 0) {
           const fieldDataModifiedDates = fieldDataObjects.map((obj) =>
@@ -105,13 +125,13 @@ async function transformDbItems(reports) {
   );
 }
 
-function filterS3(bucketObjects, fieldDataIds) {
+function filterS3(bucketObjects, previousRevisions) {
   return bucketObjects.filter((obj) => {
     // Key is fieldData/state/uuid.json format, extract uuid
     const key = obj.Key.split("/");
     const keyId = key[key.length - 1].split(".")[0];
 
-    return fieldDataIds.includes(keyId);
+    return previousRevisions.includes(keyId);
   });
 }
 

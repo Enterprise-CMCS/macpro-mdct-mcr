@@ -283,7 +283,8 @@ export interface ReportMetadata {
   lastAltered: number;
   state: State;
   id: string;
-  submittedOnDate?: string;
+  submittedOnDate?: number;
+  submittedOnDates?: number[];
   fieldDataId: string;
   formTemplateId: string;
   lastAlteredBy: string;
@@ -292,7 +293,6 @@ export interface ReportMetadata {
   completionStatus?: CompletionData;
   previousRevisions: string[];
   submissionCount: number;
-  submittedOnDates?: number[];
   locked: boolean;
   archived?: boolean;
 }
