@@ -193,7 +193,7 @@ describe("utils/forms/naaarPlanCompliance", () => {
 
       const standardKeyPrefix = "planCompliance43868";
       const entityId = "standard-id";
-      const selectedEntityName = "Plan 1";
+      const selectedPlanName = "Plan 1";
 
       const createdAnalysisMethods = [
         {
@@ -208,25 +208,22 @@ describe("utils/forms/naaarPlanCompliance", () => {
         },
       ];
 
-      const analysisMethodsInStandards = [
-        {
-          id: "standard-id",
-          [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-              value: "Geomapping",
-            },
-          ],
-        },
-      ];
+      const selectedStandard = {
+        id: "standard-id",
+        [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
+          {
+            key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
+            value: "Geomapping",
+          },
+        ],
+      };
 
       const result = addAnalysisMethods(
         mockForm,
         standardKeyPrefix,
-        entityId,
-        analysisMethodsInStandards,
+        selectedStandard,
         createdAnalysisMethods,
-        selectedEntityName
+        selectedPlanName
       );
 
       expect(result.fields[0]?.props?.choices).toEqual([
