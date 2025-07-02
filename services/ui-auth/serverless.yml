@@ -44,9 +44,7 @@ custom:
       - "SizeRestrictions_BODY"
   serverlessTerminationProtection:
     stages:
-      - main
-      - val
-      - production
+      - nonsense
   sesSourceEmailAddress: ${ssm:/configuration/${self:custom.stage}/sesSourceEmailAddress, ssm:/configuration/default/sesSourceEmailAddress, ""}
   api_gateway_rest_api_name: ${param:ApiGatewayRestApiName}
   application_endpoint_url: ${param:ApplicationEndpointUrl}
