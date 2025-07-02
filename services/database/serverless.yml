@@ -43,6 +43,7 @@ resources:
   Resources:
     BannerTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.bannerTableName}
         PointInTimeRecoverySpecification:
@@ -58,6 +59,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     McparReportTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.mcparReportTableName}
         PointInTimeRecoverySpecification:
@@ -77,6 +79,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     McparFormBucket:
       Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-mcpar
         BucketEncryption:
@@ -111,6 +114,7 @@ resources:
                   aws:SecureTransport: false
     MlrReportTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.mlrReportTableName}
         PointInTimeRecoverySpecification:
@@ -130,6 +134,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     MlrFormBucket:
       Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-mlr
         BucketEncryption:
@@ -164,6 +169,7 @@ resources:
                   aws:SecureTransport: false
     NaaarReportTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.naaarReportTableName}
         PointInTimeRecoverySpecification:
@@ -183,6 +189,7 @@ resources:
         BillingMode: PAY_PER_REQUEST # Set the capacity to auto-scale
     NaaarFormBucket:
       Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
       Properties:
         BucketName: !Sub ${self:service}-${self:custom.stage}-naaar
         BucketEncryption:
@@ -217,6 +224,7 @@ resources:
                   aws:SecureTransport: false
     FormTemplateVersionsTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.formTemplateTableName}
         PointInTimeRecoverySpecification:
