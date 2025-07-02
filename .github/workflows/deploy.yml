@@ -1,12 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - "*"
-      - "dependabot/**"
-      - "!skipci*"
-      - "!code-json-*"
+on: [push]
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -62,6 +56,7 @@ jobs:
           retention-days: 14
 
   deploy:
+    if: ${{ !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs: unit-tests
     runs-on: ubuntu-latest
     env:
@@ -118,7 +113,7 @@ jobs:
 
   register-runner:
     name: Register GitHub Runner
-    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
+    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     needs: deploy
     env:
@@ -209,7 +204,7 @@ jobs:
     needs:
       - deploy
       - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -248,7 +243,7 @@ jobs:
     needs:
       - deploy
       - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -286,7 +281,7 @@ jobs:
       - register-runner
       - e2e-test
       - a11y-tests
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -329,7 +324,7 @@ jobs:
     name: Upload Reports
     needs:
       - test
-    if: ${{ always() && github.ref_name != 'production' }}
+    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     outputs:
       timestamp: ${{ steps.timestampid.outputs.timestamp }}
@@ -376,7 +371,7 @@ jobs:
 
   cleanup:
     name: Delist GHA Runner CIDR Blocks
-    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
+    if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     needs:
       - register-runner
