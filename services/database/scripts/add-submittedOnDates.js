@@ -63,9 +63,13 @@ async function getDbItems() {
 function filterDb(items) {
   // Submitted reports that don't have submittedOnDates values
   return items.filter(
-    (item) =>
-      item.submittedOnDate &&
-      (!item.submittedOnDates || item.submittedOnDates.length === 0)
+    ({ previousRevisions, submittedOnDate, submittedOnDates = [] }) => {
+      const expectedSubmittedOnDatesCount = previousRevisions.length + 1;
+      return (
+        submittedOnDate &&
+        submittedOnDates.length !== expectedSubmittedOnDatesCount
+      );
+    }
   );
 }
 
@@ -117,7 +121,7 @@ async function transformDbItems(reports) {
           );
           submittedOnDates = [...fieldDataModifiedDates, ...submittedOnDates];
         } else {
-          console.log(`\n== No S3 objects found for ${id} ==\n`);
+          console.log(`== Missing previousRevisions: ${id} ==`);
         }
       }
 
