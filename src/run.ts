@@ -160,15 +160,18 @@ async function checkRetainedResources(
   const resourcesToCheck = {
     [`database-${stage}`]: [
       "BannerTable",
+      "McparReportTable",
+      "McparFormBucket",
+      "MlrReportTable",
+      "MlrFormBucket",
+      "NaaarReportTable",
+      "NaaarFormBucket",
       "FormTemplateVersionsTable",
-      "SarReportTable",
-      "SarFormBucket",
-      "WpReportTable",
-      "WpFormBucket",
     ],
     [`ui-${stage}`]: [
       "CloudFrontDistribution",
       "LoggingBucket",
+      "LoggingBucketPolicy",
       "WaflogsUploadBucket",
     ],
     [`ui-auth-${stage}`]: ["CognitoUserPool"],

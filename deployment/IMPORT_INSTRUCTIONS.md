@@ -2,7 +2,7 @@
 
 ## From `pete-sls` branch:
 
-```sh
+````sh
 rm -rf node_modules
 yarn install
 ./run update-env
@@ -13,6 +13,8 @@ yarn install
 # cognito.UserPool -
 
 ./run destroy --stage <YOUR_BRANCH_NAME>
+
+```copy output of destroy command here for later import into CDK:
 
 ```
 
