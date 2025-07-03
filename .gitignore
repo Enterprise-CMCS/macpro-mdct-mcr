@@ -27,3 +27,4 @@ cdk.context.json
 cdk.context.json
 .qlty/*
 !.qlty/qlty.toml
+.serverless
