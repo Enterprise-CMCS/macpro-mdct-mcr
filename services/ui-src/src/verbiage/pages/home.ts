@@ -85,8 +85,7 @@ export default {
       },
       accordion: {
         buttonLabel: "When must states submit the NAAAR to CMS?",
-        introText:
-          "The information required at 42 CFR § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
+        text: "The information required at 42 CFR § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
         orderedList: [
           "When a state enters into a contract with each MCO, PIHP, or PAHP, NAAAR reports must be submitted sufficiently in advance to enable CMS to make a determination that the contract entered into as specified at § 438.207(c)(1) is approved under § 438.3(a);",
           "On an annual basis and no later than 180 calendar days after each rating period;",
