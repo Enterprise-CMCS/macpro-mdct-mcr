@@ -24,19 +24,31 @@ export default {
       },
       accordion: {
         buttonLabel: "When is the MCPAR due?",
-        text: "Due dates vary based on contract year of the managed care program and contract period for the first report.",
-        table: {
-          caption: "MCPAR Due Dates by Contract Year",
-          headRow: ["Contract Year", "Contract Period", "Due Date"],
-          bodyRows: [
-            ["Jan to Dec", "1/1/23 to 12/31/23", "Jun 28, 2024"],
-            ["Apr to Mar", "4/1/23 to 3/31/24", "Sep 27, 2024"],
-            ["Jul to Jun", "7/1/23 to 6/30/24", "Dec 27, 2024"],
-            ["Sep to Aug", "9/1/23 to 8/31/24", "Feb 27, 2025"],
-            ["Oct to Sep", "10/1/23 to 9/30/24", "Mar 29, 2025"],
-            ["Jan to Dec", "1/1/24 to 12/31/24", "Jun 29, 2025"],
-          ],
-        },
+        text: [
+          {
+            type: "p",
+            children: [
+              {
+                type: "html",
+                content: "To view MCPAR due dates select ",
+              },
+              {
+                type: "externalLink",
+                content: "this link",
+                props: {
+                  href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting#AMCPR",
+                  target: "_blank",
+                  "aria-label": "MCPAR due dates (link opens in new tab)",
+                },
+              },
+              {
+                type: "html",
+                content:
+                  " and navigate to the Due Dates sections beneath Managed Care Program Annual Report (MCPAR). Note, due dates vary based on contract year of the managed care program and contract period for the first report.",
+              },
+            ],
+          },
+        ],
       },
     },
     MLR: {
