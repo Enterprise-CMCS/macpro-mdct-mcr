@@ -84,7 +84,7 @@ custom:
         firehoseStreamArn=`aws firehose describe-delivery-stream --delivery-stream-name ${self:custom.firehoseStreamName} | jq -r '.DeliveryStreamDescription.DeliveryStreamARN'`
         aws wafv2 put-logging-configuration \
           --logging-configuration ResourceArn=$wafAclArn,LogDestinationConfigs=$firehoseStreamArn \
-          --region ${self:provider.region}
+          --region "us-east-1"
 params:
   production:
     restrictToVpn: false

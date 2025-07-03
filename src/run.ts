@@ -20,6 +20,8 @@ import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 // load .env
 dotenv.config();
 
+process.env.AWS_DEFAULT_REGION = "us-east-1";
+
 const deployedServices = [
   "database",
   "topics",
@@ -147,10 +149,10 @@ async function checkRetainedResources(
   stage: string,
   filters: { Key: string; Value: string }[] | undefined
 ) {
-  const cfnClient = new CloudFormationClient({ region: process.env.REGION_A });
+  const cfnClient = new CloudFormationClient({ region: "us-east-1" });
 
   const templates = await getCloudFormationTemplatesForStage(
-    `${process.env.REGION_A}`,
+    "us-east-1",
     stage,
     filters
   );
@@ -204,10 +206,17 @@ async function checkRetainedResources(
 function checkEnvVars() {
   const envVarsToCheck = [
     "LOGGING_BUCKET",
-    "WP_FORM_BUCKET",
-    "SAR_FORM_BUCKET",
-    "WP_REPORT_TABLE_STREAM_ARN",
-    "SAR_REPORT_TABLE_STREAM_ARN",
+    "MCPAR_FORM_BUCKET",
+    "MLR_FORM_BUCKET",
+    "NAAAR_FORM_BUCKET",
+    "BANNER_TABLE_NAME",
+    "MCPAR_REPORT_TABLE_NAME",
+    "MLR_REPORT_TABLE_NAME",
+    "NAAAR_REPORT_TABLE_NAME",
+    "FORM_TEMPLATE_TABLE_NAME",
+    "MCPAR_REPORT_TABLE_STREAM_ARN",
+    "MLR_REPORT_TABLE_STREAM_ARN",
+    "NAAAR_REPORT_TABLE_STREAM_ARN",
     "VPC_ID",
     "VPC_SUBNET_A",
     "VPC_SUBNET_B",
@@ -251,7 +260,7 @@ async function destroy_stage(options: {
   }
 
   const stacks = await getAllStacksForStage(
-    `${process.env.REGION_A}`,
+    "us-east-1",
     options.stage,
     filters
   );
@@ -275,7 +284,17 @@ async function destroy_stage(options: {
 
   let notRetained: { templateKey: string; resourceKey: string }[] = [];
   let retained;
-  if (["main", "master", "val", "production"].includes(options.stage)) {
+  if (
+    [
+      "main",
+      "master",
+      "val",
+      "production",
+      "jonsls1",
+      "jonsls2",
+      "jonsls3",
+    ].includes(options.stage)
+  ) {
     ({ retained, notRetained } = await checkRetainedResources(
       options.stage,
       filters
@@ -303,13 +322,14 @@ async function destroy_stage(options: {
   }
 
   const accountId = await getAccountId();
-  await destroyer.destroy(`${process.env.REGION_A}`, options.stage, {
+  await destroyer.destroy("us-east-1", options.stage, {
     wait: options.wait,
     filters: filters,
     verify: options.verify,
     bucketsToSkip: [
-      `database-${options.stage}-sar`,
-      `database-${options.stage}-wp`,
+      `database-${options.stage}-mcpar`,
+      `database-${options.stage}-mlr`,
+      `database-${options.stage}-naaar`,
       `ui-${options.stage}-cloudfront-logs-${accountId}`,
       `${accountId}-ui-${options.stage}-waflogs`,
     ],
@@ -319,7 +339,7 @@ async function destroy_stage(options: {
 }
 
 async function getAccountId() {
-  const client = new STSClient({ region: process.env.REGION_A });
+  const client = new STSClient({ region: "us-east-1" });
   const identity = await client.send(new GetCallerIdentityCommand({}));
   return identity.Account;
 }
