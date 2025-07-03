@@ -53,6 +53,7 @@ import addIconSVG from "assets/icons/icon_add_gray.svg";
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [pageError, setPageError] = useState<ErrorVerbiage>();
+  const [canAddStandards, setCanAddStandards] = useState<boolean>(false);
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -70,6 +71,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   const existingStandards =
     entityType === EntityType.STANDARDS && entities.length > 0;
+  const providerTypeSelected = report?.fieldData?.providerTypes?.length > 0;
 
   // check if there are ILOS and associated plans
   const isMcparReport = route.path.includes("mcpar");
@@ -99,7 +101,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
-  // error alert appears if analysis methods are completed without any utilized
+  // analysis methods: error alert appears if analysis methods are completed without any utilized
   useEffect(() => {
     if (
       completedAnalysisMethods() &&
@@ -110,6 +112,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       setPageError(undefined);
     }
   }, [completedAnalysisMethods, atLeastOneRequiredAnalysisMethodIsUtilized]);
+
+  // standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
+  useEffect(() => {
+    if (
+      !completedAnalysisMethods() ||
+      (completedAnalysisMethods() &&
+        !atLeastOneRequiredAnalysisMethodIsUtilized) ||
+      !providerTypeSelected
+    ) {
+      setCanAddStandards(false);
+    } else {
+      setCanAddStandards(true);
+    }
+  }, [atLeastOneRequiredAnalysisMethodIsUtilized, providerTypeSelected]);
 
   const formParams = {
     route,
@@ -291,7 +307,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       );
     } else if (
       (isAnalysisMethodsPage && !hasPlans) ||
-      (isReportingOnStandards && !completedAnalysisMethods())
+      (isReportingOnStandards && !canAddStandards)
     ) {
       return (
         <Box sx={sx.missingEntity}>
@@ -313,16 +329,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       leftIcon={
         <Image
           sx={sx.buttonIcons}
-          src={
-            atLeastOneRequiredAnalysisMethodIsUtilized
-              ? addIconWhite
-              : addIconSVG
-          }
+          src={canAddStandards ? addIconWhite : addIconSVG}
           alt="Add"
         />
       }
       onClick={() => openRowDrawer()}
-      disabled={!atLeastOneRequiredAnalysisMethodIsUtilized}
+      disabled={!canAddStandards}
     >
       {verbiage.addEntityButtonText}
     </Button>

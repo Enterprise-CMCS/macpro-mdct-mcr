@@ -179,14 +179,21 @@ describe("utils/forms/naaarPlanCompliance", () => {
           {
             id: "planCompliance43868-standard-id-nonComplianceAnalyses",
             type: "checkbox",
-            props: {},
+            props: {
+              choices: [
+                {
+                  label: "Geomapping",
+                  children: [],
+                },
+              ],
+            },
           },
         ],
       };
 
       const standardKeyPrefix = "planCompliance43868";
       const entityId = "standard-id";
-      const selectedEntityName = "Plan 1";
+      const selectedPlanName = "Plan 1";
 
       const createdAnalysisMethods = [
         {
@@ -199,61 +206,30 @@ describe("utils/forms/naaarPlanCompliance", () => {
           name: "MockItem2",
           analysis_method_applicable_plans: [{ value: "Plan 2" }],
         },
-        {
-          id: "mockUUID3",
-          name: "Plan Provider Directory Review",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
-        },
-        {
-          id: "mockUUID4",
-          name: "Secret Shopper: Appointment Availability",
-          analysis_method_applicable_plans: [{ value: "Plan 1" }],
-        },
       ];
 
-      const analysisMethodsInStandards = [
-        {
-          id: "standard-id",
-          [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
-              value: "Geomapping",
-            },
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID3`,
-              value: "Plan Provider Directory Review",
-            },
-            {
-              key: `standard_analysisMethodsUtilized-${entityId}-mockUUID4`,
-              value: "Secret Shopper: Appointment Availability",
-            },
-          ],
-        },
-      ];
+      const selectedStandard = {
+        id: "standard-id",
+        [`standard_analysisMethodsUtilized-${entityId}-mockUUID1`]: [
+          {
+            key: `standard_analysisMethodsUtilized-${entityId}-mockUUID1`,
+            value: "Geomapping",
+          },
+        ],
+      };
 
       const result = addAnalysisMethods(
         mockForm,
         standardKeyPrefix,
-        entityId,
-        analysisMethodsInStandards,
+        selectedStandard,
         createdAnalysisMethods,
-        selectedEntityName
+        selectedPlanName
       );
 
       expect(result.fields[0]?.props?.choices).toEqual([
         {
           id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID1",
           label: "Geomapping",
-          children: expect.any(Array),
-        },
-        {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID3",
-          label: "Plan Provider Directory Review",
-          children: expect.any(Array),
-        },
-        {
-          id: "planCompliance43868-standard-id-nonComplianceAnalyses_mockUUID4",
-          label: "Secret Shopper: Appointment Availability",
           children: expect.any(Array),
         },
       ]);
