@@ -196,6 +196,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     handler: "fetchBanner",
     path: "/banners",
     method: "GET",
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:Scan"],
+        resources: tables
+          .filter((table) => ["Banner"].includes(table.id))
+          .map((table) => table.arn),
+      }),
+    ],
     ...commonProps,
   });
 
@@ -235,6 +244,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     requestParameters: ["reportType", "state"],
     requestValidator,
     timeout: Duration.seconds(30),
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:Query"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+    ],
     ...commonProps,
   });
 
@@ -265,6 +285,33 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "POST",
     requestParameters: ["reportType", "state"],
     requestValidator,
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:Query"],
+        resources: tables
+          .filter((table) => ["FormTemplateVersions"].includes(table.id))
+          .map((table) => `${table.arn}/index/HashIndex`),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:PutItem"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject", "s3:PutObject"],
+        resources: [
+          `${mcparFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${naaarFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
     ...commonProps,
   });
 
