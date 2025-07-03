@@ -171,7 +171,6 @@ async function checkRetainedResources(
     [`ui-${stage}`]: [
       "CloudFrontDistribution",
       "LoggingBucket",
-      "LoggingBucketPolicy",
       "WaflogsUploadBucket",
     ],
     [`ui-auth-${stage}`]: ["CognitoUserPool"],
