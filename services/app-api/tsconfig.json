@@ -23,5 +23,5 @@
   "ts-node": {
     "files": true
   },
-  "files": ["db/custom.d.ts"]
+  "include": ["db/custom.d.ts", "handlers", "utils"],
 }
