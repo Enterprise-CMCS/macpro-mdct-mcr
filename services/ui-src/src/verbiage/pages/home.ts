@@ -30,21 +30,22 @@ export default {
             children: [
               {
                 type: "html",
-                content: "To view MCPAR due dates select ",
+                content: "To view MCPAR due dates, navigate to the ",
               },
               {
                 type: "externalLink",
-                content: "this link",
+                content:
+                  "Due Dates section beneath Managed Care Program Annual Report (MCPAR)",
                 props: {
+                  rel: "noopener noreferrer",
                   href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting#AMCPR",
                   target: "_blank",
-                  "aria-label": "MCPAR due dates (link opens in new tab)",
                 },
               },
               {
                 type: "html",
                 content:
-                  " and navigate to the Due Dates sections beneath Managed Care Program Annual Report (MCPAR). Note, due dates vary based on contract year of the managed care program and contract period for the first report.",
+                  ". Note, due dates vary based on contract year of the managed care program and contract period for the first report.",
               },
             ],
           },
