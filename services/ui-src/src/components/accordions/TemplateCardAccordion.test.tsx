@@ -10,7 +10,16 @@ export const mockAccordion = {
   buttonLabel: "mock accordion button",
   text: "Mock information text inside accordion",
   introText: "Mock intro text",
-  orderedList: ["First item", "Second item", "Third item"],
+  list: [
+    "First item unordered",
+    "Second item unordered",
+    "Third item unordered",
+  ],
+  orderedList: [
+    "First item ordered",
+    "Second item ordered",
+    "Third item ordered",
+  ],
   followUpText: "Mock follow up text",
 };
 
