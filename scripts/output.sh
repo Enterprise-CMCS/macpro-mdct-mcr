@@ -1,8 +1,7 @@
-
 set -e
 
 help='This script is run with the format  ./output.sh <target stack name> <cloudformation output variable name>'
-example='ex.  ./output.sh qmr-cmdct-4184-cdk CloudFrontUrl'
+example='ex.  ./output.sh mcr-cmdct-4184-cdk CloudFrontUrl'
 
 stack_name=${1}
 output=${2}
