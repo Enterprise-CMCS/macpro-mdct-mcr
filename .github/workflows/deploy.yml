@@ -100,7 +100,7 @@ jobs:
       - id: endpoint
         run: |
           pwd
-          APPLICATION_ENDPOINT=$(./scripts/output.sh mcr-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(../scripts/output.sh mcr-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
