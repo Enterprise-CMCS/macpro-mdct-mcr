@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *   DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *   DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submissionDates.js {{reportType}}
  * Branch:
- *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submissionDates.js {{reportType}}
  *
  * To run the script without updating reports, use test=true:
  *
  * Local:
- *   test=true DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *   test=true DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submissionDates.js {{reportType}}
  * Branch:
- *   test=true branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submittedOnDates.js {{reportType}}
+ *   test=true branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submissionDates.js {{reportType}}
  */
 
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");
@@ -34,7 +34,7 @@ async function handler() {
     console.log(
       `\n==${isTest ? " [TEST]" : ""} Found ${
         reports.length
-      } reports without submittedOnDates in table ${tableName} ==\n`
+      } reports without submissionDates in table ${tableName} ==\n`
     );
 
     if (reports.length === 0) return;
@@ -61,13 +61,13 @@ async function getDbItems() {
 }
 
 function filterDb(items) {
-  // Submitted reports that don't have submittedOnDates values
+  // Submitted reports that don't have submissionDates values
   return items.filter(
-    ({ previousRevisions, submittedOnDate, submittedOnDates = [] }) => {
+    ({ previousRevisions, submittedOnDate, submissionDates = [] }) => {
       const expectedSubmittedOnDatesCount = previousRevisions.length + 1;
       return (
         submittedOnDate &&
-        submittedOnDates.length !== expectedSubmittedOnDatesCount
+        submissionDates.length !== expectedSubmittedOnDatesCount
       );
     }
   );
@@ -106,20 +106,27 @@ async function transformDbItems(reports) {
 
   return await Promise.all(
     reports.map(async (report) => {
-      const { id, previousRevisions, state, submittedOnDate } = report;
+      const { id, fieldDataId, previousRevisions, state, submittedOnDate } =
+        report;
       // Some older reports have submittedOnDate as a string, so convert to number
-      let submittedOnDates = [Number(submittedOnDate)];
+      let submissionDates = [
+        {
+          fieldDataId: fieldDataId,
+          submittedOnDate: Number(submittedOnDate),
+        },
+      ];
 
       if (previousRevisions.length > 0) {
         const bucketObjects = fieldData[state];
         const fieldDataObjects = filterS3(bucketObjects, previousRevisions);
 
         if (fieldDataObjects.length > 0) {
-          const fieldDataModifiedDates = fieldDataObjects.map((obj) =>
+          const fieldDataModifiedDates = fieldDataObjects.map((obj, index) => ({
+            fieldDataId: previousRevisions[index],
             // LastModified would approximate submission date
-            new Date(obj.LastModified).getTime()
-          );
-          submittedOnDates = [...fieldDataModifiedDates, ...submittedOnDates];
+            submittedOnDate: new Date(obj.LastModified).getTime(),
+          }));
+          submissionDates = [...fieldDataModifiedDates, ...submissionDates];
         } else {
           console.log(`== Missing previousRevisions: ${id} ==`);
         }
@@ -127,7 +134,7 @@ async function transformDbItems(reports) {
 
       return {
         ...report,
-        submittedOnDates,
+        submissionDates,
       };
     })
   );

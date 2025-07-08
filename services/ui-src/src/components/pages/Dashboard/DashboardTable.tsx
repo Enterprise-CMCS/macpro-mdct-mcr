@@ -35,7 +35,7 @@ export const DashboardTable = ({
   <Table content={tableBody(body.table, isAdmin)} sx={sx.table}>
     {reportsByState.map((report: ReportMetadataShape) => {
       const initialSubmissionDate =
-        report.submittedOnDates?.[0] ?? report.submittedOnDate;
+        report.submissionDates?.[0].submittedOnDate ?? report.submittedOnDate;
 
       return (
         <Tr key={report.id}>

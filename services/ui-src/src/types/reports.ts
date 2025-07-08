@@ -284,7 +284,7 @@ export interface ReportMetadata {
   state: State;
   id: string;
   submittedOnDate?: number;
-  submittedOnDates?: number[];
+  submissionDates?: { fieldDataId: string; submittedOnDate: number }[];
   fieldDataId: string;
   formTemplateId: string;
   lastAlteredBy: string;

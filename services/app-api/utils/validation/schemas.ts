@@ -14,7 +14,7 @@ export const metadataValidationSchema = yup.object().shape({
   lastAlteredBy: yup.string(),
   submittedBy: yup.string(),
   submittedOnDate: yup.number(),
-  submittedOnDates: yup.array(),
+  submissionDates: yup.array(),
   previousRevisions: yup.array(),
   submissionCount: yup.number(),
   submissionName: yup.string(),

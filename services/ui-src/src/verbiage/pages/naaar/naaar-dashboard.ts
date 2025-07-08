@@ -105,7 +105,7 @@ export default {
         "Last edited",
         "Edited by",
         "Status",
-        "Submitted",
+        "Initial Submission",
         "#",
         { hiddenName: "Actions" },
       ],
