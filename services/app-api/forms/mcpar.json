@@ -2842,7 +2842,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7o Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter “N/A”.",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-n paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3262,7 +3262,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15o Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter “N/A”.",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-n paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
