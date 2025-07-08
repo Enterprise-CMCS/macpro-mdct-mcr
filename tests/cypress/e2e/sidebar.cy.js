@@ -20,11 +20,13 @@ describe("Sidebar integration tests", () => {
     // Create Report & nav to it
     const programName = `automated test - ${new Date().toISOString()}`;
     cy.get('button:contains("Add / copy a MCPAR")').click();
-    cy.get('input[name="programName"]').type(programName);
+    cy.get('input[name="newOrExistingProgram"]').check("Add new program");
+    cy.get('input[name="newProgramName"]').type(programName);
     cy.get('input[name="reportingPeriodStartDate"]').type("07142023");
     cy.get('input[name="reportingPeriodEndDate"]').type("07142026");
     cy.get('[name="combinedData"]').focused().click();
     cy.get('input[name="programIsPCCM"').check("No");
+    cy.get('input[name="naaarSubmissionForThisProgram"').check("No");
     cy.get("button[type=submit]").contains("Save").click();
     //Find our new program and open it
     cy.get("table").within(() => {

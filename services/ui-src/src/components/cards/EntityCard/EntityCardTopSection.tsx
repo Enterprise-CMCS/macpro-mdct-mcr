@@ -22,8 +22,8 @@ export const EntityCardTopSection = ({
       return (
         <>
           <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "C2.V.1 General category: " : ""}${
-              formattedEntityData.category
+            {`${printVersion ? "C2.V.3 Standard type: " : ""}${
+              formattedEntityData.standardType
             }`}
           </Heading>
           {printVersion && (
@@ -33,9 +33,9 @@ export const EntityCardTopSection = ({
             {formattedEntityData.standardDescription}
           </Text>
           <Text sx={sx.subtitle}>
-            {`${printVersion ? "C2.V.3 " : ""}Standard type`}
+            {`${printVersion ? "C2.V.1 " : ""}General category`}
           </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.standardType}</Text>
+          <Text sx={sx.subtext}>{formattedEntityData.category}</Text>
         </>
       );
     case EntityType.SANCTIONS:

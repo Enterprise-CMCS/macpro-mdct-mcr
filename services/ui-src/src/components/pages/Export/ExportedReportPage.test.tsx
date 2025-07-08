@@ -1,5 +1,9 @@
 import { render } from "@testing-library/react";
-import { ExportedReportPage, reportTitle } from "./ExportedReportPage";
+import {
+  ExportedReportPage,
+  reportTitle,
+  getNaaarSubmissionDate,
+} from "./ExportedReportPage";
 // types
 import { ReportShape, ReportType } from "types";
 // utils
@@ -47,6 +51,11 @@ describe("<ExportedReportPage />", () => {
       expect(title).toBeVisible();
     });
 
+    test("getNaaarSubmissionDate returns the correct date", async () => {
+      const result = getNaaarSubmissionDate(mockMcparReportStore.report!);
+      expect(result).toBe("No");
+    });
+
     test("Does the export page have the correct title for MLR reports", () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
@@ -84,6 +93,46 @@ describe("<ExportedReportPage />", () => {
       expect(() =>
         reportTitle(unknownReportType, {}, {} as ReportShape)
       ).toThrow(Error);
+    });
+  });
+
+  describe("getNaaarSubmissionDate()", () => {
+    test("returns submitted text", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I submitted it",
+          },
+        ],
+        naaarSubmissionDateForThisProgram: "1/1/2025",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Submitted on 1/1/2025");
+    });
+
+    test("returns expected submission text", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "Yes, I plan on submitting it",
+          },
+        ],
+        naaarExpectedSubmissionDateForThisProgram: "1/1/2025",
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toBe("Plan to submit on 1/1/2025");
+    });
+
+    test("returns submission", () => {
+      const report = {
+        naaarSubmissionForThisProgram: [
+          {
+            key: "mockId",
+            value: "No",
+          },
+        ],
+      } as ReportShape;
+      expect(getNaaarSubmissionDate(report)).toEqual("No");
     });
   });
 
