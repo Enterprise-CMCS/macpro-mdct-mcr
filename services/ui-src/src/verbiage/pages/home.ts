@@ -24,19 +24,32 @@ export default {
       },
       accordion: {
         buttonLabel: "When is the MCPAR due?",
-        text: "Due dates vary based on contract year of the managed care program and contract period for the first report.",
-        table: {
-          caption: "MCPAR Due Dates by Contract Year",
-          headRow: ["Contract Year", "Contract Period", "Due Date"],
-          bodyRows: [
-            ["Jan to Dec", "1/1/23 to 12/31/23", "Jun 28, 2024"],
-            ["Apr to Mar", "4/1/23 to 3/31/24", "Sep 27, 2024"],
-            ["Jul to Jun", "7/1/23 to 6/30/24", "Dec 27, 2024"],
-            ["Sep to Aug", "9/1/23 to 8/31/24", "Feb 27, 2025"],
-            ["Oct to Sep", "10/1/23 to 9/30/24", "Mar 29, 2025"],
-            ["Jan to Dec", "1/1/24 to 12/31/24", "Jun 29, 2025"],
-          ],
-        },
+        text: [
+          {
+            type: "p",
+            children: [
+              {
+                type: "html",
+                content: "To view MCPAR due dates, navigate to the ",
+              },
+              {
+                type: "externalLink",
+                content:
+                  "Due Dates section beneath Managed Care Program Annual Report (MCPAR)",
+                props: {
+                  rel: "noopener noreferrer",
+                  href: "https://www.medicaid.gov/medicaid/managed-care/guidance/medicaid-and-chip-managed-care-reporting#AMCPR",
+                  target: "_blank",
+                },
+              },
+              {
+                type: "html",
+                content:
+                  ". Note, due dates vary based on contract year of the managed care program and contract period for the first report.",
+              },
+            ],
+          },
+        ],
       },
     },
     MLR: {
@@ -73,8 +86,7 @@ export default {
       },
       accordion: {
         buttonLabel: "When must states submit the NAAAR to CMS?",
-        introText:
-          "The information required at 42 CFR § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
+        text: "The information required at 42 CFR § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
         orderedList: [
           "When a state enters into a contract with each MCO, PIHP, or PAHP, NAAAR reports must be submitted sufficiently in advance to enable CMS to make a determination that the contract entered into as specified at § 438.207(c)(1) is approved under § 438.3(a);",
           "On an annual basis and no later than 180 calendar days after each rating period;",
