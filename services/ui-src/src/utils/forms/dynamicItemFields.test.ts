@@ -200,7 +200,13 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
   const mockNestedForms = [
     {
       label: "Geomapping",
-      children: [],
+      children: [
+        {
+          id: "mock-child-id",
+          arrayKey: [{ id: "mock-array-1" }, { id: "mock-array-2" }],
+          objectKey: { id: "mock-grandchild-id" },
+        },
+      ],
     },
   ];
 
@@ -239,9 +245,21 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       mockItems,
       mockNestedForms
     );
-    expect(Object.prototype.hasOwnProperty.call(result[0], "children")).toBe(
-      true
-    );
+    const childResult = (result[0] as AnyObject).children[0];
+    expect(childResult).toEqual({
+      id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id",
+      arrayKey: [
+        {
+          id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-array-1",
+        },
+        {
+          id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-array-2",
+        },
+      ],
+      objectKey: {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-grandchild-id",
+      },
+    });
     expect(Object.prototype.hasOwnProperty.call(result[1], "children")).toBe(
       false
     );
