@@ -58,6 +58,7 @@
     "aws-cdk": "^2.1002.0",
     "aws-cdk-local": "^2.19.2",
     "chromedriver": ">=88.0.0",
+    "amazon-user-pool-srp-client": "^1.0.4",
     "dotenv": "^8.2.0",
     "eslint": "^8.33.0",
     "eslint-config-airbnb": "^19.0.4",
