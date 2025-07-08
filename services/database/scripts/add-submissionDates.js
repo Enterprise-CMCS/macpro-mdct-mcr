@@ -121,11 +121,14 @@ async function transformDbItems(reports) {
         const fieldDataObjects = filterS3(bucketObjects, previousRevisions);
 
         if (fieldDataObjects.length > 0) {
-          const fieldDataModifiedDates = fieldDataObjects.map((obj, index) => ({
-            fieldDataId: previousRevisions[index],
-            // LastModified would approximate submission date
-            submittedOnDate: new Date(obj.LastModified).getTime(),
-          }));
+          console.log(fieldDataObjects);
+          const fieldDataModifiedDates = fieldDataObjects.map(
+            ({ Key, LastModified }) => ({
+              fieldDataId: getKeyId(Key),
+              // LastModified would approximate submission date
+              submittedOnDate: new Date(LastModified).getTime(),
+            })
+          );
           submissionDates = [...fieldDataModifiedDates, ...submissionDates];
         } else {
           console.log(`== Missing previousRevisions: ${id} ==`);
@@ -140,14 +143,17 @@ async function transformDbItems(reports) {
   );
 }
 
-function filterS3(bucketObjects, previousRevisions) {
-  return bucketObjects.filter((obj) => {
-    // Key is fieldData/state/uuid.json format, extract uuid
-    const key = obj.Key.split("/");
-    const keyId = key[key.length - 1].split(".")[0];
+// Key is fieldData/state/uuid.json format, extract uuid
+function getKeyId(key) {
+  const keyParts = key.split("/");
+  const keyId = keyParts[keyParts.length - 1].split(".")[0];
+  return keyId;
+}
 
-    return previousRevisions.includes(keyId);
-  });
+function filterS3(bucketObjects, previousRevisions) {
+  return bucketObjects.filter(({ Key }) =>
+    previousRevisions.includes(getKeyId(Key))
+  );
 }
 
 handler();
