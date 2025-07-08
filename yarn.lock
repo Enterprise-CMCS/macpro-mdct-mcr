@@ -4456,6 +4456,13 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.9.0:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
 
+amazon-user-pool-srp-client@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/amazon-user-pool-srp-client/-/amazon-user-pool-srp-client-1.0.4.tgz#41b3cd927ce3c1a4b88bc5dbe2053a5ad2c51267"
+  integrity sha512-N+AYTuq8453pONVeoGhGaHaJ4CDRwlhsfoqZKzBXDLNVz9aHRVVfvEZ0O3HInAK+Ei5xdkE0X2dSzrv5ahL6tA==
+  dependencies:
+    sjcl-aws "^1.0.8"
+
 ansi-align@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-3.0.1.tgz#0cdf12e111ace773a86e9a1fad1225c43cb19a59"
@@ -8402,6 +8409,11 @@ signal-exit@^4.0.1, signal-exit@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
+
+sjcl-aws@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/sjcl-aws/-/sjcl-aws-1.0.8.tgz#3ea17c8289c5e6be841779ab4d2cf98409eccd59"
+  integrity sha512-n80Oa+JiH/eIVUyiiSAi8zukQFt/XdZwvx1WcbDbfT5JWIaBp4K5suSMSr6ny1M9bu2MGs7R6Ae24UpTZGk/Ag==
 
 slash@^3.0.0:
   version "3.0.0"

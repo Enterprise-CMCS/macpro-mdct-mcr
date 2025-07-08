@@ -13,7 +13,6 @@ import {
 } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
-import { getSubnets } from "../utils/vpc";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
@@ -233,6 +232,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "GET",
     requestParameters: ["reportType", "state", "id"],
     requestValidator,
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:GetItem"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject"],
+        resources: [
+          `${mcparFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${naaarFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
     ...commonProps,
   });
 
@@ -275,6 +294,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "PUT",
     requestParameters: ["state", "id"],
     requestValidator,
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:GetItem", "dynamodb:PutItem"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject", "s3:PutObject"],
+        resources: [
+          `${mcparFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${naaarFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
     ...commonProps,
   });
 
@@ -289,16 +328,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["dynamodb:Query"],
-        resources: tables
-          .filter((table) => ["FormTemplateVersions"].includes(table.id))
-          .map((table) => `${table.arn}/index/HashIndex`),
+        resources: [
+          ...tables
+            .filter((table) => ["FormTemplateVersions"].includes(table.id))
+            .map((table) => `${table.arn}/index/HashIndex`),
+          ...tables
+            .filter((table) => ["FormTemplateVersions"].includes(table.id))
+            .map((table) => table.arn),
+        ],
       }),
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["dynamodb:PutItem"],
         resources: tables
           .filter((table) =>
-            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+            [
+              "McparReports",
+              "MlrReports",
+              "NaaarReports",
+              "FormTemplateVersions",
+            ].includes(table.id)
           )
           .map((table) => table.arn),
       }),
@@ -324,6 +373,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     requestValidator,
     memorySize: 2048,
     timeout: Duration.seconds(30),
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:GetItem", "dynamodb:PutItem"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject", "s3:PutObject"],
+        resources: [
+          `${mcparFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${naaarFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
     ...commonProps,
   });
 
@@ -336,6 +405,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     requestValidator,
     memorySize: 2048,
     timeout: Duration.seconds(30),
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["dynamodb:GetItem", "dynamodb:PutItem"],
+        resources: tables
+          .filter((table) =>
+            ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+          )
+          .map((table) => table.arn),
+      }),
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject", "s3:PutObject"],
+        resources: [
+          `${mcparFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${naaarFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
     ...commonProps,
   });
 
