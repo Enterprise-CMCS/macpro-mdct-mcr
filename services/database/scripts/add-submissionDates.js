@@ -64,10 +64,10 @@ function filterDb(items) {
   // Submitted reports that don't have submissionDates values
   return items.filter(
     ({ previousRevisions, submittedOnDate, submissionDates = [] }) => {
-      const expectedSubmittedOnDatesCount = previousRevisions.length + 1;
+      const expectedSubmissionDatesCount = previousRevisions.length + 1;
       return (
         submittedOnDate &&
-        submissionDates.length !== expectedSubmittedOnDatesCount
+        submissionDates.length !== expectedSubmissionDatesCount
       );
     }
   );
@@ -108,10 +108,10 @@ async function transformDbItems(reports) {
     reports.map(async (report) => {
       const { id, fieldDataId, previousRevisions, state, submittedOnDate } =
         report;
-      // Some older reports have submittedOnDate as a string, so convert to number
       let submissionDates = [
         {
-          fieldDataId: fieldDataId,
+          fieldDataId,
+          // Some older reports have submittedOnDate as a string, so convert to number
           submittedOnDate: Number(submittedOnDate),
         },
       ];
