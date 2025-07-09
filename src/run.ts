@@ -102,16 +102,18 @@ async function delete_topics(options: { stage: string }) {
     "DeleteTopicsFunctionName"
   );
 
-  const payload = JSON.stringify({ project, stage: options.stage });
+  if (functionName) {
+    const payload = JSON.stringify({ project, stage: options.stage });
 
-  const command = new InvokeCommand({
-    FunctionName: functionName,
-    Payload: Buffer.from(payload),
-  });
+    const command = new InvokeCommand({
+      FunctionName: functionName,
+      Payload: Buffer.from(payload),
+    });
 
-  const response = await lambdaClient.send(command);
-  const result = Buffer.from(response.Payload || []).toString();
-  console.log("deleteTopics response:", result);
+    const response = await lambdaClient.send(command);
+    const result = Buffer.from(response.Payload || []).toString();
+    console.log("deleteTopics response:", result);
+  }
 }
 
 async function list_topics(options: { stage: string | undefined }) {
