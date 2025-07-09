@@ -96,8 +96,7 @@ export const PlanComplianceTableOverlay = ({
       formJson = addAnalysisMethods(
         formJson,
         standardKeyPrefix,
-        entity.id,
-        standards,
+        entity,
         report?.fieldData.analysisMethods,
         selectedEntity?.name
       );
