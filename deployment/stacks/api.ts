@@ -287,7 +287,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   }).lambda;
   formTemplateVersionsTable.grantReadWriteData(createReport);
   grantReportsTableAccess(createReport, "write");
-  grantReportsBucketAccess(createReport, "write");
+  grantReportsBucketAccess(createReport, "readwrite");
 
   const updateReport = new Lambda(scope, "updateReport", {
     entry: "services/app-api/handlers/reports/update.ts",
