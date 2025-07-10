@@ -14,10 +14,6 @@ yarn install
 ```copy output of destroy command here for later import into CDK:
 
 
-delete bucket policies from:
-mcpar bucket
-mlr bucket
-naaar bucket
 
 ## From `jon-cdk` branch:
 
@@ -28,6 +24,12 @@ yarn install
 IMPORT_VARIANT=empty ./run deploy --stage <YOUR_BRANCH_NAME>
 IMPORT_VARIANT=imports_included PROJECT=mcr cdk import --context stage=<YOUR_BRANCH_NAME> --force
 IMPORT_VARIANT=imports_included ./run deploy --stage <YOUR_BRANCH_NAME>
+
+delete bucket policies from:
+mcpar bucket
+mlr bucket
+naaar bucket
+
 ./run deploy --stage <YOUR_BRANCH_NAME>
 ````
 
