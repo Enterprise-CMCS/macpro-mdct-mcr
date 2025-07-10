@@ -295,6 +295,9 @@ async function destroy_stage(options: {
       "jonsls1",
       "jonsls2",
       "jonsls3",
+      "jontester1",
+      "jontester2",
+      "jontester3",
     ].includes(options.stage)
   ) {
     ({ retained, notRetained } = await checkRetainedResources(
