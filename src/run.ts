@@ -392,7 +392,7 @@ async function list_topics(options: { stage: string | undefined }) {
 }
 
 /*
- * The command definitons in yargs
+ * The command definitions in yargs
  * All valid arguments to dev should be enumerated here, this is the entrypoint to the script
  */
 yargs(process.argv.slice(2))
