@@ -29,6 +29,7 @@ delete bucket policies from:
 mcpar bucket
 mlr bucket
 naaar bucket
+cloudfront-logs
 
 ./run deploy --stage <YOUR_BRANCH_NAME>
 ````
