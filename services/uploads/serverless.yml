@@ -20,9 +20,7 @@ custom:
   region: ${opt:region, self:provider.region}
   serverlessTerminationProtection:
     stages:
-      - main
-      - val
-      - production
+      - nonsense
   s3:
     directory: ./local_buckets
     cors: ./local_cors.xml
