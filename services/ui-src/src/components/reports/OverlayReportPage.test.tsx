@@ -18,7 +18,7 @@ import {
 import { UserProvider, getEntityStatus, useBreakpoint, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 import userEvent from "@testing-library/user-event";
-import { nonCompliantLabel } from "../../constants";
+import { nonCompliantLabels } from "../../constants";
 
 jest.mock("utils/state/useStore");
 jest.mock("utils/other/useBreakpoint");
@@ -198,7 +198,7 @@ describe("<OverlayReportPage />", () => {
         expect(entityCell).toBeVisible();
 
         const enterButton = screen.getByRole("button", {
-          name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+          name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${planName}`,
         });
         expect(enterButton).toBeVisible();
         expect(enterButton).toBeDisabled();
@@ -297,7 +297,7 @@ describe("<OverlayReportPage />", () => {
           name: `${planName} Select “Enter” to complete response.`,
         });
         const enterButton = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
 
         expect(h1).toBeVisible();
@@ -326,7 +326,7 @@ describe("<OverlayReportPage />", () => {
 
         // Table
         const enterButton = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
         await userEvent.click(enterButton);
 
@@ -367,13 +367,13 @@ describe("<OverlayReportPage />", () => {
 
         // Table
         const enterButtonTable = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
         await userEvent.click(enterButtonTable);
 
         // Parent Form
         const radioButtonParentFormNo = screen.getByRole("radio", {
-          name: nonCompliantLabel,
+          name: nonCompliantLabels["438.206"],
         });
         await userEvent.click(radioButtonParentFormNo);
 
@@ -428,7 +428,7 @@ describe("<OverlayReportPage />", () => {
           render(overlayReportPageComponent());
         });
         const enterButton = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
         await userEvent.click(enterButton);
 
@@ -462,7 +462,7 @@ describe("<OverlayReportPage />", () => {
           name: verbiage.intro.section,
         });
         const enterButton = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
 
         expect(h1).toBeVisible();
@@ -488,7 +488,7 @@ describe("<OverlayReportPage />", () => {
           name: verbiage.intro.section,
         });
         const enterButton = screen.getByRole("button", {
-          name: verbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
 
         expect(h1).toBeVisible();

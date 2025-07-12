@@ -87,6 +87,10 @@ export const numberNotLessThanZero = () =>
       message: error.NUMBER_LESS_THAN_ZERO,
     });
 
+export const numberNotLessThanZeroOptional = () => {
+  numberNotLessThanZero().notRequired().nullable();
+};
+
 export const numberOptional = () => number();
 
 const validNumberSchema = () =>
@@ -257,6 +261,7 @@ export const schemaMap: any = {
   emailOptional: emailOptional(),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   objectArray: objectArray(),
   radio: radio(),

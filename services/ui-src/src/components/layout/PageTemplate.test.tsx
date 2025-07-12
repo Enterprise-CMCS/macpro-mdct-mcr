@@ -10,19 +10,23 @@ const standardPageComponent = (
 );
 
 const reportPageComponent = (
-  <PageTemplate type="report">
+  <PageTemplate section={false} type="report">
     <p>Test text</p>
   </PageTemplate>
 );
 
 describe("<PageTemplate />", () => {
   test("Check that PageTemplate (standard) renders", () => {
-    render(standardPageComponent);
+    const { container } = render(standardPageComponent);
+    const firstElement = container.firstElementChild as Element;
+    expect(firstElement.tagName).toBe("SECTION");
     expect(screen.getByText("Test text")).toBeVisible();
   });
 
   test("Check that PageTemplate (report) renders", () => {
-    render(reportPageComponent);
+    const { container } = render(reportPageComponent);
+    const firstElement = container.firstElementChild as Element;
+    expect(firstElement.tagName).toBe("DIV");
     expect(screen.getByText("Test text")).toBeVisible();
   });
 

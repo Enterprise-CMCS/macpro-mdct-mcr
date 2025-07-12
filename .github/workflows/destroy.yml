@@ -27,6 +27,7 @@ jobs:
       (
         github.event.ref_type == 'branch' &&
         (!startsWith(github.event.ref, 'skipci')) &&
+        (!startsWith(github.event.ref, 'code-json-')) &&
         (!contains(fromJson('["main", "val", "production"]'), github.event.ref))
       ) ||
       (
