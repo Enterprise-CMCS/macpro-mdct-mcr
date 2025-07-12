@@ -64,6 +64,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const mcparFormBucket = new s3.Bucket(scope, "McparFormBucket", {
     bucketName: `database-${stage}-mcpar`,
     encryption: s3.BucketEncryption.S3_MANAGED,
@@ -71,6 +72,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const mlrFormBucket = new s3.Bucket(scope, "MlrFormBucket", {
     bucketName: `database-${stage}-mlr`,
     encryption: s3.BucketEncryption.S3_MANAGED,
@@ -78,6 +80,7 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const naaarFormBucket = new s3.Bucket(scope, "NaaarFormBucket", {
     bucketName: `database-${stage}-naaar`,
     encryption: s3.BucketEncryption.S3_MANAGED,

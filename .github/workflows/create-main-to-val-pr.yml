@@ -1,0 +1,20 @@
+name: Create main to val PR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  call-create-pr:
+    uses: ./.github/workflows/create-pr.yml
+    with:
+      head_branch: main
+      base_branch: val
+      pr_label: "val release"
+      pr_title: "MCR val release"

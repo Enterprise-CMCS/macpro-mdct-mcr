@@ -9,7 +9,7 @@ import {
 import {
   exceptionsStatus,
   nonComplianceStatus,
-  nonCompliantLabel,
+  nonCompliantLabels,
   planComplianceStandardKey,
 } from "../../constants";
 // styling
@@ -19,9 +19,9 @@ import {
   EntityShape,
   EntityType,
   FormField,
+  NaaarStandardsTableShape,
   PlanOverlayReportPageShape,
 } from "types";
-import { NaaarStandardsTableShape } from "components/tables/SortableNaaarStandardsTable";
 // utils
 import {
   addExceptionsNonComplianceStatus,
@@ -70,8 +70,9 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
     return plans.map((plan: EntityShape, index: number) => {
       const answer43868 = plan?.planCompliance43868_assurance?.[0]?.value;
       const answer438206 = plan?.planCompliance438206_assurance?.[0]?.value;
-      const isNotCompliant43868 = answer43868 === nonCompliantLabel;
-      const isNotCompliant438206 = answer438206 === nonCompliantLabel;
+      const isNotCompliant43868 = answer43868 === nonCompliantLabels["438.68"];
+      const isNotCompliant438206 =
+        answer438206 === nonCompliantLabels["438.206"];
 
       // counts
       const exceptionsNonComplianceKeys = getExceptionsNonComplianceKeys(plan);

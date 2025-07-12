@@ -88,7 +88,6 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   lastAltered: 162515200000,
   archived: false,
   submittedBy: "",
-  submittedOnDate: "",
   submissionCount: 0,
   locked: false,
   previousRevisions: [],

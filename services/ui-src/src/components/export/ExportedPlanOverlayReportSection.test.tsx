@@ -5,7 +5,7 @@ import { ExportedPlanOverlayReportSection } from "./ExportedPlanOverlayReportSec
 import {
   exceptionsStatus,
   nonComplianceStatus,
-  nonCompliantLabel,
+  nonCompliantLabels,
   planComplianceStandardKey,
 } from "../../constants";
 // types
@@ -102,13 +102,13 @@ describe("<ExportedPlanOverlayReportSection />", () => {
       planCompliance43868_assurance: [
         {
           key: "mockPlanComplianceAssuranceKey1",
-          value: nonCompliantLabel,
+          value: nonCompliantLabels["438.68"],
         },
       ],
       planCompliance438206_assurance: [
         {
           key: "mockPlanComplianceAssuranceKey2",
-          value: nonCompliantLabel,
+          value: nonCompliantLabels["438.206"],
         },
       ],
       [`${planComplianceStandardKey}-${standards[0].id}-mock-nonCompliance`]:

@@ -88,3 +88,8 @@ export const analysisMethodError = {
   description:
     "To correct this, select “Edit” and respond with “Yes” to at least one analysis method.",
 };
+
+export const loginError = {
+  title: "There was an issue logging in.",
+  description: "Verify credentials and try again or contact support.",
+};

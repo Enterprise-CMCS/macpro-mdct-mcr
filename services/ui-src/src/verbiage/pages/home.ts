@@ -62,9 +62,9 @@ export default {
       title: "Network Adequacy and Access Assurances Report (NAAAR)",
       body: {
         available:
-          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, CMS recommends that the report be submitted as supporting documentation at the same time a state submits the associated managed care contract to CMS for approval, including a new contract, a renewal, or an amendment.",
+          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. In June 2022, CMS published a standard reporting template in Excel. Beginning on or after August 2025, all states submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
         unavailable:
-          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. However, prior to June 2022, there had been no requirement to use a standard reporting template. The Excel template is available for states to use immediately if they choose. However, all states submitting rate certification packages on or after October 1, 2022 are required to use the template. Further, CMS recommends that the report be submitted as supporting documentation at the same time a state submits the associated managed care contract to CMS for approval, including a new contract, a renewal, or an amendment.",
+          "The requirement for states to submit this information to CMS began with all contracts with rating periods beginning on or after July 1, 2018. In June 2022, CMS published a standard reporting template in Excel. Beginning on or after August 2025, all states submitting NAAAR reports under any circumstance will be required to submit a report using this MDCT MCR web portal and can no longer submit the NAAAR using the Excel spreadsheet.",
       },
       downloadText: "Download NAAAR Template",
       link: {
@@ -72,14 +72,16 @@ export default {
         route: "naaar/",
       },
       accordion: {
-        buttonLabel: "When is the NAAAR due?",
-        text: "The information is required to be submitted:",
-        list: [
-          "At the time the state enters into a contract with each MCO, PIHP, or PAHP;",
-          "On an annual basis; and",
-          "Any time there is a significant change in the operations that would affect the adequacy of capacity and services of an MCO, PIHP, or PAHP.",
-          "CMS recommends that the report be submitted at the same time a state submits the associated managed care contract to CMS for approval, including a new contract, a renewal, or an amendment.",
+        buttonLabel: "When must states submit the NAAAR to CMS?",
+        introText:
+          "The information required at 42 CFR § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
+        orderedList: [
+          "When a state enters into a contract with each MCO, PIHP, or PAHP, NAAAR reports must be submitted sufficiently in advance to enable CMS to make a determination that the contract entered into as specified at § 438.207(c)(1) is approved under § 438.3(a);",
+          "On an annual basis and no later than 180 calendar days after each rating period;",
+          "When there is a significant change, as defined by the state, in the operations that would affect the adequacy of capacity and services of an MCO, PIHP, or PAHP and with the submission of the associated contract, including a new contract, a renewal, or an amendment, as required at § 438.3(a).",
         ],
+        followUpText:
+          "Additional guidance on timing of submissions for rating periods beginning on or after July 9, 2025: Under scenario #1, states will be required to submit the report sufficiently in advance to enable CMS to make a determination that the new plan contract is approved under § 438.3(a). Under scenario #2, the timing of annual submissions will align with the Managed Care Program Annual Report, MCPAR, i.e. states must submit the report on an annual basis and no later than 180 calendar days after each rating period. Under scenario #3, states will be required to submit the report with the associated contract, including a new contract, a renewal, or an amendment, as required at § 438.3(a).",
       },
     },
   },
