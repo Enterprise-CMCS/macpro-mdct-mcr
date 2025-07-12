@@ -31,7 +31,8 @@ export const determineDeploymentConfig = async (stage: string) => {
       "prod",
       "production",
       "jon-cdk",
-    ].includes(stage); // TODO: remove jon-cdk after main is deployed
+      "jon-cdk-bs",
+    ].includes(stage); // TODO: remove jon-cdk* after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),

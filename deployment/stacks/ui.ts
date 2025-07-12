@@ -7,6 +7,7 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
@@ -188,8 +189,11 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isDev: boolean,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   vpnIpSetArn?: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
