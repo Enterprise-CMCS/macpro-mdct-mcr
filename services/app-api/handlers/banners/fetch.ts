@@ -5,7 +5,7 @@ import { ok } from "../../utils/responses/response-lib";
 
 export const fetchBanner = handler(async () => {
   const scanParams = {
-    TableName: process.env.BANNER_TABLE_NAME!,
+    TableName: process.env.BannerTable!,
   };
 
   const response = await dynamoDb.scanAll(scanParams);

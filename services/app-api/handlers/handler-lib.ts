@@ -1,12 +1,9 @@
 // utils
 import * as logger from "../utils/debugging/debug-lib";
-import { isAuthenticated } from "../utils/auth/authorization";
 import {
   HttpResponse,
   internalServerError,
-  unauthenticated,
 } from "../utils/responses/response-lib";
-import { error } from "../utils/constants/constants";
 import { sanitizeObject } from "../utils/sanitize/sanitize";
 // types
 import { APIGatewayProxyEvent } from "../utils/types";
@@ -25,24 +22,19 @@ export default function handler(lambda: LambdaFunction) {
       pathParameters: event.pathParameters,
       queryStringParameters: event.queryStringParameters,
     });
-
-    if (await isAuthenticated(event)) {
-      try {
-        if (event.body) {
-          const newEventBody = sanitizeObject(JSON.parse(event.body));
-          event.body = JSON.stringify(newEventBody);
-        }
-        return await lambda(event, context);
-      } catch (error: any) {
-        logger.error("Error: %O", error);
-
-        const body = { error: error.message };
-        return internalServerError(body);
-      } finally {
-        logger.flush();
+    try {
+      if (event.body) {
+        const newEventBody = sanitizeObject(JSON.parse(event.body));
+        event.body = JSON.stringify(newEventBody);
       }
-    } else {
-      return unauthenticated(error.UNAUTHORIZED);
+      return await lambda(event, context);
+    } catch (error: any) {
+      logger.error("Error: %O", error);
+
+      const body = { error: error.message };
+      return internalServerError(body);
+    } finally {
+      logger.flush();
     }
   };
 }

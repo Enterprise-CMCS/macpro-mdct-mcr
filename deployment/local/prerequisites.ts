@@ -31,9 +31,12 @@ export class LocalPrerequisiteStack extends Stack {
     new secretsmanager.Secret(this, "DefaultSecret", {
       secretName: "mcr-default", // pragma: allowlist secret
       secretObjectValue: {
-        vpcName: SecretValue.unsafePlainText("localstack"),
         brokerString: SecretValue.unsafePlainText("localstack"),
         kafkaAuthorizedSubnetIds: SecretValue.unsafePlainText(subnet1.subnetId),
+        launchDarklyClient: SecretValue.unsafePlainText("localstack"),
+        oktaMetadataUrl: SecretValue.unsafePlainText("localstack"),
+        redirectSignout: SecretValue.unsafePlainText("localstack"),
+        vpcName: SecretValue.unsafePlainText("localstack"),
       },
     });
   }

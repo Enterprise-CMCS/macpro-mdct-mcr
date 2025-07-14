@@ -11,31 +11,35 @@ import path from "path";
 import { execSync } from "node:child_process";
 
 interface DeployFrontendProps {
+  apiGatewayRestApiUrl: string;
+  applicationEndpointUrl: string;
+  customResourceRole: iam.Role;
+  distribution: cloudfront.Distribution;
+  identityPoolId: string;
+  launchDarklyClient: string;
+  redirectSignout: string;
   scope: Construct;
   stage: string;
   uiBucket: s3.Bucket;
-  distribution: cloudfront.Distribution;
-  apiGatewayRestApiUrl: string;
-  applicationEndpointUrl: string;
-  identityPoolId: string;
-  userPoolId: string;
-  userPoolClientId: string;
   userPoolClientDomain: string;
-  customResourceRole: iam.Role;
+  userPoolClientId: string;
+  userPoolId: string;
 }
 
 export function deployFrontend(props: DeployFrontendProps) {
   const {
-    scope,
-    stage,
-    distribution,
     apiGatewayRestApiUrl,
     applicationEndpointUrl,
+    distribution,
     identityPoolId,
-    userPoolId,
-    userPoolClientId,
-    userPoolClientDomain,
+    launchDarklyClient,
+    redirectSignout,
+    scope,
+    stage,
     uiBucket,
+    userPoolClientDomain,
+    userPoolClientId,
+    userPoolId,
   } = props;
 
   const reactAppPath = "./services/ui-src/";
@@ -100,13 +104,15 @@ export function deployFrontend(props: DeployFrontendProps) {
       destinationKey: "env-config.js",
       source: path.join("./deployment/stacks/", "env-config.template.js"),
       substitutions: {
-        stage,
         apiGatewayRestApiUrl,
         applicationEndpointUrl,
         identityPoolId,
-        userPoolId,
-        userPoolClientId,
+        launchDarklyClient,
+        redirectSignout,
+        stage,
         userPoolClientDomain,
+        userPoolClientId,
+        userPoolId,
         timestamp: new Date().toISOString(),
       },
     }
