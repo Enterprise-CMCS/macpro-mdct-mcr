@@ -1,7 +1,4 @@
 import jwt_decode from "jwt-decode";
-import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { SimpleJwksCache } from "aws-jwt-verify/jwk";
-import { SimpleFetcher } from "aws-jwt-verify/https";
 // types
 import { APIGatewayProxyEvent, UserRoles } from "../types";
 
@@ -9,40 +6,6 @@ interface DecodedToken {
   "custom:cms_roles": UserRoles;
   "custom:cms_state": string | undefined;
 }
-
-export const isAuthenticated = async (event: APIGatewayProxyEvent) => {
-  const isLocalStack = event.requestContext.accountId === "000000000000";
-  if (isLocalStack) {
-    return true;
-  }
-
-  const userPoolId = process.env.COGNITO_USER_POOL_ID!;
-  const clientId = process.env.COGNITO_USER_POOL_CLIENT_ID!;
-
-  // Verifier that expects valid access tokens:
-  const verifier = CognitoJwtVerifier.create(
-    {
-      userPoolId,
-      tokenUse: "id",
-      clientId,
-    },
-    {
-      jwksCache: new SimpleJwksCache({
-        fetcher: new SimpleFetcher({
-          defaultRequestOptions: {
-            responseTimeout: 6000,
-          },
-        }),
-      }),
-    }
-  );
-  try {
-    await verifier.verify(event?.headers?.["x-api-key"]!);
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const hasPermissions = (
   event: APIGatewayProxyEvent,

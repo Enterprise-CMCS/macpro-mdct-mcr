@@ -1,71 +1,9 @@
 import { proxyEvent } from "../testing/proxyEvent";
-import {
-  hasPermissions,
-  isAuthenticated,
-  isAuthorizedToFetchState,
-} from "./authorization";
+import { hasPermissions, isAuthorizedToFetchState } from "./authorization";
 import { UserRoles } from "../types";
-
-const mockVerifier = jest.fn();
-
-jest.mock("aws-jwt-verify", () => ({
-  __esModule: true,
-  CognitoJwtVerifier: {
-    create: jest.fn().mockImplementation(() => ({
-      verify: mockVerifier,
-    })),
-  },
-}));
-
-jest.mock("aws-jwt-verify/jwk", () => ({ SimpleJwksCache: jest.fn() }), {
-  virtual: true,
-});
-
-jest.mock("aws-jwt-verify/https", () => ({ SimpleFetcher: jest.fn() }), {
-  virtual: true,
-});
 
 const noApiKeyEvent = { ...proxyEvent };
 const apiKeyEvent = { ...proxyEvent, headers: { "x-api-key": "test" } };
-const localKeyEvent = {
-  ...proxyEvent,
-  requestContext: { accountId: "000000000000" },
-};
-
-describe("Test authorization with api key and environment variables", () => {
-  beforeEach(() => {
-    process.env["COGNITO_USER_POOL_ID"] = "fakeId";
-    process.env["COGNITO_USER_POOL_CLIENT_ID"] = "fakeClientId";
-  });
-  afterEach(() => {
-    delete process.env.COGNITO_USER_POOL_ID;
-    delete process.env.COGNITO_USER_POOL_CLIENT_ID;
-    jest.clearAllMocks();
-  });
-  test("is not authorized when no api key is passed", async () => {
-    mockVerifier.mockImplementation(() => {
-      throw new Error("no key provided");
-    });
-    const authStatus = await isAuthenticated(noApiKeyEvent);
-    expect(authStatus).toBeFalsy();
-  });
-  test("is not authorized when token is invalid", async () => {
-    mockVerifier.mockImplementation(() => {
-      throw new Error("could not verify");
-    });
-    const authStatus = await isAuthenticated(apiKeyEvent);
-    expect(authStatus).toBeFalsy();
-  });
-  test("is authorized when api key is passed and environment variables are set", async () => {
-    mockVerifier.mockReturnValue(true);
-    const authStatus = await isAuthenticated(apiKeyEvent);
-    expect(authStatus).toBeTruthy();
-  });
-  test("is local environment", async () => {
-    const authStatus = await isAuthenticated(localKeyEvent);
-    expect(authStatus).toBe(true);
-  });
-});
 
 const mockedDecode = jest.fn();
 
