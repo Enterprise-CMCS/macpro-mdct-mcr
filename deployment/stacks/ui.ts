@@ -7,7 +7,7 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
-  aws_wafv2 as wafv2,
+  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
@@ -21,8 +21,8 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  // vpnIpSetArn?: string;
+  // vpnIpv6SetArn?: string;
   loggingBucket: s3.Bucket;
 }
 
@@ -34,8 +34,8 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     isDev,
     cloudfrontCertificateArn,
     cloudfrontDomainName,
-    vpnIpSetArn,
-    vpnIpv6SetArn,
+    // vpnIpSetArn,
+    // vpnIpv6SetArn,
     loggingBucket,
   } = props;
 
@@ -168,9 +168,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       scope,
       stage,
       project,
-      isDev,
-      vpnIpSetArn,
-      vpnIpv6SetArn
+      isDev
+      // vpnIpSetArn,
+      // vpnIpv6SetArn
     );
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
@@ -187,9 +187,9 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 function setupWaf(
   scope: Construct,
   stage: string,
-  project: string,
-//  vpnIpSetArn?: string,
-//  vpnIpv6SetArn?: string
+  project: string
+  //  vpnIpSetArn?: string,
+  //  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,

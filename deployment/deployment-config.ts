@@ -16,22 +16,17 @@ export interface DeploymentConfigProperties {
   stage: string;
   userPoolDomainPrefix?: string;
   vpcName: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  /*
+   * vpnIpSetArn?: string;
+   * vpnIpv6SetArn?: string;
+   */
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
     isLocalStack ||
-    ![
-      "main",
-      "master",
-      "val",
-      "prod",
-      "production",
-      "jon-cdk",
-    ].includes(stage); // TODO: remove jon-cdk after main is deployed
+    !["main", "master", "val", "prod", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
