@@ -199,7 +199,7 @@ jobs:
     needs:
       - deploy
       # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -238,7 +238,7 @@ jobs:
     needs:
       - deploy
       # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -276,7 +276,7 @@ jobs:
       # - register-runner
       # - e2e-test
       # - a11y-tests
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' }}
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
