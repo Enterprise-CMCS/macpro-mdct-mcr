@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { EntityDetailsMultiformOverlay, OverlayProvider } from "components";
 // constants
 import {
-  nonCompliantLabel,
+  nonCompliantLabels,
   planComplianceStandardExceptionsLabel,
 } from "../../constants";
 // utils
@@ -81,7 +81,7 @@ async function setupChildTableFormTest(
   // Form
   const form = screen.getAllByRole("form")[1];
   const radioButtonNo = within(form).getByRole("radio", {
-    name: nonCompliantLabel,
+    name: nonCompliantLabels["438.206"],
   });
   await userEvent.click(radioButtonNo);
 
@@ -174,7 +174,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
 
     // Form
     const radioButtonNo = screen.getAllByRole("radio", {
-      name: nonCompliantLabel,
+      name: nonCompliantLabels["438.206"],
     })[0];
     await userEvent.click(radioButtonNo);
 
@@ -275,7 +275,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
 
     // Form
     const radioButtonNo = screen.getAllByRole("radio", {
-      name: nonCompliantLabel,
+      name: nonCompliantLabels["438.206"],
     })[0];
     await userEvent.click(radioButtonNo);
 

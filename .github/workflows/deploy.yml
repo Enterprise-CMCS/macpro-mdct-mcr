@@ -1,10 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - "*"
-      - "!skipci*"
+on: [push]
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -57,11 +53,12 @@ jobs:
           retention-days: 14
 
   deploy:
+    if: ${{ !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs: unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: set branch_name # Some integrations (Snyk) build very long branch names. This is a switch to make long branch names shorter.
+      - name: set branch_name # Some integrations (Dependabot & Snyk) build very long branch names. This is a switch to make long branch names shorter.
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
@@ -322,7 +319,7 @@ jobs:
     name: Upload Reports
     needs:
       - test
-    if: ${{ always() && github.ref_name != 'production' }}
+    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     outputs:
       timestamp: ${{ steps.timestampid.outputs.timestamp }}

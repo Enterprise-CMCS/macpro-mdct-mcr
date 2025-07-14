@@ -178,4 +178,8 @@ const sx = {
   ".optional-text": {
     fontWeight: "lighter",
   },
+  ".ds-c-hint span > span": {
+    display: "block",
+    paddingTop: "0.25rem",
+  },
 };
