@@ -188,9 +188,8 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string,
-  isDev: boolean,
-  vpnIpSetArn?: string,
-  vpnIpv6SetArn?: string
+//  vpnIpSetArn?: string,
+//  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,
