@@ -127,8 +127,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     scope,
     "CloudFrontDistribution",
     {
-      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-      sslSupportMethod: cloudfront.SSLMethod.SNI,
       certificate: cloudfrontCertificateArn
         ? acm.Certificate.fromCertificateArn(
             scope,
