@@ -145,7 +145,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
     cognitoDomain: {
-      domainPrefix: userPoolDomainPrefix ?? `${stage}-login-user-pool-client`,
+      domainPrefix:
+        userPoolDomainPrefix ?? `${project}-${stage}-login-user-pool-client`,
     },
   });
 
