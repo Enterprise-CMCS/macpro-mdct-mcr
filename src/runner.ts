@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { spawn } from "child_process";
 
 // LabeledProcessRunner is a command runner that interleaves the output from different

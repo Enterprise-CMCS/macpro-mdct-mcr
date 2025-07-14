@@ -64,21 +64,21 @@ export function createDataComponents(props: CreateDataComponentsProps) {
     sortKey: { name: "id", type: dynamodb.AttributeType.STRING },
   });
 
-  const mcparFormBucket = new s3.Bucket(scope, "McparFormBucket", {
+  new s3.Bucket(scope, "McparFormBucket", {
     bucketName: `database-${stage}-mcpar`,
     encryption: s3.BucketEncryption.S3_MANAGED,
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
   });
 
-  const mlrFormBucket = new s3.Bucket(scope, "MlrFormBucket", {
+  new s3.Bucket(scope, "MlrFormBucket", {
     bucketName: `database-${stage}-mlr`,
     encryption: s3.BucketEncryption.S3_MANAGED,
     versioned: true,
     blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
   });
 
-  const naaarFormBucket = new s3.Bucket(scope, "NaaarFormBucket", {
+  new s3.Bucket(scope, "NaaarFormBucket", {
     bucketName: `database-${stage}-naaar`,
     encryption: s3.BucketEncryption.S3_MANAGED,
     versioned: true,
