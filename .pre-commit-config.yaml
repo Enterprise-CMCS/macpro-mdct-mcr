@@ -54,3 +54,18 @@ repos:
         language: system
         files: '\.tsx?$'
         pass_filenames: false
+      - id: typescript-check
+        name: typescript-check
+        entry: tsc --noEmit
+        language: system
+        pass_filenames: false
+      - id: typescript-check-api
+        name: typescript-check-api
+        entry: bash -c "cd services/app-api && tsc --noEmit"
+        language: system
+        pass_filenames: false
+      - id: typescript-check-ui
+        name: typescript-check-ui
+        entry: bash -c "cd services/ui-src && tsc --noEmit"
+        language: system
+        pass_filenames: false
