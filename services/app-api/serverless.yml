@@ -32,9 +32,7 @@ custom:
       - "SizeRestrictions_BODY"
   serverlessTerminationProtection:
     stages:
-      - main
-      - val
-      - production
+      - nonsense
   dotenv:
     path: ../../.env
   bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
