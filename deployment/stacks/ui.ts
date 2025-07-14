@@ -23,7 +23,7 @@ interface CreateUiComponentsProps {
   cloudfrontDomainName?: string;
   // vpnIpSetArn?: string;
   // vpnIpv6SetArn?: string;
-  loggingBucket: s3.Bucket;
+  loggingBucket: s3.IBucket;
 }
 
 export function createUiComponents(props: CreateUiComponentsProps) {

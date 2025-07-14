@@ -18,6 +18,7 @@ interface CreateUiAuthComponentsProps {
   stage: string;
   isDev: boolean;
   applicationEndpointUrl: string;
+  restApiId: string;
   customResourceRole: iam.Role;
   oktaMetadataUrl: string;
   bootstrapUsersPassword?: string;
@@ -32,12 +33,15 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     stage,
     isDev,
     applicationEndpointUrl,
+    restApiId,
     customResourceRole,
     oktaMetadataUrl,
     bootstrapUsersPassword,
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
   } = props;
+  // eslint-disable-next-line no-console
+  console.log(restApiId);
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
     userPoolName: `${stage}-user-pool`,
@@ -104,6 +108,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     secureCloudfrontDomainName ??
     applicationEndpointUrl ??
     "https://localhost:3000/";
+
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
     userPool,
@@ -140,7 +145,8 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const userPoolDomain = new cognito.UserPoolDomain(scope, "UserPoolDomain", {
     userPool,
     cognitoDomain: {
-      domainPrefix: userPoolDomainPrefix ?? `${stage}-login-user-pool-client`,
+      domainPrefix:
+        userPoolDomainPrefix ?? `${project}-${stage}-login-user-pool-client`,
     },
   });
 
@@ -158,6 +164,48 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
       ],
     }
   );
+
+  const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
+    assumedBy: new iam.FederatedPrincipal(
+      "cognito-identity.amazonaws.com",
+      {
+        StringEquals: {
+          "cognito-identity.amazonaws.com:aud": identityPool.ref,
+        },
+        "ForAnyValue:StringLike": {
+          "cognito-identity.amazonaws.com:amr": "authenticated",
+        },
+      },
+      "sts:AssumeRoleWithWebIdentity"
+    ),
+    inlinePolicies: {
+      CognitoAuthorizedPolicy: new iam.PolicyDocument({
+        statements: [
+          new iam.PolicyStatement({
+            actions: [
+              "mobileanalytics:PutEvents",
+              "cognito-sync:*",
+              "cognito-identity:*",
+            ],
+            resources: ["*"],
+            effect: iam.Effect.ALLOW,
+          }),
+          new iam.PolicyStatement({
+            actions: ["execute-api:Invoke"],
+            resources: [
+              `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
+            ],
+            effect: iam.Effect.ALLOW,
+          }),
+        ],
+      }),
+    },
+  });
+
+  new cognito.CfnIdentityPoolRoleAttachment(scope, "CognitoIdentityPoolRoles", {
+    identityPoolId: identityPool.ref,
+    roles: { authenticated: cognitoAuthRole.roleArn },
+  });
 
   let bootstrapUsersFunction;
 
@@ -230,59 +278,10 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     bootstrapUsersInvoke.node.addDependency(bootstrapUsersFunction);
   }
 
-  function createAuthRole(restApiId: string) {
-    const cognitoAuthRole = new iam.Role(scope, "CognitoAuthRole", {
-      assumedBy: new iam.FederatedPrincipal(
-        "cognito-identity.amazonaws.com",
-        {
-          StringEquals: {
-            "cognito-identity.amazonaws.com:aud": identityPool.ref,
-          },
-          "ForAnyValue:StringLike": {
-            "cognito-identity.amazonaws.com:amr": "authenticated",
-          },
-        },
-        "sts:AssumeRoleWithWebIdentity"
-      ),
-      inlinePolicies: {
-        CognitoAuthorizedPolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              actions: [
-                "mobileanalytics:PutEvents",
-                "cognito-sync:*",
-                "cognito-identity:*",
-              ],
-              resources: ["*"],
-              effect: iam.Effect.ALLOW,
-            }),
-            new iam.PolicyStatement({
-              actions: ["execute-api:Invoke"],
-              resources: [
-                `arn:aws:execute-api:${Aws.REGION}:${Aws.ACCOUNT_ID}:${restApiId}/*`,
-              ],
-              effect: iam.Effect.ALLOW,
-            }),
-          ],
-        }),
-      },
-    });
-
-    new cognito.CfnIdentityPoolRoleAttachment(
-      scope,
-      "CognitoIdentityPoolRoles",
-      {
-        identityPoolId: identityPool.ref,
-        roles: { authenticated: cognitoAuthRole.roleArn },
-      }
-    );
-  }
-
   return {
     userPoolDomainName: userPoolDomain.domainName,
     identityPoolId: identityPool.ref,
     userPoolId: userPool.userPoolId,
     userPoolClientId: userPoolClient.userPoolClientId,
-    createAuthRole,
   };
 }
