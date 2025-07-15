@@ -56,16 +56,16 @@ repos:
         pass_filenames: false
       - id: typescript-check
         name: typescript-check
-        entry: tsc --noEmit
+        entry: yarn tsc --noEmit
         language: system
         pass_filenames: false
       - id: typescript-check-api
         name: typescript-check-api
-        entry: bash -c "cd services/app-api && tsc --noEmit"
+        entry: bash -c "cd services/app-api && yarn tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-ui
         name: typescript-check-ui
-        entry: bash -c "cd services/ui-src && tsc --noEmit"
+        entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
         language: system
         pass_filenames: false
