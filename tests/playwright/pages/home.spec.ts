@@ -42,7 +42,7 @@ test.describe("admin user home page", () => {
 });
 
 test.describe("not logged in home page", () => {
-  test("Is assessible when not logged in", async ({ browser }) => {
+  test("Is accessible when not logged in", async ({ browser }) => {
     const userContext = await browser.newContext({
       storageState: {
         cookies: [],

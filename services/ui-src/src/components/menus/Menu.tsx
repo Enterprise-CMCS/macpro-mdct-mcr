@@ -26,6 +26,7 @@ export const Menu = () => {
   return (
     <MenuRoot offset={[8, 20]}>
       <Box role="group">
+        {/* @ts-ignore Throws TS2590: expression too complex */}
         <MenuButton
           as={Button}
           rightIcon={
