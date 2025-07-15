@@ -1,8 +1,3 @@
-import {
-  GeomappingChildJson,
-  PlanProviderChildJson,
-  SecretShopperAppointmentAvailabilityChildJson,
-} from "../../constants";
 import { AnyObject, EntityType, FormJson } from "types";
 
 // dynamically generate fields for choices
@@ -180,28 +175,22 @@ function createIDForChildrenOfAnalysisMethod(obj: AnyObject, parentId: string) {
 // dynamically filter by partialId to find the analysis methods
 export const availableAnalysisMethods = (
   analysisMethodsFieldId: string,
-  items: AnyObject[]
+  items: AnyObject[],
+  nestedForms: AnyObject[]
 ) => {
-  const GeomappingJson = structuredClone(GeomappingChildJson);
-  const SecretShopperJson = structuredClone(
-    SecretShopperAppointmentAvailabilityChildJson
-  );
-  const PlanProviderJson = structuredClone(PlanProviderChildJson);
+  const nestedFormLabels = nestedForms.map((choice: AnyObject) => choice.label);
   const updatedItemChoices = items.map((item) => {
     const id = `${analysisMethodsFieldId}_${item.id}`;
     const analysisMethod = { id, label: item.name };
-    switch (item.name) {
-      case "Geomapping":
-        createIDForChildrenOfAnalysisMethod(GeomappingJson, id);
-        return { ...analysisMethod, children: GeomappingJson };
-      case "Plan Provider Directory Review":
-        createIDForChildrenOfAnalysisMethod(PlanProviderJson, id);
-        return { ...analysisMethod, children: PlanProviderJson };
-      case "Secret Shopper: Appointment Availability":
-        createIDForChildrenOfAnalysisMethod(SecretShopperJson, id);
-        return { ...analysisMethod, children: SecretShopperJson };
-      default:
-        return analysisMethod;
+
+    if (nestedFormLabels.includes(item.name)) {
+      const choiceWithNestedFields = nestedForms.find(
+        (choice: AnyObject) => choice.label === item.name
+      );
+      createIDForChildrenOfAnalysisMethod(choiceWithNestedFields?.children, id);
+      return { ...analysisMethod, children: choiceWithNestedFields?.children };
+    } else {
+      return analysisMethod;
     }
   });
   return updatedItemChoices;

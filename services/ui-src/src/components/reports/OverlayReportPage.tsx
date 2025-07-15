@@ -10,7 +10,7 @@ import {
   Table,
 } from "components";
 // constants
-import { nonCompliantLabel } from "../../constants";
+import { nonCompliantValues } from "../../constants";
 // types
 import {
   AnyObject,
@@ -189,7 +189,7 @@ export const OverlayReportPage = ({
         const assurances = Object.keys(newEntity).filter(
           (key) =>
             key.endsWith("assurance") &&
-            newEntity[key][0].value !== nonCompliantLabel
+            !nonCompliantValues.has(newEntity[key][0].value)
         );
 
         assurances.forEach((key) => {

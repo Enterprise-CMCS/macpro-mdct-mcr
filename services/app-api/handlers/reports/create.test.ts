@@ -22,7 +22,6 @@ import { APIGatewayProxyEvent } from "../../utils/types";
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 jest.mock("../../utils/auth/authorization", () => ({
-  isAuthenticated: jest.fn().mockResolvedValue(true),
   hasPermissions: jest.fn().mockReturnValue(true),
 }));
 
@@ -268,13 +267,6 @@ describe("Test createReport API method", () => {
     jest.restoreAllMocks();
     dynamoClientMock.reset();
     consoleSpy.debug = jest.spyOn(console, "debug").mockImplementation();
-  });
-
-  test("Test unauthorized report creation throws 401 error", async () => {
-    jest.spyOn(authFunctions, "isAuthenticated").mockResolvedValueOnce(false);
-    const res = await createReport(creationEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.Unauthenticated);
-    expect(res.body).toContain(error.UNAUTHORIZED);
   });
 
   test("Test report creation by a state user without access to a report type throws 403 error", async () => {

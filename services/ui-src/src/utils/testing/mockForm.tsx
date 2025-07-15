@@ -1,4 +1,7 @@
-import { planComplianceStandardExceptionsLabel } from "../../constants";
+import {
+  nonCompliantLabels,
+  planComplianceStandardExceptionsLabel,
+} from "../../constants";
 import {
   CustomHtmlElement,
   EntityType,
@@ -340,7 +343,7 @@ export const mockNaaarAnalysisMethodsPageJson = {
             },
             {
               id: "mock-choice-id-2",
-              label: "mock label 2",
+              label: "mock label 2 No",
               children: [
                 {
                   id: "mock-child-id-0",
@@ -370,6 +373,83 @@ export const mockNaaarAnalysisMethodsPageJson = {
                   },
                 },
               ],
+            },
+          ],
+        },
+        type: "radio",
+        validation: "radio",
+      },
+    ],
+  },
+  addEntityDrawerForm: {
+    id: "am_custom",
+    fields: [
+      {
+        id: "custom_analysis_method_name",
+        type: "text",
+        validation: "text",
+        props: {
+          label: "Analysis method",
+        },
+      },
+      {
+        id: "custom_analysis_method_description",
+        type: "textarea",
+        validation: "textarea",
+        props: {
+          label: "description",
+        },
+      },
+      {
+        id: "analysis_method_frequency",
+        type: "radio",
+        props: {
+          label: "Frequency of analysis",
+          choices: [
+            { id: "option1", label: "Weekly" },
+            { id: "option2", label: "Monthly" },
+          ],
+        },
+      },
+      {
+        id: "analysis_method_applicable_plans",
+        type: "checkbox",
+        props: {
+          label: "Plans utilizing this method",
+          choices: [{ label: "Plan 1" }],
+        },
+      },
+    ],
+  },
+};
+
+export const mockTestNaaarAnalysisMethodsPageJson = {
+  name: "mock-route",
+  path: "/naaar/analysis-methods",
+  pageType: "drawer",
+  entityType: EntityType.ANALYSIS_METHODS,
+  verbiage: {
+    intro: mockVerbiageIntro,
+    dashboardTitle: "Mock dashboard title",
+    drawerTitle: "Mock drawer title",
+    addEntityButtonText: "Add other analysis method",
+    deleteModalTitle: "Are you sure you want to delete this analysis method?",
+    deleteModalConfirmButtonText: "Yes, delete method",
+  },
+  drawerForm: {
+    id: "am",
+    fields: [
+      {
+        id: "analysis_applicable",
+        props: {
+          choices: [
+            {
+              id: "mock-choice-id-1",
+              label: "mock label 1",
+            },
+            {
+              id: "mock-choice-id-2",
+              label: "mock label 2 No",
             },
           ],
         },
@@ -837,8 +917,7 @@ export const mockOverlayReportPageJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label:
-                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                    label: nonCompliantLabels["438.206"],
                   },
                 ],
               },
@@ -927,8 +1006,7 @@ export const mockEntityDetailsMultiformOverlayJson: OverlayReportPageShape = {
                   },
                   {
                     id: "no",
-                    label:
-                      "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                    label: nonCompliantLabels["438.206"],
                   },
                 ],
               },

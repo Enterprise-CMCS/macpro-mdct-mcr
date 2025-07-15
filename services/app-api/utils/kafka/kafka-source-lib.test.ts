@@ -142,16 +142,16 @@ let consoleSpy: {
 
 describe("Test Kafka Lib", () => {
   beforeAll(() => {
-    tempStage = process.env.STAGE;
+    tempStage = process.env.stage;
     tempNamespace = process.env.topicNamespace;
     tempBrokers = process.env.BOOTSTRAP_BROKER_STRING_TLS;
 
-    process.env.STAGE = stage;
+    process.env.stage = stage;
     process.env.topicNamespace = namespace;
     process.env.BOOTSTRAP_BROKER_STRING_TLS = brokerString;
   });
   afterAll(() => {
-    process.env.STAGE = tempStage;
+    process.env.stage = tempStage;
     process.env.topicNamespace = tempNamespace;
     process.env.BOOTSTRAP_BROKER_STRING_TLS = tempBrokers;
   });
@@ -247,5 +247,22 @@ describe("Test Kafka Lib", () => {
         },
       ],
     });
+  });
+
+  test("Skips handler in local environment", async () => {
+    process.env.BOOTSTRAP_BROKER_STRING_TLS = "localstack";
+
+    const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
+    await sourceLib.handler(dynamoEvent);
+    expect(consoleSpy.log).not.toHaveBeenCalled();
+    expect(mockSendBatch).not.toHaveBeenCalled();
+  });
+
+  test("Throws error for missing broker string", () => {
+    delete process.env.BOOTSTRAP_BROKER_STRING_TLS;
+
+    expect(() => {
+      new KafkaSourceLib("mcr", "v0", [table], [bucket]);
+    }).toThrow("Missing Broker Config.");
   });
 });

@@ -23,7 +23,7 @@ import {
 } from "components";
 // constants
 import {
-  nonCompliantLabel,
+  nonCompliantValues,
   planComplianceStandardExceptionsLabel,
   planComplianceStandardKey,
 } from "../../constants";
@@ -226,8 +226,9 @@ export const EntityDetailsMultiformOverlay = ({
 
         if (selectedEntity?.[assuranceField]) {
           // Assurance has non-compliant answer, enable Enter button
-          isNonCompliant =
-            selectedEntity[assuranceField][0]?.value === nonCompliantLabel;
+          isNonCompliant = nonCompliantValues.has(
+            selectedEntity[assuranceField][0]?.value
+          );
           isFormComplete = isComplianceFormComplete(selectedEntity, formId);
         }
 
@@ -262,7 +263,7 @@ export const EntityDetailsMultiformOverlay = ({
       // Assuming id is in formId_fieldId-optionId format
       const formId = event.target.id.split("_")[0];
       const inputId = event.target.id.split("-")[0];
-      updateEnableDetails[formId] = event.target.value === nonCompliantLabel;
+      updateEnableDetails[formId] = nonCompliantValues.has(event.target.value);
       setFormEnableDetails(updateEnableDetails);
 
       const changedData = {

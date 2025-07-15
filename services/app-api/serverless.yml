@@ -37,13 +37,13 @@ custom:
       - production
   dotenv:
     path: ../../.env
-  bannerTableName: ${env:BANNER_TABLE_NAME, param:BannerTableName}
-  mcparReportTableName: ${env:MCPAR_REPORT_TABLE_NAME, param:McparReportTableName}
+  bannerTableName: ${env:BannerTable, param:BannerTableName}
+  mcparReportTableName: ${env:McparReportsTable, param:McparReportTableName}
   mcparReportTableStreamArn: ${env:MCPAR_REPORT_TABLE_STREAM_ARN, param:McparReportTableStreamArn}
-  mlrReportTableName: ${env:MLR_REPORT_TABLE_NAME, param:MlrReportTableName}
-  formTemplateTableName: ${env:FORM_TEMPLATE_TABLE_NAME, param:FormTemplateTableName}
+  mlrReportTableName: ${env:MlrReportsTable, param:MlrReportTableName}
+  formTemplateTableName: ${env:FormTemplateVersionsTable, param:FormTemplateTableName}
   mlrReportTableStreamArn: ${env:MLR_REPORT_TABLE_STREAM_ARN, param:MlrReportTableStreamArn}
-  naaarReportTableName: ${env:NAAAR_REPORT_TABLE_NAME, param:NaaarReportTableName}
+  naaarReportTableName: ${env:NaaarReportsTable, param:NaaarReportTableName}
   naaarReportTableStreamArn: ${env:NAAAR_REPORT_TABLE_STREAM_ARN, param:NaaarReportTableStreamArn}
   webAclName: ${self:service}-${self:custom.stage}-webacl-waf
   mcparFormBucket: ${env:MCPAR_FORM_BUCKET, param:McparFormBucketName}
@@ -128,12 +128,12 @@ provider:
             - ${self:custom.mlrReportTableStreamArn}
             - ${self:custom.naaarReportTableStreamArn}
   environment:
-    BANNER_TABLE_NAME: ${self:custom.bannerTableName}
+    BannerTable: ${self:custom.bannerTableName}
     BOOTSTRAP_BROKER_STRING_TLS: ${self:custom.bootstrapBrokerStringTls}
-    MCPAR_REPORT_TABLE_NAME: ${self:custom.mcparReportTableName}
-    MLR_REPORT_TABLE_NAME: ${self:custom.mlrReportTableName}
-    NAAAR_REPORT_TABLE_NAME: ${self:custom.naaarReportTableName}
-    FORM_TEMPLATE_TABLE_NAME: ${self:custom.formTemplateTableName}
+    McparReportsTable: ${self:custom.mcparReportTableName}
+    MlrReportsTable: ${self:custom.mlrReportTableName}
+    NaaarReportsTable: ${self:custom.naaarReportTableName}
+    FormTemplateVersionsTable: ${self:custom.formTemplateTableName}
     MCPAR_FORM_BUCKET: ${self:custom.mcparFormBucket}
     MLR_FORM_BUCKET: ${self:custom.mlrFormBucket}
     NAAAR_FORM_BUCKET: ${self:custom.naaarFormBucket}

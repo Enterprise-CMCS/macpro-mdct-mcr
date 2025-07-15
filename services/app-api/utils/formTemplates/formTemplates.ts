@@ -26,7 +26,7 @@ import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
-    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    TableName: process.env.FormTemplateVersionsTable!,
     KeyConditionExpression: `reportType = :reportType`,
     ExpressionAttributeValues: {
       ":reportType": reportType,
@@ -43,7 +43,7 @@ export async function getTemplateVersionByHash(
   hash: string
 ) {
   const queryParams: QueryCommandInput = {
-    TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+    TableName: process.env.FormTemplateVersionsTable!,
     IndexName: "HashIndex",
     KeyConditionExpression: "reportType = :reportType AND md5Hash = :md5Hash",
     Limit: 1,
@@ -134,7 +134,7 @@ export async function getOrCreateFormTemplate(
 
     try {
       await dynamodbLib.put({
-        TableName: process.env.FORM_TEMPLATE_TABLE_NAME!,
+        TableName: process.env.FormTemplateVersionsTable!,
         Item: newFormTemplateVersionItem,
       });
     } catch (err) {
@@ -233,6 +233,11 @@ export const compileValidationJsonFromRoutes = (
     // if drawer form present, add validation to schema
     const drawerFormFields = route.drawerForm?.fields.filter(isFieldElement);
     if (drawerFormFields) addValidationToAccumulator(drawerFormFields);
+    // if add entity drawer form present, add validation to schema
+    const addEntityDrawerFormFields =
+      route.addEntityDrawerForm?.fields.filter(isFieldElement);
+    if (addEntityDrawerFormFields)
+      addValidationToAccumulator(addEntityDrawerFormFields);
     if (route.pageType === "modalOverlay") {
       const overlayFormFields = (
         route as ModalOverlayReportPageShape
