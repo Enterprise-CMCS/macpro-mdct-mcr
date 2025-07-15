@@ -2,27 +2,31 @@ import { isLocalStack } from "./local/util";
 import { getSecret } from "./utils/secrets-manager";
 
 export interface DeploymentConfigProperties {
-  project: string;
-  stage: string;
-  isDev: boolean;
-  vpcName: string;
-  oktaMetadataUrl: string;
   bootstrapUsersPassword?: string;
+  brokerString: string;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  secureCloudfrontDomainName?: string;
-  userPoolDomainPrefix?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
-  brokerString: string;
+  isDev: boolean;
   kafkaAuthorizedSubnetIds: string;
+  launchDarklyClient: string;
+  oktaMetadataUrl: string;
+  project: string;
+  redirectSignout: string;
+  secureCloudfrontDomainName?: string;
+  stage: string;
+  userPoolDomainPrefix?: string;
+  vpcName: string;
+  /*
+   * vpnIpSetArn?: string;
+   * vpnIpv6SetArn?: string;
+   */
 }
 
 export const determineDeploymentConfig = async (stage: string) => {
   const project = process.env.PROJECT!;
   const isDev =
     isLocalStack ||
-    !["main", "master", "val", "prod", "production"].includes(stage);
+    !["main", "master", "val", "prod", "production", "jon-cdk"].includes(stage); // TODO: remove jon-cdk after main is deployed
   const secretConfigOptions = {
     ...(await loadDefaultSecret(project, stage)),
     ...(await loadStageSecret(project, stage)),
@@ -70,12 +74,14 @@ function validateConfig(config: {
   [key: string]: any;
 }): asserts config is DeploymentConfigProperties {
   const expectedKeys = [
-    "project",
-    "stage",
-    "vpcName",
-    "oktaMetadataUrl",
     "brokerString",
     "kafkaAuthorizedSubnetIds",
+    "launchDarklyClient",
+    "oktaMetadataUrl",
+    "project",
+    "redirectSignout",
+    "stage",
+    "vpcName",
   ];
 
   const invalidKeys = expectedKeys.filter(

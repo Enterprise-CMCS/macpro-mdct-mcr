@@ -105,6 +105,8 @@ export default {
         "Last edited",
         "Edited by",
         "Status",
+        "Initial Submission",
+        "#",
         { hiddenName: "Actions" },
       ],
       sortableHeadRow: {

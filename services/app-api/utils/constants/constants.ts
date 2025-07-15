@@ -33,9 +33,9 @@ export const buckets = {
 // REPORTS
 
 export const reportTables = {
-  MCPAR: process.env.MCPAR_REPORT_TABLE_NAME!,
-  MLR: process.env.MLR_REPORT_TABLE_NAME!,
-  NAAAR: process.env.NAAAR_REPORT_TABLE_NAME!,
+  MCPAR: process.env.McparReportsTable!,
+  MLR: process.env.MlrReportsTable!,
+  NAAAR: process.env.NaaarReportsTable!,
 };
 
 export const reportBuckets = {
@@ -58,7 +58,7 @@ export const bucketTopics = {
   NAAAR_TEMPLATE: "naaar-form-template",
 };
 
-export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;
+export const formTemplateTableName = process.env.FormTemplateVersionsTable!;
 
 // ANALYSIS METHODS (NAAAR)
 export const DEFAULT_ANALYSIS_METHODS = [

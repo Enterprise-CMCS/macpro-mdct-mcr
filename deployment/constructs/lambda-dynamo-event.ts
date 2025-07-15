@@ -10,7 +10,6 @@ import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
-  brokerString?: string;
   stackName: string;
   tables: DynamoDBTableIdentifiers[];
 }
@@ -23,7 +22,6 @@ export class LambdaDynamoEventSource extends Construct {
 
     const {
       additionalPolicies = [],
-      // brokerString = "",
       environment = {},
       handler,
       memorySize = 1024,
@@ -82,6 +80,7 @@ export class LambdaDynamoEventSource extends Construct {
           functionName: this.lambda.functionArn,
           startingPosition: "TRIM_HORIZON",
           maximumRetryAttempts: 2,
+          batchSize: 10,
           enabled: true,
         }
       );
