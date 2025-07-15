@@ -136,7 +136,7 @@ const addComplianceDisplayInfo = (
       methodKeys,
       "EnrolleesMeetingStandard"
     );
-    // show second if first is not notansweredOptionalText
+    // show second if first is not notAnsweredOptionalText
     if (!geomappingComplianceFrequency) {
       frequencyDisplayText += notAnsweredOptionalText;
     } else if (!geomappingEnrolleesMeetingStandard) {
