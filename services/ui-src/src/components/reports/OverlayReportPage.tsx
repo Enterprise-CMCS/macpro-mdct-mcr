@@ -285,7 +285,7 @@ const sx = {
     th: {
       paddingLeft: "1rem",
       paddingRight: "0",
-      borderColor: "palette.gray_lighter",
+      borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
       color: "palette.gray_medium",
       fontSize: "lg",
       fontWeight: "bold",
