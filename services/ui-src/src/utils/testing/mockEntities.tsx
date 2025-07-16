@@ -210,7 +210,7 @@ export const mockNaaarStandards: EntityShape[] = [
         value: "Mock Provider",
       },
     ],
-    "standard_coreProviderType-otherText": "Mock Other Provider",
+    "standard_coreProviderType-mock-plan-id-1-otherText": "Mock Other Provider",
     standard_standardType: [
       { key: "mockStandardType", value: "Mock Standard Type" },
     ],

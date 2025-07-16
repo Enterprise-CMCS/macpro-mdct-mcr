@@ -617,7 +617,7 @@
                   "label": "Primary care",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -637,7 +637,7 @@
                   "label": "Specialist",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-uITThePQiXntwGGViPTD62",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -657,7 +657,7 @@
                   "label": "Mental health",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -676,7 +676,7 @@
                   "label": "Substance Use Disorder (SUD)",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-qbR8X0YAh8vObedJPx6QTJ",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -695,7 +695,7 @@
                   "label": "OB/GYN",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -714,7 +714,7 @@
                   "label": "Hospital",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-nzmRTbJeqBCoAabR4oHrrh",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -733,7 +733,7 @@
                   "label": "Pharmacy",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-cb4y58UmsRXVITpWL7l9up",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -752,7 +752,7 @@
                   "label": "Dental",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-tlzAMYfH4I7iIl5pjqAm7R",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
@@ -771,7 +771,7 @@
                   "label": "LTSS",
                   "children": [
                     {
-                      "id": "standard_coreProviderType-otherText",
+                      "id": "standard_coreProviderType-WrMpSdivds4c0XfN2RPlRd",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
