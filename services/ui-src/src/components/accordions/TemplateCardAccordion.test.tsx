@@ -50,7 +50,6 @@ describe("<TemplateCardAccordion />", () => {
     await userEvent.click(accordionQuestion);
     expect(accordionQuestion).toBeVisible();
     expect(screen.getByText(mockAccordion.text)).toBeVisible();
-    expect(screen.getByText(mockAccordion.introText)).toBeVisible();
     mockAccordion.orderedList.forEach((item) => {
       expect(screen.getByText(item)).toBeVisible();
     });

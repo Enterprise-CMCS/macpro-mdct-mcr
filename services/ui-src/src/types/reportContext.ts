@@ -1,6 +1,12 @@
 // REPORT PROVIDER/CONTEXT
 
-import { AnyObject, Choice, ErrorVerbiage, ReportJson } from "types";
+import {
+  AnyObject,
+  Choice,
+  ErrorVerbiage,
+  ReportJson,
+  SelectedOption,
+} from "types";
 
 export interface ReportKeys {
   reportType: string;
@@ -30,9 +36,16 @@ export interface ReportMetadataShape extends ReportKeys {
   fieldDataId: string;
   copyFieldDataSourceId?: string;
   programIsPCCM?: Choice[];
+  naaarSubmissionForThisProgram?: Choice[];
   previousRevisions: string[];
   planTypeIncludedInProgram?: Choice[];
   "planTypeIncludedInProgram-otherText"?: string;
+  newOrExistingProgram?: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
+  naaarSubmissionDateForThisProgram?: string;
+  naaarExpectedSubmissionDateForThisProgram?: string;
 }
 
 export interface ReportShape extends ReportMetadataShape {

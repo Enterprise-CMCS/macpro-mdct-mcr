@@ -70,3 +70,5 @@ export const DEFAULT_ANALYSIS_METHODS = [
   "Review of Grievances Related to Access",
   "Encounter Data Analysis",
 ];
+
+export const suppressionText = "Suppressed for data privacy purposes";

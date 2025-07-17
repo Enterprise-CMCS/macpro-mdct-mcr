@@ -8,6 +8,7 @@ import {
   EntityType,
   ScreenReaderCustomHeaderName,
   TableContentShape,
+  SelectedOption,
 } from "./index";
 
 // REPORT TYPES
@@ -25,6 +26,11 @@ export interface ReportJson {
   name: string;
   basePath: string;
   routes: ReportRoute[];
+  entities: {
+    [key: string]: {
+      [key: string]: boolean;
+    };
+  };
   validationSchema?: AnyObject;
   /**
    * The validationJson property is populated at the moment any form template
@@ -255,6 +261,13 @@ export interface MCPARReportMetadata extends ReportMetadata {
   dueDate: number;
   combinedData: boolean;
   programIsPCCM: Choice[];
+  newOrExistingProgram: Choice[];
+  naaarSubmissionForThisProgram: Choice[];
+  existingProgramNameSelection?: SelectedOption;
+  existingProgramNameSuggestion?: string;
+  newProgramName?: string;
+  naaarSubmissionDateForThisProgram?: string;
+  naaarExpectedSubmissionDateForThisProgram?: string;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

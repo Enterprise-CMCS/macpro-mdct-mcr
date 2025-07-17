@@ -66,6 +66,13 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   ...mockReportKeys,
   reportType: "MCPAR",
   programName: "testProgram",
+  newOrExistingProgram: [
+    {
+      value: "Add new program",
+      key: "newOrExistingProgram-isNewProgram",
+    },
+  ],
+  newProgramName: "testProgram",
   status: "Not started",
   reportingPeriodStartDate: 162515200000,
   reportingPeriodEndDate: 168515200000,
@@ -74,6 +81,12 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   programIsPCCM: [
     {
       key: "programIsPCCM-no_programIsNotPCCM",
+      value: "No",
+    },
+  ],
+  naaarSubmissionForThisProgram: [
+    {
+      key: "naaarSubmissionForThisProgram-mockId",
       value: "No",
     },
   ],
@@ -174,6 +187,12 @@ export const mockMcparReport = {
     programIsPCCM: [
       {
         key: "programIsPCCM-no_programIsNotPCCM",
+        value: "No",
+      },
+    ],
+    naaarSubmissionForThisProgram: [
+      {
+        key: "naaarSubmissionForThisProgram-mockId",
         value: "No",
       },
     ],

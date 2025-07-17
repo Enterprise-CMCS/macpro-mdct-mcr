@@ -1,3 +1,6 @@
+// constants
+import { suppressionText } from "../../constants";
+// utils
 import { validNAValues } from "utils";
 import { cleanStandardNumericalInput, cleanRatioInput } from "./clean";
 
@@ -20,7 +23,8 @@ export function maskResponseData(
 ): string {
   if (
     fieldResponseData === undefined ||
-    validNAValues.includes(fieldResponseData)
+    validNAValues.includes(fieldResponseData) ||
+    fieldResponseData === suppressionText
   )
     return fieldResponseData;
 
