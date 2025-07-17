@@ -2,8 +2,5 @@
 node_modules
 jspm_packages
 
-# Serverless directories
-.serverless
-
 # Ignore Build Folder
 .build

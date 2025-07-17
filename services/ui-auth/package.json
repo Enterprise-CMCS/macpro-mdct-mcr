@@ -16,7 +16,5 @@
     "nanoid": "^3.3.8"
   },
   "devDependencies": {
-    "serverless-plugin-common-excludes": "^4.0.0",
-    "serverless-plugin-include-dependencies": "^5.1.0"
   }
 }

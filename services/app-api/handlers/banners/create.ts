@@ -40,7 +40,7 @@ export const createBanner = handler(async (event, _context) => {
   const currentTime = Date.now();
 
   const params = {
-    TableName: process.env.BANNER_TABLE_NAME!,
+    TableName: process.env.BannerTable!,
     Item: {
       key: randomUUID(),
       createdAt: currentTime,

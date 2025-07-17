@@ -9,7 +9,17 @@ import { testA11y } from "utils/testing/commonTests";
 export const mockAccordion = {
   buttonLabel: "mock accordion button",
   text: "Mock information text inside accordion",
-  orderedList: ["First item", "Second item", "Third item"],
+  introText: "Mock intro text",
+  list: [
+    "First item unordered",
+    "Second item unordered",
+    "Third item unordered",
+  ],
+  orderedList: [
+    "First item ordered",
+    "Second item ordered",
+    "Third item ordered",
+  ],
   followUpText: "Mock follow up text",
 };
 

@@ -456,7 +456,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   return {
     paddingLeft: canAddEntities && "3.5rem",
     paddingBottom: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
     color: "palette.gray_medium",
     fontSize: "lg",
     fontWeight: "bold",
