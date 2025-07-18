@@ -9,24 +9,12 @@ import { logger } from "../debugging/debug-lib";
 import { buckets, error } from "../constants/constants";
 import { State } from "../types/other";
 
-const localConfig = {
-  endpoint: process.env.S3_LOCAL_ENDPOINT,
-  region: "localhost",
-  forcePathStyle: true,
-  credentials: {
-    accessKeyId: "S3RVER", // pragma: allowlist secret
-    secretAccessKey: "S3RVER", // pragma: allowlist secret
-  },
-  logger,
-};
-
-const awsConfig = {
-  region: "us-east-1",
-  logger,
-};
-
 export const getConfig = () => {
-  return process.env.S3_LOCAL_ENDPOINT ? localConfig : awsConfig;
+  return {
+    region: "us-east-1",
+    logger,
+    endpoint: process.env.AWS_ENDPOINT_URL,
+  };
 };
 const client = new S3Client(getConfig());
 

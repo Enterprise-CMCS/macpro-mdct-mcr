@@ -11,13 +11,6 @@ import { mockClient } from "aws-sdk-client-mock";
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
 describe("Test DynamoDB Interaction API Build Structure", () => {
-  let originalUrl: string | undefined;
-  beforeAll(() => {
-    originalUrl = process.env.DYNAMODB_URL;
-  });
-  afterAll(() => {
-    process.env.DYNAMODB_URL = originalUrl;
-  });
   beforeEach(() => {
     dynamoClientMock.reset();
   });
@@ -70,14 +63,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
 });
 
 describe("Checking Environment Variable Changes", () => {
-  test("Check if statement with DYNAMODB_URL set", () => {
-    process.env.DYNAMODB_URL = "mock url";
-    const config = getConfig();
-    expect(config).toHaveProperty("region", "localhost");
-  });
-
-  test("Check if statement with DYNAMODB_URL undefined", () => {
-    delete process.env.DYNAMODB_URL;
+  test("that config has region set", () => {
     const config = getConfig();
     expect(config).toHaveProperty("region", "us-east-1");
   });
