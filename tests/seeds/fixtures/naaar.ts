@@ -202,7 +202,7 @@ export const fillNaaar = (): SeedFillReportShape => {
               value: "Primary Care",
             },
           ],
-          [`standard_coreProviderType-${providerTypeId}-otherText`]:
+          [`standard_coreProviderType-${providerTypeId}`]:
             faker.lorem.sentence(),
           standard_populationCoveredByStandard: [
             {
