@@ -20,7 +20,7 @@ export const mapNaaarStandardEntity = <T>(
     if (key === "standard_coreProviderType") {
       const providerKey = parentObj[0].key;
       const providerId = providerKey.split("standard_coreProviderType-").pop();
-      otherText = entity[`${key}-${providerId}-otherText`];
+      otherText = entity[`${key}-${providerId}`];
 
       const matchText = `${value}; ${otherText}`;
 
