@@ -45,7 +45,7 @@
               },
               {
                 "type": "p",
-                "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2024). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
+                "content": "According to the Paperwork Reduction Act of 1995, no persons are required to respond to a collection of information unless it displays a valid OMB control number. The valid OMB control number for this information collection is 0938-0920 (Expires: June 30, 2026). The time required to complete this information collection is estimated to average 6 hours per response, including the time to review instructions, search existing data resources, gather the data needed, and complete and review the information collection. If you have comments concerning the accuracy of the time estimate(s) or suggestions for improving this form, please write to: CMS, 7500 Security Boulevard, Attn: PRA Reports Clearance Officer, Mail Stop C4-26-05, Baltimore, Maryland 21244-1850"
               }
             ]
           },
@@ -57,7 +57,7 @@
                 "type": "text",
                 "validation": "text",
                 "props": {
-                  "label": "Contact name",
+                  "label": "I.A.1 Contact name",
                   "hint": "First and last name of the contact person."
                 }
               },
@@ -66,7 +66,7 @@
                 "type": "text",
                 "validation": "email",
                 "props": {
-                  "label": "Contact email address",
+                  "label": "I.A.2 Contact email address",
                   "hint": "Enter email address. Department or program-wide email addresses are permitted."
                 }
               },
@@ -75,7 +75,7 @@
                 "type": "text",
                 "validation": "textOptional",
                 "props": {
-                  "label": "State or territory",
+                  "label": "I.A.3 State or territory",
                   "hint": "Auto-populates from your account profile.",
                   "disabled": true
                 }
@@ -85,7 +85,7 @@
                 "type": "date",
                 "validation": "textOptional",
                 "props": {
-                  "label": "Date of report submission",
+                  "label": "I.A.4 Date of report submission",
                   "hint": "CMS receives this date upon submission of this report.",
                   "disabled": true
                 }
@@ -95,7 +95,7 @@
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "Reporting scenario",
+                  "label": "I.A.5 Reporting scenario",
                   "hint": [
                     {
                       "type": "p",
@@ -609,7 +609,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "Core provider type covered by standard",
+              "label": "II.A.1 Core provider type covered by standard",
               "hint": "Enter the provider type the standard applies to. If you wish to further specify the provider type, select the core type most suitable and then add the more specific provider type under “Additional specialty details”, which will appear as an optional text field after the provider type is selected. Do not use this section to indicate populations associated with this provider type (e.g., adult, pediatric, LTSS); these details should be entered in the dedicated population fields below.",
               "choices": [
                 {
@@ -626,7 +626,7 @@
                         "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
                       },
                       "props": {
-                        "label": "Primary care specialist details (optional)",
+                        "label": "II.A.2 Primary care specialty details (optional)",
                         "hint": "e.g., nurse practitioner"
                       }
                     }
@@ -646,7 +646,7 @@
                         "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
                       },
                       "props": {
-                        "label": "Specialty details (optional)",
+                        "label": "II.A.2 Specialty details (optional)",
                         "hint": "Include all specialties (except for Mental health) within this category, e.g., cardiologist, endocrinologist."
                       }
                     }
@@ -666,7 +666,7 @@
                         "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
                       },
                       "props": {
-                        "label": "Mental health specialty details (optional)"
+                        "label": "II.A.2 Mental health specialty details (optional)"
                       }
                     }
                   ]
@@ -685,7 +685,7 @@
                         "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
                       },
                       "props": {
-                        "label": "Substance Use Disorder (SUD) specialty details (optional)"
+                        "label": "II.A.2 Substance Use Disorder (SUD) specialty details (optional)"
                       }
                     }
                   ]
@@ -704,7 +704,7 @@
                         "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
                       },
                       "props": {
-                        "label": "OB/GYN specialty details (optional)"
+                        "label": "II.A.2 OB/GYN specialty details (optional)"
                       }
                     }
                   ]
@@ -723,7 +723,7 @@
                         "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
                       },
                       "props": {
-                        "label": "Hospital specialty details (optional)"
+                        "label": "II.A.2 Hospital specialty details (optional)"
                       }
                     }
                   ]
@@ -742,7 +742,7 @@
                         "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
                       },
                       "props": {
-                        "label": "Pharmacy specialty details (optional)"
+                        "label": "II.A.2 Pharmacy specialty details (optional)"
                       }
                     }
                   ]
@@ -761,7 +761,7 @@
                         "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
                       },
                       "props": {
-                        "label": "Dental specialty details (optional)"
+                        "label": "II.A.2 Dental specialty details (optional)"
                       }
                     }
                   ]
@@ -780,7 +780,7 @@
                         "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
                       },
                       "props": {
-                        "label": "LTSS specialty details (optional)"
+                        "label": "II.A.2 LTSS specialty details (optional)"
                       }
                     }
                   ]
@@ -793,8 +793,8 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "Standard type",
-              "hint": "What is the standard type? Select one. Select the category that most closely represents the standard type.",
+              "label": "II.A.3 Standard type",
+              "hint": "What is the standard type? Select the category that most closely represents the standard type.",
               "choices": [
                 {
                   "id": "kIrheUXLpOwF7OEypso8Ylhs",
@@ -810,7 +810,7 @@
                         "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -823,7 +823,7 @@
                         "parentOptionId": "kIrheUXLpOwF7OEypso8Ylhs"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -844,7 +844,7 @@
                         "parentOptionId": "SDrVTHVxFa2YKrlBYjcqavbN"
                       },
                       "props": {
-                        "label": "Standard description",
+                        "label": "II.A.4 Standard description",
                         "hint": "e.g., 15 days"
                       }
                     },
@@ -858,7 +858,7 @@
                         "parentOptionId": "SDrVTHVxFa2YKrlBYjcqavbN"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -879,7 +879,7 @@
                         "parentOptionId": "fFSst8ncbSukHlX66fqV0udO"
                       },
                       "props": {
-                        "label": "Standard description",
+                        "label": "II.A.4 Standard description",
                         "hint": "e.g., 1 provider within 30 min or 30 miles"
                       }
                     },
@@ -893,7 +893,7 @@
                         "parentOptionId": "fFSst8ncbSukHlX66fqV0udO"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -914,7 +914,7 @@
                         "parentOptionId": "lG0CeH7LIO5iGxjpaKE8v37C"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -927,7 +927,7 @@
                         "parentOptionId": "lG0CeH7LIO5iGxjpaKE8v37C"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard for this program",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard for this program",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -948,7 +948,7 @@
                         "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -961,7 +961,7 @@
                         "parentOptionId": "vGdzNKCsiudeNeUJZgU5qhdz"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -982,7 +982,7 @@
                         "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -995,7 +995,7 @@
                         "parentOptionId": "hdz3tEHdEBvRIIdgaovgEjaa"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -1016,7 +1016,7 @@
                         "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -1029,7 +1029,7 @@
                         "parentOptionId": "EuccyPRHBiaTVhF1HMHnkUcR"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -1050,7 +1050,7 @@
                         "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -1063,7 +1063,7 @@
                         "parentOptionId": "tcIQ324hNsgHwHteoDgfCh08"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -1084,7 +1084,7 @@
                         "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -1097,7 +1097,7 @@
                         "parentOptionId": "9eion8H8PNrCP0AeiikpsKbx"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -1128,7 +1128,7 @@
                         "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
-                        "label": "Standard description"
+                        "label": "II.A.4 Standard description"
                       }
                     },
                     {
@@ -1141,7 +1141,7 @@
                         "parentOptionId": "Uil8wXl6t3aBsI4W8pQZlO5P"
                       },
                       "props": {
-                        "label": "Analysis method(s) utilized to assess compliance for this standard",
+                        "label": "II.A.5 Analysis method(s) utilized to assess compliance for this standard",
                         "hint": "Select the method(s) utilized to assess compliance with this standard. If a method is not listed here, add it in the “Analysis Methods” section.",
                         "choices": []
                       }
@@ -1156,7 +1156,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "Population covered by standard",
+              "label": "II.A.6 Population covered by standard",
               "hint": "Enter the population that the standard applies to.",
               "choices": [
                 {
@@ -1194,7 +1194,7 @@
             "type": "radio",
             "validation": "radio",
             "props": {
-              "label": "Applicable region",
+              "label": "II.A.7 Applicable region",
               "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. If the standard is statewide but results are analyzed by region type, create a standard for each applicable region.",
               "choices": [
                 {
@@ -1210,12 +1210,20 @@
                   "label": "Metro"
                 },
                 {
+                  "id": "eSA8gou1MZodAgsvNu6KoW5M",
+                  "label": "Urban"
+                },
+                {
                   "id": "nTsvcnVAkbz1YPXzrJGyuk57",
                   "label": "Micro"
                 },
                 {
                   "id": "vtr616uOBJzYTgak0yOS2X3Z",
                   "label": "Rural"
+                },
+                {
+                  "id": "PDJiZbCvszRtn2wFyCnLuhbh",
+                  "label": "Frontier"
                 },
                 {
                   "id": "K72J3FGRlXMyIV2j43TDGs7R",
@@ -1363,7 +1371,7 @@
                       },
                       {
                         "id": "dq36WGX8Ev8wmALi1rg3bv",
-                        "label": "No, the plan does not comply on all standards based on all analyses and/or exceptions granted"
+                        "label": "No, the plan does not comply on all standards based on all analyses or exceptions granted"
                       }
                     ]
                   }
@@ -1387,7 +1395,7 @@
             },
             "verbiage": {
               "heading": "A. Assurance of plan compliance for 438.68",
-              "hint": "Indicate whether the state assures that the plan complies with the state’s standards, as required at § 42 C.F.R. 438.68 (i.e. the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
+              "hint": "III.A.1 Indicate whether the state assures that the plan complies with the state’s standards, as required at § 42 C.F.R. 438.68 (i.e., the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
               "intro": {
                 "section": ""
               }
@@ -1449,7 +1457,7 @@
                   },
                   {
                     "type": "p",
-                    "content": "(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist."
+                    "content": "(2) Provides female enrollees with direct access to a women's health specialist within the provider network for covered care necessary to provide women's routine and preventive health care services. This is in addition to the enrollee's designated source of primary care if that source is not a women's health specialist."
                   },
                   {
                     "type": "ol",
@@ -1463,11 +1471,11 @@
                       },
                       {
                         "type": "li",
-                        "content": "ii. If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
+                        "content": "ii. If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP's provider network is unable to provide them."
                       },
                       {
                         "type": "li",
-                        "content": "Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
+                        "content": " Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
                       },
                       {
                         "type": "li",
@@ -1498,7 +1506,7 @@
                             "children": [
                               {
                                 "type": "li",
-                                "content": "Meet and require its network providers to meet State standards for timely access to care and services, taking into account the urgency of the need for services."
+                                "content": "Meet and require its network providers to meet State standards for timely access to care and services taking into account the urgency of the need for services, as well as appointment wait times specified in § 438.68(e)."
                               },
                               {
                                 "type": "li",
@@ -1526,7 +1534,7 @@
                       },
                       {
                         "type": "li",
-                        "content": "Access and cultural considerations. Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
+                        "content": "Access and cultural considerations.Each MCO, PIHP, and PAHP participates in the State's efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and  ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
                       },
                       {
                         "type": "li",
@@ -1537,7 +1545,7 @@
                 ]
               },
               "heading": "B. Assurance of plan compliance for 438.206",
-              "hint": "Indicate whether the state assures that the plan complies with the availability of services standards outlined in 42 C.F.R. § 438.206 the analyses the state conducted for the plan during the reporting period."
+              "hint": "III.B.1 Indicate whether the state assures that the plan complies with the availability of services standards outlined in 42 C.F.R. § 438.206 the analyses the state conducted for the plan during the reporting period."
             }
           }
         ],
@@ -1560,7 +1568,7 @@
                   }
                 ],
                 "section": "III. Plan compliance data for {{planName}}",
-                "subsection": "{{planName}}: Provide details about plan non-compliance and exceptions for this standard for 42 C.F.R. § 438.68"
+                "subsection": "{{planName}}: Provide details about plan non-compliance or exceptions for this standard"
               }
             },
             "table": {
@@ -1596,12 +1604,12 @@
                   "type": "checkbox",
                   "validation": "checkboxOneOptional",
                   "props": {
-                    "label": "This standard does not meet 42 C.F.R. § 438.68 compliance",
+                    "label": "III.C.1 This standard does not meet 42 C.F.R. § 438.68 compliance",
                     "hint": "Select if this standard does not fully comply based on at least one analysis conducted within the reporting period or if an exception was granted.",
                     "choices": [
                       {
                         "id": "l8yWzYniMtH5HQrBIjwApO",
-                        "label": "Standard is non-compliant for this plan",
+                        "label": "Plan is non-compliant for this standard",
                         "children": [
                           {
                             "id": "planCompliance43868_standard-nonComplianceAnalyses",
@@ -1613,24 +1621,8 @@
                               "parentOptionId": "l8yWzYniMtH5HQrBIjwApO"
                             },
                             "props": {
-                              "label": "Plan deficiencies: 42 C.F.R. § 438.68 analyses used to identify deficiencies",
-                              "hint": [
-                                {
-                                  "type": "html",
-                                  "content": "Indicate which analyses uncovered the deficiencies. If the analysis method does not appear here, go back to "
-                                },
-                                {
-                                  "type": "internalLink",
-                                  "content": "Standards",
-                                  "props": {
-                                    "to": "/naaar/program-level-access-and-network-adequacy-standards"
-                                  }
-                                },
-                                {
-                                  "type": "html",
-                                  "content": " and add it."
-                                }
-                              ],
+                              "label": "III.C.2a Plan deficiencies: analyses used to identify deficiencies with this standard",
+                              "hint": "Indicate which analyses reflect the deficiencies. If the analysis method does not appear here, return to “Standards” and add it. If geomapping, provider directory reviews, or secret shopper results are the methods used, additional fields will appear to enable reporting of more specific results from those analyses.",
                               "choices": [
                                 {
                                   "label": "Geomapping",
@@ -1663,7 +1655,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q1 (optional)",
+                                                            "label": "III.D.1a - Q1 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1673,7 +1665,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q2 (optional)",
+                                                            "label": "III.D.1b - Q2 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1683,7 +1675,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q3 (optional)",
+                                                            "label": "III.D.1c - Q3 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1693,7 +1685,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q4 (optional)",
+                                                            "label": "III.D.1d - Q4 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1710,7 +1702,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q1 (optional)",
+                                                            "label": "III.D.2a - Q1 (optional)",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
                                                         },
@@ -1719,7 +1711,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q2 (optional)",
+                                                            "label": "III.D.2b - Q2 (optional)",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
                                                         },
@@ -1728,7 +1720,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q3 (optional)",
+                                                            "label": "III.D.2c - Q3 (optional)",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
                                                         },
@@ -1737,7 +1729,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q4 (optional)",
+                                                            "label": "III.D.2d - Q4 (optional)",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
                                                         }
@@ -1753,7 +1745,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q1 (optional)",
+                                                            "label": "III.D.3a - Q1 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1763,7 +1755,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q2 (optional)",
+                                                            "label": "III.D.3b - Q2 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1773,7 +1765,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q3 (optional)",
+                                                            "label": "III.D.3c - Q3 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1783,7 +1775,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q4 (optional)",
+                                                            "label": "III.D.3d - Q4 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1798,7 +1790,6 @@
                                           {
                                             "id": "45PQX2mTtbVrsZtiR2ZFns",
                                             "label": "Report results annually",
-                                            "hint": "Report findings on the percent of plan enrollees that can access this provider type within the defined time or distance.",
                                             "children": [
                                               {
                                                 "id": "reportResultsAnnually",
@@ -1816,7 +1807,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Annual (optional)",
+                                                            "label": "III.D.1e - Annual (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1826,7 +1817,7 @@
                                                           "type": "date",
                                                           "validation": "dateOptional",
                                                           "props": {
-                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                            "label": "III.D.1f - Date of analysis of annual snapshot (optional)"
                                                           }
                                                         }
                                                       ]
@@ -1841,7 +1832,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Annual (optional)",
+                                                            "label": "III.D.2e - Annual (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1851,7 +1842,7 @@
                                                           "type": "date",
                                                           "validation": "dateOptional",
                                                           "props": {
-                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                            "label": "III.D.2f - Date of analysis of annual snapshot (optional)"
                                                           }
                                                         }
                                                       ]
@@ -1866,7 +1857,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Annual (optional)",
+                                                            "label": "III.D.3e - Annual (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1876,7 +1867,7 @@
                                                           "type": "date",
                                                           "validation": "dateOptional",
                                                           "props": {
-                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                            "label": "III.D.3f - Date of analysis of annual snapshot (optional)"
                                                           }
                                                         }
                                                       ]
@@ -1922,7 +1913,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q1 (optional)",
+                                                            "label": "III.D.1a - Q1 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1932,7 +1923,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q2 (optional)",
+                                                            "label": "III.D.1b - Q2 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1942,7 +1933,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q3 (optional)",
+                                                            "label": "III.D.1c - Q3 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1952,7 +1943,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q4 (optional)",
+                                                            "label": "III.D.1d - Q4 (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1969,7 +1960,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q1 (optional)",
+                                                            "label": "III.D.2a - Q1 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1979,7 +1970,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q2 (optional)",
+                                                            "label": "III.D.2b - Q2 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1989,7 +1980,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q3 (optional)",
+                                                            "label": "III.D.2c - Q3 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -1999,7 +1990,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Q4 (optional)",
+                                                            "label": "III.D.2d - Q4 (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -2031,7 +2022,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Annual (optional)",
+                                                            "label": "III.D.1e - Annual (optional)",
                                                             "mask": "comma-separated",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -2041,7 +2032,7 @@
                                                           "type": "date",
                                                           "validation": "dateOptional",
                                                           "props": {
-                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                            "label": "III.D.1f - Date of analysis of annual snapshot (optional)"
                                                           }
                                                         }
                                                       ]
@@ -2056,7 +2047,7 @@
                                                           "type": "number",
                                                           "validation": "numberNotLessThanZeroOptional",
                                                           "props": {
-                                                            "label": "Annual (optional)",
+                                                            "label": "III.D.2e - Annual (optional)",
                                                             "mask": "percentage",
                                                             "decimalPlacesToRoundTo": 0
                                                           }
@@ -2066,7 +2057,7 @@
                                                           "type": "date",
                                                           "validation": "dateOptional",
                                                           "props": {
-                                                            "label": "Date of analysis of annual snapshot (optional)"
+                                                            "label": "III.D.2f - Date of analysis of annual snapshot (optional)"
                                                           }
                                                         }
                                                       ]
@@ -2102,7 +2093,7 @@
                                                 "type": "number",
                                                 "validation": "numberNotLessThanZeroOptional",
                                                 "props": {
-                                                  "label": "Q1 (optional)",
+                                                  "label": "III.D.1a - Q1 (optional)",
                                                   "mask": "percentage",
                                                   "decimalPlacesToRoundTo": 0
                                                 }
@@ -2112,7 +2103,7 @@
                                                 "type": "number",
                                                 "validation": "numberNotLessThanZeroOptional",
                                                 "props": {
-                                                  "label": "Q2 (optional)",
+                                                  "label": "III.D.1b - Q2 (optional)",
                                                   "mask": "percentage",
                                                   "decimalPlacesToRoundTo": 0
                                                 }
@@ -2122,7 +2113,7 @@
                                                 "type": "number",
                                                 "validation": "numberNotLessThanZeroOptional",
                                                 "props": {
-                                                  "label": "Q3 (optional)",
+                                                  "label": "III.D.1c - Q3 (optional)",
                                                   "mask": "percentage",
                                                   "decimalPlacesToRoundTo": 0
                                                 }
@@ -2132,7 +2123,7 @@
                                                 "type": "number",
                                                 "validation": "numberNotLessThanZeroOptional",
                                                 "props": {
-                                                  "label": "Q4 (optional)",
+                                                  "label": "III.D.1d - Q4 (optional)",
                                                   "mask": "percentage",
                                                   "decimalPlacesToRoundTo": 0
                                                 }
@@ -2149,7 +2140,7 @@
                                                 "type": "number",
                                                 "validation": "numberNotLessThanZeroOptional",
                                                 "props": {
-                                                  "label": "Annual (optional)",
+                                                  "label": "III.D.1e - Annual (optional)",
                                                   "mask": "percentage",
                                                   "decimalPlacesToRoundTo": 0
                                                 }
@@ -2159,7 +2150,7 @@
                                                 "type": "date",
                                                 "validation": "dateOptional",
                                                 "props": {
-                                                  "label": "Date of analysis of annual snapshot (optional)"
+                                                  "label": "III.D.1f - Date of analysis of annual snapshot (optional)"
                                                 }
                                               }
                                             ]
@@ -2181,7 +2172,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Plan deficiencies: description",
+                              "label": "III.C.2b Plan deficiencies: description",
                               "hint": "Describe plan deficiencies identified if results were not previously detailed (note that additional fields will appear for entering results if the state uses geomapping, plan provider directory reviews or secret shopper results to uncover standard deficiencies). You can also use this section to provide any additional context on the plan deficiencies or results provided above."
                             }
                           },
@@ -2194,7 +2185,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
+                              "label": "III.C.2c Plan deficiencies: description of what the plan will do to achieve compliance with this standard.",
                               "hint": "Describe what the plan will do to achieve compliance specific to this standard."
                             }
                           },
@@ -2207,7 +2198,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Plan deficiencies: monitoring progress",
+                              "label": "III.C.2d Plan deficiencies: monitoring progress",
                               "hint": "Describe how the state will monitor the plan’s progress with this standard."
                             }
                           },
@@ -2220,7 +2211,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Reassessment for plan deficiencies",
+                              "label": "III.C.2e Reassessment for plan deficiencies",
                               "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies with this standard."
                             }
                           }
@@ -2228,7 +2219,7 @@
                       },
                       {
                         "id": "qynBP00OCjrE196bwX3n67",
-                        "label": "Exceptions granted under 42 C.F.R. § 438.68(d)",
+                        "label": "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)",
                         "children": [
                           {
                             "id": "planCompliance43868_standard-exceptionsDescription",
@@ -2239,7 +2230,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
+                              "label": "III.C.3b Describe any network adequacy standard exceptions that the state has granted to the plan under 42 C.F.R. § 438.68(d)."
                             }
                           },
                           {
@@ -2251,7 +2242,7 @@
                               "parentFieldName": "planCompliance43868_standard"
                             },
                             "props": {
-                              "label": "Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
+                              "label": "III.C.3c Justification for exceptions granted under 42 C.F.R. § 438.68(d)",
                               "hint": "Describe the state’s justification for granting the exception(s)."
                             }
                           }
@@ -2400,7 +2391,7 @@
                   "type": "checkbox",
                   "validation": "checkbox",
                   "props": {
-                    "label": "Delivery network-related requirements:",
+                    "label": "III.B.2 Delivery network-related requirements:",
                     "choices": [
                       {
                         "id": "lWYfZ8qpdK2vwNXXwy9b1l",
@@ -2439,7 +2430,7 @@
                   "type": "checkbox",
                   "validation": "checkbox",
                   "props": {
-                    "label": "Furnishing of services; timely access-related requirements:",
+                    "label": "III.B.3 Furnishing of services; timely access-related requirements:",
                     "choices": [
                       {
                         "id": "LR9DAx31NetMHZmnGNfP37",
@@ -2474,7 +2465,7 @@
                   "type": "checkbox",
                   "validation": "checkbox",
                   "props": {
-                    "label": "Other requirements:",
+                    "label": "III.B.4 Other requirements:",
                     "choices": [
                       {
                         "id": "TlP89DrzdEg5KQ1LXXFCUe",
@@ -2483,10 +2474,6 @@
                       {
                         "id": "ilvC7PazhMXTL6aL7LDRAE",
                         "label": "Does not ensure that network providers provide physical access, reasonable accommodations, and accessible equipment"
-                      },
-                      {
-                        "id": "yCleNTI4lSJCwNhuq59KmU",
-                        "label": "Does not adhere to applicability date"
                       },
                       {
                         "id": "mrCzwGVdpvl81r5P0JDTSr",
@@ -2511,7 +2498,7 @@
                   "type": "textarea",
                   "validation": "text",
                   "props": {
-                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 description",
+                    "label": "III.B.5 Plan deficiencies: 42 C.F.R. § 438.206 description",
                     "hint": "Describe additional plan deficiencies identified during the reporting period."
                   }
                 },
@@ -2520,7 +2507,7 @@
                   "type": "textarea",
                   "validation": "text",
                   "props": {
-                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 analyses used to identify deficiencies",
+                    "label": "III.B.6 Plan deficiencies: 42 C.F.R. § 438.206 analyses used to identify deficiencies",
                     "hint": "Indicate which analyses uncovered the deficiencies."
                   }
                 },
@@ -2529,7 +2516,7 @@
                   "type": "textarea",
                   "validation": "text",
                   "props": {
-                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 description of what the plan will do to achieve compliance",
+                    "label": "III.B.7 Plan deficiencies: 42 C.F.R. § 438.206 description of what the plan will do to achieve compliance",
                     "hint": "Describe what the plan will do to achieve compliance."
                   }
                 },
@@ -2538,7 +2525,7 @@
                   "type": "textarea",
                   "validation": "text",
                   "props": {
-                    "label": "Plan deficiencies: 42 C.F.R. § 438.206 monitoring progress",
+                    "label": "III.B.8 Plan deficiencies: 42 C.F.R. § 438.206 monitoring progress",
                     "hint": "Describe how the state will monitor the plan’s progress."
                   }
                 },
@@ -2547,7 +2534,7 @@
                   "type": "date",
                   "validation": "date",
                   "props": {
-                    "label": "Reassessment for plan deficiencies: 42 C.F.R. § 438.206",
+                    "label": "III.B.9 Reassessment for plan deficiencies: 42 C.F.R. § 438.206",
                     "hint": "Indicate when the state will reassess the plan’s network to determine whether the plan has remediated those deficiencies."
                   }
                 }
