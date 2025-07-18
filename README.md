@@ -67,7 +67,7 @@ Before starting the project we're going to install some tools. We recommend havi
 
 ### Running the project locally
 
-In the root of the project run `./run update-env && ./run local` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env `. Then you can run `./run local` to use a static manually populated `.env` file.
+In the root of the project run `./run update-env && ./run local` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env`. Then you can run `./run local` to use a static manually populated `.env` file.
 
 ### Logging in
 
@@ -84,6 +84,16 @@ Local dev is configured as a TypeScript project. The entry point is [`./src/run.
 The local environment is powered by [LocalStack](https://localstack.cloud/). For more details, see the [Local Deployment README](./deployment/local/README.md).
 
 Authentication during local development uses the Cognito user pool deployed to AWS from the `dev` (main) branch.
+
+### Viewing DynamoDB locally (alternative to LocalStack)
+
+To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
+
+- Install and run `DYNAMO_ENDPOINT=http://localhost:4566 dynamodb-admin` in a new terminal window
+
+In the terminal, any changes made to a program will show up as S3 updates with a path that includes a unique KSUID. You can use that KSUID to see the fieldData structure in your code. `database-localstack-{reportType}/fieldData/{state}/{KSUID}`
+
+For a pretty-print output of a fieldData object, run `aws --endpoint-url=http://localhost:4566 s3 cp s3://database-localstack-{reportType}/fieldData/{state}/{KSUID} - | jq`.
 
 ## Testing
 

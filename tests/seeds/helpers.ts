@@ -1,14 +1,15 @@
 /* eslint-disable no-console */
-import { faker } from "@faker-js/faker";
 import {
   SRPClient,
   calculateSignature,
   getNowString,
 } from "amazon-user-pool-srp-client";
 import * as dotenv from "dotenv";
+import { faker } from "@faker-js/faker";
 import { AwsHeaders } from "./types";
 
 dotenv.config({ path: "../../.env" });
+dotenv.config({ path: "../../.env.seed" });
 
 const apiUrl: string | undefined = process.env.API_URL;
 const clientId: string | undefined = process.env.COGNITO_USER_POOL_CLIENT_ID;

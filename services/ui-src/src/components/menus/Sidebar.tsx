@@ -196,7 +196,7 @@ const sx = {
     position: "fixed",
   },
   topBox: {
-    borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
+    borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
   },
   title: {
     fontSize: "xl",
@@ -240,7 +240,7 @@ const sx = {
     position: "relative",
     align: "center",
     role: "group",
-    borderBottom: "1px solid var(--chakra-colors-palette-gray_lighter)",
+    borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
     fontSize: "0.875rem",
     ".ds-c-icon--arrow": {
       position: "absolute",

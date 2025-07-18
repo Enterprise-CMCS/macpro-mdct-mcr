@@ -9,6 +9,7 @@ build_dev
 tsconfig.tsbuildinfo
 services/uploads/local_buckets
 /.env
+/.env.seed
 tests_output
 *.log
 !launchdarkly-flags.log

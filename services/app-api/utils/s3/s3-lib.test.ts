@@ -10,14 +10,6 @@ import { mockClient } from "aws-sdk-client-mock";
 const s3ClientMock = mockClient(S3Client);
 
 describe("Test s3Lib Interaction API Build Structure", () => {
-  let originalEndpoint: string | undefined;
-  beforeAll(() => {
-    originalEndpoint = process.env.S3_LOCAL_ENDPOINT;
-  });
-  afterAll(() => {
-    process.env.S3_LOCAL_ENDPOINT = originalEndpoint;
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     s3ClientMock.reset();
@@ -47,14 +39,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
 
 describe("Checking Environment Variable Changes", () => {
   beforeEach(() => jest.resetModules());
-  test("Check if statement with S3_LOCAL_ENDPOINT set", () => {
-    process.env.S3_LOCAL_ENDPOINT = "mock endpoint";
-    const config = getConfig();
-    expect(config).toHaveProperty("region", "localhost");
-  });
-
-  test("Check if statement with S3_LOCAL_ENDPOINT undefined", () => {
-    delete process.env.S3_LOCAL_ENDPOINT;
+  test("that config has region set", () => {
     const config = getConfig();
     expect(config).toHaveProperty("region", "us-east-1");
   });

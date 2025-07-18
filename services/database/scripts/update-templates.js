@@ -1,21 +1,18 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *    `DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/update-templates.js`
- *  Branch:
- *    branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-templates.js
+ *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/update-templates.js
+ * Branch:
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-templates.js
  */
 
 const { buildS3Client, list, putObjectTag } = require("./utils/s3.js");
 
 const isLocal = !!process.env.DYNAMODB_URL;
+const branch = isLocal ? "localstack" : process.env.branchPrefix;
 
-const mcparBucketName = isLocal
-  ? "local-mcpar-form"
-  : "database-" + process.env.branchPrefix + "-mcpar";
-const mlrBucketName = isLocal
-  ? "local-mlr-form"
-  : "database-" + process.env.branchPrefix + "-mlr";
+const mcparBucketName = `database-${branch}-mcpar`;
+const mlrBucketName = `database-${branch}-mlr`;
 const buckets = [mcparBucketName, mlrBucketName];
 
 // Using a human readable format for easier debugging in the future

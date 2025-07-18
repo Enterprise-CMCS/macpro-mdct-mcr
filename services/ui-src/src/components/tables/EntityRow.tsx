@@ -136,7 +136,7 @@ const sx = {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
     td: {
-      borderColor: "palette.gray_light",
+      borderColor: "palette.gray_lighter",
       paddingRight: 0,
     },
   },

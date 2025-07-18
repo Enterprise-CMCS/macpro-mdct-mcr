@@ -17,23 +17,12 @@ import { logger } from "../debugging/debug-lib";
 // types
 import { AnyObject } from "../types";
 
-const localConfig = {
-  endpoint: process.env.DYNAMODB_URL,
-  region: "localhost",
-  credentials: {
-    accessKeyId: "LOCALFAKEKEY", // pragma: allowlist secret
-    secretAccessKey: "LOCALFAKESECRET", // pragma: allowlist secret
-  },
-  logger,
-};
-
-const awsConfig = {
-  region: "us-east-1",
-  logger,
-};
-
 export const getConfig = () => {
-  return process.env.DYNAMODB_URL ? localConfig : awsConfig;
+  return {
+    region: "us-east-1",
+    logger,
+    endpoint: process.env.AWS_ENDPOINT_URL,
+  };
 };
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));

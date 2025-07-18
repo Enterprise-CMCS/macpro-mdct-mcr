@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *   DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submissionDates.js {{reportType}}
+ *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/add-submissionDates.js {{reportType}}
  * Branch:
  *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submissionDates.js {{reportType}}
  *
  * To run the script without updating reports, use test=true:
  *
  * Local:
- *   test=true DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/add-submissionDates.js {{reportType}}
+ *   test=true DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/add-submissionDates.js {{reportType}}
  * Branch:
  *   test=true branchPrefix="YOUR BRANCH NAME" node services/database/scripts/add-submissionDates.js {{reportType}}
  */
@@ -18,12 +18,10 @@ const { buildS3Client, list } = require("./utils/s3.js");
 
 const isLocal = !!process.env.DYNAMODB_URL;
 const isTest = !!process.env.test;
-const branch = isLocal ? "local" : process.env.branchPrefix;
+const branch = isLocal ? "localstack" : process.env.branchPrefix;
 const reportType = process.argv[2] || "mcpar";
 const tableName = `${branch}-${reportType}-reports`;
-const bucketName = isLocal
-  ? `${branch}-${reportType}-form`
-  : `database-${branch}-${reportType}`;
+const bucketName = `database-${branch}-${reportType}`;
 
 async function handler() {
   try {
