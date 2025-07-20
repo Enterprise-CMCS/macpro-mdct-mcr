@@ -7,6 +7,7 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
+  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
@@ -20,8 +21,8 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  vpnIpSetArn?: string;
-  vpnIpv6SetArn?: string;
+  // vpnIpSetArn?: string;
+  // vpnIpv6SetArn?: string;
   loggingBucket: s3.IBucket;
 }
 
@@ -49,26 +50,40 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
   });
 
-  const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
-    bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
-    encryption: s3.BucketEncryption.S3_MANAGED,
-    publicReadAccess: false,
-    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
-    removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-    autoDeleteObjects: isDev,
-    enforceSSL: true,
-    versioned: true,
-  });
+  let loggingConfig:
+    | { enableLogging: boolean; logBucket: s3.Bucket; logFilePrefix: string }
+    | undefined;
+  if (!isDev) {
+    // this bucket is not created for ephemeral environments because the delete of the bucket often fails because it doesn't decouple from the distribution gracefully
+    // should you need to test these parts of the infrastructure out the easiest method is to add your branch's name to the isDev definition in deployment-config.ts
+    const logBucket = new s3.Bucket(scope, "CloudfrontLogBucket", {
+      bucketName: `ui-${stage}-cloudfront-logs-${Aws.ACCOUNT_ID}`,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_PREFERRED,
+      removalPolicy: RemovalPolicy.RETAIN,
+      enforceSSL: true,
+      versioned: true,
+      serverAccessLogsBucket: loggingBucket,
+      serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+    });
 
-  logBucket.addToResourcePolicy(
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-      actions: ["s3:PutObject"],
-      resources: [`${logBucket.bucketArn}/*`],
-    })
-  );
+    logBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
+        actions: ["s3:PutObject"],
+        resources: [`${logBucket.bucketArn}/*`],
+      })
+    );
+
+    loggingConfig = {
+      enableLogging: true,
+      logBucket,
+      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
+    };
+  }
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
@@ -92,7 +107,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         },
         contentSecurityPolicy: {
           contentSecurityPolicy:
-            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
+            "default-src 'self'; img-src 'self' data: https://www.google-analytics.com; script-src 'self' https://www.google-analytics.com https://ssl.google-analytics.com https://www.googletagmanager.com tags.tiqcdn.com tags.tiqcdn.cn tags-eu.tiqcdn.com tealium-tags.cms.gov dap.digitalgov.gov https://*.adoberesources.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src https://*.amazonaws.com/ https://*.amazoncognito.com https://www.google-analytics.com https://*.launchdarkly.us https://adobe-ep.cms.gov https://adobedc.demdex.net; frame-ancestors 'none'; object-src 'none'",
           override: true,
         },
         xssProtection: {
@@ -130,9 +145,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
         responseHeadersPolicy: securityHeadersPolicy,
       },
       defaultRootObject: "index.html",
-      enableLogging: true,
-      logBucket,
-      logFilePrefix: `AWSLogs/CLOUDFRONT/${stage}/`,
+      ...loggingConfig,
       httpVersion: cloudfront.HttpVersion.HTTP2,
       errorResponses: [
         {
@@ -149,7 +162,14 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   if (!isLocalStack) {
-    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
+    const waf = setupWaf(
+      scope,
+      stage,
+      project,
+      isDev
+      // vpnIpSetArn,
+      // vpnIpv6SetArn
+    );
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
@@ -166,64 +186,15 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string
-  // vpnIpSetArn?: string,
-  // vpnIpv6SetArn?: string,
+  //  vpnIpSetArn?: string,
+  //  vpnIpv6SetArn?: string
 ) {
   return new WafConstruct(
     scope,
     "CloudfrontWafConstruct",
     {
       name: `${project}-${stage}-ui`,
-      blockByDefault: false,
     },
     "CLOUDFRONT"
   );
-  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
-  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
-
-  // const defaultAction = vpnIpSetArn
-  //   ? { block: {} }
-  //   : { allow: {} };
-
-  // if (vpnIpSetArn) {
-  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
-  //     name: `${stage}-gh-ipset`,
-  //     scope: "CLOUDFRONT",
-  //     addresses: [],
-  //     ipAddressVersion: "IPV4",
-  //   });
-
-  //   const statements = [
-  //     {
-  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
-  //     },
-  //     {
-  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
-  //     },
-  //   ];
-
-  //   if (vpnIpv6SetArn) {
-  //     statements.push({
-  //       ipSetReferenceStatement: {
-  //         arn: vpnIpv6SetArn,
-  //       },
-  //     });
-  //   }
-
-  //   wafRules.push({
-  //     name: "vpn-only",
-  //     priority: 0,
-  //     action: { allow: {} },
-  //     visibilityConfig: {
-  //       cloudWatchMetricsEnabled: true,
-  //       metricName: `${project}-${stage}-webacl-vpn-only`,
-  //       sampledRequestsEnabled: true,
-  //     },
-  //     statement: {
-  //       orStatement: {
-  //         statements,
-  //       },
-  //     },
-  //   });
-  // }
 }

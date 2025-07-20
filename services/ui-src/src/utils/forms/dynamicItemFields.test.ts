@@ -197,6 +197,19 @@ describe("generateAddEntityDrawerItemFields for NAAAR analysis methods with cust
 });
 
 describe("availableAnalysisMethods for NAAAR plan compliance", () => {
+  const mockNestedForms = [
+    {
+      label: "Geomapping",
+      children: [
+        {
+          id: "mock-child-id",
+          arrayKey: [{ id: "mock-array-1" }, { id: "mock-array-2" }],
+          objectKey: { id: "mock-grandchild-id" },
+        },
+      ],
+    },
+  ];
+
   it("should return the updated item choices", () => {
     const mockObjectId =
       "planCompliance43868_standard-id-nonComplianceAnalyses";
@@ -204,7 +217,11 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       { id: "mockUUID1", name: "MockItem1" },
       { id: "mockUUID2", name: "MockItem2" },
     ];
-    const result = availableAnalysisMethods(mockObjectId, mockItems);
+    const result = availableAnalysisMethods(
+      mockObjectId,
+      mockItems,
+      mockNestedForms
+    );
     expect(result).toEqual([
       {
         id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1",
@@ -223,10 +240,26 @@ describe("availableAnalysisMethods for NAAAR plan compliance", () => {
       { id: "mockUUID1", name: "Geomapping" },
       { id: "mockUUID2", name: "MockItem2" },
     ];
-    const result = availableAnalysisMethods(mockObjectId, mockItems);
-    expect(Object.prototype.hasOwnProperty.call(result[0], "children")).toBe(
-      true
+    const result = availableAnalysisMethods(
+      mockObjectId,
+      mockItems,
+      mockNestedForms
     );
+    const childResult = (result[0] as AnyObject).children[0];
+    expect(childResult).toEqual({
+      id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id",
+      arrayKey: [
+        {
+          id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-array-1",
+        },
+        {
+          id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-array-2",
+        },
+      ],
+      objectKey: {
+        id: "planCompliance43868_standard-id-nonComplianceAnalyses_mockUUID1_mock-child-id_mock-grandchild-id",
+      },
+    });
     expect(Object.prototype.hasOwnProperty.call(result[1], "children")).toBe(
       false
     );

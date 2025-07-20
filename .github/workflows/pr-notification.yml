@@ -40,7 +40,6 @@ jobs:
               application_endpoint_url="endpoint not found"
           fi
           echo "application_endpoint_url=$application_endpoint_url" >> $GITHUB_OUTPUT
-
     outputs:
       application_endpoint_url: ${{ steps.getendpoint.outputs.application_endpoint_url }}
 
@@ -49,7 +48,7 @@ jobs:
     needs:
       - endpoint
     # avoiding notifications for automated Snyk Pull Requests and draft pull requests
-    if: github.actor != 'mdct-github-service-account' && !github.event.pull_request.draft
+    if: github.actor != 'mdct-github-service-account' && github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]' && !github.event.pull_request.draft
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2

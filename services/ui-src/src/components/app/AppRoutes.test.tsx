@@ -3,17 +3,18 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 // components
-import { AppRoutes } from "components";
+import { AppRoutes, ReportContext } from "components";
 // utils
 import { UserProvider, useStore } from "utils";
 import {
   mockAdminUserStore,
   mockBannerStore,
-  mockStateUserStore,
+  mockLDFlags,
+  mockMcparReportContext,
   mockMcparReportStore,
   mockMlrReportStore,
   mockNaaarReportStore,
-  mockLDFlags,
+  mockStateUserStore,
 } from "utils/testing/setupJest";
 // verbiage
 import notFoundVerbiage from "verbiage/pages/not-found";
@@ -24,12 +25,19 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 // LaunchDarkly
 mockLDFlags.setDefault({ naaarReport: false });
 
-const appRoutesComponent = (history: any) => (
-  <Router location={history.location} navigator={history}>
-    <UserProvider>
-      <AppRoutes />
-    </UserProvider>
-  </Router>
+const appRoutesComponent = (history: any, isReportPage: boolean = false) => (
+  <ReportContext.Provider
+    value={{
+      ...mockMcparReportContext,
+      isReportPage,
+    }}
+  >
+    <Router location={history.location} navigator={history}>
+      <UserProvider>
+        <AppRoutes />
+      </UserProvider>
+    </Router>
+  </ReportContext.Provider>
 );
 
 let history: any;
@@ -127,6 +135,32 @@ describe("<AppRoutes />", () => {
 
     test("not-found routes redirect to 404", () => {
       expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
+    });
+  });
+
+  describe("Test AppRoutes box container", () => {
+    beforeEach(() => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockBannerStore,
+        ...mockMcparReportStore,
+      });
+    });
+
+    test("container should be main element for non-report page", () => {
+      history = createMemoryHistory();
+      history.push("/mcpar");
+      render(appRoutesComponent(history));
+      expect(screen.getByTestId("main-content").tagName).toBe("MAIN");
+      expect(screen.getByRole("main").id).toBe("main-content");
+    });
+
+    test("container should be div element for report page", () => {
+      history = createMemoryHistory();
+      history.push("/mock/mock-route-1");
+      render(appRoutesComponent(history, true));
+      expect(screen.getByTestId("main-content").tagName).toBe("DIV");
+      expect(screen.getByRole("main").id).toBe("report-content");
     });
   });
 

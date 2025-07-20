@@ -17,13 +17,12 @@ tests/cypress/screenshots
 tests/cypress/downloads
 .vscode/
 *._S3rver_cors.xml
-services/database/local_buckets
 tests/test-results/
 tests/playwright-report/
 tests/playwright/.cache/
 .auth/
-/.serverless
 /.cdk
 cdk.context.json
 .qlty/*
 !.qlty/qlty.toml
+.serverless

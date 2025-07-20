@@ -15,7 +15,7 @@ export const deleteBanner = handler(async (event, _context) => {
     return badRequest(error.NO_KEY);
   }
   const params = {
-    TableName: process.env.BANNER_TABLE_NAME!,
+    TableName: process.env.BannerTable!,
     Key: {
       key: event.pathParameters.bannerId,
     },

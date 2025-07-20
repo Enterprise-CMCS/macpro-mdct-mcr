@@ -33,9 +33,9 @@ export const buckets = {
 // REPORTS
 
 export const reportTables = {
-  MCPAR: process.env.MCPAR_REPORT_TABLE_NAME!,
-  MLR: process.env.MLR_REPORT_TABLE_NAME!,
-  NAAAR: process.env.NAAAR_REPORT_TABLE_NAME!,
+  MCPAR: process.env.McparReportsTable!,
+  MLR: process.env.MlrReportsTable!,
+  NAAAR: process.env.NaaarReportsTable!,
 };
 
 export const reportBuckets = {
@@ -58,109 +58,7 @@ export const bucketTopics = {
   NAAAR_TEMPLATE: "naaar-form-template",
 };
 
-export const formTemplateTableName = process.env.FORM_TEMPLATE_TABLE_NAME!;
-
-// COPY-OVER
-
-export const McparFieldsToCopy = {
-  root: [
-    "state_encounterDataValidationEntity",
-    "state_encounterDataValidationSystemHipaaCompliance",
-    "state_encounterDataValidationEntity-otherText",
-    "state_overpaymentStandard",
-    "state_overpaymentStandardContractLanguageLocation",
-    "state_overpaymentStandardDescription",
-    "state_overpaymentReportingMonitoringEfforts",
-    "state_beneficiaryCircumstanceChangeReconciliationEfforts",
-    "state_providerTerminationReportingMonitoringEfforts",
-    "state_providerTerminationReportingMonitoringMetrics",
-    "state_providerTerminationReportingMonitoringMetricsDescription",
-    "state_ownershipControlDisclosureWebsite",
-    "state_ownershipControlDisclosureWebsiteLink",
-    "state_timeframesForStandardPriorAuthorizationDecisions",
-    "state_stateTimeframeForStandardPriorAuthorizationDecisions",
-    "state_timeframesForExpeditedPriorAuthorizationDecisions",
-    "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
-    "program_contractTitle",
-    "program_type",
-    "program_type-otherText",
-    "program_coveredSpecialBenefits",
-    "program_coveredSpecialBenefits-otherText",
-    "program_specialBenefitsAvailabilityVariation",
-    "program_encounterDataUses",
-    "program_encounterDataUses-otherText",
-    "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria",
-    "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteria-otherText",
-    "program_encounterDataSubmissionCorrectionPerformanceEvaluationCriteriaContractLanguageLocation",
-    "program_encounterDataSubmissionQualityFinancialPenaltiesContractLanguageLocation",
-    "program_encounterDataQualityIncentives",
-    "program_criticalIncidentDefinition",
-    "program_standardAppealTimelyResolutionDefinition",
-    "program_expeditedAppealTimelyResolutionDefinition",
-    "program_grievanceTimelyResolutionDefinition",
-    "state_bssWebsite",
-    "state_bssEntityServiceAccessibility",
-    "state_bssEntityLtssProgramDataIssueAssistance",
-    "state_bssEntityPerformanceEvaluationMethods",
-    "plan_medicalLossRatioPercentageAggregationLevel",
-    "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-    "plan_populationSpecificMedicalLossRatioDescription",
-    "plan_medicalLossRatioReportingPeriodStartDate",
-    "plan_medicalLossRatioReportingPeriodEndDate",
-    "program_encounterDataSubmissionTimelinessStandardDefinition",
-  ],
-  accessMeasures: [
-    "id",
-    "accessMeasure_generalCategory",
-    "accessMeasure_standardDescription",
-    "accessMeasure_standardType",
-    "accessMeasure_standardType-otherText",
-    "accessMeasure_providerType",
-    "accessMeasure_providerType-otherText",
-    "accessMeasure_applicableRegion",
-    "accessMeasure_applicableRegion-otherText",
-    "accessMeasure_population",
-    "accessMeasure_population-otherText",
-    "accessMeasure_monitoringMethods",
-    "accessMeasure_monitoringMethods-otherText",
-    "accessMeasure_oversightMethodFrequency",
-    "accessMeasure_oversightMethodFrequency-otherText",
-  ],
-  plans: [
-    "id",
-    "name",
-    "plan_medicalLossRatioPercentageAggregationLevel",
-    "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-    "plan_populationSpecificMedicalLossRatioDescription",
-    "plan_medicalLossRatioReportingPeriodStartDate",
-    "plan_medicalLossRatioReportingPeriodEndDate",
-    "program_encounterDataSubmissionTimelinessStandardDefinition",
-    "plan_programIntegrityReferralPath",
-    "plan_beneficiaryCircumstanceChangeReportingFrequency",
-    "plan_ilosOfferedByPlan",
-  ],
-  qualityMeasures: [
-    "id",
-    "qualityMeasure_domain",
-    "qualityMeasure_domain-otherText",
-    "qualityMeasure_name",
-    "qualityMeasure_nqfNumber",
-    "qualityMeasure_reportingRateType",
-    "qualityMeasure_crossProgramReportingRateProgramList",
-    "qualityMeasure_set",
-    "qualityMeasure_set-otherText",
-    "qualityMeasure_description",
-  ],
-  bssEntities: [
-    "id",
-    "name",
-    "bssEntity_entityType",
-    "bssEntity_entityType-otherText",
-    "bssEntity_entityRole",
-    "bssEntity_entityRole-otherText",
-  ],
-  // sanctions are never copied from year to year.
-};
+export const formTemplateTableName = process.env.FormTemplateVersionsTable!;
 
 // ANALYSIS METHODS (NAAAR)
 export const DEFAULT_ANALYSIS_METHODS = [
@@ -168,7 +66,7 @@ export const DEFAULT_ANALYSIS_METHODS = [
   "Plan Provider Directory Review",
   "Secret Shopper: Network Participation",
   "Secret Shopper: Appointment Availability",
-  "EVV Data Analysis",
+  "Electronic Visit Verification Data Analysis",
   "Review of Grievances Related to Access",
   "Encounter Data Analysis",
 ];
