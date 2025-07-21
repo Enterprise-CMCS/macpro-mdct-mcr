@@ -30,9 +30,6 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
           ))}
         </OrderedList>
       )}
-      {verbiage.followUpText && (
-        <Text sx={sx.text}>{verbiage.followUpText}</Text>
-      )}
       {verbiage.table && (
         <Table
           content={verbiage.table}

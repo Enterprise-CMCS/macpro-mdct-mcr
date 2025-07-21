@@ -80,7 +80,6 @@ export default {
           "On an annual basis and no later than 180 calendar days after each rating period;",
           "When there is a significant change, as defined by the state, in the operations that would affect the adequacy of capacity and services of an MCO, PIHP, or PAHP and with the submission of the associated contract, including a new contract, a renewal, or an amendment, as required at § 438.3(a).",
         ],
-        followUpText: "",
       },
     },
   },
