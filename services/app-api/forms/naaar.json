@@ -1460,32 +1460,24 @@
                     "content": "(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist."
                   },
                   {
-                    "type": "ol",
-                    "props": {
-                      "className": "marker-normal"
-                    },
-                    "children": [
-                      {
-                        "type": "li",
-                        "content": "Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee."
-                      },
-                      {
-                        "type": "li",
-                        "content": "If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Demonstrates that its network providers are credentialed as required by § 438.214."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services."
-                      }
-                    ]
+                    "type": "p",
+                    "content": "(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(6) Demonstrates that its network providers are credentialed as required by § 438.214."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services."
                   },
                   {
                     "type": "p",
@@ -2277,32 +2269,24 @@
                     "content": "(2) Provides female enrollees with direct access to a women’s health specialist within the provider network for covered care necessary to provide women’s routine and preventive health care services. This is in addition to the enrollee’s designated source of primary care if that source is not a women’s health specialist."
                   },
                   {
-                    "type": "ol",
-                    "props": {
-                      "className": "marker-normal"
-                    },
-                    "children": [
-                      {
-                        "type": "li",
-                        "content": "Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee."
-                      },
-                      {
-                        "type": "li",
-                        "content": "If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Demonstrates that its network providers are credentialed as required by § 438.214."
-                      },
-                      {
-                        "type": "li",
-                        "content": "Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services."
-                      }
-                    ]
+                    "type": "p",
+                    "content": "(3) Provides for a second opinion from a network provider, or arranges for the enrollee to obtain one outside the network, at no cost to the enrollee."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(4) If the provider network is unable to provide necessary services, covered under the contract, to a particular enrollee, the MCO, PIHP, or PAHP must adequately and timely cover these services out of network for the enrollee, for as long as the MCO, PIHP, or PAHP’s provider network is unable to provide them."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(5) Requires out-of-network providers to coordinate with the MCO, PIHP, or PAHP for payment and ensures the cost to the enrollee is no greater than it would be if the services were furnished within the network."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(6) Demonstrates that its network providers are credentialed as required by § 438.214."
+                  },
+                  {
+                    "type": "p",
+                    "content": "(7) Demonstrates that its network includes sufficient family planning providers to ensure timely access to covered services."
                   },
                   {
                     "type": "p",
