@@ -182,4 +182,11 @@ const sx = {
     display: "block",
     paddingTop: "0.25rem",
   },
+  h1: {
+    fontWeight: "bold",
+    fontSize: "md",
+    color: "palette.base",
+    paddingTop: "1rem",
+    paddingBottom: "0",
+  },
 };
