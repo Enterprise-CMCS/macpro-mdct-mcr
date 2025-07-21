@@ -49,7 +49,7 @@ export class Lambda extends Construct {
       stackName,
       requestParameters,
       requestValidator,
-      isDev,
+      isDev = false,
       ...restProps
     } = props;
 
