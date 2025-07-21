@@ -165,8 +165,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     const waf = setupWaf(
       scope,
       stage,
-      project,
-      isDev
+      project
       // vpnIpSetArn,
       // vpnIpv6SetArn
     );
