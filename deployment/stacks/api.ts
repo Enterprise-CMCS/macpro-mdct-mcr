@@ -181,6 +181,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stackName: `${service}-${stage}`,
     api,
     environment,
+    isDev,
   };
 
   const requestValidator = new apigateway.RequestValidator(scope, `Validator`, {
