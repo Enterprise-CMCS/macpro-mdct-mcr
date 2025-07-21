@@ -2,7 +2,6 @@ COGNITO_USER_POOL_CLIENT_ID=op://mdct_devs/mcr_secrets/COGNITO_USER_POOL_CLIENT_
 COGNITO_USER_POOL_ID=op://mdct_devs/mcr_secrets/COGNITO_USER_POOL_ID
 COGNITO_USER_POOL_CLIENT_DOMAIN=op://mdct_devs/mcr_secrets/COGNITO_USER_POOL_CLIENT_DOMAIN
 COGNITO_IDENTITY_POOL_ID=op://mdct_devs/mcr_secrets/COGNITO_IDENTITY_POOL_ID
-POST_SIGNOUT_REDIRECT=http://localhost:3000/
 REACT_APP_LD_SDK_CLIENT=op://mdct_devs/mcr_secrets/REACT_APP_LD_SDK_CLIENT
 
 # needed for e2e tests
