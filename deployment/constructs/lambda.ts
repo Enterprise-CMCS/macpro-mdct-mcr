@@ -3,7 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration, RemovalPolicy } from "aws-cdk-lib";
+import { CfnOutput, Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -97,6 +97,12 @@ export class Lambda extends Construct {
     new LogGroup(this, `${id}LogGroup`, {
       logGroupName: `/aws/lambda/${this.lambda.functionName}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    });
+    new CfnOutput(this, `${id}isDev`, {
+      value: isDev.toString(),
+    });
+    new CfnOutput(this, `${id}RemovalPolicy`, {
+      value: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
 
     if (api && path && method) {

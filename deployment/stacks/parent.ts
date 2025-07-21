@@ -105,9 +105,6 @@ export class ParentStack extends Stack {
     new CfnOutput(this, "CloudFrontUrl", {
       value: applicationEndpointUrl,
     });
-    new CfnOutput(this, "isDev", {
-      value: isDev.toString(),
-    });
 
     createTopicsComponents({
       ...commonProps,
