@@ -99,7 +99,6 @@ export class ParentStack extends Stack {
       userPoolId,
       userPoolClientId,
       userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-      customResourceRole,
     });
 
     new CfnOutput(this, "CloudFrontUrl", {
