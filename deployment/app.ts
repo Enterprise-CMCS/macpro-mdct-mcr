@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
-import { EmptyParentStack } from "./stacks/empty/parent";
-import { ImportsIncludedParentStack } from "./stacks/imports_included/parent";
 import { ParentStack } from "./stacks/parent";
 import { determineDeploymentConfig } from "./deployment-config";
 
@@ -34,15 +32,7 @@ async function main() {
     return;
   }
 
-  let correctParentStack;
-  if (process.env.IMPORT_VARIANT == "empty") {
-    correctParentStack = EmptyParentStack;
-  } else if (process.env.IMPORT_VARIANT == "imports_included") {
-    correctParentStack = ImportsIncludedParentStack;
-  } else {
-    correctParentStack = ParentStack;
-  }
-  new correctParentStack(app, `${config.project}-${stage}`, {
+  new ParentStack(app, `${config.project}-${stage}`, {
     ...config,
     env: {
       account: process.env.CDK_DEFAULT_ACCOUNT,
