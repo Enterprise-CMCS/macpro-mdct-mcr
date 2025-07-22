@@ -107,7 +107,7 @@ export const fillNaaar = (): SeedFillReportShape => {
           [`planCompliance43868_standard-${standardId}`]: [
             {
               key: `planCompliance43868_standard-${standardId}-qynBP00OCjrE196bwX3n67`,
-              value: "Exceptions granted under 42 C.F.R. § 438.68(d)",
+              value: "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)",
             },
           ],
           [`planCompliance43868_standard-${standardId}-exceptionsDescription`]:

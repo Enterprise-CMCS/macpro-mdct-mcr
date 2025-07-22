@@ -613,17 +613,17 @@
               "hint": "Enter the provider type the standard applies to. If you wish to further specify the provider type, select the core type most suitable and then add the more specific provider type under “Additional specialty details”, which will appear as an optional text field after the provider type is selected. Do not use this section to indicate populations associated with this provider type (e.g., adult, pediatric, LTSS); these details should be entered in the dedicated population fields below.",
               "choices": [
                 {
-                  "id": "standard_UZK4hxPVnuYGcIgNzYFHCk",
+                  "id": "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
                   "label": "Primary care",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-UZK4hxPVnuYGcIgNzYFHCk",
+                      "id": "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_UZK4hxPVnuYGcIgNzYFHCk"
+                        "parentOptionId": "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk"
                       },
                       "props": {
                         "label": "II.A.2 Primary care specialty details (optional)",
@@ -633,17 +633,17 @@
                   ]
                 },
                 {
-                  "id": "standard_uITThePQiXntwGGViPTD62",
+                  "id": "standard_coreProviderType-uITThePQiXntwGGViPTD62",
                   "label": "Specialist",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-uITThePQiXntwGGViPTD62",
+                      "id": "standard_coreProviderType-uITThePQiXntwGGViPTD62-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_uITThePQiXntwGGViPTD62"
+                        "parentOptionId": "standard_coreProviderType-uITThePQiXntwGGViPTD62"
                       },
                       "props": {
                         "label": "II.A.2 Specialty details (optional)",
@@ -653,17 +653,17 @@
                   ]
                 },
                 {
-                  "id": "standard_9kBoKCLD1dYizieU5psnJi",
+                  "id": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi",
                   "label": "Mental health",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-9kBoKCLD1dYizieU5psnJi",
+                      "id": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_9kBoKCLD1dYizieU5psnJi"
+                        "parentOptionId": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi"
                       },
                       "props": {
                         "label": "II.A.2 Mental health specialty details (optional)"
@@ -672,17 +672,17 @@
                   ]
                 },
                 {
-                  "id": "standard_qbR8X0YAh8vObedJPx6QTJ",
+                  "id": "standard_coreProviderType-qbR8X0YAh8vObedJPx6QTJ",
                   "label": "Substance Use Disorder (SUD)",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-qbR8X0YAh8vObedJPx6QTJ",
+                      "id": "standard_coreProviderType-qbR8X0YAh8vObedJPx6QTJ-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_qbR8X0YAh8vObedJPx6QTJ"
+                        "parentOptionId": "standard_coreProviderType-qbR8X0YAh8vObedJPx6QTJ"
                       },
                       "props": {
                         "label": "II.A.2 Substance Use Disorder (SUD) specialty details (optional)"
@@ -691,17 +691,17 @@
                   ]
                 },
                 {
-                  "id": "standard_kV7553HIWXekySIFLiMXLW",
+                  "id": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                   "label": "OB/GYN",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-kV7553HIWXekySIFLiMXLW",
+                      "id": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_kV7553HIWXekySIFLiMXLW"
+                        "parentOptionId": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW"
                       },
                       "props": {
                         "label": "II.A.2 OB/GYN specialty details (optional)"
@@ -710,17 +710,17 @@
                   ]
                 },
                 {
-                  "id": "standard_nzmRTbJeqBCoAabR4oHrrh",
+                  "id": "standard_coreProviderType-nzmRTbJeqBCoAabR4oHrrh",
                   "label": "Hospital",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-nzmRTbJeqBCoAabR4oHrrh",
+                      "id": "standard_coreProviderType-nzmRTbJeqBCoAabR4oHrrh-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_nzmRTbJeqBCoAabR4oHrrh"
+                        "parentOptionId": "standard_coreProviderType-nzmRTbJeqBCoAabR4oHrrh"
                       },
                       "props": {
                         "label": "II.A.2 Hospital specialty details (optional)"
@@ -729,17 +729,17 @@
                   ]
                 },
                 {
-                  "id": "standard_cb4y58UmsRXVITpWL7l9up",
+                  "id": "standard_coreProviderType-cb4y58UmsRXVITpWL7l9up",
                   "label": "Pharmacy",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-cb4y58UmsRXVITpWL7l9up",
+                      "id": "standard_coreProviderType-cb4y58UmsRXVITpWL7l9up-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_cb4y58UmsRXVITpWL7l9up"
+                        "parentOptionId": "standard_coreProviderType-cb4y58UmsRXVITpWL7l9up"
                       },
                       "props": {
                         "label": "II.A.2 Pharmacy specialty details (optional)"
@@ -748,17 +748,17 @@
                   ]
                 },
                 {
-                  "id": "standard_tlzAMYfH4I7iIl5pjqAm7R",
+                  "id": "standard_coreProviderType-tlzAMYfH4I7iIl5pjqAm7R",
                   "label": "Dental",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-tlzAMYfH4I7iIl5pjqAm7R",
+                      "id": "standard_coreProviderType-tlzAMYfH4I7iIl5pjqAm7R-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_tlzAMYfH4I7iIl5pjqAm7R"
+                        "parentOptionId": "standard_coreProviderType-tlzAMYfH4I7iIl5pjqAm7R"
                       },
                       "props": {
                         "label": "II.A.2 Dental specialty details (optional)"
@@ -767,17 +767,17 @@
                   ]
                 },
                 {
-                  "id": "standard_WrMpSdivds4c0XfN2RPlRd",
+                  "id": "standard_coreProviderType-WrMpSdivds4c0XfN2RPlRd",
                   "label": "LTSS",
                   "children": [
                     {
-                      "id": "standard_coreProviderType_details-WrMpSdivds4c0XfN2RPlRd",
+                      "id": "standard_coreProviderType-WrMpSdivds4c0XfN2RPlRd-otherText",
                       "type": "text",
                       "validation": {
                         "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
-                        "parentOptionId": "standard_WrMpSdivds4c0XfN2RPlRd"
+                        "parentOptionId": "standard_coreProviderType-WrMpSdivds4c0XfN2RPlRd"
                       },
                       "props": {
                         "label": "II.A.2 LTSS specialty details (optional)"
