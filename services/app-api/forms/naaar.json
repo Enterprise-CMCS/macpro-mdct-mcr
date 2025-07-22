@@ -26,7 +26,7 @@
           "verbiage": {
             "intro": {
               "section": "I. State and program information",
-              "subsection": "State information and reporting scenario",
+              "subsection": "A. State information and reporting scenario",
               "info": [
                 {
                   "type": "p",
@@ -209,7 +209,7 @@
           "verbiage": {
             "intro": {
               "section": "I. State and program information",
-              "subsection": "Add plans",
+              "subsection": "B. Add plans",
               "info": [
                 {
                   "type": "p",
@@ -244,7 +244,7 @@
           "verbiage": {
             "intro": {
               "section": "I. State and program information",
-              "subsection": "Provider type coverage",
+              "subsection": "C. Provider type coverage",
               "info": "If your standards apply to more specific provider types, select the most closely aligned provider type category and utilize the subcategory fields available in Section II. Program-level access and network adequacy standards under “Provider type covered by standard”."
             }
           },
@@ -310,7 +310,7 @@
           "verbiage": {
             "intro": {
               "section": "I. State and program information",
-              "subsection": "Analysis methods",
+              "subsection": "D. Analysis methods",
               "info": [
                 {
                   "type": "p",
