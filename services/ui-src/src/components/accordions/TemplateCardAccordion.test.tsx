@@ -20,7 +20,6 @@ export const mockAccordion = {
     "Second item ordered",
     "Third item ordered",
   ],
-  followUpText: "Mock follow up text",
 };
 
 const accordionComponent = (
@@ -53,7 +52,6 @@ describe("<TemplateCardAccordion />", () => {
     mockAccordion.orderedList.forEach((item) => {
       expect(screen.getByText(item)).toBeVisible();
     });
-    expect(screen.getByText(mockAccordion.followUpText)).toBeVisible();
   });
 
   testA11y(accordionComponent);
