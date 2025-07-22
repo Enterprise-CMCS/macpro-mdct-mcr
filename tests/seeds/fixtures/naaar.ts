@@ -199,7 +199,7 @@ export const fillNaaar = (): SeedFillReportShape => {
           standard_coreProviderType: [
             {
               key: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
-              value: "Primary Care",
+              value: "Primary care",
             },
           ],
           [`standard_coreProviderType-${providerTypeId}-otherText`]:
