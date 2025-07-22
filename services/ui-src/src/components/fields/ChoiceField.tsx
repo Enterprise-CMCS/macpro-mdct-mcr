@@ -14,7 +14,9 @@ export const ChoiceField = ({
   hint,
   sxOverride,
   styleAsOptional,
-  ...props
+  hydrate,
+  inline,
+  onChange,
 }: Props) => {
   const [checkboxState, setCheckboxState] = useState<boolean>(false);
 
@@ -26,10 +28,10 @@ export const ChoiceField = ({
   const onChangeHandler = async () => {
     form.setValue(name, !checkboxState, { shouldValidate: true });
     setCheckboxState(!checkboxState);
+    if (onChange) onChange(!checkboxState);
   };
 
   // set initial checkbox value to form state field value or hydration value
-  const hydrationValue = props?.hydrate;
   useEffect(() => {
     // if form state has value for field, set as checkbox value
     const fieldValue = form.getValues(name);
@@ -37,30 +39,34 @@ export const ChoiceField = ({
       setCheckboxState(fieldValue);
     }
     // else if hydration value exists, set as checkbox value and form field value
-    else if (hydrationValue) {
-      setCheckboxState(hydrationValue);
-      form.setValue(name, hydrationValue, { shouldValidate: true });
+    else if (hydrate) {
+      setCheckboxState(hydrate);
+      form.setValue(name, hydrate, { shouldValidate: true });
     }
-  }, [hydrationValue]);
+  }, [hydrate]);
 
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
+  const inputLabel = inline ? labelText : null;
+  const legendLabel = inline ? null : labelText;
+  const ariaLabel = inline ? {} : { "aria-labelledby": name };
 
   return (
     <Box sx={{ ...sx, ...sxOverride }}>
-      <Text sx={sx.label} id="label">
-        {labelText}
-      </Text>
+      {legendLabel && (
+        <Text sx={sx.label} id={name}>
+          {legendLabel}
+        </Text>
+      )}
       <CmsdsChoice
         type="checkbox"
         name={name}
         hint={hint}
         onChange={onChangeHandler}
         checked={checkboxState}
-        aria-labelledby="label"
-        // required by component library, but unused
-        label={<></>}
+        label={inputLabel}
         value={checkboxState.toString()}
+        {...ariaLabel}
       />
     </Box>
   );
@@ -72,7 +78,9 @@ interface Props {
   hint: string;
   sxOverride?: AnyObject;
   styleAsOptional?: boolean;
-  [key: string]: any;
+  hydrate?: boolean;
+  inline?: boolean;
+  onChange?: Function;
 }
 
 const sx = {

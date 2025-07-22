@@ -24,8 +24,6 @@ interface CreateApiComponentsProps {
   stage: string;
   project: string;
   isDev: boolean;
-  userPoolId?: string;
-  userPoolClientId?: string;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   tables: DynamoDBTableIdentifiers[];
@@ -43,8 +41,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     isDev,
     vpc,
     kafkaAuthorizedSubnets,
-    userPoolId,
-    userPoolClientId,
     tables,
     brokerString,
     mcparFormBucket,
@@ -164,9 +160,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const environment = {
     NODE_OPTIONS: "--enable-source-maps",
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-    COGNITO_USER_POOL_ID: userPoolId ?? process.env.COGNITO_USER_POOL_ID!,
-    COGNITO_USER_POOL_CLIENT_ID:
-      userPoolClientId ?? process.env.COGNITO_USER_POOL_CLIENT_ID!,
     STAGE: stage,
     MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,

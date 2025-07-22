@@ -4,13 +4,19 @@ import { Table } from "components";
 // utils
 import { testA11y } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-// verbiage
-import verbiage from "verbiage/pages/home";
 
-const tableContent = verbiage.cards.MCPAR.accordion.table;
+const mockTableContent = {
+  caption: "Mock table caption",
+  headRow: ["Mock column 1", "Mock column 2"],
+  bodyRows: [
+    ["mock cell 1", "mock cell 2"],
+    ["mock cell 3", "mock cell 4"],
+  ],
+};
+
 const tableComponent = (
   <RouterWrappedComponent>
-    <Table content={tableContent} variant="striped" />
+    <Table content={mockTableContent} variant="striped" />
   </RouterWrappedComponent>
 );
 
