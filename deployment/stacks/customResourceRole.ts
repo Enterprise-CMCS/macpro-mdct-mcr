@@ -20,13 +20,22 @@ export function createCustomResourceRole(props: CreateCustomResourceRoleProps) {
           }),
           new iam.PolicyStatement({
             actions: [
-              ...(isDev ? ["logs:CreateLogGroup"] : []),
+              "logs:CreateLogGroup",
               "logs:CreateLogStream",
               "logs:PutLogEvents",
               "cloudfront:CreateInvalidation",
             ],
             resources: ["*"],
           }),
+          ...(isDev
+            ? [
+                new iam.PolicyStatement({
+                  effect: iam.Effect.DENY,
+                  actions: ["logs:CreateLogGroup"],
+                  resources: ["*"],
+                }),
+              ]
+            : []),
         ],
       }),
     },
