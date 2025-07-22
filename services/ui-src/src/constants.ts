@@ -143,7 +143,7 @@ export const exceptionsNonComplianceStatusDisplay = {
 
 export const nonCompliantLabels = {
   "438.68":
-    "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+    "No, the plan does not comply on all standards based on all analyses or exceptions granted",
   "438.206":
     "No, the plan does not comply with all standards based on all analyses or exceptions granted",
 };
@@ -152,4 +152,4 @@ export const nonCompliantValues = new Set(Object.values(nonCompliantLabels));
 
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
-  "Exceptions granted under 42 C.F.R. § 438.68(d)";
+  "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)";
