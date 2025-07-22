@@ -18,6 +18,7 @@ import {
 } from "utils/testing/setupJest";
 import { convertDateUtcToEt, useStore } from "utils";
 import { testA11y } from "utils/testing/commonTests";
+import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
 const mockCreateReport = jest.fn();
 const mockUpdateReport = jest.fn();
@@ -383,6 +384,12 @@ describe("<AddEditProgramModal />", () => {
         expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
         expect(mockCloseHandler).toHaveBeenCalledTimes(1);
       });
+      // should add default analysis methods for new reports
+      expect(mockCreateReport.mock.calls[0][2].fieldData).toEqual(
+        expect.objectContaining({
+          analysisMethods: DEFAULT_ANALYSIS_METHODS,
+        })
+      );
     });
 
     test("Edit modal hydrates with report info and disables fields", async () => {
@@ -429,6 +436,8 @@ describe("<AddEditProgramModal />", () => {
         expect(mockFetchReportsByState).toHaveBeenCalledTimes(1);
         expect(mockCloseHandler).toHaveBeenCalledTimes(1);
       });
+      // should not update analysis methods for existing reports
+      expect(mockUpdateReport.mock.calls[0][1].fieldData).toEqual({});
     });
   });
 
