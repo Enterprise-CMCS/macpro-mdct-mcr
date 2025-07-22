@@ -152,4 +152,4 @@ export const nonCompliantValues = new Set(Object.values(nonCompliantLabels));
 
 export const planComplianceStandardKey = "planCompliance43868_standard";
 export const planComplianceStandardExceptionsLabel =
-  "Exceptions granted under 42 C.F.R. § 438.68(d)";
+  "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)";
