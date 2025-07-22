@@ -3,6 +3,8 @@ import {
   Aws,
   aws_ec2 as ec2,
   aws_s3 as s3,
+  aws_lambda as lambda,
+  aws_iam as iam,
   CfnOutput,
   Stack,
   StackProps,
@@ -111,5 +113,67 @@ export class ParentStack extends Stack {
       vpc,
       kafkaAuthorizedSubnets,
     });
+
+    addIamPropertiesToBucketAutoDeleteRole(this);
+
+    this.node.addValidation({
+      validate: () => {
+        const handlers = Stack.of(this)
+          .node.findAll()
+          .filter((c): c is lambda.Function =>
+            c.node.id.startsWith("BucketNotificationsHandler")
+          );
+
+        handlers.forEach((fn) => {
+          const role = fn.node.tryFindChild("Role") as iam.Role;
+          const cfnRole = role?.node.tryFindChild("Resource") as iam.CfnRole;
+
+          if (cfnRole) {
+            cfnRole.addPropertyOverride("Policies", [
+              {
+                PolicyDocument: {
+                  Version: "2012-10-17",
+                  Statement: [
+                    {
+                      Effect: "Deny",
+                      Action: "logs:CreateLogGroup",
+                      Resource: "*",
+                    },
+                  ],
+                },
+              },
+            ]);
+          }
+        });
+
+        return [];
+      },
+    });
+  }
+}
+
+function addIamPropertiesToBucketAutoDeleteRole(stack: Stack | Construct) {
+  const provider = Stack.of(stack).node.tryFindChild(
+    "Custom::S3AutoDeleteObjectsCustomResourceProvider"
+  );
+  if (provider) {
+    const role = provider.node.tryFindChild("Role") as iam.CfnRole;
+    if (role) {
+      role.addPropertyOverride("Policies", [
+        {
+          PolicyName: "DenyCreateLogGroup",
+          PolicyDocument: {
+            Version: "2012-10-17",
+            Statement: [
+              {
+                Effect: "Deny",
+                Action: "logs:CreateLogGroup",
+                Resource: "*",
+              },
+            ],
+          },
+        },
+      ]);
+    }
   }
 }
