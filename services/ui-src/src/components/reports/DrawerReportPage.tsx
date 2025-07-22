@@ -32,6 +32,7 @@ import {
 } from "types";
 // utils
 import {
+  cleanSuppressed,
   entityWasUpdated,
   filterFormData,
   filterStandardsByUtilizedAnalysisMethods,
@@ -193,6 +194,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         state,
         id: report?.id,
       };
+
+      // Check if form has suppressed fields
+      cleanSuppressed(enteredData);
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
       let selectedEntityIndex = currentEntities.findIndex(
@@ -452,7 +456,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   return {
     paddingLeft: canAddEntities && "3.5rem",
     paddingBottom: "0.75rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
     color: "palette.gray_medium",
     fontSize: "lg",
     fontWeight: "bold",

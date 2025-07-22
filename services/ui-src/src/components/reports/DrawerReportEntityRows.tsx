@@ -204,7 +204,7 @@ function entityRowStyling(canAddEntities: boolean) {
     minHeight: "3.25rem",
     padding: "0.5rem",
     paddingLeft: "1rem",
-    borderBottom: "1.5px solid var(--chakra-colors-palette-gray_lighter)",
+    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
     "&:last-of-type": {
       borderBottom: canAddEntities ?? "none",
     },

@@ -4,7 +4,12 @@ const currentDate = new Date().toISOString();
 
 const newReportInputArray = [
   {
-    name: "programName",
+    name: "newOrExistingProgram",
+    type: "radio",
+    value: "Add new program",
+  },
+  {
+    name: "newProgramName",
     type: "text",
     value: `automated test - ${currentDate}`,
   },
@@ -12,6 +17,7 @@ const newReportInputArray = [
   { name: "reportingPeriodEndDate", type: "text", value: "07/14/2026" },
   { name: "combinedData", type: "singleCheckbox", value: "true" },
   { name: "programIsPCCM", type: "radio", value: "No" },
+  { name: "naaarSubmissionForThisProgram", type: "radio", value: "No" },
 ];
 
 before(() => {
@@ -47,7 +53,7 @@ describe("MCPAR Dashboard Page - Program Creation/Editing/Archiving", () => {
     verifyElementsArePrefilled(newReportInputArray);
 
     // edit report name
-    cy.get(`[name='programName']`)
+    cy.get(`[name='newProgramName']`)
       .clear()
       .type(`Edited Program - ${currentDate}`);
     cy.get("button[type=submit]").contains("Save").click();

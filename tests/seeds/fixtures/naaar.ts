@@ -101,13 +101,13 @@ export const fillNaaar = (): SeedFillReportShape => {
             {
               key: "planCompliance43868_assurance-dq36WGX8Ev8wmALi1rg3bv",
               value:
-                "No, the plan does not comply on all standards based on all analyses and/or exceptions granted",
+                "No, the plan does not comply on all standards based on all analyses or exceptions granted",
             },
           ],
           [`planCompliance43868_standard-${standardId}`]: [
             {
               key: `planCompliance43868_standard-${standardId}-qynBP00OCjrE196bwX3n67`,
-              value: "Exceptions granted under 42 C.F.R. § 438.68(d)",
+              value: "III.C.3a Exceptions granted under 42 C.F.R. § 438.68(d)",
             },
           ],
           [`planCompliance43868_standard-${standardId}-exceptionsDescription`]:
@@ -199,7 +199,7 @@ export const fillNaaar = (): SeedFillReportShape => {
           standard_coreProviderType: [
             {
               key: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
-              value: "Primary Care",
+              value: "Primary care",
             },
           ],
           [`standard_coreProviderType-${providerTypeId}-otherText`]:

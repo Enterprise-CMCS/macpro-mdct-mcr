@@ -53,7 +53,6 @@ Before starting the project we're going to install some tools. We recommend havi
 
 - Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash`
 - Install specified version of node. We enforce using a specific version of node, specified in the file `.nvmrc`. This version matches the Lambda runtime. We recommend managing node versions using [NVM](https://github.com/nvm-sh/nvm#installing-and-updating): `nvm install`, then `nvm use`
-- Install [Serverless](https://www.serverless.com/framework/docs/providers/aws/guide/installation/): `npm install -g serverless`
 - Install [yarn](https://classic.yarnpkg.com/en/docs/install/): `brew install yarn`
 - Install pre-commit on your machine with either: `pip install pre-commit` or `brew install pre-commit`
 
@@ -67,7 +66,7 @@ Before starting the project we're going to install some tools. We recommend havi
 
 ### Running the project locally
 
-In the root of the project run `./run update-env && ./run local` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env `. Then you can run `./run local` to use a static manually populated `.env` file.
+In the root of the project run `./run update-env && ./run local` to pull in values from 1Password and run the project. Alternatively, if you do not have a 1Password account you will need to reach out to an MDCT team member for values for your `.env`. Then you can run `./run local` to use a static manually populated `.env` file.
 
 ### Logging in
 
@@ -84,6 +83,16 @@ Local dev is configured as a TypeScript project. The entry point is [`./src/run.
 The local environment is powered by [LocalStack](https://localstack.cloud/). For more details, see the [Local Deployment README](./deployment/local/README.md).
 
 Authentication during local development uses the Cognito user pool deployed to AWS from the `dev` (main) branch.
+
+### Viewing DynamoDB locally (alternative to LocalStack)
+
+To view your database after the application is up and running you can install the [dynamodb-admin tool](https://www.npmjs.com/package/dynamodb-admin).
+
+- Install and run `DYNAMO_ENDPOINT=http://localhost:4566 dynamodb-admin` in a new terminal window
+
+In the terminal, any changes made to a program will show up as S3 updates with a path that includes a unique KSUID. You can use that KSUID to see the fieldData structure in your code. `database-localstack-{reportType}/fieldData/{state}/{KSUID}`
+
+For a pretty-print output of a fieldData object, run `aws --endpoint-url=http://localhost:4566 s3 cp s3://database-localstack-{reportType}/fieldData/{state}/{KSUID} - | jq`.
 
 ## Testing
 
@@ -191,9 +200,8 @@ If you have a PR that needs Product/Design input, the easiest way to get it to t
 
 MCR pipes updates from fieldData and the report object tables to BigMac for downstream consumption. To add a topic for a new report type, update the following locations:
 
-- `services/app-api/serverless.yaml`
-  - Add table streams to postKafkaData's event triggers
-  - Declare another lambda to listen to events from the relevant s3 buckets. The same handler file can be used, but serverless has a limitation of 1 existing bucket per lambda.
+- `deployment/topics.ts`
+  - Any new table with come with streaming (tables are defined here: `deployment/data.ts`)
 - `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
 - `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
 
@@ -292,11 +300,6 @@ This repository uses 3 webhooks to publish to 3 different channels all in CMS Sl
 - PROD_RELEASE_SLACK_WEBHOOK: This is used to publish to the `mdct-prod-releases` channel upon successful release of MCR to production.
   - Webhooks are created by CMS tickets, populated into GitHub Secrets
 
-## GitHub Actions Secret Management
-
-- Secrets are added to GitHub secrets by GitHub Admins
-- Development secrets are maintained in a 1Password vault
-
 ## Deployment
 
 While application deployment is generally handled by Github Actions, when you initially set up a new AWS account to host this application, you'll need to deploy a prerequisite stack like so:
@@ -305,7 +308,12 @@ While application deployment is generally handled by Github Actions, when you in
 ./run deploy-prerequisites
 ```
 
-That will create a stack called `mcr-prerequisites` which will contain resources needed by any application stacks.## GitHub Actions Secret Management:
+That will create a stack called `mcr-prerequisites` which will contain resources needed by any application stacks.
+
+## GitHub Actions Secret Management
+
+- Secrets are added to GitHub secrets by GitHub Admins
+- Development secrets are maintained in a 1Password vault
 
 ## Copyright and license
 
