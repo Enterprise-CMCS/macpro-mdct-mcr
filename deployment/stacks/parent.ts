@@ -113,7 +113,9 @@ export class ParentStack extends Stack {
       kafkaAuthorizedSubnets,
     });
 
-    applyDenyCreateLogGroupPolicy(this);
+    if (isDev) {
+      applyDenyCreateLogGroupPolicy(this);
+    }
   }
 }
 
