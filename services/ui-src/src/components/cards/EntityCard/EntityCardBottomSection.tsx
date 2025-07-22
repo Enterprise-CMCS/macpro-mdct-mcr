@@ -15,6 +15,18 @@ export const EntityCardBottomSection = ({
     </Text>
   );
 
+  const providerText = () => {
+    const provider = formattedEntityData?.provider;
+    const details = formattedEntityData?.providerDetails;
+    if (provider) {
+      if (details) {
+        return `${provider}: ${details}`;
+      }
+      return provider;
+    }
+    return printVersion && notAnswered;
+  };
+
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
@@ -34,10 +46,7 @@ export const EntityCardBottomSection = ({
                 <Text sx={sx.subtitle}>
                   {`${printVersion ? "C2.V.4 " : ""}Provider`}
                 </Text>
-                <Text sx={sx.subtext}>
-                  {formattedEntityData?.provider ||
-                    (printVersion && notAnswered)}
-                </Text>
+                <Text sx={sx.subtext}>{providerText()}</Text>
               </Box>
               <Box sx={sx.highlightSection}>
                 <Text sx={sx.subtitle}>

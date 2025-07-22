@@ -4,7 +4,11 @@ import { useFlags } from "launchdarkly-react-client-sdk";
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
 // constants
-import { DEFAULT_ANALYSIS_METHODS, States } from "../../constants";
+import {
+  DEFAULT_ANALYSIS_METHODS,
+  dropdownDefaultOptionText,
+  States,
+} from "../../constants";
 // form
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
@@ -12,6 +16,7 @@ import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
 // types
 import {
   AnyObject,
+  FieldChoice,
   FormField,
   FormJson,
   FormLayoutElement,
@@ -22,6 +27,7 @@ import {
   calculateDueDate,
   convertDateEtToUtc,
   convertDateUtcToEt,
+  defineProgramName,
   otherSpecify,
   useStore,
 } from "utils";
@@ -55,7 +61,7 @@ export const AddEditReportModal = ({
 
   useEffect(() => {
     // make deep copy of baseline form for customization
-    let customizedModalForm: FormJson = JSON.parse(
+    const customizedModalForm: FormJson = JSON.parse(
       JSON.stringify(modalFormJson)
     );
     // check if yoy copy field exists in form
@@ -70,21 +76,59 @@ export const AddEditReportModal = ({
     ) {
       customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;
     }
-    // check if program is PCCM field exists in form
-    const programIsPCCMFieldIndex = form.fields.findIndex(
-      (field: FormField | FormLayoutElement) => field.id === "programIsPCCM"
-    );
-    // if programIsPCCMField is in form && not creating new report
-    if (programIsPCCMFieldIndex > -1 && selectedReport?.id) {
-      customizedModalForm.fields[programIsPCCMFieldIndex].props!.disabled =
-        true;
+
+    const fieldsToDisableForEdit = [
+      "programIsPCCM",
+      "naaarExpectedSubmissionDateForThisProgram",
+      "naaarSubmissionDateForThisProgram",
+      "naaarSubmissionForThisProgram",
+    ];
+
+    // Not a new report
+    if (selectedReport?.id) {
+      fieldsToDisableForEdit.forEach((fieldId) => {
+        const fieldIndex = form.fields.findIndex(
+          (field) => field.id === fieldId
+        );
+        if (fieldIndex === -1) return;
+
+        const fieldToDisable = customizedModalForm.fields[fieldIndex];
+        if (fieldToDisable.props) {
+          // Disable parent field
+          fieldToDisable.props.disabled = true;
+
+          const choices = fieldToDisable.props.choices;
+          // Disable child fields
+          choices?.forEach((choice: FieldChoice) => {
+            choice.children?.forEach((child) => {
+              if (child.props) child.props.disabled = true;
+            });
+          });
+        }
+      });
     }
+
     setForm(customizedModalForm);
   }, [selectedReport, copyEligibleReportsByState]);
 
   // MCPAR report payload
   const prepareMcparPayload = (formData: any) => {
-    const programName = formData["programName"];
+    const newOrExistingProgram = formData["newOrExistingProgram"];
+    const existingProgramNameSelection = formData[
+      "existingProgramNameSelection"
+    ] || {
+      label: dropdownDefaultOptionText,
+      value: "",
+    };
+    const existingProgramNameSuggestion =
+      formData["existingProgramNameSuggestion"] || "";
+    const newProgramName = formData["newProgramName"] || "";
+
+    const programName = defineProgramName(
+      newOrExistingProgram,
+      existingProgramNameSelection,
+      newProgramName
+    );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const combinedData = formData["combinedData"] || false;
@@ -95,6 +139,12 @@ export const AddEditReportModal = ({
       formData["reportingPeriodEndDate"]
     );
     const programIsPCCM = formData["programIsPCCM"];
+    const naaarSubmissionForThisProgram =
+      formData["naaarSubmissionForThisProgram"];
+    const naaarSubmissionDateForThisProgram =
+      formData["naaarSubmissionDateForThisProgram"] || undefined;
+    const naaarExpectedSubmissionDateForThisProgram =
+      formData["naaarExpectedSubmissionDateForThisProgram"] || undefined;
 
     return {
       metadata: {
@@ -109,6 +159,13 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        newOrExistingProgram,
+        existingProgramNameSelection,
+        existingProgramNameSuggestion,
+        newProgramName,
+        naaarSubmissionForThisProgram,
+        naaarSubmissionDateForThisProgram,
+        naaarExpectedSubmissionDateForThisProgram,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

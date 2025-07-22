@@ -1,45 +1,28 @@
 // components
-import {
-  Accordion,
-  ListItem,
-  OrderedList,
-  Text,
-  UnorderedList,
-} from "@chakra-ui/react";
-import { AccordionItem, Table } from "components";
+import { Accordion, ListItem, OrderedList, Text } from "@chakra-ui/react";
+import { AccordionItem } from "components";
 // types
 import { AnyObject } from "types";
+// utils
+import { parseCustomHtml } from "utils";
 
-export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => (
-  <Accordion sx={sx.root} allowToggle={true} {...props}>
-    <AccordionItem label={verbiage.buttonLabel}>
-      <Text sx={sx.text}>{verbiage.text}</Text>
-      <Text sx={sx.text}>{verbiage.introText}</Text>
-
-      {verbiage.list?.length > 0 && (
-        <UnorderedList sx={sx.list}>
-          {verbiage.list.map((listItem: string, index: number) => (
-            <ListItem key={index}>{listItem}</ListItem>
-          ))}
-        </UnorderedList>
-      )}
-      {verbiage.orderedList?.length > 0 && (
-        <OrderedList sx={sx.orderedList}>
-          {verbiage.orderedList.map((item: string, index: number) => (
-            <ListItem key={index}>{item}</ListItem>
-          ))}
-        </OrderedList>
-      )}
-      {verbiage.table && (
-        <Table
-          content={verbiage.table}
-          variant="striped"
-          sxOverride={sx.table}
-        />
-      )}
-    </AccordionItem>
-  </Accordion>
-);
+export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => {
+  const { buttonLabel, orderedList, text } = verbiage;
+  return (
+    <Accordion sx={sx.root} allowToggle={true} {...props}>
+      <AccordionItem label={buttonLabel}>
+        {text && <Text sx={sx.text}>{parseCustomHtml(text)}</Text>}
+        {orderedList?.length > 0 && (
+          <OrderedList sx={sx.orderedList}>
+            {orderedList.map((item: string, index: number) => (
+              <ListItem key={index}>{item}</ListItem>
+            ))}
+          </OrderedList>
+        )}
+      </AccordionItem>
+    </Accordion>
+  );
+};
 
 interface Props {
   verbiage: AnyObject;
@@ -52,18 +35,6 @@ const sx = {
   },
   text: {
     marginBottom: "1rem",
-  },
-  table: {
-    "tr td:last-of-type": {
-      fontWeight: "semibold",
-    },
-  },
-  list: {
-    paddingLeft: "1rem",
-    "li:last-of-type": {
-      fontWeight: "bold",
-      textDecoration: "underline",
-    },
   },
   orderedList: {
     paddingLeft: "1rem",
