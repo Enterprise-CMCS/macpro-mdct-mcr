@@ -12,6 +12,7 @@ import {
 } from "@aws-sdk/client-cloudformation";
 import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
+import { writeSeedEnvFile } from "./write-seed-env-file.js";
 
 // load .env
 dotenv.config();
@@ -89,6 +90,7 @@ async function run_fe_locally(runner: LabeledProcessRunner) {
   );
 
   await writeLocalUiEnvFile(apiUrl!);
+  await writeSeedEnvFile(apiUrl!);
   runner.run_command_and_output("ui", ["npm", "start"], "services/ui-src");
 }
 
@@ -214,7 +216,7 @@ async function run_local() {
   process.env.AWS_DEFAULT_REGION = "us-east-1";
   process.env.AWS_ACCESS_KEY_ID = "localstack";
   process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
-  process.env.AWS_ENDPOINT_URL = "http://localhost:4566";
+  process.env.AWS_ENDPOINT_URL = "https://localhost.localstack.cloud:4566";
 
   await runner.run_command_and_output(
     "CDK local bootstrap",
