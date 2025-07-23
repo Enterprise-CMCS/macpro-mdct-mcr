@@ -69,6 +69,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
 
+  const analysisMethods = report?.fieldData?.analysisMethods || [];
   const existingStandards =
     entityType === EntityType.STANDARDS && entities.length > 0;
   const providerTypeSelected = report?.fieldData?.providerTypes?.length > 0;
@@ -84,20 +85,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
-  const atLeastOneRequiredAnalysisMethodIsUtilized = report?.fieldData[
-    "analysisMethods"
-  ]?.some(
+  const atLeastOneRequiredAnalysisMethodIsUtilized = analysisMethods.some(
     (analysisMethod: AnyObject) =>
       analysisMethod.analysis_applicable?.[0]?.value === "Yes"
   );
 
   // check if user has completed default analysis methods (NAAAR)
   const completedAnalysisMethods = () => {
-    const result = report?.fieldData["analysisMethods"]?.filter(
-      (analysisMethod: AnyObject) => {
-        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
-      }
-    );
+    const result = analysisMethods.filter((analysisMethod: AnyObject) => {
+      return analysisMethod.analysis_applicable && analysisMethod.isRequired;
+    });
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
@@ -111,7 +108,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     } else {
       setPageError(undefined);
     }
-  }, [completedAnalysisMethods, atLeastOneRequiredAnalysisMethodIsUtilized]);
+  }, [analysisMethods]);
 
   // standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
   useEffect(() => {
@@ -125,7 +122,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     } else {
       setCanAddStandards(true);
     }
-  }, [atLeastOneRequiredAnalysisMethodIsUtilized, providerTypeSelected]);
+  }, [analysisMethods, providerTypeSelected]);
 
   const formParams = {
     route,
