@@ -201,7 +201,7 @@ export const AddEditReportModal = ({
   };
 
   // NAAAR report payload
-  const prepareNaaarPayload = (formData: any) => {
+  const prepareNaaarPayload = (formData: any, isNewReport: boolean) => {
     const programName = formData["programName"];
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
@@ -233,9 +233,11 @@ export const AddEditReportModal = ({
         previousRevisions: [],
         naaarReport,
       },
-      fieldData: {
-        analysisMethods: DEFAULT_ANALYSIS_METHODS,
-      },
+      fieldData: isNewReport
+        ? {
+            analysisMethods: DEFAULT_ANALYSIS_METHODS,
+          }
+        : {},
     };
   };
 
@@ -248,7 +250,7 @@ export const AddEditReportModal = ({
     if (reportType === "MCPAR") {
       dataToWrite = prepareMcparPayload(formData);
     } else if (reportType === "NAAAR") {
-      dataToWrite = prepareNaaarPayload(formData);
+      dataToWrite = prepareNaaarPayload(formData, !selectedReport?.id);
     } else {
       dataToWrite = prepareMlrPayload(formData);
     }
