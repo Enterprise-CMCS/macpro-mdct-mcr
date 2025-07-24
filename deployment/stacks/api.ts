@@ -389,6 +389,17 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
+    additionalPolicies: [
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject"],
+        resources: [
+          `${naaarFormBucket.bucketArn}/*`,
+          `${mlrFormBucket.bucketArn}/*`,
+          `${mcparFormBucket.bucketArn}/*`,
+        ],
+      }),
+    ],
   };
 
   const postNaaarBucketDataLambda = new Lambda(scope, "postNaaarBucketData", {
