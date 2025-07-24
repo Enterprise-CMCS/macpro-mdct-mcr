@@ -52,7 +52,8 @@ import addIconSVG from "assets/icons/icon_add_gray.svg";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [pageError, setPageError] = useState<ErrorVerbiage>();
+  const [analysisMethodsError, setAnalysisMethodsError] =
+    useState<ErrorVerbiage>();
   const [canAddStandards, setCanAddStandards] = useState<boolean>(false);
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
@@ -98,30 +99,20 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
-  // analysis methods: error alert appears if analysis methods are completed without any utilized
+  /*
+   * analysis methods: error alert appears if analysis methods are completed without any utilized
+   * standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
+   */
   useEffect(() => {
-    if (
-      completedAnalysisMethods() &&
-      !atLeastOneRequiredAnalysisMethodIsUtilized
-    ) {
-      setPageError(analysisMethodError);
-    } else {
-      setPageError(undefined);
-    }
-  }, [analysisMethods]);
+    const completed = completedAnalysisMethods();
+    const utilized = atLeastOneRequiredAnalysisMethodIsUtilized;
+    const completedNotUtilized = completed && !utilized;
 
-  // standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
-  useEffect(() => {
-    if (
-      !completedAnalysisMethods() ||
-      (completedAnalysisMethods() &&
-        !atLeastOneRequiredAnalysisMethodIsUtilized) ||
-      !providerTypeSelected
-    ) {
-      setCanAddStandards(false);
-    } else {
-      setCanAddStandards(true);
-    }
+    const errorMessage = completedNotUtilized ? analysisMethodError : undefined;
+    const enableAddStandards = completed && utilized && providerTypeSelected;
+
+    setAnalysisMethodsError(errorMessage);
+    setCanAddStandards(enableAddStandards);
   }, [analysisMethods, providerTypeSelected]);
 
   const formParams = {
@@ -343,7 +334,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {isAnalysisMethodsPage && (
-        <ErrorAlert error={pageError} sxOverride={sx.pageErrorAlert} showIcon />
+        <ErrorAlert
+          error={analysisMethodsError}
+          sxOverride={sx.pageErrorAlert}
+          showIcon
+        />
       )}
       {displayErrorMessages()}
       {standardForm && (
