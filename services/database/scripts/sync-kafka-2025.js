@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/sync-kafka-2024.js
+ *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/sync-kafka-2025.js
  * Branch:
- *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/sync-kafka-2024.js
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/sync-kafka-2025.js
  */
 
 const { buildDynamoClient, scan, update } = require("./utils/dynamodb.js");
@@ -18,7 +18,8 @@ const tables = [mcparTableName, mlrTableName];
 
 const mcparBucketName = `database-${branch}-mcpar`;
 const mlrBucketName = `database-${branch}-mlr`;
-const buckets = [mcparBucketName, mlrBucketName];
+const naaarBucketName = `database-${branch}-naaar`;
+const buckets = [mcparBucketName, mlrBucketName, naaarBucketName];
 
 // Maintaining consistency with the `lastAltered` field in the DB
 const dbSyncTime = Date.now();
