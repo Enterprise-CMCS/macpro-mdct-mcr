@@ -14,7 +14,7 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
@@ -97,6 +97,7 @@ export class Lambda extends Construct {
     new LogGroup(this, `${id}LogGroup`, {
       logGroupName: `/aws/lambda/${this.lambda.functionName}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     if (api && path && method) {
