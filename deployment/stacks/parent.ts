@@ -46,10 +46,6 @@ export class ParentStack extends Stack {
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
-    vpc.addGatewayEndpoint("S3Endpoint", {
-      service: ec2.GatewayVpcEndpointAwsService.S3,
-    });
-
     const customResourceRole = createCustomResourceRole(commonProps);
 
     const loggingBucket = s3.Bucket.fromBucketName(
@@ -81,6 +77,10 @@ export class ParentStack extends Stack {
      * or configure the API to interact with it. Therefore, we're done.
      */
     if (isLocalStack) return;
+
+    vpc.addGatewayEndpoint("S3Endpoint", {
+      service: ec2.GatewayVpcEndpointAwsService.S3,
+    });
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({ ...commonProps, loggingBucket });
