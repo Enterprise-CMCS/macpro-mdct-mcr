@@ -78,10 +78,6 @@ export class ParentStack extends Stack {
      */
     if (isLocalStack) return;
 
-    vpc.addGatewayEndpoint("S3Endpoint", {
-      service: ec2.GatewayVpcEndpointAwsService.S3,
-    });
-
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({ ...commonProps, loggingBucket });
 
