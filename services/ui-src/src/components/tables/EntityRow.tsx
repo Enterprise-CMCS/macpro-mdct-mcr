@@ -136,7 +136,7 @@ const sx = {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
     td: {
-      borderColor: "palette.gray_light",
+      borderColor: "palette.gray_lighter",
       paddingRight: 0,
     },
   },
@@ -154,6 +154,7 @@ const sx = {
       margin: "0.5rem auto",
       listStyleType: "none",
       li: {
+        lineHeight: "130%",
         wordWrap: "break-word",
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",

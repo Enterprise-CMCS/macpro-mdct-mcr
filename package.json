@@ -30,8 +30,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
-    "@enterprise-cmcs/serverless-waf-plugin": "^1.4.0",
-    "axios": "^1.10.0",
+    "axios": "^1.11.0",
     "fast-xml-parser": "5.2.5",
     "loader-utils": "2.0.4",
     "tar": "^6.2.1",
@@ -46,7 +45,7 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.7.0",
+    "@faker-js/faker": "^9.9.0",
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.2",
     "@types/node": "^20.12.10",

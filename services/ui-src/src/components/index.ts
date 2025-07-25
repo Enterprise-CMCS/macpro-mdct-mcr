@@ -56,6 +56,7 @@ export { DateField } from "./fields/DateField";
 export { DropdownField } from "./fields/DropdownField";
 export { DynamicField } from "./fields/DynamicField";
 export { NumberField } from "./fields/NumberField";
+export { NumberSuppressibleField } from "./fields/NumberSuppressibleField";
 export { RadioField } from "./fields/RadioField";
 export { TextField } from "./fields/TextField";
 export { TextAreaField } from "./fields/TextAreaField";

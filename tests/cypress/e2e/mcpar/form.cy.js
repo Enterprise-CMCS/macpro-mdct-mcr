@@ -53,7 +53,8 @@ function fillOutMCPAR() {
   const programName = "automated test - " + today.toISOString();
   cy.visit("/mcpar");
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"]').type(programName);
+  cy.get('input[name="newOrExistingProgram"]').check("Add new program");
+  cy.get('input[name="newProgramName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -63,6 +64,7 @@ function fillOutMCPAR() {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -90,7 +92,8 @@ function fillOutPartialMCPAR() {
   const programName = "automated test - " + today.toISOString();
   cy.visit("/mcpar");
   cy.get("button").contains("Add / copy a MCPAR").click();
-  cy.get('input[name="programName"]').type(programName);
+  cy.get('input[name="newOrExistingProgram"]').check("Add new program");
+  cy.get('input[name="newProgramName"]').type(programName);
   cy.get('input[name="reportingPeriodStartDate"]').type(
     lastYear.toLocaleDateString("en-US")
   );
@@ -100,6 +103,7 @@ function fillOutPartialMCPAR() {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it
@@ -264,6 +268,9 @@ const processField = (field) => {
         field.props.choices[0].children?.forEach((childField) =>
           processField(childField)
         );
+        break;
+      case "numberSuppressible":
+        cy.get(`[name="${field.id}-suppressed"]`).check();
         break;
     }
   }

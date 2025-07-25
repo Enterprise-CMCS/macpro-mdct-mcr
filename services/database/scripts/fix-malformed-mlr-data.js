@@ -1,18 +1,16 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *    `DYNAMODB_URL="http://localhost:8000" S3_LOCAL_ENDPOINT="http://localhost:4569" node services/database/scripts/fix-malformed-mlr-data.js`
- *  Branch:
- *    branchPrefix="YOUR BRANCH NAME" node services/database/scripts/fix-malformed-mlr-data.js
+ *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/fix-malformed-mlr-data.js
+ * Branch:
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/fix-malformed-mlr-data.js
  */
 
 const { buildS3Client, getObject, list, putObject } = require("./utils/s3.js");
 
 const isLocal = !!process.env.DYNAMODB_URL;
-
-const mlrBucketName = isLocal
-  ? "local-mlr-form"
-  : "database-" + process.env.branchPrefix + "-mlr";
+const branch = isLocal ? "localstack" : process.env.branchPrefix;
+const mlrBucketName = `database-${branch}-mlr`;
 
 async function handler() {
   try {

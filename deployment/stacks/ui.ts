@@ -87,7 +87,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
 
   const securityHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
     scope,
-    "CloudFormationHeadersPolicy",
+    "CloudFrontHeadersPolicy",
     {
       responseHeadersPolicyName: `Headers-Policy-${stage}`,
       comment: "Add Security Headers",
@@ -165,8 +165,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
     const waf = setupWaf(
       scope,
       stage,
-      project,
-      isDev
+      project
       // vpnIpSetArn,
       // vpnIpv6SetArn
     );

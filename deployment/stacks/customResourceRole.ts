@@ -3,10 +3,11 @@ import { aws_iam as iam } from "aws-cdk-lib";
 
 interface CreateCustomResourceRoleProps {
   scope: Construct;
+  isDev: boolean;
 }
 
 export function createCustomResourceRole(props: CreateCustomResourceRoleProps) {
-  const { scope } = props;
+  const { isDev, scope } = props;
 
   return new iam.Role(scope, "CustomResourceRole", {
     assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -26,6 +27,15 @@ export function createCustomResourceRole(props: CreateCustomResourceRoleProps) {
             ],
             resources: ["*"],
           }),
+          ...(isDev
+            ? [
+                new iam.PolicyStatement({
+                  effect: iam.Effect.DENY,
+                  actions: ["logs:CreateLogGroup"],
+                  resources: ["*"],
+                }),
+              ]
+            : []),
         ],
       }),
     },

@@ -456,6 +456,21 @@
                     {
                       "id": "jlIZKSPaf0GSVGmJbRUBzg",
                       "label": "State has established a hybrid system"
+                    },
+                    {
+                      "id": "rZMeuRrGMR5viQxX79ZKKE",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "state_overpaymentStandard-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "state_overpaymentStandard"
+                          }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -475,7 +490,7 @@
                 "validation": "text",
                 "props": {
                   "label": "B.X.4 Description of overpayment contract standard",
-                  "hint": "Briefly describe the overpayment standard (for example, details on whether the state allows plans to retain overpayments, requires the plans to return overpayments, or administers a hybrid system) selected in indicator B.X.2."
+                  "hint": "Briefly describe the overpayment standard selected in indicator B.X.2."
                 }
               },
               {
@@ -1242,14 +1257,6 @@
                           "label": "General quantitative availability and accessibility standard"
                         },
                         {
-                          "id": "shBE5icoJ0qQV6yYwhMePg",
-                          "label": "LTSS-related standard: provider travels to the enrollee"
-                        },
-                        {
-                          "id": "L8WhTwcfDUqlXCb9kCLUcA",
-                          "label": "LTSS-related standard: enrollee travels to the provider"
-                        },
-                        {
                           "id": "aSzsso583qbijUdXJnz8CS",
                           "label": "Exception to quantitative standard"
                         }
@@ -1262,7 +1269,7 @@
                     "validation": "text",
                     "props": {
                       "label": "C2.V.2 Measure standard",
-                      "hint": "What is the standard for your program-level indicators? Add a description."
+                      "hint": "Describe the standard (e.g., 1 provider within 30 min or 30 miles)."
                     }
                   },
                   {
@@ -1271,7 +1278,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.3 Standard type",
-                      "hint": "What is the standard type? Select one or add free text if you select “Other”.",
+                      "hint": "What is the standard type? Select one.",
                       "choices": [
                         {
                           "id": "kBady0XnCUG8nxXWSHHeBg",
@@ -1338,50 +1345,90 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.4 Provider type",
-                      "hint": "What is the provider type? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the core provider type the standard applies to. If the standard applies to multiple provider types, create a measure for each provider type. If you wish to specify the provider type, select the core type most suitable and then write in the more specific provider type.",
                       "choices": [
                         {
                           "id": "7z1m6zajqUupPe89o3dAGQ",
-                          "label": "Primary care"
+                          "label": "Primary care",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-primaryCareDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "7z1m6zajqUupPe89o3dAGQ"
+                              },
+                              "props": {
+                                "label": "Primary care specialist details (optional)",
+                                "hint": "e.g. Nurse Practitioner"
+                              }
+                            }
+                          ]
                         },
                         {
-                          "id": "SxG3KStEU0SGAXtk6u9pCw",
-                          "label": "Behavioral health"
+                          "id": "5FfW1zf3rK1tb8DcuYuqc9",
+                          "label": "Specialist",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-specialistDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "5FfW1zf3rK1tb8DcuYuqc9"
+                              },
+                              "props": {
+                                "label": "Specialist details (optional)",
+                                "hint": "e.g. Cardiologist, endocrinologist"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "id": "1sEWHEKgjwhjmtAyWoVhfW",
+                          "label": "Mental health",
+                          "children": [
+                            {
+                              "id": "accessMeasure_providerType-mentalHealthDetails",
+                              "type": "text",
+                              "validation": {
+                                "type": "textOptional",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_providerType",
+                                "parentOptionId": "1sEWHEKgjwhjmtAyWoVhfW"
+                              },
+                              "props": {
+                                "label": "Mental health specialist details (optional)"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "id": "uF9g4CAo5Fwofxt8PYfLaQ",
+                          "label": "Substance Use Disorder (SUD)"
+                        },
+                        {
+                          "id": "vJePJt3T4mXyLfhEVhZujs",
+                          "label": "OB/GYN"
                         },
                         {
                           "id": "KQtY7LuWG02dXq3ECotrVw",
                           "label": "Hospital"
                         },
                         {
-                          "id": "DXiAww8WU0O6ULJMhUmo2w",
-                          "label": "LTSS-personal care assistant"
+                          "id": "n6KU5rXnvbvH6K6DzN26vV",
+                          "label": "Pharmacy"
                         },
                         {
-                          "id": "YjMjhj37OEaVb5GZvCjRdQ",
-                          "label": "LTSS assistive technology"
+                          "id": "eepgjQEj4WhfSSLmEtp977",
+                          "label": "Dental"
                         },
                         {
-                          "id": "QHcE4coTX0GTAGP9HyZb4g",
-                          "label": "LTSS-adult day care"
-                        },
-                        {
-                          "id": "RkTGG5vb1UaNcFkLG3OfHw",
-                          "label": "LTSS-SNF"
-                        },
-                        {
-                          "id": "XfgRX33Ot02GGMoqcMVn4w",
-                          "label": "Other, specify",
-                          "children": [
-                            {
-                              "id": "accessMeasure_providerType-otherText",
-                              "type": "textarea",
-                              "validation": {
-                                "type": "text",
-                                "nested": true,
-                                "parentFieldName": "accessMeasure_providerType"
-                              }
-                            }
-                          ]
+                          "id": "hqeJ3uJaUndRUEqNECsU3w",
+                          "label": "LTSS"
                         }
                       ]
                     }
@@ -1392,23 +1439,31 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.5 Applicable region(s)",
-                      "hint": "What is the applicable region? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the region that the standard applies to. If the same standard applies to multiple regions but is not statewide, create a standard for each of the regions. If the standard is statewide but results are analyzed by region type, create a measure for each applicable region.",
                       "choices": [
                         {
-                          "id": "X47v2Ee5kkaBERBjXFWGXw",
-                          "label": "Urban"
+                          "id": "aZ4JmR9kfLKZEqQje3N1R1",
+                          "label": "Statewide"
+                        },
+                        {
+                          "id": "qBvku8G3wwxCdmhPaEjR24",
+                          "label": "Large Metro"
+                        },
+                        {
+                          "id": "bN865rwbefg1CVAw1tBDKw",
+                          "label": "Metro"
+                        },
+                        {
+                          "id": "6MMBiFws9Erv9fVRRpjUXL",
+                          "label": "Micro"
                         },
                         {
                           "id": "H4Ldb3YGZ0OmBRYceGKDcA",
                           "label": "Rural"
                         },
                         {
-                          "id": "2fuO6QbLo06yGNAcrwVhCg",
-                          "label": "Large counties"
-                        },
-                        {
-                          "id": "B1dVVXG9qUudAeuiVkzKrQ",
-                          "label": "Small counties"
+                          "id": "eFMYKR5Xoi7xGChQfvDVA9",
+                          "label": "Counties with Extreme Access Considerations (CEAC)"
                         },
                         {
                           "id": "XkGi9vuc506VhzDCR5oAkg",
@@ -1434,7 +1489,7 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.6 Population",
-                      "hint": "What is the population? Select one or add free text if you select “Other”.",
+                      "hint": "Enter the population that the standard applies to. If the standard applies to multiple populations, create a measure for each of those populations.",
                       "choices": [
                         {
                           "id": "YtRX5yx7NEWkGfU9vDI03g",
@@ -1449,7 +1504,7 @@
                           "label": "Adult and pediatric"
                         },
                         {
-                          "id": "cMLq1Y2YKkuVRPecSTdkHg",
+                          "id": "cLwf5gMv2odDfN3CY4nhuu",
                           "label": "MLTSS"
                         },
                         {
@@ -1476,7 +1531,7 @@
                     "validation": "checkbox",
                     "props": {
                       "label": "C2.V.7 Monitoring methods",
-                      "hint": "What are the monitoring methods? Check all that apply or add free text if you select “Other”.",
+                      "hint": "Select the method(s) utilized to assess compliance with the state's 42 C.F.R. § 438.68 and 42 C.F.R. § 438.206 standards. If a method is not listed, select “Custom method” and add details.",
                       "choices": [
                         {
                           "id": "gbWqxtPWaUC1yUbmhWA0UA",
@@ -1484,27 +1539,35 @@
                         },
                         {
                           "id": "G7GxcYWmhEqjrEQDBWRl3w",
-                          "label": "Plan provider roster review"
+                          "label": "Plan Provider Directory Review"
                         },
                         {
-                          "id": "e14gKX61FkqBjIBeFDO7oA",
-                          "label": "Secret shopper calls"
+                          "id": "WZYsy13Kv3GZWpZcqyfmsAha",
+                          "label": "Secret Shopper: Network Participation"
+                        },
+                        {
+                          "id": "wtGWKuNsBxZ43NTZ45sZF5y7",
+                          "label": "Secret Shopper: Appointment Availability"
                         },
                         {
                           "id": "cMhP8Jp6SUS9XvezaPLvLg",
-                          "label": "EVV data analysis"
+                          "label": "Electronic Visit Verification Data Analysis"
                         },
                         {
                           "id": "bmQ1FmFPGk6S1g70ntAEcw",
-                          "label": "Review of grievances related to access"
+                          "label": "Review of Grievances Related to Access"
+                        },
+                        {
+                          "id": "h64Pn0WAtuQIpmIvlPKGqwR4",
+                          "label": "Encounter Data Analysis"
                         },
                         {
                           "id": "ozFC7ZVX7EWXZiNB2Ajj3g",
-                          "label": "Other, specify",
+                          "label": "Custom method",
                           "children": [
                             {
                               "id": "accessMeasure_monitoringMethods-otherText",
-                              "type": "textarea",
+                              "type": "text",
                               "validation": {
                                 "type": "text",
                                 "nested": true,
@@ -1522,27 +1585,34 @@
                     "validation": "radio",
                     "props": {
                       "label": "C2.V.8 Frequency of oversight methods",
-                      "hint": "What is the frequency of oversight methods? Select one or add free text if you select “Other”.",
                       "choices": [
                         {
-                          "id": "tOF04LLPa026mJlHmk0RaA",
-                          "label": "At procurement"
+                          "id": "vtAjpZENepsmacGCddGdyt",
+                          "label": "Weekly"
+                        },
+                        {
+                          "id": "mbp348RqaieKqyrCsLhLi2",
+                          "label": "Bi-weekly"
                         },
                         {
                           "id": "HrS3f4scOUCGvDQTc0ff8g",
                           "label": "Monthly"
                         },
                         {
+                          "id": "jtJNpYg7E2wXw9mv9BEtzf",
+                          "label": "Bi-monthly"
+                        },
+                        {
                           "id": "FA7SekH1aEO3pJtjugSGLA",
                           "label": "Quarterly"
                         },
                         {
-                          "id": "GiwsJsL2MUmmy735jGmGKA",
-                          "label": "Annually"
+                          "id": "scpt9nHDfxf9gvSJdKzwpu",
+                          "label": "Semi-annually"
                         },
                         {
-                          "id": "qrkmFNIPFkyuR1UcJ8vorA",
-                          "label": "Less than annually"
+                          "id": "GiwsJsL2MUmmy735jGmGKA",
+                          "label": "Annually"
                         },
                         {
                           "id": "RpBmNYucH0ugYLa9RGbLdA",
@@ -1558,6 +1628,10 @@
                               }
                             }
                           ]
+                        },
+                        {
+                          "id": "hqPoC1DF7cKy39f7fWKPrt",
+                          "label": "Varies by plan"
                         }
                       ]
                     }
@@ -2046,7 +2120,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report program characteristics & enrollment for each plan",
-            "drawerTitle": "Report program characteristics & enrollment for",
+            "drawerTitle": "Report program characteristics & enrollment for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2071,8 +2145,8 @@
             "fields": [
               {
                 "id": "plan_enrollment",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.1 Plan enrollment",
                   "hint": "Enter the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months).",
@@ -2082,8 +2156,8 @@
               },
               {
                 "id": "plan_medicaidEnrollmentSharePercentage",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.2 Plan share of Medicaid",
                   "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
@@ -2092,12 +2166,21 @@
               },
               {
                 "id": "plan_medicaidManagedCareEnrollmentSharePercentage",
-                "type": "number",
-                "validation": "number",
+                "type": "numberSuppressible",
+                "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.3 Plan share of any Medicaid managed care",
                   "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
                   "mask": "percentage"
+                }
+              },
+              {
+                "id": "plan_parentOrganization",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",
+                  "hint": "If the managed care plan is owned or controlled by a separate entity (parent), report the name of that entity. If the managed care plan is not controlled by a separate entity, please report the managed care plan name in this field."
                 }
               }
             ]
@@ -2115,7 +2198,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for",
+            "drawerTitle": "Report financial performance for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2263,7 +2346,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on encounter data for each plan",
-            "drawerTitle": "Report encounter data for",
+            "drawerTitle": "Report encounter data for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -2332,7 +2415,6 @@
                   "section": "Section D: Plan-Level Indicators",
                   "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
                   "spreadsheet": "D1_Plan_Set",
-                  "alert": "<strong>Beginning June 2025, Indicators D1.IV.1a-c must be completed. Submission of this data before June 2025 is optional; if you choose not to respond prior to June 2025, enter “N/A”.</strong>",
                   "info": [
                     {
                       "type": "heading",
@@ -2342,7 +2424,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals for each plan",
-                "drawerTitle": "Report on appeals for",
+                "drawerTitle": "Report on appeals for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -2388,7 +2470,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1a Appeals denied",
-                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals resolved during the reporting period (D1.IV.1) that were denied (adverse) to the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2399,7 +2481,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1b Appeals resolved in partial favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in partial favor of the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2410,7 +2492,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1c Appeals resolved in favor of enrollee",
-                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee. If you choose not to respond prior to June 2025, enter “N/A”.",
+                      "hint": "Enter the total number of appeals (D1.IV.1) resolved during the reporting period in favor of the enrollee.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2588,7 +2670,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on appeals by service for each plan",
-                "drawerTitle": "Report appeals by service for",
+                "drawerTitle": "Report appeals by service for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -2628,7 +2710,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7b Resolved appeals related to general outpatient services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2711,12 +2793,56 @@
                     }
                   },
                   {
+                    "id": "plan_resolvedDmeAndSuppliesAppeals",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.7k: Resolved appeals related to durable medical equipment (DME) & supplies",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to DME and/or supplies. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedHomeHealthAppeals",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.7l: Resolved appeals related to home health / hospice",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to home health and/or hospice. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedEmergencyServicesAppeals",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.7m: Resolved appeals related to emergency services / emergency department",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to emergency services and/or provided in the emergency department. Do not include appeals related to emergency outpatient behavioral health – those should be included in indicator D1.IV.7d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedTherapiesAppeals",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.7n: Resolved appeals related to therapies",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to speech language pathology services or occupational, physical, or respiratory therapy services. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
                     "id": "plan_resolvedOtherServiceAppeals",
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.7j Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-i paid primarily by Medicaid, enter “N/A”.",
+                      "label": "D1.IV.7o Resolved appeals related to other service types",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-n paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2743,7 +2869,7 @@
                   ]
                 },
                 "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
-                "drawerTitle": "Report state fair hearings and external medical reviews for",
+                "drawerTitle": "Report state fair hearings and external medical reviews for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -2772,7 +2898,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.8a State Fair Hearing requests",
-                      "hint": "Enter the total number of State Fair Hearing requests filed during the reporting year with the plan that issued an adverse benefit determination.",
+                      "hint": "Enter the total number of State Fair Hearing requests resolved during the reporting year with the plan that issued an adverse benefit determination.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2854,7 +2980,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances for each plan",
-                "drawerTitle": "Report on grievances for",
+                "drawerTitle": "Report on grievances for {{name}}",
                 "missingEntityMessage": [
                   {
                     "type": "p",
@@ -2958,7 +3084,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report on grievances by service for",
+                "drawerTitle": "Report on grievances by service for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -3004,7 +3130,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.15b Resolved grievances related to general outpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care, including diagnostic and laboratory services. Do not include grievances related to outpatient behavioral health services — those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3087,12 +3213,56 @@
                     }
                   },
                   {
+                    "id": "plan_resolvedDmeGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15k Resolved grievances related to durable medical equipment (DME) & supplies",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to DME and/or supplies. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedHomeHealthGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15l Resolved grievances related to home health / hospice",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to home health and/or hospice. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedEmergencyServicesGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15m Resolved grievances related to emergency services / emergency department",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to emergency services and/or provided in the emergency department. Do not include grievances related to emergency outpatient behavioral health - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedTherapyGrievances",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "D1.IV.15n Resolved grievances related to therapies",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to speech language pathology services or occupational, physical, or respiratory therapy services. If the managed care plan does not cover this type of service, enter “N/A”.",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
                     "id": "plan_resolvedOtherServiceGrievances",
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.15j Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-i paid primarily by Medicaid, enter “N/A”.",
+                      "label": "D1.IV.15o Resolved grievances related to other service types",
+                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-n paid primarily by Medicaid, enter “N/A”.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3123,7 +3293,7 @@
                   ]
                 },
                 "dashboardTitle": "Report on grievances by reason for each plan",
-                "drawerTitle": "Report on grievances by reason for",
+                "drawerTitle": "Report on grievances by reason for {{name}}",
                 "drawerInfo": [
                   {
                     "type": "p",
@@ -3179,7 +3349,7 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.16c Resolved grievances related to access to care/services from plan or provider",
+                      "label": "D1.IV.16c Resolved grievances related to network adequacy or access to care/services from plan or provider",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.</p><p>Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
@@ -3245,7 +3415,7 @@
                     "type": "number",
                     "validation": "number",
                     "props": {
-                      "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a service authorization or appeal (including requests to expedite or extend appeals)",
+                      "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a prior authorization/service authorization or appeal (including requests to expedite or extend appeals)",
                       "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
@@ -3556,7 +3726,7 @@
               "info": [
                 {
                   "type": "p",
-                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. Include any pending or unresolved actions."
+                  "content": "Describe sanctions that the state has issued for each plan. Report all known actions across the following domains: sanctions, administrative penalties, corrective action plans, other. The state should include all sanctions the state issued regardless of what entity identified the non-compliance (e.g. the state, an auditing body, the plan, a contracted entity like an external quality review organization)."
                 },
                 {
                   "type": "p",
@@ -3627,7 +3797,7 @@
                     },
                     {
                       "id": "AexbMuj1y0KnY6UqkW5o0Q",
-                      "label": "Compliance letter"
+                      "label": "All compliance-related notices or letters (e.g. warnings, non-compliance)"
                     },
                     {
                       "id": "d45iDfmlk0S3u8AYTttYXA",
@@ -3657,7 +3827,7 @@
                 "validation": "radio",
                 "props": {
                   "label": "D3.VIII.2 Plan performance issue",
-                  "hint": "What area of plan performance was associated with the intervention? Select one.",
+                  "hint": "What area of plan performance was primarily associated with the intervention? Select one.",
                   "choices": [
                     {
                       "id": "x6Cwd4oSrki6De4SnpjrMQ",
@@ -3673,19 +3843,27 @@
                     },
                     {
                       "id": "kB2nkoh27EG74eGG44pBrg",
-                      "label": "Reporting"
+                      "label": "Reporting (timeliness, completeness, accuracy)"
                     },
                     {
                       "id": "MXaon6GrskylPnGm2QHnJw",
-                      "label": "Performance improvement"
+                      "label": "Quality measure performance (e.g., failure to meet benchmarks or make progress on performance improvement projects)"
                     },
                     {
                       "id": "Ru46dEgst0eXi5s6bUA4Jg",
-                      "label": "Timely access"
+                      "label": "Timely access to care"
                     },
                     {
                       "id": "GuYmG53wQ2sWmGlVnBIxnIof",
                       "label": "Mental Health and Substance Use Disorder Parity compliance"
+                    },
+                    {
+                      "id": "0AmKeqywuQrFOItpTRLxu5KG",
+                      "label": "Timely payments to providers"
+                    },
+                    {
+                      "id": "1J5jsCbue8SyfkP8JqQv1piw",
+                      "label": "Network adequacy"
                     },
                     {
                       "id": "uFRKwEVzfE21KzEotYRkUw",
@@ -3830,7 +4008,7 @@
               "spreadsheet": "D1_Plan_Set"
             },
             "dashboardTitle": "Report on program integrity for each plan",
-            "drawerTitle": "Program integrity for",
+            "drawerTitle": "Program integrity for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -3875,16 +4053,6 @@
                 }
               },
               {
-                "id": "plan_programIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.3 Ratio of opened program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations opened by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
-                }
-              },
-              {
                 "id": "plan_resolvedProgramIntegrityInvestigations",
                 "type": "number",
                 "validation": "number",
@@ -3893,16 +4061,6 @@
                   "hint": "How many program integrity investigations were resolved by the plan during the reporting year?",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
-                }
-              },
-              {
-                "id": "plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.5 Ratio of resolved program integrity investigations to enrollees",
-                  "hint": "What is the ratio of program integrity investigations resolved by the plan in the past year to the average number of individuals enrolled in the plan per month during the reporting year (i.e., average member months)? Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
@@ -3998,16 +4156,6 @@
                       ]
                     }
                   ]
-                }
-              },
-              {
-                "id": "plan_programIntegrityReferralsPerThousandBeneficiaries",
-                "type": "number",
-                "validation": "ratio",
-                "props": {
-                  "label": "D1.X.8 Ratio of program integrity referral to the state",
-                  "hint": "What is the ratio of program integrity referrals listed in indicator D1.X.7 made to the state during the reporting year to the number of enrollees? For number of enrollees, use the average number of individuals enrolled in the plan per month during the reporting year (reported in indicator D1.I.1). Express this as a ratio per 1,000 beneficiaries.",
-                  "mask": "ratio"
                 }
               },
               {
@@ -4225,7 +4373,7 @@
               {
                 "id": "plan_ilosOfferedByPlan",
                 "type": "radio",
-                "validation": "radio",
+                "validation": "radioOptional",
                 "props": {
                   "label": "D4.XI.1 ILOSs offered by plan",
                   "hint": "Indicate whether this plan offered any ILOS to their enrollees.",
@@ -4278,7 +4426,7 @@
               "alert": "<b>Beginning June 2026, Indicators D1.XIII.1-15 must be completed. Submission of this data including partial reporting on some but not all plans, before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on prior authorization requests received for each plan",
-            "drawerTitle": "Prior authorization for ",
+            "drawerTitle": "Prior authorization for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -4499,7 +4647,7 @@
               "alert": "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>"
             },
             "dashboardTitle": "Report on Patient Access API (Application Programming Interface) Usage for each plan",
-            "drawerTitle": "Patient Access Application Programming Interface (API) Usage for ",
+            "drawerTitle": "Patient Access Application Programming Interface (API) Usage for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
@@ -4563,6 +4711,33 @@
                   "label": "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
                   "hint": "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting."
                 }
+              },
+              {
+                "id": "plan_urlForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.3 URL for Patient Access API",
+                  "hint": "Provide the URL where the plan posts Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForPatientAccessApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.4 URL for patient educational resources for Patient Access API",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Patient Access API."
+                }
+              },
+              {
+                "id": "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
+                "type": "text",
+                "validation": "url",
+                "props": {
+                  "label": "D1.XIV.5 Provider Access and Payer-to-Payer API patient educational resources URL",
+                  "hint": "Provide the URL where the plan posts patient educational resources for the Provider Access and Payer-to-Payer API."
+                }
               }
             ]
           }
@@ -4603,7 +4778,7 @@
           ]
         },
         "dashboardTitle": "Report on role and type for each BSS entity",
-        "drawerTitle": "Report on",
+        "drawerTitle": "Report on {{name}}",
         "missingEntityMessage": [
           {
             "type": "p",
@@ -4748,6 +4923,37 @@
                   ]
                 }
               ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "F: Notes",
+      "path": "/mcpar/notes",
+      "pageType": "standard",
+      "verbiage": {
+        "intro": {
+          "section": "Section F: Notes",
+          "subsection": "Notes",
+          "spreadsheet": "F_Notes",
+          "info": [
+            {
+              "type": "p",
+              "content": "Use this section to optionally add more context about your submission. If you choose not to respond, proceed to “Review & submit.”"
+            }
+          ]
+        }
+      },
+      "form": {
+        "id": "fno",
+        "fields": [
+          {
+            "id": "fnotes",
+            "type": "textarea",
+            "validation": "textOptional",
+            "props": {
+              "label": "F.1 Notes (optional)"
             }
           }
         ]
