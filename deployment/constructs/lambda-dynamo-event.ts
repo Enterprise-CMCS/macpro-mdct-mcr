@@ -3,7 +3,9 @@ import {
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
+  aws_logs as logs,
   Duration,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
 
@@ -12,6 +14,7 @@ interface LambdaDynamoEventProps
   additionalPolicies?: iam.PolicyStatement[];
   stackName: string;
   tables: DynamoDBTableIdentifiers[];
+  isDev: boolean;
 }
 
 export class LambdaDynamoEventSource extends Construct {
@@ -28,6 +31,7 @@ export class LambdaDynamoEventSource extends Construct {
       tables,
       stackName,
       timeout = Duration.seconds(6),
+      isDev,
       ...restProps
     } = props;
 
@@ -69,6 +73,12 @@ export class LambdaDynamoEventSource extends Construct {
       },
       environment,
       ...restProps,
+    });
+
+    new logs.LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     for (let table of tables) {
