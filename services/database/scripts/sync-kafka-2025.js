@@ -17,7 +17,7 @@ const naaarBucketName = `database-${branch}-naaar`;
 const buckets = [mcparBucketName, mlrBucketName, naaarBucketName];
 
 // Using a human readable format for easier debugging in the future
-const s3SyncTime = Date.now();
+const s3SyncTime = new Date().toISOString();
 // The time to compare against for filtering items
 const compareToTime = new Date("7 July 2025 00:00").getTime();
 
