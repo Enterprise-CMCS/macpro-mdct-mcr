@@ -13,6 +13,7 @@ import {
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
+import { isLocalStack } from "./local/util";
 
 interface PrerequisiteConfigProps {
   project: string;
@@ -29,11 +30,12 @@ export class PrerequisiteStack extends Stack {
 
     const { project, vpcName } = props;
 
-    const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
-
-    vpc.addGatewayEndpoint("S3Endpoint", {
-      service: ec2.GatewayVpcEndpointAwsService.S3,
-    });
+    if (!isLocalStack) {
+      const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+      vpc.addGatewayEndpoint("S3Endpoint", {
+        service: ec2.GatewayVpcEndpointAwsService.S3,
+      });
+    }
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
