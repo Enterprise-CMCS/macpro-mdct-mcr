@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 const {
   GetObjectCommand,
-  ListObjectsV2Command,
+  paginateListObjectsV2,
   PutObjectCommand,
   PutObjectTaggingCommand,
   S3Client,
@@ -49,18 +49,11 @@ const getObject = async (params) => {
 };
 
 const list = async (params) => {
-  let ContinuationToken;
   let contents = [];
 
-  do {
-    const command = new ListObjectsV2Command({
-      ...params,
-      ContinuationToken,
-    });
-    const result = await s3Client.send(command);
-    contents = contents.concat(result.Contents ?? []);
-    ContinuationToken = result.NextContinuationToken;
-  } while (ContinuationToken);
+  for await (let page of paginateListObjectsV2({ client: s3Client }, params)) {
+    contents = contents.concat(page.Contents ?? []);
+  }
 
   return contents;
 };
