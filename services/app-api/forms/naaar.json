@@ -1351,7 +1351,7 @@
           "intro": {
             "info": "Use this section to report on plan compliance with the state’s standards, as required at 42 C.F.R. § 438.68. This section is also used to report on plan compliance with 42 C.F.R. § 438.206 standards.",
             "section": "",
-            "subsection": "III. Plan compliance data for {{planName}}"
+            "subsection": "Plan compliance data for {{planName}}"
           }
         },
         "forms": [
@@ -2258,7 +2258,7 @@
                   },
                   {
                     "type": "p",
-                    "content": "438.206(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:"
+                    "content": "(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:"
                   },
                   {
                     "type": "p",

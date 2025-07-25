@@ -109,6 +109,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
@@ -174,6 +175,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     stackName: `${service}-${stage}`,
     api,
     environment,
+    isDev,
   };
 
   const requestValidator = new apigateway.RequestValidator(scope, `Validator`, {

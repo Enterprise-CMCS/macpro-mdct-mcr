@@ -55,6 +55,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [lambdaSecurityGroup],
+    isDev,
   };
 
   const createTopicsLambda = new Lambda(scope, "CreateTopics", {
