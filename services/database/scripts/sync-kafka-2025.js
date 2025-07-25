@@ -19,7 +19,7 @@ const buckets = [mcparBucketName, mlrBucketName, naaarBucketName];
 // Using a human readable format for easier debugging in the future
 const s3SyncTime = Date.now();
 // The time to compare against for filtering items
-const compareToTime = new Date("20 July 2025 00:00").getTime();
+const compareToTime = new Date("7 July 2025 00:00").getTime();
 
 async function handler() {
   try {
