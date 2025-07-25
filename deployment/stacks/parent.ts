@@ -120,6 +120,20 @@ export class ParentStack extends Stack {
 }
 
 function applyDenyCreateLogGroupPolicy(stack: Stack) {
+  const denyCreateLogGroupPolicy = {
+    PolicyName: "DenyCreateLogGroup",
+    PolicyDocument: {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: "Deny",
+          Action: "logs:CreateLogGroup",
+          Resource: "*",
+        },
+      ],
+    },
+  };
+
   const provider = stack.node.tryFindChild(
     "Custom::S3AutoDeleteObjectsCustomResourceProvider"
   );
@@ -138,17 +152,3 @@ function applyDenyCreateLogGroupPolicy(stack: Stack) {
     }
   });
 }
-
-const denyCreateLogGroupPolicy = {
-  PolicyName: "DenyCreateLogGroup",
-  PolicyDocument: {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Effect: "Deny",
-        Action: "logs:CreateLogGroup",
-        Resource: "*",
-      },
-    ],
-  },
-};
