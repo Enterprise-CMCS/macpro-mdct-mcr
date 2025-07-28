@@ -46,10 +46,6 @@ export class ParentStack extends Stack {
     const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
     const kafkaAuthorizedSubnets = getSubnets(this, kafkaAuthorizedSubnetIds);
 
-    vpc.addGatewayEndpoint("S3Endpoint", {
-      service: ec2.GatewayVpcEndpointAwsService.S3,
-    });
-
     const customResourceRole = createCustomResourceRole(commonProps);
 
     const loggingBucket = s3.Bucket.fromBucketName(
