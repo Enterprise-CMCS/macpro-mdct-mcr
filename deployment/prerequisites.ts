@@ -3,6 +3,7 @@ import "source-map-support/register";
 import {
   App,
   aws_apigateway as apigateway,
+  aws_ec2 as ec2,
   aws_iam as iam,
   DefaultStackSynthesizer,
   Stack,
@@ -12,9 +13,11 @@ import {
 import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
 import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
+import { isLocalStack } from "./local/util";
 
 interface PrerequisiteConfigProps {
   project: string;
+  vpcName: string;
 }
 
 export class PrerequisiteStack extends Stack {
@@ -25,7 +28,14 @@ export class PrerequisiteStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const { project } = props;
+    const { project, vpcName } = props;
+
+    if (!isLocalStack) {
+      const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
+      vpc.addGatewayEndpoint("S3Endpoint", {
+        service: ec2.GatewayVpcEndpointAwsService.S3,
+      });
+    }
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
 
