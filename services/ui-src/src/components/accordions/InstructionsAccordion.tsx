@@ -55,17 +55,22 @@ const sx = {
     li: {
       marginBottom: "1.25rem",
     },
-    ".indented-list": {
-      li: {
-        marginLeft: "2rem",
+    ".ordered-list-parentheses": {
+      counterReset: "item",
+      listStyleType: "none",
+      marginLeft: "3rem",
+      "> li": {
+        counterIncrement: "item",
       },
+      "> li::before": {
+        content: '"(" counter(item) ") "',
+      },
+    },
+    ".indented-list": {
+      marginLeft: "3rem",
     },
     ".marker-normal > li::marker": {
       fontWeight: "normal",
-    },
-    ".no-marker": {
-      listStyle: "none",
-      marginLeft: "-1rem",
     },
     "ol > li > ol": {
       listStyleType: "lower-roman",
