@@ -107,7 +107,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
   const appUrl =
     secureCloudfrontDomainName ??
     applicationEndpointUrl ??
-    "https://localhost:3000/";
+    "http://localhost:3000/";
 
   const userPoolClient = new cognito.UserPoolClient(scope, "UserPoolClient", {
     userPoolClientName: `${stage}-user-pool-client`,
