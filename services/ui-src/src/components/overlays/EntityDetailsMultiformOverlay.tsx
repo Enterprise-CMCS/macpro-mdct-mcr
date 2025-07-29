@@ -43,6 +43,7 @@ import {
 import { isComplianceFormComplete, translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
+  autosave = false,
   childForms,
   closeEntityDetailsOverlay,
   disabled,
@@ -380,6 +381,7 @@ export const EntityDetailsMultiformOverlay = ({
               {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
               <Box sx={sx.introContainer}>
                 <Form
+                  autosave={autosave}
                   disabled={disabled}
                   dontReset={true}
                   formData={selectedEntity}
@@ -437,6 +439,7 @@ export const EntityDetailsMultiformOverlay = ({
 };
 
 interface Props {
+  autosave?: boolean;
   childForms?: EntityDetailsChildFormShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;

@@ -17,6 +17,7 @@ import {
 } from "types";
 
 export const EntityDetailsFormOverlay = ({
+  autosave = false,
   closeEntityDetailsOverlay,
   disabled,
   form,
@@ -43,6 +44,7 @@ export const EntityDetailsFormOverlay = ({
     />
     <Box sx={{ ...sxOverride?.form }}>
       <Form
+        autosave={autosave}
         disabled={disabled}
         dontReset={true}
         formData={selectedEntity}
@@ -64,6 +66,7 @@ export const EntityDetailsFormOverlay = ({
 );
 
 interface Props {
+  autosave?: boolean;
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;
