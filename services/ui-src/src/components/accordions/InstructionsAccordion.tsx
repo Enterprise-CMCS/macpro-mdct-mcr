@@ -55,8 +55,18 @@ const sx = {
     li: {
       marginBottom: "1.25rem",
     },
+    ".indented-list": {
+      marginLeft: "2rem",
+    },
     ".marker-normal > li::marker": {
       fontWeight: "normal",
+    },
+    ".no-marker": {
+      listStyle: "none",
+      marginLeft: "-1rem",
+      "ol > li": {
+        listStyle: "none",
+      },
     },
     "ol > li > ol": {
       listStyleType: "lower-roman",
