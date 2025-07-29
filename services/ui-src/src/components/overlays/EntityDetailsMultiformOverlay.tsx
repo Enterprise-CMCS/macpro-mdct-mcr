@@ -165,6 +165,7 @@ export const EntityDetailsMultiformOverlay = ({
 
       return (
         <PlanComplianceTableOverlay
+          autosave={autosave}
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
           standards={standards}
@@ -187,6 +188,7 @@ export const EntityDetailsMultiformOverlay = ({
 
     return (
       <EntityDetailsFormOverlay
+        autosave={autosave}
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}

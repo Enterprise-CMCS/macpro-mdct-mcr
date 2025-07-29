@@ -245,7 +245,7 @@ export const OverlayReportPage = ({
     return (
       <EntityProvider>
         <EntityDetailsMultiformOverlay
-          autosave={false}
+          autosave={true}
           childForms={details.childForms}
           closeEntityDetailsOverlay={() => toggleOverlay()}
           disabled={false}
