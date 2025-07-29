@@ -8,7 +8,7 @@ export default {
     intro: {
       header: "Review & Submit",
       infoHeader: "Ready to Submit?",
-      info: "Double check that everything in your NAAAR Report is accurate. You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report. Once you’ve reviewed your report, certify that it’s in compliance with CFRs.",
+      info: "Double check that everything in your NAAAR report is accurate. You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report. Once you’ve reviewed your report, certify that it’s in compliance with CFRs.",
     },
     table: {
       caption: "Review & Submit",
@@ -20,7 +20,7 @@ export default {
         actionButtonText: "Submit NAAAR",
         closeButtonText: "Cancel",
       },
-      body: "You will be able to make edits after submitting, and resubmit.",
+      body: "You won't be able to make edits after submitting, unless you send a request to CMS to unlock your report.",
     },
     pageLink: {
       text: "Submit NAAAR",
@@ -32,7 +32,7 @@ export default {
       infoHeader: "Thank you",
       additionalInfoHeader: "What happens now?",
       additionalInfo:
-        "No further action is needed at this point. CMS will reach out if in the case they have any questions.",
+        "No further action is needed at this point. CMS will reach out if they have any questions.",
     },
   },
   alertBox: {

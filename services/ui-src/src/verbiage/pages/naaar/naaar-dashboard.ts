@@ -8,7 +8,7 @@ export default {
           {
             type: "html",
             content:
-              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1-II.A.5) for Medicaid-only covered services. Reporting on Children’s Health Insurance Program (CHIP), Non-Emergency Medical Transportation (NEMT), and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. ",
+              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1- II.A.7) for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on Children’s Health Insurance Program (CHIP) is not required in MDCT MCR. ",
           },
           {
             type: "externalLink",
@@ -29,7 +29,7 @@ export default {
           {
             type: "html",
             content:
-              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1-II.A.5) for Medicaid-only covered services. Reporting on Children’s Health Insurance Program (CHIP), Non-Emergency Medical Transportation (NEMT), and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. ",
+              "States must complete one report for each managed care program operating in the state. Medicaid and Medicare managed care plans (MMPs) are not exempt from NAAAR requirements at 42 § CFR 438.207, and states must submit a report for these plans. To reduce duplication, states can complete network adequacy sections of the report (II.A.1- II.A.7) for Medicaid-only covered services. Reporting on Non-Emergency Medical Transportation (NEMT) and Program of All-Inclusive Care for the Elderly (PACE) programs/plans is not required. Reporting on Children’s Health Insurance Program (CHIP) is not required in MDCT MCR. ",
           },
           {
             type: "externalLink",
