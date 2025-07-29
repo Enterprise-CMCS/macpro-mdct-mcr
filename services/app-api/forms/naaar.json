@@ -1452,7 +1452,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "(a) <b>Basic rule.</b> Each State must ensure that all services covered under the State plan are available and accessible to enrollees of MCOs, PIHPs, and PAHPs in a timely manner. The State must also ensure that MCO, PIHP and PAHP provider networks for services covered under the contract meet the standards developed by the State in accordance with"
+                        "content": "(a) <b>Basic rule.</b> Each State must ensure that all services covered under the State plan are available and accessible to enrollees of MCOs, PIHPs, and PAHPs in a timely manner. The State must also ensure that MCO, PIHP and PAHP provider networks for services covered under the contract meet the standards developed by the State in accordance with "
                       },
                       {
                         "type": "externalLink",
@@ -1470,7 +1470,8 @@
                     ]
                   },
                   {
-                    "type": "ol",
+                    "type": "p",
+                    "content": "(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:",
                     "children": [
                       {
                         "type": "li",
@@ -1478,10 +1479,6 @@
                           "className": "no-marker"
                         },
                         "children": [
-                          {
-                            "type": "html",
-                            "content": "(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:"
-                          },
                           {
                             "type": "ol",
                             "children": [
@@ -1539,19 +1536,16 @@
                   },
                   {
                     "type": "p",
+                    "content": "(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.",
                     "children": [
                       {
-                        "type": "p",
-                        "content": "(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements."
-                      },
-                      {
                         "type": "ol",
+                        "props": {
+                          "className": "indented-list"
+                        },
                         "children": [
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "children": [
                               {
                                 "type": "html",
@@ -1593,16 +1587,10 @@
                           },
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "content": "<b>Access and cultural considerations.</b> Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
                           },
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "content": "<b>Accessibility considerations.</b> Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities."
                           }
                         ]
@@ -2371,7 +2359,7 @@
                     "children": [
                       {
                         "type": "html",
-                        "content": "(a) <b>Basic rule.</b> Each State must ensure that all services covered under the State plan are available and accessible to enrollees of MCOs, PIHPs, and PAHPs in a timely manner. The State must also ensure that MCO, PIHP and PAHP provider networks for services covered under the contract meet the standards developed by the State in accordance with"
+                        "content": "(a) <b>Basic rule.</b> Each State must ensure that all services covered under the State plan are available and accessible to enrollees of MCOs, PIHPs, and PAHPs in a timely manner. The State must also ensure that MCO, PIHP and PAHP provider networks for services covered under the contract meet the standards developed by the State in accordance with "
                       },
                       {
                         "type": "externalLink",
@@ -2389,7 +2377,8 @@
                     ]
                   },
                   {
-                    "type": "ol",
+                    "type": "p",
+                    "content": "(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:",
                     "children": [
                       {
                         "type": "li",
@@ -2397,10 +2386,6 @@
                           "className": "no-marker"
                         },
                         "children": [
-                          {
-                            "type": "html",
-                            "content": "(b) <b>Delivery network.</b> The State must ensure, through its contracts, that each MCO, PIHP and PAHP, consistent with the scope of its contracted services, meets the following requirements:"
-                          },
                           {
                             "type": "ol",
                             "children": [
@@ -2458,19 +2443,16 @@
                   },
                   {
                     "type": "p",
+                    "content": "(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements.",
                     "children": [
                       {
-                        "type": "p",
-                        "content": "(c) <b>Furnishing of services.</b> The State must ensure that each contract with a MCO, PIHP, and PAHP complies with the following requirements."
-                      },
-                      {
                         "type": "ol",
+                        "props": {
+                          "className": "indented-list"
+                        },
                         "children": [
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "children": [
                               {
                                 "type": "html",
@@ -2512,16 +2494,10 @@
                           },
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "content": "<b>Access and cultural considerations.</b> Each MCO, PIHP, and PAHP participates in the State’s efforts to promote the delivery of services in a culturally competent manner to all enrollees, including those with limited English proficiency and diverse cultural and ethnic backgrounds, disabilities, and regardless of sex which includes sex characteristics, including intersex traits; pregnancy or related conditions; sexual orientation; gender identity and sex stereotypes."
                           },
                           {
                             "type": "li",
-                            "props": {
-                              "className": "indented-list"
-                            },
                             "content": "<b>Accessibility considerations.</b> Each MCO, PIHP, and PAHP must ensure that network providers provide physical access, reasonable accommodations, and accessible equipment for Medicaid enrollees with physical or mental disabilities."
                           }
                         ]
