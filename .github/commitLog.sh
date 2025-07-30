@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Usage:
-#   ./.github/commit-log.sh head_branch base_branch
-#   ./.github/commit-log.sh head_branch base_branch --local
+#   ./.github/commitLog.sh head_branch base_branch
+#   ./.github/commitLog.sh head_branch base_branch --local
 # 
 # Use --local to compare local branches
 
