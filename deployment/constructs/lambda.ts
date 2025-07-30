@@ -3,7 +3,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Duration } from "aws-cdk-lib";
+import { Duration, RemovalPolicy } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   Effect,
@@ -14,6 +14,7 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
@@ -27,6 +28,7 @@ interface LambdaProps extends Partial<NodejsFunctionProps> {
   additionalPolicies?: PolicyStatement[];
   requestParameters?: string[];
   requestValidator?: apigateway.IRequestValidator;
+  isDev: boolean;
 }
 
 export class Lambda extends Construct {
@@ -47,6 +49,7 @@ export class Lambda extends Construct {
       stackName,
       requestParameters,
       requestValidator,
+      isDev,
       ...restProps
     } = props;
 
@@ -89,6 +92,12 @@ export class Lambda extends Construct {
       },
       environment,
       ...restProps,
+    });
+
+    new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     if (api && path && method) {

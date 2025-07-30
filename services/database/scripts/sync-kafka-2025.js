@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /*
  * Local:
- *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/update-templates.js
+ *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/sync-kafka-2025.js
  * Branch:
- *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/update-templates.js
+ *   branchPrefix="YOUR BRANCH NAME" node services/database/scripts/sync-kafka-2025.js
  */
 
 const { buildS3Client, list, putObjectTag } = require("./utils/s3.js");
@@ -13,16 +13,19 @@ const branch = isLocal ? "localstack" : process.env.branchPrefix;
 
 const mcparBucketName = `database-${branch}-mcpar`;
 const mlrBucketName = `database-${branch}-mlr`;
-const buckets = [mcparBucketName, mlrBucketName];
+const naaarBucketName = `database-${branch}-naaar`;
+const buckets = [mcparBucketName, mlrBucketName, naaarBucketName];
 
 // Using a human readable format for easier debugging in the future
 const s3SyncTime = new Date().toISOString();
+// The time to compare against for filtering items
+const compareToTime = new Date("7 July 2025 00:00").getTime();
 
 async function handler() {
   try {
-    console.log("Searching for existing templates");
+    console.log("Searching for July 2025 modifications");
     updateS3Items();
-    console.debug("S3 template update complete");
+    console.debug("S3 data fix complete");
 
     return {
       statusCode: 200,
@@ -44,13 +47,19 @@ async function updateS3Items() {
     console.log(`Processing bucket ${reportBucket}`);
     const existingObjects = await list({
       Bucket: reportBucket,
-      Prefix: "formTemplates/",
     });
-    await tagObjects(reportBucket, existingObjects);
+    const filteredObjects = filterS3Objects(existingObjects);
+    await tagObjects(reportBucket, filteredObjects);
     console.log(
-      `Touched ${existingObjects.length} objects in bucket ${reportBucket}`
+      `Touched ${filteredObjects.length} objects in bucket ${reportBucket}`
     );
   }
+}
+
+function filterS3Objects(bucketObjects) {
+  return bucketObjects.filter(
+    (obj) => new Date(obj.LastModified).getTime() > compareToTime
+  );
 }
 
 async function tagObjects(bucketName, objectList) {

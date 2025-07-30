@@ -36,10 +36,10 @@ li::marker {
 }
 
 a {
-  color: var(--chakra-colors-palette-white);
+  color: var(--mdct-colors-palette-white);
   transition: all 0.3s ease !important;
   &:hover {
-    color: var(--chakra-colors-palette-gray_light);
+    color: var(--mdct-colors-palette-gray_light);
   }
   &:visited {
     color: inherit;
@@ -50,7 +50,7 @@ a {
 
 .ds-c-usa-banner__header {
   width: 100%;
-  max-width: var(--chakra-sizes-appMax);
+  max-width: var(--mdct-sizes-appMax);
 
   @media (min-width: 544px) {
     padding-inline: 1rem;

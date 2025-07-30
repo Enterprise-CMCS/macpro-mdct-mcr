@@ -1,5 +1,4 @@
 import { MixedSchema } from "yup/lib/mixed";
-import { AnyObject } from "yup/lib/types";
 import {
   number,
   ratio,
@@ -9,74 +8,30 @@ import {
   validNumber,
   numberNotLessThanOne,
   numberNotLessThanZero,
-  validNAValues,
+  numberSuppressible,
+  futureDate,
 } from "./schemaMap";
 import {} from "./validation";
+// constants
+import { suppressionText } from "../constants/constants";
+// utils
+import {
+  badDateTestCases,
+  badFutureDateTestCases,
+  badNumberTestCases,
+  badRatioTestCases,
+  badValidNumberTestCases,
+  goodDateTestCases,
+  goodFutureDateTestCases,
+  goodNumberTestCases,
+  goodPositiveNumberTestCases,
+  goodRatioTestCases,
+  goodValidNumberTestCases,
+  negativeNumberTestCases,
+  zeroTest,
+} from "../testing/mocks/mockSchemaValidation";
 
 describe("Schemas", () => {
-  const goodNumberTestCases = [
-    "",
-    "123",
-    "123.00",
-    "123..00",
-    "1,230",
-    "1,2,30",
-    "1230",
-    "123450123..,,,.123123123123",
-    ...validNAValues,
-  ];
-  const badNumberTestCases = ["abc", "N", "!@#!@%"];
-
-  const zeroTest = ["0", "0.0"];
-
-  const goodPositiveNumberTestCases = [
-    "123",
-    "123.00",
-    "123..00",
-    "1,230",
-    "1,2,30",
-    "1230",
-    "123450123..,,,.123123123123",
-  ];
-
-  const negativeNumberTestCases = [
-    "-123",
-    "-123.00",
-    "-123..00",
-    "-1,230",
-    "-1,2,30",
-    "-1230",
-    "-123450123..,,,.123123123123",
-  ];
-
-  const goodRatioTestCases = [
-    "1:1",
-    "123:123",
-    "1,234:1.12",
-    "0:1",
-    "1:10,000",
-  ];
-
-  const badRatioTestCases = [
-    ":",
-    ":1",
-    "1:",
-    "1",
-    "1234",
-    "abc",
-    "N/A",
-    "abc:abc",
-    ":abc",
-    "abc:",
-    "%@#$!ASDF",
-  ];
-
-  const goodDateTestCases = ["01/01/1990", "12/31/2020", "01012000"];
-  const badDateTestCases = ["01-01-1990", "13/13/1990", "12/32/1990"];
-
-  const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
-  const badValidNumberTestCases = ["N/A", "number", "foo"];
-
   // nested
   const fieldValidationObject = {
     type: "text",
@@ -87,15 +42,43 @@ describe("Schemas", () => {
     type: "string",
   };
 
-  const testSchema = (
-    schemaToUse: MixedSchema<any, AnyObject, any>,
-    testCases: Array<string | AnyObject>,
+  const testSchema = <T>(
+    schemaToUse: MixedSchema,
+    testCases: T[],
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
+    for (const testCase of testCases) {
+      const test = schemaToUse.isValidSync(testCase);
       expect(test).toEqual(expectedReturn);
     }
+  };
+
+  const testNumberSchema = (
+    schemaToUse: MixedSchema,
+    testCases: string[],
+    expectedReturn: boolean
+  ) => {
+    testSchema<string>(schemaToUse, testCases, expectedReturn);
+  };
+
+  const testTextSchema = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | undefined>,
+    expectedReturn: boolean
+  ) => {
+    testSchema<string | undefined>(schemaToUse, testCases, expectedReturn);
+  };
+
+  const testDate = (
+    schemaToUse: MixedSchema,
+    testCases: Array<string | null | undefined | number>,
+    expectedReturn: boolean
+  ) => {
+    testSchema<string | null | undefined | number>(
+      schemaToUse,
+      testCases,
+      expectedReturn
+    );
   };
 
   const testValidNumber = (
@@ -103,53 +86,59 @@ describe("Schemas", () => {
     testCases: Array<string | number>,
     expectedReturn: boolean
   ) => {
-    for (let testCase of testCases) {
-      let test = schemaToUse.isValidSync(testCase);
-      expect(test).toEqual(expectedReturn);
-    }
+    testSchema<string | number>(schemaToUse, testCases, expectedReturn);
   };
 
   test("Evaluate Number Schema using number scheme", () => {
-    testSchema(number(), goodNumberTestCases, true);
-    testSchema(number(), badNumberTestCases, false);
+    testNumberSchema(number(), goodNumberTestCases, true);
+    testNumberSchema(number(), badNumberTestCases, false);
   });
 
   // testing numberNotLessThanOne scheme
   test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
-    testSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
-    testSchema(numberNotLessThanOne(), badNumberTestCases, false);
+    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
+    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanOne scheme", () => {
-    testSchema(numberNotLessThanOne(), zeroTest, false);
+    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
   });
 
   test("Test negative values using numberNotLessThanOne scheme", () => {
-    testSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
   });
 
   // testing numberNotLessThanZero scheme
   test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
-    testSchema(numberNotLessThanZero(), goodPositiveNumberTestCases, true);
-    testSchema(numberNotLessThanZero(), badNumberTestCases, false);
+    testNumberSchema(
+      numberNotLessThanZero(),
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanZero scheme", () => {
-    testSchema(numberNotLessThanZero(), zeroTest, true);
+    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
   });
 
   test("Test negative values using numberNotLessThanZero scheme", () => {
-    testSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
-    testSchema(ratio(), goodRatioTestCases, true);
-    testSchema(ratio(), badRatioTestCases, false);
+    testNumberSchema(ratio(), goodRatioTestCases, true);
+    testNumberSchema(ratio(), badRatioTestCases, false);
   });
 
   test("Evaluate Date Schema using date scheme", () => {
-    testSchema(date(), goodDateTestCases, true);
-    testSchema(date(), badDateTestCases, false);
+    testDate(date(), goodDateTestCases, true);
+    testDate(date(), badDateTestCases, false);
+  });
+
+  test("Test futureDate schema", () => {
+    testDate(futureDate(), goodFutureDateTestCases, true);
+    testDate(futureDate(), badFutureDateTestCases, false);
   });
 
   test("Evaluate End Date Schema using date scheme", () => {
@@ -158,7 +147,7 @@ describe("Schemas", () => {
   });
 
   test("Test Nested Schema using nested scheme", () => {
-    testSchema(
+    testTextSchema(
       nested(() => validationSchema, fieldValidationObject.parentFieldName, ""),
       ["string"],
       true
@@ -168,5 +157,12 @@ describe("Schemas", () => {
   test("Test validNumber schema", () => {
     testValidNumber(validNumber(), goodValidNumberTestCases, true);
     testValidNumber(validNumber(), badValidNumberTestCases, false);
+  });
+
+  test("Test numberSuppressible schema", () => {
+    testValidNumber(numberSuppressible(), goodValidNumberTestCases, true);
+    testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
+    testTextSchema(numberSuppressible(), [suppressionText], true);
+    testTextSchema(numberSuppressible(), ["badText", undefined], false);
   });
 });

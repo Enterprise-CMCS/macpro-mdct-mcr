@@ -6,6 +6,7 @@ export const mockAccessMeasuresEntity = {
   accessMeasure_standardDescription: "mock-description",
   accessMeasure_standardType: [{ value: "mock-standard-type" }],
   "accessMeasure_standardType-otherText": "",
+  "accessMeasure_monitoringMethods-otherText": "mock-other-text",
   accessMeasure_providerType: [{ value: "mock-provider-type" }],
   accessMeasure_applicableRegion: [{ value: "Other, specify" }],
   "accessMeasure_applicableRegion-otherText": "mock-region-other-text",
@@ -13,6 +14,7 @@ export const mockAccessMeasuresEntity = {
   accessMeasure_monitoringMethods: [
     { value: "mock-monitoring-method-1" },
     { value: "mock-monitoring-method-2" },
+    { value: "Custom method" },
   ],
   accessMeasure_oversightMethodFrequency: [
     { value: "mock-oversight-method-frequency" },
@@ -30,7 +32,11 @@ export const mockCompletedAccessMeasuresFormattedEntityData = {
   provider: "mock-provider-type",
   region: "mock-region-other-text",
   population: "mock-population",
-  monitoringMethods: ["mock-monitoring-method-1", "mock-monitoring-method-2"],
+  monitoringMethods: [
+    "mock-monitoring-method-1",
+    "mock-monitoring-method-2",
+    "Custom method - mock-other-text",
+  ],
   methodFrequency: "mock-oversight-method-frequency",
 };
 
@@ -210,7 +216,7 @@ export const mockNaaarStandards: EntityShape[] = [
         value: "Mock Provider",
       },
     ],
-    "standard_coreProviderType-mock-plan-id-1-otherText": "Mock Other Provider",
+    "standard_coreProviderType-mock-plan-id-1": "Mock Other Provider",
     standard_standardType: [
       { key: "mockStandardType", value: "Mock Standard Type" },
     ],

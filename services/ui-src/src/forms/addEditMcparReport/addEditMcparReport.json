@@ -10,11 +10,66 @@
   },
   "fields": [
     {
-      "id": "programName",
-      "type": "text",
-      "validation": "text",
+      "id": "newOrExistingProgram",
+      "type": "radio",
+      "validation": "radio",
       "props": {
-        "label": "Program name (for new MCPAR)"
+        "label": "Is this MCPAR for an existing or new program?",
+        "hint": "Select from an existing program or add a new program.",
+        "choices": [
+          {
+            "id": "isExistingProgram",
+            "label": "Existing program",
+            "children": [
+              {
+                "id": "existingProgramNameSelection",
+                "type": "dropdown",
+                "validation": {
+                  "type": "dropdown",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Program name",
+                  "hint": "Select an existing program from the options below. This list was compiled using official program names submitted to CMS by states.",
+                  "options": "programList"
+                }
+              },
+              {
+                "id": "existingProgramNameSuggestion",
+                "type": "text",
+                "validation": {
+                  "type": "textOptional",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Rename selected program (optional)",
+                  "hint": "If you need to replace or rename the selected program, enter its new name in the blank field below. Note: this will not change the name of the program in this report. CMS will update it for a future report."
+                }
+              }
+            ]
+          },
+          {
+            "id": "isNewProgram",
+            "label": "Add new program",
+            "children": [
+              {
+                "id": "newProgramName",
+                "type": "text",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Specify new program name",
+                  "hint": ""
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -22,6 +77,7 @@
       "type": "dropdown",
       "props": {
         "label": "If you want to copy an existing report, select one (optional)",
+        "hint": "You may copy over the contents of an existing report from any program for your state for any reason.",
         "options": "copyEligibleReports"
       }
     },
@@ -71,6 +127,61 @@
           },
           {
             "id": "no_programIsNotPCCM",
+            "label": "No"
+          }
+        ]
+      }
+    },
+    {
+      "id": "naaarSubmissionForThisProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Did you submit or do you plan on submitting a Network Adequacy and Access Assurances (NAAAR) Report for this program for this reporting period through the MDCT online tool?",
+        "hint": "If “No”,  please complete the following questions under each plan.",
+        "choices": [
+          {
+            "id": "Oidjp5sYMuMEmkVYjNxZ5aDV",
+            "label": "Yes, I submitted it",
+            "children": [
+              {
+                "id": "naaarSubmissionDateForThisProgram",
+                "type": "date",
+                "validation": {
+                  "type": "date",
+                  "nested": true,
+                  "parentFieldName": "naaarSubmissionForThisProgram",
+                  "parentOptionId": "Oidjp5sYMuMEmkVYjNxZ5aDV"
+                },
+                "props": {
+                  "label": "NAAAR submission date",
+                  "hint": "Provide the date of the NAAAR submission."
+                }
+              }
+            ]
+          },
+          {
+            "id": "Z9Ysnff8zxb1IVjxQgoG9ndW",
+            "label": "Yes, I plan on submitting it",
+            "children": [
+              {
+                "id": "naaarExpectedSubmissionDateForThisProgram",
+                "type": "date",
+                "validation": {
+                  "type": "futureDate",
+                  "nested": true,
+                  "parentFieldName": "naaarSubmissionForThisProgram",
+                  "parentOptionId": "Z9Ysnff8zxb1IVjxQgoG9ndW"
+                },
+                "props": {
+                  "label": "NAAAR submission date",
+                  "hint": "Provide the expected date of the NAAAR submission."
+                }
+              }
+            ]
+          },
+          {
+            "id": "yG8AlzEtPXPnE7rvek6Q1xIk",
             "label": "No"
           }
         ]

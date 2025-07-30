@@ -228,6 +228,7 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
         userPoolId: userPool.userPoolId,
         bootstrapUsersPassword,
       },
+      isDev,
     }).lambda;
   }
 

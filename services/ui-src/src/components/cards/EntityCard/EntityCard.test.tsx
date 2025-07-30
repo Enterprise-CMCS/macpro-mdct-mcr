@@ -74,11 +74,13 @@ const UnfinishedAccessMeasuresEntityCardPrintComponent = (
 );
 
 const AccessMeasuresEntityCardComponent = (
+  formattedEntityData = mockCompletedAccessMeasuresFormattedEntityData
+) => (
   <EntityCard
     entity={mockAccessMeasuresEntity}
     entityIndex={0}
     entityType={EntityType.ACCESS_MEASURES}
-    formattedEntityData={mockCompletedAccessMeasuresFormattedEntityData}
+    formattedEntityData={formattedEntityData}
     verbiage={mockModalDrawerReportPageJson.verbiage}
     openAddEditEntityModal={openAddEditEntityModal}
     openDeleteEntityModal={openDeleteEntityModal}
@@ -216,7 +218,7 @@ describe("<EntityCard />", () => {
 
   describe("Test Completed AccessMeasures EntityCard", () => {
     beforeEach(() => {
-      render(AccessMeasuresEntityCardComponent);
+      render(AccessMeasuresEntityCardComponent());
     });
     test("EntityCard is visible", () => {
       expect(screen.getByTestId("entityCard")).toBeVisible();
@@ -238,6 +240,21 @@ describe("<EntityCard />", () => {
       const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
       await userEvent.click(editDetailsButton);
       expect(mockOpenDrawer).toBeCalledTimes(1);
+    });
+  });
+
+  describe("Test Completed AccessMeasures EntityCard with provider details", () => {
+    test("provider details are in the card", () => {
+      const formattedEntityData = {
+        ...mockCompletedAccessMeasuresFormattedEntityData,
+        providerDetails: "mock-provider-details",
+      };
+      render(AccessMeasuresEntityCardComponent(formattedEntityData));
+      expect(
+        screen.getByText(
+          `${formattedEntityData.provider}: mock-provider-details`
+        )
+      ).toBeVisible();
     });
   });
 
@@ -265,7 +282,7 @@ describe("<EntityCard />", () => {
 
   describe("Test AccessMeasures EntityCard accessibility", () => {
     testA11y(UnfinishedAccessMeasuresEntityCardComponent);
-    testA11y(AccessMeasuresEntityCardComponent);
+    testA11y(AccessMeasuresEntityCardComponent());
   });
 
   describe("Test Completed Print Version EntityCard", () => {
@@ -321,7 +338,7 @@ describe("<EntityCard />", () => {
     });
 
     test("Correct indicators for completed access measure", () => {
-      render(AccessMeasuresEntityCardComponent);
+      render(AccessMeasuresEntityCardComponent());
 
       // status icon alt text should indicate incompleteness
       expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
