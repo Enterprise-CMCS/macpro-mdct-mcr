@@ -1,5 +1,9 @@
 import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+// constants
+import { getDefaultAnalysisMethodIds } from "../../constants";
+// types
 import {
+  AnyObject,
   DrawerReportPageShape,
   EntityShape,
   FormField,
@@ -7,12 +11,12 @@ import {
   isFieldElement,
   ReportType,
 } from "types";
-import { AnyObject } from "yup/lib/types";
+// utils
+import { getForm, isIlosCompleted, otherSpecify, useStore } from "utils";
+// assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
-import { getForm, isIlosCompleted, otherSpecify, useStore } from "utils";
-import { getDefaultAnalysisMethodIds } from "../../constants";
 
 export const DrawerReportPageEntityRows = ({
   route,
