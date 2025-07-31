@@ -5,6 +5,7 @@ import {
   FormField,
   FormJson,
   isFieldElement,
+  ReportType,
 } from "types";
 import { AnyObject } from "yup/lib/types";
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
@@ -155,7 +156,14 @@ export const DrawerReportPageEntityRows = ({
             )
           )}
           <Flex direction={"column"} sx={sx.entityRow}>
-            <Heading as="h4" sx={sx.entityName}>
+            <Heading
+              as="h4"
+              sx={
+                report?.reportType === ReportType.MCPAR
+                  ? sx.entityName
+                  : sx.entityNameWithDescription
+              }
+            >
               {entityName}
             </Heading>
             {entity.custom_analysis_method_description && (
@@ -233,6 +241,13 @@ const sx = {
     padding: "0.5rem",
   },
   entityName: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
+    alignContent: "center",
+  },
+  entityNameWithDescription: {
     fontSize: "lg",
     fontWeight: "bold",
     flexGrow: 1,
