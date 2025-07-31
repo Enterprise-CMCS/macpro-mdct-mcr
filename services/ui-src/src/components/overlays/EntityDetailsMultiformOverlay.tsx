@@ -43,6 +43,7 @@ import {
 import { isComplianceFormComplete, translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
+  autosave = false,
   childForms,
   closeEntityDetailsOverlay,
   disabled,
@@ -164,6 +165,7 @@ export const EntityDetailsMultiformOverlay = ({
 
       return (
         <PlanComplianceTableOverlay
+          autosave={autosave}
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
           standards={standards}
@@ -186,6 +188,7 @@ export const EntityDetailsMultiformOverlay = ({
 
     return (
       <EntityDetailsFormOverlay
+        autosave={autosave}
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}
@@ -380,6 +383,7 @@ export const EntityDetailsMultiformOverlay = ({
               {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
               <Box sx={sx.introContainer}>
                 <Form
+                  autosave={autosave}
                   disabled={disabled}
                   dontReset={true}
                   formData={selectedEntity}
@@ -437,6 +441,7 @@ export const EntityDetailsMultiformOverlay = ({
 };
 
 interface Props {
+  autosave?: boolean;
   childForms?: EntityDetailsChildFormShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;

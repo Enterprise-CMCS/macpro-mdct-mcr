@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import {
   EntityDetailsMultiformOverlay,
+  EntityProvider,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -52,7 +53,12 @@ export const OverlayReportPage = ({
 
   // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report } = useStore();
+  const {
+    report,
+    setEntities,
+    setEntityType,
+    setSelectedEntity: setSelectedEntityStore,
+  } = useStore();
 
   // Open/Close overlay action methods
   const toggleOverlay = (entity?: EntityShape) => {
@@ -63,6 +69,11 @@ export const OverlayReportPage = ({
     setEntering(openOverlay);
     setIsEntityDetailsOpen(openOverlay);
     setSidebarHidden(openOverlay);
+
+    // Set store for autosave
+    setEntities(report?.fieldData[entityType]);
+    setEntityType(entityType);
+    setSelectedEntityStore(entity);
   };
 
   const TablePage = () => {
@@ -232,21 +243,24 @@ export const OverlayReportPage = ({
     };
 
     return (
-      <EntityDetailsMultiformOverlay
-        childForms={details.childForms}
-        closeEntityDetailsOverlay={() => toggleOverlay()}
-        disabled={false}
-        entityType={entityType as EntityType}
-        forms={details.forms}
-        onSubmit={onSubmit}
-        report={report}
-        selectedEntity={selectedEntity}
-        setEntering={setEntering}
-        setSelectedEntity={setSelectedEntity}
-        submitting={submitting}
-        validateOnRender={validateOnRender}
-        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
-      />
+      <EntityProvider>
+        <EntityDetailsMultiformOverlay
+          autosave={true}
+          childForms={details.childForms}
+          closeEntityDetailsOverlay={() => toggleOverlay()}
+          disabled={false}
+          entityType={entityType as EntityType}
+          forms={details.forms}
+          onSubmit={onSubmit}
+          report={report}
+          selectedEntity={selectedEntity}
+          setEntering={setEntering}
+          setSelectedEntity={setSelectedEntity}
+          submitting={submitting}
+          validateOnRender={validateOnRender}
+          verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
+        />
+      </EntityProvider>
     );
   };
 

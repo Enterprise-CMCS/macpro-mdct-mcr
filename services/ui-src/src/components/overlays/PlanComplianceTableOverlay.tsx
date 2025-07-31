@@ -45,6 +45,7 @@ import {
 } from "utils";
 
 export const PlanComplianceTableOverlay = ({
+  autosave = false,
   closeEntityDetailsOverlay,
   disabled,
   form,
@@ -110,6 +111,7 @@ export const PlanComplianceTableOverlay = ({
 
     return (
       <EntityDetailsFormOverlay
+        autosave={autosave}
         closeEntityDetailsOverlay={closeEntityDetailsFormOverlay}
         disabled={disabled}
         form={formJson}
@@ -262,6 +264,7 @@ export const PlanComplianceTableOverlay = ({
 };
 
 interface Props {
+  autosave?: boolean;
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;

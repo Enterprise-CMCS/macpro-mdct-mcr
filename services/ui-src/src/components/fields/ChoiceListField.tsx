@@ -198,6 +198,11 @@ export const ChoiceListField = ({
         (choice) => choice.id != clickedOption.key
       );
       clearUncheckedNestedFields(everyOtherOption);
+
+      // Use only in planCompliance forms
+      if (autosave && event.target.id.includes("planCompliance")) {
+        handleAutosave(selectedOptions);
+      }
     }
 
     // handle checkbox
@@ -221,64 +226,68 @@ export const ChoiceListField = ({
     form.setValue(name, selectedOptions, { shouldValidate: true });
   };
 
+  const handleAutosave = (value: Choice[] = displayValue) => {
+    const timeInMs = 200;
+    // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
+    setTimeout(async () => {
+      const fields = getAutosaveFields({
+        name,
+        type,
+        value,
+        defaultValue,
+        hydrationValue,
+      });
+
+      const choicesWithNestedEnabledFields = choices.map((choice) => {
+        if (choice.children) {
+          return {
+            ...choice,
+            children: choice.children.filter((child) => !child.props?.disabled),
+          };
+        }
+        return choice;
+      });
+
+      const combinedFields = [
+        ...fields,
+        ...getNestedChildFields(choicesWithNestedEnabledFields, form),
+      ];
+
+      const reportArgs = {
+        id: report?.id,
+        reportType: report?.reportType,
+        fieldData: report?.fieldData,
+        updateReport,
+      };
+      const user = { userName: full_name, state };
+
+      await autosaveFieldData({
+        form,
+        fields: combinedFields,
+        report: reportArgs,
+        user,
+        entityContext: {
+          selectedEntity,
+          entityType,
+          updateEntities,
+          entities,
+        },
+      });
+    }, timeInMs);
+  };
+
   // if should autosave, submit field data to database on component blur
   const onComponentBlurHandler = () => {
     if (autosave) {
-      const timeInMs = 200;
-      // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
-      setTimeout(async () => {
-        const parentName = document.activeElement?.id.split("-")[0];
-        if (
-          parentName === name &&
-          !document.activeElement?.id.includes("-otherText")
-        )
-          return; // Short circuit if still clicking on elements in this choice list
+      const parentName = document.activeElement?.id.split("-")[0];
 
-        const fields = getAutosaveFields({
-          name,
-          type,
-          value: displayValue,
-          defaultValue,
-          hydrationValue,
-        });
+      if (
+        parentName === name &&
+        !document.activeElement?.id.includes("-otherText")
+      )
+        return; // Short circuit if still clicking on elements in this choice list
 
-        const choicesWithNestedEnabledFields = choices.map((choice) => {
-          if (choice.children) {
-            return {
-              ...choice,
-              children: choice.children.filter(
-                (child) => !child.props?.disabled
-              ),
-            };
-          }
-          return choice;
-        });
-
-        const combinedFields = [
-          ...fields,
-          ...getNestedChildFields(choicesWithNestedEnabledFields, form),
-        ];
-
-        const reportArgs = {
-          id: report?.id,
-          reportType: report?.reportType,
-          fieldData: report?.fieldData,
-          updateReport,
-        };
-        const user = { userName: full_name, state };
-        await autosaveFieldData({
-          form,
-          fields: combinedFields,
-          report: reportArgs,
-          user,
-          entityContext: {
-            selectedEntity,
-            entityType,
-            updateEntities,
-            entities,
-          },
-        });
-      }, timeInMs);
+      handleAutosave();
     }
   };
 
