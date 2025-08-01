@@ -22,9 +22,9 @@ jobs:
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: set branch specific variable names
-        run: ./.github/build-vars.sh set_names
+        run: ./.github/buildVars.sh set_names
       - name: set variable values
-        run: ./.github/build-vars.sh set_values
+        run: ./.github/buildVars.sh set_values
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
