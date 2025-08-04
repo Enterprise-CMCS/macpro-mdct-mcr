@@ -243,7 +243,7 @@ const sx = {
       },
     },
     ".error-text": {
-      color: "palette.error_darker",
+      color: "error_darker",
       fontSize: ".75rem",
       textAlign: "center",
     },
@@ -274,11 +274,11 @@ const sx = {
   missingReportingPeriodMessage: {
     marginTop: "1rem",
     fontSize: "xs",
-    color: "palette.error_dark",
+    color: "error_dark",
   },
   unfinishedMessage: {
     fontSize: "xs",
-    color: "palette.error_dark",
+    color: "error_dark",
   },
   editButton: {
     marginY: "1rem",
@@ -292,7 +292,7 @@ const sx = {
     position: "absolute",
     right: "-2rem",
     fontSize: ".75rem",
-    color: "palette.gray_medium",
+    color: "gray_medium",
     ".mobile &": {
       right: "-1.5rem",
     },

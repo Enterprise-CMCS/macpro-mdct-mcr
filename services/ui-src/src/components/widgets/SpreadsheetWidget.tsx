@@ -45,7 +45,7 @@ const sx = {
   container: {
     paddingLeft: "1rem",
     borderLeft: "4px solid",
-    borderColor: "palette.spreadsheet",
+    borderColor: "spreadsheet",
   },
   iconContainer: {
     maxWidth: "3rem",
@@ -58,10 +58,10 @@ const sx = {
     margin: "auto",
   },
   title: {
-    color: "palette.spreadsheet_dark",
+    color: "spreadsheet_dark",
   },
   description: {
     fontWeight: "bold",
-    color: "palette.spreadsheet_dark",
+    color: "spreadsheet_dark",
   },
 };

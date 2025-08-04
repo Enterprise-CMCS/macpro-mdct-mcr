@@ -306,7 +306,7 @@ const sx = {
     paddingBottom: ".5rem",
     marginBottom: "1.5rem",
     borderBottom: "1px solid",
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
   },
   headerText: {
     marginBottom: "1rem",
@@ -316,7 +316,7 @@ const sx = {
   infoTextBox: {
     marginTop: "2rem",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
     },
   },
@@ -330,12 +330,12 @@ const sx = {
     height: "27px",
   },
   additionalInfoHeader: {
-    color: "palette.gray",
+    color: "gray",
     fontWeight: "bold",
     marginBottom: ".5rem",
   },
   additionalInfo: {
-    color: "palette.gray",
+    color: "gray",
   },
   printButton: {
     minWidth: "6rem",
@@ -352,7 +352,7 @@ const sx = {
     color: "white !important",
     textDecoration: "none !important",
     "&:hover, &:focus": {
-      backgroundColor: "palette.primary",
+      backgroundColor: "primary",
       color: "white",
     },
   },
@@ -367,10 +367,10 @@ const sx = {
     minHeight: "3rem",
     "&:disabled": {
       opacity: 1,
-      background: "palette.gray_lighter",
-      color: "palette.gray",
+      background: "gray_lighter",
+      color: "gray",
       "&:hover": {
-        background: "palette.gray_lighter",
+        background: "gray_lighter",
       },
     },
   },

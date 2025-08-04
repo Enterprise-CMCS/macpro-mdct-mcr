@@ -136,12 +136,12 @@ const sx = {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
     td: {
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
       paddingRight: 0,
     },
   },
   errorText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "0.75rem",
     marginBottom: "0.75rem",
   },
@@ -149,7 +149,7 @@ const sx = {
     display: "flex",
     fontWeight: "bold",
     paddingBottom: "0.5rem",
-    span: { color: "palette.gray_medium" },
+    span: { color: "gray_medium" },
     img: { marginRight: "1rem" },
   },
   programList: {
@@ -175,7 +175,7 @@ const sx = {
   editButton: {
     fontWeight: "normal",
     textDecoration: "underline",
-    color: "palette.primary",
+    color: "primary",
     padding: "0",
   },
   enterButton: {

@@ -271,7 +271,7 @@ const sx = {
   dashboardTitle: {
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
     textAlign: "left",
     ".tablet &, .mobile &": {
       paddingBottom: "0",
@@ -285,8 +285,8 @@ const sx = {
     th: {
       paddingLeft: "1rem",
       paddingRight: "0",
-      borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
-      color: "palette.gray_medium",
+      borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
+      color: "gray_medium",
       fontSize: "lg",
       fontWeight: "bold",
       ".mobile &": {
@@ -300,7 +300,7 @@ const sx = {
       },
     },
     td: {
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
     },
     tr: {
       "&:last-of-type td": {
@@ -312,10 +312,10 @@ const sx = {
     padding: "0 0 1rem 0",
     fontWeight: "bold",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     ol: {

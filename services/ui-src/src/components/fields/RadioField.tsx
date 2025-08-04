@@ -29,6 +29,6 @@ const sx = {
     boxShadow: "inset 0 0 4em 1em #A6A6A6",
   },
   ".ds-c-choice:disabled": {
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
   },
 };

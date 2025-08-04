@@ -251,16 +251,16 @@ const sx = {
   },
   fieldHint: {
     lineHeight: "lg",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   answerCell: {
     width: "51%",
   },
   notAnsweredStyling: {
-    color: "palette.error_darker",
+    color: "error_darker",
   },
   count: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
     fontWeight: "bold",
   },
   h4: {
