@@ -84,12 +84,8 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleChildSubmit = (
-      enteredData: AnyObject,
-      updatedEntity?: AnyObject
-    ) => {
-      const entity = updatedEntity ?? selectedEntity;
-      setSelectedEntity({ ...entity, ...enteredData });
+    const handleChildSubmit = (enteredData: AnyObject) => {
+      setSelectedEntity({ ...selectedEntity, ...enteredData });
       onSubmit(enteredData, false);
     };
 
@@ -155,11 +151,15 @@ export const EntityDetailsMultiformOverlay = ({
             delete selectedEntity?.[key];
             delete updatedData[key];
           });
+          // enteredData has the full form data for 438.68 so keep only 438.68 stuff from enteredData and not from selectedEntity
+          nonComplianceKeys.forEach((key) => {
+            delete selectedEntity?.[key];
+          });
         }
 
-        // return new data and updated entity (in case we deleted keys from the entity)
-        handleChildSubmit(updatedData, selectedEntity);
+        setSelectedEntity(selectedEntity);
         setSelectedStandard(null);
+        handleChildSubmit(updatedData);
       };
 
       return (
