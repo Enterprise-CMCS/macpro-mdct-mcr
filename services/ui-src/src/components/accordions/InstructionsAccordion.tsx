@@ -55,6 +55,20 @@ const sx = {
     li: {
       marginBottom: "1.25rem",
     },
+    ".ordered-list-parentheses": {
+      counterReset: "item",
+      listStyleType: "none",
+      marginLeft: "3rem",
+      "> li": {
+        counterIncrement: "item",
+      },
+      "> li::before": {
+        content: '"(" counter(item) ") "',
+      },
+    },
+    ".indented-list": {
+      marginLeft: "3rem",
+    },
     ".marker-normal > li::marker": {
       fontWeight: "normal",
     },

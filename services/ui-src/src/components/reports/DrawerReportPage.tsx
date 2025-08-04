@@ -32,6 +32,7 @@ import {
 } from "types";
 // utils
 import {
+  cleanSuppressed,
   entityWasUpdated,
   filterFormData,
   filterStandardsByUtilizedAnalysisMethods,
@@ -51,7 +52,8 @@ import addIconSVG from "assets/icons/icon_add_gray.svg";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [pageError, setPageError] = useState<ErrorVerbiage>();
+  const [analysisMethodsError, setAnalysisMethodsError] =
+    useState<ErrorVerbiage>();
   const [canAddStandards, setCanAddStandards] = useState<boolean>(false);
   const [selectedIsCustomEntity, setSelectedIsCustomEntity] =
     useState<boolean>(false);
@@ -68,6 +70,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     !!addEntityDrawerForm.id || entityType === EntityType.STANDARDS;
   const entities = report?.fieldData?.[entityType] || [];
 
+  const analysisMethods = report?.fieldData?.analysisMethods || [];
   const existingStandards =
     entityType === EntityType.STANDARDS && entities.length > 0;
   const providerTypeSelected = report?.fieldData?.providerTypes?.length > 0;
@@ -83,48 +86,34 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const isReportingOnStandards =
     route.path === "/naaar/program-level-access-and-network-adequacy-standards";
 
-  const atLeastOneRequiredAnalysisMethodIsUtilized = report?.fieldData[
-    "analysisMethods"
-  ]?.some(
+  const atLeastOneRequiredAnalysisMethodIsUtilized = analysisMethods.some(
     (analysisMethod: AnyObject) =>
       analysisMethod.analysis_applicable?.[0]?.value === "Yes"
   );
 
   // check if user has completed default analysis methods (NAAAR)
   const completedAnalysisMethods = () => {
-    const result = report?.fieldData["analysisMethods"]?.filter(
-      (analysisMethod: AnyObject) => {
-        return analysisMethod.analysis_applicable && analysisMethod.isRequired;
-      }
-    );
+    const result = analysisMethods.filter((analysisMethod: AnyObject) => {
+      return analysisMethod.analysis_applicable && analysisMethod.isRequired;
+    });
     return result?.length === DEFAULT_ANALYSIS_METHODS.length;
   };
 
-  // analysis methods: error alert appears if analysis methods are completed without any utilized
+  /*
+   * analysis methods: error alert appears if analysis methods are completed without any utilized
+   * standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
+   */
   useEffect(() => {
-    if (
-      completedAnalysisMethods() &&
-      !atLeastOneRequiredAnalysisMethodIsUtilized
-    ) {
-      setPageError(analysisMethodError);
-    } else {
-      setPageError(undefined);
-    }
-  }, [completedAnalysisMethods, atLeastOneRequiredAnalysisMethodIsUtilized]);
+    const completed = completedAnalysisMethods();
+    const utilized = atLeastOneRequiredAnalysisMethodIsUtilized;
+    const completedNotUtilized = completed && !utilized;
 
-  // standards: add button disabled if analysis methods are incomplete, complete without any utilized, or no provider types are selected
-  useEffect(() => {
-    if (
-      !completedAnalysisMethods() ||
-      (completedAnalysisMethods() &&
-        !atLeastOneRequiredAnalysisMethodIsUtilized) ||
-      !providerTypeSelected
-    ) {
-      setCanAddStandards(false);
-    } else {
-      setCanAddStandards(true);
-    }
-  }, [atLeastOneRequiredAnalysisMethodIsUtilized, providerTypeSelected]);
+    const errorMessage = completedNotUtilized ? analysisMethodError : undefined;
+    const enableAddStandards = completed && utilized && providerTypeSelected;
+
+    setAnalysisMethodsError(errorMessage);
+    setCanAddStandards(enableAddStandards);
+  }, [analysisMethods, providerTypeSelected]);
 
   const formParams = {
     route,
@@ -193,6 +182,9 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         state,
         id: report?.id,
       };
+
+      // Check if form has suppressed fields
+      cleanSuppressed(enteredData);
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
       let selectedEntityIndex = currentEntities.findIndex(
@@ -342,7 +334,11 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
       {isAnalysisMethodsPage && (
-        <ErrorAlert error={pageError} sxOverride={sx.pageErrorAlert} showIcon />
+        <ErrorAlert
+          error={analysisMethodsError}
+          sxOverride={sx.pageErrorAlert}
+          showIcon
+        />
       )}
       {displayErrorMessages()}
       {standardForm && (

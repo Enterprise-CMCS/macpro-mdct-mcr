@@ -154,6 +154,7 @@ const sx = {
       margin: "0.5rem auto",
       listStyleType: "none",
       li: {
+        lineHeight: "130%",
         wordWrap: "break-word",
         paddingTop: "0.125rem",
         paddingBottom: "0.125rem",

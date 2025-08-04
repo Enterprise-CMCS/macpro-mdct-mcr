@@ -13,7 +13,6 @@ import { execSync } from "node:child_process";
 interface DeployFrontendProps {
   apiGatewayRestApiUrl: string;
   applicationEndpointUrl: string;
-  customResourceRole: iam.Role;
   distribution: cloudfront.Distribution;
   identityPoolId: string;
   launchDarklyClient: string;

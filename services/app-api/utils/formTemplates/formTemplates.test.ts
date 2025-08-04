@@ -3,6 +3,7 @@ import {
   filterByFlag,
   flattenReportRoutesArray,
   formTemplateForReportType,
+  generateModifiedTemplate,
   generatePCCMTemplate,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
@@ -45,9 +46,18 @@ const currentMCPARFormHash = createHash("md5")
   .update(JSON.stringify(mcpar))
   .digest("hex");
 
-const pccmTemplate = generatePCCMTemplate(mcpar);
+const pccmTemplate = generatePCCMTemplate(mcpar as ReportJson);
 const currentPCCMFormHash = createHash("md5")
   .update(JSON.stringify(pccmTemplate))
+  .digest("hex");
+
+const modifiedTemplate = generateModifiedTemplate(
+  mcpar as ReportJson,
+  ["Access Measures"],
+  ["accessMeasures"]
+);
+const currentModifiedFormHash = createHash("md5")
+  .update(JSON.stringify(modifiedTemplate))
   .digest("hex");
 
 describe("Test getOrCreateFormTemplate MCPAR", () => {
@@ -72,7 +82,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -102,13 +112,13 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsPCCM
+      { isPccm: programIsPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
     expect(result.formTemplate).toEqual({
       ...pccmTemplate,
-      validationJson: getValidationFromFormTemplate(pccmTemplate as ReportJson),
+      validationJson: getValidationFromFormTemplate(pccmTemplate),
     });
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(currentPCCMFormHash);
@@ -133,7 +143,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -172,7 +182,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -197,7 +207,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -214,6 +224,38 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
 
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(ffFormHash);
+  });
+
+  test("should create a new form template with excluded routes and entities", async () => {
+    dynamoClientMock
+      .on(QueryCommand)
+      // mocked once for search by hash
+      .resolvesOnce({
+        Items: [],
+      })
+      // mocked again for search for latest report
+      .resolvesOnce({
+        Items: [],
+      });
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const result = await getOrCreateFormTemplate(
+      "local-mcpar-reports",
+      ReportType.MCPAR,
+      { hasNaaarSubmission: true }
+    );
+
+    expect(dynamoPutSpy).toHaveBeenCalled();
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(result.formTemplate).toEqual({
+      ...modifiedTemplate,
+      validationJson: getValidationFromFormTemplate(modifiedTemplate),
+    });
+    expect(result.formTemplateVersion?.versionNumber).toEqual(1);
+    expect(result.formTemplateVersion?.md5Hash).toEqual(
+      currentModifiedFormHash
+    );
   });
 });
 
@@ -237,7 +279,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -268,7 +310,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -307,7 +349,7 @@ describe("Test getOrCreateFormTemplate MLR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mlr-reports",
       ReportType.MLR,
-      programIsNotPCCM
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -318,10 +360,12 @@ describe("Test getOrCreateFormTemplate MLR", () => {
 
 describe("Test form contents", () => {
   const allFormTemplates = () => {
-    const templates = [];
+    const templates: ReportJson[] = [];
     for (let reportType of Object.values(ReportType)) {
       try {
-        const formTemplate = formTemplateForReportType(reportType);
+        const formTemplate = formTemplateForReportType(
+          reportType
+        ) as ReportJson;
         templates.push(formTemplate);
       } catch (error: any) {
         if (!/not implemented/i.test(error.message)) {
@@ -430,5 +474,25 @@ describe("filterByFlag()", () => {
 
     const route3 = filterByFlag(routes[2], "filteredFlag");
     expect(route3).toEqual(true);
+  });
+});
+
+describe("errors", () => {
+  describe("formTemplateForReportType()", () => {
+    test("show throw error for bad reportType", () => {
+      expect(() => formTemplateForReportType("badType" as ReportType)).toThrow(
+        "Not Implemented: ReportType not recognized by FormTemplateProvider"
+      );
+    });
+  });
+
+  describe("generatePCCMTemplate()", () => {
+    test("show throw error for bad PCCM logic", () => {
+      const reportJson = structuredClone(mcpar) as ReportJson;
+      reportJson.routes[2].children![0].form!.fields[3].id = "bad_type";
+      expect(() => generatePCCMTemplate(reportJson)).toThrow(
+        "Update PCCM logic!"
+      );
+    });
   });
 });

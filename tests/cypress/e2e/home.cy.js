@@ -1,7 +1,3 @@
-// element selectors
-const templateCardAccordionVerbiage = "When is the MCPAR due?";
-const templateCardAccordionTableRole = '[role="table"]';
-
 beforeEach(() => {
   cy.authenticate("stateUser");
 });
@@ -11,8 +7,9 @@ afterEach(() => {
 });
 
 describe("Homepage integration tests", () => {
-  it("Clicking accordion expander opens accordion", () => {
-    cy.contains(templateCardAccordionVerbiage).first().click();
-    cy.get(templateCardAccordionTableRole).should("be.visible");
+  it("Cards for MCPAR, MLR, and NAAAR show up", () => {
+    cy.get("h2").contains("MCPAR");
+    cy.get("h2").contains("MLR");
+    cy.get("h2").contains("NAAAR");
   });
 });

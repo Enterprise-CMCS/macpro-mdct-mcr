@@ -156,6 +156,7 @@ const sx = {
     ul: {
       listStyleType: "none",
       li: {
+        lineHeight: "130%",
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
         paddingBottom: "0.25rem",

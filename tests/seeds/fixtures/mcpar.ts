@@ -1,41 +1,110 @@
 import { faker } from "@faker-js/faker";
+import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
   Choice,
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
+import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
-export const newMcpar = (stateName: string): SeedNewReportShape => {
+export const newMcpar = (
+  stateName: string,
+  state: string,
+  options: { [key: string]: boolean } = {}
+): SeedNewReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
   });
   const reportingPeriodStartDate = newReportingPeriodStartDate.getTime();
   const reportingPeriodEndDate = newReportingPeriodEndDate.getTime();
-  const programIsPCCM = [
-    {
-      key: "programIsPCCM-yes_programIsPCCM",
-      value: "Yes",
-    },
-    {
-      key: "programIsPCCM-no_programIsNotPCCM",
-      value: "No",
-    },
+
+  const enums = {
+    programIsPCCM: [
+      { key: "programIsPCCM-yes_programIsPCCM", value: "Yes" },
+      { key: "programIsPCCM-no_programIsNotPCCM", value: "No" },
+    ],
+    naaarSubmission: [
+      {
+        key: "naaarSubmissionForThisProgram-Oidjp5sYMuMEmkVYjNxZ5aDV",
+        value: "Yes, I submitted it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-Z9Ysnff8zxb1IVjxQgoG9ndW",
+        value: "Yes, I plan on submitting it",
+      },
+      {
+        key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
+        value: "No",
+      },
+    ],
+    newOrExistingProgram: [
+      { key: "newOrExistingProgram-isNewProgram", value: "Add new program" },
+      {
+        key: "newOrExistingProgram-isExistingProgram",
+        value: "Existing program",
+      },
+    ],
+  };
+
+  const {
+    hasExpectedNaaarSubmission,
+    hasNaaarSubmission,
+    isPccm,
+    isNewProgram,
+  } = options;
+
+  // Has NAAAR submission
+  const naaarSubmissionDateForThisProgram = hasNaaarSubmission
+    ? dateFormat.format(faker.date.recent())
+    : undefined;
+  const naaarExpectedSubmissionDateForThisProgram = hasExpectedNaaarSubmission
+    ? dateFormat.format(faker.date.future())
+    : undefined;
+  const naaarSubmissionForThisProgram = [
+    enums.naaarSubmission[
+      hasNaaarSubmission ? 0 : hasExpectedNaaarSubmission ? 1 : 2
+    ],
   ];
-  const pccmIndex = randomIndex(programIsPCCM.length);
-  const programName = `${pccmIndex === 0 ? "PCCM: " : ""}${faker.book.title()}`;
+
+  // PCCM
+  const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+
+  // Pick an existing program name
+  const existingPrograms =
+    mcparProgramList[state as keyof typeof mcparProgramList];
+  const existingProgramName =
+    existingPrograms[randomIndex(existingPrograms.length)].label;
+
+  // Check for new program name
+  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const existingProgramNameSelection = isNewProgram
+    ? undefined
+    : { value: existingProgramName, label: "existingProgramNameSelection" };
+  const newOrExistingProgram = [
+    enums.newOrExistingProgram[isNewProgram ? 0 : 1],
+  ];
+  const newProgramName = isNewProgram ? programName : undefined;
 
   return {
     metadata: {
       combinedData: faker.datatype.boolean(),
       copyFieldDataSourceId: "",
       dueDate: reportingPeriodEndDate,
+      existingProgramNameSelection,
+      existingProgramNameSuggestion: "",
       lastAlteredBy: faker.person.fullName(),
       locked: false,
+      naaarExpectedSubmissionDateForThisProgram,
+      naaarSubmissionDateForThisProgram,
+      naaarSubmissionForThisProgram,
+      newOrExistingProgram,
+      newProgramName,
       previousRevisions: [],
-      programIsPCCM: [programIsPCCM[pccmIndex]],
+      programIsPCCM,
       programName,
       reportType: ReportType.MCPAR,
       reportingPeriodEndDate,
@@ -52,6 +121,32 @@ export const newMcpar = (stateName: string): SeedNewReportShape => {
   };
 };
 
+export const newMcparHasNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasNaaarSubmission: true });
+};
+
+export const newMcparHasExpectedNaaarSubmission = (
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(stateName, state, { hasExpectedNaaarSubmission: true });
+};
+
+export const newMcparNewProgram = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isNewProgram: true });
+};
+
+export const newMcparNewProgramPCCM = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isNewProgram: true, isPccm: true });
+};
+
+export const newMcparPCCM = (stateName: string, state: string) => {
+  return newMcpar(stateName, state, { isPccm: true });
+};
+
 export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
   const planId = crypto.randomUUID();
 
@@ -60,6 +155,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
   }
 
   const ilosId = crypto.randomUUID();
+  const ilosName = faker.animal.dog();
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -281,8 +377,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           id: crypto.randomUUID(),
           accessMeasure_applicableRegion: [
             {
-              key: "accessMeasure_applicableRegion-X47v2Ee5kkaBERBjXFWGXw",
-              value: "Urban",
+              key: "accessMeasure_applicableRegion-aZ4JmR9kfLKZEqQje3N1R1",
+              value: "Statewide",
             },
           ],
           accessMeasure_generalCategory: [
@@ -300,8 +396,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           ],
           accessMeasure_oversightMethodFrequency: [
             {
-              key: "accessMeasure_oversightMethodFrequency-tOF04LLPa026mJlHmk0RaA",
-              value: "At procurement",
+              key: "accessMeasure_oversightMethodFrequency-vtAjpZENepsmacGCddGdyt",
+              value: "Weekly",
             },
           ],
           accessMeasure_population: [
@@ -348,7 +444,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_encounterDataSubmissionHipaaCompliancePercentage: numberInt(),
           plan_encounterDataSubmissionTimelinessCompliancePercentage:
             numberInt(),
-          plan_enrollment: numberInt(),
+          plan_enrollment: suppressionText,
           plan_ilosOfferedByPlan: [
             {
               key: "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU",
@@ -356,7 +452,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             },
           ],
           plan_ilosUtilizationByPlan: [
-            { key: `plan_ilosUtilizationByPlan-${ilosId}`, value: "ILOS" },
+            { key: `plan_ilosUtilizationByPlan-${ilosId}`, value: ilosName },
           ],
           [`plan_ilosUtilizationByPlan_${ilosId}`]: numberInt(),
           plan_ltssUserFieldGrievances: numberInt(),
@@ -368,8 +464,9 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
             numberFloat(),
           plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
-          plan_medicaidEnrollmentSharePercentage: numberInt(),
-          plan_medicaidManagedCareEnrollmentSharePercentage: numberInt(),
+          plan_medicaidEnrollmentSharePercentage: suppressionText,
+          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+          plan_parentOrganization: faker.lorem.sentence(),
           plan_medicalLossRatioPercentage: numberFloat(),
           plan_medicalLossRatioPercentageAggregationLevel: [
             {
@@ -417,7 +514,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
             numberFloat(),
           plan_populationSpecificMedicalLossRatioDescription: numberInt(),
-          plan_programIntegrityInvestigationsToEnrolleesRatio: "1:1",
           plan_programIntegrityReferralPath: [
             {
               key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -425,7 +521,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
                 "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
             },
           ],
-          plan_programIntegrityReferralsPerThousandBeneficiaries: "1:1",
           plan_resolvedAbuseNeglectExploitationGrievances: numberInt(),
           plan_resolvedAccessToCareGrievances: numberInt(),
           plan_resolvedAppeals: numberInt(),
@@ -436,11 +531,17 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedDenialOfExpeditedAppealGrievances: numberInt(),
           plan_resolvedDentalServiceAppeals: numberInt(),
           plan_resolvedDentalServiceGrievances: numberInt(),
+          plan_resolvedDmeAndSuppliesAppeals: numberInt(),
+          plan_resolvedDmeGrievances: numberInt(),
+          plan_resolvedEmergencyServicesAppeals: numberInt(),
+          plan_resolvedEmergencyServicesGrievances: numberInt(),
           plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
           plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
           plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
           plan_resolvedGrievances: numberInt(),
+          plan_resolvedHomeHealthAppeals: numberInt(),
+          plan_resolvedHomeHealthGrievances: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
           plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
           plan_resolvedLtssServiceAppeals: numberInt(),
@@ -457,7 +558,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedPostServiceAuthorizationDenialAppeals: numberInt(),
           plan_resolvedPreServiceAuthorizationDenialAppeals: numberInt(),
           plan_resolvedProgramIntegrityInvestigations: numberInt(),
-          plan_resolvedProgramIntegrityInvestigationsToEnrolleesRatio: "1:1",
           plan_resolvedQualityOfCareGrievances: numberInt(),
           plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals:
             numberInt(),
@@ -468,6 +568,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_resolvedSnfServiceAppeals: numberInt(),
           plan_resolvedSnfServiceGrievances: numberInt(),
           plan_resolvedSuspectedFraudGrievances: numberInt(),
+          plan_resolvedTherapiesAppeals: numberInt(),
+          plan_resolvedTherapyGrievances: numberInt(),
           plan_resolvedUntimelyResponseAppeals: numberInt(),
           plan_resolvedUntimelyResponseGrievances: numberInt(),
           plan_stateFairHearingRequestsFiled: numberInt(),
@@ -486,6 +588,10 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             numberInt(),
           plan_totalStandardPriorAuthorizationRequestsReceived: numberInt(),
           plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+            faker.internet.url(),
+          plan_urlForPatientAccessApi: faker.internet.url(),
+          plan_urlForPatientResourcesForPatientAccessApi: faker.internet.url(),
+          plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi:
             faker.internet.url(),
           plan_urlForPriorAuthorizationDataOnPlanWebsite: faker.internet.url(),
           program_encounterDataSubmissionTimelinessStandardDefinition:
@@ -513,7 +619,7 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
       ilos: [
         {
           id: ilosId,
-          name: faker.animal.dog(),
+          name: ilosName,
         },
       ],
       qualityMeasures: [
@@ -582,9 +688,10 @@ export const fillMcparPCCM = (planId: string): SeedFillReportShape => {
         {
           id: planId,
           name: faker.animal.cat(),
-          plan_enrollment: numberInt(),
-          plan_medicaidEnrollmentSharePercentage: numberInt(),
-          plan_medicaidManagedCareEnrollmentSharePercentage: numberInt(),
+          plan_enrollment: suppressionText,
+          plan_medicaidEnrollmentSharePercentage: suppressionText,
+          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+          plan_parentOrganization: faker.lorem.sentence(),
         },
       ],
       sanctions: [createSanction(planId)],

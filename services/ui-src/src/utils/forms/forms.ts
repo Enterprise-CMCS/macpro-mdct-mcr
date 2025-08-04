@@ -6,14 +6,19 @@ import {
   DropdownField,
   DynamicField,
   NumberField,
+  NumberSuppressibleField,
   RadioField,
   TextField,
   TextAreaField,
   ChoiceField,
 } from "components";
+// constants
+import { suppressionText } from "../../constants";
 // types
 import {
   AnyObject,
+  Choice,
+  DropdownChoice,
   EntityType,
   FieldChoice,
   FormField,
@@ -23,6 +28,7 @@ import {
   isFieldElement,
   ReportType,
 } from "types";
+// utils
 import {
   SectionContent,
   SectionHeader,
@@ -51,6 +57,7 @@ export const formFieldFactory = (
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
+    numberSuppressible: NumberSuppressibleField,
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
@@ -329,4 +336,46 @@ export const getForm = (params: getFormParams) => {
     default:
   }
   return modifiedForm;
+};
+
+export const defineProgramName = (
+  newOrExistingProgram: Choice[],
+  existingProgramNameSelection?: DropdownChoice,
+  newProgramName?: string
+) => {
+  if (!newOrExistingProgram?.[0]?.value)
+    throw new Error(
+      "Program name radio field was not selected as an existing or new report"
+    );
+
+  switch (newOrExistingProgram[0].value) {
+    case "Existing program":
+      if (!existingProgramNameSelection?.value)
+        throw new Error(
+          "Program name dropdown selection did not have a value. Please double check the field is working properly."
+        );
+      return existingProgramNameSelection.value;
+    case "Add new program":
+      return newProgramName;
+    default:
+      throw new Error(
+        "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
+      );
+  }
+};
+
+export const cleanSuppressed = (enteredData: AnyObject) => {
+  for (const [key, value] of Object.entries(enteredData)) {
+    if (!key.endsWith("-suppressed")) continue;
+
+    const fieldToSuppress = key.split("-suppressed")[0];
+    // Suppressed checkbox was checked, set text value to suppressionText
+    if (value === true) {
+      enteredData[fieldToSuppress] = suppressionText;
+    }
+    // Suppressed key is not saved
+    delete enteredData[key];
+  }
+
+  return enteredData;
 };

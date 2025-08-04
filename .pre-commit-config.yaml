@@ -45,7 +45,7 @@ repos:
     hooks:
       - id: branch-name-validation
         name: branch-name-validation
-        entry: .github/branch-name-validation.sh
+        entry: .github/branchNameValidation.sh
         language: script
         pass_filenames: false
       - id: track-flags

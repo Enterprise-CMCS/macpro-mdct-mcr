@@ -71,95 +71,92 @@ export const SortableTable = ({
   }, [headerRefs.current]);
 
   return (
-    <>
-      {/* @ts-ignore Throws TS2590: expression too complex */}
-      <TableRoot
-        variant={variant}
-        size="sm"
-        sx={{ ...sx.root, ...sxOverride }}
-        {...props}
-      >
-        <TableCaption placement="top" sx={sx.captionBox}>
-          <VisuallyHidden>{content.caption}</VisuallyHidden>
-        </TableCaption>
-        <Thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <Tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                const ariaSort = header.column.getIsSorted()
-                  ? {
-                      "aria-sort": (header.column.getIsSorted() === "asc"
-                        ? "ascending"
-                        : "descending") as AriaSortValues,
-                    }
-                  : {};
+    <TableRoot
+      variant={variant}
+      size="sm"
+      sx={{ ...sx.root, ...sxOverride }}
+      {...props}
+    >
+      <TableCaption placement="top" sx={sx.captionBox}>
+        <VisuallyHidden>{content.caption}</VisuallyHidden>
+      </TableCaption>
+      <Thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <Tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              const ariaSort = header.column.getIsSorted()
+                ? {
+                    "aria-sort": (header.column.getIsSorted() === "asc"
+                      ? "ascending"
+                      : "descending") as AriaSortValues,
+                  }
+                : {};
 
-                return (
-                  <Th
-                    key={header.id}
-                    scope="col"
-                    sx={{ ...sx.tableHeader, ...sxOverride }}
-                    {...ariaSort}
-                  >
-                    {header.column.getCanSort() && (
-                      <Button
-                        onClick={header.column.getToggleSortingHandler()}
-                        size="sm"
-                        p={0}
-                        height={4}
-                        variant="ghost"
-                        aria-label={headerLabels[header.id]}
+              return (
+                <Th
+                  key={header.id}
+                  scope="col"
+                  sx={{ ...sx.tableHeader, ...sxOverride }}
+                  {...ariaSort}
+                >
+                  {header.column.getCanSort() && (
+                    <Button
+                      onClick={header.column.getToggleSortingHandler()}
+                      size="sm"
+                      p={0}
+                      height={4}
+                      variant="ghost"
+                      aria-label={headerLabels[header.id]}
+                    >
+                      <Box
+                        as="span"
+                        ref={(el: HTMLElement | null) =>
+                          (headerRefs.current[header.id] = el as HTMLElement)
+                        }
                       >
-                        <Box
-                          as="span"
-                          ref={(el: HTMLElement | null) =>
-                            (headerRefs.current[header.id] = el as HTMLElement)
-                          }
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                        </Box>
-                        <Box as="span" w={3} ml={2} aria-hidden="true">
-                          {header.column.getIsSorted() === "asc" && (
-                            <Image src={upArrowIcon} alt="" />
-                          )}
-                          {header.column.getIsSorted() === "desc" && (
-                            <Image src={downArrowIcon} alt="" />
-                          )}
-                        </Box>
-                      </Button>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </Box>
+                      <Box as="span" w={3} ml={2} aria-hidden="true">
+                        {header.column.getIsSorted() === "asc" && (
+                          <Image src={upArrowIcon} alt="" />
+                        )}
+                        {header.column.getIsSorted() === "desc" && (
+                          <Image src={downArrowIcon} alt="" />
+                        )}
+                      </Box>
+                    </Button>
+                  )}
+                  {!header.column.getCanSort() &&
+                    flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
                     )}
-                    {!header.column.getCanSort() &&
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                  </Th>
-                );
-              })}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                return (
-                  <Td
-                    key={cell.id}
-                    sx={border ? sx.tableCellBorder : sx.tableCell}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </Td>
-                );
-              })}
-            </Tr>
-          ))}
-        </Tbody>
-      </TableRoot>
-    </>
+                </Th>
+              );
+            })}
+          </Tr>
+        ))}
+      </Thead>
+      <Tbody>
+        {table.getRowModel().rows.map((row) => (
+          <Tr key={row.id}>
+            {row.getVisibleCells().map((cell) => {
+              return (
+                <Td
+                  key={cell.id}
+                  sx={border ? sx.tableCellBorder : sx.tableCell}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Td>
+              );
+            })}
+          </Tr>
+        ))}
+      </Tbody>
+    </TableRoot>
   );
 };
 

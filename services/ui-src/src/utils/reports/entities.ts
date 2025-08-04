@@ -16,10 +16,22 @@ const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   );
 };
 
-const getCheckboxValues = (entity: EntityShape | undefined, label: string) => {
-  return entity?.[label]?.map((method: AnyObject) =>
-    otherSpecify(method.value, entity?.[`${label}-otherText`])
-  );
+const getCheckboxValues = (
+  entity: EntityShape | undefined,
+  label: string,
+  customLabel?: string
+) => {
+  return entity?.[label]?.map((method: AnyObject) => {
+    if (method.value === "Custom method") {
+      return `Custom method - ${entity?.[`${label}-otherText`]}`;
+    }
+    return otherSpecify(
+      method.value,
+      entity?.[`${label}-otherText`],
+      undefined,
+      customLabel
+    );
+  });
 };
 
 const getReportingRateType = (entity: EntityShape | undefined) => {
@@ -63,11 +75,16 @@ export const getFormattedEntityData = (
         standardDescription: entity?.accessMeasure_standardDescription,
         standardType: getRadioValue(entity, "accessMeasure_standardType"),
         provider: getRadioValue(entity, "accessMeasure_providerType"),
+        providerDetails:
+          entity?.["accessMeasure_providerType-primaryCareDetails"] ||
+          entity?.["accessMeasure_providerType-specialistDetails"] ||
+          entity?.["accessMeasure_providerType-mentalHealthDetails"],
         region: getRadioValue(entity, "accessMeasure_applicableRegion"),
         population: getRadioValue(entity, "accessMeasure_population"),
         monitoringMethods: getCheckboxValues(
           entity,
-          "accessMeasure_monitoringMethods"
+          "accessMeasure_monitoringMethods",
+          "Custom method"
         ),
         methodFrequency: getRadioValue(
           entity,
@@ -143,7 +160,7 @@ export const getAddEditDrawerText = (
       }
       break;
     case EntityType.QUALITY_MEASURES:
-      if (formattedEntityData.perPlanResponses[0].response) {
+      if (formattedEntityData.perPlanResponses?.[0].response) {
         addEditDrawerText = "Edit";
       }
       break;
