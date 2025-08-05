@@ -15,6 +15,7 @@ import {
   ProfilePage,
   ReportPageWrapper,
   ReportContext,
+  ComponentInventoryPage,
 } from "components";
 // types
 import { ReportRoute, ReportType } from "types";
@@ -33,6 +34,7 @@ export const AppRoutes = () => {
 
   // LaunchDarkly
   const naaarReport = useFlags()?.naaarReport;
+  const componentInventoryEnabled = useFlags()?.componentInventory;
 
   return (
     <Box
@@ -157,6 +159,14 @@ export const AppRoutes = () => {
                 }
               />
             </Fragment>
+          )}
+
+          {/* Component Inventory Routes */}
+          {componentInventoryEnabled && (
+            <Route
+              path="/component-inventory"
+              element={<ComponentInventoryPage />}
+            />
           )}
         </Routes>
       </AdminBannerProvider>
