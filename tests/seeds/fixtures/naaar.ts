@@ -7,7 +7,7 @@ import { DEFAULT_ANALYSIS_METHODS } from "../../../services/ui-src/src/constants
 import { dateFormat, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
-const analysisMethods = DEFAULT_ANALYSIS_METHODS;
+const analysisMethods = [...DEFAULT_ANALYSIS_METHODS];
 
 export const newNaaar = (stateName: string): SeedNewReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
@@ -160,36 +160,11 @@ export const fillNaaar = (): SeedFillReportShape => {
       standards: [
         {
           id: standardId,
-          [`standard_analysisMethodsUtilized-${standardTypeId}`]: [
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-k9t7YoOeTOAXX3s7qF6XfN33",
-              value: "Geomapping",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-rklEpKXz8jDefWdCtzI7c7oQ",
-              value: "Plan Provider Directory Review",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-lWbEf22iUIwylv0D8f73LvNK",
-              value: "Secret Shopper: Network Participation",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-KPCPdKzBefj4BqwKVAmMnvUj",
-              value: "Secret Shopper: Appointment Availability",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-fPrkUzYKDISHITjusb9WyqTg",
-              value: "Electronic Visit Verification Data Analysis",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-2wrlQNlvY8d3qZ6pwmH4pqYA",
-              value: "Review of Grievances Related to Access",
-            },
-            {
-              key: "standard_analysisMethodsUtilized-kIrheUXLpOwF7OEypso8Ylhs-j9XspYm012nfntIjHWr4mjly",
-              value: "Encounter Data Analysis",
-            },
-          ],
+          [`standard_analysisMethodsUtilized-${standardTypeId}`]:
+            analysisMethods.map(({ id, name }) => ({
+              key: `standard_analysisMethodsUtilized-${standardTypeId}-${id}`,
+              value: name,
+            })),
           standard_applicableRegion: [
             {
               key: "standard_applicableRegion-KaDliEkRCXvPNlRS7DVjjt9q",
@@ -198,7 +173,7 @@ export const fillNaaar = (): SeedFillReportShape => {
           ],
           standard_coreProviderType: [
             {
-              key: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
+              key: `standard_coreProviderType-${providerTypeId}`,
               value: "Primary care",
             },
           ],
@@ -214,7 +189,7 @@ export const fillNaaar = (): SeedFillReportShape => {
             faker.lorem.sentence(),
           standard_standardType: [
             {
-              key: "standard_standardType-kIrheUXLpOwF7OEypso8Ylhs",
+              key: `standard_standardType-${standardTypeId}`,
               value: "Maximum time to travel",
             },
           ],
