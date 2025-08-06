@@ -121,7 +121,7 @@ export const renderOverlayEntityDataCell = (
     !parentFieldCheckedChoiceIds?.includes(entity.id);
   return (
     <Box>
-      <Text>
+      <Text as="div">
         {renderResponseData(
           formField,
           entity[fieldId],
