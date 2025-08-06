@@ -11,7 +11,11 @@ export const TemplateCardAccordion = ({ verbiage, ...props }: Props) => {
   return (
     <Accordion sx={sx.root} allowToggle={true} {...props}>
       <AccordionItem label={buttonLabel}>
-        {text && <Text sx={sx.text}>{parseCustomHtml(text)}</Text>}
+        {text && (
+          <Text as="div" sx={sx.text}>
+            {parseCustomHtml(text)}
+          </Text>
+        )}
         {orderedList?.length > 0 && (
           <OrderedList sx={sx.orderedList}>
             {orderedList.map((item: string, index: number) => (
