@@ -1,0 +1,53 @@
+name: Upload reports
+
+on:
+  workflow_call:
+    outputs:
+      result_url:
+        description: "URL to see e2e test results"
+        value: ${{ jobs.upload-reports.outputs.result_url }}
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  upload-reports:
+    name: Upload Reports
+    runs-on: ubuntu-latest
+    outputs:
+      result_url: ${{ steps.reporturl.outputs.results }}
+    steps:
+      # create a unique folder name to put playwright reports in
+      - name: Set a Timestamp
+        id: timestampid
+        run: echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      # downloads artifact created from the test job
+      - name: Download reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-html-report # download from previous job
+          path: downloaded-html-report # save as this when downloaded
+      - name: Push files to github pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./downloaded-html-report # publish downloaded dir to github pages
+          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
+      # need to extract just org name for reassembling the github pages URL
+      - name: Extract Organization Name
+        id: extract-org
+        run: |
+          echo "ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_ENV
+          echo "org name: ${ORG_NAME}"
+      # need to extract just the repo name for reassembling the github pages URL
+      - name: Extract Repository Name
+        id: extract-repo
+        run: |
+          echo "REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_ENV
+          echo "repo name: ${REPO_NAME}"
+      # assembles org name, repo name, and unique timestamp to link to github pages url that was published
+      - name: Write URL in Summary
+        id: reporturl
+        run: |
+          echo "results=`## Playwright Test Results: https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/`" >> $GITHUB_OUTPUT

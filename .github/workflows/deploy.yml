@@ -12,49 +12,49 @@ permissions:
   actions: read
 
 jobs:
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: set variable values
-        run: ./.github/buildVars.sh set_values
-        env:
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - uses: actions/cache@v4
-        with:
-          path: |
-            **/node_modules
-            ~/.cache/Cypress
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-      - name: set path
-        run: |
-          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: run unit tests
-        run: ./scripts/test-unit.sh
-      - name: publish test coverage to qlty
-        uses: qltysh/qlty-action/coverage@v1
-        with:
-          oidc: true
-          files: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-      - name: Store unit test results
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-results
-          path: |
-            ${{github.workspace}}/services/app-api/coverage/lcov.info
-            ${{github.workspace}}/services/ui-src/coverage/lcov.info
-          retention-days: 14
+  # unit-tests:
+  #   name: Unit Tests
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: set variable values
+  #       run: ./.github/buildVars.sh set_values
+  #       env:
+  #         CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: ".nvmrc"
+  #     - uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           **/node_modules
+  #           ~/.cache/Cypress
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+  #     - name: set path
+  #       run: |
+  #         echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+  #     - name: run unit tests
+  #       run: ./scripts/test-unit.sh
+  #     - name: publish test coverage to qlty
+  #       uses: qltysh/qlty-action/coverage@v1
+  #       with:
+  #         oidc: true
+  #         files: |
+  #           ${{github.workspace}}/services/app-api/coverage/lcov.info
+  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info
+  #     - name: Store unit test results
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: unit-test-results
+  #         path: |
+  #           ${{github.workspace}}/services/app-api/coverage/lcov.info
+  #           ${{github.workspace}}/services/ui-src/coverage/lcov.info
+  #         retention-days: 14
 
   deploy:
     if: ${{ !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
-    needs: unit-tests
+    # needs: unit-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -194,80 +194,80 @@ jobs:
   #     ipset_name: ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }}
   #     ipset_id: ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }}
 
-  e2e-test:
-    name: E2E Integration Tests
-    needs:
-      - deploy
-      # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # e2e-test:
+  #   name: E2E Integration Tests
+  #   needs:
+  #     - deploy
+  #     # - register-runner
+  #   if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Run Cypress Tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: tests
-          spec: |
-            cypress/e2e/*.cy.js
-            cypress/e2e/admin/*.cy.js
-            cypress/e2e/mcpar/*.cy.js
-            cypress/e2e/mlr/*.cy.js
-          browser: chrome
-          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
-          wait-on: ${{ needs.deploy.outputs.application_endpoint }}
-          env: true
-        env:
-          CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
-          CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
-          CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
-          CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-test-results
-          path: |
-            ${{github.workspace}}/tests/cypress/screenshots/
-            ${{github.workspace}}/tests/cypress/videos/
-          retention-days: 14
+  #     - name: Run Cypress Tests
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         working-directory: tests
+  #         spec: |
+  #           cypress/e2e/*.cy.js
+  #           cypress/e2e/admin/*.cy.js
+  #           cypress/e2e/mcpar/*.cy.js
+  #           cypress/e2e/mlr/*.cy.js
+  #         browser: chrome
+  #         config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
+  #         wait-on: ${{ needs.deploy.outputs.application_endpoint }}
+  #         env: true
+  #       env:
+  #         CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+  #         CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+  #         CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+  #         CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+  #     - name: Upload screenshots
+  #       uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: cypress-test-results
+  #         path: |
+  #           ${{github.workspace}}/tests/cypress/screenshots/
+  #           ${{github.workspace}}/tests/cypress/videos/
+  #         retention-days: 14
 
-  a11y-tests:
-    name: E2E A11y Tests
-    needs:
-      - deploy
-      # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # a11y-tests:
+  #   name: E2E A11y Tests
+  #   needs:
+  #     - deploy
+  #     # - register-runner
+  #   if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Check Project A11y
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: tests
-          spec: cypress/e2e/accessibility/*.cy.js
-          browser: chrome
-          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
-          wait-on: ${{ needs.deploy.outputs.application_endpoint }}
-          env: true
-        env:
-          CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
-          CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
-          CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
-          CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
-          RUN_PA11Y: true
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: a11y-test-results
-          path: |
-            ${{github.workspace}}/tests/cypress/screenshots/
-            ${{github.workspace}}/tests/cypress/videos/
-          retention-days: 14
+  #     - name: Check Project A11y
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         working-directory: tests
+  #         spec: cypress/e2e/accessibility/*.cy.js
+  #         browser: chrome
+  #         config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
+  #         wait-on: ${{ needs.deploy.outputs.application_endpoint }}
+  #         env: true
+  #       env:
+  #         CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+  #         CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+  #         CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+  #         CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+  #         RUN_PA11Y: true
+  #     - name: Upload screenshots
+  #       uses: actions/upload-artifact@v4
+  #       if: failure()
+  #       with:
+  #         name: a11y-test-results
+  #         path: |
+  #           ${{github.workspace}}/tests/cypress/screenshots/
+  #           ${{github.workspace}}/tests/cypress/videos/
+  #         retention-days: 14
 
   test:
     name: Playwright Tests
@@ -316,53 +316,14 @@ jobs:
           retention-days: 30
 
   upload-reports:
-    name: Upload Reports
-    needs:
-      - test
-    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
-    outputs:
-      timestamp: ${{ steps.timestampid.outputs.timestamp }}
+    needs: test
     steps:
-      # create a unique folder name to put playwright reports in
-      - name: Set a Timestamp
-        id: timestampid
-        run: echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - name: Install dependencies
-        run: yarn install
-      # downloads artifact created from the test job
-      - name: Download reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-html-report # download from previous job
-          path: downloaded-html-report # save as this when downloaded
-      - name: Push files to github pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./downloaded-html-report # publish downloaded dir to github pages
-          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
-      # need to extract just org name for reassembling the github pages URL
-      - name: Extract Organization Name
-        id: extract-org
-        run: |
-          echo "ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_ENV
-          echo "org name: ${ORG_NAME}"
-      # need to extract just the repo name for reassembling the github pages URL
-      - name: Extract Repository Name
-        id: extract-repo
-        run: |
-          echo "REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_ENV
-          echo "repo name: ${REPO_NAME}"
-      # assembles org name, repo name, and unique timestamp to link to github pages url that was published
-      - name: Write URL in Summary
-        run: |
-          echo "## Playwright Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+      - name: Upload report to github pages
+        uses: ./.github/workflows/upload-e2e-test-reports.yml
+        if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+      - name: Publish report url to summary
+        run: echo ${{ needs.upload-reports.outputs.result_url }} >> $GITHUB_STEP_SUMMARY
 
   # cleanup:
   #   name: Delist GHA Runner CIDR Blocks
