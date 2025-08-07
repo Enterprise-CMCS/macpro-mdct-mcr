@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import {
   EntityDetailsMultiformOverlay,
+  EntityProvider,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
@@ -44,25 +45,39 @@ export const OverlayReportPage = ({
   const { updateReport } = useContext(ReportContext);
   const [isEntityDetailsOpen, setIsEntityDetailsOpen] =
     useState<boolean>(false);
-  const [selectedEntity, setSelectedEntity] = useState<EntityShape | undefined>(
-    undefined
-  );
   const [entering, setEntering] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   // state management
   const { full_name, state } = useStore().user ?? {};
-  const { report } = useStore();
+  const {
+    report,
+    selectedEntity,
+    setEntities,
+    setEntityType,
+    setSelectedEntity,
+  } = useStore();
 
   // Open/Close overlay action methods
   const toggleOverlay = (entity?: EntityShape) => {
     // Don't open overlay if no entity or details
     const openOverlay = !!entity && !!details;
 
-    setSelectedEntity(entity);
     setEntering(openOverlay);
     setIsEntityDetailsOpen(openOverlay);
     setSidebarHidden(openOverlay);
+
+    // Set store for autosave
+    if (openOverlay) {
+      setEntities(report?.fieldData[entityType]);
+      setEntityType(entityType);
+      setSelectedEntity(entity);
+    } else {
+      // Reset store on close
+      setEntities([]);
+      setEntityType(undefined);
+      setSelectedEntity(undefined);
+    }
   };
 
   const TablePage = () => {
@@ -174,40 +189,12 @@ export const OverlayReportPage = ({
       };
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
-      const selectedEntityIndex = currentEntities.findIndex(
-        (entity: EntityShape) => entity.id === selectedEntity?.id
+
+      const { newEntity, newEntities, selectedEntityIndex } = cleanUpdatedData(
+        enteredData,
+        selectedEntity!,
+        currentEntities
       );
-
-      const newEntity = {
-        ...selectedEntity,
-        ...enteredData,
-      } as EntityShape;
-
-      // Updates only for plans
-      if (entityType === EntityType.PLANS) {
-        // Delete any previously entered details if plan is compliant
-        const assurances = Object.keys(newEntity).filter(
-          (key) =>
-            key.endsWith("assurance") &&
-            !nonCompliantValues.has(newEntity[key][0].value)
-        );
-
-        assurances.forEach((key) => {
-          const formId = key.split("_")[0];
-          const relatedFields = Object.keys(selectedEntity as AnyObject).filter(
-            (key) => key.startsWith(formId) && !key.endsWith("assurance")
-          );
-          relatedFields.forEach((key) => {
-            delete newEntity[key];
-          });
-        });
-
-        // isComplete attribute used in API completionStatus validation
-        newEntity.isComplete = isPlanComplete(newEntity);
-      }
-
-      const newEntities = [...currentEntities];
-      newEntities[selectedEntityIndex] = newEntity;
 
       const shouldSave = entityWasUpdated(
         currentEntities[selectedEntityIndex],
@@ -231,22 +218,93 @@ export const OverlayReportPage = ({
       if (toggle) toggleOverlay();
     };
 
+    const updateCallback = async (
+      enteredData: any,
+      currentEntity: any,
+      currentEntities: any
+    ) => {
+      const { newEntity, newEntities } = cleanUpdatedData(
+        enteredData,
+        currentEntity,
+        currentEntities
+      );
+
+      //  TODO: Run handleTableSubmit
+
+      return {
+        newSelectedEntity: newEntity,
+        newEntities,
+      };
+    };
+
+    const cleanUpdatedData = (
+      enteredData: AnyObject,
+      currentEntity: EntityShape,
+      currentEntities: EntityShape[]
+    ) => {
+      const selectedEntityIndex = currentEntities.findIndex(
+        (entity: EntityShape) => entity.id === currentEntity?.id
+      );
+
+      const newEntity = {
+        ...currentEntity,
+        ...enteredData,
+      } as EntityShape;
+
+      // Updates only for plans
+      if (entityType === EntityType.PLANS) {
+        // Delete any previously entered details if plan is compliant
+        const assurances = Object.keys(newEntity).filter(
+          (key) =>
+            key.endsWith("assurance") &&
+            !nonCompliantValues.has(newEntity[key][0].value)
+        );
+
+        assurances.forEach((key) => {
+          const formId = key.split("_")[0];
+          const relatedFields = Object.keys(currentEntity as AnyObject).filter(
+            (key) => key.startsWith(formId) && !key.endsWith("assurance")
+          );
+          relatedFields.forEach((key) => {
+            delete newEntity[key];
+          });
+        });
+
+        // isComplete attribute used in API completionStatus validation
+        newEntity.isComplete = isPlanComplete(newEntity);
+      }
+
+      const newEntities = [...currentEntities];
+      newEntities[selectedEntityIndex] = newEntity;
+
+      return { newEntity, newEntities, selectedEntityIndex };
+    };
+
     return (
-      <EntityDetailsMultiformOverlay
-        childForms={details.childForms}
-        closeEntityDetailsOverlay={() => toggleOverlay()}
-        disabled={false}
-        entityType={entityType as EntityType}
-        forms={details.forms}
-        onSubmit={onSubmit}
-        report={report}
-        selectedEntity={selectedEntity}
-        setEntering={setEntering}
-        setSelectedEntity={setSelectedEntity}
-        submitting={submitting}
-        validateOnRender={validateOnRender}
-        verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
-      />
+      <EntityProvider
+        updateCallback={(
+          enteredData: AnyObject,
+          currentEntity: EntityShape,
+          currentEntities: EntityShape[]
+        ) => updateCallback(enteredData, currentEntity, currentEntities)}
+      >
+        <EntityDetailsMultiformOverlay
+          autosave={true}
+          childForms={details.childForms}
+          closeEntityDetailsOverlay={() => toggleOverlay()}
+          disabled={false}
+          entityType={entityType}
+          formData={selectedEntity}
+          forms={details.forms}
+          onSubmit={onSubmit}
+          report={report}
+          setEntering={setEntering}
+          setFormData={setSelectedEntity}
+          submitting={submitting}
+          validateOnRender={validateOnRender}
+          verbiage={detailsVerbiage as EntityDetailsMultiformVerbiage}
+        />
+      </EntityProvider>
     );
   };
 

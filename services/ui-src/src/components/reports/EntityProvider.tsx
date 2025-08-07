@@ -8,6 +8,7 @@ import { useStore } from "utils";
 
 interface EntityContextShape {
   updateEntities: Function;
+  updateCallback?: Function;
   setEntities: Function;
   setSelectedEntity: Function;
   setEntityType: Function;
@@ -15,6 +16,7 @@ interface EntityContextShape {
 
 export const EntityContext = createContext<EntityContextShape>({
   updateEntities: Function,
+  updateCallback: undefined,
   setEntities: Function,
   setSelectedEntity: Function,
   setEntityType: Function,
@@ -29,7 +31,10 @@ export const EntityContext = createContext<EntityContextShape>({
  *
  * @param children - React nodes
  */
-export const EntityProvider = ({ children }: EntityProviderProps) => {
+export const EntityProvider = ({
+  children,
+  updateCallback,
+}: EntityProviderProps) => {
   // state management
   const {
     selectedEntity,
@@ -49,16 +54,31 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
    *
    * @param updateData - updated entity information
    */
-  const updateEntities = (updateData: EntityShape) => {
+  const updateEntities = async (updateData: EntityShape) => {
     const currentEntities = entities;
     const selectedEntityIndex =
       currentEntities?.findIndex((x) => x.id === selectedEntity?.id) ?? -1;
+    let newEntity = {} as EntityShape;
+
     if (currentEntities && selectedEntityIndex > -1) {
-      const newEntity = {
+      newEntity = {
         ...currentEntities[selectedEntityIndex],
         ...updateData,
       };
       currentEntities[selectedEntityIndex] = newEntity;
+      setSelectedEntity(newEntity);
+    }
+
+    setEntities(currentEntities);
+
+    if (updateCallback) {
+      const { newSelectedEntity, newEntities } = await updateCallback(
+        updateData,
+        newEntity,
+        currentEntities
+      );
+      setSelectedEntity(newSelectedEntity);
+      setEntities(newEntities);
     }
 
     return currentEntities;
@@ -90,4 +110,5 @@ export const EntityProvider = ({ children }: EntityProviderProps) => {
 
 interface EntityProviderProps {
   children?: ReactNode;
+  updateCallback?: Function;
 }

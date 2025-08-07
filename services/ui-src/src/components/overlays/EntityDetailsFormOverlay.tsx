@@ -17,13 +17,14 @@ import {
 } from "types";
 
 export const EntityDetailsFormOverlay = ({
+  autosave = false,
   closeEntityDetailsOverlay,
   disabled,
   form,
+  formData,
   onChange,
   onError,
   onSubmit,
-  selectedEntity,
   submitting,
   sxOverride,
   table,
@@ -43,9 +44,10 @@ export const EntityDetailsFormOverlay = ({
     />
     <Box sx={{ ...sxOverride?.form }}>
       <Form
+        autosave={autosave}
         disabled={disabled}
         dontReset={true}
-        formData={selectedEntity}
+        formData={formData}
         formJson={form}
         id={form.id}
         onChange={onChange}
@@ -64,13 +66,14 @@ export const EntityDetailsFormOverlay = ({
 );
 
 interface Props {
+  autosave?: boolean;
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;
+  formData?: EntityShape;
   onChange?: Function;
   onError?: Function;
   onSubmit: Function;
-  selectedEntity?: EntityShape;
   submitting: boolean;
   sxOverride?: AnyObject;
   table?: TableContentShape;

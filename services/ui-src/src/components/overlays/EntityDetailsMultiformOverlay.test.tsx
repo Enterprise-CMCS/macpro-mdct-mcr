@@ -29,7 +29,7 @@ mockedUseStore.mockReturnValue({
 const { details } = mockEntityDetailsMultiformOverlayJson;
 const mockCloseEntityDetailsOverlay = jest.fn();
 const mockOnSubmit = jest.fn();
-const mockSetSelectedEntity = jest.fn();
+const mockSetFormData = jest.fn();
 const mockSetEntering = jest.fn();
 const mockReport = {
   fieldData: {
@@ -42,7 +42,7 @@ const entityDetailsMultiformOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false,
   childForms: any = details!.childForms,
-  selectedEntity: any = mockEntityStore.selectedEntity
+  formData: any = mockEntityStore.selectedEntity
 ) => (
   <RouterWrappedComponent>
     <OverlayProvider>
@@ -51,12 +51,12 @@ const entityDetailsMultiformOverlayComponent = (
         closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
         disabled={disabled}
         entityType={EntityType.PLANS}
+        formData={formData}
         forms={details!.forms}
         onSubmit={mockOnSubmit}
         report={mockReport}
-        selectedEntity={selectedEntity}
         setEntering={mockSetEntering}
-        setSelectedEntity={mockSetSelectedEntity}
+        setFormData={mockSetFormData}
         submitting={submitting}
         validateOnRender={false}
         verbiage={details!.verbiage}
@@ -67,14 +67,14 @@ const entityDetailsMultiformOverlayComponent = (
 
 async function setupChildTableFormTest(
   childButtonText: string = "Enter",
-  selectedEntity: any = mockEntityStore.selectedEntity
+  formData: any = mockEntityStore.selectedEntity
 ) {
   render(
     entityDetailsMultiformOverlayComponent(
       undefined,
       undefined,
       undefined,
-      selectedEntity
+      formData
     )
   );
 
@@ -211,12 +211,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   });
 
   test("renders child table - add exception", async () => {
-    const selectedEntity = {
+    const formData = {
       ...mockEntityStore.selectedEntity,
       "planCompliance43868_standard-mockStandard-nonComplianceDescription":
         "Mock Description",
     };
-    await setupChildTableFormTest("Edit", selectedEntity);
+    await setupChildTableFormTest("Edit", formData);
 
     // Child Form - add exception
     const exceptionRadioButton = screen.getByRole("radio", {
@@ -234,12 +234,12 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   });
 
   test("renders child table - add non-Compliance", async () => {
-    const selectedEntity = {
+    const formData = {
       ...mockEntityStore.selectedEntity,
       "planCompliance43868_standard-mockStandard-exceptionsDescription":
         "Mock Description",
     };
-    await setupChildTableFormTest("Edit", selectedEntity);
+    await setupChildTableFormTest("Edit", formData);
 
     // Child Form - add non-compliance
     const radioButtonYes = screen.getByRole("radio", {
@@ -257,7 +257,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
   });
 
   test("renders child table - remove exceptions and non-compliance keys", async () => {
-    const selectedEntity = {
+    const formData = {
       ...mockEntityStore.selectedEntity,
       "planCompliance43868_standard-mockStandard-exceptionsDescription":
         "Mock Description",
@@ -266,7 +266,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       "planCompliance43868_standard-mockStandard-mockDescription":
         "Mock Description",
     };
-    await setupChildTableFormTest("Edit", selectedEntity);
+    await setupChildTableFormTest("Edit", formData);
     await submitChildForm();
   });
 
