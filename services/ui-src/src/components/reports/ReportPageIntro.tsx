@@ -65,7 +65,7 @@ const sx = {
     marginBottom: "2rem",
   },
   sectionHeading: {
-    color: "palette.gray",
+    color: "gray",
     fontSize: "md",
     marginBottom: "0.5rem",
   },
@@ -87,17 +87,17 @@ const sx = {
       marginBottom: "0.75rem",
     },
     "p, span": {
-      color: "palette.gray",
+      color: "gray",
       marginTop: "1rem",
     },
     a: {
-      color: "palette.primary",
+      color: "primary",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     "b, strong": {
-      color: "palette.base",
+      color: "base",
     },
   },
   table: {

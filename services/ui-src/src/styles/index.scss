@@ -5,7 +5,7 @@ $image-path: "~@cmsgov/design-system/dist/images";
 
 @mixin tabbed-focus {
   box-shadow: 0 0 0 3px #fff,
-    0 0 4px 6px var(--mdct-colors-palette-focus_dark) !important;
+    0 0 4px 6px var(--mdct-colors-focus_dark) !important;
   // Add support for Windows High Contrast Mode (WHCM)
   // The transparent color only shows when WHCM is triggered
   outline: 3px solid transparent;
@@ -36,10 +36,10 @@ li::marker {
 }
 
 a {
-  color: var(--mdct-colors-palette-white);
+  color: var(--mdct-colors-white);
   transition: all 0.3s ease !important;
   &:hover {
-    color: var(--mdct-colors-palette-gray_light);
+    color: var(--mdct-colors-gray_light);
   }
   &:visited {
     color: inherit;
@@ -67,7 +67,7 @@ select.ds-c-field {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-color: #fff;
+  background-color: var(--mdct-colors-white);
   background-image: url('/src/assets/icons/icon_dropdown_arrow.svg');
   background-position: right 8px center;
   background-repeat: no-repeat;

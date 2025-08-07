@@ -353,7 +353,7 @@ const sx = {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   topAddEntityButton: {
     marginTop: "1.5rem",
@@ -367,10 +367,10 @@ const sx = {
     paddingTop: "1rem",
     fontWeight: "bold",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     ol: {
@@ -386,7 +386,7 @@ const sx = {
       paddingLeft: "1rem",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
+      borderColor: "gray_light",
       ".tablet &, .mobile &": {
         border: "none",
       },

@@ -102,7 +102,7 @@ const sx = {
     th: {
       border: "none",
       fontWeight: "bold",
-      color: "palette.gray_medium",
+      color: "gray_medium",
     },
   },
 };

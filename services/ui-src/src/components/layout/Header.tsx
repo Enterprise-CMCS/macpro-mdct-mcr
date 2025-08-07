@@ -115,7 +115,7 @@ const sx = {
   headerBar: {
     minHeight: "4rem",
     alignItems: "center",
-    bg: "palette.primary_darkest",
+    bg: "primary_darkest",
   },
   headerContainer: {
     maxW: "appMax",
@@ -135,7 +135,7 @@ const sx = {
     marginTop: "0.5rem",
   },
   subnavBar: {
-    bg: "palette.secondary_lightest",
+    bg: "secondary_lightest",
   },
   subnavContainer: {
     maxW: "appMax",
@@ -179,7 +179,7 @@ const sx = {
     border: "1px solid",
     padding: ".5rem 1rem",
     borderRadius: "5px",
-    color: "palette.primary",
+    color: "primary",
     fontWeight: "bold",
   },
 };

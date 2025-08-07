@@ -145,7 +145,7 @@ const sx = {
 
   // disabled field
   ".ds-c-field[disabled]": {
-    color: "palette.base",
+    color: "base",
   },
   // field hint
   ".ds-c-hint": {
@@ -162,7 +162,7 @@ const sx = {
       padding: "0.5rem",
     },
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
     },
   },
@@ -185,7 +185,7 @@ const sx = {
   h1: {
     fontWeight: "bold",
     fontSize: "md",
-    color: "palette.base",
+    color: "base",
     paddingTop: "1rem",
   },
 };

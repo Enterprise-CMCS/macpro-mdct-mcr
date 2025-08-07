@@ -179,7 +179,7 @@ const sx = {
     marginTop: "1rem",
     paddingLeft: "1rem",
     borderLeft: ".3rem solid",
-    borderColor: "palette.primary",
+    borderColor: "primary",
   },
   widgetTitle: {
     fontWeight: "bold",
@@ -211,7 +211,7 @@ const sx = {
   },
   tableHeader: {
     Th: {
-      color: "palette.gray_medium",
+      color: "gray_medium",
     },
   },
 };

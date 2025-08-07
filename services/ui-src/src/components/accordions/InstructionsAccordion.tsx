@@ -43,7 +43,7 @@ const sx = {
       paddingLeft: "1rem",
     },
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
     },
     p: {

@@ -216,7 +216,7 @@ function entityRowStyling(canAddEntities: boolean) {
     minHeight: "3.25rem",
     padding: "0.5rem",
     paddingLeft: "1rem",
-    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
+    borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     "&:last-of-type": {
       borderBottom: canAddEntities ?? "none",
     },
@@ -258,7 +258,7 @@ const sx = {
     marginLeft: "2.25rem",
   },
   incompleteText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "sm",
     paddingLeft: "2.25rem",
   },
@@ -271,10 +271,10 @@ const sx = {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
   },
@@ -282,10 +282,10 @@ const sx = {
     paddingTop: "1rem",
     fontWeight: "bold",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     ol: {
@@ -311,11 +311,11 @@ const sx = {
     height: "2.5rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_lighter",
-    borderColor: "palette.gray_lighter",
+    color: "gray_lighter",
+    borderColor: "gray_lighter",
     "&:hover": {
-      color: "palette.gray_lighter",
-      borderColor: "palette.gray_lighter",
+      color: "gray_lighter",
+      borderColor: "gray_lighter",
     },
   },
   standardForm: {

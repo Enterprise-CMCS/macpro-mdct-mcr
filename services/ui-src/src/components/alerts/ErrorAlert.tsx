@@ -45,14 +45,14 @@ interface Props {
 
 const sx = {
   root: {
-    background: "palette.error_lightest",
-    borderLeft: "palette.error",
+    background: "error_lightest",
+    borderLeft: "error",
     minHeight: 0,
     marginY: "1rem",
     maxWidth: "55.25rem",
     margin: "auto",
     borderInlineStartWidth: "0.5rem",
-    borderInlineStartColor: "palette.error",
+    borderInlineStartColor: "error",
     boxShadow: "0px 4px 3px rgba(0, 0, 0, 0.2)",
     "&.toast": {
       position: "absolute",

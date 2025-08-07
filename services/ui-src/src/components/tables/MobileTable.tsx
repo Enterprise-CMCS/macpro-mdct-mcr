@@ -59,7 +59,7 @@ const sx = {
   },
   border: {
     borderBottom: "1px solid",
-    borderColor: "palette.gray_lighter",
+    borderColor: "gray_lighter",
     padding: "1rem 0",
   },
 };

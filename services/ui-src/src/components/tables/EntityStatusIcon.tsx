@@ -79,11 +79,11 @@ const sx = {
     alignItems: "center",
   },
   successText: {
-    color: "palette.success_darker",
+    color: "success_darker",
     fontSize: "0.667rem",
   },
   errorText: {
-    color: "palette.error_darker",
+    color: "error_darker",
     fontSize: "0.667rem",
   },
   containerPdf: {

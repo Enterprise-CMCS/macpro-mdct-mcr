@@ -1,4 +1,4 @@
-// Chakra UI theme info: https://chakra-ui.com/docs/styled-system/theming/theme
+// Chakra UI theme info: https://v1.chakra-ui.com/docs/styled-system/theming/theme
 import { extendTheme } from "@chakra-ui/react";
 
 // Foundational style overrides
@@ -39,22 +39,22 @@ const theme = extendTheme({
       variants: {
         // primary variants
         primary: {
-          backgroundColor: "palette.primary",
-          color: "palette.white",
+          backgroundColor: "primary",
+          color: "white",
           "&:hover": {
-            backgroundColor: "palette.primary_darker",
+            backgroundColor: "primary_darker",
           },
           "&:disabled, &:disabled:hover": {
-            color: "palette.gray",
-            backgroundColor: "palette.gray_lighter",
+            color: "gray",
+            backgroundColor: "gray_lighter",
             opacity: 1,
           },
         },
         transparent: {
-          color: "palette.primary",
+          color: "primary",
           backgroundColor: "transparent",
           _hover: {
-            color: "palette.primary_darker",
+            color: "primary_darker",
             backgroundColor: "transparent",
             span: {
               filter: svgFilters.primary_darker,
@@ -64,20 +64,20 @@ const theme = extendTheme({
         outline: () => ({
           ...theme.components.Button.variants.transparent,
           border: "1px solid",
-          borderColor: "palette.primary",
+          borderColor: "primary",
           textDecoration: "none",
           _hover: {
             ...theme.components.Button.variants.transparent._hover,
-            borderColor: "palette.primary_darker",
+            borderColor: "primary_darker",
             span: {
               filter: svgFilters.primary_darker,
             },
           },
           _visited: {
-            color: "palette.primary",
+            color: "primary",
           },
           ":hover, :visited:hover": {
-            color: "palette.primary_darker",
+            color: "primary_darker",
           },
           _focus: {
             textDecoration: "none",
@@ -89,23 +89,23 @@ const theme = extendTheme({
         }),
         // inverse variants
         inverse: {
-          backgroundColor: "palette.white",
-          color: "palette.primary",
+          backgroundColor: "white",
+          color: "primary",
           _hover: {
-            color: "palette.primary_darker",
+            color: "primary_darker",
             span: {
               filter: svgFilters.primary_darker,
             },
           },
         },
         inverse_transparent: {
-          color: "palette.white",
+          color: "white",
           backgroundColor: "transparent",
           span: {
             filter: svgFilters.white,
           },
           _hover: {
-            color: "palette.gray_lighter",
+            color: "gray_lighter",
             backgroundColor: "transparent",
             span: {
               filter: svgFilters.gray_lighter,
@@ -115,13 +115,13 @@ const theme = extendTheme({
         inverse_outline: () => ({
           ...theme.components.Button.variants.inverse_transparent,
           border: "1px solid",
-          borderColor: "palette.white",
+          borderColor: "white",
           span: {
             filter: svgFilters.white,
           },
           _hover: {
             ...theme.components.Button.variants.transparent._hover,
-            borderColor: "palette.gray_lighter",
+            borderColor: "gray_lighter",
             span: {
               filter: svgFilters.gray_lighter,
             },
@@ -133,10 +133,10 @@ const theme = extendTheme({
         }),
         // other
         danger: {
-          backgroundColor: "palette.error_dark",
-          color: "palette.white",
+          backgroundColor: "error_dark",
+          color: "white",
           _hover: {
-            backgroundColor: "palette.error_darker",
+            backgroundColor: "error_darker",
           },
         },
       },
@@ -146,7 +146,7 @@ const theme = extendTheme({
     },
     Heading: {
       baseStyle: {
-        color: "palette.base",
+        color: "base",
       },
     },
     Link: {
@@ -156,25 +156,25 @@ const theme = extendTheme({
       },
       variants: {
         primary: {
-          color: "palette.primary",
+          color: "primary",
           _visited: {
-            color: "palette.primary",
-            textDecorationColor: "palette.primary",
+            color: "primary",
+            textDecorationColor: "primary",
           },
           ":hover, :visited:hover": {
-            color: "palette.primary_darker",
-            textDecorationColor: "palette.primary_darker",
+            color: "primary_darker",
+            textDecorationColor: "primary_darker",
           },
         },
         inverse: {
-          color: "palette.white",
+          color: "white",
           _visited: {
-            color: "palette.white",
-            textDecorationColor: "palette.white",
+            color: "white",
+            textDecorationColor: "white",
           },
           ":hover, :visited:hover": {
-            color: "palette.gray_lighter",
-            textDecorationColor: "palette.gray_lighter",
+            color: "gray_lighter",
+            textDecorationColor: "gray_lighter",
           },
         },
         unstyled: {
@@ -190,7 +190,7 @@ const theme = extendTheme({
     },
     Text: {
       baseStyle: {
-        color: "palette.base",
+        color: "base",
         transition: "all 0.3s ease",
       },
     },
