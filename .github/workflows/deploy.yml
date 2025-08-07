@@ -323,7 +323,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: upload-reports
     steps:
-      - run: echo ${{ needs.upload-reports.outputs.result_url }} >> $GITHUB_STEP_SUMMARY
+      - run: |
+          echo "## Playwright Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "${{ needs.upload-reports.outputs.result_url }}" >> $GITHUB_STEP_SUMMARY
 
   # cleanup:
   #   name: Delist GHA Runner CIDR Blocks

@@ -50,4 +50,5 @@ jobs:
       - name: Write URL in Summary
         id: reporturl
         run: |
-          echo "results=`## Playwright Test Results: https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/`" >> $GITHUB_OUTPUT
+          REPORT_URL="https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/"
+          echo "results=$REPORT_URL" >> $GITHUB_OUTPUT
