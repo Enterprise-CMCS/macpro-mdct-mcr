@@ -2170,7 +2170,7 @@
                 "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.3 Plan share of any Medicaid managed care",
-                  "hint": "<span>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</span><span class='fake-list-item'>Numerator: Plan enrollment (D1.I.1)</span><span class='fake-list-item'>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</span>",
+                  "hint": "<span>What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?</span><span class='fake-list-item'>Numerator: Plan enrollment (D1.I.1)</span><span class='fake-list-item'>Denominator: Statewide Medicaid enrollment (B.I.1)</span>",
                   "mask": "percentage"
                 }
               },
