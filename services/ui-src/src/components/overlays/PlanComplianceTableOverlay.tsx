@@ -230,10 +230,13 @@ export const PlanComplianceTableOverlay = ({
         />
         <Box sx={sx.counts}>
           <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
+            {displayCount(
+              tableVerbiage.totals?.nonCompliant,
+              nonComplianceCount
+            )}
           </Text>
           <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.standards, nonComplianceCount)}
+            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>
