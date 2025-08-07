@@ -316,14 +316,14 @@ jobs:
           retention-days: 30
 
   upload-reports:
-    runs-on: ubuntu-latest
     needs: test
+    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+    uses: ./.github/workflows/upload-e2e-test-reports.yml
+  publish-url:
+    runs-on: ubuntu-latest
+    needs: upload-reports
     steps:
-      - name: Upload report to github pages
-        uses: ./.github/workflows/upload-e2e-test-reports.yml
-        if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
-      - name: Publish report url to summary
-        run: echo ${{ needs.upload-reports.outputs.result_url }} >> $GITHUB_STEP_SUMMARY
+      - run: echo ${{ needs.upload-reports.outputs.result_url }} >> $GITHUB_STEP_SUMMARY
 
   # cleanup:
   #   name: Delist GHA Runner CIDR Blocks
