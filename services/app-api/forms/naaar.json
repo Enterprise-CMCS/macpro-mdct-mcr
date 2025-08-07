@@ -1721,7 +1721,7 @@
                                             "label": "Report results by quarter",
                                             "children": [
                                               {
-                                                "id": "enrolleesMeetingStandard",
+                                                "id": "quarterlyEnrolleesMeetingStandard",
                                                 "type": "radio",
                                                 "validation": "radioOptional",
                                                 "props": {
@@ -1873,7 +1873,7 @@
                                             "label": "Report results annually",
                                             "children": [
                                               {
-                                                "id": "reportResultsAnnually",
+                                                "id": "annualEnrolleesMeetingStandard",
                                                 "type": "radio",
                                                 "validation": "radioOptional",
                                                 "props": {
@@ -1979,7 +1979,7 @@
                                             "label": "Report results by quarter",
                                             "children": [
                                               {
-                                                "id": "enrolleesMeetingStandard",
+                                                "id": "quarterlyEnrolleesMeetingStandard",
                                                 "type": "radio",
                                                 "validation": "radioOptional",
                                                 "props": {
@@ -2088,7 +2088,7 @@
                                             "label": "Report results annually",
                                             "children": [
                                               {
-                                                "id": "reportResultsAnnually",
+                                                "id": "annualEnrolleesMeetingStandard",
                                                 "type": "radio",
                                                 "validation": "radioOptional",
                                                 "props": {
