@@ -39,6 +39,10 @@ jobs:
       - name: set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+      - name: set branch_name
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: List all topics for project
         run: |
           #Executing the run command is required to assemble all the dependencies in the topics service
