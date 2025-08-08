@@ -228,18 +228,20 @@ export const radioOptional = () =>
   radioSchema().min(0, error.REQUIRED_GENERIC).notRequired().nullable();
 
 // DYNAMIC
-export const dynamic = () =>
-  array()
-    .min(1)
-    .of(
-      object().shape({
-        id: text(),
-        name: text(),
-      })
-    )
-    .required(error.REQUIRED_GENERIC);
+const dynamicSchema = () =>
+  array().of(
+    object().shape({
+      id: text(),
+      name: text().required(""),
+    })
+  );
 
-export const dynamicOptional = () => array().notRequired().nullable();
+export const dynamic = () =>
+  dynamicSchema()
+    .min(1, error.REQUIRED_GENERIC)
+    .required(error.REQUIRED_GENERIC);
+export const dynamicOptional = () =>
+  dynamicSchema().min(0).notRequired().nullable();
 
 // NESTED
 export const nested = (
