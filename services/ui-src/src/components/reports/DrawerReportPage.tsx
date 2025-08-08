@@ -448,8 +448,8 @@ function dashboardTitleStyling(canAddEntities: boolean) {
   return {
     paddingLeft: canAddEntities && "3.5rem",
     paddingBottom: "0.75rem",
-    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
-    color: "palette.gray_medium",
+    borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
+    color: "gray_medium",
     fontSize: "lg",
     fontWeight: "bold",
   };
@@ -463,7 +463,7 @@ const sx = {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   buttonIcons: {
     height: "1rem",
@@ -479,10 +479,10 @@ const sx = {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
   },
@@ -490,10 +490,10 @@ const sx = {
     paddingTop: "1rem",
     fontWeight: "bold",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     ol: {

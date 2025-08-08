@@ -47,7 +47,7 @@ const sx = {
   },
   accordionButton: {
     minHeight: "3.5rem",
-    bg: "palette.gray_lightest",
+    bg: "gray_lightest",
     textAlign: "left",
   },
   accordionPanel: {

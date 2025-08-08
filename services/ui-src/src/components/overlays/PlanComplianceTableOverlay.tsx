@@ -284,7 +284,7 @@ const sx = {
     marginBottom: "2rem",
   },
   count: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
     fontWeight: "bold",
     whiteSpace: "nowrap",
     ".tablet &, .mobile &": {
@@ -303,7 +303,7 @@ const sx = {
     fontWeight: "bold",
   },
   exceptionsNonCompliance: {
-    color: "palette.primary_darker",
+    color: "primary_darker",
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -315,7 +315,7 @@ const sxOverride = {
       borderBottomWidth: 0,
     },
     tbody: {
-      backgroundColor: "palette.secondary_lightest",
+      backgroundColor: "secondary_lightest",
     },
   },
 };

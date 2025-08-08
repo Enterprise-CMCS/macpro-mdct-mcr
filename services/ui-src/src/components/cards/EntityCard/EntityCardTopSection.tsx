@@ -200,16 +200,16 @@ const sx = {
   },
   unfinishedMessage: {
     fontSize: "xs",
-    color: "palette.error_dark",
+    color: "error_dark",
     "&.pdf-color": {
-      color: "palette.error_darker",
+      color: "error_darker",
     },
   },
   standardCount: {
     width: "44px",
     fontWeight: "bold",
     fontSize: "sm",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   standardHeading: {
     fontWeight: "bold",
@@ -222,7 +222,7 @@ const sx = {
     marginTop: "1rem",
     paddingTop: "1rem",
     borderTop: "1px solid",
-    borderTopColor: "palette.gray_lighter",
+    borderTopColor: "gray_lighter",
     fontWeight: "bold",
     fontSize: "md",
   },

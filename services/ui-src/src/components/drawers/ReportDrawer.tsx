@@ -99,11 +99,11 @@ const sx = {
   noFormMessage: {
     margin: "0.5rem auto 0.25rem",
     fontSize: "lg",
-    color: "palette.error_darker",
+    color: "error_darker",
   },
   footerBox: {
     marginTop: "2rem",
-    borderTop: "1.5px solid var(--mdct-colors-palette-gray_light)",
+    borderTop: "1.5px solid var(--mdct-colors-gray_light)",
   },
   buttonFlex: {
     justifyContent: "space-between",

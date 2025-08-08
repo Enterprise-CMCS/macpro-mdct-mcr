@@ -16,14 +16,14 @@ export const SectionHeader = ({
     hr: {
       marginTop: "2rem",
       paddingBottom: "1rem",
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
     },
     h3: {
       padding: divider === "bottom" ? "2rem 0 1rem 0" : "2rem 0 2rem 0",
     },
     hintText: {
       fontSize: "sm",
-      color: "palette.gray",
+      color: "gray",
       paddingTop: "1rem",
     },
   };

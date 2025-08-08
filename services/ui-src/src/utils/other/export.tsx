@@ -457,12 +457,12 @@ const sx = {
     fontWeight: "bold",
   },
   noResponse: {
-    color: "palette.error_darker",
+    color: "error_darker",
   },
   noResponseOptional: {
-    color: "palette.base",
+    color: "base",
   },
   notApplicable: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
 };
