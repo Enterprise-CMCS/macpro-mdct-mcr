@@ -24,8 +24,8 @@ import {
   EntityShape,
   FormJson,
   NaaarStandardsTableShape,
-  ScreenReaderCustomHeaderName,
   ReportShape,
+  ScreenReaderCustomHeaderName,
 } from "types";
 // utils
 import {
@@ -45,18 +45,19 @@ import {
 } from "utils";
 
 export const PlanComplianceTableOverlay = ({
+  autosave = false,
   closeEntityDetailsOverlay,
   disabled,
   form,
+  formData,
   onChange,
   table,
   onSubmit,
-  selectedEntity,
+  report,
   standards,
   submitting,
   validateOnRender,
   verbiage,
-  report,
 }: Props) => {
   const standardKeyPrefix = planComplianceStandardKey;
   const { selectedStandard, setSelectedStandard } = useContext(OverlayContext);
@@ -98,7 +99,7 @@ export const PlanComplianceTableOverlay = ({
         standardKeyPrefix,
         entity,
         report?.fieldData.analysisMethods,
-        selectedEntity?.name
+        formData?.name
       );
     }
 
@@ -110,12 +111,13 @@ export const PlanComplianceTableOverlay = ({
 
     return (
       <EntityDetailsFormOverlay
+        autosave={autosave}
         closeEntityDetailsOverlay={closeEntityDetailsFormOverlay}
         disabled={disabled}
         form={formJson}
+        formData={formData}
         onChange={onChange}
         onSubmit={onSubmit}
-        selectedEntity={selectedEntity}
         submitting={submitting}
         sxOverride={sxOverride}
         table={table}
@@ -136,12 +138,10 @@ export const PlanComplianceTableOverlay = ({
     const content = { caption };
 
     useEffect(() => {
-      if (selectedEntity) {
-        setExceptionsNonCompliance(
-          getExceptionsNonComplianceKeys(selectedEntity)
-        );
+      if (formData) {
+        setExceptionsNonCompliance(getExceptionsNonComplianceKeys(formData));
       }
-    }, [selectedEntity]);
+    }, [formData]);
 
     useEffect(() => {
       const {
@@ -262,18 +262,19 @@ export const PlanComplianceTableOverlay = ({
 };
 
 interface Props {
+  autosave?: boolean;
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   form: FormJson;
+  formData?: EntityShape;
   onChange?: Function;
   onSubmit: Function;
-  selectedEntity?: EntityShape;
+  report?: ReportShape;
   standards: EntityShape[];
   submitting: boolean;
   table: EntityDetailsTableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
-  report?: ReportShape;
 }
 
 const sx = {

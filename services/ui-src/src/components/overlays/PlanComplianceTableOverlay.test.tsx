@@ -38,7 +38,7 @@ const mockOnSubmit = jest.fn();
 const planComplianceTableOverlayComponent = (
   disabled: boolean = false,
   submitting: boolean = false,
-  selectedEntity: any = mockEntityStore.selectedEntity
+  formData: any = mockEntityStore.selectedEntity
 ) => (
   <RouterWrappedComponent>
     <OverlayProvider>
@@ -47,8 +47,8 @@ const planComplianceTableOverlayComponent = (
         disabled={disabled}
         standards={mockNaaarStandards}
         form={mockForm}
+        formData={formData}
         onSubmit={mockOnSubmit}
-        selectedEntity={selectedEntity}
         submitting={submitting}
         table={mockTable}
         validateOnRender={false}

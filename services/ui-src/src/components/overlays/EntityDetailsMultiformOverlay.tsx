@@ -43,16 +43,17 @@ import {
 import { isComplianceFormComplete, translateVerbiage } from "utils";
 
 export const EntityDetailsMultiformOverlay = ({
+  autosave = false,
   childForms,
   closeEntityDetailsOverlay,
   disabled,
   entityType,
+  formData,
   forms,
   onSubmit,
   report,
-  selectedEntity,
   setEntering,
-  setSelectedEntity,
+  setFormData,
   submitting,
   validateOnRender,
   verbiage,
@@ -81,11 +82,11 @@ export const EntityDetailsMultiformOverlay = ({
 
     const { form, table, verbiage } = formObject;
     const translatedVerbiage = translateVerbiage(verbiage, {
-      planName: selectedEntity?.name,
+      planName: formData?.name,
     }) as EntityDetailsMultiformVerbiage;
 
     const handleChildSubmit = (enteredData: AnyObject) => {
-      setSelectedEntity({ ...selectedEntity, ...enteredData });
+      setFormData({ ...formData, ...enteredData } as EntityShape);
       onSubmit(enteredData, false);
     };
 
@@ -94,7 +95,7 @@ export const EntityDetailsMultiformOverlay = ({
 
       const { caption, sortableHeadRow, verbiage: tableVerbiage } = table;
       const translatedTableVerbiage = translateVerbiage(tableVerbiage, {
-        planName: selectedEntity?.name,
+        planName: formData?.name,
       }) as EntityDetailsTableVerbiage;
 
       const tableProps = {
@@ -111,7 +112,7 @@ export const EntityDetailsMultiformOverlay = ({
         const nonComplianceKeys: string[] = [];
 
         // look through existing and new keys, because we may need to delete either
-        const combinedData = { ...selectedEntity, ...enteredData };
+        const combinedData = { ...formData, ...enteredData };
 
         Object.keys(combinedData || {}).forEach((key) => {
           if (key.includes(standardKeyPrefix)) {
@@ -136,45 +137,46 @@ export const EntityDetailsMultiformOverlay = ({
         if (isCompliant) {
           // delete all standard keys
           allStandardKeys.forEach((key) => {
-            delete selectedEntity?.[key];
+            delete formData?.[key];
             delete updatedData[key];
           });
         } else if (hasExceptions) {
           // delete nonCompliance if there are exceptions
           nonComplianceKeys.forEach((key) => {
-            delete selectedEntity?.[key];
+            delete formData?.[key];
             delete updatedData[key];
           });
         } else {
           // delete exceptions if there is nonCompliance
           exceptionKeys.forEach((key) => {
-            delete selectedEntity?.[key];
+            delete formData?.[key];
             delete updatedData[key];
           });
-          // enteredData has the full form data for 438.68 so keep only 438.68 stuff from enteredData and not from selectedEntity
+          // enteredData has the full form data for 438.68 so keep only 438.68 stuff from enteredData and not from formData
           nonComplianceKeys.forEach((key) => {
-            delete selectedEntity?.[key];
+            delete formData?.[key];
           });
         }
 
-        setSelectedEntity(selectedEntity);
+        setFormData(formData);
         setSelectedStandard(null);
         handleChildSubmit(updatedData);
       };
 
       return (
         <PlanComplianceTableOverlay
+          autosave={autosave}
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           disabled={false}
-          standards={standards}
           form={form}
+          formData={formData}
           onSubmit={handleTableSubmit}
-          selectedEntity={selectedEntity}
+          report={report}
+          standards={standards}
           submitting={submitting}
           table={tableProps}
           validateOnRender={validateOnRender || false}
           verbiage={translatedVerbiage}
-          report={report}
         />
       );
     }
@@ -186,11 +188,12 @@ export const EntityDetailsMultiformOverlay = ({
 
     return (
       <EntityDetailsFormOverlay
+        autosave={autosave}
         closeEntityDetailsOverlay={closeEntityDetailsOverlay}
         disabled={false}
         form={form}
+        formData={formData}
         onSubmit={handleFormSubmit}
-        selectedEntity={selectedEntity}
         submitting={submitting}
         sxOverride={sxOverride}
         validateOnRender={validateOnRender || false}
@@ -208,7 +211,9 @@ export const EntityDetailsMultiformOverlay = ({
     const [formCompletion, setFormCompletion] = useState<{
       [key: string]: boolean;
     }>({});
-    const [formData, setFormData] = useState<AnyObject>({});
+    const defaultEntity = {} as EntityShape;
+    const [formEnteredData, setFormEnteredData] =
+      useState<EntityShape>(defaultEntity);
 
     useEffect(() => {
       setEntering(false);
@@ -224,12 +229,12 @@ export const EntityDetailsMultiformOverlay = ({
         let isNonCompliant = false;
         let isFormComplete = false;
 
-        if (selectedEntity?.[assuranceField]) {
+        if (formData?.[assuranceField]) {
           // Assurance has non-compliant answer, enable Enter button
           isNonCompliant = nonCompliantValues.has(
-            selectedEntity[assuranceField][0]?.value
+            formData[assuranceField][0]?.value
           );
-          isFormComplete = isComplianceFormComplete(selectedEntity, formId);
+          isFormComplete = isComplianceFormComplete(formData, formId);
         }
 
         completedForms[formId] = isFormComplete;
@@ -243,12 +248,12 @@ export const EntityDetailsMultiformOverlay = ({
     useEffect(() => {
       if (formCount === formRefs.current.length) {
         // Prevent UI from resetting while waiting for API
-        const updatedEntity = { ...selectedEntity, ...formData };
-        setSelectedEntity(updatedEntity);
+        const updatedData = { ...formData, ...formEnteredData };
+        setFormData(updatedData);
         // Submit to API
-        onSubmit(formData);
+        onSubmit(formEnteredData);
         // Reset
-        setFormData({});
+        setFormEnteredData(defaultEntity);
         setFormCount(0);
       }
     }, [formCount]);
@@ -269,14 +274,17 @@ export const EntityDetailsMultiformOverlay = ({
       const changedData = {
         [inputId]: [{ key: event.target.id, value: event.target.value }],
       };
-      const updatedEntity = { ...selectedEntity, ...changedData };
-      setSelectedEntity(updatedEntity);
+      const updatedData = {
+        ...formData,
+        ...changedData,
+      } as EntityShape;
+      setFormData(updatedData);
     };
 
     const handleSubmit = (enteredData: AnyObject) => {
       // Combine into one submission
-      const data = { ...formData, ...enteredData };
-      setFormData(data);
+      const data = { ...formEnteredData, ...enteredData };
+      setFormEnteredData(data);
       setFormCount(formCount + 1);
     };
 
@@ -333,7 +341,7 @@ export const EntityDetailsMultiformOverlay = ({
           if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return (
               <EntityStatusIcon
-                entity={selectedEntity as EntityShape}
+                entity={formData as EntityShape}
                 entityType={entityType}
                 override={isComplete}
               />
@@ -380,9 +388,10 @@ export const EntityDetailsMultiformOverlay = ({
               {formObject.verbiage && <Intro verbiage={formObject.verbiage} />}
               <Box sx={sx.introContainer}>
                 <Form
+                  autosave={autosave}
                   disabled={disabled}
                   dontReset={true}
-                  formData={selectedEntity}
+                  formData={formData}
                   formJson={formObject.form}
                   id={formObject.form.id}
                   onChange={handleChange}
@@ -437,17 +446,18 @@ export const EntityDetailsMultiformOverlay = ({
 };
 
 interface Props {
+  autosave?: boolean;
   childForms?: EntityDetailsChildFormShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
   entityType: EntityType;
+  formData?: EntityShape;
   forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
   report?: ReportShape;
-  selectedEntity?: EntityShape;
   setEntering: Function;
-  setSelectedEntity: Function;
+  setFormData: Function;
   submitting: boolean;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
