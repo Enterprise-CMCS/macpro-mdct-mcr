@@ -195,7 +195,7 @@ const sx = {
   mobileTable: {
     padding: "1rem 0",
     borderBottom: "1px solid",
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
   },
   labelGroup: {
     marginBottom: "0.5rem",
@@ -203,7 +203,7 @@ const sx = {
   label: {
     fontSize: "sm",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   editDate: {
     marginRight: "3rem",

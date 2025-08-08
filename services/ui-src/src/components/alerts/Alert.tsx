@@ -87,20 +87,20 @@ const sx = {
     padding: "1rem",
     margin: "1.25rem auto 2.5rem",
     "&.info": {
-      backgroundColor: "palette.secondary_lightest",
-      borderInlineStartColor: "palette.secondary",
+      backgroundColor: "secondary_lightest",
+      borderInlineStartColor: "secondary",
     },
     "&.success": {
-      bgColor: "palette.success_lightest",
-      borderInlineStartColor: "palette.success",
+      bgColor: "success_lightest",
+      borderInlineStartColor: "success",
     },
     "&.warning": {
-      bgColor: "palette.warn_lightest",
-      borderInlineStartColor: "palette.warn",
+      bgColor: "warn_lightest",
+      borderInlineStartColor: "warn",
     },
     "&.error": {
-      bgColor: "palette.error_lightest",
-      borderInlineStartColor: "palette.error",
+      bgColor: "error_lightest",
+      borderInlineStartColor: "error",
     },
   },
   descriptionText: {
@@ -112,7 +112,7 @@ const sx = {
   },
   icon: {
     position: "absolute",
-    color: "palette.base",
+    color: "base",
     marginTop: "0",
     marginBottom: "1.75rem",
     width: "1.5rem",

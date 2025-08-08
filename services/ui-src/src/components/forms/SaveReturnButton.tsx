@@ -66,7 +66,7 @@ const sx = {
     marginTop: "2rem",
   },
   footerBoxBorder: {
-    borderTopColor: "palette.gray_lighter",
+    borderTopColor: "gray_lighter",
     borderTopWidth: "1px",
   },
   buttonFlex: {

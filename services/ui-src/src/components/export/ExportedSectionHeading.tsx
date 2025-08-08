@@ -79,10 +79,10 @@ const sx = {
       margin: "1.5rem 0",
     },
     a: {
-      color: "palette.base",
+      color: "base",
       textDecoration: "none",
       "&:hover": {
-        color: "palette.base",
+        color: "base",
         textDecoration: "none",
       },
     },
