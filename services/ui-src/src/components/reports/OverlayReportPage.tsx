@@ -189,10 +189,11 @@ export const OverlayReportPage = ({
       };
 
       const currentEntities = [...(report?.fieldData[entityType] || [])];
+      const currentEntity = selectedEntity || ({} as EntityShape);
 
       const { newEntity, newEntities, selectedEntityIndex } = cleanUpdatedData(
         enteredData,
-        selectedEntity!,
+        currentEntity,
         currentEntities
       );
 
@@ -218,10 +219,10 @@ export const OverlayReportPage = ({
       if (toggle) toggleOverlay();
     };
 
-    const updateCallback = async (
-      enteredData: any,
-      currentEntity: any,
-      currentEntities: any
+    const updateEntitiesCallback = async (
+      enteredData: AnyObject,
+      currentEntity: EntityShape,
+      currentEntities: EntityShape[]
     ) => {
       const { newEntity, newEntities } = cleanUpdatedData(
         enteredData,
@@ -232,8 +233,8 @@ export const OverlayReportPage = ({
       //  TODO: Run handleTableSubmit
 
       return {
-        newSelectedEntity: newEntity,
-        newEntities,
+        entity: newEntity,
+        entities: newEntities,
       };
     };
 
@@ -249,7 +250,7 @@ export const OverlayReportPage = ({
       const newEntity = {
         ...currentEntity,
         ...enteredData,
-      } as EntityShape;
+      };
 
       // Updates only for plans
       if (entityType === EntityType.PLANS) {
@@ -286,7 +287,9 @@ export const OverlayReportPage = ({
           enteredData: AnyObject,
           currentEntity: EntityShape,
           currentEntities: EntityShape[]
-        ) => updateCallback(enteredData, currentEntity, currentEntities)}
+        ) =>
+          updateEntitiesCallback(enteredData, currentEntity, currentEntities)
+        }
       >
         <EntityDetailsMultiformOverlay
           autosave={true}

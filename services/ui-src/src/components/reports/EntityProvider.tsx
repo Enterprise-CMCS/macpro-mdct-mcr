@@ -7,19 +7,19 @@ import { useStore } from "utils";
 // CONTEXT DECLARATION
 
 interface EntityContextShape {
-  updateEntities: Function;
-  updateCallback?: Function;
-  setEntities: Function;
   setSelectedEntity: Function;
   setEntityType: Function;
+  setEntities: Function;
+  updateEntities: Function;
+  updateCallback?: Function;
 }
 
 export const EntityContext = createContext<EntityContextShape>({
-  updateEntities: Function,
-  updateCallback: undefined,
-  setEntities: Function,
   setSelectedEntity: Function,
   setEntityType: Function,
+  setEntities: Function,
+  updateEntities: Function,
+  updateCallback: undefined,
 });
 
 /**
@@ -66,19 +66,13 @@ export const EntityProvider = ({
         ...updateData,
       };
       currentEntities[selectedEntityIndex] = newEntity;
-      setSelectedEntity(newEntity);
     }
 
-    setEntities(currentEntities);
-
     if (updateCallback) {
-      const { newSelectedEntity, newEntities } = await updateCallback(
-        updateData,
-        newEntity,
-        currentEntities
-      );
-      setSelectedEntity(newSelectedEntity);
-      setEntities(newEntities);
+      const { entity: updatedEntity, entities: updatedEntities } =
+        await updateCallback(updateData, newEntity, currentEntities);
+      setSelectedEntity(updatedEntity);
+      setEntities(updatedEntities);
     }
 
     return currentEntities;

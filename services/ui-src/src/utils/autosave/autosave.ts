@@ -168,7 +168,6 @@ export const autosaveFieldData = async ({
     ) {
       // All plans are submitted on individual edits
       const plans = await dataToWrite.fieldData.plans;
-      // TODO: Where are plans?
       const planNames = Object.fromEntries(
         plans.map((plan: AnyObject) => [
           `analysis_method_applicable_plans-${plan.id}`,
@@ -197,6 +196,7 @@ export const autosaveFieldData = async ({
         ...dataToWrite,
         fieldData: {
           ...dataToWrite.fieldData,
+          plans,
           analysisMethods,
         },
       };

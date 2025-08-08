@@ -226,9 +226,11 @@ export const ChoiceListField = ({
     form.setValue(name, selectedOptions, { shouldValidate: true });
   };
 
-  const handleAutosave = (value: Choice[] = displayValue) => {
-    const timeInMs = 200;
-    // Timeout because the CMSDS ChoiceList component relies on timeouts to assert its own focus, and we're stuck behind its update
+  const handleAutosave = (value: Choice[] = displayValue, timeInMs = 200) => {
+    /*
+     * Timeout because the CMSDS ChoiceList component relies on timeouts
+     * to assert its own focus, and we're stuck behind its update
+     */
     setTimeout(async () => {
       const fields = getAutosaveFields({
         name,
