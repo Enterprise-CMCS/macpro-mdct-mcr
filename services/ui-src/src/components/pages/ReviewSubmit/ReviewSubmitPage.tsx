@@ -1,4 +1,9 @@
-import { MouseEventHandler, useContext, useEffect, useState } from "react";
+import React, {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Link as RouterLink } from "react-router-dom";
 // components
 import {
@@ -268,7 +273,13 @@ export const SuccessMessage = ({
         </Heading>
         <Box sx={sx.infoTextBox}>
           <Text sx={sx.infoHeading}>{intro.infoHeader}</Text>
-          <Text>{submissionMessage}</Text>
+          <Text>
+            {Array.isArray(submissionMessage)
+              ? submissionMessage.map((part, index) => (
+                  <React.Fragment key={index}>{part}</React.Fragment>
+                ))
+              : submissionMessage}
+          </Text>
         </Box>
       </Box>
       <Box>

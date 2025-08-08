@@ -119,19 +119,13 @@ export const renderOverlayEntityDataCell = (
   const notApplicable =
     parentFieldCheckedChoiceIds &&
     !parentFieldCheckedChoiceIds?.includes(entity.id);
-  return (
-    <Box>
-      <Text>
-        {renderResponseData(
-          formField,
-          entity[fieldId],
-          entityResponseData,
-          "modalOverlay",
-          notApplicable,
-          entityIndex
-        )}
-      </Text>
-    </Box>
+  return renderResponseData(
+    formField,
+    entity[fieldId],
+    entityResponseData,
+    "modalOverlay",
+    notApplicable,
+    entityIndex
   );
 };
 
