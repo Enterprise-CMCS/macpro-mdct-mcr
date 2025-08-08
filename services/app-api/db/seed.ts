@@ -16,15 +16,19 @@ import {
 const seed = async (): Promise<void> => {
   await loginSeedUsers();
 
+  const reportTypes = ["MCPAR", "MLR", "NAAAR"];
+
   const questions: PromptObject[] = [
     {
       type: "select",
       name: "type",
       message: "Type",
       choices: [
-        { title: "MCPAR", value: "mcparMenu" },
-        { title: "MLR", value: "MLR" },
-        { title: "NAAAR", value: "NAAAR" },
+        { title: "Quick Create Reports", value: "quickCreateReports" },
+        ...reportTypes.map((report) => ({
+          title: report,
+          value: report === "MCPAR" ? "mcparMenu" : report,
+        })),
         { title: "Banners", value: "banners" },
       ],
     },
@@ -173,6 +177,18 @@ const seed = async (): Promise<void> => {
       case answer.toString().startsWith("create"): {
         const reportType = answer.toString().replace("create", "");
         createdLog(await createReport(reportType), "Base", reportType);
+        break;
+      }
+      case answer === "quickCreateReports": {
+        await Promise.all(
+          reportTypes.map(async (reportType) => {
+            createdLog(
+              await createFilledReport(reportType),
+              "Filled",
+              reportType
+            );
+          })
+        );
         break;
       }
       default:

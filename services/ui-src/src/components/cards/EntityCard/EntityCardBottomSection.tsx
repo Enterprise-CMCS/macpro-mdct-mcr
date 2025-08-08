@@ -244,16 +244,16 @@ const sx = {
   missingResponseMessage: {
     marginBottom: "1rem",
     fontSize: "xs",
-    color: "palette.error_dark",
+    color: "error_dark",
   },
   highlightContainer: {
     marginTop: "1rem",
     marginBottom: "1rem",
     padding: "0 1.5rem 1rem",
-    background: "palette.secondary_lightest",
+    background: "secondary_lightest",
     borderRadius: "3px",
     "&.error": {
-      background: "palette.error_lightest",
+      background: "error_lightest",
     },
     "&:last-of-type": {
       marginBottom: 0,
@@ -268,7 +268,7 @@ const sx = {
   },
   notAnswered: {
     fontSize: "sm",
-    color: "palette.error_darker",
+    color: "error_darker",
   },
   standardDetailsBoxes: {
     width: "10.5rem",

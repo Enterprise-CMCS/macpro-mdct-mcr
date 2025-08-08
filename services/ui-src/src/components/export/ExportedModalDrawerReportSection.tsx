@@ -63,7 +63,7 @@ const sx = {
     display: "block",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.error_darker",
+    color: "error_darker",
     marginTop: "0.5rem",
   },
   dashboardTitle: {

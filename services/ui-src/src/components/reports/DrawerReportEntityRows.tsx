@@ -1,17 +1,22 @@
 import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+// constants
+import { getDefaultAnalysisMethodIds } from "../../constants";
+// types
 import {
+  AnyObject,
   DrawerReportPageShape,
   EntityShape,
   FormField,
   FormJson,
   isFieldElement,
+  ReportType,
 } from "types";
-import { AnyObject } from "yup/lib/types";
+// utils
+import { getForm, isIlosCompleted, otherSpecify, useStore } from "utils";
+// assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import completedIcon from "assets/icons/icon_check_circle.png";
-import { getForm, isIlosCompleted, otherSpecify, useStore } from "utils";
-import { getDefaultAnalysisMethodIds } from "../../constants";
 
 export const DrawerReportPageEntityRows = ({
   route,
@@ -155,7 +160,14 @@ export const DrawerReportPageEntityRows = ({
             )
           )}
           <Flex direction={"column"} sx={sx.entityRow}>
-            <Heading as="h4" sx={sx.entityName}>
+            <Heading
+              as="h4"
+              sx={
+                report?.reportType === ReportType.MCPAR
+                  ? sx.entityName
+                  : sx.entityNameWithDescription
+              }
+            >
               {entityName}
             </Heading>
             {entity.custom_analysis_method_description && (
@@ -204,7 +216,7 @@ function entityRowStyling(canAddEntities: boolean) {
     minHeight: "3.25rem",
     padding: "0.5rem",
     paddingLeft: "1rem",
-    borderBottom: "1.5px solid var(--mdct-colors-palette-gray_lighter)",
+    borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     "&:last-of-type": {
       borderBottom: canAddEntities ?? "none",
     },
@@ -237,9 +249,16 @@ const sx = {
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
+    alignContent: "center",
+  },
+  entityNameWithDescription: {
+    fontSize: "lg",
+    fontWeight: "bold",
+    flexGrow: 1,
+    marginLeft: "2.25rem",
   },
   incompleteText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "sm",
     paddingLeft: "2.25rem",
   },
@@ -252,10 +271,10 @@ const sx = {
     fontWeight: "bold",
     marginBottom: "2rem",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
   },
@@ -263,10 +282,10 @@ const sx = {
     paddingTop: "1rem",
     fontWeight: "bold",
     a: {
-      color: "palette.primary",
+      color: "primary",
       textDecoration: "underline",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
     ol: {
@@ -292,11 +311,11 @@ const sx = {
     height: "2.5rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_lighter",
-    borderColor: "palette.gray_lighter",
+    color: "gray_lighter",
+    borderColor: "gray_lighter",
     "&:hover": {
-      color: "palette.gray_lighter",
-      borderColor: "palette.gray_lighter",
+      color: "gray_lighter",
+      borderColor: "gray_lighter",
     },
   },
   standardForm: {

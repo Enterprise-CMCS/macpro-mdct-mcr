@@ -119,19 +119,13 @@ export const renderOverlayEntityDataCell = (
   const notApplicable =
     parentFieldCheckedChoiceIds &&
     !parentFieldCheckedChoiceIds?.includes(entity.id);
-  return (
-    <Box>
-      <Text>
-        {renderResponseData(
-          formField,
-          entity[fieldId],
-          entityResponseData,
-          "modalOverlay",
-          notApplicable,
-          entityIndex
-        )}
-      </Text>
-    </Box>
+  return renderResponseData(
+    formField,
+    entity[fieldId],
+    entityResponseData,
+    "modalOverlay",
+    notApplicable,
+    entityIndex
   );
 };
 
@@ -463,12 +457,12 @@ const sx = {
     fontWeight: "bold",
   },
   noResponse: {
-    color: "palette.error_darker",
+    color: "error_darker",
   },
   noResponseOptional: {
-    color: "palette.base",
+    color: "base",
   },
   notApplicable: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
 };

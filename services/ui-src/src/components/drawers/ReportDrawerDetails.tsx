@@ -86,12 +86,12 @@ const sx = {
   detailBox: {
     marginTop: "2rem",
     fontWeight: "normal",
-    color: "palette.base",
+    color: "base",
   },
   detailHeader: {
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   grid: {
     marginBottom: ".5rem",

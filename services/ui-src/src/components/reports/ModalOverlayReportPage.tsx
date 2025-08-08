@@ -286,7 +286,7 @@ const sx = {
   dashboardTitle: {
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
     textAlign: "left",
     ".tablet &, .mobile &": {
       paddingBottom: "0",
@@ -297,7 +297,7 @@ const sx = {
   },
   tableSeparator: {
     borderTop: "1px solid",
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
     paddingBottom: "1rem",
     marginTop: "1.25rem",
   },
@@ -310,7 +310,7 @@ const sx = {
       paddingLeft: "1rem",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
+      borderColor: "gray_light",
       ".mobile &": {
         border: "none",
       },

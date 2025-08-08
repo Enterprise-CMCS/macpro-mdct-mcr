@@ -191,7 +191,7 @@ export const sx = {
       verticalAlign: "top",
       lineHeight: "base",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
       paddingLeft: "0.5rem",
     },
     tr: {

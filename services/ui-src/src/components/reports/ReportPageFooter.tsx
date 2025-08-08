@@ -93,7 +93,7 @@ const sx = {
     marginTop: "2.5rem",
     paddingTop: "1.5rem",
     borderTop: "1px solid",
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
   },
   arrowIcon: {
     width: "1rem",

@@ -29,7 +29,7 @@ const sx = {
   skipNavLink: {
     zIndex: "skipLink",
     minWidth: "200px",
-    background: "palette.white",
+    background: "white",
     transition: "all 0s !important",
     "&:focus-visible": {
       top: 1,

@@ -45,6 +45,6 @@ const sx = {
     marginY: "1.5rem",
     boxShadow: "none",
     border: "1px solid",
-    borderColor: "palette.gray_light",
+    borderColor: "gray_light",
   },
 };

@@ -139,13 +139,13 @@ const sx = {
   detailBox: {
     marginTop: "2rem",
     fontWeight: "normal",
-    color: "palette.base",
+    color: "base",
   },
   detailHeader: {
     marginBottom: ".5rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
   detailDescription: {
     marginBottom: ".5rem",
@@ -154,13 +154,13 @@ const sx = {
   infoTextBox: {
     marginTop: "2rem",
     "p, span": {
-      color: "palette.gray",
+      color: "gray",
       fontSize: "16px",
     },
     a: {
-      color: "palette.primary",
+      color: "primary",
       "&:hover": {
-        color: "palette.primary_darker",
+        color: "primary_darker",
       },
     },
   },

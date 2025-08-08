@@ -195,11 +195,11 @@ const sx = {
     fontSize: "md",
     fontWeight: "normal",
     border: "1px solid",
-    borderColor: "palette.gray_lighter",
-    color: "palette.primary",
+    borderColor: "gray_lighter",
+    color: "primary",
     ".mobile &": {
       width: "6rem",
-      borderColor: "palette.primary",
+      borderColor: "primary",
       marginTop: ".5rem",
     },
     img: {
@@ -229,8 +229,8 @@ const sx = {
     th: {
       padding: "1rem 0 1rem 1rem",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
-      color: "palette.gray_medium",
+      borderColor: "gray_lighter",
+      color: "gray_medium",
       fontWeight: "600",
       fontSize: "sm",
       lineHeight: "1.125rem",
@@ -240,8 +240,8 @@ const sx = {
     },
     tr: {
       borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
-      color: "palette.base",
+      borderColor: "gray_lighter",
+      color: "base",
       "&:last-child": {
         borderBottom: 0,
       },
@@ -250,9 +250,9 @@ const sx = {
       minWidth: "6rem",
       borderTop: "1px solid",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
       textAlign: "left",
-      color: "palette.base",
+      color: "base",
       "&:nth-of-type(1)": {
         width: "20rem",
       },
