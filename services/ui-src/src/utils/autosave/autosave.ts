@@ -134,7 +134,7 @@ export const autosaveFieldData = async ({
       dataToWrite = {
         ...dataToWrite,
         fieldData: {
-          [entityContext.entityType]: await entityContext.updateEntities(
+          [entityContext.entityType]: entityContext.updateEntities(
             Object.fromEntries(fieldsToSave)
           ),
         }, // create field data object
@@ -164,21 +164,26 @@ export const autosaveFieldData = async ({
       }
     }
 
+    const hasEditedPlans = dataToWrite.fieldData.plans;
+    const hasAnalysisMethods =
+      reportFieldData?.analysisMethods &&
+      reportFieldData.analysisMethods.length > 0;
+
     // NAAAR plans were edited
     if (
       reportKeys.reportType === ReportType.NAAAR &&
-      dataToWrite.fieldData.plans &&
-      reportFieldData?.analysisMethods
+      hasEditedPlans &&
+      hasAnalysisMethods
     ) {
       // All plans are submitted on individual edits
-      const plans = dataToWrite.fieldData.plans;
+      const plans = [...dataToWrite.fieldData.plans];
       const planNames = Object.fromEntries(
         plans.map((plan: AnyObject) => [
           `analysis_method_applicable_plans-${plan.id}`,
           plan.name,
         ])
       );
-      const analysisMethods = reportFieldData.analysisMethods;
+      const analysisMethods = [...reportFieldData.analysisMethods];
 
       for (const analysisMethod of analysisMethods) {
         const applicablePlans = analysisMethod.analysis_method_applicable_plans;

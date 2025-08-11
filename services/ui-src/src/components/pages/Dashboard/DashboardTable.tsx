@@ -130,13 +130,13 @@ const sx = {
     th: {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
-      color: "palette.gray_medium",
+      borderColor: "gray_light",
+      color: "gray_medium",
       fontWeight: "bold",
     },
     tr: {
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
+      borderColor: "gray_light",
     },
     td: {
       minWidth: "6rem",
@@ -144,7 +144,7 @@ const sx = {
       paddingLeft: 0,
       borderTop: "1px solid",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_light",
+      borderColor: "gray_light",
       textAlign: "left",
       "&:last-of-type": {
         paddingRight: 0,

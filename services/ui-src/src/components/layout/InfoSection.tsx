@@ -45,7 +45,7 @@ const sx = {
     marginRight: "1rem",
     background: "#333",
     borderRadius: "100%",
-    color: "palette.white",
+    color: "white",
   },
   number: {
     margin: "auto",
@@ -54,7 +54,7 @@ const sx = {
   },
   header: {
     marginBottom: "1rem",
-    color: "palette.gray",
+    color: "gray",
     fontSize: "2xl",
   },
 };

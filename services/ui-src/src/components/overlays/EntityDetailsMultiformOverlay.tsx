@@ -467,7 +467,7 @@ const sx = {
   container: {
     paddingTop: "1.75rem",
     "&:first-of-type": {
-      borderTopColor: "palette.gray_lighter",
+      borderTopColor: "gray_lighter",
       borderTopWidth: "1px",
     },
   },
@@ -476,7 +476,7 @@ const sx = {
     maxWidth: "30rem",
   },
   errorText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "0.75rem",
     marginTop: "0.25rem",
   },
@@ -499,7 +499,7 @@ const sx = {
     },
   },
   tableCell: {
-    borderColor: "palette.gray_lighter",
+    borderColor: "gray_lighter",
   },
   tableData: {
     display: "block",
@@ -511,8 +511,8 @@ const sx = {
   tableButton: {
     width: "6rem",
     "&:disabled": {
-      borderColor: "palette.gray_lighter",
-      color: "palette.gray_lighter",
+      borderColor: "gray_lighter",
+      color: "gray_lighter",
     },
   },
 };
@@ -520,7 +520,7 @@ const sx = {
 const sxOverride = {
   form: {
     "legend.ds-c-label": {
-      color: "palette.gray",
+      color: "gray",
     },
   },
 };

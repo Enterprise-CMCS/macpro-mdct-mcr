@@ -103,7 +103,7 @@ const sx = {
     },
   },
   footerTop: {
-    bg: "palette.gray_lightest",
+    bg: "gray_lightest",
     minHeight: "7rem",
     padding: "2rem 0",
   },
@@ -210,7 +210,7 @@ const sx = {
   },
   footerBottom: {
     minHeight: "3rem",
-    bg: "palette.primary_darkest",
+    bg: "primary_darkest",
     fontSize: 14,
   },
   footerBottomContainer: {
@@ -244,7 +244,7 @@ const sx = {
       "&:first-of-type": {
         paddingRight: ".5rem",
         borderRight: "1px solid",
-        borderColor: "palette.white",
+        borderColor: "white",
       },
       "&:last-child": {
         paddingLeft: ".5rem",
@@ -252,7 +252,7 @@ const sx = {
     },
   },
   address: {
-    color: "palette.white",
+    color: "white",
     fontWeight: "bold",
     alignSelf: "center",
     margin: "2.25rem 0 0",

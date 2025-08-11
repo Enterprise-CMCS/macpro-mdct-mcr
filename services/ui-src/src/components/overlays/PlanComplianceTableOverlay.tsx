@@ -230,10 +230,13 @@ export const PlanComplianceTableOverlay = ({
         />
         <Box sx={sx.counts}>
           <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
+            {displayCount(
+              tableVerbiage.totals?.nonCompliant,
+              nonComplianceCount
+            )}
           </Text>
           <Text sx={sx.count}>
-            {displayCount(tableVerbiage.totals?.standards, nonComplianceCount)}
+            {displayCount(tableVerbiage.totals?.exceptions, exceptionsCount)}
           </Text>
         </Box>
         <Box sx={sx.tableContainer}>
@@ -285,7 +288,7 @@ const sx = {
     marginBottom: "2rem",
   },
   count: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
     fontWeight: "bold",
     whiteSpace: "nowrap",
     ".tablet &, .mobile &": {
@@ -304,7 +307,7 @@ const sx = {
     fontWeight: "bold",
   },
   exceptionsNonCompliance: {
-    color: "palette.primary_darker",
+    color: "primary_darker",
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -316,7 +319,7 @@ const sxOverride = {
       borderBottomWidth: 0,
     },
     tbody: {
-      backgroundColor: "palette.secondary_lightest",
+      backgroundColor: "secondary_lightest",
     },
   },
 };
