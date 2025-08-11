@@ -1672,8 +1672,8 @@
                   "subsection": "Select non-compliant or exception standards for 42 C.F.R. § 438.68"
                 },
                 "totals": {
-                  "exceptions": "“N” indicates a standard for which the plan is non-compliant. Total count:",
-                  "standards": "“E” indicates a standard for which the plan has been granted an exception. Total count:"
+                  "nonCompliant": "“N” indicates a standard for which the plan is non-compliant. Total count:",
+                  "exceptions": "“E” indicates a standard for which the plan has been granted an exception. Total count:"
                 }
               }
             },

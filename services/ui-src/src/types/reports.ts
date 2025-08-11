@@ -115,7 +115,7 @@ export interface EntityDetailsTableVerbiage
   extends EntityDetailsMultiformVerbiage {
   totals?: {
     exceptions?: string;
-    standards?: string;
+    nonCompliant?: string;
   };
 }
 
