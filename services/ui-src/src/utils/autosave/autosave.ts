@@ -167,7 +167,7 @@ export const autosaveFieldData = async ({
     const hasEditedPlans = dataToWrite.fieldData.plans;
     const hasAnalysisMethods =
       reportFieldData?.analysisMethods &&
-      reportFieldData.analysisMethod.length > 0;
+      reportFieldData.analysisMethods.length > 0;
 
     // NAAAR plans were edited
     if (
