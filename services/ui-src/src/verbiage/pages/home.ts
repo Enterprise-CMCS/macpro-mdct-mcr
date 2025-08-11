@@ -26,7 +26,7 @@ export default {
         buttonLabel: "When is the MCPAR due?",
         text: [
           {
-            type: "p",
+            type: "span",
             children: [
               {
                 type: "html",
