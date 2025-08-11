@@ -105,7 +105,7 @@ const sx = {
   root: {
     ".ds-c-field__hint": {
       fontSize: "md",
-      color: "palette.base",
+      color: "base",
     },
   },
   headerText: {

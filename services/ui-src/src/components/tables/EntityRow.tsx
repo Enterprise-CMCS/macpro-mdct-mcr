@@ -136,7 +136,7 @@ const sx = {
     verticalAlign: "middle",
     paddingLeft: "1.5rem",
     td: {
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
       paddingRight: 0,
     },
   },
@@ -144,7 +144,7 @@ const sx = {
     maxWidth: "fit-content",
   },
   errorText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "sm",
     marginBottom: "0.75rem",
   },
@@ -174,7 +174,7 @@ const sx = {
     padding: 0,
     fontWeight: "normal",
     textDecoration: "underline",
-    color: "palette.primary",
+    color: "primary",
   },
   enterButton: {
     width: "5.75rem",

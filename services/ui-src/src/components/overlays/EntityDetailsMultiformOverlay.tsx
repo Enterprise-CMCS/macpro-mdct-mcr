@@ -84,12 +84,8 @@ export const EntityDetailsMultiformOverlay = ({
       planName: selectedEntity?.name,
     }) as EntityDetailsMultiformVerbiage;
 
-    const handleChildSubmit = (
-      enteredData: AnyObject,
-      updatedEntity?: AnyObject
-    ) => {
-      const entity = updatedEntity ?? selectedEntity;
-      setSelectedEntity({ ...entity, ...enteredData });
+    const handleChildSubmit = (enteredData: AnyObject) => {
+      setSelectedEntity({ ...selectedEntity, ...enteredData });
       onSubmit(enteredData, false);
     };
 
@@ -155,11 +151,15 @@ export const EntityDetailsMultiformOverlay = ({
             delete selectedEntity?.[key];
             delete updatedData[key];
           });
+          // enteredData has the full form data for 438.68 so keep only 438.68 stuff from enteredData and not from selectedEntity
+          nonComplianceKeys.forEach((key) => {
+            delete selectedEntity?.[key];
+          });
         }
 
-        // return new data and updated entity (in case we deleted keys from the entity)
-        handleChildSubmit(updatedData, selectedEntity);
+        setSelectedEntity(selectedEntity);
         setSelectedStandard(null);
+        handleChildSubmit(updatedData);
       };
 
       return (
@@ -457,7 +457,7 @@ const sx = {
   container: {
     paddingTop: "1.75rem",
     "&:first-of-type": {
-      borderTopColor: "palette.gray_lighter",
+      borderTopColor: "gray_lighter",
       borderTopWidth: "1px",
     },
   },
@@ -466,7 +466,7 @@ const sx = {
     maxWidth: "30rem",
   },
   errorText: {
-    color: "palette.error_dark",
+    color: "error_dark",
     fontSize: "0.75rem",
     marginTop: "0.25rem",
   },
@@ -489,7 +489,7 @@ const sx = {
     },
   },
   tableCell: {
-    borderColor: "palette.gray_lighter",
+    borderColor: "gray_lighter",
   },
   tableData: {
     display: "block",
@@ -501,8 +501,8 @@ const sx = {
   tableButton: {
     width: "6rem",
     "&:disabled": {
-      borderColor: "palette.gray_lighter",
-      color: "palette.gray_lighter",
+      borderColor: "gray_lighter",
+      color: "gray_lighter",
     },
   },
 };
@@ -510,7 +510,7 @@ const sx = {
 const sxOverride = {
   form: {
     "legend.ds-c-label": {
-      color: "palette.gray",
+      color: "gray",
     },
   },
 };

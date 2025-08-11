@@ -43,7 +43,7 @@ jobs:
       - name: Generate PR body
         id: pr_body
         run: |
-          body=$(.github/commit-log.sh "$HEAD_BRANCH" "$BASE_BRANCH")
+          body=$(.github/commitLog.sh "$HEAD_BRANCH" "$BASE_BRANCH")
           exit_code=$?
 
           if [ "$exit_code" == "1" ]; then
@@ -164,4 +164,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.check_pr.outputs.number }}
           PR_LABEL: ${{ inputs.pr_label }}
-

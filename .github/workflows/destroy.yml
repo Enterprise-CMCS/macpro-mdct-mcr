@@ -45,9 +45,9 @@ jobs:
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: set branch specific variable names
-        run: ./.github/build-vars.sh set_names
+        run: ./.github/buildVars.sh set_names
       - name: set variable values
-        run: ./.github/build-vars.sh set_values
+        run: ./.github/buildVars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
