@@ -280,8 +280,12 @@ const sx = {
   // styling for list in hint
   ".fake-list-item": {
     display: "block",
+    paddingLeft: "1rem",
+    textIndent: "-0.5rem",
   },
   ".fake-list-item::before": {
-    content: '"• "',
+    content: '"•"',
+    fontWeight: "bold",
+    width: "1rem",
   },
 };
