@@ -32,6 +32,9 @@ export const componentDefinitions: {
       <Button key="link" variant="link">
         Link
       </Button>,
+      <Button key="danger" variant="danger">
+        Danger
+      </Button>,
     ],
     display: "inline",
   },
