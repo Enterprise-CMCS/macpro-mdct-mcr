@@ -129,6 +129,6 @@ const sx = {
   fieldHint: {
     lineHeight: "lg",
     fontSize: "sm",
-    color: "palette.gray_medium",
+    color: "gray_medium",
   },
 };

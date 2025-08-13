@@ -175,7 +175,7 @@ const sx = {
       verticalAlign: "bottom",
       lineHeight: "base",
       borderBottom: "1px solid",
-      borderColor: "palette.gray_lighter",
+      borderColor: "gray_lighter",
     },
     "th:nth-of-type(3)": {
       width: "15rem",
@@ -191,7 +191,7 @@ const sx = {
       padding: "0.75rem 0.5rem",
       borderStyle: "none",
       fontWeight: "normal",
-      color: "palette.base",
+      color: "base",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
@@ -205,7 +205,7 @@ const sx = {
       paddingBottom: "0.375rem",
       fontWeight: "bold",
       lineHeight: "lg",
-      color: "palette.gray_medium",
+      color: "gray_medium",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
@@ -231,7 +231,7 @@ const sx = {
     wordBreak: "break-word",
   },
   tableIndex: {
-    color: "palette.gray_medium",
+    color: "gray_medium",
     fontWeight: "bold",
   },
   statusIcon: {

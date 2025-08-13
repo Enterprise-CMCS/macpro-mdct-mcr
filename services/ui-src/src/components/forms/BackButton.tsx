@@ -28,7 +28,7 @@ const sx = {
   backButton: {
     padding: 0,
     fontWeight: "normal",
-    color: "palette.primary",
+    color: "primary",
     display: "flex",
     marginBottom: "2rem",
     marginLeft: "-3rem",
@@ -39,7 +39,7 @@ const sx = {
     },
   },
   backIcon: {
-    color: "palette.primary",
+    color: "primary",
     height: "1rem",
     marginRight: "0.5rem",
   },

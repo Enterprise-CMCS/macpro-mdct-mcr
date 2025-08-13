@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useStore } from "utils";
 import { DrawerReportPage } from "./DrawerReportPage";
 import { ReportContext } from "./ReportProvider";
+import { useStore } from "utils";
 import {
   mockAdminUserStore,
   mockAnalysisMethodEntityStore,

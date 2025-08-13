@@ -172,7 +172,7 @@ const sx = {
   root: {
     width: "20rem",
     position: "relative",
-    bg: "palette.gray_lightest",
+    bg: "gray_lightest",
     transition: "all 0.3s ease",
     "&.open": {
       marginLeft: "-1rem",
@@ -196,7 +196,7 @@ const sx = {
     position: "fixed",
   },
   topBox: {
-    borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
+    borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
   },
   title: {
     fontSize: "xl",
@@ -218,11 +218,11 @@ const sx = {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "0px 10px 10px 0px",
-    bg: "palette.gray_lightest",
+    bg: "gray_lightest",
     ".ds-c-icon--arrow": {
       height: "1rem",
       marginRight: "2px",
-      color: "palette.gray",
+      color: "gray",
     },
   },
   navSectionsBox: {
@@ -240,24 +240,24 @@ const sx = {
     position: "relative",
     align: "center",
     role: "group",
-    borderBottom: "1px solid var(--mdct-colors-palette-gray_lighter)",
+    borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
     fontSize: "0.875rem",
     ".ds-c-icon--arrow": {
       position: "absolute",
       top: "10px",
       right: "0.5rem",
       fontSize: "13px",
-      color: "palette.gray",
+      color: "gray",
     },
     "&.selected": {
       position: "relative",
       zIndex: 1,
-      bg: "palette.gray_lightest_highlight",
+      bg: "gray_lightest_highlight",
       borderBottom: "1px solid transparent",
       borderInlineStartWidth: "0.125rem",
-      borderInlineStartColor: "palette.secondary",
+      borderInlineStartColor: "secondary",
       ".chakra-text": {
-        color: "palette.secondary_darkest",
+        color: "secondary_darkest",
       },
     },
   },

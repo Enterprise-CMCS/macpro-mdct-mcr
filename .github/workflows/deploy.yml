@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: set variable values
-        run: ./.github/build-vars.sh set_values
+        run: ./.github/buildVars.sh set_values
         env:
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
       - uses: actions/setup-node@v4
@@ -63,11 +63,11 @@ jobs:
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Validate branch name
-        run: ./.github/branch-name-validation.sh $branch_name
+        run: ./.github/branchNameValidation.sh $branch_name
       - name: set branch specific variable names
-        run: ./.github/build-vars.sh set_names
+        run: ./.github/buildVars.sh set_names
       - name: set variable values
-        run: ./.github/build-vars.sh set_values
+        run: ./.github/buildVars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
@@ -124,11 +124,11 @@ jobs:
 
   #     - name: set branch specific variable names
   #       id: set_names
-  #       run: ./.github/build-vars.sh set_names
+  #       run: ./.github/buildVars.sh set_names
 
   #     - name: set variable values
   #       id: set_values
-  #       run: ./.github/build-vars.sh set_values
+  #       run: ./.github/buildVars.sh set_values
   #       env:
   #         AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
   #         AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
@@ -185,7 +185,7 @@ jobs:
 
   #     - name: Update IP Set
   #       id: update-ip-set
-  #       run: ./.github/waf-controller.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
+  #       run: ./.github/wafController.sh set ${{ steps.fetch-ip-set-info.outputs.IPSET_NAME }} ${{ steps.fetch-ip-set-info.outputs.IPSET_ID }} ${{ steps.get-gha-cidrs.outputs.GHA_CIDRS_IPV4 }}
   #       env:
   #         AWS_RETRY_MODE: adaptive
   #         AWS_MAX_ATTEMPTS: 10
@@ -316,53 +316,19 @@ jobs:
           retention-days: 30
 
   upload-reports:
-    name: Upload Reports
+    name: Upload reports
     needs:
       - test
     if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+    uses: ./.github/workflows/upload-e2e-test-reports.yml
+  publish-url:
+    name: Publish report URL
     runs-on: ubuntu-latest
-    outputs:
-      timestamp: ${{ steps.timestampid.outputs.timestamp }}
+    needs: upload-reports
     steps:
-      # create a unique folder name to put playwright reports in
-      - name: Set a Timestamp
-        id: timestampid
-        run: echo "timestamp=$(date --utc +%Y%m%d_%H%M%SZ)" >> "$GITHUB_OUTPUT"
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
-      - name: Install dependencies
-        run: yarn install
-      # downloads artifact created from the test job
-      - name: Download reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-html-report # download from previous job
-          path: downloaded-html-report # save as this when downloaded
-      - name: Push files to github pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./downloaded-html-report # publish downloaded dir to github pages
-          destination_dir: ${{ steps.timestampid.outputs.timestamp }}
-      # need to extract just org name for reassembling the github pages URL
-      - name: Extract Organization Name
-        id: extract-org
-        run: |
-          echo "ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_ENV
-          echo "org name: ${ORG_NAME}"
-      # need to extract just the repo name for reassembling the github pages URL
-      - name: Extract Repository Name
-        id: extract-repo
-        run: |
-          echo "REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_ENV
-          echo "repo name: ${REPO_NAME}"
-      # assembles org name, repo name, and unique timestamp to link to github pages url that was published
-      - name: Write URL in Summary
-        run: |
+      - run: |
           echo "## Playwright Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "https://${ORG_NAME}.github.io/${REPO_NAME}/${{ steps.timestampid.outputs.timestamp }}/" >> $GITHUB_STEP_SUMMARY
+          echo "${{ needs.upload-reports.outputs.result_url }}" >> $GITHUB_STEP_SUMMARY
 
   # cleanup:
   #   name: Delist GHA Runner CIDR Blocks
@@ -390,7 +356,7 @@ jobs:
   #         echo "Current Account ID: ${AWS_ACCOUNT_ID}"
   #     - name: cleanup-ip-list
   #       id: reset-ip-set
-  #       run: ./.github/waf-controller.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
+  #       run: ./.github/wafController.sh set ${{ needs.register-runner.outputs.ipset_name }} ${{ needs.register-runner.outputs.ipset_id }} '[]'
   #       env:
   #         AWS_RETRY_MODE: adaptive
   #         AWS_MAX_ATTEMPTS: 10
