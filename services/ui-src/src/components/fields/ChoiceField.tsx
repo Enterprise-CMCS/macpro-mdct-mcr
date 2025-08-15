@@ -6,7 +6,7 @@ import { Box, Text } from "@chakra-ui/react";
 // types
 import { AnyObject } from "types";
 // utils
-import { labelTextWithOptional } from "utils";
+import { labelTextWithOptional, parseCustomHtml } from "utils";
 
 export const ChoiceField = ({
   name,
@@ -50,6 +50,7 @@ export const ChoiceField = ({
   const inputLabel = inline ? labelText : null;
   const legendLabel = inline ? null : labelText;
   const ariaLabel = inline ? {} : { "aria-labelledby": name };
+  const parsedHint = hint ? parseCustomHtml(hint) : undefined;
 
   return (
     <Box sx={{ ...sx, ...sxOverride }}>
@@ -61,7 +62,7 @@ export const ChoiceField = ({
       <CmsdsChoice
         type="checkbox"
         name={name}
-        hint={hint}
+        hint={parsedHint}
         onChange={onChangeHandler}
         checked={checkboxState}
         label={inputLabel}
