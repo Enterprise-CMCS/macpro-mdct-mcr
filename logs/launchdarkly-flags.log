@@ -5,6 +5,7 @@
 ./services/ui-src/src/components/cards/TemplateCard.tsx:33:useFlags()?.naaarReport;
 ./services/ui-src/src/components/forms/AdminDashSelector.tsx:40:useFlags()?.naaarReport;
 ./services/ui-src/src/components/modals/AddEditReportModal.tsx:51:useFlags()?.naaarReport;
+./services/ui-src/src/components/modals/AddEditReportModal.tsx:52:useFlags()?.naaarProgramList;
 
 # LaunchDarkly flags in tests
 ./services/ui-src/src/components/app/AppRoutes.test.tsx:176:mockLDFlags.set({ naaarReport: true });

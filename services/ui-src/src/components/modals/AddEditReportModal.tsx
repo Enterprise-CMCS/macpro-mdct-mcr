@@ -49,7 +49,7 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   const naaarReport = useFlags()?.naaarReport;
-  const naaarProgramList = false;
+  const naaarProgramList = useFlags()?.naaarProgramList;
 
   // get correct form
   const modalFormJsonMap: any = {
