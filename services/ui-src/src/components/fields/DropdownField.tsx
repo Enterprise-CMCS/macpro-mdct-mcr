@@ -32,7 +32,6 @@ import {
   convertDateUtcToEt,
 } from "utils";
 import uuid from "react-uuid";
-import { useParams } from "react-router-dom";
 
 export const DropdownField = ({
   name,
@@ -61,8 +60,7 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
-  const params = useParams();
-  const reportType = params["*"]?.slice(0, -1);
+  const reportType = window.location.pathname.substring(1);
 
   // get correct program list
   const programListMap: any = {
