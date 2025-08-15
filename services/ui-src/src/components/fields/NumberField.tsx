@@ -165,7 +165,7 @@ export const NumberField = ({
 
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-  const parsedHint = hint && parseCustomHtml(hint);
+  const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
@@ -276,17 +276,5 @@ const sx = {
       bottom: "11px",
       left: "10px",
     },
-  },
-  // styling for list in hint
-  ".fake-list-item": {
-    display: "block",
-    paddingLeft: "2rem",
-    textIndent: "-0.5rem",
-  },
-  ".fake-list-item::before": {
-    content: '"•"',
-    display: "inline-block",
-    width: ".5rem",
-    fontWeight: "bold",
   },
 };
