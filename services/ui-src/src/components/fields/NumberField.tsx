@@ -165,7 +165,7 @@ export const NumberField = ({
 
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-  const parsedHint = hint && parseCustomHtml(hint);
+  const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =
     label && styleAsOptional ? labelTextWithOptional(label) : label;
