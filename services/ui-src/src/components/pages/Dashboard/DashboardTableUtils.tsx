@@ -53,15 +53,13 @@ export interface DateFieldProps {
 export interface AdminActionButtonProps {
   report: ReportMetadataShape;
   reportType: string;
-  reportId: string | undefined;
-  archiving?: boolean;
-  releasing?: boolean;
   sxOverride: AnyObject;
+  reportId?: string;
 }
 
 export interface AdminReleaseActionButtonProps extends AdminActionButtonProps {
-  releasing?: boolean;
   releaseReport: Function;
+  releasing?: boolean;
 }
 
 export interface AdminArchiveActionButtonProps extends AdminActionButtonProps {
@@ -164,6 +162,7 @@ export const DateFields = ({ report, reportType }: DateFieldProps) => {
 
 export const AdminReleaseButton = ({
   report,
+  reportType,
   reportId,
   releasing,
   releaseReport,
@@ -172,6 +171,13 @@ export const AdminReleaseButton = ({
   return (
     <Button
       variant="link"
+      aria-label={
+        reportType !== ReportType.MLR
+          ? `Unlock ${report.programName} due ${convertDateUtcToEt(
+              report.dueDate
+            )} report`
+          : `Unlock ${report.programName} report`
+      }
       disabled={report?.locked === false || report?.archived === true}
       sx={sxOverride.adminActionButton}
       onClick={() => releaseReport(report)}
@@ -183,24 +189,27 @@ export const AdminReleaseButton = ({
 
 export const AdminArchiveButton = ({
   report,
+  reportType,
   reportId,
   archiveReport,
   archiving,
   sxOverride,
 }: AdminArchiveActionButtonProps) => {
+  const buttonText = report?.archived ? "Unarchive" : "Archive";
   return (
     <Button
       variant="link"
       sx={sxOverride.adminActionButton}
       onClick={() => archiveReport(report)}
+      aria-label={
+        reportType !== ReportType.MLR
+          ? `${buttonText} ${report.programName} due ${convertDateUtcToEt(
+              report.dueDate
+            )} report`
+          : `${buttonText} ${report.programName} report`
+      }
     >
-      {archiving && reportId === report.id ? (
-        <Spinner size="md" />
-      ) : report?.archived ? (
-        "Unarchive"
-      ) : (
-        "Archive"
-      )}
+      {archiving && reportId === report.id ? <Spinner size="md" /> : buttonText}
     </Button>
   );
 };

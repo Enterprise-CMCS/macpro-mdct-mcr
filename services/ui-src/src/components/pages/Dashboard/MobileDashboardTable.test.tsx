@@ -23,7 +23,12 @@ import {
   mockMcparReportStore,
   mockMlrLockedReportStore,
 } from "utils/testing/setupJest";
-import { useBreakpoint, makeMediaQueryClasses, useStore } from "utils";
+import {
+  useBreakpoint,
+  makeMediaQueryClasses,
+  useStore,
+  convertDateUtcToEt,
+} from "utils";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 
@@ -135,6 +140,8 @@ const noAlteredByReportStore = {
 
 describe("<MobileDashboardTable />", () => {
   describe("Test Dashboard view (with reports, mobile view)", () => {
+    const { dueDate: utcDueDate, programName } = mockMcparReportStore.report!;
+    const dueDate = convertDateUtcToEt(utcDueDate);
     beforeEach(() => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
@@ -169,7 +176,7 @@ describe("<MobileDashboardTable />", () => {
     test("Clicking 'Edit' button on a report navigates to first page of report", async () => {
       mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
       const enterReportButton = screen.getAllByRole("button", {
-        name: "Edit",
+        name: `Edit ${programName} due ${dueDate} report`,
       })[0];
       expect(enterReportButton).toBeVisible();
       await userEvent.click(enterReportButton);
@@ -180,7 +187,9 @@ describe("<MobileDashboardTable />", () => {
     });
 
     test("Clicking 'Edit Program' icon opens the AddEditProgramModal", async () => {
-      const addReportButton = screen.getAllByAltText("Edit Report")[0];
+      const addReportButton = screen.getAllByAltText(
+        `Edit ${programName} due ${dueDate} report submission set-up information`
+      )[0];
       expect(addReportButton).toBeVisible();
       await userEvent.click(addReportButton);
       await waitFor(async () => {
@@ -254,7 +263,7 @@ describe("<MobileDashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Archive",
+        name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -274,7 +283,7 @@ describe("<MobileDashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Unarchive",
+        name: /Unarchive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -294,7 +303,7 @@ describe("<MobileDashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Archive",
+        name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -316,7 +325,7 @@ describe("<MobileDashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -331,7 +340,7 @@ describe("<MobileDashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -346,7 +355,7 @@ describe("<MobileDashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });

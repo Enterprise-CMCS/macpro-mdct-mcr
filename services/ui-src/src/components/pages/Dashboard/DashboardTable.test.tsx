@@ -344,7 +344,7 @@ describe("<DashboardTable />", () => {
       render(dashboardViewWithReports);
       await waitFor(async () => {
         const archiveProgramButton = screen.getByRole("button", {
-          name: "Archive",
+          name: /Archive/,
         });
         expect(archiveProgramButton).toBeVisible();
         await userEvent.click(archiveProgramButton);
@@ -363,7 +363,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Unarchive",
+        name: /Unarchive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -383,7 +383,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Archive",
+        name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -405,7 +405,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -420,7 +420,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -435,7 +435,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
