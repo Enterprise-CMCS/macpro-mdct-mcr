@@ -42,6 +42,8 @@ export const MobileEntityRow = ({
   const { report_programName, report_planName, name } = entity;
   const { userIsEndUser } = useStore().user ?? {};
 
+  const ariaName = name || report_planName;
+
   const entityComplete = useMemo(() => {
     return getEntityStatus(entity, report, entityType);
   }, [report]);
@@ -85,9 +87,12 @@ export const MobileEntityRow = ({
               <li key={index}>{field}</li>
             ))}
           </ul>
-          {!entityComplete && report?.reportType === "MLR" && (
+          {!entityComplete && report && (
             <Text sx={sx.errorText}>
-              Select “Enter MLR” to complete this report.
+              {report.reportType === ReportType.MLR &&
+                "Select “Enter MLR” to complete this report."}
+              {report.reportType === ReportType.NAAAR &&
+                "Select “Enter” to complete response."}
             </Text>
           )}
         </Box>
@@ -105,6 +110,7 @@ export const MobileEntityRow = ({
           {openOverlayOrDrawer && (
             <Button
               variant="outline"
+              aria-label={entering ? "" : `${enterDetailsText()} ${ariaName}`}
               onClick={() => openOverlayOrDrawer(entity)}
               size="sm"
               disabled={!hasStandards && hasStandards !== undefined}
@@ -179,9 +185,13 @@ const sx = {
     padding: "0",
   },
   enterButton: {
-    fontWeight: "normal",
     width: "5.75rem",
+    height: "2.25rem",
     marginRight: "0",
+    ".mobile &": {
+      fontWeight: "bold",
+      fontSize: "md",
+    },
   },
   deleteButton: {
     height: "1.875rem",

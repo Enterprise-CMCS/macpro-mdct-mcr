@@ -218,7 +218,7 @@ describe("<OverlayReportPage />", () => {
           name: `Status ${verbiage.tableHeader}`,
         });
         const entityCell = screen.getByRole("gridcell", {
-          name: `${verbiage.tableHeader} ${planName} ${verbiage.enterEntityDetailsButtonText}`,
+          name: `${verbiage.tableHeader} ${planName} Select “Enter” to complete response. ${verbiage.enterEntityDetailsButtonText}`,
         });
 
         expect(entityTable).toBeVisible();
@@ -226,7 +226,7 @@ describe("<OverlayReportPage />", () => {
         expect(entityCell).toBeVisible();
 
         const enterButton = screen.getByRole("button", {
-          name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+          name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
         expect(enterButton).toBeVisible();
         expect(enterButton).toBeDisabled();
@@ -275,7 +275,7 @@ describe("<OverlayReportPage />", () => {
           name: `Status ${verbiage.tableHeader}`,
         });
         const entityCell = screen.getByRole("gridcell", {
-          name: `${verbiage.tableHeader} ${planName} ${verbiage.enterEntityDetailsButtonText}`,
+          name: `${verbiage.tableHeader} ${planName} Select “Enter” to complete response. ${verbiage.enterEntityDetailsButtonText}`,
         });
 
         expect(entityTable).toBeVisible();

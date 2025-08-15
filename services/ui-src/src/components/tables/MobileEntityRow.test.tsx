@@ -113,7 +113,7 @@ describe("<MobileEntityRow />", () => {
     test("Enter Details button opens the Drawer", async () => {
       render(completeRowComponent(setupData));
       const enterDetailsButton = screen.getByRole("button", {
-        name: "Enter Details",
+        name: `Enter Details ${setupData.entity.report_planName}`,
       });
       expect(enterDetailsButton).toBeVisible();
       await userEvent.click(enterDetailsButton);
@@ -184,25 +184,25 @@ describe("<MobileEntityRow />", () => {
     test("Enter button should be disabled if there is an entity but does not have a standard", async () => {
       render(completeRowComponent({ ...setupData, hasStandards: false }));
       const enterButton = screen.getByRole("button", {
-        name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+        name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
       expect(enterButton).toBeVisible();
       expect(enterButton).toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards", () => {
+    test("Enter button should not be disabled if there is an entity and hasStandards", () => {
       render(completeRowComponent({ ...setupData, hasStandards: true }));
       const enterButton = screen.getByRole("button", {
-        name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+        name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
       expect(enterButton).toBeVisible();
       expect(enterButton).not.toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards is not defined", () => {
+    test("Enter button should not be disabled if there is an entity and hasStandards is not defined", () => {
       render(completeRowComponent(setupData));
       const enterButton = screen.getByRole("button", {
-        name: mockOverlayReportPageVerbiage.enterEntityDetailsButtonText,
+        name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
       expect(enterButton).toBeVisible();
       expect(enterButton).not.toBeDisabled();
@@ -231,7 +231,9 @@ describe("<MobileEntityRow />", () => {
 
     test("MCPAR Enter Details button opens the Drawer", async () => {
       render(completeRowComponent(setupData));
-      const enterButton = screen.getByRole("button", { name: "Enter" });
+      const enterButton = screen.getByRole("button", {
+        name: `Enter ${setupData.entity.name}`,
+      });
       expect(enterButton).toBeVisible();
       await userEvent.click(enterButton);
       await waitFor(() => {
