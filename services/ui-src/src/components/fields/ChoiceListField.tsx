@@ -345,27 +345,6 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked:disabled::before": {
     boxShadow: "inset 0 0 4em 1em #A6A6A6;",
   },
-  ".fake-list-item": {
-    display: "block",
-    paddingLeft: "1rem",
-    textIndent: "-0.5rem",
-  },
-  ".fake-list-item::before": {
-    fontWeight: "bold",
-    display: "inline-block",
-    width: ".5rem",
-  },
-  /* Numbered style */
-  ".numbered": {
-    counterIncrement: "item",
-  },
-  ".numbered::before": {
-    content: 'counter(item) "."',
-  },
-  /* Bulleted style */
-  ".bulleted::before": {
-    content: '"•"',
-  },
 };
 
 export const getNestedChildFields = (

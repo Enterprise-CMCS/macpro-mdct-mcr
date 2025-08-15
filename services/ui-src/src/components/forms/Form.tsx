@@ -178,14 +178,36 @@ const sx = {
   ".optional-text": {
     fontWeight: "lighter",
   },
-  ".fake-paragraph-break": {
-    display: "block",
-    paddingTop: "0.25rem",
-  },
   h1: {
     fontWeight: "bold",
     fontSize: "md",
     color: "base",
     paddingTop: "1rem",
+  },
+  // fake styles for hints
+  ".fake-paragraph-break": {
+    display: "block",
+    paddingTop: "0.25rem",
+  },
+  ".fake-list-item": {
+    display: "block",
+    paddingLeft: "1rem",
+    textIndent: "-0.5rem",
+  },
+  ".fake-list-item:first-of-type": {
+    paddingTop: "0.25rem",
+  },
+  ".fake-list-item::before": {
+    content: '"•"',
+    fontWeight: "bold",
+    display: "inline-block",
+    width: ".5rem",
+  },
+  // fake list numbered style
+  ".numbered": {
+    counterIncrement: "item",
+  },
+  ".numbered::before": {
+    content: 'counter(item) "."',
   },
 };
