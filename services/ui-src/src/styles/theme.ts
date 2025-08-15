@@ -20,6 +20,15 @@ const theme = extendTheme({
   config: {
     cssVarPrefix: "mdct",
   },
+  styles: {
+    global: {
+      textarea: {
+        fieldSizing: "content",
+        // need min-height because fieldSizing overrides the rows attribute
+        minHeight: "82px",
+      },
+    },
+  },
   components: {
     Accordion: {
       baseStyle: {
