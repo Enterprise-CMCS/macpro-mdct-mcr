@@ -1342,7 +1342,7 @@
             }
           ]
         },
-        "tableHeader": "Plan Name",
+        "tableHeader": "Plan name",
         "enterEntityDetailsButtonText": "Enter"
       },
       "details": {
