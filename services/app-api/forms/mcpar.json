@@ -2217,14 +2217,14 @@
                     },
                     {
                       "type": "span",
-                      "text": "Numerator: Plan enrollment (D1.I.1)",
+                      "content": "Numerator: Plan enrollment (D1.I.1)",
                       "props": {
                         "className": "fake-list-item"
                       }
                     },
                     {
                       "type": "span",
-                      "text": "Denominator: Statewide Medicaid managed care enrollment (B.I.2)",
+                      "content": "Denominator: Statewide Medicaid managed care enrollment (B.I.2)",
                       "props": {
                         "className": "fake-list-item"
                       }
