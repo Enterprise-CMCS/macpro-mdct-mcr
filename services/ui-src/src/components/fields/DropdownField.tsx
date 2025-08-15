@@ -12,6 +12,7 @@ import { ReportContext, EntityContext } from "components";
 // constants
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 import { mcparProgramList } from "forms/addEditMcparReport/mcparProgramList";
+import { naaarProgramList } from "forms/addEditNaaarReport/naaarProgramList";
 // types
 import {
   AnyObject,
@@ -59,6 +60,16 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
+  const reportType = window.location.pathname.substring(1);
+
+  // get correct program list
+  const programListMap: any = {
+    mcpar: mcparProgramList,
+    naaar: naaarProgramList,
+  };
+
+  const programListJson = programListMap[reportType!];
+
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
     let dropdownOptions = [];
@@ -78,9 +89,9 @@ export const DropdownField = ({
           })) ?? [];
       }
     } else if (options === "programList") {
-      dropdownOptions = mcparProgramList[
-        state as keyof typeof mcparProgramList
-      ].map((option) => ({
+      dropdownOptions = programListJson[
+        state as keyof typeof programListJson
+      ].map((option: DropdownChoice) => ({
         label: option.label,
         value: option.label,
       }));

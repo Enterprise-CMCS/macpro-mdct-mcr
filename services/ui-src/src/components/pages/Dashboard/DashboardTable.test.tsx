@@ -244,6 +244,13 @@ describe("<DashboardTable />", () => {
     });
 
     test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        enumerable: true,
+        value: {
+          pathname: "/mcpar",
+        },
+      });
       render(dashboardViewWithReports);
       const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
       expect(addReportButton).toBeVisible();
