@@ -239,7 +239,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
             });
 
       // filter Standards after deletion of any plans
-      const remainingPlanIds = report?.fieldData.plans.map(
+      const remainingPlanIds = report?.fieldData.plans?.map(
         (plan: { id: any }) => plan.id
       );
 

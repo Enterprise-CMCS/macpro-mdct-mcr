@@ -163,7 +163,6 @@ export const NumberField = ({
     }
   };
 
-  // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
   const parsedHint = hint && parseCustomHtml(hint);
@@ -277,5 +276,12 @@ const sx = {
       bottom: "11px",
       left: "10px",
     },
+  },
+  // styling for list in hint
+  ".fake-list-item": {
+    display: "block",
+  },
+  ".fake-list-item::before": {
+    content: '"• "',
   },
 };

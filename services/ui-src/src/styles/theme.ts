@@ -78,6 +78,12 @@ const theme = extendTheme({
           },
           ":hover, :visited:hover": {
             color: "primary_darker",
+            backgroundColor: "gray_lightest",
+          },
+          ":disabled": {
+            color: "gray_lighter",
+            borderColor: "gray_lighter",
+            opacity: 1,
           },
           _focus: {
             textDecoration: "none",
