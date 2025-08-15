@@ -83,6 +83,7 @@ const theme = extendTheme({
           ":disabled": {
             color: "gray_lighter",
             borderColor: "gray_lighter",
+            opacity: 1,
           },
           _focus: {
             textDecoration: "none",
