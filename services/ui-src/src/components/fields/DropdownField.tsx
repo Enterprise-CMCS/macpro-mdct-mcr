@@ -32,7 +32,6 @@ import {
   useStore,
   convertDateUtcToEt,
 } from "utils";
-import { useLocation } from "react-router-dom";
 
 export const DropdownField = ({
   name,
@@ -61,8 +60,7 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
-  const { pathname } = useLocation();
-  const reportType = pathname.replaceAll("/", "");
+  const reportType = window.location.pathname.replaceAll("/", "");
 
   // get correct program list
   const programListMap: any = {
