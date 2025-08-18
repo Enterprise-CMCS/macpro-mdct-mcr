@@ -91,7 +91,6 @@ const naaarCreationDisabledEvent: APIGatewayProxyEvent = {
       dueDate: 168515200000,
       combinedData: false,
       lastAlteredBy: "Thelonious States",
-      naaarReport: false,
     },
   }),
 };
@@ -125,7 +124,6 @@ const naaarCreationEvent: APIGatewayProxyEvent = {
       dueDate: 168515200000,
       combinedData: false,
       lastAlteredBy: "Thelonious States",
-      naaarReport: true,
     },
   }),
 };

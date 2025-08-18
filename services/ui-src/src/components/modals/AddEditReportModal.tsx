@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
@@ -46,8 +45,6 @@ export const AddEditReportModal = ({
   const { copyEligibleReportsByState } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-
-  const naaarReport = useFlags()?.naaarReport;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -231,7 +228,6 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
-        naaarReport,
       },
       fieldData: isNewReport
         ? {
