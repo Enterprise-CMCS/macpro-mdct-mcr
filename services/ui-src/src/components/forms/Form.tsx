@@ -194,7 +194,7 @@ const sx = {
     paddingLeft: "1rem",
     textIndent: "-0.5rem",
   },
-  ".fake-list-item:first-of-type": {
+  ".fake-list-item:first-of-type, .fake-paragraph-break + .fake-list-item": {
     paddingTop: "0.25rem",
   },
   ".fake-list-item::before": {
