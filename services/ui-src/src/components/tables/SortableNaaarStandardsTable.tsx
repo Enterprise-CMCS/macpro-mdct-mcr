@@ -66,9 +66,9 @@ export const SortableNaaarStandardsTable = ({
   const sortableHeadRow = {
     count: { header: "#" },
     provider: { header: "Provider" },
-    standardType: { header: "Standard Type" },
-    description: { header: "Standard Description" },
-    analysisMethods: { header: "Analysis Methods" },
+    standardType: { header: "Standard type" },
+    description: { header: "Standard description" },
+    analysisMethods: { header: "Analysis methods" },
     population: { header: "Pop." },
     region: { header: "Region" },
     edit: { header: "Edit standard", hidden: true },
