@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import uuid from "react-uuid";
 // components
 import {
   DropdownChangeObject,
@@ -31,7 +32,7 @@ import {
   useStore,
   convertDateUtcToEt,
 } from "utils";
-import uuid from "react-uuid";
+import { useLocation } from "react-router-dom";
 
 export const DropdownField = ({
   name,
@@ -60,7 +61,8 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
-  const reportType = window.location.pathname.substring(1);
+  const { pathname } = useLocation();
+  const reportType = pathname.replaceAll("/", "");
 
   // get correct program list
   const programListMap: any = {
