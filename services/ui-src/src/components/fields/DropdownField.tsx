@@ -22,6 +22,9 @@ import {
   EntityShape,
   SelectedOption,
   ReportMetadataShape,
+  ProgramList,
+  ProgramChoice,
+  State,
 } from "types";
 // utils
 import {
@@ -63,16 +66,16 @@ export const DropdownField = ({
   const reportType = window.location.pathname.replaceAll("/", "");
 
   // get correct program list
-  const programListMap: any = {
+  const programListMap: { [key: string]: ProgramList } = {
     mcpar: mcparProgramList,
     naaar: naaarProgramList,
   };
 
-  const programListJson = programListMap[reportType!];
+  const programListJson = programListMap[reportType];
 
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
-    let dropdownOptions = [];
+    let dropdownOptions: DropdownChoice[] = [];
     if (options === "copyEligibleReports") {
       if (copyEligibleReportsByState?.length == 0) {
         dropdownOptions.push({
@@ -89,12 +92,12 @@ export const DropdownField = ({
           })) ?? [];
       }
     } else if (options === "programList") {
-      dropdownOptions = programListJson[
-        state as keyof typeof programListJson
-      ].map((option: DropdownChoice) => ({
-        label: option.label,
-        value: option.label,
-      }));
+      dropdownOptions = programListJson[state as State].map(
+        (option: ProgramChoice) => ({
+          label: option.label,
+          value: option.label,
+        })
+      );
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({

@@ -52,6 +52,8 @@ export const naaarProgramList = {
       label: "Comprehensive Health Plan (CHP)",
     },
   ],
+  // Alaska
+  AK: [],
   // California
   CA: [
     {
@@ -86,6 +88,8 @@ export const naaarProgramList = {
       label: "Child Health Plan Plus (CHP+) Dental Care",
     },
   ],
+  // Connecticut
+  CT: [],
   // Delaware
   DE: [
     {
@@ -655,6 +659,8 @@ export const naaarProgramList = {
       label: "NEMT",
     },
   ],
+  // South Dakota
+  SD: [],
   // Tennessee
   TN: [
     {

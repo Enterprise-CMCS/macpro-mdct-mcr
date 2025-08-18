@@ -1,5 +1,7 @@
+import { ProgramList } from "types";
+
 // ESP: program list (MCPAR)
-export const mcparProgramList = {
+export const mcparProgramList: ProgramList = {
   // Alabama
   AL: [
     {
@@ -52,6 +54,8 @@ export const mcparProgramList = {
       label: "Comprehensive Health Plan (CHP)",
     },
   ],
+  // Alaska
+  AK: [],
   // California
   CA: [
     {
@@ -86,6 +90,8 @@ export const mcparProgramList = {
       label: "Child Health Plan Plus (CHP+) Dental Care",
     },
   ],
+  // Connecticut
+  CT: [],
   // Delaware
   DE: [
     {
@@ -655,6 +661,8 @@ export const mcparProgramList = {
       label: "NEMT",
     },
   ],
+  // South Dakota
+  SD: [],
   // Tennessee
   TN: [
     {
