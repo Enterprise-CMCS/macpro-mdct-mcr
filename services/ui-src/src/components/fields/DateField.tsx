@@ -118,7 +118,7 @@ export const DateField = ({
   // prepare error message, hint, and classes
   const formErrorState = form?.formState?.errors;
   const errorMessage = formErrorState?.[name]?.message;
-  const parsedHint = hint && parseCustomHtml(hint);
+  const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const nestedChildClasses = nested ? "nested ds-c-choice__checkedChild" : "";
   const labelClass = !label ? "no-label" : "";
   const labelText =

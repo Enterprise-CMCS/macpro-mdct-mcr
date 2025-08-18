@@ -32,7 +32,29 @@
       "props": {
         "divider": "top",
         "content": "Reporting period",
-        "hint": "For items below, indicate the reporting period for the analysis and compliance information entered into this report. CMS expects states to enter a reporting period end date that is no more than one year prior to the submission of this report.<p>If submitting because of a new contract or significant change in plan operations, the reporting period may cover less than one year.</p><p>If submitting an annual report, the reporting period should cover one year.</p>"
+        "hint": [
+          {
+            "type": "span",
+            "content": "For items below, indicate the reporting period for the analysis and compliance information entered into this report. CMS expects states to enter a reporting period end date that is no more than one year prior to the submission of this report.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          },
+          {
+            "type": "span",
+            "content": "If submitting because of a new contract or significant change in plan operations, the reporting period may cover less than one year.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          },
+          {
+            "type": "span",
+            "content": "If submitting an annual report, the reporting period should cover one year.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          }
+        ]
       }
     },
     {
