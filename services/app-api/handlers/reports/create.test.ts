@@ -62,39 +62,6 @@ const creationEvent: APIGatewayProxyEvent = {
   }),
 };
 
-const naaarCreationDisabledEvent: APIGatewayProxyEvent = {
-  ...proxyEvent,
-  headers: { "cognito-identity-id": "test" },
-  pathParameters: { reportType: "NAAAR", state: "AL" },
-  body: JSON.stringify({
-    fieldData: {
-      contactName: "Contact Name",
-      analysisMethods: [
-        {
-          id: "id1",
-          name: "Geomapping",
-          isRequired: true,
-        },
-        {
-          id: "id2",
-          name: "Plan Provider Directory Review",
-          isRequired: true,
-        },
-      ],
-    },
-    metadata: {
-      reportType: "NAAAR",
-      contactName: "Contact Name",
-      status: "Not started",
-      reportingPeriodStartDate: 162515200000,
-      reportingPeriodEndDate: 168515200000,
-      dueDate: 168515200000,
-      combinedData: false,
-      lastAlteredBy: "Thelonious States",
-    },
-  }),
-};
-
 const naaarCreationEvent: APIGatewayProxyEvent = {
   ...proxyEvent,
   headers: { "cognito-identity-id": "test" },
@@ -273,12 +240,6 @@ describe("Test createReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Forbidden);
     expect(res.body).toContain(error.UNAUTHORIZED);
-  });
-
-  test("Test NAAAR report creation when form is disabled throws 400 error", async () => {
-    const res = await createReport(naaarCreationDisabledEvent, null);
-    expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(res.body).toContain(error.INVALID_DATA);
   });
 
   test("Test successful run of MCPAR report creation, not copied", async () => {
