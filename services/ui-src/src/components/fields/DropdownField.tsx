@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import uuid from "react-uuid";
 // components
 import {
   DropdownChangeObject,
@@ -12,6 +13,7 @@ import { ReportContext, EntityContext } from "components";
 // constants
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
 import { mcparProgramList } from "forms/addEditMcparReport/mcparProgramList";
+import { naaarProgramList } from "forms/addEditNaaarReport/naaarProgramList";
 // types
 import {
   AnyObject,
@@ -20,6 +22,9 @@ import {
   EntityShape,
   SelectedOption,
   ReportMetadataShape,
+  ProgramList,
+  ProgramChoice,
+  State,
 } from "types";
 // utils
 import {
@@ -30,7 +35,6 @@ import {
   useStore,
   convertDateUtcToEt,
 } from "utils";
-import uuid from "react-uuid";
 
 export const DropdownField = ({
   name,
@@ -59,9 +63,19 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
+  const reportType = window.location.pathname.replaceAll("/", "");
+
+  // get correct program list
+  const programListMap: { [key: string]: ProgramList } = {
+    mcpar: mcparProgramList,
+    naaar: naaarProgramList,
+  };
+
+  const programListJson = programListMap[reportType];
+
   // fetch the option values and format them if necessary
   const formatOptions = (options: DropdownOptions[] | string) => {
-    let dropdownOptions = [];
+    let dropdownOptions: DropdownChoice[] = [];
     if (options === "copyEligibleReports") {
       if (copyEligibleReportsByState?.length == 0) {
         dropdownOptions.push({
@@ -78,12 +92,12 @@ export const DropdownField = ({
           })) ?? [];
       }
     } else if (options === "programList") {
-      dropdownOptions = mcparProgramList[
-        state as keyof typeof mcparProgramList
-      ].map((option) => ({
-        label: option.label,
-        value: option.label,
-      }));
+      dropdownOptions = programListJson[state as State].map(
+        (option: ProgramChoice) => ({
+          label: option.label,
+          value: option.label,
+        })
+      );
     } else if (typeof options === "string") {
       dropdownOptions =
         report?.fieldData[options]?.map((option: EntityShape) => ({

@@ -12,6 +12,7 @@ import {
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
+import naaarFormJsonWithProgramList from "forms/addEditNaaarReport/addEditNaaarReportWithProgramList.json";
 // types
 import {
   AnyObject,
@@ -30,6 +31,7 @@ import {
   otherSpecify,
   useStore,
 } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,
@@ -46,11 +48,13 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const naaarProgramList = useFlags()?.naaarProgramList;
+
   // get correct form
   const modalFormJsonMap: any = {
     MCPAR: mcparFormJson,
     MLR: mlrFormJson,
-    NAAAR: naaarFormJson,
+    NAAAR: naaarProgramList ? naaarFormJsonWithProgramList : naaarFormJson,
   };
 
   const modalFormJson = modalFormJsonMap[reportType]!;
@@ -199,7 +203,24 @@ export const AddEditReportModal = ({
 
   // NAAAR report payload
   const prepareNaaarPayload = (formData: any, isNewReport: boolean) => {
-    const programName = formData["programName"];
+    const newOrExistingProgram = formData["newOrExistingProgram"];
+    const existingProgramNameSelection = formData[
+      "existingProgramNameSelection"
+    ] || {
+      label: dropdownDefaultOptionText,
+      value: "",
+    };
+    const existingProgramNameSuggestion =
+      formData["existingProgramNameSuggestion"] || "";
+    const newProgramName = formData["newProgramName"] || "";
+
+    const programName = naaarProgramList
+      ? defineProgramName(
+          newOrExistingProgram,
+          existingProgramNameSelection,
+          newProgramName
+        )
+      : formData["programName"];
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const reportingPeriodStartDate = convertDateEtToUtc(
@@ -228,6 +249,10 @@ export const AddEditReportModal = ({
         locked: false,
         submissionCount: 0,
         previousRevisions: [],
+        newOrExistingProgram,
+        existingProgramNameSelection,
+        existingProgramNameSuggestion,
+        newProgramName,
       },
       fieldData: isNewReport
         ? {
