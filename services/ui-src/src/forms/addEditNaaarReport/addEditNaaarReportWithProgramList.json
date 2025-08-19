@@ -1,0 +1,181 @@
+{
+  "id": "aen",
+  "options": {
+    "mode": "onChange"
+  },
+  "heading": {
+    "add": "Add / Copy NAAAR",
+    "subheading": "State information and reporting scenario",
+    "intro": "Add a new program to start a blank report or copy an existing report. Copying a program’s NAAAR will retain the structure of your program, including plans and network adequacy standards, but allow you to enter updated responses for the new reporting period, saving you time. You can still edit these details within.",
+    "edit": "Edit Program"
+  },
+  "fields": [
+    {
+      "id": "newOrExistingProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Is this NAAAR for an existing or new program?",
+        "hint": "Select from an existing program or add a new program.",
+        "choices": [
+          {
+            "id": "isExistingProgram",
+            "label": "Existing program",
+            "children": [
+              {
+                "id": "existingProgramNameSelection",
+                "type": "dropdown",
+                "validation": {
+                  "type": "dropdown",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Program name",
+                  "hint": "Select an existing program from the options below. This list was compiled using official program names submitted to CMS by states.",
+                  "options": "programList"
+                }
+              },
+              {
+                "id": "existingProgramNameSuggestion",
+                "type": "text",
+                "validation": {
+                  "type": "textOptional",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Rename selected program (optional)",
+                  "hint": "If you need to replace or rename the selected program, enter its new name in the blank field below. Note: this will not change the name of the program in this report. CMS will update it for a future report."
+                }
+              }
+            ]
+          },
+          {
+            "id": "isNewProgram",
+            "label": "Add new program",
+            "children": [
+              {
+                "id": "newProgramName",
+                "type": "text",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Specify new program name",
+                  "hint": ""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "copyFieldDataSourceId",
+      "type": "dropdown",
+      "props": {
+        "label": "If you want to copy an existing report, select one (optional)",
+        "options": "copyEligibleReports"
+      }
+    },
+    {
+      "id": "reportingPeriodHeader",
+      "type": "sectionHeader",
+      "props": {
+        "divider": "top",
+        "content": "Reporting period",
+        "hint": [
+          {
+            "type": "span",
+            "content": "For items below, indicate the reporting period for the analysis and compliance information entered into this report. CMS expects states to enter a reporting period end date that is no more than one year prior to the submission of this report.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          },
+          {
+            "type": "span",
+            "content": "If submitting because of a new contract or significant change in plan operations, the reporting period may cover less than one year.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          },
+          {
+            "type": "span",
+            "content": "If submitting an annual report, the reporting period should cover one year.",
+            "props": {
+              "className": "fake-paragraph-break"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "reportingPeriodStartDate",
+      "type": "date",
+      "validation": "date",
+      "props": {
+        "label": "Reporting period start date",
+        "hint": "Enter start date of the reporting period represented in the report.",
+        "timetype": "startDate"
+      }
+    },
+    {
+      "id": "reportingPeriodEndDate",
+      "type": "date",
+      "validation": {
+        "type": "endDate",
+        "dependentFieldName": "reportingPeriodStartDate"
+      },
+      "props": {
+        "label": "Reporting period end date",
+        "hint": "Enter end date of the reporting period represented in the report.",
+        "timetype": "endDate"
+      }
+    },
+    {
+      "id": "planTypeIncludedInProgram",
+      "type": "radio",
+      "validation": "radio",
+      "props": {
+        "label": "Plan type included in program",
+        "hint": "Indicate the managed care plan type (MCO, PIHP, PAHP, MMP or Other, specify) that contracts with the state in each program.",
+        "choices": [
+          {
+            "id": "NHAbx1VBdvZkHgG2HTfexemq",
+            "label": "MCO"
+          },
+          {
+            "id": "MiyW1eKfcetIG8k2eyT5dbhw",
+            "label": "PIHP"
+          },
+          {
+            "id": "QASeuhF5cDBrRpWbmYBndH2v",
+            "label": "PAHP"
+          },
+          {
+            "id": "U4dg782RHft2Fs53fOpcbocr",
+            "label": "MMP"
+          },
+          {
+            "id": "ZRH5GgCnJSlnCdieekgh67sv",
+            "label": "Other, specify",
+            "children": [
+              {
+                "id": "planTypeIncludedInProgram-otherText",
+                "type": "textarea",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "planTypeIncludedInProgram"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
