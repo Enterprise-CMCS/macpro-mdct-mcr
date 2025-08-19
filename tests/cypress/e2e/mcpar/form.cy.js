@@ -137,12 +137,23 @@ const traverseRoutes = (routes, flags) => {
   }
 
   if (!flags) {
+    let intercepted = false;
     // Intercept Launch Darkly request first time only
-    cy.intercept(/launchdarkly/).as("ld");
-    cy.wait("@ld").then(({ request }) => {
-      const response = request.body.filter((item) => item.features)[0];
-      const ldFlags = response ? response.features : {};
-      continueTraversing(ldFlags);
+    cy.intercept(/launchdarkly/, (req) => {
+      intercepted = true;
+      req.continue();
+    }).as("ld");
+
+    cy.then(() => {
+      if (intercepted) {
+        cy.wait("@ld").then(({ request }) => {
+          const response = request.body.filter((item) => item.features)[0];
+          const ldFlags = response ? response.features : {};
+          continueTraversing(ldFlags);
+        });
+      } else {
+        continueTraversing({});
+      }
     });
   } else {
     // Reset intercept

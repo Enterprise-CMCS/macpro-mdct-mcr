@@ -173,10 +173,13 @@ export const DashboardPage = ({ reportType }: Props) => {
         submitterEmail: report.submitterEmail,
         submittedOnDate: submittedOnDate,
       };
-    } else if (reportType == ReportType.MCPAR) {
+    } else if (
+      reportType == ReportType.MCPAR ||
+      reportType === ReportType.NAAAR
+    ) {
       /*
        * This elseif is used when a user is creating a brand new report on MCPAR
-       * specifically. We want the program name choicelist to default to an
+       * or NAAAR specifically. We want the program name choicelist to default to an
        * existing program name. This will hydrate it as such.
        */
       formData = {

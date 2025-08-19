@@ -9,7 +9,6 @@ import { UserProvider, useStore } from "utils";
 import {
   mockAdminUserStore,
   mockBannerStore,
-  mockLDFlags,
   mockMcparReportContext,
   mockMcparReportStore,
   mockMlrReportStore,
@@ -21,9 +20,6 @@ import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
-
-// LaunchDarkly
-mockLDFlags.setDefault({ naaarReport: false });
 
 const appRoutesComponent = (history: any, isReportPage: boolean = false) => (
   <ReportContext.Provider
@@ -80,7 +76,7 @@ describe("<AppRoutes />", () => {
     });
   });
 
-  describe("Test MCPAR and MLR report routes", () => {
+  describe("Test MCPAR, MLR, and NAAAR report routes", () => {
     test("MCPAR routes load correctly", async () => {
       mockedUseStore.mockReturnValue({
         ...mockStateUserStore,
@@ -115,6 +111,25 @@ describe("<AppRoutes />", () => {
         screen.getByRole("heading", {
           level: 1,
           name: "Minnesota Medicaid Medical Loss Ratio (MLR)",
+        })
+      ).toBeVisible();
+    });
+
+    test("NAAAR routes load correctly", async () => {
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockBannerStore,
+        ...mockNaaarReportStore,
+      });
+      history = createMemoryHistory();
+      history.push("/naaar");
+      await act(async () => {
+        await render(appRoutesComponent(history));
+      });
+      expect(
+        screen.getByRole("heading", {
+          level: 1,
+          name: "Minnesota Network Adequacy and Access Assurances Report (NAAAR)",
         })
       ).toBeVisible();
     });
@@ -161,40 +176,6 @@ describe("<AppRoutes />", () => {
       render(appRoutesComponent(history, true));
       expect(screen.getByTestId("main-content").tagName).toBe("DIV");
       expect(screen.getByRole("main").id).toBe("report-content");
-    });
-  });
-
-  describe("Test naaarReport feature flag functionality", () => {
-    beforeEach(async () => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockBannerStore,
-        ...mockNaaarReportStore,
-      });
-    });
-    test("if naaarReport flag is true, NAAAR routes should be accesible to users", async () => {
-      mockLDFlags.set({ naaarReport: true });
-      history = createMemoryHistory();
-      history.push("/naaar");
-      await act(async () => {
-        await render(appRoutesComponent(history));
-      });
-      expect(
-        screen.getByRole("heading", {
-          level: 1,
-          name: "Minnesota Network Adequacy and Access Assurances Report (NAAAR)",
-        })
-      ).toBeVisible();
-    });
-
-    test("if naaarReport flag is false, NAAAR routes should redirect to 404 Not Found page", async () => {
-      mockLDFlags.set({ naaarReport: false });
-      history = createMemoryHistory();
-      history.push("/naaar");
-      await act(async () => {
-        await render(appRoutesComponent(history));
-      });
-      expect(screen.getByText(notFoundVerbiage.header)).toBeVisible();
     });
   });
 });

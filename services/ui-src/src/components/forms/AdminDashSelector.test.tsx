@@ -5,7 +5,6 @@ import { AdminDashSelector } from "components";
 // utils
 import {
   mockAdminUserStore,
-  mockLDFlags,
   mockMlrReportStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -28,8 +27,6 @@ const adminDashSelectorView = (
     <AdminDashSelector verbiage={verbiage.readOnly} />
   </RouterWrappedComponent>
 );
-
-mockLDFlags.setDefault({ naaarReport: true });
 
 // TESTS
 
@@ -63,27 +60,6 @@ describe("<AdminDashSelector />", () => {
       });
       await userEvent.click(submitButton);
       expect(window.location.pathname).toEqual("/mcpar");
-    });
-  });
-
-  describe("Test naaarReport feature flag functionality", () => {
-    test("if naaarReport flag is true, NAAAR radio choice should be visible", async () => {
-      mockLDFlags.set({ naaarReport: true });
-      render(adminDashSelectorView);
-      expect(
-        screen.getByLabelText(
-          "Network Adequacy and Access Assurances Report (NAAAR)"
-        )
-      ).toBeVisible();
-    });
-
-    test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
-      mockLDFlags.set({ naaarReport: false });
-      render(adminDashSelectorView);
-      const naaarRadioChoice = screen.queryByLabelText(
-        "Network Adequacy and Access Assurances Report (NAAAR)"
-      );
-      expect(naaarRadioChoice).toBeNull();
     });
   });
 
