@@ -23,7 +23,6 @@ export type SeedReportMetadataShape = Omit<
 > & {
   dueDate?: number;
   combinedData?: boolean;
-  naaarReport?: boolean;
   reportingPeriodEndDate?: number;
   reportingPeriodStartDate?: number;
 };

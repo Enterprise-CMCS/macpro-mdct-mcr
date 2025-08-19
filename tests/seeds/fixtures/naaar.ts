@@ -46,7 +46,6 @@ export const newNaaar = (stateName: string): SeedNewReportShape => {
       dueDate: reportingPeriodEndDate,
       lastAlteredBy: faker.person.fullName(),
       locked: false,
-      naaarReport: true,
       planTypeIncludedInProgram: [planTypeIncludedInProgram[planIndex]],
       "planTypeIncludedInProgram-otherText":
         planIndex === planTypeIncludedInProgram.length - 1

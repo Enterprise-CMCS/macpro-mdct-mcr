@@ -1,18 +1,18 @@
 // components
-import { Box, Button, Flex, Image, Text, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 // types
 import { ReportMetadataShape, ReportType } from "types";
 // utils
 import { convertDateUtcToEt } from "utils";
 import {
-  AdminArchiveActionButtonProps,
-  AdminReleaseActionButtonProps,
+  ActionButton,
+  AdminArchiveButton,
+  AdminReleaseButton,
   DashboardTableProps,
   DateFieldProps,
+  EditReportButton,
   getStatus,
 } from "./DashboardTableUtils";
-// assets
-import editIcon from "assets/icons/icon_edit_square_gray.png";
 
 export const MobileDashboardTable = ({
   reportsByState,
@@ -38,15 +38,12 @@ export const MobileDashboardTable = ({
           </Text>
           <Flex alignContent="flex-start">
             {isStateLevelUser && !report?.locked && (
-              <Box sx={sxOverride.editReport}>
-                <button onClick={() => openAddEditReportModal(report)}>
-                  <Image
-                    src={editIcon}
-                    data-testid="mobile-edit-report"
-                    alt="Edit Report"
-                  />
-                </button>
-              </Box>
+              <EditReportButton
+                report={report}
+                reportType={report.reportType}
+                openAddEditReportModal={openAddEditReportModal}
+                sxOverride={sxOverride}
+              />
             )}
             <Text sx={sxOverride.programNameText}>{report.programName}</Text>
           </Flex>
@@ -86,24 +83,20 @@ export const MobileDashboardTable = ({
         )}
         <Flex alignContent="flex-start" gap={2}>
           <Box sx={sxOverride.editReportButtonCell}>
-            <Button
-              variant="outline"
-              onClick={() => enterSelectedReport(report)}
-              isDisabled={report?.archived}
-            >
-              {entering && reportId == report.id ? (
-                <Spinner size="md" />
-              ) : isStateLevelUser && !report?.locked ? (
-                "Edit"
-              ) : (
-                "View"
-              )}
-            </Button>
+            <ActionButton
+              report={report}
+              reportType={reportType}
+              reportId={reportId}
+              isStateLevelUser={isStateLevelUser}
+              entering={entering}
+              enterSelectedReport={enterSelectedReport}
+            />
           </Box>
           {isAdmin && (
             <Box sx={sxOverride.adminActionCell}>
               <AdminReleaseButton
                 report={report}
+                reportType={reportType}
                 reportId={reportId}
                 releaseReport={releaseReport}
                 releasing={releasing}
@@ -111,6 +104,7 @@ export const MobileDashboardTable = ({
               />
               <AdminArchiveButton
                 report={report}
+                reportType={reportType}
                 reportId={reportId}
                 archiveReport={archiveReport}
                 archiving={archiving}
@@ -142,54 +136,6 @@ const DateFields = ({ report, reportType }: DateFieldProps) => {
     </>
   );
 };
-
-const AdminReleaseButton = ({
-  report,
-  reportId,
-  releasing,
-  releaseReport,
-  sxOverride,
-}: MobileAdminReleaseActionButtonProps) => {
-  return (
-    <Button
-      variant="link"
-      disabled={report.locked === false || report.archived === true}
-      sx={sxOverride.adminActionButton}
-      onClick={() => releaseReport(report)}
-    >
-      {releasing && reportId === report.id ? <Spinner size="md" /> : "Unlock"}
-    </Button>
-  );
-};
-
-const AdminArchiveButton = ({
-  report,
-  reportId,
-  archiveReport,
-  archiving,
-  sxOverride,
-}: MobileAdminArchiveActionButtonProps) => {
-  return (
-    <Button
-      variant="link"
-      sx={sxOverride.adminActionButton}
-      onClick={() => archiveReport(report)}
-    >
-      {archiving && reportId === report.id ? (
-        <Spinner size="md" />
-      ) : report?.archived ? (
-        "Unarchive"
-      ) : (
-        "Archive"
-      )}
-    </Button>
-  );
-};
-
-interface MobileAdminReleaseActionButtonProps
-  extends Omit<AdminReleaseActionButtonProps, "reportType"> {}
-interface MobileAdminArchiveActionButtonProps
-  extends Omit<AdminArchiveActionButtonProps, "reportType"> {}
 
 const sx = {
   mobileTable: {

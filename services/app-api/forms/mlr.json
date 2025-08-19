@@ -209,22 +209,17 @@
               "label": "I. MCO, PIHP, or PAHP Name",
               "hint": [
                 {
-                  "type": "p",
-                  "children": [
-                    {
-                      "type": "html",
-                      "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
-                    },
-                    {
-                      "type": "externalLink",
-                      "content": "“Managed Care Enrollment by Program and Plan”",
-                      "props": {
-                        "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
-                        "target": "_blank",
-                        "aria-label": "Link opens in new tab"
-                      }
-                    }
-                  ]
+                  "type": "html",
+                  "content": "Enter the full name of the plan relevant to this report. Do not abbreviate plan names. All MCOs/PIHPs/PAHPs contracted in a specific program should be reported, including non-credible plans with small enrollment. Plan names should reflect those used in the Medicaid enrollment report: "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "“Managed Care Enrollment by Program and Plan”",
+                  "props": {
+                    "href": "https://www.medicaid.gov/medicaid/managed-care/enrollment-report/index.html",
+                    "target": "_blank",
+                    "aria-label": "Link opens in new tab"
+                  }
                 }
               ]
             }
@@ -281,69 +276,32 @@
               "label": "L. Eligibility group",
               "hint": [
                 {
-                  "type": "p",
-                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select “All Populations”. If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group."
+                  "type": "span",
+                  "content": "Enter the eligibility group for this MLR report. Most states provide MLR reports for all populations. In this case, select “All Populations”. If the state is providing additional detail for specific eligibility groups, see below for instructions related to each group.",
+                  "props": {
+                    "className": "fake-paragraph-break"
+                  }
                 },
                 {
-                  "type": "ol",
-                  "children": [
-                    {
-                      "type": "li",
-                      "props": {
-                        "style": {
-                          "fontWeight": "none"
-                        }
-                      },
-                      "children": [
-                        {
-                          "type": "p",
-                          "children": [
-                            {
-                              "type": "html",
-                              "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select “Standalone CHIP”. These separate child health assistance programs are defined in "
-                            },
-                            {
-                              "type": "externalLink",
-                              "content": "42 CFR § 457.10",
-                              "props": {
-                                "aria-label": "Link opens in new tab",
-                                "target": "_blank",
-                                "href": "https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-D/part-457/subpart-A#457.10"
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "li",
-                      "props": {
-                        "style": {
-                          "fontWeight": "none"
-                        }
-                      },
-                      "children": [
-                        {
-                          "type": "p",
-                          "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as “the Expansion Group”). Select “Group VIII Expansion Adult Only”."
-                        }
-                      ]
-                    },
-                    {
-                      "type": "li",
-                      "props": {
-                        "style": {
-                          "fontWeight": "none"
-                        }
-                      },
-                      "children": [
-                        {
-                          "type": "p",
-                          "content": "For States that intend to report separate MLRs for elibility groups that are served under the same program, select “Other, specify”."
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "span",
+                  "content": "<i>For separate CHIP reporting:</i> States that intend to report MLRs for separate CHIP-only programs should select “Standalone CHIP”. These separate child health assistance programs are defined in 42 CFR § 457.10.",
+                  "props": {
+                    "className": "fake-list-item numbered"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "<i>For SUPPORT Act reporting:</i> States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide an MLR for the eligibility group described in section 1902(a)(10)(A)(i)(VIII) (referred to here as “the Expansion Group”). Select “Group VIII Expansion Adult Only”.",
+                  "props": {
+                    "className": "fake-list-item numbered"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "For States that intend to report separate MLRs for eligibility groups that are served under the same program, select “Other, specify”.",
+                  "props": {
+                    "className": "fake-list-item numbered"
+                  }
                 }
               ],
               "choices": [
@@ -611,7 +569,40 @@
             "validation": "numberOptional",
             "props": {
               "label": "3.3 Credibility adjustment",
-              "hint": "<p>Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)</p><ul><li><span>Enter 0% if no credibility adjustment is needed.</span></li><li><span>For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.</span></li><li><span>For fully credible plans, the credibility adjustment should be entered as 0%.</span></li></ul><a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'> 42 CFR § 438.8(h) </a>",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Enter the percentage exactly as the percentage should appear (rounded to nearest tenth). (Optional subcomponent of section 3.4 Adjusted MLR)",
+                  "props": {
+                    "className": "fake-paragraph-break"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "Enter 0% if no credibility adjustment is needed.",
+                  "props": {
+                    "className": "fake-list-item"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "For non-credible plans, the credibility adjustment should be rounded to the nearest tenth and entered up to 100%.",
+                  "props": {
+                    "className": "fake-list-item"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "For fully credible plans, the credibility adjustment should be entered as 0%.",
+                  "props": {
+                    "className": "fake-list-item"
+                  }
+                },
+                {
+                  "type": "html",
+                  "content": "<a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-A/section-438.8#p-438.8(h)' target='_blank'>42 CFR § 438.8(h)</a>"
+                }
+              ],
               "mask": "percentage",
               "styleAsOptional": true,
               "decimalPlacesToRoundTo": 1
@@ -878,7 +869,29 @@
                       },
                       "props": {
                         "label": "4.9 Remittance methodology qualitative response",
-                        "hint": "<p>Describe the methodology used to determine the State and Federal share of the remittance.</p><p>States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide a description of the methodology used to determine the State and Federal share of the remittance for the eligibility group described in section 1902(a)(10)(A)(i)(VIII)</p> <br /> <a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)' target='_blank'>42 CFR § 438.74(b)(2)</a>"
+                        "hint": [
+                          {
+                            "type": "span",
+                            "content": "Describe the methodology used to determine the State and Federal share of the remittance.",
+                            "props": {
+                              "className": "fake-paragraph-break"
+                            }
+                          },
+                          {
+                            "type": "span",
+                            "content": "States that intend to qualify for the SUPPORT Act Section 4001 MLR provision must provide a description of the methodology used to determine the State and Federal share of the remittance for the eligibility group described in section 1902(a)(10)(A)(i)(VIII)",
+                            "props": {
+                              "className": "fake-paragraph-break"
+                            }
+                          },
+                          {
+                            "type": "span",
+                            "content": "<a href='https://www.ecfr.gov/current/title-42/chapter-IV/subchapter-C/part-438/subpart-B/section-438.74#p-438.74(b)(2)' target='_blank'>42 CFR § 438.74(b)(2)</a>",
+                            "props": {
+                              "className": "fake-paragraph-break"
+                            }
+                          }
+                        ]
                       }
                     }
                   ]

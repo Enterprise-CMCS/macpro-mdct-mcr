@@ -5,7 +5,6 @@ import { act } from "react-dom/test-utils";
 import { TemplateCard } from "components";
 // utils
 import {
-  mockLDFlags,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -50,8 +49,6 @@ const naaarTemplateCardComponent = (
     <TemplateCard templateName="NAAAR" verbiage={naaarTemplateVerbiage} />
   </RouterWrappedComponent>
 );
-
-mockLDFlags.setDefault({ naaarReport: true });
 
 describe("<TemplateCard />", () => {
   describe("Test MCPAR TemplateCard", () => {
@@ -130,25 +127,43 @@ describe("<TemplateCard />", () => {
     });
   });
 
-  describe("Test naaarReport feature flag functionality", () => {
-    test("if naaarReport flag is true, NAAAR available verbiage should be visible", async () => {
-      mockLDFlags.set({ naaarReport: true });
+  describe("Test NAAAR TemplateCard", () => {
+    beforeEach(() => {
       render(naaarTemplateCardComponent);
-      expect(
-        screen.getByText(naaarTemplateVerbiage.body.available)
-      ).toBeVisible();
-      const enterNaaarButton = screen.getByText(
-        naaarTemplateVerbiage.link.text
-      );
-      expect(enterNaaarButton).toBeVisible();
     });
 
-    test("if naaarReport flag is false, NAAAR available verbiage should not be visible", async () => {
-      mockLDFlags.set({ naaarReport: false });
-      render(naaarTemplateCardComponent);
-      expect(
-        screen.queryByText(naaarTemplateVerbiage.link.text)
-      ).not.toBeInTheDocument();
+    test("NAAAR TemplateCard is visible", () => {
+      expect(screen.getByText(naaarTemplateVerbiage.title)).toBeVisible();
+    });
+
+    test("NAAAR TemplateCard download button is visible and clickable", async () => {
+      const downloadButton = screen.getByText(
+        naaarTemplateVerbiage.downloadText
+      );
+      expect(downloadButton).toBeVisible();
+      await act(async () => {
+        await userEvent.click(downloadButton);
+      });
+    });
+
+    test("NAAAR TemplateCard image is visible on desktop", () => {
+      const imageAltText = "Spreadsheet icon";
+      expect(screen.getByAltText(imageAltText)).toBeVisible();
+    });
+
+    test("NAAAR TemplateCard link is visible on desktop", () => {
+      const templateCardLink = naaarTemplateVerbiage.link.text;
+      expect(screen.getByText(templateCardLink)).toBeVisible();
+    });
+
+    test("NAAAR TemplateCard navigates to next route on link click", async () => {
+      mockedUseStore.mockReturnValue(mockStateUserStore);
+      const templateCardLink = screen.getByText(
+        naaarTemplateVerbiage.link.text
+      )!;
+      await userEvent.click(templateCardLink);
+      const expectedRoute = naaarTemplateVerbiage.link.route;
+      await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });
 
