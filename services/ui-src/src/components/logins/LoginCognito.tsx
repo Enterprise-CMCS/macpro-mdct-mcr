@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 // components
 import { Box, Button, Heading, Stack } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
+import { TextField } from "@cmsgov/design-system";
 // types
 import { ErrorVerbiage } from "types";
 // utils
 import { loginUser } from "utils";
 // verbiage
 import { loginError } from "verbiage/errors";
-import { TextField } from "@cmsgov/design-system";
 
 const useFormFields = (initialState: any) => {
   const [fields, setValues] = useState(initialState);
@@ -59,7 +59,6 @@ export const LoginCognito = () => {
             label="Email"
             value={fields.email}
             onChange={handleFieldChange}
-            className="field"
           />
         </Box>
         <Box sx={sx.label}>
@@ -70,7 +69,6 @@ export const LoginCognito = () => {
             label="Password"
             value={fields.password}
             onChange={handleFieldChange}
-            className="field"
           />
         </Box>
         <Button
