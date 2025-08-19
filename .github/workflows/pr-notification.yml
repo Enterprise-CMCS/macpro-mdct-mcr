@@ -34,7 +34,7 @@ jobs:
         id: getendpoint
         run: |
           set +e
-          application_endpoint_url=$(aws cloudformation describe-stacks --stack-name ui-${{ env.branch_name }} --output text --query "Stacks[0].Outputs[?OutputKey=='ApplicationEndpointUrl'].OutputValue")
+          application_endpoint_url=$(aws cloudformation describe-stacks --stack-name mcr-${{ env.branch_name }} --output text --query "Stacks[0].Outputs[?OutputKey=='CloudFrontUrl'].OutputValue")
           set -e
           if [[ -z $application_endpoint_url || ! $application_endpoint_url == http* ]]; then
               application_endpoint_url="endpoint not found"
@@ -48,7 +48,11 @@ jobs:
     needs:
       - endpoint
     # avoiding notifications for automated Snyk Pull Requests and draft pull requests
-    if: github.actor != 'mdct-github-service-account' && github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]' && !github.event.pull_request.draft
+    if: >
+      github.actor != 'mdct-github-service-account' &&
+      github.actor != 'dependabot[bot]' &&
+      github.actor != 'github-actions[bot]' &&
+      !github.event.pull_request.draft
     steps:
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
