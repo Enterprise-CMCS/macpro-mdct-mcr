@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { Fragment, useContext } from "react";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 // components
@@ -30,9 +29,6 @@ export const AppRoutes = () => {
   const isExportPage = pathname.includes("/export");
   const hasNav = isReportPage && !isExportPage;
   const boxElement = hasNav ? "div" : "main";
-
-  // LaunchDarkly
-  const naaarReport = useFlags()?.naaarReport;
 
   return (
     <Box
@@ -121,43 +117,38 @@ export const AppRoutes = () => {
           />
 
           {/* NAAAR Routes */}
-          {naaarReport && (
-            <Fragment>
-              <Route
-                path="/naaar"
-                element={<DashboardPage reportType="NAAAR" />}
-              />
-              {report?.reportType === ReportType.NAAAR && (
-                <>
-                  {(report.formTemplate.flatRoutes ?? []).map(
-                    (route: ReportRoute) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={<ReportPageWrapper />}
-                      />
-                    )
-                  )}
-                  <Route
-                    path="/naaar/export"
-                    element={<ExportedReportPage />}
-                  />
-                </>
-              )}
-              <Route
-                path="/naaar/*"
-                element={
-                  !contextIsLoaded ? (
-                    <Flex sx={sx.spinnerContainer}>
-                      <Spinner size="lg" />
-                    </Flex>
-                  ) : (
-                    <Navigate to="/naaar" />
+          <Fragment>
+            <Route
+              path="/naaar"
+              element={<DashboardPage reportType="NAAAR" />}
+            />
+            {report?.reportType === ReportType.NAAAR && (
+              <>
+                {(report.formTemplate.flatRoutes ?? []).map(
+                  (route: ReportRoute) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={<ReportPageWrapper />}
+                    />
                   )
-                }
-              />
-            </Fragment>
-          )}
+                )}
+                <Route path="/naaar/export" element={<ExportedReportPage />} />
+              </>
+            )}
+            <Route
+              path="/naaar/*"
+              element={
+                !contextIsLoaded ? (
+                  <Flex sx={sx.spinnerContainer}>
+                    <Spinner size="lg" />
+                  </Flex>
+                ) : (
+                  <Navigate to="/naaar" />
+                )
+              }
+            />
+          </Fragment>
         </Routes>
       </AdminBannerProvider>
     </Box>

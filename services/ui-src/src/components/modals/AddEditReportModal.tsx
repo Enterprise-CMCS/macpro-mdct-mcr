@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Form, Modal, ReportContext } from "components";
 import { Spinner } from "@chakra-ui/react";
@@ -32,6 +31,7 @@ import {
   otherSpecify,
   useStore,
 } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AddEditReportModal = ({
   activeState,
@@ -48,7 +48,6 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const naaarReport = useFlags()?.naaarReport;
   const naaarProgramList = useFlags()?.naaarProgramList;
 
   // get correct form
@@ -254,7 +253,6 @@ export const AddEditReportModal = ({
         existingProgramNameSelection,
         existingProgramNameSuggestion,
         newProgramName,
-        naaarReport,
       },
       fieldData: isNewReport
         ? {
