@@ -2,11 +2,12 @@ import { useMemo } from "react";
 // components
 import { Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
-import { EntityButtonGroup, EntityDisplayInfo } from "./EntityRowUtils";
+import { EntityButtonGroup } from "./EntityButtonGroup";
 // types
-import { AnyObject, EntityShape, EntityType } from "types";
+import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
 import {
+  eligibilityGroup,
   getEntityStatus,
   parseCustomHtml,
   useBreakpoint,
@@ -28,11 +29,26 @@ export const EntityRow = ({
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
+  const { report_programName, report_planName, name } = entity;
+  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const { reportType } = report || {};
 
   const entityComplete = useMemo(() => {
     return getEntityStatus(entity, report, entityType);
   }, [report]);
+
+  const entityFields = () => {
+    const fields: string[] =
+      reportType === ReportType.MLR
+        ? [
+            report_planName,
+            report_programName,
+            eligibilityGroup(entity),
+            reportingPeriod,
+          ]
+        : [name];
+    return fields;
+  };
 
   return (
     <Tr sx={sx.content}>
@@ -43,11 +59,19 @@ export const EntityRow = ({
         {isMobile && (
           <Text sx={sx.rowHeader}>{parseCustomHtml(verbiage.tableHeader)}</Text>
         )}
-        <EntityDisplayInfo
-          entity={entity}
-          reportType={reportType}
-          showIncompleteText={!entityComplete && !!report}
-        />
+        <ul>
+          {entityFields().map((field, index) => (
+            <li key={index}>{field}</li>
+          ))}
+        </ul>
+        {!entityComplete && report && (
+          <Text sx={sx.errorText}>
+            {reportType === ReportType.MLR &&
+              "Select “Enter MLR” to complete this report."}
+            {reportType === ReportType.NAAAR &&
+              "Select “Enter” to complete response."}
+          </Text>
+        )}
         {isMobile && (
           <EntityButtonGroup
             deleteDisabled={locked ?? !userIsEndUser}
@@ -103,13 +127,6 @@ const sx = {
       paddingRight: 0,
     },
   },
-  rowHeader: {
-    display: "flex",
-    fontWeight: "bold",
-    paddingBottom: "0.5rem",
-    span: { color: "gray_medium" },
-    img: { marginRight: "1rem" },
-  },
   statusIcon: {
     maxWidth: "fit-content",
     ".mobile &": {
@@ -143,6 +160,21 @@ const sx = {
     },
     ".desktop &": {
       maxWidth: "18.75rem",
+    },
+  },
+  rowHeader: {
+    display: "flex",
+    fontWeight: "bold",
+    paddingBottom: "0.5rem",
+    span: { color: "gray_medium" },
+    img: { marginRight: "1rem" },
+  },
+  errorText: {
+    color: "error_dark",
+    fontSize: "sm",
+    marginBottom: "0.75rem",
+    ".mobile &": {
+      fontSize: "xs",
     },
   },
 };

@@ -1,16 +1,8 @@
-import { Button, Flex, Image, Spinner, Text } from "@chakra-ui/react";
+import { Button, Flex, Image, Spinner } from "@chakra-ui/react";
 // types
 import { AnyObject, EntityShape, ReportType } from "types";
-// utils
-import { eligibilityGroup } from "utils";
 // assets
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
-
-export interface EntityDisplayInfoProps {
-  entity: EntityShape;
-  showIncompleteText: boolean;
-  reportType?: string;
-}
 
 export interface EntityButtonGroupProps {
   entity: EntityShape;
@@ -55,47 +47,10 @@ const enterDetailsText = (verbiage: AnyObject, reportType?: string) => {
   }
 };
 
-const entityFields = (entity: EntityShape, reportType?: string) => {
-  const { report_programName, report_planName, name } = entity;
-  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const fields: string[] =
-    reportType === ReportType.MLR
-      ? [
-          report_planName,
-          report_programName,
-          eligibilityGroup(entity),
-          reportingPeriod,
-        ]
-      : [name];
-  return fields;
-};
-
 const getAriaName = (entity: EntityShape) => {
   const { name, report_planName } = entity;
   return name || report_planName;
 };
-
-export const EntityDisplayInfo = ({
-  entity,
-  showIncompleteText,
-  reportType,
-}: EntityDisplayInfoProps) => (
-  <>
-    <ul>
-      {entityFields(entity, reportType).map((field: string, index: number) => (
-        <li key={index}>{field}</li>
-      ))}
-    </ul>
-    {showIncompleteText && (
-      <Text sx={sx.errorText}>
-        {reportType === ReportType.MLR &&
-          "Select “Enter MLR” to complete this report."}
-        {reportType === ReportType.NAAAR &&
-          "Select “Enter” to complete response."}
-      </Text>
-    )}
-  </>
-);
 
 const AddEditEntityButton = ({
   editEntityButtonText,
@@ -189,14 +144,6 @@ export const EntityButtonGroup = ({
 );
 
 const sx = {
-  errorText: {
-    color: "error_dark",
-    fontSize: "sm",
-    marginBottom: "0.75rem",
-    ".mobile &": {
-      fontSize: "xs",
-    },
-  },
   actionContainer: {
     justifyContent: "space-evenly",
     alignItems: "center",
