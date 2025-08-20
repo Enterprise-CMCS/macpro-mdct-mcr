@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // components
-import { Box, Button, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { Button, Heading, Stack } from "@chakra-ui/react";
 import { ErrorAlert } from "components";
+import { TextField } from "@cmsgov/design-system";
 // types
 import { ErrorVerbiage } from "types";
 // utils
@@ -50,32 +51,22 @@ export const LoginCognito = () => {
       </Heading>
       <ErrorAlert error={error} sxOverride={sx.error} />
       <form onSubmit={(event) => handleLogin(event)}>
-        <Box sx={sx.label}>
-          <label>
-            <Text sx={sx.labelDescription}>Email</Text>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              value={fields.email}
-              onChange={handleFieldChange}
-              className="field"
-            />
-          </label>
-        </Box>
-        <Box sx={sx.label}>
-          <label>
-            <Text sx={sx.labelDescription}>Password</Text>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              value={fields.password}
-              onChange={handleFieldChange}
-              className="field"
-            />
-          </label>
-        </Box>
+        <TextField
+          id="email"
+          name="email"
+          type="email"
+          label="Email"
+          value={fields.email}
+          onChange={handleFieldChange}
+        />
+        <TextField
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          value={fields.password}
+          onChange={handleFieldChange}
+        />
         <Button
           sx={sx.button}
           onClick={handleLogin}
@@ -97,14 +88,8 @@ const sx = {
   error: {
     marginY: "1rem",
   },
-  label: {
-    marginBottom: "1rem",
-  },
-  labelDescription: {
-    marginBottom: "0.5rem",
-  },
   button: {
-    marginTop: "1rem",
+    marginTop: "2rem",
     width: "100%",
   },
 };
