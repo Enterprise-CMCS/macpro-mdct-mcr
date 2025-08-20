@@ -5,11 +5,11 @@ import {
   AddEditEntityModal,
   DeleteEntityModal,
   EntityCard,
+  EntityRow,
   ReportContext,
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
-  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
@@ -332,7 +332,7 @@ const entityTable = (
   return (
     <Table sx={sx.table} content={tableHeaders()}>
       {entities.map((entity: EntityShape) => (
-        <ResponsiveEntityRow
+        <EntityRow
           key={entity.id}
           entity={entity}
           verbiage={verbiage}
