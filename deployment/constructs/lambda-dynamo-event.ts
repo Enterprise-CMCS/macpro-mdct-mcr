@@ -27,7 +27,6 @@ export class LambdaDynamoEventSource extends Construct {
 
     const {
       additionalPolicies = [],
-      environment = {},
       memorySize = 1024,
       tables,
       stackName,
@@ -87,7 +86,6 @@ export class LambdaDynamoEventSource extends Construct {
         sourceMap: true,
         nodeModules: ["kafkajs"],
       },
-      environment,
       ...restProps,
     });
 
