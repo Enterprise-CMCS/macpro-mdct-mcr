@@ -92,7 +92,6 @@ const sx = {
   footerBox: {
     marginTop: "2.5rem",
     paddingTop: "1.5rem",
-    borderColor: "gray_light",
   },
   arrowIcon: {
     width: "1rem",
