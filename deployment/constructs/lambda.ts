@@ -36,7 +36,6 @@ export class Lambda extends Construct {
     const {
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      environment = {},
       api,
       path,
       method,
@@ -85,7 +84,6 @@ export class Lambda extends Construct {
         sourceMap: true,
         nodeModules: ["jsdom"],
       },
-      environment,
       ...restProps,
     });
 
