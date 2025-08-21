@@ -139,8 +139,8 @@ const sizes = {
 
 const buttonTheme: ComponentStyleConfig = {
   baseStyle,
-  sizes: sizes,
-  variants: variants,
+  sizes,
+  variants,
   defaultProps: {
     variant: "primary",
     size: "md",
