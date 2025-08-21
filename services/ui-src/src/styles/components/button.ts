@@ -1,7 +1,7 @@
 import { ComponentStyleConfig } from "@chakra-ui/react";
 import { svgFilters } from "styles/theme";
 
-const baseStyles = {
+const baseStyle = {
   transition: "all 0.3s ease",
   borderRadius: "0.25rem",
   px: "1.5em",
@@ -11,7 +11,7 @@ const baseStyles = {
   "&:disabled, &:disabled:hover": {
     color: "gray",
     backgroundColor: "gray_lighter",
-    opacity: "1",
+    opacity: 1,
   },
   ".mobile &": {
     fontSize: "sm",
@@ -43,8 +43,7 @@ const solidInverseVariant = {
 
 const outlineVariant = {
   backgroundColor: "transparent",
-  border: "1px solid",
-  borderColor: "primary",
+  border: (theme: any) => `1px solid ${theme.colors.primary}`,
   color: "primary",
   textDecoration: "none",
   "&:hover": {
@@ -63,8 +62,7 @@ const outlineVariant = {
 
 const outlineInverseVariant = {
   backgroundColor: "transparent",
-  border: "1px solid",
-  borderColor: "white",
+  border: (theme: any) => `1px solid ${theme.colors.white}`,
   color: "white",
   textDecoration: "none",
   "&:disabled, &:disabled:hover": {
@@ -79,7 +77,7 @@ const ghostVariant = {
   backgroundColor: "transparent",
   color: "primary",
   textDecoration: "underline",
-  padding: "0",
+  padding: 0,
   "&:hover": {
     color: "primary_darker",
     span: {
@@ -98,7 +96,7 @@ const ghostInverseVariant = {
   backgroundColor: "transparent",
   color: "white",
   textDecoration: "underline",
-  padding: "0",
+  padding: 0,
   "&:disabled, &:disabled:hover": {
     color: "gray_dark",
   },
@@ -122,13 +120,13 @@ const variants = {
 const sizes = {
   sm: {
     fontSize: "sm",
-    fontWeight: "400",
+    fontWeight: 400,
     px: "0.5em",
     py: "0.25em",
   },
   md: {
     fontSize: "md",
-    fontWeight: "700",
+    fontWeight: 700,
     px: "1.5em",
     py: "0.5em",
   },
@@ -140,7 +138,7 @@ const sizes = {
 };
 
 const buttonTheme: ComponentStyleConfig = {
-  baseStyle: baseStyles,
+  baseStyle,
   sizes: sizes,
   variants: variants,
   defaultProps: {
