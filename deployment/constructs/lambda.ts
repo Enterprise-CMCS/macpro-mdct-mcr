@@ -19,8 +19,6 @@ import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { createHash } from "crypto";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  timeout?: Duration;
-  memorySize?: number;
   path?: string;
   method?: string;
   stackName: string;
