@@ -72,6 +72,12 @@ export class LambdaDynamoEventSource extends Construct {
       },
     });
 
+    const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
       runtime: lambda.Runtime.NODEJS_20_X,
@@ -86,13 +92,8 @@ export class LambdaDynamoEventSource extends Construct {
         sourceMap: true,
         nodeModules: ["kafkajs"],
       },
+      logGroup,
       ...restProps,
-    });
-
-    new logs.LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     for (let table of tables) {
