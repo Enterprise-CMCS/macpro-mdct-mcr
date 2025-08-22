@@ -6,10 +6,10 @@ import {
   DeleteEntityModal,
   EntityDetailsOverlay,
   EntityProvider,
+  EntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
-  ResponsiveEntityRow,
   Table,
 } from "components";
 // types
@@ -218,7 +218,7 @@ export const ModalOverlayReportPage = ({
             ) : (
               <Table sx={sx.table} content={tableHeaders()}>
                 {reportFieldDataEntities.map((entity: EntityShape) => (
-                  <ResponsiveEntityRow
+                  <EntityRow
                     key={entity.id}
                     entity={entity}
                     verbiage={verbiage}

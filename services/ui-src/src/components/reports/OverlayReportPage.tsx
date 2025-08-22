@@ -3,10 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { Box } from "@chakra-ui/react";
 import {
   EntityDetailsMultiformOverlay,
+  EntityRow,
   ReportContext,
   ReportPageFooter,
   ReportPageIntro,
-  ResponsiveEntityRow,
   Table,
 } from "components";
 // constants
@@ -130,7 +130,7 @@ export const OverlayReportPage = ({
           {displayTable() && (
             <Table sx={sx.table} content={tableHeaders()}>
               {entityData.map((entity: EntityShape) => (
-                <ResponsiveEntityRow
+                <EntityRow
                   entering={entering}
                   entity={entity}
                   entityType={entityType as EntityType}
