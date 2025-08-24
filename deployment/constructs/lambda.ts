@@ -71,7 +71,7 @@ export class Lambda extends Construct {
     });
 
     const logGroup = new LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
       retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });

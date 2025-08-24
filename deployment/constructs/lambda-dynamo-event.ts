@@ -73,7 +73,7 @@ export class LambdaDynamoEventSource extends Construct {
     });
 
     const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
       retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
