@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { Fragment, useContext } from "react";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 // components
@@ -21,6 +20,7 @@ import {
 import { ReportRoute, ReportType } from "types";
 // utils
 import { ScrollToTopComponent, useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -33,7 +33,6 @@ export const AppRoutes = () => {
   const boxElement = hasNav ? "div" : "main";
 
   // LaunchDarkly
-  const naaarReport = useFlags()?.naaarReport;
   const componentInventoryEnabled = useFlags()?.componentInventory;
 
   return (
@@ -123,43 +122,38 @@ export const AppRoutes = () => {
           />
 
           {/* NAAAR Routes */}
-          {naaarReport && (
-            <Fragment>
-              <Route
-                path="/naaar"
-                element={<DashboardPage reportType="NAAAR" />}
-              />
-              {report?.reportType === ReportType.NAAAR && (
-                <>
-                  {(report.formTemplate.flatRoutes ?? []).map(
-                    (route: ReportRoute) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={<ReportPageWrapper />}
-                      />
-                    )
-                  )}
-                  <Route
-                    path="/naaar/export"
-                    element={<ExportedReportPage />}
-                  />
-                </>
-              )}
-              <Route
-                path="/naaar/*"
-                element={
-                  !contextIsLoaded ? (
-                    <Flex sx={sx.spinnerContainer}>
-                      <Spinner size="lg" />
-                    </Flex>
-                  ) : (
-                    <Navigate to="/naaar" />
+          <Fragment>
+            <Route
+              path="/naaar"
+              element={<DashboardPage reportType="NAAAR" />}
+            />
+            {report?.reportType === ReportType.NAAAR && (
+              <>
+                {(report.formTemplate.flatRoutes ?? []).map(
+                  (route: ReportRoute) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={<ReportPageWrapper />}
+                    />
                   )
-                }
-              />
-            </Fragment>
-          )}
+                )}
+                <Route path="/naaar/export" element={<ExportedReportPage />} />
+              </>
+            )}
+            <Route
+              path="/naaar/*"
+              element={
+                !contextIsLoaded ? (
+                  <Flex sx={sx.spinnerContainer}>
+                    <Spinner size="lg" />
+                  </Flex>
+                ) : (
+                  <Navigate to="/naaar" />
+                )
+              }
+            />
+          </Fragment>
 
           {/* Component Inventory Routes */}
           {componentInventoryEnabled && (
