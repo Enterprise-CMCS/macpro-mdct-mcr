@@ -9,8 +9,6 @@ import {
   ReportDrawer,
   ReportPageFooter,
   ReportPageIntro,
-  ResponsiveEntityRow,
-  Table,
 } from "components";
 // types
 import {
@@ -20,9 +18,7 @@ import {
   isFieldElement,
   EntityType,
   ModalDrawerReportPageShape,
-  ModalDrawerReportPageVerbiage,
   ReportStatus,
-  ReportType,
 } from "types";
 // utils
 import {
@@ -35,7 +31,6 @@ import {
   setClearedEntriesToDefaultValue,
   resetClearProp,
   parseCustomHtml,
-  useBreakpoint,
   getAddEditDrawerText,
 } from "utils";
 // assets
@@ -197,16 +192,6 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
           <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
             {parseCustomHtml(verbiage.missingEntityMessage || "")}
           </Box>
-        ) : report?.reportType === ReportType.NAAAR ? (
-          <Box>
-            {entityTable(
-              reportFieldDataEntities,
-              openAddEditEntityModal,
-              openDeleteEntityModal,
-              openOverlayOrDrawer,
-              verbiage
-            )}
-          </Box>
         ) : (
           <Box>
             <Button
@@ -305,45 +290,6 @@ interface Props {
   route: ModalDrawerReportPageShape;
   validateOnRender?: boolean;
 }
-
-const entityTable = (
-  entities: AnyObject,
-  openAddEditEntityModal: Function,
-  openDeleteEntityModal: Function,
-  openOverlayOrDrawer: Function,
-  verbiage: ModalDrawerReportPageVerbiage
-) => {
-  const { isTablet, isMobile } = useBreakpoint();
-  const tableHeaders = () => {
-    if (isTablet || isMobile)
-      return {
-        caption: verbiage.tableHeader,
-        headRow: [{ hiddenName: "Status" }, { hiddenName: "Content" }],
-      };
-    return {
-      caption: verbiage.tableHeader,
-      headRow: [
-        { hiddenName: "Status" },
-        verbiage.tableHeader!,
-        { hiddenName: "Action" },
-      ],
-    };
-  };
-  return (
-    <Table sx={sx.table} content={tableHeaders()}>
-      {entities.map((entity: EntityShape) => (
-        <ResponsiveEntityRow
-          key={entity.id}
-          entity={entity}
-          verbiage={verbiage}
-          openAddEditEntityModal={openAddEditEntityModal}
-          openDeleteEntityModal={openDeleteEntityModal}
-          openOverlayOrDrawer={openOverlayOrDrawer}
-        />
-      ))}
-    </Table>
-  );
-};
 
 const sx = {
   buttonIcons: {

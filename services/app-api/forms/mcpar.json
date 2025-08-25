@@ -2050,7 +2050,22 @@
                           },
                           "props": {
                             "label": "C1.XII.12a Has the state posted the current parity analysis(es) covering this program on its website?",
-                            "hint": "<p>The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.</p> <p>States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs’ separate analyses must be posted. A “Yes” response means that the parity analysis for either the state or for ALL MCOs has been posted.</p>",
+                            "hint": [
+                              {
+                                "type": "span",
+                                "content": "The current parity analysis/analyses must be posted on the state Medicaid program website. States with ANY services provided to MCO enrollees by an entity other than MCO should have a single state summary parity analysis report.",
+                                "props": {
+                                  "className": "fake-paragraph-break"
+                                }
+                              },
+                              {
+                                "type": "span",
+                                "content": "States with NO services provided to MCO enrollees by an entity other than the MCO may have multiple parity reports (by MCO), in which case all MCOs’ separate analyses must be posted. A “Yes” response means that the parity analysis for either the state or for ALL MCOs has been posted.",
+                                "props": {
+                                  "className": "fake-paragraph-break"
+                                }
+                              }
+                            ],
                             "choices": [
                               {
                                 "id": "fncOB9LFBZd1nFJvLv9YM1Pb",
@@ -2160,7 +2175,29 @@
                 "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.2 Plan share of Medicaid",
-                  "hint": "<p>What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid enrollment (B.I.1)</li></ul>",
+                  "hint": [
+                    {
+                      "type": "span",
+                      "content": "What is the plan enrollment (within the specific program) as a percentage of the state’s total Medicaid enrollment?",
+                      "props": {
+                        "className": "fake-paragraph-break"
+                      }
+                    },
+                    {
+                      "type": "span",
+                      "content": "Numerator: Plan enrollment (D1.I.1)",
+                      "props": {
+                        "className": "fake-list-item"
+                      }
+                    },
+                    {
+                      "type": "span",
+                      "content": "Denominator: Statewide Medicaid enrollment (B.I.1)",
+                      "props": {
+                        "className": "fake-list-item"
+                      }
+                    }
+                  ],
                   "mask": "percentage"
                 }
               },
@@ -2170,7 +2207,29 @@
                 "validation": "numberSuppressible",
                 "props": {
                   "label": "D1.I.3 Plan share of any Medicaid managed care",
-                  "hint": "<p>What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?</p><ul><li>Numerator: Plan enrollment (D1.I.1)</li><li>Denominator: Statewide Medicaid managed care enrollment (B.I.2)</li></ul>",
+                  "hint": [
+                    {
+                      "type": "span",
+                      "content": "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?",
+                      "props": {
+                        "className": "fake-paragraph-break"
+                      }
+                    },
+                    {
+                      "type": "span",
+                      "content": "Numerator: Plan enrollment (D1.I.1)",
+                      "props": {
+                        "className": "fake-list-item"
+                      }
+                    },
+                    {
+                      "type": "span",
+                      "content": "Denominator: Statewide Medicaid managed care enrollment (B.I.2)",
+                      "props": {
+                        "className": "fake-list-item"
+                      }
+                    }
+                  ],
                   "mask": "percentage"
                 }
               },
@@ -2459,7 +2518,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.1 Appeals resolved (at the plan level)",
-                      "hint": "<p>Enter the total number of appeals resolved during the reporting year.</p><p>An appeal is “resolved” at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary’s representative) chooses to file a request for a State Fair Hearing or External Medical Review.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of appeals resolved during the reporting year.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "An appeal is “resolved” at the plan level when the plan has issued a decision, regardless of whether the decision was wholly or partially favorable or adverse to the beneficiary, and regardless of whether the beneficiary (or the beneficiary’s representative) chooses to file a request for a State Fair Hearing or External Medical Review.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2514,7 +2588,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.3 Appeals filed on behalf of LTSS users",
-                      "hint": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.</p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of appeals filed during the reporting year by or on behalf of LTSS users. Enter “N/A” if not applicable.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the appeal was filed).",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2525,7 +2614,36 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.4 Number of critical incidents filed during the reporting year by (or on behalf of) an LTSS user who previously filed an appeal",
-                      "hint": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.</p>Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.</p>The appeal and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed appeals in the reporting year. If the managed care plan does not cover LTSS, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Also, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "The appeal and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the appeal need to have been filed in relation to delivery of LTSS — they may have been filed for any reason, related to any service received (or desired) by an LTSS user.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed an appeal during the reporting year, and whether the filing of the appeal preceded the filing of the critical incident.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2536,7 +2654,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.5a Standard appeals for which timely resolution was provided",
-                      "hint": "Enter the total number of standard appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of standard appeals for which timely resolution was provided by plan within the reporting year.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "See 42 CFR §438.408(b)(2) for requirements related to timely resolution of standard appeals.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2547,7 +2680,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.5b Expedited appeals for which timely resolution was provided",
-                      "hint": "Enter the total number of expedited appeals for which timely resolution was provided by plan within the reporting year.</p>See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of expedited appeals for which timely resolution was provided by plan within the reporting year.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "See 42 CFR §438.408(b)(3) for requirements related to timely resolution of standard appeals.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2573,7 +2721,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of authorization for a service not yet rendered or limited authorization of a service.</p>(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of authorization for a service not yet rendered or limited authorization of a service.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2699,7 +2862,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7a Resolved appeals related to general inpatient services",
-                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.</p><p>Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter “N/A”.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2765,7 +2943,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.7g Resolved appeals related to long-term services and supports (LTSS)",
-                      "hint": "<p>Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter “N/A”.</p><p(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2942,7 +3135,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
-                      "hint": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter “N/A”.</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -2953,7 +3161,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
-                      "hint": "<p>If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter “N/A”.</p><p>External medical review is defined and described at 42 CFR §438.402(c)(i)(B).</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter “N/A”.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3009,7 +3232,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.10 Grievances resolved",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year.</p><p>A grievance is “resolved” when it has reached completion and been closed by the plan.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "A grievance is “resolved” when it has reached completion and been closed by the plan.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3031,7 +3269,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": "<p>Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.</p><p>An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.</p>",
+                      "hint":   [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3042,7 +3295,29 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
-                      "hint": "<p>For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.</p><p>If the managed care plan does not cover LTSS, the state should enter “N/A” in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter “N/A” in this field.</p><p>To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "If the managed care plan does not cover LTSS, the state should enter “N/A” in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter “N/A” in this field.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3053,7 +3328,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.14 Number of grievances for which timely resolution was provided",
-                      "hint": "<p>Enter the number of grievances for which timely resolution was provided by plan during the reporting year.</p><p>See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the number of grievances for which timely resolution was provided by plan during the reporting year.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3328,7 +3618,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16a Resolved grievances related to plan or provider customer service",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.</p><p>Customer service grievances include complaints about interactions with the plan’s Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Customer service grievances include complaints about interactions with the plan’s Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3339,7 +3644,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.</p><p>Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3350,7 +3670,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16c Resolved grievances related to network adequacy or access to care/services from plan or provider",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.</p><p>Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3361,7 +3696,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16d Resolved grievances related to quality of care",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.</p><p>Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3372,7 +3722,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16e Resolved grievances related to plan communications",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.</p><p>Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee’s access to or the accessibility of enrollee materials or plan communications.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee’s access to or the accessibility of enrollee materials or plan communications.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3394,7 +3759,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16g Resolved grievances related to suspected fraud",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to suspected fraud.</p><p>Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to suspected fraud.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3405,7 +3785,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to abuse, neglect or exploitation.</p><p>Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to abuse, neglect or exploitation.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3427,7 +3822,22 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
-                      "hint": "<p>Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request for an expedited appeal.</p><p>Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.</p>",
+                      "hint": [
+                        {
+                          "type": "span",
+                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request for an expedited appeal.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        },
+                        {
+                          "type": "span",
+                          "content": "Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.",
+                          "props": {
+                            "className": "fake-paragraph-break"
+                          }
+                        }
+                      ],
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }

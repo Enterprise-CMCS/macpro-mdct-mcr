@@ -11,11 +11,66 @@
   },
   "fields": [
     {
-      "id": "programName",
-      "type": "text",
-      "validation": "text",
+      "id": "newOrExistingProgram",
+      "type": "radio",
+      "validation": "radio",
       "props": {
-        "label": "Program name"
+        "label": "Is this NAAAR for an existing or new program?",
+        "hint": "Select from an existing program or add a new program.",
+        "choices": [
+          {
+            "id": "isExistingProgram",
+            "label": "Existing program",
+            "children": [
+              {
+                "id": "existingProgramNameSelection",
+                "type": "dropdown",
+                "validation": {
+                  "type": "dropdown",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Program name",
+                  "hint": "Select an existing program from the options below. This list was compiled using official program names submitted to CMS by states.",
+                  "options": "programList"
+                }
+              },
+              {
+                "id": "existingProgramNameSuggestion",
+                "type": "text",
+                "validation": {
+                  "type": "textOptional",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Rename selected program (optional)",
+                  "hint": "If you need to replace or rename the selected program, enter its new name in the blank field below. Note: this will not change the name of the program in this report. CMS will update it for a future report."
+                }
+              }
+            ]
+          },
+          {
+            "id": "isNewProgram",
+            "label": "Add new program",
+            "children": [
+              {
+                "id": "newProgramName",
+                "type": "text",
+                "validation": {
+                  "type": "text",
+                  "nested": true,
+                  "parentFieldName": "newOrExistingProgram"
+                },
+                "props": {
+                  "label": "Specify new program name",
+                  "hint": ""
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {

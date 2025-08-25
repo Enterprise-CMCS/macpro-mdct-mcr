@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { ReportContext, ModalDrawerReportPage } from "components";
 // constants
 import { saveAndCloseText } from "../../constants";
+// types
+import { ModalDrawerReportPageShape } from "types";
 // utils
 import { useBreakpoint, useStore } from "utils";
 import {
@@ -13,10 +15,8 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
   mockMcparReportStore,
-  mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
-import { EntityType, ModalDrawerReportPageShape } from "types";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -171,80 +171,6 @@ describe("<ModalDrawerReportPage />", () => {
       // there are 2 plans in the mock report context and 1 field to repeat, so 2 fields should render
       const renderedFields = screen.getAllByRole("textbox");
       expect(renderedFields.length).toEqual(2);
-    });
-  });
-
-  describe("Test ModalDrawerReportPage w/ Entity Table (NAAAR)", () => {
-    beforeEach(() => {
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...mockNaaarReportStore,
-      });
-    });
-
-    test("renders Entity table for a NAAAR report", async () => {
-      const naaarRoute = {
-        ...mockModalDrawerReportPageJson,
-        entityType: EntityType.PLANS,
-      };
-      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
-
-      const entityTable = screen.getByRole("table");
-      const entityCaption = entityTable.querySelector("caption");
-      const entityHeader = screen.getByRole("columnheader", {
-        name: "Mock table header",
-      });
-      const entityCell = screen.getByRole("gridcell", {
-        name: "plan 1 Select “Enter” to complete response.",
-      });
-
-      expect(entityTable).toBeVisible();
-      expect(entityCaption).toHaveTextContent("Mock table header");
-      expect(entityHeader).toBeVisible();
-      expect(entityCell).toBeVisible();
-    });
-
-    test("renders mobile Entity table for a NAAAR report", async () => {
-      mockUseBreakpoint.mockReturnValue({
-        isMobile: true,
-        isTablet: false,
-      });
-      const naaarRoute = {
-        ...mockModalDrawerReportPageJson,
-        entityType: EntityType.PLANS,
-      };
-      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
-
-      const entityTable = screen.getByRole("table");
-      const entityCaption = entityTable.querySelector("caption");
-      const entityHeader = screen.queryByRole("columnheader", {
-        name: "Mock table header",
-      });
-      const entityCell = screen.getByText("plan 1");
-
-      expect(entityTable).toBeVisible();
-      expect(entityCaption).toHaveTextContent("Mock table header");
-      expect(entityHeader).toBeNull();
-      expect(entityCell).toBeVisible();
-    });
-
-    test("show error for missing plans in NAAAR report", async () => {
-      const noPlans = { ...mockNaaarReportStore };
-      delete noPlans.report?.fieldData.plans;
-
-      mockedUseStore.mockReturnValue({
-        ...mockStateUserStore,
-        ...noPlans,
-      });
-
-      const naaarRoute = {
-        ...mockModalDrawerReportPageJson,
-        entityType: EntityType.SANCTIONS,
-      };
-      render(modalDrawerReportPageComponentWithEntities(naaarRoute));
-
-      const missingMessage = screen.getByTestId("missingEntityMessage");
-      expect(missingMessage).toBeVisible();
     });
   });
 

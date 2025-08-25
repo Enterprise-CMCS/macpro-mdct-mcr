@@ -244,6 +244,13 @@ describe("<DashboardTable />", () => {
     });
 
     test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        enumerable: true,
+        value: {
+          pathname: "/mcpar",
+        },
+      });
       render(dashboardViewWithReports);
       const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
       expect(addReportButton).toBeVisible();
@@ -344,7 +351,7 @@ describe("<DashboardTable />", () => {
       render(dashboardViewWithReports);
       await waitFor(async () => {
         const archiveProgramButton = screen.getByRole("button", {
-          name: "Archive",
+          name: /Archive/,
         });
         expect(archiveProgramButton).toBeVisible();
         await userEvent.click(archiveProgramButton);
@@ -363,7 +370,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Unarchive",
+        name: /Unarchive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -383,7 +390,7 @@ describe("<DashboardTable />", () => {
       });
       render(dashboardViewWithReports);
       const archiveProgramButton = screen.getByRole("button", {
-        name: "Archive",
+        name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
       await userEvent.click(archiveProgramButton);
@@ -405,7 +412,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -420,7 +427,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });
@@ -435,7 +442,7 @@ describe("<DashboardTable />", () => {
       await waitFor(() => {
         expect(
           screen.queryByRole("button", {
-            name: "Archive",
+            name: /Archive/,
           })
         ).not.toBeInTheDocument();
       });

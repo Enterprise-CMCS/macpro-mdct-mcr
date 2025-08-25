@@ -1,4 +1,3 @@
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { useNavigate } from "react-router-dom";
 // components
 import { Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
@@ -30,19 +29,7 @@ export const TemplateCard = ({
   const { isDesktop } = useBreakpoint();
   const navigate = useNavigate();
 
-  const naaarReport = useFlags()?.naaarReport;
-
-  const enabledReports = {
-    MCPAR: true,
-    MLR: true,
-    NAAAR: naaarReport,
-  };
-
-  const reportIndex = templateName as keyof typeof enabledReports;
-
-  const cardText = verbiage.link
-    ? verbiage.body?.available
-    : verbiage.body?.unavailable;
+  const cardText = verbiage.body?.available;
 
   return (
     <Card {...cardprops}>
@@ -56,11 +43,7 @@ export const TemplateCard = ({
         )}
         <Flex sx={sx.cardContentFlex}>
           <Heading sx={sx.cardTitleText}>{verbiage.title}</Heading>
-          {enabledReports[reportIndex] ? (
-            <Text>{cardText}</Text>
-          ) : (
-            <Text>{verbiage.body.unavailable}</Text>
-          )}
+          <Text>{cardText}</Text>
           <Flex sx={sx.actionsFlex}>
             <Button
               variant="link"
@@ -74,18 +57,14 @@ export const TemplateCard = ({
             >
               {verbiage.downloadText}
             </Button>
-            {enabledReports[reportIndex] && (
-              <Button
-                sx={sx.formLink}
-                isDisabled={isDisabled}
-                onClick={() => navigate(verbiage.link.route)}
-                rightIcon={
-                  <Image src={nextIcon} alt="Link Icon" height="1rem" />
-                }
-              >
-                {verbiage.link.text}
-              </Button>
-            )}
+            <Button
+              sx={sx.formLink}
+              isDisabled={isDisabled}
+              onClick={() => navigate(verbiage.link.route)}
+              rightIcon={<Image src={nextIcon} alt="Link Icon" height="1rem" />}
+            >
+              {verbiage.link.text}
+            </Button>
           </Flex>
           <TemplateCardAccordion verbiage={verbiage.accordion} />
         </Flex>

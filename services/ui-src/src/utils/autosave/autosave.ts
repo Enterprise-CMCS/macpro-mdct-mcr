@@ -122,14 +122,17 @@ export const autosaveFieldData = async ({
   // if there are fields to save, create and send payload
   if (fieldsToSave.length) {
     const reportKeys = { reportType, id, state };
-    let dataToWrite = {} as AnyObject;
+    let dataToWrite = {
+      metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+    } as AnyObject;
+
     if (
       entityContext &&
       entityContext.selectedEntity &&
       entityContext.entityType
     ) {
       dataToWrite = {
-        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
+        ...dataToWrite,
         fieldData: {
           [entityContext.entityType]: entityContext.updateEntities(
             Object.fromEntries(fieldsToSave)
@@ -140,8 +143,8 @@ export const autosaveFieldData = async ({
       // create field data object
       const fieldData = Object.fromEntries(fieldsToSave);
       dataToWrite = {
-        metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },
-        fieldData: fieldData,
+        ...dataToWrite,
+        fieldData,
       };
 
       // handle Prior Authorization case
@@ -161,20 +164,26 @@ export const autosaveFieldData = async ({
       }
     }
 
+    const hasEditedPlans = dataToWrite.fieldData.plans;
+    const hasAnalysisMethods =
+      reportFieldData?.analysisMethods &&
+      reportFieldData.analysisMethods.length > 0;
+
     // NAAAR plans were edited
     if (
       reportKeys.reportType === ReportType.NAAAR &&
-      dataToWrite.fieldData.plans
+      hasEditedPlans &&
+      hasAnalysisMethods
     ) {
       // All plans are submitted on individual edits
-      const plans = dataToWrite.fieldData.plans;
+      const plans = [...dataToWrite.fieldData.plans];
       const planNames = Object.fromEntries(
         plans.map((plan: AnyObject) => [
           `analysis_method_applicable_plans-${plan.id}`,
           plan.name,
         ])
       );
-      const analysisMethods = reportFieldData?.analysisMethods || [];
+      const analysisMethods = [...reportFieldData.analysisMethods];
 
       for (const analysisMethod of analysisMethods) {
         const applicablePlans = analysisMethod.analysis_method_applicable_plans;

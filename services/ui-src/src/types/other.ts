@@ -160,6 +160,15 @@ const states = [
 ] as const;
 export type State = typeof states[number];
 
+export type ProgramChoice = {
+  id: string;
+  label: string;
+};
+
+export type ProgramList = {
+  [key in State]: ProgramChoice[];
+};
+
 // HELPER FUNCTIONS
 
 export const isState = (state: unknown): state is State => {
