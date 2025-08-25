@@ -1,11 +1,12 @@
 import { Construct } from "constructs";
-import { RemovalPolicy } from "aws-cdk-lib";
+import { RemovalPolicy, Tags } from "aws-cdk-lib";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface DynamoDBTableProps {
   readonly stage: string;
   readonly isDev: boolean;
   readonly name: string;
+  readonly streamable?: boolean;
   readonly partitionKey: { name: string; type: dynamodb.AttributeType };
   readonly sortKey?: { name: string; type: dynamodb.AttributeType };
   readonly lsi?: {
@@ -35,7 +36,16 @@ export class DynamoDBTable extends Construct {
 
   constructor(scope: Construct, id: string, props: DynamoDBTableProps) {
     super(scope, id);
-    const { stage, isDev, name, partitionKey, sortKey, lsi, gsi } = props;
+    const {
+      stage,
+      isDev,
+      name,
+      partitionKey,
+      sortKey,
+      lsi,
+      gsi,
+      streamable = true,
+    } = props;
 
     const tableName = `${stage}-${name}`;
     this.table = new dynamodb.Table(this, "Table", {
@@ -43,12 +53,14 @@ export class DynamoDBTable extends Construct {
       partitionKey,
       sortKey,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+      ...(streamable && { stream: dynamodb.StreamViewType.NEW_AND_OLD_IMAGES }),
       pointInTimeRecoverySpecification: {
         pointInTimeRecoveryEnabled: true,
       },
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
+
+    Tags.of(this.table).add("AWS_Backup", "d35");
 
     this.identifiers = {
       id,
