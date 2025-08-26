@@ -5,9 +5,9 @@ on:
     workflows: [Deploy]
     types: [completed]
     branches:
-      - 'main'
-      - 'val'
-      - 'production'
+      - main
+      - val
+      - production
 
 jobs:
   notify_on_failure:

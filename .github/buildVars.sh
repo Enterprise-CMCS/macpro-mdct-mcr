@@ -3,8 +3,6 @@
 var_list=(
   'AWS_OIDC_ROLE_TO_ASSUME'
   'AWS_DEFAULT_REGION'
-  'SLACK_WEBHOOK_URL'
-  'CODE_CLIMATE_ID'
 )
 
 set_value() {
