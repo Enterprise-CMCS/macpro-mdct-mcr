@@ -1,4 +1,5 @@
 import { array, boolean, mixed, object, string } from "yup";
+import moment from "moment";
 // constants
 import { suppressionText } from "../../constants";
 // types
@@ -171,6 +172,10 @@ export const date = () =>
     .test({
       message: error.REQUIRED_GENERIC,
       test: (value) => !isWhitespaceString(value),
+    })
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      const date = moment(new Date(value!));
+      return !date.isValid();
     });
 
 export const dateOptional = () =>

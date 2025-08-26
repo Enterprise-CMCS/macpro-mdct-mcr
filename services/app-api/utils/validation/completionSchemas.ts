@@ -6,6 +6,7 @@ import {
   string,
   number as yupNumber,
 } from "yup";
+import moment from "moment";
 // constants
 import { suppressionText } from "../constants/constants";
 // types
@@ -215,6 +216,10 @@ const dateSchema = () =>
     .test({
       message: error.REQUIRED_GENERIC,
       test: (value) => !isWhitespaceString(value),
+    })
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      const date = moment(new Date(value!));
+      return !date.isValid();
     });
 
 export const date = () => dateSchema().required(error.REQUIRED_GENERIC);
