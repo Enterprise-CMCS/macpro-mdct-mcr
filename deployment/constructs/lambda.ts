@@ -14,20 +14,16 @@ import {
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { isLocalStack } from "../local/util";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { createHash } from "crypto";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
-  handler: string;
-  timeout?: Duration;
-  memorySize?: number;
   path?: string;
   method?: string;
   stackName: string;
   api?: apigateway.RestApi;
   additionalPolicies?: PolicyStatement[];
-  requestParameters?: string[];
-  requestValidator?: apigateway.IRequestValidator;
   isDev: boolean;
 }
 
@@ -38,17 +34,13 @@ export class Lambda extends Construct {
     super(scope, id);
 
     const {
-      handler,
       timeout = Duration.seconds(6),
       memorySize = 1024,
-      environment = {},
       api,
       path,
       method,
       additionalPolicies = [],
       stackName,
-      requestParameters,
-      requestValidator,
       isDev,
       ...restProps
     } = props;
@@ -78,26 +70,28 @@ export class Lambda extends Construct {
       },
     });
 
+    const logGroup = new LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      handler,
       runtime: Runtime.NODEJS_20_X,
       timeout,
       memorySize,
       role,
       bundling: {
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
         minify: true,
         sourceMap: true,
         nodeModules: ["jsdom"],
       },
-      environment,
+      logGroup,
       ...restProps,
-    });
-
-    new LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     if (api && path && method) {
@@ -109,15 +103,6 @@ export class Lambda extends Construct {
           authorizationType: isLocalStack
             ? undefined
             : apigateway.AuthorizationType.IAM,
-          requestParameters: requestParameters
-            ? Object.fromEntries(
-                requestParameters.map((item) => [
-                  `method.request.path.${item}`,
-                  true,
-                ])
-              )
-            : {},
-          requestValidator,
         }
       );
     }

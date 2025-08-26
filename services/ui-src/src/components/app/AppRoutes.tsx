@@ -14,11 +14,13 @@ import {
   ProfilePage,
   ReportPageWrapper,
   ReportContext,
+  ComponentInventoryPage,
 } from "components";
 // types
 import { ReportRoute, ReportType } from "types";
 // utils
 import { ScrollToTopComponent, useStore } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -29,6 +31,9 @@ export const AppRoutes = () => {
   const isExportPage = pathname.includes("/export");
   const hasNav = isReportPage && !isExportPage;
   const boxElement = hasNav ? "div" : "main";
+
+  // LaunchDarkly
+  const componentInventoryEnabled = useFlags()?.componentInventory;
 
   return (
     <Box
@@ -149,6 +154,14 @@ export const AppRoutes = () => {
               }
             />
           </Fragment>
+
+          {/* Component Inventory Routes */}
+          {componentInventoryEnabled && (
+            <Route
+              path="/component-inventory"
+              element={<ComponentInventoryPage />}
+            />
+          )}
         </Routes>
       </AdminBannerProvider>
     </Box>

@@ -111,8 +111,6 @@ jobs:
   #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
   #   runs-on: ubuntu-latest
   #   needs: deploy
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v4
@@ -339,8 +337,6 @@ jobs:
   #     - a11y-tests
   #     - e2e-test
   #     - test
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
   #   steps:
   #     - uses: actions/checkout@v4
   #     - name: Configure AWS credentials for GitHub Actions
