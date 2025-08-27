@@ -1,4 +1,5 @@
 #!/bin/bash
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 set -o pipefail -o nounset -u
 git fetch --all > /dev/null
 
@@ -18,10 +19,10 @@ if [ ! -z "${1-}" ]; then
   if [ -f "${1-}" ]; then
     RESOURCES=$(<"${1-}")
   else
-    RESOURCES="${@-}"  
+    RESOURCES="${@-}"
   fi
   jq empty <<< "${RESOURCES}"
-  [ "$?" != 0 ] && echo "Error:  supplied JSON is invalid." && echo ${RESOURCES} && exit 1  
+  [ "$?" != 0 ] && echo "Error:  supplied JSON is invalid." && echo ${RESOURCES} && exit 1
 else
   export REGION=us-east-1
   RESOURCES=$(aws resourcegroupstaggingapi get-resources)
