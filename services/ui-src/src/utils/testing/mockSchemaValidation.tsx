@@ -65,6 +65,7 @@ export const badDateOptionalTestCases = [
   "1/1/2",
   "0/0/99",
   "0/01/2023",
+  "02/30/2025",
   "42/42/4242",
 ];
 
