@@ -175,7 +175,7 @@ export const date = () =>
     .test("is-valid-date", error.INVALID_DATE, (value) => {
       let result = false;
       if (value) {
-        const date = new Date(value!);
+        const date = new Date(value);
         let [month, day, year] = value.split("/");
         month = (parseInt(month) - 1).toString();
         if (
