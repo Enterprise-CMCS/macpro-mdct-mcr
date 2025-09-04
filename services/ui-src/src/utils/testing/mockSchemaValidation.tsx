@@ -65,7 +65,6 @@ export const badDateOptionalTestCases = [
   "1/1/2",
   "0/0/99",
   "0/01/2023",
-  "02/30/2025",
   "42/42/4242",
 ];
 
@@ -75,6 +74,10 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
   day: "2-digit",
   year: "numeric",
 });
+
+export const goodValidDateTestCases = ["01/01/2023", "05/15/2023"];
+
+export const badValidDateTestCases = ["02/30/2023", "09/31/2023"];
 
 export const goodFutureDateTestCases = [
   dateTimeFormat.format(new Date()), //Todays Date
