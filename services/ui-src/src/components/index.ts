@@ -117,8 +117,6 @@ export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
-export { MobileEntityRow } from "./tables/MobileEntityRow";
-export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";
