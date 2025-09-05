@@ -2,7 +2,6 @@
 import "source-map-support/register";
 import {
   App,
-  Aws,
   aws_apigateway as apigateway,
   aws_ec2 as ec2,
   aws_iam as iam,
@@ -58,47 +57,42 @@ export class PrerequisiteStack extends Stack {
       cloudWatchRoleArn: cloudWatchRole.roleArn,
     });
 
-    const githubProvider = new iam.CfnOIDCProvider(
+    const githubProvider = new iam.OidcProviderNative(
       this,
       "GitHubIdentityProvider",
       {
         url: "https://token.actions.githubusercontent.com",
-        thumbprintList: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
-        clientIdList: ["sts.amazonaws.com"],
+        thumbprints: ["6938fd4d98bab03faadb97b34396831e3780aea1"], // pragma: allowlist secret
+        clientIds: ["sts.amazonaws.com"],
       }
     );
 
-    new iam.CfnRole(this, "GitHubActionsServiceRole", {
+    new iam.Role(this, "GitHubActionsServiceRole", {
       description: "Service Role for use in GitHub Actions",
-      assumeRolePolicyDocument: {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Sid: "RoleForGitHubActions",
-            Effect: "Allow",
-            Principal: {
-              Federated: githubProvider.attrArn,
-            },
-            Action: ["sts:AssumeRoleWithWebIdentity"],
-            Condition: {
-              StringEquals: {
-                "token.actions.githubusercontent.com:aud": [
-                  "sts.amazonaws.com",
-                ],
-              },
-              StringLike: {
-                "token.actions.githubusercontent.com:sub": [
-                  `repo:Enterprise-CMCS/macpro-mdct-mcr:${branchFilter}`,
-                ],
-              },
-            },
+      assumedBy: new iam.FederatedPrincipal(
+        githubProvider.oidcProviderArn,
+        {
+          StringEquals: {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
-        ],
-      },
-      managedPolicyArns: [
-        `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/ADO-Restriction-Policy`,
-        `arn:aws:iam::${Aws.ACCOUNT_ID}:policy/CMSApprovedAWSServices`,
-        "arn:aws:iam::aws:policy/AdministratorAccess",
+          StringLike: {
+            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-mcr:${branchFilter}`,
+          },
+        },
+        "sts:AssumeRoleWithWebIdentity"
+      ),
+      managedPolicies: [
+        iam.ManagedPolicy.fromManagedPolicyName(
+          this,
+          "ADORestrictionPolicy",
+          "ADO-Restriction-Policy"
+        ),
+        iam.ManagedPolicy.fromManagedPolicyName(
+          this,
+          "CMSApprovedServicesPolicy",
+          "CMSApprovedAWSServices"
+        ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName("AdministratorAccess"),
       ],
     });
   }
