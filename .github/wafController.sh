@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+# #!/usr/bin/env bash
 
 # CIRCUIT_BREAKER=10
 # AWS_RETRY_ERROR=254

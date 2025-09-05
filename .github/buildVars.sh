@@ -1,10 +1,9 @@
 #!/bin/bash
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 
 var_list=(
   'AWS_OIDC_ROLE_TO_ASSUME'
   'AWS_DEFAULT_REGION'
-  'SLACK_WEBHOOK_URL'
-  'CODE_CLIMATE_ID'
 )
 
 set_value() {

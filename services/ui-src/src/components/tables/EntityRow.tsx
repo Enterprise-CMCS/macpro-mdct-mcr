@@ -1,48 +1,45 @@
 import { useMemo } from "react";
 // components
-import { Button, Flex, Image, Spinner, Td, Text, Tr } from "@chakra-ui/react";
+import { Td, Text, Tr } from "@chakra-ui/react";
 import { EntityStatusIcon } from "components";
+import { EntityButtonGroup } from "./EntityButtonGroup";
 // types
 import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
-import { eligibilityGroup, getEntityStatus, useStore } from "utils";
-// assets
-import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
+import {
+  eligibilityGroup,
+  getEntityStatus,
+  parseCustomHtml,
+  useBreakpoint,
+  useStore,
+} from "utils";
 
 export const EntityRow = ({
   entity,
-  entityType,
   verbiage,
+  entityType,
   locked,
-  hasStandards,
-  entering,
   openAddEditEntityModal,
-  openDeleteEntityModal,
   openOverlayOrDrawer,
+  openDeleteEntityModal,
+  entering,
+  hasStandards,
 }: EntityRowProps) => {
-  const { report_programName, report_planName, name } = entity;
+  const { isMobile } = useBreakpoint();
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
+
+  const { report_programName, report_planName, name } = entity;
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+  const { reportType } = report || {};
 
   const entityComplete = useMemo(() => {
     return getEntityStatus(entity, report, entityType);
   }, [report]);
 
-  const enterDetailsText = () => {
-    switch (report?.reportType) {
-      case ReportType.MLR:
-        return verbiage.enterReportText;
-      case ReportType.NAAAR:
-        return verbiage.enterEntityDetailsButtonText;
-      default:
-        return "Enter";
-    }
-  };
-
   const entityFields = () => {
-    const fields: any[] =
-      report?.reportType === ReportType.MLR
+    const fields: string[] =
+      reportType === ReportType.MLR
         ? [
             report_planName,
             report_programName,
@@ -52,7 +49,6 @@ export const EntityRow = ({
         : [name];
     return fields;
   };
-  const ariaName = name || report_planName;
 
   return (
     <Tr sx={sx.content}>
@@ -60,6 +56,9 @@ export const EntityRow = ({
         <EntityStatusIcon entity={entity} entityType={entityType} />
       </Td>
       <Td sx={sx.entityFields}>
+        {isMobile && (
+          <Text sx={sx.rowHeader}>{parseCustomHtml(verbiage.tableHeader)}</Text>
+        )}
         <ul>
           {entityFields().map((field, index) => (
             <li key={index}>{field}</li>
@@ -67,61 +66,49 @@ export const EntityRow = ({
         </ul>
         {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            {report.reportType === ReportType.MLR &&
+            {reportType === ReportType.MLR &&
               "Select “Enter MLR” to complete this report."}
-            {report.reportType === ReportType.NAAAR &&
+            {reportType === ReportType.NAAAR &&
               "Select “Enter” to complete response."}
           </Text>
         )}
+        {isMobile && (
+          <EntityButtonGroup
+            deleteDisabled={locked ?? !userIsEndUser}
+            openDisabled={!hasStandards && hasStandards !== undefined}
+            entity={entity}
+            verbiage={verbiage}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
+            openDeleteEntityModal={openDeleteEntityModal}
+            entering={entering}
+            reportType={reportType}
+          />
+        )}
       </Td>
-      <Td>
-        <Flex sx={sx.actionContainer}>
-          {!entity.isRequired && openAddEditEntityModal && (
-            <Button
-              sx={sx.editButton}
-              variant="none"
-              aria-label={`${verbiage.editEntityButtonText} ${ariaName}`}
-              onClick={() => openAddEditEntityModal(entity)}
-            >
-              {verbiage.editEntityButtonText}
-            </Button>
-          )}
-          {openOverlayOrDrawer && (
-            <Button
-              sx={sx.enterButton}
-              onClick={() => openOverlayOrDrawer(entity)}
-              aria-label={entering ? "" : `${enterDetailsText()} ${ariaName}`}
-              variant="outline"
-              size="sm"
-              disabled={!hasStandards && hasStandards !== undefined}
-            >
-              {entering ? <Spinner size="md" /> : enterDetailsText()}
-            </Button>
-          )}
-          {!entity.isRequired && openDeleteEntityModal && (
-            <Button
-              sx={sx.deleteButton}
-              data-testid="delete-entity"
-              onClick={() => openDeleteEntityModal(entity)}
-              disabled={locked || !userIsEndUser}
-            >
-              <Image
-                src={deleteIcon}
-                alt={`Delete ${ariaName}`}
-                boxSize="3xl"
-              />
-            </Button>
-          )}
-        </Flex>
-      </Td>
+      {!isMobile && (
+        <Td>
+          <EntityButtonGroup
+            entity={entity}
+            verbiage={verbiage}
+            deleteDisabled={locked ?? !userIsEndUser}
+            openDisabled={!hasStandards && hasStandards !== undefined}
+            openAddEditEntityModal={openAddEditEntityModal}
+            openOverlayOrDrawer={openOverlayOrDrawer}
+            openDeleteEntityModal={openDeleteEntityModal}
+            entering={entering}
+            reportType={reportType}
+          />
+        </Td>
+      )}
     </Tr>
   );
 };
 
 export interface EntityRowProps {
   entity: EntityShape;
-  entityType?: EntityType;
   verbiage: AnyObject;
+  entityType?: EntityType;
   locked?: boolean;
   entering?: boolean;
   hasStandards?: boolean;
@@ -142,54 +129,52 @@ const sx = {
   },
   statusIcon: {
     maxWidth: "fit-content",
+    ".mobile &": {
+      verticalAlign: "baseline",
+    },
+  },
+  entityFields: {
+    ul: {
+      listStyleType: "none",
+      ".desktop &": {
+        margin: "0.5rem auto",
+      },
+      li: {
+        lineHeight: "130%",
+        wordWrap: "break-word",
+        whiteSpace: "break-spaces",
+        paddingTop: "0.125rem",
+        paddingBottom: "0.125rem",
+        "&:first-of-type": {
+          fontWeight: "bold",
+          fontSize: "lg",
+        },
+        ".mobile &": {
+          paddingTop: 0,
+          paddingBottom: "0.25rem",
+          "&:first-of-type": {
+            fontSize: "md",
+          },
+        },
+      },
+    },
+    ".desktop &": {
+      maxWidth: "18.75rem",
+    },
+  },
+  rowHeader: {
+    display: "flex",
+    fontWeight: "bold",
+    paddingBottom: "0.5rem",
+    span: { color: "gray_medium" },
+    img: { marginRight: "1rem" },
   },
   errorText: {
     color: "error_dark",
     fontSize: "sm",
     marginBottom: "0.75rem",
-  },
-  entityFields: {
-    maxWidth: "18.75rem",
-    ul: {
-      margin: "0.5rem auto",
-      listStyleType: "none",
-      li: {
-        lineHeight: "130%",
-        wordWrap: "break-word",
-        paddingTop: "0.125rem",
-        paddingBottom: "0.125rem",
-        whiteSpace: "break-spaces",
-        "&:first-of-type": {
-          fontWeight: "bold",
-          fontSize: "lg",
-        },
-      },
-    },
-  },
-  actionContainer: {
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
-  editButton: {
-    padding: 0,
-    fontWeight: "normal",
-    textDecoration: "underline",
-    color: "primary",
-  },
-  enterButton: {
-    width: "5.75rem",
-    height: "2.5rem",
-    fontSize: "md",
-    fontWeight: "bold",
-  },
-  deleteButton: {
-    height: "1.875rem",
-    width: "1.875rem",
-    minWidth: "1.875rem",
-    padding: 0,
-    background: "white",
-    "&:hover, &:hover:disabled": {
-      background: "white",
+    ".mobile &": {
+      fontSize: "xs",
     },
   },
 };
