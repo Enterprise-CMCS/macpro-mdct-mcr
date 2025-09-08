@@ -67,6 +67,12 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       versioned: true,
       serverAccessLogsBucket: loggingBucket,
       serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
+      lifecycleRules: [
+        {
+          expiration: Duration.days(1095),
+          noncurrentVersionExpiration: Duration.days(1095),
+        },
+      ],
     });
 
     logBucket.addToResourcePolicy(
