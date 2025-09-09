@@ -458,6 +458,9 @@ function dashboardTitleStyling(canAddEntities: boolean) {
 const sx = {
   tablePage: {
     width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",

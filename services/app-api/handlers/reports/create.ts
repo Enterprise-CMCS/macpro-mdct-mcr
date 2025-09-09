@@ -29,12 +29,7 @@ import {
   internalServerError,
 } from "../../utils/responses/response-lib";
 // types
-import {
-  isReportType,
-  isState,
-  ReportType,
-  UserRoles,
-} from "../../utils/types";
+import { isReportType, isState, UserRoles } from "../../utils/types";
 
 export const createReport = handler(async (event, _context) => {
   const requiredParams = ["reportType", "state"];
@@ -59,10 +54,6 @@ export const createReport = handler(async (event, _context) => {
 
   if (!isReportType(reportType)) {
     return badRequest(error.NO_KEY);
-  }
-  const naaarReportEnabled = unvalidatedMetadata?.naaarReport || false;
-  if (reportType === ReportType.NAAAR && !naaarReportEnabled) {
-    return badRequest(error.INVALID_DATA);
   }
 
   const reportBucket = reportBuckets[reportType];

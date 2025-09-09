@@ -4,56 +4,94 @@ import {
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { DEFAULT_ANALYSIS_METHODS } from "../../../services/ui-src/src/constants";
+import { naaarProgramList } from "../../../services/ui-src/src/forms/addEditNaaarReport/naaarProgramList";
 import { dateFormat, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 const analysisMethods = [...DEFAULT_ANALYSIS_METHODS];
 
-export const newNaaar = (stateName: string): SeedNewReportShape => {
+export const newNaaar = (
+  stateName: string,
+  state: string,
+  options: { [key: string]: boolean } = {}
+): SeedNewReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
   });
   const reportingPeriodStartDate = newReportingPeriodStartDate.getTime();
   const reportingPeriodEndDate = newReportingPeriodEndDate.getTime();
-  const planTypeIncludedInProgram = [
-    {
-      key: "planTypeIncludedInProgram-NHAbx1VBdvZkHgG2HTfexemq",
-      value: "MCO",
-    },
-    {
-      key: "planTypeIncludedInProgram-MiyW1eKfcetIG8k2eyT5dbhw",
-      value: "PIHP",
-    },
-    {
-      key: "planTypeIncludedInProgram-QASeuhF5cDBrRpWbmYBndH2v",
-      value: "PAHP",
-    },
-    {
-      key: "planTypeIncludedInProgram-U4dg782RHft2Fs53fOpcbocr",
-      value: "MMP",
-    },
-    {
-      key: "planTypeIncludedInProgram-ZRH5GgCnJSlnCdieekgh67sv",
-      value: "Other, specify",
-    },
+
+  const enums = {
+    planTypeIncludedInProgram: [
+      {
+        key: "planTypeIncludedInProgram-NHAbx1VBdvZkHgG2HTfexemq",
+        value: "MCO",
+      },
+      {
+        key: "planTypeIncludedInProgram-MiyW1eKfcetIG8k2eyT5dbhw",
+        value: "PIHP",
+      },
+      {
+        key: "planTypeIncludedInProgram-QASeuhF5cDBrRpWbmYBndH2v",
+        value: "PAHP",
+      },
+      {
+        key: "planTypeIncludedInProgram-U4dg782RHft2Fs53fOpcbocr",
+        value: "MMP",
+      },
+      {
+        key: "planTypeIncludedInProgram-ZRH5GgCnJSlnCdieekgh67sv",
+        value: "Other, specify",
+      },
+    ],
+    newOrExistingProgram: [
+      { key: "newOrExistingProgram-isNewProgram", value: "Add new program" },
+      {
+        key: "newOrExistingProgram-isExistingProgram",
+        value: "Existing program",
+      },
+    ],
+  };
+
+  const { isNewProgram } = options;
+
+  const planIndex = randomIndex(enums.planTypeIncludedInProgram.length);
+  const generatedProgramName = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
+
+  // Pick an existing program name
+  const existingPrograms =
+    naaarProgramList[state as keyof typeof naaarProgramList];
+  const existingProgramName =
+    existingPrograms[randomIndex(existingPrograms.length)].label;
+
+  // Check for new program name
+  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const existingProgramNameSelection = isNewProgram
+    ? undefined
+    : { value: existingProgramName, label: "existingProgramNameSelection" };
+  const newOrExistingProgram = [
+    enums.newOrExistingProgram[isNewProgram ? 0 : 1],
   ];
-  const planIndex = randomIndex(planTypeIncludedInProgram.length);
+  const newProgramName = isNewProgram ? programName : undefined;
 
   return {
     metadata: {
       copyFieldDataSourceId: "",
       dueDate: reportingPeriodEndDate,
+      existingProgramNameSelection,
+      existingProgramNameSuggestion: "",
       lastAlteredBy: faker.person.fullName(),
       locked: false,
-      naaarReport: true,
-      planTypeIncludedInProgram: [planTypeIncludedInProgram[planIndex]],
+      newOrExistingProgram,
+      newProgramName,
+      planTypeIncludedInProgram: [enums.planTypeIncludedInProgram[planIndex]],
       "planTypeIncludedInProgram-otherText":
-        planIndex === planTypeIncludedInProgram.length - 1
+        planIndex === enums.planTypeIncludedInProgram.length - 1
           ? faker.hacker.abbreviation()
           : undefined,
       previousRevisions: [],
-      programName: `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`,
+      programName,
       reportType: ReportType.NAAAR,
       reportingPeriodEndDate,
       reportingPeriodStartDate,
@@ -65,6 +103,10 @@ export const newNaaar = (stateName: string): SeedNewReportShape => {
       stateName,
     },
   };
+};
+
+export const newNaaarNewProgram = (stateName: string, state: string) => {
+  return newNaaar(stateName, state, { isNewProgram: true });
 };
 
 export const fillNaaar = (): SeedFillReportShape => {

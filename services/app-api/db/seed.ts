@@ -27,7 +27,7 @@ const seed = async (): Promise<void> => {
         { title: "Quick Create Reports", value: "quickCreateReports" },
         ...reportTypes.map((report) => ({
           title: report,
-          value: report === "MCPAR" ? "mcparMenu" : report,
+          value: report === "MLR" ? report : `${report.toLowerCase()}Menu`,
         })),
         { title: "Banners", value: "banners" },
       ],
@@ -66,6 +66,16 @@ const seed = async (): Promise<void> => {
       ],
     },
     {
+      type: (prev: string) => (prev === "naaarMenu" ? "select" : null),
+      name: "task",
+      message: "Task",
+      choices: [
+        { title: "NAAAR - Default", value: "NAAAR" },
+        { title: "NAAAR - New Program", value: "NAAAR-newProgram" },
+        backToMenu,
+      ],
+    },
+    {
       type: (prev: string) =>
         [
           "MCPAR",
@@ -76,6 +86,7 @@ const seed = async (): Promise<void> => {
           "MCPAR-PCCM",
           "MLR",
           "NAAAR",
+          "NAAAR-newProgram",
         ].includes(prev)
           ? "select"
           : null,

@@ -1,7 +1,7 @@
 import { ProgramList } from "../../types";
 
-// ESP: program list (MCPAR)
-export const mcparProgramList: ProgramList = {
+// ESP: program list (NAAAR)
+export const naaarProgramList: ProgramList = {
   // Alabama
   AL: [
     {

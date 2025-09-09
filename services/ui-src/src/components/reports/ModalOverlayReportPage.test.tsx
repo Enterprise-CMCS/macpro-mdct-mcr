@@ -206,7 +206,9 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if action buttons are visible
       const editEntityButton = screen.getByText(verbiage.editEntityButtonText);
-      const deleteEntityButton = screen.getByTestId("delete-entity");
+      const deleteEntityButton = screen.getByRole("button", {
+        name: "Delete test-plan",
+      });
       expect(editEntityButton).toBeVisible();
       expect(deleteEntityButton).toBeVisible();
 
@@ -259,7 +261,9 @@ describe("<ModalOverlayReportPage />", () => {
       ).toBeVisible();
 
       // Get the Delete button and click it
-      const deleteEntityButton = screen.getByTestId("delete-entity");
+      const deleteEntityButton = screen.getByRole("button", {
+        name: "Delete test-plan",
+      });
       await userEvent.click(deleteEntityButton);
       expect(screen.getByRole("dialog")).toBeVisible();
 
@@ -301,7 +305,9 @@ describe("<ModalOverlayReportPage />", () => {
       ).toBeVisible();
 
       // Get the Delete button and click it
-      const deleteEntityButton = screen.getByTestId("delete-entity");
+      const deleteEntityButton = screen.getByRole("button", {
+        name: "Delete test-plan",
+      });
       expect(deleteEntityButton).toBeDisabled();
     });
 
