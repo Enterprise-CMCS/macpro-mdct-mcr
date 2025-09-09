@@ -66,6 +66,8 @@ export const EntityRow = ({
         </ul>
         {!entityComplete && report && (
           <Text sx={sx.errorText}>
+            {reportType === ReportType.MCPAR &&
+              "Select “Enter” to complete this measure."}
             {reportType === ReportType.MLR &&
               "Select “Enter MLR” to complete this report."}
             {reportType === ReportType.NAAAR &&

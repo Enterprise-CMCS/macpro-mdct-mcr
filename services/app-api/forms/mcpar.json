@@ -3269,7 +3269,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint":   [
+                      "hint": [
                         {
                           "type": "span",
                           "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",
@@ -4121,6 +4121,83 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "name": "VII.i: Quality & Performance Measures",
+          "path": "/mcpar/plan-level-indicators/quality-and-performance-measures",
+          "pageType": "modalOverlay",
+          "entityType": "qualityMeasures",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII.i: Quality & Performance Measures",
+              "spreadsheet": "D3_Program_QualityMeasures",
+              "info": [
+                {
+                  "type": "p",
+                  "content": "Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component."
+                }
+              ]
+            },
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
+            "tableHeader": "Measure name <br/> CMIT number <br/> Status",
+            "enterEntityDetailsButtonText": "Enter",
+            "addEditModalHint": "Add information to create the listing for the measure. You’ll be asked to complete the details later.",
+            "addEntityButtonText": "Add measure",
+            "editEntityButtonText": "Edit measure",
+            "addEditModalAddTitle": "Add measure",
+            "addEditModalEditTitle": "Edit measure",
+            "deleteEntityButtonAltText": "Delete measure",
+            "deleteModalTitle": "Delete measure?",
+            "deleteModalConfirmButtonText": "Yes, delete measure",
+            "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?"
+          },
+          "modalForm": {
+            "id": "am-modal",
+            "fields": [
+              {
+                "id": "qualityMeasure_measureName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.1 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "qualityMeasure_measureIdentificationNumberOrDefinition",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "L. Eligibility group",
+                  "hint": "Does this measure have a CMS Measures Inventory Tool (CMIT) number? If measure varied from CMIT specifications, answer “No”.",
+                  "choices": [
+                    {
+                      "id": "",
+                      "label": "All Populations"
+                    },
+                    {
+                      "id": "",
+                      "label": "Yes"
+                    },
+                    {
+                      "id": "",
+                      "label": "No, it uses National Quality Forum (NQF)"
+                    },
+                    {
+                      "id": "",
+                      "label": "No, it uses neither CMIT or NQF"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "overlayForm": {
+            "id": "am-overlay",
+            "fields": []
           }
         },
         {
