@@ -4132,19 +4132,12 @@
             "intro": {
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic VII.i: Quality & Performance Measures",
-              "spreadsheet": "D3_Program_QualityMeasures",
-              "info": [
-                {
-                  "type": "p",
-                  "content": "Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component."
-                }
-              ]
+              "spreadsheet": "D3_Program_QualityMeasures"
             },
             "dashboardTitle": "Quality & performance measure total count:",
             "countEntitiesInTitle": true,
             "tableHeader": "Measure name <br/> CMIT number <br/> Status",
             "enterEntityDetailsButtonText": "Enter",
-            "addEditModalHint": "Add information to create the listing for the measure. You’ll be asked to complete the details later.",
             "addEntityButtonText": "Add measure",
             "editEntityButtonText": "Edit measure",
             "addEditModalAddTitle": "Add measure",
@@ -4175,19 +4168,27 @@
                   "hint": "Does this measure have a CMS Measures Inventory Tool (CMIT) number? If measure varied from CMIT specifications, answer “No”.",
                   "choices": [
                     {
-                      "id": "",
-                      "label": "All Populations"
+                      "id": "FSlV9Wn9U158ZMqnF14ghW6o",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_measureIdentificationNumberOrDefinition-otherText",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_measureIdentificationNumberOrDefinition",
+                            "parentOptionId": "FSlV9Wn9U158ZMqnF14ghW6o"
+                          }
+                        }
+                      ]
                     },
                     {
-                      "id": "",
-                      "label": "Yes"
-                    },
-                    {
-                      "id": "",
+                      "id": "6nL3PHajAlEB416I4XNkvX0r",
                       "label": "No, it uses National Quality Forum (NQF)"
                     },
                     {
-                      "id": "",
+                      "id": "eqCvhV6aiXoIhAZg2uhnlY57",
                       "label": "No, it uses neither CMIT or NQF"
                     }
                   ]

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import uuid from "react-uuid";
 // components
-import { Text, Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import { Form, Modal, ReportContext } from "components";
 // types
 import {
@@ -93,7 +93,6 @@ export const SaveAndCreateNextEntityModal = ({
         validateOnRender={false}
         dontReset={true}
       />
-      <Text>{verbiage.addEditModalMessage}</Text>
     </Modal>
   );
 };
@@ -107,5 +106,3 @@ interface Props {
     onClose: any;
   };
 }
-
-// TODO: sx

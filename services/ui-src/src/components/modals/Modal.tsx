@@ -26,6 +26,7 @@ export const Modal = ({
   children,
   submitButtonDisabled,
 }: Props) => {
+  const isSaveAndCreateNext = formId === "am-modal";
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
@@ -76,6 +77,18 @@ export const Modal = ({
               {submitting ? <Spinner size="md" /> : content.actionButtonText}
             </Button>
           )}
+          {isSaveAndCreateNext && (
+            <Button
+              sx={sx.secondaryAction}
+              form={formId}
+              type="submit"
+              variant="outline"
+              data-testid="modal-save-and-create-new-button"
+              disabled={submitButtonDisabled}
+            >
+              {submitting ? <Spinner size="md" /> : "Save and create another"}
+            </Button>
+          )}
           {content.closeButtonText && (
             <Button
               sx={sx.close}
@@ -101,6 +114,7 @@ interface Props {
     subheading?: string;
     intro?: string;
     actionButtonText: string | ReactNode;
+    createAnotherButtonText?: string;
     closeButtonText?: string;
   };
   submitting?: boolean;
@@ -164,6 +178,22 @@ const sx = {
     paddingTop: "2rem",
   },
   action: {
+    justifyContent: "center",
+    marginTop: "1rem",
+    marginRight: "2rem",
+    minWidth: "10rem",
+    span: {
+      marginLeft: "0.5rem",
+      marginRight: "-0.25rem",
+      "&.ds-c-spinner": {
+        marginLeft: 0,
+      },
+    },
+    ".mobile &": {
+      fontSize: "sm",
+    },
+  },
+  secondaryAction: {
     justifyContent: "center",
     marginTop: "1rem",
     marginRight: "2rem",
