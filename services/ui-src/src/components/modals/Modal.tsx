@@ -22,11 +22,13 @@ export const Modal = ({
   content,
   onConfirmHandler,
   submitting,
+  submittingAnother,
   formId,
   children,
   submitButtonDisabled,
+  submitAnotherButtonDisabled,
+  isSaveAndCreateAnother,
 }: Props) => {
-  const isSaveAndCreateNext = formId === "am-modal";
   return (
     <ChakraModal
       isOpen={modalDisclosure.isOpen}
@@ -77,16 +79,16 @@ export const Modal = ({
               {submitting ? <Spinner size="md" /> : content.actionButtonText}
             </Button>
           )}
-          {isSaveAndCreateNext && (
+          {isSaveAndCreateAnother && (
             <Button
               sx={sx.secondaryAction}
               form={formId}
               type="submit"
               variant="outline"
               data-testid="modal-save-and-create-new-button"
-              disabled={submitButtonDisabled}
+              disabled={submitAnotherButtonDisabled}
             >
-              {submitting ? <Spinner size="md" /> : "Save and create another"}
+              {submittingAnother ? <Spinner size="md" /> : "Another"}
             </Button>
           )}
           {content.closeButtonText && (
@@ -118,10 +120,13 @@ interface Props {
     closeButtonText?: string;
   };
   submitting?: boolean;
+  submittingAnother?: boolean;
   onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;
   submitButtonDisabled?: boolean;
+  submitAnotherButtonDisabled?: boolean;
+  isSaveAndCreateAnother?: boolean;
   [key: string]: any;
 }
 

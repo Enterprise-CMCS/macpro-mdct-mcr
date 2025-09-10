@@ -6,24 +6,32 @@ import { Form, Modal, ReportContext } from "components";
 // types
 import {
   AnyObject,
+  EntityShape,
   EntityType,
   FormJson,
   isFieldElement,
   ReportStatus,
 } from "types";
 // utils
-import { filterFormData, useStore } from "utils";
+import {
+  entityWasUpdated,
+  filterFormData,
+  getEntriesToClear,
+  setClearedEntriesToDefaultValue,
+  useStore,
+} from "utils";
 
 export const SaveAndCreateNextEntityModal = ({
   entityType,
   form,
   verbiage,
+  selectedEntity,
   modalDisclosure,
 }: Props) => {
   const { updateReport } = useContext(ReportContext);
 
   // state management
-  const { full_name, userIsEndUser } = useStore().user ?? {};
+  const { full_name } = useStore().user ?? {};
   const { report } = useStore();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -50,15 +58,42 @@ export const SaveAndCreateNextEntityModal = ({
       enteredData,
       form.fields.filter(isFieldElement)
     );
-    // create new entity
-    dataToWrite.fieldData = {
-      [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
-    };
-    await updateReport(reportKeys, dataToWrite);
-    setSubmitting(false);
+    if (selectedEntity?.id) {
+      // if existing entity selected, edit
+      const entriesToClear = getEntriesToClear(
+        enteredData,
+        form.fields.filter(isFieldElement)
+      );
+      const selectedEntityIndex = currentEntities.findIndex(
+        (entity: EntityShape) => entity.id === selectedEntity.id
+      );
+      const updatedEntities = currentEntities;
 
-    // TODO: don't close modal if user selects "Save and create next"
-    modalDisclosure.onClose();
+      updatedEntities[selectedEntityIndex] = {
+        id: selectedEntity.id,
+        ...currentEntities[selectedEntityIndex],
+        ...filteredFormData,
+      };
+
+      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        updatedEntities[selectedEntityIndex],
+        entriesToClear
+      );
+
+      dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const shouldSave = entityWasUpdated(
+        report?.fieldData?.[entityType][selectedEntityIndex],
+        updatedEntities[selectedEntityIndex]
+      );
+      if (shouldSave) await updateReport(reportKeys, dataToWrite);
+    } else {
+      // create new entity
+      dataToWrite.fieldData = {
+        [entityType]: [...currentEntities, { id: uuid(), ...filteredFormData }],
+      };
+      await updateReport(reportKeys, dataToWrite);
+    }
+    setSubmitting(false);
   };
 
   return (
@@ -80,16 +115,13 @@ export const SaveAndCreateNextEntityModal = ({
         ),
         closeButtonText: "Cancel",
       }}
+      isSaveAndCreateAnother={true}
     >
       <Form
-        data-testid="add-edit-entity-form"
+        data-testid="add-edit-another-entity-form"
         id={form.id}
         formJson={form}
-        onSubmit={
-          report?.locked || !userIsEndUser
-            ? modalDisclosure.onClose
-            : writeEntity
-        }
+        onSubmit={writeEntity}
         validateOnRender={false}
         dontReset={true}
       />
@@ -101,8 +133,10 @@ interface Props {
   entityType: EntityType;
   form: FormJson;
   verbiage: AnyObject;
+  selectedEntity?: EntityShape;
   modalDisclosure: {
     isOpen: boolean;
+    onOpen: any;
     onClose: any;
   };
 }

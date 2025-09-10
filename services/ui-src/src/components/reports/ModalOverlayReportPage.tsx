@@ -32,6 +32,7 @@ import {
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
+import { SaveAndCreateNextEntityModal } from "components/modals/SaveAndCreateNextEntityModal";
 
 export const ModalOverlayReportPage = ({
   route,
@@ -112,6 +113,24 @@ export const ModalOverlayReportPage = ({
   const closeDeleteEntityModal = () => {
     setCurrentEntity(undefined);
     deleteEntityModalOnCloseHandler();
+  };
+
+  // Add/edit "Save and create another" entity modal disclosure and methods
+  const {
+    isOpen: addEditAnotherEntityModalIsOpen,
+    onOpen: addEditAnotherEntityModalOnOpenHandler,
+    onClose: addEditAnotherEntityModalOnCloseHandler,
+  } = useDisclosure();
+
+  const openAddEditAnotherEntityModal = (entity?: EntityShape) => {
+    if (entity) setCurrentEntity(entity);
+    addEditAnotherEntityModalOnOpenHandler();
+  };
+
+  const closeAddEditAnotherEntityModal = () => {
+    setCurrentEntity(undefined);
+    resetClearProp(modalForm.fields);
+    addEditAnotherEntityModalOnCloseHandler();
   };
 
   // Open/Close overlay action methods
@@ -238,7 +257,12 @@ export const ModalOverlayReportPage = ({
             <Button
               sx={sx.addEntityButton}
               disabled={isLocked}
-              onClick={() => openAddEditEntityModal()}
+              // open "Save and create another" modal
+              onClick={
+                modalForm.id === "am-modal"
+                  ? () => openAddEditAnotherEntityModal()
+                  : () => openAddEditEntityModal()
+              }
             >
               {verbiage.addEntityButtonText}
             </Button>
@@ -252,6 +276,18 @@ export const ModalOverlayReportPage = ({
             modalDisclosure={{
               isOpen: addEditEntityModalIsOpen,
               onClose: closeAddEditEntityModal,
+            }}
+          />
+
+          <SaveAndCreateNextEntityModal
+            entityType={entityType}
+            selectedEntity={currentEntity}
+            verbiage={verbiage}
+            form={modalForm}
+            modalDisclosure={{
+              isOpen: addEditAnotherEntityModalIsOpen,
+              onOpen: openAddEditAnotherEntityModal,
+              onClose: closeAddEditAnotherEntityModal,
             }}
           />
 
