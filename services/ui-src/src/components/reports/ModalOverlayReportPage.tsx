@@ -127,7 +127,7 @@ export const ModalOverlayReportPage = ({
     addEditAnotherEntityModalOnOpenHandler();
   };
 
-  const closeAddEditAnotherEntityModal = () => {
+  const resetModal = () => {
     setCurrentEntity(undefined);
     resetClearProp(modalForm.fields);
     addEditAnotherEntityModalOnCloseHandler();
@@ -279,7 +279,6 @@ export const ModalOverlayReportPage = ({
             }}
           />
 
-          {/* "Save and create another modal" */}
           <SaveAndCreateNextEntityModal
             entityType={entityType}
             selectedEntity={currentEntity}
@@ -288,7 +287,7 @@ export const ModalOverlayReportPage = ({
             modalDisclosure={{
               isOpen: addEditAnotherEntityModalIsOpen,
               onOpen: openAddEditAnotherEntityModal,
-              onClose: closeAddEditAnotherEntityModal,
+              onClose: resetModal,
             }}
           />
 

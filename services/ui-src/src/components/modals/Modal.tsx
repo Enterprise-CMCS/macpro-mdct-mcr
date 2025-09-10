@@ -22,11 +22,9 @@ export const Modal = ({
   content,
   onConfirmHandler,
   submitting,
-  submittingAnother,
   formId,
   children,
   submitButtonDisabled,
-  submitAnotherButtonDisabled,
   isSaveAndCreateAnother,
 }: Props) => {
   return (
@@ -86,9 +84,8 @@ export const Modal = ({
               type="submit"
               variant="outline"
               data-testid="modal-save-and-create-new-button"
-              disabled={submitAnotherButtonDisabled}
             >
-              {submittingAnother ? <Spinner size="md" /> : "Another"}
+              {submitting ? <Spinner size="md" /> : "Another"}
             </Button>
           )}
           {content.closeButtonText && (
@@ -120,12 +117,10 @@ interface Props {
     closeButtonText?: string;
   };
   submitting?: boolean;
-  submittingAnother?: boolean;
   onConfirmHandler?: Function;
   formId?: string;
   children?: ReactNode;
   submitButtonDisabled?: boolean;
-  submitAnotherButtonDisabled?: boolean;
   isSaveAndCreateAnother?: boolean;
   [key: string]: any;
 }
