@@ -41,7 +41,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: use the custom github  action to parse Snyk output
-        uses: Enterprise-CMCS/mac-fc-security-scan-report@v2.8.4.3
+        uses: Enterprise-CMCS/mac-fc-security-scan-report@v2.8.5
         with:
           jira-username: "mdct_github_service_account"
           jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
@@ -55,4 +55,4 @@ jobs:
           assign-jira-ticket-to: "MWTW"
           scan-output-path: "snyk_output.txt"
           scan-type: "snyk"
-          major-version-only: 'true'
+          major-version-only: "true"

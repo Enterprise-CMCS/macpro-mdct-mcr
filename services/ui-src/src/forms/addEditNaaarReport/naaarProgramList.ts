@@ -1,5 +1,7 @@
+import { ProgramList } from "../../types";
+
 // ESP: program list (NAAAR)
-export const naaarProgramList = {
+export const naaarProgramList: ProgramList = {
   // Alabama
   AL: [
     {
