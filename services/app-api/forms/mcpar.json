@@ -3269,7 +3269,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint":   [
+                      "hint": [
                         {
                           "type": "span",
                           "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",
@@ -4121,6 +4121,84 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "name": "VII.i: Quality & Performance Measures",
+          "path": "/mcpar/plan-level-indicators/quality-and-performance-measures",
+          "pageType": "modalOverlay",
+          "entityType": "qualityMeasures",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII.i: Quality & Performance Measures",
+              "spreadsheet": "D3_Program_QualityMeasures"
+            },
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
+            "tableHeader": "Measure name <br/> CMIT number <br/> Status",
+            "enterEntityDetailsButtonText": "Enter",
+            "addEntityButtonText": "Add measure",
+            "editEntityButtonText": "Edit measure",
+            "addEditModalAddTitle": "Add measure",
+            "addEditModalEditTitle": "Edit measure",
+            "deleteEntityButtonAltText": "Delete measure",
+            "deleteModalTitle": "Delete measure?",
+            "deleteModalConfirmButtonText": "Yes, delete measure",
+            "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?"
+          },
+          "modalForm": {
+            "id": "am-modal",
+            "fields": [
+              {
+                "id": "qualityMeasure_measureName",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.1 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "qualityMeasure_measureIdentificationNumberOrDefinition",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "L. Eligibility group",
+                  "hint": "Does this measure have a CMS Measures Inventory Tool (CMIT) number? If measure varied from CMIT specifications, answer “No”.",
+                  "choices": [
+                    {
+                      "id": "FSlV9Wn9U158ZMqnF14ghW6o",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_measureIdentificationNumberOrDefinition-otherText",
+                          "type": "text",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_measureIdentificationNumberOrDefinition",
+                            "parentOptionId": "FSlV9Wn9U158ZMqnF14ghW6o"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "6nL3PHajAlEB416I4XNkvX0r",
+                      "label": "No, it uses National Quality Forum (NQF)"
+                    },
+                    {
+                      "id": "eqCvhV6aiXoIhAZg2uhnlY57",
+                      "label": "No, it uses neither CMIT or NQF"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "overlayForm": {
+            "id": "am-overlay",
+            "fields": []
           }
         },
         {
