@@ -1,3 +1,4 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 name: Post Deploy
 
 on:
@@ -5,9 +6,9 @@ on:
     workflows: [Deploy]
     types: [completed]
     branches:
-      - 'main'
-      - 'val'
-      - 'production'
+      - main
+      - val
+      - production
 
 jobs:
   notify_on_failure:

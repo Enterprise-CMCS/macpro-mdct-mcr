@@ -99,6 +99,7 @@ export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
 export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
+export { ComponentInventoryPage } from "./pages/ComponentInventory/ComponentInventoryPage";
 // reports
 export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
@@ -116,8 +117,6 @@ export { StatusTable } from "./statusing/StatusTable";
 // tables
 export { Table } from "./tables/Table";
 export { EntityRow } from "./tables/EntityRow";
-export { MobileEntityRow } from "./tables/MobileEntityRow";
-export { ResponsiveEntityRow } from "./tables/ResponsiveEntityRow";
 export { EntityStatusIcon } from "./tables/EntityStatusIcon";
 export { SortableNaaarStandardsTable } from "./tables/SortableNaaarStandardsTable";
 export { generateColumns, SortableTable } from "./tables/SortableTable";

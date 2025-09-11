@@ -6,6 +6,7 @@ import {
   Stack,
   StackProps,
   aws_ec2 as ec2,
+  aws_iam as iam,
   aws_secretsmanager as secretsmanager,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
@@ -38,6 +39,28 @@ export class LocalPrerequisiteStack extends Stack {
         redirectSignout: SecretValue.unsafePlainText("localstack"),
         vpcName: SecretValue.unsafePlainText("localstack"),
       },
+    });
+
+    new iam.ManagedPolicy(this, "ADORestrictionPolicy", {
+      managedPolicyName: "ADO-Restriction-Policy",
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ["*"],
+          resources: ["*"],
+        }),
+      ],
+    });
+
+    new iam.ManagedPolicy(this, "CMSApprovedAWSServicesPolicy", {
+      managedPolicyName: "CMSApprovedAWSServices",
+      statements: [
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: ["*"],
+          resources: ["*"],
+        }),
+      ],
     });
   }
 }
