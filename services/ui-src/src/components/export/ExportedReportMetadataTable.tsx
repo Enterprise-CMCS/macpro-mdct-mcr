@@ -37,6 +37,12 @@ export const headerRowLabels = (
         verbiage.metadataTableHeaders.status,
       ];
     case ReportType.MLR:
+      return [
+        verbiage.metadataTableHeaders.submissionName,
+        verbiage.metadataTableHeaders.lastEdited,
+        verbiage.metadataTableHeaders.editedBy,
+        verbiage.metadataTableHeaders.status,
+      ];
     case ReportType.NAAAR:
       return [
         verbiage.metadataTableHeaders.submissionName,
@@ -73,6 +79,14 @@ export const bodyRowContent = (
         ],
       ];
     case ReportType.MLR:
+      return [
+        [
+          report?.programName ?? "",
+          convertDateUtcToEt(report?.lastAltered),
+          report?.lastAlteredBy,
+          report?.status,
+        ],
+      ];
     case ReportType.NAAAR:
       return [
         [
