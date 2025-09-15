@@ -62,8 +62,6 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       removalPolicy: RemovalPolicy.RETAIN,
       enforceSSL: true,
       versioned: true,
-      serverAccessLogsBucket: loggingBucket,
-      serverAccessLogsPrefix: `AWSLogs/${Aws.ACCOUNT_ID}/s3/`,
       lifecycleRules: [
         {
           expiration: Duration.days(1095),
