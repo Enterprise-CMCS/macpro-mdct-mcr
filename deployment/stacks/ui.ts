@@ -7,7 +7,6 @@ import {
   aws_iam as iam,
   aws_s3 as s3,
   Aws,
-  // aws_wafv2 as wafv2,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
@@ -21,8 +20,6 @@ interface CreateUiComponentsProps {
   isDev: boolean;
   cloudfrontCertificateArn?: string;
   cloudfrontDomainName?: string;
-  // vpnIpSetArn?: string;
-  // vpnIpv6SetArn?: string;
   loggingBucket: s3.IBucket;
 }
 
@@ -75,14 +72,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
       ],
     });
 
-    logBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
-        actions: ["s3:PutObject"],
-        resources: [`${logBucket.bucketArn}/*`],
-      })
-    );
+    logBucket.grantPut(new iam.ServicePrincipal("cloudfront.amazonaws.com"));
 
     loggingConfig = {
       enableLogging: true,
@@ -168,13 +158,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
   );
 
   if (!isLocalStack) {
-    const waf = setupWaf(
-      scope,
-      stage,
-      project
-      // vpnIpSetArn,
-      // vpnIpv6SetArn
-    );
+    const waf = setupWaf(scope, stage, project); // vpnIpSetArn, vpnIpv6SetArn
     distribution.attachWebAclId(waf.webAcl.attrArn);
   }
 
@@ -191,8 +175,8 @@ function setupWaf(
   scope: Construct,
   stage: string,
   project: string
-  //  vpnIpSetArn?: string,
-  //  vpnIpv6SetArn?: string
+  // vpnIpSetArn?: string,
+  // vpnIpv6SetArn?: string,
 ) {
   return new WafConstruct(
     scope,
@@ -202,4 +186,52 @@ function setupWaf(
     },
     "CLOUDFRONT"
   );
+  // Additional Rules for this WAF only if CMS asks to have the application made vpn only
+  // const wafRules: wafv2.CfnWebACL.RuleProperty[] = [];
+
+  // const defaultAction = vpnIpSetArn
+  //   ? { block: {} }
+  //   : { allow: {} };
+
+  // if (vpnIpSetArn) {
+  //   const githubIpSet = new wafv2.CfnIPSet(scope, "GitHubIPSet", {
+  //     name: `${stage}-gh-ipset`,
+  //     scope: "CLOUDFRONT",
+  //     addresses: [],
+  //     ipAddressVersion: "IPV4",
+  //   });
+
+  //   const statements = [
+  //     {
+  //       ipSetReferenceStatement: { arn: vpnIpSetArn },
+  //     },
+  //     {
+  //       ipSetReferenceStatement: { arn: githubIpSet.attrArn },
+  //     },
+  //   ];
+
+  //   if (vpnIpv6SetArn) {
+  //     statements.push({
+  //       ipSetReferenceStatement: {
+  //         arn: vpnIpv6SetArn,
+  //       },
+  //     });
+  //   }
+
+  //   wafRules.push({
+  //     name: "vpn-only",
+  //     priority: 0,
+  //     action: { allow: {} },
+  //     visibilityConfig: {
+  //       cloudWatchMetricsEnabled: true,
+  //       metricName: `${project}-${stage}-webacl-vpn-only`,
+  //       sampledRequestsEnabled: true,
+  //     },
+  //     statement: {
+  //       orStatement: {
+  //         statements,
+  //       },
+  //     },
+  //   });
+  // }
 }

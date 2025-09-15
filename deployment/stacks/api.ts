@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_dynamodb as dynamodb,
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_logs as logs,
@@ -15,9 +14,10 @@ import {
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-import { isDefined } from "../utils/misc";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 import { isLocalStack } from "../local/util";
+
+// TODO: does this need to point to the tsconfig.json file in services/app-api?
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -26,11 +26,11 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   brokerString: string;
-  mcparFormBucket: s3.IBucket;
-  mlrFormBucket: s3.IBucket;
-  naaarFormBucket: s3.IBucket;
+  wpFormBucket: s3.IBucket;
+  sarFormBucket: s3.IBucket;
+  abcdFormBucket: s3.IBucket;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -43,9 +43,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnets,
     tables,
     brokerString,
-    mcparFormBucket,
-    mlrFormBucket,
-    naaarFormBucket,
+    wpFormBucket,
+    sarFormBucket,
+    abcdFormBucket,
   } = props;
 
   const service = "app-api";
@@ -61,55 +61,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  const bannerTable = dynamodb.Table.fromTableArn(
-    scope,
-    "BannerTableLookup",
-    tables.find((table) => table.id === "Banner")!.arn
-  );
-  const formTemplateVersionsTable = dynamodb.Table.fromTableArn(
-    scope,
-    "FormTemplateVersionsTableLookup",
-    tables.find((table) => table.id === "FormTemplateVersions")!.arn
-  );
-  const mcparReportsTable = dynamodb.Table.fromTableArn(
-    scope,
-    "McparReportsTableLookup",
-    tables.find((table) => table.id === "McparReports")!.arn
-  );
-  const mlrReportsTable = dynamodb.Table.fromTableArn(
-    scope,
-    "MlrReportsTableLookup",
-    tables.find((table) => table.id === "MlrReports")!.arn
-  );
-  const naaarReportsTable = dynamodb.Table.fromTableArn(
-    scope,
-    "NaaarReportsTableLookup",
-    tables.find((table) => table.id === "NaaarReports")!.arn
-  );
-
-  type Access = "read" | "write" | "readwrite";
-
-  function grantReportsTableAccess(grantee: iam.IGrantable, access: Access) {
-    const tables = [mcparReportsTable, mlrReportsTable, naaarReportsTable];
-    for (const table of tables) {
-      if (access === "read") table.grantReadData(grantee);
-      else if (access === "write") table.grantWriteData(grantee);
-      else table.grantReadWriteData(grantee);
-    }
-  }
-
-  function grantReportsBucketAccess(grantee: iam.IGrantable, access: Access) {
-    const buckets = [mcparFormBucket, mlrFormBucket, naaarFormBucket];
-    for (const bucket of buckets) {
-      if (access === "read") bucket.grantRead(grantee);
-      else if (access === "write") bucket.grantWrite(grantee);
-      else bucket.grantReadWrite(grantee);
-    }
-  }
-
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-    retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
@@ -121,20 +74,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tracingEnabled: true,
       loggingLevel: apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
-      metricsEnabled: false,
-      throttlingBurstLimit: 5000,
-      throttlingRateLimit: 10000.0,
-      cachingEnabled: false,
-      cacheTtl: Duration.seconds(300),
-      cacheDataEncrypted: false,
       accessLogDestination: new apigateway.LogGroupLogDestination(logGroup),
-      accessLogFormat: apigateway.AccessLogFormat.custom(
-        "requestId: $context.requestId, ip: $context.identity.sourceIp, " +
-          "caller: $context.identity.caller, user: $context.identity.user, " +
-          "requestTime: $context.requestTime, httpMethod: $context.httpMethod, " +
-          "resourcePath: $context.resourcePath, status: $context.status, " +
-          "protocol: $context.protocol, responseLength: $context.responseLength"
-      ),
     },
     defaultCorsPreflightOptions: {
       allowOrigins: apigateway.Cors.ALL_ORIGINS,
@@ -161,156 +101,148 @@ export function createApiComponents(props: CreateApiComponentsProps) {
   const environment = {
     NODE_OPTIONS: "--enable-source-maps",
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
-    STAGE: stage,
-    MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
-    MLR_FORM_BUCKET: mlrFormBucket.bucketName,
-    NAAAR_FORM_BUCKET: naaarFormBucket.bucketName,
+    stage,
+    WP_FORM_BUCKET: wpFormBucket.bucketName,
+    SAR_FORM_BUCKET: sarFormBucket.bucketName,
+    ABCD_FORM_BUCKET: abcdFormBucket.bucketName,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
+  const additionalPolicies = [
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["s3:GetObject", "s3:ListBucket", "s3:PutObject"],
+      resources: [
+        `${wpFormBucket.bucketArn}/formTemplates/*`,
+        wpFormBucket.bucketArn,
+        `${wpFormBucket.bucketArn}/formTemplates/*`,
+        `${wpFormBucket.bucketArn}/fieldData/*`,
+        sarFormBucket.bucketArn,
+        `${sarFormBucket.bucketArn}/formTemplates/*`,
+        `${sarFormBucket.bucketArn}/fieldData/*`,
+        abcdFormBucket.bucketArn,
+        `${abcdFormBucket.bucketArn}/formTemplates/*`,
+        `${abcdFormBucket.bucketArn}/fieldData/*`,
+      ],
+    }),
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
+      resources: [
+        wpFormBucket.bucketArn,
+        sarFormBucket.bucketArn,
+        abcdFormBucket.bucketArn,
+        `${wpFormBucket.bucketArn}/fieldData/*`,
+        `${sarFormBucket.bucketArn}/fieldData/*`,
+        `${abcdFormBucket.bucketArn}/fieldData/*`,
+      ],
+    }),
+  ];
+
   const commonProps = {
-    brokerString,
     stackName: `${service}-${stage}`,
     api,
     environment,
+    additionalPolicies,
+    tables,
     isDev,
   };
 
-  const requestValidator = new apigateway.RequestValidator(scope, `Validator`, {
-    requestValidatorName: `${commonProps.stackName} | Validate request body and querystring parameters`,
-    restApi: api,
-    validateRequestParameters: true,
-    validateRequestBody: true,
-  });
-
-  const fetchBanner = new Lambda(scope, "fetchBanner", {
-    entry: "services/app-api/handlers/banners/fetch.ts",
-    handler: "fetchBanner",
-    path: "/banners",
-    method: "GET",
-    ...commonProps,
-  }).lambda;
-  bannerTable.grantReadData(fetchBanner);
-
-  const createBanner = new Lambda(scope, "createBanner", {
+  new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
     handler: "createBanner",
     path: "/banners",
     method: "POST",
     ...commonProps,
-  }).lambda;
-  bannerTable.grantWriteData(createBanner);
+  });
 
-  const deleteBanner = new Lambda(scope, "deleteBanner", {
+  new Lambda(scope, "deleteBanner", {
     entry: "services/app-api/handlers/banners/delete.ts",
     handler: "deleteBanner",
     path: "/banners/{bannerId}",
     method: "DELETE",
-    requestParameters: ["bannerId"],
-    requestValidator,
     ...commonProps,
-  }).lambda;
-  bannerTable.grantWriteData(deleteBanner);
+  });
 
-  const fetchReport = new Lambda(scope, "fetchReport", {
-    entry: "services/app-api/handlers/reports/fetch.ts",
-    handler: "fetchReport",
-    path: "/reports/{reportType}/{state}/{id}",
+  new Lambda(scope, "fetchBanner", {
+    entry: "services/app-api/handlers/banners/fetch.ts",
+    handler: "fetchBanner",
+    path: "/banners",
     method: "GET",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(fetchReport, "read");
-  grantReportsBucketAccess(fetchReport, "read");
+  });
 
-  const fetchReportsByState = new Lambda(scope, "fetchReportsByState", {
-    entry: "services/app-api/handlers/reports/fetch.ts",
-    handler: "fetchReportsByState",
-    path: "/reports/{reportType}/{state}",
-    method: "GET",
-    requestParameters: ["reportType", "state"],
-    requestValidator,
-    timeout: Duration.seconds(30),
-    ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(fetchReportsByState, "read");
-
-  const archiveReport = new Lambda(scope, "archiveReport", {
+  new Lambda(scope, "archiveReport", {
     entry: "services/app-api/handlers/reports/archive.ts",
     handler: "archiveReport",
     path: "/reports/archive/{reportType}/{state}/{id}",
     method: "PUT",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(archiveReport, "readwrite");
-  grantReportsBucketAccess(archiveReport, "readwrite");
+  });
 
-  const releaseReport = new Lambda(scope, "releaseReport", {
-    entry: "services/app-api/handlers/reports/release.ts",
-    handler: "releaseReport",
-    path: "/reports/release/{reportType}/{state}/{id}",
-    method: "PUT",
-    requestParameters: ["state", "id"],
-    requestValidator,
-    ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(releaseReport, "readwrite");
-  grantReportsBucketAccess(releaseReport, "readwrite");
-
-  const createReport = new Lambda(scope, "createReport", {
+  new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
     path: "/reports/{reportType}/{state}",
     method: "POST",
-    requestParameters: ["reportType", "state"],
-    requestValidator,
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["dynamodb:Query"],
-        resources: tables
-          .filter((table) => ["FormTemplateVersions"].includes(table.id))
-          .map((table) => `${table.arn}/index/HashIndex`),
-      }),
-    ],
     ...commonProps,
-  }).lambda;
-  formTemplateVersionsTable.grantReadWriteData(createReport);
-  grantReportsTableAccess(createReport, "write");
-  grantReportsBucketAccess(createReport, "readwrite");
+  });
 
-  const updateReport = new Lambda(scope, "updateReport", {
-    entry: "services/app-api/handlers/reports/update.ts",
-    handler: "updateReport",
+  new Lambda(scope, "fetchReport", {
+    entry: "services/app-api/handlers/reports/fetch.ts",
+    handler: "fetchReport",
     path: "/reports/{reportType}/{state}/{id}",
-    method: "PUT",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
-    memorySize: 2048,
-    timeout: Duration.seconds(30),
+    method: "GET",
     ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(updateReport, "readwrite");
-  grantReportsBucketAccess(updateReport, "readwrite");
+  });
 
-  const submitReport = new Lambda(scope, "submitReport", {
+  new Lambda(scope, "fetchReportsByState", {
+    entry: "services/app-api/handlers/reports/fetch.ts",
+    handler: "fetchReportsByState",
+    path: "/reports/{reportType}/{state}",
+    method: "GET",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "releaseReport", {
+    entry: "services/app-api/handlers/reports/release.ts",
+    handler: "releaseReport",
+    path: "/reports/release/{reportType}/{state}/{id}",
+    method: "PUT",
+    ...commonProps,
+  });
+
+  new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
     handler: "submitReport",
     path: "/reports/submit/{reportType}/{state}/{id}",
     method: "POST",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     memorySize: 2048,
     timeout: Duration.seconds(30),
     ...commonProps,
-  }).lambda;
-  grantReportsTableAccess(submitReport, "readwrite");
-  grantReportsBucketAccess(submitReport, "readwrite");
+  });
+
+  new Lambda(scope, "updateReport", {
+    entry: "services/app-api/handlers/reports/update.ts",
+    handler: "updateReport",
+    path: "/reports/{reportType}/{state}/{id}",
+    method: "PUT",
+    memorySize: 2048,
+    timeout: Duration.seconds(30),
+    ...commonProps,
+  });
+
+  new Lambda(scope, "approveReport", {
+    entry: "services/app-api/handlers/reports/approve.ts",
+    handler: "approveReport",
+    path: "/reports/approve/{reportType}/{state}/{id}",
+    method: "PUT",
+    memorySize: 2048,
+    timeout: Duration.seconds(30),
+    ...commonProps,
+  });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
@@ -323,54 +255,12 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
     environment: {
-      topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
     },
-    tables: tables.filter((table) =>
-      ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+    tables: tables.filter(
+      (table) => table.node.id === "SarReports" || table.node.id === "WpReports"
     ),
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:BatchWriteItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:UpdateItem",
-        ],
-        resources: tables.map((table) => table.arn),
-      }),
-
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:DescribeStream",
-          "dynamodb:GetRecords",
-          "dynamodb:GetShardIterator",
-          "dynamodb:ListShards",
-          "dynamodb:ListStreams",
-        ],
-        resources: tables.map((table) => table.streamArn).filter(isDefined),
-      }),
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["dynamodb:Query", "dynamodb:Scan"],
-        resources: tables.map((table) => `${table.arn}/index/*`),
-      }),
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "cognito-idp:AdminGetUser",
-          "ses:SendEmail",
-          "ses:SendRawEmail",
-          "lambda:InvokeFunction",
-        ],
-        resources: ["*"],
-      }),
-    ],
   });
 
   const bucketLambdaProps = {
@@ -380,75 +270,79 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
     securityGroups: [kafkaSecurityGroup],
     ...commonProps,
-    environment: {
-      topicNamespace: isDev ? `--${project}--${stage}--` : "",
-      ...commonProps.environment,
-    },
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["s3:GetObject"],
-        resources: [
-          `${naaarFormBucket.bucketArn}/*`,
-          `${mlrFormBucket.bucketArn}/*`,
-          `${mcparFormBucket.bucketArn}/*`,
-        ],
-      }),
-    ],
+    environment: { ...commonProps.environment, topicNamespace: "" },
   };
 
-  const postNaaarBucketDataLambda = new Lambda(scope, "postNaaarBucketData", {
+  const postWpBucketDataLambda = new Lambda(scope, "postWpBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
   }).lambda;
 
-  naaarFormBucket.addEventNotification(
+  wpFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postNaaarBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postWpBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
-  naaarFormBucket.addEventNotification(
+  wpFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postNaaarBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postWpBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
-  const postMlrBucketDataLambda = new Lambda(scope, "postMlrBucketData", {
+  const postSarBucketDataLambda = new Lambda(scope, "postSarBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
   }).lambda;
 
-  mlrFormBucket.addEventNotification(
+  sarFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postMlrBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postSarBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
-  mlrFormBucket.addEventNotification(
+  sarFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postMlrBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postSarBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
-  const postMcparBucketDataLambda = new Lambda(scope, "postMcparBucketData", {
+  const postAbcdBucketDataLambda = new Lambda(scope, "postAbcdBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
   }).lambda;
 
-  mcparFormBucket.addEventNotification(
+  abcdFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postMcparBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postAbcdBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
-  mcparFormBucket.addEventNotification(
+  abcdFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postMcparBucketDataLambda),
-    { suffix: ".json" }
+    new s3notifications.LambdaDestination(postAbcdBucketDataLambda),
+    {
+      prefix: "fieldData/",
+      suffix: ".json",
+    }
   );
 
   if (!isLocalStack) {
@@ -456,7 +350,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       scope,
       "ApiWafConstruct",
       {
-        name: `${project}-${stage}-${service}`,
+        name: `${project}-${service}-${stage}-webacl-waf`,
         blockRequestBodyOver8KB: false,
       },
       "REGIONAL"
