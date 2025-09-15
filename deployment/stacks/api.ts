@@ -1,4 +1,3 @@
-/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
@@ -96,6 +95,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+    retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
   });
 
   const api = new apigateway.RestApi(scope, "ApiGatewayRestApi", {
@@ -107,7 +107,20 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       tracingEnabled: true,
       loggingLevel: apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
+      metricsEnabled: false,
+      throttlingBurstLimit: 5000,
+      throttlingRateLimit: 10000.0,
+      cachingEnabled: false,
+      cacheTtl: Duration.seconds(300),
+      cacheDataEncrypted: false,
       accessLogDestination: new apigateway.LogGroupLogDestination(logGroup),
+      accessLogFormat: apigateway.AccessLogFormat.custom(
+        "requestId: $context.requestId, ip: $context.identity.sourceIp, " +
+          "caller: $context.identity.caller, user: $context.identity.user, " +
+          "requestTime: $context.requestTime, httpMethod: $context.httpMethod, " +
+          "resourcePath: $context.resourcePath, status: $context.status, " +
+          "protocol: $context.protocol, responseLength: $context.responseLength"
+      ),
     },
     defaultCorsPreflightOptions: {
       allowOrigins: apigateway.Cors.ALL_ORIGINS,
@@ -135,53 +148,28 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     NODE_OPTIONS: "--enable-source-maps",
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
-    WP_FORM_BUCKET: mcparFormBucket.bucketName,
-    SAR_FORM_BUCKET: mlrFormBucket.bucketName,
-    ABCD_FORM_BUCKET: naaarFormBucket.bucketName,
+    MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
+    MLR_FORM_BUCKET: mlrFormBucket.bucketName,
+    NAAAR_BUCKET: naaarFormBucket.bucketName,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
-  const additionalPolicies = [
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["s3:GetObject", "s3:ListBucket", "s3:PutObject"],
-      resources: [
-        `${mcparFormBucket.bucketArn}/formTemplates/*`,
-        mcparFormBucket.bucketArn,
-        `${mcparFormBucket.bucketArn}/formTemplates/*`,
-        `${mcparFormBucket.bucketArn}/fieldData/*`,
-        mlrFormBucket.bucketArn,
-        `${mlrFormBucket.bucketArn}/formTemplates/*`,
-        `${mlrFormBucket.bucketArn}/fieldData/*`,
-        naaarFormBucket.bucketArn,
-        `${naaarFormBucket.bucketArn}/formTemplates/*`,
-        `${naaarFormBucket.bucketArn}/fieldData/*`,
-      ],
-    }),
-    new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
-      resources: [
-        mcparFormBucket.bucketArn,
-        mlrFormBucket.bucketArn,
-        naaarFormBucket.bucketArn,
-        `${mcparFormBucket.bucketArn}/fieldData/*`,
-        `${mlrFormBucket.bucketArn}/fieldData/*`,
-        `${naaarFormBucket.bucketArn}/fieldData/*`,
-      ],
-    }),
-  ];
-
   const commonProps = {
     stackName: `${service}-${stage}`,
     api,
     environment,
-    additionalPolicies,
-    tables,
     isDev,
   };
+
+  new Lambda(scope, "fetchBanner", {
+    entry: "services/app-api/handlers/banners/fetch.ts",
+    handler: "fetchBanner",
+    path: "/banners",
+    method: "GET",
+    ...commonProps,
+  });
 
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
@@ -196,14 +184,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     handler: "deleteBanner",
     path: "/banners/{bannerId}",
     method: "DELETE",
-    ...commonProps,
-  });
-
-  new Lambda(scope, "fetchBanner", {
-    entry: "services/app-api/handlers/banners/fetch.ts",
-    handler: "fetchBanner",
-    path: "/banners",
-    method: "GET",
     ...commonProps,
   });
 
