@@ -29,9 +29,9 @@ interface CreateApiComponentsProps {
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   tables: DynamoDBTable[];
   brokerString: string;
-  wpFormBucket: s3.IBucket;
-  sarFormBucket: s3.IBucket;
-  abcdFormBucket: s3.IBucket;
+  mcparFormBucket: s3.IBucket;
+  mlrFormBucket: s3.IBucket;
+  naaarFormBucket: s3.IBucket;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -44,9 +44,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     kafkaAuthorizedSubnets,
     tables,
     brokerString,
-    wpFormBucket,
-    sarFormBucket,
-    abcdFormBucket,
+    mcparFormBucket,
+    mlrFormBucket,
+    naaarFormBucket,
   } = props;
 
   const service = "app-api";
@@ -103,9 +103,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     NODE_OPTIONS: "--enable-source-maps",
     BOOTSTRAP_BROKER_STRING_TLS: brokerString,
     stage,
-    WP_FORM_BUCKET: wpFormBucket.bucketName,
-    SAR_FORM_BUCKET: sarFormBucket.bucketName,
-    ABCD_FORM_BUCKET: abcdFormBucket.bucketName,
+    WP_FORM_BUCKET: mcparFormBucket.bucketName,
+    SAR_FORM_BUCKET: mlrFormBucket.bucketName,
+    ABCD_FORM_BUCKET: naaarFormBucket.bucketName,
     ...Object.fromEntries(
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
@@ -117,28 +117,28 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       effect: iam.Effect.ALLOW,
       actions: ["s3:GetObject", "s3:ListBucket", "s3:PutObject"],
       resources: [
-        `${wpFormBucket.bucketArn}/formTemplates/*`,
-        wpFormBucket.bucketArn,
-        `${wpFormBucket.bucketArn}/formTemplates/*`,
-        `${wpFormBucket.bucketArn}/fieldData/*`,
-        sarFormBucket.bucketArn,
-        `${sarFormBucket.bucketArn}/formTemplates/*`,
-        `${sarFormBucket.bucketArn}/fieldData/*`,
-        abcdFormBucket.bucketArn,
-        `${abcdFormBucket.bucketArn}/formTemplates/*`,
-        `${abcdFormBucket.bucketArn}/fieldData/*`,
+        `${mcparFormBucket.bucketArn}/formTemplates/*`,
+        mcparFormBucket.bucketArn,
+        `${mcparFormBucket.bucketArn}/formTemplates/*`,
+        `${mcparFormBucket.bucketArn}/fieldData/*`,
+        mlrFormBucket.bucketArn,
+        `${mlrFormBucket.bucketArn}/formTemplates/*`,
+        `${mlrFormBucket.bucketArn}/fieldData/*`,
+        naaarFormBucket.bucketArn,
+        `${naaarFormBucket.bucketArn}/formTemplates/*`,
+        `${naaarFormBucket.bucketArn}/fieldData/*`,
       ],
     }),
     new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: ["s3:GetObject", "s3:PutObject", "s3:ListBucket"],
       resources: [
-        wpFormBucket.bucketArn,
-        sarFormBucket.bucketArn,
-        abcdFormBucket.bucketArn,
-        `${wpFormBucket.bucketArn}/fieldData/*`,
-        `${sarFormBucket.bucketArn}/fieldData/*`,
-        `${abcdFormBucket.bucketArn}/fieldData/*`,
+        mcparFormBucket.bucketArn,
+        mlrFormBucket.bucketArn,
+        naaarFormBucket.bucketArn,
+        `${mcparFormBucket.bucketArn}/fieldData/*`,
+        `${mlrFormBucket.bucketArn}/fieldData/*`,
+        `${naaarFormBucket.bucketArn}/fieldData/*`,
       ],
     }),
   ];
@@ -281,7 +281,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...bucketLambdaProps,
   }).lambda;
 
-  wpFormBucket.addEventNotification(
+  mcparFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
     new s3notifications.LambdaDestination(postWpBucketDataLambda),
     {
@@ -290,7 +290,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  wpFormBucket.addEventNotification(
+  mcparFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
     new s3notifications.LambdaDestination(postWpBucketDataLambda),
     {
@@ -305,7 +305,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...bucketLambdaProps,
   }).lambda;
 
-  sarFormBucket.addEventNotification(
+  mlrFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
     new s3notifications.LambdaDestination(postSarBucketDataLambda),
     {
@@ -314,7 +314,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  sarFormBucket.addEventNotification(
+  mlrFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
     new s3notifications.LambdaDestination(postSarBucketDataLambda),
     {
@@ -329,7 +329,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ...bucketLambdaProps,
   }).lambda;
 
-  abcdFormBucket.addEventNotification(
+  naaarFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
     new s3notifications.LambdaDestination(postAbcdBucketDataLambda),
     {
@@ -338,7 +338,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  abcdFormBucket.addEventNotification(
+  naaarFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
     new s3notifications.LambdaDestination(postAbcdBucketDataLambda),
     {

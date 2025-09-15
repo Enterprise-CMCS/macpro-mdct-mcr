@@ -59,7 +59,6 @@ export class LambdaDynamoEventSource extends Construct {
     });
 
     for (const ddbTable of tables) {
-      ddbTable.table.grantStreamRead(this.lambda);
       new lambda.CfnEventSourceMapping(
         scope,
         `${id}${ddbTable.node.id}DynamoDBStreamEventSourceMapping`,
