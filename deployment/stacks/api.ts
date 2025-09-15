@@ -62,6 +62,38 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
+  const bannerTable = tables.find((t) => t.node.id === "Banner")!.table;
+  const formTemplateVersionsTable = tables.find(
+    (t) => t.node.id === "FormTemplateVersions"
+  )!.table;
+  const mcparReportsTable = tables.find(
+    (t) => t.node.id === "McparReports"
+  )!.table;
+  const mlrReportsTable = tables.find((t) => t.node.id === "MlrReports")!.table;
+  const naaarReportsTable = tables.find(
+    (t) => t.node.id === "NaaarReports"
+  )!.table;
+
+  type Access = "read" | "write" | "readwrite";
+
+  function grantReportsTableAccess(grantee: iam.IGrantable, access: Access) {
+    const tables = [mcparReportsTable, mlrReportsTable, naaarReportsTable];
+    for (const table of tables) {
+      if (access === "read") table.grantReadData(grantee);
+      else if (access === "write") table.grantWriteData(grantee);
+      else table.grantReadWriteData(grantee);
+    }
+  }
+
+  function grantReportsBucketAccess(grantee: iam.IGrantable, access: Access) {
+    const buckets = [mcparFormBucket, mlrFormBucket, naaarFormBucket];
+    for (const bucket of buckets) {
+      if (access === "read") bucket.grantRead(grantee);
+      else if (access === "write") bucket.grantWrite(grantee);
+      else bucket.grantReadWrite(grantee);
+    }
+  }
+
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
   });
@@ -107,7 +139,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     SAR_FORM_BUCKET: mlrFormBucket.bucketName,
     ABCD_FORM_BUCKET: naaarFormBucket.bucketName,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
