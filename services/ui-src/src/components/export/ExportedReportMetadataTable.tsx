@@ -10,6 +10,7 @@ export const ExportedReportMetadataTable = ({
   verbiage,
 }: Props) => {
   const { report } = useStore();
+
   return (
     <Table
       data-testid="exportedReportMetadataTable"
@@ -39,6 +40,9 @@ export const headerRowLabels = (
     case ReportType.NAAAR:
       return [
         verbiage.metadataTableHeaders.submissionName,
+        verbiage.metadataTableHeaders.planType,
+        verbiage.metadataTableHeaders.reportingPeriodStartDate,
+        verbiage.metadataTableHeaders.reportingPeriodEndDate,
         verbiage.metadataTableHeaders.lastEdited,
         verbiage.metadataTableHeaders.editedBy,
         verbiage.metadataTableHeaders.status,
@@ -73,6 +77,11 @@ export const bodyRowContent = (
       return [
         [
           report?.programName ?? "",
+          report?.["planTypeIncludedInProgram-otherText"]
+            ? report?.["planTypeIncludedInProgram-otherText"]
+            : report?.planTypeIncludedInProgram?.[0].value ?? "",
+          convertDateUtcToEt(report?.reportingPeriodStartDate),
+          convertDateUtcToEt(report?.reportingPeriodEndDate),
           convertDateUtcToEt(report?.lastAltered),
           report?.lastAlteredBy,
           report?.status,
