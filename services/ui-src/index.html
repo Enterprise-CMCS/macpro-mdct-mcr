@@ -11,14 +11,13 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
     <!-- Tealium Analytics Tag Manager -->
-      <!-- Tealium Analytics Tag Manager -->
-  <script>
-    window.utag_cfg_ovrd = { noview: true };
-    var tealiumEnvMap = {
-      "mdctmcr.cms.gov": "prod",
-      "mdctmcrval.cms.gov": "qa",
-    };
-    var tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
+    <script>
+      window.utag_cfg_ovrd = { noview: true };
+      const tealiumEnvMap = {
+        "mdctmcr.cms.gov": "prod",
+        "mdctmcrval.cms.gov": "qa",
+      };
+      const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
       // Load utag.sync.js
       (function () {
         const script = document.createElement("script");
@@ -26,14 +25,14 @@
         script.src = `https://tealium-tags.cms.gov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
         document.head.appendChild(script);
       })();
-  </script>
+    </script>
   </head>
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-      <!-- Tealium Analytics Tag Manager -->
-  <script>
-    // Load utag.js
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      // Load utag.js
       (function (a, b, c, d) {
         a = `https://tealium-tags.cms.gov/cms-mdctmcr/${tealiumEnv}/utag.js`;
         b = document;
@@ -45,7 +44,7 @@
         a = b.getElementsByTagName(c)[0];
         a.parentNode.insertBefore(d, a);
       })();
-  </script>
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>
