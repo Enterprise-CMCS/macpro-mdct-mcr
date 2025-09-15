@@ -28,7 +28,6 @@ interface CreateApiComponentsProps {
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
   tables: DynamoDBTable[];
-  tables: DynamoDBTable[];
   brokerString: string;
   wpFormBucket: s3.IBucket;
   sarFormBucket: s3.IBucket;
