@@ -185,7 +185,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/banners/{bannerId}",
     method: "DELETE",
     ...commonProps,
-  });
+  }).lambda;
+  bannerTable.grantWriteData(deleteBanner);
 
   new Lambda(scope, "archiveReport", {
     entry: "services/app-api/handlers/reports/archive.ts",
