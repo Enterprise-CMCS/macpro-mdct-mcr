@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_iam as iam,
@@ -9,11 +10,13 @@ import {
 } from "aws-cdk-lib";
 import { createHash } from "crypto";
 import { DynamoDBTable } from "./dynamodb-table";
+import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   stackName: string;
+  tables: DynamoDBTable[];
   tables: DynamoDBTable[];
   isDev: boolean;
 }

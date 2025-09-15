@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
@@ -26,6 +27,7 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
+  tables: DynamoDBTable[];
   tables: DynamoDBTable[];
   brokerString: string;
   wpFormBucket: s3.IBucket;
@@ -106,6 +108,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     SAR_FORM_BUCKET: sarFormBucket.bucketName,
     ABCD_FORM_BUCKET: abcdFormBucket.bucketName,
     ...Object.fromEntries(
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
       tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };

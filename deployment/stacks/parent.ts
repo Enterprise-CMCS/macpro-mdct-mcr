@@ -1,6 +1,8 @@
+/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   Aws,
+  aws_dynamodb as dynamodb,
   aws_ec2 as ec2,
   aws_s3 as s3,
   CfnOutput,
@@ -66,16 +68,16 @@ export class ParentStack extends Stack {
       naaarFormBucket,
     });
 
-    /*
-     * For local dev, the LocalStack container will host the database and API.
-     * The UI will self-host, so we don't need to tell CDK anything about it.
-     * Also, we skip authorization locally. So we don't set up Cognito,
-     * or configure the API to interact with it. Therefore, we're done.
-     */
-    if (isLocalStack) return;
+    //     /*
+    //      * For local dev, the LocalStack container will host the database and API.
+    //      * The UI will self-host, so we don't need to tell CDK anything about it.
+    //      * Also, we skip authorization locally. So we don't set up Cognito,
+    //      * or configure the API to interact with it. Therefore, we're done.
+    //      */
+    //     if (isLocalStack) return;
 
-    const { applicationEndpointUrl, distribution, uiBucket } =
-      createUiComponents({ ...commonProps, loggingBucket });
+    //     const { applicationEndpointUrl, distribution, uiBucket } =
+    //       createUiComponents({ ...commonProps, loggingBucket });
 
     const { userPoolDomainName, identityPoolId, userPoolId, userPoolClientId } =
       createUiAuthComponents({
@@ -84,22 +86,22 @@ export class ParentStack extends Stack {
         restApiId,
       });
 
-    deployFrontend({
-      ...commonProps,
-      uiBucket,
-      distribution,
-      apiGatewayRestApiUrl,
-      applicationEndpointUrl:
-        secureCloudfrontDomainName ?? applicationEndpointUrl,
-      identityPoolId,
-      userPoolId,
-      userPoolClientId,
-      userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
-    });
+    //     deployFrontend({
+    //       ...commonProps,
+    //       uiBucket,
+    //       distribution,
+    //       apiGatewayRestApiUrl,
+    //       applicationEndpointUrl:
+    //         secureCloudfrontDomainName ?? applicationEndpointUrl,
+    //       identityPoolId,
+    //       userPoolId,
+    //       userPoolClientId,
+    //       userPoolClientDomain: `${userPoolDomainName}.auth.${Aws.REGION}.amazoncognito.com`,
+    //     });
 
-    new CfnOutput(this, "CloudFrontUrl", {
-      value: applicationEndpointUrl,
-    });
+    //     new CfnOutput(this, "CloudFrontUrl", {
+    //       value: applicationEndpointUrl,
+    //     });
 
     createTopicsComponents({
       ...commonProps,
