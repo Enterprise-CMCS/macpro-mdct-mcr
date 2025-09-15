@@ -88,6 +88,7 @@ export function deployFrontend(props: DeployFrontendProps) {
         stage,
         userPoolId,
         userPoolClientId,
+        userPoolClientDomain,
         timestamp: new Date().toISOString(),
         launchDarklyClient,
         redirectSignout,
