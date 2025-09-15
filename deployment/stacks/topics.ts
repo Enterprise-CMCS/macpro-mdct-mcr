@@ -75,7 +75,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       ...commonProps,
     });
 
-    deleteTopicsLambda.node.addDependency(createTopicsLambda);
+    deleteTopicsLambda.lambda.node.addDependency(createTopicsLambda);
 
     new CfnOutput(scope, "DeleteTopicsFunctionName", {
       value: deleteTopicsLambda.lambda.functionName,
@@ -122,12 +122,9 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
           `InvokeCreateTopicsFunction-${stage}`
         ),
       },
-      policy: cr.AwsCustomResourcePolicy.fromStatements([
-        new iam.PolicyStatement({
-          actions: ["lambda:InvokeFunction"],
-          resources: [createTopicsLambda.lambda.functionArn],
-        }),
-      ]),
+      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+        resources: [createTopicsLambda.lambda.functionArn],
+      }),
       resourceType: "Custom::InvokeCreateTopicsFunction",
     }
   );
