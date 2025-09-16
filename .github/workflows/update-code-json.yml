@@ -1,9 +1,11 @@
 # This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 name: Update Code.json
+
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 0 1 * *" # monthly on day 1
+    # monthly on day 1
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,20 +13,21 @@ permissions:
 
 jobs:
   update-code-json:
+    name: Update code.json
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.2.2
+      - name: Checkout repository (full history)
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4.3.0
+        uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version-file: ".nvmrc"
 
       - name: Setup Go
-        uses: actions/setup-go@v5.4.0
+        uses: actions/setup-go@v6.0.0
         with:
           go-version: "1.22"
 
@@ -34,5 +37,5 @@ jobs:
       - name: Update code.json
         uses: DSACMS/automated-codejson-generator@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: "main"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

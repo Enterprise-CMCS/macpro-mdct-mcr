@@ -10,55 +10,63 @@ on:
         required: true
 
 concurrency:
+  # Same group as deploy.yml to prevent simultaneous deploy/destroy
   group: ${{ inputs.environment || github.event.ref }}
 
 permissions:
-  id-token: write
-  contents: read
   actions: read
+  contents: read
+  id-token: write
 
 jobs:
+  setup:
+    name: Checkout repo
+    if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
+    uses: ./.github/workflows/checkout-repo.yml
+
   destroy:
-    if: |
-      (
-        github.event.ref_type == 'branch' &&
-        (!startsWith(github.event.ref, 'skipci')) &&
-        (!startsWith(github.event.ref, 'code-json-'))
-      )
+    name: Destroy
+    if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
+    needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
-      - name: set branch_name
-        run: |
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
-          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-      - name: set branch specific variable names
+
+      - name: Set branch-specific variable names
         run: ./.github/buildVars.sh set_names
-      - name: set variable values
+
+      - name: Set branch-specific variable values
         run: ./.github/buildVars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
+          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+
       - name: Destroy
-        run: ./run destroy --stage $branch_name --verify false
+        run: ./run destroy --stage $BRANCH_NAME --verify false
+        env:
+          BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
 
   notify_on_destroy_failure:
+    name: Destroy failure notification
+    if: failure()
+    needs: destroy
     runs-on: ubuntu-latest
-    needs:
-      - destroy
-    if: ${{ failure() }}
     steps:
-      - name: Slack Notification
+      - name: Slack notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: A destroy action has failed on ${{ github.repository }}."
           MSG_MINIMAL: true
+          SLACK_TITLE: ":boom: A destroy action has failed on ${{ github.repository }}."
           SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
