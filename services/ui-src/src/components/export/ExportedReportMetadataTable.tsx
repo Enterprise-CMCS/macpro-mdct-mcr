@@ -1,7 +1,7 @@
 // components
 import { Table } from "components";
 // types
-import { ReportShape, ReportType } from "types";
+import { AnyObject, ReportShape, ReportType } from "types";
 // utils
 import { assertExhaustive, convertDateUtcToEt, useStore } from "utils";
 
@@ -26,32 +26,32 @@ export const ExportedReportMetadataTable = ({
 
 export const headerRowLabels = (
   reportType: ReportType,
-  verbiage: any
+  { metadataTableHeaders: verbiage }: AnyObject
 ): string[] => {
   switch (reportType) {
     case ReportType.MCPAR:
       return [
-        verbiage.metadataTableHeaders.dueDate,
-        verbiage.metadataTableHeaders.lastEdited,
-        verbiage.metadataTableHeaders.editedBy,
-        verbiage.metadataTableHeaders.status,
+        verbiage.dueDate,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
       ];
     case ReportType.MLR:
       return [
-        verbiage.metadataTableHeaders.submissionName,
-        verbiage.metadataTableHeaders.lastEdited,
-        verbiage.metadataTableHeaders.editedBy,
-        verbiage.metadataTableHeaders.status,
+        verbiage.submissionName,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
       ];
     case ReportType.NAAAR:
       return [
-        verbiage.metadataTableHeaders.submissionName,
-        verbiage.metadataTableHeaders.planType,
-        verbiage.metadataTableHeaders.reportingPeriodStartDate,
-        verbiage.metadataTableHeaders.reportingPeriodEndDate,
-        verbiage.metadataTableHeaders.lastEdited,
-        verbiage.metadataTableHeaders.editedBy,
-        verbiage.metadataTableHeaders.status,
+        verbiage.submissionName,
+        verbiage.planType,
+        verbiage.reportingPeriodStartDate,
+        verbiage.reportingPeriodEndDate,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
       ];
     default:
       assertExhaustive(reportType);
@@ -90,15 +90,15 @@ export const bodyRowContent = (
     case ReportType.NAAAR:
       return [
         [
-          report?.programName ?? "",
-          report?.["planTypeIncludedInProgram-otherText"] ??
-            report?.planTypeIncludedInProgram?.[0].value ??
+          report.programName ?? "",
+          report["planTypeIncludedInProgram-otherText"] ??
+            report.planTypeIncludedInProgram?.[0].value ??
             "",
-          convertDateUtcToEt(report?.reportingPeriodStartDate),
-          convertDateUtcToEt(report?.reportingPeriodEndDate),
-          convertDateUtcToEt(report?.lastAltered),
-          report?.lastAlteredBy,
-          report?.status,
+          convertDateUtcToEt(report.reportingPeriodStartDate),
+          convertDateUtcToEt(report.reportingPeriodEndDate),
+          convertDateUtcToEt(report.lastAltered),
+          report.lastAlteredBy,
+          report.status,
         ],
       ];
     default:
