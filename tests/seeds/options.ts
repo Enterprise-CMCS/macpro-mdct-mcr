@@ -12,6 +12,7 @@ import {
   newMcparPCCM,
   newMlr,
   newNaaar,
+  newNaaarNewProgram,
 } from "./fixtures";
 import { deleteApi, getApi, login, postApi, putApi } from "./helpers";
 import { AwsHeaders, SeedBannerShape, SeedReportShape } from "./types";
@@ -47,6 +48,7 @@ export const createReport = async (
     "MCPAR-PCCM": newMcparPCCM,
     MLR: newMlr,
     NAAAR: newNaaar,
+    "NAAAR-newProgram": newNaaarNewProgram,
   } as { [key: string]: Function };
   const data = newReport[reportType](stateName, state);
   const baseReportType = reportType.split("-")[0];

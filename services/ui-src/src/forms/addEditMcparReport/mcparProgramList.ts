@@ -1,4 +1,4 @@
-import { ProgramList } from "types";
+import { ProgramList } from "../../types";
 
 // ESP: program list (MCPAR)
 export const mcparProgramList: ProgramList = {
