@@ -91,8 +91,9 @@ export const bodyRowContent = (
       return [
         [
           report?.programName ?? "",
-          report?.["planTypeIncludedInProgram-otherText"]
-            ?? report?.planTypeIncludedInProgram?.[0].value ?? "",
+          report?.["planTypeIncludedInProgram-otherText"] ??
+            report?.planTypeIncludedInProgram?.[0].value ??
+            "",
           convertDateUtcToEt(report?.reportingPeriodStartDate),
           convertDateUtcToEt(report?.reportingPeriodEndDate),
           convertDateUtcToEt(report?.lastAltered),
