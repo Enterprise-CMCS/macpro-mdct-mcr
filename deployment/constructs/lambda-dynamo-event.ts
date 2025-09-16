@@ -8,6 +8,8 @@ import {
   RemovalPolicy,
 } from "aws-cdk-lib";
 import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
+import { isDefined } from "../utils/misc";
+import { createHash } from "crypto";
 
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
@@ -25,8 +27,6 @@ export class LambdaDynamoEventSource extends Construct {
 
     const {
       additionalPolicies = [],
-      environment = {},
-      handler,
       memorySize = 1024,
       tables,
       stackName,
@@ -54,31 +54,46 @@ export class LambdaDynamoEventSource extends Construct {
               ],
               resources: ["arn:aws:logs:*:*:*"],
             }),
+            new iam.PolicyStatement({
+              effect: iam.Effect.ALLOW,
+              actions: [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:ListStreams",
+              ],
+              resources: tables
+                .map((table) => table.streamArn)
+                .filter(isDefined),
+            }),
             ...additionalPolicies,
           ],
         }),
       },
     });
 
+    const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
+      logGroupName: `/aws/lambda/${stackName}-${id}`,
+      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
+      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
+    });
+
     this.lambda = new lambda_nodejs.NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      handler,
       runtime: lambda.Runtime.NODEJS_20_X,
       timeout,
       memorySize,
       role,
       bundling: {
+        assetHash: createHash("sha256")
+          .update(`${Date.now()}-${id}`)
+          .digest("hex"),
         minify: true,
         sourceMap: true,
+        nodeModules: ["kafkajs"],
       },
-      environment,
+      logGroup,
       ...restProps,
-    });
-
-    new logs.LogGroup(this, `${id}LogGroup`, {
-      logGroupName: `/aws/lambda/${this.lambda.functionName}`,
-      removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
-      retention: logs.RetentionDays.THREE_YEARS, // exceeds the 30 month requirement
     });
 
     for (let table of tables) {

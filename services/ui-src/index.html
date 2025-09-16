@@ -18,20 +18,33 @@
         "mdctmcrval.cms.gov": "qa",
       };
       const tealiumEnv = tealiumEnvMap[window.location.hostname] || "dev";
-      const tealiumDomainMap = {
-        prod: "tags.tiqcdn.com",
-        qa: "tags.tiqcdn.com",
-        dev: "tealium-tags.cms.gov",
-      };
-      const tealiumDomain = tealiumDomainMap[tealiumEnv];
-      const tealiumPath = `https://${tealiumDomain}/cms-mdctmcr/${tealiumEnv}`;
-      document.write(`<script src="${tealiumPath}/utag.js" async><\/script>`);
-      document.write(`<script src="${tealiumPath}/utag.sync.js"><\/script>`);
+      // Load utag.sync.js
+      (function () {
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://tealium-tags.cms.gov/cms-mdctmcr/${tealiumEnv}/utag.sync.js`;
+        document.head.appendChild(script);
+      })();
     </script>
   </head>
 
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Tealium Analytics Tag Manager -->
+    <script>
+      // Load utag.js
+      (function (a, b, c, d) {
+        a = `https://tealium-tags.cms.gov/cms-mdctmcr/${tealiumEnv}/utag.js`;
+        b = document;
+        c = "script";
+        d = b.createElement(c);
+        d.src = a;
+        d.type = "text/javascript";
+        d.async = true;
+        a = b.getElementsByTagName(c)[0];
+        a.parentNode.insertBefore(d, a);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

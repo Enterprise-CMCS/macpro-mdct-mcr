@@ -1,4 +1,5 @@
 #!/bin/bash
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 
 set -e
 
@@ -11,13 +12,10 @@ reserved_words=(
     cognito
 )
 
-join_by() {
-    local IFS='|'
-    echo "$*"
-}
+join_by() { local IFS='|'; echo "$*"; }
 
 #creates glob match to check for reserved words used in branch names which would trigger failures
-glob=$(join_by $(for i in ${reserved_words[@]}; do echo "^$i-|-$i$|-$i-|^$i$"; done))
+glob=$(join_by $(for i in ${reserved_words[@]}; do echo "^$i-|-$i$|-$i-|^$i$"; done;))
 
 if [[ ! $local_branch =~ $valid_branch ]] || [[ $local_branch =~ $glob ]] || [[ ${#local_branch} -gt 64 ]]; then
     echo """
@@ -26,16 +24,9 @@ if [[ ! $local_branch =~ $valid_branch ]] || [[ $local_branch =~ $glob ]] || [[ 
      ------------------------------------------------------------------------------------------------------------------------------
     Bad branch name detected; cannot continue.  $local_branch
 
-    The Serverless Application Framework has a concept of stages that facilitate multiple deployments of the same service.
-    In this setup, the git branch name gets passed to Serverless to serve as the stage name.
-    The stage name (branch name in this case) is tacked onto the end of the service name by Serverless.
-    Therefore, the branch name must be a valid service name. Branch name must be all lower case with no spaces and no underscores.
-
-    From Serverless:
-        A service name should only contain alphanumeric (case sensitive) and hyphens. It should start with an alphabetic character and shouldnt exceed 64 characters.
-        For Github Actions support, please push your code to a new branch with a name that meets Serverless' service name requirements.
-        So, make a new branch with a name that begins with a letter and is made up of only letters, numbers, and hyphens... then delete this branch.
-        ------------------------------------------------------------------------------------------------------------------------------
+    To head off deployment issues where the branch name becomes part of AWS resource names: A branch name should only contain alphanumeric (case sensitive) and hyphens. It should start with an alphabetic character and shouldnt exceed 64 characters.
+    So, make a new branch with a name that begins with a letter and is made up of only letters, numbers, and hyphens... then delete this branch.
+    ------------------------------------------------------------------------------------------------------------------------------
     """
     exit 1
 fi
