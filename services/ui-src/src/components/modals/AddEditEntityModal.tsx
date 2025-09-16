@@ -129,6 +129,7 @@ export const AddEditEntityModal = ({
             ? modalDisclosure.onClose
             : writeEntity
         }
+        saveAndAddAnother={true}
         validateOnRender={false}
         dontReset={true}
       />

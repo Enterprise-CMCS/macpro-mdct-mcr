@@ -37,6 +37,7 @@ export const Form = forwardRef(function Form(
     onSubmit,
     onError,
     formData,
+    saveAndAddAnother,
     validateOnRender,
     autosave,
     dontReset,
@@ -102,12 +103,22 @@ export const Form = forwardRef(function Form(
     }
   }, [location?.pathname]);
 
+  const realSubmit = () => {
+    if (saveAndAddAnother) {
+      // Logic for saving and adding another entity
+      form.handleSubmit(onSubmit as any, onError || onErrorHandler);
+    } else {
+      // Logic for just saving the entity
+      form.handleSubmit(onSubmit as any, onError || onErrorHandler);
+    }
+  };
+
   return (
     <FormProvider {...form}>
       <form
         id={id}
         autoComplete="off"
-        onSubmit={form.handleSubmit(onSubmit as any, onError || onErrorHandler)}
+        onSubmit={realSubmit}
         name={name || id}
         ref={ref}
         {...props}
@@ -125,6 +136,7 @@ interface Props {
   onSubmit: Function;
   validateOnRender: boolean;
   dontReset: boolean;
+  saveAndAddAnother?: boolean;
   name?: string;
   onError?: SubmitErrorHandler<FieldValues>;
   formData?: AnyObject;
