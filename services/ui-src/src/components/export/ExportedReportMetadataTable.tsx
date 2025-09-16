@@ -81,10 +81,10 @@ export const bodyRowContent = (
     case ReportType.MLR:
       return [
         [
-          report?.programName ?? "",
-          convertDateUtcToEt(report?.lastAltered),
-          report?.lastAlteredBy,
-          report?.status,
+          report.programName,
+          convertDateUtcToEt(report.lastAltered),
+          report.lastAlteredBy,
+          report.status,
         ],
       ];
     case ReportType.NAAAR:
