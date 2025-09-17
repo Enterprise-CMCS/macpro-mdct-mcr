@@ -19,15 +19,9 @@ permissions:
   id-token: write
 
 jobs:
-  setup:
-    name: Checkout repo
-    if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
-    uses: ./.github/workflows/checkout-repo.yml
-
   destroy:
     name: Destroy
     if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
-    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -37,6 +31,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
+
+      - name: Set branch_name
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ inputs.environment || github.event.ref }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Set branch-specific variable names
         run: ./.github/buildVars.sh set_names
@@ -54,9 +53,7 @@ jobs:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Destroy
-        run: ./run destroy --stage $BRANCH_NAME --verify false
-        env:
-          BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
+        run: ./run destroy --stage $branch_name --verify false
 
   notify_on_destroy_failure:
     name: Destroy failure notification

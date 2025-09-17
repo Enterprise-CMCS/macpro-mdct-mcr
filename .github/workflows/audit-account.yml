@@ -15,10 +15,6 @@ permissions:
   id-token: write
 
 jobs:
-  setup:
-    name: Checkout repo
-    uses: ./.github/workflows/checkout-repo.yml
-
   audit:
     name: Audit
     runs-on: ubuntu-latest
@@ -30,6 +26,11 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
+
+      - name: Set branch_name
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Set branch-specific variable values
         run: ./.github/buildVars.sh set_values
@@ -58,9 +59,7 @@ jobs:
       - name: List all topics for project
         run: |
           # Executing the run command is required to assemble all the dependencies in the topics service
-          ./run list-topics --stage $BRANCH_NAME
-        env:
-          BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
+          ./run list-topics --stage $branch_name
 
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
