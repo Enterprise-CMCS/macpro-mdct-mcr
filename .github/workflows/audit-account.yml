@@ -3,7 +3,8 @@ name: Audit Account
 
 on:
   schedule:
-    - cron: "0 16 * * 1" # Every Monday at 1600 UTC
+    # Every Monday at 1600 UTC
+    - cron: "0 16 * * 1"
   workflow_dispatch:
 
 concurrency:
@@ -14,54 +15,74 @@ permissions:
   id-token: write
 
 jobs:
+  setup:
+    name: Checkout repo
+    uses: ./.github/workflows/checkout-repo.yml
+
   audit:
+    name: Audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
-      - name: set variable values
+
+      - name: Set branch-specific variable values
         run: ./.github/buildVars.sh set_values
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
-      - uses: actions/cache@v4
+
+      - name: Cache Node modules and Cypress folder
+        uses: actions/cache@v4
         with:
           path: |
             **/node_modules
             ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
-      - name: set path
+
+      - name: Set path
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-      - name: set branch_name
-        run: |
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
-          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
+
       - name: List all topics for project
         run: |
-          #Executing the run command is required to assemble all the dependencies in the topics service
-          ./run list-topics --stage $branch_name
+          # Executing the run command is required to assemble all the dependencies in the topics service
+          ./run list-topics --stage $BRANCH_NAME
+        env:
+          BRANCH_NAME: ${{ needs.setup.outputs.branch_name }}
+
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
+
       - name: List active resources created by CI pipeline
         run: pushd .github && ./auditAccount.sh ci_active resources.json
+
       - name: List orphaned resources created by CI pipeline
         run: pushd .github && ./auditAccount.sh ci_inactive resources.json
+
       - name: List resources created by Cloudformation but not from CI pipeline
         run: pushd .github && ./auditAccount.sh cf_other resources.json
+
       - name: List untagged resources
         run: pushd .github && ./auditAccount.sh untagged resources.json
+
       - name: List orphaned topics
         run: pushd .github && ./auditAccount.sh orphaned_topics
+
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
+
       - name: Assemble CSV files
         run: |
           #!/bin/bash
@@ -82,6 +103,7 @@ jobs:
           TOPICS="$(./auditAccount.sh orphaned_topics)"
           [[ $(jq -r 'length' <<< "${TOPICS}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${TOPICS}" > reports/orphaned_topics.csv || :
+
       - name: Upload reports
         uses: actions/upload-artifact@v4
         with:
