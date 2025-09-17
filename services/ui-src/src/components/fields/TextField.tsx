@@ -2,10 +2,10 @@ import { useState, useEffect, useContext } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
-import { InputChangeEvent, AnyObject, CustomHtmlElement } from "types";
+import { InputChangeEvent, CustomHtmlElement } from "types";
 // utils
 import {
   autosaveFieldData,
@@ -145,7 +145,7 @@ interface Props {
   label?: string;
   hint?: CustomHtmlElement[];
   placeholder?: string;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   nested?: boolean;
   validateOnRender?: boolean;
   autosave?: boolean;

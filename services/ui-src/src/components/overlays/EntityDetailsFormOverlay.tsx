@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 // components
-import { Box } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import {
   BackButton,
   Form,
@@ -9,7 +9,6 @@ import {
 } from "components";
 // types
 import {
-  AnyObject,
   EntityDetailsMultiformVerbiage,
   EntityShape,
   FormJson,
@@ -72,7 +71,9 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
-  sxOverride?: AnyObject;
+  sxOverride?: {
+    [key: string]: SystemStyleObject;
+  };
   table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;

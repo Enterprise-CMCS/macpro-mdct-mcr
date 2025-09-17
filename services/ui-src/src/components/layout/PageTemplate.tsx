@@ -1,8 +1,6 @@
 import React from "react";
 // components
-import { Box, Flex } from "@chakra-ui/react";
-// types
-import { AnyObject } from "types";
+import { Box, Flex, SystemStyleObject } from "@chakra-ui/react";
 
 export const PageTemplate = ({
   section = true,
@@ -25,7 +23,7 @@ export const PageTemplate = ({
 interface Props {
   type?: "standard" | "report";
   children: React.ReactNode;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   [key: string]: any;
 }
 

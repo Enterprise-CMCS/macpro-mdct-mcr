@@ -1,7 +1,6 @@
 // components
-import { Link } from "@chakra-ui/react";
+import { Link, SystemStyleObject } from "@chakra-ui/react";
 // types
-import { AnyObject } from "types";
 
 export const SkipNav = ({ id, href, text, sxOverride, ...props }: Props) => {
   return (
@@ -21,7 +20,7 @@ interface Props {
   id: string;
   href: string;
   text: string;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   [key: string]: any;
 }
 
