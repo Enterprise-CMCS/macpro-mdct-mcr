@@ -16,17 +16,26 @@ permissions:
   pull-requests: write
 
 jobs:
-  setup:
-    name: Checkout repo
-    uses: ./.github/workflows/checkout-repo.yml
-
   endpoint:
     name: Endpoint
-    needs: setup
     outputs:
       application_endpoint_url: ${{ steps.cloudfront-endpoint.outputs.application_endpoint_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set branch_name
+        run: |
+          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.event.pull_request.head.ref }})
+          echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
+
+      - name: Set branch-specific variable names
+        run: ./.github/buildVars.sh set_names
+
+      - name: Set branch-specific variable values
+        run: ./.github/buildVars.sh set_values
+
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -48,7 +57,7 @@ jobs:
           fi
           echo "application_endpoint_url=$application_endpoint_url" >> $GITHUB_OUTPUT
         env:
-          STACK_NAME: ${{ vars.APP_NAME_LOWER || needs.setup.outputs.app_name_lower }}-${{ needs.setup.outputs.branch_name }}
+          STACK_NAME: ${{ vars.APP_NAME_LOWER }}-${{ env.branch_name }}
 
   notify_integrations_channel:
     name: Notify integrations channel
