@@ -61,7 +61,7 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
-const outputs = await getCloudFormationStackOutputValues(`mcr-${stage}`);
+  const outputs = await getCloudFormationStackOutputValues(`mcr-${stage}`);
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
   await writeSeedEnvFile(envVars);

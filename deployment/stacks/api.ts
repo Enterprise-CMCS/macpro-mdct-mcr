@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
-  aws_dynamodb as dynamodb,
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_logs as logs,
@@ -15,7 +14,7 @@ import {
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
 
@@ -26,7 +25,7 @@ interface CreateApiComponentsProps {
   isDev: boolean;
   vpc: ec2.IVpc;
   kafkaAuthorizedSubnets: ec2.ISubnet[];
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
   brokerString: string;
   mcparFormBucket: s3.IBucket;
   mlrFormBucket: s3.IBucket;
@@ -59,32 +58,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         "Security Group for streaming functions. Egress all is set by default.",
       allowAllOutbound: true,
     }
-  );
-
-  dynamodb.Table.fromTableArn(
-    scope,
-    "BannerTableLookup",
-    tables.find((table) => table.id === "Banner")!.arn
-  );
-  dynamodb.Table.fromTableArn(
-    scope,
-    "FormTemplateVersionsTableLookup",
-    tables.find((table) => table.id === "FormTemplateVersions")!.arn
-  );
-  dynamodb.Table.fromTableArn(
-    scope,
-    "McparReportsTableLookup",
-    tables.find((table) => table.id === "McparReports")!.arn
-  );
-  dynamodb.Table.fromTableArn(
-    scope,
-    "MlrReportsTableLookup",
-    tables.find((table) => table.id === "MlrReports")!.arn
-  );
-  dynamodb.Table.fromTableArn(
-    scope,
-    "NaaarReportsTableLookup",
-    tables.find((table) => table.id === "NaaarReports")!.arn
   );
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
@@ -146,7 +119,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,
     NAAAR_FORM_BUCKET: naaarFormBucket.bucketName,
     ...Object.fromEntries(
-      tables.map((table) => [`${table.id}Table`, table.name])
+      tables.map((table) => [`${table.node.id}Table`, table.table.tableName])
     ),
   };
 
@@ -225,8 +198,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
         effect: iam.Effect.ALLOW,
         actions: ["dynamodb:Query"],
         resources: tables
-          .filter((table) => ["FormTemplateVersions"].includes(table.id))
-          .map((table) => `${table.arn}/index/HashIndex`),
+          .filter((table) => ["FormTemplateVersions"].includes(table.node.id))
+          .map((table) => `${table.table.tableArn}/index/HashIndex`),
       }),
     ],
     ...commonProps,
@@ -267,7 +240,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       ...commonProps.environment,
     },
     tables: tables.filter((table) =>
-      ["McparReports", "MlrReports", "NaaarReports"].includes(table.id)
+      ["McparReports", "MlrReports", "NaaarReports"].includes(table.node.id)
     ),
     additionalPolicies: [
       new iam.PolicyStatement({
@@ -281,7 +254,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "dynamodb:Scan",
           "dynamodb:UpdateItem",
         ],
-        resources: tables.map((table) => table.arn),
+        resources: tables
+          .map((table) => table.table.tableStreamArn)
+          .filter(isDefined),
       }),
 
       new iam.PolicyStatement({
@@ -293,12 +268,14 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "dynamodb:ListShards",
           "dynamodb:ListStreams",
         ],
-        resources: tables.map((table) => table.streamArn).filter(isDefined),
+        resources: tables
+          .map((table) => table.table.tableStreamArn)
+          .filter(isDefined),
       }),
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["dynamodb:Query", "dynamodb:Scan"],
-        resources: tables.map((table) => `${table.arn}/index/*`),
+        resources: tables.map((table) => `${table.table.tableArn}/index/*`),
       }),
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
