@@ -32,6 +32,8 @@ Re-enter the stack name (${stack}) to continue:
 **********************************************************************${reset}
 `);
 
+  readline.close();
+
   if (confirmation !== stack) {
     throw new Error(`
 ${orange}**********************************************************************

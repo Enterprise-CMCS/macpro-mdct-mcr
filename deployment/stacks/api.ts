@@ -2,7 +2,6 @@ import { Construct } from "constructs";
 import {
   aws_apigateway as apigateway,
   aws_ec2 as ec2,
-  aws_iam as iam,
   aws_logs as logs,
   aws_s3 as s3,
   aws_s3_notifications as s3notifications,
@@ -129,6 +128,8 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     api,
     environment,
     isDev,
+    tables,
+    buckets: [mcparFormBucket, mlrFormBucket, naaarFormBucket],
   };
 
   new Lambda(scope, "fetchBanner", {
@@ -137,7 +138,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/banners",
     method: "GET",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
@@ -145,7 +146,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/banners",
     method: "POST",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "deleteBanner", {
     entry: "services/app-api/handlers/banners/delete.ts",
@@ -153,7 +154,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/banners/{bannerId}",
     method: "DELETE",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "fetchReport", {
     entry: "services/app-api/handlers/reports/fetch.ts",
@@ -161,7 +162,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/reports/{reportType}/{state}/{id}",
     method: "GET",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "fetchReportsByState", {
     entry: "services/app-api/handlers/reports/fetch.ts",
@@ -170,7 +171,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     method: "GET",
     timeout: Duration.seconds(30),
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "archiveReport", {
     entry: "services/app-api/handlers/reports/archive.ts",
@@ -178,7 +179,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/reports/archive/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "releaseReport", {
     entry: "services/app-api/handlers/reports/release.ts",
@@ -186,24 +187,15 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     path: "/reports/release/{reportType}/{state}/{id}",
     method: "PUT",
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
     path: "/reports/{reportType}/{state}",
     method: "POST",
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["dynamodb:Query"],
-        resources: tables
-          .filter((table) => ["FormTemplateVersions"].includes(table.node.id))
-          .map((table) => `${table.table.tableArn}/index/HashIndex`),
-      }),
-    ],
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "updateReport", {
     entry: "services/app-api/handlers/reports/update.ts",
@@ -213,7 +205,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     memorySize: 2048,
     timeout: Duration.seconds(30),
     ...commonProps,
-  }).lambda;
+  });
 
   new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
@@ -223,7 +215,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     memorySize: 2048,
     timeout: Duration.seconds(30),
     ...commonProps,
-  }).lambda;
+  });
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
@@ -242,50 +234,6 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     tables: tables.filter((table) =>
       ["McparReports", "MlrReports", "NaaarReports"].includes(table.node.id)
     ),
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:BatchWriteItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:Query",
-          "dynamodb:Scan",
-          "dynamodb:UpdateItem",
-        ],
-        resources: tables.map((table) => table.table.tableArn),
-      }),
-
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "dynamodb:DescribeStream",
-          "dynamodb:GetRecords",
-          "dynamodb:GetShardIterator",
-          "dynamodb:ListShards",
-          "dynamodb:ListStreams",
-        ],
-        resources: tables
-          .map((table) => table.table.tableStreamArn)
-          .filter(isDefined),
-      }),
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["dynamodb:Query", "dynamodb:Scan"],
-        resources: tables.map((table) => `${table.table.tableArn}/index/*`),
-      }),
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "cognito-idp:AdminGetUser",
-          "ses:SendEmail",
-          "ses:SendRawEmail",
-          "lambda:InvokeFunction",
-        ],
-        resources: ["*"],
-      }),
-    ],
   });
 
   const bucketLambdaProps = {
@@ -299,70 +247,59 @@ export function createApiComponents(props: CreateApiComponentsProps) {
       topicNamespace: isDev ? `--${project}--${stage}--` : "",
       ...commonProps.environment,
     },
-    additionalPolicies: [
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ["s3:GetObject"],
-        resources: [
-          `${naaarFormBucket.bucketArn}/*`,
-          `${mlrFormBucket.bucketArn}/*`,
-          `${mcparFormBucket.bucketArn}/*`,
-        ],
-      }),
-    ],
   };
 
-  const postNaaarBucketDataLambda = new Lambda(scope, "postNaaarBucketData", {
+  const postNaaarBucketData = new Lambda(scope, "postNaaarBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
-  }).lambda;
+  });
 
   naaarFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postNaaarBucketDataLambda),
+    new s3notifications.LambdaDestination(postNaaarBucketData.lambda),
     { suffix: ".json" }
   );
 
   naaarFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postNaaarBucketDataLambda),
+    new s3notifications.LambdaDestination(postNaaarBucketData.lambda),
     { suffix: ".json" }
   );
 
-  const postMlrBucketDataLambda = new Lambda(scope, "postMlrBucketData", {
+  const postMlrBucketData = new Lambda(scope, "postMlrBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
-  }).lambda;
+  });
 
   mlrFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postMlrBucketDataLambda),
+    new s3notifications.LambdaDestination(postMlrBucketData.lambda),
     { suffix: ".json" }
   );
 
   mlrFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postMlrBucketDataLambda),
+    new s3notifications.LambdaDestination(postMlrBucketData.lambda),
     { suffix: ".json" }
   );
 
-  const postMcparBucketDataLambda = new Lambda(scope, "postMcparBucketData", {
+  const postMcparBucketData = new Lambda(scope, "postMcparBucketData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
     handler: "handler",
     ...bucketLambdaProps,
-  }).lambda;
+  });
 
   mcparFormBucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
-    new s3notifications.LambdaDestination(postMcparBucketDataLambda),
+    new s3notifications.LambdaDestination(postMcparBucketData.lambda),
     { suffix: ".json" }
   );
 
   mcparFormBucket.addEventNotification(
     s3.EventType.OBJECT_TAGGING_PUT,
-    new s3notifications.LambdaDestination(postMcparBucketDataLambda),
+    new s3notifications.LambdaDestination(postMcparBucketData.lambda),
     { suffix: ".json" }
   );
 
