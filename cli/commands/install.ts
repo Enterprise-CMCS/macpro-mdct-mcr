@@ -7,7 +7,6 @@ const directories = [
   "./services/ui",
   "./services/ui-auth",
   "./services/ui-src",
-  "./services/uploads",
 ];
 
 export const installDeps = async () => {
