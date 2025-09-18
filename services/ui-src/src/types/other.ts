@@ -182,6 +182,6 @@ export const isState = (state: unknown): state is State => {
  */
 export const assertExhaustive = (_: never): void => {};
 
-export interface sxObject {
+export interface SxObject {
   [key: string]: SystemStyleObject;
 }

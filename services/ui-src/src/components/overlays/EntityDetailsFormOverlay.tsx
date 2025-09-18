@@ -12,7 +12,7 @@ import {
   EntityDetailsMultiformVerbiage,
   EntityShape,
   FormJson,
-  sxObject,
+  SxObject,
   TableContentShape,
 } from "types";
 
@@ -72,7 +72,7 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
-  sxOverride?: sxObject;
+  sxOverride?: SxObject;
   table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
