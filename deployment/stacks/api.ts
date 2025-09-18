@@ -14,9 +14,9 @@ import {
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
 import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
+import { DynamoDBTable } from "../constructs/dynamodb-table";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -254,9 +254,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
           "dynamodb:Scan",
           "dynamodb:UpdateItem",
         ],
-        resources: tables
-          .map((table) => table.table.tableStreamArn)
-          .filter(isDefined),
+        resources: tables.map((table) => table.table.tableArn),
       }),
 
       new iam.PolicyStatement({
