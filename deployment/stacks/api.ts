@@ -61,51 +61,31 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     }
   );
 
-  const bannerTable = dynamodb.Table.fromTableArn(
+  dynamodb.Table.fromTableArn(
     scope,
     "BannerTableLookup",
     tables.find((table) => table.id === "Banner")!.arn
   );
-  const formTemplateVersionsTable = dynamodb.Table.fromTableArn(
+  dynamodb.Table.fromTableArn(
     scope,
     "FormTemplateVersionsTableLookup",
     tables.find((table) => table.id === "FormTemplateVersions")!.arn
   );
-  const mcparReportsTable = dynamodb.Table.fromTableArn(
+  dynamodb.Table.fromTableArn(
     scope,
     "McparReportsTableLookup",
     tables.find((table) => table.id === "McparReports")!.arn
   );
-  const mlrReportsTable = dynamodb.Table.fromTableArn(
+  dynamodb.Table.fromTableArn(
     scope,
     "MlrReportsTableLookup",
     tables.find((table) => table.id === "MlrReports")!.arn
   );
-  const naaarReportsTable = dynamodb.Table.fromTableArn(
+  dynamodb.Table.fromTableArn(
     scope,
     "NaaarReportsTableLookup",
     tables.find((table) => table.id === "NaaarReports")!.arn
   );
-
-  type Access = "read" | "write" | "readwrite";
-
-  function grantReportsTableAccess(grantee: iam.IGrantable, access: Access) {
-    const tables = [mcparReportsTable, mlrReportsTable, naaarReportsTable];
-    for (const table of tables) {
-      if (access === "read") table.grantReadData(grantee);
-      else if (access === "write") table.grantWriteData(grantee);
-      else table.grantReadWriteData(grantee);
-    }
-  }
-
-  function grantReportsBucketAccess(grantee: iam.IGrantable, access: Access) {
-    const buckets = [mcparFormBucket, mlrFormBucket, naaarFormBucket];
-    for (const bucket of buckets) {
-      if (access === "read") bucket.grantRead(grantee);
-      else if (access === "write") bucket.grantWrite(grantee);
-      else bucket.grantReadWrite(grantee);
-    }
-  }
 
   const logGroup = new logs.LogGroup(scope, "ApiAccessLogs", {
     removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
@@ -178,97 +158,68 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     isDev,
   };
 
-  const requestValidator = new apigateway.RequestValidator(scope, `Validator`, {
-    requestValidatorName: `${commonProps.stackName} | Validate request body and querystring parameters`,
-    restApi: api,
-    validateRequestParameters: true,
-    validateRequestBody: true,
-  });
-
-  const fetchBanner = new Lambda(scope, "fetchBanner", {
+  new Lambda(scope, "fetchBanner", {
     entry: "services/app-api/handlers/banners/fetch.ts",
     handler: "fetchBanner",
     path: "/banners",
     method: "GET",
     ...commonProps,
   }).lambda;
-  bannerTable.grantReadData(fetchBanner);
 
-  const createBanner = new Lambda(scope, "createBanner", {
+  new Lambda(scope, "createBanner", {
     entry: "services/app-api/handlers/banners/create.ts",
     handler: "createBanner",
     path: "/banners",
     method: "POST",
     ...commonProps,
   }).lambda;
-  bannerTable.grantWriteData(createBanner);
 
-  const deleteBanner = new Lambda(scope, "deleteBanner", {
+  new Lambda(scope, "deleteBanner", {
     entry: "services/app-api/handlers/banners/delete.ts",
     handler: "deleteBanner",
     path: "/banners/{bannerId}",
     method: "DELETE",
-    requestParameters: ["bannerId"],
-    requestValidator,
     ...commonProps,
   }).lambda;
-  bannerTable.grantWriteData(deleteBanner);
 
-  const fetchReport = new Lambda(scope, "fetchReport", {
+  new Lambda(scope, "fetchReport", {
     entry: "services/app-api/handlers/reports/fetch.ts",
     handler: "fetchReport",
     path: "/reports/{reportType}/{state}/{id}",
     method: "GET",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(fetchReport, "read");
-  grantReportsBucketAccess(fetchReport, "read");
 
-  const fetchReportsByState = new Lambda(scope, "fetchReportsByState", {
+  new Lambda(scope, "fetchReportsByState", {
     entry: "services/app-api/handlers/reports/fetch.ts",
     handler: "fetchReportsByState",
     path: "/reports/{reportType}/{state}",
     method: "GET",
-    requestParameters: ["reportType", "state"],
-    requestValidator,
     timeout: Duration.seconds(30),
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(fetchReportsByState, "read");
 
-  const archiveReport = new Lambda(scope, "archiveReport", {
+  new Lambda(scope, "archiveReport", {
     entry: "services/app-api/handlers/reports/archive.ts",
     handler: "archiveReport",
     path: "/reports/archive/{reportType}/{state}/{id}",
     method: "PUT",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(archiveReport, "readwrite");
-  grantReportsBucketAccess(archiveReport, "readwrite");
 
-  const releaseReport = new Lambda(scope, "releaseReport", {
+  new Lambda(scope, "releaseReport", {
     entry: "services/app-api/handlers/reports/release.ts",
     handler: "releaseReport",
     path: "/reports/release/{reportType}/{state}/{id}",
     method: "PUT",
-    requestParameters: ["state", "id"],
-    requestValidator,
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(releaseReport, "readwrite");
-  grantReportsBucketAccess(releaseReport, "readwrite");
 
-  const createReport = new Lambda(scope, "createReport", {
+  new Lambda(scope, "createReport", {
     entry: "services/app-api/handlers/reports/create.ts",
     handler: "createReport",
     path: "/reports/{reportType}/{state}",
     method: "POST",
-    requestParameters: ["reportType", "state"],
-    requestValidator,
     additionalPolicies: [
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
@@ -280,37 +231,26 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     ],
     ...commonProps,
   }).lambda;
-  formTemplateVersionsTable.grantReadWriteData(createReport);
-  grantReportsTableAccess(createReport, "write");
-  grantReportsBucketAccess(createReport, "readwrite");
 
-  const updateReport = new Lambda(scope, "updateReport", {
+  new Lambda(scope, "updateReport", {
     entry: "services/app-api/handlers/reports/update.ts",
     handler: "updateReport",
     path: "/reports/{reportType}/{state}/{id}",
     method: "PUT",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     memorySize: 2048,
     timeout: Duration.seconds(30),
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(updateReport, "readwrite");
-  grantReportsBucketAccess(updateReport, "readwrite");
 
-  const submitReport = new Lambda(scope, "submitReport", {
+  new Lambda(scope, "submitReport", {
     entry: "services/app-api/handlers/reports/submit.ts",
     handler: "submitReport",
     path: "/reports/submit/{reportType}/{state}/{id}",
     method: "POST",
-    requestParameters: ["reportType", "state", "id"],
-    requestValidator,
     memorySize: 2048,
     timeout: Duration.seconds(30),
     ...commonProps,
   }).lambda;
-  grantReportsTableAccess(submitReport, "readwrite");
-  grantReportsBucketAccess(submitReport, "readwrite");
 
   new LambdaDynamoEventSource(scope, "postKafkaData", {
     entry: "services/app-api/handlers/kafka/post/postKafkaData.ts",
