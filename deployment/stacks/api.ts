@@ -13,7 +13,6 @@ import {
 import { Lambda } from "../constructs/lambda";
 import { WafConstruct } from "../constructs/waf";
 import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { isDefined } from "../utils/misc";
 import { isLocalStack } from "../local/util";
 import { DynamoDBTable } from "../constructs/dynamodb-table";
 

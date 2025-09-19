@@ -59,8 +59,12 @@ const buildUiEnvObject = (
     COGNITO_USER_POOL_ID: cfnOutputs.CognitoUserPoolId,
     COGNITO_USER_POOL_CLIENT_ID: cfnOutputs.CognitoUserPoolClientId,
     COGNITO_USER_POOL_CLIENT_DOMAIN: `${cfnOutputs.CognitoUserPoolClientDomain}.auth.${region}.amazoncognito.com`,
+    COGNITO_IDP_NAME: "Okta",
     COGNITO_REDIRECT_SIGNIN: cfnOutputs.CloudFrontUrl,
     COGNITO_REDIRECT_SIGNOUT: cfnOutputs.CloudFrontUrl,
+    POST_SIGNOUT_REDIRECT: cfnOutputs.CloudFrontUrl,
+    REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
+    STAGE: stage,
   };
 };
 
