@@ -25,7 +25,7 @@ rules:
   "@typescript-eslint/no-unused-vars":
     - error
     - argsIgnorePattern: "^_"
-  no-console: error
+  no-console: off
   no-empty: error
   no-extra-semi: error
   multiline-comment-style:
