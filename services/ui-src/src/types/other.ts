@@ -1,3 +1,4 @@
+import { SystemStyleObject } from "@chakra-ui/react";
 import React from "react";
 import { EntityShape } from "./formFields";
 
@@ -180,3 +181,7 @@ export const isState = (state: unknown): state is State => {
  * Useful for the default branch of a switch statement that verifiably covers every case.
  */
 export const assertExhaustive = (_: never): void => {};
+
+export interface SxObject {
+  [key: string]: SystemStyleObject;
+}

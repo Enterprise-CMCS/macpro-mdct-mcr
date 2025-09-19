@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 // components
 import {
+  SystemStyleObject,
   Table as TableRoot,
   TableCaption,
   Tbody,
@@ -11,11 +12,7 @@ import {
   VisuallyHidden,
 } from "@chakra-ui/react";
 // types
-import {
-  AnyObject,
-  ScreenReaderCustomHeaderName,
-  TableContentShape,
-} from "types";
+import { ScreenReaderCustomHeaderName, TableContentShape } from "types";
 // utils
 import { sanitizeAndParseHtml } from "utils";
 
@@ -93,7 +90,7 @@ interface Props {
   content: TableContentShape;
   variant?: string;
   border?: boolean;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   children?: ReactNode;
   [key: string]: any;
 }
