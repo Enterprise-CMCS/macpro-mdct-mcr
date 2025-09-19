@@ -1,13 +1,13 @@
 import { Box, Button, Image, Td, Spinner } from "@chakra-ui/react";
-
-// utils
+// types
 import {
   AnyObject,
   ReportMetadataShape,
   ReportType,
+  SxObject,
   TableContentShape,
 } from "types";
-
+// utils
 import { convertDateUtcToEt } from "utils";
 // assets
 import editIcon from "assets/icons/icon_edit_square_gray.png";
@@ -26,14 +26,14 @@ export interface DashboardTableProps {
   isStateLevelUser: boolean;
   releaseReport: Function;
   releasing?: boolean | undefined;
-  sxOverride: AnyObject;
+  sxOverride: SxObject;
 }
 
 export interface EditReportProps {
   report: ReportMetadataShape;
   reportType: string;
   openAddEditReportModal: Function;
-  sxOverride: AnyObject;
+  sxOverride: SxObject;
 }
 
 export interface ActionButtonProps {
@@ -53,7 +53,7 @@ export interface DateFieldProps {
 export interface AdminActionButtonProps {
   report: ReportMetadataShape;
   reportType: string;
-  sxOverride: AnyObject;
+  sxOverride: SxObject;
   reportId?: string;
 }
 

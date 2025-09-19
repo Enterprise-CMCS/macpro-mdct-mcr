@@ -1,0 +1,14 @@
+import { execSync } from "child_process";
+
+const updateEnvFiles = async () => {
+  execSync("op inject --in-file .env.tpl --out-file .env --force", {
+    stdio: "inherit",
+  });
+  execSync("sed -i '' -e 's/# pragma: allowlist secret//g' .env");
+};
+
+export const updateEnv = {
+  command: "update-env",
+  describe: "update environment variables using 1Password",
+  handler: updateEnvFiles,
+};

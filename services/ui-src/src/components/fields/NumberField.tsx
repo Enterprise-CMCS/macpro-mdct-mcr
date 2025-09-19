@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
-import { Box } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 import { TextField as CmsdsTextField } from "@cmsgov/design-system";
 // constants
 import { suppressionText } from "../../constants";
 // types
-import { InputChangeEvent, AnyObject } from "types";
+import { InputChangeEvent } from "types";
 // utils
 import {
   applyMask,
@@ -203,7 +203,7 @@ export interface NumberFieldProps {
   placeholder?: string;
   mask?: keyof typeof maskMap | null;
   nested?: boolean;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   autosave?: boolean;
   validateOnRender?: boolean;
   clear?: boolean;

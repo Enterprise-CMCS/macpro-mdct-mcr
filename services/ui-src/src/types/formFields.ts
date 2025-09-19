@@ -1,3 +1,4 @@
+import { SystemStyleObject } from "@chakra-ui/react";
 import React from "react";
 import { AnyObject, DrawerReportPageShape, ReportShape } from "types";
 
@@ -104,7 +105,7 @@ export interface ChoiceFieldProps {
   name: string;
   label: string;
   choices: FieldChoice[];
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   [key: string]: any;
 }
 export interface Choice {

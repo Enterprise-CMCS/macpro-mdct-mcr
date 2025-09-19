@@ -1,6 +1,8 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 name: Scan and Open Jira Tickets (Snyk)
 
 on:
+  workflow_dispatch: # for testing and manual runs
   pull_request:
     branches: [main]
   schedule:
@@ -48,9 +50,9 @@ jobs:
           jira-host: "jiraent.cms.gov"
           jira-project-key: "CMDCT"
           jira-issue-type: "Task"
-          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "40104", "value": "MCR"}] }'
-          jira-labels: "MCR,snyk"
-          jira-title-prefix: "[MCR] - Snyk :"
+          jira-custom-field-key-value: '{ "customfield_10100": "CMDCT-2280", "customfield_26700" : [{"id": "${{ vars.JIRA_APP_CUSTOM_FIELD_ID }}", "value": "${{ vars.APP_NAME_UPPER }}"}] }'
+          jira-labels: "${{ vars.APP_NAME_UPPER }},snyk"
+          jira-title-prefix: "[${{ vars.APP_NAME_UPPER }}] - Snyk :"
           is_jira_enterprise: true
           assign-jira-ticket-to: "MWTW"
           scan-output-path: "snyk_output.txt"

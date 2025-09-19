@@ -2,9 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Choice as CmsdsChoice } from "@cmsgov/design-system";
-import { Box, Text } from "@chakra-ui/react";
-// types
-import { AnyObject } from "types";
+import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
 // utils
 import { labelTextWithOptional, parseCustomHtml } from "utils";
 
@@ -77,7 +75,7 @@ interface Props {
   name: string;
   label?: string;
   hint: string;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   hydrate?: boolean;
   inline?: boolean;

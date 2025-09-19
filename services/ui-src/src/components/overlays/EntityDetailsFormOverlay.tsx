@@ -9,10 +9,10 @@ import {
 } from "components";
 // types
 import {
-  AnyObject,
   EntityDetailsMultiformVerbiage,
   EntityShape,
   FormJson,
+  SxObject,
   TableContentShape,
 } from "types";
 
@@ -72,7 +72,7 @@ interface Props {
   onSubmit: Function;
   selectedEntity?: EntityShape;
   submitting: boolean;
-  sxOverride?: AnyObject;
+  sxOverride?: SxObject;
   table?: TableContentShape;
   validateOnRender?: boolean;
   verbiage: EntityDetailsMultiformVerbiage;
