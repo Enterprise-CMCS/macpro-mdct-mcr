@@ -7,12 +7,14 @@ const __dirname = dirname(__filename);
 const outputPath = path.join(__dirname, "../../");
 const configFilePath = path.resolve(outputPath, ".env.seed");
 
-export async function writeSeedEnvFile(apiUrl: string) {
+export const writeSeedEnvFile = async (
+  envVariables: Record<string, string>
+) => {
   await fs.rm(configFilePath, { force: true });
 
-  const envConfigContent = [`API_URL=${apiUrl.replace("https", "http")}`].join(
-    "\n"
-  );
+  const envConfigContent = [
+    `API_URL=${envVariables["API_URL"].replace("https", "http")}`,
+  ].join("\n");
 
   await fs.writeFile(configFilePath, envConfigContent);
-}
+};
