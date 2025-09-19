@@ -185,3 +185,21 @@ export const assertExhaustive = (_: never): void => {};
 export interface SxObject {
   [key: string]: SystemStyleObject;
 }
+
+export interface FaqItem {
+  question: string;
+  answer: AnswerBlock[];
+}
+
+export interface AnswerBlock {
+  type: "p" | "ul" | "li" | "html" | "externalLink";
+  content?: string;
+  children?: AnswerBlock[];
+  props?: {
+    href?: string;
+    target?: string;
+    "aria-label"?: string;
+    [key: string]: string | undefined;
+  };
+  as?: string;
+}

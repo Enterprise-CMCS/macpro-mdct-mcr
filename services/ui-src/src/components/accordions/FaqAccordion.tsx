@@ -2,7 +2,7 @@
 import { Accordion, Box } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, FaqItem } from "types";
 // utils
 import { parseCustomHtml } from "utils";
 
@@ -19,7 +19,7 @@ export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
 };
 
 interface Props {
-  accordionItems: AnyObject;
+  accordionItems: FaqItem[];
   [key: string]: any;
 }
 
