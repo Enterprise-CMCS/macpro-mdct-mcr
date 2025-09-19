@@ -5,11 +5,12 @@ import { FaqAccordion } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { testA11y } from "utils/testing/commonTests";
+import { FaqItem } from "types";
 
-const accordionItems = [
+const accordionItems: FaqItem[] = [
   {
     question: "Question?",
-    answer: "Answer!",
+    answer: [{ type: "p", content: "Answer!" }],
   },
 ];
 
@@ -30,16 +31,18 @@ describe("<FaqAccordion />", () => {
 
   test("FaqAccordion default closed state only shows the question", () => {
     expect(screen.getByText(accordionItems[0].question)).toBeVisible();
-    expect(screen.getByText(accordionItems[0].answer)).not.toBeVisible();
+    const answerText = accordionItems[0].answer[0].content!;
+    expect(screen.getByText(answerText)).not.toBeVisible();
   });
 
   test("FaqAccordion should show answer on click", async () => {
     const faqQuestion = screen.getByText(accordionItems[0].question);
     expect(faqQuestion).toBeVisible();
-    expect(screen.getByText(accordionItems[0].answer)).not.toBeVisible();
+    const answerText = accordionItems[0].answer[0].content!;
+    expect(screen.getByText(answerText)).not.toBeVisible();
     await userEvent.click(faqQuestion);
     expect(faqQuestion).toBeVisible();
-    expect(screen.getByText(accordionItems[0].answer)).toBeVisible();
+    expect(screen.getByText(answerText)).toBeVisible();
   });
 
   testA11y(faqAccordionComponent);

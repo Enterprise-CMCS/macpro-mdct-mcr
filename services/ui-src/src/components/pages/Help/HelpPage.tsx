@@ -2,7 +2,7 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
 // types
-import { AnyObject } from "types";
+import { AnyObject, FaqItem } from "types";
 // verbiage
 import verbiage from "verbiage/pages/help";
 
@@ -28,7 +28,7 @@ export const HelpPage = () => {
       </Box>
       {accordionItems.length > 0 && (
         <Box sx={sx.faqAccordionBox}>
-          <FaqAccordion accordionItems={accordionItems} />
+          <FaqAccordion accordionItems={accordionItems as FaqItem[]} />
         </Box>
       )}
     </PageTemplate>
