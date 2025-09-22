@@ -185,3 +185,8 @@ export const assertExhaustive = (_: never): void => {};
 export interface SxObject {
   [key: string]: SystemStyleObject;
 }
+
+export interface FaqItem {
+  question: string;
+  answer: CustomHtmlElement[];
+}
