@@ -1,4 +1,23 @@
 export default {
+  MCPAR: {
+    formIntro: {
+      buttonLabel: "Instructions",
+      intro: [
+        {
+          type: "p",
+          content:
+            "Report on quality measures the state uses to evaluate plan performance, including but not limited to (1) plan measures validated as part of the annual External Quality Review validation activity, (2) quality of care measures required of plans in their state managed care contracts, (3) plan measures used for pay-for-performance and evaluation purposes (e.g., state directed payment, ILOS, plan incentives and withholds), and (4) plan measures calculated by states.",
+        },
+        {
+          type: "p",
+          content:
+            "Where a measure only asks for the total rate, report the total rate. Where a measure steward defines multiple levels of granularity (e.g., sub-measures such as different age groups, individual rates and composite rates, different time windows for follow-up after a hospital admission, etc.), the state should report the most aggregated form of the sub-measure while adhering to measure specifications. However, the state should keep children separate from adults unless the measure is specified otherwise. Refer to the technical guide for more information and examples.",
+        },
+      ],
+      list: [],
+      text: "",
+    },
+  },
   MLR: {
     adminDashboard: {
       buttonLabel: "Instructions",

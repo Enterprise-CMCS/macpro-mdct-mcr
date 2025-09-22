@@ -38,6 +38,8 @@ export interface DeleteEntityButtonProps {
 
 const enterDetailsText = (verbiage: AnyObject, reportType?: string) => {
   switch (reportType) {
+    case ReportType.MCPAR:
+      return verbiage.enterEntityDetailsButtonText;
     case ReportType.MLR:
       return verbiage.enterReportText;
     case ReportType.NAAAR:
