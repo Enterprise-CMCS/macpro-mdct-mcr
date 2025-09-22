@@ -215,6 +215,22 @@ const dateSchema = () =>
     .test({
       message: error.REQUIRED_GENERIC,
       test: (value) => !isWhitespaceString(value),
+    })
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      let result = false;
+      if (value) {
+        const date = new Date(value);
+        let [month, day, year] = value.split("/");
+        month = (parseInt(month) - 1).toString();
+        if (
+          date.getMonth() === parseInt(month) &&
+          date.getDate() === parseInt(day) &&
+          date.getFullYear() === parseInt(year)
+        ) {
+          result = true;
+        }
+      }
+      return result;
     });
 
 export const date = () => dateSchema().required(error.REQUIRED_GENERIC);

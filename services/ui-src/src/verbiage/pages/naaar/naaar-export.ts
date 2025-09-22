@@ -17,6 +17,9 @@ export default {
     heading: "Network Adequacy and Access Assurances (NAAAR) Report",
     metadataTableHeaders: {
       submissionName: "Submission name",
+      planType: "Plan type",
+      reportingPeriodStartDate: "Reporting period start date",
+      reportingPeriodEndDate: "Reporting period end date",
       lastEdited: "Last edited",
       editedBy: "Edited by",
       status: "Status",

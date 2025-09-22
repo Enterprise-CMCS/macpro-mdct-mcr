@@ -69,7 +69,7 @@ jobs:
       - name: set variable values
         run: ./.github/buildVars.sh set_values
         env:
-          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
       - name: Configure AWS credentials for GitHub Actions
@@ -103,7 +103,6 @@ jobs:
         working-directory: services
     outputs:
       application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
-      BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION }}
       BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME: ${{ steps.set_names.outputs.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME }}
 
   # register-runner:
@@ -111,8 +110,6 @@ jobs:
   #   if: ${{ github.ref_name != 'main' && github.ref_name != 'val' && github.ref_name != 'production' }}
   #   runs-on: ubuntu-latest
   #   needs: deploy
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
   #   steps:
   #     - name: Checkout
   #       uses: actions/checkout@v4
@@ -130,14 +127,14 @@ jobs:
   #       id: set_values
   #       run: ./.github/buildVars.sh set_values
   #       env:
-  #         AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+  #         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   #         AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
   #     - name: Configure AWS credentials for GitHub Actions
   #       uses: aws-actions/configure-aws-credentials@v4
   #       with:
   #         role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-  #         aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+  #         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
   #     - name: output account id
   #       id: output_account_id
@@ -196,10 +193,10 @@ jobs:
 
   e2e-test:
     name: E2E Integration Tests
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs:
       - deploy
       # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -235,10 +232,10 @@ jobs:
 
   a11y-tests:
     name: E2E A11y Tests
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs:
       - deploy
       # - register-runner
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -271,12 +268,12 @@ jobs:
 
   test:
     name: Playwright Tests
+    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs:
       - deploy
       # - register-runner
       # - e2e-test
       # - a11y-tests
-    if: ${{ always() && !cancelled() && needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -285,7 +282,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
@@ -317,12 +314,13 @@ jobs:
 
   upload-reports:
     name: Upload reports
+    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs:
       - test
-    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     uses: ./.github/workflows/upload-e2e-test-reports.yml
   publish-url:
     name: Publish report URL
+    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     runs-on: ubuntu-latest
     needs: upload-reports
     steps:
@@ -339,15 +337,13 @@ jobs:
   #     - a11y-tests
   #     - e2e-test
   #     - test
-  #   env:
-  #     SLS_DEPRECATION_DISABLE: "*" # Turn off deprecation warnings in the pipeline
   #   steps:
   #     - uses: actions/checkout@v4
   #     - name: Configure AWS credentials for GitHub Actions
   #       uses: aws-actions/configure-aws-credentials@v4
   #       with:
   #         role-to-assume: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-  #         aws-region: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
+  #         aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
   #     - name: output account id
   #       id: output_account_id
   #       run: |

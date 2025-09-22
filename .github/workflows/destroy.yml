@@ -1,3 +1,4 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 name: Destroy
 
 on:
@@ -18,21 +19,11 @@ permissions:
 
 jobs:
   destroy:
-    # Protected branches should be designated as such in the GitHub UI.
-    # So, a protected branch should never have this workflow run, since the branch should never be deleted.
-    # This conditional is a backup mechanism to help prevent mistakes from becoming disasters.
-    # This is a list of branch names that are commonly used for protected branches/environments.
-    # Add/remove names from this list as appropriate.
     if: |
       (
         github.event.ref_type == 'branch' &&
         (!startsWith(github.event.ref, 'skipci')) &&
-        (!startsWith(github.event.ref, 'code-json-')) &&
-        (!contains(fromJson('["main", "val", "production"]'), github.event.ref))
-      ) ||
-      (
-        inputs.environment != '' &&
-        (!contains(fromJson('["main", "val", "production"]'), inputs.environment))
+        (!startsWith(github.event.ref, 'code-json-'))
       )
     runs-on: ubuntu-latest
     steps:
@@ -49,18 +40,16 @@ jobs:
       - name: set variable values
         run: ./.github/buildVars.sh set_values
         env:
-          AWS_DEFAULT_REGION: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_DEFAULT_REGION] || secrets.AWS_DEFAULT_REGION }}
-          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets[env.BRANCH_SPECIFIC_VARNAME_AWS_OIDC_ROLE_TO_ASSUME] || secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Destroy
-        run: |
-          ./run destroy --stage $branch_name --verify false
+        run: ./run destroy --stage $branch_name --verify false
 
-  # Notify the integrations channel when a destroy action fails
   notify_on_destroy_failure:
     runs-on: ubuntu-latest
     needs:

@@ -1,24 +1,33 @@
+<!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
+
 ### Description
+
 <!-- Detailed description of changes and related context -->
 
 ### Related ticket(s)
+
 <!-- Link to related ticket(s) or issue(s) -->
 <!-- Hint: Type CMDCT-<ticket-number> for autolinking -->
+
 CMDCT-
 
 ---
 
 ### How to test
+
 <!-- Step-by-step instructions on how to test, if necessary -->
 
 ### Notes
+
 <!-- Changed dependencies, .env files, configs, etc. -->
 <!-- Instructions for local dev, e.g. requires new installs in directories -->
 
 ---
 
 ### Pre-review checklist
+
 <!-- Complete the following steps before opening for review -->
+
 - [ ] I have added [thorough](https://shorturl.at/aejkF) tests, if necessary
 - [ ] I have updated relevant documentation, if necessary
 - [ ] I have performed a self-review of my code
@@ -27,6 +36,7 @@ CMDCT-
 ---
 
 ### Pre-merge checklist
+
 <!-- Complete the following steps before merging -->
 
 #### Review
@@ -44,4 +54,5 @@ _If either of the following are true, notify the team's ISSO (Information System
 ---
 
 <!-- If deploying to val or prod, click 'Preview' and select template -->
-_convert to a different template: [val release](?expand=1&template=val-deployment.md)_ | _[production release](?expand=1&template=production-deployment.md)_
+
+_convert to a different template: [test → val](?expand=1&template=test-to-val-deployment.md)_ | _[val → prod](?expand=1&template=val-to-prod-deployment.md)_

@@ -1,7 +1,7 @@
 // components
 import { Table } from "components";
 // types
-import { ReportShape, ReportType } from "types";
+import { AnyObject, ReportShape, ReportType } from "types";
 // utils
 import { assertExhaustive, convertDateUtcToEt, useStore } from "utils";
 
@@ -10,6 +10,7 @@ export const ExportedReportMetadataTable = ({
   verbiage,
 }: Props) => {
   const { report } = useStore();
+
   return (
     <Table
       data-testid="exportedReportMetadataTable"
@@ -25,23 +26,32 @@ export const ExportedReportMetadataTable = ({
 
 export const headerRowLabels = (
   reportType: ReportType,
-  verbiage: any
+  { metadataTableHeaders: verbiage }: AnyObject
 ): string[] => {
   switch (reportType) {
     case ReportType.MCPAR:
       return [
-        verbiage.metadataTableHeaders.dueDate,
-        verbiage.metadataTableHeaders.lastEdited,
-        verbiage.metadataTableHeaders.editedBy,
-        verbiage.metadataTableHeaders.status,
+        verbiage.dueDate,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
       ];
     case ReportType.MLR:
+      return [
+        verbiage.submissionName,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
+      ];
     case ReportType.NAAAR:
       return [
-        verbiage.metadataTableHeaders.submissionName,
-        verbiage.metadataTableHeaders.lastEdited,
-        verbiage.metadataTableHeaders.editedBy,
-        verbiage.metadataTableHeaders.status,
+        verbiage.submissionName,
+        verbiage.planType,
+        verbiage.reportingPeriodStartDate,
+        verbiage.reportingPeriodEndDate,
+        verbiage.lastEdited,
+        verbiage.editedBy,
+        verbiage.status,
       ];
     default:
       assertExhaustive(reportType);
@@ -69,13 +79,26 @@ export const bodyRowContent = (
         ],
       ];
     case ReportType.MLR:
+      return [
+        [
+          report.programName,
+          convertDateUtcToEt(report.lastAltered),
+          report.lastAlteredBy,
+          report.status,
+        ],
+      ];
     case ReportType.NAAAR:
       return [
         [
-          report?.programName ?? "",
-          convertDateUtcToEt(report?.lastAltered),
-          report?.lastAlteredBy,
-          report?.status,
+          report.programName ?? "",
+          report["planTypeIncludedInProgram-otherText"] ??
+            report.planTypeIncludedInProgram?.[0].value ??
+            "",
+          convertDateUtcToEt(report.reportingPeriodStartDate),
+          convertDateUtcToEt(report.reportingPeriodEndDate),
+          convertDateUtcToEt(report.lastAltered),
+          report.lastAlteredBy,
+          report.status,
         ],
       ];
     default:
