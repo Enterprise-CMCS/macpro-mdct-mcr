@@ -14,7 +14,7 @@ jobs:
           python-version: "3.10"
       - name: Configure pre-commit to skip branch name validation
         run: |
-          echo "SKIP=branch-name-validation,typescript-check,typescript-check-api,typescript-check-ui" >> $GITHUB_ENV
+          echo "SKIP=branch-name-validation,typescript-check-cli,typescript-check-api,typescript-check-ui" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
   assignAuthor:
     runs-on: ubuntu-latest
