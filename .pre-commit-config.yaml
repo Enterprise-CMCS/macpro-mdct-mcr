@@ -54,7 +54,7 @@ repos:
         language: system
         files: '\.tsx?$'
         pass_filenames: false
-      - id: typescript-cli
+      - id: typescript-check-cli
         name: typescript-check-cli
         entry: bash -c "cd cli && yarn tsc --noEmit"
         language: system
