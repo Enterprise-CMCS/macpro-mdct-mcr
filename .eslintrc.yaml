@@ -25,9 +25,16 @@ rules:
   "@typescript-eslint/no-unused-vars":
     - error
     - argsIgnorePattern: "^_"
-  no-console: off
+  no-console: error
   no-empty: error
   no-extra-semi: error
   multiline-comment-style:
     - error
     - starred-block
+
+overrides:
+  - files:
+      - "cli/**"
+      - "deployment/**"
+    rules:
+      no-console: off
