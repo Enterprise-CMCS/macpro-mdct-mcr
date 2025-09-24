@@ -69,3 +69,8 @@ repos:
         entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
         language: system
         pass_filenames: false
+      - id: validate-commit-msg
+        name: validate-commit-msg
+        entry: .github/validateCommitMessage.sh
+        language: script
+        stages: [commit-msg]
