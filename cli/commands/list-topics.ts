@@ -1,3 +1,4 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Argv } from "yargs";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { project, region } from "../lib/consts.js";
