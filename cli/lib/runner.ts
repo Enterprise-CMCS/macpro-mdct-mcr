@@ -1,4 +1,4 @@
-/* eslint-disable multiline-comment-style */
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { spawn } from "child_process";
 import path from "path";
 

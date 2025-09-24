@@ -1,3 +1,4 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 Description: This stack includes resources needed to deploy AWS CDK apps into this environment
 Parameters:
   TrustedAccounts:
@@ -44,7 +45,9 @@ Parameters:
   BootstrapVariant:
     Type: String
     Default: "AWS CDK: Default Resources"
-    Description: Describe the provenance of the resources in this bootstrap stack. Change this when you customize the template. To prevent accidents, the CDK CLI will not overwrite bootstrap stacks with a different variant.
+    Description: >-
+      Describe the provenance of the resources in this bootstrap stack. Change this when you customize the template.
+      To prevent accidents, the CDK CLI will not overwrite bootstrap stacks with a different variant.
 Conditions:
   HasTrustedAccounts:
     Fn::Not:
@@ -520,7 +523,7 @@ Resources:
             Resource: "*"
           # Add your specific organizational security policy here
           # Uncomment the example to deny access to AWS Config
-          #- Sid: OrganizationalSecurityPolicy
+          # - Sid: OrganizationalSecurityPolicy
           #  Action:
           #    - "config:*"
           #  Effect: Deny
