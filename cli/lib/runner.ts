@@ -1,30 +1,25 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { spawn } from "child_process";
-import path from "path";
+import { spawn } from "node:child_process";
+import path from "node:path";
 
-const prefixes = new Set<string>();
+/**
+ * Maps all known prefixes to an ANSI color code from 1-14, inclusive.
+ * If there are many unique prefixes, colors will repeat.
+ * See https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit for color values.
+ */
+const prefixColors = new Map<string, number>();
 let maxPrefixLength = 0;
 
-const prefixColors: Record<string, string> = {};
-// prettier-ignore
-const colors = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14"];
-
 const formattedPrefix = (prefix: string) => {
-  if (!prefixes.has(prefix)) {
-    prefixes.add(prefix);
+  if (!prefixColors.has(prefix)) {
+    prefixColors.set(prefix, (prefixColors.size % 14) + 1);
 
     if (prefix.length > maxPrefixLength) {
       maxPrefixLength = prefix.length;
     }
-
-    const color = colors.shift();
-    if (color) {
-      colors.push(color);
-      prefixColors[prefix] = color;
-    }
   }
 
-  const color = prefixColors[prefix];
+  const color = prefixColors.get(prefix);
   return `\x1b[38;5;${color}m ${prefix.padStart(maxPrefixLength)}|\x1b[0m`;
 };
 
