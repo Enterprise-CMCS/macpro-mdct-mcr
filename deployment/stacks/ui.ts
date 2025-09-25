@@ -153,6 +153,7 @@ export function createUiComponents(props: CreateUiComponentsProps) {
           responsePagePath: "/index.html",
         },
       ],
+      priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
     }
   );
 
