@@ -1,26 +1,18 @@
-// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { spawn } from "node:child_process";
-import path from "node:path";
+/* eslint-disable multiline-comment-style */
+import { spawn } from "child_process";
+import path from "path";
 
-/**
- * Maps all known prefixes to an ANSI color code from 1-14, inclusive.
- * If there are many unique prefixes, colors will repeat.
- * See https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit for color values.
- */
-const prefixColors = new Map<string, number>();
+const prefixes = new Set<string>();
 let maxPrefixLength = 0;
 
 const formattedPrefix = (prefix: string) => {
-  if (!prefixColors.has(prefix)) {
-    prefixColors.set(prefix, (prefixColors.size % 14) + 1);
-
+  if (!prefixes.has(prefix)) {
+    prefixes.add(prefix);
     if (prefix.length > maxPrefixLength) {
       maxPrefixLength = prefix.length;
     }
   }
-
-  const color = prefixColors.get(prefix);
-  return `\x1b[38;5;${color}m ${prefix.padStart(maxPrefixLength)}|\x1b[0m`;
+  return ` ${prefix.padStart(maxPrefixLength)}|`;
 };
 
 export const runCommand = async (

@@ -13,7 +13,7 @@ export const isIlosCompleted = (
     isIlosCompleted = entity["plan_ilosOfferedByPlan"][0].value.startsWith(
       "Yes"
     )
-      ? entity["plan_ilosUtilizationByPlan"]?.length > 0
+      ? entity["plan_ilosUtilizationByPlan"].length > 0
       : entity["plan_ilosOfferedByPlan"][0];
   }
 

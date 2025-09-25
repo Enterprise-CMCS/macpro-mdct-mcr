@@ -29,8 +29,9 @@ import {
 // types
 import { SortableHeadRow, TableContentShape } from "types";
 // assets
-import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
-import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
+import downArrowIcon from "assets/icons/icon_long_arrow_alt_down_solid.png";
+import upArrowIcon from "assets/icons/icon_long_arrow_alt_up_solid.png";
+import upDownArrowIcon from "assets/icons/icon_arrows_alt_v_solid.png";
 
 export const SortableTable = ({
   border,
@@ -99,6 +100,7 @@ export const SortableTable = ({
                   scope="col"
                   sx={{ ...sx.tableHeader, ...sxOverride }}
                   {...ariaSort}
+                  aria-labelledby={`header-${header.id}`}
                 >
                   {header.column.getCanSort() && (
                     <Button
@@ -111,6 +113,7 @@ export const SortableTable = ({
                     >
                       <Box
                         as="span"
+                        id={`header-${header.id}`}
                         ref={(el: HTMLElement | null) =>
                           (headerRefs.current[header.id] = el as HTMLElement)
                         }
@@ -120,12 +123,15 @@ export const SortableTable = ({
                           header.getContext()
                         )}
                       </Box>
-                      <Box as="span" w={3} ml={2} aria-hidden="true">
+                      <Box as="span" w={3} ml={2} aria-hidden="false">
+                        {!header.column.getIsSorted() && (
+                          <Image src={upDownArrowIcon} alt="Not sorted" />
+                        )}
                         {header.column.getIsSorted() === "asc" && (
-                          <Image src={upArrowIcon} alt="" />
+                          <Image src={upArrowIcon} alt="Sort ascending" />
                         )}
                         {header.column.getIsSorted() === "desc" && (
-                          <Image src={downArrowIcon} alt="" />
+                          <Image src={downArrowIcon} alt="Sort descending" />
                         )}
                       </Box>
                     </Button>

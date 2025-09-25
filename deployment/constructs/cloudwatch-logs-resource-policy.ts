@@ -1,4 +1,3 @@
-// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import { Aws, aws_iam as iam, aws_logs as logs } from "aws-cdk-lib";
 

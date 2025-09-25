@@ -1,4 +1,3 @@
-// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import {
   aws_iam as iam,
