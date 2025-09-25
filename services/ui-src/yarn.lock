@@ -4279,9 +4279,6 @@
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/@smithy/abort-controller/-/abort-controller-3.1.5.tgz#ca7a86a3c6b20fabe59667143f58d9e198616d14"
   integrity sha512-DhNPnqTqPoG8aZ5dWkFOgsuY+i0GQ3CI6hMmvCoduNsnU9gUZWZBwGfDQsTTB7NvFPkom1df7jMIJWU90kuXXg==
-  dependencies:
-    "@smithy/types" "^3.5.0"
-    tslib "^2.6.2"
 
 "@smithy/config-resolver@^3.0.5", "@smithy/config-resolver@^3.0.9":
   version "3.0.9"
@@ -8103,10 +8100,10 @@ pa11y-runner-htmlcs@^2.0.1:
   dependencies:
     html_codesniffer "^2.5.1"
 
-pa11y@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/pa11y/-/pa11y-9.0.0.tgz#3ec16a9d441b126d963a7823cf83f89e1bfdd20a"
-  integrity sha512-IGOctP9ETUGZ+ygzX7co6p4BhImdtQ0HDHFMdjyReUXb3dzmR14HeHCUja88bCTnnnl2/FG17h6zZeD5GjQvSg==
+pa11y@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/pa11y/-/pa11y-9.0.1.tgz#385a5d9835c22fca4d7f8feade425c68a45923ff"
+  integrity sha512-S0UReAkHQuGsjVDUNUKPREms3IyR/Dfrk6U2HMrjQ71LIdADmDJXrDOBOD05UroCn8Ns9jg2NgZeFuLj50Sl4w==
   dependencies:
     axe-core "~4.10.3"
     bfj "~9.1.2"
@@ -9195,10 +9192,10 @@ tabbable@^6.2.0:
   resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-6.2.0.tgz#732fb62bc0175cfcec257330be187dcfba1f3b97"
   integrity sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==
 
-tar-fs@^3.0.8:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.0.9.tgz#d570793c6370d7078926c41fa422891566a0b617"
-  integrity sha512-XF4w9Xp+ZQgifKakjZYmFdkLoSWd34VGKcsTCwlNWM7QG3ZbaxnTsaBwnjFZqHRf/rROxaR8rXnbtwdvaDI+lA==
+tar-fs@3.1.1, tar-fs@^3.0.8:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.1.1.tgz#4f164e59fb60f103d472360731e8c6bb4a7fe9ef"
+  integrity sha512-LZA0oaPOc2fVo82Txf3gw+AkEd38szODlptMYejQUhndHMLQ9M059uXR+AfS7DNo0NpINvSqDsvyaCrBVkptWg==
   dependencies:
     pump "^3.0.0"
     tar-stream "^3.1.5"

@@ -72,7 +72,7 @@
     "babel-jest": "^29.7.0",
     "jest-axe": "^6.0.0",
     "jest-launchdarkly-mock": "^2.0.3",
-    "pa11y": "^9.0.0",
+    "pa11y": "^9.0.1",
     "pa11y-runner-htmlcs": "^2.0.1",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
@@ -85,7 +85,8 @@
     "nwsapi": "^2.2.5",
     "xml2js": "^0.5.0",
     "json5": "2.2.3",
-    "proxy-agent": "^6.3.0"
+    "proxy-agent": "^6.3.0",
+    "tar-fs": "3.1.1"
   },
   "jest": {
     "coverageReporters": [
