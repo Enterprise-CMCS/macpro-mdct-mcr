@@ -152,7 +152,7 @@ export const ActionButton = ({
 export const DateFields = ({ report, reportType }: DateFieldProps) => {
   return (
     <>
-      {reportType !== ReportType.MLR && (
+      {reportType === ReportType.MCPAR && (
         <Td>{convertDateUtcToEt(report.dueDate)}</Td>
       )}
       <Td>{convertDateUtcToEt(report.lastAltered)}</Td>
