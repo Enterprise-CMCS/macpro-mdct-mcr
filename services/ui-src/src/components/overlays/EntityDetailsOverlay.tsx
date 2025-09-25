@@ -51,7 +51,7 @@ export const EntityDetailsOverlay = ({
   } = selectedEntity;
   const eligibilityGroup = `${
     selectedEntity["report_eligibilityGroup-otherText"] ||
-    selectedEntity.report_eligibilityGroup[0].value
+    selectedEntity.report_eligibilityGroup?.[0].value
   }`;
   const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
 

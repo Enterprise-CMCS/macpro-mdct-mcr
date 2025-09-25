@@ -903,6 +903,73 @@
       }
     },
     {
+      "name": "Placeholder",
+      "path": "/mlr/placeholder",
+      "pageType": "modalOverlay",
+      "entityType": "program",
+      "verbiage": {
+        "intro": {
+          "section": "Placeholder",
+          "subsection": "Placeholder",
+          "info": []
+        },
+        "dashboardTitle": "Total count:",
+        "countEntitiesInTitle": true,
+        "tableHeader": "Entity placeholder",
+        "addEntityButtonText": "Add entity",
+        "editEntityButtonText": "Edit info",
+        "deleteModalTitle": "Delete entity for this report?",
+        "deleteModalConfirmButtonText": "Yes, delete",
+        "deleteModalWarning": "You will lose all information entered for this report. Are you sure you want to proceed?",
+        "enterReportText": "Enter entity",
+        "emptyDashboardText": "Placeholder",
+        "addEditModalAddTitle": "Add information",
+        "addEditModalEditTitle": "Edit information"
+      },
+      "modalForm": {
+        "id": "test-modal",
+        "fields": [
+          {
+            "id": "report_entityName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "Entity name",
+              "hint": "Placeholder"
+            }
+          }
+        ]
+      },
+      "drawerForm": {
+        "id": "test-drawer",
+        "fields": [
+          {
+            "id": "report_entityDrawerName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "Entity name",
+              "hint": "Placeholder"
+            }
+          }
+        ]
+      },
+      "overlayForm": {
+        "id": "test-overlay",
+        "fields": [
+          {
+            "id": "report_entityOverlayName",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "Entity name",
+              "hint": "Placeholder"
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "Review & Submit",
       "path": "/mlr/review-and-submit",
       "pageType": "reviewSubmit"
