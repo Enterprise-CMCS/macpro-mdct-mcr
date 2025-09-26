@@ -29,8 +29,10 @@ import {
 // types
 import { SortableHeadRow, TableContentShape } from "types";
 // assets
-import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
-import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
+import downArrowIcon from "assets/icons/icon_arrow_alt_down_solid.png";
+import upArrowIcon from "assets/icons/icon_arrow_alt_up_solid.png";
+import upDownArrowIcon from "assets/icons/icon_arrows_alt_v_solid.png";
+import uuid from "react-uuid";
 
 export const SortableTable = ({
   border,
@@ -43,6 +45,7 @@ export const SortableTable = ({
   ...props
 }: Props) => {
   const headerRefs = useRef<{ [key: string]: HTMLElement }>({});
+  const tableInstanceId = uuid();
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [headerLabels, setHeaderLabels] = useState<{ [key: string]: string }>(
@@ -99,6 +102,7 @@ export const SortableTable = ({
                   scope="col"
                   sx={{ ...sx.tableHeader, ...sxOverride }}
                   {...ariaSort}
+                  aria-labelledby={`${tableInstanceId}-header-${header.id}`}
                 >
                   {header.column.getCanSort() && (
                     <Button
@@ -111,6 +115,7 @@ export const SortableTable = ({
                     >
                       <Box
                         as="span"
+                        id={`${tableInstanceId}-header-${header.id}`}
                         ref={(el: HTMLElement | null) =>
                           (headerRefs.current[header.id] = el as HTMLElement)
                         }
@@ -120,12 +125,15 @@ export const SortableTable = ({
                           header.getContext()
                         )}
                       </Box>
-                      <Box as="span" w={3} ml={2} aria-hidden="true">
+                      <Box as="span" w={3} ml={2} aria-hidden="false">
+                        {!header.column.getIsSorted() && (
+                          <Image src={upDownArrowIcon} alt="Not sorted" />
+                        )}
                         {header.column.getIsSorted() === "asc" && (
-                          <Image src={upArrowIcon} alt="" />
+                          <Image src={upArrowIcon} alt="Sort ascending" />
                         )}
                         {header.column.getIsSorted() === "desc" && (
-                          <Image src={downArrowIcon} alt="" />
+                          <Image src={downArrowIcon} alt="Sort descending" />
                         )}
                       </Box>
                     </Button>
