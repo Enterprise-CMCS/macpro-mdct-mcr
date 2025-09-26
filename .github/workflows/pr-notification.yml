@@ -18,6 +18,7 @@ permissions:
 jobs:
   endpoint:
     name: Endpoint
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     outputs:
       application_endpoint_url: ${{ steps.cloudfront-endpoint.outputs.application_endpoint_url }}
     runs-on: ubuntu-latest
@@ -62,7 +63,7 @@ jobs:
   notify_integrations_channel:
     name: Notify integrations channel
     if: >
-      github.actor != 'dependabot[bot]' &&
+      github.event.pull_request.user.login != 'dependabot[bot]' &&
       github.actor != 'github-actions[bot]' &&
       github.actor != 'mdct-github-service-account' &&
       !github.event.pull_request.draft
