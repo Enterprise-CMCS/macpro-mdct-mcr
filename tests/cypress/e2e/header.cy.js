@@ -1,6 +1,3 @@
-// element selectors
-const accessibilityStatementLinkText = "Accessibility Statement";
-
 beforeEach(() => {
   cy.authenticate("stateUser");
 });
