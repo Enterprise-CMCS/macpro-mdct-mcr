@@ -7,6 +7,7 @@ on:
 jobs:
   prchecks:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,7 +21,7 @@ jobs:
       - uses: pre-commit/action@v3.0.1
   assignAuthor:
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.user.type != 'Bot' }}
+    if: github.event.pull_request.user.type != 'Bot'
     steps:
       - uses: actions/checkout@v4
       - name: Assign PR to Creator
