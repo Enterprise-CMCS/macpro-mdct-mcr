@@ -54,9 +54,9 @@ repos:
         language: system
         files: '\.tsx?$'
         pass_filenames: false
-      - id: typescript-check
-        name: typescript-check
-        entry: yarn tsc --noEmit
+      - id: typescript-check-cli
+        name: typescript-check-cli
+        entry: bash -c "cd cli && yarn tsc --noEmit"
         language: system
         pass_filenames: false
       - id: typescript-check-api
@@ -69,3 +69,8 @@ repos:
         entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
         language: system
         pass_filenames: false
+      - id: validate-commit-msg
+        name: validate-commit-msg
+        entry: .github/validateCommitMessage.sh
+        language: script
+        stages: [commit-msg]

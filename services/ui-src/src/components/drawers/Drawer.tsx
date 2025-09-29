@@ -40,6 +40,16 @@ export const Drawer = ({
       <DrawerOverlay />
       <DrawerContent sx={sx.drawerContent} className={mqClasses}>
         <DrawerHeader sx={sx.drawerHeader}>
+          <Button
+            sx={sx.drawerCloseButton}
+            leftIcon={<CloseIcon />}
+            variant="link"
+            onClick={onClose as MouseEventHandler}
+          >
+            Close
+          </Button>
+        </DrawerHeader>
+        <DrawerBody sx={sx.drawerBody}>
           {verbiage.drawerEyebrowTitle && (
             <Text sx={sx.drawerEyebrowHeaderText}>
               {verbiage.drawerEyebrowTitle}
@@ -58,16 +68,8 @@ export const Drawer = ({
               entityType={entityType}
             />
           )}
-          <Button
-            sx={sx.drawerCloseButton}
-            leftIcon={<CloseIcon />}
-            variant="link"
-            onClick={onClose as MouseEventHandler}
-          >
-            Close
-          </Button>
-        </DrawerHeader>
-        <DrawerBody sx={sx.drawerBody}>{children}</DrawerBody>
+          {children}
+        </DrawerBody>
       </DrawerContent>
     </ChakraDrawer>
   );

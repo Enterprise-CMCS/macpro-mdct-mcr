@@ -2,29 +2,39 @@ name: Pull Request
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize]
+    types: [opened, ready_for_review, synchronize]
 
 jobs:
   prchecks:
+    name: prchecks # Name needs to be unchanged to avoid updating branch rules
     runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Python for pre-commit
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - name: Configure pre-commit to skip branch name validation
-        run: |
-          echo "SKIP=branch-name-validation,typescript-check,typescript-check-api,typescript-check-ui" >> $GITHUB_ENV
-      - uses: pre-commit/action@v3.0.1
+
+      - name: Configure pre-commit to skip irrelevant checks
+        run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui" >> $GITHUB_ENV
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
+
   assignAuthor:
+    name: assignAuthor # Name needs to be unchanged to avoid updating branch rules
+    if: github.event.pull_request.user.type != 'Bot' && github.event.action != 'synchronize'
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.user.type != 'Bot' }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Assign PR to Creator
-        run: |
-          gh pr edit $PRNUM --add-assignee $PR_AUTHOR
+      - name: Assign PR to creator
+        run: gh pr edit $PR_URL --add-assignee $PR_AUTHOR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRNUM: ${{ github.event.pull_request.number }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_URL: ${{github.event.pull_request.html_url}}

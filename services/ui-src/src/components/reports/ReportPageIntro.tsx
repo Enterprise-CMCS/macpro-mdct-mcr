@@ -53,7 +53,10 @@ export const ReportPageIntro = ({
 
 interface Props {
   text: AnyObject;
-  accordion?: AnyObject;
+  accordion?: {
+    buttonLabel: string;
+    text: string;
+  };
   reportType?: string;
   hasIlos?: boolean;
   table?: TableContentShape;

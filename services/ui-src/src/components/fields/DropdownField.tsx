@@ -8,7 +8,7 @@ import {
   InlineError,
   Label,
 } from "@cmsgov/design-system";
-import { Box } from "@chakra-ui/react";
+import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // constants
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
@@ -242,7 +242,7 @@ interface Props {
   nested?: boolean;
   autosave?: boolean;
   validateOnRender?: boolean;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   [key: string]: any;
 }
