@@ -125,7 +125,7 @@ export const SortableTable = ({
                           header.getContext()
                         )}
                       </Box>
-                      <Box as="span" w={3} ml={2} aria-hidden="false">
+                      <Box as="span" w={3} ml={2} aria-hidden="true">
                         {!header.column.getIsSorted() && (
                           <Image src={upDownArrowIcon} alt="Not sorted" />
                         )}
