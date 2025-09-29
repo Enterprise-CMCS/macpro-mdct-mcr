@@ -31,3 +31,10 @@ rules:
   multiline-comment-style:
     - error
     - starred-block
+
+overrides:
+  - files:
+      - "cli/**"
+      - "deployment/**"
+    rules:
+      no-console: off

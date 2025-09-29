@@ -1,21 +1,23 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import {
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as lambda_nodejs,
   aws_logs as logs,
+  aws_s3 as s3,
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { DynamoDBTableIdentifiers } from "../constructs/dynamodb-table";
-import { isDefined } from "../utils/misc";
 import { createHash } from "crypto";
+import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaDynamoEventProps
   extends Partial<lambda_nodejs.NodejsFunctionProps> {
   additionalPolicies?: iam.PolicyStatement[];
   stackName: string;
-  tables: DynamoDBTableIdentifiers[];
+  tables: DynamoDBTable[];
+  buckets?: s3.IBucket[];
   isDev: boolean;
 }
 
@@ -29,48 +31,12 @@ export class LambdaDynamoEventSource extends Construct {
       additionalPolicies = [],
       memorySize = 1024,
       tables,
+      buckets = [],
       stackName,
       timeout = Duration.seconds(6),
       isDev,
       ...restProps
     } = props;
-
-    const role = new iam.Role(this, `${id}LambdaExecutionRole`, {
-      assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole"
-        ),
-      ],
-      inlinePolicies: {
-        LambdaPolicy: new iam.PolicyDocument({
-          statements: [
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
-              actions: [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              resources: ["arn:aws:logs:*:*:*"],
-            }),
-            new iam.PolicyStatement({
-              effect: iam.Effect.ALLOW,
-              actions: [
-                "dynamodb:DescribeStream",
-                "dynamodb:GetRecords",
-                "dynamodb:GetShardIterator",
-                "dynamodb:ListStreams",
-              ],
-              resources: tables
-                .map((table) => table.streamArn)
-                .filter(isDefined),
-            }),
-            ...additionalPolicies,
-          ],
-        }),
-      },
-    });
 
     const logGroup = new logs.LogGroup(this, `${id}LogGroup`, {
       logGroupName: `/aws/lambda/${stackName}-${id}`,
@@ -83,7 +49,6 @@ export class LambdaDynamoEventSource extends Construct {
       runtime: lambda.Runtime.NODEJS_20_X,
       timeout,
       memorySize,
-      role,
       bundling: {
         assetHash: createHash("sha256")
           .update(`${Date.now()}-${id}`)
@@ -96,12 +61,12 @@ export class LambdaDynamoEventSource extends Construct {
       ...restProps,
     });
 
-    for (let table of tables) {
+    for (const ddbTable of tables) {
       new lambda.CfnEventSourceMapping(
         scope,
-        `${id}${table.id}DynamoDBStreamEventSourceMapping`,
+        `${id}${ddbTable.node.id}DynamoDBStreamEventSourceMapping`,
         {
-          eventSourceArn: table.streamArn,
+          eventSourceArn: ddbTable.table.tableStreamArn,
           functionName: this.lambda.functionArn,
           startingPosition: "TRIM_HORIZON",
           maximumRetryAttempts: 2,
@@ -109,6 +74,21 @@ export class LambdaDynamoEventSource extends Construct {
           enabled: true,
         }
       );
+    }
+
+    for (const stmt of additionalPolicies) {
+      this.lambda.addToRolePolicy(stmt);
+    }
+
+    for (const ddbTable of tables) {
+      ddbTable.table.grantReadWriteData(this.lambda);
+      if (ddbTable.table.tableStreamArn) {
+        ddbTable.table.grantStreamRead(this.lambda);
+      }
+    }
+
+    for (const bucket of buckets) {
+      bucket.grantReadWrite(this.lambda);
     }
   }
 }

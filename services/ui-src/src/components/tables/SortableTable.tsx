@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Image,
+  SystemStyleObject,
   Table as TableRoot,
   TableCaption,
   Tbody,
@@ -26,7 +27,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 // types
-import { AnyObject, SortableHeadRow, TableContentShape } from "types";
+import { SortableHeadRow, TableContentShape } from "types";
 // assets
 import downArrowIcon from "assets/icons/icon_arrow_down_gray.png";
 import upArrowIcon from "assets/icons/icon_arrow_up_gray.png";
@@ -222,7 +223,7 @@ interface Props {
   content: TableContentShape;
   data: any[];
   initialSorting?: SortingState;
-  sxOverride?: AnyObject;
+  sxOverride?: SystemStyleObject;
   variant?: string;
   [key: string]: any;
 }

@@ -3,40 +3,34 @@
 set -eu -o pipefail
 
 # this is the entrypoint for development. It wraps up compiling and calling run.ts
-# all arguments, changes, etc. should be found in src/run.ts
+# all arguments, changes, etc. should be found in cli/run.ts
 
 # this script checks for all the prereqs and then calls run.ts
 
 export REGION_A=us-east-1
 export PROJECT=mcr
 
-# check node exists
-if ! which node >/dev/null; then
-    echo "node not found on the system. Install version in .nvmrc based on instructions in README"
+# Utilities
+require_cmd() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "$1 not found on the system. $2" >&2
     exit 1
-fi
+  fi
+}
+
+# check node exists
+require_cmd node "Install version in .nvmrc. If using nvm, run 'nvm use'"
 
 # check node version
-if ! diff .nvmrc <(node -v) >/dev/null; then
-    echo "Uh Oh! The current node version does not match the version required in .nvmrc"
-    echo "If you have installed nvm, simply running 'nvm use' in this directory should solve the problem"
-    echo "If you don't have nvm yet, the instructions in the README should sort you."
-    echo "** Don't forget to add the bit to your shell profile **"
-    exit 1
+if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
+	echo "node version does not match the version required in .nvmrc"
+	echo "If using nvm, run 'nvm use'"
+	exit 1
 fi
 
 # check yarn exists
-if ! which yarn >/dev/null; then
-    echo "yarn not found on the system. On macOS, you can install it with 'brew install yarn'"
-    exit 1
-fi
+require_cmd yarn "On macOS, install with 'brew install yarn'"
 
-# have to ensure that yarn install is up to date.
-# we use .yarn_install as a marker for the last time `yarn install` was run. Rerun the command when yarn.lock is updated
-if [ "yarn.lock" -nt ".yarn_install" ]; then
-    yarn install
-    touch .yarn_install
-fi
 
 # Parse arguments
 UPDATE_ENV=false
@@ -45,10 +39,10 @@ ARGS=()
 
 for arg in "$@"; do
     case $arg in
-    update-env)
+        update-env)
         UPDATE_ENV=true
         ;;
-    local)
+        local)
         LOCAL=true
         ;;
     esac
@@ -56,41 +50,30 @@ for arg in "$@"; do
 done
 
 if [ "$UPDATE_ENV" = true ]; then
-    if ! which op >/dev/null; then
-        echo "The MDCT team uses 1Password to store and retrieve development credentials. On macOS, you can install it with 'brew install --cask 1password-cli'"
-        exit 1
-    fi
+    require_cmd op "Install 1Password CLI: 'brew install --cask 1password-cli'"
 fi
 
 if [ "$LOCAL" = true ]; then
-    if ! which docker >/dev/null; then
-        echo "docker not found on the system. On macOS, you can install it with 'brew install docker'"
-        exit 1
-    fi
+    require_cmd docker "On macOS, install with 'brew install docker'"
+    require_cmd colima "On macOS, install with 'brew install colima'"
+    require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
 
-    if ! which colima >/dev/null; then
-        echo "colima not found on the system. On macOS, you can install it with 'brew install colima'"
-        exit 1
-    fi
-
-    if ! which localstack >/dev/null; then
-        echo "localstack not found on the system. On macOS, you can install it with 'brew install localstack/tap/localstack-cli'"
-        exit 1
-    fi
-
-    if ! colima status 2>&1 | grep -q "colima is running"; then
+    if ! colima status 2>&1 | grep -q "colima is running" ; then
         echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
 
-    if ! localstack status | grep -q "running"; then
+    if ! localstack status | grep -q "running" ; then
         echo "localstack is installed but not running. We'll start it up for you now."
-        localstack start >/dev/null 2>&1 &
+        localstack start > /dev/null 2>&1 &
     fi
 fi
 
-yarn
+pushd cli
+yarn install --frozen-lockfile
+popd 
 
-# build and run run.ts
-# tsc is configured to build what we expect in tsconfig.json
-./node_modules/.bin/tsc && node ./build_dev/src/run.js "${ARGS[@]-}"
+yarn install --frozen-lockfile
+
+# run the CLI
+yarn tsx cli/run.ts "${ARGS[@]-}"

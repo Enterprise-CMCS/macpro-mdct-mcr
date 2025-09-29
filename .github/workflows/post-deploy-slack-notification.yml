@@ -3,35 +3,41 @@ name: Post Deploy
 
 on:
   workflow_run:
-    workflows: [Deploy]
-    types: [completed]
     branches:
       - main
       - val
       - production
+    types: [completed]
+    workflows: [Deploy]
 
 jobs:
+  # Sends alert to macpro-mdct-<product name>-alerts channel in CMS slack when any integration environment fails to deploy or run tests
   notify_on_failure:
-    # Sends alert to macpro-mdct-<product name>-alerts channel in CMS slack when any integration environment fails to deploy or run tests
+    name: Workflow failure notification
+    if: >
+      github.event.workflow_run.conclusion == 'failure' &&
+      (github.event.workflow_run.head_branch == 'main' ||
+      github.event.workflow_run.head_branch == 'val' ||
+      github.event.workflow_run.head_branch == 'production')
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' && (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'val' || github.event.workflow_run.head_branch == 'production') }}
     steps:
-      - name: Slack Notification
+      - name: Slack notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":boom: The latest ${{ github.repository }} build on branch '${{ github.event.workflow_run.head_branch }}' has failed"
-          SLACK_MESSAGE: "${{ github.event.workflow_run.html_url }}"
           MSG_MINIMAL: true
+          SLACK_MESSAGE: "${{ github.event.workflow_run.html_url }}"
+          SLACK_TITLE: ":boom: The latest ${{ github.repository }} build on branch '${{ github.event.workflow_run.head_branch }}' has failed"
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
   # Sends a slack message to the mdct-prod-releases channel in CMS slack
   notify_on_prod_release:
+    name: Production release notifcation
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'production'
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'production') }}
     steps:
-      - name: Slack Notification
+      - name: Slack notification
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_TITLE: ":rocket: ${{ github.repository }} has successfully released to production."
           MSG_MINIMAL: true
+          SLACK_TITLE: ":rocket: ${{ github.repository }} has successfully released to production."
           SLACK_WEBHOOK: ${{ secrets.PROD_RELEASE_SLACK_WEBHOOK }}
