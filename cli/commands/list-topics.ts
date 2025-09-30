@@ -12,22 +12,18 @@ export const list_topics = async (options: { stage: string }) => {
   );
   const functionName = outputs["ListTopicsFunctionName"];
 
-  if (!functionName) {
-    throw new Error(
-      `Could not resolve ListTopicsFunctionName from stack ${project}-${options.stage}`
-    );
+  if (functionName) {
+    const payload = JSON.stringify({ stage: options.stage });
+
+    const command = new InvokeCommand({
+      FunctionName: functionName,
+      Payload: Buffer.from(payload),
+    });
+
+    const response = await lambdaClient.send(command);
+    const result = Buffer.from(response.Payload || []).toString();
+    console.log("listTopics response:", result);
   }
-
-  const payload = JSON.stringify({ stage: options.stage });
-
-  const command = new InvokeCommand({
-    FunctionName: functionName,
-    Payload: Buffer.from(payload),
-  });
-
-  const response = await lambdaClient.send(command);
-  const result = Buffer.from(response.Payload || []).toString();
-  console.log("listTopics response:", result);
 };
 
 export const listTopics = {
