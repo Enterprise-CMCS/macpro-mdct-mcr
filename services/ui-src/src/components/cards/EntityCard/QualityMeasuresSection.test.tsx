@@ -49,19 +49,16 @@ describe("QualityMeasuresSection", () => {
       />
     );
 
-    // Plan names rendered
     expect(screen.getByText("Plan A")).toBeInTheDocument();
     expect(screen.getByText("Plan B")).toBeInTheDocument();
     expect(screen.getByText("Plan C")).toBeInTheDocument();
-
-    // Responses rendered or empty message
     expect(screen.getByText("Response A")).toBeInTheDocument();
     expect(screen.getByText("Response C")).toBeInTheDocument();
 
     const planBResponse = screen.getAllByText("", { exact: true })[0];
     expect(planBResponse).toBeInTheDocument();
 
-    // 'error' class applied to plan with empty response
+    // 'error' class is on plan with empty response
     const errorContainers = document.querySelectorAll(".error");
     expect(errorContainers.length).toBe(1);
   });
@@ -83,7 +80,7 @@ describe("QualityMeasuresSection", () => {
       />
     );
 
-    expect(screen.getByTestId("not-answered")).toBeInTheDocument();
+    expect(screen.getByText("Not answered")).toBeInTheDocument();
     expect(screen.getByText("Some response")).toBeInTheDocument();
   });
 

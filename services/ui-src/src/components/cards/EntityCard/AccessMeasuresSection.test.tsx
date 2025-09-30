@@ -20,7 +20,7 @@ describe("AccessMeasuresSection", () => {
         {...baseProps}
         printVersion={false}
         formattedEntityData={{
-          provider: "ACME",
+          provider: "Physician",
           region: "North",
           population: "Urban",
           monitoringMethods: ["Method A", "Method B"],
@@ -55,7 +55,7 @@ describe("AccessMeasuresSection", () => {
         {...baseProps}
         printVersion={true}
         formattedEntityData={{
-          provider: "ACME",
+          provider: "Physician",
           region: "North",
           population: "Urban",
           monitoringMethods: ["X"],
@@ -115,13 +115,13 @@ describe("AccessMeasuresSection", () => {
     expect(errorContainer).toBeInTheDocument();
   });
 
-  test("does NOT apply 'error' class when all key fields are present", () => {
+  test("does not apply 'error' class when all key fields are present", () => {
     const { container } = render(
       <AccessMeasuresSection
         {...baseProps}
         printVersion={false}
         formattedEntityData={{
-          provider: "ACME",
+          provider: "Physician",
           region: "North",
           population: "Urban",
           monitoringMethods: ["M1"],
