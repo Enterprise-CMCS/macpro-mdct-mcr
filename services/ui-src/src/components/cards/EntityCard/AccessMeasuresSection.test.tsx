@@ -20,7 +20,7 @@ describe("AccessMeasuresSection", () => {
         {...baseProps}
         printVersion={false}
         formattedEntityData={{
-          provider: "Physician",
+          provider: "Hospital",
           region: "North",
           population: "Urban",
           monitoringMethods: ["Method A", "Method B"],
@@ -55,7 +55,7 @@ describe("AccessMeasuresSection", () => {
         {...baseProps}
         printVersion={true}
         formattedEntityData={{
-          provider: "Physician",
+          provider: "Hospital",
           region: "North",
           population: "Urban",
           monitoringMethods: ["X"],
@@ -121,7 +121,7 @@ describe("AccessMeasuresSection", () => {
         {...baseProps}
         printVersion={false}
         formattedEntityData={{
-          provider: "Physician",
+          provider: "Hospital",
           region: "North",
           population: "Urban",
           monitoringMethods: ["M1"],

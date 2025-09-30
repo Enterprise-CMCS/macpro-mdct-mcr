@@ -35,13 +35,13 @@ describe("StandardsSection", () => {
   test("handles missing optional fields gracefully", () => {
     render(
       <StandardsSection
-        formattedEntityData={{ provider: "Physician" }}
+        formattedEntityData={{ provider: "Hospital" }}
         sx={{}}
       />
     );
 
     expect(screen.getByText("Provider type(s)")).toBeInTheDocument();
-    expect(screen.getByText("Physician")).toBeInTheDocument();
+    expect(screen.getByText("Hospital")).toBeInTheDocument();
     // Missing fields shouldn't throw errors, and should not render values
     expect(screen.queryByText("Quantitative")).not.toBeInTheDocument();
     expect(screen.queryByText("North")).not.toBeInTheDocument();

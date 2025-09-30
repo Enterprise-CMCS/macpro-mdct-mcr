@@ -3,7 +3,10 @@ import { EntityCardBottomSection } from "./EntityCardBottomSection";
 import { EntityType } from "types";
 
 const baseProps = {
-  formattedEntityData: { provider: "TEST", providerDetails: "Extra Details" },
+  formattedEntityData: {
+    provider: "Hospital",
+    providerDetails: "Extra Details",
+  },
   printVersion: true,
   verbiage: {
     entityMissingResponseMessage: "Missing message",
