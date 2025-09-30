@@ -14,7 +14,7 @@ jobs:
   # Hack which is used just to redirect the "scheduled" triggers to deploy/production,
   # since we can't just tell Github (for now) to do a scheduled action on a branch different from the default branch
   trigger-action-on-deploy-production:
-    if: github.refs != 'refs/head/production'
+    if: github.ref != 'refs/head/production'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,7 +27,7 @@ jobs:
             --ref production
 
   sync:
-    if: github.refs == 'refs/heads/production'
+    if: github.ref == 'refs/heads/production'
     name: Run sync
     runs-on: ubuntu-latest
     steps:
