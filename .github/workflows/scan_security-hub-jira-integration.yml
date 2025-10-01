@@ -14,7 +14,7 @@ jobs:
   # Hack which is used just to redirect the "scheduled" triggers to deploy/production,
   # since we can't just tell Github (for now) to do a scheduled action on a branch different from the default branch
   trigger-action-on-deploy-production:
-    if: github.ref != 'refs/head/production'
+    if: github.ref != 'refs/heads/production'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -42,15 +42,15 @@ jobs:
           jira-username: "mdct_github_service_account"
           jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
           jira-project-key: CMDCT
-          jira-ignore-statuses: Done, Closed, Canceled
+          jira-ignore-statuses: Done, Closed, Cancelled
           jira-custom-fields: >-
-            '{
+            {
               "customfield_10100": "CMDCT-2280",
               "customfield_26700" :
                 [
                   {"id": "${{ vars.JIRA_APP_CUSTOM_FIELD_ID }}",
                   "value": "${{ vars.APP_NAME_UPPER }}"}
                 ]
-            }'
+            }
           aws-severities: CRITICAL, HIGH, MEDIUM
           jira-assignee: "MWTW"
