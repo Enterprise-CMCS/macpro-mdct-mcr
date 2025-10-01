@@ -463,6 +463,6 @@ const sx = {
     color: "base",
   },
   notApplicable: {
-    color: "gray_medium",
+    color: "gray",
   },
 };

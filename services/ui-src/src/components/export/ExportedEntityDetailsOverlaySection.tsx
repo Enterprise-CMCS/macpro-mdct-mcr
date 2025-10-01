@@ -216,7 +216,7 @@ const sx = {
       paddingBottom: "0.375rem",
       fontWeight: "bold",
       lineHeight: "lg",
-      color: "gray_medium",
+      color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
@@ -233,7 +233,7 @@ const sx = {
     },
   },
   tableIndex: {
-    color: "gray_medium",
+    color: "gray",
     fontWeight: "bold",
   },
   statusIcon: {
@@ -253,7 +253,7 @@ const sx = {
   },
   entityHeading: {
     padding: "2rem 0 0.5rem 0",
-    color: "gray_medium",
+    color: "gray",
     width: "100%",
     p: {
       color: "base",

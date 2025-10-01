@@ -166,7 +166,7 @@ const sx = {
     display: "flex",
     fontWeight: "bold",
     paddingBottom: "0.5rem",
-    span: { color: "gray_medium" },
+    span: { color: "gray" },
     img: { marginRight: "1rem" },
   },
   errorText: {
