@@ -1,7 +1,10 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
 import { region } from "../lib/consts.js";
 import { runFrontendLocally } from "../lib/utils.js";
+import downloadClamAvLayer from "../lib/clam.js";
+import { seedData } from "../lib/seedData.js";
 
 const isColimaRunning = () => {
   try {
@@ -42,7 +45,7 @@ export const local = {
     process.env.AWS_DEFAULT_REGION = region;
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
-    process.env.AWS_ENDPOINT_URL = "https://localhost.localstack.cloud:4566";
+    process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
 
     await runCommand(
       "CDK local bootstrap",
@@ -63,8 +66,6 @@ export const local = {
         "yarn",
         "cdklocal",
         "deploy",
-        "--context",
-        "stage=prerequisites",
         "--app",
         '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
       ],
@@ -77,13 +78,13 @@ export const local = {
         "yarn",
         "cdklocal",
         "deploy",
-        "--context",
-        "stage=prerequisites",
         "--app",
         '"npx --prefix deployment tsx deployment/prerequisites.ts"',
       ],
       "."
     );
+
+    await downloadClamAvLayer();
 
     await runCommand(
       "CDK local deploy",
@@ -98,6 +99,8 @@ export const local = {
       ],
       "."
     );
+
+    await seedData();
 
     await Promise.all([
       runCommand(
