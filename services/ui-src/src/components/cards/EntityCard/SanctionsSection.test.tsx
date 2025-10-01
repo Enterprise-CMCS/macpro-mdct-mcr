@@ -6,17 +6,20 @@ import {
   mockSanctionsFullData,
   mockSanctionsPartialData,
 } from "utils/testing/mockEntities";
+import { testA11y } from "utils/testing/commonTests";
+
+const SanctionsSectionComponentFullData = (
+  <SanctionsSection
+    formattedEntityData={mockSanctionsFullData}
+    printVersion={false}
+    notAnswered={mockNotAnswered}
+    sx={{}}
+  />
+);
 
 describe("SanctionsSection", () => {
   test("renders all labels without version numbers when printVersion is false", () => {
-    render(
-      <SanctionsSection
-        formattedEntityData={mockSanctionsFullData}
-        printVersion={false}
-        notAnswered={mockNotAnswered}
-        sx={{}}
-      />
-    );
+    render(SanctionsSectionComponentFullData);
 
     const labels = [
       "Sanction details",
@@ -90,16 +93,11 @@ describe("SanctionsSection", () => {
   });
 
   test("does NOT add 'error' class when all required fields are present", () => {
-    const { container } = render(
-      <SanctionsSection
-        formattedEntityData={mockSanctionsFullData}
-        printVersion={false}
-        notAnswered={mockNotAnswered}
-        sx={{}}
-      />
-    );
+    const { container } = render(SanctionsSectionComponentFullData);
 
     const errorBox = container.querySelector(".error");
     expect(errorBox).not.toBeInTheDocument();
   });
+
+  testA11y(SanctionsSectionComponentFullData);
 });

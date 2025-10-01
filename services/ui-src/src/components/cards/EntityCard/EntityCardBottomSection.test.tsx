@@ -8,10 +8,6 @@ const baseProps = {
     providerDetails: "Extra Details",
   },
   printVersion: true,
-  verbiage: {
-    entityMissingResponseMessage: "Missing message",
-    entityEmptyResponseMessage: "Empty message",
-  },
 };
 
 describe("EntityCardBottomSection", () => {

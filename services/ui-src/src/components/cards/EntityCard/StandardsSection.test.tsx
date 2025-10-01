@@ -2,12 +2,14 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { StandardsSection } from "./StandardsSection";
 import { mockStandardsFullData } from "utils/testing/mockEntities";
+import { testA11y } from "utils/testing/commonTests";
 
+const standardsSectionComponent = (
+  <StandardsSection formattedEntityData={mockStandardsFullData} sx={{}} />
+);
 describe("StandardsSection", () => {
   test("renders all labels", () => {
-    render(
-      <StandardsSection formattedEntityData={mockStandardsFullData} sx={{}} />
-    );
+    render(standardsSectionComponent);
 
     const labels = [
       "Provider type(s)",
@@ -22,9 +24,7 @@ describe("StandardsSection", () => {
   });
 
   test("renders all values from formattedEntityData", () => {
-    render(
-      <StandardsSection formattedEntityData={mockStandardsFullData} sx={{}} />
-    );
+    render(standardsSectionComponent);
 
     expect(screen.getByText("Hospital")).toBeInTheDocument();
     expect(screen.getByText("Quantitative")).toBeInTheDocument();
@@ -47,4 +47,6 @@ describe("StandardsSection", () => {
     expect(screen.queryByText("North")).not.toBeInTheDocument();
     expect(screen.queryByText("Urban")).not.toBeInTheDocument();
   });
+
+  testA11y(standardsSectionComponent);
 });

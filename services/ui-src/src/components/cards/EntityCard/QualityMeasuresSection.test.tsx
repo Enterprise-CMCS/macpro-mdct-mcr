@@ -2,17 +2,20 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { QualityMeasuresSection } from "./QualityMeasuresSection";
 import { mockNotAnswered } from "utils/testing/mockEntities";
+import { testA11y } from "utils/testing/commonTests";
+
+const qualityMeasuresSectionComponent = (
+  <QualityMeasuresSection
+    formattedEntityData={{ perPlanResponses: [] }}
+    printVersion={false}
+    notAnswered={mockNotAnswered}
+    sx={{}}
+  />
+);
 
 describe("QualityMeasuresSection", () => {
   test("renders the header", () => {
-    render(
-      <QualityMeasuresSection
-        formattedEntityData={{ perPlanResponses: [] }}
-        printVersion={false}
-        notAnswered={mockNotAnswered}
-        sx={{}}
-      />
-    );
+    render(qualityMeasuresSectionComponent);
 
     expect(screen.getByText("Measure results")).toBeInTheDocument();
   });
@@ -101,4 +104,6 @@ describe("QualityMeasuresSection", () => {
 
     expect(screen.getByText("No response provided")).toBeInTheDocument();
   });
+
+  testA11y(qualityMeasuresSectionComponent);
 });

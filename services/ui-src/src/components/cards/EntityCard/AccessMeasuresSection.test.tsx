@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
 import { mockNotAnswered } from "utils/testing/mockEntities";
+import { testA11y } from "utils/testing/commonTests";
 
 const baseProps = {
   sx: {},
@@ -9,25 +10,27 @@ const baseProps = {
   providerText: jest.fn(() => "Provider: Details"),
 };
 
+const accessMeasuresSectionComponent = (
+  <AccessMeasuresSection
+    {...baseProps}
+    printVersion={false}
+    formattedEntityData={{
+      provider: "Hospital",
+      region: "North",
+      population: "Urban",
+      monitoringMethods: ["Method A", "Method B"],
+      methodFrequency: "Monthly",
+    }}
+  />
+);
+
 describe("AccessMeasuresSection", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test("renders all fields with correct data and printVersion off", () => {
-    render(
-      <AccessMeasuresSection
-        {...baseProps}
-        printVersion={false}
-        formattedEntityData={{
-          provider: "Hospital",
-          region: "North",
-          population: "Urban",
-          monitoringMethods: ["Method A", "Method B"],
-          methodFrequency: "Monthly",
-        }}
-      />
-    );
+    render(accessMeasuresSectionComponent);
 
     expect(baseProps.providerText).toHaveBeenCalled();
 
@@ -116,21 +119,11 @@ describe("AccessMeasuresSection", () => {
   });
 
   test("does not apply 'error' class when all key fields are present", () => {
-    const { container } = render(
-      <AccessMeasuresSection
-        {...baseProps}
-        printVersion={false}
-        formattedEntityData={{
-          provider: "Hospital",
-          region: "North",
-          population: "Urban",
-          monitoringMethods: ["M1"],
-          methodFrequency: "Quarterly",
-        }}
-      />
-    );
+    const { container } = render(accessMeasuresSectionComponent);
 
     const errorContainer = container.querySelector(".error");
     expect(errorContainer).not.toBeInTheDocument();
   });
+
+  testA11y(accessMeasuresSectionComponent);
 });
