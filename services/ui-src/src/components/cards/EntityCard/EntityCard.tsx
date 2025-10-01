@@ -159,6 +159,7 @@ export const EntityCard = ({
         {entityStarted || entityCompleted || printVersion ? (
           <EntityCardBottomSection
             entityType={entityType}
+            verbiage={verbiage}
             formattedEntityData={{
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,

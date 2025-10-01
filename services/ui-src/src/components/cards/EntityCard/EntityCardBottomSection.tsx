@@ -11,6 +11,7 @@ export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
   printVersion,
+  verbiage,
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>
@@ -56,6 +57,7 @@ export const EntityCardBottomSection = ({
           formattedEntityData={formattedEntityData}
           printVersion={!!printVersion}
           notAnswered={notAnswered}
+          verbiage={verbiage}
           sx={sx}
         />
       );
@@ -72,6 +74,10 @@ interface Props {
   entityType: EntityType;
   formattedEntityData: AnyObject;
   printVersion?: boolean;
+  verbiage?: {
+    entityMissingResponseMessage?: string;
+    entityEmptyResponseMessage?: string;
+  };
 }
 
 const sx = {
