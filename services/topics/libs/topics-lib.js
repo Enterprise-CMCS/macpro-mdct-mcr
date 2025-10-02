@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-const _ = require("lodash");
 const { ConfigResourceTypes, Kafka } = require("kafkajs");
 
 /**
@@ -20,7 +19,7 @@ exports.listTopics = async function (brokerString, namespace) {
   await admin.connect();
 
   const currentTopics = await admin.listTopics();
-  var lingeringTopics = _.filter(currentTopics, function (n) {
+  const lingeringTopics = currentTopics.filter((n) => {
     console.log(n);
     return (
       n.startsWith(namespace) || n.startsWith(`_confluent-ksql-${namespace}`)
@@ -56,32 +55,28 @@ exports.createTopics = async function (
     await admin.connect();
 
     //fetch topics from MSK and filter out __ internal management topic
-    const existingTopicList = _.filter(await admin.listTopics(), function (n) {
-      return !n.startsWith("_");
-    });
+    const existingTopicList = (await admin.listTopics()).filter(
+      (n) => !n.startsWith("_")
+    );
 
     console.log("Existing topics:", JSON.stringify(existingTopicList, null, 2));
 
     //fetch the metadata for the topics in MSK
-    const topicsMetadata = _.get(
-      await admin.fetchTopicMetadata({ topics: existingTopicList }),
-      "topics",
-      {}
-    );
+    const topicsMetadata =
+      (await admin.fetchTopicMetadata({ topics: existingTopicList })).topics ||
+      [];
     console.log("Topics Metadata:", JSON.stringify(topicsMetadata, null, 2));
 
     //namespace the topics, if needed
-    var namespacedTopics = _.map(topics, function (ref) {
-      var a = { ...ref };
-      a.topic = `${topicNamespace}${a.topic}`;
-      return a;
-    });
+    const namespacedTopics = topics.map((ref) => ({
+      ...ref,
+      topic: `${topicNamespace}${ref.topic}`,
+    }));
 
     //diff the existing topics array with the topic configuration collection
-    const topicsToCreate = _.differenceWith(
-      namespacedTopics,
-      existingTopicList,
-      (topicConfig, topic) => _.get(topicConfig, "topic") == topic
+    const existingTopicSet = new Set(existingTopicList);
+    const topicsToCreate = namespacedTopics.filter(
+      (t) => !existingTopicSet.has(t.topic)
     );
 
     /*
@@ -89,34 +84,29 @@ exports.createTopics = async function (
      * where partition count of topic in Kafka is less than what is specified in the topic configuration collection
      * ...can't remove partitions, only add them
      */
-    const topicsToUpdate = _.intersectionWith(
-      namespacedTopics,
-      topicsMetadata,
-      (topicConfig, topicMetadata) =>
-        _.get(topicConfig, "topic") == _.get(topicMetadata, "name") &&
-        _.get(topicConfig, "numPartitions") >
-          _.get(topicMetadata, "partitions", []).length
-    );
+    const topicsMetadataMap = new Map(topicsMetadata.map((t) => [t.name, t]));
+    const topicsToUpdate = namespacedTopics.filter((tc) => {
+      const metadata = topicsMetadataMap.get(tc.topic);
+      if (!metadata) return false;
+      const currentPartitionCount = metadata.partitions?.length || 0;
+      return tc.numPartitions > currentPartitionCount;
+    });
 
     //create a collection to update topic paritioning
-    const paritionConfig = _.map(topicsToUpdate, function (topic) {
-      return {
-        topic: _.get(topic, "topic"),
-        count: _.get(topic, "numPartitions"),
-      };
-    });
+    const paritionConfig = topicsToUpdate.map((topic) => ({
+      topic: topic.topic,
+      count: topic.numPartitions,
+    }));
 
     //create a collection to allow querying of topic configuration
-    const configOptions = _.map(topicsMetadata, function (topic) {
-      return {
-        name: _.get(topic, "name"),
-        type: _.get(ConfigResourceTypes, "TOPIC"),
-      };
-    });
+    const configOptions = topicsMetadata.map((topic) => ({
+      name: topic.name,
+      type: ConfigResourceTypes.TOPIC,
+    }));
 
     //query topic configuration
     const configs =
-      configOptions.length != 0
+      configOptions.length !== 0
         ? await admin.describeConfigs({ resources: configOptions })
         : [];
 
@@ -135,8 +125,9 @@ exports.createTopics = async function (
     await admin.createTopics({ topics: topicsToCreate });
 
     //if any topics have less partitions in MSK than in the configuration, add those partitions
-    paritionConfig.length > 0 &&
-      (await admin.createPartitions({ topicPartitions: paritionConfig }));
+    if (paritionConfig.length > 0) {
+      await admin.createPartitions({ topicPartitions: paritionConfig });
+    }
 
     await admin.disconnect();
   };
@@ -167,7 +158,7 @@ exports.deleteTopics = async function (brokerString, topicNamespace) {
   await admin.connect();
 
   const currentTopics = await admin.listTopics();
-  var topicsToDelete = _.filter(currentTopics, function (n) {
+  const topicsToDelete = currentTopics.filter((n) => {
     console.log(n);
     return (
       n.startsWith(topicNamespace) ||
