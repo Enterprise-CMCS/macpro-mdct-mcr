@@ -449,7 +449,7 @@ function dashboardTitleStyling(canAddEntities: boolean) {
     paddingLeft: canAddEntities && "3.5rem",
     paddingBottom: "0.75rem",
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
-    color: "gray_medium",
+    color: "gray",
     fontSize: "lg",
     fontWeight: "bold",
   };
@@ -466,7 +466,7 @@ const sx = {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "gray_medium",
+    color: "gray",
   },
   buttonIcons: {
     height: "1rem",

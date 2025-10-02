@@ -115,7 +115,7 @@ const sx = {
   },
   fieldHint: {
     lineHeight: "lg",
-    color: "gray_medium",
+    color: "gray",
   },
   dataColumn: {
     maxWidth: "20rem",

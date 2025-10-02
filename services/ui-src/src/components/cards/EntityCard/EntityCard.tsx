@@ -292,7 +292,7 @@ const sx = {
     position: "absolute",
     right: "-2rem",
     fontSize: ".75rem",
-    color: "gray_medium",
+    color: "gray",
     ".mobile &": {
       right: "-1.5rem",
     },

@@ -91,7 +91,7 @@ const sx = {
   detailHeader: {
     fontSize: "md",
     fontWeight: "bold",
-    color: "gray_medium",
+    color: "gray",
   },
   grid: {
     marginBottom: ".5rem",

@@ -230,7 +230,7 @@ const sx = {
       padding: "1rem 0 1rem 1rem",
       borderBottom: "1px solid",
       borderColor: "gray_lighter",
-      color: "gray_medium",
+      color: "gray",
       fontWeight: "600",
       fontSize: "sm",
       lineHeight: "1.125rem",
