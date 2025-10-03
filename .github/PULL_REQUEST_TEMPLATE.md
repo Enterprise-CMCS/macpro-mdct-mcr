@@ -50,9 +50,3 @@ _If either of the following are true, notify the team's ISSO (Information System
 
 - [ ] These changes are significant enough to require an update to the SIA.
 - [ ] These changes are significant enough to require a penetration test.
-
----
-
-<!-- If deploying to val or prod, click 'Preview' and select template -->
-
-_convert to a different template: [test → val](?expand=1&template=test-to-val-deployment.md)_ | _[val → prod](?expand=1&template=val-to-prod-deployment.md)_
