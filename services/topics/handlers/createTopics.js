@@ -1,4 +1,5 @@
 const topics = require("../libs/topics-lib.js");
+const condensedTopicList = require("../config.js");
 
 /**
  * String in the format of `--${event.project}--${event.stage}--`
@@ -7,27 +8,6 @@ const topics = require("../libs/topics-lib.js");
  */
 const namespace = process.env.topicNamespace;
 const brokers = process.env.brokerString?.split(",") ?? [];
-
-const condensedTopicList = [
-  {
-    // topics for the mcr service's connector
-    topicPrefix: "aws.mdct.mcr",
-    version: ".v0",
-    numPartitions: 1,
-    replicationFactor: 3,
-    topics: [
-      ".mcpar-reports",
-      ".mcpar-form",
-      ".mcpar-form-template",
-      ".mlr-reports",
-      ".mlr-form",
-      ".mlr-form-template",
-      ".naaar-reports",
-      ".naaar-form",
-      ".naaar-form-template",
-    ],
-  },
-];
 
 /**
  * Handler triggered on deploy to create known topics in bigmac
