@@ -111,7 +111,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
 
   const environment = {
     NODE_OPTIONS: "--enable-source-maps",
-    brokerString: brokerString,
+    brokerString,
     STAGE: stage,
     MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,
