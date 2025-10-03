@@ -75,7 +75,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       ...commonProps,
     });
 
-    deleteTopicsLambda.node.addDependency(createTopicsLambda);
+    deleteTopicsLambda.lambda.node.addDependency(createTopicsLambda);
 
     new CfnOutput(scope, "DeleteTopicsFunctionName", {
       value: deleteTopicsLambda.lambda.functionName,
