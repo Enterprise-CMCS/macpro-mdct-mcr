@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     topicPrefix: "aws.mdct.mcr",
     version: ".v0",
