@@ -1,7 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
-import { mockNotAnswered } from "utils/testing/mockEntities";
+import {
+  mockfullAccessMeasuresData,
+  mockNotAnswered,
+} from "utils/testing/mockEntities";
 import { testA11y } from "utils/testing/commonTests";
 
 const baseProps = {
@@ -12,15 +15,11 @@ const baseProps = {
 
 const accessMeasuresSectionComponent = (
   <AccessMeasuresSection
-    {...baseProps}
-    printVersion={false}
-    formattedEntityData={{
-      provider: "Hospital",
-      region: "North",
-      population: "Urban",
-      monitoringMethods: ["Method A", "Method B"],
-      methodFrequency: "Monthly",
-    }}
+    formattedEntityData={mockfullAccessMeasuresData}
+    sx={{}}
+    topSection
+    bottomSection
+    notAnswered={mockNotAnswered}
   />
 );
 
@@ -29,10 +28,64 @@ describe("AccessMeasuresSection", () => {
     jest.clearAllMocks();
   });
 
-  test("renders all fields with correct data and printVersion off", () => {
-    render(accessMeasuresSectionComponent);
+  test("renders heading as <p> when isPDF is true", () => {
+    const { container } = render(
+      <AccessMeasuresSection
+        formattedEntityData={{ standardType: "PDF Heading" }}
+        sx={{}}
+        topSection
+        isPDF={true}
+        notAnswered={mockNotAnswered}
+      />
+    );
 
-    expect(baseProps.providerText).toHaveBeenCalled();
+    const heading = container.querySelector("p");
+    expect(heading).toHaveTextContent("PDF Heading");
+  });
+
+  test("renders heading as <h4> when isPDF is false", () => {
+    const { container } = render(
+      <AccessMeasuresSection
+        formattedEntityData={{ standardType: "H4 Heading" }}
+        sx={{}}
+        topSection
+        isPDF={false}
+        notAnswered={mockNotAnswered}
+      />
+    );
+
+    const heading = container.querySelector("h4");
+    expect(heading).toHaveTextContent("H4 Heading");
+  });
+
+  test("renders top section correctly", () => {
+    render(
+      <AccessMeasuresSection
+        formattedEntityData={mockfullAccessMeasuresData}
+        sx={{}}
+        topSection
+        printVersion={false}
+      />
+    );
+
+    expect(screen.getByText("Type A")).toBeInTheDocument();
+    expect(
+      screen.getByText("This is a description of the standard.")
+    ).toBeInTheDocument();
+    expect(screen.getByText("General category")).toBeInTheDocument();
+    expect(screen.getByText("General")).toBeInTheDocument();
+  });
+
+  test("renders bottom section with correct data", () => {
+    render(
+      <AccessMeasuresSection
+        formattedEntityData={mockfullAccessMeasuresData}
+        sx={{}}
+        bottomSection
+        printVersion={false}
+        notAnswered={mockNotAnswered}
+      />
+    );
 
     const expectedTexts = [
       "Provider",
@@ -40,7 +93,7 @@ describe("AccessMeasuresSection", () => {
       "Population",
       "Monitoring Methods",
       "Frequency of oversight methods",
-      "Provider: Details",
+      "Hospital: Some details",
       "North",
       "Urban",
       "Method A, Method B",
@@ -52,11 +105,32 @@ describe("AccessMeasuresSection", () => {
     });
   });
 
+  test("renders both top and bottom sections", () => {
+    render(
+      <AccessMeasuresSection
+        formattedEntityData={mockfullAccessMeasuresData}
+        sx={{}}
+        topSection
+        bottomSection
+        printVersion
+        notAnswered={mockNotAnswered}
+      />
+    );
+
+    // Top section field
+    expect(
+      screen.getByText("C2.V.3 Standard type: Type A")
+    ).toBeInTheDocument();
+    // Bottom section field
+    expect(screen.getByText("C2.V.4 Provider")).toBeInTheDocument();
+  });
+
   test("prefixes labels with version numbers when printVersion is true", () => {
     render(
       <AccessMeasuresSection
         {...baseProps}
-        printVersion={true}
+        printVersion
+        bottomSection
         formattedEntityData={{
           provider: "Hospital",
           region: "North",
@@ -80,18 +154,21 @@ describe("AccessMeasuresSection", () => {
     });
   });
 
-  test("renders notAnswered fallback when data is missing and printVersion is true", () => {
+  test("renders notAnswered fallback when data is missing", () => {
     render(
       <AccessMeasuresSection
-        {...baseProps}
-        printVersion={true}
         formattedEntityData={{
           provider: undefined,
-          region: "",
-          population: null,
+          providerDetails: undefined,
+          region: null,
+          population: "",
           monitoringMethods: null,
           methodFrequency: undefined,
         }}
+        sx={{}}
+        bottomSection
+        printVersion={true}
+        notAnswered={mockNotAnswered}
       />
     );
 
@@ -102,8 +179,6 @@ describe("AccessMeasuresSection", () => {
   test("applies 'error' class when key fields are missing", () => {
     const { container } = render(
       <AccessMeasuresSection
-        {...baseProps}
-        printVersion={true}
         formattedEntityData={{
           provider: "",
           region: null,
@@ -111,15 +186,27 @@ describe("AccessMeasuresSection", () => {
           monitoringMethods: [],
           methodFrequency: "",
         }}
+        sx={{}}
+        bottomSection
+        printVersion
+        notAnswered={mockNotAnswered}
       />
     );
 
-    const errorContainer = container.querySelector(".error");
-    expect(errorContainer).toBeInTheDocument();
+    const errorBox = container.querySelector(".error");
+    expect(errorBox).toBeInTheDocument();
   });
 
   test("does not apply 'error' class when all key fields are present", () => {
-    const { container } = render(accessMeasuresSectionComponent);
+    const { container } = render(
+      <AccessMeasuresSection
+        formattedEntityData={mockfullAccessMeasuresData}
+        sx={{}}
+        bottomSection
+        printVersion={false}
+        notAnswered={mockNotAnswered}
+      />
+    );
 
     const errorContainer = container.querySelector(".error");
     expect(errorContainer).not.toBeInTheDocument();

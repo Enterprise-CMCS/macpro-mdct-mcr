@@ -19,18 +19,6 @@ export const EntityCardBottomSection = ({
     </Text>
   );
 
-  const providerText = () => {
-    const provider = formattedEntityData?.provider;
-    const details = formattedEntityData?.providerDetails;
-    if (provider) {
-      if (details) {
-        return `${provider}: ${details}`;
-      }
-      return provider;
-    }
-    return printVersion && notAnswered;
-  };
-
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
@@ -38,8 +26,8 @@ export const EntityCardBottomSection = ({
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           notAnswered={notAnswered}
-          providerText={providerText}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.SANCTIONS:
@@ -49,6 +37,7 @@ export const EntityCardBottomSection = ({
           printVersion={!!printVersion}
           notAnswered={notAnswered}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.QUALITY_MEASURES:
@@ -59,11 +48,16 @@ export const EntityCardBottomSection = ({
           notAnswered={notAnswered}
           verbiage={verbiage}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.STANDARDS:
       return (
-        <StandardsSection formattedEntityData={formattedEntityData} sx={sx} />
+        <StandardsSection
+          formattedEntityData={formattedEntityData}
+          sx={sx}
+          bottomSection
+        />
       );
     default:
       return <Text>{entityType}</Text>;
