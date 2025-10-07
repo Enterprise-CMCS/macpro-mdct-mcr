@@ -251,7 +251,7 @@ const sx = {
   },
   fieldHint: {
     lineHeight: "lg",
-    color: "gray_medium",
+    color: "gray",
   },
   answerCell: {
     width: "51%",
@@ -260,7 +260,7 @@ const sx = {
     color: "error_darker",
   },
   count: {
-    color: "gray_medium",
+    color: "gray",
     fontWeight: "bold",
   },
   h4: {

@@ -205,7 +205,7 @@ const sx = {
       paddingBottom: "0.375rem",
       fontWeight: "bold",
       lineHeight: "lg",
-      color: "gray_medium",
+      color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },
@@ -231,7 +231,7 @@ const sx = {
     wordBreak: "break-word",
   },
   tableIndex: {
-    color: "gray_medium",
+    color: "gray",
     fontWeight: "bold",
   },
   statusIcon: {

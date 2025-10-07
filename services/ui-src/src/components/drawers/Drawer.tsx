@@ -147,7 +147,7 @@ const sx = {
     marginBottom: ".5rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "gray_medium",
+    color: "gray",
   },
   detailDescription: {
     marginBottom: ".5rem",

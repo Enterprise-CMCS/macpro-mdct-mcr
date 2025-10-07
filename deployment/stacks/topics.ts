@@ -48,6 +48,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     environment: {
       brokerString,
       project,
+      topicNamespace: isDev ? `--${project}--${stage}--` : "",
     },
     vpc,
     vpcSubnets: { subnets: kafkaAuthorizedSubnets },
@@ -61,10 +62,6 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     timeout: Duration.seconds(60),
     retryAttempts: 0,
     ...commonProps,
-    environment: {
-      topicNamespace: isDev ? `--${project}--${stage}--` : "",
-      ...commonProps.environment,
-    },
   });
 
   if (deleteTopicsEnabled) {
@@ -75,7 +72,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
       ...commonProps,
     });
 
-    deleteTopicsLambda.node.addDependency(createTopicsLambda);
+    deleteTopicsLambda.lambda.node.addDependency(createTopicsLambda);
 
     new CfnOutput(scope, "DeleteTopicsFunctionName", {
       value: deleteTopicsLambda.lambda.functionName,

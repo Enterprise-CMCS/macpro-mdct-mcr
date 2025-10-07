@@ -131,7 +131,7 @@ const sx = {
       padding: "0.5rem 0",
       borderBottom: "1px solid",
       borderColor: "gray_light",
-      color: "gray_medium",
+      color: "gray",
       fontWeight: "bold",
     },
     tr: {

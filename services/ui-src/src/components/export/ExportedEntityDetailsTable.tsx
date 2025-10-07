@@ -173,7 +173,7 @@ const sx = {
       paddingBottom: "0.375rem",
       fontWeight: "bold",
       lineHeight: "lg",
-      color: "gray_medium",
+      color: "gray",
       ".shrink &": {
         padding: "0.375rem 0rem",
       },

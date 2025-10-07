@@ -1,15 +1,12 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "topics",
   "version": "1.0.0",
-  "description": "Creates mmdl topics in CMS Bigmac.",
+  "description": "Create mmdl topics in CMS BigMac",
   "author": "",
-  "devDependencies": {},
+  "type": "module",
   "dependencies": {
-    "braces": "^3.0.3",
-    "kafkajs": "^2.2.4",
-    "lodash": "^4.17.21",
-    "micromatch": "^4.0.8",
-    "nanoid": "^3.3.8"
+    "kafkajs": "^2.2.4"
   },
   "resolutions": {
     "nwsapi": "^2.2.5",

@@ -299,7 +299,7 @@ const sx = {
     marginBottom: "1.25rem",
     fontSize: "md",
     fontWeight: "bold",
-    color: "gray_medium",
+    color: "gray",
   },
   topAddEntityButton: {
     marginTop: "1.5rem",
