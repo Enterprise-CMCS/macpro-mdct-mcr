@@ -1,4 +1,4 @@
-import s3Lib, { getConfig } from "./s3-lib";
+import s3Lib, { awsConfig } from "./s3-lib";
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
@@ -40,7 +40,7 @@ describe("Test s3Lib Interaction API Build Structure", () => {
 describe("Checking Environment Variable Changes", () => {
   beforeEach(() => jest.resetModules());
   test("that config has region set", () => {
-    const config = getConfig();
+    const config = awsConfig;
     expect(config).toHaveProperty("region", "us-east-1");
   });
 });

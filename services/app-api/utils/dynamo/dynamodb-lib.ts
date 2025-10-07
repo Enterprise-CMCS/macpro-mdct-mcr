@@ -17,15 +17,13 @@ import { logger } from "../debugging/debug-lib";
 // types
 import { AnyObject } from "../types";
 
-export const getConfig = () => {
-  return {
-    region: "us-east-1",
-    logger,
-    endpoint: process.env.AWS_ENDPOINT_URL,
-  };
+export const awsConfig = {
+  region: "us-east-1",
+  logger,
+  endpoint: process.env.AWS_ENDPOINT_URL,
 };
 
-const client = DynamoDBDocumentClient.from(new DynamoDBClient(getConfig()));
+const client = DynamoDBDocumentClient.from(new DynamoDBClient(awsConfig));
 
 export default {
   get: async (params: GetCommandInput) => {
