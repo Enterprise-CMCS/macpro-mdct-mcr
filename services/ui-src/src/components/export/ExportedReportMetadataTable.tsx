@@ -125,7 +125,7 @@ const sx = {
     th: {
       border: "none",
       fontWeight: "bold",
-      color: "gray_medium",
+      color: "gray",
     },
   },
 };

@@ -1,5 +1,6 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 /* eslint-disable no-console */
-const topics = require("../libs/topics-lib.js");
+import { listTopics } from "../libs/topics-lib.js";
 
 /**
  * Handler to be triggered in temporary branches by the destroy workflow, cleans up topics with the known namespace format
@@ -8,10 +9,8 @@ const topics = require("../libs/topics-lib.js");
  * @param {*} _context
  * @param {*} _callback
  */
-exports.handler = async function (event, _context, _callback) {
+export const handler = async (event, _context, _callback) => {
   console.log("Received event:", JSON.stringify(event, null, 2));
-  let namespace = event.stage
-    ? `--${process.env.project}--${event.stage}--`
-    : `--${process.env.project}--`;
-  return await topics.listTopics(process.env.brokerString, namespace);
+
+  return await listTopics(process.env.brokerString, process.env.topicNamespace);
 };

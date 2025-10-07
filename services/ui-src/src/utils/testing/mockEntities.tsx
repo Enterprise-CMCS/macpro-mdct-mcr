@@ -1,3 +1,5 @@
+import React from "react";
+import { Text } from "@chakra-ui/react";
 import { EntityShape } from "types";
 
 export const mockAccessMeasuresEntity = {
@@ -227,3 +229,32 @@ export const mockNaaarStandards: EntityShape[] = [
     "standard_applicableRegion-otherText": "Mock Other Region",
   },
 ];
+
+export const mockSanctionsFullData = {
+  noncomplianceInstances: "2",
+  dollarAmount: "$5,000",
+  assessmentDate: "2025-05-01",
+  remediationCompleted: "Yes",
+  remediationDate: "2025-06-01",
+  correctiveActionPlan: "Plan A",
+};
+
+export const mockSanctionsPartialData = {
+  dollarAmount: "$5,000",
+  assessmentDate: "2025-05-01",
+  remediationCompleted: "",
+  remediationDate: "",
+};
+
+export const mockStandardsFullData = {
+  provider: "Hospital",
+  analysisMethods: "Quantitative",
+  region: "North",
+  population: "Urban",
+};
+
+export const mockNotAnswered = (
+  <Text as="span" data-testid="not-answered">
+    Not answered
+  </Text>
+);

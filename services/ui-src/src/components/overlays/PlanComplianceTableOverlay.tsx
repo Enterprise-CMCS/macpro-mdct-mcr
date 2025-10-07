@@ -287,7 +287,7 @@ const sx = {
     marginBottom: "2rem",
   },
   count: {
-    color: "gray_medium",
+    color: "gray",
     fontWeight: "bold",
     whiteSpace: "nowrap",
     ".tablet &, .mobile &": {

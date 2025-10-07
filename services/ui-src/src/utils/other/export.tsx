@@ -393,7 +393,7 @@ export const getNestedIlosResponses = (
 };
 
 export const getNestedAnalysisMethodsResponses = (entity: EntityShape) => {
-  const frequencyVal = entity.analysis_method_frequency[0].value;
+  const frequencyVal = entity.analysis_method_frequency?.[0]?.value;
   const frequency = otherSpecify(
     frequencyVal,
     entity["analysis_method_frequency-otherText"]
@@ -401,7 +401,7 @@ export const getNestedAnalysisMethodsResponses = (entity: EntityShape) => {
 
   const plans = entity?.analysis_method_applicable_plans;
   const utilizedPlans = plans
-    .map((entity: AnyObject) => entity.value)
+    ?.map((entity: AnyObject) => entity.value)
     .join(", ");
 
   const response = [
@@ -463,6 +463,6 @@ const sx = {
     color: "base",
   },
   notApplicable: {
-    color: "gray_medium",
+    color: "gray",
   },
 };

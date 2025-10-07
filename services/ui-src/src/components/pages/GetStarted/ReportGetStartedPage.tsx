@@ -211,7 +211,7 @@ const sx = {
   },
   tableHeader: {
     Th: {
-      color: "gray_medium",
+      color: "gray",
     },
   },
 };

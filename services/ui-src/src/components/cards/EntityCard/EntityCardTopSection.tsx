@@ -209,7 +209,7 @@ const sx = {
     width: "44px",
     fontWeight: "bold",
     fontSize: "sm",
-    color: "gray_medium",
+    color: "gray",
   },
   standardHeading: {
     fontWeight: "bold",

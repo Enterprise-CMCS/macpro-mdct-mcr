@@ -77,7 +77,7 @@ const sx = {
     background: "none",
     color: "white",
     fontWeight: "bold",
-    _hover: { color: "secondary_light", background: "none !important" },
+    _hover: { color: "secondary", background: "none !important" },
     _active: { background: "none" },
     _focus: {
       boxShadow: "none",
