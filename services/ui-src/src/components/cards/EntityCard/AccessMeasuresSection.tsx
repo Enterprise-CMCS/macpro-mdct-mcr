@@ -7,25 +7,23 @@ const TopAccessMeasuresSection = ({
   printVersion,
   isPDF,
   sx,
-}: TopProps) => {
-  return (
-    <>
-      <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-        {`${printVersion ? "C2.V.3 Standard type: " : ""}${
-          formattedEntityData.standardType
-        }`}
-      </Heading>
-      {printVersion && <Text sx={sx.subtitle}>C2.V.2 Measure standard</Text>}
-      <Text sx={printVersion ? sx.subtext : sx.description}>
-        {formattedEntityData.standardDescription}
-      </Text>
-      <Text sx={sx.subtitle}>
-        {`${printVersion ? "C2.V.1 " : ""}General category`}
-      </Text>
-      <Text sx={sx.subtext}>{formattedEntityData.category}</Text>
-    </>
-  );
-};
+}: TopProps) => (
+  <>
+    <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+      {`${printVersion ? "C2.V.3 Standard type: " : ""}${
+        formattedEntityData.standardType
+      }`}
+    </Heading>
+    {printVersion && <Text sx={sx.subtitle}>C2.V.2 Measure standard</Text>}
+    <Text sx={printVersion ? sx.subtext : sx.description}>
+      {formattedEntityData.standardDescription}
+    </Text>
+    <Text sx={sx.subtitle}>
+      {`${printVersion ? "C2.V.1 " : ""}General category`}
+    </Text>
+    <Text sx={sx.subtext}>{formattedEntityData.category}</Text>
+  </>
+);
 
 const BottomAccessMeasuresSection = ({
   formattedEntityData,
@@ -106,28 +104,26 @@ export const AccessMeasuresSection = ({
   isPDF,
   topSection,
   bottomSection,
-}: Props) => {
-  return (
-    <>
-      {topSection && (
-        <TopAccessMeasuresSection
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          isPDF={isPDF}
-          sx={sx}
-        />
-      )}
-      {bottomSection && (
-        <BottomAccessMeasuresSection
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          notAnswered={notAnswered}
-          sx={sx}
-        />
-      )}
-    </>
-  );
-};
+}: Props) => (
+  <>
+    {topSection && (
+      <TopAccessMeasuresSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        isPDF={isPDF}
+        sx={sx}
+      />
+    )}
+    {bottomSection && (
+      <BottomAccessMeasuresSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        notAnswered={notAnswered}
+        sx={sx}
+      />
+    )}
+  </>
+);
 
 interface FormattedEntityData {
   standardType?: string;

@@ -7,35 +7,33 @@ const TopSanctionsSection = ({
   sx,
   printVersion,
   isPDF,
-}: TopProps) => {
-  return (
-    <>
-      <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-        {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
-          formattedEntityData.interventionType
-        }`}
-      </Heading>
-      <Grid sx={sx.grid}>
-        <GridItem>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D3.VIII.2 " : ""}Plan performance issue`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.interventionTopic}</Text>
-        </GridItem>
-        <GridItem>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D3.VIII.3 " : ""}Plan name`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
-        </GridItem>
-      </Grid>
-      <Text sx={sx.subtitle}>
-        {`${printVersion ? "D3.VIII.4 " : ""}Reason for intervention`}
-      </Text>
-      <Text sx={sx.description}>{formattedEntityData.interventionReason}</Text>
-    </>
-  );
-};
+}: TopProps) => (
+  <>
+    <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+      {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
+        formattedEntityData.interventionType
+      }`}
+    </Heading>
+    <Grid sx={sx.grid}>
+      <GridItem>
+        <Text sx={sx.subtitle}>
+          {`${printVersion ? "D3.VIII.2 " : ""}Plan performance issue`}
+        </Text>
+        <Text sx={sx.subtext}>{formattedEntityData.interventionTopic}</Text>
+      </GridItem>
+      <GridItem>
+        <Text sx={sx.subtitle}>
+          {`${printVersion ? "D3.VIII.3 " : ""}Plan name`}
+        </Text>
+        <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
+      </GridItem>
+    </Grid>
+    <Text sx={sx.subtitle}>
+      {`${printVersion ? "D3.VIII.4 " : ""}Reason for intervention`}
+    </Text>
+    <Text sx={sx.description}>{formattedEntityData.interventionReason}</Text>
+  </>
+);
 
 const BottomSanctionsSection = ({
   formattedEntityData,
@@ -127,28 +125,26 @@ export const SanctionsSection = ({
   isPDF,
   topSection,
   bottomSection,
-}: Props) => {
-  return (
-    <>
-      {topSection && (
-        <TopSanctionsSection
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          sx={sx}
-          isPDF={isPDF}
-        />
-      )}
-      {bottomSection && (
-        <BottomSanctionsSection
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          notAnswered={notAnswered}
-          sx={sx}
-        />
-      )}
-    </>
-  );
-};
+}: Props) => (
+  <>
+    {topSection && (
+      <TopSanctionsSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        sx={sx}
+        isPDF={isPDF}
+      />
+    )}
+    {bottomSection && (
+      <BottomSanctionsSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        notAnswered={notAnswered}
+        sx={sx}
+      />
+    )}
+  </>
+);
 
 interface BaseProps {
   formattedEntityData: {
