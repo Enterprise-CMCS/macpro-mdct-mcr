@@ -25,15 +25,13 @@ export const EntityCardTopSection = ({
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
-        <>
-          <AccessMeasuresSection
-            formattedEntityData={formattedEntityData}
-            printVersion={printVersion}
-            sx={sx}
-            isPDF={isPDF}
-            topSection
-          />
-        </>
+        <AccessMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={printVersion}
+          sx={sx}
+          isPDF={isPDF}
+          topSection
+        />
       );
     case EntityType.SANCTIONS:
       return (

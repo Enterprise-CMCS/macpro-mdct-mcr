@@ -39,7 +39,7 @@ describe("AccessMeasuresSection", () => {
       />
     );
 
-    const heading = container.querySelector("p");
+    const heading = container.querySelector("p.chakra-heading");
     expect(heading).toHaveTextContent("PDF Heading");
   });
 
@@ -68,12 +68,12 @@ describe("AccessMeasuresSection", () => {
       />
     );
 
-    expect(screen.getByText("Type A")).toBeInTheDocument();
+    screen.getByRole("heading", { name: "Type A", level: 4 });
     expect(
       screen.getByText("This is a description of the standard.")
-    ).toBeInTheDocument();
-    expect(screen.getByText("General category")).toBeInTheDocument();
-    expect(screen.getByText("General")).toBeInTheDocument();
+    ).toBeVisible();
+    expect(screen.getByText("General category")).toBeVisible();
+    expect(screen.getByText("General")).toBeVisible();
   });
 
   test("renders bottom section with correct data", () => {
@@ -101,7 +101,7 @@ describe("AccessMeasuresSection", () => {
     ];
 
     expectedTexts.forEach((text) => {
-      expect(screen.getByText(text)).toBeInTheDocument();
+      expect(screen.getByText(text)).toBeVisible();
     });
   });
 
@@ -118,11 +118,9 @@ describe("AccessMeasuresSection", () => {
     );
 
     // Top section field
-    expect(
-      screen.getByText("C2.V.3 Standard type: Type A")
-    ).toBeInTheDocument();
+    expect(screen.getByText("C2.V.3 Standard type: Type A")).toBeVisible();
     // Bottom section field
-    expect(screen.getByText("C2.V.4 Provider")).toBeInTheDocument();
+    expect(screen.getByText("C2.V.4 Provider")).toBeVisible();
   });
 
   test("prefixes labels with version numbers when printVersion is true", () => {
@@ -150,7 +148,7 @@ describe("AccessMeasuresSection", () => {
     ];
 
     expectedLabels.forEach((label) => {
-      expect(screen.getByText(label)).toBeInTheDocument();
+      expect(screen.getByText(label)).toBeVisible();
     });
   });
 
@@ -160,9 +158,9 @@ describe("AccessMeasuresSection", () => {
         formattedEntityData={{
           provider: undefined,
           providerDetails: undefined,
-          region: null,
+          region: undefined,
           population: "",
-          monitoringMethods: null,
+          monitoringMethods: undefined,
           methodFrequency: undefined,
         }}
         sx={{}}
@@ -181,7 +179,7 @@ describe("AccessMeasuresSection", () => {
       <AccessMeasuresSection
         formattedEntityData={{
           provider: "",
-          region: null,
+          region: undefined,
           population: "",
           monitoringMethods: [],
           methodFrequency: "",
@@ -194,7 +192,7 @@ describe("AccessMeasuresSection", () => {
     );
 
     const errorBox = container.querySelector(".error");
-    expect(errorBox).toBeInTheDocument();
+    expect(errorBox).toBeVisible();
   });
 
   test("does not apply 'error' class when all key fields are present", () => {
