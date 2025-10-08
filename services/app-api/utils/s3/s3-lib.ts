@@ -9,7 +9,7 @@ import { logger } from "../debugging/debug-lib";
 import { buckets, error } from "../constants/constants";
 import { State } from "../types/other";
 
-const awsConfig = {
+export const awsConfig = {
   region: "us-east-1",
   logger,
   endpoint: process.env.AWS_ENDPOINT_URL,
