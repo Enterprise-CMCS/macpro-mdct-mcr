@@ -1,10 +1,10 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "topics",
   "version": "1.0.0",
-  "description": "Creates mmdl topics in CMS Bigmac.",
+  "description": "Create mmdl topics in CMS BigMac",
   "author": "",
-  "license": "CC0-1.0",
-  "devDependencies": {},
+  "type": "module",
   "dependencies": {
     "kafkajs": "^2.2.4"
   },
