@@ -246,11 +246,14 @@ export const mockSanctionsPartialData = {
   remediationDate: "",
 };
 
-export const mockStandardsFullData = {
-  provider: "Hospital",
-  analysisMethods: "Quantitative",
-  region: "North",
-  population: "Urban",
+export const mockFormattedEntityData = {
+  provider: "Clinic, Hospital",
+  analysisMethods: "Quantitative, Qualitative",
+  region: "North America",
+  population: "Adults",
+  count: "42",
+  standardType: "Clinical Standards",
+  description: "A description of clinical standards used in the evaluation.",
 };
 
 export const mockNotAnswered = (
@@ -258,3 +261,39 @@ export const mockNotAnswered = (
     Not answered
   </Text>
 );
+
+export const mockQualityMeasuresData = {
+  name: "Test Measure",
+  domain: "Domain",
+  nqfNumber: "1234",
+  reportingPeriod: "Yes",
+  reportingRateType: "Rate Type",
+  set: "Mock set",
+  description: "Description",
+};
+
+export const mockfullAccessMeasuresData = {
+  standardType: "Type A",
+  standardDescription: "This is a description of the standard.",
+  category: "General",
+  provider: "Hospital",
+  providerDetails: "Some details",
+  region: "North",
+  population: "Urban",
+  monitoringMethods: ["Method A", "Method B"],
+  methodFrequency: "Monthly",
+};
+
+export const mockPlanSectionData = {
+  heading: "Mock plan non-compliance",
+  questions: [
+    {
+      question: "The plan does not meet this standard",
+      answer: "Mock expections granted under 42 C.F.R. § 438.68(d)",
+    },
+    {
+      question: "Mock descriptions of expections granted",
+      answer: ["Network adequacy standard exceptions", "State's justification"],
+    },
+  ],
+};

@@ -14,6 +14,8 @@ const SanctionsSectionComponentFullData = (
     printVersion={false}
     notAnswered={mockNotAnswered}
     sx={{}}
+    topSection
+    bottomSection
   />
 );
 
@@ -48,6 +50,8 @@ describe("SanctionsSection", () => {
         printVersion={true}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 
@@ -71,6 +75,8 @@ describe("SanctionsSection", () => {
         printVersion={true}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 
@@ -85,6 +91,8 @@ describe("SanctionsSection", () => {
         printVersion={false}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 

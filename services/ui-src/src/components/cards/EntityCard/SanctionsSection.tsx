@@ -1,13 +1,46 @@
 import { ReactNode } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import { SxObject } from "types";
 
-export const SanctionsSection = ({
+const TopSanctionsSection = ({
   formattedEntityData,
+  sx,
+  printVersion,
+  isPDF,
+}: TopProps) => (
+  <>
+    <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+      {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
+        formattedEntityData.interventionType
+      }`}
+    </Heading>
+    <Grid sx={sx.grid}>
+      <GridItem>
+        <Text sx={sx.subtitle}>
+          {`${printVersion ? "D3.VIII.2 " : ""}Plan performance issue`}
+        </Text>
+        <Text sx={sx.subtext}>{formattedEntityData.interventionTopic}</Text>
+      </GridItem>
+      <GridItem>
+        <Text sx={sx.subtitle}>
+          {`${printVersion ? "D3.VIII.3 " : ""}Plan name`}
+        </Text>
+        <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
+      </GridItem>
+    </Grid>
+    <Text sx={sx.subtitle}>
+      {`${printVersion ? "D3.VIII.4 " : ""}Reason for intervention`}
+    </Text>
+    <Text sx={sx.description}>{formattedEntityData.interventionReason}</Text>
+  </>
+);
+
+const BottomSanctionsSection = ({
+  formattedEntityData,
+  sx,
   printVersion,
   notAnswered,
-  sx,
-}: Props) => {
+}: BottomProps) => {
   const {
     noncomplianceInstances,
     dollarAmount,
@@ -84,7 +117,36 @@ export const SanctionsSection = ({
   );
 };
 
-interface Props {
+export const SanctionsSection = ({
+  formattedEntityData,
+  printVersion,
+  notAnswered,
+  sx,
+  isPDF,
+  topSection,
+  bottomSection,
+}: Props) => (
+  <>
+    {topSection && (
+      <TopSanctionsSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        sx={sx}
+        isPDF={isPDF}
+      />
+    )}
+    {bottomSection && (
+      <BottomSanctionsSection
+        formattedEntityData={formattedEntityData}
+        printVersion={printVersion}
+        notAnswered={notAnswered}
+        sx={sx}
+      />
+    )}
+  </>
+);
+
+interface BaseProps {
   formattedEntityData: {
     noncomplianceInstances?: string;
     dollarAmount?: string;
@@ -92,8 +154,25 @@ interface Props {
     remediationCompleted?: string;
     remediationDate?: string;
     correctiveActionPlan?: string;
+    interventionType?: string;
+    interventionTopic?: string;
+    interventionReason?: string;
+    planName?: string;
   };
-  printVersion: boolean;
-  notAnswered: ReactNode;
   sx: SxObject;
+}
+
+interface TopProps extends BaseProps {
+  printVersion: boolean;
+  isPDF?: boolean;
+}
+
+interface BottomProps extends BaseProps {
+  printVersion: boolean;
+  notAnswered?: ReactNode;
+}
+
+interface Props extends TopProps, BottomProps {
+  topSection?: boolean;
+  bottomSection?: boolean;
 }
