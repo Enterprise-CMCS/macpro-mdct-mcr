@@ -68,7 +68,9 @@ describe("AccessMeasuresSection", () => {
       />
     );
 
-    expect(screen.getByRole("heading", { name: "Type A", level: 4 }));
+    expect(
+      screen.getByRole("heading", { name: "Type A", level: 4 })
+    ).toBeVisible();
     expect(
       screen.getByText("This is a description of the standard.")
     ).toBeVisible();
