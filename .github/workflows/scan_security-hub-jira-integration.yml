@@ -34,7 +34,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-region: us-east-1
           role-to-assume: ${{ secrets.PRODUCTION_AWS_OIDC_ROLE_TO_ASSUME }}
       - name: Sync Security Hub and Jira
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.0.9
