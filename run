@@ -1,4 +1,5 @@
 #!/bin/bash
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 
 set -eu -o pipefail
 
@@ -8,14 +9,13 @@ set -eu -o pipefail
 # this script checks for all the prereqs and then calls run.ts
 
 export REGION_A=us-east-1
-export PROJECT=mcr
 
 # Utilities
 require_cmd() {
-  if ! command -v "$1" >/dev/null 2>&1; then
-    echo "$1 not found on the system. $2" >&2
-    exit 1
-  fi
+    if ! command -v "$1" >/dev/null 2>&1; then
+        echo "$1 not found on the system. $2" >&2
+        exit 1
+    fi
 }
 
 # check node exists
@@ -23,9 +23,9 @@ require_cmd node "Install version in .nvmrc. If using nvm, run 'nvm use'"
 
 # check node version
 if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
-	echo "node version does not match the version required in .nvmrc"
-	echo "If using nvm, run 'nvm use'"
-	exit 1
+    echo "node version does not match the version required in .nvmrc"
+    echo "If using nvm, run 'nvm use'"
+    exit 1
 fi
 
 # check yarn exists
@@ -35,19 +35,25 @@ require_cmd yarn "On macOS, install with 'brew install yarn'"
 # Parse arguments
 UPDATE_ENV=false
 LOCAL=false
+QUIET=false
 ARGS=()
 
 for arg in "$@"; do
     case $arg in
         update-env)
-        UPDATE_ENV=true
+            UPDATE_ENV=true
         ;;
         local)
-        LOCAL=true
+            LOCAL=true
+        ;;
+        -q|--quiet)
+            QUIET=true
         ;;
     esac
     ARGS+=("$arg")
 done
+
+log() { [ "$QUIET" = false ] && echo "$@"; }
 
 if [ "$UPDATE_ENV" = true ]; then
     require_cmd op "Install 1Password CLI: 'brew install --cask 1password-cli'"
@@ -57,23 +63,24 @@ if [ "$LOCAL" = true ]; then
     require_cmd docker "On macOS, install with 'brew install docker'"
     require_cmd colima "On macOS, install with 'brew install colima'"
     require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
-
+    
     if ! colima status 2>&1 | grep -q "colima is running" ; then
-        echo "colima installed but not running. We'll start it up for you now."
+        log "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
-
+    
     if ! localstack status | grep -q "running" ; then
-        echo "localstack is installed but not running. We'll start it up for you now."
+        log "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
     fi
 fi
 
-pushd cli
-yarn install --frozen-lockfile
-popd 
-
-yarn install --frozen-lockfile
+yarn install --frozen-lockfile --silent >/dev/null 2>&1 || {
+echo "Dependency install failed (root)" >&2; exit 1; }
+pushd cli >/dev/null
+yarn install --frozen-lockfile --silent >/dev/null 2>&1 || {
+echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
+popd >/dev/null
 
 # run the CLI
-yarn tsx cli/run.ts "${ARGS[@]-}"
+yarn --silent tsx cli/run.ts "${ARGS[@]-}"
