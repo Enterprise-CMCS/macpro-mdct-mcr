@@ -1,3 +1,5 @@
+<!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
+
 # Running Locally with LocalStack
 
 The `./run local` command allows you to run our application locally on your laptop using [LocalStack](https://localstack.cloud/), simulating the AWS cloud environment (except using cognito authentication from the real AWS).

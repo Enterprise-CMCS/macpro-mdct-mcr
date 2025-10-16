@@ -54,6 +54,8 @@ jobs:
 
       - name: Destroy
         run: ./run destroy --stage $branch_name --verify false
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
 
   notify_on_destroy_failure:
     name: Destroy failure notification

@@ -4,7 +4,10 @@ import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { project, region } from "../lib/consts.js";
 import { getCloudFormationStackOutputValues } from "../lib/utils.js";
 
-export const list_topics = async (options: { stage: string }) => {
+export const list_topics = async (options: {
+  stage: string;
+  quiet: boolean;
+}) => {
   const lambdaClient = new LambdaClient({ region });
 
   const outputs = await getCloudFormationStackOutputValues(
@@ -22,7 +25,12 @@ export const list_topics = async (options: { stage: string }) => {
 
     const response = await lambdaClient.send(command);
     const result = Buffer.from(response.Payload || []).toString();
-    console.log("listTopics response:", result);
+
+    if (options.quiet) {
+      console.log(result);
+    } else {
+      console.log("listTopics response:", result);
+    }
   }
 };
 
