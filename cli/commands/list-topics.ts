@@ -38,6 +38,12 @@ export const listTopics = {
   command: "list-topics",
   describe: "list topics for the stage",
   builder: (yargs: Argv) =>
-    yargs.option("stage", { type: "string", demandOption: true }),
+    yargs
+      .option("stage", { type: "string", demandOption: true })
+      .option("quiet", {
+        type: "boolean",
+        demandOption: false,
+        default: false,
+      }),
   handler: list_topics,
 };
