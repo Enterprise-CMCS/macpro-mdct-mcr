@@ -353,7 +353,6 @@ export type ReportMetadataTableVerbiage =
   | NaaarMetadataHeaders;
 
 interface BaseMetadataHeaders {
-  reportType: ReportType;
   lastEdited: string;
   editedBy: string;
   status: string;
