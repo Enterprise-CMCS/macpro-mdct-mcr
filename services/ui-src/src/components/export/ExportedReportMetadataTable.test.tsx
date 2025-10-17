@@ -6,7 +6,12 @@ import {
   headerRowLabels,
 } from "./ExportedReportMetadataTable";
 // types
-import { ReportShape, ReportStatus, ReportType } from "types";
+import {
+  McparMetadataHeaders,
+  ReportShape,
+  ReportStatus,
+  ReportType,
+} from "types";
 // utils
 import { useStore } from "utils";
 import {
@@ -120,9 +125,19 @@ describe("<ExportedReportMetadataTable />", () => {
 
   describe("ExportedReportMetadataTable fails gracefully when appropriate", () => {
     const unknownReportType = "some new report type" as ReportType;
+    const testVerbiage: McparMetadataHeaders = {
+      dueDate: "Due Date",
+      lastEdited: "Last Edited",
+      editedBy: "Edited By",
+      status: "Status",
+    };
 
     test("Should throw an error when rendering the header for an unknown report type", () => {
-      expect(() => headerRowLabels(unknownReportType, {})).toThrow(Error);
+      expect(() =>
+        headerRowLabels(unknownReportType, {
+          metadataTableHeaders: testVerbiage,
+        })
+      ).toThrow(Error);
     });
     test("Should throw an error when rendering the body for an unknown report type", () => {
       expect(() =>

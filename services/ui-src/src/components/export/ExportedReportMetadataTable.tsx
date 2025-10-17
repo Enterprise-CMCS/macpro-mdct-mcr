@@ -1,7 +1,14 @@
 // components
 import { Table } from "components";
 // types
-import { AnyObject, ReportShape, ReportType } from "types";
+import {
+  McparMetadataHeaders,
+  MlrMetadataHeaders,
+  NaaarMetadataHeaders,
+  ReportMetadataTableVerbiage,
+  ReportShape,
+  ReportType,
+} from "types";
 // utils
 import { assertExhaustive, convertDateUtcToEt, useStore } from "utils";
 
@@ -26,33 +33,31 @@ export const ExportedReportMetadataTable = ({
 
 export const headerRowLabels = (
   reportType: ReportType,
-  { metadataTableHeaders: verbiage }: AnyObject
+  {
+    metadataTableHeaders: verbiage,
+  }: { metadataTableHeaders: ReportMetadataTableVerbiage }
 ): string[] => {
   switch (reportType) {
-    case ReportType.MCPAR:
+    case ReportType.MCPAR: {
+      const v = verbiage as McparMetadataHeaders;
+      return [v.dueDate, v.lastEdited, v.editedBy, v.status];
+    }
+    case ReportType.MLR: {
+      const v = verbiage as MlrMetadataHeaders;
+      return [v.submissionName, v.lastEdited, v.editedBy, v.status];
+    }
+    case ReportType.NAAAR: {
+      const v = verbiage as NaaarMetadataHeaders;
       return [
-        verbiage.dueDate,
-        verbiage.lastEdited,
-        verbiage.editedBy,
-        verbiage.status,
+        v.submissionName,
+        v.planType,
+        v.reportingPeriodStartDate,
+        v.reportingPeriodEndDate,
+        v.lastEdited,
+        v.editedBy,
+        v.status,
       ];
-    case ReportType.MLR:
-      return [
-        verbiage.submissionName,
-        verbiage.lastEdited,
-        verbiage.editedBy,
-        verbiage.status,
-      ];
-    case ReportType.NAAAR:
-      return [
-        verbiage.submissionName,
-        verbiage.planType,
-        verbiage.reportingPeriodStartDate,
-        verbiage.reportingPeriodEndDate,
-        verbiage.lastEdited,
-        verbiage.editedBy,
-        verbiage.status,
-      ];
+    }
     default:
       assertExhaustive(reportType);
       throw new Error(
@@ -111,7 +116,9 @@ export const bodyRowContent = (
 
 export interface Props {
   reportType: ReportType;
-  verbiage: any;
+  verbiage: {
+    metadataTableHeaders: ReportMetadataTableVerbiage;
+  };
 }
 
 const sx = {
