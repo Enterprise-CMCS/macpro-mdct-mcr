@@ -126,7 +126,6 @@ describe("<ExportedReportMetadataTable />", () => {
   describe("ExportedReportMetadataTable fails gracefully when appropriate", () => {
     const unknownReportType = "some new report type" as ReportType;
     const testVerbiage: McparMetadataHeaders = {
-      reportType: ReportType.MCPAR,
       dueDate: "Due Date",
       lastEdited: "Last Edited",
       editedBy: "Edited By",

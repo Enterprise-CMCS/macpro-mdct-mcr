@@ -359,17 +359,14 @@ interface BaseMetadataHeaders {
 }
 
 export interface McparMetadataHeaders extends BaseMetadataHeaders {
-  reportType: ReportType.MCPAR;
   dueDate: string;
 }
 
 export interface MlrMetadataHeaders extends BaseMetadataHeaders {
-  reportType: ReportType.MLR;
   submissionName: string;
 }
 
 export interface NaaarMetadataHeaders extends BaseMetadataHeaders {
-  reportType: ReportType.NAAAR;
   submissionName: string;
   planType: string;
   reportingPeriodStartDate: string;
