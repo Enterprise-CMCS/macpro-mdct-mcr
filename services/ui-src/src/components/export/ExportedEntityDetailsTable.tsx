@@ -21,7 +21,6 @@ export const ExportedEntityDetailsTable = ({
   caption,
   fields,
   entity,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   entityType: passedEntityType,
   entityIndex,
 }: Props) => {
@@ -129,7 +128,6 @@ export interface Props {
   caption: string;
   fields: FormField[];
   entity: EntityShape;
-  showHintText?: boolean;
   entityType?: EntityType;
   entityIndex?: number;
 }
