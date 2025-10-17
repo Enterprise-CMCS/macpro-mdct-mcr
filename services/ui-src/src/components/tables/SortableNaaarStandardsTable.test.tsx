@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { SortableNaaarStandardsTable } from "components";
@@ -10,7 +10,7 @@ import {
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -46,7 +46,9 @@ describe("<SortableNaaarStandardsTable />", () => {
 
   test("SortableNaaarStandardsTable opens the drawer upon clicking Edit", async () => {
     const editButton = screen.getByRole("button", { name: "Edit standard 1" });
-    await userEvent.click(editButton);
+    await act(async () => {
+      await userEvent.click(editButton);
+    });
     expect(mockOpenRowDrawer).toBeCalledTimes(1);
   });
 
@@ -54,9 +56,11 @@ describe("<SortableNaaarStandardsTable />", () => {
     const deleteButton = screen.getByRole("button", {
       name: "Delete standard 1",
     });
-    await userEvent.click(deleteButton);
+    await act(async () => {
+      await userEvent.click(deleteButton);
+    });
     expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
   });
 
-  testA11y(sortableTableComponent);
+  testA11yAct(sortableTableComponent);
 });

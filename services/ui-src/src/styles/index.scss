@@ -124,6 +124,10 @@ button {
   }
 }
 
+p {
+  margin-block: 0;
+}
+
 #main-content {
   &:focus {
     box-shadow: none !important;

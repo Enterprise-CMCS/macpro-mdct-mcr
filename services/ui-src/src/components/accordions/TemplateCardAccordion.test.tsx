@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { TemplateCardAccordion } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 export const mockAccordion = {
   buttonLabel: "mock accordion button",
@@ -29,8 +29,10 @@ const accordionComponent = (
 );
 
 describe("<TemplateCardAccordion />", () => {
-  beforeEach(() => {
-    render(accordionComponent);
+  beforeEach(async () => {
+    await act(() => {
+      render(accordionComponent);
+    });
   });
 
   test("Accordion is visible", () => {
@@ -46,13 +48,17 @@ describe("<TemplateCardAccordion />", () => {
     const accordionQuestion = screen.getByText(mockAccordion.buttonLabel);
     expect(accordionQuestion).toBeVisible();
     expect(screen.getByText(mockAccordion.text)).not.toBeVisible();
-    await userEvent.click(accordionQuestion);
-    expect(accordionQuestion).toBeVisible();
-    expect(screen.getByText(mockAccordion.text)).toBeVisible();
-    mockAccordion.orderedList.forEach((item) => {
-      expect(screen.getByText(item)).toBeVisible();
+    await act(async () => {
+      await userEvent.click(accordionQuestion);
+    });
+    await waitFor(() => {
+      expect(accordionQuestion).toBeVisible();
+      expect(screen.getByText(mockAccordion.text)).toBeVisible();
+      mockAccordion.orderedList.forEach((item) => {
+        expect(screen.getByText(item)).toBeVisible();
+      });
     });
   });
 
-  testA11y(accordionComponent);
+  testA11yAct(accordionComponent);
 });

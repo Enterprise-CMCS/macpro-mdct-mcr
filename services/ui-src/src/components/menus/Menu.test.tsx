@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Menu } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 import { UserContext } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockLogout = jest.fn();
 
@@ -36,9 +36,11 @@ describe("<Menu />", () => {
 
   test("Menu button logout fires logout function", async () => {
     const logoutButton = screen.getByText("Log Out");
-    await userEvent.click(logoutButton);
+    await act(async () => {
+      await userEvent.click(logoutButton);
+    });
     expect(mockLogout).toHaveBeenCalledTimes(1);
   });
 
-  testA11y(menuComponent);
+  testA11yAct(menuComponent);
 });

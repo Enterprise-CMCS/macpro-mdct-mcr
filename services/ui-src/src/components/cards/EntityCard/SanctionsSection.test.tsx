@@ -6,7 +6,7 @@ import {
   mockSanctionsFullData,
   mockSanctionsPartialData,
 } from "utils/testing/mockEntities";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const SanctionsSectionComponentFullData = (
   <SanctionsSection
@@ -107,5 +107,5 @@ describe("SanctionsSection", () => {
     expect(errorBox).not.toBeInTheDocument();
   });
 
-  testA11y(SanctionsSectionComponentFullData);
+  testA11yAct(SanctionsSectionComponentFullData);
 });

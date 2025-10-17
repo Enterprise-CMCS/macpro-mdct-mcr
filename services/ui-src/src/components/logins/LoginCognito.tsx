@@ -70,7 +70,6 @@ export const LoginCognito = () => {
         <Button
           sx={sx.button}
           onClick={handleLogin}
-          isFullWidth
           type="submit"
           data-testid="cognito-login-button"
         >

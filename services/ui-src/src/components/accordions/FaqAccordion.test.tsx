@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { FaqAccordion } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { FaqItem } from "types";
 
 const accordionItems: FaqItem[] = [
@@ -21,8 +21,10 @@ const faqAccordionComponent = (
 );
 
 describe("<FaqAccordion />", () => {
-  beforeEach(() => {
-    render(faqAccordionComponent);
+  beforeEach(async () => {
+    await act(() => {
+      render(faqAccordionComponent);
+    });
   });
 
   test("FaqAccordion is visible", () => {
@@ -40,10 +42,14 @@ describe("<FaqAccordion />", () => {
     expect(faqQuestion).toBeVisible();
     const answerText = accordionItems[0].answer[0].content!;
     expect(screen.getByText(answerText)).not.toBeVisible();
-    await userEvent.click(faqQuestion);
+    await act(async () => {
+      await userEvent.click(faqQuestion);
+    });
     expect(faqQuestion).toBeVisible();
-    expect(screen.getByText(answerText)).toBeVisible();
+    await waitFor(() => {
+      expect(screen.getByText(answerText)).toBeVisible();
+    });
   });
 
-  testA11y(faqAccordionComponent);
+  testA11yAct(faqAccordionComponent);
 });

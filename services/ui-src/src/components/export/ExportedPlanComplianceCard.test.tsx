@@ -4,7 +4,7 @@ import { ExportedPlanComplianceCard } from "components";
 // utils
 import { mockNaaarReportStore } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -81,6 +81,6 @@ describe("<ExportedPlanComplianceCard />", () => {
   });
 
   describe("Test ExportedPlanComplianceCard accessibility", () => {
-    testA11y(ExportedPlanComplianceCardComponent);
+    testA11yAct(ExportedPlanComplianceCardComponent);
   });
 });

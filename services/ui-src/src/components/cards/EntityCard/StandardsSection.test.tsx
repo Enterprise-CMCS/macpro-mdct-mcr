@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { StandardsSection } from "./StandardsSection";
 import { mockFormattedEntityData } from "utils/testing/mockEntities";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const standardsSectionComponent = (
   <StandardsSection
@@ -118,5 +118,5 @@ describe("StandardsSection", () => {
     expect(screen.queryByText("Urban")).not.toBeInTheDocument();
   });
 
-  testA11y(standardsSectionComponent);
+  testA11yAct(standardsSectionComponent);
 });

@@ -1,7 +1,6 @@
 import { useContext } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // components
 import { AdminBannerContext, AdminBannerProvider } from "./AdminBannerProvider";
 // utils
@@ -68,8 +67,8 @@ describe("<AdminBannerProvider />", () => {
 
     test("fetchAllBanners method calls API getBanners method", async () => {
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      const fetchButton = screen.getByText("Fetch all");
       await act(async () => {
-        const fetchButton = screen.getByText("Fetch all");
         await userEvent.click(fetchButton);
       });
       // 1 call on render + 1 call on button click
@@ -79,8 +78,8 @@ describe("<AdminBannerProvider />", () => {
     test("fetchAdminBanner method calls API getBanners method", async () => {
       mockAPI.getBanners.mockImplementation(() => [mockBannerData]);
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      const fetchButton = screen.getByText("Fetch");
       await act(async () => {
-        const fetchButton = screen.getByText("Fetch");
         await userEvent.click(fetchButton);
       });
       // 1 call on render + 1 call on button click
@@ -89,8 +88,8 @@ describe("<AdminBannerProvider />", () => {
     test("fetchAdminBanner method calls API getBanners method and filters/sorts without error", async () => {
       mockAPI.getBanners.mockImplementation(() => mockMultiBannerData);
       expect(mockAPI.getBanners).toHaveBeenCalledTimes(1);
+      const fetchButton = screen.getByText("Fetch");
       await act(async () => {
-        const fetchButton = screen.getByText("Fetch");
         await userEvent.click(fetchButton);
       });
       // 1 call on render + 1 call on button click
@@ -110,8 +109,8 @@ describe("<AdminBannerProvider />", () => {
   });
   describe("Test AdminBannerProvider deleteAdminBanner method", () => {
     test("deleteAdminBanner method calls API deleteBanner method", async () => {
+      const deleteButton = screen.getByText("Delete");
       await act(async () => {
-        const deleteButton = screen.getByText("Delete");
         await userEvent.click(deleteButton);
       });
       expect(mockAPI.deleteBanner).toHaveBeenCalledTimes(1);
@@ -124,8 +123,8 @@ describe("<AdminBannerProvider />", () => {
 
   describe("Test AdminBannerProvider writeAdminBanner method", () => {
     test("writeAdminBanner method calls API writeBanner method", async () => {
+      const writeButton = screen.getByText("Write");
       await act(async () => {
-        const writeButton = screen.getByText("Write");
         await userEvent.click(writeButton);
       });
       expect(mockAPI.writeBanner).toHaveBeenCalledTimes(1);

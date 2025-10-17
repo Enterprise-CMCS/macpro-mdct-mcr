@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 // components
 import { SpreadsheetWidget } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const SpreadsheetWidgetComponent = (
   <SpreadsheetWidget description="mock-description" alt={"mock-alt-text"} />
@@ -13,5 +13,5 @@ describe("<SpreadsheetWidget />", () => {
     expect(screen.getByText("mock-description")).toBeVisible();
   });
 
-  testA11y(SpreadsheetWidgetComponent);
+  testA11yAct(SpreadsheetWidgetComponent);
 });

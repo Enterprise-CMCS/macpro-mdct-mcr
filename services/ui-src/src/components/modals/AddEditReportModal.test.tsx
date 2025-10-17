@@ -23,7 +23,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { convertDateUtcToEt, useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
 const mockCreateReport = jest.fn();
@@ -234,28 +234,30 @@ describe("<AddEditProgramModal />", () => {
       const isNewProgram = screen.getByLabelText(
         "Add new program"
       ) as HTMLInputElement;
-      await userEvent.click(isNewProgram);
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      const programNameField = form.querySelector("[name='newProgramName']")!;
-      await userEvent.type(programNameField, "fake program name");
-      const startDateField = form.querySelector(
-        "[name='reportingPeriodStartDate']"
-      )!;
-      await userEvent.type(startDateField, "1/1/2022");
-      const endDateField = form.querySelector(
-        "[name='reportingPeriodEndDate']"
-      )!;
-      await userEvent.type(endDateField, "12/31/2022");
-      const isPccmNo = screen.getAllByLabelText("No")[0] as HTMLInputElement;
-      if (!isPccmNo.disabled) {
-        await userEvent.click(isPccmNo);
-      }
-      const naaarSubmissionNo = screen.getAllByLabelText(
-        "No"
-      )[1] as HTMLInputElement;
-      await userEvent.click(naaarSubmissionNo);
-      const submitButton = screen.getByRole("button", { name: "Save" });
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(isNewProgram);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const programNameField = form.querySelector("[name='newProgramName']")!;
+        await userEvent.type(programNameField, "fake program name");
+        const startDateField = form.querySelector(
+          "[name='reportingPeriodStartDate']"
+        )!;
+        await userEvent.type(startDateField, "1/1/2022");
+        const endDateField = form.querySelector(
+          "[name='reportingPeriodEndDate']"
+        )!;
+        await userEvent.type(endDateField, "12/31/2022");
+        const isPccmNo = screen.getAllByLabelText("No")[0] as HTMLInputElement;
+        if (!isPccmNo.disabled) {
+          await userEvent.click(isPccmNo);
+        }
+        const naaarSubmissionNo = screen.getAllByLabelText(
+          "No"
+        )[1] as HTMLInputElement;
+        await userEvent.click(naaarSubmissionNo);
+        const submitButton = screen.getByRole("button", { name: "Save" });
+        await userEvent.click(submitButton);
+      });
     };
 
     test(
@@ -363,9 +365,11 @@ describe("<AddEditProgramModal />", () => {
 
     const fillForm = async (form: any) => {
       const programNameField = form.querySelector("[name='programName']")!;
-      await userEvent.type(programNameField, "fake program name");
-      const submitButton = screen.getByRole("button", { name: "Save" });
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.type(programNameField, "fake program name");
+        const submitButton = screen.getByRole("button", { name: "Save" });
+        await userEvent.click(submitButton);
+      });
     };
 
     test("Adding a new report", async () => {
@@ -401,19 +405,21 @@ describe("<AddEditProgramModal />", () => {
 
     const fillForm = async (form: any) => {
       const programNameField = form.querySelector("[name='programName']")!;
-      await userEvent.type(programNameField, "fake program name");
-      const startDateField = form.querySelector(
-        "[name='reportingPeriodStartDate']"
-      )!;
-      await userEvent.type(startDateField, "1/1/2022");
-      const endDateField = form.querySelector(
-        "[name='reportingPeriodEndDate']"
-      )!;
-      await userEvent.type(endDateField, "12/31/2022");
-      const planTypeField = screen.getByLabelText("MCO") as HTMLInputElement;
-      await userEvent.click(planTypeField);
-      const submitButton = screen.getByRole("button", { name: "Save" });
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.type(programNameField, "fake program name");
+        const startDateField = form.querySelector(
+          "[name='reportingPeriodStartDate']"
+        )!;
+        await userEvent.type(startDateField, "1/1/2022");
+        const endDateField = form.querySelector(
+          "[name='reportingPeriodEndDate']"
+        )!;
+        await userEvent.type(endDateField, "12/31/2022");
+        const planTypeField = screen.getByLabelText("MCO") as HTMLInputElement;
+        await userEvent.click(planTypeField);
+        const submitButton = screen.getByRole("button", { name: "Save" });
+        await userEvent.click(submitButton);
+      });
     };
 
     test("Adding a new report", async () => {
@@ -465,7 +471,9 @@ describe("<AddEditProgramModal />", () => {
         convertDateUtcToEt(mockNaaarReport.reportingPeriodEndDate)
       );
 
-      await userEvent.click(screen.getByText("Cancel"));
+      await act(async () => {
+        await userEvent.click(screen.getByText("Cancel"));
+      });
     });
 
     test("Editing an existing report", async () => {
@@ -482,5 +490,5 @@ describe("<AddEditProgramModal />", () => {
     });
   });
 
-  testA11y(modalComponent);
+  testA11yAct(modalComponent);
 });

@@ -4,7 +4,7 @@ import { ErrorAlert } from "components";
 // types
 import { ErrorVerbiage } from "types";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import { genericErrorContent } from "verbiage/errors";
 
@@ -28,5 +28,5 @@ describe("<ErrorAlert />", () => {
     expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
   });
 
-  testA11y(errorAlertComponent);
+  testA11yAct(errorAlertComponent);
 });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ProfilePage } from "components";
@@ -9,7 +9,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/profile";
 
@@ -48,7 +48,9 @@ describe("<ProfilePage />", () => {
     test("Check that admin button navigates to /admin on click", async () => {
       const adminButton = screen.getByText("Banner Editor");
       expect(adminButton).toBeVisible();
-      await userEvent.click(adminButton);
+      await act(async () => {
+        await userEvent.click(adminButton);
+      });
       expect(window.location.pathname).toEqual("/admin");
     });
   });
@@ -72,7 +74,7 @@ describe("<ProfilePage />", () => {
     });
   });
 
-  testA11y(ProfilePageComponent, () => {
+  testA11yAct(ProfilePageComponent, () => {
     mockedUseStore.mockReturnValue(mockAdminUserStore);
   });
 });
