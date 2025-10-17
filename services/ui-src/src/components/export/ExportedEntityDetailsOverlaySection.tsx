@@ -16,13 +16,12 @@ import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
-  ...props
 }: ExportedEntityDetailsOverlaySectionProps) => {
   const { report } = useStore();
   const entityType = section.entityType;
 
   return (
-    <Box sx={sx.sectionHeading} {...props}>
+    <Box sx={sx.sectionHeading}>
       <ExportedSectionHeading
         verbiage={{
           ...section.verbiage,
