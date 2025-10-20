@@ -13,7 +13,7 @@ mockedUseStore.mockReturnValue({
 });
 
 const mockStandardFormattedData = {
-  count: "1",
+  count: 1,
   standardType: "mock type",
   description: "mock description",
   provider: "mock provider",

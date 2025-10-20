@@ -20,6 +20,7 @@ import {
   EntityType,
   FormField,
   NaaarStandardsTableShape,
+  PlanData,
   PlanOverlayReportPageShape,
 } from "types";
 // utils
@@ -115,7 +116,7 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
           <ExportedPlanComplianceCard
             key={plan.id}
             standardData={standardData}
-            planData={planData}
+            planData={planData as PlanData}
           />
         );
       };
