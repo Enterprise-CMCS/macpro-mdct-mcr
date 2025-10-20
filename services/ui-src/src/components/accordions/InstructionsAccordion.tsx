@@ -9,7 +9,7 @@ import { parseCustomHtml, sanitizeAndParseHtml } from "utils";
 export const InstructionsAccordion = ({ verbiage, ...props }: Props) => {
   const { buttonLabel, intro, list, text } = verbiage;
   return (
-    <Accordion allowMultiple={true} sx={sx.root} {...props}>
+    <Accordion allowToggle={true} allowMultiple={true} sx={sx.root} {...props}>
       <AccordionItem label={buttonLabel} sx={sx.item}>
         {intro && <Box sx={sx.textBox}>{parseCustomHtml(intro)}</Box>}
         {list?.length > 0 && (

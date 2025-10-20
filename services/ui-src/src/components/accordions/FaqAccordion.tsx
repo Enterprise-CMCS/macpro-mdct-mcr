@@ -8,7 +8,7 @@ import { parseCustomHtml } from "utils";
 
 export const FaqAccordion = ({ accordionItems, ...props }: Props) => {
   return (
-    <Accordion allowMultiple={true} {...props}>
+    <Accordion allowToggle={true} allowMultiple={true} {...props}>
       {accordionItems.map((item: FaqItem, index: number) => (
         <AccordionItem key={index} label={item.question} sx={sx.item}>
           <Box sx={sx.answerBox}>{parseCustomHtml(item.answer)}</Box>
