@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, ReactNode, useEffect } from "react";
+import { forwardRef, ReactNode, useEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -29,7 +29,7 @@ import {
   useStore,
 } from "utils";
 
-export const Form = forwardRef(function Form(
+export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   {
     id,
     formJson,
@@ -42,8 +42,8 @@ export const Form = forwardRef(function Form(
     dontReset,
     children,
     ...props
-  }: Props,
-  ref?: ForwardedRef<HTMLFormElement>
+  },
+  ref?
 ) {
   const { fields, options } = formJson;
 

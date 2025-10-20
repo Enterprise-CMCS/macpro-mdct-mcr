@@ -20,7 +20,10 @@ export const MobileStandardsTable = ({ columns, data }: Props) => {
             return (
               <Box key={cell.id} sx={sx.rows}>
                 <Box sx={sx.headers}>
-                  {flexRender(cell.column.columnDef.header, cell.getContext())}
+                  {flexRender(
+                    cell.column.columnDef.header,
+                    cell.getContext() as any
+                  )}
                 </Box>
                 <Box sx={sx.cells}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
