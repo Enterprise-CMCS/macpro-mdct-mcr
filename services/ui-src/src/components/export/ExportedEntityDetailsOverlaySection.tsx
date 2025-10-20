@@ -16,13 +16,12 @@ import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
-  ...props
 }: ExportedEntityDetailsOverlaySectionProps) => {
   const { report } = useStore();
   const entityType = section.entityType;
 
   return (
-    <Box sx={sx.sectionHeading} {...props}>
+    <Box sx={sx.sectionHeading}>
       <ExportedSectionHeading
         verbiage={{
           ...section.verbiage,
@@ -135,7 +134,6 @@ export function getEntityTableComponents(
                 key={`table-${idx}`}
                 fields={filteredFields.slice(1) as FormField[]}
                 entity={entity}
-                showHintText={false}
                 caption={header.props?.content}
               />
             </Fragment>
