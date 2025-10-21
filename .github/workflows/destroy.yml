@@ -21,7 +21,7 @@ permissions:
 jobs:
   destroy:
     name: Destroy
-    if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
+    if: (inputs.environment || github.event.ref_type == 'branch') && !contains('skipci,code-json-', github.event.ref)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
