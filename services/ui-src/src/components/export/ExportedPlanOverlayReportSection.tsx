@@ -170,7 +170,6 @@ export const ExportedPlanOverlayReportSection = ({ section }: Props) => {
                 key={`table-${plan.id}`}
                 fields={nonCompliantDetailsChildForm438206 as FormField[]}
                 entity={plan}
-                showHintText={false}
                 caption={nonCompliantDetailsHeading438206}
                 entityType={EntityType.PLANS}
                 entityIndex={index}

@@ -21,11 +21,8 @@ export const ExportedEntityDetailsTable = ({
   caption,
   fields,
   entity,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  showHintText,
   entityType: passedEntityType,
   entityIndex,
-  ...props
 }: Props) => {
   const { report } = useStore();
   const { tableHeaders } = verbiage;
@@ -43,7 +40,6 @@ export const ExportedEntityDetailsTable = ({
 
   return (
     <Table
-      {...props}
       sx={sx.root}
       content={{
         caption,
@@ -132,10 +128,8 @@ export interface Props {
   caption: string;
   fields: FormField[];
   entity: EntityShape;
-  showHintText?: boolean;
   entityType?: EntityType;
   entityIndex?: number;
-  [key: string]: any;
 }
 
 const sx = {
