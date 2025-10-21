@@ -316,7 +316,7 @@ jobs:
 
   upload-reports:
     name: Upload reports
-    if: ${{ always() && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
+    if: ${{ always() && needs.test.result != 'skipped' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') && !startsWith(github.ref_name, 'code-json-') }}
     needs:
       - test
     uses: ./.github/workflows/upload-e2e-test-reports.yml
