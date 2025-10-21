@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Error } from "components/app/Error";
 // components
@@ -9,7 +9,7 @@ import {
   mockMcparReportStore,
   mockMlrReportStore,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 let mockPrint: any;
 
@@ -64,7 +64,9 @@ describe("<ExportedReportBanner />", () => {
     render(reportBanner);
     const printButton = screen.getByText("Download PDF");
     expect(printButton).toBeVisible();
-    await userEvent.click(printButton);
+    await act(async () => {
+      await userEvent.click(printButton);
+    });
   });
 
   test("Banner should not be visible", () => {
@@ -80,7 +82,7 @@ describe("<ExportedReportBanner />", () => {
     expect(printButton).toBeNull();
   });
 
-  testA11y(reportBanner, () => {
+  testA11yAct(reportBanner, () => {
     mockedUseStore.mockReturnValue({
       ...mockMlrReportStore,
     });

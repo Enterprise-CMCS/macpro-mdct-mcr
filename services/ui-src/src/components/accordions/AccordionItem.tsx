@@ -1,4 +1,4 @@
-import { ReactChild } from "react";
+import { ReactNode } from "react";
 // components
 import {
   AccordionButton,
@@ -37,7 +37,7 @@ export const AccordionItem = ({ label, children, ...props }: Props) => {
 
 interface Props {
   label: string;
-  children?: ReactChild | ReactChild[];
+  children?: ReactNode | ReactNode[];
   [key: string]: any;
 }
 

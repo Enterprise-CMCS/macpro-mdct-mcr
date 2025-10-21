@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { HelpPage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/help";
 
@@ -18,5 +18,5 @@ describe("<HelpPage />", () => {
     render(helpView);
     expect(screen.getByText(verbiage.intro.header)).toBeVisible();
   });
-  testA11y(helpView);
+  testA11yAct(helpView);
 });

@@ -1,7 +1,6 @@
 import { useContext } from "react";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // utils
 import { UserContext, UserProvider, useStore } from "utils";
 import { mockUseStore, RouterWrappedComponent } from "utils/testing/setupJest";
@@ -99,16 +98,16 @@ describe("<UserProvider />", () => {
     });
 
     test("test logout function", async () => {
+      const logoutButton = screen.getByTestId("logout-button");
       await act(async () => {
-        const logoutButton = screen.getByTestId("logout-button");
         await userEvent.click(logoutButton);
       });
       expect(window.location.pathname).toEqual("/");
     });
 
     test("test login with IDM function", async () => {
+      const loginButton = screen.getByTestId("login-idm-button");
       await act(async () => {
-        const loginButton = screen.getByTestId("login-idm-button");
         await userEvent.click(loginButton);
       });
       expect(screen.getByTestId("testdiv")).toHaveTextContent("User Test");
@@ -150,8 +149,8 @@ describe("<UserProvider />", () => {
       await act(async () => {
         render(testComponent);
       });
+      const logoutButton = screen.getByTestId("logout-button");
       await act(async () => {
-        const logoutButton = screen.getByTestId("logout-button");
         await userEvent.click(logoutButton);
       });
 

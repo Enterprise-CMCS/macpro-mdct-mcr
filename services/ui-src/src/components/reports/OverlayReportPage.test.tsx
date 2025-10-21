@@ -189,7 +189,7 @@ describe("<OverlayReportPage />", () => {
         const entityHeaders = screen.getByRole("row", {
           name: `Status ${verbiage.tableHeader} Action`,
         });
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: `${planName} Select “Enter” to complete response.`,
         });
 
@@ -217,7 +217,7 @@ describe("<OverlayReportPage />", () => {
         const entityHeaders = screen.getByRole("row", {
           name: `Status ${verbiage.tableHeader}`,
         });
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: `${verbiage.tableHeader} ${planName} Select “Enter” to complete response. ${verbiage.enterEntityDetailsButtonText}`,
         });
 
@@ -252,7 +252,7 @@ describe("<OverlayReportPage />", () => {
         const entityHeaders = screen.getByRole("row", {
           name: `Status ${verbiage.tableHeader} Action`,
         });
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: `${planName} Select “Enter” to complete response.`,
         });
 
@@ -274,7 +274,7 @@ describe("<OverlayReportPage />", () => {
         const entityHeaders = screen.getByRole("row", {
           name: `Status ${verbiage.tableHeader}`,
         });
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: `${verbiage.tableHeader} ${planName} Select “Enter” to complete response. ${verbiage.enterEntityDetailsButtonText}`,
         });
 
@@ -293,7 +293,7 @@ describe("<OverlayReportPage />", () => {
           level: 1,
           name: verbiage.intro.section,
         });
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: `${planName} Select “Enter” to complete response.`,
         });
         const enterButton = screen.getByRole("button", {
@@ -302,7 +302,9 @@ describe("<OverlayReportPage />", () => {
 
         expect(h1).toBeVisible();
         expect(entityCell).toBeVisible();
-        await userEvent.click(enterButton);
+        await act(async () => {
+          await userEvent.click(enterButton);
+        });
 
         const h1Requery = screen.queryByRole("heading", {
           level: 1,
@@ -328,7 +330,9 @@ describe("<OverlayReportPage />", () => {
         const enterButton = screen.getByRole("button", {
           name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
-        await userEvent.click(enterButton);
+        await act(async () => {
+          await userEvent.click(enterButton);
+        });
 
         // Parent Form
         const h1 = screen.queryByRole("heading", {
@@ -338,15 +342,19 @@ describe("<OverlayReportPage />", () => {
         expect(h1).toBeNull();
 
         const radioButton = screen.getByRole("radio", { name: "Mock Yes" });
-        await userEvent.click(radioButton);
+        await act(async () => {
+          await userEvent.click(radioButton);
+        });
 
         const submitButton = screen.getByRole("button", {
           name: "Save & return",
         });
-        await userEvent.click(submitButton);
+        await act(async () => {
+          await userEvent.click(submitButton);
+        });
 
         // Back to Table
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: planName,
         });
         const h1Requery = screen.getByRole("heading", {
@@ -369,19 +377,25 @@ describe("<OverlayReportPage />", () => {
         const enterButtonTable = screen.getByRole("button", {
           name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
-        await userEvent.click(enterButtonTable);
+        await act(async () => {
+          await userEvent.click(enterButtonTable);
+        });
 
         // Parent Form
         const radioButtonParentFormNo = screen.getByRole("radio", {
           name: nonCompliantLabels["438.206"],
         });
-        await userEvent.click(radioButtonParentFormNo);
+        await act(async () => {
+          await userEvent.click(radioButtonParentFormNo);
+        });
 
         // Enter enabled only with "No"
         const enterButtonParentForm = screen.getByRole("button", {
           name: "Enter",
         });
-        await userEvent.click(enterButtonParentForm);
+        await act(async () => {
+          await userEvent.click(enterButtonParentForm);
+        });
 
         // Child Form
         const childForm = screen.getByRole("heading", {
@@ -392,26 +406,34 @@ describe("<OverlayReportPage />", () => {
         const radioButtonChildForm = screen.getByRole("radio", {
           name: "Mock Yes",
         });
-        await userEvent.click(radioButtonChildForm);
+        await act(async () => {
+          await userEvent.click(radioButtonChildForm);
+        });
 
         const submitButtonChildForm = screen.getByRole("button", {
           name: "Save & return",
         });
-        await userEvent.click(submitButtonChildForm);
+        await act(async () => {
+          await userEvent.click(submitButtonChildForm);
+        });
 
         // Back to Parent Form, Choose "Yes"
         const radioButtonParentFormYes = screen.getByRole("radio", {
           name: "Mock Yes",
         });
-        await userEvent.click(radioButtonParentFormYes);
+        await act(async () => {
+          await userEvent.click(radioButtonParentFormYes);
+        });
 
         const submitButtonParentForm = screen.getByRole("button", {
           name: "Save & return",
         });
-        await userEvent.click(submitButtonParentForm);
+        await act(async () => {
+          await userEvent.click(submitButtonParentForm);
+        });
 
         // Back to Table
-        const entityCell = screen.getByRole("gridcell", {
+        const entityCell = screen.getByRole("cell", {
           name: planName,
         });
         const h1Requery = screen.getByRole("heading", {
@@ -430,7 +452,9 @@ describe("<OverlayReportPage />", () => {
         const enterButton = screen.getByRole("button", {
           name: `${verbiage.enterEntityDetailsButtonText} ${planName}`,
         });
-        await userEvent.click(enterButton);
+        await act(async () => {
+          await userEvent.click(enterButton);
+        });
 
         const h1 = screen.queryByRole("heading", {
           level: 1,
@@ -441,7 +465,9 @@ describe("<OverlayReportPage />", () => {
         const closeButton = screen.getByRole("button", {
           name: "Mock Back Button: Main",
         });
-        await userEvent.click(closeButton);
+        await act(async () => {
+          await userEvent.click(closeButton);
+        });
 
         const h1Requery = screen.getByRole("heading", {
           level: 1,
@@ -466,7 +492,9 @@ describe("<OverlayReportPage />", () => {
         });
 
         expect(h1).toBeVisible();
-        await userEvent.click(enterButton);
+        await act(async () => {
+          await userEvent.click(enterButton);
+        });
 
         const h1Requery = screen.getByRole("heading", {
           level: 1,
@@ -492,7 +520,9 @@ describe("<OverlayReportPage />", () => {
         });
 
         expect(h1).toBeVisible();
-        await userEvent.click(enterButton);
+        await act(async () => {
+          await userEvent.click(enterButton);
+        });
 
         const h1Requery = screen.getByRole("heading", {
           level: 1,

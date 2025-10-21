@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -14,7 +14,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -116,7 +116,9 @@ describe("<DropdownField />", () => {
       const option0 = dropdown.children.item(0) as HTMLOptionElement;
       const option2 = dropdown.children.item(2) as HTMLOptionElement;
       expect(option0.selected).toBe(true);
-      await userEvent.selectOptions(dropdown, "test-dropdown-2");
+      await act(async () => {
+        await userEvent.selectOptions(dropdown, "test-dropdown-2");
+      });
       expect(option2.selected).toBe(true);
     });
   });
@@ -185,9 +187,11 @@ describe("<DropdownField />", () => {
       const dropDown = screen.getByLabelText("test-dropdown-label");
       expect(dropDown).toBeVisible();
       const option2 = dropDown.children.item(2) as HTMLOptionElement;
-      await userEvent.selectOptions(dropDown, "test-dropdown-2");
-      expect(option2.selected).toBe(true);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.selectOptions(dropDown, "test-dropdown-2");
+        expect(option2.selected).toBe(true);
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -214,9 +218,11 @@ describe("<DropdownField />", () => {
       const dropDown = screen.getByLabelText("test-dropdown-label");
       expect(dropDown).toBeVisible();
       const option2 = dropDown.children.item(2) as HTMLOptionElement;
-      await userEvent.selectOptions(dropDown, "test-dropdown-2");
-      expect(option2.selected).toBe(true);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.selectOptions(dropDown, "test-dropdown-2");
+        expect(option2.selected).toBe(true);
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -242,9 +248,11 @@ describe("<DropdownField />", () => {
       const dropDown = screen.getByLabelText("test-dropdown-label");
       expect(dropDown).toBeVisible();
       const option2 = dropDown.children.item(2) as HTMLOptionElement;
-      await userEvent.selectOptions(dropDown, "test-dropdown-2");
-      expect(option2.selected).toBe(true);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.selectOptions(dropDown, "test-dropdown-2");
+        expect(option2.selected).toBe(true);
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
   });
@@ -302,7 +310,7 @@ describe("<DropdownField />", () => {
     });
   });
 
-  testA11y(dropdownComponentWithOptions, () => {
+  testA11yAct(dropdownComponentWithOptions, () => {
     mockGetValues(undefined);
   });
 });

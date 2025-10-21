@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportPageFooter } from "components";
@@ -12,7 +12,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 const mockRoutes = {
@@ -56,14 +56,18 @@ describe("<ReportPageFooter />", () => {
     test("ReportPageFooter without form previous navigation works", async () => {
       const result = render(reportPageComponent);
       const previousNavigationButton = result.getByText("Previous");
-      await userEvent.click(previousNavigationButton);
+      await act(async () => {
+        await userEvent.click(previousNavigationButton);
+      });
       expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-previous-route");
     });
 
     test("ReportPageFooter without form 'Continue' functionality works", async () => {
       const result = render(reportPageComponent);
       const continueButton = result.getByText("Continue");
-      await userEvent.click(continueButton);
+      await act(async () => {
+        await userEvent.click(continueButton);
+      });
       expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-next-route");
     });
   });
@@ -102,5 +106,5 @@ describe("<ReportPageFooter />", () => {
     });
   });
 
-  testA11y(reportPageComponent);
+  testA11yAct(reportPageComponent);
 });

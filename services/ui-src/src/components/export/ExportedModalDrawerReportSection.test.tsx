@@ -10,7 +10,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -68,5 +68,5 @@ describe("<ExportedModalDrawerReportSection />", () => {
       expect(entityMessage).toBeVisible();
     });
   });
-  testA11y(exportedReportSectionComponent());
+  testA11yAct(exportedReportSectionComponent());
 });

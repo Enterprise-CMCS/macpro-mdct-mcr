@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Drawer } from "components";
 // constants
 import { closeText } from "../../constants";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import { mockModalDrawerReportPageVerbiage } from "utils/testing/setupJest";
 import { EntityType } from "types";
@@ -38,9 +38,11 @@ describe("<Drawer />", () => {
   test("Drawer can be closed with close button", async () => {
     const closeButton = screen.getByText(closeText);
     expect(closeButton).toBeVisible();
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 
-  testA11y(drawerComponent);
+  testA11yAct(drawerComponent);
 });

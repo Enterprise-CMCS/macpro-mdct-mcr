@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   mockAdminUserStore,
@@ -24,7 +24,9 @@ describe("<SaveReturnButton />", () => {
       render(<SaveReturnButton onClick={mockOnClick} />);
 
       const button = screen.getByRole("button", { name: "Save & return" });
-      await userEvent.click(button);
+      await act(async () => {
+        await userEvent.click(button);
+      });
       expect(mockOnClick).toBeCalled();
     });
 
@@ -37,7 +39,9 @@ describe("<SaveReturnButton />", () => {
       );
 
       const button = screen.getByRole("button", { name: "Return" });
-      await userEvent.click(button);
+      await act(async () => {
+        await userEvent.click(button);
+      });
       expect(mockDisabledOnClick).toBeCalled();
     });
 
@@ -61,7 +65,9 @@ describe("<SaveReturnButton />", () => {
       );
 
       const button = screen.getByRole("button", { name: "Return" });
-      await userEvent.click(button);
+      await act(async () => {
+        await userEvent.click(button);
+      });
       expect(disabledOnClick).toHaveBeenCalled();
     });
   });

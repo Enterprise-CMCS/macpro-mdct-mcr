@@ -1,4 +1,5 @@
-import { Helmet } from "react-helmet";
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Center, Heading, Text, Tr, Td, Spinner } from "@chakra-ui/react";
 import {
@@ -29,6 +30,8 @@ export const ExportedReportPage = () => {
 
   const { exportVerbiage } = getReportVerbiage(reportType);
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
+
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   return (
     <Box sx={sx.container}>

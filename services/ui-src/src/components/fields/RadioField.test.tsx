@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
 import { RadioField } from "components";
 // utils
 import { mockChoices } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockSetValue = jest.fn();
@@ -47,7 +47,9 @@ describe("<RadioField />", () => {
     mockGetValues(undefined);
     render(RadioFieldComponent);
     const firstRadio = screen.getByLabelText("Choice 1") as HTMLInputElement;
-    await userEvent.click(firstRadio);
+    await act(async () => {
+      await userEvent.click(firstRadio);
+    });
     expect(mockSetValue).toHaveBeenCalledWith(
       "radio_choices",
       [{ key: "Choice 1", value: "Choice 1" }],
@@ -55,7 +57,7 @@ describe("<RadioField />", () => {
     );
   });
 
-  testA11y(RadioFieldComponent, () => {
+  testA11yAct(RadioFieldComponent, () => {
     mockGetValues(undefined);
   });
 });

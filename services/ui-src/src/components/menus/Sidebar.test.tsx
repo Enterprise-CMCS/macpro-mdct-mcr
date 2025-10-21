@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Sidebar } from "components";
@@ -9,7 +9,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -49,11 +49,17 @@ describe("<Sidebar />", () => {
     test("Sidebar button click opens and closes sidebar", async () => {
       // note: tests sidebar nav at non-desktop size, so it is closed to start
       const sidebarNav = screen.getByRole("navigation");
-      expect(sidebarNav).toHaveClass("closed");
+      await waitFor(() => {
+        expect(sidebarNav).toHaveClass("closed");
+      });
 
       const sidebarButton = screen.getByLabelText("Open/Close sidebar menu");
-      await userEvent.click(sidebarButton);
-      expect(sidebarNav).toHaveClass("open");
+      await act(async () => {
+        await userEvent.click(sidebarButton);
+      });
+      await waitFor(() => {
+        expect(sidebarNav).toHaveClass("open");
+      });
     });
 
     test("Sidebar section click opens and closes section", async () => {
@@ -64,12 +70,20 @@ describe("<Sidebar />", () => {
       expect(childSection).not.toBeVisible();
 
       // click parent section open. now child is visible.
-      await userEvent.click(parentSection);
-      await expect(childSection).toBeVisible();
+      await act(async () => {
+        await userEvent.click(parentSection);
+      });
+      await waitFor(() => {
+        expect(childSection).toBeVisible();
+      });
 
       // click parent section closed. now child is not visible.
-      await userEvent.click(parentSection);
-      await expect(childSection).not.toBeVisible();
+      await act(async () => {
+        await userEvent.click(parentSection);
+      });
+      await waitFor(() => {
+        expect(childSection).not.toBeVisible();
+      });
     });
   });
   describe("Test Sidebar isHidden property", () => {
@@ -81,5 +95,5 @@ describe("<Sidebar />", () => {
     });
   });
 
-  testA11y(sidebarComponent);
+  testA11yAct(sidebarComponent);
 });

@@ -5,7 +5,7 @@ import {
   mockfullAccessMeasuresData,
   mockNotAnswered,
 } from "utils/testing/mockEntities";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const baseProps = {
   sx: {},
@@ -212,5 +212,5 @@ describe("AccessMeasuresSection", () => {
     expect(errorContainer).not.toBeInTheDocument();
   });
 
-  testA11y(accessMeasuresSectionComponent);
+  testA11yAct(accessMeasuresSectionComponent);
 });

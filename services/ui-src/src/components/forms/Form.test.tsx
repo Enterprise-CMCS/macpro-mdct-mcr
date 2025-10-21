@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Form } from "components";
@@ -14,7 +14,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockOnSubmit = jest.fn();
 
@@ -66,10 +66,14 @@ describe("<Form />", () => {
     const result = render(formComponent);
     const form = result.container;
     const testField = form.querySelector("[name='mock-text-field']")!;
-    await userEvent.type(testField, "valid fill");
+    await act(async () => {
+      await userEvent.type(testField, "valid fill");
+    });
 
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
     await expect(mockOnSubmit).toHaveBeenCalled();
   });
 
@@ -77,7 +81,9 @@ describe("<Form />", () => {
     const result = render(formComponent);
     const form = result.container;
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
 
     const testField = form.querySelector("[name='mock-text-field']")!;
     expect(testField.hasAttribute("autocomplete")).toBeTruthy();
@@ -113,5 +119,5 @@ describe("<Form />", () => {
     });
   });
 
-  testA11y(formComponent);
+  testA11yAct(formComponent);
 });

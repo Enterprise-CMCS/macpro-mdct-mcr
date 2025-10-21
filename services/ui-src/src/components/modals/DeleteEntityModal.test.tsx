@@ -1,6 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // components
 import { DeleteEntityModal, ReportContext } from "components";
 // constants
@@ -20,7 +19,7 @@ import {
   mockNaaarReport,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { EntityType } from "types";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
@@ -135,7 +134,9 @@ describe("<DeleteEntityModal />", () => {
       });
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(submitButton);
+      });
 
       const mockUpdateCallPayload = mockUpdateCallBaseline;
       mockUpdateCallPayload.fieldData.accessMeasures = [];
@@ -158,7 +159,9 @@ describe("<DeleteEntityModal />", () => {
       });
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(submitButton);
+      });
 
       const mockUpdateCallPayload = mockBadUpdateCallBaseline;
       mockUpdateCallPayload.fieldData = { accessMeasures: [] };
@@ -235,7 +238,9 @@ describe("<DeleteEntityModal />", () => {
       render(naaarModalComponent);
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(submitButton);
+      });
 
       const mockUpdateCallPayload = naaarMockUpdateCallBaseline;
       mockUpdateCallPayload.fieldData.standards = [];
@@ -333,7 +338,9 @@ describe("<DeleteEntityModal />", () => {
       render(naaarCustomModalComponent);
 
       const submitButton = screen.getByText(deleteModalConfirmButtonText);
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(submitButton);
+      });
 
       const expectedUpdatePayload = {
         fieldData: {
@@ -354,5 +361,5 @@ describe("<DeleteEntityModal />", () => {
     });
   });
 
-  testA11y(modalComponent);
+  testA11yAct(modalComponent);
 });

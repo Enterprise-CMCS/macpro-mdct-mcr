@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ReviewSubmitPage } from "components";
@@ -19,7 +19,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import MCPARverbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MLRverbiage from "verbiage/pages/mlr/mlr-review-and-submit";
@@ -206,7 +206,9 @@ describe("<ReviewSubmitPage />", () => {
         const { review } = MCPARverbiage;
         const { modal, pageLink } = review;
         const submitCheckButton = screen.getByText(pageLink.text)!;
-        await userEvent.click(submitCheckButton);
+        await act(async () => {
+          await userEvent.click(submitCheckButton);
+        });
         const modalTitle = screen.getByText(modal.structure.heading)!;
         expect(modalTitle).toBeVisible();
       });
@@ -218,9 +220,13 @@ describe("<ReviewSubmitPage />", () => {
         });
         render(ReviewSubmitPageComponent(mockedReportContext_Filled));
         const reviewSubmitButton = screen.getByText("Submit MCPAR")!;
-        await userEvent.click(reviewSubmitButton);
+        await act(async () => {
+          await userEvent.click(reviewSubmitButton);
+        });
         const modalSubmitButton = screen.getByTestId("modal-submit-button")!;
-        await userEvent.click(modalSubmitButton);
+        await act(async () => {
+          await userEvent.click(modalSubmitButton);
+        });
         await expect(mockMcparReportContext.submitReport).toHaveBeenCalledTimes(
           1
         );
@@ -355,8 +361,8 @@ describe("<ReviewSubmitPage />", () => {
   });
 
   describe("Test McparReviewSubmitPage view accessibility", () => {
-    testA11y(ReviewSubmitPageComponent(mockMcparReportContext));
-    testA11y(ReviewSubmitPageComponent(mockedReportContext_InProgress));
-    testA11y(ReviewSubmitPageComponent(mockedReportContext_Submitted));
+    testA11yAct(ReviewSubmitPageComponent(mockMcparReportContext));
+    testA11yAct(ReviewSubmitPageComponent(mockedReportContext_InProgress));
+    testA11yAct(ReviewSubmitPageComponent(mockedReportContext_Submitted));
   });
 });

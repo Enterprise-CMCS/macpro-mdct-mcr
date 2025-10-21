@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportDrawer } from "components";
@@ -15,7 +15,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockOnClose = jest.fn();
 const mockOnSubmit = jest.fn();
@@ -86,29 +86,37 @@ describe("<ReportDrawer />", () => {
       const testField = screen.getByRole("textbox", {
         name: /mock drawer text field/i,
       });
-      await userEvent.type(testField, "valid fill");
+      await act(async () => {
+        await userEvent.type(testField, "valid fill");
+      });
       const saveCloseButton = screen.getByText(saveAndCloseText);
       expect(saveCloseButton).toBeVisible();
-      await userEvent.click(saveCloseButton);
+      await act(async () => {
+        await userEvent.click(saveCloseButton);
+      });
       expect(mockOnSubmit).toHaveBeenCalledTimes(1);
     });
 
     test("ReportDrawer can be closed with close button", async () => {
       const closeButton = screen.getByText(closeText);
       expect(closeButton).toBeVisible();
-      await userEvent.click(closeButton);
+      await act(async () => {
+        await userEvent.click(closeButton);
+      });
       expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
     test("ReportDrawer can be closed with cancel button", async () => {
       const cancelButton = screen.getByText("Cancel");
       expect(cancelButton).toBeVisible();
-      await userEvent.click(cancelButton);
+      await act(async () => {
+        await userEvent.click(cancelButton);
+      });
       expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
   });
 
-  testA11y(drawerComponent, () => {
+  testA11yAct(drawerComponent, () => {
     mockedUseStore.mockReturnValue(mockStateUserStore);
   });
 });

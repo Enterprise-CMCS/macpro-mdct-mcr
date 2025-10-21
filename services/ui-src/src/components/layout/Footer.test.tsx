@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 // components
 import { Footer } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
@@ -31,5 +31,5 @@ describe("<Footer />", () => {
     });
   });
 
-  testA11y(footerComponent);
+  testA11yAct(footerComponent);
 });

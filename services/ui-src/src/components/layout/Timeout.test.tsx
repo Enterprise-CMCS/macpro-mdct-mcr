@@ -1,5 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 // components
 import { Timeout } from "components";
 // constants
@@ -10,7 +15,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { initAuthManager, useStore, UserContext } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockLogout = jest.fn();
 const mockLoginWithIDM = jest.fn();
@@ -102,7 +107,7 @@ describe("<Timeout />", () => {
     });
   });
 
-  testA11y(timeoutComponent, () => {
+  testA11yAct(timeoutComponent, () => {
     initAuthManager();
     mockedUseStore.mockReturnValue(mockUser);
   });

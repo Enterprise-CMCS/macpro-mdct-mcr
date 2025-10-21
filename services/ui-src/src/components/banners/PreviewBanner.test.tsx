@@ -4,7 +4,7 @@ import { PreviewBanner } from "components";
 // types
 import { AlertTypes } from "types";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("react-hook-form", () => ({
   useFormContext: () => ({
@@ -25,5 +25,5 @@ describe("<PreviewBanner />", () => {
     expect(screen.getByText("Mock preview banner description")).toBeVisible();
   });
 
-  testA11y(previewBannerComponent);
+  testA11yAct(previewBannerComponent);
 });

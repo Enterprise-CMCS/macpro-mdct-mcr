@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BackButton } from "./BackButton";
 
@@ -9,7 +9,9 @@ describe("<BackButton />", () => {
     render(<BackButton onClick={mockOnClick} text={"Mock Back Button"} />);
 
     const button = screen.getByRole("button", { name: "Mock Back Button" });
-    await userEvent.click(button);
+    await act(async () => {
+      await userEvent.click(button);
+    });
     expect(mockOnClick).toBeCalled();
   });
 });

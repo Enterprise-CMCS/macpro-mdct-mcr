@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityCard, EntityCardBottomSection } from "components";
@@ -24,7 +24,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { EntityType } from "types";
 
 const openAddEditEntityModal = jest.fn();
@@ -226,19 +226,25 @@ describe("<EntityCard />", () => {
 
     test("Clicking edit button opens the AddEditProgramModal", async () => {
       const editEntityButton = screen.getByText(editEntityButtonText);
-      await userEvent.click(editEntityButton);
+      await act(async () => {
+        await userEvent.click(editEntityButton);
+      });
       await expect(openAddEditEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the drawer on edit-details click", async () => {
       const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
-      await userEvent.click(editDetailsButton);
+      await act(async () => {
+        await userEvent.click(editDetailsButton);
+      });
       expect(mockOpenDrawer).toBeCalledTimes(1);
     });
   });
@@ -269,20 +275,24 @@ describe("<EntityCard />", () => {
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the drawer on enter-details click", async () => {
       const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await userEvent.click(enterDetailsButton);
+      await act(async () => {
+        await userEvent.click(enterDetailsButton);
+      });
       expect(mockOpenDrawer).toBeCalledTimes(1);
     });
   });
 
   describe("Test AccessMeasures EntityCard accessibility", () => {
-    testA11y(UnfinishedAccessMeasuresEntityCardComponent);
-    testA11y(AccessMeasuresEntityCardComponent());
+    testA11yAct(UnfinishedAccessMeasuresEntityCardComponent);
+    testA11yAct(AccessMeasuresEntityCardComponent());
   });
 
   describe("Test Completed Print Version EntityCard", () => {
@@ -373,13 +383,17 @@ describe("<EntityCard />", () => {
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the drawer on enter-details click", async () => {
       const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await userEvent.click(enterDetailsButton);
+      await act(async () => {
+        await userEvent.click(enterDetailsButton);
+      });
       expect(mockOpenDrawer).toBeCalledTimes(1);
     });
   });
@@ -395,13 +409,17 @@ describe("<EntityCard />", () => {
 
     test("Clicking edit button opens the AddEditProgramModal", async () => {
       const editEntityButton = screen.getByText(editEntityButtonText);
-      await userEvent.click(editEntityButton);
+      await act(async () => {
+        await userEvent.click(editEntityButton);
+      });
       await expect(openAddEditEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
   });
@@ -417,13 +435,17 @@ describe("<EntityCard />", () => {
 
     test("Clicking edit button opens the AddEditProgramModal", async () => {
       const editEntityButton = screen.getByText(editEntityButtonText);
-      await userEvent.click(editEntityButton);
+      await act(async () => {
+        await userEvent.click(editEntityButton);
+      });
       await expect(openAddEditEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
   });
@@ -547,13 +569,13 @@ describe("<EntityCard />", () => {
   });
 
   describe("Test QualityMeasures EntityCard accessibility", () => {
-    testA11y(UnstartedQualityMeasuresEntityCardComponent);
-    testA11y(QualityMeasuresEntityCardComponentMissingDetails, () => {
+    testA11yAct(UnstartedQualityMeasuresEntityCardComponent);
+    testA11yAct(QualityMeasuresEntityCardComponentMissingDetails, () => {
       mockedUseStore.mockReturnValue({
         ...mockMcparReportStore,
       });
     });
-    testA11y(CompletedQualityMeasuresEntityCardComponent);
+    testA11yAct(CompletedQualityMeasuresEntityCardComponent);
   });
 
   describe("Test Completed Sanctions EntityCard", () => {
@@ -567,19 +589,25 @@ describe("<EntityCard />", () => {
 
     test("Clicking edit button opens the AddEditProgramModal", async () => {
       const editEntityButton = screen.getByText(editEntityButtonText);
-      await userEvent.click(editEntityButton);
+      await act(async () => {
+        await userEvent.click(editEntityButton);
+      });
       await expect(openAddEditEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the drawer on edit-details click", async () => {
       const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
-      await userEvent.click(editDetailsButton);
+      await act(async () => {
+        await userEvent.click(editDetailsButton);
+      });
       expect(mockOpenDrawer).toBeCalledTimes(1);
     });
   });
@@ -595,13 +623,17 @@ describe("<EntityCard />", () => {
 
     test("EntityCard opens the delete modal on remove click", async () => {
       const removeButton = screen.getByTestId("delete-entity-button");
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
     test("EntityCard opens the drawer on enter-details click", async () => {
       const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await userEvent.click(enterDetailsButton);
+      await act(async () => {
+        await userEvent.click(enterDetailsButton);
+      });
       expect(mockOpenDrawer).toBeCalledTimes(1);
     });
   });
@@ -660,8 +692,8 @@ describe("<EntityCard />", () => {
   });
 
   describe("Test Sanctions EntityCard accessibility", () => {
-    testA11y(UnfinishedSanctionsEntityCardComponent);
-    testA11y(SanctionsEntityCardComponent);
+    testA11yAct(UnfinishedSanctionsEntityCardComponent);
+    testA11yAct(SanctionsEntityCardComponent);
   });
 
   describe("Should return Entity Type by default", () => {
