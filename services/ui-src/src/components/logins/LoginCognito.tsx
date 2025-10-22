@@ -49,7 +49,7 @@ export const LoginCognito = () => {
       <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} sxOverride={sx.error} />
+      {error && <ErrorAlert error={error} sxOverride={sx.error} />}
       <form onSubmit={(event) => handleLogin(event)}>
         <TextField
           id="email"
