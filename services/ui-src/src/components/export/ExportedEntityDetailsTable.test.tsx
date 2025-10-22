@@ -38,11 +38,9 @@ describe("<ExportedEntityDetailsTable />", () => {
     localStorage.setItem("selectedReportType", "");
   });
   test("renders successfully", async () => {
-    const { findAllByText, findByTestId } = render(
-      exportedEntityDetailsTableComponent()
-    );
-    expect(await findByTestId("exportedEntityDetailsTable"));
-
+    const { findAllByText } = render(exportedEntityDetailsTableComponent());
+    const table = await screen.findByRole("table");
+    expect(table).toBeVisible();
     const expectedTextContent = [
       "N/A",
       "mock text field",
