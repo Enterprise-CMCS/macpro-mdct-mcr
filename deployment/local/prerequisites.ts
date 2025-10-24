@@ -20,7 +20,7 @@ export class LocalPrerequisiteStack extends Stack {
       enableDnsSupport: true,
       enableDnsHostnames: false,
       subnetConfiguration: [],
-      vpcName: "localstack",
+      vpcName: "localstack-dev",
     });
 
     const subnet1 = new ec2.Subnet(this, "Subnet1", {
@@ -37,7 +37,7 @@ export class LocalPrerequisiteStack extends Stack {
         launchDarklyClient: SecretValue.unsafePlainText("localstack"),
         oktaMetadataUrl: SecretValue.unsafePlainText("localstack"),
         redirectSignout: SecretValue.unsafePlainText("localstack"),
-        vpcName: SecretValue.unsafePlainText("localstack"),
+        vpcName: SecretValue.unsafePlainText("localstack-dev"),
       },
     });
 
