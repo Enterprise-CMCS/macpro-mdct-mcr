@@ -109,9 +109,8 @@ export const numberNotLessThanZero = () =>
       message: error.NUMBER_LESS_THAN_ZERO,
     });
 
-export const numberNotLessThanZeroOptional = () => {
+export const numberNotLessThanZeroOptional = () =>
   numberNotLessThanZero().notRequired().nullable();
-};
 
 const valueCleaningNumberSchema = (value: string, charsToReplace: RegExp) => {
   return yupNumber().transform((_value) => {
