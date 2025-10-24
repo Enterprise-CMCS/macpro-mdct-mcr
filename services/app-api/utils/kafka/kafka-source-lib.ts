@@ -59,7 +59,7 @@ class KafkaSourceLib {
       throw new Error("Missing Broker Config. ");
     }
     // Setup vars
-    this.stage = process.env.stage ?? "";
+    this.stage = process.env.STAGE ?? "";
     this.topicNamespace = process.env.topicNamespace
       ? process.env.topicNamespace
       : "";
