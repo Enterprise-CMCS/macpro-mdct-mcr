@@ -1,10 +1,10 @@
 // components
 import { ComponentInventoryPage } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const inventoryPage = <ComponentInventoryPage />;
 
 describe("<inventoryPage />", () => {
-  testA11y(inventoryPage);
+  testA11yAct(inventoryPage);
 });

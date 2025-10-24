@@ -4,7 +4,7 @@ import { Alert } from "components";
 // types
 import { AlertTypes } from "types";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const alertComponent = (
   <Alert
@@ -23,5 +23,5 @@ describe("<Alert />", () => {
     expect(screen.getByText("test-link")).toBeVisible();
   });
 
-  testA11y(alertComponent);
+  testA11yAct(alertComponent);
 });

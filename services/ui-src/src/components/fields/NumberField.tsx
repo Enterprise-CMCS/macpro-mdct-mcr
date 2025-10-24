@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 // components
 import { Box, SystemStyleObject } from "@chakra-ui/react";
@@ -164,7 +164,7 @@ export const NumberField = ({
   };
 
   const formErrorState = form?.formState?.errors;
-  const errorMessage = formErrorState?.[name]?.message;
+  const errorMessage = formErrorState?.[name]?.message as ReactNode;
   const parsedHint = hint ? parseCustomHtml(hint) : undefined;
   const maskClass = mask || "";
   const labelText =

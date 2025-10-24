@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 // components
 import { PageTemplate } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const standardPageComponent = (
   <PageTemplate>
@@ -30,6 +30,6 @@ describe("<PageTemplate />", () => {
     expect(screen.getByText("Test text")).toBeVisible();
   });
 
-  testA11y(standardPageComponent);
-  testA11y(reportPageComponent);
+  testA11yAct(standardPageComponent);
+  testA11yAct(reportPageComponent);
 });

@@ -4,7 +4,7 @@ import { Banner } from "components";
 // types
 import { AlertTypes } from "types";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const bannerComponent = (
   <Banner
@@ -23,5 +23,5 @@ describe("<Banner />", () => {
     expect(screen.getByText("This is for testing.")).toBeVisible();
   });
 
-  testA11y(bannerComponent);
+  testA11yAct(bannerComponent);
 });

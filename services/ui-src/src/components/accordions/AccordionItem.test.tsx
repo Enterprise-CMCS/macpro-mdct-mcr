@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Accordion } from "@chakra-ui/react";
 import { AccordionItem } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -34,10 +34,12 @@ describe("<AccordionItem />", () => {
   });
 
   test("AccordionItem shows minus sign when open", async () => {
-    await userEvent.click(screen.getByAltText("Expand"));
+    await act(async () => {
+      await userEvent.click(screen.getByAltText("Expand"));
+    });
     expect(screen.queryByAltText("Expand")).toBeFalsy();
     expect(screen.getByAltText("Collapse")).toBeVisible();
   });
 
-  testA11y(accordionItemComponent);
+  testA11yAct(accordionItemComponent);
 });

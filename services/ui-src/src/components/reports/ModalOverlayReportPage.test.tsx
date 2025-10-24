@@ -121,12 +121,16 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Get the Add button and click it
       const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
-      await user.click(addEntityButton);
+      await act(async () => {
+        await user.click(addEntityButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
 
       // Close out of the modal it created
       const closeButton = screen.getByText("Close");
-      await user.click(closeButton);
+      await act(async () => {
+        await user.click(closeButton);
+      });
     });
 
     test("should render the initial view for a Admin user", async () => {
@@ -232,12 +236,16 @@ describe("<ModalOverlayReportPage />", () => {
       const editEntityButton = screen.getAllByText(
         verbiage.editEntityButtonText
       );
-      await user.click(editEntityButton[0]);
+      await act(async () => {
+        await user.click(editEntityButton[0]);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
 
       // Close out of the modal it created
       const closeButton = screen.getAllByText("Close");
-      await user.click(closeButton[0]);
+      await act(async () => {
+        await user.click(closeButton[0]);
+      });
 
       // And make sure they can still add entities
       const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
@@ -264,18 +272,24 @@ describe("<ModalOverlayReportPage />", () => {
       const deleteEntityButton = screen.getByRole("button", {
         name: "Delete test-plan",
       });
-      await userEvent.click(deleteEntityButton);
+      await act(async () => {
+        await userEvent.click(deleteEntityButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
 
       // Click delete in modal
       const deleteButton = screen.getByText(
         verbiage.deleteModalConfirmButtonText
       );
-      await user.click(deleteButton);
+      await act(async () => {
+        await user.click(deleteButton);
+      });
 
       // Close out of the modal it created
       const closeButton = screen.getByText("Close");
-      await user.click(closeButton);
+      await act(async () => {
+        await user.click(closeButton);
+      });
 
       // Verify that the entity is removed
       expect(screen.getByRole("table")).toBeNull;
@@ -324,13 +338,17 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Get the Enter button and click it
       const enterEntityButton = screen.getByText(verbiage.enterReportText);
-      await user.click(enterEntityButton);
+      await act(async () => {
+        await user.click(enterEntityButton);
+      });
 
       expect(mockSetSidebarHidden).toBeCalledWith(true);
 
       // Close out of the Overlay it opened
       const closeButton = screen.getByText("Return to MLR Reporting");
-      await user.click(closeButton);
+      await act(async () => {
+        await user.click(closeButton);
+      });
 
       // And make sure we're back on the first page!
       expect(screen.getByText(dashboardTitle)).toBeVisible();
@@ -354,22 +372,23 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Get the Enter button and click it
       const enterEntityButton = screen.getByText(verbiage.enterReportText);
-      await user.click(enterEntityButton);
+      await act(async () => {
+        await user.click(enterEntityButton);
+      });
 
       expect(mockSetSidebarHidden).toBeCalledWith(true);
 
       // Test text fields
       const textField = screen.getByLabelText("mock text field");
       expect(textField).toBeVisible();
-      await userEvent.type(textField, "test");
-
-      // Test number fields
       const numberField = screen.getByLabelText("mock number field");
       expect(numberField).toBeVisible();
-      await userEvent.type(numberField, "123");
-
       const saveAndCloseButton = screen.getByText("Save & return");
-      await userEvent.click(saveAndCloseButton);
+      await act(async () => {
+        await userEvent.type(textField, "test");
+        await userEvent.type(numberField, "123");
+        await userEvent.click(saveAndCloseButton);
+      });
 
       // And make sure we're back on the first page!
       expect(mockSetSidebarHidden).toBeCalledWith(false);
@@ -394,11 +413,15 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Get the Enter button and click it
       const enterEntityButton = screen.getByText(verbiage.enterReportText);
-      await user.click(enterEntityButton);
+      await act(async () => {
+        await user.click(enterEntityButton);
+      });
       expect(mockSetSidebarHidden).toBeCalledWith(true);
 
       const saveAndCloseButton = screen.getByText("Return");
-      await userEvent.click(saveAndCloseButton);
+      await act(async () => {
+        await userEvent.click(saveAndCloseButton);
+      });
 
       expect(
         mockMLREntityStartedReportContext.updateReport

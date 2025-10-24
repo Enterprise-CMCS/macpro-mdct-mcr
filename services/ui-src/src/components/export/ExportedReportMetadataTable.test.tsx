@@ -18,7 +18,7 @@ import {
   mockMcparReportStore,
   mockMlrReportStore,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import mcparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import mlrExportVerbiage from "verbiage/pages/mlr/mlr-export";
@@ -151,5 +151,5 @@ describe("<ExportedReportMetadataTable />", () => {
     });
   });
 
-  testA11y(metadataTableWithContext(mockMcparContext));
+  testA11yAct(metadataTableWithContext(mockMcparContext));
 });

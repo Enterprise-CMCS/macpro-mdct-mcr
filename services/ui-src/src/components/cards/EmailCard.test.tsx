@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { EmailCard } from "components";
 // utils
 import { createEmailLink } from "utils/other/email";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/help";
 
@@ -35,5 +35,5 @@ describe("<EmailCard />", () => {
     expect(screen.getByRole("link")).toBeVisible();
   });
 
-  testA11y(emailCardComponent);
+  testA11yAct(emailCardComponent);
 });

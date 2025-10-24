@@ -24,14 +24,6 @@ window.scrollBy = jest.fn();
 window.scrollTo = jest.fn();
 window.HTMLElement.prototype.scrollIntoView = jest.fn();
 
-/* From Chakra UI Accordion test file (https://bit.ly/3MFtwXq) */
-jest.mock("@chakra-ui/transition", () => ({
-  ...jest.requireActual("@chakra-ui/transition"),
-  Collapse: jest.fn(({ in: inProp, children }: any) => (
-    <div hidden={!inProp}>{children}</div>
-  )),
-}));
-
 /* Mock Amplify */
 jest.mock("aws-amplify/api", () => ({
   get: jest.fn().mockImplementation(() => ({

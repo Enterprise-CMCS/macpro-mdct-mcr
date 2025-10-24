@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 // components
 import { ReportContext } from "components/reports/ReportProvider";
 import { EntityRow, EntityRowProps } from "./EntityRow";
@@ -23,7 +23,7 @@ import {
 } from "utils/testing/setupJest";
 import userEvent from "@testing-library/user-event";
 import { getEntityStatus, useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const openAddEditEntityModal = jest.fn();
 const openDeleteEntityModal = jest.fn();
@@ -106,7 +106,9 @@ describe("<EntityRow />", () => {
         name: `Edit ${setupData.entity.report_planName}`,
       });
       expect(addReportButton).toBeVisible();
-      await userEvent.click(addReportButton);
+      await act(async () => {
+        await userEvent.click(addReportButton);
+      });
       await waitFor(() => {
         expect(openAddEditEntityModal).toBeCalledTimes(1);
       });
@@ -118,7 +120,9 @@ describe("<EntityRow />", () => {
         name: `Enter Details ${setupData.entity.report_planName}`,
       });
       expect(enterDetailsButton).toBeVisible();
-      await userEvent.click(enterDetailsButton);
+      await act(async () => {
+        await userEvent.click(enterDetailsButton);
+      });
       await waitFor(() => {
         expect(mockOpenDrawer).toBeCalledTimes(1);
       });
@@ -130,7 +134,9 @@ describe("<EntityRow />", () => {
         name: `Delete ${setupData.entity.report_planName}`,
       });
       expect(deleteButton).toBeVisible();
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
       await waitFor(() => {
         expect(openDeleteEntityModal).toBeCalledTimes(1);
       });
@@ -156,7 +162,7 @@ describe("<EntityRow />", () => {
       mockEntering = false;
     });
 
-    testA11y(completeRowComponent(setupData));
+    testA11yAct(completeRowComponent(setupData));
   });
 
   describe("NAAAR", () => {
@@ -183,7 +189,9 @@ describe("<EntityRow />", () => {
         name: `${mockOverlayReportPageVerbiage.editEntityButtonText} ${setupData.entity.name}`,
       });
       expect(editButton).toBeVisible();
-      await userEvent.click(editButton);
+      await act(async () => {
+        await userEvent.click(editButton);
+      });
       await waitFor(() => {
         expect(openAddEditEntityModal).toBeCalledTimes(1);
       });
@@ -216,7 +224,7 @@ describe("<EntityRow />", () => {
       expect(enterButton).not.toBeDisabled();
     });
 
-    testA11y(completeRowComponent(setupData));
+    testA11yAct(completeRowComponent(setupData));
   });
 
   describe("MCPAR", () => {
@@ -242,12 +250,14 @@ describe("<EntityRow />", () => {
         name: `Enter ${setupData.entity.name}`,
       });
       expect(enterButton).toBeVisible();
-      await userEvent.click(enterButton);
+      await act(async () => {
+        await userEvent.click(enterButton);
+      });
       await waitFor(() => {
         expect(mockOpenDrawer).toBeCalledTimes(1);
       });
     });
 
-    testA11y(completeRowComponent(setupData));
+    testA11yAct(completeRowComponent(setupData));
   });
 });

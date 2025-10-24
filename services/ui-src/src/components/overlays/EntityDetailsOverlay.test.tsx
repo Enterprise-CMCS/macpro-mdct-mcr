@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
@@ -83,7 +83,9 @@ describe("<EntityDetailsOverlay />", () => {
   test("should call the close overlay function when clicking Return to MLR", async () => {
     // Close out of the Overlay it opened
     const closeButton = screen.getByText("Return to MLR Reporting");
-    await user.click(closeButton);
+    await act(async () => {
+      await user.click(closeButton);
+    });
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });
 });

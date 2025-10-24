@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsMultiformOverlay, OverlayProvider } from "components";
@@ -83,7 +83,9 @@ async function setupChildTableFormTest(
   const radioButtonNo = within(form).getByRole("radio", {
     name: nonCompliantLabels["438.206"],
   });
-  await userEvent.click(radioButtonNo);
+  await act(async () => {
+    await userEvent.click(radioButtonNo);
+  });
 
   // Table
   const updatedEntityCellsIncomplete = screen.getByRole("row", {
@@ -96,7 +98,9 @@ async function setupChildTableFormTest(
     "button",
     { name: "Enter" }
   );
-  await userEvent.click(updatedEnterButton);
+  await act(async () => {
+    await userEvent.click(updatedEnterButton);
+  });
 
   // Child Table
   const childTable = screen.getByRole("table", { name: "Mock Child Table" });
@@ -106,12 +110,16 @@ async function setupChildTableFormTest(
   const childTableButton = within(childTable).getByRole("button", {
     name: childButtonText,
   });
-  await userEvent.click(childTableButton);
+  await act(async () => {
+    await userEvent.click(childTableButton);
+  });
 }
 
 async function submitChildForm() {
   const submitButton = screen.getByRole("button", { name: "Save & return" });
-  await userEvent.click(submitButton);
+  await act(async () => {
+    await userEvent.click(submitButton);
+  });
   await waitFor(() => {
     expect(mockOnSubmit).toBeCalled();
   });
@@ -134,8 +142,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       const radioButtonYes = screen.getByRole("radio", {
         name: `Mock Yes${formId}`,
       });
-      await userEvent.click(radioButtonYes);
-
+      await act(async () => {
+        await userEvent.click(radioButtonYes);
+      });
       await waitFor(() => {
         const h3 = screen.getByRole("heading", {
           level: 3,
@@ -165,7 +174,6 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         expect(enterButton).toBeDisabled();
       });
     }
-
     await submitChildForm();
   });
 
@@ -176,7 +184,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const radioButtonNo = screen.getAllByRole("radio", {
       name: nonCompliantLabels["438.206"],
     })[0];
-    await userEvent.click(radioButtonNo);
+    await act(async () => {
+      await userEvent.click(radioButtonNo);
+    });
 
     // Table
     const updatedEntityCellsIncomplete = screen.getByRole("row", {
@@ -191,7 +201,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         name: "Enter",
       }
     );
-    await userEvent.click(updatedEnterButton);
+    await act(async () => {
+      await userEvent.click(updatedEnterButton);
+    });
 
     // Child Form
     const childForm = screen.getByRole("heading", {
@@ -223,12 +235,16 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       name: planComplianceStandardExceptionsLabel,
     });
 
-    await userEvent.click(exceptionRadioButton);
+    await act(async () => {
+      await userEvent.click(exceptionRadioButton);
+    });
 
     const exceptionTextbox = screen.getByRole("textbox", {
       name: "Mock Exception Description",
     });
-    await userEvent.type(exceptionTextbox, "Test value");
+    await act(async () => {
+      await userEvent.type(exceptionTextbox, "Test value");
+    });
 
     await submitChildForm();
   });
@@ -246,12 +262,16 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       name: "Mock Yes",
     });
 
-    await userEvent.click(radioButtonYes);
+    await act(async () => {
+      await userEvent.click(radioButtonYes);
+    });
 
     const nonComplianceTextbox = screen.getByRole("textbox", {
       name: "Mock Non-Compliance Description",
     });
-    await userEvent.type(nonComplianceTextbox, "Test value");
+    await act(async () => {
+      await userEvent.type(nonComplianceTextbox, "Test value");
+    });
 
     await submitChildForm();
   });
@@ -277,7 +297,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const radioButtonNo = screen.getAllByRole("radio", {
       name: nonCompliantLabels["438.206"],
     })[0];
-    await userEvent.click(radioButtonNo);
+    await act(async () => {
+      await userEvent.click(radioButtonNo);
+    });
 
     // Table
     const entityCellsIncomplete = screen.getByRole("row", {
@@ -292,7 +314,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         name: "Enter",
       }
     );
-    await userEvent.click(updatedEnterButton);
+    await act(async () => {
+      await userEvent.click(updatedEnterButton);
+    });
 
     // Stays on Table
     const childForm = screen.queryByRole("heading", {
@@ -306,7 +330,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const closeButton = screen.getByRole("button", {
       name: "Mock Back Button: Main",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });
@@ -317,7 +343,9 @@ describe("<EntityDetailsMultiformOverlay />", () => {
     const submitButton = screen.queryByRole("button", {
       name: "Save & return",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
     expect(submitButton).toBeNull();

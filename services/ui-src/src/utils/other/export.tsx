@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import uuid from "react-uuid";
 // types
@@ -322,7 +323,7 @@ export const renderChoiceListFieldResponse = (
 
 export const renderDefaultFieldResponse = (
   formField: FormField,
-  fieldResponseData: AnyObject
+  fieldResponseData: ReactNode
 ) => {
   // check and handle fields that need a mask applied
   const fieldMask = formField.props?.mask;

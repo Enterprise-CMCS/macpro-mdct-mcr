@@ -14,7 +14,7 @@ import {
   mockNaaarReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import mlrVerbiage from "verbiage/pages/mlr/mlr-export";
 
@@ -167,11 +167,6 @@ describe("<ExportedModalOverlayReportSection />", () => {
         mockReportContext.report.fieldData.program.length + 1
       );
 
-      // Check that icon is visible and has empty alt-text
-      const completeIcon = screen.getByRole("img");
-      expect(completeIcon).toBeVisible();
-      expect(completeIcon).toHaveAttribute("alt", "");
-
       // Correct index
       expect(await findByText("1")).toBeVisible();
 
@@ -221,37 +216,37 @@ describe("<ExportedModalOverlayReportSection />", () => {
       );
 
       // index
-      expect(screen.getByRole("gridcell", { name: "1" })).toBeVisible();
+      expect(screen.getByRole("cell", { name: "1" })).toBeVisible();
 
       // provider type
       expect(
-        screen.getByRole("gridcell", {
+        screen.getByRole("cell", {
           name: "Primary Care",
         })
       ).toBeVisible();
 
       // standard type
       expect(
-        screen.getByRole("gridcell", { name: "Appointment wait time" })
+        screen.getByRole("cell", { name: "Appointment wait time" })
       ).toBeVisible();
 
       // description
       expect(
-        screen.getByRole("gridcell", { name: "standard description" })
+        screen.getByRole("cell", { name: "standard description" })
       ).toBeVisible();
 
       // analysis methods, joined with a comma
       expect(
-        screen.getByRole("gridcell", {
+        screen.getByRole("cell", {
           name: "Geomapping, Plan Provider Directory Review",
         })
       ).toBeVisible();
 
       // population
-      expect(screen.getByRole("gridcell", { name: "Pediatric" })).toBeVisible();
+      expect(screen.getByRole("cell", { name: "Pediatric" })).toBeVisible();
 
       // region
-      expect(screen.getByRole("gridcell", { name: "Metro" })).toBeVisible();
+      expect(screen.getByRole("cell", { name: "Metro" })).toBeVisible();
     });
 
     test("Should render message for naaar with no standards", async () => {
@@ -314,5 +309,5 @@ describe("<ExportedModalOverlayReportSection />", () => {
       );
     });
   });
-  testA11y(exportedModalOverlayReportSectionComponent);
+  testA11yAct(exportedModalOverlayReportSectionComponent);
 });

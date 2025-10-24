@@ -15,7 +15,7 @@ import {
   mockMlrReportContext,
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const exportedEntityDetailsOverlaySectionComponent = (
   content: ModalOverlayReportPageShape = mockModalOverlayReportPageWithOverlayJson
@@ -145,5 +145,5 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
     });
   });
 
-  testA11y(exportedEntityDetailsOverlaySectionComponent());
+  testA11yAct(exportedEntityDetailsOverlaySectionComponent());
 });

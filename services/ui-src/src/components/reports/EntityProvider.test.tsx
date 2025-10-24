@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useContext, useEffect } from "react";
 // components
@@ -68,7 +68,9 @@ describe("<EntityProvider />", () => {
       await result.container.querySelector("[id='entities']")?.innerHTML
     ).toMatch(JSON.stringify(testEntities));
     const updateButton = await result.findByText("Update Entities");
-    await userEvent.click(updateButton);
+    await act(async () => {
+      await userEvent.click(updateButton);
+    });
 
     setTimeout(async () => {
       expect(
@@ -83,7 +85,9 @@ describe("<EntityProvider />", () => {
       await result.container.querySelector("[id='entities']")?.innerHTML
     ).toMatch(JSON.stringify(testEntities));
     const updateButton = await result.findByText("Update Entities");
-    await userEvent.click(updateButton);
+    await act(async () => {
+      await userEvent.click(updateButton);
+    });
 
     setTimeout(async () => {
       expect(

@@ -4,7 +4,7 @@ import { MainSkipNav, ReportContext } from "components";
 // types
 import { ReportContextShape } from "types";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseLocation = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -69,5 +69,5 @@ describe("<MainSkipNav />", () => {
     await expect(skipNavLink).toBeVisible();
   });
 
-  testA11y(mainSkipNavOutsideReport);
+  testA11yAct(mainSkipNavOutsideReport);
 });

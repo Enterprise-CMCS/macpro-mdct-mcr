@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -12,7 +12,7 @@ import {
   mockStateUserStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -70,8 +70,10 @@ describe("<DateField />", () => {
       const dateFieldInput: HTMLInputElement = result.container.querySelector(
         "[name='testDateField']"
       )!;
-      await userEvent.type(dateFieldInput, "07/14/2022");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(dateFieldInput, "07/14/2022");
+        await userEvent.tab();
+      });
       expect(dateFieldInput.value).toEqual("07/14/2022");
     });
   });
@@ -171,8 +173,10 @@ describe("<DateField />", () => {
         name: "test-date-field",
       });
       expect(dateField).toBeVisible();
-      await userEvent.type(dateField, "07/14/2022");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(dateField, "07/14/2022");
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -197,8 +201,10 @@ describe("<DateField />", () => {
         name: "test-date-field",
       });
       expect(dateField).toBeVisible();
-      await userEvent.type(dateField, "07/14/2022");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(dateField, "07/14/2022");
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
   });
@@ -223,9 +229,11 @@ describe("<DateField />", () => {
       const dateFieldInput = result.getByRole("textbox", {
         name: "test-date-field",
       });
-      await userEvent.click(dateFieldInput);
-      await userEvent.clear(dateFieldInput);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.click(dateFieldInput);
+        await userEvent.clear(dateFieldInput);
+        await userEvent.tab();
+      });
       expect(mockTrigger).toHaveBeenCalled();
     });
 
@@ -236,7 +244,7 @@ describe("<DateField />", () => {
     });
   });
 
-  testA11y(dateFieldComponent, () => {
+  testA11yAct(dateFieldComponent, () => {
     mockGetValues(undefined);
   });
 });

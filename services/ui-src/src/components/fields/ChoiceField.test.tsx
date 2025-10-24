@@ -1,10 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
 import { ChoiceField } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockRhfMethods = {
   register: () => {},
@@ -55,7 +55,9 @@ describe("<ChoiceField />", () => {
     render(ChoiceFieldComponent());
     const choice = screen.getByLabelText("Checkbox A") as HTMLInputElement;
     expect(choice.checked).toBe(false);
-    await userEvent.click(choice);
+    await act(async () => {
+      await userEvent.click(choice);
+    });
     expect(choice.checked).toBe(true);
     expect(mockOnChange).toHaveBeenCalledTimes(1);
   });
@@ -88,5 +90,5 @@ describe("<ChoiceField />", () => {
       expect(displayValue).toBeTruthy();
     });
   });
-  testA11y(ChoiceFieldComponent());
+  testA11yAct(ChoiceFieldComponent());
 });
