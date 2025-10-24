@@ -217,6 +217,9 @@ const dateSchema = () =>
       test: (value) => !isWhitespaceString(value),
     })
     .test("is-valid-date", error.INVALID_DATE, (value) => {
+      // Allow null for optional date fields (note: required date fields are caught by required() in chain)
+      if (value === null) return true;
+
       let result = false;
       if (value) {
         const date = new Date(value);
