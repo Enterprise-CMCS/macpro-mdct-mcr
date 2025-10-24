@@ -19,9 +19,7 @@ const accordionItemComponent = (
 
 describe("<AccordionItem />", () => {
   beforeEach(async () => {
-    await act(() => {
-      render(accordionItemComponent);
-    });
+    render(accordionItemComponent);
   });
 
   test("AccordionItem is visible", () => {

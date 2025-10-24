@@ -27,9 +27,7 @@ const accordionComponent = <InstructionsAccordion verbiage={mockAccordion} />;
 
 describe("<InstructionsAccordion />", () => {
   beforeEach(async () => {
-    await act(async () => {
-      render(accordionComponent);
-    });
+    render(accordionComponent);
   });
 
   test("Accordion is visible", () => {

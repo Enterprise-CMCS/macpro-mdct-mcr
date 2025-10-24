@@ -22,9 +22,7 @@ const faqAccordionComponent = (
 
 describe("<FaqAccordion />", () => {
   beforeEach(async () => {
-    await act(() => {
-      render(faqAccordionComponent);
-    });
+    render(faqAccordionComponent);
   });
 
   test("FaqAccordion is visible", () => {

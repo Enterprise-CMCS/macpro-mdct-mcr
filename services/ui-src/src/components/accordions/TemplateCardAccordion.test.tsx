@@ -30,9 +30,7 @@ const accordionComponent = (
 
 describe("<TemplateCardAccordion />", () => {
   beforeEach(async () => {
-    await act(() => {
-      render(accordionComponent);
-    });
+    render(accordionComponent);
   });
 
   test("Accordion is visible", () => {
