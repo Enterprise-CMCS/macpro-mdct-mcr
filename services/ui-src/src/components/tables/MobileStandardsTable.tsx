@@ -41,7 +41,7 @@ interface Props {
 
 const sx = {
   rows: {
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
   },
   headers: {
     fontWeight: "semibold",

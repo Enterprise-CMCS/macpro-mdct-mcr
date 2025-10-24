@@ -76,27 +76,27 @@ interface Props {
 
 const sx = {
   subtitle: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   subtext: {
-    marginTop: "0.25rem",
+    marginTop: "spacer_half",
     fontSize: "sm",
   },
   resultsHeader: {
-    marginY: "1rem",
+    marginY: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   missingResponseMessage: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "xs",
     color: "error_dark",
   },
   highlightContainer: {
-    marginTop: "1rem",
-    marginBottom: "1rem",
+    marginTop: "spacer2",
+    marginBottom: "spacer2",
     padding: "0 1.5rem 1rem",
     background: "secondary_lightest",
     borderRadius: "3px",
@@ -109,7 +109,7 @@ const sx = {
   },
   highlightSection: {
     width: "100%",
-    marginLeft: "1rem",
+    marginLeft: "spacer2",
     ":nth-of-type(1)": {
       marginLeft: 0,
     },
@@ -120,6 +120,6 @@ const sx = {
   },
   standardDetailsBoxes: {
     width: "10.5rem",
-    marginRight: "3rem",
+    marginRight: "spacer6",
   },
 };

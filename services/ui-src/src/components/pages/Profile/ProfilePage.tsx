@@ -51,27 +51,27 @@ export const ProfilePage = () => {
 const sx = {
   layout: {
     ".contentFlex": {
-      marginTop: "3.5rem",
+      marginTop: "spacer7",
       marginBottom: "5rem !important",
     },
   },
   headerText: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     fontSize: "2rem",
     fontWeight: "normal",
   },
   table: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     maxWidth: "100%",
     "tr td:first-of-type": {
       width: "8rem",
       fontWeight: "semibold",
     },
     td: {
-      padding: "0.5rem",
+      padding: "spacer1",
     },
   },
   adminButton: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
 };

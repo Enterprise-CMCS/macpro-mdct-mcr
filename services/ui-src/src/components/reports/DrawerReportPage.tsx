@@ -476,11 +476,11 @@ const sx = {
     fontWeight: "bold",
     flexGrow: 1,
     marginLeft: "2.25rem",
-    paddingRight: "1rem",
+    paddingRight: "spacer2",
   },
   missingEntity: {
     fontWeight: "bold",
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     a: {
       color: "primary",
       textDecoration: "underline",
@@ -490,7 +490,7 @@ const sx = {
     },
   },
   missingEntityMessage: {
-    paddingTop: "1rem",
+    paddingTop: "spacer2",
     fontWeight: "bold",
     a: {
       color: "primary",
@@ -500,25 +500,25 @@ const sx = {
       },
     },
     ol: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
   },
   standardForm: {
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
   },
   addEntityButton: {
-    marginBottom: "2rem",
-    marginTop: "2rem",
+    marginBottom: "spacer4",
+    marginTop: "spacer4",
   },
   addStandardsButton: {
     marginBottom: "0",
-    marginTop: "2rem",
+    marginTop: "spacer4",
     "&:first-of-type": {
-      marginBottom: "2rem",
+      marginBottom: "spacer4",
       marginTop: "0",
     },
   },
   pageErrorAlert: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
   },
 };

@@ -14,8 +14,8 @@ export const SectionHeader = ({
 }: SectionHeaderProps) => {
   const sx = {
     hr: {
-      marginTop: "2rem",
-      paddingBottom: "1rem",
+      marginTop: "spacer4",
+      paddingBottom: "spacer2",
       borderColor: "gray_lighter",
     },
     h3: {
@@ -24,7 +24,7 @@ export const SectionHeader = ({
     hintText: {
       fontSize: "sm",
       color: "gray",
-      paddingTop: "1rem",
+      paddingTop: "spacer2",
     },
   };
   return (
@@ -46,7 +46,7 @@ interface SectionHeaderProps {
 
 export const SectionContent = ({ content }: SectionContentProps) => {
   const sx = {
-    paddingTop: "0.5rem",
+    paddingTop: "spacer1",
   };
   return <Text sx={sx}>{content}</Text>;
 };

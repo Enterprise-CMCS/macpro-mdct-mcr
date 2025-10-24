@@ -144,7 +144,7 @@ const sx = {
     borderColor: "gray_light",
   },
   labelGroup: {
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
   },
   label: {
     fontSize: "sm",
@@ -152,6 +152,6 @@ const sx = {
     color: "gray",
   },
   editDate: {
-    marginRight: "3rem",
+    marginRight: "spacer6",
   },
 };

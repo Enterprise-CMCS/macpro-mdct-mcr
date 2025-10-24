@@ -149,7 +149,7 @@ const sx = {
   },
   // field hint
   ".ds-c-hint": {
-    marginBottom: "0.25rem",
+    marginBottom: "spacer_half",
   },
   // field hint and error message
   ".ds-c-hint, .ds-c-inline-error": {
@@ -159,7 +159,7 @@ const sx = {
     },
     ol: {
       margin: "0.25rem 0.5rem",
-      padding: "0.5rem",
+      padding: "spacer1",
     },
     a: {
       color: "primary",
@@ -168,7 +168,7 @@ const sx = {
   },
   // nested child fields
   ".ds-c-choice__checkedChild.nested": {
-    paddingY: "0.25rem",
+    paddingY: "spacer_half",
     paddingTop: 0,
     ".ds-c-fieldset, label": {
       marginTop: 0,
@@ -182,26 +182,26 @@ const sx = {
     fontWeight: "bold",
     fontSize: "md",
     color: "base",
-    paddingTop: "1rem",
+    paddingTop: "spacer2",
   },
   // fake styles for hints
   ".fake-paragraph-break": {
     display: "block",
-    paddingTop: "0.25rem",
+    paddingTop: "spacer_half",
   },
   ".fake-list-item": {
     display: "block",
-    paddingLeft: "1rem",
+    paddingLeft: "spacer2",
     textIndent: "-0.5rem",
   },
   ".fake-list-item:first-of-type, .fake-paragraph-break + .fake-list-item": {
-    paddingTop: "0.25rem",
+    paddingTop: "spacer_half",
   },
   ".fake-list-item::before": {
     content: '"•"',
     fontWeight: "bold",
     display: "inline-block",
-    width: ".5rem",
+    width: "spacer1",
   },
   // fake list numbered style
   ".numbered": {

@@ -42,7 +42,7 @@ interface Props {
 
 const sx = {
   card: {
-    marginY: "1.5rem",
+    marginY: "spacer3",
     boxShadow: "none",
     border: "1px solid",
     borderColor: "gray_light",

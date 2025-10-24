@@ -170,7 +170,7 @@ const sx = {
     "@media print": {
       pageBreakInside: "avoid",
     },
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     "tr, th": {
       verticalAlign: "bottom",
       lineHeight: "base",
@@ -225,7 +225,7 @@ const sx = {
     display: "block",
     fontSize: "md",
     fontWeight: "bold",
-    marginTop: "0.5rem",
+    marginTop: "spacer1",
   },
   entityList: {
     wordBreak: "break-word",
@@ -235,7 +235,7 @@ const sx = {
     fontWeight: "bold",
   },
   statusIcon: {
-    paddingLeft: "1rem",
+    paddingLeft: "spacer2",
     img: {
       maxWidth: "fit-content",
     },

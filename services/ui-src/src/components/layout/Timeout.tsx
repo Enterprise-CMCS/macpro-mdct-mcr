@@ -141,11 +141,11 @@ const sx = {
   },
   stayActive: {
     justifyContent: "center",
-    marginTop: "1rem",
-    marginRight: "1rem",
+    marginTop: "spacer2",
+    marginRight: "spacer2",
     minWidth: "7.5rem",
     span: {
-      marginLeft: "1rem",
+      marginLeft: "spacer2",
       marginRight: "-0.25rem",
       "&.ds-c-spinner": {
         marginLeft: 0,
@@ -157,11 +157,11 @@ const sx = {
   },
   close: {
     justifyContent: "start",
-    padding: ".5rem 1rem",
-    marginTop: "1rem",
+    padding: "0.5rem 1rem",
+    marginTop: "spacer2",
     span: {
       marginLeft: "0rem",
-      marginRight: "0.5rem",
+      marginRight: "spacer1",
     },
     ".mobile &": {
       fontSize: "sm",

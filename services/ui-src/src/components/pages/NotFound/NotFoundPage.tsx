@@ -35,14 +35,14 @@ export const NotFoundPage = () => {
 
 const sx = {
   layout: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
     ".contentFlex": {
       maxWidth: "35rem",
     },
   },
   heading: {
     gap: "12px",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     alignItems: "center",
   },
   warningIcon: {
@@ -61,9 +61,9 @@ const sx = {
   subHeadingText: {
     fontSize: "lg",
     fontWeight: "bold",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     ".mobile &": {
-      marginBottom: "1.5rem",
+      marginBottom: "spacer3",
     },
   },
   descriptionText: {

@@ -137,7 +137,7 @@ const sx = {
     "@media print": {
       pageBreakInside: "avoid",
     },
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     "tr, th": {
       verticalAlign: "top",
       lineHeight: "base",
