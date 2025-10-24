@@ -26,7 +26,7 @@ export const mockAccordion = {
 const accordionComponent = <InstructionsAccordion verbiage={mockAccordion} />;
 
 describe("<InstructionsAccordion />", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     render(accordionComponent);
   });
 

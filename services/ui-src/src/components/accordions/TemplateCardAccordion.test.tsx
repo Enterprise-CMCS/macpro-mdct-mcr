@@ -29,7 +29,7 @@ const accordionComponent = (
 );
 
 describe("<TemplateCardAccordion />", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     render(accordionComponent);
   });
 

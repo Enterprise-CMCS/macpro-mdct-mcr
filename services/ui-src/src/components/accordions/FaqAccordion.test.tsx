@@ -21,7 +21,7 @@ const faqAccordionComponent = (
 );
 
 describe("<FaqAccordion />", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     render(faqAccordionComponent);
   });
 

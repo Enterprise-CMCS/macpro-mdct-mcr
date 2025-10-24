@@ -18,7 +18,7 @@ const accordionItemComponent = (
 );
 
 describe("<AccordionItem />", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     render(accordionItemComponent);
   });
 
