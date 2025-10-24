@@ -7,6 +7,8 @@ import {
   numberNotLessThanZero,
   dropdownOptional,
   numberSuppressible,
+  date,
+  dateOptional,
 } from "./completionSchemas";
 // constants
 import { suppressionText } from "../constants/constants";
@@ -134,5 +136,28 @@ describe("Schemas", () => {
     testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
     testTextSchema(numberSuppressible(), [suppressionText], true);
     testTextSchema(numberSuppressible(), ["badText", undefined], false);
+  });
+
+  test("Test date schema rejects null values", async () => {
+    const schema = date();
+    expect(await schema.isValid(null)).toBe(false);
+  });
+
+  test("Test dateOptional schema with null values", async () => {
+    const schema = dateOptional();
+    expect(await schema.isValid(null)).toBe(true);
+  });
+
+  test("Test dateOptional schema with valid date values", async () => {
+    const schema = dateOptional();
+    expect(await schema.isValid("04/06/2025")).toBe(true);
+    expect(await schema.isValid("12/31/2024")).toBe(true);
+  });
+
+  test("Test dateOptional schema with invalid date values", async () => {
+    const schema = dateOptional();
+    expect(await schema.isValid("invalid-date")).toBe(false);
+    expect(await schema.isValid("13/01/2024")).toBe(false);
+    expect(await schema.isValid("04/32/2024")).toBe(false);
   });
 });
