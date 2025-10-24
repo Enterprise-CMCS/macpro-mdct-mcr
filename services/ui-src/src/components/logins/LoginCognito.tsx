@@ -86,10 +86,10 @@ const sx = {
     alignSelf: "center",
   },
   error: {
-    marginY: "1rem",
+    marginY: "spacer2",
   },
   button: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     width: "100%",
   },
 };

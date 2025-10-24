@@ -243,14 +243,14 @@ interface SymbolOverlayProps {
 const sx = {
   ".ds-c-field": {
     maxWidth: "15rem",
-    paddingLeft: ".5rem",
-    paddingRight: ".5rem",
+    paddingLeft: "spacer1",
+    paddingRight: "spacer1",
   },
   numberFieldContainer: {
     position: "relative",
     "&.currency": {
       ".ds-c-field": {
-        paddingLeft: "1.5rem",
+        paddingLeft: "spacer3",
       },
     },
     "&.percentage": {

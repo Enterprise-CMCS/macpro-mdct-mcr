@@ -83,8 +83,8 @@ const sx = {
   root: {
     alignItems: "start",
     minHeight: "5.25rem",
-    borderInlineStartWidth: "0.5rem",
-    padding: "1rem",
+    borderInlineStartWidth: "spacer1",
+    padding: "spacer2",
     margin: "1.25rem auto 2.5rem",
     "&.info": {
       backgroundColor: "secondary_lightest",
@@ -104,11 +104,11 @@ const sx = {
     },
   },
   descriptionText: {
-    marginTop: ".25rem",
+    marginTop: "spacer_half",
   },
   linkText: {
-    marginTop: ".25rem",
-    marginBottom: ".25rem",
+    marginTop: "spacer_half",
+    marginBottom: "spacer_half",
   },
   icon: {
     position: "absolute",
@@ -118,7 +118,7 @@ const sx = {
     width: "1.5rem",
   },
   contentBox: {
-    marginLeft: "2rem",
+    marginLeft: "spacer4",
     "&.no-icon": {
       marginLeft: 0,
     },

@@ -71,8 +71,8 @@ export const Menu = () => {
 const sx = {
   menuButton: {
     padding: 0,
-    paddingRight: ".5rem",
-    marginLeft: ".5rem",
+    paddingRight: "spacer1",
+    marginLeft: "spacer1",
     borderRadius: 0,
     background: "none",
     color: "white",

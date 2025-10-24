@@ -245,7 +245,7 @@ const sx = {
     ".ds-c-icon--arrow": {
       position: "absolute",
       top: "10px",
-      right: "0.5rem",
+      right: "spacer1",
       fontSize: "13px",
       color: "gray",
     },
@@ -275,24 +275,24 @@ const sx = {
     },
   },
   navItemTitle: {
-    marginRight: "2.5rem",
+    marginRight: "spacer5",
     fontSize: "14px",
     marginY: "10px",
     textAlign: "left",
     "&.level-1": {
-      marginLeft: "1rem",
+      marginLeft: "spacer2",
       ".desktop &": {
-        marginLeft: "2rem",
+        marginLeft: "spacer4",
       },
     },
     "&.level-2": {
-      marginLeft: "2rem",
+      marginLeft: "spacer4",
       ".desktop &": {
-        marginLeft: "3rem",
+        marginLeft: "spacer6",
       },
     },
     "&.level-3": {
-      marginLeft: "3rem",
+      marginLeft: "spacer6",
       ".desktop &": {
         marginLeft: "4rem",
       },

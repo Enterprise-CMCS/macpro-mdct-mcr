@@ -90,15 +90,15 @@ const sx = {
   },
   grid: {
     gridTemplateColumns: "33% auto",
-    columnGap: "1rem",
+    columnGap: "spacer2",
   },
   subtitle: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   subtext: {
-    marginTop: "0.25rem",
+    marginTop: "spacer_half",
     fontSize: "sm",
   },
   unfinishedMessage: {
@@ -119,11 +119,11 @@ const sx = {
     fontSize: "md",
   },
   standardDescription: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
   },
   planHeading: {
-    marginTop: "1rem",
-    paddingTop: "1rem",
+    marginTop: "spacer2",
+    paddingTop: "spacer2",
     borderTop: "1px solid",
     borderTopColor: "gray_lighter",
     fontWeight: "bold",

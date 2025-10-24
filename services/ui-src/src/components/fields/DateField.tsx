@@ -165,7 +165,7 @@ const sx = {
   // unlabelled child field hints
   "&.ds-c-choice__checkedChild.no-label": {
     ".ds-c-field__hint": {
-      marginBottom: "0.25rem",
+      marginBottom: "spacer_half",
     },
   },
   ".optional-text": {

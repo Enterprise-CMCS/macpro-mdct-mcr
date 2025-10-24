@@ -31,7 +31,7 @@ const sx = {
   contentBox: {
     "&.standard": {
       flexShrink: "0",
-      paddingTop: "2rem",
+      paddingTop: "spacer4",
     },
     "&.report": {
       height: "100%",

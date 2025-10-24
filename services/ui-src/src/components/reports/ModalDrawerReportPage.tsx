@@ -302,15 +302,15 @@ const sx = {
     color: "gray",
   },
   topAddEntityButton: {
-    marginTop: "1.5rem",
-    marginBottom: "2rem",
+    marginTop: "spacer3",
+    marginBottom: "spacer4",
   },
   bottomAddEntityButton: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     marginBottom: "0",
   },
   missingEntityMessage: {
-    paddingTop: "1rem",
+    paddingTop: "spacer2",
     fontWeight: "bold",
     a: {
       color: "primary",
@@ -320,16 +320,16 @@ const sx = {
       },
     },
     ol: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
   },
   table: {
     tableLayout: "fixed",
     br: {
-      marginBottom: "0.25rem",
+      marginBottom: "spacer_half",
     },
     th: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "gray_light",

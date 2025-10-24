@@ -214,7 +214,7 @@ const sx = {
     position: "relative",
     marginX: "1.25rem",
     "&.print-version": {
-      paddingLeft: "2.5rem",
+      paddingLeft: "spacer5",
     },
     ".delete-entity-button": {
       position: "absolute",
@@ -226,7 +226,7 @@ const sx = {
     },
     ".print-version-icon-div-complete": {
       position: "absolute",
-      top: "0.25rem",
+      top: "spacer_half",
       left: "-1.5rem",
       marginLeft: "-0.75rem",
       ".mobile &": {
@@ -235,7 +235,7 @@ const sx = {
     },
     ".print-version-icon-div-incomplete": {
       position: "absolute",
-      top: "0.25rem",
+      top: "spacer_half",
       left: "-1.5rem",
       marginLeft: "-0.25rem",
       ".mobile &": {
@@ -272,7 +272,7 @@ const sx = {
     },
   },
   missingReportingPeriodMessage: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "xs",
     color: "error_dark",
   },
@@ -281,11 +281,11 @@ const sx = {
     color: "error_dark",
   },
   editButton: {
-    marginY: "1rem",
+    marginY: "spacer2",
     fontWeight: "normal",
   },
   openDrawerButton: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontWeight: "normal",
   },
   entitiesCount: {

@@ -65,12 +65,12 @@ interface Props {
 
 const sx = {
   introBox: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
   },
   sectionHeading: {
     color: "gray",
     fontSize: "md",
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
   },
   subsectionHeading: {
     fontWeight: "normal",
@@ -78,20 +78,20 @@ const sx = {
   },
   hintTextBox: {
     color: "#5B616B",
-    paddingTop: "1.5rem",
+    paddingTop: "spacer3",
   },
   spreadsheetWidgetBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
   infoTextBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     h4: {
       fontSize: "lg",
       marginBottom: "0.75rem",
     },
     "p, span": {
       color: "gray",
-      marginTop: "1rem",
+      marginTop: "spacer2",
     },
     a: {
       color: "primary",
@@ -104,6 +104,6 @@ const sx = {
     },
   },
   table: {
-    marginTop: "1.5rem",
+    marginTop: "spacer3",
   },
 };

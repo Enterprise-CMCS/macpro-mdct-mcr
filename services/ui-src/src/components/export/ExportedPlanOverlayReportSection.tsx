@@ -241,12 +241,12 @@ const sx = {
   },
   planNameHeading: {
     fontSize: "xl",
-    paddingBottom: "1.5rem",
+    paddingBottom: "spacer3",
   },
   fieldLabel: {
     fontSize: "sm",
     fontWeight: "bold",
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
   },
   fieldHint: {
     lineHeight: "lg",
@@ -264,10 +264,10 @@ const sx = {
   },
   h4: {
     fontSize: "lg",
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
   },
   h5: {
     fontSize: "md",
-    paddingBottom: "1.5rem",
+    paddingBottom: "spacer3",
   },
 };

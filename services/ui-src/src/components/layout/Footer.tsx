@@ -151,7 +151,7 @@ const sx = {
     maxWidth: "100%",
     padding: "0 1rem",
     minWidth: "100%",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     ".desktop &": {
       marginBottom: 0,
       display: "block",
@@ -205,7 +205,7 @@ const sx = {
     fontSize: "0.875rem",
     ".mobile &": {
       maxW: "100%",
-      marginX: "1rem",
+      marginX: "spacer2",
     },
   },
   footerBottom: {
@@ -220,7 +220,7 @@ const sx = {
     },
   },
   footerBottomFlex: {
-    paddingY: "1rem",
+    paddingY: "spacer2",
     justifyContent: "space-between",
     alignItems: "normal",
     flexDirection: "column",
@@ -242,12 +242,12 @@ const sx = {
     margin: "0.5rem 0",
     ".desktop &": {
       "&:first-of-type": {
-        paddingRight: ".5rem",
+        paddingRight: "spacer1",
         borderRight: "1px solid",
         borderColor: "white",
       },
       "&:last-child": {
-        paddingLeft: ".5rem",
+        paddingLeft: "spacer1",
       },
     },
   },

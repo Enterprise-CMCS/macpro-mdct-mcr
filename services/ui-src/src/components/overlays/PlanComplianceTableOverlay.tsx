@@ -284,7 +284,7 @@ const sx = {
     maxWidth: "fit-content",
   },
   counts: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
   },
   count: {
     color: "gray",
@@ -299,7 +299,7 @@ const sx = {
     width: "fit-content",
   },
   tableButton: {
-    marginX: "1rem",
+    marginX: "spacer2",
     width: "6rem",
   },
   bold: {

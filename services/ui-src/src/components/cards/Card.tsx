@@ -19,10 +19,10 @@ interface Props {
 const sx = {
   root: {
     width: "100%",
-    padding: "2rem",
+    padding: "spacer4",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     ".mobile &": {
-      padding: "1rem",
+      padding: "spacer2",
     },
   },
 };

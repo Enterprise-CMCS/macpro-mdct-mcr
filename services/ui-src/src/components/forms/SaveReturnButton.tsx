@@ -63,7 +63,7 @@ interface Props {
 
 const sx = {
   footerBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
   footerBoxBorder: {
     borderTopColor: "gray_lighter",
@@ -71,7 +71,7 @@ const sx = {
   },
   buttonFlex: {
     justifyContent: "end",
-    marginY: "1.5rem",
+    marginY: "spacer3",
   },
   saveButton: {
     width: "10.25rem",

@@ -293,21 +293,21 @@ const sx = {
     },
   },
   emptyDashboard: {
-    paddingTop: "1rem",
+    paddingTop: "spacer2",
   },
   tableSeparator: {
     borderTop: "1px solid",
     borderColor: "gray_light",
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
     marginTop: "1.25rem",
   },
   table: {
     tableLayout: "fixed",
     br: {
-      marginBottom: "0.25rem",
+      marginBottom: "spacer_half",
     },
     th: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid",
       borderColor: "gray_light",
@@ -323,8 +323,8 @@ const sx = {
     },
   },
   addEntityButton: {
-    marginTop: "2rem",
-    marginBottom: "2rem",
+    marginTop: "spacer4",
+    marginBottom: "spacer4",
     ".tablet &, .mobile &": {
       wordBreak: "break-word",
       whiteSpace: "break-spaces",
