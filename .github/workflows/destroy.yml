@@ -22,6 +22,7 @@ jobs:
   destroy:
     name: Destroy
     if: (inputs.environment || github.event.ref_type == 'branch') && !contains('skipci,code-json-', github.event.ref)
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

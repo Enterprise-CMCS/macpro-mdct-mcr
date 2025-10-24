@@ -2,37 +2,45 @@ name: Pull Request
 
 on:
   pull_request:
-    types: [opened, ready_for_review, synchronize]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
 
 jobs:
   prchecks:
-    name: prchecks # Name needs to be unchanged to avoid updating branch rules
     runs-on: ubuntu-latest
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-
-      - name: Setup Python for pre-commit
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-
       - name: Configure pre-commit to skip irrelevant checks
-        run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui" >> $GITHUB_ENV
-
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.1
-
+        run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,no-commit-to-branch" >> $GITHUB_ENV
+      - uses: pre-commit/action@v3.0.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - name: run unit tests
+        run: ./scripts/test-unit.sh
+      - name: publish test coverage to qlty
+        uses: qltysh/qlty-action/coverage@v1
+        with:
+          oidc: true
+          files: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info
+        env:
+          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
   assignAuthor:
-    name: assignAuthor # Name needs to be unchanged to avoid updating branch rules
-    if: github.event.pull_request.user.type != 'Bot' && github.event.action != 'synchronize'
+    if: github.event.pull_request.user.type != 'Bot' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
-      - name: Assign PR to creator
+      - name: Assign PR to Creator
         run: gh pr edit $PR_URL --add-assignee $PR_AUTHOR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
