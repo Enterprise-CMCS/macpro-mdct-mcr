@@ -97,32 +97,4 @@ export function deployFrontend(props: DeployFrontendProps) {
   );
 
   deployTimeConfig.node.addDependency(deployWebsite);
-
-  const invalidateCloudfront = new cr.AwsCustomResource(
-    scope,
-    "InvalidateCloudfront",
-    {
-      onUpdate: {
-        service: "CloudFront",
-        action: "createInvalidation",
-        parameters: {
-          DistributionId: distribution.distributionId,
-          InvalidationBatch: {
-            Paths: {
-              Quantity: 1,
-              Items: ["/*"],
-            },
-            CallerReference: new Date().toISOString(),
-          },
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvalidateCloudfront-${stage}`
-        ),
-      },
-      role: deploymentRole,
-    }
-  );
-  distribution.grantCreateInvalidation(invalidateCloudfront.grantPrincipal);
-
-  invalidateCloudfront.node.addDependency(deployTimeConfig);
 }
