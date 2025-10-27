@@ -38,8 +38,6 @@ export function createUiAuthComponents(props: CreateUiAuthComponentsProps) {
     secureCloudfrontDomainName,
     userPoolDomainPrefix,
   } = props;
-  // eslint-disable-next-line no-console
-  console.log(restApiId);
 
   const userPool = new cognito.UserPool(scope, "UserPool", {
     userPoolName: `${stage}-user-pool`,
