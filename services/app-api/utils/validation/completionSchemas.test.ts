@@ -21,7 +21,6 @@ import {
   numberSuppressible,
   radio,
   radioOptional,
-  radioSchema,
   ratio,
   text,
   textOptional,
@@ -142,12 +141,12 @@ describe("Completion schemas", () => {
     }
   );
 
-  test.each([
-    // ...accept(emptyResponses),
-    ...accept(["any nonempty string"]),
-  ])("textOptional() $description -> $expected", ({ value, expected }) => {
-    expect(textOptional().isValidSync(value)).toBe(expected);
-  });
+  test.each([...accept(emptyResponses), ...accept(["any nonempty string"])])(
+    "textOptional() $description -> $expected",
+    ({ value, expected }) => {
+      expect(textOptional().isValidSync(value)).toBe(expected);
+    }
+  );
 
   test.each([
     ...reject(emptyResponses),
@@ -160,7 +159,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...accept(negativeNumbers),
@@ -174,7 +173,7 @@ describe("Completion schemas", () => {
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...reject(negativeNumbers),
-    // ...accept(notApplicableValues),
+    ...accept(notApplicableValues),
     ...reject(["0", "0.0", "0.5"]),
     ...accept(["1", "1.5"]),
   ])(
@@ -189,7 +188,7 @@ describe("Completion schemas", () => {
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...reject(negativeNumbers),
-    // ...accept(notApplicableValues),
+    ...accept(notApplicableValues),
     ...reject(["-0.5"]),
     ...accept(["0", "0.0", "0.5", "1", "1.5"]),
   ])(
@@ -204,7 +203,7 @@ describe("Completion schemas", () => {
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...accept(negativeNumbers),
-    // ...accept(notApplicableValues),
+    ...accept(notApplicableValues),
     ...accept(["Suppressed for data privacy purposes"]),
   ])(
     "numberSuppressible() $description -> $expected",
@@ -214,11 +213,11 @@ describe("Completion schemas", () => {
   );
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...reject(negativeNumbers),
-    // ...accept(notApplicableValues),
+    ...accept(notApplicableValues),
     ...reject(["-0.5"]),
     ...accept(["0", "0.0", "0.5", "1", "1.5"]),
   ])(
@@ -239,7 +238,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...reject(nonNumericValues),
     ...accept(positiveNumbers),
     ...accept(negativeNumbers),
@@ -284,7 +283,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...accept([
       "test@example.com",
       "test.with.dot@multi.part.domain",
@@ -309,7 +308,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...accept([
       "http://example.com",
       "https://example.com",
@@ -331,7 +330,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // ...accept(emptyResponses),
+    ...accept(emptyResponses),
     ...reject(invalidDates),
     ...accept(pastDates),
     ...accept(futureDates),
@@ -358,7 +357,7 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    // { value: undefined, description: "undefined", expected: false },
+    { value: undefined, description: "undefined", expected: false },
     { value: "", description: "empty string", expected: false },
     { value: null, description: "null", expected: false },
     { value: 1, description: "1", expected: false },
@@ -451,19 +450,10 @@ describe("Completion schemas", () => {
   });
 
   test.each([
-    { value: undefined, description: "undefined", expected: true },
-    { value: [], description: "empty array", expected: true },
-    { value: [choice], description: "one selection", expected: true },
-    // { value: [choice, choice], description: "two selections", expected: false },
-  ])("radioSchema $description -> $expected", ({ value, expected }) => {
-    expect(radioSchema().isValidSync(value)).toBe(expected);
-  });
-
-  test.each([
     { value: undefined, description: "undefined", expected: false },
     { value: [], description: "empty array", expected: false },
     { value: [choice], description: "one selection", expected: true },
-    // { value: [choice, choice], description: "two selections", expected: false },
+    { value: [choice, choice], description: "two selections", expected: false },
   ])("radio $description -> $expected", ({ value, expected }) => {
     expect(radio().isValidSync(value)).toBe(expected);
   });
@@ -472,7 +462,7 @@ describe("Completion schemas", () => {
     { value: undefined, description: "undefined", expected: true },
     { value: [], description: "empty array", expected: true },
     { value: [choice], description: "one selection", expected: true },
-    // { value: [choice, choice], description: "two selections", expected: false },
+    { value: [choice, choice], description: "two selections", expected: false },
   ])("radioOptional $description -> $expected", ({ value, expected }) => {
     expect(radioOptional().isValidSync(value)).toBe(expected);
   });
