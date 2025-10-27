@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { AdminDashSelector } from "components";
@@ -9,7 +9,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -58,10 +58,12 @@ describe("<AdminDashSelector />", () => {
       const submitButton = screen.getByRole("button", {
         name: "Go to Report Dashboard",
       });
-      await userEvent.click(submitButton);
+      await act(async () => {
+        await userEvent.click(submitButton);
+      });
       expect(window.location.pathname).toEqual("/mcpar");
     });
   });
 
-  testA11y(adminDashSelectorView);
+  testA11yAct(adminDashSelectorView);
 });

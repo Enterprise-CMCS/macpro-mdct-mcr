@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { axe } from "jest-axe";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { SortableTable } from "components";
 import { generateColumns } from "./SortableTable";
+import { testA11yAct } from "utils/testing/commonTests";
 
 interface TestDataShape {
   id: string;
@@ -153,9 +153,5 @@ describe("<SortableTable />", () => {
 });
 
 describe("Test SortableTable accessibility", () => {
-  it("Should not have basic accessibility issues", async () => {
-    const { container } = render(sortableTableComponent);
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
+  testA11yAct(sortableTableComponent);
 });

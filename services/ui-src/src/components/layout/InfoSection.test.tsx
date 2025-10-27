@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { InfoSection } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import mcparVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
@@ -24,5 +24,5 @@ describe("<InfoSection />", () => {
     await expect(sectionHeader).toBeVisible();
   });
 
-  testA11y(InfoSectionComponent);
+  testA11yAct(InfoSectionComponent);
 });

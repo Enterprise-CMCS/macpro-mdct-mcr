@@ -1,4 +1,4 @@
-import { ReactChild } from "react";
+import { ReactNode } from "react";
 // components
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 
@@ -11,7 +11,7 @@ export const Card = ({ children, sxOverride, ...props }: Props) => {
 };
 
 interface Props {
-  children?: ReactChild | ReactChild[];
+  children?: ReactNode | ReactNode[];
   sxOverride?: SystemStyleObject;
   [key: string]: any;
 }

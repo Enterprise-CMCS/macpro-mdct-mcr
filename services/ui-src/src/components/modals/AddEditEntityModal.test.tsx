@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 // components
 import { AddEditEntityModal, ReportContext } from "components";
 // utils
@@ -13,7 +12,7 @@ import {
   RouterWrappedComponent,
   mockMcparReportStore,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { EntityType } from "types";
 
 jest.mock("react-uuid", () => jest.fn(() => "mock-id-2"));
@@ -88,5 +87,5 @@ describe("<AddEditEntityModal />", () => {
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  testA11y(modalComponent);
+  testA11yAct(modalComponent);
 });

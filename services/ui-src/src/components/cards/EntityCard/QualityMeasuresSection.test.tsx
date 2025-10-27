@@ -5,7 +5,7 @@ import {
   mockNotAnswered,
   mockQualityMeasuresData,
 } from "utils/testing/mockEntities";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const defaultProps = {
   formattedEntityData: {
@@ -154,5 +154,5 @@ describe("QualityMeasuresSection", () => {
     expect(screen.getByText("Not answered")).toBeInTheDocument();
   });
 
-  testA11y(<QualityMeasuresSection {...defaultProps} />);
+  testA11yAct(<QualityMeasuresSection {...defaultProps} />);
 });

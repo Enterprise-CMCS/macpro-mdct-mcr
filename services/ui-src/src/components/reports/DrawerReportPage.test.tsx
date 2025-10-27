@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, DrawerReportPage } from "components";
@@ -33,7 +33,7 @@ import {
   mockTestNaaarAnalysisMethodsPageJson,
   mockAnalysisMethodEntityStore,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -150,7 +150,9 @@ describe("<DrawerReportPage />", () => {
         mockMcparReportContext.report.fieldData.plans[1].name;
       expect(screen.getByText(visibleEntityText)).toBeVisible();
       const launchDrawerButton = screen.getAllByText("Enter")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
     });
 
@@ -202,7 +204,9 @@ describe("<DrawerReportPage />", () => {
 
       render(priorAuthReportingDrawerReportPage);
       const notReportingDataButton = screen.getAllByRole("radio")[0];
-      await userEvent.click(notReportingDataButton);
+      await act(async () => {
+        await userEvent.click(notReportingDataButton);
+      });
       const launchDrawerButton = screen.getAllByText("Enter")[1];
       expect(launchDrawerButton).toBeDisabled;
     });
@@ -255,7 +259,9 @@ describe("<DrawerReportPage />", () => {
 
       render(patientAccessApiReportingDrawerReportPage);
       const notReportingDataButton = screen.getAllByRole("radio")[0];
-      await userEvent.click(notReportingDataButton);
+      await act(async () => {
+        await userEvent.click(notReportingDataButton);
+      });
       const launchDrawerButton = screen.getAllByText("Enter")[1];
       expect(launchDrawerButton).toBeDisabled;
     });
@@ -265,13 +271,17 @@ describe("<DrawerReportPage />", () => {
         mockMcparReportContext.report.fieldData.plans[0].name;
       expect(screen.getByText(visibleEntityText)).toBeVisible();
       const launchDrawerButton = screen.getAllByText("Enter")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
-      await userEvent.type(textField, "test");
-      const saveAndCloseButton = screen.getByText(saveAndCloseText);
-      await userEvent.click(saveAndCloseButton);
+      await act(async () => {
+        await userEvent.type(textField, "test");
+        const saveAndCloseButton = screen.getByText(saveAndCloseText);
+        await userEvent.click(saveAndCloseButton);
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
     });
 
@@ -284,7 +294,9 @@ describe("<DrawerReportPage />", () => {
         mockMcparReportContext.report.fieldData.plans[0].name;
       expect(screen.getByText(visibleEntityText)).toBeVisible();
       const launchDrawerButton = screen.getAllByText("Enter")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
@@ -298,10 +310,14 @@ describe("<DrawerReportPage />", () => {
         ...mockMcparReportStore,
       });
       const launchDrawerButton = screen.getAllByText("Enter")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const saveAndCloseButton = screen.getByText(saveAndCloseText);
-      await userEvent.click(saveAndCloseButton);
+      await act(async () => {
+        await userEvent.click(saveAndCloseButton);
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
 
@@ -310,12 +326,16 @@ describe("<DrawerReportPage />", () => {
         mockMcparReportContext.report.fieldData.plans[0].name;
       expect(screen.getByText(visibleEntityText)).toBeVisible();
       const launchDrawerButton = screen.getAllByText("Enter")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
       const saveAndCloseButton = screen.getByText(saveAndCloseText);
-      await userEvent.click(saveAndCloseButton);
+      await act(async () => {
+        await userEvent.click(saveAndCloseButton);
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
 
@@ -339,7 +359,9 @@ describe("<DrawerReportPage />", () => {
       });
       render(drawerReportPageWithNaaarRoutes);
       const addStandardsButton = screen.getAllByText("Add standard")[0];
-      await userEvent.click(addStandardsButton);
+      await act(async () => {
+        await userEvent.click(addStandardsButton);
+      });
       expect(screen.getByText("Mock dashboard title")).toBeVisible();
     });
   });
@@ -436,7 +458,9 @@ describe("<DrawerReportPage />", () => {
 
       render(drawerReportPageWithIlos);
       const enterDefaultMethod = screen.getAllByText("Enter")[0];
-      await userEvent.click(enterDefaultMethod);
+      await act(async () => {
+        await userEvent.click(enterDefaultMethod);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const textField = await screen.getByLabelText("mock label 1 - ILOS");
       expect(textField).toBeVisible();
@@ -458,7 +482,9 @@ describe("<DrawerReportPage />", () => {
       });
       test("Can enter default analysis method drawer", async () => {
         const enterDefaultMethod = screen.getAllByText("Enter")[0];
-        await userEvent.click(enterDefaultMethod);
+        await act(async () => {
+          await userEvent.click(enterDefaultMethod);
+        });
         expect(screen.getByRole("dialog")).toBeVisible();
         const textField = await screen.getByLabelText("mock label 1");
         expect(textField).toBeVisible();
@@ -483,25 +509,29 @@ describe("<DrawerReportPage />", () => {
 
         render(drawerReportPageWithCustomEntities);
         const addCustomMethod = screen.getByText("Add other analysis method");
-        await userEvent.click(addCustomMethod);
+        await act(async () => {
+          await userEvent.click(addCustomMethod);
+        });
         expect(screen.getByRole("dialog")).toBeVisible();
         // fill out custom drawer
         const customTitleField = await screen.getByLabelText("Analysis method");
         expect(customTitleField).toBeVisible();
-        await userEvent.type(customTitleField, "New analysis method");
-        const customDescriptionField = await screen.getByLabelText(
-          "description"
-        );
-        await userEvent.type(
-          customDescriptionField,
-          "New analysis description"
-        );
-        const customFrequencyRadioButton = await screen.getByLabelText(
-          "Weekly"
-        );
-        await userEvent.click(customFrequencyRadioButton);
-        const saveCustomMethod = screen.getByText("Save & close");
-        await userEvent.click(saveCustomMethod);
+        await act(async () => {
+          await userEvent.type(customTitleField, "New analysis method");
+          const customDescriptionField = await screen.getByLabelText(
+            "description"
+          );
+          await userEvent.type(
+            customDescriptionField,
+            "New analysis description"
+          );
+          const customFrequencyRadioButton = await screen.getByLabelText(
+            "Weekly"
+          );
+          await userEvent.click(customFrequencyRadioButton);
+          const saveCustomMethod = screen.getByText("Save & close");
+          await userEvent.click(saveCustomMethod);
+        });
         const enterDefaultMethod = screen.getAllByText("Enter")[0];
         expect(enterDefaultMethod).toBeVisible();
       });
@@ -545,11 +575,13 @@ describe("<DrawerReportPage />", () => {
         test("DrawerReportPage opens the delete modal on remove click", async () => {
           const addCustomMethod = screen.getByText("Add other analysis method");
           const removeButton = screen.getByTestId("delete-entity");
-          await userEvent.click(removeButton);
-          // click delete in modal
+          await act(async () => {
+            await userEvent.click(removeButton);
+          });
           const deleteButton = screen.getByText("Yes, delete method");
-          await userEvent.click(deleteButton);
-
+          await act(async () => {
+            await userEvent.click(deleteButton);
+          });
           // verify that the field is removed
           const inputBoxLabelAfterRemove =
             screen.queryAllByTestId("test-label");
@@ -688,12 +720,16 @@ describe("<DrawerReportPage />", () => {
 
     test("changing an analysis method to not utilized will affect the associated standard", async () => {
       const launchDrawerButton = screen.getAllByText("Edit")[0];
-      await userEvent.click(launchDrawerButton);
+      await act(async () => {
+        await userEvent.click(launchDrawerButton);
+      });
       expect(screen.getByRole("dialog")).toBeVisible();
       const noButton = screen.getByLabelText("mock label 2 No");
-      await userEvent.click(noButton);
       const saveMethod = screen.getByText("Save & close");
-      await userEvent.click(saveMethod);
+      await act(async () => {
+        await userEvent.click(noButton);
+        await userEvent.click(saveMethod);
+      });
 
       const mockUpdate = mockNaaarReportContextWithAnalysisMethods.updateReport;
 
@@ -706,7 +742,7 @@ describe("<DrawerReportPage />", () => {
     });
   });
 
-  testA11y(drawerReportPageWithEntities, () => {
+  testA11yAct(drawerReportPageWithEntities, () => {
     mockedUseStore.mockReturnValue({
       ...mockStateUserStore,
       ...mockMcparReportStore,

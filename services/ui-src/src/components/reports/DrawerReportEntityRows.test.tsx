@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DrawerReportPage } from "./DrawerReportPage";
 import { ReportContext } from "./ReportProvider";
@@ -229,7 +229,9 @@ describe("<DrawerReportEntityRow />", () => {
         const button = screen.getByRole("button", {
           name: "Delete New Method",
         });
-        await userEvent.click(button);
+        await act(async () => {
+          await userEvent.click(button);
+        });
         expect(
           screen.getByRole("dialog", {
             name: "Are you sure you want to delete this analysis method?",

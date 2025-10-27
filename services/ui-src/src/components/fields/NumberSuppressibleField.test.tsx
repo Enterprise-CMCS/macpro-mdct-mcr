@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -12,7 +12,7 @@ import {
   mockStateUserStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -67,7 +67,9 @@ describe("<NumberSuppressibleField />", () => {
     expect(choiceField).not.toBeChecked();
     expect(numberField).not.toBeDisabled();
 
-    await userEvent.click(choiceField);
+    await act(async () => {
+      await userEvent.click(choiceField);
+    });
     expect(choiceField).toBeChecked();
     expect(numberField).toBeDisabled();
   });
@@ -78,7 +80,9 @@ describe("<NumberSuppressibleField />", () => {
     const numberField = screen.getByRole("textbox", { name: "test-label" });
     expect(choiceField).not.toBeChecked();
 
-    await userEvent.type(numberField, suppressionText);
+    await act(async () => {
+      await userEvent.type(numberField, suppressionText);
+    });
     expect(choiceField).toBeChecked();
     expect(numberField).toBeDisabled();
   });
@@ -91,7 +95,7 @@ describe("<NumberSuppressibleField />", () => {
     expect(numberField).toBeDisabled();
   });
 
-  testA11y(numberSuppressibleFieldComponent(""), () => {
+  testA11yAct(numberSuppressibleFieldComponent(""), () => {
     mockGetValues(undefined);
   });
 });

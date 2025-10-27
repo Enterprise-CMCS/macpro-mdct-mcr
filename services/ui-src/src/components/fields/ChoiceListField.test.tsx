@@ -18,7 +18,7 @@ import {
   mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -887,9 +887,9 @@ describe("<ChoiceListField />", () => {
       mockGetValues(undefined);
     });
 
-    testA11y(CheckboxComponent);
-    testA11y(CheckboxComponentWithNestedChildren);
-    testA11y(RadioComponent());
-    testA11y(RadioComponentWithNestedChildren);
+    testA11yAct(CheckboxComponent);
+    testA11yAct(CheckboxComponentWithNestedChildren);
+    testA11yAct(RadioComponent());
+    testA11yAct(RadioComponentWithNestedChildren);
   });
 });

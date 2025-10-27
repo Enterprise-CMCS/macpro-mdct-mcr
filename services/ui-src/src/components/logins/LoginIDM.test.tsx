@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { LoginIDM } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const loginIDMComponent = (
   <RouterWrappedComponent>
@@ -21,5 +21,5 @@ describe("<LoginIDM />", () => {
     expect(loginButton).toBeVisible();
   });
 
-  testA11y(loginIDMComponent);
+  testA11yAct(loginIDMComponent);
 });

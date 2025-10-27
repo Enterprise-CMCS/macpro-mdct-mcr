@@ -10,7 +10,7 @@ import {
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -56,5 +56,5 @@ describe("<ExportedEntityDetailsTable />", () => {
     expect(screen.getByText("header content")).toBeVisible();
   });
 
-  testA11y(exportedEntityDetailsTableComponent());
+  testA11yAct(exportedEntityDetailsTableComponent());
 });
