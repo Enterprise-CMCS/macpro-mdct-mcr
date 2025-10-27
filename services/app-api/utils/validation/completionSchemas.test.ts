@@ -12,6 +12,7 @@ import {
   email,
   emailOptional,
   endDate,
+  nested,
   number,
   numberNotLessThanOne,
   numberNotLessThanZero,
@@ -517,8 +518,95 @@ describe("Completion schemas", () => {
   });
 
   describe("Nested field validation", () => {
-    test.skip("It should work good", () => {
-      throw new Error("Nested completionSchema tests aren't implemented.");
+    /*
+     * The following tests assume a form that looks like this:
+     * fields: [
+     *   {
+     *     id: "parentId",
+     *     type: "radio",
+     *     props: {
+     *       label: "Got digits?",
+     *       choices: [
+     *         {
+     *           id: "123-noo",
+     *           label: "Nope, just my fingers ;)",
+     *         },
+     *         {
+     *           id: "456-yah",
+     *           label: "Yep, I have em!",
+     *           children: [
+     *             {
+     *               id: "childId",
+     *               label: "What are the digits?",
+     *               type: "text",
+     *               validation: {
+     *                 type: "digits", // defined in the tests below
+     *                 nested: true,
+     *                 parentFieldName: "parentId",
+     *                 parentOptionId: "yah",
+     *               },
+     *             },
+     *           ],
+     *         },
+     *       ],
+     *     },
+     *   },
+     * ]
+     */
+
+    const digits = () => yup.string().matches(/^\d+$/);
+
+    test("Accepts a correct nested field", () => {
+      const schema = yup.object().shape({
+        childId: nested(() => digits(), "parentId", "yah"),
+      });
+      const fieldData = {
+        parentId: [{ key: "456-yah" }],
+        childId: "142536",
+      };
+      expect(schema.isValidSync(fieldData)).toBe(true);
+    });
+
+    test("Rejects an incorrect nested field", () => {
+      const schema = yup.object().shape({
+        childId: nested(() => digits(), "parentId", "yah"),
+      });
+      const fieldData = {
+        parentId: [{ key: "456-yah" }],
+        childId: "qwerty",
+      };
+      expect(schema.isValidSync(fieldData)).toBe(false);
+    });
+
+    test("Accepts a blank optional nested field", () => {
+      const schema = yup.object().shape({
+        childId: nested(() => digits(), "parentId", "yah"),
+      });
+      const fieldData = {
+        parentId: [{ key: "456-yah" }],
+      };
+      expect(schema.isValidSync(fieldData)).toBe(true);
+    });
+
+    test("Rejects a blank required nested field", () => {
+      const schema = yup.object().shape({
+        childId: nested(() => digits().required(), "parentId", "yah"),
+      });
+      const fieldData = {
+        parentId: [{ key: "456-yah" }],
+      };
+      expect(schema.isValidSync(fieldData)).toBe(false);
+    });
+
+    test("Accepts any nested value if the parent option does not match", () => {
+      const schema = yup.object().shape({
+        childId: nested(() => digits().required(), "parentId", "yah"),
+      });
+      const fieldData = {
+        parentId: [{ key: "123-noo" }],
+        childId: "qwerty",
+      };
+      expect(schema.isValidSync(fieldData)).toBe(true);
     });
   });
 });
