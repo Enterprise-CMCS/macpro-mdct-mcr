@@ -1,11 +1,9 @@
 import { Construct } from "constructs";
 import {
-  aws_iam as iam,
   aws_cloudfront as cloudfront,
-  Duration,
   aws_s3 as s3,
   aws_s3_deployment as s3_deployment,
-  custom_resources as cr,
+  Duration,
 } from "aws-cdk-lib";
 import path from "path";
 import { execSync } from "node:child_process";
