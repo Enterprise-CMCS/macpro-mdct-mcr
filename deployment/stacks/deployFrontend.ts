@@ -68,9 +68,7 @@ export function deployFrontend(props: DeployFrontendProps) {
       cacheControl: [
         s3_deployment.CacheControl.setPublic(),
         s3_deployment.CacheControl.maxAge(Duration.days(365)),
-        s3_deployment.CacheControl.noCache(),
       ],
-      role: deploymentRole,
     }
   );
 
@@ -88,10 +86,10 @@ export function deployFrontend(props: DeployFrontendProps) {
         launchDarklyClient,
         redirectSignout,
         stage,
+        timestamp: new Date().toISOString(),
         userPoolClientDomain,
         userPoolClientId,
         userPoolId,
-        timestamp: new Date().toISOString(),
       },
     }
   );
