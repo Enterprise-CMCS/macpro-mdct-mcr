@@ -30,7 +30,13 @@ export const error = {
 // TEXT
 const textSchema = () => string().typeError(error.INVALID_GENERIC);
 
-export const text = () => textSchema().required();
+export const text = () =>
+  textSchema()
+    .test({
+      test: (value) => value?.trim().length !== 0,
+      message: error.REQUIRED_GENERIC,
+    })
+    .required();
 export const textOptional = () => textSchema().nullable();
 
 // NUMBER - Helpers

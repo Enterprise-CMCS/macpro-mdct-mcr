@@ -134,12 +134,13 @@ const futureDates = [
 const choice = { key: "mock-key", value: "mock-value" };
 
 describe("Completion schemas", () => {
-  test.each([...reject(emptyResponses), ...accept(["any nonempty string"])])(
-    "text() $description -> $expected",
-    ({ value, expected }) => {
-      expect(text().isValidSync(value)).toBe(expected);
-    }
-  );
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(["    "]),
+    ...accept(["any nonempty string"]),
+  ])("text() $description -> $expected", ({ value, expected }) => {
+    expect(text().isValidSync(value)).toBe(expected);
+  });
 
   test.each([...accept(emptyResponses), ...accept(["any nonempty string"])])(
     "textOptional() $description -> $expected",
