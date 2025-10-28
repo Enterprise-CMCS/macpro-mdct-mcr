@@ -67,7 +67,7 @@ const sx = {
       width: "8rem",
       fontWeight: "semibold",
     },
-    "tr:nth-of-type(2n+1)": {
+    "tr:nth-of-type(odd)": {
       background: "#EDF2F7",
     },
     td: {
