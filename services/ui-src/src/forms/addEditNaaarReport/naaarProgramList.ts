@@ -20,10 +20,6 @@ export const naaarProgramList: ProgramList = {
       label: "Provider Led Arkansas Shared Savings Entity (PASSE)",
     },
     {
-      id: "rBfRswyiFHJCKkuyRsTpLnhs",
-      label: "Non-Emergency Transportation (NET)",
-    },
-    {
       id: "zaAyFy8QjFIjkpVtQs7LNCVl",
       label: "Healthy Smiles",
     },
@@ -142,12 +138,12 @@ export const naaarProgramList: ProgramList = {
       label: "Adult Dental and Kid Dental",
     },
     {
-      id: "YI4p6xUUkUVA7smiPuc1IPM7",
-      label: "D-SNP",
+      id: "joBTvwsoDk96IdRR8uWjSjM8",
+      label: "HIDE D-SNP",
     },
     {
-      id: "hLa0sapsg4Tr5hg64dL4Qznh",
-      label: "CNET",
+      id: "MilDmDjguVXAHQc12BkdIXWA",
+      label: "FIDE D-SNP",
     },
     {
       id: "GtPVr3OIOsuwly2q6jRZsGU2",
@@ -169,10 +165,6 @@ export const naaarProgramList: ProgramList = {
       label: "Planning 4 Healthy Babies (P4HB)",
     },
     {
-      id: "XUb31QW7oCudbcqkBxDLSTTq",
-      label: "NEMT",
-    },
-    {
       id: "jjUAdivEbz7rbobt6Bna3jH0",
       label: "Pathways to Coverage",
     },
@@ -185,7 +177,7 @@ export const naaarProgramList: ProgramList = {
     },
     {
       id: "jHfU3f0ICuHeVeHE00MkCllx",
-      label: "Community Care Services",
+      label: "Community Care Services (CCS)",
     },
   ],
   // Idaho
@@ -205,10 +197,6 @@ export const naaarProgramList: ProgramList = {
     {
       id: "5BA11vA9v6QDT0j3q3g0DEfb",
       label: "Idaho Smiles",
-    },
-    {
-      id: "4CgSZYVQ9L8unciH8CmVZprN",
-      label: "NEMT Broker",
     },
   ],
   // Illinois
@@ -263,10 +251,6 @@ export const naaarProgramList: ProgramList = {
       id: "AIRheUY1geIqiumKruePsmJK",
       label: "Dental Wellness Plan",
     },
-    {
-      id: "B4fFkG4xYiUS3RAf0azA1btz",
-      label: "CHIP Hawki - Dental",
-    },
   ],
   // Kansas
   KS: [
@@ -280,10 +264,6 @@ export const naaarProgramList: ProgramList = {
     {
       id: "OjOZW0vISP2monSyFzoEmEKo",
       label: "Kentucky Managed Care Organization Program (KYMCO)",
-    },
-    {
-      id: "GGWOioU5LjlhMuTq4VFwYSRq",
-      label: "KY Human Service Transportation Delivery Program (HSTD)",
     },
     {
       id: "PBIM7hCm99T0L5SgLvFFXyei",
@@ -310,12 +290,7 @@ export const naaarProgramList: ProgramList = {
     },
   ],
   // Maine
-  ME: [
-    {
-      id: "HwE48AXxXf6eSHZc7qYlpyYK",
-      label: "Maine Non-Emergency Transportation (NET) Program",
-    },
-  ],
+  ME: [],
   // Maryland
   MD: [
     {
@@ -344,7 +319,7 @@ export const naaarProgramList: ProgramList = {
     },
     {
       id: "8tTtPlLsxV5mX6RQ4iKJtrLr",
-      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership (MBHP))",
+      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership [MBHP])",
     },
     {
       id: "NeHtD99KiHVS2ZUWnUqfwBtO",
@@ -489,7 +464,7 @@ export const naaarProgramList: ProgramList = {
   NY: [
     {
       id: "yLC2ONYWuyUY4nP3dHhxyTj2",
-      label: "Behavioral Health and Recovery Plan (HARP)",
+      label: "Health and Recovery Plan (HARP)",
     },
     {
       id: "VtDtt5Oi1aL0C83I8J1L0k7K",
@@ -511,6 +486,10 @@ export const naaarProgramList: ProgramList = {
     {
       id: "PoUqzdCA7hzGx2kKOCHEPMQn",
       label: "Mainstream Managed Care (MMC)",
+    },
+    {
+      id: "btP5SZ1TjTJC7gnufnfldf4h",
+      label: "Children’s Health Insurance Program",
     },
   ],
   // North Carolina
@@ -581,10 +560,6 @@ export const naaarProgramList: ProgramList = {
       id: "xXGZkdQpblavQztQwUE8kS86",
       label: "SoonerCare Dental",
     },
-    {
-      id: "sEd1C16hcjPFqxsy6jrH0wD0",
-      label: "SoonerRide",
-    },
   ],
   // Oregon
   OR: [
@@ -611,10 +586,6 @@ export const naaarProgramList: ProgramList = {
       id: "l0xMakS2qBpApIjIvolMtvbd",
       label: "Adult Community Autism Program (ACAP)",
     },
-    {
-      id: "GEAeHfhMrDPZpjeDW2pkiOs7",
-      label: "Medical Assistance Transportation Program (MATP)",
-    },
   ],
   // Puerto Rico
   PR: [
@@ -638,10 +609,6 @@ export const naaarProgramList: ProgramList = {
       label: "RIteSmiles",
     },
     {
-      id: "KEk5eatvowEA79IkOSg4R426",
-      label: "Medical Transportation Management (MTM)",
-    },
-    {
       id: "XtLKxy0BCUkuJMwUOb7UaOw8",
       label: "Rhode Island Integrated Care Initiative",
     },
@@ -655,10 +622,6 @@ export const naaarProgramList: ProgramList = {
     {
       id: "lsRPa82TNqiTCiD9n56RXflS",
       label: "Healthy Connections Prime",
-    },
-    {
-      id: "ammoGu23kEZtibXVydNsDanW",
-      label: "NEMT",
     },
   ],
   // South Dakota
@@ -674,8 +637,8 @@ export const naaarProgramList: ProgramList = {
       label: "TennCare Select",
     },
     {
-      id: "XVltP7POUgr95mlkZpXr9r3v",
-      label: "Adult Dental Program",
+      id: "1ilx3KpB5wRPKBUZLAneuqjf",
+      label: "TennCare Dental",
     },
     {
       id: "mPtbliMlZ938gISzXR8in70S",
@@ -730,10 +693,6 @@ export const naaarProgramList: ProgramList = {
     {
       id: "PYeSbQy8wz26GQUukofUjFoS",
       label: "UT ACO",
-    },
-    {
-      id: "pG8qB66wy1cSauuc0sCGC7et",
-      label: "UT CHIP Dental",
     },
     {
       id: "pdN2QyTjLfIe9v1IthAFwYuq",
@@ -805,6 +764,10 @@ export const naaarProgramList: ProgramList = {
     {
       id: "pKMy2Ws5IT2iInUxfBd1e1LB",
       label: "SSI Managed Care (SSI)",
+    },
+    {
+      id: "UQWdTmmkEJbHFGZqrsaIrtYr",
+      label: "Care 4 Kids",
     },
     {
       id: "mzGvJmaG5Przlu0CfpfTxDYk",
