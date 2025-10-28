@@ -31,7 +31,7 @@ export const error = {
 const textSchema = () => string().typeError(error.INVALID_GENERIC);
 
 export const text = () => textSchema().required();
-export const textOptional = () => textSchema().min(0).nullable();
+export const textOptional = () => textSchema().nullable();
 
 // NUMBER - Helpers
 export const validNAValues = [
