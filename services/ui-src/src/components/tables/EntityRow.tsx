@@ -136,6 +136,7 @@ const sx = {
   entityFields: {
     ul: {
       listStyleType: "none",
+      padding: 0,
       ".desktop &": {
         margin: "0.5rem auto",
       },
