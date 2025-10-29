@@ -67,6 +67,9 @@ const sx = {
       width: "8rem",
       fontWeight: "semibold",
     },
+    "tr:nth-of-type(odd)": {
+      background: "gray_lightest",
+    },
     td: {
       padding: "spacer1",
     },
