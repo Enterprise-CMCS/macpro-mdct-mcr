@@ -11,7 +11,6 @@ export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
   printVersion,
-  verbiage,
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>
@@ -41,16 +40,7 @@ export const EntityCardBottomSection = ({
         />
       );
     case EntityType.QUALITY_MEASURES:
-      return (
-        <QualityMeasuresSection
-          formattedEntityData={formattedEntityData}
-          printVersion={!!printVersion}
-          notAnswered={notAnswered}
-          verbiage={verbiage}
-          sx={sx}
-          bottomSection
-        />
-      );
+      return <QualityMeasuresSection bottomSection />;
     case EntityType.STANDARDS:
       return (
         <StandardsSection
