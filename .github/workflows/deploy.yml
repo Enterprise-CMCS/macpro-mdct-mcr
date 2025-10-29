@@ -1,12 +1,6 @@
 name: Deploy
 
-on:
-  push:
-    branches:
-      - "*"
-      - "dependabot/**"
-      - "!skipci*"
-      - "!code-json-*"
+on: [push]
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -21,6 +15,7 @@ env:
 
 jobs:
   deploy:
+    if: ${{ !startsWith(github.ref_name, 'skipci') }}
     runs-on: ubuntu-latest
     environment: ${{ (github.ref_name == 'production' && 'production') || (github.ref_name == 'val' && 'val') || 'dev' }}
     steps:
