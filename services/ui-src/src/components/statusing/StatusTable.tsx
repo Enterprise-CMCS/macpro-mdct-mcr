@@ -121,10 +121,10 @@ const TableRow = ({ page, depth }: RowProps) => {
           depth == 1
             ? isMobile
               ? "1.5rem"
-              : "0.5rem"
+              : "spacer1"
             : isMobile
             ? "1rem"
-            : "0.5rem"
+            : "spacer1"
         }
       >
         <StatusIcon
@@ -165,7 +165,7 @@ interface RowProps {
 
 const sx = {
   container: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     table: {
       td: {
         borderBottom: "none",
@@ -176,16 +176,16 @@ const sx = {
     fontWeight: "bold",
     lineHeight: "1.125rem",
     fontSize: "sm",
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
+    paddingTop: "spacer2",
+    paddingBottom: "spacer2",
     ".mobile &": {
-      paddingTop: "1.5rem",
-      paddingBottom: "1.5rem",
+      paddingTop: "spacer3",
+      paddingBottom: "spacer3",
     },
   },
   subparent: {
-    paddingTop: "1rem",
-    paddingBottom: "1rem",
+    paddingTop: "spacer2",
+    paddingBottom: "spacer2",
     lineHeight: "1.125rem",
     fontSize: "sm",
   },
@@ -200,11 +200,11 @@ const sx = {
     ".mobile &": {
       width: "6rem",
       borderColor: "primary",
-      marginTop: ".5rem",
+      marginTop: "spacer1",
     },
     img: {
       width: "1rem",
-      marginRight: "0.5rem",
+      marginRight: "spacer1",
     },
   },
   statusColumn: {
@@ -215,7 +215,7 @@ const sx = {
     },
   },
   status: {
-    gap: "0.5rem",
+    gap: "spacer1",
     alignItems: "center",
     img: {
       width: "1.25rem",
@@ -225,7 +225,7 @@ const sx = {
   },
 
   table: {
-    marginBottom: "2.5rem",
+    marginBottom: "spacer5",
     th: {
       padding: "1rem 0 1rem 1rem",
       borderBottom: "1px solid",
@@ -258,7 +258,7 @@ const sx = {
       },
       "&:last-of-type": {
         textAlign: "right",
-        paddingRight: ".5rem",
+        paddingRight: "spacer1",
       },
     },
   },

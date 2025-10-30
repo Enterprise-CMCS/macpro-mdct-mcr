@@ -390,7 +390,7 @@ const sx = {
   appendButton: {
     width: "12.5rem",
     height: "2.5rem",
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
   dynamicField: {
     alignItems: "flex-end",
@@ -404,7 +404,7 @@ const sx = {
       width: "100%",
     },
     "&:not(:first-of-type)": {
-      paddingTop: "2rem",
+      paddingTop: "spacer4",
     },
   },
   textField: {

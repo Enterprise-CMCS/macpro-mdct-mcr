@@ -1,10 +1,6 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
-import {
-  aws_ec2 as ec2,
-  custom_resources as cr,
-  CfnOutput,
-  Duration,
-} from "aws-cdk-lib";
+import { aws_ec2 as ec2, CfnOutput, Duration, triggers } from "aws-cdk-lib";
 import { Lambda } from "../constructs/lambda";
 
 interface CreateTopicsComponentsProps {
@@ -30,7 +26,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
 
   const service = "topics";
 
-  const deleteTopicsEnabled = !isDev;
+  const deleteTopicsEnabled = isDev;
 
   const lambdaSecurityGroup = new ec2.SecurityGroup(
     scope,
@@ -68,7 +64,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     const deleteTopicsLambda = new Lambda(scope, "DeleteTopics", {
       entry: "services/topics/handlers/deleteTopics.js",
       handler: "handler",
-      timeout: Duration.seconds(300),
+      timeout: Duration.minutes(5),
       ...commonProps,
     });
 
@@ -82,7 +78,7 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
   const listTopicsLambda = new Lambda(scope, "ListTopics", {
     entry: "services/topics/handlers/listTopics.js",
     handler: "handler",
-    timeout: Duration.seconds(300),
+    timeout: Duration.minutes(5),
     retryAttempts: 0,
     ...commonProps,
   });
@@ -91,42 +87,8 @@ export function createTopicsComponents(props: CreateTopicsComponentsProps) {
     value: listTopicsLambda.lambda.functionName,
   });
 
-  const createTopicsInvoke = new cr.AwsCustomResource(
-    scope,
-    "InvokeCreateTopicsFunction",
-    {
-      onCreate: {
-        service: "Lambda",
-        action: "invoke",
-        parameters: {
-          FunctionName: createTopicsLambda.lambda.functionName,
-          InvocationType: "Event",
-          Payload: JSON.stringify({}),
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvokeCreateTopicsFunction-${stage}`
-        ),
-      },
-      onUpdate: {
-        service: "Lambda",
-        action: "invoke",
-        parameters: {
-          FunctionName: createTopicsLambda.lambda.functionName,
-          InvocationType: "Event",
-          Payload: JSON.stringify({}),
-        },
-        physicalResourceId: cr.PhysicalResourceId.of(
-          `InvokeCreateTopicsFunction-${stage}`
-        ),
-      },
-      policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
-        resources: [createTopicsLambda.lambda.functionArn],
-      }),
-      resourceType: "Custom::InvokeCreateTopicsFunction",
-    }
-  );
-
-  createTopicsLambda.lambda.grantInvoke(createTopicsInvoke.grantPrincipal);
-
-  createTopicsInvoke.node.addDependency(createTopicsLambda);
+  new triggers.Trigger(scope, "InvokeCreateTopicsFunction", {
+    handler: createTopicsLambda.lambda,
+    invocationType: triggers.InvocationType.EVENT,
+  });
 }

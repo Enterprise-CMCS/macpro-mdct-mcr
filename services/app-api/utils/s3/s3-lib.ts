@@ -9,14 +9,14 @@ import { logger } from "../debugging/debug-lib";
 import { buckets, error } from "../constants/constants";
 import { State } from "../types/other";
 
-export const getConfig = () => {
-  return {
-    region: "us-east-1",
-    logger,
-    endpoint: process.env.AWS_ENDPOINT_URL,
-  };
+export const awsConfig = {
+  region: "us-east-1",
+  logger,
+  endpoint: process.env.AWS_ENDPOINT_URL,
+  forcePathStyle: true,
 };
-const client = new S3Client(getConfig());
+
+const client = new S3Client(awsConfig);
 
 export default {
   put: async (params: PutObjectCommandInput) =>

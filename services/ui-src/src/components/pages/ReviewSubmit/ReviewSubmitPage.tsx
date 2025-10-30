@@ -315,17 +315,17 @@ const sx = {
   leadTextBox: {
     width: "100%",
     paddingBottom: ".5rem",
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
     borderBottom: "1px solid",
     borderColor: "gray_light",
   },
   headerText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "4xl",
     fontWeight: "normal",
   },
   infoTextBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     a: {
       color: "primary",
       textDecoration: "underline",
@@ -337,7 +337,7 @@ const sx = {
   },
   headerImage: {
     display: "inline-block",
-    marginRight: "1rem",
+    marginRight: "spacer2",
     height: "27px",
   },
   additionalInfoHeader: {
@@ -372,7 +372,7 @@ const sx = {
     justifyContent: "space-between",
   },
   alert: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
   },
   submitButton: {
     minHeight: "3rem",

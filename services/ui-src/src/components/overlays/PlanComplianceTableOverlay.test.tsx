@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { OverlayProvider, PlanComplianceTableOverlay } from "components";
@@ -94,7 +94,9 @@ describe("<PlanComplianceTableOverlay />", () => {
     const enterButton = screen.getByRole("button", {
       name: "Enter",
     });
-    await userEvent.click(enterButton);
+    await act(async () => {
+      await userEvent.click(enterButton);
+    });
 
     // Form
     const h2 = screen.getByRole("heading", {
@@ -107,7 +109,9 @@ describe("<PlanComplianceTableOverlay />", () => {
     const closeButton = screen.getByRole("button", {
       name: "Mock Back Button: Form 2",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     // Back to Table
     const tableH2 = await screen.getByRole("heading", {
@@ -136,7 +140,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     );
 
     // Table
-    const exceptionsStatusCell = screen.getByRole("gridcell", {
+    const exceptionsStatusCell = screen.getByRole("cell", {
       name: "Exceptions granted",
     });
     expect(exceptionsStatusCell).toBeVisible();
@@ -145,24 +149,32 @@ describe("<PlanComplianceTableOverlay />", () => {
     const editButton = screen.getByRole("button", {
       name: "Edit",
     });
-    await userEvent.click(editButton);
+    await act(async () => {
+      await userEvent.click(editButton);
+    });
 
     // Form
     const radioButtonYes = screen.getByRole("radio", {
       name: "Mock Yes",
     });
-    await userEvent.click(radioButtonYes);
+    await act(async () => {
+      await userEvent.click(radioButtonYes);
+    });
 
     const nonComplianceTextbox = screen.getByRole("textbox", {
       name: "Mock Non-Compliance Description",
     });
-    await userEvent.type(nonComplianceTextbox, "Test value");
+    await act(async () => {
+      await userEvent.type(nonComplianceTextbox, "Test value");
+    });
 
     // Submit
     const submitButton = screen.getByRole("button", {
       name: "Save & return",
     });
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
 
     expect(mockOnSubmit).toBeCalled();
   });
@@ -185,7 +197,7 @@ describe("<PlanComplianceTableOverlay />", () => {
     );
 
     // Table
-    const exceptionsStatusCell = screen.getByRole("gridcell", {
+    const exceptionsStatusCell = screen.getByRole("cell", {
       name: "Non-compliant",
     });
     expect(exceptionsStatusCell).toBeVisible();
@@ -202,7 +214,9 @@ describe("<PlanComplianceTableOverlay />", () => {
     const closeButton = screen.getByRole("button", {
       name: "Mock Back Button: Table",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });

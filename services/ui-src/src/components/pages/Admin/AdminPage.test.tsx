@@ -1,6 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // components
 import { AdminPage, AdminBannerContext } from "components";
 // utils
@@ -171,7 +170,9 @@ describe("<AdminPage />", () => {
       });
 
       const deleteButton = screen.getByText(deleteButtonText);
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
       expect(
         screen.getByText("Current banner could not be deleted")
       ).toBeVisible();

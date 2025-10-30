@@ -1,11 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { AdminBannerForm } from "components";
 // utils
 import { convertDateTimeEtToUtc, useStore } from "utils";
 import { RouterWrappedComponent } from "utils/testing/mockRouter";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { mockBannerStore } from "utils/testing/mockZustand";
 import { mockBannerData } from "utils/testing/mockBanner";
 
@@ -51,11 +51,13 @@ const fillOutForm = async (form: any) => {
   const startDateInput = form.querySelector("[name='bannerStartDate']")!;
   const endDateInput = form.querySelector("[name='bannerEndDate']")!;
   // fill out form fields
-  await userEvent.type(titleInput, "this is the title text");
-  await userEvent.type(descriptionInput, "this is the description text");
-  await userEvent.type(startDateInput, "7/11/2021");
-  await userEvent.type(endDateInput, "8/12/2021");
-  await userEvent.tab();
+  await act(async () => {
+    await userEvent.type(titleInput, "this is the title text");
+    await userEvent.type(descriptionInput, "this is the description text");
+    await userEvent.type(startDateInput, "7/11/2021");
+    await userEvent.type(endDateInput, "8/12/2021");
+    await userEvent.tab();
+  });
 };
 
 describe("<AdminBannerForm />", () => {
@@ -75,7 +77,9 @@ describe("<AdminBannerForm />", () => {
     const form = result.container;
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       title: "this is the title text",
       description: "this is the description text",
@@ -97,7 +101,9 @@ describe("<AdminBannerForm />", () => {
     const form = result.container;
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
     await expect(mockWriteAdminBanner).toHaveBeenCalledWith({
       title: "this is the title text",
       description: "this is the description text",
@@ -119,14 +125,18 @@ describe("<AdminBannerForm />", () => {
     const form = result.container;
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
     await expect(mockWriteAdminBanner).not.toHaveBeenCalled();
-    expect(
-      screen.getByText("Banners cannot have overlapping dates.")
-    ).toBeVisible();
-    expect(
-      screen.getByText("Please adjust the new banner dates and try again.")
-    ).toBeVisible();
+    await waitFor(() => {
+      expect(
+        screen.getByText("Banners cannot have overlapping dates.")
+      ).toBeVisible();
+      expect(
+        screen.getByText("Please adjust the new banner dates and try again.")
+      ).toBeVisible();
+    });
   });
 
   test("Shows error if writeBanner throws error", async () => {
@@ -137,9 +147,13 @@ describe("<AdminBannerForm />", () => {
     const form = result.container;
     await fillOutForm(form);
     const submitButton = screen.getByRole("button");
-    await userEvent.click(submitButton);
-    expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/Something went wrong on our end/)).toBeVisible();
+    });
   });
 
-  testA11y(adminBannerFormComponent(mockWriteAdminBanner));
+  testA11yAct(adminBannerFormComponent(mockWriteAdminBanner));
 });

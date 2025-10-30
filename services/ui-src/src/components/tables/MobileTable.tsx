@@ -29,7 +29,10 @@ export const MobileTable = ({ columns, data }: Props) => {
           {row.getVisibleCells().map((cell) => (
             <Box key={cell.id} sx={{ ...sx.rows, ...isInline(cell) }}>
               <Text sx={{ ...sx.headers, ...isInline(cell) }}>
-                {flexRender(cell.column.columnDef.header, cell.getContext())}
+                {flexRender(
+                  cell.column.columnDef.header,
+                  cell.getContext() as any
+                )}
               </Text>
               <Text sx={{ ...isInline(cell) }}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -49,7 +52,7 @@ interface Props {
 
 const sx = {
   rows: {
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
   },
   headers: {
     fontWeight: "semibold",

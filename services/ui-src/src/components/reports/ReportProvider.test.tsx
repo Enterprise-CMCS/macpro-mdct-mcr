@@ -1,7 +1,6 @@
 import { useContext } from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // components
 import { ReportContext, ReportProvider } from "./ReportProvider";
 // utils
@@ -19,7 +18,7 @@ import {
   mockMcparReport,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockReportAPI = require("utils/api/requestMethods/report");
 jest.mock("utils/api/requestMethods/report", () => ({
@@ -90,7 +89,9 @@ describe("<ReportProvider />", () => {
   test("fetchReport method calls API getReport method", async () => {
     render(testComponent);
     const fetchButton = screen.getByText("Fetch Report");
-    await userEvent.click(fetchButton);
+    await act(async () => {
+      await userEvent.click(fetchButton);
+    });
     // 1 call on render + 1 call on button click
     expect(getReport).toHaveBeenCalledTimes(1);
   });
@@ -102,8 +103,8 @@ describe("<ReportProvider />", () => {
     await act(async () => {
       await render(testComponent);
     });
+    const fetchButton = screen.getByText("Fetch Report");
     await act(async () => {
-      const fetchButton = screen.getByText("Fetch Report");
       await userEvent.click(fetchButton);
     });
     expect(screen.getByTestId("error-message")).toHaveTextContent(
@@ -114,7 +115,9 @@ describe("<ReportProvider />", () => {
   test("fetchReportsByState method calls API getReportsByState method", async () => {
     render(testComponent);
     const fetchByStateButton = screen.getByText("Fetch Reports By State");
-    await userEvent.click(fetchByStateButton);
+    await act(async () => {
+      await userEvent.click(fetchByStateButton);
+    });
     // 1 call on render + 1 call on button click
     expect(getReportsByState).toHaveBeenCalledTimes(1);
   });
@@ -126,8 +129,8 @@ describe("<ReportProvider />", () => {
     await act(async () => {
       await render(testComponent);
     });
+    const fetchByStateButton = screen.getByText("Fetch Reports By State");
     await act(async () => {
-      const fetchByStateButton = screen.getByText("Fetch Reports By State");
       await userEvent.click(fetchByStateButton);
     });
     expect(screen.getByTestId("error-message")).toHaveTextContent(
@@ -138,7 +141,9 @@ describe("<ReportProvider />", () => {
   test("updateReport method calls API putReport method", async () => {
     render(testComponent);
     const updateButton = screen.getByText("Update Report");
-    await userEvent.click(updateButton);
+    await act(async () => {
+      await userEvent.click(updateButton);
+    });
     expect(putReport).toHaveBeenCalledTimes(1);
     expect(putReport).toHaveBeenCalledWith(mockReportKeys, mockMcparReport);
   });
@@ -150,8 +155,8 @@ describe("<ReportProvider />", () => {
     await act(async () => {
       await render(testComponent);
     });
+    const updateButton = screen.getByText("Update Report");
     await act(async () => {
-      const updateButton = screen.getByText("Update Report");
       await userEvent.click(updateButton);
     });
     expect(screen.getByTestId("error-message")).toHaveTextContent(
@@ -162,28 +167,36 @@ describe("<ReportProvider />", () => {
   test("createReport method calls postReport method", async () => {
     render(testComponent);
     const createButton = screen.getByText("Create Report");
-    await userEvent.click(createButton);
+    await act(async () => {
+      await userEvent.click(createButton);
+    });
     expect(postReport).toHaveBeenCalledTimes(1);
   });
 
   test("archiveReport method calls archiveReport method", async () => {
     render(testComponent);
     const archiveButton = screen.getByText("Archive Report");
-    await userEvent.click(archiveButton);
+    await act(async () => {
+      await userEvent.click(archiveButton);
+    });
     expect(archiveReport).toHaveBeenCalledTimes(1);
   });
 
   test("submitReport method calls submitReport method", async () => {
     render(testComponent);
     const submitButton = screen.getByText("Submit Report");
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
     expect(submitReport).toHaveBeenCalledTimes(1);
   });
 
   test("releaseReport method calls releaseReport method", async () => {
     render(testComponent);
     const releaseButton = screen.getByText("Release Report");
-    await userEvent.click(releaseButton);
+    await act(async () => {
+      await userEvent.click(releaseButton);
+    });
     expect(releaseReport).toHaveBeenCalledTimes(1);
   });
 
@@ -193,7 +206,9 @@ describe("<ReportProvider />", () => {
     expect(localStorage.getItem("selectedReport")).toBe(null);
     // click button to set report
     const setReportSelectionButton = screen.getByText("Set Report Selection");
-    await userEvent.click(setReportSelectionButton);
+    await act(async () => {
+      await userEvent.click(setReportSelectionButton);
+    });
     // verify report is set in storage
     expect(localStorage.getItem("selectedReport")).toBe(mockMcparReport.id);
 
@@ -201,7 +216,9 @@ describe("<ReportProvider />", () => {
     const clearReportSelectionButton = screen.getByText(
       "Clear Report Selection"
     );
-    await userEvent.click(clearReportSelectionButton);
+    await act(async () => {
+      await userEvent.click(clearReportSelectionButton);
+    });
     // verify storage is set to empty string
     expect(localStorage.getItem("selectedReport")).toBe("");
   });
@@ -225,5 +242,5 @@ describe("<ReportProvider />", () => {
     });
   });
 
-  testA11y(testComponent);
+  testA11yAct(testComponent);
 });

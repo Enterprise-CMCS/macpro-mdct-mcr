@@ -468,13 +468,13 @@ const sx = {
   errorText: {
     color: "error_dark",
     fontSize: "0.75rem",
-    marginTop: "0.25rem",
+    marginTop: "spacer_half",
   },
   heading: {
     fontSize: "1.3rem",
   },
   table: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
     maxWidth: "36.125rem",
     td: {
       paddingRight: "0",

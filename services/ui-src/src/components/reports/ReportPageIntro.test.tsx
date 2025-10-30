@@ -5,7 +5,7 @@ import { InstructionsAccordion } from "components/accordions/InstructionsAccordi
 
 // utils
 import { mockVerbiageIntro } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("components/accordions/InstructionsAccordion", () => ({
   InstructionsAccordion: jest.fn(() => <></>),
@@ -44,5 +44,5 @@ describe("<ReportPageIntro />", () => {
     expect(screen.queryByText(mockVerbiageIntro.alert)).toBeNull();
   });
 
-  testA11y(<ReportPageIntro text={text} />);
+  testA11yAct(<ReportPageIntro text={text} />);
 });

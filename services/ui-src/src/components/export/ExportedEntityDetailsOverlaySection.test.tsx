@@ -15,7 +15,7 @@ import {
   mockMlrReportContext,
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const exportedEntityDetailsOverlaySectionComponent = (
   content: ModalOverlayReportPageShape = mockModalOverlayReportPageWithOverlayJson
@@ -35,13 +35,16 @@ mockedUseStore.mockReturnValue({
 describe("<ExportedEntityDetailsOverlaySection />", () => {
   describe("renders", () => {
     test("ExportedEntityDetailsOverlaySection is visible", async () => {
-      const { findByTestId, findByText } = render(
+      const { findByText, findByRole } = render(
         exportedEntityDetailsOverlaySectionComponent()
       );
-      expect(
-        await findByTestId("exportedEntityDetailsOverlaySection")
-      ).toBeVisible();
       expect(await findByText("mock subsection")).toBeVisible();
+      expect(
+        await findByRole("heading", { name: /1\. mock subsection for:/i })
+      ).toBeVisible();
+      expect(
+        await findByRole("heading", { name: /2\. mock subsection for:/i })
+      ).toBeVisible();
     });
     test("ExportedEntityDetailsOverlaySection renders the correct number of tables", () => {
       const { getAllByRole } = render(
@@ -142,5 +145,5 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
     });
   });
 
-  testA11y(exportedEntityDetailsOverlaySectionComponent());
+  testA11yAct(exportedEntityDetailsOverlaySectionComponent());
 });

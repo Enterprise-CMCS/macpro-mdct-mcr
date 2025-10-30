@@ -40,16 +40,16 @@ const sx = {
     marginBottom: "2.25rem",
   },
   headerText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "2rem",
     fontWeight: "normal",
   },
   emailCardBox: {
     width: "100%",
-    marginBottom: "3rem",
+    marginBottom: "spacer6",
   },
   card: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
   },
   faqAccordionBox: {
     width: "100%",

@@ -213,7 +213,7 @@ export const exportTableSx = {
   "@media print": {
     pageBreakInside: "avoid",
   },
-  marginBottom: "1rem",
+  marginBottom: "spacer2",
   "tr, th": {
     verticalAlign: "top",
     lineHeight: "base",
@@ -264,7 +264,7 @@ const sx = {
   missingEntityMessage: {
     fontWeight: "bold",
     ol: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
   },
 };

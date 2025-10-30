@@ -25,12 +25,12 @@ interface Props {
 
 const sx = {
   item: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
     borderStyle: "none",
   },
   answerBox: {
     ".mobile &": {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
   },
 };

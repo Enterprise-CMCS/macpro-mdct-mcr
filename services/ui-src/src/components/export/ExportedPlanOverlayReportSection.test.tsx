@@ -14,7 +14,7 @@ import { EntityShape } from "types";
 import { mockNaaarPlanCompliancePageJson } from "utils/testing/mockForm";
 import { mockNaaarReportStore } from "utils/testing/mockZustand";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -163,5 +163,5 @@ describe("<ExportedPlanOverlayReportSection />", () => {
     ).not.toBeInTheDocument();
   });
 
-  testA11y(exportedPlanOverlaySectionComponent);
+  testA11yAct(exportedPlanOverlaySectionComponent);
 });

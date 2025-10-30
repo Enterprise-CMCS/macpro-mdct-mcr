@@ -102,12 +102,12 @@ const sx = {
     color: "error_darker",
   },
   footerBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     borderTop: "1.5px solid var(--mdct-colors-gray_light)",
   },
   buttonFlex: {
     justifyContent: "space-between",
-    marginY: "1.5rem",
+    marginY: "spacer3",
   },
   saveButton: {
     width: "8.25rem",

@@ -280,10 +280,10 @@ const sx = {
   table: {
     tableLayout: "fixed",
     br: {
-      marginBottom: "0.25rem",
+      marginBottom: "spacer_half",
     },
     th: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid var(--mdct-colors-gray_lighter)",
       color: "gray",
@@ -319,13 +319,13 @@ const sx = {
       },
     },
     ol: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
     ul: {
       display: "contents",
     },
     li: {
-      marginLeft: "2rem",
+      marginLeft: "spacer4",
       lineHeight: "2rem",
       "&:first-of-type": {
         paddingTop: "0.75rem",

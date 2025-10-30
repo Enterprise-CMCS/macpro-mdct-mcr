@@ -16,10 +16,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  endpoint:
-    name: Endpoint
-    outputs:
-      application_endpoint_url: ${{ steps.cloudfront-endpoint.outputs.application_endpoint_url }}
+  notify_integrations_channel:
+    name: Notify integrations channel
+    if: github.event.pull_request.user.type != 'Bot' && !github.event.pull_request.draft
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -40,10 +39,12 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          aws-region: us-east-1
 
       - name: Get CloudFront endpoint
         id: cloudfront-endpoint
+        env:
+          STACK_NAME: ${{ vars.APP_NAME_LOWER }}-${{ env.branch_name }}
         run: |
           set -eo pipefail
           application_endpoint_url=$(
@@ -55,27 +56,15 @@ jobs:
           if [[ -z "$application_endpoint_url" || ! "$application_endpoint_url" =~ ^https?:// ]]; then
             application_endpoint_url="N/A"
           fi
-          echo "application_endpoint_url=$application_endpoint_url" >> $GITHUB_OUTPUT
-        env:
-          STACK_NAME: ${{ vars.APP_NAME_LOWER }}-${{ env.branch_name }}
+          echo "application_endpoint_url=$application_endpoint_url" >> "$GITHUB_OUTPUT"
 
-  notify_integrations_channel:
-    name: Notify integrations channel
-    if: >
-      github.actor != 'dependabot[bot]' &&
-      github.actor != 'github-actions[bot]' &&
-      github.actor != 'mdct-github-service-account' &&
-      !github.event.pull_request.draft
-    needs: endpoint
-    runs-on: ubuntu-latest
-    steps:
       - name: Slack notification
         uses: rtCamp/action-slack-notify@v2
-    env:
-      MSG_MINIMAL: true
-      SLACK_MESSAGE: |
-        ${{ github.event.pull_request.html_url }}
-        Cloudfront URL: ${{ needs.endpoint.outputs.application_endpoint_url }}
-      SLACK_TITLE: |
-        :github: A new pull request has been created in ${{ github.repository }} by ${{ github.event.pull_request.user.login }}
-      SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}
+        env:
+          MSG_MINIMAL: true
+          SLACK_MESSAGE: |
+            ${{ github.event.pull_request.html_url }}
+            Cloudfront URL: ${{ steps.cloudfront-endpoint.outputs.application_endpoint_url }}
+          SLACK_TITLE: |
+            :github: A new pull request has been created in ${{ github.repository }} by ${{ github.event.pull_request.user.login }}
+          SLACK_WEBHOOK: ${{ secrets.INTEGRATIONS_SLACK_WEBHOOK }}

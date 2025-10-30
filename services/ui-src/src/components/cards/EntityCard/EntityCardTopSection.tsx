@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 // components
-import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { AccessMeasuresSection } from "./AccessMeasuresSection";
+import { SanctionsSection } from "./SanctionsSection";
+import { QualityMeasuresSection } from "./QualityMeasuresSection";
+import { StandardsSection } from "./StandardsSection";
+import { PlansSection } from "./PlansSection";
 // types
 import { AnyObject, EntityType } from "types";
 
@@ -20,151 +25,49 @@ export const EntityCardTopSection = ({
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
-        <>
-          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "C2.V.3 Standard type: " : ""}${
-              formattedEntityData.standardType
-            }`}
-          </Heading>
-          {printVersion && (
-            <Text sx={sx.subtitle}>C2.V.2 Measure standard</Text>
-          )}
-          <Text sx={printVersion ? sx.subtext : sx.description}>
-            {formattedEntityData.standardDescription}
-          </Text>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "C2.V.1 " : ""}General category`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.category}</Text>
-        </>
+        <AccessMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={printVersion}
+          sx={sx}
+          isPDF={isPDF}
+          topSection
+        />
       );
     case EntityType.SANCTIONS:
       return (
-        <>
-          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "D3.VIII.1 Intervention type: " : ""}${
-              formattedEntityData.interventionType
-            }`}
-          </Heading>
-          <Grid sx={sx.grid}>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${printVersion ? "D3.VIII.2 " : ""}Plan performance issue`}
-              </Text>
-              <Text sx={sx.subtext}>
-                {formattedEntityData.interventionTopic}
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${printVersion ? "D3.VIII.3 " : ""}Plan name`}
-              </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.planName}</Text>
-            </GridItem>
-          </Grid>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D3.VIII.4 " : ""}Reason for intervention`}
-          </Text>
-          <Text sx={sx.description}>
-            {formattedEntityData.interventionReason}
-          </Text>
-        </>
+        <SanctionsSection
+          formattedEntityData={formattedEntityData}
+          printVersion={!!printVersion}
+          sx={sx}
+          isPDF={isPDF}
+          topSection
+        />
       );
     case EntityType.QUALITY_MEASURES:
       return (
-        <>
-          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
-              formattedEntityData.name
-            }`}
-          </Heading>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
-          <Grid sx={sx.grid}>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${
-                  printVersion ? "D2.VII.3 " : ""
-                }National Quality Forum (NQF) number`}
-              </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {printVersion
-                  ? "D2.VII.4 Measure Reporting and D2.VII.5 Programs"
-                  : "Measure Reporting and Programs"}
-              </Text>
-              <Text sx={sx.subtext}>
-                {formattedEntityData.reportingRateType}
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
-              </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {printVersion
-                  ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
-                  : "Measure Reporting Period"}
-              </Text>
-              {formattedEntityData.reportingPeriod ? (
-                <Text sx={sx.subtext}>
-                  {formattedEntityData.reportingPeriod}
-                </Text>
-              ) : (
-                <Text
-                  sx={sx.unfinishedMessage}
-                  className={printVersion ? "pdf-color" : ""}
-                >
-                  Not answered
-                </Text>
-              )}
-            </GridItem>
-          </Grid>
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
-        </>
+        <QualityMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={!!printVersion}
+          sx={sx}
+          isPDF={isPDF}
+          topSection
+        />
       );
     case EntityType.STANDARDS:
       return (
-        <>
-          <Flex>
-            <Text sx={sx.standardCount}>{formattedEntityData.count}</Text>
-            <Text sx={sx.standardHeading}>
-              {formattedEntityData.standardType}
-            </Text>
-          </Flex>
-          <Text sx={sx.standardDescription}>
-            {formattedEntityData.description}
-          </Text>
-        </>
+        <StandardsSection
+          formattedEntityData={formattedEntityData}
+          sx={sx}
+          topSection
+        />
       );
     case EntityType.PLANS:
       return (
-        <>
-          <Text sx={sx.planHeading}>{formattedEntityData.heading}</Text>
-          {formattedEntityData?.questions?.map((q: AnyObject) => {
-            const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
-            return (
-              <Box key={`${q.question} ${q.answer}`}>
-                <Text sx={sx.subtitle}>{q.question}</Text>
-                {answers.map((answer) => (
-                  <Text key={`${q.question} ${answer}`} sx={sx.subtext}>
-                    {answer}
-                  </Text>
-                ))}
-              </Box>
-            );
-          })}
-        </>
+        <PlansSection
+          formattedEntityData={formattedEntityData}
+          sx={sx}
+          topSection
+        />
       );
     default:
       return <Text>{entityType}</Text>;
@@ -187,15 +90,15 @@ const sx = {
   },
   grid: {
     gridTemplateColumns: "33% auto",
-    columnGap: "1rem",
+    columnGap: "spacer2",
   },
   subtitle: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   subtext: {
-    marginTop: "0.25rem",
+    marginTop: "spacer_half",
     fontSize: "sm",
   },
   unfinishedMessage: {
@@ -216,11 +119,11 @@ const sx = {
     fontSize: "md",
   },
   standardDescription: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
   },
   planHeading: {
-    marginTop: "1rem",
-    paddingTop: "1rem",
+    marginTop: "spacer2",
+    paddingTop: "spacer2",
     borderTop: "1px solid",
     borderTopColor: "gray_lighter",
     fontWeight: "bold",

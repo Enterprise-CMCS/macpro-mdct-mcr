@@ -19,18 +19,6 @@ export const EntityCardBottomSection = ({
     </Text>
   );
 
-  const providerText = () => {
-    const provider = formattedEntityData?.provider;
-    const details = formattedEntityData?.providerDetails;
-    if (provider) {
-      if (details) {
-        return `${provider}: ${details}`;
-      }
-      return provider;
-    }
-    return printVersion && notAnswered;
-  };
-
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return (
@@ -38,8 +26,8 @@ export const EntityCardBottomSection = ({
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           notAnswered={notAnswered}
-          providerText={providerText}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.SANCTIONS:
@@ -49,6 +37,7 @@ export const EntityCardBottomSection = ({
           printVersion={!!printVersion}
           notAnswered={notAnswered}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.QUALITY_MEASURES:
@@ -59,11 +48,16 @@ export const EntityCardBottomSection = ({
           notAnswered={notAnswered}
           verbiage={verbiage}
           sx={sx}
+          bottomSection
         />
       );
     case EntityType.STANDARDS:
       return (
-        <StandardsSection formattedEntityData={formattedEntityData} sx={sx} />
+        <StandardsSection
+          formattedEntityData={formattedEntityData}
+          sx={sx}
+          bottomSection
+        />
       );
     default:
       return <Text>{entityType}</Text>;
@@ -82,27 +76,27 @@ interface Props {
 
 const sx = {
   subtitle: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   subtext: {
-    marginTop: "0.25rem",
+    marginTop: "spacer_half",
     fontSize: "sm",
   },
   resultsHeader: {
-    marginY: "1rem",
+    marginY: "spacer2",
     fontSize: "xs",
     fontWeight: "bold",
   },
   missingResponseMessage: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "xs",
     color: "error_dark",
   },
   highlightContainer: {
-    marginTop: "1rem",
-    marginBottom: "1rem",
+    marginTop: "spacer2",
+    marginBottom: "spacer2",
     padding: "0 1.5rem 1rem",
     background: "secondary_lightest",
     borderRadius: "3px",
@@ -115,7 +109,7 @@ const sx = {
   },
   highlightSection: {
     width: "100%",
-    marginLeft: "1rem",
+    marginLeft: "spacer2",
     ":nth-of-type(1)": {
       marginLeft: 0,
     },
@@ -126,6 +120,6 @@ const sx = {
   },
   standardDetailsBoxes: {
     width: "10.5rem",
-    marginRight: "3rem",
+    marginRight: "spacer6",
   },
 };

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { NotFoundPage } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/not-found";
 
@@ -14,5 +14,5 @@ describe("<NotFoundPage />", () => {
     expect(screen.getByText(verbiage.header)).toBeVisible();
   });
 
-  testA11y(notFoundView);
+  testA11yAct(notFoundView);
 });

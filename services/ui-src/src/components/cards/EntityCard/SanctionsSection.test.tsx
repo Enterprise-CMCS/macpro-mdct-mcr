@@ -6,7 +6,7 @@ import {
   mockSanctionsFullData,
   mockSanctionsPartialData,
 } from "utils/testing/mockEntities";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const SanctionsSectionComponentFullData = (
   <SanctionsSection
@@ -14,6 +14,8 @@ const SanctionsSectionComponentFullData = (
     printVersion={false}
     notAnswered={mockNotAnswered}
     sx={{}}
+    topSection
+    bottomSection
   />
 );
 
@@ -48,6 +50,8 @@ describe("SanctionsSection", () => {
         printVersion={true}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 
@@ -71,6 +75,8 @@ describe("SanctionsSection", () => {
         printVersion={true}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 
@@ -85,6 +91,8 @@ describe("SanctionsSection", () => {
         printVersion={false}
         notAnswered={mockNotAnswered}
         sx={{}}
+        topSection
+        bottomSection
       />
     );
 
@@ -99,5 +107,5 @@ describe("SanctionsSection", () => {
     expect(errorBox).not.toBeInTheDocument();
   });
 
-  testA11y(SanctionsSectionComponentFullData);
+  testA11yAct(SanctionsSectionComponentFullData);
 });

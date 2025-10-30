@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import uuid from "react-uuid";
 // types
@@ -322,7 +323,7 @@ export const renderChoiceListFieldResponse = (
 
 export const renderDefaultFieldResponse = (
   formField: FormField,
-  fieldResponseData: AnyObject
+  fieldResponseData: ReactNode
 ) => {
   // check and handle fields that need a mask applied
   const fieldMask = formField.props?.mask;
@@ -429,14 +430,14 @@ export const getNestedAnalysisMethodsResponses = (entity: EntityShape) => {
 // style object for rendered elements
 const sx = {
   fieldChoice: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
   },
   dynamicItem: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
   },
   entityBox: {
     verticalAlign: "top",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     ul: {
       listStyle: "none",
       ".entityResponse": {

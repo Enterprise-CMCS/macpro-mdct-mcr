@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { Table } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { RouterWrappedComponent } from "utils/testing/setupJest";
 
 const mockTableContent = {
@@ -26,5 +26,5 @@ describe("<Table />", () => {
     expect(screen.getByRole("table")).toBeVisible();
   });
 
-  testA11y(tableComponent);
+  testA11yAct(tableComponent);
 });

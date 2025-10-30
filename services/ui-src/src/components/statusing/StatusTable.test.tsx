@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { StatusTable, StatusIcon } from "./StatusTable";
@@ -11,7 +11,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { makeMediaQueryClasses, useBreakpoint, useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 
@@ -119,7 +119,9 @@ describe("<StatusTable />", () => {
       const editButtons = screen.getAllByRole("button");
       expect(editButtons).toHaveLength(4);
 
-      await userEvent.click(editButtons[0]);
+      await act(async () => {
+        await userEvent.click(editButtons[0]);
+      });
       const validateOnRenderProp = { state: { validateOnRender: true } };
       const expectedRoute1 = "/mock/mock-route-1";
       expect(mockUseNavigate).toHaveBeenCalledWith(
@@ -127,14 +129,18 @@ describe("<StatusTable />", () => {
         validateOnRenderProp
       );
 
-      await userEvent.click(editButtons[1]);
+      await act(async () => {
+        await userEvent.click(editButtons[1]);
+      });
       const expectedRoute2 = "/mock/mock-route-2a";
       expect(mockUseNavigate).toHaveBeenCalledWith(
         expectedRoute2,
         validateOnRenderProp
       );
 
-      await userEvent.click(editButtons[2]);
+      await act(async () => {
+        await userEvent.click(editButtons[2]);
+      });
       const expectedRoute3 = "/mock/mock-route-2b";
       expect(mockUseNavigate).toHaveBeenCalledWith(
         expectedRoute3,
@@ -152,7 +158,9 @@ describe("<StatusTable />", () => {
       const editButtons = screen.getAllByRole("button");
       expect(editButtons).toHaveLength(4);
 
-      await userEvent.click(editButtons[0]);
+      await act(async () => {
+        await userEvent.click(editButtons[0]);
+      });
       const validateOnRenderProp = { state: { validateOnRender: true } };
       const expectedRoute1 = "/mock/mock-route-1";
       expect(mockUseNavigate).toHaveBeenCalledWith(
@@ -160,14 +168,18 @@ describe("<StatusTable />", () => {
         validateOnRenderProp
       );
 
-      await userEvent.click(editButtons[1]);
+      await act(async () => {
+        await userEvent.click(editButtons[1]);
+      });
       const expectedRoute2 = "/mock/mock-route-2a";
       expect(mockUseNavigate).toHaveBeenCalledWith(
         expectedRoute2,
         validateOnRenderProp
       );
 
-      await userEvent.click(editButtons[2]);
+      await act(async () => {
+        await userEvent.click(editButtons[2]);
+      });
       const expectedRoute3 = "/mock/mock-route-2b";
       expect(mockUseNavigate).toHaveBeenCalledWith(
         expectedRoute3,
@@ -257,7 +269,7 @@ describe("<StatusTable />", () => {
     });
   });
 
-  testA11y(McparReviewSubmitPage, () => {
+  testA11yAct(McparReviewSubmitPage, () => {
     mockUseBreakpoint.mockReturnValue({
       isMobile: false,
     });

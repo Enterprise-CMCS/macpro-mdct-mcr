@@ -4,7 +4,7 @@ import { RouterWrappedComponent } from "utils/testing/setupJest";
 // components
 import { MobileTable } from "components";
 import { generateColumns } from "./SortableTable";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 interface TestDataShape {
   id: string;
@@ -51,5 +51,5 @@ describe("<MobileTable />", () => {
     ).toBeTruthy();
   });
 
-  testA11y(MobileTableComponent);
+  testA11yAct(MobileTableComponent);
 });

@@ -142,16 +142,16 @@ let consoleSpy: {
 
 describe("Test Kafka Lib", () => {
   beforeAll(() => {
-    tempStage = process.env.stage;
+    tempStage = process.env.STAGE;
     tempNamespace = process.env.topicNamespace;
     tempBrokers = process.env.brokerString;
 
-    process.env.stage = stage;
+    process.env.STAGE = stage;
     process.env.topicNamespace = namespace;
     process.env.brokerString = brokerString;
   });
   afterAll(() => {
-    process.env.stage = tempStage;
+    process.env.STAGE = tempStage;
     process.env.topicNamespace = tempNamespace;
     process.env.brokerString = tempBrokers;
   });

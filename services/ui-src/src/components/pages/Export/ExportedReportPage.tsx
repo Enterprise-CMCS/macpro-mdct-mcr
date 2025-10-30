@@ -1,4 +1,5 @@
-import { Helmet } from "react-helmet";
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Center, Heading, Text, Tr, Td, Spinner } from "@chakra-ui/react";
 import {
@@ -29,6 +30,8 @@ export const ExportedReportPage = () => {
 
   const { exportVerbiage } = getReportVerbiage(reportType);
   const { metadata, reportPage, tableHeaders } = exportVerbiage;
+
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   return (
     <Box sx={sx.container}>
@@ -180,10 +183,10 @@ export const sx = {
     fontSize: "4xl",
   },
   combinedDataTable: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     ".combined-data-title": {
       display: "inline-block",
-      marginBottom: "0.5rem",
+      marginBottom: "spacer1",
       fontSize: "md",
       fontWeight: "bold",
     },
@@ -192,7 +195,7 @@ export const sx = {
       lineHeight: "base",
       borderBottom: "1px solid",
       borderColor: "gray_lighter",
-      paddingLeft: "0.5rem",
+      paddingLeft: "spacer1",
     },
     tr: {
       "th, td": {

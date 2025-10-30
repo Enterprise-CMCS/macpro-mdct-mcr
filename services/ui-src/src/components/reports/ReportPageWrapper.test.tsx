@@ -15,7 +15,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 const mockUseLocation = jest.fn();
@@ -142,19 +142,19 @@ describe("<ReportPageWrapper />", () => {
     });
   });
 
-  testA11y(ReportPageWrapperComponent, () => {
+  testA11yAct(ReportPageWrapperComponent, () => {
     mockUseLocation.mockReturnValue(mockLocations.standard);
   });
-  testA11y(ReportPageWrapperComponent, () => {
+  testA11yAct(ReportPageWrapperComponent, () => {
     mockUseLocation.mockReturnValue(mockLocations.drawer);
   });
-  testA11y(ReportPageWrapperComponent, () => {
+  testA11yAct(ReportPageWrapperComponent, () => {
     mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
   });
-  testA11y(ReportPageWrapperComponent, () => {
+  testA11yAct(ReportPageWrapperComponent, () => {
     mockUseLocation.mockReturnValue(mockLocations.modalOverlay);
   });
-  testA11y(ReportPageWrapperComponent, () => {
+  testA11yAct(ReportPageWrapperComponent, () => {
     mockUseLocation.mockReturnValue(mockLocations.reviewSubmit);
   });
 });

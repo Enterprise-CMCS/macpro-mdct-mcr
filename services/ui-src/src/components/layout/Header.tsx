@@ -132,7 +132,7 @@ const sx = {
   },
   appLogo: {
     maxWidth: "200px",
-    marginTop: "0.5rem",
+    marginTop: "spacer1",
   },
   subnavBar: {
     bg: "secondary_lightest",
@@ -153,10 +153,10 @@ const sx = {
   },
   subnavFlexRight: {
     alignItems: "center",
-    paddingRight: ".5rem",
+    paddingRight: "spacer1",
   },
   checkIcon: {
-    marginRight: "0.5rem",
+    marginRight: "spacer1",
     boxSize: "1rem",
     ".mobile &": {
       display: "none",
@@ -170,14 +170,14 @@ const sx = {
     },
   },
   leaveFormLink: {
-    marginLeft: "1rem",
+    marginLeft: "spacer2",
   },
   closeIcon: {
     width: "2rem",
   },
   leaveFormText: {
     border: "1px solid",
-    padding: ".5rem 1rem",
+    padding: "0.5rem 1rem",
     borderRadius: "5px",
     color: "primary",
     fontWeight: "bold",

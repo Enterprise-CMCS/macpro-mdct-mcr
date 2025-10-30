@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe } from "jest-axe";
 // components
@@ -179,7 +178,9 @@ describe("<MobileDashboardTable />", () => {
         name: `Edit ${programName} due ${dueDate} report`,
       })[0];
       expect(enterReportButton).toBeVisible();
-      await userEvent.click(enterReportButton);
+      await act(async () => {
+        await userEvent.click(enterReportButton);
+      });
       await waitFor(async () => {
         expect(mockUseNavigate).toBeCalledTimes(1);
         expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
@@ -191,7 +192,9 @@ describe("<MobileDashboardTable />", () => {
         `Edit ${programName} due ${dueDate} report submission set-up information`
       )[0];
       expect(addReportButton).toBeVisible();
-      await userEvent.click(addReportButton);
+      await act(async () => {
+        await userEvent.click(addReportButton);
+      });
       await waitFor(async () => {
         expect(screen.getByTestId("add-edit-report-form")).toBeVisible();
       });
@@ -203,6 +206,7 @@ describe("<MobileDashboardTable />", () => {
         ...multiSubmissionCountStore,
       });
       render(dashboardViewWithReports);
+      await act(async () => {});
       await waitFor(() => {
         expect(screen.getAllByText("123")[0]).toBeVisible();
       });
@@ -227,7 +231,7 @@ describe("<MobileDashboardTable />", () => {
       render(dashboardViewWithReports);
       await waitFor(() => {
         expect(
-          screen.queryByRole("gridcell", { name: "123" })
+          screen.queryByRole("cell", { name: "123" })
         ).not.toBeInTheDocument();
       });
     });
@@ -266,7 +270,9 @@ describe("<MobileDashboardTable />", () => {
         name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
-      await userEvent.click(archiveProgramButton);
+      await act(async () => {
+        await userEvent.click(archiveProgramButton);
+      });
       await waitFor(async () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
@@ -286,7 +292,9 @@ describe("<MobileDashboardTable />", () => {
         name: /Unarchive/,
       });
       expect(archiveProgramButton).toBeVisible();
-      await userEvent.click(archiveProgramButton);
+      await act(async () => {
+        await userEvent.click(archiveProgramButton);
+      });
       await waitFor(async () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
@@ -306,7 +314,9 @@ describe("<MobileDashboardTable />", () => {
         name: /Archive/,
       });
       expect(archiveProgramButton).toBeVisible();
-      await userEvent.click(archiveProgramButton);
+      await act(async () => {
+        await userEvent.click(archiveProgramButton);
+      });
       await waitFor(async () => {
         expect(mockMcparReportContext.archiveReport).toHaveBeenCalledTimes(1);
         // once for render, once for archive
@@ -383,7 +393,9 @@ describe("<MobileDashboardTable />", () => {
       render(mlrDashboardViewWithLockedReports);
       const releaseProgramButton = screen.getAllByText("Unlock")[0];
       expect(releaseProgramButton).toBeVisible();
-      await userEvent.click(releaseProgramButton);
+      await act(async () => {
+        await userEvent.click(releaseProgramButton);
+      });
       await waitFor(async () => {
         expect(mockMcparReportContext.releaseReport).toHaveBeenCalledTimes(1);
         // once for render, once for release

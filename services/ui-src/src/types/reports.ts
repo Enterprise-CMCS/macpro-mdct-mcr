@@ -346,3 +346,29 @@ export function pageHasOverlay(
 ): unknownPage is ModalOverlayReportPageShape {
   return Object.getOwnPropertyNames(unknownPage).includes("overlayForm");
 }
+
+export type ReportMetadataTableVerbiage =
+  | McparMetadataHeaders
+  | MlrMetadataHeaders
+  | NaaarMetadataHeaders;
+
+interface BaseMetadataHeaders {
+  lastEdited: string;
+  editedBy: string;
+  status: string;
+}
+
+export interface McparMetadataHeaders extends BaseMetadataHeaders {
+  dueDate: string;
+}
+
+export interface MlrMetadataHeaders extends BaseMetadataHeaders {
+  submissionName: string;
+}
+
+export interface NaaarMetadataHeaders extends BaseMetadataHeaders {
+  submissionName: string;
+  planType: string;
+  reportingPeriodStartDate: string;
+  reportingPeriodEndDate: string;
+}
