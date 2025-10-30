@@ -28,11 +28,21 @@ repos:
         types: [file]
         additional_dependencies:
           - "eslint@8.56.0"
-          - "@typescript-eslint/parser"
-          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser@6.21.0"
+          - "@typescript-eslint/eslint-plugin@6.21.0"
           - "eslint-plugin-jest"
           - "eslint-plugin-cypress@2.15.2"
           - "eslint-plugin-playwright"
+          - "eslint-config-react-app@7.0.1"
+          - "eslint-config-prettier@8.10.0"
+          - "eslint-plugin-prettier@4.2.1"
+          - "eslint-plugin-flowtype@8.0.3"
+          - "eslint-plugin-import@2.29.1"
+          - "eslint-plugin-jsx-a11y@6.7.1"
+          - "eslint-plugin-react@7.34.1"
+          - "eslint-plugin-react-hooks@4.6.0"
+          - "@babel/eslint-parser@7.23.10"
+          - "prettier@2.8.8"
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.4.1
     hooks:
@@ -70,12 +80,6 @@ repos:
         name: branch-name-validation
         entry: .github/branchNameValidation.sh
         language: script
-        pass_filenames: false
-      - id: track-flags
-        name: track-flags
-        entry: yarn track-flags
-        language: system
-        files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
         pass_filenames: false
       - id: typescript-check-cli
         name: typescript-check-cli
