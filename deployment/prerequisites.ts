@@ -19,8 +19,24 @@ import { isLocalStack } from "./local/util";
 interface PrerequisiteConfigProps {
   project: string;
   vpcName: string;
-  branchFilter: string;
 }
+
+const getGitHubEnvironmentName = (vpcName: string): string => {
+  const envMap = {
+    dev: "dev",
+    impl: "val",
+    prod: "production",
+  };
+  const match = Object.keys(envMap).find((suffix) =>
+    vpcName.endsWith(suffix)
+  ) as keyof typeof envMap;
+  if (!match) {
+    throw new Error(
+      `Could not determine GitHub environment name from VPC name: ${vpcName}`
+    );
+  }
+  return envMap[match];
+};
 
 export class PrerequisiteStack extends Stack {
   constructor(
@@ -30,7 +46,7 @@ export class PrerequisiteStack extends Stack {
   ) {
     super(scope, id, props);
 
-    const { project, vpcName, branchFilter } = props;
+    const { project, vpcName } = props;
 
     if (!isLocalStack) {
       const vpc = ec2.Vpc.fromLookup(this, "Vpc", { vpcName });
@@ -77,7 +93,9 @@ export class PrerequisiteStack extends Stack {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           StringLike: {
-            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:${branchFilter}`,
+            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
+              vpcName
+            )}`,
           },
         },
         "sts:AssumeRoleWithWebIdentity"
