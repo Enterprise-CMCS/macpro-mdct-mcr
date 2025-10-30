@@ -16,13 +16,12 @@ import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
-  ...props
 }: ExportedEntityDetailsOverlaySectionProps) => {
   const { report } = useStore();
   const entityType = section.entityType;
 
   return (
-    <Box sx={sx.sectionHeading} {...props}>
+    <Box sx={sx.sectionHeading}>
       <ExportedSectionHeading
         verbiage={{
           ...section.verbiage,
@@ -135,7 +134,6 @@ export function getEntityTableComponents(
                 key={`table-${idx}`}
                 fields={filteredFields.slice(1) as FormField[]}
                 entity={entity}
-                showHintText={false}
                 caption={header.props?.content}
               />
             </Fragment>
@@ -183,7 +181,7 @@ const sx = {
     "@media print": {
       pageBreakInside: "avoid",
     },
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     width: "100%",
     "tr, th": {
       verticalAlign: "bottom",
@@ -237,7 +235,7 @@ const sx = {
     fontWeight: "bold",
   },
   statusIcon: {
-    paddingLeft: "1rem",
+    paddingLeft: "spacer2",
     img: {
       maxWidth: "fit-content",
     },
@@ -258,7 +256,7 @@ const sx = {
     p: {
       color: "base",
       "&:first-of-type": {
-        marginTop: "1rem",
+        marginTop: "spacer2",
       },
     },
   },

@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 // components
 import { Text } from "@chakra-ui/react";
 import { Modal } from "components";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockCloseHandler = jest.fn();
 const mockConfirmationHandler = jest.fn();
@@ -47,5 +47,5 @@ describe("<Modal />", () => {
     expect(mockCloseHandler).toHaveBeenCalledTimes(1);
   });
 
-  testA11y(modalComponent);
+  testA11yAct(modalComponent);
 });

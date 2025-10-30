@@ -147,8 +147,8 @@ const sx = {
   reportContainer: {
     flexDirection: "column",
     width: "100%",
-    marginY: "3.5rem",
-    marginLeft: "3.5rem",
+    marginY: "spacer7",
+    marginLeft: "spacer7",
     ".mobile &": {
       marginX: "0rem",
     },

@@ -1,4 +1,4 @@
-import { ReactChild } from "react";
+import { ReactNode } from "react";
 // components
 import { Box, SystemStyleObject } from "@chakra-ui/react";
 
@@ -11,7 +11,7 @@ export const Card = ({ children, sxOverride, ...props }: Props) => {
 };
 
 interface Props {
-  children?: ReactChild | ReactChild[];
+  children?: ReactNode | ReactNode[];
   sxOverride?: SystemStyleObject;
   [key: string]: any;
 }
@@ -19,10 +19,10 @@ interface Props {
 const sx = {
   root: {
     width: "100%",
-    padding: "2rem",
+    padding: "spacer4",
     boxShadow: "0px 3px 9px rgba(0, 0, 0, 0.2)",
     ".mobile &": {
-      padding: "1rem",
+      padding: "spacer2",
     },
   },
 };

@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
 // components
@@ -25,7 +24,7 @@ import {
   mockNaaarReportWithAnalysisMethods,
   mockNaaarReportWithCustomAnalysisMethodsContext,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -143,7 +142,9 @@ describe("<DynamicField />", () => {
     test("DynamicField append button adds a field", async () => {
       // click append
       const appendButton = screen.getByText("Add a row");
-      await userEvent.click(appendButton);
+      await act(async () => {
+        await userEvent.click(appendButton);
+      });
 
       // verify there are now two text boxes
       const inputBoxLabel = screen.getAllByText("test-label");
@@ -154,7 +155,9 @@ describe("<DynamicField />", () => {
     test("DynamicField remove button removes a field", async () => {
       // click append
       const appendButton = screen.getByText("Add a row");
-      await userEvent.click(appendButton);
+      await act(async () => {
+        await userEvent.click(appendButton);
+      });
 
       // verify there are now two text boxes
       const inputBoxLabel = screen.getAllByText("test-label");
@@ -163,11 +166,15 @@ describe("<DynamicField />", () => {
 
       // click remove
       const removeButton = screen.queryAllByTestId("removeButton")[1];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
 
       // click delete in modal
       const deleteButton = screen.getByText("Yes, delete plan");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       // verify that the field is removed
       const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
@@ -179,7 +186,9 @@ describe("<DynamicField />", () => {
     test("DynamicField remove button can be clicked multiple times if a user doesnt submit confirmation to remove the input", async () => {
       // click append
       const appendButton = screen.getByText("Add a row");
-      await userEvent.click(appendButton);
+      await act(async () => {
+        await userEvent.click(appendButton);
+      });
 
       // verify there are now two text boxes
       const inputBoxLabel = screen.getAllByText("test-label");
@@ -188,29 +197,39 @@ describe("<DynamicField />", () => {
 
       // click remove
       const removeButton = screen.queryAllByTestId("removeButton")[1];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
 
       // click cancel in modal
       const cancelButton = screen.getByText("Cancel");
-      await userEvent.click(cancelButton);
+      await act(async () => {
+        await userEvent.click(cancelButton);
+      });
       expect(inputBoxLabel).toHaveLength(2);
       expect(appendButton).toBeVisible();
 
       // verify that the field can open modal again after closing
-      await userEvent.click(removeButton);
-      await userEvent.click(cancelButton);
-      await userEvent.click(removeButton);
-      await userEvent.click(cancelButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+        await userEvent.click(cancelButton);
+        await userEvent.click(removeButton);
+        await userEvent.click(cancelButton);
+      });
 
       expect(inputBoxLabel).toHaveLength(2);
       expect(appendButton).toBeVisible();
 
       // Check deletion still works
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
 
       // click delete in modal
       const deleteButton = screen.getByText("Yes, delete plan");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       // verify that the field is removed
       const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
@@ -226,11 +245,15 @@ describe("<DynamicField />", () => {
 
       // click remove
       const removeButton = screen.queryAllByTestId("removeButton")[0];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
 
       // click delete in modal
       const deleteButton = screen.getByText("Yes, delete plan");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       // verify that there is still one field available
       const inputBoxLabelAfterRemove = screen.getAllByText("test-label");
@@ -250,9 +273,13 @@ describe("<DynamicField />", () => {
       });
       // delete mock-plan-1
       const removeButton = screen.queryAllByTestId("removeButton")[0];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       const deleteButton = screen.getByText("Yes, delete plan");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       expect(mockUpdateReport).toHaveBeenCalledWith(
         { ...mockReportKeys, state: mockStateUserStore.user?.state },
@@ -302,9 +329,13 @@ describe("<DynamicField />", () => {
 
       // delete mock-ilos-1
       const removeButton = screen.queryAllByTestId("removeButton")[0];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       const deleteButton = screen.getByText("Yes, delete ILOS");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       expect(mockUpdateReport).toHaveBeenCalledWith(
         { ...mockReportKeys, state: mockStateUserStore.user?.state },
@@ -368,9 +399,13 @@ describe("<DynamicField />", () => {
 
       // delete mock-ilos-1
       const removeButton = screen.queryAllByTestId("removeButton")[0];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       const deleteButton = screen.getByText("Yes, delete ILOS");
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
     });
@@ -394,11 +429,15 @@ describe("<DynamicField />", () => {
       const removeButton = screen.getByRole("button", {
         name: "Delete mock-plan-1",
       });
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       const deleteButton = screen.getByRole("button", {
         name: "Yes, delete plan",
       });
-      await userEvent.click(deleteButton);
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
 
       expect(mockUpdateReport).toHaveBeenCalledWith(
         {
@@ -475,13 +514,16 @@ describe("<DynamicField />", () => {
       await act(async () => {
         render(dynamicFieldComponent([plan], context));
       });
-
-      await userEvent.click(
-        screen.getByRole("button", { name: `Delete ${plan.name}` })
-      );
-      await userEvent.click(
-        screen.getByRole("button", { name: "Yes, delete plan" })
-      );
+      const deleteButton = screen.getByRole("button", {
+        name: `Delete ${plan.name}`,
+      });
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
+      const confirmDeleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
+      await userEvent.click(confirmDeleteButton);
 
       const updateArg = mockUpdateReport.mock.calls[0][1];
       const updatedMethods = updateArg.fieldData.analysisMethods;
@@ -501,7 +543,9 @@ describe("<DynamicField />", () => {
       });
       // delete mock-plan-1
       const removeButton = screen.queryAllByTestId("removeButton")[0];
-      await userEvent.click(removeButton);
+      await act(async () => {
+        await userEvent.click(removeButton);
+      });
       expect(mockUpdateReport).toHaveBeenCalledTimes(0);
     });
   });
@@ -512,7 +556,9 @@ describe("<DynamicField />", () => {
       const firstDynamicField: HTMLInputElement =
         result.container.querySelector("[name='plans[0]']")!;
       expect(firstDynamicField).toBeVisible();
-      await userEvent.type(firstDynamicField, "123");
+      await act(async () => {
+        await userEvent.type(firstDynamicField, "123");
+      });
       expect(firstDynamicField.value).toEqual("123");
     });
   });
@@ -527,8 +573,10 @@ describe("<DynamicField />", () => {
       const firstDynamicField: HTMLInputElement =
         result.container.querySelector("[name='plans[0]']")!;
       expect(firstDynamicField).toBeVisible();
-      await userEvent.type(firstDynamicField, "123");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(firstDynamicField, "123");
+        await userEvent.tab();
+      });
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
       expect(firstDynamicField.value).toBe("123");
     });
@@ -542,9 +590,11 @@ describe("<DynamicField />", () => {
       const firstDynamicField: HTMLInputElement =
         result.container.querySelector("[name='plans[0]']")!;
       expect(firstDynamicField).toBeVisible();
-      await userEvent.type(firstDynamicField, "Plans");
+      await act(async () => {
+        await userEvent.type(firstDynamicField, "Plans");
+        await userEvent.tab();
+      });
       expect(firstDynamicField.value).toBe("Plans");
-      await userEvent.tab();
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
       expect(mockUpdateReport).lastCalledWith(
         { reportType: "MCPAR", id: "mock-report-id", state: "MN" },
@@ -558,9 +608,11 @@ describe("<DynamicField />", () => {
           },
         }
       );
-      await userEvent.click(firstDynamicField);
-      await userEvent.clear(firstDynamicField);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.click(firstDynamicField);
+        await userEvent.clear(firstDynamicField);
+        await userEvent.tab();
+      });
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
       expect(mockUpdateReport).lastCalledWith(
         { reportType: "MCPAR", id: "mock-report-id", state: "MN" },
@@ -580,12 +632,16 @@ describe("<DynamicField />", () => {
       const result = render(dynamicFieldComponent(mockHydrationPlans));
       // click append
       const appendButton = screen.getByText("Add a row");
-      await userEvent.click(appendButton);
+      await act(async () => {
+        await userEvent.click(appendButton);
+      });
       const firstDynamicField: HTMLInputElement =
         result.container.querySelector("[name='plans[2]']")!;
       expect(firstDynamicField).toBeVisible();
-      await userEvent.type(firstDynamicField, "123");
-      await userEvent.click(appendButton);
+      await act(async () => {
+        await userEvent.type(firstDynamicField, "123");
+        await userEvent.click(appendButton);
+      });
       // verify there are now two text boxes
       const inputBoxLabel = screen.getAllByText("test-label");
       expect(inputBoxLabel).toHaveLength(4);
@@ -617,5 +673,5 @@ describe("<DynamicField />", () => {
     });
   });
 
-  testA11y(dynamicFieldComponent());
+  testA11yAct(dynamicFieldComponent());
 });

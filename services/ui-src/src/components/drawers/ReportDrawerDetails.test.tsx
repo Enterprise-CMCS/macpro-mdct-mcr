@@ -7,7 +7,7 @@ import {
   mockUnfinishedQualityMeasuresFormattedEntityData,
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { EntityType } from "types";
 
 const ReportDrawerDetailsAccessMeasuresComponent = (
@@ -78,8 +78,8 @@ describe("<ReportDrawerDetails />", () => {
     });
   });
 
-  testA11y(ReportDrawerDetailsAccessMeasuresComponent);
-  testA11y(ReportDrawerDetailsSanctionsComponent);
-  testA11y(ReportDrawerDetailsQualityMeasuresComponent);
-  testA11y(ReportDrawerDetailsInvalidEntityTypeComponent);
+  testA11yAct(ReportDrawerDetailsAccessMeasuresComponent);
+  testA11yAct(ReportDrawerDetailsSanctionsComponent);
+  testA11yAct(ReportDrawerDetailsQualityMeasuresComponent);
+  testA11yAct(ReportDrawerDetailsInvalidEntityTypeComponent);
 });

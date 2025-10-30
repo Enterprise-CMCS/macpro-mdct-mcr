@@ -50,22 +50,22 @@ const sx = {
   },
   componentContainer: {
     width: "100%",
-    paddingBottom: "2rem",
+    paddingBottom: "spacer4",
     "& + &": {
       borderTop: "1px solid",
       borderColor: "gray_lighter",
-      paddingTop: "2rem",
+      paddingTop: "spacer4",
     },
   },
   variantContainer: {
-    gap: "1rem",
-    marginTop: "0.5rem",
+    gap: "spacer2",
+    marginTop: "spacer1",
     flexDirection: "column",
     width: "100%",
   },
   variantContainerInline: {
-    gap: "1rem",
-    marginTop: "0.5rem",
+    gap: "spacer2",
+    marginTop: "spacer1",
     flexDirection: "row",
   },
 };

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFormContext } from "react-hook-form";
 // components
@@ -12,7 +12,7 @@ import {
   mockStateUserStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockTrigger = jest.fn();
 const mockRhfMethods = {
@@ -169,8 +169,10 @@ describe("<TextField />", () => {
         name: "test-label",
       });
       expect(textField).toBeVisible();
-      await userEvent.type(textField, "test value");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(textField, "test value");
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -196,8 +198,10 @@ describe("<TextField />", () => {
         name: "test-label",
       });
       expect(textField).toBeVisible();
-      await userEvent.type(textField, "test value");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(textField, "test value");
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledWith(
         {
@@ -222,8 +226,10 @@ describe("<TextField />", () => {
         name: "test-label",
       });
       expect(textField).toBeVisible();
-      await userEvent.type(textField, "test value");
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.type(textField, "test value");
+        await userEvent.tab();
+      });
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(0);
     });
   });
@@ -249,8 +255,10 @@ describe("<TextField />", () => {
         name: "test-label",
       });
       expect(textField).toBeVisible();
-      await userEvent.clear(textField);
-      await userEvent.tab();
+      await act(async () => {
+        await userEvent.clear(textField);
+        await userEvent.tab();
+      });
       expect(mockTrigger).toHaveBeenCalled();
     });
 
@@ -261,7 +269,7 @@ describe("<TextField />", () => {
     });
   });
 
-  testA11y(textFieldComponent, () => {
+  testA11yAct(textFieldComponent, () => {
     mockGetValues(undefined);
   });
 });

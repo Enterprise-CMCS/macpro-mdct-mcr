@@ -139,7 +139,7 @@ const sx = {
   returnLink: {
     display: "flex",
     width: "8.5rem",
-    marginTop: "1.5rem",
+    marginTop: "spacer3",
     svg: {
       height: "1.375rem",
       width: "1.375rem",
@@ -153,8 +153,8 @@ const sx = {
     ".returnIcon": {
       width: "1.25rem",
       height: "1.25rem",
-      marginTop: "0.25rem",
-      marginRight: "0.5rem",
+      marginTop: "spacer_half",
+      marginRight: "spacer1",
     },
   },
   leadTextBox: {
@@ -162,22 +162,22 @@ const sx = {
     marginBottom: "2.25rem",
   },
   headerText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "4xl",
     fontWeight: "normal",
   },
   sectionContent: {
-    marginTop: "1rem",
-    marginBottom: "2rem",
-    gridGap: "2rem",
+    marginTop: "spacer2",
+    marginBottom: "spacer4",
+    gridGap: "spacer4",
     flexDirection: "column",
     ".desktop &": {
       flexDirection: "row",
     },
   },
   widgetContainer: {
-    marginTop: "1rem",
-    paddingLeft: "1rem",
+    marginTop: "spacer2",
+    paddingLeft: "spacer2",
     borderLeft: ".3rem solid",
     borderColor: "primary",
   },
@@ -189,25 +189,25 @@ const sx = {
     width: "100%",
   },
   additionalInfo: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     fontSize: "sm",
   },
   pageLinkContainer: {
-    marginTop: "1rem",
-    marginBottom: "2rem",
+    marginTop: "spacer2",
+    marginBottom: "spacer4",
     textAlign: "right",
   },
   pageLink: {
     justifyContent: "start",
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     borderRadius: "0.25rem",
     span: {
-      marginLeft: "0.5rem",
+      marginLeft: "spacer1",
       marginRight: "-0.25rem",
     },
   },
   smallSectionHeading: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
   },
   tableHeader: {
     Th: {

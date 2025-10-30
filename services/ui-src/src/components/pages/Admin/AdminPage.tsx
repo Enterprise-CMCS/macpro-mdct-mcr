@@ -117,13 +117,13 @@ export const AdminPage = () => {
 const sx = {
   layout: {
     ".contentFlex": {
-      marginTop: "3.5rem",
+      marginTop: "spacer7",
     },
   },
   errorAlert: {
     width: "100% !important",
     marginTop: "-4rem",
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
   },
   introTextBox: {
     width: "100%",
@@ -132,12 +132,12 @@ const sx = {
   introInstructions: {
     p: {
       "&:first-of-type": {
-        marginBottom: "1.5rem",
+        marginBottom: "spacer3",
       },
     },
   },
   headerText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "2rem",
     fontWeight: "normal",
   },
@@ -155,7 +155,7 @@ const sx = {
   },
   currentBannerStatus: {
     span: {
-      marginLeft: "0.5rem",
+      marginLeft: "spacer1",
       "&.active": {
         color: "success",
       },
@@ -166,14 +166,14 @@ const sx = {
   },
   currentBannerDate: {
     span: {
-      marginLeft: "0.5rem",
+      marginLeft: "spacer1",
     },
   },
   currentBannerFlex: {
     flexDirection: "column",
   },
   spinnerContainer: {
-    marginTop: "0.5rem",
+    marginTop: "spacer1",
     ".ds-c-spinner": {
       "&:before": {
         borderColor: "black",

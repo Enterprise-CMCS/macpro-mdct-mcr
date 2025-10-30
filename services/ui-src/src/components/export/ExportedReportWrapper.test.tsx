@@ -15,7 +15,7 @@ import {
   mockMcparReportStore,
   mockNaaarPlanCompliancePageJson,
 } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 import { useStore } from "utils";
 
 jest.mock("utils/state/useStore");
@@ -119,7 +119,7 @@ describe("<ExportedReportWrapper />", () => {
     ).toBeInTheDocument();
   });
 
-  testA11y(exportedStandardReportWrapperComponent);
-  testA11y(exportedDrawerReportWrapperComponent);
-  testA11y(exportedModalDrawerReportWrapperComponent);
+  testA11yAct(exportedStandardReportWrapperComponent);
+  testA11yAct(exportedDrawerReportWrapperComponent);
+  testA11yAct(exportedModalDrawerReportWrapperComponent);
 });

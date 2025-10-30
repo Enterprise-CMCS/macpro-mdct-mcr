@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsFormOverlay } from "./EntityDetailsFormOverlay";
@@ -53,11 +53,15 @@ describe("<EntityDetailsFormOverlay />", () => {
 
     // Form
     const radioButtonYes = screen.getByRole("radio", { name: "Mock Yes" });
-    await userEvent.click(radioButtonYes);
+    await act(async () => {
+      await userEvent.click(radioButtonYes);
+    });
 
     // Submit
     const submitButton = screen.getByRole("button", { name: "Save & return" });
-    await userEvent.click(submitButton);
+    await act(async () => {
+      await userEvent.click(submitButton);
+    });
 
     expect(mockOnSubmit).toBeCalled();
   });
@@ -67,7 +71,9 @@ describe("<EntityDetailsFormOverlay />", () => {
     const closeButton = screen.getByRole("button", {
       name: "Mock Back Button: Child",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
   });
@@ -78,7 +84,9 @@ describe("<EntityDetailsFormOverlay />", () => {
     const submitButton = screen.queryByRole("button", {
       name: "Save & return",
     });
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(mockCloseEntityDetailsOverlay).toBeCalled();
     expect(submitButton).toBeNull();

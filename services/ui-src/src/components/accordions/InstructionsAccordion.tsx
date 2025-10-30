@@ -32,15 +32,15 @@ interface Props {
 
 const sx = {
   root: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
   item: {
-    marginBottom: "1.5rem",
+    marginBottom: "spacer3",
     borderStyle: "none",
   },
   textBox: {
     ".mobile &": {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
     a: {
       color: "primary",
@@ -58,7 +58,7 @@ const sx = {
     ".ordered-list-parentheses": {
       counterReset: "item",
       listStyleType: "none",
-      marginLeft: "3rem",
+      marginLeft: "spacer6",
       "> li": {
         counterIncrement: "item",
       },
@@ -67,7 +67,7 @@ const sx = {
       },
     },
     ".indented-list": {
-      marginLeft: "3rem",
+      marginLeft: "spacer6",
     },
     ".marker-normal > li::marker": {
       fontWeight: "normal",
@@ -79,8 +79,8 @@ const sx = {
     },
   },
   list: {
-    paddingLeft: "1rem",
-    margin: "1.5rem",
+    paddingLeft: "spacer2",
+    margin: "spacer3",
     li: {
       marginBottom: "1.25rem",
     },

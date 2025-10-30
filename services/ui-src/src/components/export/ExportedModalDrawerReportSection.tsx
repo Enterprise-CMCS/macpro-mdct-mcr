@@ -64,7 +64,7 @@ const sx = {
     fontSize: "md",
     fontWeight: "bold",
     color: "error_darker",
-    marginTop: "0.5rem",
+    marginTop: "spacer1",
   },
   dashboardTitle: {
     marginBottom: "1.25rem",

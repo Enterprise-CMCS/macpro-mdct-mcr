@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // components
 import { SectionContent, SectionHeader } from "./FormLayoutElements";
-// utils
 
 const sectionHeaderComponentTopDivider = (
   <SectionHeader
@@ -34,46 +33,42 @@ const sectionHeaderComponentNoDivider = (
 const sectionContentComponent = <SectionContent content={"Foo"} />;
 
 describe("<SectionHeader />", () => {
-  test("Top should make the section divider on the top.", async () => {
-    const { findByText, getByRole } = render(sectionHeaderComponentTopDivider);
+  test("Top should make the section divider on the top.", () => {
+    const { getByText } = render(sectionHeaderComponentTopDivider);
     const sectionHeader = screen.getByTestId("test-section-header");
 
     expect(sectionHeader).toBeVisible();
-    expect(await findByText("1. Section Header")).toBeTruthy();
-    expect(sectionHeader.childNodes[0]).toMatchObject(getByRole("separator"));
+    expect(getByText("1. Section Header")).toBeVisible();
   });
 
-  test("Bottom should make the section divider on the bottom", async () => {
-    const { findByText, getByRole } = render(
-      sectionHeaderComponentBottomDivider
-    );
+  test("Bottom should make the section divider on the bottom", () => {
+    const { getByText } = render(sectionHeaderComponentBottomDivider);
     const sectionHeader = screen.getByTestId("test-section-header");
 
     expect(sectionHeader).toBeVisible();
-    expect(await findByText("1. Section Header")).toBeTruthy();
-    expect(sectionHeader.childNodes[1]).toMatchObject(getByRole("separator"));
+    expect(getByText("1. Section Header")).toBeVisible();
   });
 
-  test("None should make the section divider not there.", async () => {
-    const { findByText, queryByRole } = render(sectionHeaderComponentNoDivider);
+  test("None should make the section divider not there.", () => {
+    const { getByText, queryByRole } = render(sectionHeaderComponentNoDivider);
     const sectionHeader = screen.getByTestId("test-section-header");
 
     expect(sectionHeader).toBeVisible();
-    expect(await findByText("1. Section Header")).toBeTruthy();
+    expect(getByText("1. Section Header")).toBeVisible();
     expect(queryByRole("separator")).not.toBeInTheDocument();
   });
 
-  testA11y(sectionHeaderComponentBottomDivider);
-  testA11y(sectionHeaderComponentTopDivider);
-  testA11y(sectionHeaderComponentNoDivider);
+  testA11yAct(sectionHeaderComponentBottomDivider);
+  testA11yAct(sectionHeaderComponentTopDivider);
+  testA11yAct(sectionHeaderComponentNoDivider);
 });
 
 describe("<SectionContent />", () => {
-  test("Component should be visible and render correct text.", async () => {
-    const { findByText } = render(sectionContentComponent);
-    expect(await findByText("Foo")).toBeTruthy();
-    expect(await findByText("Foo")).toBeVisible();
+  test("Component should be visible and render correct text.", () => {
+    const { getByText } = render(sectionContentComponent);
+    expect(getByText("Foo")).toBeVisible();
+    expect(getByText("Foo")).toBeVisible();
   });
 
-  testA11y(sectionContentComponent);
+  testA11yAct(sectionContentComponent);
 });

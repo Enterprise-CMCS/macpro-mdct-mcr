@@ -21,7 +21,7 @@ permissions:
 jobs:
   destroy:
     name: Destroy
-    if: github.event.ref_type == 'branch' && !contains('skipci,code-json-', github.event.ref)
+    if: (inputs.environment || github.event.ref_type == 'branch') && !contains('skipci,code-json-', github.event.ref)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -43,17 +43,19 @@ jobs:
       - name: Set branch-specific variable values
         run: ./.github/buildVars.sh set_values
         env:
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_DEFAULT_REGION: us-east-1
           AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+          aws-region: us-east-1
           role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Destroy
         run: ./run destroy --stage $branch_name --verify false
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}
 
   notify_on_destroy_failure:
     name: Destroy failure notification

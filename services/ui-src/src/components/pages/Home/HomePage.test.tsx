@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { HomePage } from "components";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -19,5 +19,5 @@ describe("<HomePage />", () => {
     expect(screen.getByText(verbiage.cards.MCPAR.title)).toBeVisible();
   });
 
-  testA11y(homeView);
+  testA11yAct(homeView);
 });

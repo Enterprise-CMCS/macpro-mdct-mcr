@@ -91,13 +91,13 @@ export interface Props {
 const sx = {
   numberColumn: {
     width: "5.5rem",
-    paddingTop: "0.5rem",
+    paddingTop: "spacer1",
   },
   fieldNumber: {
     fontSize: "sm",
     fontWeight: "bold",
     textTransform: "none",
-    paddingLeft: "0.5rem",
+    paddingLeft: "spacer1",
   },
   labelColumn: {
     width: "14rem",
@@ -111,7 +111,7 @@ const sx = {
   fieldLabel: {
     fontSize: "sm",
     fontWeight: "bold",
-    marginBottom: "0.5rem",
+    marginBottom: "spacer1",
   },
   fieldHint: {
     lineHeight: "lg",

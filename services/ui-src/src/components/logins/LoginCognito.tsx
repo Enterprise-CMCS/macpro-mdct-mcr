@@ -49,7 +49,7 @@ export const LoginCognito = () => {
       <Heading size="md" as="h2" sx={sx.heading}>
         Log In with Cognito
       </Heading>
-      <ErrorAlert error={error} sxOverride={sx.error} />
+      {error && <ErrorAlert error={error} sxOverride={sx.error} />}
       <form onSubmit={(event) => handleLogin(event)}>
         <TextField
           id="email"
@@ -70,7 +70,6 @@ export const LoginCognito = () => {
         <Button
           sx={sx.button}
           onClick={handleLogin}
-          isFullWidth
           type="submit"
           data-testid="cognito-login-button"
         >
@@ -86,10 +85,10 @@ const sx = {
     alignSelf: "center",
   },
   error: {
-    marginY: "1rem",
+    marginY: "spacer2",
   },
   button: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     width: "100%",
   },
 };

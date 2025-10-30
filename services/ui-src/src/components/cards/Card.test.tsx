@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 // components
 import { Card } from "components";
 // utils
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const cardComponent = (
   <Card>
@@ -16,5 +16,5 @@ describe("<Card />", () => {
     expect(screen.getByText("Mock child component")).toBeVisible();
   });
 
-  testA11y(cardComponent);
+  testA11yAct(cardComponent);
 });

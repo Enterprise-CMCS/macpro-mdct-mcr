@@ -6,7 +6,7 @@ import {
 } from "components";
 import { Box } from "@chakra-ui/react";
 // types
-import { AnyObject, EntityType } from "types";
+import { EntityType, PlanData, StandardData } from "types";
 
 export const ExportedPlanComplianceCard = ({
   standardData,
@@ -36,13 +36,13 @@ export const ExportedPlanComplianceCard = ({
 };
 
 interface Props {
-  standardData: AnyObject;
-  planData: AnyObject;
+  standardData: StandardData;
+  planData: PlanData;
 }
 
 const sx = {
   card: {
-    marginY: "1.5rem",
+    marginY: "spacer3",
     boxShadow: "none",
     border: "1px solid",
     borderColor: "gray_light",

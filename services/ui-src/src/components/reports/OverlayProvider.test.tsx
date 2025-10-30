@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { OverlayContext, OverlayProvider } from "./OverlayProvider";
 // utils
 import { RouterWrappedComponent } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockChildFormId = "mockId";
 const mockSelectedStandard = { count: 1, entity: { name: "Mock" } };
@@ -51,7 +51,9 @@ describe("<OverlayProvider />", () => {
     const text = `Child Form ${mockChildFormId}`;
     expect(screen.queryByText(text)).toBeNull();
 
-    await userEvent.click(button);
+    await act(async () => {
+      await userEvent.click(button);
+    });
     expect(screen.getByText(text)).toBeVisible();
   });
 
@@ -60,9 +62,11 @@ describe("<OverlayProvider />", () => {
     const text = `${mockSelectedStandard.entity.name} ${mockSelectedStandard.count}`;
     expect(screen.queryByText(text)).toBeNull();
 
-    await userEvent.click(button);
+    await act(async () => {
+      await userEvent.click(button);
+    });
     expect(screen.getByText(text)).toBeVisible();
   });
 
-  testA11y(testComponent);
+  testA11yAct(testComponent);
 });

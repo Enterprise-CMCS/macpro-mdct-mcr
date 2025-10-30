@@ -13,7 +13,7 @@ export const LoginIDM = () => {
       <Heading as="h2" size="md" sx={sx.heading}>
         Log In with IDM
       </Heading>
-      <Button sx={sx.button} onClick={loginWithIDM} isFullWidth>
+      <Button sx={sx.button} onClick={loginWithIDM}>
         Log In with IDM
       </Button>
     </Box>
@@ -25,7 +25,7 @@ const sx = {
     textAlign: "center",
   },
   heading: {
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     alignSelf: "center",
   },
   button: {

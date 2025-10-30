@@ -214,8 +214,8 @@ function entityRowStyling(canAddEntities: boolean) {
     justifyContent: "space-between",
     alignItems: "center",
     minHeight: "3.25rem",
-    padding: "0.5rem",
-    paddingLeft: "1rem",
+    padding: "spacer1",
+    paddingLeft: "spacer2",
     borderBottom: "1.5px solid var(--mdct-colors-gray_lighter)",
     "&:last-of-type": {
       borderBottom: canAddEntities ?? "none",
@@ -241,8 +241,8 @@ const sx = {
     paddingLeft: "2.25rem",
     maxWidth: "30rem",
     minHeight: "3.75rem",
-    gap: "4px",
-    padding: "0.5rem",
+    gap: "spacer_half",
+    padding: "spacer1",
   },
   entityName: {
     fontSize: "lg",
@@ -269,7 +269,7 @@ const sx = {
   },
   missingIlos: {
     fontWeight: "bold",
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     a: {
       color: "primary",
       textDecoration: "underline",
@@ -279,7 +279,7 @@ const sx = {
     },
   },
   missingEntityMessage: {
-    paddingTop: "1rem",
+    paddingTop: "spacer2",
     fontWeight: "bold",
     a: {
       color: "primary",
@@ -289,7 +289,7 @@ const sx = {
       },
     },
     ol: {
-      paddingLeft: "1rem",
+      paddingLeft: "spacer2",
     },
   },
   enterButton: {
@@ -319,10 +319,10 @@ const sx = {
     },
   },
   standardForm: {
-    paddingBottom: "1rem",
+    paddingBottom: "spacer2",
   },
   bottomAddEntityButton: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     marginBottom: "0",
   },
 };

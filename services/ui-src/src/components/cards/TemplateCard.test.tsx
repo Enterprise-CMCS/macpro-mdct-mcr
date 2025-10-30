@@ -1,6 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
 // components
 import { TemplateCard } from "components";
 // utils
@@ -9,7 +8,7 @@ import {
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 // verbiage
 import verbiage from "verbiage/pages/home";
 
@@ -85,7 +84,9 @@ describe("<TemplateCard />", () => {
       const templateCardLink = screen.getByText(
         mcparTemplateVerbiage.link.text
       )!;
-      await userEvent.click(templateCardLink);
+      await act(async () => {
+        await userEvent.click(templateCardLink);
+      });
       const expectedRoute = mcparTemplateVerbiage.link.route;
       await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
@@ -121,7 +122,9 @@ describe("<TemplateCard />", () => {
     test("MLR TemplateCard navigates to next route on link click", async () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
       const templateCardLink = screen.getByText(mlrTemplateVerbiage.link.text)!;
-      await userEvent.click(templateCardLink);
+      await act(async () => {
+        await userEvent.click(templateCardLink);
+      });
       const expectedRoute = mlrTemplateVerbiage.link.route;
       await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
@@ -161,11 +164,13 @@ describe("<TemplateCard />", () => {
       const templateCardLink = screen.getByText(
         naaarTemplateVerbiage.link.text
       )!;
-      await userEvent.click(templateCardLink);
+      await act(async () => {
+        await userEvent.click(templateCardLink);
+      });
       const expectedRoute = naaarTemplateVerbiage.link.route;
       await expect(mockUseNavigate).toHaveBeenCalledWith(expectedRoute);
     });
   });
 
-  testA11y(mcparTemplateCardComponent);
+  testA11yAct(mcparTemplateCardComponent);
 });

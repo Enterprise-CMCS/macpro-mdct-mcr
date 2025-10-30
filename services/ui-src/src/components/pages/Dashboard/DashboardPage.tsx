@@ -336,8 +336,8 @@ const sx = {
   layout: {
     ".contentFlex": {
       maxWidth: "appMax",
-      marginTop: "1rem",
-      marginBottom: "3.5rem",
+      marginTop: "spacer2",
+      marginBottom: "spacer7",
     },
   },
   returnLink: {
@@ -356,8 +356,8 @@ const sx = {
     ".returnIcon": {
       width: "1.25rem",
       height: "1.25rem",
-      marginTop: "0.25rem",
-      marginRight: "0.5rem",
+      marginTop: "spacer_half",
+      marginRight: "spacer1",
     },
   },
   leadTextBox: {
@@ -369,7 +369,7 @@ const sx = {
     },
   },
   headerText: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
     fontSize: "4xl",
     fontWeight: "normal",
     ".tablet &, .mobile &": {
@@ -402,7 +402,7 @@ const sx = {
     textAlign: "center",
   },
   callToActionContainer: {
-    marginTop: "2.5rem",
+    marginTop: "spacer5",
     textAlign: "center",
   },
   spinnerContainer: {
@@ -420,7 +420,7 @@ const sxChildStyles = {
     button: {
       width: "6.875rem",
       height: "1.75rem",
-      borderRadius: "0.25rem",
+      borderRadius: "spacer_half",
       textAlign: "center",
       fontSize: "sm",
       fontWeight: "normal",
@@ -436,7 +436,7 @@ const sxChildStyles = {
     img: {
       height: "1.5rem",
       minWidth: "21px",
-      marginLeft: "0.5rem",
+      marginLeft: "spacer1",
       ".tablet &, .mobile &": {
         marginLeft: 0,
       },

@@ -31,13 +31,13 @@ interface Props {
 
 const sx = {
   root: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
   text: {
-    marginBottom: "1rem",
+    marginBottom: "spacer2",
   },
   orderedList: {
-    paddingLeft: "1rem",
+    paddingLeft: "spacer2",
     "& > li": {
       marginBottom: "0.75rem",
     },

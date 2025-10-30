@@ -30,7 +30,7 @@ const sx = {
     fontWeight: "normal",
     color: "primary",
     display: "flex",
-    marginBottom: "2rem",
+    marginBottom: "spacer4",
     marginLeft: "-3rem",
     marginTop: "-2rem",
     ".mobile &": {
@@ -41,6 +41,6 @@ const sx = {
   backIcon: {
     color: "primary",
     height: "1rem",
-    marginRight: "0.5rem",
+    marginRight: "spacer1",
   },
 };

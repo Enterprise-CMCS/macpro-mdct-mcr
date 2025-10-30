@@ -121,7 +121,7 @@ export interface EntityRowProps {
 const sx = {
   content: {
     verticalAlign: "middle",
-    paddingLeft: "1.5rem",
+    paddingLeft: "spacer3",
     td: {
       borderColor: "gray_lighter",
       paddingRight: 0,
@@ -136,6 +136,7 @@ const sx = {
   entityFields: {
     ul: {
       listStyleType: "none",
+      padding: 0,
       ".desktop &": {
         margin: "0.5rem auto",
       },
@@ -151,7 +152,7 @@ const sx = {
         },
         ".mobile &": {
           paddingTop: 0,
-          paddingBottom: "0.25rem",
+          paddingBottom: "spacer_half",
           "&:first-of-type": {
             fontSize: "md",
           },
@@ -165,9 +166,9 @@ const sx = {
   rowHeader: {
     display: "flex",
     fontWeight: "bold",
-    paddingBottom: "0.5rem",
+    paddingBottom: "spacer1",
     span: { color: "gray" },
-    img: { marginRight: "1rem" },
+    img: { marginRight: "spacer2" },
   },
   errorText: {
     color: "error_dark",

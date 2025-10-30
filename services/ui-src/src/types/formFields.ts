@@ -180,3 +180,23 @@ export function isLayoutElement(
 ): field is FormLayoutElement {
   return (field as FormField).validation === undefined;
 }
+
+export interface StandardData {
+  count: number;
+  standardType: string;
+  description: string;
+  provider: string;
+  analysisMethods: string;
+  region: string;
+  population: string;
+}
+
+export interface PlanQuestion {
+  question: string;
+  answer: string | string[];
+}
+
+export interface PlanData {
+  heading: string;
+  questions: PlanQuestion[];
+}

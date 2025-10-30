@@ -89,10 +89,10 @@ const sx = {
   label: {
     fontWeight: "bold",
     fontSize: "md",
-    marginTop: "1.5rem",
+    marginTop: "spacer3",
   },
   ".ds-c-hint": {
-    marginTop: "-.5rem",
-    marginLeft: ".25rem",
+    marginTop: "-0.5rem",
+    marginLeft: "spacer_half",
   },
 };

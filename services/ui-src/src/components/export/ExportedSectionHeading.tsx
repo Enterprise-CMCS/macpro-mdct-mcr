@@ -91,7 +91,7 @@ const sx = {
     },
     h4: {
       fontSize: "lg",
-      paddingTop: "1rem",
+      paddingTop: "spacer2",
     },
   },
 };

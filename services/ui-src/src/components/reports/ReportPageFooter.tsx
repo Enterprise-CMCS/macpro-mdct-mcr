@@ -90,8 +90,8 @@ interface Props {
 
 const sx = {
   footerBox: {
-    marginTop: "2.5rem",
-    paddingTop: "1.5rem",
+    marginTop: "spacer5",
+    paddingTop: "spacer3",
     borderTop: "1px solid",
     borderColor: "gray_light",
   },
@@ -107,6 +107,6 @@ const sx = {
   },
   praStatement: {
     fontSize: "0.875rem",
-    marginTop: "2rem",
+    marginTop: "spacer4",
   },
 };

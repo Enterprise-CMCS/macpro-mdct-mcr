@@ -3,6 +3,7 @@ import { colors } from "./colors";
 import { fonts } from "./fonts";
 import { lineHeights } from "./lineheights";
 import { sizes } from "./sizes";
+import { space } from "./space";
 
 export const foundation = {
   breakpoints: breakpoints,
@@ -10,4 +11,5 @@ export const foundation = {
   fonts: fonts,
   lineHeights: lineHeights,
   sizes: sizes,
+  space: space,
 };

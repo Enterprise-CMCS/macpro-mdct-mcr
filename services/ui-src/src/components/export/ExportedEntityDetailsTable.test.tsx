@@ -10,7 +10,7 @@ import {
   mockModalOverlayReportPageWithOverlayJson,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -38,11 +38,9 @@ describe("<ExportedEntityDetailsTable />", () => {
     localStorage.setItem("selectedReportType", "");
   });
   test("renders successfully", async () => {
-    const { findAllByText, findByTestId } = render(
-      exportedEntityDetailsTableComponent()
-    );
-    expect(await findByTestId("exportedEntityDetailsTable"));
-
+    const { findAllByText } = render(exportedEntityDetailsTableComponent());
+    const table = await screen.findByRole("table");
+    expect(table).toBeVisible();
     const expectedTextContent = [
       "N/A",
       "mock text field",
@@ -58,5 +56,5 @@ describe("<ExportedEntityDetailsTable />", () => {
     expect(screen.getByText("header content")).toBeVisible();
   });
 
-  testA11y(exportedEntityDetailsTableComponent());
+  testA11yAct(exportedEntityDetailsTableComponent());
 });

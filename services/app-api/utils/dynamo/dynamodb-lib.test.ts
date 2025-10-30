@@ -1,4 +1,4 @@
-import dynamoLib, { getConfig } from "./dynamodb-lib";
+import dynamoLib, { awsConfig } from "./dynamodb-lib";
 import {
   GetCommand,
   DeleteCommand,
@@ -64,7 +64,7 @@ describe("Test DynamoDB Interaction API Build Structure", () => {
 
 describe("Checking Environment Variable Changes", () => {
   test("that config has region set", () => {
-    const config = getConfig();
+    const config = awsConfig;
     expect(config).toHaveProperty("region", "us-east-1");
   });
 });

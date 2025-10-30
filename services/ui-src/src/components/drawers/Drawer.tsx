@@ -93,7 +93,7 @@ interface Props {
 const sx = {
   drawerContent: {
     maxWidth: "90vw",
-    padding: "1rem",
+    padding: "spacer2",
     "&.tablet": {
       maxWidth: "32rem",
     },
@@ -110,7 +110,7 @@ const sx = {
   },
   drawerHeader: {
     position: "relative",
-    padding: "1rem",
+    padding: "spacer2",
   },
   drawerHeaderText: {
     paddingRight: "4rem",
@@ -118,16 +118,16 @@ const sx = {
     fontWeight: "bold",
   },
   drawerReminderText: {
-    marginTop: "1rem",
+    marginTop: "spacer2",
     paddingRight: "4rem",
     fontSize: "md",
     fontWeight: "normal",
   },
   drawerCloseButton: {
     position: "absolute",
-    top: "1rem",
-    right: "1rem",
-    paddingTop: "0.25rem",
+    top: "spacer2",
+    right: "spacer2",
+    paddingTop: "spacer_half",
     span: {
       margin: "0 .25rem",
       paddingTop: "0.06rem",
@@ -139,22 +139,22 @@ const sx = {
     },
   },
   detailBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     fontWeight: "normal",
     color: "base",
   },
   detailHeader: {
-    marginBottom: ".5rem",
+    marginBottom: "spacer1",
     fontSize: "md",
     fontWeight: "bold",
     color: "gray",
   },
   detailDescription: {
-    marginBottom: ".5rem",
+    marginBottom: "spacer1",
     fontSize: "md",
   },
   infoTextBox: {
-    marginTop: "2rem",
+    marginTop: "spacer4",
     "p, span": {
       color: "gray",
       fontSize: "16px",

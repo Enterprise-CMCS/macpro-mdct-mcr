@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { ExportedSectionHeading } from "components";
 // utils
 import { mockVerbiageIntro } from "utils/testing/setupJest";
-import { testA11y } from "utils/testing/commonTests";
+import { testA11yAct } from "utils/testing/commonTests";
 
 const mockSectionHeading = {
   heading: "mock-heading",
@@ -29,5 +29,5 @@ describe("<ExportedSectionHeading />", () => {
     expect(sectionHeading).toBeVisible();
   });
 
-  testA11y(exportedReportSectionHeadingComponent);
+  testA11yAct(exportedReportSectionHeadingComponent);
 });
