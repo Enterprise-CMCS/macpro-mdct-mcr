@@ -21,6 +21,23 @@ interface PrerequisiteConfigProps {
   vpcName: string;
 }
 
+const getGitHubEnvironmentName = (vpcName: string): string => {
+  const envMap = {
+    dev: "dev",
+    impl: "val",
+    prod: "production",
+  };
+  const match = Object.keys(envMap).find((suffix) =>
+    vpcName.endsWith(suffix)
+  ) as keyof typeof envMap;
+  if (!match) {
+    throw new Error(
+      `Could not determine GitHub environment name from VPC name: ${vpcName}`
+    );
+  }
+  return envMap[match];
+};
+
 export class PrerequisiteStack extends Stack {
   constructor(
     scope: Construct,
@@ -36,19 +53,6 @@ export class PrerequisiteStack extends Stack {
       vpc.addGatewayEndpoint("S3Endpoint", {
         service: ec2.GatewayVpcEndpointAwsService.S3,
       });
-    }
-
-    let githubEnvironmentName: string;
-    if (vpcName.endsWith("dev")) {
-      githubEnvironmentName = "dev";
-    } else if (vpcName.endsWith("impl")) {
-      githubEnvironmentName = "val";
-    } else if (vpcName.endsWith("prod")) {
-      githubEnvironmentName = "production";
-    } else {
-      throw new Error(
-        `Could not determine GitHub environment name from VPC name: ${vpcName}`
-      );
     }
 
     new CloudWatchLogsResourcePolicy(this, "logPolicy", { project });
@@ -89,7 +93,9 @@ export class PrerequisiteStack extends Stack {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           StringLike: {
-            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${githubEnvironmentName}`,
+            "token.actions.githubusercontent.com:sub": `repo:Enterprise-CMCS/macpro-mdct-${project}:environment:${getGitHubEnvironmentName(
+              vpcName
+            )}`,
           },
         },
         "sts:AssumeRoleWithWebIdentity"
