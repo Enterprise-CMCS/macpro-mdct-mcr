@@ -28,6 +28,7 @@ async function run() {
     head: sourceBranch,
     base: targetBranch,
     body: "This PR was created automatically via Octokit",
+    draft: true,
   });
   console.log(`✅ Pull request created: ${pr.html_url}`);
   await octokit.issues.addLabels({
