@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import { Fragment, useContext } from "react";
 import { Box, Flex, Spinner } from "@chakra-ui/react";
 // components

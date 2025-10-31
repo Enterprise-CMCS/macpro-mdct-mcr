@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation, Route, Routes } from "react-router-dom";
+import { useLocation, Route, Routes } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 // components
 import { Container, Divider, Flex, Heading, Stack } from "@chakra-ui/react";

@@ -7,7 +7,7 @@ import { ReportContextShape } from "types";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseLocation = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useLocation: () => mockUseLocation(),
 }));
 

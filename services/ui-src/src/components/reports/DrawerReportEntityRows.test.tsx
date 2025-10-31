@@ -21,7 +21,7 @@ import {
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
 const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",

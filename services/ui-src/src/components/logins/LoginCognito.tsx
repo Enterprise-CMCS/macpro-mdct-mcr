@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 // components
 import { Button, Heading, Stack } from "@chakra-ui/react";
 import { ErrorAlert } from "components";

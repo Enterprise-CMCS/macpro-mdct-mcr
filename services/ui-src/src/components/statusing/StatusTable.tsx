@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 // components
 import { Box, Button, Flex, Image, Td, Text, Tr } from "@chakra-ui/react";
 import { Table } from "components";

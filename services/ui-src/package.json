@@ -41,7 +41,7 @@
     "react-error-boundary": "^3.1.4",
     "react-hook-form": "^7.54.2",
     "react-icons": "^4.12.0",
-    "react-router-dom": "6.28.1",
+    "react-router": "7.9.5",
     "react-uuid": "^1.0.3",
     "sass": "^1.83.4",
     "vite": "^7.1.11",
@@ -66,7 +66,6 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@types/react-helmet": "^6.1.6",
-    "@types/react-router-dom": "^5.3.3",
     "axe-core": "^4.10.3",
     "babel": "^6.23.0",
     "babel-jest": "^29.7.0",
@@ -132,7 +131,7 @@
     "globals": {
       "_env_": {}
     },
-    "testEnvironment": "jest-environment-jsdom"
+    "testEnvironment": "<rootDir>/src/utils/testing/testEnv.js"
   },
   "browserslist": {
     "production": [

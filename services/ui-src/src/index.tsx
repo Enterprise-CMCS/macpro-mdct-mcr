@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router";
 import { ErrorBoundary } from "react-error-boundary";
 import { Amplify } from "aws-amplify";
 import config from "config";

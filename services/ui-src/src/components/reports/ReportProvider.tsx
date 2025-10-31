@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 // types
 import {
   ReportKeys,
