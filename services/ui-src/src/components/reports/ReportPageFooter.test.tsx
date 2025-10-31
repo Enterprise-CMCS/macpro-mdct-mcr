@@ -20,7 +20,7 @@ const mockRoutes = {
   nextRoute: "/mock-next-route",
 };
 
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 

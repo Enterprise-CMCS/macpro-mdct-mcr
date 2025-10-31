@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 // components
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
