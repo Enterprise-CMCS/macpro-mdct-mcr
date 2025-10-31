@@ -7,13 +7,7 @@ import {
   mockCompletedAccessMeasuresFormattedEntityData,
   mockSanctionsEntity,
   mockCompletedSanctionsFormattedEntityData,
-  mockQualityMeasuresEntity,
-  mockUnfinishedQualityMeasuresFormattedEntityData,
-  mockCompletedQualityMeasuresEntity,
-  mockCompletedQualityMeasuresFormattedEntityData,
   mockReportFieldData,
-  mockQualityMeasuresEntityMissingDetails,
-  mockQualityMeasuresFormattedEntityDataMissingDetails,
   mockModalDrawerReportPageVerbiage,
 } from "utils/testing/setupJest";
 
@@ -42,50 +36,6 @@ describe("getFormattedEntityData()", () => {
       const result = getAddEditDrawerText(
         EntityType.ACCESS_MEASURES,
         { provider: true },
-        mockModalDrawerReportPageVerbiage
-      );
-      expect(result).toBe("Edit Mock drawer title");
-    });
-  });
-
-  describe("entity type: quality measures", () => {
-    test("Returns correct data for quality measures with no completed measures", () => {
-      const entityData = getFormattedEntityData(
-        EntityType.QUALITY_MEASURES,
-        mockQualityMeasuresEntity,
-        mockReportFieldData
-      );
-      expect(entityData).toEqual(
-        mockUnfinishedQualityMeasuresFormattedEntityData
-      );
-    });
-
-    test("Returns correct data for quality measures with some completed measures", () => {
-      const entityData = getFormattedEntityData(
-        EntityType.QUALITY_MEASURES,
-        mockQualityMeasuresEntityMissingDetails,
-        mockReportFieldData
-      );
-      expect(entityData).toEqual(
-        mockQualityMeasuresFormattedEntityDataMissingDetails
-      );
-    });
-
-    test("Returns correct data for quality measures with fully completed measures", () => {
-      const entityData = getFormattedEntityData(
-        EntityType.QUALITY_MEASURES,
-        mockCompletedQualityMeasuresEntity,
-        mockReportFieldData
-      );
-      expect(entityData).toEqual(
-        mockCompletedQualityMeasuresFormattedEntityData
-      );
-    });
-
-    test("returns 'Edit' when perPlanResponses exists for QUALITY_MEASURES", () => {
-      const result = getAddEditDrawerText(
-        EntityType.QUALITY_MEASURES,
-        { perPlanResponses: [{ name: "plan 1", response: "n/a" }] },
         mockModalDrawerReportPageVerbiage
       );
       expect(result).toBe("Edit Mock drawer title");

@@ -137,17 +137,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           entity.sanction_planName.value !== selectedRecord.id
       );
 
-      // filter qualityMeasures to exclude responses from each measure related to selected entity
-      const filteredQualityMeasures = report?.fieldData?.qualityMeasures?.map(
-        (entity: EntityShape) => {
-          const newEntity = { ...entity };
-          delete newEntity[
-            `qualityMeasure_plan_measureResults_${selectedRecord.id}`
-          ];
-          return newEntity;
-        }
-      );
-
       // filter analysis methods to remove deleted plans
       const filteredAnalysisMethods = report?.fieldData?.analysisMethods?.map(
         (originalMethod: EntityShape) => {
@@ -257,7 +246,6 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
         fieldData: {
           [name]: filteredEntities,
           sanctions: filteredSanctions,
-          qualityMeasures: filteredQualityMeasures,
           plans: filteredPlans,
           analysisMethods: filteredAnalysisMethods,
           standards: filteredStandards,
