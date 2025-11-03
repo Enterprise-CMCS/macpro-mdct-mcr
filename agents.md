@@ -16,6 +16,10 @@
 
 -
 
+## Accessibility guidelines
+
+-
+
 ## Unit testing instructions
 
 - For backend unit tests, use `cd services/app-api` to jump from the project root to the backend layer
