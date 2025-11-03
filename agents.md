@@ -8,15 +8,15 @@
 
 - To run MCR locally, use `./run update-env && ./run local`
 
+## Accessibility
+
+-
+
 ## Code style guidelines
 
 -
 
 ## Commit guidelines
-
--
-
-## Accessibility guidelines
 
 -
 
