@@ -10,7 +10,7 @@ import verbiage from "verbiage/pages/mcpar/mcpar-get-started";
 
 const mockUseNavigate = jest.fn();
 
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 
