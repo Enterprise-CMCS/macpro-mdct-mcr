@@ -2127,8 +2127,48 @@
           "path": "/mcpar/plan-level-indicators/new-section",
           "pageType": "report",
           "pageConfig": {
-            "hideSidebar": true
+            "hideSidebar": true,
+            "hasModal": true,
+            "hasDrawer": true,
+            "hasOverlay": false
           },
+          "forms": [
+            {
+              "baseForm": {}
+            },
+            {
+              "modalForm": {
+                "id": "modalForm1",
+                "fields": [
+                  {
+                    "id": "modal_formField-1",
+                    "type": "text",
+                    "validation": "text",
+                    "props": {
+                      "label": "Modal text field",
+                      "hint": "This is a modal text field."
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "drawerForm": {
+                "id": "drawerForm1",
+                "fields": [
+                  {
+                    "id": "drawer_formField-1",
+                    "type": "text",
+                    "validation": "text",
+                    "props": {
+                      "label": "Drawer text field",
+                      "hint": "This is a drawer text field."
+                    }
+                  }
+                ]
+              }
+            }
+          ],
           "entityType": "plans",
           "verbiage": {
             "intro": {
@@ -3282,7 +3322,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint":   [
+                      "hint": [
                         {
                           "type": "span",
                           "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",

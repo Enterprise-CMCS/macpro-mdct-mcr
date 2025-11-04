@@ -76,6 +76,9 @@ export interface ReportPageConfig {
 
   // Page features
   features?: {
+    hasModal: boolean;
+    hasDrawer: boolean;
+    hasOverlay: boolean;
     canAddEntities?: boolean;
     canDeleteEntities?: boolean;
     hideSidebar?: boolean;
@@ -87,6 +90,7 @@ export interface ReportPageShapeBase extends ReportRouteBase {
   form?: FormJson;
   pageConfig?: ReportPageConfig;
   children?: never;
+  forms?: AnyObject[];
   verbiage: ReportPageVerbiage;
 }
 
