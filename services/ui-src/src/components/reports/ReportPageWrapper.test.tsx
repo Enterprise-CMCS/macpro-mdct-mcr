@@ -19,7 +19,7 @@ import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 const mockUseLocation = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation(),
 }));

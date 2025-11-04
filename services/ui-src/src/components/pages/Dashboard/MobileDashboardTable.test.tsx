@@ -43,7 +43,7 @@ const mockMakeMediaQueryClasses = makeMediaQueryClasses as jest.MockedFunction<
 >;
 
 const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mcpar",
