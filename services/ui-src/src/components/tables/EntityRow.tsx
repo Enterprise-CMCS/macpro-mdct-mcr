@@ -195,7 +195,7 @@ const sx = {
   },
   errorText: {
     color: "error_dark",
-    fontSize: "sm",
+    fontSize: "xs",
     marginBottom: "0.75rem",
     ".mobile &": {
       fontSize: "xs",

@@ -302,10 +302,13 @@ const sx = {
       marginBottom: "spacer_half",
     },
     th: {
+      fontSize: "md",
+      fontWeight: "bold",
+      color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "gray_light",
+      borderColor: "gray_lighter",
       ".mobile &": {
         border: "none",
       },
