@@ -19,7 +19,6 @@ import {
   isFieldElement,
   ModalOverlayReportPageShape,
   ReportStatus,
-  ReportType,
 } from "types";
 // utils
 import {
@@ -57,9 +56,8 @@ export const ModalOverlayReportPage = ({
     useStore().user ?? {};
   const { report } = useStore();
 
-  const { MLR: accordionMLR, MCPAR: accordionMCPAR } = accordionVerbiage;
-  const accordionReport =
-    report?.reportType === ReportType.MCPAR ? accordionMCPAR : accordionMLR;
+  const reportType = report?.reportType || "MLR";
+  const accordionReport = (accordionVerbiage as AnyObject)[reportType];
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
