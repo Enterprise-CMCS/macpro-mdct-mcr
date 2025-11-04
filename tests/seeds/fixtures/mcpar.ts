@@ -372,6 +372,38 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
       ],
       websiteStatePostedCurrentParityAnalysisCoveringThisProgram:
         faker.internet.url(),
+      qualityMeasures: [
+        {
+          id: crypto.randomUUID(),
+          measure_name: faker.animal.bird(),
+          measure_identifier: [
+            {
+              key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
+              value: "Yes",
+            },
+          ],
+          measure_identifier_cmit: numberInt(),
+          measure_data_version: [
+            {
+              key: "measure_data_version-GLnFjfEWVnsNJdWMswHwxk",
+              value: "Preliminary",
+            },
+          ],
+          measure_activities: [
+            {
+              key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
+              value:
+                "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
+            },
+          ],
+          measure_data_collection_method: [
+            {
+              key: "measure_data_collection_method-bkD4uguEEiRjo5GyoCVNMi",
+              value: "Administrative",
+            },
+          ],
+        },
+      ],
       accessMeasures: [
         {
           id: crypto.randomUUID(),
