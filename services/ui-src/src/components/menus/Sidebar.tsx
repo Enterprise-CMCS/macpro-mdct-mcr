@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router";
 // components
 import { Box, Collapse, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { SkipNav } from "components";

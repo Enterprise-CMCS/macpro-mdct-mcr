@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 // components
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 import {
   Heading,
   Link,

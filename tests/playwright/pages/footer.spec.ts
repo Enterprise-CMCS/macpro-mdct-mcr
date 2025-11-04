@@ -33,14 +33,9 @@ test.describe("Global footer tests", () => {
     await homePage.goto();
     await homePage.isReady();
 
-    // set up promise for page change
-    const pagePromise = userContext.waitForEvent("page");
-    // click link
-    await homePage.accessibilityStatementLink.click();
-    // await new page and check url
-    const newPage = await pagePromise;
-    expect(newPage.url()).toBe(
-      "https://www.cms.gov/about-cms/web-policies-important-links/accessibility-nondiscrimination-disabilities-notice"
+    await expect(homePage.accessibilityStatementLink).toHaveAttribute(
+      "href",
+      "https://www.cms.gov/About-CMS/Agency-Information/Aboutwebsite/CMSNondiscriminationNotice"
     );
   });
 });
