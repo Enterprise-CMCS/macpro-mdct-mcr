@@ -56,6 +56,9 @@ export const ModalOverlayReportPage = ({
     useStore().user ?? {};
   const { report } = useStore();
 
+  const reportType = report?.reportType || "MLR";
+  const accordionReport = (accordionVerbiage as AnyObject)[reportType];
+
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
   const isLocked = report?.locked || isAdminUserType;
@@ -202,7 +205,7 @@ export const ModalOverlayReportPage = ({
         <Box sx={sx.content}>
           <ReportPageIntro
             text={verbiage.intro}
-            accordion={accordionVerbiage.MLR.formIntro}
+            accordion={accordionReport.formIntro}
             reportType={report?.reportType}
           />
 
