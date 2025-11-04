@@ -3939,7 +3939,7 @@
                 },
                 "dashboardTitle": "Quality & performance measure total count:",
                 "countEntitiesInTitle": true,
-                "tableHeader": "Measure name <br/> Measure ID / definition <br/> Status",
+                "tableHeader": "Measure name <br/> Measure ID / definition",
                 "addEntityButtonText": "Add measure",
                 "editEntityButtonText": "Edit measure",
                 "deleteModalTitle": "Delete measure?",
