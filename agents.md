@@ -22,16 +22,6 @@
 
 ### CSS coding standards
 
-- Use relative CSS units (rem, em, %, vw, vh) instead of absolute `px` units, except for border styles where `px` is acceptable
-- Use CSS logical properties for all styling (e.g., `margin-inline-start` instead of `margin-left`, `block-size` instead of `height`)
-- Use CSS cascade layers to organize all CSS in this order: `@layer config, resets, components, utilities`
-- Use `@layer config` for CSS custom properties (variables)
-- Use `@layer resets` for general CSS resets and normalizations
-- Use `@layer components` for component-specific styles
-- Use `@layer utilities` for utility classes and common styling patterns
-- Use `c-` as the prefix for component CSS classes
-- Use `u-` as the prefix for utility CSS classes
-- Use `js-` as the prefix for JavaScript id and class selectors
 - Use `:focus-visible` instead of `:focus` for focus state
 - Don't write text in all caps. Use CSS `text-transform` instead
 - Don't use Tailwind CSS
@@ -63,7 +53,8 @@
 
 ## Commit guidelines
 
--
+- Squash where applicable
+- Be descriptive of all changes made
 
 ## Unit testing instructions
 
