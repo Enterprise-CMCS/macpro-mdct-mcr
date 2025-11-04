@@ -6,6 +6,7 @@ import {
   ReviewSubmitPage,
   ModalDrawerReportPage,
   DrawerReportPage,
+  ReportPage,
   PageTemplate,
   Sidebar,
   StandardReportPage,
@@ -19,6 +20,7 @@ import {
   DrawerReportPageShape,
   PageTypes,
   ReportRoute,
+  ReportPageShapeBase,
   StandardReportPageShape,
   AnyObject,
   OverlayReportPageShape,
@@ -54,6 +56,13 @@ export const ReportPageWrapper = () => {
 
   const renderPageSection = (route: ReportRoute) => {
     switch (route.pageType) {
+      case PageTypes.REPORT:
+        return (
+          <ReportPage
+            route={route as ReportPageShapeBase}
+            validateOnRender={false}
+          />
+        );
       case PageTypes.DRAWER:
         showSidebar();
         return (

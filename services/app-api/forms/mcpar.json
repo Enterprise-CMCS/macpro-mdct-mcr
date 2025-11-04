@@ -2123,6 +2123,20 @@
       "path": "/mcpar/plan-level-indicators",
       "children": [
         {
+          "name": "New Section",
+          "path": "/mcpar/plan-level-indicators/new-section",
+          "pageType": "report",
+          "pageConfig": {
+            "hideSidebar": true
+          },
+          "entityType": "plans",
+          "verbiage": {
+            "intro": {
+              "section": "Section: New Section"
+            }
+          }
+        },
+        {
           "name": "I: Program Characteristics",
           "path": "/mcpar/plan-level-indicators/program-characteristics",
           "pageType": "drawer",
