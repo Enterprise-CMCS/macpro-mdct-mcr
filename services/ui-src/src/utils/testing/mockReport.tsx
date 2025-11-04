@@ -253,6 +253,30 @@ export const mockReportFieldData = {
       "accessMeasure_standardType-otherText": "",
     },
   ],
+  qualityMeasures: [
+    {
+      id: "mock-qm-cmit",
+      measure_name: "mock-qm-cmit",
+      measure_identifier: [
+        {
+          key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A", // pragma: allowlist secret
+          value: "Yes",
+        },
+      ],
+      measure_identifier_cmit: "1234",
+    },
+    {
+      id: "mock-qm-cbe",
+      measure_name: "mock-qm-cbe",
+      measure_identifier: [
+        {
+          key: "measure_identifier-eqVgpF8hmsma9ibcvwVqCb",
+          value: "No, it has a Consensus Based Entity (CBE) number",
+        },
+      ],
+      measure_identifier_cbe: "4321",
+    },
+  ],
   sanctions: [
     {
       ...mockSanctionsEntity,
