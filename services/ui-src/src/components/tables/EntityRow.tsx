@@ -29,7 +29,14 @@ export const EntityRow = ({
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const { report_programName, report_planName, name } = entity;
+  const {
+    report_programName,
+    report_planName,
+    name,
+    measure_identifier_cbe,
+    measure_identifier_cmit,
+    measure_name,
+  } = entity;
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
   const { reportType } = report || {};
 
@@ -38,15 +45,27 @@ export const EntityRow = ({
   }, [report]);
 
   const entityFields = () => {
-    const fields: string[] =
-      reportType === ReportType.MLR
-        ? [
-            report_planName,
-            report_programName,
-            eligibilityGroup(entity),
-            reportingPeriod,
-          ]
-        : [name];
+    let fields: string[] = [];
+    switch (reportType) {
+      case ReportType.MCPAR:
+        fields = [
+          measure_name,
+          `Measure ID: ${
+            measure_identifier_cmit || measure_identifier_cbe || "N/A"
+          }`,
+        ];
+        break;
+      case ReportType.MLR:
+        fields = [
+          report_planName,
+          report_programName,
+          eligibilityGroup(entity),
+          reportingPeriod,
+        ];
+        break;
+      default:
+        fields = [name];
+    }
     return fields;
   };
 
