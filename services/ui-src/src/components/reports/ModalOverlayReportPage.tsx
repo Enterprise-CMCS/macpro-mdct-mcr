@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
@@ -221,7 +221,7 @@ export const ModalOverlayReportPage = ({
 
           <Box>
             {reportFieldDataEntities.length === 0 ? (
-              <Box>{verbiage.emptyDashboardText}</Box>
+              <Text>{verbiage.emptyDashboardText}</Text>
             ) : (
               <>
                 <AddEntityButton />

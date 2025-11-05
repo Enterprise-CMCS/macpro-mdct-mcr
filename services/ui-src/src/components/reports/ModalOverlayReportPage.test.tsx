@@ -102,7 +102,7 @@ describe("<ModalOverlayReportPage />", () => {
       const addInformationButton = screen.getAllByRole("button", {
         name: verbiage.addEntityButtonText,
       });
-      expect(addInformationButton[0]).toBeVisible();
+      expect(addInformationButton).toHaveLength(1);
 
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
@@ -226,7 +226,7 @@ describe("<ModalOverlayReportPage />", () => {
       const addInformationButton = screen.getAllByRole("button", {
         name: verbiage.addEntityButtonText,
       });
-      expect(addInformationButton[0]).toBeVisible();
+      expect(addInformationButton).toHaveLength(2);
 
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
@@ -259,7 +259,7 @@ describe("<ModalOverlayReportPage />", () => {
       const addEntityButton = screen.getAllByRole("button", {
         name: verbiage.addEntityButtonText,
       });
-      expect(addEntityButton[0]).toBeVisible();
+      expect(addEntityButton).toHaveLength(2);
     });
 
     test("should open and close the delete modal as a State user", async () => {
@@ -308,7 +308,7 @@ describe("<ModalOverlayReportPage />", () => {
       const addEntityButton = screen.getAllByRole("button", {
         name: verbiage.addEntityButtonText,
       });
-      expect(addEntityButton[0]).toBeVisible();
+      expect(addEntityButton).toHaveLength(2);
     });
 
     test("should be unable to click the delete button as an Admin", async () => {

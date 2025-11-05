@@ -283,7 +283,7 @@ describe("<NumberField />", () => {
         "[name='testNumberField']"
       )!;
       const displayValue = numberField.value;
-      expect(displayValue).toEqual("54,321");
+      expect(displayValue).toEqual("54321");
     });
 
     test("If only hydrationValue exists, displayValue is set to it", () => {
@@ -293,7 +293,7 @@ describe("<NumberField />", () => {
         "[name='testNumberFieldWithHydrationValue']"
       )!;
       const displayValue = numberField.value;
-      expect(displayValue).toEqual("12,345");
+      expect(displayValue).toEqual("12345");
     });
 
     test("If both formFieldValue and hydrationValue exist, displayValue is set to formFieldValue", () => {
@@ -303,7 +303,7 @@ describe("<NumberField />", () => {
         "[name='testNumberFieldWithHydrationValue']"
       )!;
       const displayValue = numberField.value;
-      expect(displayValue).toEqual("54,321");
+      expect(displayValue).toEqual("54321");
     });
 
     test("should set value to default if given clear prop and clear is set to true", () => {
