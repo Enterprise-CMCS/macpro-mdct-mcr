@@ -2127,7 +2127,36 @@
           "path": "/mcpar/plan-level-indicators/new-section",
           "pageType": "report",
           "pageConfig": {
-            "hideSidebar": true
+            "entityDisplay": {
+              "variant": "row",
+              "showCount": true
+            },
+            "entityForm": {
+              "variant": "drawer",
+              "form": {
+                "id": "newSectionForm",
+                "fields": [
+                  {
+                    "id": "new_section_field_1",
+                    "type": "text",
+                    "validation": "text",
+                    "props": {
+                      "label": "New Section Field 1",
+                      "hint": "This is a sample field for the new section."
+                    }
+                  },
+                  {
+                    "id": "new_section_field_2",
+                    "type": "number",
+                    "validation": "number",
+                    "props": {
+                      "label": "New Section Field 2",
+                      "hint": "This is another sample field for the new section."
+                    }
+                  }
+                ]
+              }
+            }
           },
           "entityType": "plans",
           "verbiage": {
