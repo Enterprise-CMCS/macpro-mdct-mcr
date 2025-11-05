@@ -224,10 +224,10 @@ export const ModalOverlayReportPage = ({
               <Box>{verbiage.emptyDashboardText}</Box>
             ) : (
               <>
+                <AddEntityButton />
                 <Heading as="h3" sx={sx.dashboardTitle}>
                   {dashTitle}
                 </Heading>
-                <AddEntityButton />
                 <Table sx={sx.table} content={tableHeaders()}>
                   {reportFieldDataEntities.map((entity: EntityShape) => (
                     <EntityRow
@@ -321,8 +321,8 @@ const sx = {
     },
   },
   addEntityButton: {
-    marginTop: "spacer2",
-    marginBottom: "spacer2",
+    marginTop: "spacer3",
+    marginBottom: "spacer3",
     ".tablet &, .mobile &": {
       wordBreak: "break-word",
       whiteSpace: "break-spaces",
