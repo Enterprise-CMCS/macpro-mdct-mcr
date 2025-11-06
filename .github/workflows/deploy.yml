@@ -47,6 +47,8 @@ jobs:
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
 
   e2e-tests:
     runs-on: ubuntu-latest
