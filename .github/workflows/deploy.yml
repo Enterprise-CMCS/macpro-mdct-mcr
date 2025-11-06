@@ -47,15 +47,28 @@ jobs:
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
-    outputs:
-      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
 
-  test:
-    name: E2E Tests
-    if: ${{ needs.deploy.result == 'success' && github.ref_name != 'production' && !startsWith(github.ref_name, 'skipci') }}
-    needs:
-      - deploy
-    uses: ./.github/workflows/e2e-test.yml
-    with:
-      base-url: ${{ needs.deploy.outputs.application_endpoint }}
-    secrets: inherit #pragma: allowlist secret
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Cypress Tests
+        if: ${{ github.ref_name != 'production' }}
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: tests
+          browser: chrome
+          config: baseUrl=${{ steps.endpoint.outputs.application_endpoint }}
+        env:
+          CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+          CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+          CYPRESS_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+          CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+          RUN_PA11Y: true
+      - name: Upload screenshots
+        if: ${{ github.ref_name != 'production' && failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-test-results-${{ github.run_number }}
+          path: tests/cypress/screenshots/
+          retention-days: 30
