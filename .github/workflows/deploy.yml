@@ -59,7 +59,7 @@ jobs:
         with:
           working-directory: tests
           browser: chrome
-          config: baseUrl=${{ steps.endpoint.outputs.application_endpoint }}
+          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
         env:
           CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
           CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
