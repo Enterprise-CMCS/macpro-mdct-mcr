@@ -110,7 +110,7 @@ export const EntityRow = ({
         )}
       </Td>
       {!isMobile && (
-        <Td>
+        <Td sx={sx.desktopButtonGroup}>
           <EntityButtonGroup
             entity={entity}
             verbiage={verbiage}
@@ -167,8 +167,8 @@ const sx = {
         lineHeight: "130%",
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
-        paddingTop: "0.125rem",
-        paddingBottom: "0.125rem",
+        fontSize: "md",
+        color: "gray_darker",
         "&:first-of-type": {
           fontWeight: "bold",
           fontSize: "lg",
@@ -200,5 +200,8 @@ const sx = {
     ".mobile &": {
       fontSize: "xs",
     },
+  },
+  desktopButtonGroup: {
+    paddingInlineStart: 0,
   },
 };

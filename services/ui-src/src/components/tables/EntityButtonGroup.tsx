@@ -157,12 +157,13 @@ const sx = {
     fontWeight: "normal",
     textDecoration: "underline",
     color: "primary",
+    padding: 0,
   },
   enterButton: {
-    width: "5.75rem",
     height: "2.25rem",
     fontSize: "md",
     fontWeight: "bold",
+    paddingX: "spacer3",
   },
   deleteButton: {
     height: "1.875rem",
