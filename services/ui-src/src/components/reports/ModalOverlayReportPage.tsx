@@ -304,6 +304,7 @@ const sx = {
     th: {
       fontSize: "md",
       fontWeight: "bold",
+      lineHeight: "130%",
       color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",
