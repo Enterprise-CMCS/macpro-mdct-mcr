@@ -58,3 +58,4 @@ jobs:
     uses: ./.github/workflows/e2e-test.yml
     with:
       base-url: ${{ needs.deploy.outputs.application_endpoint }}
+    secrets: inherit #pragma: allowlist secret
