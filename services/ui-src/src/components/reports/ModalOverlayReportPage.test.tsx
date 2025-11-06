@@ -90,17 +90,19 @@ describe("<ModalOverlayReportPage />", () => {
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
       expect(screen.getByText(accordionHeader)).toBeVisible();
 
-      // Check if dashboard title is showing 0 entities
-      const dashboardTitle = `${verbiage.dashboardTitle} 0`;
-      expect(screen.getByText(dashboardTitle)).toBeVisible();
+      // Check dashboard title is not showing
+      const dashboardTitle = verbiage.dashboardTitle;
+      expect(screen.queryByText(dashboardTitle)).not.toBeInTheDocument();
 
       // Check if emptyDashboardText is displaying
       const emptyDashboardText = verbiage.emptyDashboardText;
       expect(screen.getByText(emptyDashboardText)).toBeVisible();
 
       // Check if addEntity button is displaying
-      const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
+      const addInformationButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
+      expect(addInformationButton).toHaveLength(1);
 
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
@@ -120,9 +122,11 @@ describe("<ModalOverlayReportPage />", () => {
       const user = userEvent.setup();
 
       // Get the Add button and click it
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
+      const addEntityButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
       await act(async () => {
-        await user.click(addEntityButton);
+        await user.click(addEntityButton[0]);
       });
       expect(screen.getByRole("dialog")).toBeVisible();
 
@@ -153,18 +157,20 @@ describe("<ModalOverlayReportPage />", () => {
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
       expect(screen.getByText(accordionHeader)).toBeVisible();
 
-      // Check if dashboard title is showing 0 entities
-      const dashboardTitle = `${verbiage.dashboardTitle} 0`;
-      expect(screen.getByText(dashboardTitle)).toBeVisible();
+      // Check dashboard title is not showing with 0 entities
+      const dashboardTitle = verbiage.dashboardTitle;
+      expect(screen.queryByText(dashboardTitle)).not.toBeInTheDocument();
 
       // Check if emptyDashboardText is displaying
       const emptyDashboardText = verbiage.emptyDashboardText;
       expect(screen.getByText(emptyDashboardText)).toBeVisible();
 
       // Check if addEntity button is displaying but disabled
-      const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
-      expect(screen.getByText(addInformationButton)).toBeDisabled();
+      const addInformationButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
+      expect(addInformationButton[0]).toBeVisible();
+      expect(addInformationButton[0]).toBeDisabled();
 
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
@@ -217,8 +223,10 @@ describe("<ModalOverlayReportPage />", () => {
       expect(deleteEntityButton).toBeVisible();
 
       // Check if addEntity button is displaying
-      const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
+      const addInformationButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
+      expect(addInformationButton).toHaveLength(2);
 
       // Check if Footer is display with a next button and no previous butto
       expect(screen.getByText("Continue")).toBeVisible();
@@ -248,8 +256,10 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // And make sure they can still add entities
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
-      expect(addEntityButton).toBeVisible();
+      const addEntityButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
+      expect(addEntityButton).toHaveLength(2);
     });
 
     test("should open and close the delete modal as a State user", async () => {
@@ -295,8 +305,10 @@ describe("<ModalOverlayReportPage />", () => {
       expect(screen.getByRole("table")).toBeNull;
 
       // And make sure they can still add entities
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
-      expect(addEntityButton).toBeVisible();
+      const addEntityButton = screen.getAllByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
+      expect(addEntityButton).toHaveLength(2);
     });
 
     test("should be unable to click the delete button as an Admin", async () => {

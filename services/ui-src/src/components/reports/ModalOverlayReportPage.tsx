@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
@@ -184,6 +184,16 @@ export const ModalOverlayReportPage = ({
     setSidebarHidden(false);
   };
 
+  const AddEntityButton = () => (
+    <Button
+      sx={sx.addEntityButton}
+      disabled={isLocked}
+      onClick={() => openAddEditEntityModal()}
+    >
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
+
   return (
     <Box>
       {overlayForm && isEntityDetailsOpen && currentEntity ? (
@@ -209,38 +219,32 @@ export const ModalOverlayReportPage = ({
             reportType={report?.reportType}
           />
 
-          <Box sx={sx.dashboardBox}>
-            <Heading as="h3" sx={sx.dashboardTitle}>
-              {dashTitle}
-            </Heading>
+          <Box>
             {reportFieldDataEntities.length === 0 ? (
-              <>
-                <Box sx={sx.tableSeparator} />
-                <Box sx={sx.emptyDashboard}>{verbiage.emptyDashboardText}</Box>
-              </>
+              <Text>{verbiage.emptyDashboardText}</Text>
             ) : (
-              <Table sx={sx.table} content={tableHeaders()}>
-                {reportFieldDataEntities.map((entity: EntityShape) => (
-                  <EntityRow
-                    key={entity.id}
-                    entity={entity}
-                    verbiage={verbiage}
-                    locked={isLocked}
-                    entering={entering}
-                    openAddEditEntityModal={openAddEditEntityModal}
-                    openDeleteEntityModal={openDeleteEntityModal}
-                    openOverlayOrDrawer={openEntityDetailsOverlay}
-                  />
-                ))}
-              </Table>
+              <>
+                <AddEntityButton />
+                <Heading as="h3" sx={sx.dashboardTitle}>
+                  {dashTitle}
+                </Heading>
+                <Table sx={sx.table} content={tableHeaders()}>
+                  {reportFieldDataEntities.map((entity: EntityShape) => (
+                    <EntityRow
+                      key={entity.id}
+                      entity={entity}
+                      verbiage={verbiage}
+                      locked={isLocked}
+                      entering={entering}
+                      openAddEditEntityModal={openAddEditEntityModal}
+                      openDeleteEntityModal={openDeleteEntityModal}
+                      openOverlayOrDrawer={openEntityDetailsOverlay}
+                    />
+                  ))}
+                </Table>
+              </>
             )}
-            <Button
-              sx={sx.addEntityButton}
-              disabled={isLocked}
-              onClick={() => openAddEditEntityModal()}
-            >
-              {verbiage.addEntityButtonText}
-            </Button>
+            <AddEntityButton />
           </Box>
 
           <AddEditEntityModal
@@ -283,9 +287,6 @@ const sx = {
       width: "100%",
     },
   },
-  dashboardBox: {
-    textAlign: "center",
-  },
   dashboardTitle: {
     fontSize: "md",
     fontWeight: "bold",
@@ -295,25 +296,19 @@ const sx = {
       paddingBottom: "0",
     },
   },
-  emptyDashboard: {
-    paddingTop: "spacer2",
-  },
-  tableSeparator: {
-    borderTop: "1px solid",
-    borderColor: "gray_light",
-    paddingBottom: "spacer2",
-    marginTop: "1.25rem",
-  },
   table: {
     tableLayout: "fixed",
     br: {
       marginBottom: "spacer_half",
     },
     th: {
+      fontSize: "md",
+      fontWeight: "bold",
+      color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "gray_light",
+      borderColor: "gray_lighter",
       ".mobile &": {
         border: "none",
       },
@@ -326,8 +321,8 @@ const sx = {
     },
   },
   addEntityButton: {
-    marginTop: "spacer4",
-    marginBottom: "spacer4",
+    marginTop: "spacer3",
+    marginBottom: "spacer3",
     ".tablet &, .mobile &": {
       wordBreak: "break-word",
       whiteSpace: "break-spaces",

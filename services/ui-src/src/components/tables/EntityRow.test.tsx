@@ -234,6 +234,8 @@ describe("<EntityRow />", () => {
         ...mockMcparReportStore,
       });
     });
+
+    // Plans
     const entityType = EntityType.PLANS;
     const entity: EntityShape =
       mockMcparReportContext.report.fieldData[entityType][0];
@@ -241,6 +243,25 @@ describe("<EntityRow />", () => {
       context: mockMcparReportContext,
       entity,
       entityType,
+      verbiage: mockDrawerReportPageJson.verbiage,
+    };
+
+    // Quality Measures
+    const entityTypeQM = EntityType.QUALITY_MEASURES;
+    const entityQMCmit: EntityShape =
+      mockMcparReportContext.report.fieldData[entityTypeQM][0];
+    const setupDataQmCmit = {
+      context: mockMcparReportContext,
+      entity: entityQMCmit,
+      entityType: entityTypeQM,
+      verbiage: mockDrawerReportPageJson.verbiage,
+    };
+    const entityQMCbe: EntityShape =
+      mockMcparReportContext.report.fieldData[entityTypeQM][1];
+    const setupDataQmCbe = {
+      context: mockMcparReportContext,
+      entity: entityQMCbe,
+      entityType: entityTypeQM,
       verbiage: mockDrawerReportPageJson.verbiage,
     };
 
@@ -256,6 +277,16 @@ describe("<EntityRow />", () => {
       await waitFor(() => {
         expect(mockOpenDrawer).toBeCalledTimes(1);
       });
+    });
+
+    test("MCPAR quality measures cmit", () => {
+      render(completeRowComponent(setupDataQmCmit));
+      expect(screen.getByText("Measure ID: CMIT: 1234")).toBeVisible();
+    });
+
+    test("MCPAR quality measures cbe", () => {
+      render(completeRowComponent(setupDataQmCbe));
+      expect(screen.getByText("Measure ID: CBE: 4321")).toBeVisible();
     });
 
     testA11yAct(completeRowComponent(setupData));

@@ -44,16 +44,21 @@ export const EntityRow = ({
     return getEntityStatus(entity, report, entityType);
   }, [report]);
 
+  const getMeasureIdDisplayText = () => {
+    let identifier = "N/A";
+    if (measure_identifier_cmit) {
+      identifier = `CMIT: ${measure_identifier_cmit}`;
+    } else if (measure_identifier_cbe) {
+      identifier = `CBE: ${measure_identifier_cbe}`;
+    }
+    return `Measure ID: ${identifier}`;
+  };
+
   const entityFields = () => {
     let fields: string[] = [];
     switch (reportType) {
       case ReportType.MCPAR:
-        fields = [
-          measure_name,
-          `Measure ID: ${
-            measure_identifier_cmit || measure_identifier_cbe || "N/A"
-          }`,
-        ];
+        fields = [measure_name, getMeasureIdDisplayText()];
         break;
       case ReportType.MLR:
         fields = [
@@ -85,10 +90,9 @@ export const EntityRow = ({
         </ul>
         {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            {reportType === ReportType.MLR &&
-              "Select “Enter MLR” to complete this report."}
-            {reportType === ReportType.NAAAR &&
-              "Select “Enter” to complete response."}
+            {reportType === ReportType.MLR
+              ? "Select “Enter MLR” to complete this report."
+              : "Select “Enter” to complete response."}
           </Text>
         )}
         {isMobile && (
@@ -191,7 +195,7 @@ const sx = {
   },
   errorText: {
     color: "error_dark",
-    fontSize: "sm",
+    fontSize: "xs",
     marginBottom: "0.75rem",
     ".mobile &": {
       fontSize: "xs",

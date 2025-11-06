@@ -147,13 +147,13 @@ const sx = {
   actionContainer: {
     justifyContent: "space-evenly",
     alignItems: "center",
+    gap: "spacer3",
     ".mobile &": {
       justifyContent: "space-between",
       maxWidth: "13.75rem",
     },
   },
   editButton: {
-    padding: 0,
     fontWeight: "normal",
     textDecoration: "underline",
     color: "primary",
