@@ -13,6 +13,7 @@ export default class BannerPage extends BasePage {
   readonly newBannerStartDateInput: Locator;
   readonly newBannerEndDateInput: Locator;
   readonly newBannerInputs: Locator;
+  readonly bannerLoadingSpinner: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -33,6 +34,11 @@ export default class BannerPage extends BasePage {
     this.newBannerStartDateInput = this.page.getByLabel("Start date");
     this.newBannerEndDateInput = this.page.getByLabel("End date");
     this.newBannerInputs = this.page.getByRole("textbox");
+    this.bannerLoadingSpinner = this.page
+      .getByTestId("admin-view")
+      .locator("div")
+      .filter({ hasText: "Loading..." })
+      .nth(3);
   }
 
   public async createAdminBanner() {
@@ -59,6 +65,11 @@ export default class BannerPage extends BasePage {
     // check for text indicating whether or not there are banners after load
     const noBannerText = this.page.getByText("There are no existing banners");
     const bannerText = this.page.getByText("Status");
+    await this.bannerLoadingSpinner.waitFor({ state: "visible" });
+    await this.bannerLoadingSpinner.waitFor({
+      state: "hidden",
+      timeout: 60000,
+    });
     await expect(noBannerText.or(bannerText).first()).toBeVisible();
 
     // if text for no banners shows, exit

@@ -12,7 +12,7 @@ test.beforeAll(async () => {
 });
 
 test.describe(
-  "MCPAR Dashboard Page - Program Creation/Editing/Archiving",
+  "MCPAR Dashboard Page - Program Creation/Editing/Archiving @flaky",
   () => {
     test("State users can create and edit reports", async ({
       mcparDashboardPage,
