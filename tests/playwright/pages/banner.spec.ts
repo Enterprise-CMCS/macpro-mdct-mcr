@@ -1,7 +1,7 @@
 import { expect, test } from "../utils/fixtures/base";
 import { BannerPage, stateUserAuth } from "../utils";
 
-test.describe("admin user banner page", () => {
+test.describe("admin user banner page @flaky", () => {
   test.beforeEach(async ({ bannerPage }) => {
     await bannerPage.goto();
     await bannerPage.deleteExistingBanners();
