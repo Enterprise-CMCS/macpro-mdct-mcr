@@ -27,7 +27,8 @@ export const DrawerReportPageEntityRows = ({
   patientAccessDisabled,
 }: Props) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
-  const canAddEntities = !!addEntityDrawerForm.id;
+  const canAddEntities =
+    !!addEntityDrawerForm.id || !!route.pageConfig?.features?.canAddEntities;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
@@ -93,7 +94,7 @@ export const DrawerReportPageEntityRows = ({
       const calculateEntityCompletion = () => {
         let formFields = form.fields;
         if (isCustomEntity) {
-          formFields = addEntityForm.fields;
+          formFields = addEntityForm.fields || form.fields;
         }
         return formFields
           ?.filter(isFieldElement)

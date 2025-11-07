@@ -2128,30 +2128,102 @@
           "pageType": "report",
           "pageConfig": {
             "entityDisplay": {
-              "variant": "row",
+              "variant": "rows",
               "showCount": true
             },
             "entityForm": {
-              "variant": "drawer",
+              "variant": "modal",
               "form": {
                 "id": "newSectionForm",
                 "fields": [
                   {
-                    "id": "new_section_field_1",
-                    "type": "text",
-                    "validation": "text",
+                    "id": "accessMeasure_generalCategory",
+                    "type": "radio",
+                    "validation": "radio",
                     "props": {
-                      "label": "New Section Field 1",
-                      "hint": "This is a sample field for the new section."
+                      "label": "C2.V.1 General category",
+                      "hint": "Select one.",
+                      "choices": [
+                        {
+                          "id": "XbR70C9iDU2yPtQXBuwZgA",
+                          "label": "General quantitative availability and accessibility standard"
+                        },
+                        {
+                          "id": "aSzsso583qbijUdXJnz8CS",
+                          "label": "Exception to quantitative standard"
+                        }
+                      ]
                     }
                   },
                   {
-                    "id": "new_section_field_2",
-                    "type": "number",
-                    "validation": "number",
+                    "id": "accessMeasure_standardDescription",
+                    "type": "textarea",
+                    "validation": "text",
                     "props": {
-                      "label": "New Section Field 2",
-                      "hint": "This is another sample field for the new section."
+                      "label": "C2.V.2 Measure standard",
+                      "hint": "Describe the standard (e.g., 1 provider within 30 min or 30 miles)."
+                    }
+                  },
+                  {
+                    "id": "accessMeasure_standardType",
+                    "type": "radio",
+                    "validation": "radio",
+                    "props": {
+                      "label": "C2.V.3 Standard type",
+                      "hint": "What is the standard type? Select one.",
+                      "choices": [
+                        {
+                          "id": "kBady0XnCUG8nxXWSHHeBg",
+                          "label": "Maximum time to travel"
+                        },
+                        {
+                          "id": "ZoChtaOBaUKbb5mc8J5Ttg",
+                          "label": "Maximum distance to travel"
+                        },
+                        {
+                          "id": "ufmG7LliEkSNgUxRfb736A",
+                          "label": "Maximum time or distance"
+                        },
+                        {
+                          "id": "5PhGxIGxvUGWyuJ8RGTABg",
+                          "label": "Ease of getting a timely appointment"
+                        },
+                        {
+                          "id": "E90BE7ESr0aUT0TBvTGqpA",
+                          "label": "Appointment wait time"
+                        },
+                        {
+                          "id": "c8ElWnGCxkeuR7Gf46G4Gw",
+                          "label": "Hours of operation"
+                        },
+                        {
+                          "id": "EUkZ4TchV0qx9Ebvf6W8wg",
+                          "label": "Provider to enrollee ratios"
+                        },
+                        {
+                          "id": "qsGpnAyE4EiGEyZweLmH3w",
+                          "label": "Minimum number of network providers"
+                        },
+                        {
+                          "id": "NrjpuHSmZka4YV22wVM1Zw",
+                          "label": "Service fulfillment"
+                        },
+                        {
+                          "id": "v7kDD0JjQUymHUGTlEwRfw",
+                          "label": "Other, specify",
+                          "children": [
+                            {
+                              "id": "accessMeasure_standardType-otherText",
+                              "type": "textarea",
+                              "validation": {
+                                "type": "text",
+                                "nested": true,
+                                "parentFieldName": "accessMeasure_standardType"
+                              }
+                            }
+                          ]
+                        }
+                      ]
                     }
                   }
                 ]

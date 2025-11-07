@@ -297,7 +297,7 @@ export const getForm = (params: getFormParams) => {
     ilos,
     reportingOnIlos = false,
   } = params;
-  const { drawerForm } = route;
+  const { drawerForm, pageConfig } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];
@@ -308,7 +308,7 @@ export const getForm = (params: getFormParams) => {
   );
   const reportType = report?.reportType;
 
-  let modifiedForm = drawerForm;
+  let modifiedForm = drawerForm || pageConfig.entityForm?.form; // todo: just stubbing in to make this work
   switch (reportType) {
     case ReportType.NAAAR:
       if (isAnalysisMethodsPage && plans.length > 0) {

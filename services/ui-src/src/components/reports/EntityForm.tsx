@@ -1,11 +1,13 @@
 import { ReportDrawer } from "components/drawers/ReportDrawer";
-import { AnyObject, EntityShape, FormJson } from "types";
+import { AddEditEntityModal } from "components/modals/AddEditEntityModal";
+import { AnyObject, EntityShape, EntityType, FormJson } from "types";
 
 export const EntityForm = ({
   variant,
   isOpen,
   onClose,
   entity,
+  entityType,
   form,
   onSubmit,
   submitting = false,
@@ -26,7 +28,15 @@ export const EntityForm = ({
         />
       );
     case "modal":
-      return null; // Modal implementation would go here
+      return (
+        <AddEditEntityModal
+          entityType={entityType!}
+          selectedEntity={entity!}
+          verbiage={verbiage}
+          form={form}
+          modalDisclosure={{ isOpen, onClose }}
+        />
+      );
     case "overlay":
       return null; // Overlay implementation would go here
     default:
@@ -39,6 +49,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   entity?: EntityShape;
+  entityType?: EntityType;
   form: FormJson;
   onSubmit: (data: AnyObject) => void;
   submitting?: boolean;
