@@ -51,7 +51,7 @@ const mockExemptionsOutput = {
 
 describe("utils/forms/mcparPlanExemption", () => {
   describe("addPlanChoices()", () => {
-    it("add plans to form", () => {
+    test("add plans to form", () => {
       const plansExemptFromQualityMeasures = {
         id: "mockForm",
         fields: [mockTextField, mockExemptionsInput],
@@ -66,7 +66,7 @@ describe("utils/forms/mcparPlanExemption", () => {
       expect(input).toEqual(expectedResult);
     });
 
-    it("does not add plans to form", () => {
+    test("does not add plans to form", () => {
       const noMatch = {
         id: "mockForm",
         fields: [
@@ -94,7 +94,7 @@ describe("utils/forms/mcparPlanExemption", () => {
   });
 
   describe("formModifications()", () => {
-    it("modifies the form", () => {
+    test("modifies the form", () => {
       const route = {
         name: "Mock route",
         path: "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption",
@@ -126,7 +126,7 @@ describe("utils/forms/mcparPlanExemption", () => {
       expect(input).toEqual(expectedResult);
     });
 
-    it("does not modify the form", () => {
+    test("does not modify the form", () => {
       const route = {
         name: "Mock route",
         path: "/mock-route",

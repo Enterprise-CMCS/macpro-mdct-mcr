@@ -118,7 +118,7 @@ const testCases = {
 
 describe("utils/autosave/dataModifications", () => {
   describe("dataModifications()", () => {
-    it("updates MCPAR", () => {
+    test("updates MCPAR", () => {
       const input = dataModifications(
         ReportType.MCPAR,
         testCases.dataToWrite,
@@ -128,7 +128,7 @@ describe("utils/autosave/dataModifications", () => {
       expect(input).toEqual(testCases.updatePlansInExemptions.expectedResult);
     });
 
-    it("updates MLR", () => {
+    test("updates MLR", () => {
       const reportFieldData = {};
 
       const input = dataModifications(
@@ -144,7 +144,7 @@ describe("utils/autosave/dataModifications", () => {
       expect(input).toEqual(expectedResult);
     });
 
-    it("updates NAAAR", () => {
+    test("updates NAAAR", () => {
       const input = dataModifications(
         ReportType.NAAAR,
         testCases.dataToWrite,
@@ -180,7 +180,7 @@ describe("utils/autosave/dataModifications", () => {
       ],
     };
 
-    it("allows prior authorization fields", () => {
+    test("allows prior authorization fields", () => {
       const fieldsToSave = [
         [
           "reportingDataPriorToJune2026",
@@ -229,7 +229,7 @@ describe("utils/autosave/dataModifications", () => {
       expect(input).toEqual(expectedResult);
     });
 
-    it("removes prior authorization fields", () => {
+    test("removes prior authorization fields", () => {
       const fieldsToSave = [
         [
           "reportingDataPriorToJune2026",
@@ -279,7 +279,7 @@ describe("utils/autosave/dataModifications", () => {
   });
 
   describe("updatePlansInAnalysisMethods()", () => {
-    it("updates plans in analysis_method_applicable_plans", () => {
+    test("updates plans in analysis_method_applicable_plans", () => {
       const input = updatePlansInAnalysisMethods(
         testCases.dataToWrite,
         testCases.updatePlansInAnalysisMethods.reportFieldData
@@ -289,7 +289,7 @@ describe("utils/autosave/dataModifications", () => {
       );
     });
 
-    it("does not modify dataToWrite", () => {
+    test("does not modify dataToWrite", () => {
       const reportFieldData = {
         analysisMethods: [],
       };
@@ -308,7 +308,7 @@ describe("utils/autosave/dataModifications", () => {
   });
 
   describe("updatePlansInExemptions()", () => {
-    it("updates plans in plansExemptFromQualityMeasures", () => {
+    test("updates plans in plansExemptFromQualityMeasures", () => {
       const input = updatePlansInExemptions(
         testCases.dataToWrite,
         testCases.updatePlansInExemptions.reportFieldData
@@ -318,7 +318,7 @@ describe("utils/autosave/dataModifications", () => {
   });
 
   describe("updatePlanNames()", () => {
-    it("updates plan names", () => {
+    test("updates plan names", () => {
       const plans = [
         {
           key: "mock-plan-1",
