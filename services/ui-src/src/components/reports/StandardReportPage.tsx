@@ -16,7 +16,12 @@ import {
   StandardReportPageShape,
 } from "types";
 // utils
-import { filterFormData, useFindRoute, useStore } from "utils";
+import {
+  filterFormData,
+  formModifications,
+  useFindRoute,
+  useStore,
+} from "utils";
 
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -59,17 +64,24 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     navigate(nextRoute);
   };
 
+  const { accordion, formJson } = formModifications(
+    report?.reportType,
+    route,
+    report?.fieldData
+  );
+
   return (
     <Box>
       {route.verbiage.intro && (
         <ReportPageIntro
+          accordion={accordion}
           text={route.verbiage.intro}
           reportType={report?.reportType}
         />
       )}
       <Form
         id={route.form.id}
-        formJson={route.form}
+        formJson={formJson}
         onSubmit={onSubmit}
         onError={onError}
         formData={report?.fieldData}
