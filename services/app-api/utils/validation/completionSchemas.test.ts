@@ -435,7 +435,7 @@ describe("Completion schemas", () => {
 
   test.each([
     { value: undefined, description: "undefined", expected: true },
-    { value: [], description: "empty array", expected: false },
+    { value: [], description: "empty array", expected: true },
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: true },
   ])("checkboxOptional $description -> $expected", ({ value, expected }) => {

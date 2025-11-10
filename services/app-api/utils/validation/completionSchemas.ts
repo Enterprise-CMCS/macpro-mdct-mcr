@@ -253,7 +253,6 @@ export const checkboxOneOptional = () =>
     .nullable();
 export const checkboxOptional = () =>
   array()
-    .min(1)
     .of(object({ key: text(), value: text() }))
     .notRequired()
     .nullable();
