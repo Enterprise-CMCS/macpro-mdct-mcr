@@ -229,7 +229,12 @@ export const checkbox = () =>
   array()
     .min(0)
     .of(object({ key: text(), value: text() }));
-export const checkboxOptional = () => checkbox();
+export const checkboxOptional = () =>
+  array()
+    .min(1)
+    .of(object({ key: text(), value: text() }))
+    .notRequired()
+    .nullable();
 export const checkboxSingle = () => boolean();
 export const checkboxOneOptional = () =>
   array()

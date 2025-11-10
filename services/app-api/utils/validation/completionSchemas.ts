@@ -251,7 +251,12 @@ export const checkboxOneOptional = () =>
     .of(object({ key: text(), value: text() }))
     .notRequired()
     .nullable();
-export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxOptional = () =>
+  array()
+    .min(1)
+    .of(object({ key: text(), value: text() }))
+    .notRequired()
+    .nullable();
 export const checkboxSingle = () => boolean();
 
 // RADIO
