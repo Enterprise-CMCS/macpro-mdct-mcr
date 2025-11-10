@@ -4,7 +4,6 @@ import { ReportDrawerDetails } from "components";
 // utils
 import {
   mockUnfinishedAccessMeasuresFormattedEntityData,
-  mockUnfinishedQualityMeasuresFormattedEntityData,
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -21,13 +20,6 @@ const ReportDrawerDetailsSanctionsComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedSanctionsFormattedEntityData}
     entityType={EntityType.SANCTIONS}
-  />
-);
-
-const ReportDrawerDetailsQualityMeasuresComponent = (
-  <ReportDrawerDetails
-    drawerDetails={mockUnfinishedQualityMeasuresFormattedEntityData}
-    entityType={EntityType.QUALITY_MEASURES}
   />
 );
 
@@ -57,18 +49,6 @@ describe("<ReportDrawerDetails />", () => {
         )
       ).toBeVisible();
     });
-
-    test("Should render quality measures text provided in drawerDetails", async () => {
-      render(ReportDrawerDetailsQualityMeasuresComponent);
-      expect(
-        screen.getByText(
-          mockUnfinishedQualityMeasuresFormattedEntityData.domain
-        )
-      ).toBeVisible();
-      expect(
-        screen.getByText(mockUnfinishedQualityMeasuresFormattedEntityData.name)
-      ).toBeVisible();
-    });
   });
 
   describe("Test ReportDrawerDetails invalid entity type", () => {
@@ -80,6 +60,5 @@ describe("<ReportDrawerDetails />", () => {
 
   testA11yAct(ReportDrawerDetailsAccessMeasuresComponent);
   testA11yAct(ReportDrawerDetailsSanctionsComponent);
-  testA11yAct(ReportDrawerDetailsQualityMeasuresComponent);
   testA11yAct(ReportDrawerDetailsInvalidEntityTypeComponent);
 });

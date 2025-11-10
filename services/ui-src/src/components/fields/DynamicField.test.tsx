@@ -15,7 +15,6 @@ import {
   mockMcparReportContext,
   mockSanctionsEntity,
   mockStateUserStore,
-  mockQualityMeasuresEntity,
   mockAdminUserStore,
   mockMcparReportStore,
   mockNaaarReportWithAnalysisMethodsContext,
@@ -305,18 +304,6 @@ describe("<DynamicField />", () => {
               },
             ],
             standards: [],
-            qualityMeasures: [
-              {
-                ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                  "mock-response-2",
-              },
-              {
-                ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                  "mock-response-2",
-              },
-            ],
           },
         }
       );
@@ -363,9 +350,6 @@ describe("<DynamicField />", () => {
                 ],
                 plan_ilosUtilizationByPlan: [],
               },
-            ],
-            qualityMeasures: [
-              ...mockMcparReportStore.report!.fieldData.qualityMeasures,
             ],
             sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
             standards: [],

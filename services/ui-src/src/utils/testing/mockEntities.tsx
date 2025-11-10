@@ -42,110 +42,6 @@ export const mockCompletedAccessMeasuresFormattedEntityData = {
   methodFrequency: "mock-oversight-method-frequency",
 };
 
-export const mockQualityMeasuresEntity = {
-  id: "ad3126-7225-17a8-628f-821857076e",
-  qualityMeasure_domain: [
-    {
-      key: "qualityMeasure_domain-id",
-      value: "Primary care access and preventative care",
-    },
-  ],
-  qualityMeasure_name: "Measure Name",
-  qualityMeasure_nqfNumber: "1234",
-  qualityMeasure_reportingRateType: [
-    {
-      key: "qualityMeasure_reportingRateType-id",
-      value: "Program-specific rate",
-    },
-  ],
-  qualityMeasure_set: [
-    {
-      key: "qualityMeasure_set-id",
-      value: "Medicaid Child Core Set",
-    },
-  ],
-  qualityMeasure_reportingPeriod: [
-    {
-      key: "qualityMeasure_reportingPeriod-id",
-      value: "Yes",
-    },
-  ],
-  qualityMeasure_description: "Measure Description",
-};
-
-export const mockUnfinishedQualityMeasuresFormattedEntityData = {
-  domain: "Primary care access and preventative care",
-  name: "Measure Name",
-  nqfNumber: "1234",
-  reportingRateType: "Program-specific rate",
-  set: "Medicaid Child Core Set",
-  reportingPeriod: "Yes",
-  description: "Measure Description",
-  perPlanResponses: [
-    { name: "mock-plan-name-1", response: undefined },
-    { name: "mock-plan-name-2", response: undefined },
-  ],
-};
-
-export const mockQualityMeasuresEntityMissingReportingPeriodAndDetails = {
-  ...mockQualityMeasuresEntity,
-  qualityMeasure_reportingPeriod: undefined,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-};
-
-export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails =
-  {
-    ...mockUnfinishedQualityMeasuresFormattedEntityData,
-    reportingPeriod: undefined,
-    perPlanResponses: [
-      { name: "mock-plan-name-1", response: "mock-response-1" },
-      { name: "mock-plan-name-2", response: undefined },
-    ],
-  };
-
-export const mockQualityMeasuresEntityMissingReportingPeriod = {
-  ...mockQualityMeasuresEntity,
-  qualityMeasure_reportingPeriod: undefined,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-  "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
-};
-
-export const mockQualityMeasuresFormattedEntityDataMissingReportingPeriod = {
-  ...mockUnfinishedQualityMeasuresFormattedEntityData,
-  reportingPeriod: undefined,
-  perPlanResponses: [
-    { name: "mock-plan-name-1", response: "mock-response-1" },
-    { name: "mock-plan-name-2", response: "mock-response-2" },
-  ],
-};
-
-export const mockQualityMeasuresEntityMissingDetails = {
-  ...mockQualityMeasuresEntity,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-};
-
-export const mockQualityMeasuresFormattedEntityDataMissingDetails = {
-  ...mockUnfinishedQualityMeasuresFormattedEntityData,
-  perPlanResponses: [
-    { name: "mock-plan-name-1", response: "mock-response-1" },
-    { name: "mock-plan-name-2", response: undefined },
-  ],
-};
-
-export const mockCompletedQualityMeasuresEntity = {
-  ...mockQualityMeasuresEntity,
-  "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-  "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
-};
-
-export const mockCompletedQualityMeasuresFormattedEntityData = {
-  ...mockUnfinishedQualityMeasuresFormattedEntityData,
-  perPlanResponses: [
-    { name: "mock-plan-name-1", response: "mock-response-1" },
-    { name: "mock-plan-name-2", response: "mock-response-2" },
-  ],
-};
-
 export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "MCPAR" }],
@@ -261,16 +157,6 @@ export const mockNotAnswered = (
     Not answered
   </Text>
 );
-
-export const mockQualityMeasuresData = {
-  name: "Test Measure",
-  domain: "Domain",
-  nqfNumber: "1234",
-  reportingPeriod: "Yes",
-  reportingRateType: "Rate Type",
-  set: "Mock set",
-  description: "Description",
-};
 
 export const mockfullAccessMeasuresData = {
   standardType: "Type A",

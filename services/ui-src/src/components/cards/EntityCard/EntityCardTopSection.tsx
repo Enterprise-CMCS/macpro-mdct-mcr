@@ -44,15 +44,7 @@ export const EntityCardTopSection = ({
         />
       );
     case EntityType.QUALITY_MEASURES:
-      return (
-        <QualityMeasuresSection
-          formattedEntityData={formattedEntityData}
-          printVersion={!!printVersion}
-          sx={sx}
-          isPDF={isPDF}
-          topSection
-        />
-      );
+      return <QualityMeasuresSection topSection />;
     case EntityType.STANDARDS:
       return (
         <StandardsSection

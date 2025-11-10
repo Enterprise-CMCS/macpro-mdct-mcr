@@ -59,7 +59,33 @@ export type ReportRouteWithForm =
   | OverlayReportPageShape
   | PlanOverlayReportPageShape;
 
+export interface ReportPageConfig {
+  // Display configuration
+  entityDisplay?: {
+    variant: "rows" | "cards" | "table";
+    showCount?: boolean;
+    emptyMessage?: string;
+  };
+
+  // Editor configuration
+  entityEditor?: {
+    variant: "drawer" | "overlay" | "modal";
+    addForm?: FormJson;
+    editForm?: FormJson;
+  };
+
+  // Page features
+  features?: {
+    canAddEntities?: boolean;
+    canDeleteEntities?: boolean;
+    hideSidebar?: boolean;
+    showReportNavigation?: boolean;
+  };
+}
+
 export interface ReportPageShapeBase extends ReportRouteBase {
+  form?: FormJson;
+  pageConfig?: ReportPageConfig;
   children?: never;
   verbiage: ReportPageVerbiage;
 }

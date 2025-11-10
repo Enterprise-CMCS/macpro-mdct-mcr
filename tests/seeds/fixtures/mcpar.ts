@@ -622,40 +622,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           name: ilosName,
         },
       ],
-      qualityMeasures: [
-        {
-          id: crypto.randomUUID(),
-          qualityMeasure_name: faker.animal.insect(),
-          qualityMeasure_description: faker.lorem.sentence(),
-          qualityMeasure_domain: [
-            {
-              key: "qualityMeasure_domain-Y3InqsLp4kSTgAUvTwq0CA",
-              value: "Primary care access and preventative care",
-            },
-          ],
-          qualityMeasure_nqfNumber: faker.hacker.abbreviation(),
-          [`qualityMeasure_plan_measureResults_${planId}`]:
-            faker.lorem.sentence(),
-          qualityMeasure_reportingPeriod: [
-            {
-              key: "qualityMeasure_reportingPeriod-XAalDWT7l0qPz676XFGSGQ",
-              value: "Yes",
-            },
-          ],
-          qualityMeasure_reportingRateType: [
-            {
-              key: "qualityMeasure_reportingRateType-lTIN7GiY2Ui2kJYrWzXqVw",
-              value: "Program-specific rate",
-            },
-          ],
-          qualityMeasure_set: [
-            {
-              key: "qualityMeasure_set-tjSQLCDhgEy7H3VrhtUKxw",
-              value: "Medicaid Child Core Set",
-            },
-          ],
-        },
-      ],
       sanctions: [createSanction(planId)],
     },
   };

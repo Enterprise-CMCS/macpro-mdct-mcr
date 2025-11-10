@@ -97,6 +97,7 @@ export { HomePage } from "./pages/Home/HomePage";
 export { NotFoundPage } from "./pages/NotFound/NotFoundPage";
 export { ProfilePage } from "./pages/Profile/ProfilePage";
 export { ReportGetStartedPage } from "./pages/GetStarted/ReportGetStartedPage";
+export { ReportPage } from "./pages/Report/ReportPage";
 export { ReviewSubmitPage } from "./pages/ReviewSubmit/ReviewSubmitPage";
 export { ExportedReportPage } from "./pages/Export/ExportedReportPage";
 export { ComponentInventoryPage } from "./pages/ComponentInventory/ComponentInventoryPage";

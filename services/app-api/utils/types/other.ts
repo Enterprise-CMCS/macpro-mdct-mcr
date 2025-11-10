@@ -126,6 +126,7 @@ export enum PageTypes {
   MODAL_OVERLAY = "modalOverlay",
   PLAN_OVERLAY = "planOverlay",
   REVIEW_SUBMIT = "reviewSubmit",
+  REPORT = "report",
 }
 
 export interface ScreenReaderCustomHeaderName {
