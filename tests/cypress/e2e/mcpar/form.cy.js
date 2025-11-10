@@ -278,12 +278,25 @@ const processField = (field) => {
       case "radio":
       case "checkbox": {
         const firstChoice = field.props?.choices?.[0];
-        if (!firstChoice || firstChoice.id === "placeholder") return;
 
-        cy.get(`[id="${field.id}-${firstChoice.id}"]`).check();
-        field.props.choices[0].children?.forEach((childField) =>
-          processField(childField)
-        );
+        if (firstChoice && firstChoice.id !== "placeholder") {
+          cy.get(`#${field.id}-${firstChoice.id}`).check();
+          firstChoice.children?.forEach(processField);
+          break;
+        }
+
+        // Find first checkbox
+        cy.get(`input[type="checkbox"][id^="${field.id}-"]`)
+          .first()
+          .then(($el) => {
+            const id = $el.attr("id");
+            cy.wrap($el).check();
+
+            const choice = field.props?.choices?.find(
+              (c) => `${field.id}-${c.id}` === id
+            );
+            choice?.children?.forEach(processField);
+          });
         break;
       }
       case "numberSuppressible":
