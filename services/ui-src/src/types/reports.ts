@@ -196,6 +196,10 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
 // REPORT VERBIAGE
 
 export interface ReportPageVerbiage {
+  accordion?: {
+    buttonLabel: string;
+    text: string;
+  };
   intro: {
     alert?: string;
     hint?: string;

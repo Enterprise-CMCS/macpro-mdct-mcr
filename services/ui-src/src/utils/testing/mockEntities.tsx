@@ -42,6 +42,76 @@ export const mockCompletedAccessMeasuresFormattedEntityData = {
   methodFrequency: "mock-oversight-method-frequency",
 };
 
+export const mockQualityMeasuresEntity = {
+  id: "mock-id",
+  qualityMeasure_crossProgramReportingRateProgramList: "Mock program list",
+  qualityMeasure_description: "Mock description",
+  qualityMeasure_domain: [
+    {
+      key: "qualityMeasure_domain-mock",
+      value: "Mock domain",
+    },
+  ],
+  qualityMeasure_name: "Mock name",
+  qualityMeasure_nqfNumber: "12345678",
+  "qualityMeasure_plan_measureResults_mock-plan-id-1": "Yes",
+  "qualityMeasure_plan_measureResults_mock-plan-id-2": "Yes",
+  qualityMeasure_reportingPeriod: [
+    {
+      key: "qualityMeasure_reportingPeriod-mock",
+      value: "Mock reporting period",
+    },
+  ],
+  qualityMeasure_reportingPeriodEndDate: "",
+  qualityMeasure_reportingPeriodStartDate: "",
+  qualityMeasure_reportingRateType: [
+    {
+      key: "qualityMeasure_reportingRateType-mock",
+      value: "Cross-program rate",
+    },
+  ],
+  qualityMeasure_set: [
+    {
+      key: "qualityMeasure_set-mock",
+      value: "Mock Set",
+    },
+  ],
+};
+
+export const mockUnfinishedQualityMeasuresFormattedEntityData = {
+  perPlanResponses: [
+    {
+      name: "mock-plan-name-1",
+      response: undefined,
+    },
+    {
+      name: "mock-plan-name-2",
+      response: undefined,
+    },
+  ],
+  reportingPeriod: "Mock reporting period",
+};
+
+export const mockCompletedQualityMeasuresFormattedEntityData = {
+  ...mockUnfinishedQualityMeasuresFormattedEntityData,
+  name: "Mock name",
+  description: "Mock description",
+  domain: "Mock domain",
+  nqfNumber: "12345678",
+  perPlanResponses: [
+    {
+      name: "mock-plan-name-1",
+      response: "Yes",
+    },
+    {
+      name: "mock-plan-name-2",
+      response: "Yes",
+    },
+  ],
+  reportingRateType: "Cross-program rate: Mock program list",
+  set: "Mock Set",
+};
+
 export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "MCPAR" }],
