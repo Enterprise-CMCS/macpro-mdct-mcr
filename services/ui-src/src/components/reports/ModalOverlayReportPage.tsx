@@ -207,6 +207,7 @@ export const ModalOverlayReportPage = ({
             selectedEntity={currentEntity}
             disabled={!userIsEndUser}
             setEntering={setEntering}
+            route={route}
             submitting={submitting}
             validateOnRender={validateOnRender}
           />
