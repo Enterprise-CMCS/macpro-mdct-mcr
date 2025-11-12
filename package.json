@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.823.0",
+    "@aws-sdk/client-cloudformation": "^3.921.0",
     "@aws-sdk/client-cloudfront": "^3.921.0",
     "@aws-sdk/client-lambda": "^3.921.0",
     "@aws-sdk/client-s3": "^3.921.0",
