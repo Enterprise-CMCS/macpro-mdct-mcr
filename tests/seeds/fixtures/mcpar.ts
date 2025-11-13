@@ -148,18 +148,37 @@ export const newMcparPCCM = (stateName: string, state: string) => {
 };
 
 export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
-  const planId = crypto.randomUUID();
+  const numberOfExamples = 3;
+  const planIds = Array.from({ length: numberOfExamples }, () =>
+    crypto.randomUUID()
+  );
 
   if (programIsPCCM?.[0].value === "Yes") {
-    return fillMcparPCCM(planId);
+    return fillMcparPCCM(planIds);
   }
 
-  const ilosId = crypto.randomUUID();
-  const ilosName = faker.animal.dog();
-  const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
-  const newReportingPeriodEndDate = faker.date.future({
-    refDate: newReportingPeriodStartDate,
-  });
+  const accessMeasures = Array.from({ length: numberOfExamples }, () =>
+    createAccessMeasure()
+  );
+
+  const bssEntities = Array.from({ length: numberOfExamples }, () =>
+    createBssEntity()
+  );
+
+  const ilos = Array.from({ length: numberOfExamples }, () => ({
+    id: crypto.randomUUID(),
+    name: faker.animal.dog(),
+  }));
+
+  const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
+
+  const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
+
+  const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
+    createQualityMeasure()
+  );
+
+  const sanctions = planIds.map((planId) => createSanction(planId));
 
   return {
     metadata: {
@@ -372,294 +391,21 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
       ],
       websiteStatePostedCurrentParityAnalysisCoveringThisProgram:
         faker.internet.url(),
-      qualityMeasures: [
-        {
-          id: crypto.randomUUID(),
-          measure_name: faker.animal.bird(),
-          measure_identifier: [
-            {
-              key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
-              value: "Yes",
-            },
-          ],
-          measure_identifier_cmit: numberInt(),
-          measure_data_version: [
-            {
-              key: "measure_data_version-GLnFjfEWVnsNJdWMswHwxk",
-              value: "Preliminary",
-            },
-          ],
-          measure_activities: [
-            {
-              key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
-              value:
-                "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
-            },
-          ],
-          measure_data_collection_method: [
-            {
-              key: "measure_data_collection_method-bkD4uguEEiRjo5GyoCVNMi",
-              value: "Administrative",
-            },
-          ],
-        },
-      ],
-      accessMeasures: [
-        {
-          id: crypto.randomUUID(),
-          accessMeasure_applicableRegion: [
-            {
-              key: "accessMeasure_applicableRegion-aZ4JmR9kfLKZEqQje3N1R1",
-              value: "Statewide",
-            },
-          ],
-          accessMeasure_generalCategory: [
-            {
-              key: "accessMeasure_generalCategory-XbR70C9iDU2yPtQXBuwZgA",
-              value:
-                "General quantitative availability and accessibility standard",
-            },
-          ],
-          accessMeasure_monitoringMethods: [
-            {
-              key: "accessMeasure_monitoringMethods-gbWqxtPWaUC1yUbmhWA0UA",
-              value: "Geomapping",
-            },
-          ],
-          accessMeasure_oversightMethodFrequency: [
-            {
-              key: "accessMeasure_oversightMethodFrequency-vtAjpZENepsmacGCddGdyt",
-              value: "Weekly",
-            },
-          ],
-          accessMeasure_population: [
-            {
-              key: "accessMeasure_population-YtRX5yx7NEWkGfU9vDI03g",
-              value: "Adult",
-            },
-          ],
-          accessMeasure_providerType: [
-            {
-              key: "accessMeasure_providerType-7z1m6zajqUupPe89o3dAGQ",
-              value: "Primary care",
-            },
-          ],
-          accessMeasure_standardDescription: faker.lorem.sentence(),
-          accessMeasure_standardType: [
-            {
-              key: "accessMeasure_standardType-kBady0XnCUG8nxXWSHHeBg",
-              value: "Maximum time to travel",
-            },
-          ],
-        },
-      ],
-      plans: [
-        {
-          id: planId,
-          name: faker.animal.cat(),
-          plan_activeAppeals: numberInt(),
-          plan_activeGrievances: numberInt(),
-          plan_appealsDenied: numberInt(),
-          plan_appealsResolvedInFavorOfEnrollee: numberInt(),
-          plan_appealsResolvedInPartialFavorOfEnrollee: numberInt(),
-          plan_averageTimeToDecisionForExpeditedPriorAuthorizations:
-            numberFloat(),
-          plan_averageTimeToDecisionForStandardPriorAuthorizations:
-            numberFloat(),
-          plan_beneficiaryCircumstanceChangeReportingFrequency: [
-            {
-              key: "plan_beneficiaryCircumstanceChangeReportingFrequency-D79APWVHmkGzLcmBQrRXOA",
-              value: "Daily",
-            },
-          ],
-          plan_dedicatedProgramIntegrityStaff: numberInt(),
-          plan_encounterDataSubmissionHipaaCompliancePercentage: numberInt(),
-          plan_encounterDataSubmissionTimelinessCompliancePercentage:
-            numberInt(),
-          plan_enrollment: suppressionText,
-          plan_ilosOfferedByPlan: [
-            {
-              key: "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU",
-              value: "Yes, at least 1 ILOS is offered by this plan",
-            },
-          ],
-          plan_ilosUtilizationByPlan: [
-            { key: `plan_ilosUtilizationByPlan-${ilosId}`, value: ilosName },
-          ],
-          [`plan_ilosUtilizationByPlan_${ilosId}`]: numberInt(),
-          plan_ltssUserFieldGrievances: numberInt(),
-          plan_ltssUserFiledAppeals: numberInt(),
-          plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledAppeal:
-            numberInt(),
-          plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance:
-            numberInt(),
-          plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
-            numberFloat(),
-          plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
-          plan_medicaidEnrollmentSharePercentage: suppressionText,
-          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
-          plan_parentOrganization: faker.lorem.sentence(),
-          plan_medicalLossRatioPercentage: numberFloat(),
-          plan_medicalLossRatioPercentageAggregationLevel: [
-            {
-              key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-              value: "Program-specific statewide",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriod: [
-            {
-              key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-              value: "Yes",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-            newReportingPeriodEndDate
-          ),
-          plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-            newReportingPeriodStartDate
-          ),
-          plan_mfcuProgramIntegrityReferrals: numberInt(),
-          plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer:
-            numberInt(),
-          plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers:
-            numberInt(),
-          plan_openedProgramIntegrityInvestigations: numberInt(),
-          plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
-            numberFloat(),
-          plan_overpaymentReportingToStateDollarAmount: numberFloat(),
-          plan_overpaymentReportingToStateEndDate: dateFormat.format(
-            newReportingPeriodEndDate
-          ),
-          plan_overpaymentReportingToStateStartDate: dateFormat.format(
-            newReportingPeriodStartDate
-          ),
-          plan_percentageOfExpeditedPriorAuthorizationRequestsApproved:
-            numberFloat(),
-          plan_percentageOfExpeditedPriorAuthorizationRequestsDenied:
-            numberFloat(),
-          plan_percentageOfStandardPriorAuthorizationRequestsApproved:
-            numberFloat(),
-          plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal:
-            numberFloat(),
-          plan_percentageOfStandardPriorAuthorizationRequestsDenied:
-            numberFloat(),
-          plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
-            numberFloat(),
-          plan_populationSpecificMedicalLossRatioDescription: numberInt(),
-          plan_programIntegrityReferralPath: [
-            {
-              key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
-              value:
-                "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
-            },
-          ],
-          plan_resolvedAbuseNeglectExploitationGrievances: numberInt(),
-          plan_resolvedAccessToCareGrievances: numberInt(),
-          plan_resolvedAppeals: numberInt(),
-          plan_resolvedCareCaseManagementGrievances: numberInt(),
-          plan_resolvedCoveredOutpatientPrescriptionDrugAppeals: numberInt(),
-          plan_resolvedCoveredOutpatientPrescriptionDrugGrievances: numberInt(),
-          plan_resolvedCustomerServiceGrievances: numberInt(),
-          plan_resolvedDenialOfExpeditedAppealGrievances: numberInt(),
-          plan_resolvedDentalServiceAppeals: numberInt(),
-          plan_resolvedDentalServiceGrievances: numberInt(),
-          plan_resolvedDmeAndSuppliesAppeals: numberInt(),
-          plan_resolvedDmeGrievances: numberInt(),
-          plan_resolvedEmergencyServicesAppeals: numberInt(),
-          plan_resolvedEmergencyServicesGrievances: numberInt(),
-          plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
-          plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
-          plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
-          plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
-          plan_resolvedGrievances: numberInt(),
-          plan_resolvedHomeHealthAppeals: numberInt(),
-          plan_resolvedHomeHealthGrievances: numberInt(),
-          plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
-          plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
-          plan_resolvedLtssServiceAppeals: numberInt(),
-          plan_resolvedLtssServiceGrievances: numberInt(),
-          plan_resolvedNemtAppeals: numberInt(),
-          plan_resolvedNemtGrievances: numberInt(),
-          plan_resolvedOtherGrievances: numberInt(),
-          plan_resolvedOtherServiceAppeals: numberInt(),
-          plan_resolvedOtherServiceGrievances: numberInt(),
-          plan_resolvedOutpatientBehavioralHealthServiceAppeals: numberInt(),
-          plan_resolvedOutpatientBehavioralHealthServiceGrievances: numberInt(),
-          plan_resolvedPaymentBillingGrievances: numberInt(),
-          plan_resolvedPlanCommunicationGrievances: numberInt(),
-          plan_resolvedPostServiceAuthorizationDenialAppeals: numberInt(),
-          plan_resolvedPreServiceAuthorizationDenialAppeals: numberInt(),
-          plan_resolvedProgramIntegrityInvestigations: numberInt(),
-          plan_resolvedQualityOfCareGrievances: numberInt(),
-          plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals:
-            numberInt(),
-          plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals:
-            numberInt(),
-          plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals: numberInt(),
-          plan_resolvedServiceTimelinessAppeals: numberInt(),
-          plan_resolvedSnfServiceAppeals: numberInt(),
-          plan_resolvedSnfServiceGrievances: numberInt(),
-          plan_resolvedSuspectedFraudGrievances: numberInt(),
-          plan_resolvedTherapiesAppeals: numberInt(),
-          plan_resolvedTherapyGrievances: numberInt(),
-          plan_resolvedUntimelyResponseAppeals: numberInt(),
-          plan_resolvedUntimelyResponseGrievances: numberInt(),
-          plan_stateFairHearingRequestsFiled: numberInt(),
-          plan_stateFairHearingRequestsRetracted: numberInt(),
-          plan_stateFairHearingRequestsWithAdverseDecision: numberInt(),
-          plan_stateFairHearingRequestsWithExternalMedicalReviewWithAdverseDecision:
-            numberInt(),
-          plan_stateFairHearingRequestsWithExternalMedicalReviewWithFavorableDecision:
-            numberInt(),
-          plan_stateFairHearingRequestsWithFavorableDecision: numberInt(),
-          plan_timelyResolvedExpeditedAppeals: numberInt(),
-          plan_timelyResolvedStandardAppeals: numberInt(),
-          plan_timyleResolvedGrievances: numberInt(),
-          plan_totalExpeditedPriorAuthorizationRequestsReceived: numberInt(),
-          plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived:
-            numberInt(),
-          plan_totalStandardPriorAuthorizationRequestsReceived: numberInt(),
-          plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
-            faker.internet.url(),
-          plan_urlForPatientAccessApi: faker.internet.url(),
-          plan_urlForPatientResourcesForPatientAccessApi: faker.internet.url(),
-          plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi:
-            faker.internet.url(),
-          plan_urlForPriorAuthorizationDataOnPlanWebsite: faker.internet.url(),
-          program_encounterDataSubmissionTimelinessStandardDefinition:
-            faker.lorem.sentence(),
-        },
-      ],
-      bssEntities: [
-        {
-          id: crypto.randomUUID(),
-          name: faker.animal.cetacean(),
-          bssEntity_entityRole: [
-            {
-              key: "bssEntity_entityRole-aZ0uOjpYOE6zavUNXcZYrw",
-              value: "Enrollment Broker/Choice Counseling",
-            },
-          ],
-          bssEntity_entityType: [
-            {
-              key: "bssEntity_entityType-b8RT4wLcoU2yb0QgswyAfQ",
-              value: "State Government Entity",
-            },
-          ],
-        },
-      ],
-      ilos: [
-        {
-          id: ilosId,
-          name: ilosName,
-        },
-      ],
-      sanctions: [createSanction(planId)],
+      accessMeasures,
+      bssEntities,
+      ilos,
+      plans,
+      plansExemptFromQualityMeasures,
+      qualityMeasures,
+      sanctions,
     },
   };
 };
 
-export const fillMcparPCCM = (planId: string): SeedFillReportShape => {
+export const fillMcparPCCM = (planIds: string[]): SeedFillReportShape => {
+  const plans = planIds.map((planId) => createPlanPCCM(planId));
+  const sanctions = planIds.map((planId) => createSanction(planId));
+
   return {
     metadata: {
       lastAlteredBy: faker.person.fullName(),
@@ -682,20 +428,291 @@ export const fillMcparPCCM = (planId: string): SeedFillReportShape => {
       program_specialBenefitsAvailabilityVariation: faker.lorem.sentence(),
       state_statewideMedicaidEnrollment: numberInt(),
       state_statewideMedicaidManagedCareEnrollment: numberInt(),
-      plans: [
-        {
-          id: planId,
-          name: faker.animal.cat(),
-          plan_enrollment: suppressionText,
-          plan_medicaidEnrollmentSharePercentage: suppressionText,
-          plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
-          plan_parentOrganization: faker.lorem.sentence(),
-        },
-      ],
-      sanctions: [createSanction(planId)],
+      plans,
+      sanctions,
     },
   };
 };
+
+const createAccessMeasure = () => ({
+  id: crypto.randomUUID(),
+  accessMeasure_applicableRegion: [
+    {
+      key: "accessMeasure_applicableRegion-aZ4JmR9kfLKZEqQje3N1R1",
+      value: "Statewide",
+    },
+  ],
+  accessMeasure_generalCategory: [
+    {
+      key: "accessMeasure_generalCategory-XbR70C9iDU2yPtQXBuwZgA",
+      value: "General quantitative availability and accessibility standard",
+    },
+  ],
+  accessMeasure_monitoringMethods: [
+    {
+      key: "accessMeasure_monitoringMethods-gbWqxtPWaUC1yUbmhWA0UA",
+      value: "Geomapping",
+    },
+  ],
+  accessMeasure_oversightMethodFrequency: [
+    {
+      key: "accessMeasure_oversightMethodFrequency-vtAjpZENepsmacGCddGdyt",
+      value: "Weekly",
+    },
+  ],
+  accessMeasure_population: [
+    {
+      key: "accessMeasure_population-YtRX5yx7NEWkGfU9vDI03g",
+      value: "Adult",
+    },
+  ],
+  accessMeasure_providerType: [
+    {
+      key: "accessMeasure_providerType-7z1m6zajqUupPe89o3dAGQ",
+      value: "Primary care",
+    },
+  ],
+  accessMeasure_standardDescription: faker.lorem.sentence(),
+  accessMeasure_standardType: [
+    {
+      key: "accessMeasure_standardType-kBady0XnCUG8nxXWSHHeBg",
+      value: "Maximum time to travel",
+    },
+  ],
+});
+
+const createBssEntity = () => ({
+  id: crypto.randomUUID(),
+  name: faker.animal.cetacean(),
+  bssEntity_entityRole: [
+    {
+      key: "bssEntity_entityRole-aZ0uOjpYOE6zavUNXcZYrw",
+      value: "Enrollment Broker/Choice Counseling",
+    },
+  ],
+  bssEntity_entityType: [
+    {
+      key: "bssEntity_entityType-b8RT4wLcoU2yb0QgswyAfQ",
+      value: "State Government Entity",
+    },
+  ],
+});
+
+const createPlanExemption = (plan: any) => ({
+  key: `plansExemptFromQualityMeasures-${plan.id}`,
+  value: plan.name,
+});
+
+const createPlanPCCM = (planId: string) => ({
+  id: planId,
+  name: faker.animal.cat(),
+  plan_enrollment: suppressionText,
+  plan_medicaidEnrollmentSharePercentage: suppressionText,
+  plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+  plan_parentOrganization: faker.lorem.sentence(),
+});
+
+const createPlan = (planId: string, ilos: { id: string; name: string }) => {
+  const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
+  const newReportingPeriodEndDate = faker.date.future({
+    refDate: newReportingPeriodStartDate,
+  });
+
+  return {
+    id: planId,
+    name: faker.animal.cat(),
+    plan_activeAppeals: numberInt(),
+    plan_activeGrievances: numberInt(),
+    plan_appealsDenied: numberInt(),
+    plan_appealsResolvedInFavorOfEnrollee: numberInt(),
+    plan_appealsResolvedInPartialFavorOfEnrollee: numberInt(),
+    plan_averageTimeToDecisionForExpeditedPriorAuthorizations: numberFloat(),
+    plan_averageTimeToDecisionForStandardPriorAuthorizations: numberFloat(),
+    plan_beneficiaryCircumstanceChangeReportingFrequency: [
+      {
+        key: "plan_beneficiaryCircumstanceChangeReportingFrequency-D79APWVHmkGzLcmBQrRXOA",
+        value: "Daily",
+      },
+    ],
+    plan_dedicatedProgramIntegrityStaff: numberInt(),
+    plan_encounterDataSubmissionHipaaCompliancePercentage: numberInt(),
+    plan_encounterDataSubmissionTimelinessCompliancePercentage: numberInt(),
+    plan_enrollment: suppressionText,
+    plan_ilosOfferedByPlan: [
+      {
+        key: "plan_ilosOfferedByPlan-1qdYiWh0SaO7IQ41NeOt0uJU",
+        value: "Yes, at least 1 ILOS is offered by this plan",
+      },
+    ],
+    plan_ilosUtilizationByPlan: [
+      { key: `plan_ilosUtilizationByPlan-${ilos.id}`, value: ilos.name },
+    ],
+    [`plan_ilosUtilizationByPlan_${ilos.id}`]: numberInt(),
+    plan_ltssUserFieldGrievances: numberInt(),
+    plan_ltssUserFiledAppeals: numberInt(),
+    plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledAppeal: numberInt(),
+    plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance:
+      numberInt(),
+    plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests:
+      numberFloat(),
+    plan_medianTimeToDecisionOnStandardPriorAuthorizations: numberFloat(),
+    plan_medicaidEnrollmentSharePercentage: suppressionText,
+    plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
+    plan_parentOrganization: faker.lorem.sentence(),
+    plan_medicalLossRatioPercentage: numberFloat(),
+    plan_medicalLossRatioPercentageAggregationLevel: [
+      {
+        key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
+        value: "Program-specific statewide",
+      },
+    ],
+    plan_medicalLossRatioReportingPeriod: [
+      {
+        key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
+        value: "Yes",
+      },
+    ],
+    plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
+      newReportingPeriodEndDate
+    ),
+    plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
+      newReportingPeriodStartDate
+    ),
+    plan_mfcuProgramIntegrityReferrals: numberInt(),
+    plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
+    plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
+    plan_openedProgramIntegrityInvestigations: numberInt(),
+    plan_overpaymentReportingToStateCorrespondingYearPremiumRevenue:
+      numberFloat(),
+    plan_overpaymentReportingToStateDollarAmount: numberFloat(),
+    plan_overpaymentReportingToStateEndDate: dateFormat.format(
+      newReportingPeriodEndDate
+    ),
+    plan_overpaymentReportingToStateStartDate: dateFormat.format(
+      newReportingPeriodStartDate
+    ),
+    plan_percentageOfExpeditedPriorAuthorizationRequestsApproved: numberFloat(),
+    plan_percentageOfExpeditedPriorAuthorizationRequestsDenied: numberFloat(),
+    plan_percentageOfStandardPriorAuthorizationRequestsApproved: numberFloat(),
+    plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal:
+      numberFloat(),
+    plan_percentageOfStandardPriorAuthorizationRequestsDenied: numberFloat(),
+    plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
+      numberFloat(),
+    plan_populationSpecificMedicalLossRatioDescription: numberInt(),
+    plan_programIntegrityReferralPath: [
+      {
+        key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
+        value: "Makes referrals to the Medicaid Fraud Control Unit (MFCU) only",
+      },
+    ],
+    plan_resolvedAbuseNeglectExploitationGrievances: numberInt(),
+    plan_resolvedAccessToCareGrievances: numberInt(),
+    plan_resolvedAppeals: numberInt(),
+    plan_resolvedCareCaseManagementGrievances: numberInt(),
+    plan_resolvedCoveredOutpatientPrescriptionDrugAppeals: numberInt(),
+    plan_resolvedCoveredOutpatientPrescriptionDrugGrievances: numberInt(),
+    plan_resolvedCustomerServiceGrievances: numberInt(),
+    plan_resolvedDenialOfExpeditedAppealGrievances: numberInt(),
+    plan_resolvedDentalServiceAppeals: numberInt(),
+    plan_resolvedDentalServiceGrievances: numberInt(),
+    plan_resolvedDmeAndSuppliesAppeals: numberInt(),
+    plan_resolvedDmeGrievances: numberInt(),
+    plan_resolvedEmergencyServicesAppeals: numberInt(),
+    plan_resolvedEmergencyServicesGrievances: numberInt(),
+    plan_resolvedGeneralInpatientServiceAppeals: numberInt(),
+    plan_resolvedGeneralInpatientServiceGrievances: numberInt(),
+    plan_resolvedGeneralOutpatientServiceAppeals: numberInt(),
+    plan_resolvedGeneralOutpatientServiceGrievances: numberInt(),
+    plan_resolvedGrievances: numberInt(),
+    plan_resolvedHomeHealthAppeals: numberInt(),
+    plan_resolvedHomeHealthGrievances: numberInt(),
+    plan_resolvedInpatientBehavioralHealthServiceAppeals: numberInt(),
+    plan_resolvedInpatientBehavioralHealthServiceGrievances: numberInt(),
+    plan_resolvedLtssServiceAppeals: numberInt(),
+    plan_resolvedLtssServiceGrievances: numberInt(),
+    plan_resolvedNemtAppeals: numberInt(),
+    plan_resolvedNemtGrievances: numberInt(),
+    plan_resolvedOtherGrievances: numberInt(),
+    plan_resolvedOtherServiceAppeals: numberInt(),
+    plan_resolvedOtherServiceGrievances: numberInt(),
+    plan_resolvedOutpatientBehavioralHealthServiceAppeals: numberInt(),
+    plan_resolvedOutpatientBehavioralHealthServiceGrievances: numberInt(),
+    plan_resolvedPaymentBillingGrievances: numberInt(),
+    plan_resolvedPlanCommunicationGrievances: numberInt(),
+    plan_resolvedPostServiceAuthorizationDenialAppeals: numberInt(),
+    plan_resolvedPreServiceAuthorizationDenialAppeals: numberInt(),
+    plan_resolvedProgramIntegrityInvestigations: numberInt(),
+    plan_resolvedQualityOfCareGrievances: numberInt(),
+    plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals:
+      numberInt(),
+    plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals: numberInt(),
+    plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals: numberInt(),
+    plan_resolvedServiceTimelinessAppeals: numberInt(),
+    plan_resolvedSnfServiceAppeals: numberInt(),
+    plan_resolvedSnfServiceGrievances: numberInt(),
+    plan_resolvedSuspectedFraudGrievances: numberInt(),
+    plan_resolvedTherapiesAppeals: numberInt(),
+    plan_resolvedTherapyGrievances: numberInt(),
+    plan_resolvedUntimelyResponseAppeals: numberInt(),
+    plan_resolvedUntimelyResponseGrievances: numberInt(),
+    plan_stateFairHearingRequestsFiled: numberInt(),
+    plan_stateFairHearingRequestsRetracted: numberInt(),
+    plan_stateFairHearingRequestsWithAdverseDecision: numberInt(),
+    plan_stateFairHearingRequestsWithExternalMedicalReviewWithAdverseDecision:
+      numberInt(),
+    plan_stateFairHearingRequestsWithExternalMedicalReviewWithFavorableDecision:
+      numberInt(),
+    plan_stateFairHearingRequestsWithFavorableDecision: numberInt(),
+    plan_timelyResolvedExpeditedAppeals: numberInt(),
+    plan_timelyResolvedStandardAppeals: numberInt(),
+    plan_timyleResolvedGrievances: numberInt(),
+    plan_totalExpeditedPriorAuthorizationRequestsReceived: numberInt(),
+    plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived:
+      numberInt(),
+    plan_totalStandardPriorAuthorizationRequestsReceived: numberInt(),
+    plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+      faker.internet.url(),
+    plan_urlForPatientAccessApi: faker.internet.url(),
+    plan_urlForPatientResourcesForPatientAccessApi: faker.internet.url(),
+    plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi:
+      faker.internet.url(),
+    plan_urlForPriorAuthorizationDataOnPlanWebsite: faker.internet.url(),
+    program_encounterDataSubmissionTimelinessStandardDefinition:
+      faker.lorem.sentence(),
+  };
+};
+
+const createQualityMeasure = () => ({
+  id: crypto.randomUUID(),
+  measure_name: faker.animal.bird(),
+  measure_identifier: [
+    {
+      key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
+      value: "Yes",
+    },
+  ],
+  measure_identifier_cmit: numberInt(),
+  measure_data_version: [
+    {
+      key: "measure_data_version-GLnFjfEWVnsNJdWMswHwxk",
+      value: "Preliminary",
+    },
+  ],
+  measure_activities: [
+    {
+      key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
+      value:
+        "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
+    },
+  ],
+  measure_data_collection_method: [
+    {
+      key: "measure_data_collection_method-bkD4uguEEiRjo5GyoCVNMi",
+      value: "Administrative",
+    },
+  ],
+});
 
 const createSanction = (planId: string) => ({
   id: crypto.randomUUID(),

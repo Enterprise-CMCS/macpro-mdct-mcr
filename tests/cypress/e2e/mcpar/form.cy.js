@@ -67,6 +67,8 @@ function fillOutMCPAR() {
   cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
+  cy.wait(2000);
+
   //Find our new program and open it
   cy.get("table").within(() => {
     cy.wait(2000);
@@ -274,12 +276,29 @@ const processField = (field) => {
         cy.get(`[name="${field.id}"]`).select(1);
         break;
       case "radio":
-      case "checkbox":
-        cy.get(`[id="${field.id}-${field.props.choices[0].id}"]`).check();
-        field.props.choices[0].children?.forEach((childField) =>
-          processField(childField)
-        );
+      case "checkbox": {
+        const firstChoice = field.props?.choices?.[0];
+
+        if (firstChoice && firstChoice.id !== "placeholder") {
+          cy.get(`#${field.id}-${firstChoice.id}`).check();
+          firstChoice.children?.forEach(processField);
+          break;
+        }
+
+        // Find first checkbox
+        cy.get(`input[type="checkbox"][id^="${field.id}-"]`)
+          .first()
+          .then(($el) => {
+            const id = $el.attr("id");
+            cy.wrap($el).check();
+
+            const choice = field.props?.choices?.find(
+              (c) => `${field.id}-${c.id}` === id
+            );
+            choice?.children?.forEach(processField);
+          });
         break;
+      }
       case "numberSuppressible":
         cy.get(`[name="${field.id}-suppressed"]`).check();
         break;

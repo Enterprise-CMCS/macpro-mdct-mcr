@@ -4,6 +4,7 @@ import { ReportDrawerDetails } from "components";
 // utils
 import {
   mockUnfinishedAccessMeasuresFormattedEntityData,
+  mockUnfinishedQualityMeasuresFormattedEntityData,
   mockUnfinishedSanctionsFormattedEntityData,
 } from "utils/testing/setupJest";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -13,6 +14,13 @@ const ReportDrawerDetailsAccessMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedAccessMeasuresFormattedEntityData}
     entityType={EntityType.ACCESS_MEASURES}
+  />
+);
+
+const ReportDrawerDetailsQualityMeasuresComponent = (
+  <ReportDrawerDetails
+    drawerDetails={mockUnfinishedQualityMeasuresFormattedEntityData}
+    entityType={EntityType.QUALITY_MEASURES}
   />
 );
 
@@ -37,6 +45,15 @@ describe("<ReportDrawerDetails />", () => {
       expect(
         screen.getByText(
           mockUnfinishedAccessMeasuresFormattedEntityData.category
+        )
+      ).toBeVisible();
+    });
+
+    test("Should render quality measures text provided in drawerDetails", async () => {
+      render(ReportDrawerDetailsQualityMeasuresComponent);
+      expect(
+        screen.getByText(
+          mockUnfinishedQualityMeasuresFormattedEntityData.reportingPeriod
         )
       ).toBeVisible();
     });
