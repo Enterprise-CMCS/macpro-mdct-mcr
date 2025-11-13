@@ -12,7 +12,7 @@ import {
   ErrorAlert,
   SortableNaaarStandardsTable,
 } from "components";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
+import { DrawerReportPageEntityRows } from "./DrawerReportPageEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,

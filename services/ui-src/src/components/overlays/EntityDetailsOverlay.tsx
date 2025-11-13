@@ -3,6 +3,7 @@ import React, { MouseEventHandler, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import {
   BackButton,
+  // DrawerReportPageEntityRows,
   Form,
   ReportPageIntro,
   SaveReturnButton,
@@ -115,7 +116,19 @@ export const EntityDetailsOverlay = ({
   };
 
   const qualityMeasuresOverlay = () => {
-    return <Box>{JSON.stringify(form)}</Box>;
+    return (
+      <Box>
+        {/* {" "}
+        <DrawerReportPageEntityRows
+          route={route}
+          entities={entities}
+          openRowDrawer={openRowDrawer}
+          openDeleteEntityModal={openDeleteEntityModal}
+          priorAuthDisabled={priorAuthDisabled}
+          patientAccessDisabled={patientAccessDisabled}
+        /> */}
+      </Box>
+    );
   };
 
   return reportType === ReportType.MLR ? (
