@@ -4262,11 +4262,11 @@
                   "dashboardTitle": "Report results by plan:",
                   "drawerTitle": "Report measure results for {{name}}"
                 },
-                "fields": [],
-                "drawerForm": {
-                  "id": "dqmmar-drawer",
-                  "fields": [{}]
-                }
+                "fields": []
+              },
+              "drawerForm": {
+                "id": "dqmmar-drawer",
+                "fields": [{}]
               }
             }
           ]

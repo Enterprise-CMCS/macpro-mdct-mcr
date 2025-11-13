@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useEffect } from "react";
 // components
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   BackButton,
-  // DrawerReportPageEntityRows,
+  DrawerReportPageEntityRows,
   Form,
   ReportPageIntro,
   SaveReturnButton,
@@ -17,7 +17,7 @@ import {
   ModalOverlayReportPageShape,
 } from "types";
 // utils
-import { useStore } from "utils";
+import { getReportVerbiage, useStore } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
@@ -116,17 +116,41 @@ export const EntityDetailsOverlay = ({
   };
 
   const qualityMeasuresOverlay = () => {
+    const { qualityMeasuresVerbiage } = getReportVerbiage(reportType);
+    const { tableHeaders } = qualityMeasuresVerbiage;
     return (
       <Box>
-        {/* {" "}
+        <BackButton
+          onClick={closeEntityDetailsOverlay}
+          text={overlayVerbiage.MCPAR.backButton}
+        />
+        <Heading>{selectedEntity.measure_name}</Heading>
+        <Flex>
+          <Box>
+            <Text>{tableHeaders.measureId}</Text>
+            <Text>{tableHeaders.dataVersion}</Text>
+            <Text>{tableHeaders.activities}</Text>
+          </Box>
+          <Box>
+            <Text>{selectedEntity.measure_identifierCmit}</Text>
+            <Text>{selectedEntity.measure_dataVersion[0].value}</Text>
+            <Text>{selectedEntity.measure_activities[0].value}</Text>
+          </Box>
+        </Flex>
+        <Box>
+          <Heading as="h2">Report results by plan</Heading>
+          <Heading as="h3">
+            For each plan listed, enter and respond to the indicators within.
+          </Heading>
+        </Box>
         <DrawerReportPageEntityRows
-          route={route}
+          route={route!}
           entities={entities}
-          openRowDrawer={openRowDrawer}
-          openDeleteEntityModal={openDeleteEntityModal}
-          priorAuthDisabled={priorAuthDisabled}
-          patientAccessDisabled={patientAccessDisabled}
-        /> */}
+          openRowDrawer={() => {}}
+          openDeleteEntityModal={() => {}}
+          drawerForm={route?.drawerForm}
+          plans={report?.fieldData["plans"]}
+        />
       </Box>
     );
   };

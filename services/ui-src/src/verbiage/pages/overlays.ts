@@ -1,4 +1,7 @@
 export default {
+  MCPAR: {
+    backButton: "Return to quality & performance measures dashboard",
+  },
   MLR: {
     backButton: "Return to MLR Reporting",
     intro: {

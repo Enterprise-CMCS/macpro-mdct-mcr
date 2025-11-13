@@ -9,6 +9,7 @@ import {
   FormField,
   FormJson,
   isFieldElement,
+  ModalOverlayReportPageShape,
   ReportType,
 } from "types";
 // utils
@@ -25,17 +26,22 @@ export const DrawerReportPageEntityRows = ({
   openDeleteEntityModal,
   priorAuthDisabled,
   patientAccessDisabled,
+  plans,
 }: Props) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities = !!addEntityDrawerForm.id;
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
+  const isAnalysisMethodsPage = route.path?.includes("analysis-methods");
   const hasPlans = report?.fieldData?.["plans"]?.length > 0;
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
+
+  const isQualityMeasuresPage = route.path?.includes(
+    "quality-measures/measures-and-results"
+  );
 
   const enterButton = (
     entity: EntityShape,
@@ -86,127 +92,168 @@ export const DrawerReportPageEntityRows = ({
   const form = getForm(formParams);
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
-  const entityRows = (entities: EntityShape[]) => {
-    return entities?.map((entity) => {
-      const isCustomEntity =
-        canAddEntities && !getDefaultAnalysisMethodIds().includes(entity.id);
-      const calculateEntityCompletion = () => {
-        let formFields = form.fields;
-        if (isCustomEntity) {
-          formFields = addEntityForm.fields;
-        }
-        return formFields
-          ?.filter(isFieldElement)
-          .every((field: FormField) => field.id in entity);
-      };
-
-      /*
-       * If the entity has the same fields from drawerForms fields, it was completed
-       * at somepoint.
-       */
-      const isEntityCompleted = reportingOnIlos
-        ? calculateEntityCompletion() &&
-          isIlosCompleted(reportingOnIlos, entity)
-        : calculateEntityCompletion();
-
-      const AnalysisMethodsDetails = () => {
-        if (!isEntityCompleted) {
-          const incompleteText = "Select “Enter” to complete response.";
-          return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
-        }
-        const isUtilized =
-          entity?.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
-        let completeText = "Not utilized";
-
-        const plans = entity?.analysis_method_applicable_plans;
-        if (plans && isUtilized) {
-          const frequencyVal = entity.analysis_method_frequency[0].value;
-          const frequency = otherSpecify(
-            frequencyVal,
-            entity["analysis_method_frequency-otherText"]
-          );
-          const utilizedPlans = plans
-            .map((entity: AnyObject) => entity.value)
-            .sort()
-            .join(", ");
-
-          completeText = `${frequency}: ${utilizedPlans}`;
-        }
-
-        return <Text sx={sx.completeText}>{completeText}</Text>;
-      };
-
-      const entityName = entity.name ?? entity.custom_analysis_method_name;
-
+  const qualityMeasureRows = (plans: EntityShape[]) => {
+    return plans.map((plan) => {
+      const incompleteText = "Select “Enter” to complete response.";
       return (
         <Flex
-          key={entity.id}
+          key={plan.id}
           sx={entityRowStyling(canAddEntities)}
           data-testid="report-drawer"
         >
-          {isEntityCompleted ? (
-            <Image
-              src={completedIcon}
-              alt={"Entity is complete"}
-              sx={sx.statusIcon}
-            />
-          ) : (
-            canAddEntities && (
-              <Image
-                src={unfinishedIcon}
-                alt={"Entity is incomplete"}
-                sx={sx.statusIcon}
-              />
-            )
-          )}
+          <Image
+            src={unfinishedIcon}
+            alt={"Entity is incomplete"}
+            sx={sx.statusIcon}
+          />
           <Flex direction={"column"} sx={sx.entityRow}>
-            <Heading
-              as="h4"
-              sx={
-                report?.reportType === ReportType.MCPAR
-                  ? sx.entityName
-                  : sx.entityNameWithDescription
-              }
-            >
-              {entityName}
+            <Heading as="h4" sx={sx.entityNameWithDescription}>
+              {plan.name}
             </Heading>
-            {entity.custom_analysis_method_description && (
-              <Text sx={sx.completeText}>
-                {entity.custom_analysis_method_description}
-              </Text>
-            )}
-            {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
+            <Text sx={sx.completeText}>Status: Incomplete</Text>
+            <Text sx={sx.incompleteText}>{incompleteText}</Text>
           </Flex>
           <Box sx={buttonBoxStyling(canAddEntities)}>
-            {enterButton(entity, entityName, isEntityCompleted)}
-            {canAddEntities && !entity.isRequired && (
-              <Button
-                sx={sx.deleteButton}
-                data-testid="delete-entity"
-                onClick={() => openDeleteEntityModal(entity)}
-              >
-                <Image
-                  src={deleteIcon}
-                  alt={`Delete ${entityName}`}
-                  boxSize="2xl"
-                />
-              </Button>
-            )}
+            {enterButton(plan, plan.name, false)}
           </Box>
         </Flex>
       );
     });
   };
-  return <>{entityRows(entities)}</>;
+
+  const entityRows = (entities: EntityShape[]) => {
+    return entities?.map((entity) => {
+      if (form && addEntityForm) {
+        const isCustomEntity =
+          canAddEntities && !getDefaultAnalysisMethodIds().includes(entity.id);
+        const calculateEntityCompletion = () => {
+          let formFields = form.fields;
+          if (isCustomEntity) {
+            formFields = addEntityForm.fields;
+          }
+          return formFields
+            ?.filter(isFieldElement)
+            .every((field: FormField) => field.id in entity);
+        };
+
+        /*
+         * If the entity has the same fields from drawerForms fields, it was completed
+         * at somepoint.
+         */
+        const isEntityCompleted = reportingOnIlos
+          ? calculateEntityCompletion() &&
+            isIlosCompleted(reportingOnIlos, entity)
+          : calculateEntityCompletion();
+
+        const AnalysisMethodsDetails = () => {
+          if (!isEntityCompleted) {
+            const incompleteText = "Select “Enter” to complete response.";
+            return <Text sx={sx.incompleteText}>{incompleteText}</Text>;
+          }
+          const isUtilized =
+            entity?.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
+          let completeText = "Not utilized";
+
+          const plans = entity?.analysis_method_applicable_plans;
+          if (plans && isUtilized) {
+            const frequencyVal = entity.analysis_method_frequency[0].value;
+            const frequency = otherSpecify(
+              frequencyVal,
+              entity["analysis_method_frequency-otherText"]
+            );
+            const utilizedPlans = plans
+              .map((entity: AnyObject) => entity.value)
+              .sort()
+              .join(", ");
+
+            completeText = `${frequency}: ${utilizedPlans}`;
+          }
+
+          return <Text sx={sx.completeText}>{completeText}</Text>;
+        };
+
+        const entityName = entity.name ?? entity.custom_analysis_method_name;
+
+        return (
+          <Flex
+            key={entity.id}
+            sx={entityRowStyling(canAddEntities)}
+            data-testid="report-drawer"
+          >
+            {isEntityCompleted ? (
+              <Image
+                src={completedIcon}
+                alt={"Entity is complete"}
+                sx={sx.statusIcon}
+              />
+            ) : (
+              canAddEntities && (
+                <Image
+                  src={unfinishedIcon}
+                  alt={"Entity is incomplete"}
+                  sx={sx.statusIcon}
+                />
+              )
+            )}
+            <Flex direction={"column"} sx={sx.entityRow}>
+              <Heading
+                as="h4"
+                sx={
+                  report?.reportType === ReportType.MCPAR
+                    ? sx.entityName
+                    : sx.entityNameWithDescription
+                }
+              >
+                {entityName}
+              </Heading>
+              {entity.custom_analysis_method_description && (
+                <Text sx={sx.completeText}>
+                  {entity.custom_analysis_method_description}
+                </Text>
+              )}
+              {isAnalysisMethodsPage && <AnalysisMethodsDetails />}
+            </Flex>
+            <Box sx={buttonBoxStyling(canAddEntities)}>
+              {enterButton(entity, entityName, isEntityCompleted)}
+              {canAddEntities && !entity.isRequired && (
+                <Button
+                  sx={sx.deleteButton}
+                  data-testid="delete-entity"
+                  onClick={() => openDeleteEntityModal(entity)}
+                >
+                  <Image
+                    src={deleteIcon}
+                    alt={`Delete ${entityName}`}
+                    boxSize="2xl"
+                  />
+                </Button>
+              )}
+            </Box>
+          </Flex>
+        );
+      }
+      return <></>;
+    });
+  };
+
+  return (
+    <>
+      {isQualityMeasuresPage
+        ? qualityMeasureRows(plans!)
+        : entityRows(entities)}
+    </>
+  );
 };
 
 interface Props {
-  route: DrawerReportPageShape;
+  route: DrawerReportPageShape | ModalOverlayReportPageShape;
   entities: EntityShape[];
   openRowDrawer: Function;
   openDeleteEntityModal: Function;
-  priorAuthDisabled: Boolean;
-  patientAccessDisabled: Boolean;
+  drawerForm?: FormJson;
+  plans?: EntityShape[];
+  priorAuthDisabled?: Boolean;
+  patientAccessDisabled?: Boolean;
 }
 
 function entityRowStyling(canAddEntities: boolean) {
