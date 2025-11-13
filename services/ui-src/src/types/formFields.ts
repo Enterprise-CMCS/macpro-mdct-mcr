@@ -1,6 +1,11 @@
 import { SystemStyleObject } from "@chakra-ui/react";
 import React from "react";
-import { AnyObject, DrawerReportPageShape, ReportShape } from "types";
+import {
+  AnyObject,
+  DrawerReportPageShape,
+  ModalOverlayReportPageShape,
+  ReportShape,
+} from "types";
 
 // FORM & FIELD STRUCTURE
 
@@ -133,7 +138,7 @@ export interface AutosaveField {
 }
 
 export interface getFormParams {
-  route: DrawerReportPageShape;
+  route: DrawerReportPageShape | ModalOverlayReportPageShape;
   report?: ReportShape;
   isCustomEntityForm?: boolean;
   isAnalysisMethodsPage?: boolean;

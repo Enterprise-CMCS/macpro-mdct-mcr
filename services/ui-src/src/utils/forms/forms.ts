@@ -311,21 +311,23 @@ export const getForm = (params: getFormParams) => {
   let modifiedForm = drawerForm;
   switch (reportType) {
     case ReportType.NAAAR:
-      if (isAnalysisMethodsPage && plans.length > 0) {
-        modifiedForm = isCustomEntityForm
-          ? generateAddEntityDrawerItemFields(
-              addEntityDrawerForm,
-              plans,
-              EntityType.PLANS
-            )
-          : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
-      }
-      if (isReportingOnStandards) {
-        generateAnalysisMethodChoices(drawerForm, analysisMethodsUsedByPlans);
+      if (drawerForm) {
+        if (isAnalysisMethodsPage && plans.length > 0) {
+          modifiedForm = isCustomEntityForm
+            ? generateAddEntityDrawerItemFields(
+                addEntityDrawerForm,
+                plans,
+                EntityType.PLANS
+              )
+            : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
+        }
+        if (isReportingOnStandards) {
+          generateAnalysisMethodChoices(drawerForm, analysisMethodsUsedByPlans);
+        }
       }
       break;
     case ReportType.MCPAR:
-      if (ilos && reportingOnIlos) {
+      if (drawerForm && ilos && reportingOnIlos) {
         modifiedForm = generateDrawerItemFields(
           drawerForm,
           ilos,
