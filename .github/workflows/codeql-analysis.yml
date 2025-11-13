@@ -3,6 +3,7 @@ name: "CodeQL" # Keep as-is to avoid updating branch rules
 
 on:
   pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
     branches:
       - main
       - val
@@ -10,6 +11,7 @@ on:
   schedule:
     # run every Monday against main
     - cron: "0 4 * * 1"
+  workflow_dispatch:
 
 jobs:
   analyze:
