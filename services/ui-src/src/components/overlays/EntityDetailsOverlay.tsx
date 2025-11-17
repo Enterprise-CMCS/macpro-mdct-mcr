@@ -118,6 +118,8 @@ export const EntityDetailsOverlay = ({
   const qualityMeasuresOverlay = () => {
     const { qualityMeasuresVerbiage } = getReportVerbiage(reportType);
     const { tableHeaders } = qualityMeasuresVerbiage;
+    const headers = Object.keys(tableHeaders).map((key) => tableHeaders[key]);
+
     return (
       <Box>
         <BackButton
@@ -127,9 +129,9 @@ export const EntityDetailsOverlay = ({
         <Heading>{selectedEntity.measure_name}</Heading>
         <Flex>
           <Box>
-            <Text>{tableHeaders.measureId}</Text>
-            <Text>{tableHeaders.dataVersion}</Text>
-            <Text>{tableHeaders.activities}</Text>
+            {headers.map((header: string, index: number) => (
+              <Text key={index}>{header}</Text>
+            ))}
           </Box>
           <Box>
             <Text>{selectedEntity.measure_identifierCmit}</Text>
@@ -138,10 +140,12 @@ export const EntityDetailsOverlay = ({
           </Box>
         </Flex>
         <Box>
-          <Heading as="h2">Report results by plan</Heading>
-          <Heading as="h3">
-            For each plan listed, enter and respond to the indicators within.
+          <Heading as="h3" sx={sx.dashboardTitle}>
+            {overlayVerbiage.MCPAR.dashboardTitle}
           </Heading>
+          <Text sx={sx.dashboardSubtitle}>
+            {overlayVerbiage.MCPAR.dashboardSubtitle}
+          </Text>
         </Box>
         <DrawerReportPageEntityRows
           route={route!}
@@ -197,5 +201,13 @@ const sx = {
         },
       },
     },
+  },
+  dashboardTitle: {
+    fontSize: "xl",
+    fontWeight: "bold",
+  },
+  dashboardSubtitle: {
+    fontSize: "md",
+    color: "gray",
   },
 };

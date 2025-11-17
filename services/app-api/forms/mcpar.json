@@ -4259,7 +4259,6 @@
                     "section": "Section D: Plan-Level Indicators",
                     "subsection": "Topic VIII: Quality & Performance Measures"
                   },
-                  "dashboardTitle": "Report results by plan:",
                   "drawerTitle": "Report measure results for {{name}}"
                 },
                 "fields": []
