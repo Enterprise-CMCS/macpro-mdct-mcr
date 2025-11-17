@@ -44,6 +44,8 @@ export const formModifications = (
 ) => {
   let accordion = route.verbiage.accordion;
   let formJson = route.form;
+  const plans = fieldData["plans"];
+  const hasPlans = plans?.length > 0;
 
   if (
     reportType === ReportType.MCPAR &&
@@ -57,5 +59,6 @@ export const formModifications = (
   return {
     accordion,
     formJson,
+    showError: !hasPlans,
   };
 };

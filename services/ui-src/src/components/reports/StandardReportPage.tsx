@@ -37,13 +37,6 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report!.formTemplate.basePath
   );
 
-  const isNewPlanExemption =
-    route.path ===
-    "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption";
-
-  const plans = report?.fieldData?.["plans"];
-  const hasPlans = plans?.length > 0;
-
   const onError = () => {
     navigate(nextRoute);
   };
@@ -72,7 +65,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     navigate(nextRoute);
   };
 
-  const { accordion, formJson } = formModifications(
+  const { accordion, formJson, showError } = formModifications(
     report?.reportType,
     route,
     report?.fieldData
@@ -87,7 +80,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
           reportType={report?.reportType}
         />
       )}
-      {isNewPlanExemption && !hasPlans ? (
+      {showError ? (
         <Box sx={sx.missingEntity}>
           {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
         </Box>
