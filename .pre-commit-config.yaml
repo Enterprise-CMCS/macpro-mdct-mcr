@@ -1,3 +1,4 @@
+exclude: "seed-section-base-*"
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
@@ -8,6 +9,17 @@ repos:
               ^services/ui-src/public/templates/mlr-reporting-template\.xlsx$|
               ^services/ui-src/public/templates/mcpar-reporting-template\.xlsx$
           )
+      - id: no-commit-to-branch
+        args:
+          # We include branch names in various AWS resource names, including S3 buckets, so:
+          #   * They must not be too long.
+          #   * They must contain only lowercase letters, numbers, hyphens, and dots (and dots are not recommended).
+          #   * See https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+          #   * This check is not exhaustive, but it should catch most deploy problems early.
+          - "--pattern"
+          - "^.{30,}$"
+          - "--pattern"
+          - "[^a-z0-9\\-]"
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v8.56.0
     hooks:
@@ -16,12 +28,23 @@ repos:
         types: [file]
         additional_dependencies:
           - "eslint@8.56.0"
-          - "@typescript-eslint/parser"
-          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser@5.18.0"
+          - "@typescript-eslint/eslint-plugin@5.18.0"
           - "eslint-plugin-jest"
           - "eslint-plugin-cypress@2.15.2"
+          - "eslint-plugin-playwright"
+          - "eslint-config-react-app@7.0.1"
+          - "eslint-config-prettier@8.10.0"
+          - "eslint-plugin-prettier@4.2.1"
+          - "eslint-plugin-flowtype@8.0.3"
+          - "eslint-plugin-import@2.32.0"
+          - "eslint-plugin-jsx-a11y@6.10.2"
+          - "eslint-plugin-react@7.37.5"
+          - "eslint-plugin-react-hooks@4.6.2"
+          - "@babel/eslint-parser@7.23.10"
+          - "prettier@2.4.1"
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.3.1
+    rev: v2.4.1
     hooks:
       - id: prettier
         files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
@@ -32,6 +55,10 @@ repos:
         args:
           - --exclude-files
           - .*test\.json|^tests/seeds/fixtures/|^services/app-api/utils/constants/copyover.ts
+          - --exclude-files
+          - services/uploads/src/test.json
+          - --exclude-files
+          - tests/cypress/cypress.json
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.0.272
@@ -43,16 +70,16 @@ repos:
       - id: gitleaks
   - repo: local
     hooks:
+      - id: install-dependencies
+        name: install-dependencies
+        entry: bash -c 'export NVM_DIR="$HOME/.nvm"; [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install && nvm use && ./run install'
+        language: system
+        pass_filenames: false
+        always_run: true
       - id: branch-name-validation
         name: branch-name-validation
         entry: .github/branchNameValidation.sh
         language: script
-        pass_filenames: false
-      - id: track-flags
-        name: track-flags
-        entry: yarn track-flags
-        language: system
-        files: '\.tsx?$'
         pass_filenames: false
       - id: typescript-check-cli
         name: typescript-check-cli

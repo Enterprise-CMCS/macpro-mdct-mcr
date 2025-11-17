@@ -3,8 +3,8 @@ import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
 import { region } from "../lib/consts.js";
 import { runFrontendLocally } from "../lib/utils.js";
-import downloadClamAvLayer from "../lib/clam.js";
 import { seedData } from "../lib/seedData.js";
+import { tryImport } from "../lib/optional-imports.js";
 
 const isColimaRunning = () => {
   try {
@@ -84,7 +84,13 @@ export const local = {
       "."
     );
 
-    await downloadClamAvLayer();
+    const clamModule = await tryImport<{ default: () => Promise<void> }>(
+      "../lib/clam.js"
+    );
+    if (clamModule) {
+      const downloadClamAvLayer = clamModule.default;
+      await downloadClamAvLayer();
+    }
 
     await runCommand(
       "CDK local deploy",

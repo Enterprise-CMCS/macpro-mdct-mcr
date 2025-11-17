@@ -9,6 +9,7 @@ plugins:
   - "@typescript-eslint"
   - "jest"
   - "cypress"
+  - "playwright"
 parserOptions:
   ecmaVersion: 6
   sourceType: module
@@ -34,6 +35,7 @@ rules:
 
 overrides:
   - files:
+      - "tests/**/*"
       - "cli/**"
       - "deployment/**"
     rules:

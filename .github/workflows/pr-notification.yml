@@ -18,8 +18,8 @@ permissions:
 jobs:
   notify_integrations_channel:
     name: Notify integrations channel
-    environment: dev
     if: github.event.pull_request.user.type != 'Bot' && !github.event.pull_request.draft
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
