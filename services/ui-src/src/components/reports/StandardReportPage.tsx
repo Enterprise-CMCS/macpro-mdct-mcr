@@ -37,6 +37,10 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report!.formTemplate.basePath
   );
 
+  const isNewPlanExemption =
+    route.path ===
+    "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption";
+
   const onError = () => {
     navigate(nextRoute);
   };
@@ -80,7 +84,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
           reportType={report?.reportType}
         />
       )}
-      {showError ? (
+      {isNewPlanExemption && showError ? (
         <Box sx={sx.missingEntity}>
           {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
         </Box>
