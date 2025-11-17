@@ -351,7 +351,7 @@ export const DynamicField = ({
           sx={sx.appendButton}
           onClick={appendNewRecord}
         >
-          Add a row
+          {name.includes("measure_rates") ? "Add another rate" : "Add a row"}
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
