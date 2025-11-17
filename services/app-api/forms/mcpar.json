@@ -4249,6 +4249,24 @@
                         }
                       ]
                     }
+                  },
+                  {
+                    "id": "measure_rates_header",
+                    "type": "sectionHeader",
+                    "props": {
+                      "divider": "none",
+                      "content": "Reporting of rates",
+                      "hint": "If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.2 in the field below for D2.VII.7. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guidance: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name, title, or brief description for the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
+                    }
+                  },
+                  {
+                    "id": "measure_rates",
+                    "type": "dynamic",
+                    "validation": "dynamic",
+                    "props": {
+                      "label": "D2.VII.7 Names, titles, or brief description of each rate",
+                      "hint": "Enter the name of this performance rate you are reporting for the measure."
+                    }
                   }
                 ]
               }
