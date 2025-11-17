@@ -19,6 +19,7 @@ import {
 import {
   filterFormData,
   formModifications,
+  parseCustomHtml,
   useFindRoute,
   useStore,
 } from "utils";
@@ -35,6 +36,13 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report!.formTemplate.flatRoutes!,
     report!.formTemplate.basePath
   );
+
+  const isNewPlanExemption =
+    route.path ===
+    "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption";
+
+  const plans = report?.fieldData?.["plans"];
+  const hasPlans = plans?.length > 0;
 
   const onError = () => {
     navigate(nextRoute);
@@ -79,16 +87,22 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
           reportType={report?.reportType}
         />
       )}
-      <Form
-        id={route.form.id}
-        formJson={formJson}
-        onSubmit={onSubmit}
-        onError={onError}
-        formData={report?.fieldData}
-        autosave
-        validateOnRender={validateOnRender || false}
-        dontReset={false}
-      />
+      {isNewPlanExemption && !hasPlans ? (
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
+        </Box>
+      ) : (
+        <Form
+          id={route.form.id}
+          formJson={formJson}
+          onSubmit={onSubmit}
+          onError={onError}
+          formData={report?.fieldData}
+          autosave
+          validateOnRender={validateOnRender || false}
+          dontReset={false}
+        />
+      )}
       <ReportPageFooter
         submitting={submitting}
         form={route.form}
@@ -102,3 +116,31 @@ interface Props {
   route: StandardReportPageShape;
   validateOnRender?: boolean;
 }
+
+const sx = {
+  missingEntity: {
+    fontWeight: "bold",
+    marginBottom: "spacer4",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
+  },
+  missingEntityMessage: {
+    paddingTop: "spacer2",
+    fontWeight: "bold",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
+    ol: {
+      paddingLeft: "spacer2",
+    },
+  },
+};

@@ -209,6 +209,7 @@ export interface ReportPageVerbiage {
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;
   };
+  missingEntityMessage?: CustomHtmlElement[];
   praDisclosure?: CustomHtmlElement[];
 }
 
@@ -218,7 +219,6 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   drawerTitle: string;
   addEntityButtonText?: string;
   drawerInfo?: CustomHtmlElement[];
-  missingEntityMessage?: CustomHtmlElement[];
   missingIlosMessage?: CustomHtmlElement[];
   missingPlansAndIlosMessage?: CustomHtmlElement[];
 }
