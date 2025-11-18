@@ -16,7 +16,8 @@
       "node_modules",
       "test",
       "services/ui-src/src/**",
-      "services/ui-src/build/**"
+      "services/ui-src/build/**",
+      "tests/**"
     ]
   },
   "context": {
