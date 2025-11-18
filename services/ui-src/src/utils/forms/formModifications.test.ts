@@ -171,7 +171,9 @@ describe("utils/forms/mcparPlanExemption", () => {
         },
       };
 
-      const fieldData = {};
+      const fieldData = {
+        plans: [],
+      };
 
       const input = formModifications(ReportType.MCPAR, route, fieldData);
 
