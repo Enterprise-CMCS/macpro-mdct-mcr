@@ -4265,7 +4265,63 @@
               },
               "drawerForm": {
                 "id": "dqmmar-drawer",
-                "fields": [{}]
+                "fields": [
+                  {
+                    "id": "planMeasure_notReporting",
+                    "type": "checkboxSingle",
+                    "validation": "checkboxSingle",
+                    "props": {
+                      "label": "D2.VII.8 Are you reporting results for this measure?",
+                      "hint": "Are you reporting results for this measure  for this reporting period?",
+                      "choices": [
+                        {
+                          "id": "lQ5bKmWHMEPzMbwFaEbYZP",
+                          "label": "Not reporting",
+                          "children": [
+                            {
+                              "id": "planMeasure_notReportingReason",
+                              "type": "radio",
+                              "validation": {
+                                "type": "radio",
+                                "nested": true,
+                                "parentFieldName": "planMeasure_notReporting",
+                                "parentOptionId": "lQ5bKmWHMEPzMbwFaEbYZP"
+                              },
+                              "props": {
+                                "choices": [
+                                  {
+                                    "id": "ckbkAEVTyhi8DWbWwijKQv",
+                                    "label": "No, the eligible population does not meet the required measure sample size"
+                                  },
+                                  {
+                                    "id": "TUdOs9uxcTARpg8mKSJUWc",
+                                    "label": "No, this measure does not apply to this plan"
+                                  },
+                                  {
+                                    "id": "lKx8iLGbvnlzTGsOQDngBZ",
+                                    "label": "Other, specify",
+                                    "children": [
+                                      {
+                                        "id": "planMeasure_notReportingReason-otherText",
+                                        "type": "text",
+                                        "validation": {
+                                          "type": "text",
+                                          "nested": true,
+                                          "parentFieldName": "planMeasure_notReportingReason",
+                                          "parentOptionId": "lKx8iLGbvnlzTGsOQDngBZ"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
               }
             }
           ]
