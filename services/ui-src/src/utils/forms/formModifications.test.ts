@@ -121,6 +121,7 @@ describe("utils/forms/mcparPlanExemption", () => {
           id: "mockForm",
           fields: [mockTextField, mockExemptionsOutput],
         },
+        showError: false,
       };
 
       expect(input).toEqual(expectedResult);
@@ -151,6 +152,7 @@ describe("utils/forms/mcparPlanExemption", () => {
           id: "mockForm",
           fields: [mockTextField],
         },
+        showError: false,
       };
 
       expect(input).toEqual(expectedResult);
