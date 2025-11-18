@@ -53,7 +53,7 @@ export const formModifications = (
   ) {
     accordion = accordionVerbiage.MCPAR.formIntro;
     formJson = addPlanChoices(route.form, fieldData.plans);
-    showError = fieldData["plans"]?.length < 1;
+    showError = !fieldData["plans"] || fieldData["plans"]?.length < 1;
   }
 
   return {
