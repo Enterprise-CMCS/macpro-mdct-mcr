@@ -42,6 +42,7 @@ export const deploy = {
         const downloadClamAvLayer = clamModule.default;
         await downloadClamAvLayer();
       }
+      await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
       await runCommand(
         "CDK deploy",
         [
