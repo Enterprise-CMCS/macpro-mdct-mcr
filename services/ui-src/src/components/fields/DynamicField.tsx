@@ -29,7 +29,13 @@ import {
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 
-export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
+export const DynamicField = ({
+  name,
+  label,
+  isRequired,
+  autosave = true,
+  ...props
+}: Props) => {
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, entities, entityType, selectedEntity } = useStore();
@@ -78,6 +84,11 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
   const onBlurHandler = async () => {
     // trigger client-side validation so blank fields get client-side validation warning
     form.trigger(name);
+
+    if (!autosave) {
+      return;
+    }
+
     // prepare args for autosave
     const fields = getAutosaveFields({
       name,
@@ -94,7 +105,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       fieldData: report?.fieldData,
     };
     const user = { userName: full_name, state };
-    // no need to check "autosave" prop; dynamic fields should always autosave
+
     await autosaveFieldData({
       form,
       fields,
@@ -118,7 +129,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
 
   // delete selected record from DB
   const deleteRecord = async (selectedRecord: EntityShape) => {
-    if (userIsEndUser) {
+    if (userIsEndUser && autosave) {
       const reportKeys = {
         reportType: report?.reportType,
         state: state,
@@ -253,8 +264,8 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
       };
 
       await updateReport(reportKeys, dataToWrite);
-      removeRecord(selectedRecord);
     }
+    removeRecord(selectedRecord);
   };
 
   // remove selected record from the UI
@@ -340,7 +351,7 @@ export const DynamicField = ({ name, label, isRequired, ...props }: Props) => {
           sx={sx.appendButton}
           onClick={appendNewRecord}
         >
-          Add a row
+          {name.includes("measure_rates") ? "Add another rate" : "Add a row"}
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -360,6 +371,7 @@ interface Props {
   name: EntityType;
   label: string;
   isRequired?: boolean;
+  autosave?: boolean;
   [key: string]: any;
 }
 
@@ -369,8 +381,9 @@ const sx = {
     marginLeft: "0.625rem",
   },
   removeImage: {
-    width: "1.25rem",
-    height: "1.25rem",
+    maxWidth: "none",
+    width: "1.5rem",
+    height: "1.5rem",
     _hover: {
       filter: svgFilters.primary_darker,
     },
