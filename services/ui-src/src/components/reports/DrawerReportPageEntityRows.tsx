@@ -25,6 +25,7 @@ export const DrawerReportPageEntityRows = ({
   openDeleteEntityModal,
   priorAuthDisabled,
   patientAccessDisabled,
+  plans,
 }: Props) => {
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const canAddEntities = !!addEntityDrawerForm.id;
@@ -36,6 +37,10 @@ export const DrawerReportPageEntityRows = ({
   const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
   const ilos = report?.fieldData?.["ilos"];
   const hasIlos = ilos?.length;
+
+  const isQualityMeasuresPage = route.path?.includes(
+    "quality-measures/measures-and-results"
+  );
 
   const enterButton = (
     entity: EntityShape,
@@ -85,6 +90,35 @@ export const DrawerReportPageEntityRows = ({
   };
   const form = getForm(formParams);
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
+
+  const qualityMeasureRows = (plans: EntityShape[]) => {
+    return plans.map((plan) => {
+      const incompleteText = "Select “Enter” to complete response.";
+      return (
+        <Flex
+          key={plan.id}
+          sx={entityRowStyling(canAddEntities)}
+          data-testid="report-drawer"
+        >
+          <Image
+            src={unfinishedIcon}
+            alt={"Entity is incomplete"}
+            sx={sx.statusIcon}
+          />
+          <Flex direction={"column"} sx={sx.entityRow}>
+            <Heading as="h4" sx={sx.entityNameWithDescription}>
+              {plan.name}
+            </Heading>
+            <Text sx={sx.completeText}>Status: Incomplete</Text>
+            <Text sx={sx.incompleteText}>{incompleteText}</Text>
+          </Flex>
+          <Box sx={buttonBoxStyling(canAddEntities)}>
+            {enterButton(plan, plan.name, false)}
+          </Box>
+        </Flex>
+      );
+    });
+  };
 
   const entityRows = (entities: EntityShape[]) => {
     return entities?.map((entity) => {
@@ -197,7 +231,14 @@ export const DrawerReportPageEntityRows = ({
       );
     });
   };
-  return <>{entityRows(entities)}</>;
+
+  return (
+    <>
+      {isQualityMeasuresPage
+        ? qualityMeasureRows(plans!)
+        : entityRows(entities)}
+    </>
+  );
 };
 
 interface Props {
@@ -205,8 +246,9 @@ interface Props {
   entities: EntityShape[];
   openRowDrawer: Function;
   openDeleteEntityModal: Function;
-  priorAuthDisabled: Boolean;
-  patientAccessDisabled: Boolean;
+  plans?: EntityShape[];
+  priorAuthDisabled?: Boolean;
+  patientAccessDisabled?: Boolean;
 }
 
 function entityRowStyling(canAddEntities: boolean) {

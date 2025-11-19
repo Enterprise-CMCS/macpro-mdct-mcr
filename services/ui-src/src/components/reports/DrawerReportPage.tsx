@@ -11,8 +11,8 @@ import {
   DeleteEntityModal,
   ErrorAlert,
   SortableNaaarStandardsTable,
+  DrawerReportPageEntityRows,
 } from "components";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,

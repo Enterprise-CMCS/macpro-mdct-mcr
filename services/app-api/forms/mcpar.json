@@ -4252,6 +4252,10 @@
                   }
                 ]
               },
+              "overlayForm": {
+                "id": "dqmmar-overlay",
+                "fields": []
+              },
               "drawerForm": {
                 "id": "dqmmar-drawer",
                 "fields": []

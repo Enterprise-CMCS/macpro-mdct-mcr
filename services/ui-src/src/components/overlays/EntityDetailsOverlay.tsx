@@ -1,16 +1,25 @@
 import React, { MouseEventHandler, useEffect } from "react";
 // components
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import {
   BackButton,
+  DrawerReportPageEntityRows,
   Form,
   ReportPageIntro,
   SaveReturnButton,
 } from "components";
 // types
-import { EntityShape, FormJson, EntityType } from "types";
+import {
+  EntityShape,
+  FormJson,
+  EntityType,
+  ReportType,
+  ModalOverlayReportPageShape,
+  ModalOverlayDrawerReportPageShape,
+  DrawerReportPageShape,
+} from "types";
 // utils
-import { useStore } from "utils";
+import { getReportVerbiage, useStore } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
@@ -24,9 +33,16 @@ export const EntityDetailsOverlay = ({
   selectedEntity,
   disabled,
   setEntering,
+  route,
   submitting,
   validateOnRender,
 }: Props) => {
+  const { report } = useStore();
+  const reportType = report?.reportType;
+  const isQualityMeasures =
+    route?.path ===
+    "/mcpar/plan-level-indicators/quality-measures/measures-and-results";
+
   // Entity Provider Setup
   const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
@@ -44,59 +60,112 @@ export const EntityDetailsOverlay = ({
     };
   }, [entityType, selectedEntity]);
 
-  // Display Variables
-  const {
-    report_programName: reportProgramName,
-    report_planName: reportPlanName,
-  } = selectedEntity;
-  const eligibilityGroup = `${
-    selectedEntity["report_eligibilityGroup-otherText"] ||
-    selectedEntity.report_eligibilityGroup[0].value
-  }`;
-  const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+  const mlrReportingOverlay = () => {
+    // Display Variables
+    const {
+      report_programName: reportProgramName,
+      report_planName: reportPlanName,
+    } = selectedEntity;
+    const eligibilityGroup = `${
+      selectedEntity["report_eligibilityGroup-otherText"] ||
+      selectedEntity.report_eligibilityGroup[0].value
+    }`;
+    const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
 
-  const programInfo = [
-    reportPlanName,
-    reportProgramName,
-    eligibilityGroup,
-    reportingPeriod,
-  ];
+    const programInfo = [
+      reportPlanName,
+      reportProgramName,
+      eligibilityGroup,
+      reportingPeriod,
+    ];
 
-  return (
-    <Box>
-      <BackButton
-        onClick={closeEntityDetailsOverlay}
-        text={"Return to MLR Reporting"}
-      />
-      <ReportPageIntro
-        text={overlayVerbiage.MLR.intro}
-        accordion={accordionVerbiage.MLR.detailIntro}
-      />
-      <Box sx={sx.programInfo}>
-        <Text sx={sx.textHeading}>MLR report for:</Text>
-        <ul>
-          {programInfo.map((field, index) => (
-            <li key={index}>{field}</li>
-          ))}
-        </ul>
+    return (
+      <Box>
+        <BackButton
+          onClick={closeEntityDetailsOverlay}
+          text={overlayVerbiage.MLR.backButton}
+        />
+        <ReportPageIntro
+          text={overlayVerbiage.MLR.intro}
+          accordion={accordionVerbiage.MLR.detailIntro}
+        />
+        <Box sx={sx.programInfo}>
+          <Text sx={sx.textHeading}>MLR report for:</Text>
+          <ul>
+            {programInfo.map((field, index) => (
+              <li key={index}>{field}</li>
+            ))}
+          </ul>
+        </Box>
+        <Form
+          id={form.id}
+          formJson={form}
+          onSubmit={onSubmit}
+          formData={selectedEntity}
+          autosave={true}
+          disabled={disabled}
+          validateOnRender={validateOnRender || false}
+          dontReset={true}
+        />
+        <SaveReturnButton
+          disabled={disabled}
+          disabledOnClick={closeEntityDetailsOverlay}
+          formId={form.id}
+          submitting={submitting}
+        />
       </Box>
-      <Form
-        id={form.id}
-        formJson={form}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-        autosave={true}
-        disabled={disabled}
-        validateOnRender={validateOnRender || false}
-        dontReset={true}
-      />
-      <SaveReturnButton
-        disabled={disabled}
-        disabledOnClick={closeEntityDetailsOverlay}
-        formId={form.id}
-        submitting={submitting}
-      />
-    </Box>
+    );
+  };
+
+  const qualityMeasuresOverlay = () => {
+    const { qualityMeasuresVerbiage } = getReportVerbiage(reportType);
+    const { tableHeaders } = qualityMeasuresVerbiage;
+    const headers = Object.keys(tableHeaders).map((key) => tableHeaders[key]);
+
+    return (
+      <Box>
+        <BackButton
+          onClick={closeEntityDetailsOverlay}
+          text={overlayVerbiage.MCPAR.backButton}
+        />
+        <Heading>{selectedEntity.measure_name}</Heading>
+        <Flex>
+          <Box>
+            {headers.map((header: string, index: number) => (
+              <Text key={index}>{header}</Text>
+            ))}
+          </Box>
+          <Box>
+            <Text>{selectedEntity.measure_identifierCmit}</Text>
+            <Text>{selectedEntity.measure_dataVersion[0].value}</Text>
+            <Text>{selectedEntity.measure_activities[0].value}</Text>
+          </Box>
+        </Flex>
+        <Box>
+          <Heading as="h3" sx={sx.dashboardTitle}>
+            {overlayVerbiage.MCPAR.dashboardTitle}
+          </Heading>
+          <Text sx={sx.dashboardSubtitle}>
+            {overlayVerbiage.MCPAR.dashboardSubtitle}
+          </Text>
+        </Box>
+        <DrawerReportPageEntityRows
+          route={route as unknown as DrawerReportPageShape}
+          entities={entities}
+          openRowDrawer={() => {}}
+          openDeleteEntityModal={() => {}}
+          plans={report?.fieldData["plans"]}
+        />
+      </Box>
+    );
+  };
+
+  return reportType === ReportType.MLR ? (
+    mlrReportingOverlay()
+  ) : reportType === ReportType.MCPAR && isQualityMeasures ? (
+    qualityMeasuresOverlay()
+  ) : (
+    <></>
   );
 };
 
@@ -109,6 +178,7 @@ interface Props {
   selectedEntity: EntityShape;
   disabled: boolean;
   setEntering: Function;
+  route: ModalOverlayReportPageShape | ModalOverlayDrawerReportPageShape;
   submitting?: boolean;
   validateOnRender?: boolean;
 }
@@ -132,5 +202,13 @@ const sx = {
         },
       },
     },
+  },
+  dashboardTitle: {
+    fontSize: "xl",
+    fontWeight: "bold",
+  },
+  dashboardSubtitle: {
+    fontSize: "md",
+    color: "gray",
   },
 };
