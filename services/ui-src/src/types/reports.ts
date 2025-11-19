@@ -101,6 +101,16 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   form?: never;
 }
 
+export interface ModalOverlayDrawerReportPageShape extends ReportPageShapeBase {
+  entityType: EntityType;
+  verbiage: ModalOverlayReportPageVerbiage;
+  modalForm: FormJson;
+  drawerForm: FormJson;
+  overlayForm?: FormJson;
+  addEntityDrawerForm?: never;
+  form?: never;
+}
+
 export interface EntityDetailsMultiformShape {
   form: FormJson;
   table?: {
@@ -241,7 +251,8 @@ export interface ModalDrawerReportPageVerbiage
   tableHeader?: string;
 }
 
-export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
+export interface ModalOverlayReportPageVerbiage
+  extends ModalDrawerReportPageVerbiage {
   addEntityButtonText: string;
   dashboardTitle: string;
   countEntitiesInTitle: boolean;
@@ -259,6 +270,15 @@ export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
   editEntityButtonText: string;
   enterReportText?: string;
   enterEntityDetailsButtonText?: string;
+}
+
+export interface ModalOverlayDrawerReportPageVerbiage
+  extends ReportPageVerbiage {
+  dashboardTitle: string;
+  dashboardSubtitle: string;
+  countEntitiesInTitle: boolean;
+  tableHeader: string;
+  drawerTitle: string;
 }
 
 export interface PlanOverlayReportPageVerbiage extends ReportPageVerbiage {

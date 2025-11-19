@@ -4,6 +4,7 @@ import {
   EntityShape,
   EntityType,
   ModalDrawerReportPageVerbiage,
+  ModalOverlayDrawerReportPageVerbiage,
 } from "types";
 // utils
 import { compareText, maskResponseData, otherSpecify, translate } from "utils";
@@ -150,7 +151,7 @@ export const entityWasUpdated = (
 export const getAddEditDrawerText = (
   entityType: EntityType,
   formattedEntityData: AnyObject,
-  verbiage: ModalDrawerReportPageVerbiage
+  verbiage: ModalDrawerReportPageVerbiage | ModalOverlayDrawerReportPageVerbiage
 ) => {
   let addEditDrawerText = "Add";
   switch (entityType) {
