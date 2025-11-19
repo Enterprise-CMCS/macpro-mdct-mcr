@@ -121,6 +121,7 @@ describe("utils/forms/mcparPlanExemption", () => {
           id: "mockForm",
           fields: [mockTextField, mockExemptionsOutput],
         },
+        showError: false,
       };
 
       expect(input).toEqual(expectedResult);
@@ -151,6 +152,38 @@ describe("utils/forms/mcparPlanExemption", () => {
           id: "mockForm",
           fields: [mockTextField],
         },
+        showError: false,
+      };
+
+      expect(input).toEqual(expectedResult);
+    });
+
+    test("showError is true if no plans are added", () => {
+      const route = {
+        name: "Mock route",
+        path: "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption",
+        form: {
+          id: "mockForm",
+          fields: [mockTextField],
+        },
+        verbiage: {
+          intro: {
+            section: "Mock section",
+          },
+        },
+      };
+
+      const fieldData = {};
+
+      const input = formModifications(ReportType.MCPAR, route, fieldData);
+
+      const expectedResult = {
+        accordion: accordionVerbiage.MCPAR.formIntro,
+        formJson: {
+          id: "mockForm",
+          fields: [mockTextField],
+        },
+        showError: true,
       };
 
       expect(input).toEqual(expectedResult);
