@@ -30,12 +30,6 @@ jobs:
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.event.pull_request.head.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
-      - name: Set branch-specific variable names
-        run: ./.github/buildVars.sh set_names
-
-      - name: Set branch-specific variable values
-        run: ./.github/buildVars.sh set_values
-
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:

@@ -39,16 +39,10 @@ jobs:
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
-      - name: Set branch-specific variable values
-        run: ./.github/buildVars.sh set_values
-        env:
-          AWS_DEFAULT_REGION: us-east-1
-          AWS_OIDC_ROLE_TO_ASSUME: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.AWS_OIDC_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Cache Node modules and Cypress folder
