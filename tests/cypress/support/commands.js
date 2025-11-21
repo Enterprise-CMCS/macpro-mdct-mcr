@@ -26,7 +26,7 @@ Cypress.Commands.add("archiveExistingMcparReports", () => {
   // go to mcpar dashboard
   fillFormField(adminMcparSelectorArray);
   cy.contains("Go to Report Dashboard").click();
-  cy.wait(3000);
+  cy.wait(5000);
 
   /*
    * Check if there is already a MCPAR report, if so, archive
@@ -50,7 +50,7 @@ Cypress.Commands.add("archiveExistingMlrReports", () => {
   // go to mlr dashboard
   fillFormField(adminMlrSelectorArray);
   cy.contains("Go to Report Dashboard").click();
-  cy.wait(3000);
+  cy.wait(5000);
 
   /*
    * Check if there is already a SAR report, if so, archive
