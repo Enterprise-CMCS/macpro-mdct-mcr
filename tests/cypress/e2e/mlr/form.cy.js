@@ -15,6 +15,8 @@ describe("MLR E2E Form Submission", () => {
     fillOutMLR(programName);
     submitMLR();
 
+    cy.wait(5000);
+
     cy.contains("Successfully Submitted").should("be.visible");
   });
   it("unlock as admin", () => {
@@ -214,6 +216,7 @@ const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
+      .first()
       .as("mlrCompleteModalButton")
       .focus();
     cy.get("@mlrCompleteModalButton").click();
