@@ -110,7 +110,10 @@
       "plan_smaMfcuConcurrentProgramIntegrityReferrals": "",
       "plan_smaMfcuAggregateProgramIntegrityReferrals": ""
     },
-    { "id": "367f228-ba4f-0ad5-e2d5-2c2814e41a", "name": "Empty Plan" }
+    {
+      "id": "367f228-ba4f-0ad5-e2d5-2c2814e41a",
+      "name": "Empty Plan"
+    }
   ],
   "bssEntities": [
     {
@@ -217,8 +220,6 @@
   "program_standardAppealTimelyResolutionDefinition": "Text Fill",
   "program_expeditedAppealTimelyResolutionDefinition": "Text Fill",
   "program_grievanceTimelyResolutionDefinition": "Text Fill",
-  "program_networkAdequacyChallenges": "Text Fill",
-  "program_networkAdequacyGapResponseEfforts": "Text Fill",
   "accessMeasures": [
     {
       "id": "b76a4b-1ae2-035a-a3fb-ab4e2721f50e",

@@ -209,8 +209,6 @@
   "program_standardAppealTimelyResolutionDefinition": "Text Fill",
   "program_expeditedAppealTimelyResolutionDefinition": "Text Fill",
   "program_grievanceTimelyResolutionDefinition": "Text Fill",
-  "program_networkAdequacyChallenges": "Text Fill",
-  "program_networkAdequacyGapResponseEfforts": "Text Fill",
   "accessMeasures": [
     {
       "id": "38eae-da88-f114-e76c-357f10506f64",

@@ -259,8 +259,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           value: "Yes",
         },
       ],
-      program_networkAdequacyChallenges: faker.lorem.sentence(),
-      program_networkAdequacyGapResponseEfforts: faker.lorem.sentence(),
       program_prohibitedAffiliationDisclosure: [
         {
           key: "program_prohibitedAffiliationDisclosure-7emiYPcs60GzXxKS5Pc9bg",

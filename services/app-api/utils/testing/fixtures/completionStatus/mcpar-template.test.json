@@ -4,12 +4,24 @@
   "basePath": "/mcpar",
   "version": "MCPAR_2023-03-17",
   "entities": {
-    "sanctions": { "required": false },
-    "accessMeasures": { "required": true },
-    "qualityMeasures": { "required": true },
-    "plans": { "required": true },
-    "bssEntities": { "required": true },
-    "ilos": { "required": false }
+    "sanctions": {
+      "required": false
+    },
+    "accessMeasures": {
+      "required": true
+    },
+    "qualityMeasures": {
+      "required": true
+    },
+    "plans": {
+      "required": true
+    },
+    "bssEntities": {
+      "required": true
+    },
+    "ilos": {
+      "required": false
+    }
   },
   "routes": [
     {
@@ -1035,26 +1047,7 @@
               },
               "form": {
                 "id": "cna",
-                "fields": [
-                  {
-                    "id": "program_networkAdequacyChallenges",
-                    "type": "textarea",
-                    "validation": "text",
-                    "props": {
-                      "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state's biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter 'No challenges were encountered' as your response. 'N/A' is not an acceptable response."
-                    }
-                  },
-                  {
-                    "id": "program_networkAdequacyGapResponseEfforts",
-                    "type": "textarea",
-                    "validation": "text",
-                    "props": {
-                      "label": "C1.V.2 State response to gaps in network adequacy",
-                      "hint": "How does the state work with MCPs to address gaps in network adequacy?"
-                    }
-                  }
-                ]
+                "fields": []
               }
             },
             {
@@ -4796,8 +4789,6 @@
     "program_standardAppealTimelyResolutionDefinition": "text",
     "program_expeditedAppealTimelyResolutionDefinition": "text",
     "program_grievanceTimelyResolutionDefinition": "text",
-    "program_networkAdequacyChallenges": "text",
-    "program_networkAdequacyGapResponseEfforts": "text",
     "accessMeasures": "objectArray",
     "accessMeasure_generalCategory": "radio",
     "accessMeasure_standardDescription": "text",
