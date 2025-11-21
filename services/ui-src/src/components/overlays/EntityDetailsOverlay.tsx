@@ -1,32 +1,37 @@
 import React, { MouseEventHandler, useEffect } from "react";
 // components
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import {
   BackButton,
-  Form,
-  ReportPageIntro,
-  SaveReturnButton,
+  EntityDetailsOverlayQualityMeasures,
+  EntityDetailsOverlayReporting,
 } from "components";
 // types
-import { EntityShape, FormJson, EntityType } from "types";
+import {
+  EntityShape,
+  FormJson,
+  EntityType,
+  ReportType,
+  ModalOverlayReportPageShape,
+  ReportShape,
+  DrawerReportPageShape,
+} from "types";
 // utils
 import { useStore } from "utils";
 // verbiage
-import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
 
-export const EntityDetailsOverlay = ({
-  closeEntityDetailsOverlay,
-  entityType,
-  entities,
-  form,
-  onSubmit,
-  selectedEntity,
-  disabled,
-  setEntering,
-  submitting,
-  validateOnRender,
-}: Props) => {
+export const EntityDetailsOverlay = (props: EntityDetailsOverlayProps) => {
+  const {
+    closeEntityDetailsOverlay,
+    entities,
+    entityType,
+    report,
+    route,
+    selectedEntity,
+    setEntering,
+  } = props;
+
   // Entity Provider Setup
   const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
@@ -44,93 +49,52 @@ export const EntityDetailsOverlay = ({
     };
   }, [entityType, selectedEntity]);
 
-  // Display Variables
-  const {
-    report_programName: reportProgramName,
-    report_planName: reportPlanName,
-  } = selectedEntity;
-  const eligibilityGroup = `${
-    selectedEntity["report_eligibilityGroup-otherText"] ||
-    selectedEntity.report_eligibilityGroup[0].value
-  }`;
-  const reportingPeriod = `${selectedEntity.report_reportingPeriodStartDate} to ${selectedEntity.report_reportingPeriodEndDate}`;
+  const reportType = report.reportType as ReportType;
 
-  const programInfo = [
-    reportPlanName,
-    reportProgramName,
-    eligibilityGroup,
-    reportingPeriod,
-  ];
+  const backButtonText = (reportType: ReportType) => {
+    const key = reportType as keyof typeof overlayVerbiage;
+    return overlayVerbiage[key]?.backButton || "Return";
+  };
+
+  const SwitchOverlay = (props: EntityDetailsOverlayProps) => {
+    if (
+      reportType === ReportType.MCPAR &&
+      route.path ===
+        "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
+    ) {
+      return <EntityDetailsOverlayQualityMeasures {...props} />;
+    }
+
+    if (reportType === ReportType.MLR) {
+      return <EntityDetailsOverlayReporting {...props} />;
+    }
+
+    return <></>;
+  };
 
   return (
     <Box>
       <BackButton
         onClick={closeEntityDetailsOverlay}
-        text={"Return to MLR Reporting"}
+        text={backButtonText(reportType)}
       />
-      <ReportPageIntro
-        text={overlayVerbiage.MLR.intro}
-        accordion={accordionVerbiage.MLR.detailIntro}
-      />
-      <Box sx={sx.programInfo}>
-        <Text sx={sx.textHeading}>MLR report for:</Text>
-        <ul>
-          {programInfo.map((field, index) => (
-            <li key={index}>{field}</li>
-          ))}
-        </ul>
-      </Box>
-      <Form
-        id={form.id}
-        formJson={form}
-        onSubmit={onSubmit}
-        formData={selectedEntity}
-        autosave={true}
-        disabled={disabled}
-        validateOnRender={validateOnRender || false}
-        dontReset={true}
-      />
-      <SaveReturnButton
-        disabled={disabled}
-        disabledOnClick={closeEntityDetailsOverlay}
-        formId={form.id}
-        submitting={submitting}
-      />
+      <SwitchOverlay {...props} />
     </Box>
   );
 };
 
-interface Props {
+export interface EntityDetailsOverlayProps {
   closeEntityDetailsOverlay: MouseEventHandler;
   entityType: EntityType;
-  entities: any;
-  form: FormJson;
-  onSubmit: Function;
-  selectedEntity: EntityShape;
   disabled: boolean;
+  entities: EntityShape[];
+  drawerForm?: FormJson;
+  form?: FormJson;
+  onSubmit: Function;
+  report: ReportShape;
+  route: DrawerReportPageShape | ModalOverlayReportPageShape;
+  selectedEntity: EntityShape;
   setEntering: Function;
   submitting?: boolean;
   validateOnRender?: boolean;
 }
-
-const sx = {
-  textHeading: {
-    fontWeight: "bold",
-    lineHeight: "1.25rem",
-  },
-  programInfo: {
-    ul: {
-      margin: "0.5rem auto 0 auto",
-      listStyleType: "none",
-      li: {
-        wordWrap: "break-word",
-        whiteSpace: "break-spaces",
-        fontSize: "xl",
-        lineHeight: "1.75rem",
-        "&:first-of-type": {
-          fontWeight: "bold",
-        },
-      },
-    },
-  },
-};

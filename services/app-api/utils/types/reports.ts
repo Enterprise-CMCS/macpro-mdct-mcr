@@ -90,13 +90,13 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
 }
 
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
+  addEntityDrawerForm?: never;
+  drawerForm?: FormJson;
   entityType: EntityType;
-  verbiage: ModalOverlayReportPageVerbiage;
+  form?: never;
   modalForm: FormJson;
   overlayForm?: FormJson;
-  drawerForm?: never;
-  addEntityDrawerForm?: never;
-  form?: never;
+  verbiage: ModalOverlayReportPageVerbiage;
 }
 
 export interface EntityDetailsMultiformShape {
