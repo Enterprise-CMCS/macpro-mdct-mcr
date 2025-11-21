@@ -24,6 +24,8 @@ describe("MCPAR E2E Form Submission", () => {
       .focus();
     cy.get("@mcparModalSubmitButton").click();
 
+    cy.wait(5000);
+
     cy.contains("Successfully Submitted").should("be.visible");
     cy.get("a:contains('Leave form')").as("mcparLinkFormLink").focus();
     cy.get("@mcparLinkFormLink").click();
@@ -210,6 +212,7 @@ const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
+      .first()
       .as("mcparCompleteModalButton")
       .focus();
     cy.get("@mcparCompleteModalButton").click();
@@ -274,12 +277,29 @@ const processField = (field) => {
         cy.get(`[name="${field.id}"]`).select(1);
         break;
       case "radio":
-      case "checkbox":
-        cy.get(`[id="${field.id}-${field.props.choices[0].id}"]`).check();
-        field.props.choices[0].children?.forEach((childField) =>
-          processField(childField)
-        );
+      case "checkbox": {
+        const firstChoice = field.props?.choices?.[0];
+
+        if (firstChoice && firstChoice.id !== "placeholder") {
+          cy.get(`#${field.id}-${firstChoice.id}`).check();
+          firstChoice.children?.forEach(processField);
+          break;
+        }
+
+        // Find first checkbox
+        cy.get(`input[type="checkbox"][id^="${field.id}-"]`)
+          .first()
+          .then(($el) => {
+            const id = $el.attr("id");
+            cy.wrap($el).check();
+
+            const choice = field.props?.choices?.find(
+              (c) => `${field.id}-${c.id}` === id
+            );
+            choice?.children?.forEach(processField);
+          });
         break;
+      }
       case "numberSuppressible":
         cy.get(`[name="${field.id}-suppressed"]`).check();
         break;
