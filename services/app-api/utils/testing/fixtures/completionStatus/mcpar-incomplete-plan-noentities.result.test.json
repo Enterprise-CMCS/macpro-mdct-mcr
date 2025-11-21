@@ -23,7 +23,7 @@
   },
   "/mcpar/plan-level-indicators": {
     "/mcpar/plan-level-indicators/program-characteristics": false,
-    "/mcpar/plan-level-indicators/financial-performance": false,
+    "/mcpar/plan-level-indicators/financial-performance": true,
     "/mcpar/plan-level-indicators/encounter-data-report": false,
     "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances": {
       "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-overview": false,
