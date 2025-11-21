@@ -1,7 +1,13 @@
 // components
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { DrawerReportPageEntityRows } from "components";
-import { EntityDetailsOverlayProps } from "./EntityDetailsOverlay";
+// types
+import {
+  DrawerReportPageShape,
+  EntityShape,
+  ModalOverlayReportPageShape,
+  ReportShape,
+} from "types";
 // utils
 import { getReportVerbiage } from "utils";
 // verbiage
@@ -11,7 +17,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
   report,
   route,
   selectedEntity,
-}: EntityDetailsOverlayProps) => {
+}: Props) => {
   const { qualityMeasuresVerbiage } = getReportVerbiage(report.reportType);
   const { tableHeaders } = qualityMeasuresVerbiage;
   const headers = Object.keys(tableHeaders).map((key) => tableHeaders[key]);
@@ -52,6 +58,12 @@ export const EntityDetailsOverlayQualityMeasures = ({
     </>
   );
 };
+
+interface Props {
+  report: ReportShape;
+  route: DrawerReportPageShape | ModalOverlayReportPageShape;
+  selectedEntity: EntityShape;
+}
 
 const sx = {
   dashboardTitle: {

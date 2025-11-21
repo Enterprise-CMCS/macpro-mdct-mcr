@@ -4,9 +4,7 @@ import { EntityDetailsOverlayReporting } from "./EntityDetailsOverlayReporting";
 // utils
 import {
   mockEntityStore,
-  mockMlrReport,
   mockModalOverlayForm,
-  mockModalOverlayReportPageJson,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -36,10 +34,7 @@ const entityDetailsOverlayReportingComponent = (
       entityType={mockEntityStore.entityType!}
       form={mockModalOverlayForm}
       onSubmit={mockOnSubmit}
-      report={mockMlrReport}
-      route={mockModalOverlayReportPageJson}
       selectedEntity={mockEntityStore.selectedEntity!}
-      setEntering={jest.fn()}
     />
   </RouterWrappedComponent>
 );

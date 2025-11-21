@@ -15,8 +15,6 @@ describe("MLR E2E Form Submission", () => {
     fillOutMLR(programName);
     submitMLR();
 
-    cy.wait(5000);
-
     cy.contains("Successfully Submitted").should("be.visible");
   });
   it("unlock as admin", () => {
@@ -148,8 +146,6 @@ function fillOutMLR(programName) {
   cy.get('button:contains("Add new MLR submission")').click();
   cy.get('input[name="programName"]').type(programName);
   cy.get("button[type=submit]").contains("Save").click();
-
-  cy.wait(2000);
 
   //Find our new program and open it
   cy.get("table").within(() => {

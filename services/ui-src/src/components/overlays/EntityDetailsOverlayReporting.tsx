@@ -1,9 +1,9 @@
+import { MouseEventHandler } from "react";
 // components
 import { Box, Text } from "@chakra-ui/react";
 import { Form, ReportPageIntro, SaveReturnButton } from "components";
-import { EntityDetailsOverlayProps } from "./EntityDetailsOverlay";
 // types
-import { FormJson } from "types";
+import { EntityShape, EntityType, FormJson } from "types";
 // utils
 import { getProgramInfo } from "utils";
 // verbiage
@@ -18,7 +18,7 @@ export const EntityDetailsOverlayReporting = ({
   selectedEntity,
   submitting,
   validateOnRender,
-}: EntityDetailsOverlayProps) => {
+}: Props) => {
   const programInfo = getProgramInfo(selectedEntity);
 
   return (
@@ -54,6 +54,19 @@ export const EntityDetailsOverlayReporting = ({
     </>
   );
 };
+
+interface Props {
+  closeEntityDetailsOverlay: MouseEventHandler;
+  entityType: EntityType;
+  disabled: boolean;
+  entities: EntityShape[];
+  drawerForm?: FormJson;
+  form?: FormJson;
+  onSubmit: Function;
+  selectedEntity: EntityShape;
+  submitting?: boolean;
+  validateOnRender?: boolean;
+}
 
 const sx = {
   textHeading: {

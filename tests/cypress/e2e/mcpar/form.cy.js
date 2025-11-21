@@ -24,8 +24,6 @@ describe("MCPAR E2E Form Submission", () => {
       .focus();
     cy.get("@mcparModalSubmitButton").click();
 
-    cy.wait(5000);
-
     cy.contains("Successfully Submitted").should("be.visible");
     cy.get("a:contains('Leave form')").as("mcparLinkFormLink").focus();
     cy.get("@mcparLinkFormLink").click();

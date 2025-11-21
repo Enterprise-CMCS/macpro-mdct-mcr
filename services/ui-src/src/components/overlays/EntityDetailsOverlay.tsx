@@ -21,17 +21,20 @@ import { useStore } from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
-export const EntityDetailsOverlay = (props: EntityDetailsOverlayProps) => {
-  const {
-    closeEntityDetailsOverlay,
-    entities,
-    entityType,
-    report,
-    route,
-    selectedEntity,
-    setEntering,
-  } = props;
-
+export const EntityDetailsOverlay = ({
+  closeEntityDetailsOverlay,
+  disabled,
+  entities,
+  entityType,
+  form = {} as FormJson,
+  onSubmit,
+  report,
+  route,
+  selectedEntity,
+  submitting,
+  setEntering,
+  validateOnRender,
+}: Props) => {
   // Entity Provider Setup
   const { setEntities, setSelectedEntity, setEntityType } = useStore();
 
@@ -56,17 +59,35 @@ export const EntityDetailsOverlay = (props: EntityDetailsOverlayProps) => {
     return overlayVerbiage[key]?.backButton || "Return";
   };
 
-  const SwitchOverlay = (props: EntityDetailsOverlayProps) => {
+  const switchOverlay = () => {
     if (
       reportType === ReportType.MCPAR &&
       route.path ===
         "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
     ) {
-      return <EntityDetailsOverlayQualityMeasures {...props} />;
+      return (
+        <EntityDetailsOverlayQualityMeasures
+          report={report}
+          route={route}
+          selectedEntity={selectedEntity}
+        />
+      );
     }
 
     if (reportType === ReportType.MLR) {
-      return <EntityDetailsOverlayReporting {...props} />;
+      return (
+        <EntityDetailsOverlayReporting
+          closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+          disabled={disabled}
+          entities={entities}
+          entityType={entityType}
+          form={form}
+          onSubmit={onSubmit}
+          selectedEntity={selectedEntity}
+          submitting={submitting}
+          validateOnRender={validateOnRender}
+        />
+      );
     }
 
     return <></>;
@@ -78,12 +99,12 @@ export const EntityDetailsOverlay = (props: EntityDetailsOverlayProps) => {
         onClick={closeEntityDetailsOverlay}
         text={backButtonText(reportType)}
       />
-      <SwitchOverlay {...props} />
+      {switchOverlay()}
     </Box>
   );
 };
 
-export interface EntityDetailsOverlayProps {
+interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;
   entityType: EntityType;
   disabled: boolean;
