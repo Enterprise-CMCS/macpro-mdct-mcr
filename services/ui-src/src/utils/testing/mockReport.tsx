@@ -263,7 +263,7 @@ export const mockReportFieldData = {
           value: "Yes",
         },
       ],
-      measure_identifier_cmit: "1234",
+      measure_identifierCmit: "1234",
     },
     {
       id: "mock-qm-cbe",
@@ -274,7 +274,7 @@ export const mockReportFieldData = {
           value: "No, it has a Consensus Based Entity (CBE) number",
         },
       ],
-      measure_identifier_cbe: "4321",
+      measure_identifierCbe: "4321",
     },
   ],
   sanctions: [

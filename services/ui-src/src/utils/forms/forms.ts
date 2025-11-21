@@ -297,7 +297,7 @@ export const getForm = (params: getFormParams) => {
     ilos,
     reportingOnIlos = false,
   } = params;
-  const { drawerForm } = route;
+  const { drawerForm = {} as FormJson } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];

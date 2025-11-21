@@ -33,8 +33,8 @@ export const EntityRow = ({
     report_programName,
     report_planName,
     name,
-    measure_identifier_cbe,
-    measure_identifier_cmit,
+    measure_identifierCbe,
+    measure_identifierCmit,
     measure_name,
   } = entity;
   const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
@@ -46,10 +46,10 @@ export const EntityRow = ({
 
   const getMeasureIdDisplayText = () => {
     let identifier = "N/A";
-    if (measure_identifier_cmit) {
-      identifier = `CMIT: ${measure_identifier_cmit}`;
-    } else if (measure_identifier_cbe) {
-      identifier = `CBE: ${measure_identifier_cbe}`;
+    if (measure_identifierCmit) {
+      identifier = `CMIT: ${measure_identifierCmit}`;
+    } else if (measure_identifierCbe) {
+      identifier = `CBE: ${measure_identifierCbe}`;
     }
     return `Measure ID: ${identifier}`;
   };

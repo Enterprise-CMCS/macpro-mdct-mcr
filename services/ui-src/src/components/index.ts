@@ -84,6 +84,8 @@ export { EntityDetailsFormOverlay } from "./overlays/EntityDetailsFormOverlay";
 export { EntityDetailsMultiformOverlay } from "./overlays/EntityDetailsMultiformOverlay";
 export { PlanComplianceTableOverlay } from "./overlays/PlanComplianceTableOverlay";
 export { EntityDetailsOverlay } from "./overlays/EntityDetailsOverlay";
+export { EntityDetailsOverlayQualityMeasures } from "./overlays/EntityDetailsOverlayQualityMeasures";
+export { EntityDetailsOverlayReporting } from "./overlays/EntityDetailsOverlayReporting";
 // modals
 export { Modal } from "./modals/Modal";
 export { AddEditReportModal } from "./modals/AddEditReportModal";
@@ -105,6 +107,7 @@ export { ReportPageWrapper } from "./reports/ReportPageWrapper";
 export { ReportPageIntro } from "./reports/ReportPageIntro";
 export { StandardReportPage } from "./reports/StandardReportPage";
 export { DrawerReportPage } from "./reports/DrawerReportPage";
+export { DrawerReportPageEntityRows } from "./reports/DrawerReportPageEntityRows";
 export { ModalDrawerReportPage } from "./reports/ModalDrawerReportPage";
 export { ModalOverlayReportPage } from "./reports/ModalOverlayReportPage";
 export { OverlayContext, OverlayProvider } from "./reports/OverlayProvider";
