@@ -214,7 +214,6 @@ const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
-      .first()
       .as("mlrCompleteModalButton")
       .focus();
     cy.get("@mlrCompleteModalButton").click();
