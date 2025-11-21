@@ -124,7 +124,7 @@ export class PrerequisiteStack extends Stack {
   async addAdditionalPrerequisitesAsync(vpc: ec2.IVpc) {
     const module = await tryImport<{
       addAdditionalPrerequisites: (stack: Stack, vpc: ec2.IVpc) => void;
-    }>("./prerequisites-additional");
+    }>("../prerequisites-additional");
     if (module?.addAdditionalPrerequisites) {
       module.addAdditionalPrerequisites(this, vpc);
     }
