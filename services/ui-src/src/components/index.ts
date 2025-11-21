@@ -112,6 +112,7 @@ export { OverlayReportPage } from "./reports/OverlayReportPage";
 export { ReportPageFooter } from "./reports/ReportPageFooter";
 export { ReportContext, ReportProvider } from "./reports/ReportProvider";
 export { EntityContext, EntityProvider } from "./reports/EntityProvider";
+export { DrawerReportPageEntityRows } from "./reports/DrawerReportPageEntityRows";
 // statusing
 export { StatusTable } from "./statusing/StatusTable";
 // tables

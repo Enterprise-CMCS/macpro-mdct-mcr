@@ -94,7 +94,7 @@ export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
   verbiage: ModalOverlayReportPageVerbiage;
   modalForm: FormJson;
   overlayForm?: FormJson;
-  drawerForm?: never;
+  drawerForm?: FormJson;
   addEntityDrawerForm?: never;
   form?: never;
 }

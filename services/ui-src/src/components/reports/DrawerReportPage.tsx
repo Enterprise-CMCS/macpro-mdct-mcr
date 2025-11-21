@@ -12,7 +12,7 @@ import {
   ErrorAlert,
   SortableNaaarStandardsTable,
 } from "components";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
+import { DrawerReportPageEntityRows } from "./DrawerReportPageEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,
@@ -202,12 +202,12 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
       }
       const filteredFormData = filterFormData(
         enteredData,
-        referenceForm.fields.filter(isFieldElement)
+        referenceForm!.fields.filter(isFieldElement)
       );
 
       const entriesToClear = getEntriesToClear(
         enteredData,
-        referenceForm.fields.filter(isFieldElement)
+        referenceForm!.fields.filter(isFieldElement)
       );
 
       const newEntity = {
@@ -414,7 +414,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
           drawerTitle: getDrawerTitle(),
           drawerInfo: verbiage.drawerInfo,
         }}
-        form={selectedIsCustomEntity ? addEntityForm : form}
+        form={selectedIsCustomEntity && addEntityForm ? addEntityForm : form!}
         onSubmit={onSubmit}
         submitting={submitting}
         drawerDisclosure={{
