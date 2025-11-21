@@ -11,23 +11,6 @@
       "plan_enrollment": "70",
       "plan_medicaidEnrollmentSharePercentage": "74",
       "plan_medicaidManagedCareEnrollmentSharePercentage": "69",
-      "plan_medicalLossRatioPercentage": "53",
-      "plan_medicalLossRatioPercentageAggregationLevel": [
-        {
-          "key": "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-          "value": "Program-specific statewide"
-        }
-      ],
-      "plan_populationSpecificMedicalLossRatioDescription": "Text Fill",
-      "plan_medicalLossRatioReportingPeriod": [
-        {
-          "key": "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-          "value": "Yes"
-        }
-      ],
-      "plan_medicalLossRatioPercentageAggregationLevel-otherText": "",
-      "plan_medicalLossRatioReportingPeriodStartDate": "02/17/2023",
-      "plan_medicalLossRatioReportingPeriodEndDate": "02/17/2023",
       "program_encounterDataSubmissionTimelinessStandardDefinition": "Text Fill",
       "plan_encounterDataSubmissionTimelinessCompliancePercentage": "68",
       "plan_encounterDataSubmissionHipaaCompliancePercentage": "78",

@@ -465,25 +465,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_medicaidEnrollmentSharePercentage: suppressionText,
           plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
           plan_parentOrganization: faker.lorem.sentence(),
-          plan_medicalLossRatioPercentage: numberFloat(),
-          plan_medicalLossRatioPercentageAggregationLevel: [
-            {
-              key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-              value: "Program-specific statewide",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriod: [
-            {
-              key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-              value: "Yes",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-            newReportingPeriodEndDate
-          ),
-          plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-            newReportingPeriodStartDate
-          ),
           plan_mfcuProgramIntegrityReferrals: numberInt(),
           plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer:
             numberInt(),
