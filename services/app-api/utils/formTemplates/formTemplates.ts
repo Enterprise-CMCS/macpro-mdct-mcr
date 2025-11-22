@@ -227,7 +227,9 @@ export const compileValidationJsonFromRoutes = (
   routeArray.forEach((route: ReportRoute) => {
     // check for non-standard needed validation objects
     if (
-      (route.pageType === "modalDrawer" || route.pageType === "modalOverlay") &&
+      (route.pageType === "modalDrawer" ||
+        route.pageType === "modalOverlay" ||
+        route.pageType === "modalOverlayDrawer") &&
       route.entityType
     ) {
       Object.assign(validationSchema, { [route.entityType]: "objectArray" });

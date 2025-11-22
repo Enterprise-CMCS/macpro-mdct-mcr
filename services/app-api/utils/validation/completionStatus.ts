@@ -263,6 +263,9 @@ export const calculateCompletionStatus = async (
           ),
         };
         break;
+      case "modalOverlayDrawer":
+        // TODO: modalOverlayDrawer completion status
+        break;
       case "planOverlay": {
         let isComplete = false;
 

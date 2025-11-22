@@ -11,6 +11,7 @@ import {
   StandardReportPage,
   ModalOverlayReportPage,
   OverlayProvider,
+  ModalOverlayDrawerReportPage,
 } from "components";
 // types
 import {
@@ -22,6 +23,7 @@ import {
   StandardReportPageShape,
   AnyObject,
   OverlayReportPageShape,
+  ModalOverlayDrawerReportPageShape,
 } from "types";
 // utils
 import { useStore } from "utils";
@@ -74,6 +76,14 @@ export const ReportPageWrapper = () => {
         return (
           <ModalOverlayReportPage
             route={route as ModalOverlayReportPageShape}
+            setSidebarHidden={setSidebarHidden}
+            validateOnRender={locationState?.validateOnRender}
+          />
+        );
+      case PageTypes.MODAL_OVERLAY_DRAWER:
+        return (
+          <ModalOverlayDrawerReportPage
+            route={route as ModalOverlayDrawerReportPageShape}
             setSidebarHidden={setSidebarHidden}
             validateOnRender={locationState?.validateOnRender}
           />

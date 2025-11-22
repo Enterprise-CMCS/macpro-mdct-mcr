@@ -1,5 +1,12 @@
 export default {
+  MCPAR: {
+    backButton: "Return to quality & performance measures dashboard",
+    dashboardTitle: "Report results by plan:",
+    dashboardSubtitle:
+      "For each plan listed, enter and respond to the indicators within.",
+  },
   MLR: {
+    backButton: "Return to MLR Reporting",
     intro: {
       section: "MLR Reporting",
       subsection: "Medicaid Medical Loss Ratio (MLR) & Remittances",
