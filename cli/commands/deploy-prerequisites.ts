@@ -7,6 +7,7 @@ export const deployPrerequisites = {
   describe: "deploy the app's AWS account prerequisites with cdk to the cloud",
   handler: async () => {
     await checkIfAuthenticated();
+    await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
       "CDK prerequisite deploy",
       [

@@ -24,6 +24,8 @@ describe("MCPAR E2E Form Submission", () => {
       .focus();
     cy.get("@mcparModalSubmitButton").click();
 
+    cy.wait(5000);
+
     cy.contains("Successfully Submitted").should("be.visible");
     cy.get("a:contains('Leave form')").as("mcparLinkFormLink").focus();
     cy.get("@mcparLinkFormLink").click();
@@ -212,6 +214,7 @@ const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
   if (modalForm && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
+      .first()
       .as("mcparCompleteModalButton")
       .focus();
     cy.get("@mcparCompleteModalButton").click();
