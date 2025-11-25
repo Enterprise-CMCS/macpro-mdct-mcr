@@ -692,10 +692,10 @@ const createQualityMeasure = () => ({
       value: "Yes",
     },
   ],
-  measure_identifier_cmit: numberInt(),
-  measure_data_version: [
+  measure_identifierCmit: numberInt(),
+  measure_dataVersion: [
     {
-      key: "measure_data_version-GLnFjfEWVnsNJdWMswHwxk",
+      key: "measure_dataVersion-GLnFjfEWVnsNJdWMswHwxk",
       value: "Preliminary",
     },
   ],
@@ -706,9 +706,9 @@ const createQualityMeasure = () => ({
         "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
     },
   ],
-  measure_data_collection_method: [
+  measure_dataCollectionMethod: [
     {
-      key: "measure_data_collection_method-bkD4uguEEiRjo5GyoCVNMi",
+      key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
       value: "Administrative",
     },
   ],

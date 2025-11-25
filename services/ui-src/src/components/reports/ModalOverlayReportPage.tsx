@@ -18,6 +18,7 @@ import {
   EntityShape,
   isFieldElement,
   ModalOverlayReportPageShape,
+  ReportShape,
   ReportStatus,
 } from "types";
 // utils
@@ -39,7 +40,7 @@ export const ModalOverlayReportPage = ({
   validateOnRender,
 }: Props) => {
   // Route Information
-  const { entityType, verbiage, modalForm, overlayForm } = route;
+  const { drawerForm, entityType, modalForm, overlayForm, verbiage } = route;
 
   // Context Information
   const { isMobile } = useBreakpoint();
@@ -54,17 +55,18 @@ export const ModalOverlayReportPage = ({
   // state management
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
     useStore().user ?? {};
-  const { report } = useStore();
+  const { report = {} as ReportShape } = useStore();
 
-  const reportType = report?.reportType || "MLR";
-  const accordionReport = (accordionVerbiage as AnyObject)[reportType];
+  const reportType = (report.reportType ||
+    "MLR") as keyof typeof accordionVerbiage;
+  const accordionReport = accordionVerbiage[reportType];
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const isLocked = report?.locked || isAdminUserType;
+  const isLocked = report.locked || isAdminUserType;
 
   // Display Variables
-  const reportFieldDataEntities = report?.fieldData[entityType] || [];
+  const reportFieldDataEntities = report.fieldData?.[entityType] || [];
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
     if (isMobile)
@@ -119,6 +121,7 @@ export const ModalOverlayReportPage = ({
 
   // Open/Close overlay action methods
   const openEntityDetailsOverlay = (entity: EntityShape) => {
+    window.scrollTo(0, 0);
     setEntering(true);
     setCurrentEntity(entity);
     setIsEntityDetailsOpen(true);
@@ -126,6 +129,7 @@ export const ModalOverlayReportPage = ({
   };
 
   const closeEntityDetailsOverlay = () => {
+    window.scrollTo(0, 0);
     setCurrentEntity(undefined);
     setIsEntityDetailsOpen(false);
     setSidebarHidden(false);
@@ -136,12 +140,12 @@ export const ModalOverlayReportPage = ({
     if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
-        reportType: report?.reportType,
-        state: state,
-        id: report?.id,
+        reportType,
+        state,
+        id: report.id,
       };
-      const currentEntities = [...(report?.fieldData[entityType] || [])];
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+      const currentEntities = [...(report.fieldData[entityType] || [])];
+      const selectedEntityIndex = report.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === currentEntity?.id
       );
       const filteredFormData = filterFormData(
@@ -196,16 +200,19 @@ export const ModalOverlayReportPage = ({
 
   return (
     <Box>
-      {overlayForm && isEntityDetailsOpen && currentEntity ? (
+      {isEntityDetailsOpen && currentEntity ? (
         <EntityProvider>
           <EntityDetailsOverlay
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+            disabled={!userIsEndUser}
+            drawerForm={drawerForm}
+            entities={report.fieldData[entityType]}
             entityType={entityType}
-            entities={report?.fieldData[entityType]}
             form={overlayForm}
             onSubmit={onSubmit}
+            report={report}
+            route={route}
             selectedEntity={currentEntity}
-            disabled={!userIsEndUser}
             setEntering={setEntering}
             submitting={submitting}
             validateOnRender={validateOnRender}
@@ -216,7 +223,7 @@ export const ModalOverlayReportPage = ({
           <ReportPageIntro
             text={verbiage.intro}
             accordion={accordionReport.formIntro}
-            reportType={report?.reportType}
+            reportType={reportType}
           />
 
           <Box>

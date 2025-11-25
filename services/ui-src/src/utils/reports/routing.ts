@@ -1,5 +1,11 @@
 import { useLocation } from "react-router";
-import { ReportRoute, ReportType } from "types";
+import {
+  DrawerReportPageShape,
+  ModalOverlayReportPageShape,
+  ReportRoute,
+  ReportType,
+  StandardReportPageShape,
+} from "types";
 
 /**
  * WARNING: You probably want ReportContext.isReportPage instead.
@@ -50,3 +56,41 @@ export const useFindRoute = (
   }
   return calculatedRoutes;
 };
+
+const hasPath = (path: string) => (route: { path: string }) =>
+  route.path.includes(path);
+
+const isPath = (path: string) => (route: { path: string }) =>
+  route.path === path;
+
+export const routeChecker: RouteChecker = {
+  // MCPAR
+  isMcpar: hasPath("mcpar"),
+  isIlosPage: isPath("/mcpar/plan-level-indicators/ilos"),
+  isMeasuresAndResultsPage: isPath(
+    "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
+  ),
+  isNewPlanExemptionPage: isPath(
+    "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption"
+  ),
+  isPatientAccessApiPage: isPath(
+    "/mcpar/plan-level-indicators/patient-access-api"
+  ),
+  isPriorAuthorizationPage: isPath(
+    "/mcpar/plan-level-indicators/prior-authorization"
+  ),
+  // NAAAR
+  isAnalysisMethodsPage: hasPath("analysis-methods"),
+  isStandardsPage: isPath(
+    "/naaar/program-level-access-and-network-adequacy-standards"
+  ),
+};
+
+interface RouteChecker {
+  [key: string]: (
+    route:
+      | DrawerReportPageShape
+      | ModalOverlayReportPageShape
+      | StandardReportPageShape
+  ) => boolean;
+}

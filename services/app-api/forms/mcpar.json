@@ -3269,7 +3269,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint":   [
+                      "hint": [
                         {
                           "type": "span",
                           "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",
@@ -3992,7 +3992,7 @@
                           "label": "Yes",
                           "children": [
                             {
-                              "id": "measure_identifier_cmit",
+                              "id": "measure_identifierCmit",
                               "type": "number",
                               "validation": {
                                 "type": "number",
@@ -4011,7 +4011,7 @@
                           "label": "No, it has a Consensus Based Entity (CBE) number",
                           "children": [
                             {
-                              "id": "measure_identifier_cbe",
+                              "id": "measure_identifierCbe",
                               "type": "number",
                               "validation": {
                                 "type": "number",
@@ -4030,7 +4030,7 @@
                           "label": "No, it uses neither CMIT or CBE",
                           "children": [
                             {
-                              "id": "measure_identifier_definition",
+                              "id": "measure_identifierDefinition",
                               "type": "textarea",
                               "validation": {
                                 "type": "text",
@@ -4044,7 +4044,7 @@
                               }
                             },
                             {
-                              "id": "measure_identifier_url",
+                              "id": "measure_identifierUrl",
                               "type": "text",
                               "validation": {
                                 "type": "urlOptional",
@@ -4057,7 +4057,7 @@
                               }
                             },
                             {
-                              "id": "measure_identifier_domain",
+                              "id": "measure_identifierDomain",
                               "type": "checkbox",
                               "validation": {
                                 "type": "checkbox",
@@ -4102,12 +4102,12 @@
                                     "label": "Other, specify",
                                     "children": [
                                       {
-                                        "id": "measure_identifier_domain-otherText",
+                                        "id": "measure_identifierDomain-otherText",
                                         "type": "text",
                                         "validation": {
                                           "type": "text",
                                           "nested": true,
-                                          "parentFieldName": "measure_identifier_domain",
+                                          "parentFieldName": "measure_identifierDomain",
                                           "parentOptionId": "obrFjzruEFPxkwkabnf8V2"
                                         }
                                       }
@@ -4122,7 +4122,7 @@
                     }
                   },
                   {
-                    "id": "measure_data_version",
+                    "id": "measure_dataVersion",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -4204,7 +4204,7 @@
                     }
                   },
                   {
-                    "id": "measure_data_collection_method",
+                    "id": "measure_dataCollectionMethod",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
@@ -4236,12 +4236,12 @@
                           "label": "Other, specify",
                           "children": [
                             {
-                              "id": "measure_data_collection_method-otherText",
+                              "id": "measure_dataCollectionMethod-otherText",
                               "type": "text",
                               "validation": {
                                 "type": "text",
                                 "nested": true,
-                                "parentFieldName": "measure_data_collection_method",
+                                "parentFieldName": "measure_dataCollectionMethod",
                                 "parentOptionId": "D3x0tz0657GlrkneNtssdn"
                               }
                             }

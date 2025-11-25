@@ -2,16 +2,21 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsOverlay } from "./EntityDetailsOverlay";
+// types
+import { EntityShape, ReportShape } from "types";
 // utils
 import {
   mockEntityStore,
+  mockMcparReport,
+  mockMlrReport,
   mockModalOverlayForm,
+  mockModalOverlayReportPageJson,
+  mockNaaarReport,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 // verbiage
-import accordionVerbiage from "verbiage/pages/accordion";
 import overlayVerbiage from "verbiage/pages/overlays";
 
 const mockCloseEntityDetailsOverlay = jest.fn();
@@ -25,14 +30,19 @@ mockedUseStore.mockReturnValue({
 });
 
 const entityDetailsOverlayComponent = (
+  report: ReportShape,
+  route: any = mockModalOverlayReportPageJson
+) => (
   <RouterWrappedComponent>
     <EntityDetailsOverlay
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       entityType={mockEntityStore.entityType!}
-      entities={mockEntityStore.entities}
+      entities={mockEntityStore.entities as EntityShape[]}
       form={mockModalOverlayForm}
       onSubmit={mockOnSubmit}
       disabled={false}
+      report={report}
+      route={route}
       setEntering={jest.fn()}
       selectedEntity={mockEntityStore.selectedEntity!}
     />
@@ -40,52 +50,77 @@ const entityDetailsOverlayComponent = (
 );
 
 describe("<EntityDetailsOverlay />", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    render(entityDetailsOverlayComponent);
-  });
+  describe("MCPAR", () => {
+    const route = {
+      path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+    };
 
-  const user = userEvent.setup();
-  const selectedEntity = mockEntityStore.selectedEntity;
-
-  test("should render the initial view for a state user", async () => {
-    // Close out of the Overlay it opened
-    const closeButton = screen.getByText("Return to MLR Reporting");
-    expect(closeButton).toBeVisible();
-
-    // Check if header is visible on load - H2
-    expect(
-      screen.getByText(overlayVerbiage.MLR.intro.subsection)
-    ).toBeVisible();
-
-    // Check if accordion is showing
-    const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
-    expect(screen.getByText(accordionHeader)).toBeVisible();
-
-    // Check if MLR Report For is showing the correct Entity Data
-    const reportPlanName = selectedEntity!.report_planName;
-    const reportProgramName = selectedEntity!.report_programName;
-    const eligibilityGroup = selectedEntity!.report_eligibilityGroup[0].value;
-    const reportingPeriod = `${
-      selectedEntity!.report_reportingPeriodStartDate
-    } to ${selectedEntity!.report_reportingPeriodEndDate}`;
-
-    expect(screen.getByText(reportPlanName)).toBeVisible();
-    expect(screen.getByText(reportProgramName)).toBeVisible();
-    expect(screen.getByText(eligibilityGroup)).toBeVisible();
-    expect(screen.getByText(reportingPeriod)).toBeVisible();
-
-    // Make sure footer button appears correctly
-    const saveAndReturn = screen.getByText("Save & return");
-    expect(saveAndReturn).toBeVisible();
-  });
-
-  test("should call the close overlay function when clicking Return to MLR", async () => {
-    // Close out of the Overlay it opened
-    const closeButton = screen.getByText("Return to MLR Reporting");
-    await act(async () => {
-      await user.click(closeButton);
+    beforeEach(() => {
+      jest.clearAllMocks();
+      render(entityDetailsOverlayComponent(mockMcparReport, route));
     });
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+
+    test("should render the initial view for a state user", () => {
+      expect(
+        screen.getByText("Measure identification number or definition:")
+      ).toBeVisible();
+    });
+
+    test("should call the close overlay function when clicking Return", async () => {
+      const closeButton = screen.getByRole("button", {
+        name: "Return to quality & performance measures dashboard",
+      });
+      await act(async () => {
+        await userEvent.click(closeButton);
+      });
+      expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
+    });
+  });
+
+  describe("MLR", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      render(
+        entityDetailsOverlayComponent(
+          mockMlrReport,
+          mockModalOverlayReportPageJson
+        )
+      );
+    });
+
+    test("should render the initial view for a state user", () => {
+      expect(
+        screen.getByRole("heading", {
+          level: 2,
+          name: overlayVerbiage.MLR.intro.subsection,
+        })
+      ).toBeVisible();
+    });
+
+    test("should call the close overlay function when clicking Return", async () => {
+      const closeButton = screen.getByRole("button", {
+        name: "Return to MLR Reporting",
+      });
+      await act(async () => {
+        await userEvent.click(closeButton);
+      });
+      expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
+    });
+  });
+
+  describe("NAAAR", () => {
+    test("should call the close overlay function when clicking Return", async () => {
+      render(
+        entityDetailsOverlayComponent(
+          mockNaaarReport,
+          mockModalOverlayReportPageJson
+        )
+      );
+      const closeButton = screen.getByRole("button", { name: "Return" });
+      await act(async () => {
+        await userEvent.click(closeButton);
+      });
+      expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
+    });
   });
 });

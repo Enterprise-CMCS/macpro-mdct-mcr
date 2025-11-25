@@ -5,6 +5,8 @@ import {
   ReportType,
   StandardReportPageShape,
 } from "types";
+// utils
+import { routeChecker } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
 
@@ -48,12 +50,11 @@ export const formModifications = (
 
   if (
     reportType === ReportType.MCPAR &&
-    route.path ===
-      "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption"
+    routeChecker.isNewPlanExemptionPage(route)
   ) {
     accordion = accordionVerbiage.MCPAR.formIntro;
     formJson = addPlanChoices(route.form, fieldData.plans);
-    showError = !fieldData["plans"] || fieldData["plans"]?.length < 1;
+    showError = !fieldData.plans || fieldData.plans.length < 1;
   }
 
   return {
