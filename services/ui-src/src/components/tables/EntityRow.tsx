@@ -23,7 +23,7 @@ export const EntityRow = ({
   openOverlayOrDrawer,
   openDeleteEntityModal,
   entering,
-  hasStandards,
+  hasEntities,
 }: EntityRowProps) => {
   const { isMobile } = useBreakpoint();
   const { report } = useStore();
@@ -98,7 +98,7 @@ export const EntityRow = ({
         {isMobile && (
           <EntityButtonGroup
             deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasStandards && hasStandards !== undefined}
+            openDisabled={!hasEntities && hasEntities !== undefined}
             entity={entity}
             verbiage={verbiage}
             openAddEditEntityModal={openAddEditEntityModal}
@@ -115,7 +115,7 @@ export const EntityRow = ({
             entity={entity}
             verbiage={verbiage}
             deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasStandards && hasStandards !== undefined}
+            openDisabled={!hasEntities && hasEntities !== undefined}
             openAddEditEntityModal={openAddEditEntityModal}
             openOverlayOrDrawer={openOverlayOrDrawer}
             openDeleteEntityModal={openDeleteEntityModal}
@@ -134,7 +134,7 @@ export interface EntityRowProps {
   entityType?: EntityType;
   locked?: boolean;
   entering?: boolean;
-  hasStandards?: boolean;
+  hasEntities?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openOverlayOrDrawer?: Function;

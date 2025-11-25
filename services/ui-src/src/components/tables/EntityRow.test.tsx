@@ -198,7 +198,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Enter button should be disabled if there is an entity but does not have a standard", async () => {
-      render(completeRowComponent({ ...setupData, hasStandards: false }));
+      render(completeRowComponent({ ...setupData, hasEntities: false }));
       const enterButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
@@ -206,8 +206,8 @@ describe("<EntityRow />", () => {
       expect(enterButton).toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards", () => {
-      render(completeRowComponent({ ...setupData, hasStandards: true }));
+    test("Enter button should not disabled if there is an entity and hasEntities", () => {
+      render(completeRowComponent({ ...setupData, hasEntities: true }));
       const enterButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
@@ -215,7 +215,7 @@ describe("<EntityRow />", () => {
       expect(enterButton).not.toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards is not defined", () => {
+    test("Enter button should not disabled if there is an entity and hasEntities is not defined", () => {
       render(completeRowComponent(setupData));
       const enterButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
