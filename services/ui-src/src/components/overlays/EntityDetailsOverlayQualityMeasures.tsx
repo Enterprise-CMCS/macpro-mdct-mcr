@@ -131,13 +131,16 @@ const sx = {
   listItem: {
     display: "flex",
     fontSize: "sm",
-    marginBottom: "spacer3",
+    marginBottom: "spacer2",
   },
   listValues: {
     flex: 1,
   },
   listValue: {
-    marginBottom: "spacer1",
+    marginTop: "spacer1",
+    "&:first-of-type": {
+      marginTop: 0,
+    },
   },
   measureName: {
     fontSize: "lg",

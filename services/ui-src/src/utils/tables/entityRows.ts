@@ -176,25 +176,23 @@ export const getCompleteText = ({
   isCustomEntity,
 }: GetCompleteTextProps) => {
   if (isAnalysisMethodsPage) {
-    const isUtilized =
-      entity.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
-    const plans = entity.analysis_method_applicable_plans;
+    const {
+      analysis_applicable: applicable,
+      analysis_method_applicable_plans: plans,
+      analysis_method_frequency: frequency,
+      "analysis_method_frequency-otherText": frequencyOtherText,
+    } = entity;
 
-    if (!isUtilized || !plans) {
-      return "Not utilized";
-    }
+    if (!isCustomEntity && !applicable) return "Not started";
+    if (applicable?.[0].value === "No" || !plans) return "Not utilized";
 
-    const frequencyVal = entity.analysis_method_frequency[0].value;
-    const frequency = otherSpecify(
-      frequencyVal,
-      entity["analysis_method_frequency-otherText"]
-    );
+    const frequencyText = otherSpecify(frequency[0].value, frequencyOtherText);
     const utilizedPlans = plans
-      .map((entity: EntityShape) => entity.value)
+      .map((plan: EntityShape) => plan.value)
       .sort()
       .join(", ");
 
-    return `${frequency}: ${utilizedPlans}`;
+    return `${frequencyText}: ${utilizedPlans}`;
   }
 
   if (isEntityCompleted) return;
@@ -256,7 +254,12 @@ export const getMeasureIdDisplayText = (entity: EntityShape) => {
 export const getMeasureValues = (entity: EntityShape, key: string) => {
   if (key !== "measure_identifier") {
     const value = entity[key];
-    return Array.isArray(value) ? [value[0].value] : [value];
+
+    const formattedValue = Array.isArray(value)
+      ? value.map((obj: EntityShape) => obj.value).join("; ")
+      : value;
+
+    return [formattedValue];
   }
 
   const {
@@ -278,7 +281,7 @@ export const getMeasureValues = (entity: EntityShape, key: string) => {
 
   if (measure_identifierDomain) {
     const domains = measure_identifierDomain
-      .map((d: { value: string }) => d.value)
+      .map((domain: EntityShape) => domain.value)
       .join(", ");
     values.push(`Measure domain(s): ${domains}`);
   }

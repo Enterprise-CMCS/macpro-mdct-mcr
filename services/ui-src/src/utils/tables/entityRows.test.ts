@@ -486,6 +486,17 @@ describe("getCompleteText()", () => {
       expect(input).toBe("Monthly: Plan 1, Plan 2");
     });
 
+    test("returns not started", () => {
+      const props = {
+        ...baseGetCompleteTextProps,
+        entity: {
+          id: "mock-entity",
+        } as EntityShape,
+      };
+      const input = getCompleteText(props);
+      expect(input).toBe("Not started");
+    });
+
     test("returns not utilized for not applicable", () => {
       const props = {
         ...baseGetCompleteTextProps,
@@ -695,13 +706,17 @@ describe("getMeasureValues()", () => {
       id: "mock-report",
       mock: [
         {
-          key: "mock",
-          value: "mock array value",
+          key: "mock-1",
+          value: "mock array value 1",
+        },
+        {
+          key: "mock-2",
+          value: "mock array value 2",
         },
       ],
     };
     const input = getMeasureValues(entity, "mock");
-    expect(input).toEqual(["mock array value"]);
+    expect(input).toEqual(["mock array value 1; mock array value 2"]);
   });
 
   test("returns values for measure identifier", () => {
