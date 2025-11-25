@@ -326,7 +326,7 @@
                 "validation": "number",
                 "props": {
                   "label": "B.I.2 Statewide Medicaid managed care enrollment",
-                  "hint": "Enter the average number of individuals enrolled in risk-based Medicaid managed care per month during the reporting year (i.e., average member months).</br> Include all MCOs, at-risk PIHPs and PAHPs only and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
+                  "hint": "Enter the average number of individuals enrolled in risk-based Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all MCOs, at-risk PIHPs and PAHPs only and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
