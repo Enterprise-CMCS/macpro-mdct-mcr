@@ -174,8 +174,8 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
 
   const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
 
-  const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
-    createQualityMeasure()
+  const qualityMeasures = Array.from({ length: numberOfExamples }, (_, index) =>
+    createQualityMeasure(index)
   );
 
   const sanctions = planIds.map((planId) => createSanction(planId));
@@ -683,36 +683,75 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
   };
 };
 
-const createQualityMeasure = () => ({
-  id: crypto.randomUUID(),
-  measure_name: faker.animal.bird(),
-  measure_identifier: [
+const createQualityMeasure = (index: number) => {
+  const measureIdentifiers = [
     {
-      key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
-      value: "Yes",
+      measure_identifier: [
+        {
+          key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
+          value: "Yes",
+        },
+      ],
+      measure_identifierCmit: numberInt(),
     },
-  ],
-  measure_identifierCmit: numberInt(),
-  measure_dataVersion: [
     {
-      key: "measure_dataVersion-GLnFjfEWVnsNJdWMswHwxk",
-      value: "Preliminary",
+      measure_identifier: [
+        {
+          key: "measure_identifier-eqVgpF8hmsma9ibcvwVqCb",
+          value: "Consensus Based Entity (CBE) number",
+        },
+      ],
+      measure_identifierCbe: numberInt(),
     },
-  ],
-  measure_activities: [
     {
-      key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
-      value:
-        "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
+      measure_identifier: [
+        {
+          key: "measure_identifier-hcsq9mTy5wWhxUPtgkQWwB",
+          value: "No, it uses neither CMIT or CBE",
+        },
+      ],
+      measure_identifierDefinition: faker.lorem.sentence(),
+      measure_identifierUrl: faker.internet.url(),
+      measure_identifierDomain: [
+        {
+          key: "measure_identifierDomain-3fj5mLIKvGHC8Obt7YnVYp",
+          value: "Primary care access and preventative care",
+        },
+      ],
     },
-  ],
-  measure_dataCollectionMethod: [
-    {
-      key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
-      value: "Administrative",
-    },
-  ],
-});
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    measure_name: faker.animal.bird(),
+    ...measureIdentifiers[index],
+    measure_dataVersion: [
+      {
+        key: "measure_dataVersion-GLnFjfEWVnsNJdWMswHwxk",
+        value: "Preliminary",
+      },
+    ],
+    measure_activities: [
+      {
+        key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
+        value:
+          "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
+      },
+    ],
+    measure_dataCollectionMethod: [
+      {
+        key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+        value: "Administrative",
+      },
+    ],
+    measure_rates: [
+      {
+        id: crypto.randomUUID(),
+        name: faker.animal.bear(),
+      },
+    ],
+  };
+};
 
 const createSanction = (planId: string) => ({
   id: crypto.randomUUID(),

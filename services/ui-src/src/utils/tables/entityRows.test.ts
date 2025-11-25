@@ -4,8 +4,13 @@ import {
   calculateIsEntityCompleted,
   getButtonProps,
   getCompleteText,
+  getEligibilityGroup,
   getIncompleteText,
+  getMeasureIdDisplayText,
+  getMeasureIdentifier,
+  getMeasureValues,
   getProgramInfo,
+  getReportingPeriodText,
   hasEntityNameWithDescription,
 } from "./entityRows";
 // types
@@ -516,6 +521,19 @@ describe("getCompleteText()", () => {
     });
   });
 
+  test("returns undefined for complete entity", () => {
+    const props = {
+      entity: {
+        id: "mock-entity",
+      } as EntityShape,
+      isAnalysisMethodsPage: false,
+      isCustomEntity: false,
+      isEntityCompleted: true,
+    };
+    const input = getCompleteText(props);
+    expect(input).toBe(undefined);
+  });
+
   test("returns incomplete status", () => {
     const props = {
       entity: {
@@ -539,6 +557,45 @@ describe("getIncompleteText()", () => {
 
   test("returns undefined for complete", () => {
     expect(getIncompleteText({ isEntityCompleted: true })).toBe(undefined);
+  });
+});
+
+describe("getEligibilityGroup()", () => {
+  const baseEntity = {
+    id: "mock-report",
+    report_eligibilityGroup: [
+      {
+        key: "report_eligibilityGroup",
+        value: "Mock eligibility group",
+      },
+    ],
+  };
+
+  test("returns group name", () => {
+    const input = getEligibilityGroup(baseEntity);
+    expect(input).toBe("Mock eligibility group");
+  });
+
+  test("returns other text", () => {
+    const otherTextEntity = {
+      ...baseEntity,
+      "report_eligibilityGroup-otherText": "Mock eligibility group text",
+    };
+    const input = getEligibilityGroup(otherTextEntity);
+    expect(input).toBe("Mock eligibility group text");
+  });
+});
+
+describe("getReportingPeriodText()", () => {
+  test("returns reporting period", () => {
+    const entity = {
+      id: "mock-report",
+      report_reportingPeriodStartDate: "01/01/2021",
+      report_reportingPeriodEndDate: "01/01/2022",
+    };
+
+    const input = getReportingPeriodText(entity);
+    expect(input).toBe("01/01/2021 to 01/01/2022");
   });
 });
 
@@ -579,6 +636,128 @@ describe("getProgramInfo()", () => {
       "Mock program name",
       "Mock eligibility group text",
       "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+});
+
+describe("getMeasureIdentifier()", () => {
+  test("returns CBE", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifierCbe: "1234",
+    };
+    const input = getMeasureIdentifier(entity);
+    expect(input).toBe("CBE: 1234");
+  });
+
+  test("returns CMIT", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifierCmit: "1234",
+    };
+    const input = getMeasureIdentifier(entity);
+    expect(input).toBe("CMIT: 1234");
+  });
+});
+
+describe("getMeasureIdDisplayText()", () => {
+  test("returns N/A", () => {
+    const entity = {
+      id: "mock-report",
+    };
+    const input = getMeasureIdDisplayText(entity);
+    expect(input).toBe("Measure ID: N/A");
+  });
+
+  test("returns ID", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifierCbe: "1234",
+    };
+    const input = getMeasureIdDisplayText(entity);
+    expect(input).toBe("Measure ID: CBE: 1234");
+  });
+});
+
+describe("getMeasureValues()", () => {
+  test("returns values for string value", () => {
+    const entity = {
+      id: "mock-report",
+      mock: "mock value",
+    };
+    const input = getMeasureValues(entity, "mock");
+    expect(input).toEqual(["mock value"]);
+  });
+
+  test("returns values for array value", () => {
+    const entity = {
+      id: "mock-report",
+      mock: [
+        {
+          key: "mock",
+          value: "mock array value",
+        },
+      ],
+    };
+    const input = getMeasureValues(entity, "mock");
+    expect(input).toEqual(["mock array value"]);
+  });
+
+  test("returns values for measure identifier", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifier: [
+        {
+          key: "measure_identifier-mock",
+          value: "cbe",
+        },
+      ],
+      measure_identifierCbe: "1234",
+    };
+    const input = getMeasureValues(entity, "measure_identifier");
+    expect(input).toEqual(["CBE: 1234"]);
+  });
+
+  test("returns values for other measure identifier", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifier: [
+        {
+          key: "measure_identifier-mock",
+          value: "other",
+        },
+      ],
+      measure_identifierDefinition: "mock definition",
+    };
+    const input = getMeasureValues(entity, "measure_identifier");
+    const expectedResult: string[] = ["Other definition: mock definition"];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("returns values for other measure identifier with domains and url", () => {
+    const entity = {
+      id: "mock-report",
+      measure_identifier: [
+        {
+          key: "measure_identifier-mock",
+          value: "other",
+        },
+      ],
+      measure_identifierDefinition: "mock definition",
+      measure_identifierDomain: [
+        {
+          key: "measure_identifierDomain-mock",
+          value: "mock domain",
+        },
+      ],
+      measure_identifierUrl: "https://mock",
+    };
+    const input = getMeasureValues(entity, "measure_identifier");
+    const expectedResult: string[] = [
+      "Other definition: mock definition",
+      "Link: https://mock",
+      "Measure domain(s): mock domain",
     ];
     expect(input).toEqual(expectedResult);
   });

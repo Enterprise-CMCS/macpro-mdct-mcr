@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 // components
-import { Heading, List, ListItem, Text } from "@chakra-ui/react";
+import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
 import {
   DrawerReportPageEntityRows,
   ReportPageIntro,
@@ -15,6 +15,7 @@ import {
 } from "types";
 // utils
 import {
+  getMeasureValues,
   getReportVerbiage,
   parseCustomHtml,
   sanitizeAndParseHtml,
@@ -36,16 +37,15 @@ export const EntityDetailsOverlayQualityMeasures = ({
   const openDeleteEntityModal = () => {};
   const openRowDrawer = () => {};
 
-  const getValue = (entity: EntityShape, key: string) => {
-    const value = entity[key];
-    if (Array.isArray(value)) return value[0].value;
-    return value;
-  };
+  const list = Object.keys(tableHeaders).map((key: string) => {
+    const values = getMeasureValues(selectedEntity, key);
 
-  const list = Object.keys(tableHeaders).map((key: string) => ({
-    header: tableHeaders[key],
-    value: getValue(selectedEntity, key),
-  }));
+    return {
+      ariaValues: values.join(" "),
+      header: tableHeaders[key],
+      values,
+    };
+  });
 
   return (
     <>
@@ -56,16 +56,18 @@ export const EntityDetailsOverlayQualityMeasures = ({
       <List sx={sx.list}>
         {list.map((listItem: any, index: number) => (
           <ListItem
-            aria-label={`${listItem.header} ${sanitizeAndParseHtml(
-              listItem.value
-            )}`}
+            aria-label={`${listItem.header} ${listItem.ariaValues}`}
             key={index}
             sx={sx.listItem}
           >
-            <Text sx={sx.listHeader}>{listItem.header}</Text>
-            <Text sx={sx.listValue}>
-              {sanitizeAndParseHtml(listItem.value)}
-            </Text>
+            <Box sx={sx.listHeader}>{listItem.header}</Box>
+            <Box sx={sx.listValues}>
+              {listItem.values.map((value: string, index: number) => (
+                <Text key={`${listItem.header}-${index}`} sx={sx.listValue}>
+                  {sanitizeAndParseHtml(value)}
+                </Text>
+              ))}
+            </Box>
           </ListItem>
         ))}
       </List>
@@ -131,8 +133,11 @@ const sx = {
     fontSize: "sm",
     marginBottom: "spacer3",
   },
-  listValue: {
+  listValues: {
     flex: 1,
+  },
+  listValue: {
+    marginBottom: "spacer1",
   },
   measureName: {
     fontSize: "lg",

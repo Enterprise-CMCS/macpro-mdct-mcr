@@ -210,23 +210,80 @@ export const getIncompleteText = ({
   return "Select “Enter” to complete response.";
 };
 
-export const getProgramInfo = (entity: EntityShape) => {
+export const getEligibilityGroup = (entity: EntityShape) => {
   const {
     report_eligibilityGroup: reportEligibilityGroup,
     "report_eligibilityGroup-otherText": reportOtherText,
-    report_planName: reportPlanName,
-    report_programName: reportProgramName,
+  } = entity;
+
+  return reportOtherText || reportEligibilityGroup?.[0].value;
+};
+
+export const getReportingPeriodText = (entity: EntityShape) => {
+  const {
     report_reportingPeriodEndDate: reportEndDate,
     report_reportingPeriodStartDate: reportStartDate,
   } = entity;
 
-  const eligibilityGroup = `${
-    reportOtherText || reportEligibilityGroup[0].value
-  }`;
+  return `${reportStartDate} to ${reportEndDate}`;
+};
 
-  const reportingPeriod = `${reportStartDate} to ${reportEndDate}`;
+export const getProgramInfo = (entity: EntityShape) => {
+  const {
+    report_planName: reportPlanName,
+    report_programName: reportProgramName,
+  } = entity;
+
+  const eligibilityGroup = getEligibilityGroup(entity);
+  const reportingPeriod = getReportingPeriodText(entity);
 
   return [reportPlanName, reportProgramName, eligibilityGroup, reportingPeriod];
+};
+
+export const getMeasureIdentifier = (entity: EntityShape) => {
+  const { measure_identifierCbe, measure_identifierCmit } = entity;
+
+  if (measure_identifierCmit) return `CMIT: ${measure_identifierCmit}`;
+  if (measure_identifierCbe) return `CBE: ${measure_identifierCbe}`;
+  return;
+};
+
+export const getMeasureIdDisplayText = (entity: EntityShape) => {
+  const identifier = getMeasureIdentifier(entity);
+  return `Measure ID: ${identifier || "N/A"}`;
+};
+
+export const getMeasureValues = (entity: EntityShape, key: string) => {
+  if (key !== "measure_identifier") {
+    const value = entity[key];
+    return Array.isArray(value) ? [value[0].value] : [value];
+  }
+
+  const {
+    measure_identifierDefinition,
+    measure_identifierDomain,
+    measure_identifierUrl,
+  } = entity;
+
+  const identifier = getMeasureIdentifier(entity);
+  if (identifier) return [identifier];
+
+  const values: string[] = [
+    `Other definition: ${measure_identifierDefinition}`,
+  ];
+
+  if (measure_identifierUrl) {
+    values.push(`Link: ${measure_identifierUrl}`);
+  }
+
+  if (measure_identifierDomain) {
+    const domains = measure_identifierDomain
+      .map((d: { value: string }) => d.value)
+      .join(", ");
+    values.push(`Measure domain(s): ${domains}`);
+  }
+
+  return values;
 };
 
 export const hasEntityNameWithDescription = (reportType: string) => {
