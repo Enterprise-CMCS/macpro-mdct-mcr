@@ -492,7 +492,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             numberFloat(),
           plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
             numberFloat(),
-          plan_populationSpecificMedicalLossRatioDescription: numberInt(),
           plan_programIntegrityReferralPath: [
             {
               key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
