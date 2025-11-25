@@ -14,12 +14,7 @@ import {
   ReportShape,
 } from "types";
 // utils
-import {
-  getMeasureValues,
-  getReportVerbiage,
-  parseCustomHtml,
-  sanitizeAndParseHtml,
-} from "utils";
+import { getMeasureValues, getReportVerbiage, parseCustomHtml } from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
@@ -51,7 +46,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
     <>
       <ReportPageIntro text={overlayVerbiage.MCPAR.intro} />
       <Heading as="h2" sx={sx.measureName}>
-        {sanitizeAndParseHtml(selectedEntity.measure_name)}
+        {parseCustomHtml(selectedEntity.measure_name)}
       </Heading>
       <List sx={sx.list}>
         {list.map((listItem: any, index: number) => (
@@ -64,7 +59,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
             <Box sx={sx.listValues}>
               {listItem.values.map((value: string, index: number) => (
                 <Text key={`${listItem.header}-${index}`} sx={sx.listValue}>
-                  {sanitizeAndParseHtml(value)}
+                  {value}
                 </Text>
               ))}
             </Box>

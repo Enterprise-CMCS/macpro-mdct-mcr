@@ -239,10 +239,10 @@ export const getProgramInfo = (entity: EntityShape) => {
 };
 
 export const getMeasureIdentifier = (entity: EntityShape) => {
-  const { measure_identifierCbe, measure_identifierCmit } = entity;
+  const { measure_identifierCbe: cbe, measure_identifierCmit: cmit } = entity;
 
-  if (measure_identifierCmit) return `CMIT: ${measure_identifierCmit}`;
-  if (measure_identifierCbe) return `CBE: ${measure_identifierCbe}`;
+  if (cmit) return `CMIT: ${cmit}`;
+  if (cbe) return `CBE: ${cbe}`;
   return;
 };
 
@@ -263,24 +263,22 @@ export const getMeasureValues = (entity: EntityShape, key: string) => {
   }
 
   const {
-    measure_identifierDefinition,
-    measure_identifierDomain,
-    measure_identifierUrl,
+    measure_identifierDefinition: identifierDefinition,
+    measure_identifierDomain: identifierDomain,
+    measure_identifierUrl: identifierUrl,
   } = entity;
 
   const identifier = getMeasureIdentifier(entity);
   if (identifier) return [identifier];
 
-  const values: string[] = [
-    `Other definition: ${measure_identifierDefinition}`,
-  ];
+  const values: string[] = [`Other definition: ${identifierDefinition}`];
 
-  if (measure_identifierUrl) {
-    values.push(`Link: ${measure_identifierUrl}`);
+  if (identifierUrl) {
+    values.push(`Link: ${identifierUrl}`);
   }
 
-  if (measure_identifierDomain) {
-    const domains = measure_identifierDomain
+  if (identifierDomain) {
+    const domains = identifierDomain
       .map((domain: EntityShape) => domain.value)
       .join(", ");
     values.push(`Measure domain(s): ${domains}`);
