@@ -12,23 +12,6 @@
       "plan_enrollment": "63",
       "plan_medicaidEnrollmentSharePercentage": "67",
       "plan_medicaidManagedCareEnrollmentSharePercentage": "22",
-      "plan_medicalLossRatioPercentage": "16",
-      "plan_medicalLossRatioPercentageAggregationLevel": [
-        {
-          "key": "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-          "value": "Program-specific statewide"
-        }
-      ],
-      "plan_populationSpecificMedicalLossRatioDescription": "Text Fill",
-      "plan_medicalLossRatioReportingPeriod": [
-        {
-          "key": "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-          "value": "Yes"
-        }
-      ],
-      "plan_medicalLossRatioPercentageAggregationLevel-otherText": "",
-      "plan_medicalLossRatioReportingPeriodStartDate": "02/23/2023",
-      "plan_medicalLossRatioReportingPeriodEndDate": "02/23/2023",
       "program_encounterDataSubmissionTimelinessStandardDefinition": "Text Fill",
       "plan_encounterDataSubmissionTimelinessCompliancePercentage": "60",
       "plan_encounterDataSubmissionHipaaCompliancePercentage": "78",
@@ -110,7 +93,10 @@
       "plan_smaMfcuConcurrentProgramIntegrityReferrals": "",
       "plan_smaMfcuAggregateProgramIntegrityReferrals": ""
     },
-    { "id": "367f228-ba4f-0ad5-e2d5-2c2814e41a", "name": "Empty Plan" }
+    {
+      "id": "367f228-ba4f-0ad5-e2d5-2c2814e41a",
+      "name": "Empty Plan"
+    }
   ],
   "bssEntities": [
     {
@@ -217,8 +203,6 @@
   "program_standardAppealTimelyResolutionDefinition": "Text Fill",
   "program_expeditedAppealTimelyResolutionDefinition": "Text Fill",
   "program_grievanceTimelyResolutionDefinition": "Text Fill",
-  "program_networkAdequacyChallenges": "Text Fill",
-  "program_networkAdequacyGapResponseEfforts": "Text Fill",
   "accessMeasures": [
     {
       "id": "b76a4b-1ae2-035a-a3fb-ab4e2721f50e",

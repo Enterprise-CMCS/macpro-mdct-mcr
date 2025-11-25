@@ -259,8 +259,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           value: "Yes",
         },
       ],
-      program_networkAdequacyChallenges: faker.lorem.sentence(),
-      program_networkAdequacyGapResponseEfforts: faker.lorem.sentence(),
       program_prohibitedAffiliationDisclosure: [
         {
           key: "program_prohibitedAffiliationDisclosure-7emiYPcs60GzXxKS5Pc9bg",
@@ -467,25 +465,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
           plan_medicaidEnrollmentSharePercentage: suppressionText,
           plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
           plan_parentOrganization: faker.lorem.sentence(),
-          plan_medicalLossRatioPercentage: numberFloat(),
-          plan_medicalLossRatioPercentageAggregationLevel: [
-            {
-              key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-              value: "Program-specific statewide",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriod: [
-            {
-              key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-              value: "Yes",
-            },
-          ],
-          plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-            newReportingPeriodEndDate
-          ),
-          plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-            newReportingPeriodStartDate
-          ),
           plan_mfcuProgramIntegrityReferrals: numberInt(),
           plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer:
             numberInt(),
@@ -513,7 +492,6 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
             numberFloat(),
           plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
             numberFloat(),
-          plan_populationSpecificMedicalLossRatioDescription: numberInt(),
           plan_programIntegrityReferralPath: [
             {
               key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",

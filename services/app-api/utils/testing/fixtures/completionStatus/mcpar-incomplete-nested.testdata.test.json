@@ -12,23 +12,6 @@
       "plan_enrollment": "69",
       "plan_medicaidEnrollmentSharePercentage": "49",
       "plan_medicaidManagedCareEnrollmentSharePercentage": "8",
-      "plan_medicalLossRatioPercentage": "25",
-      "plan_medicalLossRatioPercentageAggregationLevel": [
-        {
-          "key": "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-          "value": "Program-specific statewide"
-        }
-      ],
-      "plan_populationSpecificMedicalLossRatioDescription": "Text Fill",
-      "plan_medicalLossRatioReportingPeriod": [
-        {
-          "key": "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-          "value": "Yes"
-        }
-      ],
-      "plan_medicalLossRatioPercentageAggregationLevel-otherText": "",
-      "plan_medicalLossRatioReportingPeriodStartDate": "03/17/2023",
-      "plan_medicalLossRatioReportingPeriodEndDate": "03/17/2023",
       "program_encounterDataSubmissionTimelinessStandardDefinition": "Text Fill",
       "plan_encounterDataSubmissionTimelinessCompliancePercentage": "75",
       "plan_encounterDataSubmissionHipaaCompliancePercentage": "31",
@@ -223,8 +206,6 @@
   "program_standardAppealTimelyResolutionDefinition": "Text Fill",
   "program_expeditedAppealTimelyResolutionDefinition": "Text Fill",
   "program_grievanceTimelyResolutionDefinition": "Text Fill",
-  "program_networkAdequacyChallenges": "Text Fill",
-  "program_networkAdequacyGapResponseEfforts": "Text Fill",
   "accessMeasures": [
     {
       "id": "7823da-83df-2f2a-3d1e-a213fa8e1b0",
