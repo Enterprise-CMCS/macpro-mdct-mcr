@@ -120,7 +120,8 @@ export function getEntityTableComponents(
         </Box>
         {formSections.map((fields, idx) => {
           const filteredFields = fields.filter(
-            (field) => field.type !== "sectionContent"
+            (field) =>
+              field.type !== "sectionContent" && field.type !== "sectionDivider"
           );
           const header = filteredFields[0];
           return (
