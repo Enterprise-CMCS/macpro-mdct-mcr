@@ -20,6 +20,7 @@ import {
   ModalOverlayReportPageShape,
   ReportShape,
   ReportStatus,
+  ReportType,
 } from "types";
 // utils
 import {
@@ -65,8 +66,20 @@ export const ModalOverlayReportPage = ({
   const isAdminUserType = userIsAdmin || userIsReadOnly;
   const isLocked = report.locked || isAdminUserType;
 
-  // Display Variables
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
+  let hasPlans = false;
+
+  // check for plans in MCPAR
+  if (
+    reportType === ReportType.MCPAR &&
+    route.path ===
+      "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
+  ) {
+    const plans = report.fieldData?.["plans"];
+    hasPlans = plans?.length > 0;
+  }
+
+  // Display Variables
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
     if (isMobile)
@@ -246,6 +259,7 @@ export const ModalOverlayReportPage = ({
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openOverlayOrDrawer={openEntityDetailsOverlay}
+                      hasPlans={hasPlans}
                     />
                   ))}
                 </Table>
