@@ -70,7 +70,11 @@ export const ModalOverlayReportPage = ({
   let hasPlans = false;
 
   // check for plans in MCPAR
-  if (reportType === ReportType.MCPAR) {
+  if (
+    reportType === ReportType.MCPAR &&
+    route.path ===
+      "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
+  ) {
     const plans = report.fieldData?.["plans"];
     hasPlans = plans?.length > 0;
   }
@@ -255,7 +259,7 @@ export const ModalOverlayReportPage = ({
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openOverlayOrDrawer={openEntityDetailsOverlay}
-                      hasEntities={hasPlans}
+                      hasPlans={hasPlans}
                     />
                   ))}
                 </Table>

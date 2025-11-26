@@ -23,7 +23,8 @@ export const EntityRow = ({
   openOverlayOrDrawer,
   openDeleteEntityModal,
   entering,
-  hasEntities,
+  hasStandards,
+  hasPlans,
 }: EntityRowProps) => {
   const { isMobile } = useBreakpoint();
   const { report } = useStore();
@@ -74,6 +75,21 @@ export const EntityRow = ({
     return fields;
   };
 
+  const openDisabled = () => {
+    let isDisabled: boolean = false;
+    switch (reportType) {
+      case ReportType.MCPAR:
+        isDisabled = !hasPlans && hasPlans !== undefined;
+        break;
+      case ReportType.NAAAR:
+        isDisabled = !hasStandards && hasStandards !== undefined;
+        break;
+      default:
+        break;
+    }
+    return isDisabled;
+  };
+
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
@@ -98,7 +114,7 @@ export const EntityRow = ({
         {isMobile && (
           <EntityButtonGroup
             deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasEntities && hasEntities !== undefined}
+            openDisabled={openDisabled()}
             entity={entity}
             verbiage={verbiage}
             openAddEditEntityModal={openAddEditEntityModal}
@@ -115,7 +131,7 @@ export const EntityRow = ({
             entity={entity}
             verbiage={verbiage}
             deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasEntities && hasEntities !== undefined}
+            openDisabled={openDisabled()}
             openAddEditEntityModal={openAddEditEntityModal}
             openOverlayOrDrawer={openOverlayOrDrawer}
             openDeleteEntityModal={openDeleteEntityModal}
@@ -134,7 +150,8 @@ export interface EntityRowProps {
   entityType?: EntityType;
   locked?: boolean;
   entering?: boolean;
-  hasEntities?: boolean;
+  hasStandards?: boolean;
+  hasPlans?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openOverlayOrDrawer?: Function;

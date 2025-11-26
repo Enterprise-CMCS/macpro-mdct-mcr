@@ -68,7 +68,7 @@ export const OverlayReportPage = ({
   const TablePage = () => {
     const entityData = report?.fieldData[entityType] || [];
     const standardEntities = report?.fieldData["standards"] || [];
-    const hasEntities = standardEntities.length > 0;
+    const hasStandards = standardEntities.length > 0;
 
     const tableHeaders = () => {
       if (isMobile) {
@@ -100,7 +100,7 @@ export const OverlayReportPage = ({
             {parseCustomHtml(errorMessage || "")}
           </Box>
         );
-      } else if (!hasEntities) {
+      } else if (!hasStandards) {
         return (
           <Box sx={sx.missingEntityMessage}>
             {parseCustomHtml(verbiage.requiredMessages.standards || "")}
@@ -136,7 +136,7 @@ export const OverlayReportPage = ({
                   entityType={entityType as EntityType}
                   key={entity.id}
                   locked={undefined}
-                  hasEntities={hasEntities}
+                  hasStandards={hasStandards}
                   openOverlayOrDrawer={() => toggleOverlay(entity)}
                   verbiage={verbiage}
                 />
