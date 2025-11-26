@@ -1,6 +1,13 @@
 import { MouseEventHandler, useState } from "react";
 // components
-import { Heading, List, ListItem, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   DrawerReportPageEntityRows,
   ReportDrawer,
@@ -16,9 +23,9 @@ import {
 } from "types";
 // utils
 import {
+  getMeasureValues,
   getReportVerbiage,
   parseCustomHtml,
-  sanitizeAndParseHtml,
   translate,
 } from "utils";
 // verbiage
@@ -44,16 +51,15 @@ export const EntityDetailsOverlayQualityMeasures = ({
     onOpen();
   };
 
-  const getValue = (entity: EntityShape, key: string) => {
-    const value = entity[key];
-    if (Array.isArray(value)) return value[0].value;
-    return value;
-  };
+  const list = Object.keys(tableHeaders).map((key: string) => {
+    const values = getMeasureValues(selectedEntity, key);
 
-  const list = Object.keys(tableHeaders).map((key: string) => ({
-    header: tableHeaders[key],
-    value: getValue(selectedEntity, key),
-  }));
+    return {
+      ariaValues: values.join(" "),
+      header: tableHeaders[key],
+      values,
+    };
+  });
 
   const hasDrawerForm = !!route?.drawerForm;
 
@@ -65,21 +71,23 @@ export const EntityDetailsOverlayQualityMeasures = ({
     <>
       <ReportPageIntro text={overlayVerbiage.MCPAR.intro} />
       <Heading as="h2" sx={sx.measureName}>
-        {sanitizeAndParseHtml(selectedEntity.measure_name)}
+        {selectedEntity.measure_name}
       </Heading>
       <List sx={sx.list}>
         {list.map((listItem: any, index: number) => (
           <ListItem
-            aria-label={`${listItem.header} ${sanitizeAndParseHtml(
-              listItem.value
-            )}`}
+            aria-label={`${listItem.header} ${listItem.ariaValues}`}
             key={index}
             sx={sx.listItem}
           >
-            <Text sx={sx.listHeader}>{listItem.header}</Text>
-            <Text sx={sx.listValue}>
-              {sanitizeAndParseHtml(listItem.value)}
-            </Text>
+            <Box sx={sx.listHeader}>{listItem.header}</Box>
+            <Box sx={sx.listValues}>
+              {listItem.values.map((value: string, index: number) => (
+                <Text key={`${listItem.header}-${index}`} sx={sx.listValue}>
+                  {value}
+                </Text>
+              ))}
+            </Box>
           </ListItem>
         ))}
       </List>
@@ -161,10 +169,16 @@ const sx = {
   listItem: {
     display: "flex",
     fontSize: "sm",
-    marginBottom: "spacer3",
+    marginBottom: "spacer2",
+  },
+  listValues: {
+    flex: 1,
   },
   listValue: {
-    flex: 1,
+    marginTop: "spacer1",
+    "&:first-of-type": {
+      marginTop: 0,
+    },
   },
   measureName: {
     fontSize: "lg",

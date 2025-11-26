@@ -57,7 +57,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     // Check list is showing the correct entity data
     expect(
       screen.getByRole("listitem", {
-        name: "Measure identification number or definition: 1234",
+        name: "Measure identification number or definition: CMIT: 1234",
       })
     ).toBeVisible();
     expect(

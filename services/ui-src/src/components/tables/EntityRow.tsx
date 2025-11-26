@@ -7,8 +7,9 @@ import { EntityButtonGroup } from "./EntityButtonGroup";
 import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
 import {
-  eligibilityGroup,
   getEntityStatus,
+  getMeasureIdDisplayText,
+  getProgramInfo,
   parseCustomHtml,
   useBreakpoint,
   useStore,
@@ -29,49 +30,22 @@ export const EntityRow = ({
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const {
-    report_programName,
-    report_planName,
-    name,
-    measure_identifierCbe,
-    measure_identifierCmit,
-    measure_name,
-  } = entity;
-  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+  const { name, measure_name } = entity;
   const { reportType } = report || {};
 
   const entityComplete = useMemo(() => {
     return getEntityStatus(entity, report, entityType);
   }, [report]);
 
-  const getMeasureIdDisplayText = () => {
-    let identifier = "N/A";
-    if (measure_identifierCmit) {
-      identifier = `CMIT: ${measure_identifierCmit}`;
-    } else if (measure_identifierCbe) {
-      identifier = `CBE: ${measure_identifierCbe}`;
-    }
-    return `Measure ID: ${identifier}`;
-  };
-
   const entityFields = () => {
-    let fields: string[] = [];
     switch (reportType) {
       case ReportType.MCPAR:
-        fields = [measure_name, getMeasureIdDisplayText()];
-        break;
+        return [measure_name, getMeasureIdDisplayText(entity)];
       case ReportType.MLR:
-        fields = [
-          report_planName,
-          report_programName,
-          eligibilityGroup(entity),
-          reportingPeriod,
-        ];
-        break;
+        return getProgramInfo(entity);
       default:
-        fields = [name];
+        return [name];
     }
-    return fields;
   };
 
   return (
