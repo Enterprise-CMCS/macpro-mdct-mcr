@@ -1,6 +1,10 @@
 import { render } from "@testing-library/react";
 // components
-import { SectionContent, SectionHeader } from "./FormLayoutElements";
+import {
+  SectionContent,
+  SectionDivider,
+  SectionHeader,
+} from "./FormLayoutElements";
 // utils
 import { testA11yAct } from "utils/testing/commonTests";
 
@@ -22,6 +26,15 @@ describe("<SectionHeader />", () => {
   });
 
   testA11yAct(sectionHeaderComponent("none"));
+});
+
+describe("<SectionDivider />", () => {
+  test("Component should be visible and render correct text.", () => {
+    const { getByRole } = render(<SectionDivider />);
+    expect(getByRole("separator")).toBeVisible();
+  });
+
+  testA11yAct(<SectionDivider />);
 });
 
 describe("<SectionContent />", () => {

@@ -1,8 +1,16 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 // components
-import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   DrawerReportPageEntityRows,
+  ReportDrawer,
   ReportPageIntro,
   SaveReturnButton,
 } from "components";
@@ -14,7 +22,12 @@ import {
   ReportShape,
 } from "types";
 // utils
-import { getMeasureValues, getReportVerbiage, parseCustomHtml } from "utils";
+import {
+  getMeasureValues,
+  getReportVerbiage,
+  parseCustomHtml,
+  translate,
+} from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
@@ -25,12 +38,18 @@ export const EntityDetailsOverlayQualityMeasures = ({
   selectedEntity,
   submitting,
 }: Props) => {
+  const [selectedPlan, setSelectedPlan] = useState("");
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const { qualityMeasuresVerbiage } = getReportVerbiage(report.reportType);
   const { tableHeaders } = qualityMeasuresVerbiage;
 
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
-  const openRowDrawer = () => {};
+  const openRowDrawer = (plan: EntityShape) => {
+    setSelectedPlan(plan.name);
+    onOpen();
+  };
 
   const list = Object.keys(tableHeaders).map((key: string) => {
     const values = getMeasureValues(selectedEntity, key);
@@ -41,6 +60,12 @@ export const EntityDetailsOverlayQualityMeasures = ({
       values,
     };
   });
+
+  const hasDrawerForm = !!route?.drawerForm;
+
+  const onSubmit = () => {
+    onClose();
+  };
 
   return (
     <>
@@ -75,7 +100,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       </Heading>
       <DrawerReportPageEntityRows
         entities={report.fieldData.plans}
-        hasForm={false}
+        hasForm={hasDrawerForm}
         openRowDrawer={openRowDrawer}
         openDeleteEntityModal={openDeleteEntityModal}
         route={route}
@@ -87,6 +112,24 @@ export const EntityDetailsOverlayQualityMeasures = ({
         submitting={submitting}
         disabledOnClick={closeEntityDetailsOverlay}
       />
+      {hasDrawerForm && (
+        <ReportDrawer
+          selectedEntity={selectedEntity!}
+          verbiage={{
+            drawerTitle: translate(route.verbiage.drawerTitle, {
+              plan: selectedPlan,
+              measureName: selectedEntity.measure_name,
+            }),
+          }}
+          form={route.drawerForm!}
+          onSubmit={onSubmit}
+          submitting={submitting}
+          drawerDisclosure={{
+            isOpen,
+            onClose,
+          }}
+        />
+      )}
     </>
   );
 };

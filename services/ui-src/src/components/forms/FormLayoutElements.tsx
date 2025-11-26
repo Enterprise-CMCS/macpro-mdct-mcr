@@ -37,6 +37,10 @@ interface SectionHeaderProps {
   hint?: string;
 }
 
+export const SectionDivider = () => {
+  return <hr className="form-section-break" />;
+};
+
 export const SectionContent = ({ content }: SectionContentProps) => {
   return <Text>{content}</Text>;
 };

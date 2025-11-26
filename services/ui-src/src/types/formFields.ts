@@ -176,7 +176,11 @@ export function isFieldElement(
    * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+  const formLayoutElementTypes = [
+    "sectionHeader",
+    "sectionContent",
+    "sectionDivider",
+  ];
   return !formLayoutElementTypes.includes(field.type);
 }
 

@@ -1,8 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsOverlayQualityMeasures } from "./EntityDetailsOverlayQualityMeasures";
+// types
+import { DrawerReportPageShape, ModalOverlayReportPageShape } from "types";
 // utils
 import {
+  mockDrawerForm,
   mockEntityStore,
   mockMcparReport,
   mockModalOverlayReportPageJson,
@@ -23,11 +27,13 @@ mockedUseStore.mockReturnValue({
 });
 
 const entityDetailsOverlayQualityMeasuresComponent = (
+  route: DrawerReportPageShape | ModalOverlayReportPageShape
+) => (
   <RouterWrappedComponent>
     <EntityDetailsOverlayQualityMeasures
       closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
       report={mockMcparReport}
-      route={mockModalOverlayReportPageJson}
+      route={route}
       selectedEntity={mockEntityStore.selectedEntity!}
     />
   </RouterWrappedComponent>
@@ -35,7 +41,11 @@ const entityDetailsOverlayQualityMeasuresComponent = (
 
 describe("<EntityDetailsOverlayQualityMeasures />", () => {
   test("should render the initial view for a state user", () => {
-    render(entityDetailsOverlayQualityMeasuresComponent);
+    render(
+      entityDetailsOverlayQualityMeasuresComponent(
+        mockModalOverlayReportPageJson
+      )
+    );
     // Check if header is visible on load - H2
     expect(
       screen.getByRole("heading", {
@@ -62,5 +72,45 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     // Make sure footer button appears correctly
     const saveAndReturn = screen.getByRole("button", { name: "Save & return" });
     expect(saveAndReturn).toBeVisible();
+  });
+
+  test("should have drawer form when included in route", async () => {
+    const mockDrawerFormRoute = {
+      ...mockModalOverlayReportPageJson,
+      drawerForm: mockDrawerForm,
+    };
+    render(entityDetailsOverlayQualityMeasuresComponent(mockDrawerFormRoute));
+
+    // drawer form doesn't show on render
+    expect(screen.queryByRole("form")).toBeNull();
+
+    // open drawer
+    const openDrawerButton = screen.getByRole("button", {
+      name: "Enter mock-plan-name-2",
+    });
+    expect(openDrawerButton).toBeVisible();
+    await act(async () => {
+      await userEvent.click(openDrawerButton);
+    });
+
+    // fill out drawer form
+    expect(screen.getByRole("form")).toBeVisible();
+    const drawerField = screen.getByRole("textbox");
+    expect(drawerField).toBeVisible();
+    await act(async () => {
+      await userEvent.type(drawerField, "test");
+    });
+
+    // close drawer
+    const closeDrawerButton = screen.getByRole("button", {
+      name: "Save & close",
+    });
+    expect(closeDrawerButton).toBeVisible();
+    await act(async () => {
+      await userEvent.click(closeDrawerButton);
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole("form")).toBeNull();
+    });
   });
 });
