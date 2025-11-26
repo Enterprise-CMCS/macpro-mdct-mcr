@@ -14,7 +14,7 @@ import {
   ReportShape,
 } from "types";
 // utils
-import { getMeasureValues, getReportVerbiage } from "utils";
+import { getMeasureValues, getReportVerbiage, parseCustomHtml } from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
@@ -71,7 +71,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       </Heading>
       <Text sx={sx.reportSubtitle}>{overlayVerbiage.MCPAR.reportSubtitle}</Text>
       <Heading as="h3" sx={dashboardTitleStyling(canAddEntities)}>
-        {overlayVerbiage.MCPAR.dashboardTitle}
+        {parseCustomHtml(overlayVerbiage.MCPAR.dashboardTitle)}
       </Heading>
       <DrawerReportPageEntityRows
         entities={report.fieldData.plans}
