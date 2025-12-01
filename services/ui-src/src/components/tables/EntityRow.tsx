@@ -23,8 +23,7 @@ export const EntityRow = ({
   openOverlayOrDrawer,
   openDeleteEntityModal,
   entering,
-  hasStandards,
-  hasPlans,
+  openDisabled = false,
 }: EntityRowProps) => {
   const { isMobile } = useBreakpoint();
   const { report } = useStore();
@@ -75,20 +74,19 @@ export const EntityRow = ({
     return fields;
   };
 
-  const openDisabled = () => {
-    let isDisabled: boolean = false;
-    switch (reportType) {
-      case ReportType.MCPAR:
-        isDisabled = !hasPlans && hasPlans !== undefined;
-        break;
-      case ReportType.NAAAR:
-        isDisabled = !hasStandards && hasStandards !== undefined;
-        break;
-      default:
-        break;
-    }
-    return isDisabled;
-  };
+  const EntityButtons = () => (
+    <EntityButtonGroup
+      entity={entity}
+      verbiage={verbiage}
+      deleteDisabled={locked ?? !userIsEndUser}
+      openDisabled={openDisabled}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openOverlayOrDrawer={openOverlayOrDrawer}
+      openDeleteEntityModal={openDeleteEntityModal}
+      entering={entering}
+      reportType={reportType}
+    />
+  );
 
   return (
     <Tr sx={sx.content}>
@@ -111,33 +109,11 @@ export const EntityRow = ({
               : "Select “Enter” to complete response."}
           </Text>
         )}
-        {isMobile && (
-          <EntityButtonGroup
-            deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={openDisabled()}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-            openDeleteEntityModal={openDeleteEntityModal}
-            entering={entering}
-            reportType={reportType}
-          />
-        )}
+        {isMobile && <EntityButtons />}
       </Td>
       {!isMobile && (
         <Td sx={sx.desktopButtonGroup}>
-          <EntityButtonGroup
-            entity={entity}
-            verbiage={verbiage}
-            deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={openDisabled()}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-            openDeleteEntityModal={openDeleteEntityModal}
-            entering={entering}
-            reportType={reportType}
-          />
+          <EntityButtons />
         </Td>
       )}
     </Tr>
@@ -150,12 +126,10 @@ export interface EntityRowProps {
   entityType?: EntityType;
   locked?: boolean;
   entering?: boolean;
-  hasStandards?: boolean;
-  hasPlans?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
+  openDisabled?: boolean;
   openOverlayOrDrawer?: Function;
-  [key: string]: any;
 }
 
 const sx = {

@@ -67,7 +67,7 @@ export const ModalOverlayReportPage = ({
   const isLocked = report.locked || isAdminUserType;
 
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
-  let hasPlans = false;
+  let openDisabled = false;
 
   // check for plans in MCPAR
   if (
@@ -76,7 +76,8 @@ export const ModalOverlayReportPage = ({
       "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
   ) {
     const plans = report.fieldData?.["plans"];
-    hasPlans = plans?.length > 0;
+    const hasPlans = plans?.length > 0;
+    openDisabled = !hasPlans && hasPlans !== undefined;
   }
 
   // Display Variables
@@ -259,7 +260,7 @@ export const ModalOverlayReportPage = ({
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openOverlayOrDrawer={openEntityDetailsOverlay}
-                      hasPlans={hasPlans}
+                      openDisabled={openDisabled}
                     />
                   ))}
                 </Table>
