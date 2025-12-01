@@ -30,6 +30,7 @@ import {
   useBreakpoint,
   useStore,
   resetClearProp,
+  routeChecker,
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -65,8 +66,19 @@ export const ModalOverlayReportPage = ({
   const isAdminUserType = userIsAdmin || userIsReadOnly;
   const isLocked = report.locked || isAdminUserType;
 
-  // Display Variables
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
+  let openDisabled = false;
+
+  const isMeasuresAndResultsPage = routeChecker.isMeasuresAndResultsPage(route);
+
+  // check for plans in MCPAR
+  if (isMeasuresAndResultsPage) {
+    const plans = report.fieldData?.["plans"];
+    const hasPlans = plans?.length > 0;
+    openDisabled = !hasPlans && hasPlans !== undefined;
+  }
+
+  // Display Variables
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
     if (isMobile)
@@ -246,6 +258,7 @@ export const ModalOverlayReportPage = ({
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openOverlayOrDrawer={openEntityDetailsOverlay}
+                      openDisabled={openDisabled}
                     />
                   ))}
                 </Table>

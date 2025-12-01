@@ -69,6 +69,7 @@ export const OverlayReportPage = ({
     const entityData = report?.fieldData[entityType] || [];
     const standardEntities = report?.fieldData["standards"] || [];
     const hasStandards = standardEntities.length > 0;
+    const openDisabled = !hasStandards && hasStandards !== undefined;
 
     const tableHeaders = () => {
       if (isMobile) {
@@ -136,7 +137,7 @@ export const OverlayReportPage = ({
                   entityType={entityType as EntityType}
                   key={entity.id}
                   locked={undefined}
-                  hasStandards={hasStandards}
+                  openDisabled={openDisabled}
                   openOverlayOrDrawer={() => toggleOverlay(entity)}
                   verbiage={verbiage}
                 />
