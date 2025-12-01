@@ -31,6 +31,7 @@ import {
 // utils
 import {
   SectionContent,
+  SectionDivider,
   SectionHeader,
 } from "components/forms/FormLayoutElements";
 import {
@@ -63,6 +64,7 @@ export const formFieldFactory = (
     textarea: TextAreaField,
     sectionHeader: SectionHeader,
     sectionContent: SectionContent,
+    sectionDivider: SectionDivider,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {

@@ -3947,7 +3947,8 @@
                 "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
                 "enterReportText": "Enter",
                 "addEditModalAddTitle": "Add a quality performance measure",
-                "addEditModalEditTitle": "Edit a quality performance measure"
+                "addEditModalEditTitle": "Edit a quality performance measure",
+                "drawerTitle": "Report measure results for {{plan}}: {{measureName}}"
               },
               "modalForm": {
                 "id": "dqmmar-modal",
@@ -4204,11 +4205,93 @@
                     }
                   },
                   {
+                    "id": "measure_rates_header",
+                    "type": "sectionHeader",
+                    "props": {
+                      "divider": "none",
+                      "content": "Naming of rates",
+                      "hint": "If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.2 in the field below for D2.VII.7. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guidance: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name, title, or brief description for the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
+                    }
+                  },
+                  {
+                    "id": "measure_rates",
+                    "type": "dynamic",
+                    "validation": "dynamic",
+                    "props": {
+                      "label": "D2.VII.7 Name rate",
+                      "hint": "Enter the name of this performance rate you are reporting for the measure."
+                    }
+                  }
+                ]
+              },
+              "drawerForm": {
+                "id": "dqmmar-drawer",
+                "fields": [
+                  {
+                    "id": "measure_isReporting",
+                    "type": "checkbox",
+                    "validation": "checkboxOptional",
+                    "props": {
+                      "label": "D2.VII.7 Are you reporting results for this measure?",
+                      "hint": "Are you reporting results for this measure for this reporting period?",
+                      "choices": [
+                        {
+                          "id": "37sMoqg5MNOb17KDCpTO1w",
+                          "label": "Not reporting",
+                          "children": [
+                            {
+                              "id": "measure_isNotReportingReason",
+                              "type": "radio",
+                              "validation": {
+                                "type": "radio",
+                                "nested": true,
+                                "parentFieldName": "measure_isReporting",
+                                "parentOptionId": "37sMoqg5MNOb17KDCpTO1w"
+                              },
+                              "props": {
+                                "choices": [
+                                  {
+                                    "id": "aKM1awPXFkBfWwesiwKk0p",
+                                    "label": "No, the eligible population does not meet the required measure sample size"
+                                  },
+                                  {
+                                    "id": "x37F2dqsuBqjx1BPxQENph",
+                                    "label": "No, this measure does not apply to this plan"
+                                  },
+                                  {
+                                    "id": "ZuunP6hiUTIDNzi86PCHBB",
+                                    "label": "Other, specify",
+                                    "children": [
+                                      {
+                                        "id": "measure_isNotReportingReason-otherText",
+                                        "type": "text",
+                                        "validation": {
+                                          "type": "text",
+                                          "nested": true,
+                                          "parentFieldName": "measure_isNotReportingReason",
+                                          "parentOptionId": "ZuunP6hiUTIDNzi86PCHBB"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "id": "measure_section_divider",
+                    "type": "sectionDivider"
+                  },
+                  {
                     "id": "measure_dataCollectionMethod",
                     "type": "radio",
                     "validation": "radio",
                     "props": {
-                      "label": "D2.VII.5 Data collection method",
+                      "label": "D2.VII.8 Data collection method",
                       "hint": "What data collection method did the plan use for this measure? (see technical guide for definitions).",
                       "choices": [
                         {
@@ -4248,24 +4331,6 @@
                           ]
                         }
                       ]
-                    }
-                  },
-                  {
-                    "id": "measure_rates_header",
-                    "type": "sectionHeader",
-                    "props": {
-                      "divider": "none",
-                      "content": "Naming of rates",
-                      "hint": "If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.2 in the field below for D2.VII.7. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guidance: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name, title, or brief description for the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
-                    }
-                  },
-                  {
-                    "id": "measure_rates",
-                    "type": "dynamic",
-                    "validation": "dynamic",
-                    "props": {
-                      "label": "D2.VII.7 Name rate",
-                      "hint": "Enter the name of this performance rate you are reporting for the measure."
                     }
                   }
                 ]

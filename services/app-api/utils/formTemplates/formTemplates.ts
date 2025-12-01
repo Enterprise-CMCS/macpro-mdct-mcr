@@ -263,7 +263,11 @@ export function isFieldElement(
    * This function is duplicated in ui-src/src/types/formFields.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+  const formLayoutElementTypes = [
+    "sectionHeader",
+    "sectionContent",
+    "sectionDivider",
+  ];
   return !formLayoutElementTypes.includes(field.type);
 }
 
