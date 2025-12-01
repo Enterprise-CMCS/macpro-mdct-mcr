@@ -176,25 +176,23 @@ export const getCompleteText = ({
   isCustomEntity,
 }: GetCompleteTextProps) => {
   if (isAnalysisMethodsPage) {
-    const isUtilized =
-      entity.analysis_applicable?.[0]?.value === "Yes" || isCustomEntity;
-    const plans = entity.analysis_method_applicable_plans;
+    const {
+      analysis_applicable: applicable,
+      analysis_method_applicable_plans: plans,
+      analysis_method_frequency: frequency,
+      "analysis_method_frequency-otherText": frequencyOtherText,
+    } = entity;
 
-    if (!isUtilized || !plans) {
-      return "Not utilized";
-    }
+    if (!isCustomEntity && !applicable) return "Not started";
+    if (applicable?.[0].value === "No" || !plans) return "Not utilized";
 
-    const frequencyVal = entity.analysis_method_frequency[0].value;
-    const frequency = otherSpecify(
-      frequencyVal,
-      entity["analysis_method_frequency-otherText"]
-    );
+    const frequencyText = otherSpecify(frequency[0].value, frequencyOtherText);
     const utilizedPlans = plans
-      .map((entity: EntityShape) => entity.value)
+      .map((plan: EntityShape) => plan.value)
       .sort()
       .join(", ");
 
-    return `${frequency}: ${utilizedPlans}`;
+    return `${frequencyText}: ${utilizedPlans}`;
   }
 
   if (isEntityCompleted) return;
@@ -210,23 +208,83 @@ export const getIncompleteText = ({
   return "Select “Enter” to complete response.";
 };
 
-export const getProgramInfo = (entity: EntityShape) => {
+export const getEligibilityGroup = (entity: EntityShape) => {
   const {
     report_eligibilityGroup: reportEligibilityGroup,
     "report_eligibilityGroup-otherText": reportOtherText,
-    report_planName: reportPlanName,
-    report_programName: reportProgramName,
+  } = entity;
+
+  return reportOtherText || reportEligibilityGroup?.[0].value;
+};
+
+export const getReportingPeriodText = (entity: EntityShape) => {
+  const {
     report_reportingPeriodEndDate: reportEndDate,
     report_reportingPeriodStartDate: reportStartDate,
   } = entity;
 
-  const eligibilityGroup = `${
-    reportOtherText || reportEligibilityGroup[0].value
-  }`;
+  return `${reportStartDate} to ${reportEndDate}`;
+};
 
-  const reportingPeriod = `${reportStartDate} to ${reportEndDate}`;
+export const getProgramInfo = (entity: EntityShape) => {
+  const {
+    report_planName: reportPlanName,
+    report_programName: reportProgramName,
+  } = entity;
+
+  const eligibilityGroup = getEligibilityGroup(entity);
+  const reportingPeriod = getReportingPeriodText(entity);
 
   return [reportPlanName, reportProgramName, eligibilityGroup, reportingPeriod];
+};
+
+export const getMeasureIdentifier = (entity: EntityShape) => {
+  const { measure_identifierCbe: cbe, measure_identifierCmit: cmit } = entity;
+
+  if (cmit) return `CMIT: ${cmit}`;
+  if (cbe) return `CBE: ${cbe}`;
+  return;
+};
+
+export const getMeasureIdDisplayText = (entity: EntityShape) => {
+  const identifier = getMeasureIdentifier(entity);
+  return `Measure ID: ${identifier || "N/A"}`;
+};
+
+export const getMeasureValues = (entity: EntityShape, key: string) => {
+  if (key !== "measure_identifier") {
+    const value = entity[key];
+
+    const formattedValue = Array.isArray(value)
+      ? value.map((obj: EntityShape) => obj.value).join("; ")
+      : value;
+
+    return [formattedValue];
+  }
+
+  const {
+    measure_identifierDefinition: identifierDefinition,
+    measure_identifierDomain: identifierDomain,
+    measure_identifierUrl: identifierUrl,
+  } = entity;
+
+  const identifier = getMeasureIdentifier(entity);
+  if (identifier) return [identifier];
+
+  const values: string[] = [`Other definition: ${identifierDefinition}`];
+
+  if (identifierUrl) {
+    values.push(`Link: ${identifierUrl}`);
+  }
+
+  if (identifierDomain) {
+    const domains = identifierDomain
+      .map((domain: EntityShape) => domain.value)
+      .join(", ");
+    values.push(`Measure domain(s): ${domains}`);
+  }
+
+  return values;
 };
 
 export const hasEntityNameWithDescription = (reportType: string) => {
