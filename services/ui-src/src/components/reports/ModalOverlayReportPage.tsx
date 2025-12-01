@@ -20,7 +20,6 @@ import {
   ModalOverlayReportPageShape,
   ReportShape,
   ReportStatus,
-  ReportType,
 } from "types";
 // utils
 import {
@@ -31,6 +30,7 @@ import {
   useBreakpoint,
   useStore,
   resetClearProp,
+  routeChecker,
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -69,12 +69,10 @@ export const ModalOverlayReportPage = ({
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
   let openDisabled = false;
 
+  const isMeasuresAndResultsPage = routeChecker.isMeasuresAndResultsPage(route);
+
   // check for plans in MCPAR
-  if (
-    reportType === ReportType.MCPAR &&
-    route.path ===
-      "/mcpar/plan-level-indicators/quality-measures/measures-and-results"
-  ) {
+  if (isMeasuresAndResultsPage) {
     const plans = report.fieldData?.["plans"];
     const hasPlans = plans?.length > 0;
     openDisabled = !hasPlans && hasPlans !== undefined;
