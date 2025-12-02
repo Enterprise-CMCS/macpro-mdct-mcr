@@ -50,8 +50,7 @@ export const AddEditReportModal = ({
 
   // LaunchDarkly
   const naaarProgramList = useFlags()?.naaarProgramList;
-  // const qualityMeasuresEnabled = useFlags()?.qualityMeasuresEnabled;
-  const qualityMeasuresEnabled = false;
+  const qualityMeasuresEnabled = useFlags()?.qualityMeasuresEnabled;
 
   // get correct form
   const modalFormJsonMap: any = {
