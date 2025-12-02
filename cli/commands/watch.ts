@@ -21,6 +21,7 @@ export const watch = {
       const downloadClamAvLayer = clamModule.default;
       await downloadClamAvLayer();
     }
+    process.env.CDK_WATCH = "true";
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await Promise.all([
       runCommand(

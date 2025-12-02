@@ -14,7 +14,7 @@ import { createUiAuthComponents } from "./ui-auth";
 import { createUiComponents } from "./ui";
 import { createApiComponents } from "./api";
 import { deployFrontend } from "./deployFrontend";
-import { isLocalStack } from "../local/util";
+import { isCdkWatch, isLocalStack } from "../local/util";
 import { createTopicsComponents } from "./topics";
 import { getSubnets } from "../utils/vpc";
 
@@ -73,7 +73,7 @@ export class ParentStack extends Stack {
      * Also, we skip authorization locally. So we don't set up Cognito,
      * or configure the API to interact with it. Therefore, we're done.
      */
-    if (isLocalStack) return;
+    if (isLocalStack || isCdkWatch) return;
 
     const { applicationEndpointUrl, distribution, uiBucket } =
       createUiComponents({ ...commonProps, loggingBucket });
