@@ -2,6 +2,7 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { EntityDetailsOverlayQualityMeasures } from "./EntityDetailsOverlayQualityMeasures";
+import { ReportContext } from "components";
 // types
 import { DrawerReportPageShape, ModalOverlayReportPageShape } from "types";
 // utils
@@ -9,6 +10,7 @@ import {
   mockDrawerForm,
   mockEntityStore,
   mockMcparReport,
+  mockMcparReportContext,
   mockModalOverlayReportPageJson,
   mockStateUserStore,
   RouterWrappedComponent,
@@ -30,12 +32,14 @@ const entityDetailsOverlayQualityMeasuresComponent = (
   route: DrawerReportPageShape | ModalOverlayReportPageShape
 ) => (
   <RouterWrappedComponent>
-    <EntityDetailsOverlayQualityMeasures
-      closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
-      report={mockMcparReport}
-      route={route}
-      selectedEntity={mockEntityStore.selectedEntity!}
-    />
+    <ReportContext.Provider value={mockMcparReportContext}>
+      <EntityDetailsOverlayQualityMeasures
+        closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
+        report={mockMcparReport}
+        route={route}
+        selectedMeasure={mockEntityStore.selectedEntity!}
+      />
+    </ReportContext.Provider>
   </RouterWrappedComponent>
 );
 
@@ -74,7 +78,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     expect(saveAndReturn).toBeVisible();
   });
 
-  test("should have drawer form when included in route", async () => {
+  test("should have drawer form and be able to submit", async () => {
     const mockDrawerFormRoute = {
       ...mockModalOverlayReportPageJson,
       drawerForm: mockDrawerForm,
@@ -111,6 +115,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     });
     await waitFor(() => {
       expect(screen.queryByRole("form")).toBeNull();
+      expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
     });
   });
 });
