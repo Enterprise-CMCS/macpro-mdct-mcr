@@ -3,7 +3,7 @@ import {
   filterByFlag,
   flattenReportRoutesArray,
   formTemplateForReportType,
-  generateModifiedTemplate,
+  filterFormTemplateRoutes,
   generatePCCMTemplate,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
@@ -51,7 +51,7 @@ const currentPCCMFormHash = createHash("md5")
   .update(JSON.stringify(pccmTemplate))
   .digest("hex");
 
-const modifiedTemplate = generateModifiedTemplate(
+const modifiedTemplate = filterFormTemplateRoutes(
   mcpar as ReportJson,
   ["Access Measures"],
   ["accessMeasures"]

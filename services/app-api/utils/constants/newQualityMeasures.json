@@ -1,0 +1,415 @@
+{
+  "name": "VII: Quality Measures",
+  "path": "/mcpar/plan-level-indicators/quality-measures",
+  "children": [
+    {
+      "name": "New plan exemption",
+      "path": "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption",
+      "pageType": "standard",
+      "entityType": "qualityMeasures",
+      "verbiage": {
+        "intro": {
+          "section": "Section D: Plan-Level Indicators",
+          "subsection": "Topic VII: Quality & Performance Measures",
+          "spreadsheet": "D2_Program_QualityMeasures",
+          "info": [
+            {
+              "type": "heading",
+              "as": "h4",
+              "content": "New plan exemption"
+            }
+          ]
+        },
+        "missingEntityMessage": [
+          {
+            "type": "p",
+            "children": [
+              {
+                "type": "html",
+                "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
+              },
+              {
+                "type": "internalLink",
+                "content": "Add Plans",
+                "props": {
+                  "to": "/mcpar/program-information/add-plans"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "form": {
+        "id": "dqmnpe",
+        "fields": [
+          {
+            "id": "plansExemptFromQualityMeasures",
+            "type": "checkbox",
+            "validation": "checkboxOptional",
+            "props": {
+              "label": "D2.VII.1 Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
+              "choices": [
+                {
+                  "id": "placeholder",
+                  "label": "Plans (dynamic)"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Measures and results",
+      "path": "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+      "pageType": "modalOverlay",
+      "entityType": "qualityMeasures",
+      "verbiage": {
+        "intro": {
+          "section": "Section D: Plan-Level Indicators",
+          "subsection": "Topic VII: Quality & Performance Measures",
+          "spreadsheet": "D2_Program_QualityMeasures",
+          "info": [
+            {
+              "type": "heading",
+              "as": "h4",
+              "content": "Measures and results"
+            }
+          ]
+        },
+        "dashboardTitle": "Quality & performance measure total count:",
+        "countEntitiesInTitle": true,
+        "tableHeader": "Measure name <br/> Measure ID / definition",
+        "addEntityButtonText": "Add measure",
+        "editEntityButtonText": "Edit measure",
+        "deleteModalTitle": "Delete measure?",
+        "deleteModalConfirmButtonText": "Yes, delete measure",
+        "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+        "enterReportText": "Enter",
+        "addEditModalAddTitle": "Add a quality performance measure",
+        "addEditModalEditTitle": "Edit a quality performance measure"
+      },
+      "modalForm": {
+        "id": "dqmmar-modal",
+        "fields": [
+          {
+            "id": "measure_name",
+            "type": "text",
+            "validation": "text",
+            "props": {
+              "label": "D2.VII.1 Measure name",
+              "hint": "What is the measure name?"
+            }
+          },
+          {
+            "id": "measure_identifier",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "D2.VII.2 Measure identification number or definition",
+              "hint": [
+                {
+                  "type": "span",
+                  "content": "Does this measure have a "
+                },
+                {
+                  "type": "externalLink",
+                  "content": "CMS Measures Inventory Tool (CMIT) number",
+                  "props": {
+                    "href": "https://p4qm.org/measures",
+                    "target": "_blank",
+                    "aria-label": "Measure database (link opens in new tab)"
+                  }
+                },
+                {
+                  "type": "span",
+                  "content": "? If measurement varied from CMIT or Consensus Based Entity (CBE) specifications, answer “No, it uses neither CMIT or CBE”."
+                }
+              ],
+              "choices": [
+                {
+                  "id": "lIqRkso1nUidNG1Gh7Ll0A",
+                  "label": "Yes",
+                  "children": [
+                    {
+                      "id": "measure_identifierCmit",
+                      "type": "number",
+                      "validation": {
+                        "type": "number",
+                        "nested": true,
+                        "parentFieldName": "measure_identifier",
+                        "parentOptionId": "lIqRkso1nUidNG1Gh7Ll0A"
+                      },
+                      "props": {
+                        "label": "CMIT number"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "eqVgpF8hmsma9ibcvwVqCb",
+                  "label": "No, it has a Consensus Based Entity (CBE) number",
+                  "children": [
+                    {
+                      "id": "measure_identifierCbe",
+                      "type": "number",
+                      "validation": {
+                        "type": "number",
+                        "nested": true,
+                        "parentFieldName": "measure_identifier",
+                        "parentOptionId": "eqVgpF8hmsma9ibcvwVqCb"
+                      },
+                      "props": {
+                        "label": "Consensus Based Entity (CBE) number"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hcsq9mTy5wWhxUPtgkQWwB",
+                  "label": "No, it uses neither CMIT or CBE",
+                  "children": [
+                    {
+                      "id": "measure_identifierDefinition",
+                      "type": "textarea",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "measure_identifier",
+                        "parentOptionId": "hcsq9mTy5wWhxUPtgkQWwB"
+                      },
+                      "props": {
+                        "label": "How is this measure defined?",
+                        "hint": "If this measure has been modified from an existing CMIT or CBE measure, note the CMIT or CBE number and briefly describe the modifications. Otherwise, provide a link to the measure specification. If a link is not available, describe the numerator and denominator and exclusion criteria for each."
+                      }
+                    },
+                    {
+                      "id": "measure_identifierUrl",
+                      "type": "text",
+                      "validation": {
+                        "type": "urlOptional",
+                        "nested": true,
+                        "parentFieldName": "measure_identifier",
+                        "parentOptionId": "hcsq9mTy5wWhxUPtgkQWwB"
+                      },
+                      "props": {
+                        "label": "Link to the measure specification (optional)"
+                      }
+                    },
+                    {
+                      "id": "measure_identifierDomain",
+                      "type": "checkbox",
+                      "validation": {
+                        "type": "checkbox",
+                        "nested": true,
+                        "parentFieldName": "measure_identifier",
+                        "parentOptionId": "hcsq9mTy5wWhxUPtgkQWwB"
+                      },
+                      "props": {
+                        "label": "D2.VII.2a Measure domain",
+                        "hint": "Select one or more measure domains or add your own as needed.",
+                        "choices": [
+                          {
+                            "id": "3fj5mLIKvGHC8Obt7YnVYp",
+                            "label": "Primary care access and preventative care"
+                          },
+                          {
+                            "id": "03t5xZRG7NlfuH98afQvfh",
+                            "label": "Maternal and perinatal health"
+                          },
+                          {
+                            "id": "ygPYwo4BYtOprLv4yGR0Lc",
+                            "label": "Care of acute and chronic conditions"
+                          },
+                          {
+                            "id": "h02cn7n9OEY70MuEoMjVUp",
+                            "label": "Behavioral health care"
+                          },
+                          {
+                            "id": "tCQ00Yn1NVv5G8u6XSCbab",
+                            "label": "Dental and oral health services"
+                          },
+                          {
+                            "id": "91CSn9m44zCI0CU9tg9Bt9",
+                            "label": "Experience of care"
+                          },
+                          {
+                            "id": "qKriWrOoPseXXnaM88Rqpe",
+                            "label": "Long-term services and supports"
+                          },
+                          {
+                            "id": "obrFjzruEFPxkwkabnf8V2",
+                            "label": "Other, specify",
+                            "children": [
+                              {
+                                "id": "measure_identifierDomain-otherText",
+                                "type": "text",
+                                "validation": {
+                                  "type": "text",
+                                  "nested": true,
+                                  "parentFieldName": "measure_identifierDomain",
+                                  "parentOptionId": "obrFjzruEFPxkwkabnf8V2"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "measure_dataVersion",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "D2.VII.3 Data version",
+              "hint": "Is this data preliminary or final?",
+              "choices": [
+                {
+                  "id": "GLnFjfEWVnsNJdWMswHwxk",
+                  "label": "Preliminary"
+                },
+                {
+                  "id": "sK8VJLLx8HokhraqqLcH6k",
+                  "label": "Final"
+                }
+              ]
+            }
+          },
+          {
+            "id": "measure_activities",
+            "type": "checkbox",
+            "validation": "checkbox",
+            "props": {
+              "label": "D2.VII.4 Activities the quality measure is used in ",
+              "hint": "Which pay-for-performance, quality, or evaluation efforts is this measure used in? Select all that apply.",
+              "choices": [
+                {
+                  "id": "SMRcwYNpSvLf1YTLslsoCP",
+                  "label": "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)"
+                },
+                {
+                  "id": "hUAhCuNQ9FxjJqhX28hJ0f",
+                  "label": "Managed Care Quality Strategy (as defined at 42 CFR 438.340)"
+                },
+                {
+                  "id": "OlWKinxF3sh0LBMaABqP9h",
+                  "label": "External Quality Review (EQR) (as defined at 42 CFR 438.450-364)"
+                },
+                {
+                  "id": "LnCoLFFJScpYddtIoar7ZZ",
+                  "label": "Quality Rating System (QRS) (either the state’s own QRS, or as defined at 42 CFR 438.500-535)"
+                },
+                {
+                  "id": "8RGsv8Wmj0gvQm2UxTTD4g",
+                  "label": "Plan Withholds (as defined at 42 CFR 438.6(b))"
+                },
+                {
+                  "id": "D4V9Zi6Sk6Z7T5jroDE7Pa",
+                  "label": "Plan Incentives (as defined at 42 CFR 438.6(b))"
+                },
+                {
+                  "id": "yypoD2k1sqPLumyHKl3wfg",
+                  "label": "State Directed Payments (SDPs) (as defined at 42 CFR § 438.6(c)(2)(ii)(C) and (D))"
+                },
+                {
+                  "id": "SD9JuRdGwpaD0S9yPYc90H",
+                  "label": "In Lieu of Service (ILOS)"
+                },
+                {
+                  "id": "6c1JMtXyc3riXxf2xHbdVI",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "measure_activities-otherText",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "measure_activities",
+                        "parentOptionId": "6c1JMtXyc3riXxf2xHbdVI"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "MFK8OOLrIqSP1pHuG8f0pp",
+                  "label": "None"
+                }
+              ]
+            }
+          },
+          {
+            "id": "measure_dataCollectionMethod",
+            "type": "radio",
+            "validation": "radio",
+            "props": {
+              "label": "D2.VII.5 Data collection method",
+              "hint": "What data collection method did the plan use for this measure? (see technical guide for definitions).",
+              "choices": [
+                {
+                  "id": "bkD4uguEEiRjo5GyoCVNMi",
+                  "label": "Administrative"
+                },
+                {
+                  "id": "tL67PrkzTlW7sYbwvLX20u",
+                  "label": "Electronic clinical data systems (ECDS)"
+                },
+                {
+                  "id": "ZMOGJqcMYUpz9kfB5U7WKW",
+                  "label": "Electronic health record (EHR)"
+                },
+                {
+                  "id": "sr81F3S6pBZcmyr4iiBDmR",
+                  "label": "Hybrid"
+                },
+                {
+                  "id": "UaVA7pFl6zfrYIVFaZXkX0",
+                  "label": "Survey"
+                },
+                {
+                  "id": "D3x0tz0657GlrkneNtssdn",
+                  "label": "Other, specify",
+                  "children": [
+                    {
+                      "id": "measure_dataCollectionMethod-otherText",
+                      "type": "text",
+                      "validation": {
+                        "type": "text",
+                        "nested": true,
+                        "parentFieldName": "measure_dataCollectionMethod",
+                        "parentOptionId": "D3x0tz0657GlrkneNtssdn"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "measure_rates_header",
+            "type": "sectionHeader",
+            "props": {
+              "divider": "none",
+              "content": "Naming of rates",
+              "hint": "If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.2 in the field below for D2.VII.7. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guidance: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name, title, or brief description for the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
+            }
+          },
+          {
+            "id": "measure_rates",
+            "type": "dynamic",
+            "validation": "dynamic",
+            "props": {
+              "label": "D2.VII.7 Name rate",
+              "hint": "Enter the name of this performance rate you are reporting for the measure."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

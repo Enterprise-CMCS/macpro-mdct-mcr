@@ -23,6 +23,7 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+import newQualityMeasures from "../constants/newQualityMeasures.json";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -84,11 +85,20 @@ export async function getOrCreateFormTemplate(
   }
 
   if (options.hasNaaarSubmission) {
-    currentFormTemplate = generateModifiedTemplate(
+    currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["Access Measures"],
       ["accessMeasures"]
     );
+  }
+
+  if (!options.qualityMeasuresEnabled) {
+    currentFormTemplate = filterFormTemplateRoutes(
+      currentFormTemplate,
+      ["VII: Quality Measures"],
+      []
+    );
+    currentFormTemplate = replaceQualityMeasuresRoute(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -334,7 +344,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
   return reportTemplate;
 };
 
-export const generateModifiedTemplate = (
+export const filterFormTemplateRoutes = (
   originalReportTemplate: ReportJson,
   routesToRemove: string[],
   entitiesToRemove: string[]
@@ -365,6 +375,19 @@ export const generateModifiedTemplate = (
   const reportTemplate = structuredClone(originalReportTemplate);
   filterRoutesByName(reportTemplate.routes, routesToRemove);
   filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
+  return reportTemplate;
+};
+
+// temporary function to insert QM route based on feature flag
+export const replaceQualityMeasuresRoute = (
+  originalReportTemplate: ReportJson
+) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
+  reportTemplate.routes[3].children!.splice(
+    3,
+    0,
+    newQualityMeasures as unknown as ReportRoute
+  );
   return reportTemplate;
 };
 
