@@ -3,7 +3,6 @@ import { Argv } from "yargs";
 import { checkIfAuthenticated } from "../lib/sts.js";
 import { runCommand } from "../lib/runner.js";
 import { runFrontendLocally } from "../lib/utils.js";
-import { seedData } from "../lib/seedData.js";
 import { tryImport } from "../lib/optional-imports.js";
 
 export const watch = {
@@ -14,8 +13,6 @@ export const watch = {
   },
   handler: async (options: { stage: string }) => {
     await checkIfAuthenticated();
-
-    await seedData();
 
     const clamModule = await tryImport<{ default: () => Promise<void> }>(
       "../lib/clam.js"
