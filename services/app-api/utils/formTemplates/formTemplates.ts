@@ -92,7 +92,10 @@ export async function getOrCreateFormTemplate(
     );
   }
 
-  if (reportType === ReportType.MCPAR && !options.qualityMeasuresEnabled) {
+  if (
+    reportType === ReportType.MCPAR &&
+    options.newQualityMeasuresSectionEnabled
+  ) {
     currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["VII: Quality Measures"],

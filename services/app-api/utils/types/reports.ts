@@ -269,7 +269,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   naaarExpectedSubmissionDateForThisProgram?: string;
-  qualityMeasuresEnabled?: boolean;
+  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {
