@@ -3,9 +3,9 @@
   "include": ["./commands/**/*.ts", "./lib/**/*.ts", "./run.ts"],
   "compilerOptions": {
     "incremental": true,
-    "target": "es2023",
+    "target": "es2022",
     "module": "nodenext",
-    "lib": ["es2023"],
+    "lib": ["es2022"],
     "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
