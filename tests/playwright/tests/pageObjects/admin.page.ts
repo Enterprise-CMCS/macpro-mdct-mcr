@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { adminPassword, adminUser, adminUserAuth } from "../../utils/consts";
 
 export class AdminPage {
   readonly page: Page;
@@ -18,6 +19,31 @@ export class AdminPage {
 
   async redirectPage(url: string) {
     await this.page.waitForURL(url);
+  }
+
+  // There is an intermitten issue in deployed envs where auth tokens appear to expire early
+  async checkAndReauthenticate() {
+    const emailInput = this.page.getByRole("textbox", { name: "email" });
+    const passwordInput = this.page.getByRole("textbox", { name: "password" });
+    const loginButton = this.page.getByRole("button", {
+      name: "Log In with Cognito",
+    });
+    if (await loginButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await emailInput.fill(adminUser);
+      await passwordInput.fill(adminPassword);
+      await loginButton.click();
+      await this.page.waitForURL("/");
+      await this.page.waitForResponse(
+        (response) =>
+          response.url().includes("/banners") && response.status() === 200
+      );
+      await this.page
+        .getByRole("heading", {
+          name: "View State/Territory Reports",
+        })
+        .isVisible();
+      await this.page.context().storageState({ path: adminUserAuth });
+    }
   }
 
   // Header/Navigation functionality

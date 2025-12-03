@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { statePassword, stateUser, stateUserAuth } from "../../utils/consts";
 
 export class StatePage {
   readonly page: Page;
@@ -18,6 +19,40 @@ export class StatePage {
 
   async redirectPage(url: string) {
     await this.page.waitForURL(url);
+  }
+
+  async waitForBannersToLoad() {
+    await this.page.waitForResponse(
+      (response) =>
+        response.url().includes("/banners") &&
+        response.request().method() === "GET" &&
+        response.status() === 200
+    );
+  }
+
+  // There is an intermitten issue in deployed envs where auth tokens appear to expire early
+  async checkAndReauthenticate() {
+    const emailInput = this.page.getByRole("textbox", { name: "email" });
+    const passwordInput = this.page.getByRole("textbox", { name: "password" });
+    const loginButton = this.page.getByRole("button", {
+      name: "Log In with Cognito",
+    });
+    if (await loginButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await emailInput.fill(stateUser);
+      await passwordInput.fill(statePassword);
+      await loginButton.click();
+      await this.page.waitForURL("/");
+      await this.page.waitForResponse(
+        (response) =>
+          response.url().includes("/banners") && response.status() === 200
+      );
+      await this.page
+        .getByRole("heading", {
+          name: "Managed Care Reporting Portal",
+        })
+        .isVisible();
+      await this.page.context().storageState({ path: stateUserAuth });
+    }
   }
 
   // Header/Navigation functionality

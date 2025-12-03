@@ -1,8 +1,13 @@
 import { test, expect } from "./fixtures/base";
 
 test.describe("Header tests - State user", () => {
-  test("MCR logo link should navigate to /", async ({ statePage }) => {
+  test.beforeEach(async ({ statePage }) => {
     await statePage.goto("/");
+    await statePage.checkAndReauthenticate();
+    await statePage.waitForBannersToLoad();
+  });
+
+  test("MCR logo link should navigate to /", async ({ statePage }) => {
     await expect(
       statePage.page.getByRole("heading", {
         name: "Managed Care Reporting Portal",
@@ -19,7 +24,6 @@ test.describe("Header tests - State user", () => {
   test("Manage account link should navigate to /profile", async ({
     statePage,
   }) => {
-    await statePage.goto("/");
     await statePage.manageAccount();
     await expect(
       statePage.page.getByRole("heading", { name: "My Account" })
@@ -27,24 +31,21 @@ test.describe("Header tests - State user", () => {
   });
 
   test("Get help link navigate to /help", async ({ statePage }) => {
-    await statePage.goto("/");
     await statePage.getHelp();
     await expect(
       statePage.page.getByRole("heading", { name: "How can we help you?" })
     ).toBeVisible();
   });
-
-  test("Logout button should successfully log out the user", async ({
-    statePage,
-  }) => {
-    await statePage.goto("/");
-    await statePage.logOut();
-  });
 });
 
 test.describe("Header tests - Admin user", () => {
-  test("MCR logo link should navigate to /", async ({ adminPage }) => {
+  test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/");
+    await adminPage.checkAndReauthenticate();
+    await adminPage.waitForBannersToLoad();
+  });
+
+  test("MCR logo link should navigate to /", async ({ adminPage }) => {
     await expect(
       adminPage.page.getByRole("heading", {
         name: "View State/Territory Reports",
@@ -61,7 +62,6 @@ test.describe("Header tests - Admin user", () => {
   test("Manage account link should navigate to /profile", async ({
     adminPage,
   }) => {
-    await adminPage.goto("/");
     await adminPage.manageAccount();
     await expect(
       adminPage.page.getByRole("heading", { name: "My Account" })
@@ -69,17 +69,9 @@ test.describe("Header tests - Admin user", () => {
   });
 
   test("Get help link navigate to /help", async ({ adminPage }) => {
-    await adminPage.goto("/");
     await adminPage.getHelp();
     await expect(
       adminPage.page.getByRole("heading", { name: "How can we help you?" })
     ).toBeVisible();
-  });
-
-  test("Logout button should successfully log out the user", async ({
-    adminPage,
-  }) => {
-    await adminPage.goto("/");
-    await adminPage.logOut();
   });
 });

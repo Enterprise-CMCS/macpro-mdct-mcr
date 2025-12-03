@@ -3,6 +3,7 @@ import { expect, test } from "./fixtures/base";
 test.describe("admin user banner page", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/admin");
+    await adminPage.checkAndReauthenticate();
     await adminPage.waitForBannersToLoad();
     await adminPage.deleteExistingBanners();
   });
