@@ -92,7 +92,7 @@ export async function getOrCreateFormTemplate(
     );
   }
 
-  if (!options.qualityMeasuresEnabled) {
+  if (reportType === ReportType.MCPAR && !options.qualityMeasuresEnabled) {
     currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["VII: Quality Measures"],
@@ -383,7 +383,7 @@ export const replaceQualityMeasuresRoute = (
   originalReportTemplate: ReportJson
 ) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  reportTemplate.routes[3].children!.splice(
+  reportTemplate.routes[3].children?.splice(
     3,
     0,
     newQualityMeasures as unknown as ReportRoute
