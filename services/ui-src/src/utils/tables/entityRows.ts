@@ -54,6 +54,7 @@ export const buildDrawerReportPageEntityRows = ({
       form,
       isCustomEntity,
       reportingOnIlos,
+      isMeasuresAndResultsPage,
     });
 
     const enterButton = getButtonProps({
@@ -105,9 +106,24 @@ export const calculateIsEntityCompleted = ({
   form,
   isCustomEntity,
   reportingOnIlos,
+  isMeasuresAndResultsPage,
 }: CalculateEntityCompletionProps) => {
-  const calculateEntityCompletion = () => {
-    let formFields = form.fields;
+  const calculateMeasureCompletion = () => {
+    if (
+      entity?.measure_isReporting?.length > 0 &&
+      entity?.measure_isNotReportingReason?.length > 0
+    ) {
+      return true;
+    } else {
+      const requiredFields = form.fields
+        ?.filter(isFieldElement)
+        .filter((field) => field.id !== "measure_isReporting");
+      return calculateEntityCompletion(requiredFields);
+    }
+  };
+
+  const calculateEntityCompletion = (fields?: FormField[]) => {
+    let formFields = fields || form.fields;
     if (isCustomEntity) {
       formFields = addEntityForm.fields;
     }
@@ -122,6 +138,8 @@ export const calculateIsEntityCompleted = ({
    */
   const isEntityCompleted = reportingOnIlos
     ? calculateEntityCompletion() && isIlosCompleted(reportingOnIlos, entity)
+    : isMeasuresAndResultsPage
+    ? calculateMeasureCompletion()
     : calculateEntityCompletion();
 
   return isEntityCompleted || false;
@@ -322,6 +340,7 @@ interface CalculateEntityCompletionProps {
   isCustomEntity: boolean;
   form: FormJson;
   reportingOnIlos: boolean;
+  isMeasuresAndResultsPage?: boolean;
 }
 
 interface GetCompleteTextProps {
