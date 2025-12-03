@@ -1,20 +1,37 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
 // components
-import { Box, Heading, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  List,
+  ListItem,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import {
   DrawerReportPageEntityRows,
+  ReportContext,
+  ReportDrawer,
   ReportPageIntro,
   SaveReturnButton,
 } from "components";
 // types
 import {
+  AnyObject,
   DrawerReportPageShape,
   EntityShape,
   ModalOverlayReportPageShape,
   ReportShape,
+  ReportStatus,
 } from "types";
 // utils
-import { getMeasureValues, getReportVerbiage, parseCustomHtml } from "utils";
+import {
+  getMeasureValues,
+  getReportVerbiage,
+  parseCustomHtml,
+  translate,
+  useStore,
+} from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
@@ -22,18 +39,26 @@ export const EntityDetailsOverlayQualityMeasures = ({
   closeEntityDetailsOverlay,
   report,
   route,
-  selectedEntity,
-  submitting,
+  selectedMeasure,
 }: Props) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [selectedPlan, setSelectedPlan] = useState<EntityShape>();
+  const { updateReport } = useContext(ReportContext);
+  const { full_name, state, userIsEndUser } = useStore().user ?? {};
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const { qualityMeasuresVerbiage } = getReportVerbiage(report.reportType);
   const { tableHeaders } = qualityMeasuresVerbiage;
 
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
-  const openRowDrawer = () => {};
+  const openRowDrawer = (plan: EntityShape) => {
+    setSelectedPlan(plan);
+    onOpen();
+  };
 
   const list = Object.keys(tableHeaders).map((key: string) => {
-    const values = getMeasureValues(selectedEntity, key);
+    const values = getMeasureValues(selectedMeasure, key);
 
     return {
       ariaValues: values.join(" "),
@@ -42,11 +67,50 @@ export const EntityDetailsOverlayQualityMeasures = ({
     };
   });
 
+  const hasDrawerForm = !!route?.drawerForm;
+
+  const onSubmit = async (enteredData: AnyObject) => {
+    if (userIsEndUser) {
+      setSubmitting(true);
+      const reportKeys = {
+        reportType: report?.reportType,
+        state: state,
+        id: report?.id,
+      };
+
+      const currentPlans = [...(report?.fieldData.plans || [])];
+      let selectedPlanIndex = currentPlans.findIndex(
+        (plan: EntityShape) => plan.id == selectedPlan?.id
+      );
+
+      const newPlan = {
+        ...selectedPlan,
+        ...enteredData,
+      };
+
+      const updatedPlans = currentPlans;
+      updatedPlans[selectedPlanIndex] = newPlan;
+
+      const dataToWrite = {
+        metadata: {
+          status: ReportStatus.IN_PROGRESS,
+          lastAlteredBy: full_name,
+        },
+        fieldData: {
+          plans: updatedPlans,
+        },
+      };
+      await updateReport(reportKeys, dataToWrite);
+      setSubmitting(false);
+    }
+    onClose();
+  };
+
   return (
     <>
       <ReportPageIntro text={overlayVerbiage.MCPAR.intro} />
       <Heading as="h2" sx={sx.measureName}>
-        {selectedEntity.measure_name}
+        {selectedMeasure.measure_name}
       </Heading>
       <List sx={sx.list}>
         {list.map((listItem: any, index: number) => (
@@ -75,7 +139,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       </Heading>
       <DrawerReportPageEntityRows
         entities={report.fieldData.plans}
-        hasForm={false}
+        hasForm={hasDrawerForm}
         openRowDrawer={openRowDrawer}
         openDeleteEntityModal={openDeleteEntityModal}
         route={route}
@@ -84,9 +148,26 @@ export const EntityDetailsOverlayQualityMeasures = ({
       <SaveReturnButton
         border={false}
         onClick={closeEntityDetailsOverlay}
-        submitting={submitting}
         disabledOnClick={closeEntityDetailsOverlay}
       />
+      {hasDrawerForm && (
+        <ReportDrawer
+          selectedEntity={selectedPlan!}
+          verbiage={{
+            drawerTitle: translate(route.verbiage.drawerTitle, {
+              plan: selectedPlan?.name,
+              measureName: selectedMeasure.measure_name,
+            }),
+          }}
+          form={route.drawerForm!}
+          onSubmit={onSubmit}
+          submitting={submitting}
+          drawerDisclosure={{
+            isOpen,
+            onClose,
+          }}
+        />
+      )}
     </>
   );
 };
@@ -95,8 +176,7 @@ interface Props {
   closeEntityDetailsOverlay: MouseEventHandler;
   report: ReportShape;
   route: DrawerReportPageShape | ModalOverlayReportPageShape;
-  selectedEntity: EntityShape;
-  submitting?: boolean;
+  selectedMeasure: EntityShape;
 }
 
 function dashboardTitleStyling(canAddEntities: boolean) {

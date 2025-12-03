@@ -204,6 +204,7 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   tableHeader: string;
   addEditModalHint: string;
   emptyDashboardText: string;
+  drawerTitle?: string;
 }
 
 export interface OverlayReportPageVerbiage extends ReportPageVerbiage {

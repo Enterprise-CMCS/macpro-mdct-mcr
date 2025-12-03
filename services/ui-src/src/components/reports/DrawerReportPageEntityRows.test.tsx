@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DrawerReportPage } from "./DrawerReportPage";
 import { ReportContext } from "./ReportProvider";
@@ -239,11 +239,13 @@ describe("<DrawerReportEntityRow />", () => {
         await act(async () => {
           await userEvent.click(button);
         });
-        expect(
-          screen.getByRole("dialog", {
-            name: "Are you sure you want to delete this analysis method?",
-          })
-        ).toBeVisible();
+        await waitFor(() => {
+          expect(
+            screen.getByRole("dialog", {
+              name: "Are you sure you want to delete this analysis method?",
+            })
+          ).toBeVisible();
+        });
         expect(
           screen.getByRole("button", { name: "Yes, delete method" })
         ).toBeDisabled();

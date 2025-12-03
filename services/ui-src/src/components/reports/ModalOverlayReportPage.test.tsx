@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ModalOverlayReportPage, ReportProvider } from "components";
@@ -128,7 +128,9 @@ describe("<ModalOverlayReportPage />", () => {
       await act(async () => {
         await user.click(addEntityButton[0]);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
 
       // Close out of the modal it created
       const closeButton = screen.getByText("Close");
@@ -247,8 +249,9 @@ describe("<ModalOverlayReportPage />", () => {
       await act(async () => {
         await user.click(editEntityButton[0]);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
-
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       // Close out of the modal it created
       const closeButton = screen.getAllByText("Close");
       await act(async () => {
@@ -285,8 +288,9 @@ describe("<ModalOverlayReportPage />", () => {
       await act(async () => {
         await userEvent.click(deleteEntityButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
-
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       // Click delete in modal
       const deleteButton = screen.getByText(
         verbiage.deleteModalConfirmButtonText

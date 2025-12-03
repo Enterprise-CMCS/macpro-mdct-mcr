@@ -78,7 +78,7 @@ jobs:
       - name: Run Playwright tests
         if: ${{ github.ref_name != 'production' }}
         run: |
-          yarn playwright install
+          yarn playwright install --with-deps chromium
           yarn playwright test --grep-invert "@flaky" --reporter=github,html
         working-directory: tests
         env:

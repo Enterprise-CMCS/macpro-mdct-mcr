@@ -66,8 +66,7 @@ export const EntityDetailsOverlay = ({
           closeEntityDetailsOverlay={closeEntityDetailsOverlay}
           report={report}
           route={route}
-          selectedEntity={selectedEntity}
-          submitting={submitting}
+          selectedMeasure={selectedEntity}
         />
       );
     }
