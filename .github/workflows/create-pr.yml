@@ -17,10 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          # using more advanced version for this action to be able to have node natively run typescript
-          node-version: 22.19.0
+          node-version-file: ".nvmrc"
       - uses: actions/cache@v4
         with:
           path: "**/node_modules"
