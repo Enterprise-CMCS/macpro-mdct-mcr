@@ -92,6 +92,9 @@ threshold = 20
 [smells.function_parameters]
 enabled = false
 
+[smells.identical_code]
+enabled = false
+
 [smells.nested_control_flow]
 enabled = false
 
