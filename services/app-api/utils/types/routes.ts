@@ -1,6 +1,6 @@
 import { EntityType } from "./formFields";
-import { PageTypes } from "./other";
-import { ReportType } from "./reports";
+import { PageTypes, TableContentShape } from "./other";
+import { EntityDetailsTableContentShape, ReportType } from "./reports";
 import {
   EndDateValidation,
   NestedValidation,
@@ -144,19 +144,18 @@ export interface ModalDrawerRoute extends BaseRoute {
   pageType: PageTypes;
 }
 
-// TODO: Type details
 export interface MultiformRoute extends BaseRoute {
   details: {
     verbiage: any;
     forms: {
       form: ReportForm;
-      table: any;
+      table: TableContentShape;
       verbiage: any;
     }[];
     childForms: {
       form: ReportForm;
       parentForm: string;
-      table?: any;
+      table?: EntityDetailsTableContentShape;
       verbiage: any;
     }[];
   };
