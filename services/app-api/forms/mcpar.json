@@ -4289,7 +4289,7 @@
                   {
                     "id": "measure_dataCollectionMethod",
                     "type": "radio",
-                    "validation": "radio",
+                    "validation": "radioOptional",
                     "props": {
                       "label": "D2.VII.8 Data collection method",
                       "hint": "What data collection method did the plan use for this measure? (see technical guide for definitions).",
@@ -4322,7 +4322,7 @@
                               "id": "measure_dataCollectionMethod-otherText",
                               "type": "text",
                               "validation": {
-                                "type": "text",
+                                "type": "textOptional",
                                 "nested": true,
                                 "parentFieldName": "measure_dataCollectionMethod",
                                 "parentOptionId": "D3x0tz0657GlrkneNtssdn"
