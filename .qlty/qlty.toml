@@ -80,7 +80,7 @@ mode = "comment"
 enabled = false
 
 [smells.duplication]
-enabled = false
+enabled = true
 
 [smells.file_complexity]
 enabled = false
@@ -96,6 +96,9 @@ enabled = false
 enabled = false
 
 [smells.return_statements]
+enabled = false
+
+[smells.similar_code]
 enabled = false
 
 [[source]]
