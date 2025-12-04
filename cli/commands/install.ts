@@ -7,7 +7,7 @@ async function* findPackageJsonDirectories(
   directory: string
 ): AsyncGenerator<string> {
   const SKIP_DIRECTORIES = [".git", ".cdk", "node_modules"];
-  for (let entry of await readdir(directory, { withFileTypes: true })) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (entry.isDirectory() && !SKIP_DIRECTORIES.includes(entry.name)) {
       yield* findPackageJsonDirectories(join(directory, entry.name));
     } else if (entry.isFile() && entry.name === "package.json") {
