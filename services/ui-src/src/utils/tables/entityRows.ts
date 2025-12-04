@@ -109,17 +109,14 @@ export const calculateIsEntityCompleted = ({
   isMeasuresAndResultsPage,
 }: CalculateEntityCompletionProps) => {
   const calculateMeasureCompletion = () => {
-    if (
-      entity?.measure_isReporting?.length > 0 &&
-      entity?.measure_isNotReportingReason?.length > 0
-    ) {
-      return true;
-    } else {
-      const requiredFields = form.fields
-        ?.filter(isFieldElement)
-        .filter((field) => field.id !== "measure_isReporting");
-      return calculateEntityCompletion(requiredFields);
-    }
+    const isNotReporting = entity?.measure_isReporting?.length > 0;
+    const hasReasons = entity?.measure_isNotReportingReason?.length > 0;
+    if (isNotReporting && hasReasons) return true;
+
+    const requiredFields = form.fields
+      ?.filter(isFieldElement)
+      .filter((field) => field.id !== "measure_isReporting");
+    return calculateEntityCompletion(requiredFields);
   };
 
   const calculateEntityCompletion = (fields?: FormField[]) => {
@@ -134,15 +131,17 @@ export const calculateIsEntityCompleted = ({
 
   /*
    * If the entity has the same fields from drawerForm fields, it was completed
-   * at somepoint.
+   * at some point.
    */
-  const isEntityCompleted = reportingOnIlos
-    ? calculateEntityCompletion() && isIlosCompleted(reportingOnIlos, entity)
-    : isMeasuresAndResultsPage
-    ? calculateMeasureCompletion()
-    : calculateEntityCompletion();
+  if (reportingOnIlos) {
+    return (
+      calculateEntityCompletion() && isIlosCompleted(reportingOnIlos, entity)
+    );
+  }
 
-  return isEntityCompleted || false;
+  if (isMeasuresAndResultsPage) return calculateMeasureCompletion();
+
+  return calculateEntityCompletion();
 };
 
 export const getButtonProps = ({
