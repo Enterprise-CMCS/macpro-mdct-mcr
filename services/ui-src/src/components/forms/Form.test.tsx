@@ -7,6 +7,7 @@ import { ReportStatus } from "types";
 // utils
 import {
   mockForm,
+  mockAdminForm,
   mockMcparReportStore,
   mockMlrReportStore,
   mockNonFieldForm,
@@ -50,6 +51,21 @@ const formComponentJustHeader = (
       dontReset={false}
     />
     <button form={mockNonFieldForm.id} type="submit">
+      Submit
+    </button>
+  </RouterWrappedComponent>
+);
+
+const formComponentAdminEditable = (
+  <RouterWrappedComponent>
+    <Form
+      id={mockForm.id}
+      formJson={mockAdminForm}
+      onSubmit={mockOnSubmit}
+      validateOnRender={false}
+      dontReset={false}
+    />
+    <button form={mockForm.id} type="submit">
       Submit
     </button>
   </RouterWrappedComponent>
@@ -116,6 +132,17 @@ describe("<Form />", () => {
     const { container } = render(formComponent);
     await container.querySelectorAll("input").forEach((x) => {
       expect(x).toBeDisabled();
+    });
+  });
+
+  test("Admin or internal users should see editable forms after a report is submitted", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockMcparReportStore,
+      report: { status: ReportStatus.SUBMITTED },
+    });
+    const { container } = render(formComponentAdminEditable);
+    await container.querySelectorAll("input").forEach((x) => {
+      expect(x).toBeEnabled();
     });
   });
 

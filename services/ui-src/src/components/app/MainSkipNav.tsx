@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 // components
 import { ReportContext, SkipNav } from "components";
 
