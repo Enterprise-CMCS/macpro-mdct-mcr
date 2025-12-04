@@ -18,8 +18,8 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@cypress-audit/pa11y": "^1.4.2",
-    "@playwright/test": "^1.55.1",
-    "axe-core": "^4.10.3",
+    "@playwright/test": "^1.56.1",
+    "axe-core": "^4.10.2",
     "concurrently": "^8.2.2",
     "cypress": "^14.2.0",
     "cypress-axe": "^1.6.0",
