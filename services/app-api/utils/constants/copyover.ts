@@ -40,11 +40,6 @@ export const mcparFieldsToCopy = {
     "state_bssEntityServiceAccessibility",
     "state_bssEntityLtssProgramDataIssueAssistance",
     "state_bssEntityPerformanceEvaluationMethods",
-    "plan_medicalLossRatioPercentageAggregationLevel",
-    "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-    "plan_populationSpecificMedicalLossRatioDescription",
-    "plan_medicalLossRatioReportingPeriodStartDate",
-    "plan_medicalLossRatioReportingPeriodEndDate",
     "program_encounterDataSubmissionTimelinessStandardDefinition",
   ],
   accessMeasures: [
