@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ModalDrawerReportPage } from "components";
@@ -19,7 +19,7 @@ import {
 import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",
@@ -94,7 +94,9 @@ describe("<ModalDrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(addEntityButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const editButton = screen.getByText(editEntityButtonText);
       await act(async () => {
         await userEvent.click(editButton);
@@ -128,7 +130,9 @@ describe("<ModalDrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(enterDetailsButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       expect(screen.getByText("Add Mock drawer title")).toBeVisible();
     });
 
@@ -137,7 +141,9 @@ describe("<ModalDrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
 
       const textField = await screen.getByLabelText("mock drawer text field");
       const saveAndCloseButton = screen.getByText(saveAndCloseText);

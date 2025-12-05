@@ -3,8 +3,8 @@ import { runCommand } from "../lib/runner.js";
 import { execSync } from "child_process";
 import { region } from "../lib/consts.js";
 import { runFrontendLocally } from "../lib/utils.js";
-import downloadClamAvLayer from "../lib/clam.js";
 import { seedData } from "../lib/seedData.js";
+import { tryImport } from "../lib/optional-imports.js";
 
 const isColimaRunning = () => {
   try {
@@ -47,6 +47,7 @@ export const local = {
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
 
+    await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(
       "CDK local bootstrap",
       [
@@ -84,7 +85,13 @@ export const local = {
       "."
     );
 
-    await downloadClamAvLayer();
+    const clamModule = await tryImport<{ default: () => Promise<void> }>(
+      "../lib/clam.js"
+    );
+    if (clamModule) {
+      const downloadClamAvLayer = clamModule.default;
+      await downloadClamAvLayer();
+    }
 
     await runCommand(
       "CDK local deploy",

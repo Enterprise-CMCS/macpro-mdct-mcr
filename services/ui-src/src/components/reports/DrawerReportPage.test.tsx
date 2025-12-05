@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, DrawerReportPage } from "components";
@@ -36,7 +36,7 @@ import {
 import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",
@@ -153,7 +153,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
     });
 
     test("Selected 'Not reporting data' should disable the 'Enter' button for Prior Authorization", async () => {
@@ -274,7 +276,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
       await act(async () => {
@@ -297,7 +301,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
       const saveAndCloseButton = screen.queryByText(saveAndCloseText);
@@ -313,7 +319,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const saveAndCloseButton = screen.getByText(saveAndCloseText);
       await act(async () => {
         await userEvent.click(saveAndCloseButton);
@@ -329,7 +337,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const textField = await screen.getByLabelText("mock drawer text field");
       expect(textField).toBeVisible();
       const saveAndCloseButton = screen.getByText(saveAndCloseText);
@@ -461,7 +471,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(enterDefaultMethod);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const textField = await screen.getByLabelText("mock label 1 - ILOS");
       expect(textField).toBeVisible();
     });
@@ -485,7 +497,9 @@ describe("<DrawerReportPage />", () => {
         await act(async () => {
           await userEvent.click(enterDefaultMethod);
         });
-        expect(screen.getByRole("dialog")).toBeVisible();
+        await waitFor(() => {
+          expect(screen.getByRole("dialog")).toBeVisible();
+        });
         const textField = await screen.getByLabelText("mock label 1");
         expect(textField).toBeVisible();
       });
@@ -512,7 +526,9 @@ describe("<DrawerReportPage />", () => {
         await act(async () => {
           await userEvent.click(addCustomMethod);
         });
-        expect(screen.getByRole("dialog")).toBeVisible();
+        await waitFor(() => {
+          expect(screen.getByRole("dialog")).toBeVisible();
+        });
         // fill out custom drawer
         const customTitleField = await screen.getByLabelText("Analysis method");
         expect(customTitleField).toBeVisible();
@@ -723,7 +739,9 @@ describe("<DrawerReportPage />", () => {
       await act(async () => {
         await userEvent.click(launchDrawerButton);
       });
-      expect(screen.getByRole("dialog")).toBeVisible();
+      await waitFor(() => {
+        expect(screen.getByRole("dialog")).toBeVisible();
+      });
       const noButton = screen.getByLabelText("mock label 2 No");
       const saveMethod = screen.getByText("Save & close");
       await act(async () => {

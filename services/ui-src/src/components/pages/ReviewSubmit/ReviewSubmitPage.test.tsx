@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext, ReviewSubmitPage } from "components";
@@ -210,7 +210,9 @@ describe("<ReviewSubmitPage />", () => {
           await userEvent.click(submitCheckButton);
         });
         const modalTitle = screen.getByText(modal.structure.heading)!;
-        expect(modalTitle).toBeVisible();
+        await waitFor(() => {
+          expect(modalTitle).toBeVisible();
+        });
       });
 
       test("McparReviewSubmitPage updates report status on submit confirmation", async () => {

@@ -47,13 +47,21 @@ jobs:
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
       - name: Run Cypress Tests
-        if: ${{ github.ref_name != 'val' && github.ref_name != 'production' }}
+        if: ${{ github.ref_name != 'production' }}
         uses: cypress-io/github-action@v6
         with:
           working-directory: tests
           browser: chrome
-          config: baseUrl=${{ steps.endpoint.outputs.application_endpoint }}
+          config: baseUrl=${{ needs.deploy.outputs.application_endpoint }}
         env:
           CYPRESS_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
           CYPRESS_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
@@ -61,28 +69,28 @@ jobs:
           CYPRESS_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
           RUN_PA11Y: true
       - name: Upload screenshots
-        if: ${{ github.ref_name != 'val' && github.ref_name != 'production' && failure() }}
+        if: ${{ github.ref_name != 'production' && failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: cypress-test-results-${{ github.run_number }}
           path: tests/cypress/screenshots/
           retention-days: 30
-      # - name: Run Playwright tests
-      #   if: ${{ github.ref_name != 'val' && github.ref_name != 'production' }}
-      #   run: |
-      #     yarn playwright install
-      #     yarn playwright test --reporter=github,html
-      #   working-directory: tests
-      #   env:
-      #     BASE_URL: ${{ steps.endpoint.outputs.application_endpoint}}
-      #     TEST_STATE_USER_EMAIL: ${{ secrets.TEST_STATE_USER_EMAIL }}
-      #     TEST_STATE_USER_PASSWORD: ${{ secrets.TEST_STATE_USER_PASSWORD }}
-      #     TEST_ADMIN_USER_EMAIL: ${{ secrets.TEST_ADMIN_USER_EMAIL }}
-      #     TEST_ADMIN_USER_PASSWORD: ${{ secrets.TEST_ADMIN_USER_PASSWORD }}
-      # - name: Upload playwright results
-      #   uses: actions/upload-artifact@v4
-      #   if: ${{ github.ref_name != 'val' && github.ref_name != 'production' && failure() }}
-      #   with:
-      #     name: playwright-html-report-${{ github.run_number }}
-      #     path: tests/playwright-report
-      #     retention-days: 30
+      - name: Run Playwright tests
+        if: ${{ github.ref_name != 'production' }}
+        run: |
+          yarn playwright install --with-deps chromium
+          yarn playwright test --grep-invert "@flaky" --reporter=github,html
+        working-directory: tests
+        env:
+          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
+          TEST_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
+          TEST_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
+          TEST_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
+          TEST_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+      - name: Upload playwright results
+        uses: actions/upload-artifact@v4
+        if: ${{ github.ref_name != 'production' && failure() }}
+        with:
+          name: playwright-html-report-${{ github.run_number }}
+          path: tests/playwright-report
+          retention-days: 30

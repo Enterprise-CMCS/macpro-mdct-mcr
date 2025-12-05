@@ -23,7 +23,7 @@ const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
 
 const mockUseNavigate = jest.fn();
 
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
 }));
 

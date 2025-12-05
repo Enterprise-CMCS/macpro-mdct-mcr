@@ -18,8 +18,8 @@ permissions:
 jobs:
   notify_integrations_channel:
     name: Notify integrations channel
-    environment: dev
     if: github.event.pull_request.user.type != 'Bot' && !github.event.pull_request.draft
+    environment: dev
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -29,12 +29,6 @@ jobs:
         run: |
           BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.event.pull_request.head.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-
-      - name: Set branch-specific variable names
-        run: ./.github/buildVars.sh set_names
-
-      - name: Set branch-specific variable values
-        run: ./.github/buildVars.sh set_values
 
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4

@@ -8,9 +8,9 @@
   },
   "private": true,
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "^3.744.0",
-    "@aws-sdk/client-lambda": "3.744.0",
-    "@aws-sdk/client-sts": "^3.744.0",
+    "@aws-sdk/client-cloudformation": "^3.921.0",
+    "@aws-sdk/client-lambda": "3.921.0",
+    "@aws-sdk/client-sts": "^3.921.0",
     "@types/node": "^24.3.1",
     "@types/yargs": "^17.0.33",
     "dotenv": "^16.0.3",
