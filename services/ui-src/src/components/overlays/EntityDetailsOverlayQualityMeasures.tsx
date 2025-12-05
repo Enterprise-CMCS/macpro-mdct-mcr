@@ -35,6 +35,16 @@ import {
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
 
+const createRateField = (id: string, name: string) => ({
+  id: `measure_rate_results_${id}`,
+  type: "number",
+  validation: "numberOptional",
+  props: {
+    label: `${name} results`,
+    hint: "If you are reporting results for this performance rate for this reporting period, enter a number. Enter “NR” if you are suppressing data for data privacy purposes. Enter “N/A” for all other reasons.",
+  },
+});
+
 export const EntityDetailsOverlayQualityMeasures = ({
   closeEntityDetailsOverlay,
   report,
@@ -43,6 +53,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedPlan, setSelectedPlan] = useState<EntityShape>();
+  const [drawerForm, setDrawerForm] = useState(route?.drawerForm);
   const { updateReport } = useContext(ReportContext);
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -52,7 +63,19 @@ export const EntityDetailsOverlayQualityMeasures = ({
 
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
+
+  const addRatesToForm = () => {
+    const copiedDrawerForm = structuredClone(drawerForm);
+    const rates = selectedMeasure.measure_rates;
+    for (const rate of rates) {
+      copiedDrawerForm?.fields.push(createRateField(rate.id, rate.name));
+    }
+    return copiedDrawerForm;
+  };
+
   const openRowDrawer = (plan: EntityShape) => {
+    const drawerFormWithRates = addRatesToForm();
+    setDrawerForm(drawerFormWithRates);
     setSelectedPlan(plan);
     onOpen();
   };
@@ -159,7 +182,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
               measureName: selectedMeasure.measure_name,
             }),
           }}
-          form={route.drawerForm!}
+          form={drawerForm!}
           onSubmit={onSubmit}
           submitting={submitting}
           drawerDisclosure={{
