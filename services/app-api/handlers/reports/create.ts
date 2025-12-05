@@ -66,13 +66,15 @@ export const createReport = handler(async (event, _context) => {
       "Yes"
     );
   const isPccm = unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
+  const newQualityMeasuresSectionEnabled =
+    unvalidatedMetadata?.newQualityMeasuresSectionEnabled === true;
 
   // eslint-disable-next-line no-useless-catch
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
-      { hasNaaarSubmission, isPccm }
+      { hasNaaarSubmission, isPccm, newQualityMeasuresSectionEnabled }
     ));
   } catch (e) {
     throw e;

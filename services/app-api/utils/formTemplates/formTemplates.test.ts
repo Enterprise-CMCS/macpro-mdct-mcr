@@ -3,11 +3,12 @@ import {
   filterByFlag,
   flattenReportRoutesArray,
   formTemplateForReportType,
-  generateModifiedTemplate,
+  filterFormTemplateRoutes,
   generatePCCMTemplate,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
   isFieldElement,
+  replaceQualityMeasuresRoute,
 } from "./formTemplates";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
@@ -51,13 +52,26 @@ const currentPCCMFormHash = createHash("md5")
   .update(JSON.stringify(pccmTemplate))
   .digest("hex");
 
-const modifiedTemplate = generateModifiedTemplate(
+const modifiedTemplate = filterFormTemplateRoutes(
   mcpar as ReportJson,
   ["Access Measures"],
   ["accessMeasures"]
 );
+
 const currentModifiedFormHash = createHash("md5")
   .update(JSON.stringify(modifiedTemplate))
+  .digest("hex");
+
+const filteredTemplate = filterFormTemplateRoutes(
+  mcpar as ReportJson,
+  ["VII: Quality Measures"],
+  []
+);
+const templateWithUpdatedQualityMeasures =
+  replaceQualityMeasuresRoute(filteredTemplate);
+
+const currentQualityMeasuresFormHash = createHash("md5")
+  .update(JSON.stringify(templateWithUpdatedQualityMeasures))
   .digest("hex");
 
 describe("Test getOrCreateFormTemplate MCPAR", () => {
@@ -255,6 +269,40 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(
       currentModifiedFormHash
+    );
+  });
+
+  test("should create a new form template with excluded routes and entities", async () => {
+    dynamoClientMock
+      .on(QueryCommand)
+      // mocked once for search by hash
+      .resolvesOnce({
+        Items: [],
+      })
+      // mocked again for search for latest report
+      .resolvesOnce({
+        Items: [],
+      });
+    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const result = await getOrCreateFormTemplate(
+      "local-mcpar-reports",
+      ReportType.MCPAR,
+      { newQualityMeasuresSectionEnabled: true }
+    );
+
+    expect(dynamoPutSpy).toHaveBeenCalled();
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(result.formTemplate).toEqual({
+      ...templateWithUpdatedQualityMeasures,
+      validationJson: getValidationFromFormTemplate(
+        templateWithUpdatedQualityMeasures
+      ),
+    });
+    expect(result.formTemplateVersion.versionNumber).toEqual(1);
+    expect(result.formTemplateVersion.md5Hash).toEqual(
+      currentQualityMeasuresFormHash
     );
   });
 });
