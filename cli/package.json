@@ -2,19 +2,21 @@
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "cli",
   "version": "1.0.0",
+  "license": "CC0-1.0",
   "type": "module",
   "scripts": {
     "build:cli": "tsc"
   },
-  "private": true,
   "devDependencies": {
-    "@aws-sdk/client-cloudformation": "^3.921.0",
-    "@aws-sdk/client-lambda": "3.921.0",
-    "@aws-sdk/client-sts": "^3.921.0",
-    "@types/node": "^24.3.1",
-    "@types/yargs": "^17.0.33",
-    "dotenv": "^16.0.3",
-    "typescript": "^4.9.5",
-    "yargs": "^17.7.1"
+    "@types/node": "^24.10.1",
+    "@types/yargs": "^17.0.35",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudformation": "^3.940.0",
+    "@aws-sdk/client-lambda": "^3.940.0",
+    "@aws-sdk/client-sts": "^3.940.0",
+    "dotenv": "^17.2.3",
+    "yargs": "^18.0.0"
   }
 }
