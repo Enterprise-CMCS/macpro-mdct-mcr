@@ -1,0 +1,37 @@
+name: Update Deployment PR
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-pr:
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'production release') ||
+      contains(github.event.pull_request.labels.*.name, 'val release') ||
+      contains(github.event.pull_request.labels.*.name, 'keep updated')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Update a PR
+        run: |
+          node .github/update-pr.ts
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          APP_NAME_UPPER: ${{ vars.APP_NAME_UPPER }}
