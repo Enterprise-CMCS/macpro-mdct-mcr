@@ -62,14 +62,13 @@ const currentModifiedFormHash = createHash("md5")
   .update(JSON.stringify(modifiedTemplate))
   .digest("hex");
 
-let templateWithUpdatedQualityMeasures = filterFormTemplateRoutes(
+const filteredTemplate = filterFormTemplateRoutes(
   mcpar as ReportJson,
   ["VII: Quality Measures"],
   []
 );
-templateWithUpdatedQualityMeasures = replaceQualityMeasuresRoute(
-  templateWithUpdatedQualityMeasures
-);
+const templateWithUpdatedQualityMeasures =
+  replaceQualityMeasuresRoute(filteredTemplate);
 
 const currentQualityMeasuresFormHash = createHash("md5")
   .update(JSON.stringify(templateWithUpdatedQualityMeasures))
@@ -97,7 +96,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -127,7 +126,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -158,7 +157,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -197,7 +196,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -222,7 +221,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -258,7 +257,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { hasNaaarSubmission: true, newQualityMeasuresSectionEnabled: false }
+      { hasNaaarSubmission: true }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -301,8 +300,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
         templateWithUpdatedQualityMeasures
       ),
     });
-    expect(result.formTemplateVersion?.versionNumber).toEqual(1);
-    expect(result.formTemplateVersion?.md5Hash).toEqual(
+    expect(result.formTemplateVersion.versionNumber).toEqual(1);
+    expect(result.formTemplateVersion.md5Hash).toEqual(
       currentQualityMeasuresFormHash
     );
   });

@@ -12,6 +12,7 @@ import { AnyObject, EntityType } from "types";
 export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
+  newQualityMeasuresSectionEnabled,
   printVersion,
 }: Props) => {
   const [isPDF, setIsPDF] = useState(false);
@@ -44,7 +45,16 @@ export const EntityCardTopSection = ({
         />
       );
     case EntityType.QUALITY_MEASURES:
-      return <QualityMeasuresSection topSection />;
+      return (
+        <QualityMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={!!printVersion}
+          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
+          sx={sx}
+          isPDF={isPDF}
+          topSection
+        />
+      );
     case EntityType.STANDARDS:
       return (
         <StandardsSection
@@ -69,6 +79,7 @@ export const EntityCardTopSection = ({
 interface Props {
   entityType: EntityType;
   formattedEntityData: AnyObject;
+  newQualityMeasuresSectionEnabled?: boolean;
   printVersion?: boolean;
 }
 
