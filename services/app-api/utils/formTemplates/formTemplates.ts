@@ -23,7 +23,7 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import newQualityMeasures from "../constants/newQualityMeasures.json";
+import { qualityMeasures2026Route } from "../../forms/routes/mcpar/plan-level-indicators/quality-measures-2026";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -408,7 +408,7 @@ export const replaceQualityMeasuresRoute = (
       children.splice(
         targetIndex + 1,
         0,
-        newQualityMeasures as unknown as ReportRoute
+        qualityMeasures2026Route as ReportRoute
       );
     }
   }
