@@ -14,7 +14,6 @@ import {
 // utils
 import {
   compareText,
-  eligibilityGroup,
   getReportVerbiage,
   maskResponseData,
   otherSpecify,
@@ -363,20 +362,6 @@ export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
       : labelArray?.join(" "),
     hint: formFieldProps?.hint,
     indicator: formFieldProps?.indicator,
-  };
-};
-
-export const getEntityDetailsMLR = (entity: EntityShape) => {
-  const { report_programName, report_planName } = entity;
-
-  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
-  const mlrEligibilityGroup = eligibilityGroup(entity);
-
-  return {
-    report_planName,
-    report_programName,
-    reportingPeriod,
-    mlrEligibilityGroup,
   };
 };
 

@@ -9,6 +9,7 @@
     "test": "tests"
   },
   "scripts": {
+    "build:json": "cd services/app-api && yarn run build:json",
     "db:seed": "cd services/app-api && yarn run db:seed",
     "test": "cd tests && npm test && cd -",
     "test:ci": "cd tests && yarn run test:ci",

@@ -15,7 +15,6 @@ import {
   mockMcparReportContext,
   mockSanctionsEntity,
   mockStateUserStore,
-  mockQualityMeasuresEntity,
   mockAdminUserStore,
   mockMcparReportStore,
   mockNaaarReportWithAnalysisMethodsContext,
@@ -83,6 +82,7 @@ const MockForm = (props: any) => {
             name={EntityType.PLANS}
             label="test-label"
             hydrate={props.hydrationValue}
+            autosave={props?.autosave}
           />
         </form>
       </FormProvider>
@@ -90,8 +90,16 @@ const MockForm = (props: any) => {
   );
 };
 
-const dynamicFieldComponent = (hydrationValue?: any, customContext?: any) => (
-  <MockForm hydrationValue={hydrationValue} customContext={customContext} />
+const dynamicFieldComponent = (
+  hydrationValue?: any,
+  customContext?: any,
+  autosave = true
+) => (
+  <MockForm
+    hydrationValue={hydrationValue}
+    customContext={customContext}
+    autosave={autosave}
+  />
 );
 
 const MockIlosForm = (props: any) => {
@@ -305,18 +313,6 @@ describe("<DynamicField />", () => {
               },
             ],
             standards: [],
-            qualityMeasures: [
-              {
-                ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                  "mock-response-2",
-              },
-              {
-                ...mockQualityMeasuresEntity,
-                "qualityMeasure_plan_measureResults_mock-plan-id-2":
-                  "mock-response-2",
-              },
-            ],
           },
         }
       );
@@ -363,9 +359,6 @@ describe("<DynamicField />", () => {
                 ],
                 plan_ilosUtilizationByPlan: [],
               },
-            ],
-            qualityMeasures: [
-              ...mockMcparReportStore.report!.fieldData.qualityMeasures,
             ],
             sanctions: [...mockMcparReportStore.report!.fieldData.sanctions],
             standards: [],
@@ -670,6 +663,28 @@ describe("<DynamicField />", () => {
           },
         }
       );
+    });
+
+    test("Does not autosave but still performs display operations when autosave disabled", async () => {
+      render(dynamicFieldComponent(mockHydrationPlans, undefined, false));
+      const inputBoxLabel = screen.getAllByText("test-label");
+      expect(inputBoxLabel).toHaveLength(2);
+      // click delete
+      const deleteButton = screen.getByRole("button", {
+        name: "Delete mock-plan-1",
+      });
+      await act(async () => {
+        await userEvent.click(deleteButton);
+      });
+      const confirmDeleteButton = screen.getByRole("button", {
+        name: "Yes, delete plan",
+      });
+      await act(async () => {
+        await userEvent.click(confirmDeleteButton);
+      });
+      expect(mockUpdateReport).toHaveBeenCalledTimes(0);
+      const inputBoxLabelAfter = screen.getAllByText("test-label");
+      expect(inputBoxLabelAfter).toHaveLength(1);
     });
   });
 

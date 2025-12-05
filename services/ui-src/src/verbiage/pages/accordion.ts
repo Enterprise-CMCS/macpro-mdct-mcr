@@ -1,4 +1,102 @@
 export default {
+  MCPAR: {
+    formIntro: {
+      buttonLabel: "Instructions",
+      intro: [
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content: "<b>Background</b>",
+            },
+          ],
+        },
+        {
+          type: "p",
+          content:
+            "This report collects information about your program and an assessment of how it operates. This should include how an MCO, PIHP, or PAHP performs on quality measures, including consumer report cards and surveys. 42 CFR 438.66(e)(2)(vii).",
+        },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content: "<b>Instructions</b>",
+            },
+          ],
+        },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content:
+                "Starting December 2026, CMS will require states to report this data per calendar year. Moving all states, programs, and plans onto the same reporting timeframe will help standardize data, make it easier to compare, and align it with other CMS systems. To determine which calendar year to use for your report, reference the: ",
+            },
+            {
+              type: "externalLink",
+              content:
+                "MCPAR Technical Guidance: Quality Measures (TG), found here on Medicaid.gov.",
+              props: {
+                href: "https://www.medicaid.gob",
+                target: "_blank",
+                "aria-label":
+                  "MCPAR Quality Measures Technical Guidance (link opens in new tab)",
+              },
+            },
+          ],
+        },
+        {
+          type: "p",
+          children: [
+            {
+              type: "html",
+              content: "<b>Reporting scope</b>",
+            },
+          ],
+        },
+        {
+          type: "p",
+          content:
+            "Include the measures that the state uses to evaluate plan performance. This may include, but is not limited to:",
+        },
+        {
+          type: "ol",
+          children: [
+            {
+              type: "li",
+              content: "Plan measures from External Quality Review activities",
+            },
+            {
+              type: "li",
+              content: "Contract-required quality of care measures",
+            },
+            {
+              type: "li",
+              content:
+                "Plan measures used for pay-for-performance and evaluation (e.g., state directed payment, ILOS, plan incentives and withholds)",
+            },
+            {
+              type: "li",
+              content: "Measures that states calculate on behalf of plans",
+            },
+          ],
+        },
+        {
+          type: "p",
+          content:
+            "Where a measure steward asks only for the total rate, report the total rate. If a measure steward specifies multiple rates for the same measure (e.g., rates for different age groups, etc.) follow the decision tree located in Figure X in the technical guidance to determine which rates to report. The state should not report all possible rates for the measure in the MCPAR.",
+        },
+        {
+          type: "p",
+          content:
+            "Always keep children separate from adults unless the measure specifies otherwise. Refer to the technical guidance for more information and examples.",
+        },
+      ],
+      text: "",
+    },
+  },
   MLR: {
     adminDashboard: {
       buttonLabel: "Instructions",

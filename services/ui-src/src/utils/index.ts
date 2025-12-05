@@ -11,6 +11,7 @@ export * from "./autosave/autosave";
 // forms
 export * from "./forms/forms";
 export * from "./forms/dynamicItemFields";
+export * from "./forms/formModifications";
 export * from "./forms/ilosFields";
 export * from "./forms/naaarPlanCompliance";
 export * from "./forms/priorAuthorization";
@@ -22,6 +23,7 @@ export * from "./reports/routing";
 // statusing
 export * from "./statusing/getRouteStatus";
 // tables
+export * from "./tables/entityRows";
 export * from "./tables/getEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
@@ -40,7 +42,6 @@ export * from "./other/parsing";
 export * from "./other/scrollToTop";
 export * from "./other/time";
 export * from "./other/useBreakpoint";
-export * from "./other/rendering";
 export * from "./other/parsing";
 export * from "./other/typing";
 // state management (zustand)

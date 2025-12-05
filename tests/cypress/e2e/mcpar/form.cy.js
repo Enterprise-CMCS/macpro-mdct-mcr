@@ -69,6 +69,8 @@ function fillOutMCPAR() {
   cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
+  cy.wait(2000);
+
   //Find our new program and open it
   cy.get("table").within(() => {
     cy.wait(2000);

@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "handler.js",
   "scripts": {
+    "build:json": "ts-node utils/routes/build-json",
     "coverage": "jest --coverage",
     "db:seed": "ts-node db/seed",
     "test": "jest",
