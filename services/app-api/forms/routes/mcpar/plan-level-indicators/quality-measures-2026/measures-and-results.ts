@@ -384,7 +384,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
       {
         id: "measure_dataCollectionMethod",
         type: ReportFormFieldType.RADIO,
-        validation: ValidationType.RADIO,
+        validation: ValidationType.RADIO_OPTIONAL,
         props: {
           label: "D2.VII.8 Data collection method",
           hint: "What data collection method did the plan use for this measure? (see technical guide for definitions).",
@@ -417,7 +417,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                   id: "measure_dataCollectionMethod-otherText",
                   type: ReportFormFieldType.TEXT,
                   validation: {
-                    type: ValidationType.TEXT,
+                    type: ValidationType.TEXT_OPTIONAL,
                     nested: true,
                     parentFieldName: "measure_dataCollectionMethod",
                     parentOptionId: "D3x0tz0657GlrkneNtssdn",
