@@ -75,6 +75,22 @@ jobs:
           name: cypress-test-results-${{ github.run_number }}
           path: tests/cypress/screenshots/
           retention-days: 30
+
+  playwright-tests:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: Install dependencies
+        run: yarn install
+        working-directory: tests
       - name: Run Playwright tests
         if: ${{ github.ref_name != 'production' }}
         run: |
@@ -83,10 +99,10 @@ jobs:
         working-directory: tests
         env:
           BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
-          TEST_STATE_USER_EMAIL: ${{ secrets.CYPRESS_STATE_USER_EMAIL }}
-          TEST_STATE_USER_PASSWORD: ${{ secrets.CYPRESS_STATE_USER_PASSWORD }}
-          TEST_ADMIN_USER_EMAIL: ${{ secrets.CYPRESS_ADMIN_USER_EMAIL }}
-          TEST_ADMIN_USER_PASSWORD: ${{ secrets.CYPRESS_ADMIN_USER_PASSWORD }}
+          TEST_STATE_USER_EMAIL: ${{ secrets.SEED_STATE_USER_EMAIL }}
+          TEST_STATE_USER_PASSWORD: ${{ secrets.SEED_STATE_USER_PASSWORD }}
+          TEST_ADMIN_USER_EMAIL: ${{ secrets.SEED_ADMIN_USER_EMAIL }}
+          TEST_ADMIN_USER_PASSWORD: ${{ secrets.SEED_ADMIN_USER_PASSWORD }}
       - name: Upload playwright results
         uses: actions/upload-artifact@v4
         if: ${{ github.ref_name != 'production' && failure() }}

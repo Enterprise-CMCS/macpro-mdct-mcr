@@ -208,6 +208,7 @@ describe("calculateIsEntityCompleted()", () => {
     form: mockDrawerForm,
     isCustomEntity: false,
     reportingOnIlos: false,
+    isMeasuresAndResultsPage: false,
   };
 
   test("returns true for complete entity", () => {
@@ -259,6 +260,47 @@ describe("calculateIsEntityCompleted()", () => {
       ...baseCalculateIsEntityCompletedProps,
       entity: incompleteEntity,
       reportingOnIlos: true,
+    };
+    const input = calculateIsEntityCompleted(props);
+    expect(input).toBe(false);
+  });
+
+  test("returns true for measure and results when complete", () => {
+    const props = {
+      ...baseCalculateIsEntityCompletedProps,
+      isMeasuresAndResultsPage: true,
+    };
+    const input = calculateIsEntityCompleted(props);
+    expect(input).toBe(true);
+  });
+
+  test("returns true for measure and results when not reporting", () => {
+    const props = {
+      ...baseCalculateIsEntityCompletedProps,
+      isMeasuresAndResultsPage: true,
+      entity: {
+        id: "test-measure-plan-1",
+        measure_isReporting: [
+          {
+            label: "Not reporting",
+          },
+        ],
+        measure_isNotReportingReason: [
+          {
+            label: "Does not apply",
+          },
+        ],
+      },
+    };
+    const input = calculateIsEntityCompleted(props);
+    expect(input).toBe(true);
+  });
+
+  test("returns false for measure and results when incomplete", () => {
+    const props = {
+      ...baseCalculateIsEntityCompletedProps,
+      entity: incompleteEntity,
+      isMeasuresAndResultsPage: true,
     };
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(false);

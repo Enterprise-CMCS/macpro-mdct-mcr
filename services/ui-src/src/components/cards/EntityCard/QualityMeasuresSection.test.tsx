@@ -1,9 +1,15 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import { QualityMeasuresSection } from "./QualityMeasuresSection";
 import { testA11yAct } from "utils/testing/commonTests";
+import { mockNotAnswered } from "utils/testing/mockEntities";
 
 const defaultProps = {
+  formattedEntityData: {
+    perPlanResponses: [],
+  },
+  printVersion: false,
+  notAnswered: mockNotAnswered,
+  sx: {},
   topSection: true,
   bottomSection: true,
 };

@@ -390,11 +390,28 @@ export const replaceQualityMeasuresRoute = (
   originalReportTemplate: ReportJson
 ) => {
   const reportTemplate = structuredClone(originalReportTemplate);
-  reportTemplate.routes[3].children?.splice(
-    3,
-    0,
-    qualityMeasures2026Route as unknown as ReportRoute
+
+  const parentRoute = reportTemplate.routes.find(
+    (route) => route.path === "/mcpar/plan-level-indicators"
   );
+
+  if (parentRoute && parentRoute.children) {
+    const children = parentRoute.children;
+    const targetPath =
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances";
+
+    const targetIndex = children.findIndex(
+      (route) => route.path === targetPath
+    );
+
+    if (targetIndex > -1) {
+      children.splice(
+        targetIndex + 1,
+        0,
+        qualityMeasures2026Route as ReportRoute
+      );
+    }
+  }
   return reportTemplate;
 };
 

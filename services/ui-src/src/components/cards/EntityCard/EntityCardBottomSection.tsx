@@ -10,6 +10,8 @@ import { AnyObject, EntityType } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
+  verbiage,
+  newQualityMeasuresSectionEnabled,
   printVersion,
 }: Props) => {
   const notAnswered = (
@@ -40,7 +42,17 @@ export const EntityCardBottomSection = ({
         />
       );
     case EntityType.QUALITY_MEASURES:
-      return <QualityMeasuresSection bottomSection />;
+      return (
+        <QualityMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={!!printVersion}
+          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
+          notAnswered={notAnswered}
+          verbiage={verbiage}
+          sx={sx}
+          bottomSection
+        />
+      );
     case EntityType.STANDARDS:
       return (
         <StandardsSection
@@ -57,6 +69,7 @@ export const EntityCardBottomSection = ({
 interface Props {
   entityType: EntityType;
   formattedEntityData: AnyObject;
+  newQualityMeasuresSectionEnabled?: boolean;
   printVersion?: boolean;
   verbiage?: {
     entityMissingResponseMessage?: string;

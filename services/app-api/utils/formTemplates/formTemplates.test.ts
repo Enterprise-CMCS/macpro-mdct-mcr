@@ -62,14 +62,13 @@ const currentModifiedFormHash = createHash("md5")
   .update(JSON.stringify(modifiedTemplate))
   .digest("hex");
 
-let templateWithUpdatedQualityMeasures = filterFormTemplateRoutes(
+const filteredTemplate = filterFormTemplateRoutes(
   mcpar as ReportJson,
   ["VII: Quality Measures"],
   []
 );
-templateWithUpdatedQualityMeasures = replaceQualityMeasuresRoute(
-  templateWithUpdatedQualityMeasures
-);
+const templateWithUpdatedQualityMeasures =
+  replaceQualityMeasuresRoute(filteredTemplate);
 
 const currentQualityMeasuresFormHash = createHash("md5")
   .update(JSON.stringify(templateWithUpdatedQualityMeasures))
@@ -301,8 +300,8 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
         templateWithUpdatedQualityMeasures
       ),
     });
-    expect(result.formTemplateVersion?.versionNumber).toEqual(1);
-    expect(result.formTemplateVersion?.md5Hash).toEqual(
+    expect(result.formTemplateVersion.versionNumber).toEqual(1);
+    expect(result.formTemplateVersion.md5Hash).toEqual(
       currentQualityMeasuresFormHash
     );
   });
