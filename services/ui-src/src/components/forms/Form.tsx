@@ -52,9 +52,10 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   const { report } = useStore();
 
   let location = useLocation();
+  const readUser = userIsAdmin || userIsReadOnly;
+  const submittedReport = report?.status === ReportStatus.SUBMITTED;
   const fieldInputDisabled =
-    ((userIsAdmin || userIsReadOnly) && !formJson.editableByAdmins) ||
-    report?.status === ReportStatus.SUBMITTED;
+    !formJson.editableByAdmins && (readUser || submittedReport);
 
   // create validation schema
   const formValidationJson = compileValidationJsonFromFields(
