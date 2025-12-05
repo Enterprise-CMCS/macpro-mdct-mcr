@@ -229,6 +229,12 @@ export const mockEntityStore: McrEntityState = {
       },
     ],
     measure_identifierCmit: "1234",
+    measure_rates: [
+      {
+        id: "mock-rate-1",
+        name: "mock rate 1",
+      },
+    ],
   },
   // ACTIONS
   setSelectedEntity: () => {},

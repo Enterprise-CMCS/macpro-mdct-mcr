@@ -78,7 +78,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
     expect(saveAndReturn).toBeVisible();
   });
 
-  test("should have drawer form and be able to submit", async () => {
+  test("should have drawer form with rates and be able to submit", async () => {
     const mockDrawerFormRoute = {
       ...mockModalOverlayReportPageJson,
       drawerForm: mockDrawerForm,
@@ -99,11 +99,18 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
 
     // fill out drawer form
     expect(screen.getByRole("form")).toBeVisible();
-    const drawerField = screen.getByRole("textbox");
-    expect(drawerField).toBeVisible();
-    await act(async () => {
-      await userEvent.type(drawerField, "test");
+    const mockDrawerField = screen.getByRole("textbox", {
+      name: "mock drawer text field",
     });
+    expect(mockDrawerField).toBeVisible();
+    await act(async () => {
+      await userEvent.type(mockDrawerField, "test");
+    });
+
+    // verify rate field gets appended
+    expect(
+      screen.getByRole("textbox", { name: "mock rate 1 results" })
+    ).toBeVisible();
 
     // close drawer
     const closeDrawerButton = screen.getByRole("button", {
