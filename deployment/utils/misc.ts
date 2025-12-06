@@ -17,7 +17,7 @@ export function isDefined<T>(x: T | undefined): x is T {
 export async function tryImport<T>(modulePath: string): Promise<T | undefined> {
   try {
     return await import(modulePath);
-  } catch (error) {
+  } catch {
     return undefined;
   }
 }
