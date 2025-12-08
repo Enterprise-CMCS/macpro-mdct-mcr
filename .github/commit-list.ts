@@ -18,15 +18,23 @@ function extractPrNumber(line: string) {
 
 // Extract CMDCT tickets
 function extractTickets(text: string) {
-  const lower = text.toLowerCase();
-  const tickets = new Set();
+  // Extract only between these headings
+  const sectionMatch = text.match(
+    /### Related ticket\(s\)([\s\S]*?)### How to test/i
+  );
+  if (!sectionMatch) return [];
+
+  const section = sectionMatch[1];
+
+  const tickets = new Set<string>();
   // Match with or without -
   const regex = /cmdct[ -]?(\d+)/gi;
   let match;
 
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(section)) !== null) {
     tickets.add(`CMDCT-${match[1]}`);
   }
+
   return [...tickets];
 }
 

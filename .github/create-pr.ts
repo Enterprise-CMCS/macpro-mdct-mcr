@@ -1,7 +1,7 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Octokit } from "@octokit/rest";
 import { createActionAuth } from "@octokit/auth-action";
-import { createPrBody } from "./commit-list";
+import { createPrBody } from "./commit-list.ts";
 
 const [owner, repo] = process.env.GITHUB_REPO!.split("/");
 const targetBranch = process.env.TARGET_BRANCH!;
