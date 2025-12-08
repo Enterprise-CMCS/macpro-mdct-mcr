@@ -70,7 +70,7 @@
     "jest-launchdarkly-mock": "^2.0.3",
     "pa11y": "^9.0.0",
     "pa11y-runner-htmlcs": "^2.0.1",
-    "typescript": "^4.9",
+    "typescript": "^5.9.3",
     "vite": "^7.1.11",
     "vite-tsconfig-paths": "^5.1.4"
   },
@@ -109,7 +109,7 @@
       "\\.[jt]sx?$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!(@hookform/resolvers))"
+      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
     ],
     "verbose": true,
     "moduleNameMapper": {
