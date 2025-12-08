@@ -26,6 +26,7 @@ import {
 } from "types";
 // utils
 import {
+  addRatesToForm,
   getMeasureValues,
   getReportVerbiage,
   parseCustomHtml,
@@ -34,16 +35,6 @@ import {
 } from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
-
-const createRateField = (id: string, name: string) => ({
-  id: `measure_rate_results_${id}`,
-  type: "number",
-  validation: "numberOptional",
-  props: {
-    label: `${name} results`,
-    hint: "If you are reporting results for this performance rate for this reporting period, enter a number. Enter “NR” if you are suppressing data for data privacy purposes. Enter “N/A” for all other reasons.",
-  },
-});
 
 export const EntityDetailsOverlayQualityMeasures = ({
   closeEntityDetailsOverlay,
@@ -64,17 +55,12 @@ export const EntityDetailsOverlayQualityMeasures = ({
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
 
-  const addRatesToForm = () => {
-    const copiedDrawerForm = structuredClone(route?.drawerForm);
-    const rates = selectedMeasure.measure_rates;
-    for (const rate of rates) {
-      copiedDrawerForm?.fields.push(createRateField(rate.id, rate.name));
-    }
-    return copiedDrawerForm;
-  };
-
   const openRowDrawer = (plan: EntityShape) => {
-    const drawerFormWithRates = addRatesToForm();
+    if (!route?.drawerForm) return;
+    const drawerFormWithRates = addRatesToForm(
+      route.drawerForm,
+      selectedMeasure
+    );
     setDrawerForm(drawerFormWithRates);
     setSelectedPlan(plan);
     onOpen();
