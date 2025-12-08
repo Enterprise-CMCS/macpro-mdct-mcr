@@ -65,7 +65,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
   const openDeleteEntityModal = () => {};
 
   const addRatesToForm = () => {
-    const copiedDrawerForm = structuredClone(drawerForm);
+    const copiedDrawerForm = structuredClone(route?.drawerForm);
     const rates = selectedMeasure.measure_rates;
     for (const rate of rates) {
       copiedDrawerForm?.fields.push(createRateField(rate.id, rate.name));
