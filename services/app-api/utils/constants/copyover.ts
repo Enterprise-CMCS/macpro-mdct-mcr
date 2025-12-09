@@ -77,6 +77,18 @@ export const mcparFieldsToCopy = {
     "plan_beneficiaryCircumstanceChangeReportingFrequency",
     "plan_ilosOfferedByPlan",
   ],
+  qualityMeasures: [
+    "id",
+    "qualityMeasure_domain",
+    "qualityMeasure_domain-otherText",
+    "qualityMeasure_name",
+    "qualityMeasure_nqfNumber",
+    "qualityMeasure_reportingRateType",
+    "qualityMeasure_crossProgramReportingRateProgramList",
+    "qualityMeasure_set",
+    "qualityMeasure_set-otherText",
+    "qualityMeasure_description",
+  ],
   bssEntities: [
     "id",
     "name",
