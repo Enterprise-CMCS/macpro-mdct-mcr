@@ -157,6 +157,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       <DrawerReportPageEntityRows
         entities={report.fieldData.plans}
         hasForm={hasDrawerForm}
+        measureId={selectedMeasure.id}
         openRowDrawer={openRowDrawer}
         openDeleteEntityModal={openDeleteEntityModal}
         route={route}

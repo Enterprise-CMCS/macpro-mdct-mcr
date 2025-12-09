@@ -269,6 +269,7 @@ describe("calculateIsEntityCompleted()", () => {
     const props = {
       ...baseCalculateIsEntityCompletedProps,
       isMeasuresAndResultsPage: true,
+      measureId: "mock-measure-id-1",
     };
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(true);
@@ -278,18 +279,23 @@ describe("calculateIsEntityCompleted()", () => {
     const props = {
       ...baseCalculateIsEntityCompletedProps,
       isMeasuresAndResultsPage: true,
+      measureId: "mock-measure-id-1",
       entity: {
         id: "test-measure-plan-1",
-        measure_isReporting: [
-          {
-            label: "Not reporting",
+        measures: {
+          "mock-measure-id-1": {
+            measure_isReporting: [
+              {
+                label: "Not reporting",
+              },
+            ],
+            measure_isNotReportingReason: [
+              {
+                label: "Does not apply",
+              },
+            ],
           },
-        ],
-        measure_isNotReportingReason: [
-          {
-            label: "Does not apply",
-          },
-        ],
+        },
       },
     };
     const input = calculateIsEntityCompleted(props);
@@ -301,6 +307,7 @@ describe("calculateIsEntityCompleted()", () => {
       ...baseCalculateIsEntityCompletedProps,
       entity: incompleteEntity,
       isMeasuresAndResultsPage: true,
+      measureId: "mock-measure-id-1",
     };
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(false);

@@ -5,6 +5,7 @@ import {
   EntityShape,
   FormField,
   FormJson,
+  FormLayoutElement,
   isFieldElement,
   ModalOverlayReportPageShape,
   ReportShape,
@@ -21,6 +22,7 @@ export const buildDrawerReportPageEntityRows = ({
   route,
   hasForm,
   userIsEndUser,
+  measureId,
 }: BuildDrawerReportPageEntityRowsProps) => {
   const ilos = report.fieldData?.ilos;
   const isAnalysisMethodsPage = routeChecker.isAnalysisMethodsPage(route);
@@ -55,6 +57,7 @@ export const buildDrawerReportPageEntityRows = ({
       isCustomEntity,
       reportingOnIlos,
       isMeasuresAndResultsPage,
+      measureId,
     });
 
     const enterButton = getButtonProps({
@@ -107,26 +110,33 @@ export const calculateIsEntityCompleted = ({
   isCustomEntity,
   reportingOnIlos,
   isMeasuresAndResultsPage,
+  measureId,
 }: CalculateEntityCompletionProps) => {
   const calculateMeasureCompletion = () => {
-    const isNotReporting = entity?.measure_isReporting?.length > 0;
-    const hasReasons = entity?.measure_isNotReportingReason?.length > 0;
+    if (!measureId) return false;
+    const planMeasureData = entity?.measures?.[measureId];
+    const isNotReporting = planMeasureData?.measure_isReporting?.length > 0;
+    const hasReasons =
+      planMeasureData?.measure_isNotReportingReason?.length > 0;
     if (isNotReporting && hasReasons) return true;
 
     const requiredFields = form.fields
       ?.filter(isFieldElement)
       .filter((field) => field.id !== "measure_isReporting");
-    return calculateEntityCompletion(requiredFields);
+    return calculateEntityCompletion(requiredFields, planMeasureData);
   };
 
-  const calculateEntityCompletion = (fields?: FormField[]) => {
-    let formFields = fields || form.fields;
+  const calculateEntityCompletion = (
+    fields: (FormField | FormLayoutElement)[] = form.fields,
+    entityData: EntityShape = entity
+  ) => {
+    let formFields = fields;
     if (isCustomEntity) {
       formFields = addEntityForm.fields;
     }
     return formFields
       ?.filter(isFieldElement)
-      .every((field: FormField) => field.id in entity);
+      .every((field: FormField) => field.id in entityData);
   };
 
   /*
@@ -320,6 +330,7 @@ interface BuildDrawerReportPageEntityRowsProps {
   route: DrawerReportPageShape | ModalOverlayReportPageShape;
   hasForm: boolean;
   userIsEndUser: boolean;
+  measureId?: string;
 }
 
 interface ButtonProps {
@@ -340,6 +351,7 @@ interface CalculateEntityCompletionProps {
   form: FormJson;
   reportingOnIlos: boolean;
   isMeasuresAndResultsPage?: boolean;
+  measureId?: string;
 }
 
 interface GetCompleteTextProps {
