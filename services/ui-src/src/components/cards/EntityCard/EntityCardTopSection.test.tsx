@@ -20,7 +20,6 @@ const entityCardTopSectionComponent = (entityType: EntityType) => (
   <EntityCardTopSection
     entityType={entityType}
     formattedEntityData={formattedEntityData}
-    newQualityMeasuresSectionEnabled={false}
     printVersion={true}
   />
 );

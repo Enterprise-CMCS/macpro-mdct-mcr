@@ -154,22 +154,5 @@ describe("QualityMeasuresSection", () => {
     expect(screen.getByText("Not answered")).toBeInTheDocument();
   });
 
-  test("renders TBD if new quality measures section enabled", () => {
-    render(
-      <QualityMeasuresSection
-        {...defaultProps}
-        formattedEntityData={{ name: "PDF Heading" }}
-        isPDF={true}
-        newQualityMeasuresSectionEnabled={true}
-      />
-    );
-
-    const paragraphs = screen.getAllByRole("paragraph");
-    // one for top section, one for bottom
-    expect(paragraphs.length).toBe(2);
-    expect(paragraphs[0]).toHaveTextContent("TBD");
-    expect(paragraphs[1]).toHaveTextContent("TBD");
-  });
-
   testA11yAct(<QualityMeasuresSection {...defaultProps} />);
 });
