@@ -10,7 +10,7 @@ import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import { isLocalStack } from "../local/util";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import { DynamoDBTable } from "./dynamodb-table";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
@@ -52,7 +52,7 @@ export class Lambda extends Construct {
 
     this.lambda = new NodejsFunction(this, id, {
       functionName: `${stackName}-${id}`,
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       timeout,
       memorySize,
       bundling: {

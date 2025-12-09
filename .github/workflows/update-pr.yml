@@ -1,19 +1,19 @@
-# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-name: Create Deployment PR
+name: Update Deployment PR
 
 on:
-  workflow_dispatch:
-    inputs:
-      target_branch:
-        required: true
-        type: string
+  pull_request:
+    types: [synchronize]
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  create-pr:
+  update-pr:
+    if: |
+      contains(github.event.pull_request.labels.*.name, 'production release') ||
+      contains(github.event.pull_request.labels.*.name, 'val release') ||
+      contains(github.event.pull_request.labels.*.name, 'keep updated')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +26,12 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Create a PR
+      - name: Update a PR
         run: |
-          node .github/create-pr.ts
+          node .github/update-pr.ts
         env:
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TARGET_BRANCH: ${{ github.event.inputs.target_branch }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
           APP_NAME_UPPER: ${{ vars.APP_NAME_UPPER }}

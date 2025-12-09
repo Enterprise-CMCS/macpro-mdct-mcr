@@ -1,4 +1,5 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "app": "npx tsx deployment/app.ts",
   "requireApproval": "never",
   "output": ".cdk/cdk.out",
@@ -15,8 +16,14 @@
       "yarn.lock",
       "node_modules",
       "test",
-      "services/ui-src/src/**",
-      "services/ui-src/build/**"
+      "services/ui-src/**",
+      "services/ui-auth/**",
+      "services/topics/**",
+      "services/app-api/coverage/**",
+      "cli/**",
+      "tests/**",
+      "**.md",
+      "scripts/**"
     ]
   },
   "context": {
