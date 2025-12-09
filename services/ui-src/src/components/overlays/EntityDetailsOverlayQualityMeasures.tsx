@@ -26,6 +26,7 @@ import {
 } from "types";
 // utils
 import {
+  addRatesToForm,
   getMeasureValues,
   getReportVerbiage,
   parseCustomHtml,
@@ -43,6 +44,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedPlan, setSelectedPlan] = useState<EntityShape>();
+  const [drawerForm, setDrawerForm] = useState(route?.drawerForm);
   const { updateReport } = useContext(ReportContext);
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -52,7 +54,14 @@ export const EntityDetailsOverlayQualityMeasures = ({
 
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
+
   const openRowDrawer = (plan: EntityShape) => {
+    if (!route?.drawerForm) return;
+    const drawerFormWithRates = addRatesToForm(
+      route.drawerForm,
+      selectedMeasure
+    );
+    setDrawerForm(drawerFormWithRates);
     setSelectedPlan(plan);
     onOpen();
   };
@@ -159,7 +168,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
               measureName: selectedMeasure.measure_name,
             }),
           }}
-          form={route.drawerForm!}
+          form={drawerForm!}
           onSubmit={onSubmit}
           submitting={submitting}
           drawerDisclosure={{

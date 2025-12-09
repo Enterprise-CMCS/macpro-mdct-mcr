@@ -15,6 +15,7 @@ export * from "./forms/formModifications";
 export * from "./forms/ilosFields";
 export * from "./forms/naaarPlanCompliance";
 export * from "./forms/priorAuthorization";
+export * from "./forms/qualityMeasures";
 export * from "./forms/standards";
 // reports
 export * from "./reports/entities";
