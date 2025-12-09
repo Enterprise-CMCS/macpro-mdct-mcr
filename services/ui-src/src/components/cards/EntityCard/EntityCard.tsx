@@ -16,6 +16,7 @@ import completedIcon from "assets/icons/icon_check_circle.png";
 import deleteIcon from "assets/icons/icon_cancel_x_circle.png";
 import editIcon from "assets/icons/icon_edit.png";
 import unfinishedIcon from "assets/icons/icon_error_circle.png";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const EntityCard = ({
   entity,
@@ -42,6 +43,10 @@ export const EntityCard = ({
   const entitiesCount = `${entityIndex + 1} / ${
     reportFieldDataEntities.length
   }`;
+
+  // LaunchDarkly
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
 
   // any drawer-based field will do for this check
   switch (entityType) {
@@ -135,6 +140,7 @@ export const EntityCard = ({
         <EntityCardTopSection
           entityType={entityType}
           formattedEntityData={formattedEntityData}
+          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
           printVersion={!!printVersion}
         />
         {openAddEditEntityModal && (
@@ -163,6 +169,7 @@ export const EntityCard = ({
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,
             }}
+            newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
             printVersion={!!printVersion}
           />
         ) : (

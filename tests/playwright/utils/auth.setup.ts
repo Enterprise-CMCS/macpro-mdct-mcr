@@ -18,12 +18,15 @@ setup("authenticate as admin", async ({ page }) => {
   await passwordInput.fill(adminPassword);
   await loginButton.click();
   await page.waitForURL("/");
+  await page.waitForResponse(
+    (response) =>
+      response.url().includes("/banners") && response.status() === 200
+  );
   await page
     .getByRole("heading", {
       name: "View State/Territory Reports",
     })
     .isVisible();
-  await page.waitForTimeout(1000);
   await page.context().storageState({ path: adminUserAuth });
 });
 
@@ -36,11 +39,14 @@ setup("authenticate as user", async ({ page }) => {
   await passwordInput.fill(statePassword);
   await loginButton.click();
   await page.waitForURL("/");
+  await page.waitForResponse(
+    (response) =>
+      response.url().includes("/banners") && response.status() === 200
+  );
   await page
     .getByRole("heading", {
       name: "Managed Care Reporting Portal",
     })
     .isVisible();
-  await page.waitForTimeout(1000);
   await page.context().storageState({ path: stateUserAuth });
 });

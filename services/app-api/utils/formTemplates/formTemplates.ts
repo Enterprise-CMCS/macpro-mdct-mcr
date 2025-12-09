@@ -23,6 +23,7 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+import { qualityMeasures2026Route } from "../../forms/routes/mcpar/plan-level-indicators/quality-measures-2026";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -84,11 +85,23 @@ export async function getOrCreateFormTemplate(
   }
 
   if (options.hasNaaarSubmission) {
-    currentFormTemplate = generateModifiedTemplate(
+    currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["Access Measures"],
       ["accessMeasures"]
     );
+  }
+
+  if (
+    reportType === ReportType.MCPAR &&
+    options.newQualityMeasuresSectionEnabled
+  ) {
+    currentFormTemplate = filterFormTemplateRoutes(
+      currentFormTemplate,
+      ["VII: Quality Measures"],
+      []
+    );
+    currentFormTemplate = replaceQualityMeasuresRoute(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -338,7 +351,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
   return reportTemplate;
 };
 
-export const generateModifiedTemplate = (
+export const filterFormTemplateRoutes = (
   originalReportTemplate: ReportJson,
   routesToRemove: string[],
   entitiesToRemove: string[]
@@ -369,6 +382,36 @@ export const generateModifiedTemplate = (
   const reportTemplate = structuredClone(originalReportTemplate);
   filterRoutesByName(reportTemplate.routes, routesToRemove);
   filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
+  return reportTemplate;
+};
+
+// temporary function to insert QM route based on feature flag
+export const replaceQualityMeasuresRoute = (
+  originalReportTemplate: ReportJson
+) => {
+  const reportTemplate = structuredClone(originalReportTemplate);
+
+  const parentRoute = reportTemplate.routes.find(
+    (route) => route.path === "/mcpar/plan-level-indicators"
+  );
+
+  if (parentRoute && parentRoute.children) {
+    const children = parentRoute.children;
+    const targetPath =
+      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances";
+
+    const targetIndex = children.findIndex(
+      (route) => route.path === targetPath
+    );
+
+    if (targetIndex > -1) {
+      children.splice(
+        targetIndex + 1,
+        0,
+        qualityMeasures2026Route as ReportRoute
+      );
+    }
+  }
   return reportTemplate;
 };
 

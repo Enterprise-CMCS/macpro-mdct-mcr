@@ -152,6 +152,12 @@ export const mockForm = {
   fields: [mockFormField],
 };
 
+export const mockAdminForm = {
+  id: "mock-form-id",
+  editableByAdmins: true,
+  fields: [mockFormField],
+};
+
 export const mockModalForm = {
   id: "mock-modal-form-id",
   fields: [mockModalFormField],

@@ -6,8 +6,18 @@ export enum UserRoles {
   INTERNAL = "mdctmcr-internal-user", // "MDCT MCR Internal User"
   APPROVER = "mdctmcr-approver", // "MDCT MCR Approver"
   STATE_USER = "mdctmcr-state-user", // "MDCT MCR State User"
-  // old roles
-  STATE_REP = "mdctmcr-state-rep", // removed Jan 2024 (consolidated to STATE_USER)
+
+  /**
+   * Special Case:
+   * The STATE_REP ROLE was rolled into the STATE_USER functionality in Jan 2024,
+   * from MDCT MCR's perspective. See authorization.ts for implementation.
+   *
+   * The role still exists in IDM and users do exist with the role. State Rep users
+   * have additional IDM authority to approve requests for State User accounts.
+   *
+   * If differentiation between the roles in MCR is required in the future, the consolidation can be unrolled.
+   */
+  STATE_REP = "mdctmcr-state-rep",
 }
 
 export interface MCRUser {
