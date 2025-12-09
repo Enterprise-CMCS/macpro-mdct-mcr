@@ -10,7 +10,7 @@ const TopQualityMeasuresSection = ({
   sx,
 }: TopProps) => (
   <>
-    {newQualityMeasuresSectionEnabled ? (
+    {!newQualityMeasuresSectionEnabled ? (
       <Fragment>
         <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
           {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
@@ -82,7 +82,7 @@ const BottomQualityMeasuresSection = ({
   sx,
 }: BottomProps) => (
   <>
-    {newQualityMeasuresSectionEnabled ? (
+    {!newQualityMeasuresSectionEnabled ? (
       <Fragment>
         <Text sx={sx.resultsHeader}>Measure results</Text>
 
