@@ -11,7 +11,6 @@ import naaarForm from "../../forms/naaar.json";
 // types
 import {
   AnyObject,
-  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
@@ -23,7 +22,8 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { qualityMeasures2026Route } from "../../forms/routes/mcpar/plan-level-indicators/quality-measures-2026";
+// flagged routes
+import newQualityMeasuresSectionEnabledForm from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -57,20 +57,31 @@ export async function getTemplateVersionByHash(
   return result.Items?.[0];
 }
 
-export const formTemplateForReportType = (reportType: ReportType) => {
-  switch (reportType) {
-    case ReportType.MCPAR:
-      return mcparForm;
-    case ReportType.MLR:
-      return mlrForm;
-    case ReportType.NAAAR:
-      return naaarForm;
-    default:
-      assertExhaustive(reportType);
-      throw new Error(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
+export const formTemplateForReportType = (
+  reportType: ReportType,
+  options: { [key: string]: boolean } = {}
+) => {
+  const routeMap: Record<ReportType, ReportJson> = {
+    [ReportType.MCPAR]: mcparForm as ReportJson,
+    [ReportType.MLR]: mlrForm as ReportJson,
+    [ReportType.NAAAR]: naaarForm as ReportJson,
+  };
+
+  if (!(reportType in routeMap)) {
+    throw new Error(
+      "Not Implemented: ReportType not recognized by FormTemplateProvider"
+    );
   }
+
+  if (
+    reportType === ReportType.MCPAR &&
+    options.newQualityMeasuresSectionEnabled
+  ) {
+    routeMap[ReportType.MCPAR] =
+      newQualityMeasuresSectionEnabledForm as ReportJson;
+  }
+
+  return structuredClone(routeMap[reportType] as ReportJson);
 };
 
 export async function getOrCreateFormTemplate(
@@ -78,7 +89,7 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = formTemplateForReportType(reportType) as ReportJson;
+  let currentFormTemplate = formTemplateForReportType(reportType, options);
 
   if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
@@ -90,18 +101,6 @@ export async function getOrCreateFormTemplate(
       ["Access Measures"],
       ["accessMeasures"]
     );
-  }
-
-  if (
-    reportType === ReportType.MCPAR &&
-    options.newQualityMeasuresSectionEnabled
-  ) {
-    currentFormTemplate = filterFormTemplateRoutes(
-      currentFormTemplate,
-      ["VII: Quality Measures"],
-      []
-    );
-    currentFormTemplate = replaceQualityMeasuresRoute(currentFormTemplate);
   }
 
   const stringifiedTemplate = JSON.stringify(currentFormTemplate);
@@ -382,36 +381,6 @@ export const filterFormTemplateRoutes = (
   const reportTemplate = structuredClone(originalReportTemplate);
   filterRoutesByName(reportTemplate.routes, routesToRemove);
   filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
-  return reportTemplate;
-};
-
-// temporary function to insert QM route based on feature flag
-export const replaceQualityMeasuresRoute = (
-  originalReportTemplate: ReportJson
-) => {
-  const reportTemplate = structuredClone(originalReportTemplate);
-
-  const parentRoute = reportTemplate.routes.find(
-    (route) => route.path === "/mcpar/plan-level-indicators"
-  );
-
-  if (parentRoute && parentRoute.children) {
-    const children = parentRoute.children;
-    const targetPath =
-      "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances";
-
-    const targetIndex = children.findIndex(
-      (route) => route.path === targetPath
-    );
-
-    if (targetIndex > -1) {
-      children.splice(
-        targetIndex + 1,
-        0,
-        qualityMeasures2026Route as ReportRoute
-      );
-    }
-  }
   return reportTemplate;
 };
 

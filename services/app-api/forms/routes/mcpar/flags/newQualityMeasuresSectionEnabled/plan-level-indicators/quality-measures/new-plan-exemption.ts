@@ -4,7 +4,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../../utils/types";
+} from "../../../../../../../utils/types";
 
 export const newPlanExemptionRoute: FormRoute = {
   name: "New plan exemption",

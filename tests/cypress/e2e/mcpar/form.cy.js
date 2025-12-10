@@ -1,6 +1,5 @@
-import mcparTemplate from "../../../../services/app-api/forms/mcpar.json";
-
-const templateMap = { MCPAR: mcparTemplate };
+import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
+import newQualityMeasuresSectionEnabled from "../../../../services/app-api/forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 before(() => {
   cy.archiveExistingMcparReports();
@@ -10,7 +9,13 @@ describe("MCPAR E2E Form Submission", () => {
   it("A state user can fully create a form and submit it", () => {
     cy.authenticate("stateUser");
 
-    fillOutMCPAR();
+    const flags = Cypress.env("ldFlags");
+
+    const routes = flags.newQualityMeasuresSectionEnabled
+      ? newQualityMeasuresSectionEnabled.routes
+      : mcparReportJson.routes;
+
+    fillOutMCPAR(routes, flags);
 
     //no errors; submit enabled
     cy.get('div[role*="alert"]').should("not.exist");
@@ -35,7 +40,13 @@ describe("MCPAR E2E Form Submission", () => {
   it("A state user cannot submit an incomplete form", () => {
     cy.authenticate("stateUser");
 
-    fillOutPartialMCPAR();
+    const flags = Cypress.env("ldFlags");
+
+    const routes = flags.newQualityMeasuresSectionEnabled
+      ? newQualityMeasuresSectionEnabled.routes
+      : mcparReportJson.routes;
+
+    fillOutPartialMCPAR(routes, flags);
 
     // there is a submission alert
     cy.get('div[role*="alert"]').should("exist");
@@ -47,7 +58,7 @@ describe("MCPAR E2E Form Submission", () => {
   });
 });
 
-function fillOutMCPAR() {
+function fillOutMCPAR(routes, flags) {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
@@ -84,11 +95,10 @@ function fillOutMCPAR() {
   });
 
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
-  traverseRoutes(template.routes);
+  traverseRoutes(routes, flags);
 }
 
-function fillOutPartialMCPAR() {
+function fillOutPartialMCPAR(routes, flags) {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
@@ -122,15 +132,14 @@ function fillOutPartialMCPAR() {
     cy.get("@mcparPartialEditButton").click();
   });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
-  traverseRoutes([template.routes[0]]);
+  traverseRoutes([routes[0]], flags);
 
   //Finish loading the form route before moving to review and submit
   cy.wait(1000);
   cy.get('a[href*="review-and-submit"]').click();
 }
 
-const traverseRoutes = (routes, flags) => {
+const traverseRoutes = (routes, flags = {}) => {
   function continueTraversing(existingFlags) {
     //iterate over each route
     routes.forEach((route) => {
@@ -140,30 +149,7 @@ const traverseRoutes = (routes, flags) => {
     });
   }
 
-  if (!flags) {
-    let intercepted = false;
-    // Intercept Launch Darkly request first time only
-    cy.intercept(/launchdarkly/, (req) => {
-      intercepted = true;
-      req.continue();
-    }).as("ld");
-
-    cy.then(() => {
-      if (intercepted) {
-        cy.wait("@ld").then(({ request }) => {
-          const response = request.body.filter((item) => item.features)[0];
-          const ldFlags = response ? response.features : {};
-          continueTraversing(ldFlags);
-        });
-      } else {
-        continueTraversing({});
-      }
-    });
-  } else {
-    // Reset intercept
-    cy.intercept(/launchdarkly/, (req) => req.continue());
-    continueTraversing(flags);
-  }
+  continueTraversing(flags);
 };
 
 const traverseRoute = (route, flags) => {

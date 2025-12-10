@@ -6,7 +6,7 @@ import { programLevelAccessAndNetworkAdequacyStandardsRoute } from "./program-le
 import { reviewAndSubmitRoute } from "./review-and-submit";
 import { stateAndProgramInformationRoute } from "./state-and-program-information";
 
-export const ReportJson: ReportJsonFile = {
+export const naaarReportJson: ReportJsonFile = {
   type: ReportType.NAAAR,
   name: "NAAAR Report Submission Form",
   basePath: "/naaar",
