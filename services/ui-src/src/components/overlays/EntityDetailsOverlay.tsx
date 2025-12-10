@@ -47,8 +47,9 @@ export const EntityDetailsOverlay = ({
     setEntityType(entityType);
     setEntities(entities);
     return () => {
-      setEntities([]);
       setSelectedEntity(undefined);
+      setEntityType(undefined);
+      setEntities(undefined);
     };
   }, [entityType, selectedEntity]);
 

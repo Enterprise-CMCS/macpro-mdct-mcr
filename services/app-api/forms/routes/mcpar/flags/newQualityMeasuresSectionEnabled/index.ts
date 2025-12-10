@@ -1,13 +1,13 @@
 // types
-import { ReportJsonFile, ReportType } from "../../../utils/types";
+import { ReportJsonFile, ReportType } from "../../../../../utils/types";
 // routes
-import { bssEntityIndicatorsRoute } from "./bss-entity-indicators";
-import { notesRoute } from "./notes";
+import { bssEntityIndicatorsRoute } from "../../bss-entity-indicators";
+import { notesRoute } from "../../notes";
 import { planLevelIndicatorsRoute } from "./plan-level-indicators";
-import { programInformationRoute } from "./program-information";
-import { programLevelIndicatorsRoute } from "./program-level-indicators";
-import { reviewAndSubmitRoute } from "./review-and-submit";
-import { stateLevelIndicatorsRoute } from "./state-level-indicators";
+import { programInformationRoute } from "../../program-information";
+import { programLevelIndicatorsRoute } from "../../program-level-indicators";
+import { reviewAndSubmitRoute } from "../../review-and-submit";
+import { stateLevelIndicatorsRoute } from "../../state-level-indicators";
 
 export const mcparReportJson: ReportJsonFile = {
   type: ReportType.MCPAR,
