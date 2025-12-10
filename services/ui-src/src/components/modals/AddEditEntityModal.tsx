@@ -47,7 +47,7 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    let dataToWrite = {
+    let dataToWrite: AnyObject = {
       metadata: {
         lastAlteredBy: full_name,
         status: ReportStatus.IN_PROGRESS,
@@ -81,6 +81,10 @@ export const AddEditEntityModal = ({
         entriesToClear
       );
 
+      dataToWrite.fieldData = {
+        [entityType]: updatedEntities,
+      };
+
       // filter plan rates after changes to quality measures
       const plans: EntityShape[] = report?.fieldData?.plans;
       const measureRates = updatedEntities[selectedEntityIndex]?.measure_rates;
@@ -88,12 +92,9 @@ export const AddEditEntityModal = ({
       // if measure rates exist, must be quality measures
       if (measureRates?.length > 0 && plans?.length > 0) {
         filterRateDataFromPlans(measureRates, plans, selectedEntity.id);
+        dataToWrite.fieldData[EntityType.PLANS] = plans;
       }
 
-      dataToWrite.fieldData = {
-        [entityType]: updatedEntities,
-        [EntityType.PLANS]: plans,
-      };
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
         updatedEntities[selectedEntityIndex]
