@@ -165,8 +165,8 @@ const traverseRoute = (route, flags) => {
 
     //Fill out the 3 different types of forms
     completeForm(route.form);
+    cy.wait(1000);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
-
     if (route.pageType === "modalOverlay") {
       completeModalOverlayDrawerForm(route.drawerForm);
     } else {
@@ -292,7 +292,7 @@ const processField = (field) => {
       case "checkbox": {
         const firstChoice = field.props?.choices?.[0];
 
-        if (firstChoice && firstChoice.id !== "placeholder") {
+        if (firstChoice && firstChoice.id !== "generatedCheckbox") {
           cy.get(`#${field.id}-${firstChoice.id}`).check();
           firstChoice.children?.forEach(processField);
           break;
