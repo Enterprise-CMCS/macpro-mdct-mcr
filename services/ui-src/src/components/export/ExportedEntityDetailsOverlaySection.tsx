@@ -111,7 +111,7 @@ export function getEntityTableComponents(
             (field) =>
               field.type !== "sectionContent" && field.type !== "sectionDivider"
           );
-          const header = filteredFields[0];
+          const header = filteredFields[0] || {};
           return (
             <Fragment key={`tableContainer-${idx}`}>
               {header.type === "sectionHeader" && (
@@ -152,7 +152,10 @@ export function renderEntityDetailTables(
       const formSections = getFormSections(section.overlayForm?.fields ?? []);
       return getEntityTableComponents(entities, section, formSections);
     }
-    case ReportType.MCPAR:
+    case ReportType.MCPAR: {
+      const formSections = getFormSections(section.overlayForm?.fields ?? []);
+      return getEntityTableComponents(entities, section, formSections);
+    }
     case ReportType.NAAAR:
       throw new Error(
         `The entity detail table for report type '${reportType}' have not been implemented.`

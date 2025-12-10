@@ -13,9 +13,7 @@ import {
   EntityType,
 } from "types";
 // utils
-import { useStore } from "utils";
-// verbiage
-import verbiage from "verbiage/pages/mlr/mlr-export";
+import { getReportVerbiage, useStore } from "utils";
 
 export const ExportedEntityDetailsTable = ({
   caption,
@@ -25,7 +23,8 @@ export const ExportedEntityDetailsTable = ({
   entityIndex,
 }: Props) => {
   const { report } = useStore();
-  const { tableHeaders } = verbiage;
+  const { exportVerbiage } = getReportVerbiage(report?.reportType);
+  const { tableHeaders } = exportVerbiage;
 
   const entityType = passedEntityType ?? EntityType.PROGRAM;
 
