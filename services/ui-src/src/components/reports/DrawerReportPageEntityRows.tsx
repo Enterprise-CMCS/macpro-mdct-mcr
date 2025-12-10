@@ -16,6 +16,7 @@ import completedIcon from "assets/icons/icon_check_circle.png";
 export const DrawerReportPageEntityRows = ({
   entities,
   hasForm = true,
+  measureId,
   openDeleteEntityModal,
   openRowDrawer,
   patientAccessDisabled = false,
@@ -34,6 +35,7 @@ export const DrawerReportPageEntityRows = ({
     route,
     hasForm,
     userIsEndUser,
+    measureId,
   });
 
   return (
@@ -109,6 +111,7 @@ export const DrawerReportPageEntityRows = ({
 interface Props {
   entities: EntityShape[];
   hasForm?: boolean;
+  measureId?: string;
   openDeleteEntityModal: Function;
   openRowDrawer: Function;
   patientAccessDisabled?: boolean;

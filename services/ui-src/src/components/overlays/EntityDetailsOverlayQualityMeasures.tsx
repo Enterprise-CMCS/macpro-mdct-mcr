@@ -44,6 +44,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
 }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [selectedPlan, setSelectedPlan] = useState<EntityShape>();
+  const [planMeasureData, setPlanMeasureData] = useState<EntityShape>();
   const [drawerForm, setDrawerForm] = useState(route?.drawerForm);
   const { updateReport } = useContext(ReportContext);
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
@@ -63,6 +64,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
     );
     setDrawerForm(drawerFormWithRates);
     setSelectedPlan(plan);
+    setPlanMeasureData(plan?.measures?.[selectedMeasure.id]);
     onOpen();
   };
 
@@ -94,7 +96,12 @@ export const EntityDetailsOverlayQualityMeasures = ({
 
       const newPlan = {
         ...selectedPlan,
-        ...enteredData,
+        measures: {
+          ...selectedPlan?.measures,
+          [selectedMeasure.id]: {
+            ...enteredData,
+          },
+        },
       };
 
       const updatedPlans = currentPlans;
@@ -112,6 +119,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       await updateReport(reportKeys, dataToWrite);
       setSubmitting(false);
     }
+    setSelectedPlan(undefined);
     onClose();
   };
 
@@ -149,6 +157,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       <DrawerReportPageEntityRows
         entities={report.fieldData.plans}
         hasForm={hasDrawerForm}
+        measureId={selectedMeasure.id}
         openRowDrawer={openRowDrawer}
         openDeleteEntityModal={openDeleteEntityModal}
         route={route}
@@ -161,7 +170,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       />
       {hasDrawerForm && (
         <ReportDrawer
-          selectedEntity={selectedPlan!}
+          selectedEntity={planMeasureData!}
           verbiage={{
             drawerTitle: translate(route.verbiage.drawerTitle, {
               plan: selectedPlan?.name,
