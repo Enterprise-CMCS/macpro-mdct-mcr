@@ -16,6 +16,7 @@ import {
 import {
   entityWasUpdated,
   filterFormData,
+  filterRateDataFromPlans,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
   useStore,
@@ -80,7 +81,19 @@ export const AddEditEntityModal = ({
         entriesToClear
       );
 
-      dataToWrite.fieldData = { [entityType]: updatedEntities };
+      // filter plan rates after changes to quality measures
+      const plans: EntityShape[] = report?.fieldData?.plans;
+      const measureRates = updatedEntities[selectedEntityIndex]?.measure_rates;
+
+      // if measure rates exist, must be quality measures
+      if (measureRates?.length > 0 && plans?.length > 0) {
+        filterRateDataFromPlans(measureRates, plans, selectedEntity.id);
+      }
+
+      dataToWrite.fieldData = {
+        [entityType]: updatedEntities,
+        [EntityType.PLANS]: plans,
+      };
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
         updatedEntities[selectedEntityIndex]
