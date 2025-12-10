@@ -78,6 +78,16 @@ export const mockQualityMeasuresEntity = {
   ],
 };
 
+export const mockQualityMeasuresData = {
+  name: "Test Measure",
+  domain: "Domain",
+  nqfNumber: "1234",
+  reportingPeriod: "Yes",
+  reportingRateType: "Rate Type",
+  set: "Mock set",
+  description: "Description",
+};
+
 export const mockUnfinishedQualityMeasuresFormattedEntityData = {
   perPlanResponses: [
     {

@@ -38,7 +38,7 @@ describe("EntityCardBottomSection", () => {
         entityType={EntityType.QUALITY_MEASURES}
       />
     );
-    expect(screen.getByText("TBD")).toBeInTheDocument();
+    expect(screen.getByText("Measure results")).toBeInTheDocument();
   });
 
   test("renders StandardsSection when entityType is STANDARDS", () => {

@@ -11,7 +11,6 @@ export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
   verbiage,
-  newQualityMeasuresSectionEnabled,
   printVersion,
 }: Props) => {
   const notAnswered = (
@@ -46,7 +45,6 @@ export const EntityCardBottomSection = ({
         <QualityMeasuresSection
           formattedEntityData={formattedEntityData}
           printVersion={!!printVersion}
-          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
           notAnswered={notAnswered}
           verbiage={verbiage}
           sx={sx}
@@ -69,7 +67,6 @@ export const EntityCardBottomSection = ({
 interface Props {
   entityType: EntityType;
   formattedEntityData: AnyObject;
-  newQualityMeasuresSectionEnabled?: boolean;
   printVersion?: boolean;
   verbiage?: {
     entityMissingResponseMessage?: string;

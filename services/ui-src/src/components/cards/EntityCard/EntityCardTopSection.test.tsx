@@ -20,7 +20,6 @@ const entityCardTopSectionComponent = (entityType: EntityType) => (
   <EntityCardTopSection
     entityType={entityType}
     formattedEntityData={formattedEntityData}
-    newQualityMeasuresSectionEnabled={false}
     printVersion={true}
   />
 );
@@ -52,7 +51,7 @@ describe("<EntityCardTopSection />", () => {
     const { container } = render(
       entityCardTopSectionComponent(EntityType.QUALITY_MEASURES)
     );
-    const pTag = container.querySelector("p");
-    expect(pTag).toHaveTextContent("TBD");
+    const h4Tag = container.querySelector("h4");
+    expect(h4Tag).toHaveTextContent("D2.VII.1 Measure Name:");
   });
 });

@@ -12,7 +12,6 @@ import { AnyObject, EntityType } from "types";
 export const EntityCardTopSection = ({
   entityType,
   formattedEntityData,
-  newQualityMeasuresSectionEnabled,
   printVersion,
 }: Props) => {
   const [isPDF, setIsPDF] = useState(false);
@@ -49,7 +48,6 @@ export const EntityCardTopSection = ({
         <QualityMeasuresSection
           formattedEntityData={formattedEntityData}
           printVersion={!!printVersion}
-          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
           sx={sx}
           isPDF={isPDF}
           topSection
@@ -79,7 +77,6 @@ export const EntityCardTopSection = ({
 interface Props {
   entityType: EntityType;
   formattedEntityData: AnyObject;
-  newQualityMeasuresSectionEnabled?: boolean;
   printVersion?: boolean;
 }
 
