@@ -166,7 +166,12 @@ const traverseRoute = (route, flags) => {
     //Fill out the 3 different types of forms
     completeForm(route.form);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
-    completeDrawerForm(route.drawerForm);
+
+    if (route.pageType === "modalOverlay") {
+      completeModalOverlayDrawerForm(route.drawerForm);
+    } else {
+      completeDrawerForm(route.drawerForm);
+    }
 
     cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
     cy.get("@mcparContinueButton").click();
@@ -179,20 +184,23 @@ const traverseRoute = (route, flags) => {
 const completeDrawerForm = (drawerForm) => {
   if (drawerForm) {
     //enter the drawer, then fill out the form and save it
-    cy.get('button:contains("Enter")').then(($editButton) => {
-      if ($editButton.is(":disabled")) {
-        return;
-      } else {
-        cy.wrap($editButton).focus();
-        cy.get($editButton).click();
-        completeForm(drawerForm);
-        cy.get('button:contains("Save")')
-          .as("mcparCompleteDrawerSaveButton")
-          .focus();
-        cy.get("@mcparCompleteDrawerSaveButton").click();
-        cy.wait(1000);
-      }
-    });
+    cy.get('button:contains("Enter")')
+      .first()
+      .then(($editButton) => {
+        if ($editButton.is(":disabled")) {
+          return;
+        } else {
+          cy.wrap($editButton).focus();
+          cy.get($editButton).click();
+          completeForm(drawerForm);
+          cy.get('button:contains("Save & close")')
+            .first()
+            .as("mcparCompleteDrawerSaveButton")
+            .focus();
+          cy.get("@mcparCompleteDrawerSaveButton").click();
+          cy.wait(1000);
+        }
+      });
   }
 };
 
@@ -210,6 +218,22 @@ const completeModalForm = (modalForm, buttonText) => {
       .focus();
     cy.get("@mcparCompleteModalSaveButton").click();
     cy.wait(1000);
+  }
+};
+
+const completeModalOverlayDrawerForm = (drawerForm) => {
+  if (drawerForm) {
+    cy.get('button:contains("Enter")')
+      .first()
+      .as("mcparModalOverlayDrawerEnterButton")
+      .focus();
+    cy.get("@mcparModalOverlayDrawerEnterButton").click();
+    completeDrawerForm(drawerForm);
+    cy.get('button:contains("Save & return")')
+      .first()
+      .as("mcparModalOverlayDrawerSaveButton")
+      .focus();
+    cy.get("@mcparModalOverlayDrawerSaveButton").click();
   }
 };
 
