@@ -247,8 +247,8 @@ export const analysisMethodsRoute: AddEntityDrawerFormRoute = {
           label: "Plans utilizing this method",
           choices: [
             {
-              id: "placeholder",
-              label: "Plans",
+              id: "generatedCheckbox",
+              label: "Plans (generated)",
             },
           ],
         },

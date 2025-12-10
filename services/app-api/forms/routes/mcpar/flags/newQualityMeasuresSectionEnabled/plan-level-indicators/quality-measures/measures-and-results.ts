@@ -4,7 +4,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../../utils/types";
+} from "../../../../../../../utils/types";
 
 export const measuresAndResultsRoute: ModalDrawerRoute = {
   name: "Measures and results",

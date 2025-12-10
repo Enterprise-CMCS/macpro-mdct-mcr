@@ -4,7 +4,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../../utils/types";
+} from "../../../../../../../utils/types";
 
 export const newPlanExemptionRoute: FormRoute = {
   name: "New plan exemption",
@@ -56,8 +56,8 @@ export const newPlanExemptionRoute: FormRoute = {
             "D2.VII.1 Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
           choices: [
             {
-              id: "placeholder",
-              label: "Plans (dynamic)",
+              id: "generatedCheckbox",
+              label: "Plans (generated)",
             },
           ],
         },

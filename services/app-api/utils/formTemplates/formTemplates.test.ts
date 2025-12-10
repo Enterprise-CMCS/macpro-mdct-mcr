@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import {
   compileValidationJsonFromRoutes,
   filterByFlag,
@@ -8,7 +9,6 @@ import {
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
   isFieldElement,
-  replaceQualityMeasuresRoute,
 } from "./formTemplates";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
@@ -32,7 +32,8 @@ import {
   FormField,
   FormLayoutElement,
 } from "../types";
-import { createHash } from "crypto";
+// flagged routes
+import newQualityMeasuresSectionEnabledForm from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -62,13 +63,8 @@ const currentModifiedFormHash = createHash("md5")
   .update(JSON.stringify(modifiedTemplate))
   .digest("hex");
 
-const filteredTemplate = filterFormTemplateRoutes(
-  mcpar as ReportJson,
-  ["VII: Quality Measures"],
-  []
-);
 const templateWithUpdatedQualityMeasures =
-  replaceQualityMeasuresRoute(filteredTemplate);
+  newQualityMeasuresSectionEnabledForm as ReportJson;
 
 const currentQualityMeasuresFormHash = createHash("md5")
   .update(JSON.stringify(templateWithUpdatedQualityMeasures))

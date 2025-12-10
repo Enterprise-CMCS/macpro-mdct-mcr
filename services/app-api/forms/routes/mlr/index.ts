@@ -5,7 +5,7 @@ import { mlrReportingRoute } from "./mlr-reporting";
 import { informationForPrimaryContactRoute } from "./information-for-primary-contact";
 import { reviewAndSubmitRoute } from "./review-and-submit";
 
-export const ReportJson: ReportJsonFile = {
+export const mlrReportJson: ReportJsonFile = {
   type: ReportType.MLR,
   name: "MLR Report Submission Form",
   basePath: "/mlr",
