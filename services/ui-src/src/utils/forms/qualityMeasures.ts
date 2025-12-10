@@ -21,24 +21,3 @@ export const addRatesToForm = (form: FormJson, measure: EntityShape) => {
   }
   return copiedDrawerForm;
 };
-
-export const filterRateDataFromPlans = (
-  measureRates: EntityShape[],
-  plans: EntityShape[],
-  measureId: string
-) => {
-  const measureRateIds = measureRates.map((rate: EntityShape) => rate.id);
-
-  for (const plan of plans) {
-    const planMeasureData = plan.measures[measureId];
-    const planRateIds = Object.keys(planMeasureData).filter((fieldId) =>
-      fieldId.startsWith(RATE_ID_PREFIX)
-    );
-    const rateIdsToDelete = planRateIds.filter(
-      (id) => !measureRateIds.includes(id.split(RATE_ID_PREFIX)[1])
-    );
-    rateIdsToDelete.forEach((rateId: string) => {
-      delete planMeasureData[rateId];
-    });
-  }
-};

@@ -14,9 +14,9 @@ import {
 } from "types";
 // utils
 import {
+  addEditEntityModifications,
   entityWasUpdated,
   filterFormData,
-  filterRateDataFromPlans,
   getEntriesToClear,
   setClearedEntriesToDefaultValue,
   useStore,
@@ -47,7 +47,7 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    let dataToWrite: AnyObject = {
+    const dataToWrite: AnyObject = {
       metadata: {
         lastAlteredBy: full_name,
         status: ReportStatus.IN_PROGRESS,
@@ -69,35 +69,30 @@ export const AddEditEntityModal = ({
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
       const updatedEntities = currentEntities;
+      let updatedEntity = updatedEntities[selectedEntityIndex];
 
-      updatedEntities[selectedEntityIndex] = {
+      updatedEntity = {
         id: selectedEntity.id,
         ...currentEntities[selectedEntityIndex],
         ...filteredFormData,
       };
 
-      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
-        updatedEntities[selectedEntityIndex],
+      updatedEntity = setClearedEntriesToDefaultValue(
+        updatedEntity,
         entriesToClear
       );
 
-      dataToWrite.fieldData = {
-        [entityType]: updatedEntities,
-      };
-
-      // filter plan rates after changes to quality measures
-      const plans: EntityShape[] = report?.fieldData?.plans;
-      const measureRates = updatedEntities[selectedEntityIndex]?.measure_rates;
-
-      // if measure rates exist, must be quality measures
-      if (measureRates?.length > 0 && plans?.length > 0) {
-        filterRateDataFromPlans(measureRates, plans, selectedEntity.id);
-        dataToWrite.fieldData[EntityType.PLANS] = plans;
-      }
+      const plans = report?.fieldData?.plans;
+      dataToWrite.fieldData = addEditEntityModifications(
+        entityType,
+        updatedEntities,
+        updatedEntity,
+        plans
+      );
 
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
-        updatedEntities[selectedEntityIndex]
+        updatedEntity
       );
       if (shouldSave) await updateReport(reportKeys, dataToWrite);
     } else {

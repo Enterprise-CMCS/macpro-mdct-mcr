@@ -6,7 +6,13 @@ import {
   ModalDrawerReportPageVerbiage,
 } from "types";
 // utils
-import { compareText, maskResponseData, otherSpecify, translate } from "utils";
+import {
+  compareText,
+  maskResponseData,
+  otherSpecify,
+  RATE_ID_PREFIX,
+  translate,
+} from "utils";
 import { getFormattedPlanData } from "./entities.plans";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
@@ -173,4 +179,57 @@ export const getAddEditDrawerText = (
       break;
   }
   return translate(verbiage.drawerTitle, { action: addEditDrawerText });
+};
+
+const filterRateDataFromPlans = (
+  measureRates: EntityShape[],
+  plans: EntityShape[],
+  measureId: string
+) => {
+  const measureRateIds = measureRates.map((rate: EntityShape) => rate.id);
+
+  for (const plan of plans) {
+    const planMeasureData = plan.measures[measureId];
+    const planRateIds = Object.keys(planMeasureData).filter((fieldId) =>
+      fieldId.startsWith(RATE_ID_PREFIX)
+    );
+    const rateIdsToDelete = planRateIds.filter(
+      (id) => !measureRateIds.includes(id.split(RATE_ID_PREFIX)[1])
+    );
+    rateIdsToDelete.forEach((rateId: string) => {
+      delete planMeasureData[rateId];
+    });
+  }
+};
+
+const qualityMeasuresDataModifications = (
+  selectedEntity: EntityShape,
+  plans: EntityShape[],
+  fieldData: AnyObject
+) => {
+  // filter plan rates after changes to quality measures
+  const measureRates = selectedEntity?.measure_rates;
+
+  // if measure rates exist, must be quality measures
+  if (measureRates?.length > 0 && plans?.length > 0) {
+    filterRateDataFromPlans(measureRates, plans, selectedEntity.id);
+    fieldData[EntityType.PLANS] = plans;
+  }
+};
+
+export const addEditEntityModifications = (
+  entityType: EntityType,
+  updatedEntities: EntityShape[],
+  selectedEntity: EntityShape,
+  plans: EntityShape[]
+) => {
+  const fieldData: AnyObject = {
+    [entityType]: updatedEntities,
+  };
+
+  if (entityType === EntityType.QUALITY_MEASURES) {
+    qualityMeasuresDataModifications(selectedEntity, plans, fieldData);
+  }
+
+  return fieldData;
 };

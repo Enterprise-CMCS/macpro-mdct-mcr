@@ -1,7 +1,6 @@
 import {
   addRatesToForm,
   createRateField,
-  filterRateDataFromPlans,
   RATE_ID_PREFIX,
 } from "./qualityMeasures";
 // utils
@@ -44,35 +43,6 @@ describe("qualityMeasures utils", () => {
       expect(rateField.type).toEqual("number");
       expect(rateField.validation).toEqual("numberOptional");
       expect(rateField.props.label).toEqual("mock rate 1 results");
-    });
-  });
-
-  describe("filterRateDataFromPlans()", () => {
-    const mockPlansWithRateResults = [
-      {
-        id: "mock id",
-        name: "mock plan name",
-        measures: {
-          [mockMeasure.id]: {
-            [`${RATE_ID_PREFIX}mock-rate-1`]: "123",
-            [`${RATE_ID_PREFIX}mock-old-rate`]: "N/A",
-          },
-        },
-      },
-    ];
-    const mockPlanMeasureData =
-      mockPlansWithRateResults[0].measures[mockMeasure.id];
-
-    test("filters rate results from plans", () => {
-      filterRateDataFromPlans(
-        mockMeasure.measure_rates,
-        mockPlansWithRateResults,
-        mockMeasure.id
-      );
-      expect(mockPlanMeasureData?.[`${RATE_ID_PREFIX}mock-rate-1`]).toBe("123");
-      expect(
-        mockPlanMeasureData?.[`${RATE_ID_PREFIX}mock-old-rate`]
-      ).toBeUndefined();
     });
   });
 });
