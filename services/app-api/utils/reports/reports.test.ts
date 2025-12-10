@@ -1,4 +1,8 @@
-import { copyFieldDataFromSource, makePCCMModifications } from "./reports";
+import {
+  copyFieldDataFromSource,
+  makePCCMModifications,
+  populateQualityMeasures,
+} from "./reports";
 import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 // utils
@@ -6,6 +10,7 @@ import { mockReportJson } from "../../utils/testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 // types
 import { ReportType } from "../../utils/types";
+import { uuidRegex } from "../constants/constants";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -19,6 +24,23 @@ describe("copyFieldDataFromSource()", () => {
           {
             key: "program_type-atiwcA9QUE2eoTchV2ZLtw", // pragma: allowlist secret
             value: "Primary Care Case Management (PCCM) Entity",
+          },
+        ],
+      });
+    });
+
+    test("Test populateQualityMeasures sets correct field data", () => {
+      let testFieldData = {};
+      testFieldData = populateQualityMeasures(
+        testFieldData,
+        "MN",
+        "Minnesota Senior Health Options (MSHO)"
+      );
+      expect(testFieldData).toEqual({
+        qualityMeasures: [
+          {
+            id: expect.stringMatching(uuidRegex),
+            measure_name: "MSHO measure 1",
           },
         ],
       });

@@ -1,7 +1,9 @@
+import { randomUUID } from "crypto";
 import { mcparFieldsToCopy, naaarFieldsToCopy } from "../constants/copyover";
+import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
-import { AnyObject, ReportType, State } from "../types";
+import { AnyObject, EntityType, ReportType, State } from "../types";
 
 /**
  *
@@ -93,5 +95,21 @@ export function makePCCMModifications(fieldData: any) {
     },
   ];
 
+  return fieldData;
+}
+
+export function populateQualityMeasures(
+  fieldData: any,
+  state: State,
+  programName: string
+) {
+  const measures = mcparQualityMeasuresList?.[state]?.[programName];
+  if (measures) {
+    const formattedMeasures = measures.map((measure) => ({
+      id: randomUUID(),
+      ...measure,
+    }));
+    fieldData[EntityType.QUALITY_MEASURES] = formattedMeasures;
+  }
   return fieldData;
 }
