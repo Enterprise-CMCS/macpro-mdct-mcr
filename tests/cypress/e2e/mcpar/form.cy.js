@@ -1,6 +1,4 @@
-import mcparTemplate from "../../../../services/app-api/forms/mcpar.json";
-
-const templateMap = { MCPAR: mcparTemplate };
+import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
 
 before(() => {
   cy.archiveExistingMcparReports();
@@ -10,7 +8,11 @@ describe("MCPAR E2E Form Submission", () => {
   it("A state user can fully create a form and submit it", () => {
     cy.authenticate("stateUser");
 
-    fillOutMCPAR();
+    const flags = Cypress.env("ldFlags");
+
+    const routes = mcparReportJson.routes;
+
+    fillOutMCPAR(routes, flags);
 
     //no errors; submit enabled
     cy.get('div[role*="alert"]').should("not.exist");
@@ -35,7 +37,11 @@ describe("MCPAR E2E Form Submission", () => {
   it("A state user cannot submit an incomplete form", () => {
     cy.authenticate("stateUser");
 
-    fillOutPartialMCPAR();
+    const flags = Cypress.env("ldFlags");
+
+    const routes = mcparReportJson.routes;
+
+    fillOutPartialMCPAR(routes, flags);
 
     // there is a submission alert
     cy.get('div[role*="alert"]').should("exist");
@@ -47,7 +53,7 @@ describe("MCPAR E2E Form Submission", () => {
   });
 });
 
-function fillOutMCPAR() {
+function fillOutMCPAR(routes, flags) {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
@@ -69,6 +75,8 @@ function fillOutMCPAR() {
   cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
   cy.get("button[type=submit]").contains("Save").click();
 
+  cy.wait(2000);
+
   //Find our new program and open it
   cy.get("table").within(() => {
     cy.wait(2000);
@@ -82,11 +90,10 @@ function fillOutMCPAR() {
   });
 
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
-  traverseRoutes(template.routes);
+  traverseRoutes(routes, flags);
 }
 
-function fillOutPartialMCPAR() {
+function fillOutPartialMCPAR(routes, flags) {
   //Create the program
   const today = new Date();
   const lastYear = new Date();
@@ -120,15 +127,14 @@ function fillOutPartialMCPAR() {
     cy.get("@mcparPartialEditButton").click();
   });
   //Using the json as a guide, traverse all the routes/forms and fill it out dynamically
-  const template = templateMap["MCPAR"];
-  traverseRoutes([template.routes[0]]);
+  traverseRoutes([routes[0]], flags);
 
   //Finish loading the form route before moving to review and submit
   cy.wait(1000);
   cy.get('a[href*="review-and-submit"]').click();
 }
 
-const traverseRoutes = (routes, flags) => {
+const traverseRoutes = (routes, flags = {}) => {
   function continueTraversing(existingFlags) {
     //iterate over each route
     routes.forEach((route) => {
@@ -138,30 +144,7 @@ const traverseRoutes = (routes, flags) => {
     });
   }
 
-  if (!flags) {
-    let intercepted = false;
-    // Intercept Launch Darkly request first time only
-    cy.intercept(/launchdarkly/, (req) => {
-      intercepted = true;
-      req.continue();
-    }).as("ld");
-
-    cy.then(() => {
-      if (intercepted) {
-        cy.wait("@ld").then(({ request }) => {
-          const response = request.body.filter((item) => item.features)[0];
-          const ldFlags = response ? response.features : {};
-          continueTraversing(ldFlags);
-        });
-      } else {
-        continueTraversing({});
-      }
-    });
-  } else {
-    // Reset intercept
-    cy.intercept(/launchdarkly/, (req) => req.continue());
-    continueTraversing(flags);
-  }
+  continueTraversing(flags);
 };
 
 const traverseRoute = (route, flags) => {
@@ -177,8 +160,13 @@ const traverseRoute = (route, flags) => {
 
     //Fill out the 3 different types of forms
     completeForm(route.form);
+    cy.wait(1000);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
-    completeDrawerForm(route.drawerForm);
+    if (route.pageType === "modalOverlay") {
+      completeModalOverlayDrawerForm(route.drawerForm);
+    } else {
+      completeDrawerForm(route.drawerForm);
+    }
 
     cy.get('button:contains("Continue")').as("mcparContinueButton").focus();
     cy.get("@mcparContinueButton").click();
@@ -191,20 +179,23 @@ const traverseRoute = (route, flags) => {
 const completeDrawerForm = (drawerForm) => {
   if (drawerForm) {
     //enter the drawer, then fill out the form and save it
-    cy.get('button:contains("Enter")').then(($editButton) => {
-      if ($editButton.is(":disabled")) {
-        return;
-      } else {
-        cy.wrap($editButton).focus();
-        cy.get($editButton).click();
-        completeForm(drawerForm);
-        cy.get('button:contains("Save")')
-          .as("mcparCompleteDrawerSaveButton")
-          .focus();
-        cy.get("@mcparCompleteDrawerSaveButton").click();
-        cy.wait(1000);
-      }
-    });
+    cy.get('button:contains("Enter")')
+      .first()
+      .then(($editButton) => {
+        if ($editButton.is(":disabled")) {
+          return;
+        } else {
+          cy.wrap($editButton).focus();
+          cy.get($editButton).click();
+          completeForm(drawerForm);
+          cy.get('button:contains("Save & close")')
+            .first()
+            .as("mcparCompleteDrawerSaveButton")
+            .focus();
+          cy.get("@mcparCompleteDrawerSaveButton").click();
+          cy.wait(1000);
+        }
+      });
   }
 };
 
@@ -222,6 +213,22 @@ const completeModalForm = (modalForm, buttonText) => {
       .focus();
     cy.get("@mcparCompleteModalSaveButton").click();
     cy.wait(1000);
+  }
+};
+
+const completeModalOverlayDrawerForm = (drawerForm) => {
+  if (drawerForm) {
+    cy.get('button:contains("Enter")')
+      .first()
+      .as("mcparModalOverlayDrawerEnterButton")
+      .focus();
+    cy.get("@mcparModalOverlayDrawerEnterButton").click();
+    completeDrawerForm(drawerForm);
+    cy.get('button:contains("Save & return")')
+      .first()
+      .as("mcparModalOverlayDrawerSaveButton")
+      .focus();
+    cy.get("@mcparModalOverlayDrawerSaveButton").click();
   }
 };
 
@@ -280,7 +287,7 @@ const processField = (field) => {
       case "checkbox": {
         const firstChoice = field.props?.choices?.[0];
 
-        if (firstChoice && firstChoice.id !== "placeholder") {
+        if (firstChoice && firstChoice.id !== "generatedCheckbox") {
           cy.get(`#${field.id}-${firstChoice.id}`).check();
           firstChoice.children?.forEach(processField);
           break;
