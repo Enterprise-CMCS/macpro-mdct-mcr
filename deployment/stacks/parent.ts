@@ -8,15 +8,15 @@ import {
   Stack,
   StackProps,
 } from "aws-cdk-lib";
-import { DeploymentConfigProperties } from "../deployment-config";
-import { createDataComponents } from "./data";
-import { createUiAuthComponents } from "./ui-auth";
-import { createUiComponents } from "./ui";
-import { createApiComponents } from "./api";
-import { deployFrontend } from "./deployFrontend";
-import { isLocalStack } from "../local/util";
-import { createTopicsComponents } from "./topics";
-import { getSubnets } from "../utils/vpc";
+import { DeploymentConfigProperties } from "../deployment-config.js";
+import { createDataComponents } from "./data.js";
+import { createUiAuthComponents } from "./ui-auth.js";
+import { createUiComponents } from "./ui.js";
+import { createApiComponents } from "./api.js";
+import { deployFrontend } from "./deployFrontend.js";
+import { isLocalStack } from "../local/util.js";
+import { createTopicsComponents } from "./topics.js";
+import { getSubnets } from "../utils/vpc.js";
 
 export class ParentStack extends Stack {
   constructor(

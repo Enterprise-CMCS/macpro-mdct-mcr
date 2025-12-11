@@ -1,5 +1,5 @@
-import { isLocalStack } from "./local/util";
-import { getSecret } from "./utils/secrets-manager";
+import { isLocalStack } from "./local/util.js";
+import { getSecret } from "./utils/secrets-manager.js";
 
 export interface DeploymentConfigProperties {
   bootstrapUsersPassword?: string;

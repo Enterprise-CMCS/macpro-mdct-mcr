@@ -11,11 +11,11 @@ import {
   StackProps,
   Tags,
 } from "aws-cdk-lib";
-import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy";
-import { loadDefaultSecret } from "./deployment-config";
 import { Construct } from "constructs";
-import { isLocalStack } from "./local/util";
-import { tryImport } from "./utils/misc";
+import { CloudWatchLogsResourcePolicy } from "./constructs/cloudwatch-logs-resource-policy.js";
+import { loadDefaultSecret } from "./deployment-config.js";
+import { isLocalStack } from "./local/util.js";
+import { tryImport } from "./utils/misc.js";
 
 interface PrerequisiteConfigProps {
   project: string;
