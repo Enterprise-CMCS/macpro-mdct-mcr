@@ -1,7 +1,7 @@
 {
   "type": "module",
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^22.19.2",
     "typescript": "^5.9.3"
   }
 }
