@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
-import { ParentStack } from "./stacks/parent";
-import { determineDeploymentConfig } from "./deployment-config";
+import { ParentStack } from "./stacks/parent.js";
+import { determineDeploymentConfig } from "./deployment-config.js";
 
 async function main() {
   const app = new App({
