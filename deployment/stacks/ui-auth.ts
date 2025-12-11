@@ -8,9 +8,9 @@ import {
   RemovalPolicy,
   triggers,
 } from "aws-cdk-lib";
-import { WafConstruct } from "../constructs/waf";
-import { isLocalStack } from "../local/util";
-import { Lambda } from "../constructs/lambda";
+import { WafConstruct } from "../constructs/waf.js";
+import { isLocalStack } from "../local/util.js";
+import { Lambda } from "../constructs/lambda.js";
 
 interface CreateUiAuthComponentsProps {
   scope: Construct;
