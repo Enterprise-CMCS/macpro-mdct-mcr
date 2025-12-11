@@ -11,7 +11,7 @@ permissions:
 jobs:
   update-pr:
     if: |
-      contains(github.event.pull_request.labels.*.name, 'production release') ||
+      contains(github.event.pull_request.labels.*.name, 'prod release') ||
       contains(github.event.pull_request.labels.*.name, 'val release') ||
       contains(github.event.pull_request.labels.*.name, 'keep updated')
     runs-on: ubuntu-latest

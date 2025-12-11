@@ -1,9 +1,10 @@
+import { createHash } from "crypto";
 import {
   compileValidationJsonFromRoutes,
   filterByFlag,
   flattenReportRoutesArray,
   formTemplateForReportType,
-  generateModifiedTemplate,
+  filterFormTemplateRoutes,
   generatePCCMTemplate,
   getOrCreateFormTemplate,
   getValidationFromFormTemplate,
@@ -31,7 +32,6 @@ import {
   FormField,
   FormLayoutElement,
 } from "../types";
-import { createHash } from "crypto";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -51,7 +51,7 @@ const currentPCCMFormHash = createHash("md5")
   .update(JSON.stringify(pccmTemplate))
   .digest("hex");
 
-const modifiedTemplate = generateModifiedTemplate(
+const modifiedTemplate = filterFormTemplateRoutes(
   mcpar as ReportJson,
   ["Access Measures"],
   ["accessMeasures"]
