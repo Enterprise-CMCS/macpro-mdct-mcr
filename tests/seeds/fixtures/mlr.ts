@@ -6,32 +6,45 @@ import {
 import { dateFormat, numberFloat, numberInt } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
-export const newMlr = (stateName: string): SeedNewReportShape => ({
-  metadata: {
-    lastAlteredBy: faker.person.fullName(),
-    locked: false,
-    previousRevisions: [],
-    programName: faker.book.series(),
-    reportType: ReportType.MLR,
-    status: ReportStatus.NOT_STARTED,
-    submissionCount: 0,
-  },
-  fieldData: {
-    stateName,
-    versionControl: [
-      {
-        key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
-        value: "No, this is an initial submission",
-      },
-    ],
-  },
-});
+export const newMlr = (
+  flags: string[],
+  stateName: string
+): SeedNewReportShape => {
+  if (flags.length > 0) {
+    // Add data mods by flag
+  }
 
-export const fillMlr = (): SeedFillReportShape => {
+  return {
+    metadata: {
+      lastAlteredBy: faker.person.fullName(),
+      locked: false,
+      previousRevisions: [],
+      programName: faker.book.series(),
+      reportType: ReportType.MLR,
+      status: ReportStatus.NOT_STARTED,
+      submissionCount: 0,
+    },
+    fieldData: {
+      stateName,
+      versionControl: [
+        {
+          key: "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+          value: "No, this is an initial submission",
+        },
+      ],
+    },
+  };
+};
+
+export const fillMlr = (flags: string[]): SeedFillReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
   });
+
+  if (flags.length > 0) {
+    // Add data mods by flag
+  }
 
   return {
     metadata: {

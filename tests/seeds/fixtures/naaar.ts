@@ -11,6 +11,7 @@ import { SeedFillReportShape, SeedNewReportShape } from "../types";
 const analysisMethods = [...DEFAULT_ANALYSIS_METHODS];
 
 export const newNaaar = (
+  flags: string[],
   stateName: string,
   state: string,
   options: { [key: string]: boolean } = {}
@@ -75,6 +76,10 @@ export const newNaaar = (
   ];
   const newProgramName = isNewProgram ? programName : undefined;
 
+  if (flags.length > 0) {
+    // Add data mods by flag
+  }
+
   return {
     metadata: {
       copyFieldDataSourceId: "",
@@ -105,16 +110,24 @@ export const newNaaar = (
   };
 };
 
-export const newNaaarNewProgram = (stateName: string, state: string) => {
-  return newNaaar(stateName, state, { isNewProgram: true });
+export const newNaaarNewProgram = (
+  flags: string[],
+  stateName: string,
+  state: string
+) => {
+  return newNaaar(flags, stateName, state, { isNewProgram: true });
 };
 
-export const fillNaaar = (): SeedFillReportShape => {
+export const fillNaaar = (flags: string[]): SeedFillReportShape => {
   const planId = crypto.randomUUID();
   const standardId = crypto.randomUUID();
   const planName = faker.animal.cat();
   const providerTypeId = "UZK4hxPVnuYGcIgNzYFHCk";
   const standardTypeId = "kIrheUXLpOwF7OEypso8Ylhs";
+
+  if (flags.length > 0) {
+    // Add data mods by flag
+  }
 
   return {
     metadata: {
