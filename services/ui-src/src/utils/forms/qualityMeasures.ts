@@ -1,7 +1,7 @@
 // types
 import { EntityShape, FormJson } from "types";
 
-export const RATE_ID_PREFIX = "measure_rate_results-";
+export const RATE_ID_PREFIX = "measure_rateResults-";
 
 export const createRateField = (id: string, name: string) => ({
   id: `${RATE_ID_PREFIX}${id}`,
