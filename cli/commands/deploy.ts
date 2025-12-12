@@ -7,7 +7,6 @@ import {
 import { checkIfAuthenticated } from "../lib/sts.js";
 import { region } from "../lib/consts.js";
 import { runCommand } from "../lib/runner.js";
-import { tryImport } from "../lib/optional-imports.js";
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
@@ -35,13 +34,6 @@ export const deploy = {
     const project = process.env.PROJECT!;
 
     if (await stackExists(`${project}-prerequisites`)) {
-      const clamModule = await tryImport<{ default: () => Promise<void> }>(
-        "../lib/clam.js"
-      );
-      if (clamModule) {
-        const downloadClamAvLayer = clamModule.default;
-        await downloadClamAvLayer();
-      }
       await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
       await runCommand(
         "CDK deploy",
