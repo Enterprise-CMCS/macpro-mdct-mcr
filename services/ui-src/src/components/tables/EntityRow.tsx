@@ -25,6 +25,7 @@ export const EntityRow = ({
   openDeleteEntityModal,
   entering,
   openDisabled = false,
+  override,
 }: EntityRowProps) => {
   const { isMobile } = useBreakpoint();
   const { report } = useStore();
@@ -34,7 +35,7 @@ export const EntityRow = ({
   const { reportType } = report || {};
 
   const entityComplete = useMemo(() => {
-    return getEntityStatus(entity, report, entityType);
+    return override ?? getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const entityFields = () => {
@@ -65,7 +66,11 @@ export const EntityRow = ({
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity} entityType={entityType} />
+        <EntityStatusIcon
+          entity={entity}
+          entityType={entityType}
+          override={override}
+        />
       </Td>
       <Td sx={sx.entityFields}>
         {isMobile && (
@@ -104,6 +109,7 @@ export interface EntityRowProps {
   openDeleteEntityModal?: Function;
   openDisabled?: boolean;
   openOverlayOrDrawer?: Function;
+  override?: boolean;
 }
 
 const sx = {
