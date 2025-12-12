@@ -69,16 +69,15 @@ export const AddEditEntityModal = ({
         (entity: EntityShape) => entity.id === selectedEntity.id
       );
       const updatedEntities = currentEntities;
-      let updatedEntity = updatedEntities[selectedEntityIndex];
 
-      updatedEntity = {
+      updatedEntities[selectedEntityIndex] = {
         id: selectedEntity.id,
         ...currentEntities[selectedEntityIndex],
         ...filteredFormData,
       };
 
-      updatedEntity = setClearedEntriesToDefaultValue(
-        updatedEntity,
+      updatedEntities[selectedEntityIndex] = setClearedEntriesToDefaultValue(
+        updatedEntities[selectedEntityIndex],
         entriesToClear
       );
 
@@ -86,13 +85,13 @@ export const AddEditEntityModal = ({
       dataToWrite.fieldData = addEditEntityModifications(
         entityType,
         updatedEntities,
-        updatedEntity,
+        updatedEntities[selectedEntityIndex],
         plans
       );
 
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
-        updatedEntity
+        updatedEntities[selectedEntityIndex]
       );
       if (shouldSave) await updateReport(reportKeys, dataToWrite);
     } else {
