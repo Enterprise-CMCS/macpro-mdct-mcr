@@ -16,20 +16,15 @@ export const getMcparEntityStatus = (
 ) => {
   const plans = report?.fieldData?.plans;
   const planForm = route?.drawerForm;
-  if (entityType === EntityType.QUALITY_MEASURES && plans && planForm) {
-    for (const plan of plans) {
-      const isPlanComplete = calculateIsEntityCompleted({
-        entity: plan,
-        form: planForm,
-        isMeasuresAndResultsPage: true,
-        isCustomEntity: false,
-        measureId: entity.id,
-      });
-      if (!isPlanComplete) {
-        return false;
-      }
-    }
-    return true;
-  }
-  return false;
+  if (entityType !== EntityType.QUALITY_MEASURES || !plans || !planForm)
+    return false;
+
+  return plans.every((plan: EntityShape) =>
+    calculateIsEntityCompleted({
+      entity: plan,
+      form: planForm,
+      isMeasuresAndResultsPage: true,
+      measureId: entity.id,
+    })
+  );
 };

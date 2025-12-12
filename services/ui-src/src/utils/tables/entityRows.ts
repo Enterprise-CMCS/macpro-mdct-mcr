@@ -347,7 +347,7 @@ interface ButtonProps {
 interface CalculateEntityCompletionProps {
   addEntityForm?: FormJson;
   entity: EntityShape;
-  isCustomEntity: boolean;
+  isCustomEntity?: boolean;
   form: FormJson;
   reportingOnIlos?: boolean;
   isMeasuresAndResultsPage?: boolean;
