@@ -178,7 +178,7 @@ const traverseRoute = (route, flags) => {
 };
 
 const completeDrawerForm = (drawerForm) => {
-  if (drawerForm) {
+  if (drawerForm && drawerForm.fields?.length > 0) {
     //enter the drawer, then fill out the form and save it
     cy.get('button:contains("Enter")')
       .first()
@@ -202,7 +202,7 @@ const completeDrawerForm = (drawerForm) => {
 
 const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
-  if (modalForm && buttonText) {
+  if (modalForm && modalForm.fields?.length > 0 && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
       .first()
       .as("mcparCompleteModalButton")
@@ -218,7 +218,7 @@ const completeModalForm = (modalForm, buttonText) => {
 };
 
 const completeModalOverlayDrawerForm = (drawerForm) => {
-  if (drawerForm) {
+  if (drawerForm && drawerForm.fields?.length > 0) {
     cy.get('button:contains("Enter")')
       .first()
       .as("mcparModalOverlayDrawerEnterButton")
