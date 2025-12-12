@@ -9,6 +9,7 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   kafkaAuthorizedSubnetIds: string;
   launchDarklyClient: string;
+  launchDarklyServer: string;
   oktaMetadataUrl: string;
   project: string;
   redirectSignout: string;
@@ -75,6 +76,7 @@ function validateConfig(config: {
     "brokerString",
     "kafkaAuthorizedSubnetIds",
     "launchDarklyClient",
+    "launchDarklyServer",
     "oktaMetadataUrl",
     "project",
     "redirectSignout",
