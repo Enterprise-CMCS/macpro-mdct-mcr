@@ -1,4 +1,5 @@
 import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
+import newQualityMeasuresSectionEnabled from "../../../../services/app-api/forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 before(() => {
   cy.archiveExistingMcparReports();
@@ -10,7 +11,9 @@ describe("MCPAR E2E Form Submission", () => {
 
     const flags = Cypress.env("ldFlags");
 
-    const routes = mcparReportJson.routes;
+    const routes = flags.newQualityMeasuresSectionEnabled
+      ? newQualityMeasuresSectionEnabled.routes
+      : mcparReportJson.routes;
 
     fillOutMCPAR(routes, flags);
 
@@ -39,7 +42,9 @@ describe("MCPAR E2E Form Submission", () => {
 
     const flags = Cypress.env("ldFlags");
 
-    const routes = mcparReportJson.routes;
+    const routes = flags.newQualityMeasuresSectionEnabled
+      ? newQualityMeasuresSectionEnabled.routes
+      : mcparReportJson.routes;
 
     fillOutPartialMCPAR(routes, flags);
 

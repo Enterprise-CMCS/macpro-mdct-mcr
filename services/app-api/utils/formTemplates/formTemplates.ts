@@ -22,6 +22,8 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+// flagged routes
+import newQualityMeasuresSectionEnabledForm from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -57,7 +59,7 @@ export async function getTemplateVersionByHash(
 
 export const formTemplateForReportType = (
   reportType: ReportType,
-  _options: { [key: string]: boolean } = {}
+  options: { [key: string]: boolean } = {}
 ) => {
   const routeMap: Record<ReportType, ReportJson> = {
     [ReportType.MCPAR]: mcparForm as ReportJson,
@@ -69,6 +71,14 @@ export const formTemplateForReportType = (
     throw new Error(
       "Not Implemented: ReportType not recognized by FormTemplateProvider"
     );
+  }
+
+  if (
+    reportType === ReportType.MCPAR &&
+    options.newQualityMeasuresSectionEnabled
+  ) {
+    routeMap[ReportType.MCPAR] =
+      newQualityMeasuresSectionEnabledForm as ReportJson;
   }
 
   return structuredClone(routeMap[reportType] as ReportJson);

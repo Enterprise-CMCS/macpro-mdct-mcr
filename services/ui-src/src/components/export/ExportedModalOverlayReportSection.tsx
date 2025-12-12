@@ -11,7 +11,7 @@ import {
 } from "types";
 // utils
 import {
-  getEntityDetailsMLR,
+  getProgramInfo,
   getReportVerbiage,
   mapNaaarStandardsData,
   useStore,
@@ -83,10 +83,30 @@ export function renderModalOverlayTableBody(
   entities: EntityShape[]
 ) {
   switch (reportType) {
+    case ReportType.MCPAR:
+      return entities.map((entity, idx) => {
+        const { measure_name } = entity;
+        return (
+          <Tr key={idx}>
+            <Td>
+              <Text sx={sx.tableIndex}>{idx + 1}</Text>
+            </Td>
+            {["placeholder"].map((value) => (
+              <Td key={`${value}-${idx}`}>
+                <Text>{measure_name}</Text>
+              </Td>
+            ))}
+          </Tr>
+        );
+      });
     case ReportType.MLR:
       return entities.map((entity, idx) => {
-        const { report_programName, mlrEligibilityGroup, reportingPeriod } =
-          getEntityDetailsMLR(entity);
+        const [
+          reportPlanName,
+          reportProgramName,
+          eligibilityGroup,
+          reportingPeriod,
+        ] = getProgramInfo(entity);
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>
@@ -97,9 +117,9 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
-                {entity.report_planName ?? "Not entered"} <br />
-                {report_programName} <br />
-                {mlrEligibilityGroup} <br />
+                {reportPlanName ?? "Not entered"} <br />
+                {reportProgramName} <br />
+                {eligibilityGroup} <br />
                 {reportingPeriod}
               </Text>
             </Td>

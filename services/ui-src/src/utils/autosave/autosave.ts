@@ -1,17 +1,21 @@
 import { FieldValues, UseFormReturn } from "react-hook-form";
+// types
 import {
   AnyObject,
   AutosaveField,
   EntityType,
   EntityShape,
   ReportStatus,
-  ReportType,
 } from "types";
-import { deletePlanData } from "utils/forms/priorAuthorization";
+// utils
+import {
+  dataModifications,
+  handlePriorAuthorization,
+} from "./dataModifications";
 
 type FieldValue = any;
 
-type FieldDataTuple = [string, FieldValue];
+export type FieldDataTuple = [string, FieldValue];
 
 interface FieldInfo {
   name: string;
@@ -140,75 +144,18 @@ export const autosaveFieldData = async ({
         }, // create field data object
       };
     } else {
-      // create field data object
-      const fieldData = Object.fromEntries(fieldsToSave);
-      dataToWrite = {
-        ...dataToWrite,
-        fieldData,
-      };
-
-      // handle Prior Authorization case
-      let reportingOnPriorAuthorization: boolean = true;
-      if (
-        fieldsToSave[0][0] === "reportingDataPriorToJune2026" &&
-        fieldsToSave[0][1][0].value !== "Yes"
-      ) {
-        reportingOnPriorAuthorization = false;
-      }
-      if (!reportingOnPriorAuthorization) {
-        const filteredFieldData = deletePlanData(reportFieldData!["plans"]);
-        dataToWrite = {
-          ...dataToWrite,
-          fieldData: { ...fieldData, plans: filteredFieldData },
-        };
-      }
-    }
-
-    const hasEditedPlans = dataToWrite.fieldData.plans;
-    const hasAnalysisMethods =
-      reportFieldData?.analysisMethods &&
-      reportFieldData.analysisMethods.length > 0;
-
-    // NAAAR plans were edited
-    if (
-      reportKeys.reportType === ReportType.NAAAR &&
-      hasEditedPlans &&
-      hasAnalysisMethods
-    ) {
-      // All plans are submitted on individual edits
-      const plans = [...dataToWrite.fieldData.plans];
-      const planNames = Object.fromEntries(
-        plans.map((plan: AnyObject) => [
-          `analysis_method_applicable_plans-${plan.id}`,
-          plan.name,
-        ])
+      dataToWrite = handlePriorAuthorization(
+        dataToWrite,
+        reportFieldData,
+        fieldsToSave
       );
-      const analysisMethods = [...reportFieldData.analysisMethods];
-
-      for (const analysisMethod of analysisMethods) {
-        const applicablePlans = analysisMethod.analysis_method_applicable_plans;
-
-        if (applicablePlans) {
-          analysisMethod.analysis_method_applicable_plans = applicablePlans
-            .map((plan: AnyObject) => {
-              // Look up plan name
-              const name = planNames[plan.key];
-              // If plan name isn't in object, it was deleted
-              return name ? { key: plan.key, value: name } : undefined;
-            })
-            // Remove undefined plans from array
-            .filter(Boolean);
-        }
-      }
-
-      dataToWrite = {
-        ...dataToWrite,
-        fieldData: {
-          ...dataToWrite.fieldData,
-          analysisMethods,
-        },
-      };
     }
+
+    dataToWrite = dataModifications(
+      report.reportType,
+      dataToWrite,
+      reportFieldData
+    );
 
     await updateReport(reportKeys, dataToWrite);
   }

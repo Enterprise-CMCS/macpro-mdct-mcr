@@ -40,6 +40,7 @@ export default {
     indicator: "Indicator",
     response: "Response",
   },
+  modalOverlayTableHeaders: {},
   emptyEntityMessage: {
     accessMeasures: "0  - No access measures entered",
     sanctions: "0 - No sanctions entered",
