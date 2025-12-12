@@ -14,6 +14,7 @@ import {
 } from "types";
 // utils
 import {
+  addEditEntityModifications,
   entityWasUpdated,
   filterFormData,
   getEntriesToClear,
@@ -46,7 +47,7 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    let dataToWrite = {
+    const dataToWrite: AnyObject = {
       metadata: {
         lastAlteredBy: full_name,
         status: ReportStatus.IN_PROGRESS,
@@ -80,7 +81,14 @@ export const AddEditEntityModal = ({
         entriesToClear
       );
 
-      dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const plans = report?.fieldData?.plans;
+      dataToWrite.fieldData = addEditEntityModifications(
+        entityType,
+        updatedEntities,
+        updatedEntities[selectedEntityIndex],
+        plans
+      );
+
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
         updatedEntities[selectedEntityIndex]
