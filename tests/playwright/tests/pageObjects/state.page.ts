@@ -1,5 +1,10 @@
 import { Page } from "@playwright/test";
-import { statePassword, stateUser, stateUserAuth } from "../../utils/consts";
+import {
+  statePassword,
+  stateUser,
+  stateUserAuth,
+  stateUserHeading,
+} from "../../utils/consts";
 
 export class StatePage {
   readonly page: Page;
@@ -48,7 +53,7 @@ export class StatePage {
       );
       await this.page
         .getByRole("heading", {
-          name: "Managed Care Reporting Portal",
+          name: stateUserHeading,
         })
         .isVisible();
       await this.page.context().storageState({ path: stateUserAuth });

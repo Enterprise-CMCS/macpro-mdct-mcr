@@ -4,7 +4,7 @@ test.describe("admin user banner page", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/admin");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForBannersToLoad();
+    await adminPage.waitForRequest("/banners", "GET");
     await adminPage.deleteExistingBanners();
   });
 

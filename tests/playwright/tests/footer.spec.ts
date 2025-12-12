@@ -30,7 +30,7 @@ test.describe("Global footer tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForBannersToLoad();
+    await adminPage.waitForRequest("/banners", "GET");
   });
 
   test("Footer help link navigates to /help", async ({ adminPage }) => {

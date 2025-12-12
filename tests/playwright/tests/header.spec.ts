@@ -1,3 +1,4 @@
+import { adminUserHeading, stateUserHeading } from "../utils/consts";
 import { test, expect } from "./fixtures/base";
 
 test.describe("Header tests - State user", () => {
@@ -10,13 +11,13 @@ test.describe("Header tests - State user", () => {
   test("MCR logo link should navigate to /", async ({ statePage }) => {
     await expect(
       statePage.page.getByRole("heading", {
-        name: "Managed Care Reporting Portal",
+        name: stateUserHeading,
       })
     ).toBeVisible();
     await statePage.page.getByAltText("MCR logo").click();
     await expect(
       statePage.page.getByRole("heading", {
-        name: "Managed Care Reporting Portal",
+        name: stateUserHeading,
       })
     ).toBeVisible();
   });
@@ -42,19 +43,19 @@ test.describe("Header tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForBannersToLoad();
+    await adminPage.waitForRequest("/banners", "GET");
   });
 
   test("MCR logo link should navigate to /", async ({ adminPage }) => {
     await expect(
       adminPage.page.getByRole("heading", {
-        name: "View State/Territory Reports",
+        name: adminUserHeading,
       })
     ).toBeVisible();
     await adminPage.page.getByAltText("MCR logo").click();
     await expect(
       adminPage.page.getByRole("heading", {
-        name: "View State/Territory Reports",
+        name: adminUserHeading,
       })
     ).toBeVisible();
   });
