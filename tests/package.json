@@ -23,7 +23,10 @@
     "concurrently": "^8.2.2",
     "cypress": "^14.2.0",
     "cypress-axe": "^1.6.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "playwright-core": ">= 1.0.0",
+    "aws4": "^1.13.2",
+    "@types/aws4": "^1.11.6"
   },
   "dependencies": {
     "cross-spawn": "^7.0.6",
