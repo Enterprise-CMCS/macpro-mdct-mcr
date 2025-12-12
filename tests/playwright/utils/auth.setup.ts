@@ -17,7 +17,12 @@ async function interceptIdentityRequest(page: Page): Promise<void> {
 
   const routeHandler = async (route: any) => {
     const request = route.request();
-    if (request.method() === "POST") {
+    const amzTarget = request.headers()["x-amz-target"];
+
+    if (
+      request.method() === "POST" &&
+      amzTarget === "AWSCognitoIdentityService.GetCredentialsForIdentity"
+    ) {
       const response = await route.fetch();
       const responseBody = await response.json();
 
