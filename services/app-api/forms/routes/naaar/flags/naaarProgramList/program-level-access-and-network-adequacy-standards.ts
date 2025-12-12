@@ -123,7 +123,7 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
                     id: "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi",
                     type: ReportFormFieldType.TEXT,
                     validation: {
-                      type: ValidationType.TEXT,
+                      type: ValidationType.TEXT_OPTIONAL,
                       nested: true,
                       parentFieldName: "standard_coreProviderType",
                       parentOptionId:
@@ -165,7 +165,7 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
                     id: "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                     type: ReportFormFieldType.TEXT,
                     validation: {
-                      type: ValidationType.TEXT_OPTIONAL,
+                      type: ValidationType.TEXT,
                       nested: true,
                       parentFieldName: "standard_coreProviderType",
                       parentOptionId:

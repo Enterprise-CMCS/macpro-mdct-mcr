@@ -672,7 +672,7 @@
                       "id": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi",
                       "type": "text",
                       "validation": {
-                        "type": "text",
+                        "type": "textOptional",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_coreProviderType-9kBoKCLD1dYizieU5psnJi"
@@ -710,7 +710,7 @@
                       "id": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                       "type": "text",
                       "validation": {
-                        "type": "textOptional",
+                        "type": "text",
                         "nested": true,
                         "parentFieldName": "standard_coreProviderType",
                         "parentOptionId": "standard_coreProviderType-kV7553HIWXekySIFLiMXLW"
