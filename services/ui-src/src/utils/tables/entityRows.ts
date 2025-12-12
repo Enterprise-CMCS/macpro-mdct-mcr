@@ -131,7 +131,7 @@ export const calculateIsEntityCompleted = ({
     entityData: EntityShape = entity
   ) => {
     let formFields = fields;
-    if (isCustomEntity) {
+    if (isCustomEntity && addEntityForm) {
       formFields = addEntityForm.fields;
     }
     return formFields
@@ -345,11 +345,11 @@ interface ButtonProps {
 }
 
 interface CalculateEntityCompletionProps {
-  addEntityForm: FormJson;
+  addEntityForm?: FormJson;
   entity: EntityShape;
   isCustomEntity: boolean;
   form: FormJson;
-  reportingOnIlos: boolean;
+  reportingOnIlos?: boolean;
   isMeasuresAndResultsPage?: boolean;
   measureId?: string;
 }

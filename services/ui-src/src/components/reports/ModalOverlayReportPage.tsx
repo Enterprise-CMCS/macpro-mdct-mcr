@@ -31,6 +31,7 @@ import {
   useStore,
   resetClearProp,
   routeChecker,
+  getMcparEntityStatus,
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -68,6 +69,7 @@ export const ModalOverlayReportPage = ({
 
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
   let openDisabled = false;
+  let statusOverride: Function = () => undefined;
 
   const isMeasuresAndResultsPage = routeChecker.isMeasuresAndResultsPage(route);
 
@@ -76,6 +78,8 @@ export const ModalOverlayReportPage = ({
     const plans = report.fieldData?.["plans"];
     const hasPlans = plans?.length > 0;
     openDisabled = !hasPlans && hasPlans !== undefined;
+    statusOverride = (entity: EntityShape) =>
+      getMcparEntityStatus(entity, report, entityType, route);
   }
 
   // Display Variables
@@ -252,6 +256,7 @@ export const ModalOverlayReportPage = ({
                     <EntityRow
                       key={entity.id}
                       entity={entity}
+                      override={statusOverride(entity)}
                       verbiage={verbiage}
                       locked={isLocked}
                       entering={entering}
