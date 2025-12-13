@@ -202,7 +202,7 @@ const seed = async (): Promise<void> => {
         const reportType = answer.toString().replace("createFilled", "");
         const flags = await getEnabledFlagsByReportType(reportType);
         createdLog(
-          await createFilledReport(reportType, flags),
+          await createFilledReport(flags, reportType),
           "Filled",
           reportType
         );
@@ -212,7 +212,7 @@ const seed = async (): Promise<void> => {
         const reportType = answer.toString().replace("createSubmitted", "");
         const flags = await getEnabledFlagsByReportType(reportType);
         createdLog(
-          await createSubmittedReport(reportType, flags),
+          await createSubmittedReport(flags, reportType),
           "Submitted",
           reportType
         );
@@ -222,7 +222,7 @@ const seed = async (): Promise<void> => {
         const reportType = answer.toString().replace("createArchived", "");
         const flags = await getEnabledFlagsByReportType(reportType);
         createdLog(
-          await createArchivedReport(reportType, flags),
+          await createArchivedReport(flags, reportType),
           "Archived",
           reportType
         );
@@ -231,7 +231,7 @@ const seed = async (): Promise<void> => {
       case answer.toString().startsWith("create"): {
         const reportType = answer.toString().replace("create", "");
         const flags = await getEnabledFlagsByReportType(reportType);
-        createdLog(await createReport(reportType, flags), "Base", reportType);
+        createdLog(await createReport(flags, reportType), "Base", reportType);
         break;
       }
       case answer === "quickCreateReports": {
@@ -239,7 +239,7 @@ const seed = async (): Promise<void> => {
           reportTypes.map(async (reportType) => {
             const flags = await getEnabledFlagsByReportType(reportType);
             createdLog(
-              await createFilledReport(reportType, flags),
+              await createFilledReport(flags, reportType),
               "Filled",
               reportType
             );

@@ -37,8 +37,8 @@ export const loginSeedUsers = async (): Promise<void> => {
 
 // Reports
 export const createReport = async (
-  reportType: string,
-  flags: { [key: string]: true }
+  flags: { [key: string]: true },
+  reportType: string
 ): Promise<SeedReportShape> => {
   const newReport = {
     MCPAR: newMcpar,
@@ -62,10 +62,10 @@ export const createReport = async (
 };
 
 export const createFilledReport = async (
-  reportType: string,
-  flags: { [key: string]: true }
+  flags: { [key: string]: true },
+  reportType: string
 ): Promise<SeedReportShape> => {
-  const { id, programIsPCCM } = await createReport(reportType, flags);
+  const { id, programIsPCCM } = await createReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
   const report = await updateFillReport(
     id,
@@ -97,10 +97,10 @@ export const updateFillReport = async (
 };
 
 export const createSubmittedReport = async (
-  reportType: string,
-  flags: { [key: string]: true }
+  flags: { [key: string]: true },
+  reportType: string
 ): Promise<SeedReportShape> => {
-  const { id } = await createFilledReport(reportType, flags);
+  const { id } = await createFilledReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
   const report = await updateSubmitReport(id, baseReportType);
   return report;
@@ -119,10 +119,10 @@ export const updateSubmitReport = async (
 };
 
 export const createArchivedReport = async (
-  reportType: string,
-  flags: { [key: string]: true }
+  flags: { [key: string]: true },
+  reportType: string
 ): Promise<SeedReportShape> => {
-  const { id } = await createSubmittedReport(reportType, flags);
+  const { id } = await createSubmittedReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
   const report = await updateArchiveReport(id, baseReportType);
   return report;
