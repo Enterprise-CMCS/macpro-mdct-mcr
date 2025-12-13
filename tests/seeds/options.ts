@@ -37,6 +37,7 @@ export const loginSeedUsers = async (): Promise<void> => {
 
 // Reports
 export const createReport = async (
+  flags: { [key: string]: true },
   reportType: string
 ): Promise<SeedReportShape> => {
   const newReport = {
@@ -50,7 +51,7 @@ export const createReport = async (
     NAAAR: newNaaar,
     "NAAAR-newProgram": newNaaarNewProgram,
   } as { [key: string]: Function };
-  const data = newReport[reportType](stateName, state);
+  const data = newReport[reportType](flags, stateName, state);
   const baseReportType = reportType.split("-")[0];
   const report = await postApi(
     `/reports/${baseReportType}/${state}`,
@@ -61,17 +62,24 @@ export const createReport = async (
 };
 
 export const createFilledReport = async (
+  flags: { [key: string]: true },
   reportType: string
 ): Promise<SeedReportShape> => {
-  const { id, programIsPCCM } = await createReport(reportType);
+  const { id, programIsPCCM } = await createReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
-  const report = await updateFillReport(id, baseReportType, programIsPCCM);
+  const report = await updateFillReport(
+    id,
+    baseReportType,
+    flags,
+    programIsPCCM
+  );
   return report;
 };
 
 export const updateFillReport = async (
   id: string,
   reportType: string,
+  flags: { [key: string]: true },
   programIsPCCM?: Choice[]
 ): Promise<SeedReportShape> => {
   const fillReport = {
@@ -79,7 +87,7 @@ export const updateFillReport = async (
     MLR: fillMlr,
     NAAAR: fillNaaar,
   } as { [key: string]: Function };
-  const data = fillReport[reportType](programIsPCCM);
+  const data = fillReport[reportType](flags, programIsPCCM);
   const report = await putApi(
     `/reports/${reportType}/${state}/${id}`,
     headers,
@@ -89,9 +97,10 @@ export const updateFillReport = async (
 };
 
 export const createSubmittedReport = async (
+  flags: { [key: string]: true },
   reportType: string
 ): Promise<SeedReportShape> => {
-  const { id } = await createFilledReport(reportType);
+  const { id } = await createFilledReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
   const report = await updateSubmitReport(id, baseReportType);
   return report;
@@ -110,9 +119,10 @@ export const updateSubmitReport = async (
 };
 
 export const createArchivedReport = async (
+  flags: { [key: string]: true },
   reportType: string
 ): Promise<SeedReportShape> => {
-  const { id } = await createSubmittedReport(reportType);
+  const { id } = await createSubmittedReport(flags, reportType);
   const baseReportType = reportType.split("-")[0];
   const report = await updateArchiveReport(id, baseReportType);
   return report;
