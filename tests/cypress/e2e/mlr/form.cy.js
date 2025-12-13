@@ -64,7 +64,10 @@ describe("test unlock with incomplete reports", () => {
   it("A report cannot be unlocked if it is unfinished", () => {
     cy.authenticate("stateUser");
 
-    fillOutMLR(programName);
+    const flags = Cypress.env("ldFlags");
+    const routes = getRoutesByFlag(flags);
+
+    fillOutMLR(routes, programName);
     // skip submit step
     cy.contains("Successfully Submitted").should("not.exist");
   });
