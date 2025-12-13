@@ -7,10 +7,10 @@ import { dateFormat, numberFloat, numberInt } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 export const newMlr = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string
 ): SeedNewReportShape => {
-  if (flags.length > 0) {
+  if (Object.keys(flags).length > 0) {
     // Add data mods by flag
   }
 
@@ -36,13 +36,15 @@ export const newMlr = (
   };
 };
 
-export const fillMlr = (flags: string[]): SeedFillReportShape => {
+export const fillMlr = (flags: {
+  [key: string]: true;
+}): SeedFillReportShape => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
   });
 
-  if (flags.length > 0) {
+  if (Object.keys(flags).length > 0) {
     // Add data mods by flag
   }
 

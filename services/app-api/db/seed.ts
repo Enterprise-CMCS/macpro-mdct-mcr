@@ -32,15 +32,21 @@ const getEnabledFlagsByReportType = async (reportType: string) => {
 
   // Get status of each flag from LaunchDarkly
   const evaluations = await Promise.all(
-    flagNames.map(async (flagName) => ({
-      flagName,
-      enabled: await isFeaturedFlagEnabled(flagName),
-    }))
+    flagNames.map(async (flagName) => {
+      const enabled = await isFeaturedFlagEnabled(flagName);
+      return { flagName, enabled };
+    })
   );
-  const enabledFlagNames = evaluations
-    .filter(({ enabled }) => enabled)
-    .map(({ flagName }) => flagName);
-  return enabledFlagNames;
+
+  return evaluations.reduce<Record<string, true>>(
+    (enabledFlags, { flagName, enabled }) => {
+      if (enabled) {
+        enabledFlags[flagName] = true;
+      }
+      return enabledFlags;
+    },
+    {}
+  );
 };
 
 const seed = async (): Promise<void> => {

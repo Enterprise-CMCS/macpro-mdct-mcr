@@ -10,7 +10,7 @@ import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 export const newMcpar = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string,
   options: { [key: string]: boolean } = {}
@@ -90,7 +90,7 @@ export const newMcpar = (
   ];
   const newProgramName = isNewProgram ? programName : undefined;
 
-  if (flags.length > 0) {
+  if (Object.keys(flags).length > 0) {
     // Add data mods by flag
   }
 
@@ -127,7 +127,7 @@ export const newMcpar = (
 };
 
 export const newMcparHasNaaarSubmission = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
@@ -135,7 +135,7 @@ export const newMcparHasNaaarSubmission = (
 };
 
 export const newMcparHasExpectedNaaarSubmission = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
@@ -145,7 +145,7 @@ export const newMcparHasExpectedNaaarSubmission = (
 };
 
 export const newMcparNewProgram = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
@@ -153,7 +153,7 @@ export const newMcparNewProgram = (
 };
 
 export const newMcparNewProgramPCCM = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
@@ -164,7 +164,7 @@ export const newMcparNewProgramPCCM = (
 };
 
 export const newMcparPCCM = (
-  flags: string[],
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
@@ -172,7 +172,7 @@ export const newMcparPCCM = (
 };
 
 export const fillMcpar = (
-  flags: string[],
+  flags: { [key: string]: true },
   programIsPCCM?: Choice[]
 ): SeedFillReportShape => {
   const numberOfExamples = 3;
@@ -205,7 +205,7 @@ export const fillMcpar = (
 
   const sanctions = planIds.map((planId) => createSanction(planId));
 
-  if (flags.length > 0) {
+  if (Object.keys(flags).length > 0) {
     // Add data mods by flag
   }
 
