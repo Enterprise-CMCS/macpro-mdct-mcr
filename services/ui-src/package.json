@@ -65,7 +65,6 @@
     "@types/react-dom": "^18.3.1",
     "@types/react-helmet": "^6.1.6",
     "axe-core": "^4.10.3",
-    "babel": "^6.23.0",
     "babel-jest": "^29.7.0",
     "jest-axe": "^6.0.0",
     "jest-launchdarkly-mock": "^2.0.3",
