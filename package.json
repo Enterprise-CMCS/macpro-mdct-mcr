@@ -51,7 +51,6 @@
     "amazon-user-pool-srp-client": "^1.0.4",
     "aws-cdk": "^2.1029.0",
     "aws-cdk-local": "^2.19.2",
-    "chromedriver": ">=135.0.1",
     "dotenv": "^16.6.1",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
