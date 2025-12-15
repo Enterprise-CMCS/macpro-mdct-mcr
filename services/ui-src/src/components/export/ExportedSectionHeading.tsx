@@ -21,7 +21,8 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
     const hideSectionIntroHeader =
       introType === "heading" &&
       introContent !== "Appeals Overview" &&
-      introContent !== "Network Adequacy";
+      introContent !== "Network Adequacy" &&
+      introContent !== "New plan exemption";
 
     return !hideSectionIntroHeader && sectionSubHeader;
   };
