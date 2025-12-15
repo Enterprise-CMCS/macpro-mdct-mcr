@@ -44,7 +44,13 @@ repos:
       - id: detect-secrets
         args:
           - --exclude-files
-          - .*test\.json|^tests/seeds/fixtures/|^services/app-api/utils/constants/copyover.ts
+          - .*test\.json
+          - --exclude-files
+          - ^tests/seeds/fixtures/
+          - --exclude-files
+          - ^services/app-api/forms/routes/
+          - --exclude-files
+          - ^services/app-api/utils/constants/copyover.ts
           - --exclude-files
           - services/uploads/src/test.json
           - --exclude-files
@@ -77,6 +83,11 @@ repos:
       - id: typescript-check-ui
         name: typescript-check-ui
         entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
+        language: system
+        pass_filenames: false
+      - id: typescript-check-cdk
+        name: typescript-check-cdk
+        entry: bash -c "cd deployment && yarn tsc --noEmit"
         language: system
         pass_filenames: false
       - id: validate-commit-msg

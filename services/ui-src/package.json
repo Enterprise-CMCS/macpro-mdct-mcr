@@ -62,7 +62,6 @@
     "@types/react-helmet": "^6.1.6",
     "@vitejs/plugin-react": "^5.0.3",
     "axe-core": "^4.10.3",
-    "babel": "^6.23.0",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "jest-axe": "^6.0.0",

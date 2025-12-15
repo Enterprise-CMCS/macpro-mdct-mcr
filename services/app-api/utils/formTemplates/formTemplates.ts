@@ -11,7 +11,6 @@ import naaarForm from "../../forms/naaar.json";
 // types
 import {
   AnyObject,
-  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
@@ -56,20 +55,23 @@ export async function getTemplateVersionByHash(
   return result.Items?.[0];
 }
 
-export const formTemplateForReportType = (reportType: ReportType) => {
-  switch (reportType) {
-    case ReportType.MCPAR:
-      return mcparForm;
-    case ReportType.MLR:
-      return mlrForm;
-    case ReportType.NAAAR:
-      return naaarForm;
-    default:
-      assertExhaustive(reportType);
-      throw new Error(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
+export const formTemplateForReportType = (
+  reportType: ReportType,
+  _options: { [key: string]: boolean } = {}
+) => {
+  const routeMap: Record<ReportType, ReportJson> = {
+    [ReportType.MCPAR]: mcparForm as ReportJson,
+    [ReportType.MLR]: mlrForm as ReportJson,
+    [ReportType.NAAAR]: naaarForm as ReportJson,
+  };
+
+  if (!(reportType in routeMap)) {
+    throw new Error(
+      "Not Implemented: ReportType not recognized by FormTemplateProvider"
+    );
   }
+
+  return structuredClone(routeMap[reportType] as ReportJson);
 };
 
 export async function getOrCreateFormTemplate(
@@ -77,14 +79,14 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = formTemplateForReportType(reportType) as ReportJson;
+  let currentFormTemplate = formTemplateForReportType(reportType, options);
 
   if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
 
   if (options.hasNaaarSubmission) {
-    currentFormTemplate = generateModifiedTemplate(
+    currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["Access Measures"],
       ["accessMeasures"]
@@ -263,7 +265,11 @@ export function isFieldElement(
    * This function is duplicated in ui-src/src/types/formFields.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+  const formLayoutElementTypes = [
+    "sectionHeader",
+    "sectionContent",
+    "sectionDivider",
+  ];
   return !formLayoutElementTypes.includes(field.type);
 }
 
@@ -334,7 +340,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
   return reportTemplate;
 };
 
-export const generateModifiedTemplate = (
+export const filterFormTemplateRoutes = (
   originalReportTemplate: ReportJson,
   routesToRemove: string[],
   entitiesToRemove: string[]
