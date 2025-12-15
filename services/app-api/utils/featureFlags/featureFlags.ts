@@ -33,7 +33,7 @@ export const getFlagValue = async (flagName: string) => {
   return client.variation(flagName, context, false);
 };
 
-export const isFeaturedFlagEnabled = async (flagName: string) => {
+export const isFeatureFlagEnabled = async (flagName: string) => {
   const flagValue = await getFlagValue(flagName);
 
   console.log(`FEATURE FLAG: ${flagName}, enabled: ${flagValue}`);

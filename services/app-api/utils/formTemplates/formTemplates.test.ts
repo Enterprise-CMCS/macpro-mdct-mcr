@@ -39,10 +39,10 @@ import {
   mockReportJson,
   mockS3PutObjectCommandOutput,
 } from "../testing/setupJest";
-import { isFeaturedFlagEnabled } from "../featureFlags/featureFlags";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
 
 jest.mock("../featureFlags/featureFlags", () => ({
-  isFeaturedFlagEnabled: jest.fn(),
+  isFeatureFlagEnabled: jest.fn(),
 }));
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
@@ -442,7 +442,7 @@ describe("Test form contents", () => {
   });
 
   test("returns flagged routes", async () => {
-    (isFeaturedFlagEnabled as jest.Mock).mockResolvedValue(true);
+    (isFeatureFlagEnabled as jest.Mock).mockResolvedValue(true);
     const template = await formTemplateForReportType(ReportType.MCPAR);
     expect(mcparFlags).toEqual({ default: { mockFlag }, mockFlag });
     expect(template).toEqual(mockFlag);

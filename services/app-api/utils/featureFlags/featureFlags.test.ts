@@ -1,7 +1,7 @@
 import {
   getFlagValue,
   getLaunchDarklyClient,
-  isFeaturedFlagEnabled,
+  isFeatureFlagEnabled,
 } from "./featureFlags";
 import * as LD from "@launchdarkly/node-server-sdk";
 
@@ -62,12 +62,12 @@ describe("utils/featureFlags", () => {
     });
   });
 
-  describe("isFeaturedFlagEnabled()", () => {
+  describe("isFeatureFlagEnabled()", () => {
     test("returns true", async () => {
       jest
         .spyOn(require("./featureFlags"), "getFlagValue")
         .mockResolvedValue(true);
-      const expectedResult = await isFeaturedFlagEnabled("mockFlag");
+      const expectedResult = await isFeatureFlagEnabled("mockFlag");
       expect(consoleSpy.log).toHaveBeenCalled();
       expect(expectedResult).toBe(true);
     });
@@ -76,7 +76,7 @@ describe("utils/featureFlags", () => {
       jest
         .spyOn(require("./featureFlags"), "getFlagValue")
         .mockResolvedValue(false);
-      const expectedResult = await isFeaturedFlagEnabled("mockFlag");
+      const expectedResult = await isFeatureFlagEnabled("mockFlag");
       expect(consoleSpy.log).toHaveBeenCalled();
       expect(expectedResult).toBe(false);
     });

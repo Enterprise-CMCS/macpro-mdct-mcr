@@ -19,7 +19,7 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { isFeaturedFlagEnabled } from "../featureFlags/featureFlags";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
 // routes
 import { mcparReportJson, mlrReportJson, naaarReportJson } from "../../forms";
 // flagged routes
@@ -78,7 +78,7 @@ export const formTemplateForReportType = async (reportType: ReportType) => {
 
   // Loop through flags and replace routes if flag is enabled
   for (const flagName of flagNames) {
-    const enabled = await isFeaturedFlagEnabled(flagName);
+    const enabled = await isFeatureFlagEnabled(flagName);
 
     if (enabled) {
       routeMap[reportType] = flagsByReportType[flagName];
