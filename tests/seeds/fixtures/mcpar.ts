@@ -1,11 +1,15 @@
 import { faker } from "@faker-js/faker";
 import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
-  Choice,
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
+import {
+  mcparQualityMeasuresList,
+  Measure,
+  MeasureList,
+} from "../../../services/app-api/utils/data/mcparQualityMeasuresList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
@@ -173,14 +177,14 @@ export const newMcparPCCM = (
 
 export const fillMcpar = (
   flags: { [key: string]: true },
-  programIsPCCM?: Choice[]
+  options?: { [key: string]: any }
 ): SeedFillReportShape => {
   const numberOfExamples = 3;
   const planIds = Array.from({ length: numberOfExamples }, () =>
     crypto.randomUUID()
   );
 
-  if (programIsPCCM?.[0].value === "Yes") {
+  if (options?.programIsPCCM?.[0].value === "Yes") {
     return fillMcparPCCM(planIds);
   }
 
@@ -207,12 +211,24 @@ export const fillMcpar = (
 
   let flaggedData = {};
 
+  // Add data mods by flag
   if (flags.newQualityMeasuresSectionEnabled) {
     const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
-    const newQualityMeasures = Array.from(
+    let newQualityMeasures = Array.from(
       { length: numberOfExamples },
       (_, index) => createNewQualityMeasure(index)
     );
+
+    // Check for pre-determined measures to use
+    const measuresByStateAndProgram: Measure[] = (
+      mcparQualityMeasuresList as MeasureList
+    )?.[options?.state as keyof MeasureList]?.[options?.programName];
+
+    if (measuresByStateAndProgram) {
+      newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
+        createNewQualityMeasure(index, measure)
+      );
+    }
 
     const plansWithMeasures = plans.map((plan) => {
       const measures = newQualityMeasures.reduce<Record<string, any>>(
@@ -805,7 +821,7 @@ const createQualityMeasure = (planIds: string[]) => {
   };
 };
 
-const createNewQualityMeasure = (index: number) => {
+const createNewQualityMeasure = (index: number, measure?: Measure) => {
   const measureIdentifiers = [
     {
       measure_identifier: [
@@ -845,7 +861,7 @@ const createNewQualityMeasure = (index: number) => {
 
   return {
     id: crypto.randomUUID(),
-    measure_name: faker.animal.bird(),
+    measure_name: measure?.measure_name || faker.animal.bird(),
     ...measureIdentifiers[index],
     measure_dataVersion: [
       {

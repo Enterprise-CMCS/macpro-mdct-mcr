@@ -177,6 +177,8 @@ export const calculateCompletionStatus = async (
     };
 
     const planMeasureData = plan.measures?.[measureId];
+    if (!planMeasureData) return false;
+
     const isNotReporting = planMeasureData?.measure_isReporting?.length > 0;
     const hasReasons =
       planMeasureData?.measure_isNotReportingReason?.length > 0;
