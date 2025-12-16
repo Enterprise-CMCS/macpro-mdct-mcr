@@ -4,7 +4,6 @@ import { execSync } from "node:child_process";
 import { region } from "../lib/consts.js";
 import { runFrontendLocally } from "../lib/utils.js";
 import { seedData } from "../lib/seedData.js";
-import { tryImport } from "../lib/optional-imports.js";
 
 const isColimaRunning = () => {
   try {
@@ -84,14 +83,6 @@ export const local = {
       ],
       "."
     );
-
-    const clamModule = await tryImport<{ default: () => Promise<void> }>(
-      "../lib/clam.js"
-    );
-    if (clamModule) {
-      const downloadClamAvLayer = clamModule.default;
-      await downloadClamAvLayer();
-    }
 
     await runCommand(
       "CDK local deploy",
