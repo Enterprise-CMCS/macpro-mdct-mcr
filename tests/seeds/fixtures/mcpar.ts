@@ -214,7 +214,49 @@ export const fillMcpar = (
       (_, index) => createNewQualityMeasure(index)
     );
 
+    const plansWithMeasures = plans.map((plan) => {
+      const measures = newQualityMeasures.reduce<Record<string, any>>(
+        (newMeasures, measure) => {
+          const measureId = measure.id;
+          const rateId = measure.measure_rates[0].id;
+
+          newMeasures[measureId] = {
+            measure_dataCollectionMethod: [
+              {
+                key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+                value: "Administrative",
+              },
+            ],
+            measure_isNotReportingReason: [
+              {
+                key: "measure_isNotReportingReason-aKM1awPXFkBfWwesiwKk0p",
+                value:
+                  "No, the eligible population does not meet the required measure sample size",
+              },
+            ],
+            "measure_isNotReportingReason-otherText": "",
+            measure_isReporting: [
+              {
+                key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
+                value: "Not reporting",
+              },
+            ],
+            [`measure_rateResults-${rateId}`]: numberInt(),
+          };
+
+          return newMeasures;
+        },
+        {}
+      );
+
+      return {
+        measures,
+        ...plan,
+      };
+    });
+
     flaggedData = {
+      plans: plansWithMeasures,
       plansExemptFromQualityMeasures,
       qualityMeasures: newQualityMeasures,
     };
