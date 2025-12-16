@@ -263,7 +263,7 @@ describe("<ModalOverlayReportPage />", () => {
       const user = userEvent.setup();
 
       // Verify the entity exists
-      expect(screen.getByRole("table")).not.toBeNull;
+      expect(screen.getByRole("table")).not.toBeNull();
       expect(
         screen.getByText(
           mockMLREntityStartedReportContext.report.fieldData.program[0]
@@ -296,7 +296,7 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // Verify that the entity is removed
-      expect(screen.getByRole("table")).toBeNull;
+      expect(screen.getByRole("table")).toBeNull();
 
       // And make sure they can still add entities
       const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
@@ -314,7 +314,7 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // Verify the entity exists
-      expect(screen.getByRole("table")).not.toBeNull;
+      expect(screen.getByRole("table")).not.toBeNull();
       expect(
         screen.getByText(
           mockMLREntityStartedReportContext.report.fieldData.program[0]
