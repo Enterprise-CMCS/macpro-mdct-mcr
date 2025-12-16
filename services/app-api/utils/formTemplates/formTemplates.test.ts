@@ -1,3 +1,9 @@
+// Mock flags before imports to avoid ReferenceError
+const mockFlag = { basePath: "/mock" };
+jest.mock("../../forms/routes/mcpar/flags", () => ({
+  mockFlag,
+}));
+
 import { createHash } from "crypto";
 import {
   compileValidationJsonFromRoutes,
@@ -15,13 +21,9 @@ import { mockClient } from "aws-sdk-client-mock";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 // forms
-import mlr from "../../forms/mlr.json";
-import mcpar from "../../forms/mcpar.json";
-// utils
-import {
-  mockReportJson,
-  mockS3PutObjectCommandOutput,
-} from "../testing/setupJest";
+import { mlrReportJson as mlr, mcparReportJson as mcpar } from "../../forms";
+// flagged routes
+import * as mcparFlags from "../../forms/routes/mcpar/flags";
 // types
 import {
   FormJson,
@@ -32,6 +34,16 @@ import {
   FormField,
   FormLayoutElement,
 } from "../types";
+// utils
+import {
+  mockReportJson,
+  mockS3PutObjectCommandOutput,
+} from "../testing/setupJest";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
+
+jest.mock("../featureFlags/featureFlags", () => ({
+  isFeatureFlagEnabled: jest.fn(),
+}));
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -359,13 +371,13 @@ describe("Test getOrCreateFormTemplate MLR", () => {
 });
 
 describe("Test form contents", () => {
-  const allFormTemplates = () => {
+  const allFormTemplates = async () => {
     const templates: ReportJson[] = [];
     for (let reportType of Object.values(ReportType)) {
       try {
-        const formTemplate = formTemplateForReportType(
+        const formTemplate = (await formTemplateForReportType(
           reportType
-        ) as ReportJson;
+        )) as ReportJson;
         templates.push(formTemplate);
       } catch (error: any) {
         if (!/not implemented/i.test(error.message)) {
@@ -407,8 +419,9 @@ describe("Test form contents", () => {
    * That will happen rarely enough that we will forget to do so;
    * this test is here to remind us.
    */
-  it("Should contain fields of known types", () => {
-    for (let formTemplate of allFormTemplates()) {
+  it("Should contain fields of known types", async () => {
+    const forms = await allFormTemplates();
+    for (let formTemplate of forms) {
       for (let form of allFormsIn(formTemplate)) {
         for (let field of form.fields) {
           const isField = isFieldElement(field);
@@ -426,6 +439,13 @@ describe("Test form contents", () => {
         }
       }
     }
+  });
+
+  test("returns flagged routes", async () => {
+    (isFeatureFlagEnabled as jest.Mock).mockResolvedValue(true);
+    const template = await formTemplateForReportType(ReportType.MCPAR);
+    expect(mcparFlags).toEqual({ default: { mockFlag }, mockFlag });
+    expect(template).toEqual(mockFlag);
   });
 });
 
@@ -478,14 +498,6 @@ describe("filterByFlag()", () => {
 });
 
 describe("errors", () => {
-  describe("formTemplateForReportType()", () => {
-    test("show throw error for bad reportType", () => {
-      expect(() => formTemplateForReportType("badType" as ReportType)).toThrow(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
-    });
-  });
-
   describe("generatePCCMTemplate()", () => {
     test("show throw error for bad PCCM logic", () => {
       const reportJson = structuredClone(mcpar) as ReportJson;

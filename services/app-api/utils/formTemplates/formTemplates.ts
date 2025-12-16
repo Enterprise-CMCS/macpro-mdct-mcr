@@ -4,10 +4,6 @@ import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
 import { logger } from "../debugging/debug-lib";
 import { createHash } from "crypto";
-// forms
-import mlrForm from "../../forms/mlr.json";
-import mcparForm from "../../forms/mcpar.json";
-import naaarForm from "../../forms/naaar.json";
 // types
 import {
   AnyObject,
@@ -17,11 +13,19 @@ import {
   FormTemplate,
   ModalOverlayReportPageShape,
   ReportJson,
+  ReportJsonFile,
   ReportRoute,
   ReportType,
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
+// routes
+import { mcparReportJson, mlrReportJson, naaarReportJson } from "../../forms";
+// flagged routes
+import * as mcparFlags from "../../forms/routes/mcpar/flags";
+import * as mlrFlags from "../../forms/routes/mlr/flags";
+import * as naaarFlags from "../../forms/routes/naaar/flags";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -55,20 +59,31 @@ export async function getTemplateVersionByHash(
   return result.Items?.[0];
 }
 
-export const formTemplateForReportType = (
-  reportType: ReportType,
-  _options: { [key: string]: boolean } = {}
-) => {
-  const routeMap: Record<ReportType, ReportJson> = {
-    [ReportType.MCPAR]: mcparForm as ReportJson,
-    [ReportType.MLR]: mlrForm as ReportJson,
-    [ReportType.NAAAR]: naaarForm as ReportJson,
+export const formTemplateForReportType = async (reportType: ReportType) => {
+  const routeMap: Record<ReportType, ReportJsonFile> = {
+    [ReportType.MCPAR]: mcparReportJson,
+    [ReportType.MLR]: mlrReportJson,
+    [ReportType.NAAAR]: naaarReportJson,
   };
 
-  if (!(reportType in routeMap)) {
-    throw new Error(
-      "Not Implemented: ReportType not recognized by FormTemplateProvider"
-    );
+  // Get LaunchDarkly flags from folder names in forms/routes/[reportType]/flags
+  const flagMap: Record<ReportType, any> = {
+    [ReportType.MCPAR]: mcparFlags,
+    [ReportType.MLR]: mlrFlags,
+    [ReportType.NAAAR]: naaarFlags,
+  };
+
+  const flagsByReportType = flagMap[reportType];
+  const flagNames = Object.keys(flagsByReportType);
+
+  // Loop through flags and replace routes if flag is enabled
+  for (const flagName of flagNames) {
+    const enabled = await isFeatureFlagEnabled(flagName);
+
+    if (enabled) {
+      routeMap[reportType] = flagsByReportType[flagName];
+      break;
+    }
   }
 
   return structuredClone(routeMap[reportType] as ReportJson);
@@ -79,7 +94,7 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = formTemplateForReportType(reportType, options);
+  let currentFormTemplate = await formTemplateForReportType(reportType);
 
   if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
