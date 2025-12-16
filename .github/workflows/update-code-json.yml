@@ -33,7 +33,28 @@ jobs:
         run: go install github.com/boyter/scc/v3@v3.5.0
 
       - name: Update code.json
+        id: update-codejson
         uses: DSACMS/automated-codejson-generator@main
         with:
           BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get GitHub App token
+        if: steps.update-codejson.outputs.method_used == 'pull_request'
+        id: app-token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.GH_APP_ID }}
+          private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+
+      - name: Auto-merge code.json PR
+        if: steps.update-codejson.outputs.method_used == 'pull_request'
+        run: |
+          echo "PR URL: $PR_URL"
+
+          # Approve and enable auto-merge
+          gh pr review "$PR_URL" --approve
+          gh pr merge "$PR_URL" --auto --squash
+        env:
+          PR_URL: ${{ steps.update-codejson.outputs.pr_url }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
