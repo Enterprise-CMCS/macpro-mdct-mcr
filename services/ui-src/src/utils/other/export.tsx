@@ -257,6 +257,10 @@ export const renderResponseData = (
     ? fieldResponseData?.length
     : fieldResponseData;
 
+  // check if optional
+  const validationType = formField.validation.toString();
+  const isOptional = validationType.includes("Optional") || formField?.groupId;
+
   const missingEntryVerbiage = notApplicable
     ? exportVerbiage.missingEntry.notApplicable
     : exportVerbiage.missingEntry.noResponse;
@@ -264,6 +268,13 @@ export const renderResponseData = (
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 
   if (!hasResponse) {
+    if (isOptional) {
+      return (
+        <Text sx={sx.noResponseOptional}>
+          {exportVerbiage.missingEntry.noResponseOptional}
+        </Text>
+      );
+    }
     const isIlos = formField.id === "plan_ilosOfferedByPlan";
     return (
       !isIlos && <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>
