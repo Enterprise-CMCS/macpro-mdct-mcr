@@ -1,5 +1,9 @@
 import { randomUUID } from "crypto";
-import { mcparFieldsToCopy, naaarFieldsToCopy } from "../constants/copyover";
+import {
+  mcparFieldsToCopy,
+  naaarFieldsToCopy,
+  newQualityMeasureFieldsToCopy,
+} from "../constants/copyover";
 import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
@@ -19,7 +23,8 @@ export async function copyFieldDataFromSource(
   copyFieldDataSourceId: any,
   formTemplate: any,
   validatedFieldData: AnyObject,
-  reportType: ReportType
+  reportType: ReportType,
+  newQualityMeasuresSectionEnabled?: boolean
 ) {
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
   let fieldsToCopy: AnyObject = mcparFieldsToCopy;
@@ -27,6 +32,11 @@ export async function copyFieldDataFromSource(
     fieldsToCopy = naaarFieldsToCopy;
   } else if (reportType !== ReportType.MCPAR) {
     return validatedFieldData;
+  }
+
+  // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
+  if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
+    fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
   }
 
   const sourceFieldData = (await s3Lib.get({
