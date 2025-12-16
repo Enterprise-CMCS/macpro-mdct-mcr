@@ -1,5 +1,23 @@
-// import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
+import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
 import mcparFebruary2026 from "../../../../services/app-api/forms/routes/mcpar/flags/mcparFebruary2026.json";
+
+const flaggedForms = {
+  // flagName: jsonFilePath
+  mcparFebruary2026,
+};
+
+function getRoutesByFlag(flags) {
+  const flagNames = Object.keys(flags);
+  const flaggedFormNames = Object.keys(flaggedForms);
+  const matchingFlagAndForm = flagNames.find((name) =>
+    flaggedFormNames.includes(name)
+  );
+  if (matchingFlagAndForm) {
+    return flaggedForms[matchingFlagAndForm].routes;
+  }
+
+  return mcparReportJson.routes;
+}
 
 before(() => {
   cy.archiveExistingMcparReports();
@@ -10,8 +28,7 @@ describe("MCPAR E2E Form Submission", () => {
     cy.authenticate("stateUser");
 
     const flags = Cypress.env("ldFlags");
-
-    const routes = mcparFebruary2026.routes;
+    const routes = getRoutesByFlag(flags);
 
     fillOutMCPAR(routes, flags);
 
@@ -39,8 +56,7 @@ describe("MCPAR E2E Form Submission", () => {
     cy.authenticate("stateUser");
 
     const flags = Cypress.env("ldFlags");
-
-    const routes = mcparFebruary2026.routes;
+    const routes = getRoutesByFlag(flags);
 
     fillOutPartialMCPAR(routes, flags);
 

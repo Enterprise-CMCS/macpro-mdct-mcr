@@ -9,9 +9,8 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.921.0",
-    "@aws-sdk/client-s3": "^3.921.0",
-    "@aws-sdk/lib-dynamodb": "^3.921.0",
-    "braces": "^3.0.3"
+    "@aws-sdk/client-dynamodb": "^3.946.0",
+    "@aws-sdk/client-s3": "^3.946.0",
+    "@aws-sdk/lib-dynamodb": "^3.946.0"
   }
 }

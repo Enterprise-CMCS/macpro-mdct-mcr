@@ -8,10 +8,10 @@ import { Duration, RemovalPolicy, aws_s3 as s3 } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
-import { isLocalStack } from "../local/util.js";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { createHash } from "node:crypto";
+import { isLocalStack } from "../local/util.js";
 import { DynamoDBTable } from "./dynamodb-table.js";
+import { createHash } from "node:crypto";
 
 interface LambdaProps extends Partial<NodejsFunctionProps> {
   path?: string;

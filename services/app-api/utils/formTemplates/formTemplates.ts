@@ -19,7 +19,7 @@ import {
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
-import { isFeaturedFlagEnabled } from "../featureFlags/featureFlags";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
 // routes
 import { mcparReportJson, mlrReportJson, naaarReportJson } from "../../forms";
 // flagged routes
@@ -59,10 +59,7 @@ export async function getTemplateVersionByHash(
   return result.Items?.[0];
 }
 
-export const formTemplateForReportType = async (
-  reportType: ReportType,
-  _options: { [key: string]: boolean } = {}
-) => {
+export const formTemplateForReportType = async (reportType: ReportType) => {
   const routeMap: Record<ReportType, ReportJsonFile> = {
     [ReportType.MCPAR]: mcparReportJson,
     [ReportType.MLR]: mlrReportJson,
@@ -81,7 +78,7 @@ export const formTemplateForReportType = async (
 
   // Loop through flags and replace routes if flag is enabled
   for (const flagName of flagNames) {
-    const enabled = await isFeaturedFlagEnabled(flagName);
+    const enabled = await isFeatureFlagEnabled(flagName);
 
     if (enabled) {
       routeMap[reportType] = flagsByReportType[flagName];
@@ -97,10 +94,7 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = await formTemplateForReportType(
-    reportType,
-    options
-  );
+  let currentFormTemplate = await formTemplateForReportType(reportType);
 
   if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
