@@ -1,6 +1,24 @@
 import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
 import newQualityMeasuresSectionEnabled from "../../../../services/app-api/forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
+const flaggedForms = {
+  // flagName: jsonFilePath
+  newQualityMeasuresSectionEnabled,
+};
+
+function getRoutesByFlag(flags) {
+  const flagNames = Object.keys(flags);
+  const flaggedFormNames = Object.keys(flaggedForms);
+  const matchingFlagAndForm = flagNames.find((name) =>
+    flaggedFormNames.includes(name)
+  );
+  if (matchingFlagAndForm) {
+    return flaggedForms[matchingFlagAndForm].routes;
+  }
+
+  return mcparReportJson.routes;
+}
+
 before(() => {
   cy.archiveExistingMcparReports();
 });
@@ -10,10 +28,7 @@ describe("MCPAR E2E Form Submission", () => {
     cy.authenticate("stateUser");
 
     const flags = Cypress.env("ldFlags");
-
-    const routes = flags.newQualityMeasuresSectionEnabled
-      ? newQualityMeasuresSectionEnabled.routes
-      : mcparReportJson.routes;
+    const routes = getRoutesByFlag(flags);
 
     fillOutMCPAR(routes, flags);
 
@@ -41,10 +56,7 @@ describe("MCPAR E2E Form Submission", () => {
     cy.authenticate("stateUser");
 
     const flags = Cypress.env("ldFlags");
-
-    const routes = flags.newQualityMeasuresSectionEnabled
-      ? newQualityMeasuresSectionEnabled.routes
-      : mcparReportJson.routes;
+    const routes = getRoutesByFlag(flags);
 
     fillOutPartialMCPAR(routes, flags);
 
@@ -182,7 +194,7 @@ const traverseRoute = (route, flags) => {
 };
 
 const completeDrawerForm = (drawerForm) => {
-  if (drawerForm) {
+  if (drawerForm && drawerForm.fields?.length > 0) {
     //enter the drawer, then fill out the form and save it
     cy.get('button:contains("Enter")')
       .first()
@@ -206,7 +218,7 @@ const completeDrawerForm = (drawerForm) => {
 
 const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
-  if (modalForm && buttonText) {
+  if (modalForm && modalForm.fields?.length > 0 && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
       .first()
       .as("mcparCompleteModalButton")
@@ -222,7 +234,7 @@ const completeModalForm = (modalForm, buttonText) => {
 };
 
 const completeModalOverlayDrawerForm = (drawerForm) => {
-  if (drawerForm) {
+  if (drawerForm && drawerForm.fields?.length > 0) {
     cy.get('button:contains("Enter")')
       .first()
       .as("mcparModalOverlayDrawerEnterButton")

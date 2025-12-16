@@ -1,4 +1,21 @@
-import template from "../../../../services/app-api/forms/mlr.json";
+import mlrReportJson from "../../../../services/app-api/forms/mlr.json";
+
+const flaggedForms = {
+  // flagName: jsonFilePath
+};
+
+function getRoutesByFlag(flags) {
+  const flagNames = Object.keys(flags);
+  const flaggedFormNames = Object.keys(flaggedForms);
+  const matchingFlagAndForm = flagNames.find((name) =>
+    flaggedFormNames.includes(name)
+  );
+  if (matchingFlagAndForm) {
+    return flaggedForms[matchingFlagAndForm].routes;
+  }
+
+  return mlrReportJson.routes;
+}
 
 before(() => {
   cy.archiveExistingMlrReports();
@@ -12,7 +29,10 @@ describe("MLR E2E Form Submission", () => {
   it("Submit a complete report as a state user", () => {
     cy.authenticate("stateUser");
 
-    fillOutMLR(programName);
+    const flags = Cypress.env("ldFlags");
+    const routes = getRoutesByFlag(flags);
+
+    fillOutMLR(routes, programName);
     submitMLR();
 
     cy.wait(5000);
@@ -44,7 +64,10 @@ describe("test unlock with incomplete reports", () => {
   it("A report cannot be unlocked if it is unfinished", () => {
     cy.authenticate("stateUser");
 
-    fillOutMLR(programName);
+    const flags = Cypress.env("ldFlags");
+    const routes = getRoutesByFlag(flags);
+
+    fillOutMLR(routes, programName);
     // skip submit step
     cy.contains("Successfully Submitted").should("not.exist");
   });
@@ -142,7 +165,7 @@ function verifyFormIsFilledFromLastSubmission(programName) {
   });
 }
 
-function fillOutMLR(programName) {
+function fillOutMLR(routes, programName) {
   //Create the program
   cy.visit("/mlr");
   cy.get('button:contains("Add new MLR submission")').click();
@@ -162,7 +185,7 @@ function fillOutMLR(programName) {
   });
 
   //Using the mcpar.json as a guide, traverse all the routes/forms and fill it out dynamically
-  traverseRoutes(template.routes);
+  traverseRoutes(routes);
   cy.wait(2000);
 }
 
@@ -197,6 +220,7 @@ const traverseRoute = (route) => {
 
     //Fill out form
     completeForm(route.form);
+    cy.wait(1000);
     completeModalForm(route.modalForm, route.verbiage?.addEntityButtonText);
     completeOverlayForm(route.overlayForm);
     // Continue to next route
@@ -214,7 +238,7 @@ const completeForm = (form) => {
 
 const completeModalForm = (modalForm, buttonText) => {
   //open the modal, then fill out the form and save it
-  if (modalForm && buttonText) {
+  if (modalForm && modalForm.fields?.length > 0 && buttonText) {
     cy.get(`button:contains("${buttonText}")`)
       .first()
       .as("mlrCompleteModalButton")
@@ -228,7 +252,7 @@ const completeModalForm = (modalForm, buttonText) => {
 
 const completeOverlayForm = (overlayForm) => {
   //open the modal, then fill out the form and save it
-  if (overlayForm) {
+  if (overlayForm && overlayForm.fields?.length > 0) {
     cy.get('button:contains("Enter")')
       .first()
       .as("mlrCompleteOverlayEnterButton")
