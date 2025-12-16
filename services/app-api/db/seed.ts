@@ -200,7 +200,8 @@ const seed = async (): Promise<void> => {
       // Reports
       case answer.toString().startsWith("createFilled"): {
         const reportType = answer.toString().replace("createFilled", "");
-        const flags = await getEnabledFlagsByReportType(reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(
           await createFilledReport(flags, reportType),
           "Filled",
@@ -210,7 +211,8 @@ const seed = async (): Promise<void> => {
       }
       case answer.toString().startsWith("createSubmitted"): {
         const reportType = answer.toString().replace("createSubmitted", "");
-        const flags = await getEnabledFlagsByReportType(reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(
           await createSubmittedReport(flags, reportType),
           "Submitted",
@@ -220,7 +222,8 @@ const seed = async (): Promise<void> => {
       }
       case answer.toString().startsWith("createArchived"): {
         const reportType = answer.toString().replace("createArchived", "");
-        const flags = await getEnabledFlagsByReportType(reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(
           await createArchivedReport(flags, reportType),
           "Archived",
@@ -230,14 +233,16 @@ const seed = async (): Promise<void> => {
       }
       case answer.toString().startsWith("create"): {
         const reportType = answer.toString().replace("create", "");
-        const flags = await getEnabledFlagsByReportType(reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(await createReport(flags, reportType), "Base", reportType);
         break;
       }
       case answer === "quickCreateReports": {
         await Promise.all(
           reportTypes.map(async (reportType) => {
-            const flags = await getEnabledFlagsByReportType(reportType);
+            const baseReportType = reportType.split("-")[0];
+            const flags = await getEnabledFlagsByReportType(baseReportType);
             createdLog(
               await createFilledReport(flags, reportType),
               "Filled",
