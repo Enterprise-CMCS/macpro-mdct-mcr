@@ -12,6 +12,42 @@ import {
   getBanners,
   loginSeedUsers,
 } from "../../../tests/seeds/options";
+// utils
+import { isFeatureFlagEnabled } from "../utils/featureFlags/featureFlags";
+// flagged routes
+import * as mcparFlags from "../forms/routes/mcpar/flags";
+import * as mlrFlags from "../forms/routes/mlr/flags";
+import * as naaarFlags from "../forms/routes/naaar/flags";
+
+const getEnabledFlagsByReportType = async (reportType: string) => {
+  // Get LaunchDarkly flags from folder names in forms/routes/[reportType]/flags
+  const flagMap: Record<string, any> = {
+    MCPAR: mcparFlags,
+    MLR: mlrFlags,
+    NAAAR: naaarFlags,
+  };
+
+  const flagsByReportType = flagMap[reportType];
+  const flagNames = Object.keys(flagsByReportType);
+
+  // Get status of each flag from LaunchDarkly
+  const evaluations = await Promise.all(
+    flagNames.map(async (flagName) => {
+      const enabled = await isFeatureFlagEnabled(flagName);
+      return { flagName, enabled };
+    })
+  );
+
+  return evaluations.reduce<Record<string, true>>(
+    (enabledFlags, { flagName, enabled }) => {
+      if (enabled) {
+        enabledFlags[flagName] = true;
+      }
+      return enabledFlags;
+    },
+    {}
+  );
+};
 
 const seed = async (): Promise<void> => {
   await loginSeedUsers();
@@ -164,13 +200,21 @@ const seed = async (): Promise<void> => {
       // Reports
       case answer.toString().startsWith("createFilled"): {
         const reportType = answer.toString().replace("createFilled", "");
-        createdLog(await createFilledReport(reportType), "Filled", reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
+        createdLog(
+          await createFilledReport(flags, reportType),
+          "Filled",
+          reportType
+        );
         break;
       }
       case answer.toString().startsWith("createSubmitted"): {
         const reportType = answer.toString().replace("createSubmitted", "");
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(
-          await createSubmittedReport(reportType),
+          await createSubmittedReport(flags, reportType),
           "Submitted",
           reportType
         );
@@ -178,8 +222,10 @@ const seed = async (): Promise<void> => {
       }
       case answer.toString().startsWith("createArchived"): {
         const reportType = answer.toString().replace("createArchived", "");
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
         createdLog(
-          await createArchivedReport(reportType),
+          await createArchivedReport(flags, reportType),
           "Archived",
           reportType
         );
@@ -187,14 +233,18 @@ const seed = async (): Promise<void> => {
       }
       case answer.toString().startsWith("create"): {
         const reportType = answer.toString().replace("create", "");
-        createdLog(await createReport(reportType), "Base", reportType);
+        const baseReportType = reportType.split("-")[0];
+        const flags = await getEnabledFlagsByReportType(baseReportType);
+        createdLog(await createReport(flags, reportType), "Base", reportType);
         break;
       }
       case answer === "quickCreateReports": {
         await Promise.all(
           reportTypes.map(async (reportType) => {
+            const baseReportType = reportType.split("-")[0];
+            const flags = await getEnabledFlagsByReportType(baseReportType);
             createdLog(
-              await createFilledReport(reportType),
+              await createFilledReport(flags, reportType),
               "Filled",
               reportType
             );
