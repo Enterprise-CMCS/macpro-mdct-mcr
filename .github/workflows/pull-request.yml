@@ -18,17 +18,17 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: Configure pre-commit to skip irrelevant checks
         run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,typescript-check-cdk,no-commit-to-branch" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
       - name: run unit tests
-        run: ./scripts/test-unit.sh
+        run: node ./scripts/test-unit.ts
       - name: publish test coverage to qlty
         uses: qltysh/qlty-action/coverage@v1
         with:
