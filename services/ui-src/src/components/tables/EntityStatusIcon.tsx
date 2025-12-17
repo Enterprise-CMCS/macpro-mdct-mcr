@@ -8,11 +8,11 @@ import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
 export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
   return (
-    <Box sx={isPdf ? sx.containerPdf : sx.container}>
+    <Box sx={sx.container}>
       {isComplete ? (
         <>
           <Image
-            sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
+            sx={sx.statusIcon}
             src={isPdf ? successIconDark : successIcon}
             alt={isPdf ? "" : "complete icon"}
             boxSize="xl"
@@ -26,7 +26,7 @@ export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
       ) : (
         <>
           <Image
-            sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
+            sx={sx.statusIcon}
             src={isPdf ? unfinishedIconDark : unfinishedIcon}
             alt={isPdf ? "" : "warning icon"}
             boxSize="xl"
@@ -66,18 +66,7 @@ const sx = {
     color: "error_darker",
     fontSize: "0.667rem",
   },
-  containerPdf: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   statusIcon: {
-    marginLeft: "0rem",
-    img: {
-      maxWidth: "fit-content",
-    },
-  },
-  statusIconPdf: {
     marginLeft: "0rem",
     img: {
       maxWidth: "fit-content",
