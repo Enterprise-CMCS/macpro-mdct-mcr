@@ -97,6 +97,38 @@ describe("copyFieldDataFromSource()", () => {
         ],
       });
     });
+
+    test("filters id only entities on copyover", async () => {
+      dynamoClientMock.on(QueryCommand).resolves({
+        Items: [],
+      });
+      jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        stateName: "Minnesota",
+        qualityMeasures: [
+          { id: "foo", measure_name: "name" },
+          { id: "bar" },
+          { id: "baz" },
+        ],
+      });
+      const res = await copyFieldDataFromSource(
+        "database-local-mcpar",
+        "Minnesota",
+        "mockReportQualityMeasuresJson",
+        mockReportQualityMeasuresJson,
+        { stateName: "Minnesota" },
+        ReportType.MCPAR,
+        true // newQualityMeasuresSectionEnabled
+      );
+      expect(res).toEqual({
+        stateName: "Minnesota",
+        qualityMeasures: [
+          {
+            id: "foo",
+            measure_name: "name",
+          },
+        ],
+      });
+    });
   });
 
   describe("MLR", () => {

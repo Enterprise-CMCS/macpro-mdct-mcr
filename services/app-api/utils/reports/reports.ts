@@ -70,7 +70,8 @@ export async function copyFieldDataFromSource(
       );
       const copiedEntities = (rootValue as AnyObject[])
         .map((entity) => copyEntityData(entity, entityFieldsToCopy))
-        .filter(nonEmptyObject);
+        .filter(nonEmptyObject)
+        .filter(nonIdOnlyObject);
       if (copiedEntities.length > 0) {
         // Don't copy empty arrays
         validatedFieldData[rootKey] = copiedEntities;
@@ -94,6 +95,10 @@ function copyEntityData(
 
 function nonEmptyObject(obj: AnyObject) {
   return Object.keys(obj).length > 0;
+}
+
+function nonIdOnlyObject(obj: AnyObject) {
+  return !(Object.keys(obj).length === 1 && obj?.id);
 }
 
 export function makePCCMModifications(fieldData: any) {
