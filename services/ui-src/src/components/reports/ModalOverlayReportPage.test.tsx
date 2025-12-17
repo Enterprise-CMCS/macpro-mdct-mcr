@@ -100,11 +100,13 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if addEntity button is displaying
       const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: addInformationButton })
+      ).toBeVisible();
 
       // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByText("Continue")).toBeVisible();
-      expect(screen.getByText("Previous")).toBeVisible();
+      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
+      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
 
     test("should open the add/edit modal for a State User", async () => {
@@ -120,7 +122,9 @@ describe("<ModalOverlayReportPage />", () => {
       const user = userEvent.setup();
 
       // Get the Add button and click it
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
+      const addEntityButton = screen.getByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
       await act(async () => {
         await user.click(addEntityButton);
       });
@@ -129,7 +133,9 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // Close out of the modal it created
-      const closeButton = screen.getByText("Close");
+      const closeButton = screen.getByRole("button", {
+        name: "Close",
+      });
       await act(async () => {
         await user.click(closeButton);
       });
@@ -153,7 +159,9 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if accordion is showing
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
-      expect(screen.getByText(accordionHeader)).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: accordionHeader })
+      ).toBeVisible();
 
       // Check if dashboard title is showing 0 entities
       const dashboardTitle = `${verbiage.dashboardTitle} 0`;
@@ -165,12 +173,16 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if addEntity button is displaying but disabled
       const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
-      expect(screen.getByText(addInformationButton)).toBeDisabled();
+      expect(
+        screen.getByRole("button", { name: addInformationButton })
+      ).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: addInformationButton })
+      ).toBeDisabled();
 
       // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByText("Continue")).toBeVisible();
-      expect(screen.getByText("Previous")).toBeVisible();
+      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
+      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
     /**
      * @todo Write a test to make sure admins can't click/change details?
@@ -200,7 +212,9 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if accordion is showing
       const accordionHeader = accordionVerbiage.MLR.formIntro.buttonLabel;
-      expect(screen.getByText(accordionHeader)).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: accordionHeader })
+      ).toBeVisible();
 
       // Check if dashboard title is showing 1 entities
       const dashboardTitle = `${verbiage.dashboardTitle} 1`;
@@ -208,10 +222,12 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if emptyDashboardText is NOT displaying
       const emptyDashboardText = verbiage.emptyDashboardText;
-      expect(screen.queryByText(emptyDashboardText)).toBeNull();
+      expect(screen.queryByText(emptyDashboardText)).not.toBeInTheDocument();
 
       // Check if action buttons are visible
-      const editEntityButton = screen.getByText(verbiage.editEntityButtonText);
+      const editEntityButton = screen.getByRole("button", {
+        name: `${verbiage.editEntityButtonText} test-plan`,
+      });
       const deleteEntityButton = screen.getByRole("button", {
         name: "Delete test-plan",
       });
@@ -220,11 +236,13 @@ describe("<ModalOverlayReportPage />", () => {
 
       // Check if addEntity button is displaying
       const addInformationButton = verbiage.addEntityButtonText;
-      expect(screen.getByText(addInformationButton)).toBeVisible();
+      expect(
+        screen.getByRole("button", { name: addInformationButton })
+      ).toBeVisible();
 
       // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByText("Continue")).toBeVisible();
-      expect(screen.getByText("Previous")).toBeVisible();
+      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
+      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
 
     test("should open the edit modal", async () => {
@@ -235,23 +253,25 @@ describe("<ModalOverlayReportPage />", () => {
       const user = userEvent.setup();
 
       // Get the Edit button and click it
-      const editEntityButton = screen.getAllByText(
-        verbiage.editEntityButtonText
-      );
+      const editEntityButton = screen.getByRole("button", {
+        name: `${verbiage.editEntityButtonText} test-plan`,
+      });
       await act(async () => {
-        await user.click(editEntityButton[0]);
+        await user.click(editEntityButton);
       });
       await waitFor(() => {
         expect(screen.getByRole("dialog")).toBeVisible();
       });
       // Close out of the modal it created
-      const closeButton = screen.getAllByText("Close");
+      const closeButton = screen.getByRole("button", { name: "Close" });
       await act(async () => {
-        await user.click(closeButton[0]);
+        await user.click(closeButton);
       });
 
       // And make sure they can still add entities
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
+      const addEntityButton = screen.getByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
       expect(addEntityButton).toBeVisible();
     });
 
@@ -263,7 +283,7 @@ describe("<ModalOverlayReportPage />", () => {
       const user = userEvent.setup();
 
       // Verify the entity exists
-      expect(screen.getByRole("table")).not.toBeNull;
+      expect(screen.getByRole("table")).toBeVisible();
       expect(
         screen.getByText(
           mockMLREntityStartedReportContext.report.fieldData.program[0]
@@ -282,24 +302,22 @@ describe("<ModalOverlayReportPage />", () => {
         expect(screen.getByRole("dialog")).toBeVisible();
       });
       // Click delete in modal
-      const deleteButton = screen.getByText(
-        verbiage.deleteModalConfirmButtonText
-      );
+      const deleteButton = screen.getByRole("button", {
+        name: verbiage.deleteModalConfirmButtonText,
+      });
       await act(async () => {
         await user.click(deleteButton);
       });
 
-      // Close out of the modal it created
-      const closeButton = screen.getByText("Close");
-      await act(async () => {
-        await user.click(closeButton);
+      // Wait for modal to close (happens automatically after updateReport completes)
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
       });
 
-      // Verify that the entity is removed
-      expect(screen.getByRole("table")).toBeNull;
-
-      // And make sure they can still add entities
-      const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
+      // verify users can still add entities
+      const addEntityButton = screen.getByRole("button", {
+        name: verbiage.addEntityButtonText,
+      });
       expect(addEntityButton).toBeVisible();
     });
 
@@ -314,7 +332,7 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // Verify the entity exists
-      expect(screen.getByRole("table")).not.toBeNull;
+      expect(screen.getByRole("table")).toBeVisible();
       expect(
         screen.getByText(
           mockMLREntityStartedReportContext.report.fieldData.program[0]
@@ -341,15 +359,19 @@ describe("<ModalOverlayReportPage />", () => {
       expect(screen.getByText(dashboardTitle)).toBeVisible();
 
       // Get the Enter button and click it
-      const enterEntityButton = screen.getByText(verbiage.enterReportText);
+      const enterEntityButton = screen.getByRole("button", {
+        name: `${verbiage.enterReportText} test-plan`,
+      });
       await act(async () => {
         await user.click(enterEntityButton);
       });
 
-      expect(mockSetSidebarHidden).toBeCalledWith(true);
+      expect(mockSetSidebarHidden).toHaveBeenCalledWith(true);
 
       // Close out of the Overlay it opened
-      const closeButton = screen.getByText("Return to MLR Reporting");
+      const closeButton = screen.getByRole("button", {
+        name: "Return to MLR Reporting",
+      });
       await act(async () => {
         await user.click(closeButton);
       });
@@ -375,19 +397,23 @@ describe("<ModalOverlayReportPage />", () => {
       expect(screen.getByText(dashboardTitle)).toBeVisible();
 
       // Get the Enter button and click it
-      const enterEntityButton = screen.getByText(verbiage.enterReportText);
+      const enterEntityButton = screen.getByRole("button", {
+        name: `${verbiage.enterReportText} test-plan`,
+      });
       await act(async () => {
         await user.click(enterEntityButton);
       });
 
-      expect(mockSetSidebarHidden).toBeCalledWith(true);
+      expect(mockSetSidebarHidden).toHaveBeenCalledWith(true);
 
       // Test text fields
       const textField = screen.getByLabelText("mock text field");
       expect(textField).toBeVisible();
       const numberField = screen.getByLabelText("mock number field");
       expect(numberField).toBeVisible();
-      const saveAndCloseButton = screen.getByText("Save & return");
+      const saveAndCloseButton = screen.getByRole("button", {
+        name: "Save & return",
+      });
       await act(async () => {
         await userEvent.type(textField, "test");
         await userEvent.type(numberField, "123");
@@ -395,7 +421,7 @@ describe("<ModalOverlayReportPage />", () => {
       });
 
       // And make sure we're back on the first page!
-      expect(mockSetSidebarHidden).toBeCalledWith(false);
+      expect(mockSetSidebarHidden).toHaveBeenCalledWith(false);
       expect(screen.getByText(dashboardTitle)).toBeVisible();
     });
 
@@ -416,13 +442,15 @@ describe("<ModalOverlayReportPage />", () => {
       expect(screen.getByText(dashboardTitle)).toBeVisible();
 
       // Get the Enter button and click it
-      const enterEntityButton = screen.getByText(verbiage.enterReportText);
+      const enterEntityButton = screen.getByRole("button", {
+        name: `${verbiage.enterReportText} test-plan`,
+      });
       await act(async () => {
         await user.click(enterEntityButton);
       });
-      expect(mockSetSidebarHidden).toBeCalledWith(true);
+      expect(mockSetSidebarHidden).toHaveBeenCalledWith(true);
 
-      const saveAndCloseButton = screen.getByText("Return");
+      const saveAndCloseButton = screen.getByRole("button", { name: "Return" });
       await act(async () => {
         await userEvent.click(saveAndCloseButton);
       });
@@ -432,7 +460,7 @@ describe("<ModalOverlayReportPage />", () => {
       ).toHaveBeenCalledTimes(0);
 
       // And make sure we're back on the first page!
-      expect(mockSetSidebarHidden).toBeCalledWith(false);
+      expect(mockSetSidebarHidden).toHaveBeenCalledWith(false);
       expect(screen.getByText(dashboardTitle)).toBeVisible();
     });
   });
