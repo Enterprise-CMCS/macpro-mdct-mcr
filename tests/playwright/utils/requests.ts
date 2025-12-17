@@ -102,14 +102,13 @@ async function authenticatedRequest(
   path: string,
   body?: any
 ): Promise<any> {
-  const headers = generateRequestHeaders(method, path, body);
+  const endpoint = process.env.API_URL + path;
+  const headers = generateRequestHeaders(method, endpoint, body);
 
   const apiContext = await request.newContext({
     storageState: adminUserAuth,
     extraHTTPHeaders: headers,
   });
-
-  const endpoint = process.env.API_URL + path;
   const requestOptions: any = { headers };
 
   let response;
