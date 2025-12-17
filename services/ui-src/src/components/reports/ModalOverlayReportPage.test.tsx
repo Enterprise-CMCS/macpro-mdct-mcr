@@ -263,9 +263,9 @@ describe("<ModalOverlayReportPage />", () => {
         expect(screen.getByRole("dialog")).toBeVisible();
       });
       // Close out of the modal it created
-      const closeButton = screen.getAllByText("Close");
+      const closeButton = screen.getByRole("button", { name: "Close" });
       await act(async () => {
-        await user.click(closeButton[0]);
+        await user.click(closeButton);
       });
 
       // And make sure they can still add entities
