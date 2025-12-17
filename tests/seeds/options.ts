@@ -1,4 +1,3 @@
-import { Choice } from "../../services/app-api/utils/types";
 import {
   fillMcpar,
   fillMlr,
@@ -65,14 +64,16 @@ export const createFilledReport = async (
   flags: { [key: string]: true },
   reportType: string
 ): Promise<SeedReportShape> => {
-  const { id, programIsPCCM } = await createReport(flags, reportType);
-  const baseReportType = reportType.split("-")[0];
-  const report = await updateFillReport(
-    id,
-    baseReportType,
+  const { id, programIsPCCM, programName, state } = await createReport(
     flags,
-    programIsPCCM
+    reportType
   );
+  const baseReportType = reportType.split("-")[0];
+  const report = await updateFillReport(id, baseReportType, flags, {
+    programIsPCCM,
+    programName,
+    state,
+  });
   return report;
 };
 
@@ -80,14 +81,14 @@ export const updateFillReport = async (
   id: string,
   reportType: string,
   flags: { [key: string]: true },
-  programIsPCCM?: Choice[]
+  options?: { [key: string]: any }
 ): Promise<SeedReportShape> => {
   const fillReport = {
     MCPAR: fillMcpar,
     MLR: fillMlr,
     NAAAR: fillNaaar,
   } as { [key: string]: Function };
-  const data = fillReport[reportType](flags, programIsPCCM);
+  const data = fillReport[reportType](flags, options);
   const report = await putApi(
     `/reports/${reportType}/${state}/${id}`,
     headers,

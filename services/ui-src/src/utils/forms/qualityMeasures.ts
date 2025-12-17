@@ -14,8 +14,10 @@ export const createRateField = (id: string, name: string) => ({
 });
 
 export const addRatesToForm = (form: FormJson, measure: EntityShape) => {
-  const copiedDrawerForm = structuredClone(form);
   const rates = measure.measure_rates;
+  if (!rates) return form;
+
+  const copiedDrawerForm = structuredClone(form);
   for (const rate of rates) {
     copiedDrawerForm.fields.push(createRateField(rate.id, rate.name));
   }

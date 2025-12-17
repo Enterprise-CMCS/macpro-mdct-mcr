@@ -1,4 +1,5 @@
 import { calculateCompletionStatus, isComplete } from "./completionStatus";
+import { measuresAndResultsRoute } from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled/plan-level-indicators/quality-measures/measures-and-results";
 
 describe("Completion Status Tests", () => {
   describe("Test Nested Completion Check", () => {
@@ -330,133 +331,322 @@ describe("Completion Status Tests", () => {
     });
   });
 
-  test("Test analysis methods custom logic", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "123",
-          name: "test plan",
+  describe("pageType: drawer", () => {
+    test("Test analysis methods custom logic", async () => {
+      const testData = {
+        plans: [
+          {
+            id: "123",
+            name: "test plan",
+          },
+        ],
+        analysisMethods: [
+          {
+            id: "1",
+            name: "first method",
+            analysis_applicable: [
+              {
+                key: "a",
+                value: "no",
+              },
+            ],
+          },
+        ],
+      };
+      const formTemplate = {
+        routes: [
+          {
+            name: "I. State and program information",
+            path: "/naaar/state-and-program-information",
+            children: [
+              {
+                name: "Analysis methods",
+                path: "/naaar/state-and-program-information/analysis-methods",
+                entityType: "analysisMethods",
+                pageType: "drawer",
+                drawerForm: {
+                  id: "iam",
+                  fields: [],
+                },
+                addEntityDrawerForm: {
+                  id: "iamnew",
+                  fields: [],
+                },
+              },
+            ],
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({
+        "/naaar/state-and-program-information": {
+          "/naaar/state-and-program-information/analysis-methods": false,
         },
-      ],
-      analysisMethods: [
+      });
+    });
+  });
+
+  describe("pageType: planOverlay", () => {
+    test("Test planOverlay with complete fieldData", async () => {
+      const testData = {
+        plans: [
+          {
+            id: "mockPlanId",
+            name: "Mock Plan",
+            isComplete: true,
+          },
+        ],
+      };
+      const formTemplate = {
+        routes: [
+          {
+            name: "Mock Plan Overlay Page",
+            path: "/naaar/mock-plan-overlay",
+            pageType: "planOverlay",
+            entityType: "plans",
+          },
+          {
+            name: "Plan compliance",
+            path: "/naaar/plan-compliance",
+            pageType: "planOverlay",
+            entityType: "plans",
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({
+        "/naaar/mock-plan-overlay": false,
+        "/naaar/plan-compliance": true,
+      });
+    });
+
+    test("Test planOverlay with incomplete fieldData", async () => {
+      const testData = {
+        plans: [
+          {
+            id: "mockPlanId",
+            name: "Mock Plan",
+            isComplete: false,
+          },
+        ],
+      };
+      const formTemplate = {
+        routes: [
+          {
+            name: "Plan compliance",
+            path: "/naaar/plan-compliance",
+            pageType: "planOverlay",
+            entityType: "plans",
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({
+        "/naaar/plan-compliance": false,
+      });
+    });
+
+    test("Test planOverlay with no fieldData", async () => {
+      const testData = {};
+      const formTemplate = {
+        routes: [
+          {
+            name: "Plan compliance",
+            path: "/naaar/plan-compliance",
+            pageType: "planOverlay",
+            entityType: "plans",
+          },
+        ],
+      };
+      const result = await calculateCompletionStatus(testData, formTemplate);
+      expect(result).toMatchObject({
+        "/naaar/plan-compliance": false,
+      });
+    });
+  });
+
+  describe("pageType: modalOverlay", () => {
+    describe("Measures and results page", () => {
+      const qualityMeasures = [
         {
-          id: "1",
-          name: "first method",
-          analysis_applicable: [
+          id: "mockMeasureId",
+          measure_name: "Mock measure name",
+          measure_identifier: [
             {
-              key: "a",
-              value: "no",
+              key: "measure_identifier-mock",
+              value: "Yes",
+            },
+          ],
+          measure_identifierCmit: "12345",
+          measure_dataVersion: [
+            {
+              key: "measure_dataVersion-mock",
+              value: "Mock",
+            },
+          ],
+          measure_activities: [
+            {
+              key: "measure_activities-mock",
+              value: "Mock",
+            },
+          ],
+          measure_dataCollectionMethod: [
+            {
+              key: "measure_dataCollectionMethod-mock",
+              value: "Mock",
+            },
+          ],
+          measure_rates: [
+            {
+              id: "mockRateId",
+              name: "Mock rate",
             },
           ],
         },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "I. State and program information",
-          path: "/naaar/state-and-program-information",
-          children: [
+      ];
+
+      test("with complete fieldData", async () => {
+        const testData = {
+          plans: [
             {
-              name: "Analysis methods",
-              path: "/naaar/state-and-program-information/analysis-methods",
-              entityType: "analysisMethods",
-              pageType: "drawer",
-              drawerForm: {
-                id: "iam",
-                fields: [],
-              },
-              addEntityDrawerForm: {
-                id: "iamnew",
-                fields: [],
+              id: "mockPlanId",
+              measures: {
+                mockMeasureId: {
+                  measure_dataCollectionMethod: [
+                    {
+                      key: "measure_dataCollectionMethod-mock",
+                      value: "Mock",
+                    },
+                  ],
+                  measure_isNotReportingReason: [
+                    {
+                      key: "measure_isNotReportingReason-mock",
+                      value: "No",
+                    },
+                  ],
+                  "measure_isNotReportingReason-otherText": "",
+                  measure_isReporting: [
+                    {
+                      key: "measure_isReporting-mock",
+                      value: "Not reporting",
+                    },
+                  ],
+                  "measure_rateResults-mockRateId": "12345",
+                },
               },
             },
           ],
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/state-and-program-information": {
-        "/naaar/state-and-program-information/analysis-methods": false,
-      },
-    });
-  });
+          qualityMeasures,
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "Mock Modal Overlay Page",
+              path: "/mcpar/mock-modal-overlay",
+              pageType: "modalOverlay",
+              entityType: "qualityMeasures",
+            },
+            {
+              name: "Measures and results",
+              path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+              pageType: "modalOverlay",
+              entityType: "qualityMeasures",
+              drawerForm: measuresAndResultsRoute.drawerForm,
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/mock-modal-overlay": false,
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results":
+            true,
+        });
+      });
 
-  test("Test planOverlay with complete fieldData", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "mockPlanId",
-          name: "Mock Plan",
-          isComplete: true,
-        },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "Mock Plan Overlay Page",
-          path: "/naaar/mock-plan-overlay",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/mock-plan-overlay": false,
-      "/naaar/plan-compliance": true,
-    });
-  });
+      test("with no reporting plan measures", async () => {
+        const testData = {
+          plans: [
+            {
+              id: "mockPlanId",
+              measures: {
+                mockMeasureId: {
+                  measure_dataCollectionMethod: [
+                    {
+                      key: "measure_dataCollectionMethod-mock",
+                      value: "Mock",
+                    },
+                  ],
+                  "measure_rateResults-mockRateId": "12345",
+                },
+              },
+            },
+          ],
+          qualityMeasures,
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "Measures and results",
+              path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+              pageType: "modalOverlay",
+              entityType: "qualityMeasures",
+              drawerForm: measuresAndResultsRoute.drawerForm,
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results":
+            true,
+        });
+      });
 
-  test("Test planOverlay with incomplete fieldData", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "mockPlanId",
-          name: "Mock Plan",
-          isComplete: false,
-        },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/plan-compliance": false,
-    });
-  });
+      test("with no plan measures", async () => {
+        const testData = {
+          plans: [
+            {
+              id: "mockPlanId",
+            },
+          ],
+          qualityMeasures,
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "Measures and results",
+              path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+              pageType: "modalOverlay",
+              entityType: "qualityMeasures",
+              drawerForm: measuresAndResultsRoute.drawerForm,
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results":
+            false,
+        });
+      });
 
-  test("Test planOverlay with no fieldData", async () => {
-    const testData = {};
-    const formTemplate = {
-      routes: [
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/plan-compliance": false,
+      test("with no fieldData", async () => {
+        const testData = {};
+        const formTemplate = {
+          routes: [
+            {
+              name: "Measures and results",
+              path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+              pageType: "modalOverlay",
+              entityType: "qualityMeasures",
+              drawerForm: measuresAndResultsRoute.drawerForm,
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results":
+            false,
+        });
+      });
     });
   });
 
