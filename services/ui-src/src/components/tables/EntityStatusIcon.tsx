@@ -1,31 +1,15 @@
-import { useMemo } from "react";
 // components
 import { Box, Image, Text } from "@chakra-ui/react";
-// types
-import { EntityShape, EntityType } from "types";
-// utils
-import { getEntityStatus, useStore } from "utils";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
-export const EntityStatusIcon = ({
-  entity,
-  entityType,
-  isPdf,
-  override,
-}: Props) => {
-  const { report } = useStore();
-
-  const entityComplete = useMemo(() => {
-    return override ?? getEntityStatus(entity, report, entityType);
-  }, [report, override]);
-
+export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
   return (
     <Box sx={isPdf ? sx.containerPdf : sx.container}>
-      {entityComplete ? (
+      {isComplete ? (
         <>
           <Image
             sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
@@ -59,11 +43,7 @@ export const EntityStatusIcon = ({
 };
 
 interface Props {
-  /**
-   * Entity to show status for
-   */
-  entity: EntityShape;
-  entityType?: EntityType;
+  isComplete: boolean;
   /**
    * Whether or not icon is appearing on PDF page (used for styling)
    */
