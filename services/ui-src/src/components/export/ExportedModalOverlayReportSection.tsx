@@ -21,7 +21,6 @@ import {
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import finishedIcon from "assets/icons/icon_check_circle.png";
-import { useMemo } from "react";
 
 export const ExportedModalOverlayReportSection = ({ section }: Props) => {
   const { report } = useStore();
@@ -89,9 +88,7 @@ export function renderModalOverlayTableBody(
       return entities.map((entity, idx) => {
         const { report_programName, mlrEligibilityGroup, reportingPeriod } =
           getEntityDetailsMLR(entity);
-        const entityComplete = useMemo(() => {
-          return getEntityStatus(entity, report, entityType);
-        }, [report]);
+        const entityComplete = getEntityStatus(entity, report, entityType);
 
         return (
           <Tr key={idx}>
