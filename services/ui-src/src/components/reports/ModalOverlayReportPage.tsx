@@ -85,7 +85,7 @@ export const ModalOverlayReportPage = ({
   ) {
     if (!toCheck) return false;
     // Pre-populated quality measure is created before plans, but has no rates
-    return !entity.measure_rates || plans.length > 0;
+    return !entity.measure_rates || (entity.measure_rates && plans.length == 0);
   }
 
   // Display Variables
