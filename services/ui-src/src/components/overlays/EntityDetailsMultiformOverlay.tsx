@@ -329,9 +329,7 @@ export const EntityDetailsMultiformOverlay = ({
       switch (headerName) {
         case "Status": {
           if (hasDetailsEnabled && (is438206Form || !isComplete)) {
-            return (
-              <EntityStatusIcon isComplete={isComplete} override={isComplete} />
-            );
+            return <EntityStatusIcon isComplete={isComplete} />;
           }
           return <></>;
         }

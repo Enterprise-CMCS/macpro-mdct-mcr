@@ -38,8 +38,6 @@ interface Props {
    * Whether or not icon is appearing on PDF page (used for styling)
    */
   isPdf?: boolean;
-  override?: boolean;
-  [key: string]: any;
 }
 
 const sx = {
