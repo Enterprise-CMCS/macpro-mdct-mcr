@@ -189,7 +189,8 @@ const filterRateDataFromPlans = (
   const measureRateIds = measureRates.map((rate: EntityShape) => rate.id);
 
   for (const plan of plans) {
-    const planMeasureData = plan.measures[measureId];
+    const planMeasureData = plan?.measures?.[measureId];
+    if (!planMeasureData) continue;
     const planRateIds = Object.keys(planMeasureData).filter((fieldId) =>
       fieldId.startsWith(RATE_ID_PREFIX)
     );
