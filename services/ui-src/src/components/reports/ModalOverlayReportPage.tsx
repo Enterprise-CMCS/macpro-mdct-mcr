@@ -68,18 +68,24 @@ export const ModalOverlayReportPage = ({
   const isLocked = report.locked || isAdminUserType;
 
   const reportFieldDataEntities = report.fieldData?.[entityType] || [];
-  let openDisabled = false;
   let statusOverride: Function = () => undefined;
 
   const isMeasuresAndResultsPage = routeChecker.isMeasuresAndResultsPage(route);
 
   // check for plans in MCPAR
   if (isMeasuresAndResultsPage) {
-    const plans = report.fieldData?.["plans"];
-    const hasPlans = plans?.length > 0;
-    openDisabled = !hasPlans && hasPlans !== undefined;
     statusOverride = (entity: EntityShape) =>
       getMcparEntityStatus(entity, report, entityType, route);
+  }
+
+  function isOpenDisabled(
+    toCheck: boolean,
+    entity: EntityShape,
+    plans: EntityShape[] = []
+  ) {
+    if (!toCheck) return false;
+    // Pre-populated quality measure is created before plans, but has no rates
+    return !entity.measure_rates || plans.length > 0;
   }
 
   // Display Variables
@@ -263,7 +269,11 @@ export const ModalOverlayReportPage = ({
                       openAddEditEntityModal={openAddEditEntityModal}
                       openDeleteEntityModal={openDeleteEntityModal}
                       openOverlayOrDrawer={openEntityDetailsOverlay}
-                      openDisabled={openDisabled}
+                      openDisabled={isOpenDisabled(
+                        isMeasuresAndResultsPage,
+                        entity,
+                        report.fieldData?.plans
+                      )}
                     />
                   ))}
                 </Table>
