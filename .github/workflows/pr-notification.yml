@@ -25,9 +25,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+
       - name: Set branch_name
         run: |
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.event.pull_request.head.ref }})
+          BRANCH_NAME=$(node ./.github/setBranchName.ts ${{ github.event.pull_request.head.ref }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials for GitHub Actions
