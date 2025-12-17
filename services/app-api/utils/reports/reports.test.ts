@@ -9,10 +9,34 @@ import { mockClient } from "aws-sdk-client-mock";
 import { mockReportJson } from "../../utils/testing/setupJest";
 import s3Lib from "../s3/s3-lib";
 // types
-import { ReportType } from "../../utils/types";
+import { ReportJson, ReportType } from "../../utils/types";
 import { uuidRegex } from "../constants/constants";
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
+
+const mockReportQualityMeasuresJson: ReportJson = {
+  ...mockReportJson,
+  entities: {},
+};
+mockReportQualityMeasuresJson.routes.push({
+  name: "mock-route-1",
+  path: "/mock/mock-route-1",
+  pageType: "standard",
+  verbiage: { intro: { section: "" } },
+  form: {
+    id: "mock-form-id",
+    fields: [
+      {
+        id: "measure_name",
+        type: "text",
+        validation: "text",
+        props: {
+          label: "mock measure name",
+        },
+      },
+    ],
+  },
+});
 
 describe("copyFieldDataFromSource()", () => {
   describe("MCPAR", () => {
@@ -41,6 +65,66 @@ describe("copyFieldDataFromSource()", () => {
           {
             id: expect.stringMatching(uuidRegex),
             measure_name: "MSHO measure 1",
+          },
+        ],
+      });
+    });
+
+    test("returns new quality measures copyover", async () => {
+      dynamoClientMock.on(QueryCommand).resolves({
+        Items: [],
+      });
+      jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        stateName: "Minnesota",
+        qualityMeasures: [{ id: "foo", measure_name: "name" }],
+      });
+      const res = await copyFieldDataFromSource(
+        "database-local-mcpar",
+        "Minnesota",
+        "mockReportQualityMeasuresJson",
+        mockReportQualityMeasuresJson,
+        { stateName: "Minnesota" },
+        ReportType.MCPAR,
+        true // newQualityMeasuresSectionEnabled
+      );
+      expect(res).toEqual({
+        stateName: "Minnesota",
+        qualityMeasures: [
+          {
+            id: "foo",
+            measure_name: "name",
+          },
+        ],
+      });
+    });
+
+    test("filters id only entities on copyover", async () => {
+      dynamoClientMock.on(QueryCommand).resolves({
+        Items: [],
+      });
+      jest.spyOn(s3Lib, "get").mockResolvedValueOnce({
+        stateName: "Minnesota",
+        qualityMeasures: [
+          { id: "foo", measure_name: "name" },
+          { id: "bar" },
+          { id: "baz" },
+        ],
+      });
+      const res = await copyFieldDataFromSource(
+        "database-local-mcpar",
+        "Minnesota",
+        "mockReportQualityMeasuresJson",
+        mockReportQualityMeasuresJson,
+        { stateName: "Minnesota" },
+        ReportType.MCPAR,
+        true // newQualityMeasuresSectionEnabled
+      );
+      expect(res).toEqual({
+        stateName: "Minnesota",
+        qualityMeasures: [
+          {
+            id: "foo",
+            measure_name: "name",
           },
         ],
       });
