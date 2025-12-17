@@ -35,7 +35,6 @@ import {
   EntityDetailsMultiformVerbiage,
   EntityDetailsTableVerbiage,
   EntityShape,
-  EntityType,
   ReportShape,
   ScreenReaderCustomHeaderName,
 } from "types";
@@ -46,7 +45,6 @@ export const EntityDetailsMultiformOverlay = ({
   childForms,
   closeEntityDetailsOverlay,
   disabled,
-  entityType,
   forms,
   onSubmit,
   report,
@@ -332,11 +330,7 @@ export const EntityDetailsMultiformOverlay = ({
         case "Status": {
           if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return (
-              <EntityStatusIcon
-                entity={selectedEntity as EntityShape}
-                entityType={entityType}
-                override={isComplete}
-              />
+              <EntityStatusIcon isComplete={isComplete} override={isComplete} />
             );
           }
           return <></>;
@@ -440,7 +434,6 @@ interface Props {
   childForms?: EntityDetailsChildFormShape[];
   closeEntityDetailsOverlay: MouseEventHandler;
   disabled: boolean;
-  entityType: EntityType;
   forms: EntityDetailsMultiformShape[];
   onChange?: Function;
   onSubmit: Function;
