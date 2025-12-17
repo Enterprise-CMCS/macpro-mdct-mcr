@@ -7,36 +7,26 @@ import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
 export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
+  const iconSrc = isComplete
+    ? isPdf
+      ? successIconDark
+      : successIcon
+    : isPdf
+    ? unfinishedIconDark
+    : unfinishedIcon;
+
+  const altText = isPdf ? "" : isComplete ? "complete icon" : "warning icon";
+  const pdfLabelText = isComplete ? "Complete" : "Error";
   return (
     <Box sx={sx.container}>
-      {isComplete ? (
-        <>
-          <Image
-            sx={sx.statusIcon}
-            src={isPdf ? successIconDark : successIcon}
-            alt={isPdf ? "" : "complete icon"}
-            boxSize="xl"
-          />
-          {isPdf && (
-            <Text sx={sx.successText}>
-              <b>Complete</b>
-            </Text>
-          )}
-        </>
-      ) : (
-        <>
-          <Image
-            sx={sx.statusIcon}
-            src={isPdf ? unfinishedIconDark : unfinishedIcon}
-            alt={isPdf ? "" : "warning icon"}
-            boxSize="xl"
-          />
-          {isPdf && (
-            <Text sx={sx.errorText}>
-              <b>Error</b>
-            </Text>
-          )}
-        </>
+      <Image sx={sx.statusIcon} src={iconSrc} alt={altText} boxSize="xl" />
+      {isPdf && (
+        <Text
+          sx={sx.pdfLabelText}
+          color={isComplete ? "success_darker" : "error_darker"}
+        >
+          {pdfLabelText}
+        </Text>
       )}
     </Box>
   );
@@ -58,13 +48,9 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
   },
-  successText: {
-    color: "success_darker",
+  pdfLabelText: {
     fontSize: "0.667rem",
-  },
-  errorText: {
-    color: "error_darker",
-    fontSize: "0.667rem",
+    fontWeight: "bold",
   },
   statusIcon: {
     marginLeft: "0rem",
