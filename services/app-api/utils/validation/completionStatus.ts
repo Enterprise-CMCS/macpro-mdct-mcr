@@ -179,9 +179,8 @@ export const calculateCompletionStatus = async (
     const planMeasureData = plan.measures?.[measureId];
     if (!planMeasureData) return false;
 
-    const isNotReporting = planMeasureData?.measure_isReporting?.length > 0;
-    const hasReasons =
-      planMeasureData?.measure_isNotReportingReason?.length > 0;
+    const isNotReporting = planMeasureData.measure_isReporting?.length > 0;
+    const hasReasons = planMeasureData.measure_isNotReportingReason?.length > 0;
     if (isNotReporting && hasReasons) return true;
 
     const requiredFields = form.fields
@@ -287,12 +286,9 @@ export const calculateCompletionStatus = async (
         };
         break;
       case "modalOverlay": {
-        if (!route.modalForm || (!route.drawerForm && !route.overlayForm))
-          break;
-
         let isComplete = false;
 
-        if (route.overlayForm) {
+        if (route.modalForm && route.overlayForm) {
           isComplete = await calculateEntityCompletion(
             [route.modalForm, route.overlayForm],
             route.entityType
@@ -307,15 +303,17 @@ export const calculateCompletionStatus = async (
           const qualityMeasures = fieldData.qualityMeasures || [];
           const plans = fieldData.plans || [];
 
-          isComplete = qualityMeasures.every((measure: EntityShape) =>
-            plans.every((plan: EntityShape) =>
-              calculateMeasureCompletion(
-                measure.id,
-                route.drawerForm as FormJson,
-                plan
+          if (qualityMeasures.length > 0 && plans.length > 0) {
+            isComplete = qualityMeasures.every((measure: EntityShape) =>
+              plans.every((plan: EntityShape) =>
+                calculateMeasureCompletion(
+                  measure.id,
+                  route.drawerForm as FormJson,
+                  plan
+                )
               )
-            )
-          );
+            );
+          }
         }
 
         routeCompletion = { [route.path]: isComplete };
