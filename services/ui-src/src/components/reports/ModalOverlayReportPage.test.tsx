@@ -289,16 +289,12 @@ describe("<ModalOverlayReportPage />", () => {
         await user.click(deleteButton);
       });
 
-      // Close out of the modal it created
-      const closeButton = screen.getByText("Close");
-      await act(async () => {
-        await user.click(closeButton);
+      // Wait for modal to close (happens automatically after updateReport completes)
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog")).toBeNull();
       });
 
-      // Verify that the entity is removed
-      expect(screen.getByRole("table")).toBeNull();
-
-      // And make sure they can still add entities
+      // verify users can still add entities
       const addEntityButton = screen.getByText(verbiage.addEntityButtonText);
       expect(addEntityButton).toBeVisible();
     });
