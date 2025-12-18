@@ -45,7 +45,7 @@ describe("<AdminDashSelector />", () => {
             name: "Go to Report Dashboard",
           })
           .hasAttribute("disabled")
-      ).toBeTruthy;
+      ).toBeTruthy();
     });
 
     test("Form submits correctly", async () => {
