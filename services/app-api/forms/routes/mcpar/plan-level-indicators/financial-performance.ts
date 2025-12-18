@@ -43,6 +43,50 @@ export const financialPerformanceRoute: DrawerFormRoute = {
     id: "dfp",
     fields: [
       {
+        id: "plan_mlrDataReceived",
+        type: ReportFormFieldType.RADIO,
+        validation: ValidationType.RADIO,
+        props: {
+          label: "D1.II.1 MLR Data Received",
+          hint: "Has the state received the final MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
+          choices: [
+            {
+              id: "xY7zW9vU3tS1rQ5pO8nM2k",
+              label: "Yes",
+              children: [
+                {
+                  id: "plan_mlrDataValidated",
+                  type: ReportFormFieldType.RADIO,
+                  validation: {
+                    type: ValidationType.RADIO,
+                    nested: true,
+                    parentFieldName: "plan_mlrDataReceived",
+                  },
+                  props: {
+                    label: "D1.II.1a MLR Data Validated",
+                    hint: "Has the state validated the final MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
+                    choices: [
+                      {
+                        id: "aB4cD6eF8gH0iJ2kL4mN6o",
+                        label: "Yes",
+                      },
+                      {
+                        id: "pQ8rS0tU2vW4xY6zA8bC0d",
+                        label: "No",
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            {
+              id: "eF2gH4iJ6kL8mN0oP2qR4s",
+              label: "No",
+            },
+          ],
+        },
+      },
+      {
         id: "plan_medicalLossRatioPercentage",
         type: ReportFormFieldType.NUMBER,
         validation: ValidationType.NUMBER,
