@@ -3,7 +3,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../utils/types";
+} from "../../../../../../utils/types";
 
 export const mlrRoute: FormRoute = {
   name: "II: MLR",

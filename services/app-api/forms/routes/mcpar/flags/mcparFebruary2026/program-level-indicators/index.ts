@@ -4,7 +4,7 @@ import { availabilityAndAccessibilityRoute } from "./availability-and-accessibil
 import { bssRoute } from "./bss";
 import { encounterDataReportRoute } from "../../../program-level-indicators/encounter-data-report";
 import { mentalHealthAndSubstanceUseDisorderParityRoute } from "../../../program-level-indicators/mental-health-and-substance-use-disorder-parity";
-import { mlrRoute } from "../../../program-level-indicators/mlr";
+import { mlrRoute } from "./mlr";
 import { programCharacteristicsRoute } from "../../../program-level-indicators/program-characteristics";
 import { programIntegrityRoute } from "../../../program-level-indicators/program-integrity";
 
