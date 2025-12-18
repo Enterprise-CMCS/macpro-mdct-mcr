@@ -65,6 +65,21 @@ export const mlrRoute: FormRoute = {
             {
               id: "cD3eF6gH7iJ8kL9mNpQr2s",
               label: "No",
+              children: [
+                {
+                  id: "program_mlrAnticipatedValidationDate",
+                  type: ReportFormFieldType.DATE,
+                  validation: {
+                    type: ValidationType.DATE,
+                    nested: true,
+                    parentFieldName: "program_mlrValidationCompletion",
+                  },
+                  props: {
+                    label: "C1.II.3a Anticipated Validation Date",
+                    hint: "When does the state anticipate doing so?",
+                  },
+                },
+              ],
             },
           ],
         },
