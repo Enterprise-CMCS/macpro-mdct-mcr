@@ -26,7 +26,7 @@ export const financialPerformanceRoute: DrawerFormRoute = {
           {
             type: "html",
             content:
-              "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. ",
+              "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7.",
           },
           {
             type: "internalLink",
