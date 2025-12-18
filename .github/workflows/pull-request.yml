@@ -18,12 +18,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: ".nvmrc"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
       - name: Configure pre-commit to skip irrelevant checks
         run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,typescript-check-cdk,no-commit-to-branch" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
