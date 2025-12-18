@@ -1,10 +1,13 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { Alert } from "components";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // types
-import { AlertTypes, ReportPageVerbiage } from "types";
+import { AlertTypes, CustomHtmlElement, ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
+// verbiage
+import accordion from "verbiage/pages/accordion";
 
 export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionSubHeader = verbiage?.intro?.subsection || heading;
@@ -13,10 +16,16 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
     : verbiage?.intro?.info;
   const sectionAlert = verbiage?.intro.alert;
 
-  const introHeaderRender = () => {
-    const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
+  const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
+  const introContent = infoHeader && infoHeader.content;
+
+  // LaunchDarkly
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
+  const isQualityMeasuresResultsPage = introContent === "Measures and results";
+
+  const introHeaderRender = (infoHeader: any, introContent: any) => {
     const introType = infoHeader && infoHeader.type;
-    const introContent = infoHeader && infoHeader.content;
 
     const hideSectionIntroHeader =
       introType === "heading" &&
@@ -31,7 +40,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
     <>
       {sectionSubHeader ? (
         <Heading as="h3" sx={sx.heading.h3}>
-          {introHeaderRender()}
+          {introHeaderRender(infoHeader, introContent)}
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
@@ -39,11 +48,23 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
           <Alert status={AlertTypes.WARNING} description={sectionAlert} />
         )}
         {sectionInfo && (
-          <Box sx={sx.info}>
-            {typeof sectionInfo === "string"
-              ? sectionInfo
-              : parseCustomHtml(sectionInfo)}
-          </Box>
+          <>
+            <Box sx={sx.info}>
+              {typeof sectionInfo === "string"
+                ? sectionInfo
+                : parseCustomHtml(sectionInfo)}
+            </Box>
+            <Box sx={sx.instructions}>
+              {newQualityMeasuresSectionEnabled &&
+                isQualityMeasuresResultsPage && (
+                  <>
+                    {parseCustomHtml(
+                      accordion.MCPAR.formIntro.intro as CustomHtmlElement[]
+                    )}
+                  </>
+                )}
+            </Box>
+          </>
         )}
       </Box>
     </>
@@ -93,6 +114,23 @@ const sx = {
     h4: {
       fontSize: "lg",
       paddingTop: "spacer2",
+    },
+  },
+  instructions: {
+    color: "gray",
+    p: {
+      ":nth-of-type(odd)": {
+        margin: "1.25rem auto",
+      },
+    },
+    a: {
+      color: "gray",
+      textDecoration: "none",
+      cursor: "text",
+      "&:hover": {
+        color: "gray",
+        textDecoration: "none",
+      },
     },
   },
 };

@@ -88,6 +88,11 @@ const sx = {
     marginTop: "spacer_half",
     fontSize: "sm",
   },
+  qualityMeasuresPlanName: {
+    paddingTop: "spacer2",
+    fontSize: "sm",
+    fontWeight: "bold",
+  },
   resultsHeader: {
     marginY: "spacer2",
     fontSize: "xs",

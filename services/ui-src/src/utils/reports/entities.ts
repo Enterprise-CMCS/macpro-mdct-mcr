@@ -72,26 +72,26 @@ export const getMeasureResults = (
 ) => {
   return plans?.map((plan: AnyObject) => {
     const measureIsNotReporting =
-      plan.measures[entityId!][`measure_isReporting`]?.[0].value ===
+      plan.measures[entityId!]?.[`measure_isReporting`]?.[0].value ===
       "Not reporting";
     if (!measureIsNotReporting) {
       const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
         return {
           rate: rate.name,
           rateResult:
-            plan.measures[entityId!][`measure_rate_results-${rate.id}`],
+            plan.measures[entityId!]?.[`measure_rate_results-${rate.id}`],
         };
       });
       return {
         planName: plan.name,
         dataCollectionMethod:
-          plan.measures[entityId!][`measure_dataCollectionMethod`][0].value,
-        ...resultsPerPlan,
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod`][0].value,
+        rateResults: resultsPerPlan,
       };
     } else {
       return {
         planName: plan.name,
-        notReporting: "Not reporting",
+        notReporting: true,
         notReportingReason:
           plan.measures[entityId!][`measure_isNotReportingReason`][0].value,
       };
@@ -176,7 +176,9 @@ export const getFormattedEntityData = (
           identifierDomain:
             neitherCmitOrCbe &&
             getCheckboxValues(entity, "measure_identifierDomain"),
-          identifierUrl: neitherCmitOrCbe && entity?.measure_identifierUrl,
+          identifierUrl:
+            (neitherCmitOrCbe && entity?.measure_identifierUrl) ||
+            "Not answered, optional",
           dataVersion: getRadioValue(entity, "measure_dataVersion"),
           activities: getCheckboxValues(entity, "measure_activities"),
           measureResults: getMeasureResults(
