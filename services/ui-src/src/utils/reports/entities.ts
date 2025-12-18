@@ -71,16 +71,31 @@ export const getMeasureResults = (
   measureRates?: AnyObject[]
 ) => {
   return plans?.map((plan: AnyObject) => {
-    const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+    const measureIsNotReporting =
+      plan.measures[entityId!][`measure_isReporting`]?.[0].value ===
+      "Not reporting";
+    if (!measureIsNotReporting) {
+      const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+        return {
+          rate: rate.name,
+          rateResult:
+            plan.measures[entityId!][`measure_rate_results-${rate.id}`],
+        };
+      });
       return {
-        rate: rate.name,
-        rateResult: plan.measures[entityId!][`measure_rate_results-${rate.id}`],
+        planName: plan.name,
+        dataCollectionMethod:
+          plan.measures[entityId!][`measure_dataCollectionMethod`][0].value,
+        ...resultsPerPlan,
       };
-    });
-    return {
-      planName: plan.name,
-      ...resultsPerPlan,
-    };
+    } else {
+      return {
+        planName: plan.name,
+        notReporting: "Not reporting",
+        notReportingReason:
+          plan.measures[entityId!][`measure_isNotReportingReason`][0].value,
+      };
+    }
   });
 };
 
@@ -164,7 +179,6 @@ export const getFormattedEntityData = (
           identifierUrl: neitherCmitOrCbe && entity?.measure_identifierUrl,
           dataVersion: getRadioValue(entity, "measure_dataVersion"),
           activities: getCheckboxValues(entity, "measure_activities"),
-          measureRates: entity?.measure_rates,
           measureResults: getMeasureResults(
             entity?.id,
             reportFieldData?.["plans"],

@@ -75,6 +75,10 @@ interface Props {
 }
 
 const sx = {
+  heading: {
+    marginTop: "spacer2",
+    fontSize: "sm",
+  },
   subtitle: {
     marginTop: "spacer2",
     fontSize: "xs",

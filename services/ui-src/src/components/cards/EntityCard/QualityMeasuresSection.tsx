@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
-import { SxObject } from "types";
+import { AnyObject, SxObject } from "types";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 const TopQualityMeasuresSection = ({
@@ -139,7 +139,6 @@ const BottomQualityMeasuresSection = ({
   printVersion,
   notAnswered,
   verbiage,
-  isPDF,
   sx,
   newQualityMeasuresSectionEnabled,
 }: BottomProps) => {
@@ -181,9 +180,30 @@ const BottomQualityMeasuresSection = ({
         </>
       ) : (
         <>
-          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "D2.VII.7 Measure results " : ""}`}
+          <Heading as={"p"} sx={sx.heading}>
+            D2.VII.7 Measure results
           </Heading>
+          {formattedEntityData?.isPartiallyComplete && (
+            <Text sx={sx.missingResponseMessage}>
+              {verbiage?.entityMissingResponseMessage ||
+                (printVersion && notAnswered)}
+            </Text>
+          )}
+
+          {formattedEntityData?.measureResults?.map((result) => (
+            // console.log("result", result),
+            <Box
+              key={result.planName}
+              sx={sx.highlightContainer}
+              className={!result ? "error" : ""}
+            >
+              <Flex>
+                <Box sx={sx.highlightSection}>
+                  <Text sx={sx.subtitle}>{result.planName}</Text>
+                </Box>
+              </Flex>
+            </Box>
+          ))}
         </>
       )}
     </>
@@ -252,7 +272,7 @@ interface FormattedEntityData {
   identifierUrl?: string;
   dataVersion?: string;
   activities?: string;
-  measureRates?: string;
+  measureResults?: AnyObject[];
 }
 interface BaseProps {
   formattedEntityData: FormattedEntityData;
