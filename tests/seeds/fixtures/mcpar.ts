@@ -1,15 +1,20 @@
 import { faker } from "@faker-js/faker";
 import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
-  Choice,
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
+import {
+  mcparQualityMeasuresList,
+  Measure,
+  MeasureList,
+} from "../../../services/app-api/utils/data/mcparQualityMeasuresList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
 export const newMcpar = (
+  flags: { [key: string]: true },
   stateName: string,
   state: string,
   options: { [key: string]: boolean } = {}
@@ -89,6 +94,10 @@ export const newMcpar = (
   ];
   const newProgramName = isNewProgram ? programName : undefined;
 
+  if (Object.keys(flags).length > 0) {
+    // Add data mods by flag
+  }
+
   return {
     metadata: {
       combinedData: faker.datatype.boolean(),
@@ -122,38 +131,60 @@ export const newMcpar = (
 };
 
 export const newMcparHasNaaarSubmission = (
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
-  return newMcpar(stateName, state, { hasNaaarSubmission: true });
+  return newMcpar(flags, stateName, state, { hasNaaarSubmission: true });
 };
 
 export const newMcparHasExpectedNaaarSubmission = (
+  flags: { [key: string]: true },
   stateName: string,
   state: string
 ) => {
-  return newMcpar(stateName, state, { hasExpectedNaaarSubmission: true });
+  return newMcpar(flags, stateName, state, {
+    hasExpectedNaaarSubmission: true,
+  });
 };
 
-export const newMcparNewProgram = (stateName: string, state: string) => {
-  return newMcpar(stateName, state, { isNewProgram: true });
+export const newMcparNewProgram = (
+  flags: { [key: string]: true },
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(flags, stateName, state, { isNewProgram: true });
 };
 
-export const newMcparNewProgramPCCM = (stateName: string, state: string) => {
-  return newMcpar(stateName, state, { isNewProgram: true, isPccm: true });
+export const newMcparNewProgramPCCM = (
+  flags: { [key: string]: true },
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(flags, stateName, state, {
+    isNewProgram: true,
+    isPccm: true,
+  });
 };
 
-export const newMcparPCCM = (stateName: string, state: string) => {
-  return newMcpar(stateName, state, { isPccm: true });
+export const newMcparPCCM = (
+  flags: { [key: string]: true },
+  stateName: string,
+  state: string
+) => {
+  return newMcpar(flags, stateName, state, { isPccm: true });
 };
 
-export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
+export const fillMcpar = (
+  flags: { [key: string]: true },
+  options?: { [key: string]: any }
+): SeedFillReportShape => {
   const numberOfExamples = 3;
   const planIds = Array.from({ length: numberOfExamples }, () =>
     crypto.randomUUID()
   );
 
-  if (programIsPCCM?.[0].value === "Yes") {
+  if (options?.programIsPCCM?.[0].value === "Yes") {
     return fillMcparPCCM(planIds);
   }
 
@@ -172,13 +203,80 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
 
   const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
 
-  const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
-
-  const qualityMeasures = Array.from({ length: numberOfExamples }, (_, index) =>
-    createQualityMeasure(index)
+  const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
+    createQualityMeasure(planIds)
   );
 
   const sanctions = planIds.map((planId) => createSanction(planId));
+
+  let flaggedData = {};
+
+  // Add data mods by flag
+  if (flags.newQualityMeasuresSectionEnabled) {
+    const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
+    let newQualityMeasures = Array.from(
+      { length: numberOfExamples },
+      (_, index) => createNewQualityMeasure(index)
+    );
+
+    // Check for pre-determined measures to use
+    const measuresByStateAndProgram: Measure[] = (
+      mcparQualityMeasuresList as MeasureList
+    )?.[options?.state as keyof MeasureList]?.[options?.programName];
+
+    if (measuresByStateAndProgram) {
+      newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
+        createNewQualityMeasure(index, measure)
+      );
+    }
+
+    const plansWithMeasures = plans.map((plan) => {
+      const measures = newQualityMeasures.reduce<Record<string, any>>(
+        (newMeasures, measure) => {
+          const measureId = measure.id;
+          const rateId = measure.measure_rates[0].id;
+
+          newMeasures[measureId] = {
+            measure_dataCollectionMethod: [
+              {
+                key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+                value: "Administrative",
+              },
+            ],
+            measure_isNotReportingReason: [
+              {
+                key: "measure_isNotReportingReason-aKM1awPXFkBfWwesiwKk0p",
+                value:
+                  "No, the eligible population does not meet the required measure sample size",
+              },
+            ],
+            "measure_isNotReportingReason-otherText": "",
+            measure_isReporting: [
+              {
+                key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
+                value: "Not reporting",
+              },
+            ],
+            [`measure_rateResults-${rateId}`]: numberInt(),
+          };
+
+          return newMeasures;
+        },
+        {}
+      );
+
+      return {
+        measures,
+        ...plan,
+      };
+    });
+
+    flaggedData = {
+      plans: plansWithMeasures,
+      plansExemptFromQualityMeasures,
+      qualityMeasures: newQualityMeasures,
+    };
+  }
 
   return {
     metadata: {
@@ -395,9 +493,9 @@ export const fillMcpar = (programIsPCCM?: Choice[]): SeedFillReportShape => {
       bssEntities,
       ilos,
       plans,
-      plansExemptFromQualityMeasures,
       qualityMeasures,
       sanctions,
+      ...flaggedData,
     },
   };
 };
@@ -683,7 +781,47 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
   };
 };
 
-const createQualityMeasure = (index: number) => {
+const createQualityMeasure = (planIds: string[]) => {
+  const measureResults = planIds.reduce((results, planId) => {
+    results[`qualityMeasure_plan_measureResults_${planId}`] =
+      faker.lorem.sentence();
+    return results;
+  }, {} as Record<string, string>);
+
+  return {
+    id: crypto.randomUUID(),
+    qualityMeasure_name: faker.animal.insect(),
+    qualityMeasure_description: faker.lorem.sentence(),
+    qualityMeasure_domain: [
+      {
+        key: "qualityMeasure_domain-Y3InqsLp4kSTgAUvTwq0CA",
+        value: "Primary care access and preventative care",
+      },
+    ],
+    qualityMeasure_nqfNumber: faker.hacker.abbreviation(),
+    ...measureResults,
+    qualityMeasure_reportingPeriod: [
+      {
+        key: "qualityMeasure_reportingPeriod-XAalDWT7l0qPz676XFGSGQ",
+        value: "Yes",
+      },
+    ],
+    qualityMeasure_reportingRateType: [
+      {
+        key: "qualityMeasure_reportingRateType-lTIN7GiY2Ui2kJYrWzXqVw",
+        value: "Program-specific rate",
+      },
+    ],
+    qualityMeasure_set: [
+      {
+        key: "qualityMeasure_set-tjSQLCDhgEy7H3VrhtUKxw",
+        value: "Medicaid Child Core Set",
+      },
+    ],
+  };
+};
+
+const createNewQualityMeasure = (index: number, measure?: Measure) => {
   const measureIdentifiers = [
     {
       measure_identifier: [
@@ -723,7 +861,7 @@ const createQualityMeasure = (index: number) => {
 
   return {
     id: crypto.randomUUID(),
-    measure_name: faker.animal.bird(),
+    measure_name: measure?.measure_name || faker.animal.bird(),
     ...measureIdentifiers[index],
     measure_dataVersion: [
       {

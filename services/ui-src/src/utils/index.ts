@@ -26,6 +26,7 @@ export * from "./statusing/getRouteStatus";
 // tables
 export * from "./tables/entityRows";
 export * from "./tables/getEntityStatus";
+export * from "./tables/getMcparEntityStatus";
 export * from "./tables/getMlrEntityStatus";
 export * from "./tables/getNaaarEntityStatus";
 export * from "./tables/mapNaaarStandardsData";

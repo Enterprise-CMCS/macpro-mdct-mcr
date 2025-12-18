@@ -122,6 +122,28 @@ const createPccmEvent: APIGatewayProxyEvent = {
   }),
 };
 
+const mcparQmCreationEvent: APIGatewayProxyEvent = {
+  ...mockProxyEvent,
+  body: JSON.stringify({
+    fieldData: {
+      stateName: "Alabama",
+    },
+    metadata: {
+      reportType: "MCPAR",
+      programName: "testProgram",
+      status: "Not started",
+      reportingPeriodStartDate: 162515200000,
+      reportingPeriodEndDate: 168515200000,
+      dueDate: 168515200000,
+      combinedData: false,
+      lastAlteredBy: "Thelonious States",
+      fieldDataId: "mockReportFieldData",
+      formTemplateId: "mockReportJson",
+      newQualityMeasuresSectionEnabled: true,
+    },
+  }),
+};
+
 const creationEventWithNoFieldData: APIGatewayProxyEvent = {
   ...mockProxyEvent,
   body: JSON.stringify({ fieldData: undefined }),
@@ -311,6 +333,35 @@ describe("Test createReport API method", () => {
     expect(body.fieldData.programName).toBeUndefined();
     expect(body.fieldData.plans).toBeUndefined();
     expect(s3PutSpy).toHaveBeenCalled();
+  });
+
+  test("Test successful run of new quality measures report creation, not copied", async () => {
+    const qualityMeasureUtilSpy = jest.spyOn(
+      reportUtils,
+      "populateQualityMeasures"
+    );
+    dynamoClientMock.on(QueryCommand).resolves({
+      Items: [],
+    });
+    const s3PutSpy = jest.spyOn(s3Lib, "put");
+    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
+    const res = await createReport(mcparQmCreationEvent, null);
+
+    const body = JSON.parse(res.body!);
+    expect(consoleSpy.debug).toHaveBeenCalled();
+    expect(res.statusCode).toBe(StatusCodes.Created);
+    expect(body.status).toContain("Not started");
+    expect(body.fieldDataId).toBeDefined;
+    expect(body.formTemplateId).toBeDefined;
+    expect(body.formTemplateId).not.toEqual(
+      mockMcparReport.metadata.formTemplateId
+    );
+    expect(body.fieldData.stateName).toBe("Alabama");
+    expect(body.formTemplate.validationJson).toMatchObject({
+      stateName: "text",
+    });
+    expect(s3PutSpy).toHaveBeenCalled();
+    expect(qualityMeasureUtilSpy).toHaveBeenCalled();
   });
 
   test("Test successful run of NAAAR report creation, not copied", async () => {

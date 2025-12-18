@@ -1,9 +1,10 @@
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 function cleanMessage(msg: string) {
   let m = msg;
   // Remove PR number
   m = m.replace(/\(#\d+\)$/, "");
-  // Remove CMDCT tickets
-  m = m.replace(/[\[\(]?cmdct[ -]?\d+[\])]?:?/gi, "");
+  // Remove CMDCT tickets and any []:- surrounding it
+  m = m.replace(/[\[\(]?cmdct[ -]?\d+[\])]?[ ]?[:-]?/gi, "");
   // Remove leading/trailing whitespaces
   m = m.trim();
   // Capitalize first letter
@@ -17,14 +18,16 @@ function extractPrNumber(line: string) {
 }
 
 // Extract CMDCT tickets
-function extractTickets(text: string) {
-  // Extract only between these headings
-  const sectionMatch = text.match(
-    /### Related ticket\(s\)([\s\S]*?)### How to test/i
-  );
-  if (!sectionMatch) return [];
+function extractTickets(text: string, pr: boolean = false) {
+  let section = text;
 
-  const section = sectionMatch[1];
+  if (pr) {
+    // Extract only between Related ticket heading and the next heading
+    const sectionMatch = text.match(/### Related ticket([\s\S]*?)###/i);
+    if (!sectionMatch) return [];
+
+    section = sectionMatch[1];
+  }
 
   const tickets = new Set<string>();
   // Match with or without -
@@ -46,7 +49,7 @@ async function formatMessage({ message, octokit, owner, repo }: any) {
   // If no tickets are in message, get it from the PR body
   if (tickets.length === 0 && prNumber) {
     const prBody = await fetchPrBody({ octokit, owner, prNumber, repo });
-    tickets = extractTickets(prBody.toLowerCase());
+    tickets = extractTickets(prBody.toLowerCase(), true);
   }
 
   const ticketText = tickets.length > 0 ? `(${tickets.join(", ")})` : "";

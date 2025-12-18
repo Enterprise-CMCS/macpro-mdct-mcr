@@ -1,4 +1,8 @@
-import { addRatesToForm, createRateField } from "./qualityMeasures";
+import {
+  addRatesToForm,
+  createRateField,
+  RATE_ID_PREFIX,
+} from "./qualityMeasures";
 // utils
 import { mockDrawerForm } from "utils/testing/setupJest";
 
@@ -35,7 +39,7 @@ describe("qualityMeasures utils", () => {
         mockMeasure.measure_rates[0].id,
         mockMeasure.measure_rates[0].name
       );
-      expect(rateField.id).toEqual("measure_rate_results-mock-rate-1");
+      expect(rateField.id).toEqual(`${RATE_ID_PREFIX}mock-rate-1`);
       expect(rateField.type).toEqual("number");
       expect(rateField.validation).toEqual("numberOptional");
       expect(rateField.props.label).toEqual("mock rate 1 results");

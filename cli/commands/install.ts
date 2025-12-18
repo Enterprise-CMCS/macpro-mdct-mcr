@@ -18,12 +18,14 @@ async function* findPackageJsonDirectories(
 
 export const installDeps = async () => {
   for await (const dir of findPackageJsonDirectories(".")) {
-    await runCommand(
-      `yarn install ${dir}`,
-      ["yarn", "--silent", "install", "--frozen-lockfile"],
-      dir,
-      { quiet: true }
-    );
+    const commandPieces = ["yarn", "--silent", "install"];
+    if (process.env.CI === "true") {
+      commandPieces.push("--frozen-lockfile");
+    }
+
+    await runCommand(`yarn install ${dir}`, commandPieces, dir, {
+      quiet: true,
+    });
   }
 };
 

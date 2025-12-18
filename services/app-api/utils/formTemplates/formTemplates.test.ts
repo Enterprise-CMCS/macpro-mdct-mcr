@@ -1,3 +1,9 @@
+// Mock flags before imports to avoid ReferenceError
+const mockFlag = { basePath: "/mock" };
+jest.mock("../../forms/routes/mcpar/flags", () => ({
+  mockFlag,
+}));
+
 import { createHash } from "crypto";
 import {
   compileValidationJsonFromRoutes,
@@ -15,13 +21,9 @@ import { mockClient } from "aws-sdk-client-mock";
 import s3Lib from "../s3/s3-lib";
 import dynamodbLib from "../dynamo/dynamodb-lib";
 // forms
-import mlr from "../../forms/mlr.json";
-import mcpar from "../../forms/mcpar.json";
-// utils
-import {
-  mockReportJson,
-  mockS3PutObjectCommandOutput,
-} from "../testing/setupJest";
+import { mlrReportJson as mlr, mcparReportJson as mcpar } from "../../forms";
+// flagged routes
+import * as mcparFlags from "../../forms/routes/mcpar/flags";
 // types
 import {
   FormJson,
@@ -32,8 +34,16 @@ import {
   FormField,
   FormLayoutElement,
 } from "../types";
-// flagged routes
-import newQualityMeasuresSectionEnabledForm from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
+// utils
+import {
+  mockReportJson,
+  mockS3PutObjectCommandOutput,
+} from "../testing/setupJest";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
+
+jest.mock("../featureFlags/featureFlags", () => ({
+  isFeatureFlagEnabled: jest.fn(),
+}));
 
 const dynamoClientMock = mockClient(DynamoDBDocumentClient);
 
@@ -58,16 +68,8 @@ const modifiedTemplate = filterFormTemplateRoutes(
   ["Access Measures"],
   ["accessMeasures"]
 );
-
 const currentModifiedFormHash = createHash("md5")
   .update(JSON.stringify(modifiedTemplate))
-  .digest("hex");
-
-const templateWithUpdatedQualityMeasures =
-  newQualityMeasuresSectionEnabledForm as ReportJson;
-
-const currentQualityMeasuresFormHash = createHash("md5")
-  .update(JSON.stringify(templateWithUpdatedQualityMeasures))
   .digest("hex");
 
 describe("Test getOrCreateFormTemplate MCPAR", () => {
@@ -92,7 +94,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -122,7 +124,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -153,7 +155,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).not.toHaveBeenCalled();
     expect(s3PutSpy).not.toHaveBeenCalled();
@@ -192,7 +194,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
     expect(dynamoPutSpy).toHaveBeenCalled();
     expect(s3PutSpy).toHaveBeenCalled();
@@ -217,7 +219,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { isPccm: programIsNotPCCM, newQualityMeasuresSectionEnabled: false }
+      { isPccm: programIsNotPCCM }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -253,7 +255,7 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     const result = await getOrCreateFormTemplate(
       "local-mcpar-reports",
       ReportType.MCPAR,
-      { hasNaaarSubmission: true, newQualityMeasuresSectionEnabled: false }
+      { hasNaaarSubmission: true }
     );
 
     expect(dynamoPutSpy).toHaveBeenCalled();
@@ -265,40 +267,6 @@ describe("Test getOrCreateFormTemplate MCPAR", () => {
     expect(result.formTemplateVersion?.versionNumber).toEqual(1);
     expect(result.formTemplateVersion?.md5Hash).toEqual(
       currentModifiedFormHash
-    );
-  });
-
-  test("should create a new form template with excluded routes and entities", async () => {
-    dynamoClientMock
-      .on(QueryCommand)
-      // mocked once for search by hash
-      .resolvesOnce({
-        Items: [],
-      })
-      // mocked again for search for latest report
-      .resolvesOnce({
-        Items: [],
-      });
-    const dynamoPutSpy = jest.spyOn(dynamodbLib, "put");
-    const s3PutSpy = jest.spyOn(s3Lib, "put");
-    s3PutSpy.mockResolvedValue(mockS3PutObjectCommandOutput);
-    const result = await getOrCreateFormTemplate(
-      "local-mcpar-reports",
-      ReportType.MCPAR,
-      { newQualityMeasuresSectionEnabled: true }
-    );
-
-    expect(dynamoPutSpy).toHaveBeenCalled();
-    expect(s3PutSpy).toHaveBeenCalled();
-    expect(result.formTemplate).toEqual({
-      ...templateWithUpdatedQualityMeasures,
-      validationJson: getValidationFromFormTemplate(
-        templateWithUpdatedQualityMeasures
-      ),
-    });
-    expect(result.formTemplateVersion.versionNumber).toEqual(1);
-    expect(result.formTemplateVersion.md5Hash).toEqual(
-      currentQualityMeasuresFormHash
     );
   });
 });
@@ -403,13 +371,13 @@ describe("Test getOrCreateFormTemplate MLR", () => {
 });
 
 describe("Test form contents", () => {
-  const allFormTemplates = () => {
+  const allFormTemplates = async () => {
     const templates: ReportJson[] = [];
     for (let reportType of Object.values(ReportType)) {
       try {
-        const formTemplate = formTemplateForReportType(
+        const formTemplate = (await formTemplateForReportType(
           reportType
-        ) as ReportJson;
+        )) as ReportJson;
         templates.push(formTemplate);
       } catch (error: any) {
         if (!/not implemented/i.test(error.message)) {
@@ -451,8 +419,9 @@ describe("Test form contents", () => {
    * That will happen rarely enough that we will forget to do so;
    * this test is here to remind us.
    */
-  it("Should contain fields of known types", () => {
-    for (let formTemplate of allFormTemplates()) {
+  it("Should contain fields of known types", async () => {
+    const forms = await allFormTemplates();
+    for (let formTemplate of forms) {
       for (let form of allFormsIn(formTemplate)) {
         for (let field of form.fields) {
           const isField = isFieldElement(field);
@@ -470,6 +439,13 @@ describe("Test form contents", () => {
         }
       }
     }
+  });
+
+  test("returns flagged routes", async () => {
+    (isFeatureFlagEnabled as jest.Mock).mockResolvedValue(true);
+    const template = await formTemplateForReportType(ReportType.MCPAR);
+    expect(mcparFlags).toEqual({ default: { mockFlag }, mockFlag });
+    expect(template).toEqual(mockFlag);
   });
 });
 
@@ -522,14 +498,6 @@ describe("filterByFlag()", () => {
 });
 
 describe("errors", () => {
-  describe("formTemplateForReportType()", () => {
-    test("show throw error for bad reportType", () => {
-      expect(() => formTemplateForReportType("badType" as ReportType)).toThrow(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
-    });
-  });
-
   describe("generatePCCMTemplate()", () => {
     test("show throw error for bad PCCM logic", () => {
       const reportJson = structuredClone(mcpar) as ReportJson;

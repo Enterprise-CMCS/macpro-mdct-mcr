@@ -10,11 +10,11 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
-import { WafConstruct } from "../constructs/waf";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { isLocalStack } from "../local/util";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
+import { Lambda } from "../constructs/lambda.js";
+import { WafConstruct } from "../constructs/waf.js";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.js";
+import { isLocalStack } from "../local/util.js";
+import { DynamoDBTable } from "../constructs/dynamodb-table.js";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -28,6 +28,7 @@ interface CreateApiComponentsProps {
   mcparFormBucket: s3.IBucket;
   mlrFormBucket: s3.IBucket;
   naaarFormBucket: s3.IBucket;
+  launchDarklyServer: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -43,6 +44,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     mcparFormBucket,
     mlrFormBucket,
     naaarFormBucket,
+    launchDarklyServer,
   } = props;
 
   const service = "app-api";
@@ -113,6 +115,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     NODE_OPTIONS: "--enable-source-maps",
     brokerString,
     STAGE: stage,
+    launchDarklyServer,
     MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,
     NAAAR_FORM_BUCKET: naaarFormBucket.bucketName,

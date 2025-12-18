@@ -100,6 +100,19 @@ export const mcparFieldsToCopy = {
   // sanctions are never copied from year to year.
 };
 
+// fields to copy when newQualityMeasuresSectionEnabled flag is true
+export const newQualityMeasureFieldsToCopy = [
+  "id",
+  "measure_name",
+  "measure_identifier",
+  "measure_identifierCmit",
+  "measure_identifierCbe",
+  "measure_identifierDefinition",
+  "measure_dataVersion",
+  "measure_activities",
+  "measure_rates",
+];
+
 export const naaarFieldsToCopy = {
   root: [
     "contactName",

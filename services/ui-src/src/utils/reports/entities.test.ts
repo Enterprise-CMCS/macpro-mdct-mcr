@@ -1,4 +1,5 @@
 import {
+  addEditEntityModifications,
   entityWasUpdated,
   getAddEditDrawerText,
   getFormattedEntityData,
@@ -16,6 +17,7 @@ import {
   mockQualityMeasuresEntity,
   mockCompletedQualityMeasuresFormattedEntityData,
 } from "utils/testing/setupJest";
+import { RATE_ID_PREFIX } from "utils/forms/qualityMeasures";
 
 describe("utils/reports/entities", () => {
   describe("getAddEditDrawerText()", () => {
@@ -156,6 +158,60 @@ describe("utils/reports/entities", () => {
     test("returns false", () => {
       const updated = { id: "mock-id" };
       expect(entityWasUpdated(original, updated)).toBe(false);
+    });
+  });
+
+  describe("addEditEntityModifications()", () => {
+    const mockMeasures = [
+      {
+        id: "mock-measure-1",
+        name: "mock measure 1",
+        measure_rates: [
+          {
+            id: "mock-rate-1",
+            name: "mock rate 1",
+          },
+        ],
+      },
+    ];
+
+    const mockPlans = [
+      {
+        id: "mock id",
+        name: "mock plan name",
+        measures: {
+          [mockMeasures[0].id]: {
+            [`${RATE_ID_PREFIX}mock-rate-1`]: "123",
+            [`${RATE_ID_PREFIX}mock-old-rate`]: "N/A",
+          },
+        },
+      },
+    ];
+    test("returns field data when no further modifications needed", () => {
+      const result = addEditEntityModifications(
+        EntityType.PLANS,
+        mockPlans,
+        mockPlans[0],
+        mockPlans
+      );
+      expect(result).toEqual({
+        [EntityType.PLANS]: mockPlans,
+      });
+    });
+
+    const mockPlanMeasureData = mockPlans[0].measures[mockMeasures[0].id];
+
+    test("returns modified field data when measures, plans, and rates present", () => {
+      addEditEntityModifications(
+        EntityType.QUALITY_MEASURES,
+        mockMeasures,
+        mockMeasures[0],
+        mockPlans
+      );
+      expect(mockPlanMeasureData?.[`${RATE_ID_PREFIX}mock-rate-1`]).toBe("123");
+      expect(
+        mockPlanMeasureData?.[`${RATE_ID_PREFIX}mock-old-rate`]
+      ).toBeUndefined();
     });
   });
 });

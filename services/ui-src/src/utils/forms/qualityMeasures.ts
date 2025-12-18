@@ -1,7 +1,10 @@
+// types
 import { EntityShape, FormJson } from "types";
 
+export const RATE_ID_PREFIX = "measure_rateResults-";
+
 export const createRateField = (id: string, name: string) => ({
-  id: `measure_rate_results-${id}`,
+  id: `${RATE_ID_PREFIX}${id}`,
   type: "number",
   validation: "numberOptional",
   props: {
@@ -11,8 +14,10 @@ export const createRateField = (id: string, name: string) => ({
 });
 
 export const addRatesToForm = (form: FormJson, measure: EntityShape) => {
-  const copiedDrawerForm = structuredClone(form);
   const rates = measure.measure_rates;
+  if (!rates) return form;
+
+  const copiedDrawerForm = structuredClone(form);
   for (const rate of rates) {
     copiedDrawerForm.fields.push(createRateField(rate.id, rate.name));
   }

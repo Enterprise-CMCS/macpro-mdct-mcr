@@ -67,9 +67,14 @@ repos:
     hooks:
       - id: branch-name-validation
         name: branch-name-validation
-        entry: .github/branchNameValidation.sh
-        language: script
+        entry: node .github/branchNameValidation.ts
+        language: system
         pass_filenames: false
+      - id: validate-commit-msg
+        name: validate-commit-msg
+        entry: node .github/validateCommitMessage.ts
+        language: system
+        stages: [commit-msg]
       - id: typescript-check-cli
         name: typescript-check-cli
         entry: bash -c "cd cli && yarn tsc --noEmit"
@@ -85,8 +90,8 @@ repos:
         entry: bash -c "cd services/ui-src && yarn tsc --noEmit"
         language: system
         pass_filenames: false
-      - id: validate-commit-msg
-        name: validate-commit-msg
-        entry: .github/validateCommitMessage.sh
-        language: script
-        stages: [commit-msg]
+      - id: typescript-check-cdk
+        name: typescript-check-cdk
+        entry: bash -c "cd deployment && yarn tsc --noEmit"
+        language: system
+        pass_filenames: false

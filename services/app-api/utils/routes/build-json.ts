@@ -27,7 +27,7 @@ async function writeJsonFile(outPath: string, data: any) {
   await fs.writeFile(outPath, json + "\n", "utf8");
 }
 
-async function buildForReportType(reportPath: string) {
+export const buildForReportType = async (reportPath: string) => {
   const reportType = path.basename(reportPath);
 
   const indexFile = path.join(reportPath, "index.ts");
@@ -65,9 +65,9 @@ async function buildForReportType(reportPath: string) {
   } catch {
     // No flags folder OK
   }
-}
+};
 
-async function buildJson() {
+export const buildJson = async () => {
   const reportTypes = await getDirectories(ROUTES_DIR);
 
   if (reportTypes.length === 0) {
@@ -78,9 +78,12 @@ async function buildJson() {
   for (const reportTypePath of reportTypes) {
     await buildForReportType(reportTypePath);
   }
-}
+};
 
-buildJson().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+/* istanbul ignore next */
+if (require.main === module) {
+  buildJson().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}

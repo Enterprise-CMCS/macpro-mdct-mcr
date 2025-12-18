@@ -21,6 +21,7 @@ import { getOrCreateFormTemplate } from "../../utils/formTemplates/formTemplates
 import {
   copyFieldDataFromSource,
   makePCCMModifications,
+  populateQualityMeasures,
 } from "../../utils/reports/reports";
 import {
   badRequest,
@@ -113,17 +114,18 @@ export const createReport = handler(async (event, _context) => {
   }
 
   // If the `copyFieldDataSourceId` parameter is passed, merge the validated field data with the source ids data.
-
   let newFieldData;
+  const copyFieldDataSourceId = unvalidatedMetadata?.copyFieldDataSourceId;
 
-  if (unvalidatedMetadata.copyFieldDataSourceId) {
+  if (copyFieldDataSourceId) {
     newFieldData = await copyFieldDataFromSource(
       reportBucket,
       state,
-      unvalidatedMetadata.copyFieldDataSourceId,
+      copyFieldDataSourceId,
       formTemplate,
       validatedFieldData!,
-      reportType
+      reportType,
+      newQualityMeasuresSectionEnabled
     );
   } else {
     newFieldData = validatedFieldData;
@@ -132,6 +134,15 @@ export const createReport = handler(async (event, _context) => {
   // make necessary modifications for PCCM
   if (isPccm) {
     newFieldData = makePCCMModifications(newFieldData);
+  }
+
+  // prefill MCPAR quality measures if not copying report
+  if (newQualityMeasuresSectionEnabled && !copyFieldDataSourceId) {
+    newFieldData = populateQualityMeasures(
+      newFieldData,
+      state,
+      unvalidatedMetadata.programName
+    );
   }
 
   const fieldDataParams: PutObjectCommandInput = {
