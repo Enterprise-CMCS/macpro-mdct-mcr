@@ -67,9 +67,6 @@ jobs:
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
 
-      - name: List active resources created by CI pipeline
-        run: pushd .github && ./auditAccount.sh ci_active resources.json
-
       - name: List orphaned resources created by CI pipeline
         run: pushd .github && ./auditAccount.sh ci_inactive resources.json
 
@@ -110,9 +107,6 @@ jobs:
           #!/bin/bash
           pushd .github
           echo "Reports with no entries will be omitted"
-          CI_ACTIVE="$(./auditAccount.sh ci_active resources.json)"
-          [[ $(jq -r 'length' <<< "${CI_ACTIVE}") -gt 0 ]] && jq -r '(.[0]
-            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_ACTIVE}" > reports/ci_active.csv || :
           CI_INACTIVE="$(./auditAccount.sh ci_inactive resources.json)"
           [[ $(jq -r 'length' <<< "${CI_INACTIVE}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_INACTIVE}" > reports/ci_inactive.csv || :
