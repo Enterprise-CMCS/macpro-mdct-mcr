@@ -20,7 +20,7 @@ jobs:
     environment: ${{ (github.ref_name == 'production' && 'production') || (github.ref_name == 'val' && 'val') || 'dev' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
       - uses: actions/cache@v4
@@ -30,9 +30,9 @@ jobs:
       - name: path + branch settings + install packages
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          BRANCH_NAME=$(node ./.github/setBranchName.ts ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          ./.github/branchNameValidation.sh $BRANCH_NAME
+          node ./.github/branchNameValidation.ts $BRANCH_NAME
           ./run install
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
@@ -43,7 +43,7 @@ jobs:
         run: ./run deploy --stage $branch_name
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(./scripts/output.sh ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(node ./scripts/output.ts ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
