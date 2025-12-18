@@ -146,7 +146,7 @@ export const financialPerformanceRoute: DrawerFormRoute = {
         validation: ValidationType.TEXT,
         props: {
           label: "D1.II.2 Population specific MLR description",
-          hint: "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter "N/A" if not applicable.</br>See glossary for the regulatory definition of MLR.",
+          hint: 'Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter "N/A" if not applicable.</br>See glossary for the regulatory definition of MLR.',
         },
       },
       {
