@@ -4,7 +4,7 @@ import { ReportJsonFile, ReportType } from "../../../../../utils/types";
 import { bssEntityIndicatorsRoute } from "../../bss-entity-indicators";
 import { notesRoute } from "../../notes";
 import { planLevelIndicatorsRoute } from "./plan-level-indicators";
-import { programInformationRoute } from "../../program-information";
+import { programInformationRoute } from "./program-information";
 import { programLevelIndicatorsRoute } from "./program-level-indicators";
 import { reviewAndSubmitRoute } from "../../review-and-submit";
 import { stateLevelIndicatorsRoute } from "./state-level-indicators";

@@ -3,7 +3,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../utils/types";
+} from "../../../../../../utils/types";
 
 export const addInLieuOfServicesAndSettingsRoute: FormRoute = {
   name: "Add In Lieu of Services and Settings",
@@ -39,8 +39,6 @@ export const addInLieuOfServicesAndSettingsRoute: FormRoute = {
         },
       ],
       spreadsheet: "A_Program_Info",
-      alert:
-        "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>",
     },
   },
   form: {
