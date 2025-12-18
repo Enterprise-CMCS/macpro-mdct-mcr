@@ -64,11 +64,25 @@ export const getPlanValues = (entity?: EntityShape, plans?: AnyObject[]) =>
     response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
   }));
 
-// returns an array of { planName: string, response: string } or undefined
-export const getMeasureRateValues = (measureRates?: AnyObject[]) =>
-  measureRates?.map((rate: AnyObject) => ({
-    name: rate.name,
-  }));
+// returns an array of { rateName: string, rateResult: string } or undefined
+export const getMeasureResults = (
+  entityId?: string,
+  plans?: AnyObject,
+  measureRates?: AnyObject[]
+) => {
+  return plans?.map((plan: AnyObject) => {
+    const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+      return {
+        rate: rate.name,
+        rateResult: plan.measures[entityId!][`measure_rate_results-${rate.id}`],
+      };
+    });
+    return {
+      planName: plan.name,
+      ...resultsPerPlan,
+    };
+  });
+};
 
 export const getFormattedEntityData = (
   entityType: EntityType,
@@ -138,6 +152,7 @@ export const getFormattedEntityData = (
           entity?.measure_identifier?.[0].value ===
           "No, it uses neither CMIT or CBE";
         return {
+          id: entity?.id,
           name: entity?.measure_name,
           identifierType: getRadioValue(entity, "measure_identifier"),
           cmitNumber: yesCmit && entity?.measure_identifierCmit,
@@ -149,7 +164,12 @@ export const getFormattedEntityData = (
           identifierUrl: neitherCmitOrCbe && entity?.measure_identifierUrl,
           dataVersion: getRadioValue(entity, "measure_dataVersion"),
           activities: getCheckboxValues(entity, "measure_activities"),
-          measureRates: getMeasureRateValues(entity?.measure_rates),
+          measureRates: entity?.measure_rates,
+          measureResults: getMeasureResults(
+            entity?.id,
+            reportFieldData?.["plans"],
+            entity?.measure_rates
+          ),
         };
       } else {
         return {

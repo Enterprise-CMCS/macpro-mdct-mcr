@@ -128,11 +128,6 @@ const TopQualityMeasuresSection = ({
             }Activities the quality measure is used in`}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.activities}</Text>
-
-          <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
-          </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
         </>
       )}
     </>
@@ -144,40 +139,53 @@ const BottomQualityMeasuresSection = ({
   printVersion,
   notAnswered,
   verbiage,
+  isPDF,
   sx,
+  newQualityMeasuresSectionEnabled,
 }: BottomProps) => {
+  // console.log("formatted entity data", formattedEntityData);
   return (
     <>
-      <Text sx={sx.resultsHeader}>Measure results</Text>
+      {!newQualityMeasuresSectionEnabled ? (
+        <>
+          <Text sx={sx.resultsHeader}>Measure results</Text>
 
-      {formattedEntityData?.isPartiallyComplete && (
-        <Text sx={sx.missingResponseMessage}>
-          {verbiage?.entityMissingResponseMessage ||
-            (printVersion && notAnswered)}
-        </Text>
-      )}
+          {formattedEntityData?.isPartiallyComplete && (
+            <Text sx={sx.missingResponseMessage}>
+              {verbiage?.entityMissingResponseMessage ||
+                (printVersion && notAnswered)}
+            </Text>
+          )}
 
-      {formattedEntityData?.perPlanResponses?.map((plan) => (
-        <Box
-          key={plan.name + plan.response}
-          sx={sx.highlightContainer}
-          className={!plan.response ? "error" : ""}
-        >
-          <Flex>
-            <Box sx={sx.highlightSection}>
-              <Text sx={sx.subtitle}>{plan.name}</Text>
+          {formattedEntityData?.perPlanResponses?.map((plan) => (
+            <Box
+              key={plan.name + plan.response}
+              sx={sx.highlightContainer}
+              className={!plan.response ? "error" : ""}
+            >
+              <Flex>
+                <Box sx={sx.highlightSection}>
+                  <Text sx={sx.subtitle}>{plan.name}</Text>
 
-              {printVersion && !plan.response ? (
-                notAnswered
-              ) : (
-                <Text sx={sx.subtext}>
-                  {plan.response || verbiage?.entityEmptyResponseMessage}
-                </Text>
-              )}
+                  {printVersion && !plan.response ? (
+                    notAnswered
+                  ) : (
+                    <Text sx={sx.subtext}>
+                      {plan.response || verbiage?.entityEmptyResponseMessage}
+                    </Text>
+                  )}
+                </Box>
+              </Flex>
             </Box>
-          </Flex>
-        </Box>
-      ))}
+          ))}
+        </>
+      ) : (
+        <>
+          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+            {`${printVersion ? "D2.VII.7 Measure results " : ""}`}
+          </Heading>
+        </>
+      )}
     </>
   );
 };
@@ -210,6 +218,7 @@ export const QualityMeasuresSection = ({
         <BottomQualityMeasuresSection
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
+          isPDF={isPDF}
           notAnswered={notAnswered}
           verbiage={verbiage}
           newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
@@ -234,6 +243,7 @@ interface FormattedEntityData {
   reportingRateType?: string;
   reportingPeriod?: string;
   // new Quality Measures entity data
+  id?: string;
   identifierType?: string;
   cmitNumber?: string;
   cbeNumber?: string;
@@ -256,6 +266,7 @@ interface TopProps extends BaseProps {
 }
 
 interface BottomProps extends BaseProps {
+  isPDF?: boolean;
   notAnswered?: ReactNode;
   verbiage?: {
     entityMissingResponseMessage?: string;
