@@ -50,6 +50,20 @@ export const EntityRow = ({
     return fields;
   };
 
+  const EntityButtons = () => (
+    <EntityButtonGroup
+      deleteDisabled={locked ?? !userIsEndUser}
+      openDisabled={!hasStandards && hasStandards !== undefined}
+      entity={entity}
+      verbiage={verbiage}
+      openAddEditEntityModal={openAddEditEntityModal}
+      openOverlayOrDrawer={openOverlayOrDrawer}
+      openDeleteEntityModal={openDeleteEntityModal}
+      entering={entering}
+      reportType={reportType}
+    />
+  );
+
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
@@ -72,33 +86,11 @@ export const EntityRow = ({
               "Select “Enter” to complete response."}
           </Text>
         )}
-        {isMobile && (
-          <EntityButtonGroup
-            deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasStandards && hasStandards !== undefined}
-            entity={entity}
-            verbiage={verbiage}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-            openDeleteEntityModal={openDeleteEntityModal}
-            entering={entering}
-            reportType={reportType}
-          />
-        )}
+        {isMobile && <EntityButtons />}
       </Td>
       {!isMobile && (
         <Td>
-          <EntityButtonGroup
-            entity={entity}
-            verbiage={verbiage}
-            deleteDisabled={locked ?? !userIsEndUser}
-            openDisabled={!hasStandards && hasStandards !== undefined}
-            openAddEditEntityModal={openAddEditEntityModal}
-            openOverlayOrDrawer={openOverlayOrDrawer}
-            openDeleteEntityModal={openDeleteEntityModal}
-            entering={entering}
-            reportType={reportType}
-          />
+          <EntityButtons />
         </Td>
       )}
     </Tr>
@@ -115,7 +107,6 @@ export interface EntityRowProps {
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
   openOverlayOrDrawer?: Function;
-  [key: string]: any;
 }
 
 const sx = {
