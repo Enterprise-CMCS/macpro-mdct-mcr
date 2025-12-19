@@ -8,10 +8,11 @@ import { Banner } from "./types";
  * @returns needsSigning - boolean indicating whether SigV4 signing is needed
  */
 function needsSigV4Signing(): boolean {
-  const apiUrl = process.env.API_URL || "";
-  const needsSigning = new URL(apiUrl).host.endsWith(
-    "execute-api.us-east-1.amazonaws.com"
-  );
+  /*
+   * This is the same check we use in deployment/local/util.ts to determine if we're running against LocalStack.
+   * When running against LocalStack, we do not need to sign requests.
+   */
+  const needsSigning = process.env.CDK_DEFAULT_ACCOUNT !== "000000000000";
   return needsSigning;
 }
 
