@@ -1,7 +1,13 @@
-import { mcparFieldsToCopy, naaarFieldsToCopy } from "../constants/copyover";
+import { randomUUID } from "crypto";
+import {
+  mcparFieldsToCopy,
+  naaarFieldsToCopy,
+  newQualityMeasureFieldsToCopy,
+} from "../constants/copyover";
+import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
 import s3Lib, { getFieldDataKey } from "../s3/s3-lib";
-import { AnyObject, ReportType, State } from "../types";
+import { AnyObject, EntityType, ReportType, State } from "../types";
 
 /**
  *
@@ -17,7 +23,8 @@ export async function copyFieldDataFromSource(
   copyFieldDataSourceId: any,
   formTemplate: any,
   validatedFieldData: AnyObject,
-  reportType: ReportType
+  reportType: ReportType,
+  newQualityMeasuresSectionEnabled?: boolean
 ) {
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
   let fieldsToCopy: AnyObject = mcparFieldsToCopy;
@@ -25,6 +32,11 @@ export async function copyFieldDataFromSource(
     fieldsToCopy = naaarFieldsToCopy;
   } else if (reportType !== ReportType.MCPAR) {
     return validatedFieldData;
+  }
+
+  // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
+  if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
+    fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
   }
 
   const sourceFieldData = (await s3Lib.get({
@@ -58,7 +70,8 @@ export async function copyFieldDataFromSource(
       );
       const copiedEntities = (rootValue as AnyObject[])
         .map((entity) => copyEntityData(entity, entityFieldsToCopy))
-        .filter(nonEmptyObject);
+        .filter(nonEmptyObject)
+        .filter(nonIdOnlyObject);
       if (copiedEntities.length > 0) {
         // Don't copy empty arrays
         validatedFieldData[rootKey] = copiedEntities;
@@ -84,6 +97,10 @@ function nonEmptyObject(obj: AnyObject) {
   return Object.keys(obj).length > 0;
 }
 
+function nonIdOnlyObject(obj: AnyObject) {
+  return !(Object.keys(obj).length === 1 && obj?.id);
+}
+
 export function makePCCMModifications(fieldData: any) {
   // Section C.I, Question C1.I.3 Program type; select PCCM option
   fieldData.program_type = [
@@ -93,5 +110,21 @@ export function makePCCMModifications(fieldData: any) {
     },
   ];
 
+  return fieldData;
+}
+
+export function populateQualityMeasures(
+  fieldData: any,
+  state: State,
+  programName: string
+) {
+  const measures = mcparQualityMeasuresList?.[state]?.[programName];
+  if (measures) {
+    const formattedMeasures = measures.map((measure) => ({
+      id: randomUUID(),
+      ...measure,
+    }));
+    fieldData[EntityType.QUALITY_MEASURES] = formattedMeasures;
+  }
   return fieldData;
 }

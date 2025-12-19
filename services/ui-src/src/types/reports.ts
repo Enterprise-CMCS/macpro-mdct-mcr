@@ -93,12 +93,13 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
 }
 
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
+  addEntityDrawerForm?: never;
+  drawerForm?: FormJson;
   entityType: EntityType;
-  verbiage: ModalOverlayReportPageVerbiage;
+  form?: never;
   modalForm: FormJson;
   overlayForm?: FormJson;
-  drawerForm?: never;
-  form?: never;
+  verbiage: ModalOverlayReportPageVerbiage;
 }
 
 export interface EntityDetailsMultiformShape {
@@ -196,6 +197,10 @@ export interface ReportRouteWithoutForm extends ReportRouteBase {
 // REPORT VERBIAGE
 
 export interface ReportPageVerbiage {
+  accordion?: {
+    buttonLabel: string;
+    text: string;
+  };
   intro: {
     alert?: string;
     hint?: string;
@@ -205,6 +210,7 @@ export interface ReportPageVerbiage {
     info?: string | CustomHtmlElement[];
     exportSectionHeader?: string;
   };
+  missingEntityMessage?: CustomHtmlElement[];
   praDisclosure?: CustomHtmlElement[];
 }
 
@@ -214,7 +220,6 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   drawerTitle: string;
   addEntityButtonText?: string;
   drawerInfo?: CustomHtmlElement[];
-  missingEntityMessage?: CustomHtmlElement[];
   missingIlosMessage?: CustomHtmlElement[];
   missingPlansAndIlosMessage?: CustomHtmlElement[];
 }
@@ -244,6 +249,7 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   tableHeader: string;
   addEditModalHint: string;
   emptyDashboardText: string;
+  drawerTitle?: string;
 }
 
 export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
@@ -317,6 +323,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   existingProgramNameSuggestion?: string;
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
+  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

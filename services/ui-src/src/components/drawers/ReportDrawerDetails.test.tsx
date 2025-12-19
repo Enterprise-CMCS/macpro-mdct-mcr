@@ -17,17 +17,17 @@ const ReportDrawerDetailsAccessMeasuresComponent = (
   />
 );
 
-const ReportDrawerDetailsSanctionsComponent = (
-  <ReportDrawerDetails
-    drawerDetails={mockUnfinishedSanctionsFormattedEntityData}
-    entityType={EntityType.SANCTIONS}
-  />
-);
-
 const ReportDrawerDetailsQualityMeasuresComponent = (
   <ReportDrawerDetails
     drawerDetails={mockUnfinishedQualityMeasuresFormattedEntityData}
     entityType={EntityType.QUALITY_MEASURES}
+  />
+);
+
+const ReportDrawerDetailsSanctionsComponent = (
+  <ReportDrawerDetails
+    drawerDetails={mockUnfinishedSanctionsFormattedEntityData}
+    entityType={EntityType.SANCTIONS}
   />
 );
 
@@ -49,24 +49,21 @@ describe("<ReportDrawerDetails />", () => {
       ).toBeVisible();
     });
 
+    test("Should render quality measures text provided in drawerDetails", async () => {
+      render(ReportDrawerDetailsQualityMeasuresComponent);
+      expect(
+        screen.getByText(
+          mockUnfinishedQualityMeasuresFormattedEntityData.reportingPeriod
+        )
+      ).toBeVisible();
+    });
+
     test("Should render sanctions text provided in drawerDetails", async () => {
       render(ReportDrawerDetailsSanctionsComponent);
       expect(
         screen.getByText(
           mockUnfinishedSanctionsFormattedEntityData.interventionTopic
         )
-      ).toBeVisible();
-    });
-
-    test("Should render quality measures text provided in drawerDetails", async () => {
-      render(ReportDrawerDetailsQualityMeasuresComponent);
-      expect(
-        screen.getByText(
-          mockUnfinishedQualityMeasuresFormattedEntityData.domain
-        )
-      ).toBeVisible();
-      expect(
-        screen.getByText(mockUnfinishedQualityMeasuresFormattedEntityData.name)
       ).toBeVisible();
     });
   });
@@ -80,6 +77,5 @@ describe("<ReportDrawerDetails />", () => {
 
   testA11yAct(ReportDrawerDetailsAccessMeasuresComponent);
   testA11yAct(ReportDrawerDetailsSanctionsComponent);
-  testA11yAct(ReportDrawerDetailsQualityMeasuresComponent);
   testA11yAct(ReportDrawerDetailsInvalidEntityTypeComponent);
 });

@@ -111,7 +111,8 @@ describe("<DrawerReportEntityRow />", () => {
           {
             id: "mock-id",
             custom_analysis_method_name: "New Method",
-            custom_analysis_method_description: "mock description",
+            custom_analysis_method_description:
+              "Mock custom analysis description",
             analysis_applicable: [
               {
                 key: "analysis_applicable",
@@ -175,6 +176,12 @@ describe("<DrawerReportEntityRow />", () => {
       test("renders enter button for unanswered analysis method", () => {
         expect(
           screen.getByRole("button", { name: "Enter Geomapping" })
+        ).toBeVisible();
+      });
+
+      test("renders description for custom analysis method", () => {
+        expect(
+          screen.getByText("Mock custom analysis description")
         ).toBeVisible();
       });
 
