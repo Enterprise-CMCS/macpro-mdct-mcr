@@ -53,7 +53,7 @@ export const EntityRow = ({
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
-        <EntityStatusIcon entity={entity} entityType={entityType} />
+        <EntityStatusIcon isComplete={!!entityComplete} />
       </Td>
       <Td sx={sx.entityFields}>
         {isMobile && (

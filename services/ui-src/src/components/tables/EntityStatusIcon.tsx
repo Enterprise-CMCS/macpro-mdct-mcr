@@ -1,75 +1,43 @@
-import { useMemo } from "react";
 // components
 import { Box, Image, Text } from "@chakra-ui/react";
-// types
-import { EntityShape, EntityType } from "types";
-// utils
-import { getEntityStatus, useStore } from "utils";
 // assets
 import unfinishedIcon from "assets/icons/icon_error_circle_bright.png";
 import unfinishedIconDark from "assets/icons/icon_error_circle.png";
 import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
-export const EntityStatusIcon = ({
-  entity,
-  entityType,
-  isPdf,
-  override,
-}: Props) => {
-  const { report } = useStore();
+export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
+  const iconSrc = isComplete
+    ? isPdf
+      ? successIconDark
+      : successIcon
+    : isPdf
+    ? unfinishedIconDark
+    : unfinishedIcon;
 
-  const entityComplete = useMemo(() => {
-    return override ?? getEntityStatus(entity, report, entityType);
-  }, [report, override]);
-
+  const altText = isPdf ? "" : isComplete ? "complete icon" : "warning icon";
+  const pdfLabelText = isComplete ? "Complete" : "Error";
   return (
-    <Box sx={isPdf ? sx.containerPdf : sx.container}>
-      {entityComplete ? (
-        <>
-          <Image
-            sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
-            src={isPdf ? successIconDark : successIcon}
-            alt={isPdf ? "" : "complete icon"}
-            boxSize="xl"
-          />
-          {isPdf && (
-            <Text sx={sx.successText}>
-              <b>Complete</b>
-            </Text>
-          )}
-        </>
-      ) : (
-        <>
-          <Image
-            sx={isPdf ? sx.statusIconPdf : sx.statusIcon}
-            src={isPdf ? unfinishedIconDark : unfinishedIcon}
-            alt={isPdf ? "" : "warning icon"}
-            boxSize="xl"
-          />
-          {isPdf && (
-            <Text sx={sx.errorText}>
-              <b>Error</b>
-            </Text>
-          )}
-        </>
+    <Box sx={sx.container}>
+      <Image sx={sx.statusIcon} src={iconSrc} alt={altText} boxSize="xl" />
+      {isPdf && (
+        <Text
+          sx={sx.pdfLabelText}
+          color={isComplete ? "success_darker" : "error_darker"}
+        >
+          {pdfLabelText}
+        </Text>
       )}
     </Box>
   );
 };
 
 interface Props {
-  /**
-   * Entity to show status for
-   */
-  entity: EntityShape;
-  entityType?: EntityType;
+  isComplete: boolean;
   /**
    * Whether or not icon is appearing on PDF page (used for styling)
    */
   isPdf?: boolean;
-  override?: boolean;
-  [key: string]: any;
 }
 
 const sx = {
@@ -78,26 +46,11 @@ const sx = {
     flexDirection: "column",
     alignItems: "center",
   },
-  successText: {
-    color: "success_darker",
+  pdfLabelText: {
     fontSize: "0.667rem",
-  },
-  errorText: {
-    color: "error_darker",
-    fontSize: "0.667rem",
-  },
-  containerPdf: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    fontWeight: "bold",
   },
   statusIcon: {
-    marginLeft: "0rem",
-    img: {
-      maxWidth: "fit-content",
-    },
-  },
-  statusIconPdf: {
     marginLeft: "0rem",
     img: {
       maxWidth: "fit-content",
