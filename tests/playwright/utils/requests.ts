@@ -9,8 +9,9 @@ import { Banner } from "./types";
  */
 function needsSigV4Signing(): boolean {
   const apiUrl = process.env.API_URL || "";
-  const needsSigning =
-    apiUrl.includes("execute-api") && apiUrl.includes("amazonaws.com");
+  const needsSigning = new URL(apiUrl).host.endsWith(
+    "execute-api.us-east-1.amazonaws.com"
+  );
   return needsSigning;
 }
 
