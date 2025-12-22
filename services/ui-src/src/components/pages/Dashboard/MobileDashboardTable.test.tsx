@@ -173,7 +173,6 @@ describe("<MobileDashboardTable />", () => {
     });
 
     test("Clicking 'Edit' button on a report navigates to first page of report", async () => {
-      mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
       const enterReportButton = screen.getAllByRole("button", {
         name: `Edit ${programName} due ${dueDate} report`,
       })[0];
@@ -183,7 +182,9 @@ describe("<MobileDashboardTable />", () => {
       });
       await waitFor(async () => {
         expect(mockUseNavigate).toBeCalledTimes(1);
-        expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
+        expect(mockUseNavigate).toBeCalledWith(
+          "/report/MCPAR/CO/mock-report-id"
+        );
       });
     });
 

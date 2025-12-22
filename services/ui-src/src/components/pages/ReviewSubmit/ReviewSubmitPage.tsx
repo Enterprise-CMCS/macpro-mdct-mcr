@@ -47,7 +47,7 @@ export const ReviewSubmitPage = () => {
   const reportType =
     report?.reportType || localStorage.getItem("selectedReportType");
   const reportId = report?.id || localStorage.getItem("selectedReport");
-  const reportState = state || localStorage.getItem("selectedState");
+  const reportState = report?.state || localStorage.getItem("selectedState");
 
   const reportKeys = {
     reportType: reportType!,

@@ -1,6 +1,5 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import { ExportedReportPage } from "components/pages/Export/ExportedReportPage";
-import { NotFoundPage } from "components/pages/NotFound/NotFoundPage";
 import { ReportPageWrapper } from "components/reports/ReportPageWrapper";
 import { ReportContext } from "components/reports/ReportProvider";
 import { useContext, useEffect, useState } from "react";

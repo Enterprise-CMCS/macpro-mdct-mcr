@@ -1,6 +1,9 @@
 import { useLocation } from "react-router";
 import { ReportRoute, ReportType } from "types";
-import { removeReportSpecificPath, uriPathToPagePath } from "./pathFormatter";
+import {
+  removeReportSpecificPath,
+  uriPathToPagePath as urlPathToPagePath,
+} from "./pathFormatter";
 
 /**
  * WARNING: You probably want ReportContext.isReportPage instead.
@@ -28,7 +31,7 @@ export const useFindRoute = (
   fallbackRoute: string = ""
 ) => {
   const { pathname } = useLocation();
-  const currentPath = uriPathToPagePath(pathname);
+  const currentPath = urlPathToPagePath(pathname);
   let calculatedRoutes = {
     previousRoute: fallbackRoute,
     nextRoute: fallbackRoute,
@@ -45,6 +48,7 @@ export const useFindRoute = (
       // set previousRoute to previous path or fallback route
       const previousRoute =
         flatRouteArray[currentPosition - 1]?.path || fallbackRoute;
+
       calculatedRoutes.previousRoute = removeReportSpecificPath(previousRoute);
       // set nextRoute to next path or fallback route
       const nextRoute =

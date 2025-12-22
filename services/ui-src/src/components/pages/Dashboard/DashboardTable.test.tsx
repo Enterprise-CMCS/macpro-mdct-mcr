@@ -229,18 +229,16 @@ describe("<DashboardTable />", () => {
 
     test("Clicking 'Edit' button on a report row fetches the field data, then navigates to report", async () => {
       render(dashboardViewWithReports);
-      mockMcparReportContext.fetchReport.mockReturnValueOnce(mockMcparReport);
       const enterReportButton = screen.getAllByTestId("enter-report")[0];
       expect(enterReportButton).toBeVisible();
       await act(async () => {
         await userEvent.click(enterReportButton);
       });
       await waitFor(async () => {
-        expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(
-          1
-        );
         expect(mockUseNavigate).toBeCalledTimes(1);
-        expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
+        expect(mockUseNavigate).toBeCalledWith(
+          "/report/MCPAR/CO/mock-report-id"
+        );
       });
     });
 

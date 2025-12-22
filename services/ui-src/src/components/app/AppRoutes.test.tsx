@@ -169,10 +169,15 @@ describe("<AppRoutes />", () => {
       expect(screen.getByRole("main").id).toBe("main-content");
     });
 
-    test("container should be div element for report page", () => {
+    test("container should be div element for report page", async () => {
+      // history = createMemoryHistory();
+      // history.push("/mock/mock-route-1");
       history = createMemoryHistory();
-      history.push("/mock/mock-route-1");
-      render(appRoutesComponent(history, true));
+      history.push("/report/MCPAR/MN/mockReportId/mock-route-1");
+
+      await act(async () => {
+        await render(appRoutesComponent(history, true));
+      });
       expect(screen.getByTestId("main-content").tagName).toBe("DIV");
       expect(screen.getByRole("main").id).toBe("report-content");
     });

@@ -16,12 +16,20 @@ import { testA11yAct } from "utils/testing/commonTests";
 
 const mockUseNavigate = jest.fn();
 const mockRoutes = {
-  previousRoute: "/mock-previous-route",
-  nextRoute: "/mock-next-route",
+  previousRoute: "mock-previous-route",
+  nextRoute: "mock-next-route",
 };
+
+const mockUseParams = jest.fn().mockReturnValue({
+  reportType: "mockReportType",
+  state: "mockState",
+  reportId: "mockReportId",
+  pageId: "mockPageId",
+});
 
 jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
+  useParams: () => mockUseParams(),
 }));
 
 jest.mock("utils", () => ({
@@ -59,7 +67,9 @@ describe("<ReportPageFooter />", () => {
       await act(async () => {
         await userEvent.click(previousNavigationButton);
       });
-      expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-previous-route");
+      expect(mockUseNavigate).toHaveBeenLastCalledWith(
+        "/report/mockReportType/mockState/mockReportId/mock-previous-route"
+      );
     });
 
     test("ReportPageFooter without form 'Continue' functionality works", async () => {
@@ -68,7 +78,9 @@ describe("<ReportPageFooter />", () => {
       await act(async () => {
         await userEvent.click(continueButton);
       });
-      expect(mockUseNavigate).toHaveBeenLastCalledWith("/mock-next-route");
+      expect(mockUseNavigate).toHaveBeenLastCalledWith(
+        "/report/mockReportType/mockState/mockReportId/mock-next-route"
+      );
     });
   });
 

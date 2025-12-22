@@ -17,11 +17,19 @@ import {
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
+const mockUseParams = jest.fn().mockReturnValue({
+  reportType: "mockReportType",
+  state: "mockState",
+  reportId: "mockReportId",
+  pageId: "mock-route-1",
+});
+
 const mockUseNavigate = jest.fn();
 const mockUseLocation = jest.fn();
 jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: () => mockUseLocation(),
+  useParams: () => mockUseParams(),
 }));
 
 jest.mock("utils/state/useStore");
@@ -31,12 +39,14 @@ mockedUseStore.mockReturnValue({
   ...mockMcparReportStore,
 });
 
-const mockLocations = {
-  standard: { pathname: mockReportJson.flatRoutes[0].path },
-  drawer: { pathname: mockReportJson.flatRoutes[1].path },
-  modalDrawer: { pathname: mockReportJson.flatRoutes[2].path },
-  modalOverlay: { pathname: mockReportJson.flatRoutes[3].path },
-  reviewSubmit: { pathname: mockReportJson.flatRoutes[4].path },
+const mockUrls = {
+  standard: { pathname: "/report/MCPAR/CO/myReport/mock-route-1" },
+  drawer: { pathname: "/report/MCPAR/CO/myReport/mock-route-2a" },
+  modalDrawer: { pathname: "/report/MCPAR/CO/myReport/mock-route-2b" },
+  modalOverlay: { pathname: "/report/MCPAR/CO/myReport/mock-route-2c" },
+  reviewSubmit: {
+    pathname: "/report/MCPAR/CO/myReport/mock-review-and-submit",
+  },
 };
 
 const ReportPageWrapperComponent = (
@@ -67,7 +77,7 @@ const ReportPageWrapper_WithoutReport = (
 describe("<ReportPageWrapper />", () => {
   describe("Test ReportPageWrapper view", () => {
     test("ReportPageWrapper StandardFormSection view renders", () => {
-      mockUseLocation.mockReturnValue(mockLocations.standard);
+      mockUseLocation.mockReturnValue(mockUrls.standard);
       render(ReportPageWrapperComponent);
       expect(
         screen.getByText(mockStandardReportPageJson.verbiage.intro.section)
@@ -75,7 +85,7 @@ describe("<ReportPageWrapper />", () => {
     });
 
     test("ReportPageWrapper DrawerSection view renders", () => {
-      mockUseLocation.mockReturnValue(mockLocations.drawer);
+      mockUseLocation.mockReturnValue(mockUrls.drawer);
       render(ReportPageWrapperComponent);
       expect(
         screen.getByText(mockDrawerReportPageJson.verbiage.dashboardTitle)
@@ -83,7 +93,7 @@ describe("<ReportPageWrapper />", () => {
     });
 
     test("ReportPageWrapper ModalDrawerReportPage view renders", () => {
-      mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
+      mockUseLocation.mockReturnValue(mockUrls.modalDrawer);
       render(ReportPageWrapperComponent);
       expect(
         screen.getByText(
@@ -93,7 +103,7 @@ describe("<ReportPageWrapper />", () => {
     });
 
     test("ReportPageWrapper ModalOverlayReportPage view renders", () => {
-      mockUseLocation.mockReturnValue(mockLocations.modalOverlay);
+      mockUseLocation.mockReturnValue(mockUrls.modalOverlay);
       render(ReportPageWrapperComponent);
       expect(
         screen.getByText(
@@ -103,7 +113,7 @@ describe("<ReportPageWrapper />", () => {
     });
 
     test("ReportPageWrapper ReviewSubmitPage view renders", () => {
-      mockUseLocation.mockReturnValue(mockLocations.reviewSubmit);
+      mockUseLocation.mockReturnValue(mockUrls.reviewSubmit);
       render(ReportPageWrapperComponent);
       expect(screen.getByTestId("review-submit-page")).toBeVisible();
     });
@@ -114,7 +124,7 @@ describe("<ReportPageWrapper />", () => {
 
     test("ReportPageWrapper navigates to dashboard if no report", () => {
       mockedUseStore.mockReturnValue(mockStateUserStore);
-      mockUseLocation.mockReturnValue(mockLocations.standard);
+      mockUseLocation.mockReturnValue(mockUrls.standard);
       render(ReportPageWrapper_WithoutReport);
       expect(mockUseNavigate).toHaveBeenCalledWith("/");
     });
@@ -143,18 +153,18 @@ describe("<ReportPageWrapper />", () => {
   });
 
   testA11yAct(ReportPageWrapperComponent, () => {
-    mockUseLocation.mockReturnValue(mockLocations.standard);
+    mockUseLocation.mockReturnValue(mockUrls.standard);
   });
   testA11yAct(ReportPageWrapperComponent, () => {
-    mockUseLocation.mockReturnValue(mockLocations.drawer);
+    mockUseLocation.mockReturnValue(mockUrls.drawer);
   });
   testA11yAct(ReportPageWrapperComponent, () => {
-    mockUseLocation.mockReturnValue(mockLocations.modalDrawer);
+    mockUseLocation.mockReturnValue(mockUrls.modalDrawer);
   });
   testA11yAct(ReportPageWrapperComponent, () => {
-    mockUseLocation.mockReturnValue(mockLocations.modalOverlay);
+    mockUseLocation.mockReturnValue(mockUrls.modalOverlay);
   });
   testA11yAct(ReportPageWrapperComponent, () => {
-    mockUseLocation.mockReturnValue(mockLocations.reviewSubmit);
+    mockUseLocation.mockReturnValue(mockUrls.reviewSubmit);
   });
 });
