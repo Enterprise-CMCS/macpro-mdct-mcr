@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useLocation } from "react-router";
+import { Link as RouterLink, useLocation, useParams } from "react-router";
 // components
 import { Box, Collapse, Flex, Image, Link, Text } from "@chakra-ui/react";
 import { SkipNav } from "components";
@@ -8,6 +8,10 @@ import { useBreakpoint, useStore } from "utils";
 // assets
 import arrowDownIcon from "assets/icons/icon_arrow_down_gray.png";
 import arrowUpIcon from "assets/icons/icon_arrow_up_gray.png";
+import {
+  removeReportSpecificPath,
+  uriPathToPagePath,
+} from "utils/reports/pathFormatter";
 
 interface LinkItemProps {
   name: string;
@@ -23,8 +27,10 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { report } = useStore();
-  const reportJson = report?.formTemplate;
+  const { reportType, state, reportId } = useParams(); // TODO: this might be easier to pull from the template?
+  const basePath = `/report/${reportType}/${state}/${reportId}`;
 
+  const reportJson = report?.formTemplate;
   //TO FIX: temporary fix, for some reason isDesktop sometimes returns false so it messes with the sidebar on load
   useEffect(() => {
     toggleSidebar(isDesktop);
@@ -66,7 +72,12 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
             </Box>
             <Box sx={sx.navSectionsBox} className="nav-sections-box">
               {reportJson.routes.map((section) => (
-                <NavSection key={section.name} section={section} level={1} />
+                <NavSection
+                  key={section.name}
+                  section={section}
+                  level={1}
+                  basePath={basePath}
+                />
               ))}
             </Box>
           </Box>
@@ -80,19 +91,22 @@ interface NavSectionProps {
   key: string;
   section: LinkItemProps;
   level: number;
+  basePath: string;
 }
 
-const NavSection = ({ section, level }: NavSectionProps) => {
+const NavSection = ({ section, level, basePath }: NavSectionProps) => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (pathname.includes(section.path)) {
+    const parsedSection = removeReportSpecificPath(section.path);
+    if (pathname.includes(parsedSection)) {
       setIsOpen(true);
     }
   }, [pathname]);
 
   const { name, path, children } = section;
+  const formattedLink = `${basePath}/${removeReportSpecificPath(path)}`;
 
   return (
     <React.Fragment key={path}>
@@ -113,14 +127,14 @@ const NavSection = ({ section, level }: NavSectionProps) => {
       ) : (
         <Link
           as={RouterLink}
-          to={path}
+          to={formattedLink}
           variant="unstyled"
           sx={sx.navLinkSansChildren}
         >
           <NavItem
             name={name}
             level={level}
-            optionPath={path}
+            optionPath={path} // TODO
             hasChildren={false}
           />
         </Link>
@@ -132,6 +146,7 @@ const NavSection = ({ section, level }: NavSectionProps) => {
               key={section.name}
               section={section}
               level={level + 1}
+              basePath={basePath}
             />
           ))}
         </Collapse>
@@ -156,7 +171,8 @@ const NavItem = ({
   isOpen,
 }: NavItemProps) => {
   const currentPath = window.location.pathname;
-  const isCurrentPath = optionPath === currentPath;
+  const isCurrentPath =
+    removeReportSpecificPath(optionPath) === uriPathToPagePath(currentPath);
   return (
     <Flex sx={sx.navItemFlex} className={isCurrentPath ? "selected" : ""}>
       <Text sx={sx.navItemTitle} className={`level-${level}`}>

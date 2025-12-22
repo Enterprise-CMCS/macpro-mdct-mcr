@@ -1,8 +1,6 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 // components
 import { Box, Button, Flex, Image, Spinner } from "@chakra-ui/react";
-// constants
-import { INITIAL_REPORT_ROUTES } from "../../constants";
 // types
 import { CustomHtmlElement, FormJson, ReportStatus } from "types";
 // utils
@@ -19,23 +17,27 @@ export const ReportPageFooter = ({
 }: Props) => {
   const navigate = useNavigate();
   const { report } = useStore();
+  const { reportType, state, reportId } = useParams(); // TODO: this might be easier to pull from the template?
   const { previousRoute, nextRoute } = useFindRoute(
     report?.formTemplate.flatRoutes,
     report?.formTemplate.basePath
   );
 
+  const basePath = `/report/${reportType}/${state}/${reportId}`;
+  const formattedPrevious = `${basePath}/${previousRoute}`;
+  const formattedNext = `${basePath}/${nextRoute}`;
+
   const { userIsAdmin, userIsReadOnly, userIsEndUser } = useStore().user ?? {};
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const hidePrevious = INITIAL_REPORT_ROUTES.includes(previousRoute);
+  const hidePrevious = previousRoute === "";
   const reportWithSubmittedStatus = report?.status === ReportStatus.SUBMITTED;
   const formIsDisabled =
     (isAdminUserType && !form?.editableByAdmins) ||
     (userIsEndUser && reportWithSubmittedStatus);
   const isReadOnly = !form?.id || formIsDisabled;
-
   const prevButton = (
     <Button
-      onClick={() => navigate(previousRoute)}
+      onClick={() => navigate(formattedPrevious)}
       variant="outline"
       leftIcon={<Image src={previousIcon} alt="Previous" sx={sx.arrowIcon} />}
     >
@@ -45,7 +47,7 @@ export const ReportPageFooter = ({
 
   const nextButtonNavOnly = (
     <Button
-      onClick={() => navigate(nextRoute)}
+      onClick={() => navigate(formattedNext)}
       sx={sx.nextButton}
       rightIcon={<Image src={nextIcon} alt="Next" sx={sx.arrowIcon} />}
     >

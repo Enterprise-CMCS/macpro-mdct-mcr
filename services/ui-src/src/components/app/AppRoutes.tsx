@@ -12,15 +12,15 @@ import {
   ReportGetStartedPage,
   NotFoundPage,
   ProfilePage,
-  ReportPageWrapper,
   ReportContext,
   ComponentInventoryPage,
 } from "components";
 // types
-import { ReportRoute, ReportType } from "types";
+import { ReportType } from "types";
 // utils
 import { ScrollToTopComponent, useStore } from "utils";
 import { useFlags } from "launchdarkly-react-client-sdk";
+import { ReportLoader } from "./ReportLoader";
 
 export const AppRoutes = () => {
   const { userIsAdmin } = useStore().user ?? {};
@@ -55,6 +55,12 @@ export const AppRoutes = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
 
+          {/* Reports: Proof of concept */}
+          <Route
+            path="/report/:reportType/:state/:reportId/:pageId?*"
+            element={<ReportLoader />}
+          />
+
           {/* MCPAR ROUTES */}
           <Route path="/mcpar" element={<DashboardPage reportType="MCPAR" />} />
           <Route
@@ -63,15 +69,6 @@ export const AppRoutes = () => {
           />
           {report?.reportType === ReportType.MCPAR && (
             <>
-              {(report.formTemplate.flatRoutes ?? []).map(
-                (route: ReportRoute) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<ReportPageWrapper />}
-                  />
-                )
-              )}
               <Route path="/mcpar/export" element={<ExportedReportPage />} />
             </>
           )}
@@ -96,15 +93,6 @@ export const AppRoutes = () => {
           />
           {report?.reportType === ReportType.MLR && (
             <>
-              {(report.formTemplate.flatRoutes ?? []).map(
-                (route: ReportRoute) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<ReportPageWrapper />}
-                  />
-                )
-              )}
               <Route path="/mlr/export" element={<ExportedReportPage />} />
             </>
           )}
@@ -129,15 +117,6 @@ export const AppRoutes = () => {
             />
             {report?.reportType === ReportType.NAAAR && (
               <>
-                {(report.formTemplate.flatRoutes ?? []).map(
-                  (route: ReportRoute) => (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      element={<ReportPageWrapper />}
-                    />
-                  )
-                )}
                 <Route path="/naaar/export" element={<ExportedReportPage />} />
               </>
             )}
