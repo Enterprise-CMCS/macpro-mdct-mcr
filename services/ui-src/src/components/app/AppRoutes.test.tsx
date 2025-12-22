@@ -170,8 +170,6 @@ describe("<AppRoutes />", () => {
     });
 
     test("container should be div element for report page", async () => {
-      // history = createMemoryHistory();
-      // history.push("/mock/mock-route-1");
       history = createMemoryHistory();
       history.push("/report/MCPAR/MN/mockReportId/mock-route-1");
 

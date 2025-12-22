@@ -40,7 +40,7 @@ export const ReviewSubmitPage = () => {
     useState<boolean>(false);
 
   // get user information
-  const { state, userIsEndUser } = useStore().user ?? {};
+  const { userIsEndUser } = useStore().user ?? {};
   const { report } = useStore();
 
   // get report type, state, and id from context or storage
