@@ -15,10 +15,10 @@ export const ReportLoader = ({ exportView = false }) => {
   const navigate = useNavigate();
 
   const loadAndEnter = async () => {
-    setIsLoading(true);
     if (!reportId || !state || !reportType) {
-      return <NotFoundPage />;
+      return;
     }
+    setIsLoading(true);
     const reportKeys: ReportKeys = {
       reportType: reportType,
       state: state,
@@ -32,7 +32,6 @@ export const ReportLoader = ({ exportView = false }) => {
 
       const path = removeReportSpecificPath(firstReportPagePath);
       navigate(`/report/${reportType}/${state}/${reportId}/${path}`);
-      return <></>;
     }
     setReportSelection(selectedReport);
     setIsLoading(false);
