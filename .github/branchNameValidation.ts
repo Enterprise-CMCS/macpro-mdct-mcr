@@ -18,7 +18,7 @@ console.log(`Validating branch name: ${localBranch}`);
 
 const branchRegex = /^[a-z][a-z0-9-]*$/;
 const invalidBranchRegex = !branchRegex.test(localBranch);
-const maxLength = 64;
+const maxLength = 32;
 
 if (invalidBranchRegex) {
   console.error(
