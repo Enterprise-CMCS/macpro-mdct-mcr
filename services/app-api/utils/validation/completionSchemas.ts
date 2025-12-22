@@ -203,6 +203,12 @@ const dateSchema = () =>
       );
     });
 
+export const dateMonthYear = () =>
+  string().test({
+    message: error.INVALID_DATE,
+    test: (value) =>
+      !!value?.match(dateMonthYearFormatRegex) || value?.trim() === "",
+  });
 export const date = () => dateSchema().required(error.REQUIRED_GENERIC);
 export const dateOptional = () => dateSchema().notRequired().nullable();
 
@@ -303,3 +309,5 @@ export const nested = (
 // REGEX
 export const dateFormatRegex =
   /^$|^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
+export const dateMonthYearFormatRegex =
+  /^((0[1-9]|1[0-2])\/(19|20)\d{2})|((0[1-9]|1[0-2])(19|20)\d{2})|\s$/;

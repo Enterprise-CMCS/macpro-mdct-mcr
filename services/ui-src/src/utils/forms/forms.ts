@@ -11,6 +11,7 @@ import {
   TextField,
   TextAreaField,
   ChoiceField,
+  MonthYearField,
 } from "components";
 // constants
 import { suppressionText } from "../../constants";
@@ -54,6 +55,7 @@ export const formFieldFactory = (
     checkboxSingle: ChoiceField,
     checkbox: CheckboxField,
     date: DateField,
+    dateMonthYear: MonthYearField,
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
