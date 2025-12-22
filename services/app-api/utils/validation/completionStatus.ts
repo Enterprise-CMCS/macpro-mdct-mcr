@@ -12,7 +12,7 @@ import {
   ReportRoute,
 } from "../types";
 // utils
-import { validateFieldData } from "./completionValidation";
+import { validateFieldData } from "./validation";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
