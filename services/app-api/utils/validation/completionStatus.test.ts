@@ -1,565 +1,433 @@
+import { mockFormField, mockNestedFormField } from "../testing/mocks/mockForm";
 import { calculateCompletionStatus, isComplete } from "./completionStatus";
 
 describe("Completion Status Tests", () => {
-  describe("Test Nested Completion Check", () => {
-    test("Fails if there are any false", () => {
-      expect(
-        isComplete({
-          foo: true,
-          bar: {
-            baz: true,
-            biz: {
-              buzz: false,
-            },
-          },
-        })
-      ).toBe(false);
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  describe("isComplete()", () => {
+    test("returns false if a key is false", () => {
+      const mockStatuses = {
+        key1: false,
+        key2: true,
+      };
+      expect(isComplete(mockStatuses)).toBe(false);
     });
-    test("Succeeds if all true", () => {
-      expect(
-        isComplete({
-          foo: true,
-          bar: {
-            baz: true,
-            biz: {
-              buzz: true,
-            },
-          },
-        })
-      ).toBe(true);
+    test("returns false if a nested key is false", () => {
+      const nestedFalseStatus = {
+        key1: true,
+        key2: {
+          keya: false,
+        },
+      };
+      expect(isComplete(nestedFalseStatus)).toBe(false);
+    });
+
+    test("returns true if all keys are true", () => {
+      const allTrueStatus = {
+        key1: true,
+        key2: {
+          keya: true,
+        },
+      };
+      expect(isComplete(allTrueStatus)).toBe(true);
     });
   });
-  describe("Test Completion Status of Report", () => {
-    const entitiesRoutes = [
-      {
-        name: "A: Program Information",
-        path: "/mcpar/program-information",
-        children: [
+
+  describe("calculateCompletionStatus()", () => {
+    const mockSectionPath = "/report/section-1";
+    const mockStandardFormPath = "/report/section-1/form-1";
+    const mockFieldData = {
+      [mockFormField.id]: "answer 1",
+    };
+    const mockFormTemplate = {
+      routes: [
+        {
+          name: "Route 1",
+          path: mockSectionPath,
+          children: [
+            {
+              name: "Form 1",
+              path: mockStandardFormPath,
+              pageType: "standard",
+              form: { fields: [mockFormField] },
+            },
+            {
+              name: "No form 1",
+              path: `${mockSectionPath}/no-form`,
+              pageType: "standard",
+            },
+          ],
+        },
+      ],
+      validationJson: {
+        [mockFormField.id]: "text",
+      },
+    };
+    describe("basic functionality", () => {
+      test("routes with no form don't return a status and forms with no field data return false", async () => {
+        const result = await calculateCompletionStatus({}, mockFormTemplate);
+        expect(result).toEqual({
+          [mockSectionPath]: {
+            [mockStandardFormPath]: false,
+          },
+        });
+      });
+
+      test("form routes with valid field data return true", async () => {
+        const result = await calculateCompletionStatus(
+          mockFieldData,
+          mockFormTemplate
+        );
+        expect(result).toEqual({
+          [mockSectionPath]: {
+            [mockStandardFormPath]: true,
+          },
+        });
+      });
+
+      test("Null routes does not cause an exception", async () => {
+        const result = await calculateCompletionStatus({}, {});
+        expect(result).toMatchObject({});
+      });
+    });
+
+    describe("with entities", () => {
+      const mockEntityRoutes = [
+        {
+          name: "Route 1",
+          path: mockSectionPath,
+          children: [
+            {
+              name: "Form 1",
+              path: mockStandardFormPath,
+              pageType: "drawer",
+              entityType: "mockEntity",
+              drawerForm: { id: "mock-form", fields: [mockNestedFormField] },
+            },
+          ],
+        },
+      ];
+
+      test("Missing entities returns undefined", async () => {
+        const result = await calculateCompletionStatus(
+          {},
+          { routes: mockEntityRoutes }
+        );
+        expect(result).toMatchObject({
+          [mockSectionPath]: {
+            [mockStandardFormPath]: undefined,
+          },
+        });
+      });
+      test("Incomplete entities returns true", async () => {
+        const result = await calculateCompletionStatus(
+          {},
+          { entities: {}, routes: mockEntityRoutes }
+        );
+        expect(result).toMatchObject({
+          [mockSectionPath]: {
+            [mockStandardFormPath]: true,
+          },
+        });
+      });
+
+      test("Missing nested fields returns false", async () => {
+        const result = await calculateCompletionStatus(
           {
-            name: "III: Encounter Data Report",
-            path: "/mcpar/plan-level-indicators/encounter-data-report",
-            pageType: "drawer",
-            entityType: "plans",
-            verbiage: {
-              intro: {
-                section: "Section D: Plan-Level Indicators",
-                subsection: "Topic III. Encounter Data",
-                spreadsheet: "D1_Plan_Set",
+            mockEntity: [
+              {
+                id: "cd432-070f-0b5b-4cfb-73c12e6f45",
+                name: "Dynamic Fill",
               },
-              dashboardTitle: "Report on encounter data for each plan",
-              drawerTitle: "Report encounter data for",
-              missingEntityMessage: [
+            ],
+          },
+          {
+            entities: { mockEntity: { required: true } },
+            routes: mockEntityRoutes,
+          }
+        );
+        expect(result).toMatchObject({
+          [mockSectionPath]: {
+            [mockStandardFormPath]: false,
+          },
+        });
+      });
+    });
+
+    describe("special cases", () => {
+      test("If user has not added an ILOS, they're not required to complete that section", async () => {
+        const testData = {};
+        const formTemplate = {
+          routes: [
+            {
+              name: "D: Plan-Level Indicators",
+              path: "/mcpar/plan-level-indicators",
+              children: [
                 {
-                  type: "span",
-                  content:
-                    "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. ",
-                },
-                {
-                  type: "internalLink",
-                  content: "Add Plans",
-                  props: {
-                    to: "/mcpar/program-information/add-plans",
+                  name: "ILOS",
+                  path: "/mcpar/plan-level-indicators/ilos",
+                  entityType: "plans",
+                  pageType: "drawer",
+                  drawerForm: {
+                    id: "dpa",
+                    fields: [],
                   },
                 },
               ],
             },
-            drawerForm: {
-              id: "dedr",
-              fields: undefined,
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators": {},
+        });
+      });
+
+      test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
+        const testData = {
+          state_priorAuthorizationReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
             },
-          },
-        ],
-      },
-    ];
-    test("Basic Standard Form No Fields", async () => {
-      jest.clearAllMocks();
-
-      const testData = {};
-      const formTemplate = {
-        routes: [
-          {
-            name: "A: Program Information",
-            path: "/mcpar/program-information",
-            children: [
-              {
-                name: "Point of Contact",
-                path: "/mcpar/program-information/point-of-contact",
-                pageType: "standard",
-                form: { fields: [] },
-              },
-            ],
-          },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({
-        "/mcpar/program-information": {
-          "/mcpar/program-information/point-of-contact": false,
-        },
-      });
-    });
-
-    test("Basic Standard Form With Fields", async () => {
-      jest.clearAllMocks();
-
-      const testData = {};
-      const formTemplate = {
-        routes: [
-          {
-            name: "A: Program Information",
-            path: "/mcpar/program-information",
-            children: [
-              {
-                name: "Point of Contact",
-                path: "/mcpar/program-information/point-of-contact",
-                pageType: "standard",
-                form: {
-                  fields: [
-                    {
-                      id: "stateName",
-                      type: "text",
-                      validation: "text",
-                      props: {
-                        label: "A.1 State name",
-                        hint: "Auto-populated from your account profile.",
-                        disabled: true,
-                      },
-                    },
-                  ],
+          ],
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "B: State-Level Indicators",
+              path: "/mcpar/state-level-indicators",
+              children: [
+                {
+                  name: "Prior Authorization",
+                  path: "/mcpar/state-level-indicators/prior-authorization",
+                  pageType: "standard",
+                  form: {
+                    id: "bpi",
+                    fields: [],
+                  },
                 },
-              },
-            ],
+              ],
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/state-level-indicators": {
+            "/mcpar/state-level-indicators/prior-authorization": false,
           },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toStrictEqual({
-        "/mcpar/program-information": {
-          "/mcpar/program-information/point-of-contact": false,
-        },
+        });
       });
-    });
 
-    test("Null routes does not cause an exception", async () => {
-      const result = await calculateCompletionStatus({}, {});
-      expect(result).toMatchObject({});
-    });
-
-    test("Missing entities does not cause an exception", async () => {
-      const result = await calculateCompletionStatus(
-        {},
-        { routes: entitiesRoutes }
-      );
-      expect(result).toMatchObject({
-        "/mcpar/program-information": {
-          "/mcpar/plan-level-indicators/encounter-data-report": undefined,
-        },
+      test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
+        const testData = {
+          plan_priorAuthorizationReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
+            },
+          ],
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "D: Plan-Level Indicators",
+              path: "/mcpar/plan-level-indicators",
+              children: [
+                {
+                  name: "Prior Authorization",
+                  path: "/mcpar/plan-level-indicators/prior-authorization",
+                  entityType: "plans",
+                  pageType: "drawer",
+                  form: {
+                    id: "pa",
+                    fields: [],
+                  },
+                  drawerForm: {
+                    id: "dpa",
+                    fields: [],
+                  },
+                },
+              ],
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators": {},
+        });
       });
-    });
-    test("Incomplete entities does not cause an exception", async () => {
-      const result = await calculateCompletionStatus(
-        {},
-        { entities: {}, routes: entitiesRoutes }
-      );
-      expect(result).toMatchObject({
-        "/mcpar/program-information": {
-          "/mcpar/plan-level-indicators/encounter-data-report": true,
-        },
-      });
-    });
 
-    test("Missing nested fields does not cause an exception", async () => {
-      const result = await calculateCompletionStatus(
-        {
+      test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
+        const testData = {
+          plan_patientAccessApiReporting: [
+            {
+              key: "mock-key",
+              value: "Not reporting data",
+            },
+          ],
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "D: Plan-Level Indicators",
+              path: "/mcpar/plan-level-indicators",
+              children: [
+                {
+                  name: "Prior Authorization",
+                  path: "/mcpar/plan-level-indicators/patient-access-api",
+                  entityType: "plans",
+                  pageType: "drawer",
+                  form: {
+                    id: "paa",
+                    fields: [],
+                  },
+                  drawerForm: {
+                    id: "dpaa",
+                    fields: [],
+                  },
+                },
+              ],
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/mcpar/plan-level-indicators": {},
+        });
+      });
+
+      test("Test analysis methods custom logic", async () => {
+        const testData = {
           plans: [
             {
-              id: "cd432-070f-0b5b-4cfb-73c12e6f45",
-              name: "Dynamic Fill",
+              id: "123",
+              name: "test plan",
             },
           ],
-        },
-        { entities: { plans: { required: true } }, routes: entitiesRoutes }
-      );
-      expect(result).toMatchObject({
-        "/mcpar/program-information": {
-          "/mcpar/plan-level-indicators/encounter-data-report": false,
-        },
-      });
-    });
-
-    test("If user has not added an ILOS, they're not required to complete that section", async () => {
-      const testData = {};
-      const formTemplate = {
-        routes: [
-          {
-            name: "D: Plan-Level Indicators",
-            path: "/mcpar/plan-level-indicators",
-            children: [
-              {
-                name: "ILOS",
-                path: "/mcpar/plan-level-indicators/ilos",
-                entityType: "plans",
-                pageType: "drawer",
-                drawerForm: {
-                  id: "dpa",
-                  fields: [],
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({
-        "/mcpar/plan-level-indicators": {},
-      });
-    });
-
-    test("If user is not reporting Prior Authorization (Section B) data, they're not required to complete that section", async () => {
-      const testData = {
-        state_priorAuthorizationReporting: [
-          {
-            key: "mock-key",
-            value: "Not reporting data",
-          },
-        ],
-      };
-      const formTemplate = {
-        routes: [
-          {
-            name: "B: State-Level Indicators",
-            path: "/mcpar/state-level-indicators",
-            children: [
-              {
-                name: "Prior Authorization",
-                path: "/mcpar/state-level-indicators/prior-authorization",
-                pageType: "standard",
-                form: {
-                  id: "bpi",
-                  fields: [],
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({
-        "/mcpar/state-level-indicators": {
-          "/mcpar/state-level-indicators/prior-authorization": false,
-        },
-      });
-    });
-
-    test("If user is not reporting Prior Authorization (Section D) data, they're not required to complete that section", async () => {
-      const testData = {
-        plan_priorAuthorizationReporting: [
-          {
-            key: "mock-key",
-            value: "Not reporting data",
-          },
-        ],
-      };
-      const formTemplate = {
-        routes: [
-          {
-            name: "D: Plan-Level Indicators",
-            path: "/mcpar/plan-level-indicators",
-            children: [
-              {
-                name: "Prior Authorization",
-                path: "/mcpar/plan-level-indicators/prior-authorization",
-                entityType: "plans",
-                pageType: "drawer",
-                form: {
-                  id: "pa",
-                  fields: [],
-                },
-                drawerForm: {
-                  id: "dpa",
-                  fields: [],
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({
-        "/mcpar/plan-level-indicators": {},
-      });
-    });
-
-    test("If user is not reporting Patient Access API data, they're not required to complete that section", async () => {
-      const testData = {
-        plan_patientAccessApiReporting: [
-          {
-            key: "mock-key",
-            value: "Not reporting data",
-          },
-        ],
-      };
-      const formTemplate = {
-        routes: [
-          {
-            name: "D: Plan-Level Indicators",
-            path: "/mcpar/plan-level-indicators",
-            children: [
-              {
-                name: "Prior Authorization",
-                path: "/mcpar/plan-level-indicators/patient-access-api",
-                entityType: "plans",
-                pageType: "drawer",
-                form: {
-                  id: "paa",
-                  fields: [],
-                },
-                drawerForm: {
-                  id: "dpaa",
-                  fields: [],
-                },
-              },
-            ],
-          },
-        ],
-      };
-      const result = await calculateCompletionStatus(testData, formTemplate);
-      expect(result).toMatchObject({
-        "/mcpar/plan-level-indicators": {},
-      });
-    });
-  });
-
-  test("Test analysis methods custom logic", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "123",
-          name: "test plan",
-        },
-      ],
-      analysisMethods: [
-        {
-          id: "1",
-          name: "first method",
-          analysis_applicable: [
+          analysisMethods: [
             {
-              key: "a",
-              value: "no",
+              id: "1",
+              name: "first method",
+              analysis_applicable: [
+                {
+                  key: "a",
+                  value: "no",
+                },
+              ],
             },
           ],
-        },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "I. State and program information",
-          path: "/naaar/state-and-program-information",
-          children: [
+        };
+        const formTemplate = {
+          routes: [
             {
-              name: "Analysis methods",
-              path: "/naaar/state-and-program-information/analysis-methods",
-              entityType: "analysisMethods",
-              pageType: "drawer",
-              drawerForm: {
-                id: "iam",
-                fields: [],
-              },
-              addEntityDrawerForm: {
-                id: "iamnew",
-                fields: [],
-              },
+              name: "I. State and program information",
+              path: "/naaar/state-and-program-information",
+              children: [
+                {
+                  name: "Analysis methods",
+                  path: "/naaar/state-and-program-information/analysis-methods",
+                  entityType: "analysisMethods",
+                  pageType: "drawer",
+                  drawerForm: {
+                    id: "iam",
+                    fields: [],
+                  },
+                  addEntityDrawerForm: {
+                    id: "iamnew",
+                    fields: [],
+                  },
+                },
+              ],
             },
           ],
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/state-and-program-information": {
-        "/naaar/state-and-program-information/analysis-methods": false,
-      },
-    });
-  });
-
-  test("Test planOverlay with complete fieldData", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "mockPlanId",
-          name: "Mock Plan",
-          isComplete: true,
-        },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "Mock Plan Overlay Page",
-          path: "/naaar/mock-plan-overlay",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/mock-plan-overlay": false,
-      "/naaar/plan-compliance": true,
-    });
-  });
-
-  test("Test planOverlay with incomplete fieldData", async () => {
-    const testData = {
-      plans: [
-        {
-          id: "mockPlanId",
-          name: "Mock Plan",
-          isComplete: false,
-        },
-      ],
-    };
-    const formTemplate = {
-      routes: [
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/plan-compliance": false,
-    });
-  });
-
-  test("Test planOverlay with no fieldData", async () => {
-    const testData = {};
-    const formTemplate = {
-      routes: [
-        {
-          name: "Plan compliance",
-          path: "/naaar/plan-compliance",
-          pageType: "planOverlay",
-          entityType: "plans",
-        },
-      ],
-    };
-    const result = await calculateCompletionStatus(testData, formTemplate);
-    expect(result).toMatchObject({
-      "/naaar/plan-compliance": false,
-    });
-  });
-
-  describe("Fixture Testing", () => {
-    const runs = [
-      {
-        description: "Completed MCPAR Report",
-        fixture: "mcpar-complete",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "New Incomplete MCPAR Report",
-        fixture: "mcpar-incomplete",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Missing nested field",
-        fixture: "mcpar-incomplete-nested",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Empty Checkbox",
-        fixture: "mcpar-incomplete-empty-checkbox",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description:
-          "Report is missing State Name in point of contact, otherwise complete.",
-        fixture: "mcpar-missing-pointofcontact",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "MCPAR Report, incomplete due to missing drawer",
-        fixture: "mcpar-missing-drawer",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "MCPAR Report, incomplete due to missing modal",
-        fixture: "mcpar-missing-modal",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Completed MCPAR Report with no Sanction",
-        fixture: "mcpar-complete-nosanctions",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Incomplete MCPAR Report due to partial sanction",
-        fixture: "mcpar-incomplete-partialsanction",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Incomplete MCPAR Report due to plan with no entities",
-        fixture: "mcpar-incomplete-plan-noentities",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Completed MCPAR but not submitted",
-        fixture: "mcpar-complete-unsubmitted",
-        formTemplate: "mcpar-template",
-      },
-      {
-        description: "Completed MLR with no remittance",
-        fixture: "mlr-complete-no-remittance",
-        formTemplate: "mlr-template",
-      },
-      {
-        description: "Completed MLR with remittance",
-        fixture: "mlr-complete-with-remittance",
-        formTemplate: "mlr-template",
-      },
-      {
-        description: "MLR with no programs",
-        fixture: "mlr-missing-reports",
-        formTemplate: "mlr-template",
-      },
-    ];
-    runs.forEach((run) => {
-      test(run.description, async () => {
-        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
-        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
-        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
+        };
         const result = await calculateCompletionStatus(testData, formTemplate);
-        expect(result).toMatchObject(expectedResult);
+        expect(result).toMatchObject({
+          "/naaar/state-and-program-information": {
+            "/naaar/state-and-program-information/analysis-methods": false,
+          },
+        });
       });
     });
-  });
 
-  describe("Local Fixture Testing, not used in CI", () => {
-    const runs = [
-      {
-        description: "Completed MCPAR but not submitted",
-        fixture: "mcpar-complete-unsubmitted",
-        formTemplate: "mcpar-template",
-      },
-    ];
-    runs.forEach((run) => {
-      test(run.description, async () => {
-        const testData = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.testdata.test.json`);
-        const expectedResult = require(`../../utils/testing/fixtures/completionStatus/${run.fixture}.result.test.json`);
-        const formTemplate = require(`../../utils/testing/fixtures/completionStatus/${run.formTemplate}.test.json`);
+    describe("planOverlay", () => {
+      test("Test planOverlay with complete fieldData", async () => {
+        const testData = {
+          plans: [
+            {
+              id: "mockPlanId",
+              name: "Mock Plan",
+              isComplete: true,
+            },
+          ],
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "Mock Plan Overlay Page",
+              path: "/naaar/mock-plan-overlay",
+              pageType: "planOverlay",
+              entityType: "plans",
+            },
+            {
+              name: "Plan compliance",
+              path: "/naaar/plan-compliance",
+              pageType: "planOverlay",
+              entityType: "plans",
+            },
+          ],
+        };
         const result = await calculateCompletionStatus(testData, formTemplate);
-        expect(result).toMatchObject(expectedResult);
+        expect(result).toMatchObject({
+          "/naaar/mock-plan-overlay": false,
+          "/naaar/plan-compliance": true,
+        });
+      });
+
+      test("Test planOverlay with incomplete fieldData", async () => {
+        const testData = {
+          plans: [
+            {
+              id: "mockPlanId",
+              name: "Mock Plan",
+              isComplete: false,
+            },
+          ],
+        };
+        const formTemplate = {
+          routes: [
+            {
+              name: "Plan compliance",
+              path: "/naaar/plan-compliance",
+              pageType: "planOverlay",
+              entityType: "plans",
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/naaar/plan-compliance": false,
+        });
+      });
+
+      test("Test planOverlay with no fieldData", async () => {
+        const testData = {};
+        const formTemplate = {
+          routes: [
+            {
+              name: "Plan compliance",
+              path: "/naaar/plan-compliance",
+              pageType: "planOverlay",
+              entityType: "plans",
+            },
+          ],
+        };
+        const result = await calculateCompletionStatus(testData, formTemplate);
+        expect(result).toMatchObject({
+          "/naaar/plan-compliance": false,
+        });
       });
     });
   });
