@@ -32,6 +32,7 @@ export interface ReportForm {
 export enum ReportFormFieldType {
   CHECKBOX = "checkbox",
   DATE = "date",
+  DATE_MONTH_YEAR = "dateMonthYear",
   DROPDOWN = "dropdown",
   DYNAMIC = "dynamic",
   NUMBER = "number",
