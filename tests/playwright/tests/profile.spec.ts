@@ -5,7 +5,7 @@ test.describe("Admin profile", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/profile");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForBannersToLoad();
+    await adminPage.waitForRequest("/banners", "GET");
   });
 
   test("admin profile should have banner edit button", async ({
