@@ -1,4 +1,5 @@
 import { Flex, Spinner } from "@chakra-ui/react";
+import { ExportedReportPage } from "components/pages/Export/ExportedReportPage";
 import { NotFoundPage } from "components/pages/NotFound/NotFoundPage";
 import { ReportPageWrapper } from "components/reports/ReportPageWrapper";
 import { ReportContext } from "components/reports/ReportProvider";
@@ -7,7 +8,7 @@ import { useNavigate, useParams } from "react-router";
 import { ReportKeys, ReportShape } from "types";
 import { removeReportSpecificPath } from "utils/reports/pathFormatter";
 
-export const ReportLoader = () => {
+export const ReportLoader = ({ exportView = false }) => {
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { fetchReport, setReportSelection } = useContext(ReportContext);
@@ -25,7 +26,7 @@ export const ReportLoader = () => {
     };
     const selectedReport: ReportShape = await fetchReport(reportKeys);
     // if no page provided, find first page
-    if (!pageId || pageId === "") {
+    if (!exportView && (!pageId || pageId === "")) {
       const firstReportPagePath =
         selectedReport.formTemplate.flatRoutes![0].path;
 
@@ -46,8 +47,7 @@ export const ReportLoader = () => {
         <Spinner size="lg" />
       </Flex>
     );
-
-  return <ReportPageWrapper />;
+  return exportView ? <ExportedReportPage /> : <ReportPageWrapper />;
 };
 
 const sx = {

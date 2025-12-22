@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
-import { AlertTypes, AnyObject, ReportStatus, ReportType } from "types";
+import { AlertTypes, AnyObject, ReportKeys, ReportStatus } from "types";
 // utils
 import {
   getReportVerbiage,
@@ -50,9 +50,9 @@ export const ReviewSubmitPage = () => {
   const reportState = state || localStorage.getItem("selectedState");
 
   const reportKeys = {
-    reportType: reportType,
-    state: reportState,
-    id: reportId,
+    reportType: reportType!,
+    state: reportState!,
+    id: reportId!,
   };
 
   const { reviewAndSubmitVerbiage } = getReportVerbiage(report?.reportType);
@@ -110,6 +110,7 @@ export const ReviewSubmitPage = () => {
             submittedBy={report?.submittedBy}
             reviewVerbiage={reviewAndSubmitVerbiage}
             stateName={report.fieldData.stateName!}
+            reportKeys={reportKeys}
           />
         ) : (
           <ReadyToSubmit
@@ -120,6 +121,7 @@ export const ReviewSubmitPage = () => {
             submitting={submitting}
             isPermittedToSubmit={isPermittedToSubmit}
             reviewVerbiage={reviewAndSubmitVerbiage}
+            reportKeys={reportKeys}
           />
         )}
       </Flex>
@@ -127,15 +129,21 @@ export const ReviewSubmitPage = () => {
   );
 };
 
-const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
+const PrintButton = ({
+  reviewVerbiage,
+  reportKeys,
+}: {
+  reviewVerbiage: AnyObject;
+  reportKeys: ReportKeys;
+}) => {
   const { print } = reviewVerbiage;
   const { report } = useStore();
-  const reportType = (report?.reportType as ReportType).toLowerCase();
   const isSubmitted = report?.status === "Submitted";
+  const { reportType, state, id } = reportKeys;
   return (
     <Button
       as={RouterLink}
-      to={`/${reportType}/export`}
+      to={`/export/${reportType}/${state}/${id}`}
       target="_blank"
       sx={!isSubmitted ? sx.printButton : sx.downloadButton}
       leftIcon={
@@ -160,6 +168,7 @@ const ReadyToSubmit = ({
   submitting,
   isPermittedToSubmit,
   reviewVerbiage,
+  reportKeys,
 }: ReadyToSubmitProps) => {
   const { review } = reviewVerbiage;
   const { intro, modal, pageLink } = review;
@@ -180,7 +189,7 @@ const ReadyToSubmit = ({
         </Box>
       </Box>
       <Flex sx={sx.submitContainer}>
-        <PrintButton reviewVerbiage={reviewVerbiage} />
+        <PrintButton reviewVerbiage={reviewVerbiage} reportKeys={reportKeys} />
         <Button
           type="submit"
           onClick={onOpen as MouseEventHandler}
@@ -214,6 +223,7 @@ interface ReadyToSubmitProps {
   hasStarted?: boolean;
   isPermittedToSubmit?: boolean;
   reviewVerbiage: AnyObject;
+  reportKeys: ReportKeys;
 }
 
 export const SuccessMessageGenerator = (
@@ -251,6 +261,7 @@ export const SuccessMessage = ({
   submittedBy,
   reviewVerbiage,
   stateName,
+  reportKeys,
 }: SuccessMessageProps) => {
   const { submitted } = reviewVerbiage;
   const { intro } = submitted;
@@ -287,7 +298,7 @@ export const SuccessMessage = ({
         <Text sx={sx.additionalInfo}>{intro.additionalInfo}</Text>
       </Box>
       <Box sx={sx.infoTextBox}>
-        <PrintButton reviewVerbiage={reviewVerbiage} />
+        <PrintButton reviewVerbiage={reviewVerbiage} reportKeys={reportKeys} />
       </Box>
     </Flex>
   );
@@ -300,6 +311,7 @@ interface SuccessMessageProps {
   date?: number;
   submittedBy?: string;
   stateName?: string;
+  reportKeys: ReportKeys;
 }
 
 const sx = {

@@ -25,7 +25,6 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  entering,
   releaseReport,
   releasing,
   sxOverride,
