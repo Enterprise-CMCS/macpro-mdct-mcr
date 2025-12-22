@@ -17,7 +17,7 @@ import { InternalLink } from "./InternalLink";
 
 const customElementMap: any = {
   externalLink: Link,
-  internalLink: InternalLink, // TODO: This needs a wrapper to convert the oldURL pattern into the new
+  internalLink: InternalLink,
   text: Text,
   heading: Heading,
   html: React.Fragment,
