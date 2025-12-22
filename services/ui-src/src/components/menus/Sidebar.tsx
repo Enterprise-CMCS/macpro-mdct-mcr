@@ -27,7 +27,7 @@ export const Sidebar = ({ isHidden }: SidebarProps) => {
   const { isDesktop } = useBreakpoint();
   const [isOpen, toggleSidebar] = useState(isDesktop);
   const { report } = useStore();
-  const { reportType, state, reportId } = useParams(); // TODO: this might be easier to pull from the template?
+  const { reportType, state, reportId } = useParams();
   const basePath = `/report/${reportType}/${state}/${reportId}`;
 
   const reportJson = report?.formTemplate;
@@ -134,7 +134,7 @@ const NavSection = ({ section, level, basePath }: NavSectionProps) => {
           <NavItem
             name={name}
             level={level}
-            optionPath={path} // TODO
+            optionPath={path}
             hasChildren={false}
           />
         </Link>

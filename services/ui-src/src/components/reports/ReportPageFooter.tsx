@@ -17,7 +17,7 @@ export const ReportPageFooter = ({
 }: Props) => {
   const navigate = useNavigate();
   const { report } = useStore();
-  const { reportType, state, reportId } = useParams(); // TODO: this might be easier to pull from the template?
+  const { reportType, state, reportId } = useParams();
   const { previousRoute, nextRoute } = useFindRoute(
     report?.formTemplate.flatRoutes,
     report?.formTemplate.basePath

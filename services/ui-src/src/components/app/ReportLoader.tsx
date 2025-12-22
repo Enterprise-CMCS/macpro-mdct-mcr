@@ -32,6 +32,7 @@ export const ReportLoader = ({ exportView = false }) => {
 
       const path = removeReportSpecificPath(firstReportPagePath);
       navigate(`/report/${reportType}/${state}/${reportId}/${path}`);
+      return <></>;
     }
     setReportSelection(selectedReport);
     setIsLoading(false);
