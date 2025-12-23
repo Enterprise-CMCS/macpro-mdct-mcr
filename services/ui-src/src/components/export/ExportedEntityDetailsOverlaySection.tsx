@@ -6,6 +6,7 @@ import { Box, Heading } from "@chakra-ui/react";
 // types
 import {
   EntityShape,
+  EntityType,
   FormField,
   FormLayoutElement,
   ModalOverlayReportPageShape,
@@ -22,16 +23,19 @@ export const ExportedEntityDetailsOverlaySection = ({
 
   return (
     <Box sx={sx.sectionHeading}>
-      <ExportedSectionHeading
-        verbiage={{
-          ...section.verbiage,
-          intro: {
-            ...section.verbiage.intro,
-            info: undefined,
-            exportSectionHeader: undefined,
-          },
-        }}
-      />
+      {entityType !== EntityType.QUALITY_MEASURES && (
+        <ExportedSectionHeading
+          verbiage={{
+            ...section.verbiage,
+            intro: {
+              ...section.verbiage.intro,
+              info: undefined,
+              exportSectionHeader: undefined,
+            },
+          }}
+        />
+      )}
+
       {renderEntityDetailTables(
         report?.reportType as ReportType,
         report?.fieldData[entityType] ?? [],
