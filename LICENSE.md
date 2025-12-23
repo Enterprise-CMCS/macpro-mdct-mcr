@@ -1,3 +1,4 @@
+<!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 As a work of the United States Government, this project is in the
 public domain within the United States.
 
