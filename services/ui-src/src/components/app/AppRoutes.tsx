@@ -51,7 +51,7 @@ export const AppRoutes = () => {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFoundPage />} />
 
-          {/* Reports: Proof of concept */}
+          {/* Reports */}
           <Route
             path="/report/:reportType/:state/:reportId/:pageId?/*"
             element={<ReportLoader />}

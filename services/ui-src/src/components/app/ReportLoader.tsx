@@ -17,6 +17,7 @@ export const ReportLoader = ({ exportView = false }) => {
 
   const loadAndEnter = async () => {
     if (!reportId || !state || !reportType) {
+      setIsLoading(false);
       setNotFound(true);
       return;
     }
@@ -31,7 +32,6 @@ export const ReportLoader = ({ exportView = false }) => {
     if (!selectedReport) {
       setNotFound(true);
     }
-
     // if no page provided, find first page
     if (!exportView && (!pageId || pageId === "")) {
       const firstReportPagePath =
