@@ -29,7 +29,7 @@ const {
 } = completionStatus;
 
 const mockValidator = jest.fn();
-jest.mock("./completionValidation", () => ({
+jest.mock("./validation", () => ({
   validateFieldData: () => mockValidator(),
 }));
 
