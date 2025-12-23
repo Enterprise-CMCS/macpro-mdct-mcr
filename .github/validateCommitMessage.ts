@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 // this script is only ever run by pre-commit to validate commit messages
 import { readFileSync } from "fs";

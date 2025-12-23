@@ -1,3 +1,4 @@
+<!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
 # Secret Scanning
 
 Gitleaks is a SAST tool for **detecting** and **preventing** hardcoded secrets like passwords, api keys, and tokens in git repos. Gitleaks is an **easy-to-use, all-in-one solution** for detecting secrets, past or present, in your code.
@@ -116,8 +117,8 @@ The allowlist feature is useful when you have legitimate files or patterns that 
   files = [ '''go\.(mod|sum)''', "file-with-some-tests.js"]
   paths = [ '''templates\/(en|es)''', "mock/server"]
   regexes = ['''auth_test''']
-# Notice the difference between using 
-# regular expressions '''regexp''' 
+# Notice the difference between using
+# regular expressions '''regexp'''
 # and exact matches "exactMatch"
 ```
 
@@ -258,7 +259,7 @@ Precommit: you need to install the precommit cli
 
 ## Setup
 
-1.  Run the command “pre-commit install”
+1.  Run the command "pre-commit install"
 
 ## Steps
 

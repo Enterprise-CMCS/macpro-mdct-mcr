@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 // node .github/setBranchName.ts dependabot/npm_and_yarn/some-package-1.2.3
 import { createHash } from "node:crypto";
