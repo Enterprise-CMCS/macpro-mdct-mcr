@@ -6,6 +6,7 @@ import {
   ExportedReportMetadataTable,
   ExportedReportWrapper,
   ExportedSectionHeading,
+  NotFoundPage,
   Table,
 } from "components";
 // types

@@ -11,6 +11,7 @@ import {
   StandardReportPage,
   ModalOverlayReportPage,
   OverlayProvider,
+  NotFoundPage,
 } from "components";
 // types
 import {
@@ -111,6 +112,9 @@ export const ReportPageWrapper = () => {
   const reportTemplate = report?.formTemplate.flatRoutes!.find(
     (route: ReportRoute) => removeReportSpecificPath(route.path) === pagePath
   );
+  if (!reportTemplate) {
+    return <NotFoundPage />;
+  }
 
   return (
     <PageTemplate section={false} type="report">

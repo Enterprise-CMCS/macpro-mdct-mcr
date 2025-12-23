@@ -53,7 +53,7 @@ export const AppRoutes = () => {
 
           {/* Reports: Proof of concept */}
           <Route
-            path="/report/:reportType/:state/:reportId/:pageId?*"
+            path="/report/:reportType/:state/:reportId/:pageId?/*"
             element={<ReportLoader />}
           />
           <Route

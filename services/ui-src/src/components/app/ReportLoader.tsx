@@ -1,5 +1,6 @@
 import { Flex, Spinner } from "@chakra-ui/react";
 import { ExportedReportPage } from "components/pages/Export/ExportedReportPage";
+import { NotFoundPage } from "components/pages/NotFound/NotFoundPage";
 import { ReportPageWrapper } from "components/reports/ReportPageWrapper";
 import { ReportContext } from "components/reports/ReportProvider";
 import { useContext, useEffect, useState } from "react";
@@ -10,11 +11,13 @@ import { removeReportSpecificPath } from "utils/reports/pathFormatter";
 export const ReportLoader = ({ exportView = false }) => {
   const { reportType, state, reportId, pageId } = useParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [notFound, setNotFound] = useState<boolean>(false);
   const { fetchReport, setReportSelection } = useContext(ReportContext);
   const navigate = useNavigate();
 
   const loadAndEnter = async () => {
     if (!reportId || !state || !reportType) {
+      setNotFound(true);
       return;
     }
     setIsLoading(true);
@@ -23,7 +26,12 @@ export const ReportLoader = ({ exportView = false }) => {
       state: state,
       id: reportId,
     };
+
     const selectedReport: ReportShape = await fetchReport(reportKeys);
+    if (!selectedReport) {
+      setNotFound(true);
+    }
+
     // if no page provided, find first page
     if (!exportView && (!pageId || pageId === "")) {
       const firstReportPagePath =
@@ -40,12 +48,23 @@ export const ReportLoader = ({ exportView = false }) => {
     loadAndEnter();
   }, []);
 
-  if (isLoading)
+  useEffect(() => {
+    // If you manage to back into the root, this will shuttle you forward.
+    if (!pageId || pageId === "") {
+      loadAndEnter();
+    }
+  }, [pageId]);
+
+  if (isLoading) {
     return (
       <Flex sx={sx.spinnerContainer}>
         <Spinner size="lg" />
       </Flex>
     );
+  }
+  if (notFound) {
+    return <NotFoundPage />;
+  }
   return exportView ? <ExportedReportPage /> : <ReportPageWrapper />;
 };
 
