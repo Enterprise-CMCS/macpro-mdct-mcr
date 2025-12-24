@@ -85,7 +85,7 @@ jobs:
       - name: Install macpro-mdct-tools dependencies
         run: |
           pushd macpro-mdct-tools/scripts
-          yarn install --frozen-lockfile
+          yarn install --immutable
           popd
 
       - name: Run unmanaged resources scan

@@ -28,8 +28,9 @@ if ! diff  <(cat .nvmrc | tr -d '\n') <(node -v | tr -d '\n') > /dev/null ; then
     exit 1
 fi
 
-# check yarn exists
-require_cmd yarn "On macOS, install with 'brew install yarn'"
+# check corepack/yarn - yarn 4+ is managed via corepack
+require_cmd corepack "corepack is included with Node.js. Run 'corepack enable' to activate it"
+corepack enable 2>/dev/null || true
 
 
 # Parse arguments
@@ -75,12 +76,12 @@ if [ "$LOCAL" = true ]; then
     fi
 fi
 
-yarn install --frozen-lockfile --silent >/dev/null 2>&1 || {
+yarn install --immutable --silent >/dev/null 2>&1 || {
 echo "Dependency install failed (root)" >&2; exit 1; }
 pushd cli >/dev/null
-yarn install --frozen-lockfile --silent >/dev/null 2>&1 || {
+yarn install --immutable --silent >/dev/null 2>&1 || {
 echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
 popd >/dev/null
 
 # run the CLI
-yarn --silent tsx cli/run.ts "${ARGS[@]-}"
+yarn exec tsx cli/run.ts "${ARGS[@]-}"
