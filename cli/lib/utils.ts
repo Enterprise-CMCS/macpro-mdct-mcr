@@ -4,7 +4,7 @@ import {
 } from "@aws-sdk/client-cloudformation";
 import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
 import { runCommand } from "../lib/runner.js";
-import { region } from "./consts.js";
+import { project, region } from "./consts.js";
 import { writeSeedEnvFile } from "./write-seed-env-file.js";
 
 export const getCloudFormationStackOutputValues = async (
@@ -69,7 +69,9 @@ const buildUiEnvObject = (
 };
 
 export const runFrontendLocally = async (stage: string) => {
-  const outputs = await getCloudFormationStackOutputValues(`mcr-${stage}`);
+  const outputs = await getCloudFormationStackOutputValues(
+    `${project}-${stage}`
+  );
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
   await writeSeedEnvFile(envVars);
