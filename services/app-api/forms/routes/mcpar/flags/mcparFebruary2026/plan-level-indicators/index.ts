@@ -7,7 +7,7 @@ import { patientAccessApiRoute } from "../../../plan-level-indicators/patient-ac
 import { priorAuthorizationRoute } from "../../../plan-level-indicators/prior-authorization";
 import { programCharacteristicsRoute } from "../../../plan-level-indicators/program-characteristics";
 import { programIntegrityRoute } from "../../../plan-level-indicators/program-integrity";
-import { qualityMeasuresRoute } from "../../../plan-level-indicators/quality-measures";
+import { qualityMeasuresRoute } from "./quality-measures";
 import { sanctionsRoute } from "../../../plan-level-indicators/sanctions";
 
 export const planLevelIndicatorsRoute: ParentRoute = {
