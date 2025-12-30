@@ -1,8 +1,8 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { Argv } from "yargs";
+import type { Argv } from "yargs";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
-import { project, region } from "../lib/consts.js";
-import { getCloudFormationStackOutputValues } from "../lib/utils.js";
+import { project, region } from "../lib/consts.ts";
+import { getCloudFormationStackOutputValues } from "../lib/utils.ts";
 
 export const list_topics = async (options: {
   stage: string;

@@ -26,12 +26,4 @@ tests/playwright/.cache/
 cdk.context.json
 .qlty/*
 !.qlty/qlty.toml
-
-# Yarn 4
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-**/.yarn/install-state.gz
+**/.yarn/*
