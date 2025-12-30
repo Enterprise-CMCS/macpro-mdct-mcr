@@ -4,7 +4,6 @@
   "type": "module",
   "description": "",
   "main": "index.js",
-  "private": true,
   "directories": {
     "test": "tests"
   },
