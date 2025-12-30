@@ -34,6 +34,9 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set branch_name
         run: |
           BRANCH_NAME=$(./.github/setBranchName.ts ${{ github.ref_name }})
@@ -85,7 +88,7 @@ jobs:
       - name: Install macpro-mdct-tools dependencies
         run: |
           pushd macpro-mdct-tools/scripts
-          yarn install --frozen-lockfile
+          yarn install --immutable
           popd
 
       - name: Run unmanaged resources scan

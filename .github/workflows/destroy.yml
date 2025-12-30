@@ -33,6 +33,9 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set branch_name
         run: |
           BRANCH_NAME=$(./.github/setBranchName.ts ${{ inputs.environment || github.event.ref }})

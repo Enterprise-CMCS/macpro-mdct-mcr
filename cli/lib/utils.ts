@@ -2,10 +2,10 @@ import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { writeLocalUiEnvFile } from "./write-ui-env-file.js";
-import { runCommand } from "../lib/runner.js";
-import { region } from "./consts.js";
-import { writeSeedEnvFile } from "./write-seed-env-file.js";
+import { writeLocalUiEnvFile } from "./write-ui-env-file.ts";
+import { runCommand } from "../lib/runner.ts";
+import { region } from "./consts.ts";
+import { writeSeedEnvFile } from "./write-seed-env-file.ts";
 
 export const getCloudFormationStackOutputValues = async (
   stackName: string

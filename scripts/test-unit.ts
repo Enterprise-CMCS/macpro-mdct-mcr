@@ -6,7 +6,7 @@ import { execSync } from "node:child_process";
 import { chdir, cwd } from "node:process";
 
 const yarnCommand =
-  process.env.CI === "true" ? "yarn install --frozen-lockfile" : "yarn install";
+  process.env.CI === "true" ? "yarn install --immutable" : "yarn install";
 
 execSync(yarnCommand, { stdio: "inherit" });
 for (const service of ["ui-src", "app-api"]) {
