@@ -58,6 +58,8 @@ jobs:
     needs: deploy
     steps:
       - uses: actions/checkout@v4
+      - name: Enable corepack
+        run: corepack enable
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
