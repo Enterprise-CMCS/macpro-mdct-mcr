@@ -26,3 +26,4 @@ tests/playwright/.cache/
 cdk.context.json
 .qlty/*
 !.qlty/qlty.toml
+**/.yarn/*

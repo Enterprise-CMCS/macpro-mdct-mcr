@@ -1,5 +1,11 @@
 import { Page } from "@playwright/test";
-import { adminPassword, adminUser, adminUserAuth } from "../../utils/consts";
+import {
+  adminPassword,
+  adminUser,
+  adminUserAuth,
+  adminUserHeading,
+} from "../../utils/consts";
+import { getBanners } from "../../utils/requests";
 
 export class AdminPage {
   readonly page: Page;
@@ -39,7 +45,7 @@ export class AdminPage {
       );
       await this.page
         .getByRole("heading", {
-          name: "View State/Territory Reports",
+          name: adminUserHeading,
         })
         .isVisible();
       await this.page.context().storageState({ path: adminUserAuth });
@@ -158,7 +164,7 @@ export class AdminPage {
         response.status() == 201 && response.request().method() === "POST"
     );
 
-    await this.waitForBannersToLoad();
+    await this.waitForRequest("/banners", "GET");
     // Sometimes the spinner is behind the network requests, this check makes the tests more reliable
     const loadingButton = this.page.getByRole("button", { name: "Loading..." });
     if (await loadingButton.isVisible({ timeout: 1000 }).catch(() => false)) {
@@ -183,15 +189,15 @@ export class AdminPage {
         response.status() == 200 && response.request().method() === "DELETE"
     );
     // Wait for banners to reload and admin-view loading to disappear
-    await this.waitForBannersToLoad();
+    await this.waitForRequest("/banners", "GET");
   }
 
-  async waitForBannersToLoad() {
+  async waitForRequest(path: string, requestType: string) {
     await this.page.waitForResponse(
       (response) =>
-        response.url().includes("/banners") &&
-        response.request().method() === "GET" &&
-        response.status() === 200
+        response.url().includes(path) &&
+        response.request().method() === requestType &&
+        response.status() == 200
     );
 
     // Sometimes the loader still displays after the network request completes
@@ -207,25 +213,18 @@ export class AdminPage {
   }
 
   async deleteExistingBanners() {
-    const noBannerText = this.page.getByText("There are no existing banners");
-    const bannerText = this.page.getByText("Status");
-    await noBannerText.or(bannerText).first().waitFor({ state: "visible" });
+    await this.waitForRequest("/banners", "GET");
+    let banners = await getBanners();
 
-    // Loop through deleting banners until no banners text is visible
-    while (!(await noBannerText.isVisible())) {
+    while (banners.length > 0) {
       const bannerCollapse = this.page.locator(".chakra-collapse");
       const firstDeleteButton = bannerCollapse
         .getByRole("button", { name: "Delete banner" })
         .first();
       await firstDeleteButton.click();
+      await this.waitForRequest("/banners", "DELETE");
 
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes(`banners`) &&
-          response.request().method() === "DELETE" &&
-          response.status() == 200
-      );
-      await this.waitForBannersToLoad();
+      banners = await getBanners();
     }
   }
 

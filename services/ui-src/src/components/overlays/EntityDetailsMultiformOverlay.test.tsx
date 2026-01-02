@@ -17,7 +17,7 @@ import {
   mockNaaarStandards,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
-import { EntityType, ReportShape } from "types";
+import { ReportShape } from "types";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
@@ -50,7 +50,6 @@ const entityDetailsMultiformOverlayComponent = (
         childForms={childForms}
         closeEntityDetailsOverlay={mockCloseEntityDetailsOverlay}
         disabled={disabled}
-        entityType={EntityType.PLANS}
         forms={details!.forms}
         onSubmit={mockOnSubmit}
         report={mockReport}
