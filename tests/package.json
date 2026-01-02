@@ -1,13 +1,13 @@
 {
   "name": "cypress-tests",
   "version": "1.0.0",
+  "packageManager": "yarn@4.12.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "cd ../ && ./run local && cd -",
-    "cypress": "cypress open",
-    "test": "concurrently --kill-others \"yarn start\" \"yarn cypress\"",
-    "test:ci": "cypress install && cypress run --browser chrome --headless",
+    "test": "concurrently --kill-others \"yarn start\" \"yarn cypress open\"",
+    "test:ci": "yarn cypress install && yarn cypress run --browser chrome --headless",
     "test:e2e": "playwright test",
     "test:e2e-ui": "playwright test --ui",
     "test:e2e-stable": "playwright test --grep-invert \"@flaky\"",
@@ -19,14 +19,14 @@
     "@axe-core/playwright": "^4.10.1",
     "@cypress-audit/pa11y": "^1.4.2",
     "@playwright/test": "^1.56.1",
+    "@types/aws4": "^1.11.6",
+    "aws4": "^1.13.2",
     "axe-core": "^4.10.2",
     "concurrently": "^8.2.2",
     "cypress": "^14.2.0",
     "cypress-axe": "^1.6.0",
     "dotenv": "^16.4.7",
-    "playwright-core": "^1.57.0",
-    "aws4": "^1.13.2",
-    "@types/aws4": "^1.11.6"
+    "playwright-core": "^1.57.0"
   },
   "dependencies": {
     "cross-spawn": "^7.0.6",

@@ -4,6 +4,7 @@
   "type": "module",
   "description": "",
   "main": "index.js",
+  "packageManager": "yarn@4.12.0",
   "directories": {
     "test": "tests"
   },
@@ -52,6 +53,7 @@
     "aws-cdk": "^2.1029.0",
     "aws-cdk-local": "^2.19.2",
     "dotenv": "^16.6.1",
+    "esbuild": "^0.27.0",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-cypress": "^2.15.2",
