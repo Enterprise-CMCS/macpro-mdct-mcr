@@ -80,26 +80,30 @@ export const getMeasureResults = (
     const measureIsNotReporting =
       plan.measures[entityId!]?.[`measure_isReporting`]?.[0].value ===
       "Not reporting";
-    if (!measureIsNotReporting) {
+    if (measureIsNotReporting) {
+      return {
+        planName: plan.name,
+        notReporting: true,
+        notReportingReason: otherSpecify(
+          plan.measures[entityId!]?.[`measure_isNotReportingReason`][0].value,
+          plan.measures[entityId!]?.[`measure_isNotReportingReason-otherText`]
+        ),
+      };
+    } else {
       const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
         return {
           rate: rate.name,
           rateResult:
-            plan.measures[entityId!]?.[`measure_rate_results-${rate.id}`],
+            plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
         };
       });
       return {
         planName: plan.name,
-        dataCollectionMethod:
+        dataCollectionMethod: otherSpecify(
           plan.measures[entityId!]?.[`measure_dataCollectionMethod`][0].value,
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
+        ),
         rateResults: resultsPerPlan,
-      };
-    } else {
-      return {
-        planName: plan.name,
-        notReporting: true,
-        notReportingReason:
-          plan.measures[entityId!][`measure_isNotReportingReason`][0].value,
       };
     }
   });
