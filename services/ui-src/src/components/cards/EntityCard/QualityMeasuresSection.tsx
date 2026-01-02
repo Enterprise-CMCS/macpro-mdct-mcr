@@ -1,70 +1,95 @@
 import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { useFlags } from "launchdarkly-react-client-sdk";
+// types
 import { SxObject } from "types";
+import {
+  NewBottomQualityMeasuresSection,
+  NewTopQualityMeasuresSection,
+} from "./NewQualityMeasuresSection";
 
 const TopQualityMeasuresSection = ({
   formattedEntityData,
   printVersion,
   isPDF,
   sx,
-}: TopProps) => (
-  <>
-    <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-      {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
-        formattedEntityData.name
-      }`}
-    </Heading>
-    <Text sx={sx.subtitle}>
-      {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
-    </Text>
-    <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
-    <Grid sx={sx.grid}>
-      <GridItem>
-        <Text sx={sx.subtitle}>
-          {`${
-            printVersion ? "D2.VII.3 " : ""
-          }National Quality Forum (NQF) number`}
-        </Text>
-        <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
-      </GridItem>
-      <GridItem>
-        <Text sx={sx.subtitle}>
-          {printVersion
-            ? "D2.VII.4 Measure Reporting and D2.VII.5 Programs"
-            : "Measure Reporting and Programs"}
-        </Text>
-        <Text sx={sx.subtext}>{formattedEntityData.reportingRateType}</Text>
-      </GridItem>
-      <GridItem>
-        <Text sx={sx.subtitle}>
-          {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
-        </Text>
-        <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
-      </GridItem>
-      <GridItem>
-        <Text sx={sx.subtitle}>
-          {printVersion
-            ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
-            : "Measure Reporting Period"}
-        </Text>
-        {formattedEntityData.reportingPeriod ? (
-          <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
-        ) : (
-          <Text
-            sx={sx.unfinishedMessage}
-            className={printVersion ? "pdf-color" : ""}
-          >
-            Not answered
+  newQualityMeasuresSectionEnabled,
+}: TopProps) => {
+  return (
+    <>
+      {!newQualityMeasuresSectionEnabled ? (
+        <>
+          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+            {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
+              formattedEntityData.name
+            }`}
+          </Heading>
+          <Text sx={sx.subtitle}>
+            {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
           </Text>
-        )}
-      </GridItem>
-    </Grid>
-    <Text sx={sx.subtitle}>
-      {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
-    </Text>
-    <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
-  </>
-);
+          <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+          <Grid sx={sx.grid}>
+            <GridItem>
+              <Text sx={sx.subtitle}>
+                {`${
+                  printVersion ? "D2.VII.3 " : ""
+                }National Quality Forum (NQF) number`}
+              </Text>
+              <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>
+                {printVersion
+                  ? "D2.VII.4 Measure Reporting and D2.VII.5 Programs"
+                  : "Measure Reporting and Programs"}
+              </Text>
+              <Text sx={sx.subtext}>
+                {formattedEntityData.reportingRateType}
+              </Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>
+                {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
+              </Text>
+              <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
+            </GridItem>
+            <GridItem>
+              <Text sx={sx.subtitle}>
+                {printVersion
+                  ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
+                  : "Measure Reporting Period"}
+              </Text>
+              {formattedEntityData.reportingPeriod ? (
+                <Text sx={sx.subtext}>
+                  {formattedEntityData.reportingPeriod}
+                </Text>
+              ) : (
+                <Text
+                  sx={sx.unfinishedMessage}
+                  className={printVersion ? "pdf-color" : ""}
+                >
+                  Not answered
+                </Text>
+              )}
+            </GridItem>
+          </Grid>
+          <Text sx={sx.subtitle}>
+            {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
+          </Text>
+          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
+        </>
+      ) : (
+        <>
+          <NewTopQualityMeasuresSection
+            formattedEntityData={formattedEntityData}
+            printVersion={printVersion}
+            sx={sx}
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 const BottomQualityMeasuresSection = ({
   formattedEntityData,
@@ -72,40 +97,55 @@ const BottomQualityMeasuresSection = ({
   notAnswered,
   verbiage,
   sx,
-}: BottomProps) => (
-  <>
-    <Text sx={sx.resultsHeader}>Measure results</Text>
+  newQualityMeasuresSectionEnabled,
+}: BottomProps) => {
+  return (
+    <>
+      {!newQualityMeasuresSectionEnabled ? (
+        <>
+          <Text sx={sx.resultsHeader}>Measure results</Text>
 
-    {formattedEntityData?.isPartiallyComplete && (
-      <Text sx={sx.missingResponseMessage}>
-        {verbiage?.entityMissingResponseMessage ||
-          (printVersion && notAnswered)}
-      </Text>
-    )}
+          {formattedEntityData?.isPartiallyComplete && (
+            <Text sx={sx.missingResponseMessage}>
+              {verbiage?.entityMissingResponseMessage ||
+                (printVersion && notAnswered)}
+            </Text>
+          )}
 
-    {formattedEntityData?.perPlanResponses?.map((plan) => (
-      <Box
-        key={plan.name + plan.response}
-        sx={sx.highlightContainer}
-        className={!plan.response ? "error" : ""}
-      >
-        <Flex>
-          <Box sx={sx.highlightSection}>
-            <Text sx={sx.subtitle}>{plan.name}</Text>
+          {formattedEntityData?.perPlanResponses?.map((plan) => (
+            <Box
+              key={plan.name + plan.response}
+              sx={sx.highlightContainer}
+              className={!plan.response ? "error" : ""}
+            >
+              <Flex>
+                <Box sx={sx.highlightSection}>
+                  <Text sx={sx.subtitle}>{plan.name}</Text>
 
-            {printVersion && !plan.response ? (
-              notAnswered
-            ) : (
-              <Text sx={sx.subtext}>
-                {plan.response || verbiage?.entityEmptyResponseMessage}
-              </Text>
-            )}
-          </Box>
-        </Flex>
-      </Box>
-    ))}
-  </>
-);
+                  {printVersion && !plan.response ? (
+                    notAnswered
+                  ) : (
+                    <Text sx={sx.subtext}>
+                      {plan.response || verbiage?.entityEmptyResponseMessage}
+                    </Text>
+                  )}
+                </Box>
+              </Flex>
+            </Box>
+          ))}
+        </>
+      ) : (
+        <>
+          <NewBottomQualityMeasuresSection
+            formattedEntityData={formattedEntityData}
+            printVersion={printVersion}
+            sx={sx}
+          />
+        </>
+      )}
+    </>
+  );
+};
 
 export const QualityMeasuresSection = ({
   formattedEntityData,
@@ -117,6 +157,9 @@ export const QualityMeasuresSection = ({
   topSection,
   bottomSection,
 }: Props) => {
+  // LaunchDarkly
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
   return (
     <>
       {topSection && (
@@ -124,6 +167,7 @@ export const QualityMeasuresSection = ({
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           isPDF={isPDF}
+          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
           sx={sx}
         />
       )}
@@ -131,8 +175,10 @@ export const QualityMeasuresSection = ({
         <BottomQualityMeasuresSection
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
+          isPDF={isPDF}
           notAnswered={notAnswered}
           verbiage={verbiage}
+          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
           sx={sx}
         />
       )}
@@ -158,6 +204,7 @@ interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
   sx: SxObject;
+  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 interface TopProps extends BaseProps {
@@ -165,6 +212,7 @@ interface TopProps extends BaseProps {
 }
 
 interface BottomProps extends BaseProps {
+  isPDF?: boolean;
   notAnswered?: ReactNode;
   verbiage?: {
     entityMissingResponseMessage?: string;

@@ -14,6 +14,7 @@ import {
   translate,
 } from "utils";
 import { getFormattedPlanData } from "./entities.plans";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -69,11 +70,54 @@ export const getPlanValues = (entity?: EntityShape, plans?: AnyObject[]) =>
     response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
   }));
 
+// returns an array of { rateName: string, rateResult: string } or undefined
+export const getMeasureResults = (
+  entityId?: string,
+  plans?: AnyObject,
+  measureRates?: AnyObject[]
+) => {
+  return plans?.map((plan: AnyObject) => {
+    const measureIsNotReporting =
+      plan.measures[entityId!]?.[`measure_isReporting`]?.[0].value ===
+      "Not reporting";
+    if (measureIsNotReporting) {
+      return {
+        planName: plan.name,
+        notReporting: true,
+        notReportingReason: otherSpecify(
+          plan.measures[entityId!]?.[`measure_isNotReportingReason`][0].value,
+          plan.measures[entityId!]?.[`measure_isNotReportingReason-otherText`]
+        ),
+      };
+    } else {
+      const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+        return {
+          rate: rate.name,
+          rateResult:
+            plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
+        };
+      });
+      return {
+        planName: plan.name,
+        dataCollectionMethod: otherSpecify(
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod`][0].value,
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
+        ),
+        rateResults: resultsPerPlan,
+      };
+    }
+  });
+};
+
 export const getFormattedEntityData = (
   entityType: EntityType,
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
+  // LaunchDarkly
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
+
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return {
@@ -124,16 +168,47 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      return {
-        domain: getRadioValue(entity, "qualityMeasure_domain"),
-        name: entity?.qualityMeasure_name,
-        nqfNumber: entity?.qualityMeasure_nqfNumber,
-        reportingRateType: getReportingRateType(entity),
-        set: getRadioValue(entity, "qualityMeasure_set"),
-        reportingPeriod: getReportingPeriod(entity),
-        description: entity?.qualityMeasure_description,
-        perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
-      };
+      if (newQualityMeasuresSectionEnabled) {
+        const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
+        const noCbe =
+          entity?.measure_identifier?.[0].value ===
+          "No, it has a Consensus Based Entity (CBE) number";
+        const neitherCmitOrCbe =
+          entity?.measure_identifier?.[0].value ===
+          "No, it uses neither CMIT or CBE";
+        return {
+          id: entity?.id,
+          name: entity?.measure_name,
+          identifierType: getRadioValue(entity, "measure_identifier"),
+          cmitNumber: yesCmit && entity?.measure_identifierCmit,
+          cbeNumber: noCbe && entity?.measure_identifierCbe,
+          description: neitherCmitOrCbe && entity?.measure_identifierDefinition,
+          identifierDomain:
+            neitherCmitOrCbe &&
+            getCheckboxValues(entity, "measure_identifierDomain"),
+          identifierUrl:
+            (neitherCmitOrCbe && entity?.measure_identifierUrl) ||
+            "Not answered, optional",
+          dataVersion: getRadioValue(entity, "measure_dataVersion"),
+          activities: getCheckboxValues(entity, "measure_activities"),
+          measureResults: getMeasureResults(
+            entity?.id,
+            reportFieldData?.["plans"],
+            entity?.measure_rates
+          ),
+        };
+      } else {
+        return {
+          domain: getRadioValue(entity, "qualityMeasure_domain"),
+          name: entity?.qualityMeasure_name,
+          nqfNumber: entity?.qualityMeasure_nqfNumber,
+          reportingRateType: getReportingRateType(entity),
+          set: getRadioValue(entity, "qualityMeasure_set"),
+          reportingPeriod: getReportingPeriod(entity),
+          description: entity?.qualityMeasure_description,
+          perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
+        };
+      }
     case EntityType.PLANS: {
       if (!entity) return {};
       const data = getFormattedPlanData(entity);
