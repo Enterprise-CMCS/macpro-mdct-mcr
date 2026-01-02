@@ -5,6 +5,7 @@ import {
   checkboxSingle,
   date,
   dateOptional,
+  dateMonthYear,
   dropdown,
   dropdownOptional,
   dynamic,
@@ -337,6 +338,15 @@ describe("Completion schemas", () => {
     ...accept(futureDates),
   ])("dateOptional() $description -> $expected", ({ value, expected }) => {
     expect(dateOptional().isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(pastDates), // reject mm/dd/yyyy dates
+    ...reject(futureDates), // reject mm/dd/yyyy dates
+    ...accept(["052022", "05/2022", "01/2030"]),
+  ])("dateMonthYear() $description -> $expected", ({ value, expected }) => {
+    expect(dateMonthYear().isValidSync(value)).toBe(expected);
   });
 
   test.each([
