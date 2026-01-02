@@ -30,7 +30,7 @@ export class LocalPrerequisiteStack extends Stack {
     });
 
     new secretsmanager.Secret(this, "DefaultSecret", {
-      secretName: "mcr-default", // pragma: allowlist secret
+      secretName: `${process.env.PROJECT}-default`, // pragma: allowlist secret
       secretObjectValue: {
         brokerString: SecretValue.unsafePlainText("localstack"),
         kafkaAuthorizedSubnetIds: SecretValue.unsafePlainText(subnet1.subnetId),
@@ -71,7 +71,7 @@ export class LocalPrerequisiteStack extends Stack {
 async function main() {
   const app = new App();
 
-  new LocalPrerequisiteStack(app, "mcr-local-prerequisites");
+  new LocalPrerequisiteStack(app, `${process.env.PROJECT}-local-prerequisites`);
 }
 
 main();
