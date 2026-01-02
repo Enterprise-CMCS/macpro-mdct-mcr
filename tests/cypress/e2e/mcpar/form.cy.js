@@ -1,7 +1,9 @@
 import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
+import newQualityMeasuresSectionEnabled from "../../../../services/app-api/forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled.json";
 
 const flaggedForms = {
   // flagName: jsonFilePath
+  newQualityMeasuresSectionEnabled,
 };
 
 function getRoutesByFlag(flags) {

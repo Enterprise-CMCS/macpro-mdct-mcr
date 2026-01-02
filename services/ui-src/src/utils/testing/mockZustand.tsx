@@ -216,6 +216,25 @@ export const mockEntityStore: McrEntityState = {
     ],
     report_reportingPeriodStartDate: "11/11/2011",
     report_reportingPeriodEndDate: "11/11/2011",
+    measure_activities: [
+      {
+        key: "measure_activities-mock",
+        value: "mock value",
+      },
+    ],
+    measure_dataVersion: [
+      {
+        key: "measure_dataVersion-mock",
+        value: "mock value",
+      },
+    ],
+    measure_identifierCmit: "1234",
+    measure_rates: [
+      {
+        id: "mock-rate-1",
+        name: "mock rate 1",
+      },
+    ],
   },
   // ACTIONS
   setSelectedEntity: () => {},

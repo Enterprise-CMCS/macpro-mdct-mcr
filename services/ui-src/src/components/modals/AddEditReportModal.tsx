@@ -48,7 +48,10 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  // LaunchDarkly
   const naaarProgramList = useFlags()?.naaarProgramList;
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -167,6 +170,7 @@ export const AddEditReportModal = ({
         naaarSubmissionForThisProgram,
         naaarSubmissionDateForThisProgram,
         naaarExpectedSubmissionDateForThisProgram,
+        newQualityMeasuresSectionEnabled,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

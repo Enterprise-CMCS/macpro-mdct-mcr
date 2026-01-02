@@ -11,17 +11,10 @@ import {
   mockSanctionsEntity,
   mockUnfinishedSanctionsFormattedEntityData,
   mockCompletedSanctionsFormattedEntityData,
+  mockMcparReportStore,
+  mockCompletedQualityMeasuresFormattedEntityData,
   mockQualityMeasuresEntity,
   mockUnfinishedQualityMeasuresFormattedEntityData,
-  mockCompletedQualityMeasuresEntity,
-  mockCompletedQualityMeasuresFormattedEntityData,
-  mockQualityMeasuresEntityMissingReportingPeriodAndDetails,
-  mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails,
-  mockQualityMeasuresEntityMissingReportingPeriod,
-  mockQualityMeasuresFormattedEntityDataMissingReportingPeriod,
-  mockQualityMeasuresEntityMissingDetails,
-  mockQualityMeasuresFormattedEntityDataMissingDetails,
-  mockMcparReportStore,
 } from "utils/testing/setupJest";
 import { useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
@@ -103,9 +96,9 @@ const AccessMeasuresEntityCardPrintComponent = (
   />
 );
 
-// QUALITY MEASURES
+// QUALITY_MEASURES
 
-const UnstartedQualityMeasuresEntityCardComponent = (
+const UnfinishedQualityMeasuresEntityCardComponent = (
   <EntityCard
     entity={mockQualityMeasuresEntity}
     entityIndex={0}
@@ -118,52 +111,9 @@ const UnstartedQualityMeasuresEntityCardComponent = (
   />
 );
 
-const QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails = (
+const QualityMeasuresEntityCardComponent = (
   <EntityCard
-    entity={mockQualityMeasuresEntityMissingReportingPeriodAndDetails}
-    entityIndex={0}
-    entityType={EntityType.QUALITY_MEASURES}
-    formattedEntityData={
-      mockQualityMeasuresFormattedEntityDataMissingReportingPeriodAndDetails
-    }
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openOverlayOrDrawer={mockOpenDrawer}
-  />
-);
-
-const QualityMeasuresEntityCardComponentMissingReportingPeriod = (
-  <EntityCard
-    entity={mockQualityMeasuresEntityMissingReportingPeriod}
-    entityIndex={0}
-    entityType={EntityType.QUALITY_MEASURES}
-    formattedEntityData={
-      mockQualityMeasuresFormattedEntityDataMissingReportingPeriod
-    }
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openOverlayOrDrawer={mockOpenDrawer}
-  />
-);
-
-const QualityMeasuresEntityCardComponentMissingDetails = (
-  <EntityCard
-    entity={mockQualityMeasuresEntityMissingDetails}
-    entityIndex={0}
-    entityType={EntityType.QUALITY_MEASURES}
-    formattedEntityData={mockQualityMeasuresFormattedEntityDataMissingDetails}
-    verbiage={mockModalDrawerReportPageJson.verbiage}
-    openAddEditEntityModal={openAddEditEntityModal}
-    openDeleteEntityModal={openDeleteEntityModal}
-    openOverlayOrDrawer={mockOpenDrawer}
-  />
-);
-
-const CompletedQualityMeasuresEntityCardComponent = (
-  <EntityCard
-    entity={mockCompletedQualityMeasuresEntity}
+    entity={mockQualityMeasuresEntity}
     entityIndex={0}
     entityType={EntityType.QUALITY_MEASURES}
     formattedEntityData={mockCompletedQualityMeasuresFormattedEntityData}
@@ -216,484 +166,414 @@ describe("<EntityCard />", () => {
     jest.clearAllMocks();
   });
 
-  describe("Test Completed AccessMeasures EntityCard", () => {
-    beforeEach(() => {
-      render(AccessMeasuresEntityCardComponent());
-    });
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
+  describe("entity: access measures", () => {
+    describe("Test Completed AccessMeasures EntityCard", () => {
+      beforeEach(() => {
+        render(AccessMeasuresEntityCardComponent());
+      });
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
+      });
+
+      test("Clicking edit button opens the AddEditProgramModal", async () => {
+        const editEntityButton = screen.getByText(editEntityButtonText);
+        await act(async () => {
+          await userEvent.click(editEntityButton);
+        });
+        await expect(openAddEditEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the drawer on edit-details click", async () => {
+        const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
+        await act(async () => {
+          await userEvent.click(editDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
     });
 
-    test("Clicking edit button opens the AddEditProgramModal", async () => {
-      const editEntityButton = screen.getByText(editEntityButtonText);
-      await act(async () => {
-        await userEvent.click(editEntityButton);
+    describe("Test Completed AccessMeasures EntityCard with provider details", () => {
+      test("provider details are in the card", () => {
+        const formattedEntityData = {
+          ...mockCompletedAccessMeasuresFormattedEntityData,
+          providerDetails: "mock-provider-details",
+        };
+        render(AccessMeasuresEntityCardComponent(formattedEntityData));
+        expect(
+          screen.getByText(
+            `${formattedEntityData.provider}: mock-provider-details`
+          )
+        ).toBeVisible();
       });
-      await expect(openAddEditEntityModal).toBeCalledTimes(1);
     });
 
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
+    describe("Test Unfinished AccessMeasures EntityCard", () => {
+      beforeEach(() => {
+        render(UnfinishedAccessMeasuresEntityCardComponent);
       });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
+
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
+      });
+
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the drawer on enter-details click", async () => {
+        const enterDetailsButton = screen.getByText(
+          enterEntityDetailsButtonText
+        );
+        await act(async () => {
+          await userEvent.click(enterDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
     });
 
-    test("EntityCard opens the drawer on edit-details click", async () => {
-      const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
-      await act(async () => {
-        await userEvent.click(editDetailsButton);
+    describe("Test AccessMeasures EntityCard accessibility", () => {
+      testA11yAct(UnfinishedAccessMeasuresEntityCardComponent);
+      testA11yAct(AccessMeasuresEntityCardComponent());
+    });
+
+    describe("Test Completed Print Version EntityCard", () => {
+      beforeEach(() => {
+        render(AccessMeasuresEntityCardPrintComponent);
       });
-      expect(mockOpenDrawer).toBeCalledTimes(1);
+      test("EntityCard in print version displays entity count", () => {
+        expect(screen.getByTestId("entities-count")).toBeVisible();
+      });
+
+      test("EntityCard in print version displays print version status indicator", () => {
+        expect(screen.getByTestId("print-status-indicator")).toBeVisible();
+      });
+
+      test("Finished EntityCard in print version displays completed ", () => {
+        expect(screen.getByText("Complete")).toBeVisible();
+      });
+    });
+
+    describe("Test Uncompleted Print Version EntityCard", () => {
+      test("EntityCard in print version displays error", () => {
+        render(UnfinishedAccessMeasuresEntityCardPrintComponent);
+        expect(screen.getByText("Error")).toBeVisible();
+      });
+    });
+
+    describe("Test EntityCard status indicators for AccessMeasures", () => {
+      test("Correct indicators for unfinished access measure", () => {
+        render(UnfinishedAccessMeasuresEntityCardComponent);
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+        // Access measures do not have reporting periods, so their metadata is always complete
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
+
+        // This message shows for entities with partial details; this entity isn't even started
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeTruthy();
+
+        // There are no details yet, so they cannot be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeTruthy();
+      });
+
+      test("Correct indicators for completed access measure", () => {
+        render(AccessMeasuresEntityCardComponent());
+
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
+
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
+
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeFalsy();
+
+        // The details are complete but they can still be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeTruthy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeFalsy();
+      });
     });
   });
 
-  describe("Test Completed AccessMeasures EntityCard with provider details", () => {
-    test("provider details are in the card", () => {
-      const formattedEntityData = {
-        ...mockCompletedAccessMeasuresFormattedEntityData,
-        providerDetails: "mock-provider-details",
-      };
-      render(AccessMeasuresEntityCardComponent(formattedEntityData));
-      expect(
-        screen.getByText(
-          `${formattedEntityData.provider}: mock-provider-details`
-        )
-      ).toBeVisible();
+  describe("entity: quality measures", () => {
+    describe("Test Completed QualityMeasures EntityCard", () => {
+      beforeEach(() => {
+        render(QualityMeasuresEntityCardComponent);
+      });
+
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
+      });
+
+      test("Clicking edit button opens the AddEditProgramModal", async () => {
+        const editEntityButton = screen.getByText(editEntityButtonText);
+        await act(async () => {
+          await userEvent.click(editEntityButton);
+        });
+        await expect(openAddEditEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the drawer on edit-details click", async () => {
+        const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
+        await act(async () => {
+          await userEvent.click(editDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
+    });
+
+    describe("Test Unfinished QualityMeasures EntityCard", () => {
+      beforeEach(() => {
+        render(UnfinishedQualityMeasuresEntityCardComponent);
+      });
+
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
+      });
+
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
+      });
+
+      test("EntityCard opens the drawer on enter-details click", async () => {
+        const enterDetailsButton = screen.getByText(
+          enterEntityDetailsButtonText
+        );
+        await act(async () => {
+          await userEvent.click(enterDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
+      });
+    });
+
+    describe("Test EntityCard status indicators for QualityMeasures", () => {
+      test("Correct indicators for unfinished quality measure card", () => {
+        render(UnfinishedQualityMeasuresEntityCardComponent);
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+        // QualityMeasures do not have reporting periods, so their metadata is always complete
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
+
+        // This message shows for entities with partial details; this entity isn't even started
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeTruthy();
+
+        // There are no details yet, so they cannot be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeTruthy();
+      });
+
+      test("Correct indicators for completed quality measure", () => {
+        render(QualityMeasuresEntityCardComponent);
+
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
+
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
+
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeFalsy();
+
+        // The details are complete but they can still be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeTruthy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeFalsy();
+      });
+    });
+
+    describe("Test QualityMeasures EntityCard accessibility", () => {
+      testA11yAct(UnfinishedQualityMeasuresEntityCardComponent);
+      testA11yAct(QualityMeasuresEntityCardComponent);
     });
   });
 
-  describe("Test Unfinished AccessMeasures EntityCard", () => {
-    beforeEach(() => {
-      render(UnfinishedAccessMeasuresEntityCardComponent);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
+  describe("entity: sanctions", () => {
+    describe("Test Completed Sanctions EntityCard", () => {
+      beforeEach(() => {
+        render(SanctionsEntityCardComponent);
       });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
-    });
 
-    test("EntityCard opens the drawer on enter-details click", async () => {
-      const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await act(async () => {
-        await userEvent.click(enterDetailsButton);
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
       });
-      expect(mockOpenDrawer).toBeCalledTimes(1);
-    });
-  });
 
-  describe("Test AccessMeasures EntityCard accessibility", () => {
-    testA11yAct(UnfinishedAccessMeasuresEntityCardComponent);
-    testA11yAct(AccessMeasuresEntityCardComponent());
-  });
-
-  describe("Test Completed Print Version EntityCard", () => {
-    beforeEach(() => {
-      render(AccessMeasuresEntityCardPrintComponent);
-    });
-    test("EntityCard in print version displays entity count", () => {
-      expect(screen.getByTestId("entities-count")).toBeVisible();
-    });
-
-    test("EntityCard in print version displays print version status indicator", () => {
-      expect(screen.getByTestId("print-status-indicator")).toBeVisible();
-    });
-
-    test("Finished EntityCard in print version displays completed ", () => {
-      expect(screen.getByText("Complete")).toBeVisible();
-    });
-  });
-
-  describe("Test Uncompleted Print Version EntityCard", () => {
-    test("EntityCard in print version displays error", () => {
-      render(UnfinishedAccessMeasuresEntityCardPrintComponent);
-      expect(screen.getByText("Error")).toBeVisible();
-    });
-  });
-
-  describe("Test EntityCard status indicators for AccessMeasures", () => {
-    test("Correct indicators for unfinished access measure", () => {
-      render(UnfinishedAccessMeasuresEntityCardComponent);
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
-
-      // Access measures do not have reporting periods, so their metadata is always complete
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      // This message shows for entities with partial details; this entity isn't even started
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock entity unfinished messsage")
-      ).toBeTruthy();
-
-      // There are no details yet, so they cannot be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeTruthy();
-    });
-
-    test("Correct indicators for completed access measure", () => {
-      render(AccessMeasuresEntityCardComponent());
-
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      // The details are complete but they can still be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeTruthy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeFalsy();
-    });
-  });
-
-  describe("Test Unstarted QualityMeasures EntityCard", () => {
-    beforeEach(() => {
-      render(UnstartedQualityMeasuresEntityCardComponent);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
+      test("Clicking edit button opens the AddEditProgramModal", async () => {
+        const editEntityButton = screen.getByText(editEntityButtonText);
+        await act(async () => {
+          await userEvent.click(editEntityButton);
+        });
+        await expect(openAddEditEntityModal).toBeCalledTimes(1);
       });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
-    });
 
-    test("EntityCard opens the drawer on enter-details click", async () => {
-      const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await act(async () => {
-        await userEvent.click(enterDetailsButton);
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
       });
-      expect(mockOpenDrawer).toBeCalledTimes(1);
-    });
-  });
 
-  describe("Test QualityMeasures EntityCard with missing details", () => {
-    beforeEach(() => {
-      render(QualityMeasuresEntityCardComponentMissingDetails);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("Clicking edit button opens the AddEditProgramModal", async () => {
-      const editEntityButton = screen.getByText(editEntityButtonText);
-      await act(async () => {
-        await userEvent.click(editEntityButton);
-      });
-      await expect(openAddEditEntityModal).toBeCalledTimes(1);
-    });
-
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
-      });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
-    });
-  });
-
-  describe("Test completed QualityMeasures EntityCard", () => {
-    beforeEach(() => {
-      render(CompletedQualityMeasuresEntityCardComponent);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("Clicking edit button opens the AddEditProgramModal", async () => {
-      const editEntityButton = screen.getByText(editEntityButtonText);
-      await act(async () => {
-        await userEvent.click(editEntityButton);
-      });
-      await expect(openAddEditEntityModal).toBeCalledTimes(1);
-    });
-
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
-      });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
-    });
-  });
-
-  describe("Test EntityCard status indicators for QualityMeasures", () => {
-    test("Correct indicators for quality measure which has not been started", () => {
-      render(UnstartedQualityMeasuresEntityCardComponent);
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
-
-      // This quality measure was just created from scratch, so it has a reporting period
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      // This message shows for entities with partial details; this entity isn't even started
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock entity unfinished messsage")
-      ).toBeTruthy();
-
-      // There are no details yet, so they cannot be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeTruthy();
-    });
-
-    test("Correct indicators for quality measure without reporting period", () => {
-      render(QualityMeasuresEntityCardComponentMissingReportingPeriod);
-
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeTruthy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      // The details are complete but they can still be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeTruthy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeFalsy();
-    });
-
-    test("Correct indicators for quality measure with neither reporting period nor details", () => {
-      render(
-        QualityMeasuresEntityCardComponentMissingReportingPeriodAndDetails
-      );
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeTruthy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeTruthy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeTruthy();
-    });
-
-    test("Correct indicators for quality measures without details", () => {
-      render(QualityMeasuresEntityCardComponentMissingDetails);
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeTruthy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeTruthy();
-    });
-
-    test("Correct indicators for quality measure which is complete", () => {
-      render(CompletedQualityMeasuresEntityCardComponent);
-      expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeTruthy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeFalsy();
-    });
-  });
-
-  describe("Test QualityMeasures EntityCard accessibility", () => {
-    testA11yAct(UnstartedQualityMeasuresEntityCardComponent);
-    testA11yAct(QualityMeasuresEntityCardComponentMissingDetails, () => {
-      mockedUseStore.mockReturnValue({
-        ...mockMcparReportStore,
+      test("EntityCard opens the drawer on edit-details click", async () => {
+        const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
+        await act(async () => {
+          await userEvent.click(editDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
       });
     });
-    testA11yAct(CompletedQualityMeasuresEntityCardComponent);
-  });
 
-  describe("Test Completed Sanctions EntityCard", () => {
-    beforeEach(() => {
-      render(SanctionsEntityCardComponent);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("Clicking edit button opens the AddEditProgramModal", async () => {
-      const editEntityButton = screen.getByText(editEntityButtonText);
-      await act(async () => {
-        await userEvent.click(editEntityButton);
+    describe("Test Unfinished Sanctions EntityCard", () => {
+      beforeEach(() => {
+        render(UnfinishedSanctionsEntityCardComponent);
       });
-      await expect(openAddEditEntityModal).toBeCalledTimes(1);
-    });
 
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
+      test("EntityCard is visible", () => {
+        expect(screen.getByTestId("entityCard")).toBeVisible();
       });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
-    });
 
-    test("EntityCard opens the drawer on edit-details click", async () => {
-      const editDetailsButton = screen.getByText(editEntityDetailsButtonText);
-      await act(async () => {
-        await userEvent.click(editDetailsButton);
+      test("EntityCard opens the delete modal on remove click", async () => {
+        const removeButton = screen.getByTestId("delete-entity-button");
+        await act(async () => {
+          await userEvent.click(removeButton);
+        });
+        expect(openDeleteEntityModal).toBeCalledTimes(1);
       });
-      expect(mockOpenDrawer).toBeCalledTimes(1);
-    });
-  });
 
-  describe("Test Unfinished Sanctions EntityCard", () => {
-    beforeEach(() => {
-      render(UnfinishedSanctionsEntityCardComponent);
-    });
-
-    test("EntityCard is visible", () => {
-      expect(screen.getByTestId("entityCard")).toBeVisible();
-    });
-
-    test("EntityCard opens the delete modal on remove click", async () => {
-      const removeButton = screen.getByTestId("delete-entity-button");
-      await act(async () => {
-        await userEvent.click(removeButton);
+      test("EntityCard opens the drawer on enter-details click", async () => {
+        const enterDetailsButton = screen.getByText(
+          enterEntityDetailsButtonText
+        );
+        await act(async () => {
+          await userEvent.click(enterDetailsButton);
+        });
+        expect(mockOpenDrawer).toBeCalledTimes(1);
       });
-      expect(openDeleteEntityModal).toBeCalledTimes(1);
     });
 
-    test("EntityCard opens the drawer on enter-details click", async () => {
-      const enterDetailsButton = screen.getByText(enterEntityDetailsButtonText);
-      await act(async () => {
-        await userEvent.click(enterDetailsButton);
+    describe("Test EntityCard status indicators for Sanctions", () => {
+      test("Correct indicators for unfinished sanction card", () => {
+        render(UnfinishedSanctionsEntityCardComponent);
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+
+        // Sanctions do not have reporting periods, so their metadata is always complete
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
+
+        // This message shows for entities with partial details; this entity isn't even started
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeTruthy();
+
+        // There are no details yet, so they cannot be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeTruthy();
       });
-      expect(mockOpenDrawer).toBeCalledTimes(1);
-    });
-  });
 
-  describe("Test EntityCard status indicators for Sanctions", () => {
-    test("Correct indicators for unfinished sanction card", () => {
-      render(UnfinishedSanctionsEntityCardComponent);
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeTruthy();
+      test("Correct indicators for completed sanction", () => {
+        render(SanctionsEntityCardComponent);
 
-      // Sanctions do not have reporting periods, so their metadata is always complete
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
+        // status icon alt text should indicate incompleteness
+        expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
 
-      // This message shows for entities with partial details; this entity isn't even started
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock entity unfinished messsage")
-      ).toBeTruthy();
+        expect(
+          screen.queryByText("Mock entity missing reporting period message")
+        ).toBeFalsy();
 
-      // There are no details yet, so they cannot be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeFalsy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeTruthy();
+        expect(
+          screen.queryByText("Mock entity missing response message")
+        ).toBeFalsy();
+        expect(
+          screen.queryByText("Mock entity unfinished messsage")
+        ).toBeFalsy();
+
+        // The details are complete but they can still be EDITed
+        expect(
+          screen.queryByText("Mock edit entity details button text")
+        ).toBeTruthy();
+        expect(
+          screen.queryByText("Mock enter entity details button text")
+        ).toBeFalsy();
+      });
     });
 
-    test("Correct indicators for completed sanction", () => {
-      render(SanctionsEntityCardComponent);
-
-      // status icon alt text should indicate incompleteness
-      expect(screen.queryByAltText("entity is incomplete")).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing reporting period message")
-      ).toBeFalsy();
-
-      expect(
-        screen.queryByText("Mock entity missing response message")
-      ).toBeFalsy();
-      expect(screen.queryByText("Mock entity unfinished messsage")).toBeFalsy();
-
-      // The details are complete but they can still be EDITed
-      expect(
-        screen.queryByText("Mock edit entity details button text")
-      ).toBeTruthy();
-      expect(
-        screen.queryByText("Mock enter entity details button text")
-      ).toBeFalsy();
+    describe("Test Sanctions EntityCard accessibility", () => {
+      testA11yAct(UnfinishedSanctionsEntityCardComponent);
+      testA11yAct(SanctionsEntityCardComponent);
     });
-  });
-
-  describe("Test Sanctions EntityCard accessibility", () => {
-    testA11yAct(UnfinishedSanctionsEntityCardComponent);
-    testA11yAct(SanctionsEntityCardComponent);
   });
 
   describe("Should return Entity Type by default", () => {

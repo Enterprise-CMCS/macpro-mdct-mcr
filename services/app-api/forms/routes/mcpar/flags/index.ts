@@ -1,2 +1,2 @@
 // flagged routes
-export {};
+export { mcparReportJson as newQualityMeasuresSectionEnabled } from "./newQualityMeasuresSectionEnabled/index";
