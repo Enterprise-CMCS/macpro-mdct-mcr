@@ -1,9 +1,9 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { runCommand } from "../lib/runner.js";
+import { runCommand } from "../lib/runner.ts";
 import { execSync } from "node:child_process";
-import { region } from "../lib/consts.js";
-import { runFrontendLocally } from "../lib/utils.js";
-import { seedData } from "../lib/seedData.js";
+import { region } from "../lib/consts.ts";
+import { runFrontendLocally } from "../lib/utils.ts";
+import { seedData } from "../lib/seedData.ts";
 
 const isColimaRunning = () => {
   try {
