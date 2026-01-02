@@ -12,6 +12,7 @@ import {
   numberNotLessThanZeroOptional,
   futureDate,
   date,
+  dateMonthYear,
 } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
@@ -160,6 +161,11 @@ describe("Schemas", () => {
   test("Test validDate schema", () => {
     testDate(date(), goodValidDateTestCases, true);
     testDate(date(), badValidDateTestCases, false);
+  });
+
+  test("Test dateMonthYear schema", () => {
+    testDate(dateMonthYear(), ["052022", "05/2022", "01/2030"], true);
+    testDate(dateMonthYear(), goodValidDateTestCases, false);
   });
 
   test("Test validNumber schema", () => {

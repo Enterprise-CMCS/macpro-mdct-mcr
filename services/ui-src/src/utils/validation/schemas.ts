@@ -189,6 +189,11 @@ export const date = () =>
       return result;
     });
 
+export const dateMonthYear = () =>
+  string()
+    .matches(dateMonthYearFormatRegex, error.INVALID_DATE_MONTH_YEAR)
+    .required(error.REQUIRED_GENERIC);
+
 export const dateOptional = () =>
   string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
 
@@ -285,5 +290,7 @@ export const nested = (
 // REGEX
 const datePattern =
   "((0[1-9]|1[0-2])\\/(0[1-9]|1\\d|2\\d|3[01])\\/(19|20)\\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|3[01])(19|20)\\d{2})";
+const dateMonthYearPattern = "(0[1-9]|1[0-2])\\/?(19|20)\\d{2}";
 export const dateFormatRegex = new RegExp(`^${datePattern}$`);
+export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);

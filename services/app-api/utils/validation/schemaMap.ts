@@ -182,6 +182,11 @@ export const date = () =>
     test: (value) => !!value?.match(dateFormatRegex) || value?.trim() === "",
   });
 
+export const dateMonthYear = () =>
+  string()
+    .matches(dateMonthYearFormatRegex, error.INVALID_DATE)
+    .required(error.REQUIRED_GENERIC);
+
 export const dateOptional = () => date();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -278,6 +283,7 @@ export const objectArray = () => array().of(mixed());
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
+export const dateMonthYearFormatRegex = /^(0[1-9]|1[0-2])\/?(19|20)\d{2}$/;
 
 // SCHEMA MAP
 export const schemaMap: any = {
@@ -286,6 +292,7 @@ export const schemaMap: any = {
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
   date: date(),
+  dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
   futureDate: futureDate(),
   dropdown: dropdown(),

@@ -68,9 +68,9 @@ export const mlrRoute: FormRoute = {
               children: [
                 {
                   id: "program_mlrAnticipatedValidationDate",
-                  type: ReportFormFieldType.DATE,
+                  type: ReportFormFieldType.DATE_MONTH_YEAR,
                   validation: {
-                    type: ValidationType.DATE,
+                    type: ValidationType.DATE_MONTH_YEAR,
                     nested: true,
                     parentFieldName: "program_mlrValidationCompletion",
                   },
