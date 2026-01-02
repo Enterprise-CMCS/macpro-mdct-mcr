@@ -20,12 +20,20 @@ import {
 } from "utils/testing/setupJest";
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 
+const mockUseParams = jest.fn().mockReturnValue({
+  reportType: "mockReportType",
+  state: "mockState",
+  reportId: "mockReportId",
+  pageId: "mockPageId",
+});
+
 const mockUseNavigate = jest.fn();
 jest.mock("react-router", () => ({
   useNavigate: () => mockUseNavigate,
   useLocation: jest.fn(() => ({
     pathname: "/mock-route",
   })),
+  useParams: () => mockUseParams(),
 }));
 
 jest.mock("utils/state/useStore");

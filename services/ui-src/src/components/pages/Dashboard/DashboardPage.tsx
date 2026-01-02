@@ -22,13 +22,7 @@ import {
   ReportContext,
 } from "components";
 // types
-import {
-  AnyObject,
-  ReportMetadataShape,
-  ReportKeys,
-  ReportShape,
-  ReportType,
-} from "types";
+import { AnyObject, ReportMetadataShape, ReportShape, ReportType } from "types";
 // utils
 import {
   convertDateUtcToEt,
@@ -47,9 +41,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   const {
     errorMessage,
     fetchReportsByState,
-    fetchReport,
     clearReportSelection,
-    setReportSelection,
     archiveReport,
     releaseReport,
   } = useContext(ReportContext);
@@ -70,7 +62,6 @@ export const DashboardPage = ({ reportType }: Props) => {
   >(undefined);
   const [reportId, setReportId] = useState<string | undefined>(undefined);
   const [archiving, setArchiving] = useState<boolean>(false);
-  const [entering, setEntering] = useState<boolean>(false);
   const [releasing, setReleasing] = useState<boolean>(false);
   const [selectedReport, setSelectedReport] = useState<AnyObject | undefined>(
     undefined
@@ -105,20 +96,7 @@ export const DashboardPage = ({ reportType }: Props) => {
   }, [reportsByState]);
 
   const enterSelectedReport = async (report: ReportMetadataShape) => {
-    setReportId(report.id);
-    setEntering(true);
-    const reportKeys: ReportKeys = {
-      reportType: report.reportType,
-      state: report.state,
-      id: report.id,
-    };
-    const selectedReport: ReportShape = await fetchReport(reportKeys);
-    // set active report to selected report
-    setReportSelection(selectedReport);
-    setReportId(undefined);
-    setEntering(false);
-    const firstReportPagePath = selectedReport.formTemplate.flatRoutes![0].path;
-    navigate(firstReportPagePath);
+    navigate(`/report/${report.reportType}/${report.state}/${report.id}`);
   };
 
   const openAddEditReportModal = (report?: ReportShape) => {
@@ -271,7 +249,6 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
               isStateLevelUser={userIsEndUser!}
@@ -288,7 +265,6 @@ export const DashboardPage = ({ reportType }: Props) => {
               enterSelectedReport={enterSelectedReport}
               archiveReport={toggleReportArchiveStatus}
               archiving={archiving}
-              entering={entering}
               releaseReport={toggleReportLockStatus}
               releasing={releasing}
               isStateLevelUser={userIsEndUser!}

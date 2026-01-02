@@ -25,7 +25,6 @@ export const DashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  entering,
   releaseReport,
   releasing,
   sxOverride,
@@ -90,7 +89,6 @@ export const DashboardTable = ({
               reportType={reportType}
               reportId={reportId}
               isStateLevelUser={isStateLevelUser}
-              entering={entering}
               enterSelectedReport={enterSelectedReport}
             />
           </Td>

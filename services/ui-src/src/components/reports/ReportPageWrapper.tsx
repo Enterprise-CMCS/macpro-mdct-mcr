@@ -11,6 +11,7 @@ import {
   StandardReportPage,
   ModalOverlayReportPage,
   OverlayProvider,
+  NotFoundPage,
 } from "components";
 // types
 import {
@@ -26,6 +27,10 @@ import {
 // utils
 import { useStore } from "utils";
 import { OverlayReportPage } from "./OverlayReportPage";
+import {
+  removeReportSpecificPath,
+  uriPathToPagePath,
+} from "utils/reports/pathFormatter";
 
 export const ReportPageWrapper = () => {
   const { user: state, report } = useStore();
@@ -102,9 +107,14 @@ export const ReportPageWrapper = () => {
     }
   };
 
+  // There is implied logic here based on transforming the path listed in the template against the url
+  const pagePath = uriPathToPagePath(pathname);
   const reportTemplate = report?.formTemplate.flatRoutes!.find(
-    (route: ReportRoute) => route.path === pathname
+    (route: ReportRoute) => removeReportSpecificPath(route.path) === pagePath
   );
+  if (!reportTemplate) {
+    return <NotFoundPage />;
+  }
 
   return (
     <PageTemplate section={false} type="report">

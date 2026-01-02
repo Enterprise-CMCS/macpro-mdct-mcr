@@ -21,7 +21,6 @@ export interface DashboardTableProps {
   enterSelectedReport: Function;
   archiveReport: Function;
   archiving: boolean;
-  entering: boolean;
   isAdmin: boolean;
   isStateLevelUser: boolean;
   releaseReport: Function;
@@ -41,7 +40,6 @@ export interface ActionButtonProps {
   reportType: string;
   reportId: string | undefined;
   isStateLevelUser: boolean;
-  entering: boolean;
   enterSelectedReport: Function;
 }
 
@@ -123,9 +121,7 @@ export const EditReportButton = ({
 export const ActionButton = ({
   report,
   reportType,
-  reportId,
   isStateLevelUser,
-  entering,
   enterSelectedReport,
 }: ActionButtonProps) => {
   const editOrView = isStateLevelUser && !report?.locked ? "Edit" : "View";
@@ -144,7 +140,7 @@ export const ActionButton = ({
       onClick={() => enterSelectedReport(report)}
       isDisabled={report?.archived}
     >
-      {entering && reportId == report.id ? <Spinner size="md" /> : editOrView}
+      {editOrView}
     </Button>
   );
 };

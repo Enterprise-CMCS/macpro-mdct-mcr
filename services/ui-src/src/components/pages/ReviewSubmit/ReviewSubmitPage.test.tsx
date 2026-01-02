@@ -270,7 +270,9 @@ describe("<ReviewSubmitPage />", () => {
         render(ReviewSubmitPageComponent(mockedReportContext_InProgress));
         const printButton = screen.getByText("Review PDF");
         expect(printButton).toBeVisible();
-        expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+        expect(printButton.getAttribute("href")).toEqual(
+          "/export/MCPAR/CO/mock-report-id"
+        );
         expect(printButton.getAttribute("target")).toEqual("_blank");
       });
     });
@@ -284,7 +286,9 @@ describe("<ReviewSubmitPage />", () => {
         render(ReviewSubmitPageComponent(mockedReportContext_Submitted));
         const printButton = screen.getByRole("link");
         expect(printButton).toBeVisible();
-        expect(printButton.getAttribute("href")).toEqual("/mcpar/export");
+        expect(printButton.getAttribute("href")).toEqual(
+          "/export/MCPAR/CO/mock-report-id"
+        );
         expect(printButton.getAttribute("target")).toEqual("_blank");
       });
     });
