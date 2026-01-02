@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 // node .github/branchNameValidation.ts SOME_BRANCH_NAME
 import { execSync } from "child_process";
@@ -18,7 +19,7 @@ console.log(`Validating branch name: ${localBranch}`);
 
 const branchRegex = /^[a-z][a-z0-9-]*$/;
 const invalidBranchRegex = !branchRegex.test(localBranch);
-const maxLength = 64;
+const maxLength = 32;
 
 if (invalidBranchRegex) {
   console.error(

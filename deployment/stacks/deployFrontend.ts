@@ -1,6 +1,7 @@
 import { Construct } from "constructs";
 import {
   aws_cloudfront as cloudfront,
+  aws_iam as iam,
   aws_s3 as s3,
   aws_s3_deployment as s3_deployment,
   Duration,
@@ -13,6 +14,7 @@ interface DeployFrontendProps {
   applicationEndpointUrl: string;
   distribution: cloudfront.Distribution;
   identityPoolId: string;
+  isDev: boolean;
   launchDarklyClient: string;
   redirectSignout: string;
   scope: Construct;
@@ -29,6 +31,7 @@ export function deployFrontend(props: DeployFrontendProps) {
     applicationEndpointUrl,
     distribution,
     identityPoolId,
+    isDev,
     launchDarklyClient,
     redirectSignout,
     scope,
@@ -87,4 +90,13 @@ export function deployFrontend(props: DeployFrontendProps) {
   );
 
   deployTimeConfig.node.addDependency(deployWebsite);
+
+  if (isDev) {
+    const denyLogs = new iam.PolicyStatement({
+      effect: iam.Effect.DENY,
+      actions: ["logs:CreateLogGroup"],
+      resources: ["*"],
+    });
+    deployWebsite.handlerRole.addToPrincipalPolicy(denyLogs);
+  }
 }

@@ -37,7 +37,7 @@ test.describe("admin user home page", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForBannersToLoad();
+    await adminPage.waitForRequest("/banners", "GET");
   });
 
   test("Should see the correct home page as an admin user", async ({

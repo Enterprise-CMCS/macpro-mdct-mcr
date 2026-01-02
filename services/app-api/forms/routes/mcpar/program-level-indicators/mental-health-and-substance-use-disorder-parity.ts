@@ -379,7 +379,7 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                             id: "websiteStatePostedCurrentParityAnalysisCoveringThisProgram",
                             type: ReportFormFieldType.TEXT,
                             validation: {
-                              type: "url",
+                              type: ValidationType.URL,
                               nested: true,
                               parentFieldName:
                                 "program_hasStatePostedCurrentParityAnalysisCoveringThisProgram",

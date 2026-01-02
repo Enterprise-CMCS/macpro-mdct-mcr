@@ -1,5 +1,6 @@
 import * as React from "react";
 import { act, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 // components
 import { ReportContext } from "components/reports/ReportProvider";
 import { EntityRow, EntityRowProps } from "./EntityRow";
@@ -21,7 +22,6 @@ import {
   mockOverlayReportPageVerbiage,
   mockDrawerReportPageJson,
 } from "utils/testing/setupJest";
-import userEvent from "@testing-library/user-event";
 import { getEntityStatus, useStore } from "utils";
 import { testA11yAct } from "utils/testing/commonTests";
 
@@ -74,7 +74,6 @@ describe("<EntityRow />", () => {
     const entityType = EntityType.PROGRAM;
     const entity: EntityShape =
       mockMlrReportContext.report.fieldData[entityType][0];
-    const mlrContext = mockMlrReportContext;
     const setupData = {
       entity,
       entityType,
@@ -87,7 +86,7 @@ describe("<EntityRow />", () => {
         ...mockMlrReportStore,
       });
       mockedGetEntityStatus.mockReturnValue(false);
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const errorMessage = screen.getByText(
         "Select “Enter MLR” to complete this report."
       );
@@ -96,7 +95,7 @@ describe("<EntityRow />", () => {
 
     test("don't render error if entity is complete", () => {
       mockedGetEntityStatus.mockReturnValue(true);
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const errorMessage = screen.queryByText(
         "Select “Enter MLR” to complete this report."
       );
@@ -104,7 +103,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Edit button opens the AddEditEntityModal", async () => {
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const addReportButton = screen.getByRole("button", {
         name: `Edit ${setupData.entity.report_planName}`,
       });
@@ -118,7 +117,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Enter Details button opens the Drawer", async () => {
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const enterDetailsButton = screen.getByRole("button", {
         name: `Enter Details ${setupData.entity.report_planName}`,
       });
@@ -132,7 +131,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Delete button opens the DeleteEntityModal", async () => {
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const deleteButton = screen.getByRole("button", {
         name: `Delete ${setupData.entity.report_planName}`,
       });
@@ -150,7 +149,7 @@ describe("<EntityRow />", () => {
         ...mockAdminUserStore,
         ...mockMlrReportStore,
       });
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const deleteButton = screen.getByRole("button", {
         name: `Delete ${setupData.entity.report_planName}`,
       });
@@ -159,13 +158,13 @@ describe("<EntityRow />", () => {
 
     test("render Spinner when entering", () => {
       mockEntering = true;
-      render(completeRowComponent(setupData, mlrContext));
+      render(completeRowComponent(setupData, mockMlrReportContext));
       const loading = screen.getByRole("button", { name: "Loading..." });
       expect(loading).toBeVisible();
       mockEntering = false;
     });
 
-    testA11yAct(completeRowComponent(setupData, mlrContext));
+    testA11yAct(completeRowComponent(setupData, mockMlrReportContext));
   });
 
   describe("NAAAR", () => {
@@ -187,7 +186,7 @@ describe("<EntityRow />", () => {
     };
 
     test("Edit button opens the AddEditEntityModal", async () => {
-      render(completeRowComponent(setupData, naaarContext));
+      render(completeRowComponent(setupData, mockNaaarReportContext));
       const editButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.editEntityButtonText} ${setupData.entity.name}`,
       });
@@ -226,7 +225,7 @@ describe("<EntityRow />", () => {
     });
 
     test("Enter button should not disabled if there is an entity and hasStandards is not defined", () => {
-      render(completeRowComponent(setupData, naaarContext));
+      render(completeRowComponent(setupData, mockNaaarReportContext));
       const enterButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
       });
@@ -234,7 +233,7 @@ describe("<EntityRow />", () => {
       expect(enterButton).not.toBeDisabled();
     });
 
-    testA11yAct(completeRowComponent(setupData, naaarContext));
+    testA11yAct(completeRowComponent(setupData, mockNaaarReportContext));
   });
 
   describe("MCPAR", () => {
@@ -274,7 +273,7 @@ describe("<EntityRow />", () => {
     };
 
     test("MCPAR Enter Details button opens the Drawer", async () => {
-      render(completeRowComponent(setupData, mcparContext));
+      render(completeRowComponent(setupData, mockMcparReportContext));
       const enterButton = screen.getByRole("button", {
         name: `Enter ${setupData.entity.name}`,
       });

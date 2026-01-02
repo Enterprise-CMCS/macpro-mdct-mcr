@@ -237,7 +237,6 @@ export const OverlayReportPage = ({
         childForms={details.childForms}
         closeEntityDetailsOverlay={() => toggleOverlay()}
         disabled={false}
-        entityType={entityType as EntityType}
         forms={details.forms}
         onSubmit={onSubmit}
         report={report}

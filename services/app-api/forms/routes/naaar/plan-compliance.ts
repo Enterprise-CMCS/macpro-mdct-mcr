@@ -536,7 +536,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q1PercentMetStandard",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.1a - Q1 (optional)",
@@ -548,7 +548,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q2PercentMetStandard",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.1b - Q2 (optional)",
@@ -560,7 +560,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q3PercentMetStandard",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.1c - Q3 (optional)",
@@ -572,7 +572,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q4PercentMetStandard",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.1d - Q4 (optional)",
@@ -591,7 +591,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q1ActualMaxTime",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.2a - Q1 (optional)",
@@ -602,7 +602,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q2ActualMaxTime",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.2b - Q2 (optional)",
@@ -613,7 +613,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q3ActualMaxTime",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.2c - Q3 (optional)",
@@ -624,7 +624,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q4ActualMaxTime",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.2d - Q4 (optional)",
@@ -643,7 +643,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q1ActualMaxDist",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.3a - Q1 (optional)",
@@ -655,7 +655,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q2ActualMaxDist",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.3b - Q2 (optional)",
@@ -667,7 +667,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q3ActualMaxDist",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.3c - Q3 (optional)",
@@ -679,7 +679,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q4ActualMaxDist",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.3d - Q4 (optional)",
@@ -715,7 +715,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "annualPercentMetStandard",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.1e - Annual (optional)",
@@ -744,7 +744,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "annualMaxTime",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.2e - Annual (optional)",
@@ -774,7 +774,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "actualMaxDistance",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.3e - Annual (optional)",
@@ -838,7 +838,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q1NumberOfNetworkProviders",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.4a - Q1 (optional)",
@@ -850,7 +850,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q2NumberOfNetworkProviders",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.4b - Q2 (optional)",
@@ -862,7 +862,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q3NumberOfNetworkProviders",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.4c - Q3 (optional)",
@@ -874,7 +874,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q4NumberOfNetworkProviders",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.4d - Q4 (optional)",
@@ -894,7 +894,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q1ProviderToEnrolleeRatio",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.5a - Q1 (optional)",
@@ -906,7 +906,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q2ProviderToEnrolleeRatio",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.5b - Q2 (optional)",
@@ -918,7 +918,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q3ProviderToEnrolleeRatio",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.5c - Q3 (optional)",
@@ -930,7 +930,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "q4ProviderToEnrolleeRatio",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.5d - Q4 (optional)",
@@ -966,7 +966,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "annualMinimumNumberOfNetworkProviders",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.4e - Annual (optional)",
@@ -996,7 +996,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                       id: "annualProviderToEnrolleeRatio",
                                                       type: ReportFormFieldType.NUMBER,
                                                       validation:
-                                                        "numberNotLessThanZeroOptional",
+                                                        ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                                       props: {
                                                         label:
                                                           "III.D.5e - Annual (optional)",
@@ -1048,7 +1048,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             id: "q1Ssaa",
                                             type: ReportFormFieldType.NUMBER,
                                             validation:
-                                              "numberNotLessThanZeroOptional",
+                                              ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label: "III.6.5a - Q1 (optional)",
                                               mask: "percentage",
@@ -1059,7 +1059,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             id: "q2Ssaa",
                                             type: ReportFormFieldType.NUMBER,
                                             validation:
-                                              "numberNotLessThanZeroOptional",
+                                              ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label: "III.6.5b - Q2 (optional)",
                                               mask: "percentage",
@@ -1070,7 +1070,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             id: "q3Ssaa",
                                             type: ReportFormFieldType.NUMBER,
                                             validation:
-                                              "numberNotLessThanZeroOptional",
+                                              ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label: "III.6.5c - Q3 (optional)",
                                               mask: "percentage",
@@ -1081,7 +1081,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             id: "q4Ssaa",
                                             type: ReportFormFieldType.NUMBER,
                                             validation:
-                                              "numberNotLessThanZeroOptional",
+                                              ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label: "III.6.5d - Q4 (optional)",
                                               mask: "percentage",
@@ -1099,7 +1099,7 @@ export const planComplianceRoute: MultiformRoute = {
                                             id: "annualSsaa",
                                             type: ReportFormFieldType.NUMBER,
                                             validation:
-                                              "numberNotLessThanZeroOptional",
+                                              ValidationType.NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL,
                                             props: {
                                               label:
                                                 "III.6.5e - Annual (optional)",
