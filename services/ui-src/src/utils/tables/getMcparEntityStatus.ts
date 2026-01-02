@@ -20,9 +20,12 @@ export const getMcparEntityStatus = (
     return false;
 
   // Filter out plans that are exempted from quality measures
+
+  // Extract plan IDs from the key field (format: "plansExemptFromQualityMeasures-{planId}")
   const exemptedPlanIds =
     report.fieldData?.plansExemptFromQualityMeasures?.map(
-      (exemption: EntityShape) => exemption.value
+      (exemption: EntityShape) =>
+        exemption.key?.replace("plansExemptFromQualityMeasures-", "")
     ) || [];
 
   const filteredPlans = plans.filter(
