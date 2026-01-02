@@ -19,7 +19,20 @@ export const getMcparEntityStatus = (
   if (entityType !== EntityType.QUALITY_MEASURES || !plans || !planForm)
     return false;
 
-  return plans.every((plan: EntityShape) =>
+  // Filter out plans that are exempted from quality measures
+  const exemptedPlanIds =
+    report.fieldData?.plansExemptFromQualityMeasures?.map(
+      (exemption: EntityShape) => exemption.value
+    ) || [];
+
+  const filteredPlans = plans.filter(
+    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
+  );
+
+  // If all plans are exempted, return true (nothing to complete)
+  if (filteredPlans.length === 0) return true;
+
+  return filteredPlans.every((plan: EntityShape) =>
     calculateIsEntityCompleted({
       entity: plan,
       form: planForm,

@@ -799,7 +799,7 @@ describe("getMeasureValues()", () => {
     expect(input).toEqual(expectedResult);
   });
 
-  test("returns values for other measure identifier with domains and url", () => {
+  test("returns values for other measure identifier", () => {
     const entity = {
       id: "mock-report",
       measure_identifier: [
@@ -809,20 +809,9 @@ describe("getMeasureValues()", () => {
         },
       ],
       measure_identifierDefinition: "mock definition",
-      measure_identifierDomain: [
-        {
-          key: "measure_identifierDomain-mock",
-          value: "mock domain",
-        },
-      ],
-      measure_identifierUrl: "https://mock",
     };
     const input = getMeasureValues(entity, "measure_identifier");
-    const expectedResult: string[] = [
-      "Other definition: mock definition",
-      "Link: https://mock",
-      "Measure domain(s): mock domain",
-    ];
+    const expectedResult: string[] = ["Other definition: mock definition"];
     expect(input).toEqual(expectedResult);
   });
 });

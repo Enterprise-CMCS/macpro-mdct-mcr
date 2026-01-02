@@ -46,8 +46,6 @@ export const ReportDrawerDetails = ({ entityType, drawerDetails }: Props) => {
       return (
         <Box sx={sx.detailBox}>
           <Text sx={sx.detailHeader}>{drawerDetails.name}</Text>
-          <Text sx={sx.detailSubtitle}>Measure Domain</Text>
-          <Text sx={sx.detailSubtext}>{drawerDetails.domain}</Text>
           <Grid sx={sx.grid}>
             <GridItem>
               <Text sx={sx.detailSubtitle}>NQF</Text>

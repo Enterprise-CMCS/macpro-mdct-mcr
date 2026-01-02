@@ -80,6 +80,16 @@ export const EntityDetailsOverlayQualityMeasures = ({
 
   const hasDrawerForm = !!route?.drawerForm;
 
+  // Filter out plans that are exempted from quality measures
+  const exemptedPlanIds =
+    report.fieldData?.plansExemptFromQualityMeasures?.map(
+      (exemption: EntityShape) => exemption.value
+    ) || [];
+
+  const filteredPlans = (report.fieldData.plans || []).filter(
+    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
+  );
+
   const onSubmit = async (enteredData: AnyObject) => {
     if (userIsEndUser) {
       setSubmitting(true);
@@ -155,7 +165,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
         {parseCustomHtml(overlayVerbiage.MCPAR.dashboardTitle)}
       </Heading>
       <DrawerReportPageEntityRows
-        entities={report.fieldData.plans}
+        entities={filteredPlans}
         hasForm={hasDrawerForm}
         measureId={selectedMeasure.id}
         openRowDrawer={openRowDrawer}

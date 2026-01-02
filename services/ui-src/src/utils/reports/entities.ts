@@ -125,7 +125,6 @@ export const getFormattedEntityData = (
       };
     case EntityType.QUALITY_MEASURES:
       return {
-        domain: getRadioValue(entity, "qualityMeasure_domain"),
         name: entity?.qualityMeasure_name,
         nqfNumber: entity?.qualityMeasure_nqfNumber,
         reportingRateType: getReportingRateType(entity),
