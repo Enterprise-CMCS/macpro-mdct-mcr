@@ -13,6 +13,7 @@ export enum ValidationType {
   NUMBER = "number",
   NUMBER_NOT_LESS_THAN_ONE = "numberNotLessThanOne",
   NUMBER_NOT_LESS_THAN_ZERO = "numberNotLessThanZero",
+  NUMBER_NOT_LESS_THAN_ZERO_OPTIONAL = "numberNotLessThanZeroOptional",
   NUMBER_OPTIONAL = "numberOptional",
   NUMBER_SUPPRESSIBLE = "numberSuppressible",
   RADIO = "radio",

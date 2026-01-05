@@ -276,8 +276,8 @@ describe("Test createReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
-    expect(body.fieldDataId).toBeDefined;
-    expect(body.formTemplateId).toBeDefined;
+    expect(body.fieldDataId).toBeDefined();
+    expect(body.formTemplateId).toBeDefined();
     expect(body.formTemplateId).not.toEqual(
       mockMcparReport.metadata.formTemplateId
     );
@@ -309,8 +309,8 @@ describe("Test createReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
-    expect(body.fieldDataId).toBeDefined;
-    expect(body.formTemplateId).toBeDefined;
+    expect(body.fieldDataId).toBeDefined();
+    expect(body.formTemplateId).toBeDefined();
     expect(body.formTemplateId).not.toEqual(
       mockMcparReport.metadata.formTemplateId
     );
@@ -376,8 +376,8 @@ describe("Test createReport API method", () => {
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
     expect(body.status).toContain("Not started");
-    expect(body.fieldDataId).toBeDefined;
-    expect(body.formTemplateId).toBeDefined;
+    expect(body.fieldDataId).toBeDefined();
+    expect(body.formTemplateId).toBeDefined();
     expect(body.fieldData.analysisMethods).toBeDefined();
     expect(body.fieldData.analysisMethods.length).toBeGreaterThan(0);
     expect(body.fieldData.plans).toBeUndefined();

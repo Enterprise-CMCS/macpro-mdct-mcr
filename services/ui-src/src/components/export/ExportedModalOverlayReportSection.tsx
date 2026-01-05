@@ -7,11 +7,13 @@ import {
   EntityType,
   ModalOverlayReportPageShape,
   NaaarStandardsTableShape,
+  ReportShape,
   ReportType,
 } from "types";
 // utils
 import {
   getProgramInfo,
+  getEntityStatus,
   getReportVerbiage,
   mapNaaarStandardsData,
   useStore,
@@ -53,10 +55,7 @@ export const ExportedModalOverlayReportSection = ({ section }: Props) => {
             data-testid="exportTable"
           >
             {entities &&
-              renderModalOverlayTableBody(
-                report?.reportType as ReportType,
-                entities
-              )}
+              renderModalOverlayTableBody(report, entityType, entities)}
           </Table>
           {(!entities || entityCount === 0) && (
             <Text sx={sx.emptyState}> No entities found.</Text>
@@ -79,9 +78,11 @@ export function renderStatusIcon(status: boolean) {
 }
 
 export function renderModalOverlayTableBody(
-  reportType: ReportType,
+  report: ReportShape,
+  entityType: EntityType,
   entities: EntityShape[]
 ) {
+  const reportType = report.reportType;
   switch (reportType) {
     case ReportType.MCPAR:
       return entities.map((entity) => {
@@ -95,10 +96,12 @@ export function renderModalOverlayTableBody(
           eligibilityGroup,
           reportingPeriod,
         ] = getProgramInfo(entity);
+        const entityComplete = getEntityStatus(entity, report, entityType);
+
         return (
           <Tr key={idx}>
             <Td sx={sx.statusIcon}>
-              <EntityStatusIcon entity={entity} isPdf={true} />
+              <EntityStatusIcon isComplete={!!entityComplete} isPdf={true} />
             </Td>
             <Td>
               <Text sx={sx.tableIndex}>{idx + 1}</Text>

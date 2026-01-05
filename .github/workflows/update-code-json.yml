@@ -26,6 +26,9 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Setup Go
         uses: actions/setup-go@v6.0.0
 
