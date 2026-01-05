@@ -185,7 +185,27 @@ export const date = () =>
 export const dateMonthYear = () =>
   string()
     .matches(dateMonthYearFormatRegex, error.INVALID_DATE)
-    .required(error.REQUIRED_GENERIC);
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      let result = false;
+      if (!value) return result;
+      let month, year;
+      if (value.includes("/")) {
+        [month, year] = value.split("/");
+      } else {
+        month = value.substring(0, 2);
+        year = value.substring(2);
+      }
+
+      const date = new Date(`${month}/01/${year}`); // use arbitrary day to allow us to check the month and year
+      month = (parseInt(month) - 1).toString();
+      if (
+        date.getMonth() === parseInt(month) &&
+        date.getFullYear() === parseInt(year)
+      ) {
+        result = true;
+      }
+      return result;
+    });
 
 export const dateOptional = () => date();
 export const endDate = (startDateField: string) =>
@@ -283,7 +303,7 @@ export const objectArray = () => array().of(mixed());
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
-export const dateMonthYearFormatRegex = /^(0[1-9]|1[0-2])\/?(19|20)\d{2}$/;
+export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
 
 // SCHEMA MAP
 export const schemaMap: any = {

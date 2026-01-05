@@ -165,7 +165,7 @@ describe("Schemas", () => {
 
   test("Test dateMonthYear schema", () => {
     testDate(dateMonthYear(), ["052022", "05/2022", "01/2030"], true);
-    testDate(dateMonthYear(), goodValidDateTestCases, false);
+    testDate(dateMonthYear(), [...goodValidDateTestCases, "13/2022"], false);
   });
 
   test("Test validNumber schema", () => {

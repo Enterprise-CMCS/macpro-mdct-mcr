@@ -192,7 +192,27 @@ export const date = () =>
 export const dateMonthYear = () =>
   string()
     .matches(dateMonthYearFormatRegex, error.INVALID_DATE_MONTH_YEAR)
-    .required(error.REQUIRED_GENERIC);
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      let result = false;
+      if (!value) return result;
+      let month, year;
+      if (value.includes("/")) {
+        [month, year] = value.split("/");
+      } else {
+        month = value.substring(0, 2);
+        year = value.substring(2);
+      }
+
+      const date = new Date(`${month}/01/${year}`); // use arbitrary day to allow us to check the month and year
+      month = (parseInt(month) - 1).toString();
+      if (
+        date.getMonth() === parseInt(month) &&
+        date.getFullYear() === parseInt(year)
+      ) {
+        result = true;
+      }
+      return result;
+    });
 
 export const dateOptional = () =>
   string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
@@ -290,7 +310,7 @@ export const nested = (
 // REGEX
 const datePattern =
   "((0[1-9]|1[0-2])\\/(0[1-9]|1\\d|2\\d|3[01])\\/(19|20)\\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|3[01])(19|20)\\d{2})";
-const dateMonthYearPattern = "(0[1-9]|1[0-2])\\/?(19|20)\\d{2}";
+const dateMonthYearPattern = "(\\d{2}\\/\\d{4}|\\d{6})";
 export const dateFormatRegex = new RegExp(`^${datePattern}$`);
 export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);

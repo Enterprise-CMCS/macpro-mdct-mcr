@@ -344,6 +344,7 @@ describe("Completion schemas", () => {
     ...reject(emptyResponses),
     ...reject(pastDates), // reject mm/dd/yyyy dates
     ...reject(futureDates), // reject mm/dd/yyyy dates
+    ...reject(["132022", "13/2022", "00/2022"]),
     ...accept(["052022", "05/2022", "01/2030"]),
   ])("dateMonthYear() $description -> $expected", ({ value, expected }) => {
     expect(dateMonthYear().isValidSync(value)).toBe(expected);
