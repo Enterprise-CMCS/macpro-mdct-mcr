@@ -1010,9 +1010,9 @@
                       "children": [
                         {
                           "id": "program_mlrAnticipatedValidationDate",
-                          "type": "date",
+                          "type": "dateMonthYear",
                           "validation": {
-                            "type": "date",
+                            "type": "dateMonthYear",
                             "nested": true,
                             "parentFieldName": "program_mlrValidationCompletion"
                           },

@@ -194,8 +194,7 @@ export const dateMonthYear = () =>
     .required(error.REQUIRED_GENERIC)
     .matches(dateMonthYearFormatRegex, error.INVALID_DATE_MONTH_YEAR)
     .test("is-valid-date", error.INVALID_DATE, (value) => {
-      let result = false;
-      if (!value) return result;
+      if (!value) return false;
       let month, year;
       if (value.includes("/")) {
         [month, year] = value.split("/");
@@ -203,16 +202,13 @@ export const dateMonthYear = () =>
         month = value.substring(0, 2);
         year = value.substring(2);
       }
+      month = Number(month);
+      year = Number(year);
 
-      const date = new Date(`${month}/01/${year}`); // use arbitrary day to allow us to check the month and year
-      month = (parseInt(month) - 1).toString();
-      if (
-        date.getMonth() === parseInt(month) &&
-        date.getFullYear() === parseInt(year)
-      ) {
-        result = true;
-      }
-      return result;
+      const monthIndex = month - 1;
+      const date = new Date(year, monthIndex, 1); // use arbitrary day 1 so we can validate month and year
+
+      return date.getMonth() === monthIndex && date.getFullYear() === year;
     });
 
 export const dateOptional = () =>
