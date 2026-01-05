@@ -1,4 +1,5 @@
 import {
+  clearPlanMeasureData,
   dataModifications,
   handlePriorAuthorization,
   updatePlanNames,
@@ -86,6 +87,12 @@ const testCases = {
   },
   updatePlansInExemptions: {
     reportFieldData: {
+      plans: [
+        {
+          id: "mock-plan-1",
+          name: "Mock Plan 1",
+        },
+      ],
       plansExemptFromQualityMeasures: [
         {
           key: "plansExemptFromQualityMeasures-mock-plan-1",
@@ -341,6 +348,40 @@ describe("utils/autosave/dataModifications", () => {
       ];
 
       expect(input).toEqual(expectedResult);
+    });
+  });
+
+  describe("clearPlanMeasureData()", () => {
+    test("clear plan measure data", () => {
+      const mockDataToWrite = {
+        fieldData: {},
+      };
+      const fieldKey = "TEST";
+      const plans = [
+        {
+          id: "mock-plan-1",
+          name: "Mock Plan 1",
+          measures: {
+            "measure-1": {},
+          },
+        },
+      ];
+      const exemptPlans = [
+        { key: `${fieldKey}-${plans[0].id}`, name: plans[0].name },
+      ];
+      clearPlanMeasureData(mockDataToWrite, plans, exemptPlans, fieldKey);
+
+      expect(mockDataToWrite).toEqual({
+        fieldData: {
+          plans: [
+            {
+              id: "mock-plan-1",
+              name: "Mock Plan 1",
+              measures: undefined,
+            },
+          ],
+        },
+      });
     });
   });
 });

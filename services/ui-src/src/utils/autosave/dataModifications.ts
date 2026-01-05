@@ -1,5 +1,5 @@
 // types
-import { AnyObject, ReportType } from "types";
+import { AnyObject, EntityShape, ReportType } from "types";
 import { FieldDataTuple } from "./autosave";
 // utils
 import { deletePlanData } from "utils";
@@ -94,20 +94,24 @@ export const updatePlansInExemptions = (
   reportFieldData: AnyObject = {}
 ) => {
   const field = "plansExemptFromQualityMeasures";
-  const hasEditedPlans = dataToWrite.fieldData.plans;
-  const hasExemptPlans =
-    reportFieldData?.plansExemptFromQualityMeasures &&
-    reportFieldData.plansExemptFromQualityMeasures.length > 0;
+  const plans = reportFieldData.plans;
+  const exemptPlans = reportFieldData.plansExemptFromQualityMeasures;
 
-  if (hasEditedPlans && hasExemptPlans) {
-    const plans = [...dataToWrite.fieldData.plans];
+  if (exemptPlans?.length > 0) {
     const planNames = Object.fromEntries(
-      plans.map((plan) => [`${field}-${plan.id}`, plan.name])
+      plans.map((plan: EntityShape) => [`${field}-${plan.id}`, plan.name])
     );
 
     const plansExemptFromQualityMeasures = updatePlanNames(
-      reportFieldData.plansExemptFromQualityMeasures,
+      exemptPlans,
       planNames
+    );
+
+    clearPlanMeasureData(
+      dataToWrite,
+      plans,
+      plansExemptFromQualityMeasures,
+      field
     );
 
     return {
@@ -137,4 +141,25 @@ export const updatePlanNames = (
       // Remove undefined plans from array
       .filter(Boolean)
   );
+};
+
+export const clearPlanMeasureData = (
+  dataToWrite: AnyObject,
+  plans: EntityShape[],
+  exemptPlans: (AnyObject | undefined)[],
+  fieldKey: string
+) => {
+  if (!exemptPlans) return;
+
+  const exemptPlanIds = exemptPlans?.map(
+    (plan) => plan?.key.split(`${fieldKey}-`)[1]
+  );
+
+  if (!exemptPlanIds) return;
+  dataToWrite.fieldData.plans = plans;
+  for (const plan of dataToWrite.fieldData.plans) {
+    if (exemptPlanIds.includes(plan.id)) {
+      plan.measures = undefined;
+    }
+  }
 };
