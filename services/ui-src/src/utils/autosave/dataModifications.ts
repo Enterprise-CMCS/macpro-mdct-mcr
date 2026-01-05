@@ -95,10 +95,8 @@ export const updatePlansInExemptions = (
 ) => {
   const field = "plansExemptFromQualityMeasures";
   const plans = reportFieldData.plans;
-  const exemptPlans = [
-    ...reportFieldData.plansExemptFromQualityMeasures,
-    ...dataToWrite.fieldData.plansExemptFromQualityMeasures,
-  ];
+  const exemptPlans =
+    dataToWrite.fieldData.plansExemptFromQualityMeasures || [];
 
   if (exemptPlans?.length > 0) {
     const planNames = Object.fromEntries(
