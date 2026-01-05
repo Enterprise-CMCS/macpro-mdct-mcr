@@ -191,6 +191,7 @@ export const date = () =>
 
 export const dateMonthYear = () =>
   string()
+    .required(error.REQUIRED_GENERIC)
     .matches(dateMonthYearFormatRegex, error.INVALID_DATE_MONTH_YEAR)
     .test("is-valid-date", error.INVALID_DATE, (value) => {
       let result = false;
