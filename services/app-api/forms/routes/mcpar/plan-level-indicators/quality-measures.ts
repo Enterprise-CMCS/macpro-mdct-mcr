@@ -55,6 +55,60 @@ export const qualityMeasuresRoute: ModalDrawerRoute = {
     id: "dqm-modal",
     fields: [
       {
+        id: "qualityMeasure_domain",
+        type: ReportFormFieldType.RADIO,
+        validation: ValidationType.RADIO,
+        props: {
+          label: "D2.VII.1 Measure domain",
+          hint: "Select domain or add your own as needed.",
+          choices: [
+            {
+              id: "Y3InqsLp4kSTgAUvTwq0CA",
+              label: "Primary care access and preventative care",
+            },
+            {
+              id: "sS7VRlrnxka189jEhpdNaw",
+              label: "Maternal and perinatal health",
+            },
+            {
+              id: "VkozZc87GUK2TB34Wbx4qQ",
+              label: "Care of acute and chronic conditions",
+            },
+            {
+              id: "6GxkOAbVNkq3Z49YZ3coGQ",
+              label: "Behavioral health care",
+            },
+            {
+              id: "bGXszezpLU2UGa4o9o3grw",
+              label: "Dental and oral health services",
+            },
+            {
+              id: "A3XIBOzO2kiug971jxFoZw",
+              label: "Health plan enrollee experience of care",
+            },
+            {
+              id: "yf7Lo8QK8kOPJqcXYgucMg",
+              label: "Long-term services and supports",
+            },
+            {
+              id: "p7XrgO0am0uYpaks9bBXvg",
+              label: "Other, specify",
+              children: [
+                {
+                  id: "qualityMeasure_domain-otherText",
+                  type: ReportFormFieldType.TEXTAREA,
+                  validation: {
+                    type: ValidationType.TEXT,
+                    nested: true,
+                    parentFieldName: "qualityMeasure_domain",
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+      {
         id: "qualityMeasure_name",
         type: ReportFormFieldType.TEXTAREA,
         validation: ValidationType.TEXT,

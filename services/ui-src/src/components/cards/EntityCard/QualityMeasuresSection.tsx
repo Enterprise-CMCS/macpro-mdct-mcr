@@ -14,6 +14,10 @@ const TopQualityMeasuresSection = ({
         formattedEntityData.name
       }`}
     </Heading>
+    <Text sx={sx.subtitle}>
+      {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
+    </Text>
+    <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
     <Grid sx={sx.grid}>
       <GridItem>
         <Text sx={sx.subtitle}>
@@ -144,6 +148,7 @@ interface FormattedEntityData {
   }[];
   set?: string;
   name?: string;
+  domain?: string;
   description?: string;
   nqfNumber?: string;
   reportingRateType?: string;
