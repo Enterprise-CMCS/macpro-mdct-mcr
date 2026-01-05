@@ -753,6 +753,55 @@ describe("Completion Status Tests", () => {
           [mockModalOverlayReportPageJson.path]: false,
         });
       });
+
+      const qualityMeasuresRoute = {
+        name: "Measures and results",
+        path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+        pageType: "modalOverlay",
+        entityType: EntityType.QUALITY_MEASURES,
+        verbiage: measuresAndResultsRoute.verbiage,
+        drawerForm: measuresAndResultsRoute.drawerForm,
+        modalForm: measuresAndResultsRoute.modalForm,
+      };
+      const measureCompletionSpy = jest.spyOn(
+        completionStatus,
+        "calculateMeasureCompletion"
+      );
+      test("returns false for incomplete quality measures route", async () => {
+        const result = await calculateRouteCompletion(
+          qualityMeasuresRoute,
+          {},
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [qualityMeasuresRoute.path]: false,
+        });
+      });
+
+      test("returns true for complete quality measures route", async () => {
+        measureCompletionSpy.mockReturnValue(true);
+        const result = await calculateRouteCompletion(
+          qualityMeasuresRoute,
+          {
+            qualityMeasures: [
+              {
+                id: "mock-qm-1",
+              },
+            ],
+            plans: [
+              {
+                id: "mock-plan-1",
+              },
+            ],
+          },
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [qualityMeasuresRoute.path]: true,
+        });
+      });
     });
 
     describe("case: plan overlay", () => {
