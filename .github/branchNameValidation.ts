@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-// node .github/branchNameValidation.ts SOME_BRANCH_NAME
+// .github/branchNameValidation.ts SOME_BRANCH_NAME
 import { execSync } from "child_process";
 
 let localBranch = process.argv[2];
@@ -10,7 +10,7 @@ if (!localBranch) {
     encoding: "utf-8",
   }).trim();
   const setBranchNameOutput = execSync(
-    `node .github/setBranchName.ts "${currentBranch}"`,
+    `.github/setBranchName.ts "${currentBranch}"`,
     { encoding: "utf-8" }
   ).trim();
   localBranch = setBranchNameOutput;
