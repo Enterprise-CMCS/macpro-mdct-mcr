@@ -304,6 +304,13 @@ const processField = (field) => {
       case "checkbox": {
         const firstChoice = field.props?.choices?.[0];
 
+        if (
+          field.type === "checkbox" &&
+          validationType === "checkboxOptional"
+        ) {
+          break;
+        }
+
         if (firstChoice && firstChoice.id !== "generatedCheckbox") {
           cy.get(`#${field.id}-${firstChoice.id}`).check();
           firstChoice.children?.forEach(processField);
