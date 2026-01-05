@@ -86,21 +86,25 @@ const testCases = {
     },
   },
   updatePlansInExemptions: {
+    dataToWrite: {
+      fieldData: {
+        plansExemptFromQualityMeasures: [
+          {
+            key: "plansExemptFromQualityMeasures-mock-plan-1",
+            value: "Exempt Mock Plan 1",
+          },
+          {
+            key: "plansExemptFromQualityMeasures-mock-plan-2",
+            value: "Exempt Mock Plan 2",
+          },
+        ],
+      },
+    },
     reportFieldData: {
       plans: [
         {
           id: "mock-plan-1",
           name: "Mock Plan 1",
-        },
-      ],
-      plansExemptFromQualityMeasures: [
-        {
-          key: "plansExemptFromQualityMeasures-mock-plan-1",
-          value: "Exempt Mock Plan 1",
-        },
-        {
-          key: "plansExemptFromQualityMeasures-mock-plan-2",
-          value: "Exempt Mock Plan 2",
         },
       ],
     },
@@ -128,7 +132,7 @@ describe("utils/autosave/dataModifications", () => {
     test("updates MCPAR", () => {
       const input = dataModifications(
         ReportType.MCPAR,
-        testCases.dataToWrite,
+        testCases.updatePlansInExemptions.dataToWrite,
         testCases.updatePlansInExemptions.reportFieldData
       );
 
@@ -317,7 +321,7 @@ describe("utils/autosave/dataModifications", () => {
   describe("updatePlansInExemptions()", () => {
     test("updates plans in plansExemptFromQualityMeasures", () => {
       const input = updatePlansInExemptions(
-        testCases.dataToWrite,
+        testCases.updatePlansInExemptions.dataToWrite,
         testCases.updatePlansInExemptions.reportFieldData
       );
       expect(input).toEqual(testCases.updatePlansInExemptions.expectedResult);
