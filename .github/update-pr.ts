@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Octokit } from "@octokit/rest";
 import { createActionAuth } from "@octokit/auth-action";
 import { createPrBody } from "./commit-list.ts";
