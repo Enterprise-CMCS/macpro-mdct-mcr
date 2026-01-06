@@ -21,9 +21,9 @@ export const enum StatusCodes {
 
 export enum AlertTypes {
   ERROR = "error",
-  INFO = "info",
+  // INFO = "info",
   SUCCESS = "success",
-  WARNING = "warning",
+  WARN = "warn",
 }
 
 // TIME

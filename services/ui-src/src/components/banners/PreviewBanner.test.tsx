@@ -16,7 +16,7 @@ jest.mock("react-hook-form", () => ({
   }),
 }));
 
-const previewBannerComponent = <PreviewBanner status={AlertTypes.WARNING} />;
+const previewBannerComponent = <PreviewBanner status={AlertTypes.WARN} />;
 
 describe("<PreviewBanner />", () => {
   test("PreviewBanner is visible", () => {
