@@ -15,6 +15,7 @@ export const schemaMap: any = {
   url: schema.url(),
   urlOptional: schema.urlOptional(),
   date: schema.date(),
+  dateMonthYear: schema.dateMonthYear(),
   dateOptional: schema.dateOptional(),
   futureDate: schema.futureDate(),
   dropdown: schema.dropdown(),
