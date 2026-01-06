@@ -21,9 +21,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Snyk and Run Snyk test
-        run: |
-          npm install -g snyk
-          snyk test --all-projects --json > snyk_output.txt || true
+        run: npx snyk test --all-projects --json > snyk_output.txt || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
@@ -36,9 +34,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Snyk and Run Snyk test
-        run: |
-          npm install -g snyk
-          snyk test --all-projects --json > snyk_output.txt || true
+        run: npx snyk test --all-projects --json > snyk_output.txt || true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 

@@ -30,7 +30,7 @@ jobs:
         run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,typescript-check-cdk,no-commit-to-branch" >> $GITHUB_ENV
       - uses: pre-commit/action@v3.0.1
       - name: run unit tests
-        run: node ./scripts/test-unit.ts
+        run: ./scripts/test-unit.ts
       - name: publish test coverage to qlty
         uses: qltysh/qlty-action/coverage@v1
         with:
