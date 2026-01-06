@@ -1,7 +1,7 @@
 export default {
   missingEntry: {
     noResponse: "Not answered",
-    noResponseOptional: "Not answered",
+    noResponseOptional: "Not answered, optional",
     notApplicable: "Not applicable",
     missingPlans:
       "This program is missing plans. You won't be able to complete this section until you've added all the managed care plans that serve enrollees in the program. Go to section A: Add Plans.",
