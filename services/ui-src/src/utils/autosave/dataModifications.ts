@@ -98,7 +98,7 @@ export const updatePlansInExemptions = (
   const exemptPlans =
     dataToWrite.fieldData.plansExemptFromQualityMeasures || [];
 
-  if (exemptPlans?.length > 0) {
+  if (exemptPlans.length > 0) {
     const planNames = Object.fromEntries(
       plans.map((plan: EntityShape) => [`${field}-${plan.id}`, plan.name])
     );
@@ -131,32 +131,26 @@ export const updatePlanNames = (
   plans: AnyObject[],
   planNames: { [x: string]: string }
 ) => {
-  return (
-    plans
-      .map((plan: AnyObject) => {
-        // Look up plan name
-        const name = planNames[plan.key];
-        // If plan name isn't in object, it was deleted
-        return name ? { key: plan.key, value: name } : undefined;
-      })
-      // Remove undefined plans from array
-      .filter(Boolean)
-  );
+  return plans
+    .filter((plan: AnyObject) => plan.key in planNames)
+    .map((plan: AnyObject) => {
+      // Look up plan name
+      const name = planNames[plan.key];
+      return { key: plan.key, value: name };
+    });
 };
 
 export const clearPlanMeasureData = (
   dataToWrite: AnyObject,
   plans: EntityShape[],
-  exemptPlans: (AnyObject | undefined)[],
+  exemptPlans: AnyObject[],
   fieldKey: string
 ) => {
-  if (!exemptPlans) return;
-
-  const exemptPlanIds = exemptPlans?.map(
+  const exemptPlanIds = exemptPlans.map(
     (plan) => plan?.key.split(`${fieldKey}-`)[1]
   );
 
-  if (!exemptPlanIds) return;
+  if (exemptPlanIds.length === 0) return;
   dataToWrite.fieldData.plans = plans;
   for (const plan of dataToWrite.fieldData.plans) {
     if (exemptPlanIds.includes(plan.id)) {
