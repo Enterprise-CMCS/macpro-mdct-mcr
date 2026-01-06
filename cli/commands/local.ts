@@ -67,20 +67,14 @@ export const local = {
         "cdklocal",
         "deploy",
         "--app",
-        '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
+        "./deployment/local/prerequisites.ts",
       ],
       "."
     );
 
     await runCommand(
       "CDK local prerequisite deploy",
-      [
-        "yarn",
-        "cdklocal",
-        "deploy",
-        "--app",
-        '"npx --prefix deployment tsx deployment/prerequisites.ts"',
-      ],
+      ["yarn", "cdklocal", "deploy", "--app", "./deployment/prerequisites.ts"],
       "."
     );
 
