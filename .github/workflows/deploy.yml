@@ -32,9 +32,9 @@ jobs:
       - name: path + branch settings + install packages
         run: |
           echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
-          BRANCH_NAME=$(node ./.github/setBranchName.ts ${{ github.ref_name }})
+          BRANCH_NAME=$(./.github/setBranchName.ts ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
-          node ./.github/branchNameValidation.ts $BRANCH_NAME
+          ./.github/branchNameValidation.ts $BRANCH_NAME
           ./run install
       - name: Configure AWS credentials for GitHub Actions
         uses: aws-actions/configure-aws-credentials@v4
@@ -45,7 +45,7 @@ jobs:
         run: ./run deploy --stage $branch_name
       - id: endpoint
         run: |
-          APPLICATION_ENDPOINT=$(node ./scripts/output.ts ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
+          APPLICATION_ENDPOINT=$(./scripts/output.ts ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
           echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
           echo "## Application Endpoint" >> $GITHUB_STEP_SUMMARY
           echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY

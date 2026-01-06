@@ -67,12 +67,12 @@ repos:
     hooks:
       - id: branch-name-validation
         name: branch-name-validation
-        entry: node .github/branchNameValidation.ts
+        entry: .github/branchNameValidation.ts
         language: system
         pass_filenames: false
       - id: validate-commit-msg
         name: validate-commit-msg
-        entry: node .github/validateCommitMessage.ts
+        entry: .github/validateCommitMessage.ts
         language: system
         stages: [commit-msg]
       - id: typescript-check-cli

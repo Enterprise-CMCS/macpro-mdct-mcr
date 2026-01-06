@@ -95,7 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           pushd macpro-mdct-tools/scripts
-          npx tsx scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
+          ./scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
           REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | head -n1 || true)
           if [ -n "$REPORT_FILE" ]; then
