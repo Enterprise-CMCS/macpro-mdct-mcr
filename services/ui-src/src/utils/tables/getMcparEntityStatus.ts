@@ -7,6 +7,7 @@ import {
 } from "types";
 // utils
 import { calculateIsEntityCompleted } from "./entityRows";
+import { getPlansNotExemptFromQualityMeasures } from "../reports/entities.plans";
 
 export const getMcparEntityStatus = (
   entity: EntityShape,
@@ -19,18 +20,7 @@ export const getMcparEntityStatus = (
   if (entityType !== EntityType.QUALITY_MEASURES || !plans || !planForm)
     return false;
 
-  // Filter out plans that are exempted from quality measures
-
-  // Extract plan IDs from the key field (format: "plansExemptFromQualityMeasures-{planId}")
-  const exemptedPlanIds =
-    report.fieldData?.plansExemptFromQualityMeasures?.map(
-      (exemption: EntityShape) =>
-        exemption.key?.replace("plansExemptFromQualityMeasures-", "")
-    ) || [];
-
-  const filteredPlans = plans.filter(
-    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
-  );
+  const filteredPlans = getPlansNotExemptFromQualityMeasures(report);
 
   // If all plans are exempted, return true (nothing to complete)
   if (filteredPlans.length === 0) return true;
