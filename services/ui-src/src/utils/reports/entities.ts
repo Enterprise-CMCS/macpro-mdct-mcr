@@ -65,14 +65,15 @@ const getReportingPeriod = (entity: EntityShape | undefined) => {
 // returns an array of { planName: string, response: string } or undefined
 export const getPlanValues = (
   entity?: EntityShape,
-  plans?: AnyObject[],
-  exemptedPlanIds?: string[]
+  plans: AnyObject[] = [],
+  exemptedPlanIds: string[] = []
 ) => {
-  const filteredPlans = exemptedPlanIds
-    ? plans?.filter((plan: AnyObject) => !exemptedPlanIds.includes(plan.id))
-    : plans;
+  const filteredPlans = plans.filter(
+    (plan: AnyObject) =>
+      !exemptedPlanIds.includes(`plansExemptFromQualityMeasures-${plan.id}`)
+  );
 
-  return filteredPlans?.map((plan: AnyObject) => ({
+  return filteredPlans.map((plan: AnyObject) => ({
     name: plan.name,
     response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
   }));
@@ -135,8 +136,7 @@ export const getFormattedEntityData = (
     case EntityType.QUALITY_MEASURES: {
       const exemptedPlanIds =
         reportFieldData?.plansExemptFromQualityMeasures?.map(
-          (exemption: EntityShape) =>
-            exemption.key?.replace("plansExemptFromQualityMeasures-", "")
+          (exemption: EntityShape) => exemption.key
         ) || [];
 
       return {

@@ -296,7 +296,7 @@ export const getMeasureValues = (entity: EntityShape, key: string) => {
       ];
     }
 
-    return [formattedValue];
+    return formattedValue ? [formattedValue] : [];
   }
 
   if (key !== "measure_identifier") {
