@@ -134,10 +134,9 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES: {
-      const exemptedPlanIds =
-        reportFieldData?.plansExemptFromQualityMeasures?.map(
-          (exemption: EntityShape) => exemption.key
-        ) || [];
+      const exemptedPlanIds = (
+        reportFieldData?.plansExemptFromQualityMeasures || []
+      ).map((exemption: EntityShape) => exemption.key);
 
       return {
         domain: getRadioValue(entity, "qualityMeasure_domain"),

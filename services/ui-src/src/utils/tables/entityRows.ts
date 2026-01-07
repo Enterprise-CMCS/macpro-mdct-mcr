@@ -306,7 +306,7 @@ export const getMeasureValues = (entity: EntityShape, key: string) => {
       ? value.map((obj: EntityShape) => obj.value).join("; ")
       : value;
 
-    return [formattedValue];
+    return formattedValue ? [formattedValue] : [];
   }
 
   const { measure_identifierDefinition: identifierDefinition } = entity;
