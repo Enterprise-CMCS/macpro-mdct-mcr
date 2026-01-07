@@ -178,6 +178,7 @@ describe("<EntityRow />", () => {
     const entityType = EntityType.PLANS;
     const entity: EntityShape =
       mockNaaarReportContext.report.fieldData[entityType][0];
+    const naaarContext = mockNaaarReportContext;
     const setupData = {
       entity,
       entityType,
@@ -198,12 +199,9 @@ describe("<EntityRow />", () => {
       });
     });
 
-    test("Enter button should be disabled if there is an entity but does not have a standard", async () => {
+    test("Enter button should be disabled if openDisabled true", async () => {
       render(
-        completeRowComponent(
-          { ...setupData, hasStandards: false },
-          mockNaaarReportContext
-        )
+        completeRowComponent({ ...setupData, openDisabled: true }, naaarContext)
       );
       const enterButton = screen.getByRole("button", {
         name: `${mockOverlayReportPageVerbiage.enterEntityDetailsButtonText} ${setupData.entity.name}`,
@@ -212,11 +210,11 @@ describe("<EntityRow />", () => {
       expect(enterButton).toBeDisabled();
     });
 
-    test("Enter button should not disabled if there is an entity and hasStandards", () => {
+    test("Enter button should not disabled if openDisabled false", () => {
       render(
         completeRowComponent(
-          { ...setupData, hasStandards: true },
-          mockNaaarReportContext
+          { ...setupData, openDisabled: false },
+          naaarContext
         )
       );
       const enterButton = screen.getByRole("button", {
@@ -245,12 +243,32 @@ describe("<EntityRow />", () => {
         ...mockMcparReportStore,
       });
     });
+
+    // Plans
     const entityType = EntityType.PLANS;
     const entity: EntityShape =
       mockMcparReportContext.report.fieldData[entityType][0];
+    const mcparContext = mockMcparReportContext;
     const setupData = {
       entity,
       entityType,
+      verbiage: mockDrawerReportPageJson.verbiage,
+    };
+
+    // Quality Measures
+    const entityTypeQM = EntityType.QUALITY_MEASURES;
+    const entityQMCmit: EntityShape =
+      mockMcparReportContext.report.fieldData[entityTypeQM][0];
+    const setupDataQmCmit = {
+      entity: entityQMCmit,
+      entityType: entityTypeQM,
+      verbiage: mockDrawerReportPageJson.verbiage,
+    };
+    const entityQMCbe: EntityShape =
+      mockMcparReportContext.report.fieldData[entityTypeQM][1];
+    const setupDataQmCbe = {
+      entity: entityQMCbe,
+      entityType: entityTypeQM,
       verbiage: mockDrawerReportPageJson.verbiage,
     };
 
@@ -268,6 +286,16 @@ describe("<EntityRow />", () => {
       });
     });
 
-    testA11yAct(completeRowComponent(setupData, mockMcparReportContext));
+    test("MCPAR quality measures cmit", () => {
+      render(completeRowComponent(setupDataQmCmit, mcparContext));
+      expect(screen.getByText("Measure ID: CMIT: 1234")).toBeVisible();
+    });
+
+    test("MCPAR quality measures cbe", () => {
+      render(completeRowComponent(setupDataQmCbe, mcparContext));
+      expect(screen.getByText("Measure ID: CBE: 4321")).toBeVisible();
+    });
+
+    testA11yAct(completeRowComponent(setupData, mcparContext));
   });
 });

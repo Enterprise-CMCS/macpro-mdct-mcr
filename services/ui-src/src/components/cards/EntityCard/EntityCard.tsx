@@ -57,9 +57,10 @@ export const EntityCard = ({
         (el: any) => el.response
       );
       entityStarted = !!validPerPlanResponses?.length;
+      // perPlanResponses already excludes exempted plans (filtered in getFormattedEntityData)
       entityCompleted =
         entityStarted &&
-        validPerPlanResponses?.length === report?.fieldData?.plans?.length;
+        validPerPlanResponses?.length === perPlanResponses?.length;
       break;
     }
     default:
@@ -159,7 +160,6 @@ export const EntityCard = ({
         {entityStarted || entityCompleted || printVersion ? (
           <EntityCardBottomSection
             entityType={entityType}
-            verbiage={verbiage}
             formattedEntityData={{
               ...formattedEntityData,
               isPartiallyComplete: entityStarted && !entityCompleted,

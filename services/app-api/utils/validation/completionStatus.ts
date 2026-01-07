@@ -10,9 +10,12 @@ import {
   FormField,
   PageTypes,
   ReportRoute,
+  EntityShape,
+  FormLayoutElement,
 } from "../types";
 // utils
 import { validateFieldData } from "./completionValidation";
+import { isFieldElement } from "../formTemplates/formTemplates";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
@@ -169,6 +172,34 @@ export const calculateEntityCompletion = async (
   return areAllFormsComplete;
 };
 
+export const calculateMeasureCompletion = (
+  measureId: string,
+  form: FormJson,
+  plan: EntityShape
+) => {
+  const calculateEntityCompletion = (
+    fields: (FormField | FormLayoutElement)[],
+    entityData: EntityShape
+  ) => {
+    return fields
+      ?.filter(isFieldElement)
+      .every((field) => field.id in entityData);
+  };
+
+  const planMeasureData = plan.measures?.[measureId];
+  if (!planMeasureData) return false;
+
+  const isNotReporting = planMeasureData.measure_isReporting?.length > 0;
+  const hasReasons = planMeasureData.measure_isNotReportingReason?.length > 0;
+  if (isNotReporting && hasReasons) return true;
+
+  const requiredFields = form.fields
+    ?.filter(isFieldElement)
+    .filter((field) => field.id !== "measure_isReporting");
+
+  return calculateEntityCompletion(requiredFields, planMeasureData);
+};
+
 export const calculateRouteCompletion = async (
   route: ReportRoute,
   fieldData: AnyObject,
@@ -274,18 +305,41 @@ export const calculateRouteCompletion = async (
         ),
       };
       break;
-    case PageTypes.MODAL_OVERLAY:
-      if (!route.modalForm || !route.overlayForm) break;
-      routeCompletion = {
-        [route.path]: await calculateEntityCompletion(
+    case PageTypes.MODAL_OVERLAY: {
+      let isComplete = false;
+      if (route.modalForm && route.overlayForm) {
+        isComplete = await calculateEntityCompletion(
           [route.modalForm, route.overlayForm],
           route.entityType,
           fieldData,
           validationJson,
           formTemplate
-        ),
-      };
+        );
+      }
+      if (
+        route.path ===
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results" &&
+        route.drawerForm
+      ) {
+        const qualityMeasures = fieldData.qualityMeasures || [];
+        const plans = fieldData.plans || [];
+
+        if (qualityMeasures.length > 0 && plans.length > 0) {
+          isComplete = qualityMeasures.every((measure: EntityShape) =>
+            plans.every((plan: EntityShape) =>
+              calculateMeasureCompletion(
+                measure.id,
+                route.drawerForm as FormJson,
+                plan
+              )
+            )
+          );
+        }
+      }
+
+      routeCompletion = { [route.path]: isComplete };
       break;
+    }
     case PageTypes.PLAN_OVERLAY: {
       let isComplete = false;
 

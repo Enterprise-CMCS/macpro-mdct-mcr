@@ -1,11 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
 // components
-import {
-  ExportedModalOverlayReportSection,
-  renderModalOverlayTableBody,
-} from "./ExportedModalOverlayReportSection";
+import { ExportedModalOverlayReportSection } from "./ExportedModalOverlayReportSection";
 // types
-import { EntityType, ModalOverlayReportPageShape, ReportType } from "types";
+import { EntityType, ModalOverlayReportPageShape } from "types";
 // utils
 import {
   mockMlrReportContext,
@@ -301,17 +298,6 @@ describe("<ExportedModalOverlayReportSection />", () => {
       );
 
       expect(await findByText("No entities found.")).toBeVisible();
-    });
-
-    test("Should throw an error using an unsupported report", async () => {
-      const unsupportedReport = {
-        ...mockReportContext.report,
-        reportType: ReportType.MCPAR,
-      };
-
-      expect(() =>
-        renderModalOverlayTableBody(unsupportedReport, EntityType.STANDARDS, [])
-      ).toThrow(Error);
     });
   });
   testA11yAct(exportedModalOverlayReportSectionComponent);

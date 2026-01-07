@@ -139,7 +139,7 @@ export const applyMask = (
   fixedDecimalPlaces?: number | undefined
 ): MaskedValue => {
   // if maskName is specified as null, bypass all masking and return user-inputted value
-  if (maskName === null) return { isValid: false, maskedValue: value };
+  if (!maskName) return { isValid: false, maskedValue: value };
 
   // apply specified mask or default to comma-separated mask
   const maskToApply = maskName
