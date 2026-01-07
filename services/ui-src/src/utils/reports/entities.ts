@@ -63,11 +63,21 @@ const getReportingPeriod = (entity: EntityShape | undefined) => {
 };
 
 // returns an array of { planName: string, response: string } or undefined
-export const getPlanValues = (entity?: EntityShape, plans?: AnyObject[]) =>
-  plans?.map((plan: AnyObject) => ({
+export const getPlanValues = (
+  entity?: EntityShape,
+  plans: AnyObject[] = [],
+  exemptedPlanIds: string[] = []
+) => {
+  const filteredPlans = plans.filter(
+    (plan: AnyObject) =>
+      !exemptedPlanIds.includes(`plansExemptFromQualityMeasures-${plan.id}`)
+  );
+
+  return filteredPlans.map((plan: AnyObject) => ({
     name: plan.name,
     response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
   }));
+};
 
 export const getFormattedEntityData = (
   entityType: EntityType,
@@ -123,7 +133,11 @@ export const getFormattedEntityData = (
           "sanction_correctiveActionPlan"
         ),
       };
-    case EntityType.QUALITY_MEASURES:
+    case EntityType.QUALITY_MEASURES: {
+      const exemptedPlanIds = (
+        reportFieldData?.plansExemptFromQualityMeasures || []
+      ).map((exemption: EntityShape) => exemption.key);
+
       return {
         domain: getRadioValue(entity, "qualityMeasure_domain"),
         name: entity?.qualityMeasure_name,
@@ -132,8 +146,13 @@ export const getFormattedEntityData = (
         set: getRadioValue(entity, "qualityMeasure_set"),
         reportingPeriod: getReportingPeriod(entity),
         description: entity?.qualityMeasure_description,
-        perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
+        perPlanResponses: getPlanValues(
+          entity,
+          reportFieldData?.plans,
+          exemptedPlanIds
+        ),
       };
+    }
     case EntityType.PLANS: {
       if (!entity) return {};
       const data = getFormattedPlanData(entity);
