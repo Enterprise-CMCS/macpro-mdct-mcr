@@ -25,7 +25,6 @@ export const ErrorAlert = ({
             status={AlertTypes.ERROR}
             title={error.title}
             description={error.description}
-            hideIcon={true}
             className={variant}
           />
         )}

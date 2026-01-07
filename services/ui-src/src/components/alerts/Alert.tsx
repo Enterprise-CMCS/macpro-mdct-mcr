@@ -14,7 +14,7 @@ export const Alert = ({
   className,
 }: Props) => {
   return (
-    <AlertRoot variation={status} className={className || status}>
+    <AlertRoot variation={status} className={className}>
       <Flex>
         <Box sx={sx.contentBox}>
           {title && (
@@ -28,11 +28,9 @@ export const Alert = ({
                 {parseCustomHtml(description)}
               </Text>
               {link && (
-                <Text sx={sx.linkText}>
-                  <Link href={link} isExternal>
-                    {link}
-                  </Link>
-                </Text>
+                <Link href={link} isExternal>
+                  {link}
+                </Link>
               )}
             </>
           )}
@@ -47,26 +45,15 @@ interface Props {
   title?: string;
   description?: string | CustomHtmlElement[];
   link?: string;
-  [key: string]: any;
+  className?: string;
 }
 
 const sx = {
-  root: {
-    alignItems: "start",
-    minHeight: "5.25rem",
-    borderInlineStartWidth: "spacer1",
-    padding: "spacer2",
-    margin: "1.25rem auto 2.5rem",
-  },
   title: {
     fontSize: "lg",
   },
   descriptionText: {
     marginTop: "spacer_half",
-  },
-  linkText: {
-    marginTop: "spacer_half",
-    marginBottom: "spacer_half",
   },
   contentBox: {
     marginLeft: "spacer2",
