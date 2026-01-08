@@ -177,7 +177,8 @@ p {
 // ALERT
 
 .ds-c-alert {
-  margin-top: var(--mdct-space-spacer2);
+  margin-top: var(--mdct-space-spacer3);
+  margin-bottom: var(--mdct-space-spacer5);
 }
 
 @media print {
