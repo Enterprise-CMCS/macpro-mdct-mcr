@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useEffect } from "react";
+import { forwardRef, ReactNode, useLayoutEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -97,7 +97,10 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     });
   };
 
-  useEffect(() => {
+  /*
+   * DONT TOUCH!
+   */
+  useLayoutEffect(() => {
     if (!dontReset && !validateOnRender) {
       form?.reset();
     }
