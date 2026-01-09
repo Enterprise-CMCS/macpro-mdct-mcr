@@ -18,7 +18,7 @@ export const Alert = ({
       <Flex>
         <Box sx={sx.contentBox}>
           {title && (
-            <Heading as="h3" sx={sx.title}>
+            <Heading as="h1" sx={sx.title}>
               {title}
             </Heading>
           )}
