@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 // components
 import { Box } from "@chakra-ui/react";
 import {
@@ -22,8 +22,9 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { updateReport } = useContext(ReportContext);
   // state management
-  const { full_name, state } = useStore().user ?? {};
+  const { full_name } = useStore().user ?? {};
   const { report } = useStore();
+  const { reportType, reportId, state } = useParams();
 
   const navigate = useNavigate();
   const { nextRoute } = useFindRoute(
@@ -31,8 +32,11 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     report!.formTemplate.basePath
   );
 
+  const basePath = `/report/${reportType}/${state}/${reportId}`;
+  const formattedNext = `${basePath}/${nextRoute}`;
+
   const onError = () => {
-    navigate(nextRoute);
+    navigate(formattedNext);
   };
 
   const onSubmit = async (enteredData: AnyObject) => {
@@ -56,7 +60,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     await updateReport(reportKeys, dataToWrite);
     setSubmitting(false);
 
-    navigate(nextRoute);
+    navigate(formattedNext);
   };
 
   return (

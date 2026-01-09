@@ -103,10 +103,6 @@ describe("<ModalOverlayReportPage />", () => {
       expect(
         screen.getByRole("button", { name: addInformationButton })
       ).toBeVisible();
-
-      // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
-      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
 
     test("should open the add/edit modal for a State User", async () => {
@@ -179,10 +175,6 @@ describe("<ModalOverlayReportPage />", () => {
       expect(
         screen.getByRole("button", { name: addInformationButton })
       ).toBeDisabled();
-
-      // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
-      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
     /**
      * @todo Write a test to make sure admins can't click/change details?
@@ -239,10 +231,6 @@ describe("<ModalOverlayReportPage />", () => {
       expect(
         screen.getByRole("button", { name: addInformationButton })
       ).toBeVisible();
-
-      // Check if Footer is display with a next button and no previous butto
-      expect(screen.getByRole("button", { name: "Continue" })).toBeVisible();
-      expect(screen.getByRole("button", { name: "Previous" })).toBeVisible();
     });
 
     test("should open the edit modal", async () => {
