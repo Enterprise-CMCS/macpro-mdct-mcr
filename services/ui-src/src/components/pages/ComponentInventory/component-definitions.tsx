@@ -43,14 +43,10 @@ export const componentDefinitions: {
     description:
       "The Alert component is used to display important messages to the user.",
     variants: [
-      <Alert
-        key="info"
-        status={AlertTypes.INFO}
-        description="This is an info alert."
-      />,
+      <Alert key="info" description="This is an info alert." />,
       <Alert
         key="warning"
-        status={AlertTypes.WARNING}
+        status={AlertTypes.WARN}
         description="This is a warning alert."
       />,
       <Alert

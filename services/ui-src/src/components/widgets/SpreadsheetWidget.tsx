@@ -44,6 +44,7 @@ interface Props {
 const sx = {
   container: {
     paddingLeft: "spacer2",
+    marginBottom: "spacer2",
     borderLeft: "4px solid",
     borderColor: "success_dark",
   },

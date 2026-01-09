@@ -9,7 +9,7 @@ import { testA11yAct } from "utils/testing/commonTests";
 const bannerComponent = (
   <Banner
     bannerData={{
-      status: AlertTypes.WARNING,
+      status: AlertTypes.WARN,
       title: "Test banner!",
       description: "This is for testing.",
     }}

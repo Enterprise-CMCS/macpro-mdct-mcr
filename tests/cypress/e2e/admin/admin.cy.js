@@ -53,8 +53,8 @@ describe("Admin Page E2E Testing", () => {
 
     // check active banner
     cy.contains("Status: Active", { matchCase: true }).should("be.visible");
-    cy.get('[role="alert"]').contains("test-title");
-    cy.get('[role="alert"]').contains("test-description");
+    cy.get('[role="region"]').contains("test-title");
+    cy.get('[role="region"]').contains("test-description");
     cy.contains(`Start Date: 07/14/2022`, { matchCase: true }).should(
       "be.visible"
     );

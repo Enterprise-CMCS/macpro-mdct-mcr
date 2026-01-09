@@ -8,7 +8,7 @@ import { testA11yAct } from "utils/testing/commonTests";
 
 const alertComponent = (
   <Alert
-    status={AlertTypes.WARNING}
+    status={AlertTypes.WARN}
     title="Test alert!"
     description="This is for testing."
     link="test-link"

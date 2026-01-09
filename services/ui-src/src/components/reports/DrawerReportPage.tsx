@@ -337,7 +337,6 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
         <ErrorAlert
           error={analysisMethodsError}
           sxOverride={sx.pageErrorAlert}
-          showIcon
         />
       )}
       {displayErrorMessages()}
