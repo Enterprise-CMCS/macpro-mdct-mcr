@@ -3,23 +3,24 @@ import { deletePlanData } from "./priorAuthorization";
 const mockPlanData = [
   {
     id: "mock-id",
-    plan_totalNumberOfStandardPARequests: 1,
-    plan_totalNumberOfExpeditedPARequests: 2,
-    plan_totalNumberOfStandardAndExpeditedPARequests: 3,
-    plan_percentageOfStandardPARequestsApproved: "1%",
-    plan_percentageOfStandardPARequestsDenied: "5%",
-    plan_percentageOfStandardPARequestsApprovedAfterAppeal: "43%",
-    plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs:
-      { key: "mock-key-1", value: "24" },
-    plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs:
-      { key: "mock-key-2", value: "132" },
-    plan_percentageOfExpeditedPARequestsApproved: "0%",
-    plan_percentageOfExpeditedPARequestsDenied: "100%",
-    plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs:
-      { key: "mock-key-3", value: "57" },
-    plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs:
-      { key: "mock-key-4", value: "24" },
-    plan_percentageOfPARequestsExtendedReviewTimeframeAndApproved: "50%",
+    plan_urlForPriorAuthorizationDataOnPlanWebsite: "https://www.google.com",
+    plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization:
+      "https://www.google.com",
+    plan_totalStandardPriorAuthorizationRequestsReceived: 1,
+    plan_totalExpeditedPriorAuthorizationRequestsReceived: 2,
+    plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived: 3,
+    plan_percentageOfStandardPriorAuthorizationRequestsApproved: "12%",
+    plan_percentageOfStandardPriorAuthorizationRequestsDenied: "43%",
+    plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal:
+      "56%",
+    plan_averageTimeToDecisionForStandardPriorAuthorizations: 4,
+    plan_medianTimeToDecisionOnStandardPriorAuthorizations: 5,
+    plan_percentageOfExpeditedPriorAuthorizationRequestsApproved: "78%",
+    plan_percentageOfExpeditedPriorAuthorizationRequestsDenied: "99%",
+    plan_averageTimeToDecisionForExpeditedPriorAuthorizations: 6,
+    plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests: 7,
+    plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
+      "100%",
   },
 ];
 

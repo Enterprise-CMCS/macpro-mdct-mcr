@@ -2,19 +2,21 @@
 import { AnyObject } from "types";
 
 const priorAuthorizationFields = [
-  "plan_totalNumberOfStandardPARequests",
-  "plan_totalNumberOfExpeditedPARequests",
-  "plan_totalNumberOfStandardAndExpeditedPARequests",
-  "plan_percentageOfStandardPARequestsApproved",
-  "plan_percentageOfStandardPARequestsDenied",
-  "plan_percentageOfStandardPARequestsApprovedAfterAppeal",
-  "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
-  "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForStandardPAs",
-  "plan_percentageOfExpeditedPARequestsApproved",
-  "plan_percentageOfExpeditedPARequestsDenied",
-  "plan_averageTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
-  "plan_medianTimeElapsedBetweenSubmissionOfRequestAndDeterminationForExpeditedPAs",
-  "plan_percentageOfPARequestsExtendedReviewTimeframeAndApproved",
+  "plan_urlForPriorAuthorizationDataOnPlanWebsite",
+  "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization", // pragma: allowlist secret
+  "plan_totalStandardPriorAuthorizationRequestsReceived",
+  "plan_totalExpeditedPriorAuthorizationRequestsReceived",
+  "plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApproved",
+  "plan_percentageOfStandardPriorAuthorizationRequestsDenied",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal",
+  "plan_averageTimeToDecisionForStandardPriorAuthorizations",
+  "plan_medianTimeToDecisionOnStandardPriorAuthorizations",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsDenied",
+  "plan_averageTimeToDecisionForExpeditedPriorAuthorizations",
+  "plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests",
+  "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
 ];
 
 export const deletePlanData = (planData: AnyObject) => {

@@ -150,7 +150,7 @@ export const autosaveFieldData = async ({
       // handle Prior Authorization case
       let reportingOnPriorAuthorization: boolean = true;
       if (
-        fieldsToSave[0][0] === "reportingDataPriorToJune2026" &&
+        fieldsToSave[0][0] === "plan_priorAuthorizationReporting" &&
         fieldsToSave[0][1][0].value !== "Yes"
       ) {
         reportingOnPriorAuthorization = false;
