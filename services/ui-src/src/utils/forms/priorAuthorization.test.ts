@@ -24,8 +24,41 @@ const mockPlanData = [
   },
 ];
 
+const priorAuthorizationFields = [
+  "plan_urlForPriorAuthorizationDataOnPlanWebsite",
+  "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization", // pragma: allowlist secret
+  "plan_totalStandardPriorAuthorizationRequestsReceived",
+  "plan_totalExpeditedPriorAuthorizationRequestsReceived",
+  "plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApproved",
+  "plan_percentageOfStandardPriorAuthorizationRequestsDenied",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal",
+  "plan_averageTimeToDecisionForStandardPriorAuthorizations",
+  "plan_medianTimeToDecisionOnStandardPriorAuthorizations",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsDenied",
+  "plan_averageTimeToDecisionForExpeditedPriorAuthorizations",
+  "plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests",
+  "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
+  "plan_urlForPriorAuthorizationDataOnPlanWebsite",
+  "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization", // pragma: allowlist secret
+  "plan_totalStandardPriorAuthorizationRequestsReceived",
+  "plan_totalExpeditedPriorAuthorizationRequestsReceived",
+  "plan_totalStandardAndExpeditedPriorAuthorizationRequestsReceived",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApproved",
+  "plan_percentageOfStandardPriorAuthorizationRequestsDenied",
+  "plan_percentageOfStandardPriorAuthorizationRequestsApprovedAfterAppeal",
+  "plan_averageTimeToDecisionForStandardPriorAuthorizations",
+  "plan_medianTimeToDecisionOnStandardPriorAuthorizations",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsApproved",
+  "plan_percentageOfExpeditedPriorAuthorizationRequestsDenied",
+  "plan_averageTimeToDecisionForExpeditedPriorAuthorizations",
+  "plan_medianTimeToDecisionOnExpeditedPriorAuthorizationRequests",
+  "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
+];
+
 describe("deletePlanData", () => {
-  const result = deletePlanData(mockPlanData);
+  const result = deletePlanData(mockPlanData, priorAuthorizationFields);
   it("should remove all prior authorization data from the plan, leaving only the plan ID", () => {
     expect(result.length).toBe(1);
     expect(result[0]).toStrictEqual({ id: "mock-id" });

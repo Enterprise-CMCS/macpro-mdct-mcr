@@ -30,6 +30,7 @@ interface Props {
     reportType: string | undefined;
     updateReport: Function;
     fieldData?: AnyObject | undefined;
+    formFields?: AnyObject | undefined;
   };
   user: {
     userName: string | undefined;
@@ -91,7 +92,13 @@ export const autosaveFieldData = async ({
   user,
   entityContext,
 }: Props) => {
-  const { id, reportType, updateReport, fieldData: reportFieldData } = report;
+  const {
+    id,
+    reportType,
+    updateReport,
+    fieldData: reportFieldData,
+    formFields,
+  } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
@@ -156,7 +163,23 @@ export const autosaveFieldData = async ({
         reportingOnPriorAuthorization = false;
       }
       if (!reportingOnPriorAuthorization) {
-        const filteredFieldData = deletePlanData(reportFieldData!["plans"]);
+        // get prior authorization field ids from form template
+        const planLevelIndicators = formFields?.routes.filter(
+          (route: any) => route.path === "/mcpar/plan-level-indicators"
+        );
+        const priorAuthorizationRoute = planLevelIndicators[0].children?.filter(
+          (child: any) =>
+            child.path === "/mcpar/plan-level-indicators/prior-authorization"
+        );
+        const priorAuthorizationFields =
+          priorAuthorizationRoute[0].drawerForm.fields.map((field: any) => {
+            return field.id;
+          });
+
+        const filteredFieldData = deletePlanData(
+          reportFieldData!["plans"],
+          priorAuthorizationFields
+        );
         dataToWrite = {
           ...dataToWrite,
           fieldData: { ...fieldData, plans: filteredFieldData },
