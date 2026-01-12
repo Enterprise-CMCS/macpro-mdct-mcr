@@ -166,7 +166,7 @@ describe("autosaveFieldData", () => {
       user,
     });
     expect(mockForm.trigger).toHaveBeenCalledWith(
-      "reportingDataPriorToJune2026"
+      "plan_priorAuthorizationReporting"
     );
     expect(reportWithPlans.updateReport).toHaveBeenCalledWith(
       { reportType: "MCPAR", id: "reportId", state: "MN" },
@@ -177,7 +177,7 @@ describe("autosaveFieldData", () => {
         },
         fieldData: {
           plans: [],
-          reportingDataPriorToJune2026: "Not reporting on data",
+          plan_priorAuthorizationReporting: "Not reporting on data",
         },
       }
     );
