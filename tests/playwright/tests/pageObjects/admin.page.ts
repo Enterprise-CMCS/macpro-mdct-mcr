@@ -178,7 +178,9 @@ export class AdminPage {
       .locator("#addAdminBanner")
       .getByRole("region", { name: "Notice:" })
       .filter({
-        has: this.page.locator(".chakra-heading", { hasText: title }),
+        has: this.page
+          .locator("#addAdminBanner", { hasText: title })
+          .getByRole("heading", { name: "Delete Banner Test" }),
       });
 
     // Click the delete button for this specific banner
