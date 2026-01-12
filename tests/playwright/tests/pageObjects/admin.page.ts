@@ -174,9 +174,10 @@ export class AdminPage {
 
   async deleteAdminBanner() {
     // Find the specific banner container that contains the title
-    const bannerContainer = this.page.getByText(
-      "Notice: Delete Banner TestDelete Banner DescriptionDelete banner"
-    );
+    const banner = this.page.getByRole("region").filter({
+      has: this.page.getByRole("heading", { name: "Delete Banner Test" }),
+    });
+    const bannerContainer = banner.locator("..");
 
     // Click the delete button for this specific banner
     const deleteButton = bannerContainer.getByRole("button", {
