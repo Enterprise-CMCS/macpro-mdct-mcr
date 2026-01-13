@@ -7,7 +7,7 @@ import {
   ReportStatus,
   ReportType,
 } from "types";
-import { deletePlanData } from "utils/forms/priorAuthorization";
+import { deletePlanData, getFieldsToFilter } from "utils/forms/deletePlanData";
 
 type FieldValue = any;
 
@@ -29,8 +29,8 @@ interface Props {
     id: string | undefined;
     reportType: string | undefined;
     updateReport: Function;
-    fieldData?: AnyObject | undefined;
-    formFields?: AnyObject | undefined;
+    fieldData?: AnyObject;
+    formFields?: AnyObject;
   };
   user: {
     userName: string | undefined;
@@ -154,31 +154,31 @@ export const autosaveFieldData = async ({
         fieldData,
       };
 
-      // handle Prior Authorization case
-      let reportingOnPriorAuthorization: boolean = true;
+      // handle Prior Authorization and Patient Access API cases
+      let reportingOnPriorAuthOrPatientAccessApi: boolean = true;
+      const reportingOn: string = fieldsToSave[0][0];
+      const notReporting = [
+        "plan_priorAuthorizationReporting",
+        "plan_patientAccessApiReporting",
+      ];
+
       if (
-        fieldsToSave[0][0] === "plan_priorAuthorizationReporting" &&
+        notReporting.includes(reportingOn) &&
         fieldsToSave[0][1][0].value !== "Yes"
       ) {
-        reportingOnPriorAuthorization = false;
+        reportingOnPriorAuthOrPatientAccessApi = false;
       }
-      if (!reportingOnPriorAuthorization) {
-        // get prior authorization field ids from form template
+      if (!reportingOnPriorAuthOrPatientAccessApi) {
         const planLevelIndicators = formFields?.routes.filter(
           (route: any) => route.path === "/mcpar/plan-level-indicators"
         );
-        const priorAuthorizationRoute = planLevelIndicators[0].children?.filter(
-          (child: any) =>
-            child.path === "/mcpar/plan-level-indicators/prior-authorization"
+        const fieldsToFilter = getFieldsToFilter(
+          planLevelIndicators,
+          reportingOn
         );
-        const priorAuthorizationFields =
-          priorAuthorizationRoute[0].drawerForm.fields.map((field: any) => {
-            return field.id;
-          });
-
         const filteredFieldData = deletePlanData(
           reportFieldData!["plans"],
-          priorAuthorizationFields
+          fieldsToFilter
         );
         dataToWrite = {
           ...dataToWrite,
