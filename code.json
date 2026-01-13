@@ -1,5 +1,6 @@
 {
   "name": "macpro-mdct-mcr",
+  "version": "",
   "description": "MCR is the CMCS MDCT application for collecting state data related to Managed Care plans and performance. The collected data assists CMCS in monitoring, managing, and better understanding Medicaid and CHIP programs.",
   "longDescription": "Managed Care Reporting",
   "status": "Production",
@@ -15,11 +16,14 @@
   },
   "organization": "Centers for Medicare & Medicaid Services",
   "repositoryURL": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr",
-  "projectURL": "https://mdctmcr.cms.gov",
   "repositoryHost": "github.com/Enterprise-CMCS",
   "repositoryVisibility": "public",
+  "homepageURL": "",
+  "downloadURL": "",
+  "disclaimerURL": "",
+  "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 14874,
+  "laborHours": 15729,
   "reuseFrequency": {
     "forks": 3,
     "clones": 0
@@ -34,18 +38,23 @@
   "languages": [
     "TypeScript",
     "JavaScript",
-    "Shell",
-    "Python",
     "SCSS",
+    "Shell",
     "Smarty",
     "HTML"
   ],
   "maintenance": "contract",
-  "contractNumber": "75FCMC24F0027",
+  "contractNumber": [
+    "75FCMC24F0027"
+  ],
+  "SBOM": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/network/dependencies",
+  "relatedCode": [],
+  "reusedCode": [],
+  "partners": [],
   "date": {
     "created": "2022-03-04T14:51:19Z",
-    "lastModified": "2025-08-27T18:50:44Z",
-    "metaDataLastUpdated": "2025-09-01T00:19:53.764Z"
+    "lastModified": "2025-12-30T21:24:50Z",
+    "metadataLastUpdated": "2026-01-01T00:19:43.500Z"
   },
   "tags": [
     "mdct"
@@ -54,9 +63,8 @@
     "email": "brendan.myers@coforma.com",
     "name": "Brendan Myers"
   },
-  "feedbackMechanisms": [
-    "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/issues"
-  ],
+  "feedbackMechanism": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/issues",
+  "AIUseCaseID": "0",
   "localisation": false,
   "repositoryType": "application",
   "userInput": true,
@@ -66,7 +74,6 @@
     "MDCT"
   ],
   "systems": [],
-  "upstream": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr/network/dependencies",
   "subsetInHealthcare": [
     "Medicaid"
   ],

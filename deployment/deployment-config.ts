@@ -1,5 +1,5 @@
-import { isLocalStack } from "./local/util";
-import { getSecret } from "./utils/secrets-manager";
+import { isLocalStack } from "./local/util.ts";
+import { getSecret } from "./utils/secrets-manager.ts";
 
 export interface DeploymentConfigProperties {
   bootstrapUsersPassword?: string;
@@ -9,6 +9,7 @@ export interface DeploymentConfigProperties {
   isDev: boolean;
   kafkaAuthorizedSubnetIds: string;
   launchDarklyClient: string;
+  launchDarklyServer: string;
   oktaMetadataUrl: string;
   project: string;
   redirectSignout: string;
@@ -75,6 +76,7 @@ function validateConfig(config: {
     "brokerString",
     "kafkaAuthorizedSubnetIds",
     "launchDarklyClient",
+    "launchDarklyServer",
     "oktaMetadataUrl",
     "project",
     "redirectSignout",

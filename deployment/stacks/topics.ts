@@ -1,7 +1,7 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
 import { aws_ec2 as ec2, CfnOutput, Duration, triggers } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
+import { Lambda } from "../constructs/lambda.ts";
 
 interface CreateTopicsComponentsProps {
   brokerString: string;

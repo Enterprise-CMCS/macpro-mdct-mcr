@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import "source-map-support/register";
+// This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+import "source-map-support/register.js";
 import { App, DefaultStackSynthesizer, Stack, Tags } from "aws-cdk-lib";
-import { ParentStack } from "./stacks/parent";
-import { determineDeploymentConfig } from "./deployment-config";
+import { ParentStack } from "./stacks/parent.ts";
+import { determineDeploymentConfig } from "./deployment-config.ts";
 
 async function main() {
   const app = new App({

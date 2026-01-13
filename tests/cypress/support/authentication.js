@@ -40,8 +40,25 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
   Cypress.session.clearAllSavedSessions();
   cy.wait(2000);
   cy.session([userType, userCredentials], () => {
+    // Capture LaunchDarkly request
+    cy.intercept(/clientsdk.launchdarkly.us\/sdk\/evalx/, (req) =>
+      req.continue()
+    ).as("ld");
+
     cy.visit("/");
+
+    // Create a list of enabled feature flags
+    cy.wait("@ld").then(({ response }) => {
+      const enabledFlags = Object.fromEntries(
+        Object.entries(response.body)
+          .filter(([_, obj]) => obj.value === true)
+          .map(([key]) => [key, true])
+      );
+      Cypress.env("ldFlags", enabledFlags);
+    });
+
     cy.wait(2000);
+
     let credentials = {};
 
     if (userType && userCredentials) {
