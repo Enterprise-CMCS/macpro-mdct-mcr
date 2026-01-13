@@ -210,7 +210,7 @@ const states = [
   "WI",
   "WY",
 ] as const;
-export type State = typeof states[number];
+export type State = (typeof states)[number];
 
 export interface FormTemplate {
   md5Hash: string;

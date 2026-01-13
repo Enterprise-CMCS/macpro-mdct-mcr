@@ -12,8 +12,8 @@ export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
       ? successIconDark
       : successIcon
     : isPdf
-    ? unfinishedIconDark
-    : unfinishedIcon;
+      ? unfinishedIconDark
+      : unfinishedIcon;
 
   const altText = isPdf ? "" : isComplete ? "complete icon" : "warning icon";
   const pdfLabelText = isComplete ? "Complete" : "Error";

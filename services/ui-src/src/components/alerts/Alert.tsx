@@ -41,8 +41,8 @@ export const Alert = ({
               status === AlertTypes.WARNING
                 ? warningIcon
                 : status === AlertTypes.ERROR
-                ? errorIcon
-                : alertIcon
+                  ? errorIcon
+                  : alertIcon
             }
             sx={sx.icon}
             alt={status || "alert"}

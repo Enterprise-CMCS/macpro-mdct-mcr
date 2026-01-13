@@ -159,7 +159,7 @@ const states = [
   "WI",
   "WY",
 ] as const;
-export type State = typeof states[number];
+export type State = (typeof states)[number];
 
 export type ProgramChoice = {
   id: string;

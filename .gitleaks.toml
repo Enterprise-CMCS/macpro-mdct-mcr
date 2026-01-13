@@ -1,2 +1,2 @@
 [allowlist]
-  files = [ "*.test.json", "SECRETSCANNING.md" ]
+files = ["*.test.json", "SECRETSCANNING.md"]
