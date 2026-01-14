@@ -176,6 +176,13 @@ p {
   }
 }
 
+// ALERT
+
+.ds-c-alert {
+  margin-top: var(--mdct-space-spacer3);
+  margin-bottom: var(--mdct-space-spacer5);
+}
+
 @media print {
   @page {
     margin: 0px; //this will hide the print header & footer.

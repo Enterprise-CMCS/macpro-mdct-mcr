@@ -262,6 +262,7 @@ export const ChoiceListField = ({
           id: report?.id,
           reportType: report?.reportType,
           fieldData: report?.fieldData,
+          formFields: report?.formTemplate,
           updateReport,
         };
         const user = { userName: full_name, state };

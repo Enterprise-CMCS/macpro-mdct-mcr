@@ -172,11 +172,12 @@ export class AdminPage {
     }
   }
 
-  async deleteAdminBanner(title: string) {
+  async deleteAdminBanner() {
     // Find the specific banner container that contains the title
-    const bannerContainer = this.page.locator(".css-j7qwjs").filter({
-      has: this.page.locator(".chakra-alert__title", { hasText: title }),
+    const banner = this.page.getByRole("region").filter({
+      has: this.page.getByRole("heading", { name: "Delete Banner Test" }),
     });
+    const bannerContainer = banner.locator("..");
 
     // Click the delete button for this specific banner
     const deleteButton = bannerContainer.getByRole("button", {

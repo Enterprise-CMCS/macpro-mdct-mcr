@@ -7,7 +7,7 @@ import {
   ReportStatus,
   ReportType,
 } from "types";
-import { deletePlanData } from "utils/forms/priorAuthorization";
+import { deletePlanData, getFieldsToFilter } from "utils/forms/deletePlanData";
 
 type FieldValue = any;
 
@@ -29,7 +29,8 @@ interface Props {
     id: string | undefined;
     reportType: string | undefined;
     updateReport: Function;
-    fieldData?: AnyObject | undefined;
+    fieldData?: AnyObject;
+    formFields?: AnyObject;
   };
   user: {
     userName: string | undefined;
@@ -91,7 +92,13 @@ export const autosaveFieldData = async ({
   user,
   entityContext,
 }: Props) => {
-  const { id, reportType, updateReport, fieldData: reportFieldData } = report;
+  const {
+    id,
+    reportType,
+    updateReport,
+    fieldData: reportFieldData,
+    formFields,
+  } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
@@ -147,16 +154,32 @@ export const autosaveFieldData = async ({
         fieldData,
       };
 
-      // handle Prior Authorization case
-      let reportingOnPriorAuthorization: boolean = true;
+      // handle Prior Authorization and Patient Access API cases
+      let reportingOnPriorAuthOrPatientAccessApi: boolean = true;
+      const reportingOn: string = fieldsToSave[0][0];
+      const notReporting = [
+        "plan_priorAuthorizationReporting",
+        "plan_patientAccessApiReporting",
+      ];
+
       if (
-        fieldsToSave[0][0] === "reportingDataPriorToJune2026" &&
+        notReporting.includes(reportingOn) &&
         fieldsToSave[0][1][0].value !== "Yes"
       ) {
-        reportingOnPriorAuthorization = false;
+        reportingOnPriorAuthOrPatientAccessApi = false;
       }
-      if (!reportingOnPriorAuthorization) {
-        const filteredFieldData = deletePlanData(reportFieldData!["plans"]);
+      if (!reportingOnPriorAuthOrPatientAccessApi) {
+        const planLevelIndicators = formFields?.routes.filter(
+          (route: any) => route.path === "/mcpar/plan-level-indicators"
+        );
+        const fieldsToFilter = getFieldsToFilter(
+          planLevelIndicators,
+          reportingOn
+        );
+        const filteredFieldData = deletePlanData(
+          reportFieldData!["plans"],
+          fieldsToFilter
+        );
         dataToWrite = {
           ...dataToWrite,
           fieldData: { ...fieldData, plans: filteredFieldData },
