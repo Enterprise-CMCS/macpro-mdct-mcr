@@ -150,6 +150,7 @@ describe("QualityMeasuresSection", () => {
     test("detects legacy template when perPlanResponses is present", () => {
       const legacyData = {
         name: "Test",
+        domain: "Test Domain",
         perPlanResponses: [{ name: "Plan A", response: "Yes" }],
       };
 
@@ -162,8 +163,9 @@ describe("QualityMeasuresSection", () => {
         />
       );
 
+      // Legacy template shows "Measure results" (without the D2.VII.7 prefix)
       expect(screen.getByText("Measure results")).toBeInTheDocument();
-    });
+    };);
 
     test("detects new template when measureResults is present", () => {
       const newData = {
@@ -187,30 +189,37 @@ describe("QualityMeasuresSection", () => {
         />
       );
 
+      // New template shows "D2.VII.7 Measure results"
       expect(screen.getByText("D2.VII.7 Measure results")).toBeInTheDocument();
     });
 
-    test("detects new template when cmitNumber is present", () => {
-      const newData = {
+    test("prioritizes perPlanResponses for legacy detection even with other fields present", () => {
+      const legacyData = {
         name: "Test",
-        cmitNumber: "CMIT123",
+        nqfNumber: "0123",
+        domain: "Clinical",
+        perPlanResponses: [{ name: "Plan A", response: "Yes" }],
+        // cmitNumber could theoretically exist but perPlanResponses takes priority
       };
 
       render(
         <QualityMeasuresSection
           {...defaultProps}
-          formattedEntityData={newData}
-          topSection={true}
-          bottomSection={false}
+          formattedEntityData={legacyData}
+          bottomSection={true}
+          topSection={false}
         />
       );
 
-      expect(screen.getByText("CMIT: CMIT123")).toBeInTheDocument();
+      // Legacy template identifier
+      expect(screen.getByText("Measure results")).toBeInTheDocument();
     });
 
-    test("defaults to new template when data structure is ambiguous", () => {
+    test("defaults to new template when neither storage field is present", () => {
       const ambiguousData = {
         name: "Test",
+        cmitNumber: "CMIT123",
+        // Neither perPlanResponses nor measureResults present
       };
 
       render(
@@ -222,10 +231,11 @@ describe("QualityMeasuresSection", () => {
         />
       );
 
+      // New template identifier
       expect(
         screen.getByText("Measure identification number or definition")
       ).toBeInTheDocument();
-    });
+    };);
   });
 
   describe("Original test cases", () => {

@@ -7,24 +7,15 @@ import {
   NewTopQualityMeasuresSection,
 } from "./NewQualityMeasuresSection";
 
-// Helper to detect which template version the data uses
+// Helper to detect which template version the data uses based on data storage structure
 const detectTemplateVersion = (data: FormattedEntityData): "legacy" | "new" => {
-  // Check for new template fields
-  if (
-    data.measureResults !== undefined ||
-    data.cmitNumber !== undefined ||
-    data.cbeNumber !== undefined ||
-    data.dataVersion !== undefined
-  ) {
-    return "new";
-  }
-  // Check for legacy template fields
-  if (
-    data.perPlanResponses !== undefined ||
-    data.nqfNumber !== undefined ||
-    data.domain !== undefined
-  ) {
+  // Legacy template stores plan-level data in perPlanResponses array
+  if (data.perPlanResponses !== undefined) {
     return "legacy";
+  }
+  // New template stores plan-level data in measureResults array
+  if (data.measureResults !== undefined) {
+    return "new";
   }
   // Default to new if ambiguous (for future reports)
   return "new";
