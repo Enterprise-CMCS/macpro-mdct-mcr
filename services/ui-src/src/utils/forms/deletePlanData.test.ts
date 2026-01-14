@@ -230,12 +230,12 @@ const mockPlanLevelIndicators = [
 ];
 
 describe("deletePlanData", () => {
-  const result = deletePlanData(mockPlanData, priorAuthorizationFields);
   it("should remove all prior authorization data from the plan, leaving only the plan ID", () => {
+    const result = deletePlanData(mockPlanData, priorAuthorizationFields);
     expect(result.length).toBe(1);
     expect(result[0]).toStrictEqual({ id: "mock-id" });
   });
-  it("should", () => {
+  it("should return an array of form field IDs", () => {
     const result = getFieldsToFilter(
       mockPlanLevelIndicators,
       "plan_priorAuthorizationReporting"

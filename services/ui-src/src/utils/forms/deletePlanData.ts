@@ -37,14 +37,14 @@ export const getFieldsToFilter = (
 
 export const deletePlanData = (
   planData: AnyObject,
-  priorAuthorizationFields: string[]
+  fieldsToFilter: string[]
 ) => {
-  // delete Prior Authorization plan data if selecting "Not reporting data"
+  // delete relevant plan data if selecting "Not reporting data"
   const filteredPlanData = planData?.map((plan: AnyObject) => {
     let planKeys = Object.keys(plan);
-    for (let i = 0; i < priorAuthorizationFields.length; i++) {
+    for (let i = 0; i < fieldsToFilter.length; i++) {
       for (let j = 0; j < planKeys.length; j++) {
-        if (planKeys[j].startsWith(priorAuthorizationFields[i])) {
+        if (planKeys[j].startsWith(fieldsToFilter[i])) {
           delete plan[planKeys[j]];
         }
       }
