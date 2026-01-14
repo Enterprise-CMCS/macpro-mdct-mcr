@@ -142,7 +142,7 @@ describe("autosaveFieldData", () => {
   it("should handle Prior Authorization use case", async () => {
     const priorAuthFields = [
       {
-        name: "reportingDataPriorToJune2026",
+        name: "plan_priorAuthorizationReporting",
         type: "radio",
         value: "Not reporting on data",
         hydrationValue: "Yes",

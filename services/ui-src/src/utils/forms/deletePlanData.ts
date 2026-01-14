@@ -9,11 +9,11 @@ export const getFieldsToFilter = (
   switch (reportingOn) {
     case "plan_priorAuthorizationReporting": {
       // get prior authorization field ids from form template
-      const priorAuthorizationRoute = planLevelIndicators[0].children?.filter(
+      const priorAuthorizationRoute = planLevelIndicators?.[0].children?.filter(
         (child: any) =>
           child.path === "/mcpar/plan-level-indicators/prior-authorization"
       );
-      fields = priorAuthorizationRoute[0].drawerForm.fields.map(
+      fields = priorAuthorizationRoute?.[0].drawerForm.fields.map(
         (field: any) => {
           return field.id;
         }
@@ -22,13 +22,15 @@ export const getFieldsToFilter = (
     }
     case "plan_patientAccessApiReporting": {
       // get patient access api field ids from form template
-      const patientAccessApiRoute = planLevelIndicators[0].children?.filter(
+      const patientAccessApiRoute = planLevelIndicators?.[0].children?.filter(
         (child: any) =>
           child.path === "/mcpar/plan-level-indicators/patient-access-api"
       );
-      fields = patientAccessApiRoute[0].drawerForm.fields.map((field: any) => {
-        return field.id;
-      });
+      fields = patientAccessApiRoute?.[0].drawerForm.fields.map(
+        (field: any) => {
+          return field.id;
+        }
+      );
       break;
     }
   }
