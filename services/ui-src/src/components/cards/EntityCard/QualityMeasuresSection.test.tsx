@@ -233,7 +233,10 @@ describe("QualityMeasuresSection", () => {
       const { container } = render(
         <QualityMeasuresSection
           {...defaultProps}
-          formattedEntityData={{ name: "PDF Heading" }}
+          formattedEntityData={{
+            name: "PDF Heading",
+            perPlanResponses: [], // Legacy template field
+          }}
           isPDF={true}
         />
       );
@@ -259,7 +262,10 @@ describe("QualityMeasuresSection", () => {
       render(
         <QualityMeasuresSection
           {...defaultProps}
-          formattedEntityData={{ isPartiallyComplete: true }}
+          formattedEntityData={{
+            isPartiallyComplete: true,
+            perPlanResponses: [], // Legacy template field
+          }}
           verbiage={{ entityMissingResponseMessage: "Custom missing message" }}
         />
       );
