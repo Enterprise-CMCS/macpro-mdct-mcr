@@ -142,7 +142,7 @@ describe("autosaveFieldData", () => {
   it("should handle Prior Authorization use case", async () => {
     const priorAuthFields = [
       {
-        name: "reportingDataPriorToJune2026",
+        name: "plan_priorAuthorizationReporting",
         type: "radio",
         value: "Not reporting on data",
         hydrationValue: "Yes",
@@ -166,7 +166,7 @@ describe("autosaveFieldData", () => {
       user,
     });
     expect(mockForm.trigger).toHaveBeenCalledWith(
-      "reportingDataPriorToJune2026"
+      "plan_priorAuthorizationReporting"
     );
     expect(reportWithPlans.updateReport).toHaveBeenCalledWith(
       { reportType: "MCPAR", id: "reportId", state: "MN" },
@@ -177,7 +177,7 @@ describe("autosaveFieldData", () => {
         },
         fieldData: {
           plans: [],
-          reportingDataPriorToJune2026: "Not reporting on data",
+          plan_priorAuthorizationReporting: "Not reporting on data",
         },
       }
     );
