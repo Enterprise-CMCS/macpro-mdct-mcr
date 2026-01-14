@@ -35,7 +35,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
         {sectionAlert && (
-          <Alert status={AlertTypes.WARNING} description={sectionAlert} />
+          <Alert status={AlertTypes.WARN} description={sectionAlert} />
         )}
         {sectionInfo && (
           <Box sx={sx.info}>

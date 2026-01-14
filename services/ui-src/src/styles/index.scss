@@ -1,11 +1,10 @@
 // necessary to render the UsaBanner correctly
 $image-path: "~@cmsgov/design-system/dist/images";
 @use "@cmsgov/design-system/dist/css/index";
-@use '@cmsgov/design-system/dist/css/core-theme';
+@use "@cmsgov/design-system/dist/css/core-theme";
 
 @mixin tabbed-focus {
-  box-shadow: 0 0 0 3px #fff,
-    0 0 4px 6px var(--mdct-colors-focus_dark) !important;
+  box-shadow: 0 0 0 3px #fff, 0 0 4px 6px var(--mdct-colors-focus_dark) !important;
   // Add support for Windows High Contrast Mode (WHCM)
   // The transparent color only shows when WHCM is triggered
   outline: 3px solid transparent;
@@ -46,7 +45,12 @@ a {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-block: 0;
 }
 
@@ -65,14 +69,14 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-// DROPDOWN 
+// DROPDOWN
 
 select.ds-c-field {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   background-color: var(--mdct-colors-white);
-  background-image: url('/src/assets/icons/icon_dropdown_arrow.svg');
+  background-image: url("/src/assets/icons/icon_dropdown_arrow.svg");
   background-position: right 8px center;
   background-repeat: no-repeat;
   background-size: 10px;
@@ -170,11 +174,18 @@ p {
   }
 }
 
-@media print {  
+// ALERT
+
+.ds-c-alert {
+  margin-top: var(--mdct-space-spacer3);
+  margin-bottom: var(--mdct-space-spacer5);
+}
+
+@media print {
   @page {
-    margin: 0px;  //this will hide the print header & footer.
-  } 
+    margin: 0px; //this will hide the print header & footer.
+  }
   html {
-      margin: 30px; //this adds back missing margin for the print page
+    margin: 30px; //this adds back missing margin for the print page
   }
 }

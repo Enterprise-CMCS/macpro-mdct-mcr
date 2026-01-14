@@ -54,7 +54,7 @@ test.describe("admin user banner page", () => {
       "Delete Banner Description",
       startDate
     );
-    await adminPage.deleteAdminBanner("Delete Banner Test");
+    await adminPage.deleteAdminBanner();
     const bannerSection = adminPage.page
       .locator("text=Current Banner(s)")
       .locator("..");
