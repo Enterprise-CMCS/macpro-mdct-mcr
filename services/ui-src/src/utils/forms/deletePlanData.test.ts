@@ -42,6 +42,17 @@ const priorAuthorizationFields = [
   "plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe",
 ];
 
+const patientAccessApiFields = [
+  "plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer",
+
+  "plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers",
+
+  "plan_urlForPatientAccessApi",
+
+  "plan_urlForPatientResourcesForPatientAccessApi",
+  "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
+];
+
 const mockPlanLevelIndicators = [
   {
     name: "D: Plan-Level Indicators",
@@ -225,6 +236,64 @@ const mockPlanLevelIndicators = [
           ],
         },
       },
+      {
+        name: "XIV: Patient Access API Usage",
+        path: "/mcpar/plan-level-indicators/patient-access-api",
+        drawerForm: {
+          id: "dpaa",
+          fields: [
+            {
+              id: "plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer",
+              type: "number",
+              validation: "number",
+              props: {
+                label:
+                  "D1.XIV.1 Number of unique beneficiaries with at least one data transfer",
+                hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred via the Patient Access API to a health application designated by the beneficiary. Provide program-specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+              },
+            },
+            {
+              id: "plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers",
+              type: "number",
+              validation: "number",
+              props: {
+                label:
+                  "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
+                hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+              },
+            },
+            {
+              id: "plan_urlForPatientAccessApi",
+              type: "text",
+              validation: "url",
+              props: {
+                label: "D1.XIV.3 URL for Patient Access API",
+                hint: "Provide the URL where the plan posts Patient Access API.",
+              },
+            },
+            {
+              id: "plan_urlForPatientResourcesForPatientAccessApi",
+              type: "text",
+              validation: "url",
+              props: {
+                label:
+                  "D1.XIV.4 URL for patient educational resources for Patient Access API",
+                hint: "Provide the URL where the plan posts patient educational resources for the Patient Access API.",
+              },
+            },
+            {
+              id: "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
+              type: "text",
+              validation: "url",
+              props: {
+                label:
+                  "D1.XIV.5 Provider Access and Payer-to-Payer API patient educational resources URL",
+                hint: "Provide the URL where the plan posts patient educational resources for the Provider Access and Payer-to-Payer API.",
+              },
+            },
+          ],
+        },
+      },
     ],
   },
 ];
@@ -235,12 +304,21 @@ describe("deletePlanData", () => {
     expect(result.length).toBe(1);
     expect(result[0]).toStrictEqual({ id: "mock-id" });
   });
-  it("should return an array of form field IDs", () => {
+  it("should return an array of form field IDs for Prior Authorization", () => {
     const result = getFieldsToFilter(
       mockPlanLevelIndicators,
       "plan_priorAuthorizationReporting"
     );
     expect(result.length).toBe(15);
     expect(result).toEqual(priorAuthorizationFields);
+  });
+
+  it("should return an array of form field IDs for Patient Access API", () => {
+    const result = getFieldsToFilter(
+      mockPlanLevelIndicators,
+      "plan_patientAccessApiReporting"
+    );
+    expect(result.length).toBe(5);
+    expect(result).toEqual(patientAccessApiFields);
   });
 });
