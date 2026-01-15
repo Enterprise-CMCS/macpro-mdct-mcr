@@ -52,6 +52,6 @@ describe("<EntityCardTopSection />", () => {
       entityCardTopSectionComponent(EntityType.QUALITY_MEASURES)
     );
     const h4Tag = container.querySelector("h4");
-    expect(h4Tag).toHaveTextContent("D2.VII.1 Measure Name:");
+    expect(h4Tag).toContain("D2.VII.1 Measure Name:");
   });
 });
