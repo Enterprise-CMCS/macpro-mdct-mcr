@@ -256,7 +256,7 @@ export const renderGeneratedCheckboxCell = (fieldResponseData: AnyObject) => {
       </Text>
     );
   }
-  return fieldResponseData?.map((response: AnyObject) => (
+  return fieldResponseData.map((response: AnyObject) => (
     <Text key={response.key} sx={sx.dynamicItem}>
       {response.value}
     </Text>

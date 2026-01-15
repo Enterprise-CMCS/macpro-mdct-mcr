@@ -1,23 +1,36 @@
 import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // types
-import { SxObject } from "types";
+import { AnyObject, SxObject } from "types";
 import {
   NewBottomQualityMeasuresSection,
   NewTopQualityMeasuresSection,
 } from "./NewQualityMeasuresSection";
+
+// Helper to detect which template version the data uses based on data storage structure
+const detectTemplateVersion = (data: FormattedEntityData): "legacy" | "new" => {
+  // Legacy template stores plan-level data in perPlanResponses array
+  if (data.perPlanResponses !== undefined) {
+    return "legacy";
+  }
+  // New template stores plan-level data in measureResults array
+  if (data.measureResults !== undefined) {
+    return "new";
+  }
+  // Default to new if ambiguous (for future reports)
+  return "new";
+};
 
 const TopQualityMeasuresSection = ({
   formattedEntityData,
   printVersion,
   isPDF,
   sx,
-  newQualityMeasuresSectionEnabled,
+  useLegacyTemplate,
 }: TopProps) => {
   return (
     <>
-      {!newQualityMeasuresSectionEnabled ? (
+      {useLegacyTemplate ? (
         <>
           <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
             {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
@@ -97,11 +110,11 @@ const BottomQualityMeasuresSection = ({
   notAnswered,
   verbiage,
   sx,
-  newQualityMeasuresSectionEnabled,
+  useLegacyTemplate,
 }: BottomProps) => {
   return (
     <>
-      {!newQualityMeasuresSectionEnabled ? (
+      {useLegacyTemplate ? (
         <>
           <Text sx={sx.resultsHeader}>Measure results</Text>
 
@@ -157,9 +170,10 @@ export const QualityMeasuresSection = ({
   topSection,
   bottomSection,
 }: Props) => {
-  // LaunchDarkly
-  const newQualityMeasuresSectionEnabled =
-    useFlags()?.newQualityMeasuresSectionEnabled;
+  // Detect which template version to use based on data structure
+  const templateVersion = detectTemplateVersion(formattedEntityData);
+  const useLegacyTemplate = templateVersion === "legacy";
+
   return (
     <>
       {topSection && (
@@ -167,7 +181,7 @@ export const QualityMeasuresSection = ({
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           isPDF={isPDF}
-          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
+          useLegacyTemplate={useLegacyTemplate}
           sx={sx}
         />
       )}
@@ -178,7 +192,7 @@ export const QualityMeasuresSection = ({
           isPDF={isPDF}
           notAnswered={notAnswered}
           verbiage={verbiage}
-          newQualityMeasuresSectionEnabled={newQualityMeasuresSectionEnabled}
+          useLegacyTemplate={useLegacyTemplate}
           sx={sx}
         />
       )}
@@ -199,12 +213,20 @@ interface FormattedEntityData {
   nqfNumber?: string;
   reportingRateType?: string;
   reportingPeriod?: string;
+  // New template fields
+  cmitNumber?: string;
+  cbeNumber?: string;
+  identifierUrl?: string;
+  identifierDomain?: string;
+  dataVersion?: string;
+  activities?: string;
+  measureResults?: AnyObject[];
 }
 interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
   sx: SxObject;
-  newQualityMeasuresSectionEnabled?: boolean;
+  useLegacyTemplate?: boolean;
 }
 
 interface TopProps extends BaseProps {
