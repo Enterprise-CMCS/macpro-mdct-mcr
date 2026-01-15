@@ -29,8 +29,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
       - name: Create a PR
-        run: |
-          .github/create-pr.ts
+        run: .github/create-pr.ts
         env:
           GITHUB_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -19,6 +19,7 @@ export * from "./forms/qualityMeasures";
 export * from "./forms/standards";
 // reports
 export * from "./reports/entities";
+export * from "./reports/entities.plans";
 export * from "./reports/reports";
 export * from "./reports/routing";
 // statusing

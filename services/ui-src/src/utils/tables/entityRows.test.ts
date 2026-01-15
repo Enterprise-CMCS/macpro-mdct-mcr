@@ -799,7 +799,7 @@ describe("getMeasureValues()", () => {
     expect(input).toEqual(expectedResult);
   });
 
-  test("returns values for other measure identifier with domains and url", () => {
+  test("returns values for other measure identifier", () => {
     const entity = {
       id: "mock-report",
       measure_identifier: [
@@ -809,21 +809,71 @@ describe("getMeasureValues()", () => {
         },
       ],
       measure_identifierDefinition: "mock definition",
-      measure_identifierDomain: [
-        {
-          key: "measure_identifierDomain-mock",
-          value: "mock domain",
-        },
-      ],
-      measure_identifierUrl: "https://mock",
     };
     const input = getMeasureValues(entity, "measure_identifier");
-    const expectedResult: string[] = [
-      "Other definition: mock definition",
-      "Link: https://mock",
-      "Measure domain(s): mock domain",
-    ];
+    const expectedResult: string[] = ["Other definition: mock definition"];
     expect(input).toEqual(expectedResult);
+  });
+
+  test("returns values for measure_activities with array value", () => {
+    const entity = {
+      id: "mock-report",
+      measure_activities: [
+        {
+          key: "measure_activities-mock-1",
+          value: "Activity 1",
+        },
+        {
+          key: "measure_activities-mock-2",
+          value: "Activity 2",
+        },
+      ],
+    };
+    const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual(["Activity 1; Activity 2"]);
+  });
+
+  test("returns values for measure_activities with string value", () => {
+    const entity = {
+      id: "mock-report",
+      measure_activities: "Single Activity",
+    };
+    const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual(["Single Activity"]);
+  });
+
+  test("returns values for measure_activities with otherText", () => {
+    const entity = {
+      id: "mock-report",
+      measure_activities: [
+        {
+          key: "measure_activities-mock",
+          value: "Activity",
+        },
+      ],
+      "measure_activities-otherText": "Custom activity description",
+    };
+    const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual(["Activity; Other: Custom activity description"]);
+  });
+
+  test("returns only otherText for measure_activities when no other values", () => {
+    const entity = {
+      id: "mock-report",
+      measure_activities: [],
+      "measure_activities-otherText": "Custom activity description",
+    };
+    const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual(["Other: Custom activity description"]);
+  });
+
+  test("returns empty array for measure_activities when value is undefined", () => {
+    const entity = {
+      id: "mock-report",
+      measure_activities: undefined,
+    };
+    const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual([]);
   });
 });
 

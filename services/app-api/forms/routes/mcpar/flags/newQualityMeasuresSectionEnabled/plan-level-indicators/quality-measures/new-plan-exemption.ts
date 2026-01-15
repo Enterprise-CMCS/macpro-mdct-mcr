@@ -16,6 +16,8 @@ export const newPlanExemptionRoute: FormRoute = {
       section: "Section D: Plan-Level Indicators",
       subsection: "Topic VII: Quality & Performance Measures",
       spreadsheet: "D2_Program_QualityMeasures",
+      alert:
+        "<b>Please be aware checking a plan in this list will clear any entered quality measures data for that plan.</b>",
       info: [
         {
           type: "heading",

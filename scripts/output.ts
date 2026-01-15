@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 
-// node ./scripts/output.ts PROJECT_NAME-SOME_BRANCH_NAME CloudFrontUrl
+// ./scripts/output.ts PROJECT_NAME-SOME_BRANCH_NAME CloudFrontUrl
 import {
   CloudFormationClient,
   DescribeStacksCommand,

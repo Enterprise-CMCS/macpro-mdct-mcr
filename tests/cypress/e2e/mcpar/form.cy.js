@@ -302,6 +302,10 @@ const processField = (field) => {
         break;
       case "radio":
       case "checkbox": {
+        if (validationType === "checkboxOptional") {
+          break;
+        }
+
         const firstChoice = field.props?.choices?.[0];
 
         if (firstChoice && firstChoice.id !== "generatedCheckbox") {

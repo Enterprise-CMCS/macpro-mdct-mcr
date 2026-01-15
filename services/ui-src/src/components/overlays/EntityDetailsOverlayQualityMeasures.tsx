@@ -1,4 +1,4 @@
-import { MouseEventHandler, useContext, useState } from "react";
+import { MouseEventHandler, useContext, useEffect, useState } from "react";
 // components
 import {
   Box,
@@ -28,6 +28,7 @@ import {
 import {
   addRatesToForm,
   getMeasureValues,
+  getPlansNotExemptFromQualityMeasures,
   getReportVerbiage,
   parseCustomHtml,
   translate,
@@ -46,6 +47,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
   const [selectedPlan, setSelectedPlan] = useState<EntityShape>();
   const [planMeasureData, setPlanMeasureData] = useState<EntityShape>();
   const [drawerForm, setDrawerForm] = useState(route?.drawerForm);
+  const [filteredPlans, setFilteredPlans] = useState<EntityShape[]>([]);
   const { updateReport } = useContext(ReportContext);
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -55,6 +57,13 @@ export const EntityDetailsOverlayQualityMeasures = ({
 
   const canAddEntities = true;
   const openDeleteEntityModal = () => {};
+
+  useEffect(() => {
+    setFilteredPlans(getPlansNotExemptFromQualityMeasures(report));
+  }, [
+    report.fieldData?.plans,
+    report.fieldData?.plansExemptFromQualityMeasures,
+  ]);
 
   const openRowDrawer = (plan: EntityShape) => {
     if (!route?.drawerForm) return;
@@ -155,7 +164,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
         {parseCustomHtml(overlayVerbiage.MCPAR.dashboardTitle)}
       </Heading>
       <DrawerReportPageEntityRows
-        entities={report.fieldData.plans}
+        entities={filteredPlans}
         hasForm={hasDrawerForm}
         measureId={selectedMeasure.id}
         openRowDrawer={openRowDrawer}

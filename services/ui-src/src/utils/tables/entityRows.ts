@@ -279,6 +279,26 @@ export const getMeasureIdDisplayText = (entity: EntityShape) => {
 };
 
 export const getMeasureValues = (entity: EntityShape, key: string) => {
+  if (key === "measure_activities") {
+    const value = entity[key];
+    const otherText = entity["measure_activities-otherText"];
+
+    const formattedValue = Array.isArray(value)
+      ? value.map((obj: EntityShape) => obj.value).join("; ")
+      : value;
+
+    // If there's "Other, specify" text, append it
+    if (otherText) {
+      return [
+        formattedValue
+          ? `${formattedValue}; Other: ${otherText}`
+          : `Other: ${otherText}`,
+      ];
+    }
+
+    return formattedValue ? [formattedValue] : [];
+  }
+
   if (key !== "measure_identifier") {
     const value = entity[key];
 
@@ -286,30 +306,15 @@ export const getMeasureValues = (entity: EntityShape, key: string) => {
       ? value.map((obj: EntityShape) => obj.value).join("; ")
       : value;
 
-    return [formattedValue];
+    return formattedValue ? [formattedValue] : [];
   }
 
-  const {
-    measure_identifierDefinition: identifierDefinition,
-    measure_identifierDomain: identifierDomain,
-    measure_identifierUrl: identifierUrl,
-  } = entity;
+  const { measure_identifierDefinition: identifierDefinition } = entity;
 
   const identifier = getMeasureIdentifier(entity);
   if (identifier) return [identifier];
 
   const values: string[] = [`Other definition: ${identifierDefinition}`];
-
-  if (identifierUrl) {
-    values.push(`Link: ${identifierUrl}`);
-  }
-
-  if (identifierDomain) {
-    const domains = identifierDomain
-      .map((domain: EntityShape) => domain.value)
-      .join(", ");
-    values.push(`Measure domain(s): ${domains}`);
-  }
 
   return values;
 };

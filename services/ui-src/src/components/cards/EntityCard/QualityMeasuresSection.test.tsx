@@ -21,11 +21,6 @@ const mockSx = {
   notAnswered: {},
 };
 
-const mockVerbiage = {
-  entityMissingResponseMessage: "Missing responses message",
-  entityEmptyResponseMessage: "Empty response message",
-};
-
 const defaultProps = {
   formattedEntityData: {
     perPlanResponses: [],
@@ -165,7 +160,7 @@ describe("QualityMeasuresSection", () => {
 
       // Legacy template shows "Measure results" (without the D2.VII.7 prefix)
       expect(screen.getByText("Measure results")).toBeInTheDocument();
-    };);
+    });
 
     test("detects new template when measureResults is present", () => {
       const newData = {
@@ -235,7 +230,7 @@ describe("QualityMeasuresSection", () => {
       expect(
         screen.getByText("Measure identification number or definition")
       ).toBeInTheDocument();
-    };);
+    });
   });
 
   describe("Original test cases", () => {
