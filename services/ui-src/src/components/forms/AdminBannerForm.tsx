@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, Flex, Spinner } from "@chakra-ui/react";
 import { ErrorAlert, Form, PreviewBanner } from "components";
 // types
-import { AlertTypes, ErrorVerbiage, FormJson } from "types";
+import { ErrorVerbiage, FormJson } from "types";
 // utils
 import {
   convertDateEtToUtc,
@@ -92,7 +92,7 @@ export const AdminBannerForm = ({ writeAdminBanner, ...props }: Props) => {
         dontReset={false}
         {...props}
       >
-        <PreviewBanner status={AlertTypes.INFO} />
+        <PreviewBanner />
       </Form>
       <Flex sx={sx.previewFlex}>
         <Button form={form.id} type="submit" sx={sx.replaceBannerButton}>

@@ -13,7 +13,7 @@ export * from "./forms/forms";
 export * from "./forms/dynamicItemFields";
 export * from "./forms/ilosFields";
 export * from "./forms/naaarPlanCompliance";
-export * from "./forms/priorAuthorization";
+export * from "./forms/deletePlanData";
 export * from "./forms/standards";
 // reports
 export * from "./reports/entities";
