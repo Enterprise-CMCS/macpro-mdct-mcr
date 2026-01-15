@@ -1,13 +1,13 @@
 {
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
+  "$schema": "https://json.schemastore.org/tsconfig",
   "include": ["./commands/**/*.ts", "./lib/**/*.ts", "./run.ts"],
   "compilerOptions": {
     "incremental": true,
-    "target": "es2022",
+    "target": "ES2023",
     "module": "nodenext",
-    "lib": ["es2022"],
-    "outDir": "./dist",
-    "rootDir": ".",
+    "lib": ["ES2023"],
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -22,6 +22,9 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   }

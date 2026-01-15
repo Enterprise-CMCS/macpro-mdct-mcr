@@ -4,25 +4,28 @@ import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
 import { logger } from "../debugging/debug-lib";
 import { createHash } from "crypto";
-// forms
-import mlrForm from "../../forms/mlr.json";
-import mcparForm from "../../forms/mcpar.json";
-import naaarForm from "../../forms/naaar.json";
 // types
 import {
   AnyObject,
-  assertExhaustive,
   FieldChoice,
   FormField,
   FormLayoutElement,
   FormTemplate,
   ModalOverlayReportPageShape,
   ReportJson,
+  ReportJsonFile,
   ReportRoute,
   ReportType,
 } from "../types";
 // utils
 import { getTemplate } from "../../handlers/formTemplates/populateTemplatesTable";
+import { isFeatureFlagEnabled } from "../featureFlags/featureFlags";
+// routes
+import { mcparReportJson, mlrReportJson, naaarReportJson } from "../../forms";
+// flagged routes
+import * as mcparFlags from "../../forms/routes/mcpar/flags";
+import * as mlrFlags from "../../forms/routes/mlr/flags";
+import * as naaarFlags from "../../forms/routes/naaar/flags";
 
 export async function getNewestTemplateVersion(reportType: ReportType) {
   const queryParams: QueryCommandInput = {
@@ -56,20 +59,34 @@ export async function getTemplateVersionByHash(
   return result.Items?.[0];
 }
 
-export const formTemplateForReportType = (reportType: ReportType) => {
-  switch (reportType) {
-    case ReportType.MCPAR:
-      return mcparForm;
-    case ReportType.MLR:
-      return mlrForm;
-    case ReportType.NAAAR:
-      return naaarForm;
-    default:
-      assertExhaustive(reportType);
-      throw new Error(
-        "Not Implemented: ReportType not recognized by FormTemplateProvider"
-      );
+export const formTemplateForReportType = async (reportType: ReportType) => {
+  const routeMap: Record<ReportType, ReportJsonFile> = {
+    [ReportType.MCPAR]: mcparReportJson,
+    [ReportType.MLR]: mlrReportJson,
+    [ReportType.NAAAR]: naaarReportJson,
+  };
+
+  // Get LaunchDarkly flags from folder names in forms/routes/[reportType]/flags
+  const flagMap: Record<ReportType, any> = {
+    [ReportType.MCPAR]: mcparFlags,
+    [ReportType.MLR]: mlrFlags,
+    [ReportType.NAAAR]: naaarFlags,
+  };
+
+  const flagsByReportType = flagMap[reportType];
+  const flagNames = Object.keys(flagsByReportType);
+
+  // Loop through flags and replace routes if flag is enabled
+  for (const flagName of flagNames) {
+    const enabled = await isFeatureFlagEnabled(flagName);
+
+    if (enabled) {
+      routeMap[reportType] = flagsByReportType[flagName];
+      break;
+    }
   }
+
+  return structuredClone(routeMap[reportType] as ReportJson);
 };
 
 export async function getOrCreateFormTemplate(
@@ -77,14 +94,14 @@ export async function getOrCreateFormTemplate(
   reportType: ReportType,
   options: { [key: string]: boolean } = {}
 ) {
-  let currentFormTemplate = formTemplateForReportType(reportType) as ReportJson;
+  let currentFormTemplate = await formTemplateForReportType(reportType);
 
   if (options.isPccm) {
     currentFormTemplate = generatePCCMTemplate(currentFormTemplate);
   }
 
   if (options.hasNaaarSubmission) {
-    currentFormTemplate = generateModifiedTemplate(
+    currentFormTemplate = filterFormTemplateRoutes(
       currentFormTemplate,
       ["Access Measures"],
       ["accessMeasures"]
@@ -263,7 +280,11 @@ export function isFieldElement(
    * This function is duplicated in ui-src/src/types/formFields.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = ["sectionHeader", "sectionContent"];
+  const formLayoutElementTypes = [
+    "sectionHeader",
+    "sectionContent",
+    "sectionDivider",
+  ];
   return !formLayoutElementTypes.includes(field.type);
 }
 
@@ -334,7 +355,7 @@ export const generatePCCMTemplate = (originalReportTemplate: ReportJson) => {
   return reportTemplate;
 };
 
-export const generateModifiedTemplate = (
+export const filterFormTemplateRoutes = (
   originalReportTemplate: ReportJson,
   routesToRemove: string[],
   entitiesToRemove: string[]

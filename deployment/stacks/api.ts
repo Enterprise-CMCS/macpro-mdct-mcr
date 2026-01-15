@@ -10,11 +10,11 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda";
-import { WafConstruct } from "../constructs/waf";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event";
-import { isLocalStack } from "../local/util";
-import { DynamoDBTable } from "../constructs/dynamodb-table";
+import { Lambda } from "../constructs/lambda.ts";
+import { WafConstruct } from "../constructs/waf.ts";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
+import { isLocalStack } from "../local/util.ts";
+import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
   scope: Construct;
@@ -28,6 +28,7 @@ interface CreateApiComponentsProps {
   mcparFormBucket: s3.IBucket;
   mlrFormBucket: s3.IBucket;
   naaarFormBucket: s3.IBucket;
+  launchDarklyServer: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -43,6 +44,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     mcparFormBucket,
     mlrFormBucket,
     naaarFormBucket,
+    launchDarklyServer,
   } = props;
 
   const service = "app-api";
@@ -70,7 +72,9 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     deployOptions: {
       stageName: stage,
       tracingEnabled: true,
-      loggingLevel: apigateway.MethodLoggingLevel.INFO,
+      loggingLevel: isDev
+        ? apigateway.MethodLoggingLevel.OFF
+        : apigateway.MethodLoggingLevel.INFO,
       dataTraceEnabled: true,
       metricsEnabled: false,
       throttlingBurstLimit: 5000,
@@ -113,6 +117,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     NODE_OPTIONS: "--enable-source-maps",
     brokerString,
     STAGE: stage,
+    launchDarklyServer,
     MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,
     NAAAR_FORM_BUCKET: naaarFormBucket.bucketName,

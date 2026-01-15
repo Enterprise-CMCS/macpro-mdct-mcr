@@ -304,9 +304,14 @@ describe("<ExportedModalOverlayReportSection />", () => {
     });
 
     test("Should throw an error using an unsupported report", async () => {
-      expect(() => renderModalOverlayTableBody(ReportType.MCPAR, [])).toThrow(
-        Error
-      );
+      const unsupportedReport = {
+        ...mockReportContext.report,
+        reportType: ReportType.MCPAR,
+      };
+
+      expect(() =>
+        renderModalOverlayTableBody(unsupportedReport, EntityType.STANDARDS, [])
+      ).toThrow(Error);
     });
   });
   testA11yAct(exportedModalOverlayReportSectionComponent);

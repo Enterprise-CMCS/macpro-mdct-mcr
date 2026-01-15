@@ -1,13 +1,12 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { Argv } from "yargs";
+import type { Argv } from "yargs";
 import {
   CloudFormationClient,
   DescribeStacksCommand,
 } from "@aws-sdk/client-cloudformation";
-import { checkIfAuthenticated } from "../lib/sts.js";
-import { region } from "../lib/consts.js";
-import { runCommand } from "../lib/runner.js";
-import { tryImport } from "../lib/optional-imports.js";
+import { checkIfAuthenticated } from "../lib/sts.ts";
+import { region } from "../lib/consts.ts";
+import { runCommand } from "../lib/runner.ts";
 
 const stackExists = async (stackName: string): Promise<boolean> => {
   const client = new CloudFormationClient({ region });
@@ -35,13 +34,6 @@ export const deploy = {
     const project = process.env.PROJECT!;
 
     if (await stackExists(`${project}-prerequisites`)) {
-      const clamModule = await tryImport<{ default: () => Promise<void> }>(
-        "../lib/clam.js"
-      );
-      if (clamModule) {
-        const downloadClamAvLayer = clamModule.default;
-        await downloadClamAvLayer();
-      }
       await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
       await runCommand(
         "CDK deploy",

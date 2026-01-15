@@ -1,10 +1,9 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import { runCommand } from "../lib/runner.js";
-import { execSync } from "child_process";
-import { region } from "../lib/consts.js";
-import { runFrontendLocally } from "../lib/utils.js";
-import { seedData } from "../lib/seedData.js";
-import { tryImport } from "../lib/optional-imports.js";
+import { runCommand } from "../lib/runner.ts";
+import { execSync } from "node:child_process";
+import { region } from "../lib/consts.ts";
+import { runFrontendLocally } from "../lib/utils.ts";
+import { seedData } from "../lib/seedData.ts";
 
 const isColimaRunning = () => {
   try {
@@ -68,30 +67,16 @@ export const local = {
         "cdklocal",
         "deploy",
         "--app",
-        '"npx --prefix deployment tsx deployment/local/prerequisites.ts"',
+        "./deployment/local/prerequisites.ts",
       ],
       "."
     );
 
     await runCommand(
       "CDK local prerequisite deploy",
-      [
-        "yarn",
-        "cdklocal",
-        "deploy",
-        "--app",
-        '"npx --prefix deployment tsx deployment/prerequisites.ts"',
-      ],
+      ["yarn", "cdklocal", "deploy", "--app", "./deployment/prerequisites.ts"],
       "."
     );
-
-    const clamModule = await tryImport<{ default: () => Promise<void> }>(
-      "../lib/clam.js"
-    );
-    if (clamModule) {
-      const downloadClamAvLayer = clamModule.default;
-      await downloadClamAvLayer();
-    }
 
     await runCommand(
       "CDK local deploy",

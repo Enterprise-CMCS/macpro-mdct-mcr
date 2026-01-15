@@ -1,4 +1,4 @@
-import { utcToZonedTime } from "date-fns-tz";
+import { toZonedTime } from "date-fns-tz";
 
 /*
  * Converts passed UTC datetime to ET date
@@ -6,7 +6,7 @@ import { utcToZonedTime } from "date-fns-tz";
  */
 export const convertDateUtcToEt = (date: number): string => {
   const convertedDate = date;
-  const easternDatetime = utcToZonedTime(
+  const easternDatetime = toZonedTime(
     new Date(convertedDate),
     "America/New_York"
   );

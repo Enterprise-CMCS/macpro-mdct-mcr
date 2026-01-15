@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useEffect } from "react";
+import { forwardRef, ReactNode, useLayoutEffect } from "react";
 import {
   FieldValues,
   FormProvider,
@@ -97,7 +97,14 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     });
   };
 
-  useEffect(() => {
+  /*
+   * useLayoutEffect fires before the browser repaints the screen
+   *
+   * Fixes an issue where some fields registered before the reset and some after.
+   * We want a fresh form state before form fields render and
+   * for every field on the page to register into the form.
+   */
+  useLayoutEffect(() => {
     if (!dontReset && !validateOnRender) {
       form?.reset();
     }

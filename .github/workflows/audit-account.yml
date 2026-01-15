@@ -30,13 +30,16 @@ jobs:
           path: macpro-mdct-tools
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version-file: ".nvmrc"
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set branch_name
         run: |
-          BRANCH_NAME=$(./.github/setBranchName.sh ${{ github.ref_name }})
+          BRANCH_NAME=$(./.github/setBranchName.ts ${{ github.ref_name }})
           echo "branch_name=${BRANCH_NAME}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials for GitHub Actions
@@ -67,9 +70,6 @@ jobs:
       - name: Collect resources from account
         run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
 
-      - name: List active resources created by CI pipeline
-        run: pushd .github && ./auditAccount.sh ci_active resources.json
-
       - name: List orphaned resources created by CI pipeline
         run: pushd .github && ./auditAccount.sh ci_inactive resources.json
 
@@ -88,14 +88,14 @@ jobs:
       - name: Install macpro-mdct-tools dependencies
         run: |
           pushd macpro-mdct-tools/scripts
-          yarn install --frozen-lockfile
+          yarn install --immutable
           popd
 
       - name: Run unmanaged resources scan
         run: |
           set -euo pipefail
           pushd macpro-mdct-tools/scripts
-          npx tsx scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
+          ./scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
           REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | head -n1 || true)
           if [ -n "$REPORT_FILE" ]; then
@@ -110,9 +110,6 @@ jobs:
           #!/bin/bash
           pushd .github
           echo "Reports with no entries will be omitted"
-          CI_ACTIVE="$(./auditAccount.sh ci_active resources.json)"
-          [[ $(jq -r 'length' <<< "${CI_ACTIVE}") -gt 0 ]] && jq -r '(.[0]
-            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_ACTIVE}" > reports/ci_active.csv || :
           CI_INACTIVE="$(./auditAccount.sh ci_inactive resources.json)"
           [[ $(jq -r 'length' <<< "${CI_INACTIVE}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_INACTIVE}" > reports/ci_inactive.csv || :

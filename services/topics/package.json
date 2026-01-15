@@ -2,6 +2,8 @@
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "topics",
   "version": "1.0.0",
+  "packageManager": "yarn@4.12.0",
+  "license": "CC0-1.0",
   "description": "Create mmdl topics in CMS BigMac",
   "author": "",
   "type": "module",
