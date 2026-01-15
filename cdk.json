@@ -1,6 +1,6 @@
 {
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
-  "app": "npx tsx deployment/app.ts",
+  "app": "./deployment/app.ts",
   "requireApproval": "never",
   "output": ".cdk/cdk.out",
   "watch": {

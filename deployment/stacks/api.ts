@@ -10,11 +10,11 @@ import {
   Duration,
   RemovalPolicy,
 } from "aws-cdk-lib";
-import { Lambda } from "../constructs/lambda.js";
-import { WafConstruct } from "../constructs/waf.js";
-import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.js";
-import { isLocalStack } from "../local/util.js";
-import { DynamoDBTable } from "../constructs/dynamodb-table.js";
+import { Lambda } from "../constructs/lambda.ts";
+import { WafConstruct } from "../constructs/waf.ts";
+import { LambdaDynamoEventSource } from "../constructs/lambda-dynamo-event.ts";
+import { isLocalStack } from "../local/util.ts";
+import { DynamoDBTable } from "../constructs/dynamodb-table.ts";
 
 interface CreateApiComponentsProps {
   scope: Construct;

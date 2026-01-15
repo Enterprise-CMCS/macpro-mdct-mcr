@@ -1,4 +1,5 @@
 import {
+  clearPlanMeasureData,
   dataModifications,
   handlePriorAuthorization,
   updatePlanNames,
@@ -85,15 +86,25 @@ const testCases = {
     },
   },
   updatePlansInExemptions: {
+    dataToWrite: {
+      fieldData: {
+        plansExemptFromQualityMeasures: [
+          {
+            key: "plansExemptFromQualityMeasures-mock-plan-1",
+            value: "Exempt Mock Plan 1",
+          },
+          {
+            key: "plansExemptFromQualityMeasures-mock-plan-2",
+            value: "Exempt Mock Plan 2",
+          },
+        ],
+      },
+    },
     reportFieldData: {
-      plansExemptFromQualityMeasures: [
+      plans: [
         {
-          key: "plansExemptFromQualityMeasures-mock-plan-1",
-          value: "Exempt Mock Plan 1",
-        },
-        {
-          key: "plansExemptFromQualityMeasures-mock-plan-2",
-          value: "Exempt Mock Plan 2",
+          id: "mock-plan-1",
+          name: "Mock Plan 1",
         },
       ],
     },
@@ -121,7 +132,7 @@ describe("utils/autosave/dataModifications", () => {
     test("updates MCPAR", () => {
       const input = dataModifications(
         ReportType.MCPAR,
-        testCases.dataToWrite,
+        testCases.updatePlansInExemptions.dataToWrite,
         testCases.updatePlansInExemptions.reportFieldData
       );
 
@@ -310,7 +321,7 @@ describe("utils/autosave/dataModifications", () => {
   describe("updatePlansInExemptions()", () => {
     test("updates plans in plansExemptFromQualityMeasures", () => {
       const input = updatePlansInExemptions(
-        testCases.dataToWrite,
+        testCases.updatePlansInExemptions.dataToWrite,
         testCases.updatePlansInExemptions.reportFieldData
       );
       expect(input).toEqual(testCases.updatePlansInExemptions.expectedResult);
@@ -341,6 +352,40 @@ describe("utils/autosave/dataModifications", () => {
       ];
 
       expect(input).toEqual(expectedResult);
+    });
+  });
+
+  describe("clearPlanMeasureData()", () => {
+    test("clear plan measure data", () => {
+      const mockDataToWrite = {
+        fieldData: {},
+      };
+      const fieldKey = "TEST";
+      const plans = [
+        {
+          id: "mock-plan-1",
+          name: "Mock Plan 1",
+          measures: {
+            "measure-1": {},
+          },
+        },
+      ];
+      const exemptPlans = [
+        { key: `${fieldKey}-${plans[0].id}`, name: plans[0].name },
+      ];
+      clearPlanMeasureData(mockDataToWrite, plans, exemptPlans, fieldKey);
+
+      expect(mockDataToWrite).toEqual({
+        fieldData: {
+          plans: [
+            {
+              id: "mock-plan-1",
+              name: "Mock Plan 1",
+              measures: undefined,
+            },
+          ],
+        },
+      });
     });
   });
 });
