@@ -6,6 +6,7 @@ import { EntityCardTopSection } from "./EntityCardTopSection";
 jest.mock("utils/state/useStore");
 
 const formattedEntityData = {
+  name: "Test Name",
   category: "LTSS-related standard: provider travels to the enrollee",
   methodFrequency: "Annually",
   monitoringMethods: [],
@@ -52,6 +53,6 @@ describe("<EntityCardTopSection />", () => {
       entityCardTopSectionComponent(EntityType.QUALITY_MEASURES)
     );
     const h4Tag = container.querySelector("h4");
-    expect(h4Tag).toContain("D2.VII.1 Measure Name:");
+    expect(h4Tag).toHaveTextContent("D2.VII.2 Measure Name: Test Name");
   });
 });
