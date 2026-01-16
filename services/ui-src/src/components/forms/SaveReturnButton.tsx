@@ -21,8 +21,8 @@ export const SaveReturnButton = ({
     !userIsEndUser
       ? { onClick: disabledOnClick }
       : onClick
-      ? { onClick }
-      : { form: formId! };
+        ? { onClick }
+        : { form: formId! };
 
   const buttonText = !userIsEndUser ? "Return" : "Save & return";
   return (

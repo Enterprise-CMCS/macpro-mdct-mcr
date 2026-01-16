@@ -64,7 +64,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
     "jest-environment-jsdom": "^29.7.0",
-    "prettier": "2.4.1",
+    "oxfmt": "^0.24.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.3",
     "util": "^0.12.5",
