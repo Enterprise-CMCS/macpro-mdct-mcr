@@ -18,7 +18,7 @@
     // the ancient ES5 target. We should set the target to ES2022 for Node 18,
     // but doing so causes problems with Kafka (`Kafka is not a constructor`).
     // Once we address that issue, we can remove the downlevelIteration flag.
-    "downlevelIteration": true,
+    "downlevelIteration": true
   },
   "ts-node": {
     "files": true

@@ -1,17 +1,10 @@
 {
-  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "name": "cli",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
   "license": "CC0-1.0",
   "type": "module",
   "scripts": {
     "build:cli": "tsc"
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.1",
-    "@types/yargs": "^17.0.35",
-    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "^3.946.0",
@@ -19,5 +12,12 @@
     "@aws-sdk/client-sts": "^3.946.0",
     "dotenv": "^17.2.3",
     "yargs": "^18.0.0"
-  }
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/yargs": "^17.0.35",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "yarn@4.12.0",
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there"
 }

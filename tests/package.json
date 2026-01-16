@@ -1,8 +1,9 @@
 {
   "name": "cypress-tests",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
     "start": "cd ../ && ./run local && cd -",
@@ -13,8 +14,10 @@
     "test:e2e-stable": "playwright test --grep-invert \"@flaky\"",
     "test:e2e-stable-ui": "playwright test --ui --grep-invert \"@flaky\""
   },
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "cross-spawn": "^7.0.6",
+    "ws": "^7.5.10"
+  },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@cypress-audit/pa11y": "^1.4.2",
@@ -28,8 +31,5 @@
     "dotenv": "^16.4.7",
     "playwright-core": "^1.57.0"
   },
-  "dependencies": {
-    "cross-spawn": "^7.0.6",
-    "ws": "^7.5.10"
-  }
+  "packageManager": "yarn@4.12.0"
 }
