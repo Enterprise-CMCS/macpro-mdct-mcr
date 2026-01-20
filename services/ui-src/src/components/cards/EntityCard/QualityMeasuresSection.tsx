@@ -117,14 +117,12 @@ const BottomQualityMeasuresSection = ({
       {useLegacyTemplate ? (
         <>
           <Text sx={sx.resultsHeader}>Measure results</Text>
-
           {formattedEntityData?.isPartiallyComplete && (
             <Text sx={sx.missingResponseMessage}>
               {verbiage?.entityMissingResponseMessage ||
                 (printVersion && notAnswered)}
             </Text>
           )}
-
           {formattedEntityData?.perPlanResponses?.map((plan) => (
             <Box
               key={plan.name + plan.response}
@@ -151,6 +149,7 @@ const BottomQualityMeasuresSection = ({
         <>
           <NewBottomQualityMeasuresSection
             formattedEntityData={formattedEntityData}
+            verbiage={verbiage}
             printVersion={printVersion}
             sx={sx}
           />
