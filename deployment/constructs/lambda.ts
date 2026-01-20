@@ -1,7 +1,9 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { Construct } from "constructs";
-import type { NodejsFunctionProps } from "aws-cdk-lib/aws-lambda-nodejs";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import {
+  NodejsFunction,
+  type NodejsFunctionProps,
+} from "aws-cdk-lib/aws-lambda-nodejs";
 import { Duration, RemovalPolicy, aws_s3 as s3 } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
