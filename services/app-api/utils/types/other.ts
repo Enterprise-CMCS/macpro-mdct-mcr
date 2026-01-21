@@ -85,8 +85,6 @@ export interface S3EventRecord {
 
 export enum AlertTypes {
   ERROR = "error",
-  INFO = "info",
-  SUCCESS = "success",
   WARNING = "warning",
 }
 
@@ -210,7 +208,7 @@ const states = [
   "WI",
   "WY",
 ] as const;
-export type State = typeof states[number];
+export type State = (typeof states)[number];
 
 export interface FormTemplate {
   md5Hash: string;

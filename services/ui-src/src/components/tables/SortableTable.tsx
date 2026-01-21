@@ -67,10 +67,13 @@ export const SortableTable = ({
 
   useEffect(() => {
     const relKeys = Object.keys(headerRefs.current);
-    const refLabels = relKeys.reduce((obj, key) => {
-      obj[key] = headerRefs.current[key].textContent || "";
-      return obj;
-    }, {} as { [key: string]: string });
+    const refLabels = relKeys.reduce(
+      (obj, key) => {
+        obj[key] = headerRefs.current[key].textContent || "";
+        return obj;
+      },
+      {} as { [key: string]: string }
+    );
     setHeaderLabels(refLabels);
   }, [headerRefs.current]);
 

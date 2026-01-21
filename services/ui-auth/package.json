@@ -1,18 +1,18 @@
 {
   "name": "ui-auth",
-  "description": "",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
-  "main": "index.js",
+  "description": "",
+  "license": "CC0-1.0",
+  "author": "",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "CC0-1.0",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.946.0",
     "micromatch": "^4.0.8",
     "nanoid": "^3.3.8"
-  }
+  },
+  "packageManager": "yarn@4.12.0"
 }

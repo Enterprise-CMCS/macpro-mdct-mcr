@@ -33,7 +33,8 @@ interface Props {
     id: string | undefined;
     reportType: string | undefined;
     updateReport: Function;
-    fieldData?: AnyObject | undefined;
+    fieldData?: AnyObject;
+    formFields?: AnyObject;
   };
   user: {
     userName: string | undefined;
@@ -95,7 +96,13 @@ export const autosaveFieldData = async ({
   user,
   entityContext,
 }: Props) => {
-  const { id, reportType, updateReport, fieldData: reportFieldData } = report;
+  const {
+    id,
+    reportType,
+    updateReport,
+    fieldData: reportFieldData,
+    formFields,
+  } = report;
   const { userName, state } = user;
   // for each passed field, format for autosave payload (if changed)
   const fieldsToSave: FieldDataTuple[] = await Promise.all(
@@ -147,7 +154,8 @@ export const autosaveFieldData = async ({
       dataToWrite = handlePriorAuthorization(
         dataToWrite,
         reportFieldData,
-        fieldsToSave
+        fieldsToSave,
+        formFields
       );
     }
 

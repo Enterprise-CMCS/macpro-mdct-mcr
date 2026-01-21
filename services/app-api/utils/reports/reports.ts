@@ -113,6 +113,8 @@ export function makePCCMModifications(fieldData: any) {
       value: "Primary Care Case Management (PCCM) Entity",
     },
   ];
+  // delete Program Type other text in case of copyover
+  delete fieldData["program_type-otherText"];
 
   return fieldData;
 }

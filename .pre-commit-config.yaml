@@ -24,20 +24,12 @@ repos:
           - "eslint-plugin-cypress@2.15.2"
           - "eslint-plugin-playwright"
           - "eslint-config-react-app@7.0.1"
-          - "eslint-config-prettier@8.10.0"
-          - "eslint-plugin-prettier@4.2.1"
           - "eslint-plugin-flowtype@8.0.3"
           - "eslint-plugin-import@2.32.0"
           - "eslint-plugin-jsx-a11y@6.10.2"
           - "eslint-plugin-react@7.37.5"
           - "eslint-plugin-react-hooks@4.6.2"
           - "@babel/eslint-parser@7.23.10"
-          - "prettier@2.4.1"
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.4.1
-    hooks:
-      - id: prettier
-        files: '\.[jt]sx?$' # *.js, *.jsx, *.ts and *.tsx
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.1.0
     hooks:
@@ -65,6 +57,11 @@ repos:
       - id: gitleaks
   - repo: local
     hooks:
+      - id: oxfmt
+        name: oxfmt
+        entry: npx oxfmt
+        language: system
+        pass_filenames: false
       - id: branch-name-validation
         name: branch-name-validation
         entry: .github/branchNameValidation.ts

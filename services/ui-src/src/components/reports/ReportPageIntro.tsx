@@ -44,9 +44,9 @@ export const ReportPageIntro = ({
           />
         </Box>
       )}
+      {showAlert && <Alert status={AlertTypes.WARN} description={alert} />}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
       {accordion && <InstructionsAccordion verbiage={accordion} />}
-      {showAlert && <Alert status={AlertTypes.WARNING} description={alert} />}
     </Box>
   );
 };

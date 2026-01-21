@@ -2,7 +2,7 @@
 import { AnyObject, EntityShape, ReportType } from "types";
 import { FieldDataTuple } from "./autosave";
 // utils
-import { deletePlanData } from "utils";
+import { deletePlanData, getFieldsToFilter, routeChecker } from "utils";
 
 export const dataModifications = (
   reportType: string = "",
@@ -22,7 +22,8 @@ export const dataModifications = (
 export const handlePriorAuthorization = (
   dataToWrite: AnyObject,
   reportFieldData: AnyObject = {},
-  fieldsToSave: FieldDataTuple[]
+  fieldsToSave: FieldDataTuple[],
+  formFields?: AnyObject
 ) => {
   // create field data object
   const fieldData = Object.fromEntries(fieldsToSave);
@@ -30,16 +31,30 @@ export const handlePriorAuthorization = (
     ...dataToWrite,
     fieldData,
   };
-  // handle Prior Authorization case
-  let reportingOnPriorAuthorization: boolean = true;
+
+  // handle Prior Authorization and Patient Access API cases
+  let reportingOnPriorAuthOrPatientAccessApi: boolean = true;
+  const reportingOn: string = fieldsToSave[0][0];
+  const notReporting = [
+    "plan_priorAuthorizationReporting",
+    "plan_patientAccessApiReporting",
+  ];
+
   if (
-    fieldsToSave[0][0] === "reportingDataPriorToJune2026" &&
+    notReporting.includes(reportingOn) &&
     fieldsToSave[0][1][0].value !== "Yes"
   ) {
-    reportingOnPriorAuthorization = false;
+    reportingOnPriorAuthOrPatientAccessApi = false;
   }
-  if (!reportingOnPriorAuthorization) {
-    const filteredFieldData = deletePlanData(reportFieldData!["plans"]);
+  if (!reportingOnPriorAuthOrPatientAccessApi) {
+    const planLevelIndicators = formFields?.routes.filter((route: any) =>
+      routeChecker.isPlanLevelIndicatorsPage(route)
+    );
+    const fieldsToFilter = getFieldsToFilter(planLevelIndicators, reportingOn);
+    const filteredFieldData = deletePlanData(
+      reportFieldData.plans,
+      fieldsToFilter
+    );
     updatedDataToWrite = {
       ...updatedDataToWrite,
       fieldData: { ...fieldData, plans: filteredFieldData },

@@ -9,6 +9,7 @@ import {
 // types
 import { ReportType } from "types";
 import { FieldDataTuple } from "./autosave";
+import { mockPlanLevelIndicators } from "utils/forms/deletePlanData.test";
 
 const testCases = {
   dataToWrite: {
@@ -176,7 +177,7 @@ describe("utils/autosave/dataModifications", () => {
           {
             id: "mock-plan-1",
             name: "Mock Plan 1",
-            plan_totalNumberOfStandardPARequests: 1,
+            plan_totalStandardPriorAuthorizationRequestsReceived: 1,
           },
         ],
       },
@@ -186,15 +187,18 @@ describe("utils/autosave/dataModifications", () => {
         {
           id: "mock-plan-1",
           name: "Mock Plan 1",
-          plan_totalNumberOfStandardPARequests: 1,
+          plan_totalStandardPriorAuthorizationRequestsReceived: 1,
         },
       ],
     };
 
     test("allows prior authorization fields", () => {
+      const formFields = {
+        routes: mockPlanLevelIndicators,
+      };
       const fieldsToSave = [
         [
-          "reportingDataPriorToJune2026",
+          "plan_priorAuthorizationReporting",
           [
             {
               key: "mock-choice-yes",
@@ -208,7 +212,7 @@ describe("utils/autosave/dataModifications", () => {
             {
               id: "mock-plan-1",
               name: "Mock Plan 1",
-              plan_totalNumberOfStandardPARequests: 1,
+              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
             },
           ],
         ],
@@ -216,7 +220,8 @@ describe("utils/autosave/dataModifications", () => {
       const input = handlePriorAuthorization(
         dataToWrite,
         reportFieldData,
-        fieldsToSave
+        fieldsToSave,
+        formFields
       );
       const expectedResult = {
         id: "mock-id",
@@ -225,10 +230,10 @@ describe("utils/autosave/dataModifications", () => {
             {
               id: "mock-plan-1",
               name: "Mock Plan 1",
-              plan_totalNumberOfStandardPARequests: 1,
+              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
             },
           ],
-          reportingDataPriorToJune2026: [
+          plan_priorAuthorizationReporting: [
             {
               key: "mock-choice-yes",
               value: "Yes",
@@ -241,9 +246,12 @@ describe("utils/autosave/dataModifications", () => {
     });
 
     test("removes prior authorization fields", () => {
+      const formFields = {
+        routes: mockPlanLevelIndicators,
+      };
       const fieldsToSave = [
         [
-          "reportingDataPriorToJune2026",
+          "plan_priorAuthorizationReporting",
           [
             {
               key: "mock-choice-no",
@@ -257,7 +265,7 @@ describe("utils/autosave/dataModifications", () => {
             {
               id: "mock-plan-1",
               name: "Mock Plan 1",
-              plan_totalNumberOfStandardPARequests: 1,
+              plan_totalStandardPriorAuthorizationRequestsReceived: 1,
             },
           ],
         ],
@@ -265,7 +273,8 @@ describe("utils/autosave/dataModifications", () => {
       const input = handlePriorAuthorization(
         dataToWrite,
         reportFieldData,
-        fieldsToSave
+        fieldsToSave,
+        formFields
       );
       const expectedResult = {
         id: "mock-id",
@@ -276,7 +285,7 @@ describe("utils/autosave/dataModifications", () => {
               name: "Mock Plan 1",
             },
           ],
-          reportingDataPriorToJune2026: [
+          plan_priorAuthorizationReporting: [
             {
               key: "mock-choice-no",
               value: "No",

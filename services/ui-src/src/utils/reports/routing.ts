@@ -76,6 +76,7 @@ export const routeChecker: RouteChecker = {
   isPatientAccessApiPage: isPath(
     "/mcpar/plan-level-indicators/patient-access-api"
   ),
+  isPlanLevelIndicatorsPage: isPath("/mcpar/plan-level-indicators"),
   isPriorAuthorizationPage: isPath(
     "/mcpar/plan-level-indicators/prior-authorization"
   ),

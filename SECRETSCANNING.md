@@ -1,4 +1,5 @@
 <!-- This file is managed by macpro-mdct-core so if you'd like to change it let's do it there -->
+
 # Secret Scanning
 
 Gitleaks is a SAST tool for **detecting** and **preventing** hardcoded secrets like passwords, api keys, and tokens in git repos. Gitleaks is an **easy-to-use, all-in-one solution** for detecting secrets, past or present, in your code.
@@ -11,7 +12,7 @@ Gitleaks can be installed using Homebrew, Docker, or Go. Gitleaks is also availa
 
 ### Windows
 
-Download gitleaks locally from [here](https://github.com/gitleaks/gitleaks) for secret scanning. After downloading, add path of the *gitleaks.exe* to system environment variables so that you can use the *gitleaks* command in command prompt and windows shell.
+Download gitleaks locally from [here](https://github.com/gitleaks/gitleaks) for secret scanning. After downloading, add path of the _gitleaks.exe_ to system environment variables so that you can use the _gitleaks_ command in command prompt and windows shell.
 
 ### Other Operating Systems
 
@@ -71,21 +72,21 @@ Use "gitleaks [command] --help" for more information about a command.
 
 ## Commands
 
-There are two commands you will use to detect secrets;  `detect`  and  `protect`.
+There are two commands you will use to detect secrets; `detect` and `protect`.
 
 #### [Detect](https://github.com/gitleaks/gitleaks#detect)
 
-The  `detect`  command is used to scan repos, directories, and files. This command can be used on developer machines and in CI environments.
+The `detect` command is used to scan repos, directories, and files. This command can be used on developer machines and in CI environments.
 
-When running  `detect`  on a git repository, gitleaks will parse the output of a  `git log -p`  command (you can see how this executed  [here](https://github.com/zricethezav/gitleaks/blob/7240e16769b92d2a1b137c17d6bf9d55a8562899/git/git.go#L17-L25)).  [`git log -p`  generates patches](https://git-scm.com/docs/git-log#_generating_patch_text_with_p)  which gitleaks will use to detect secrets. You can configure what commits  `git log`  will range over by using the  `--log-opts`  flag.  `--log-opts`  accepts any option for  `git log -p`. For example, if you wanted to run gitleaks on a range of commits you could use the following command:  `gitleaks detect --source . --log-opts="--all commitA..commitB"`. See the  `git log`  [documentation](https://git-scm.com/docs/git-log)  for more information.
+When running `detect` on a git repository, gitleaks will parse the output of a `git log -p` command (you can see how this executed [here](https://github.com/zricethezav/gitleaks/blob/7240e16769b92d2a1b137c17d6bf9d55a8562899/git/git.go#L17-L25)). [`git log -p` generates patches](https://git-scm.com/docs/git-log#_generating_patch_text_with_p) which gitleaks will use to detect secrets. You can configure what commits `git log` will range over by using the `--log-opts` flag. `--log-opts` accepts any option for `git log -p`. For example, if you wanted to run gitleaks on a range of commits you could use the following command: `gitleaks detect --source . --log-opts="--all commitA..commitB"`. See the `git log` [documentation](https://git-scm.com/docs/git-log) for more information.
 
-You can scan files and directories by using the  `--no-git`  option.
+You can scan files and directories by using the `--no-git` option.
 
 #### [Protect](https://github.com/gitleaks/gitleaks#protect)
 
-The  `protect`  command is used to scan uncommitted changes in a git repo. This command should be used on developer machines in accordance with  [shifting left on security](https://cloud.google.com/architecture/devops/devops-tech-shifting-left-on-security). When running  `protect`  on a git repository, gitleaks will parse the output of a  `git diff`  command (you can see how this executed  [here](https://github.com/zricethezav/gitleaks/blob/7240e16769b92d2a1b137c17d6bf9d55a8562899/git/git.go#L48-L49)). You can set the  `--staged`  flag to check for changes in commits that have been  `git add`ed. The  `--staged`  flag should be used when running Gitleaks as a pre-commit.
+The `protect` command is used to scan uncommitted changes in a git repo. This command should be used on developer machines in accordance with [shifting left on security](https://cloud.google.com/architecture/devops/devops-tech-shifting-left-on-security). When running `protect` on a git repository, gitleaks will parse the output of a `git diff` command (you can see how this executed [here](https://github.com/zricethezav/gitleaks/blob/7240e16769b92d2a1b137c17d6bf9d55a8562899/git/git.go#L48-L49)). You can set the `--staged` flag to check for changes in commits that have been `git add`ed. The `--staged` flag should be used when running Gitleaks as a pre-commit.
 
-**NOTE**: the  `protect`  command can only be used on git repos, running  `protect`  on files or directories will result in an error message.
+**NOTE**: the `protect` command can only be used on git repos, running `protect` on files or directories will result in an error message.
 
 ## Ignore Configuration
 
@@ -108,7 +109,7 @@ The allowlist feature is useful when you have legitimate files or patterns that 
 
 #### Guide
 
-1. Create a *.gitleaks.toml* file for configuring allow list for the repo
+1. Create a _.gitleaks.toml_ file for configuring allow list for the repo
 2. Below is a config guide having information about supported keyswords and lists in the toml for the allow list
 
 ```
@@ -124,7 +125,7 @@ The allowlist feature is useful when you have legitimate files or patterns that 
 
 ### Gitleaks:Allow
 
-If you are knowingly committing a test secret that gitleaks will catch you can add a  `gitleaks:allow`  comment to that line which will instruct gitleaks to ignore that secret. Ex:
+If you are knowingly committing a test secret that gitleaks will catch you can add a `gitleaks:allow` comment to that line which will instruct gitleaks to ignore that secret. Ex:
 
 ```
 class CustomClass:
@@ -133,7 +134,7 @@ class CustomClass:
 
 #### [](https://github.com/gitleaks/gitleaks#gitleaksignore).gitleaksignore
 
-You can ignore specific findings by creating a  `.gitleaksignore`  file at the root of your repo. In release v8.10.0 Gitleaks added a  `Fingerprint`  value to the Gitleaks report. Each leak, or finding, has a Fingerprint that uniquely identifies a secret. Add this fingerprint to the  `.gitleaksignore`  file to ignore that specific secret. See Gitleaks'  [.gitleaksignore](https://github.com/zricethezav/gitleaks/blob/master/.gitleaksignore)  for an example. Note: this feature is experimental and is subject to change in the future.
+You can ignore specific findings by creating a `.gitleaksignore` file at the root of your repo. In release v8.10.0 Gitleaks added a `Fingerprint` value to the Gitleaks report. Each leak, or finding, has a Fingerprint that uniquely identifies a secret. Add this fingerprint to the `.gitleaksignore` file to ignore that specific secret. See Gitleaks' [.gitleaksignore](https://github.com/zricethezav/gitleaks/blob/master/.gitleaksignore) for an example. Note: this feature is experimental and is subject to change in the future.
 
 # Setup Precommit
 
@@ -155,18 +156,18 @@ In a python project, add the following to your requirements.txt (or requirements
 pre-commit
 ```
 
-As a 0-dependency  [zipapp](https://docs.python.org/3/library/zipapp.html):
+As a 0-dependency [zipapp](https://docs.python.org/3/library/zipapp.html):
 
--   locate and download the  `.pyz`  file from the  [github releases](https://github.com/pre-commit/pre-commit/releases)
--   run  `python pre-commit-#.#.#.pyz ...`  in place of  `pre-commit ...`
+- locate and download the `.pyz` file from the [github releases](https://github.com/pre-commit/pre-commit/releases)
+- run `python pre-commit-#.#.#.pyz ...` in place of `pre-commit ...`
 
-Using  [homebrew](https://brew.sh/):
+Using [homebrew](https://brew.sh/):
 
 ```
 brew  install  pre-commit
 ```
 
-Using  [conda](https://conda.io/)  (via  [conda-forge](https://conda-forge.org/)):
+Using [conda](https://conda.io/) (via [conda-forge](https://conda-forge.org/)):
 
 ```
 conda  install  -c  conda-forge  pre-commit
@@ -176,8 +177,8 @@ conda  install  -c  conda-forge  pre-commit
 
 ### 1. Install pre-commit
 
--   follow the  [install](https://pre-commit.com/#install)  instructions above
--   `pre-commit --version`  should show you what version you're using
+- follow the [install](https://pre-commit.com/#install) instructions above
+- `pre-commit --version` should show you what version you're using
 
 ```
 $ pre-commit --version
@@ -186,11 +187,11 @@ pre-commit 3.3.2
 
 ### 2. Add a pre-commit configuration
 
--   create a file named  `.pre-commit-config.yaml`
--   you can generate a very basic configuration using  [`pre-commit sample-config`](https://pre-commit.com/#pre-commit-sample-config)
--   the full set of options for the configuration are listed  [below](https://pre-commit.com/#plugins)
--   this example uses a formatter for python code, however  `pre-commit`  works for any programming language
--   other  [supported hooks](https://pre-commit.com/hooks.html)  are available
+- create a file named `.pre-commit-config.yaml`
+- you can generate a very basic configuration using [`pre-commit sample-config`](https://pre-commit.com/#pre-commit-sample-config)
+- the full set of options for the configuration are listed [below](https://pre-commit.com/#plugins)
+- this example uses a formatter for python code, however `pre-commit` works for any programming language
+- other [supported hooks](https://pre-commit.com/hooks.html) are available
 
 ```
 repos:
@@ -208,18 +209,18 @@ repos:
 
 ### 3. Install the git hook scripts
 
--   run  `pre-commit install`  to set up the git hook scripts
+- run `pre-commit install` to set up the git hook scripts
 
 ```
 $ pre-commit  install
 pre-commit installed at .git/hooks/pre-commit
 ```
 
--   now  `pre-commit`  will run automatically on  `git commit`!
+- now `pre-commit` will run automatically on `git commit`!
 
 ### 4. (optional) Run against all the files
 
--   it's usually a good idea to run the hooks against all of the files when adding new hooks (usually  `pre-commit`  will only run on the changed files during git hooks)
+- it's usually a good idea to run the hooks against all of the files when adding new hooks (usually `pre-commit` will only run on the changed files during git hooks)
 
 ```
 $ pre-commit run --all-files
@@ -244,8 +245,8 @@ Fixing sample.py
 black....................................................................Passed
 ```
 
--   oops! looks like I had some trailing whitespace
--   consider running that in  [CI](https://pre-commit.com/#usage-in-continuous-integration)  too
+- oops! looks like I had some trailing whitespace
+- consider running that in [CI](https://pre-commit.com/#usage-in-continuous-integration) too
 
 # Test Secret Scanning
 
@@ -284,7 +285,6 @@ Precommit: you need to install the precommit cli
 2.  If you want to test it for failure cases, add a hardcoded key or secret
 
 3.  Commit the changes/ Create a PR (pull request)
-
 
 ## Criteria
 
