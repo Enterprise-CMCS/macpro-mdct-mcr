@@ -152,6 +152,7 @@ function removeIrrelevantData(s3FieldData, s3FormTemplate) {
   let needsToBeUpdated = false;
 
   for (const dataKey of Object.keys(s3FieldData)) {
+    // remove entities that should not exist in PCCM report
     if (
       allMcparEntities.includes(dataKey) &&
       !allowedEntities.includes(dataKey)
@@ -160,6 +161,13 @@ function removeIrrelevantData(s3FieldData, s3FormTemplate) {
       needsToBeUpdated = true;
     }
   }
+
+  // remove copied program type other text since pccm report auto-selects the PCCM option
+  if (s3FieldData["program_type-otherText"]) {
+    delete s3FieldData["program_type-otherText"];
+    needsToBeUpdated = true;
+  }
+
   return needsToBeUpdated;
 }
 

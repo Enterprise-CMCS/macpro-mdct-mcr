@@ -19,6 +19,23 @@ describe("reports.ts", () => {
         ],
       });
     });
+
+    test("Test makePCCMModifications removes other text if copying report", () => {
+      let testFieldData = {
+        "program_type-otherText": "Other text",
+        mockField1: "test does copy",
+      };
+      testFieldData = makePCCMModifications(testFieldData);
+      expect(testFieldData).toEqual({
+        program_type: [
+          {
+            key: "program_type-atiwcA9QUE2eoTchV2ZLtw", // pragma: allowlist secret
+            value: "Primary Care Case Management (PCCM) Entity",
+          },
+        ],
+        mockField1: "test does copy",
+      });
+    });
   });
 
   describe("copyFieldDataFromSource()", () => {
