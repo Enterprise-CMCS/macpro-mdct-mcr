@@ -5,26 +5,16 @@ import {
   adminUserAuth,
   adminUserHeading,
 } from "../../utils/consts";
-import { getBanners } from "../../utils/requests";
+import { formatDate } from "../../utils/date-helpers";
+import { BasePage } from "./base.page";
 
-export class AdminPage {
-  readonly page: Page;
-
+export class AdminPage extends BasePage {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
 
-  // Common navigation and utility methods
-  async goto(url?: string) {
-    if (url) {
-      await this.page.goto(url);
-    } else {
-      await this.page.goto("/");
-    }
-  }
-
-  async redirectPage(url: string) {
-    await this.page.waitForURL(url);
+  get currentBannersSection() {
+    return this.page.locator("text=Current Banner(s)").locator("..");
   }
 
   // There is an intermitten issue in deployed envs where auth tokens appear to expire early
@@ -52,119 +42,87 @@ export class AdminPage {
     }
   }
 
-  // Header/Navigation functionality
-  async manageAccount() {
-    await this.page.getByRole("button", { name: "My Account" }).click();
-    await this.page.getByRole("menu").isVisible();
-    await this.page.getByRole("menuitem", { name: "Manage Account" }).click();
-  }
-
-  async getHelp() {
-    await this.page.getByRole("link", { name: "Get Help" }).click();
-  }
-
-  async logOut() {
-    await this.page.getByRole("button", { name: "My Account" }).click();
-    await this.page.getByRole("menu").isVisible();
-    await this.page.getByRole("menuitem", { name: "Log Out" }).click();
-    await this.page.waitForResponse((response) => response.ok());
-  }
-
-  // Admin Home page functionality
-  async selectMCPAR(state: string) {
+  async navigateToReportDashboard(stateAbbreviation: string) {
+    await this.page.goto("/");
     await this.page
-      .getByRole("combobox", {
-        name: "List of states, including District of Columbia and Puerto Rico",
-      })
-      .selectOption(state);
+      .getByLabel(
+        "List of states, including District of Columbia and Puerto Rico"
+      )
+      .selectOption(stateAbbreviation);
     await this.page
       .getByRole("radio", {
         name: "Managed Care Program Annual Report (MCPAR)",
       })
       .click();
-    await this.goToDashboard();
-  }
 
-  async selectMLR() {
+    const reportsResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
     await this.page
-      .getByRole("radio", {
-        name: "Medicaid Medical Loss Ratio (MLR)",
-      })
+      .getByRole("button", { name: "Go to Report Dashboard" })
       .click();
+    await reportsResponse;
+    // There are times the loading spinner remains after the network request completes
+    await this.page
+      .locator("div")
+      .filter({ hasText: /^Loading\.\.\.$/ })
+      .nth(1)
+      .waitFor({ state: "hidden" });
   }
 
-  async selectNAAAR() {
-    await this.page
-      .getByRole("radio", {
-        name: "Network Adequacy and Access Assurances Report (NAAAR)",
-      })
-      .click();
-  }
+  async archiveMCPAR(programName: string) {
+    const reportRow = await this.getReportRow(programName);
 
-  async goToDashboard() {
-    await this.page
+    const putResponse = this.waitForResponse(
+      "/reports/archive/MCPAR/",
+      "PUT",
+      200
+    );
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await reportRow
       .getByRole("button", {
-        name: "Go to Report Dashboard",
+        name: new RegExp(`Archive ${programName}.*report`),
       })
       .click();
-    await this.page.waitForResponse((response) => response.status() == 200);
+    await Promise.all([putResponse, getResponse]);
   }
 
-  async getRowMCPAR(stateName: string, programName: string) {
-    await this.goto();
-    await this.selectMCPAR(stateName);
-    const table = this.page.getByRole("table");
-    await table.isVisible();
+  async unarchiveMCPAR(programName: string) {
+    const reportRow = await this.getReportRow(programName);
 
-    return table.getByRole("row", { name: programName });
+    const putResponse = this.waitForResponse(
+      "/reports/archive/MCPAR/",
+      "PUT",
+      200
+    );
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await reportRow
+      .getByRole("button", {
+        name: new RegExp(`Unarchive ${programName}.*report`),
+      })
+      .click();
+    await Promise.all([putResponse, getResponse]);
   }
 
-  async archiveMCPAR(stateName: string, programName: string) {
-    const row = await this.getRowMCPAR(stateName, programName);
-    const archiveButton = row.getByRole("button", { name: "Archive" });
-
-    await archiveButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
-    await archiveButton.isHidden();
-    await row.getByRole("button", { name: "Unarchive" }).isVisible();
-  }
-
-  async unarchiveMCPAR(stateName: string, programName: string) {
-    const row = await this.getRowMCPAR(stateName, programName);
-    const unarchiveButton = row.getByRole("button", { name: "Unarchive" });
-
-    await unarchiveButton.click();
-    await this.page.waitForResponse((response) => response.status() == 200);
-    await row.getByRole("button", { name: "Archive" }).isVisible();
-    await unarchiveButton.isHidden();
-  }
-
-  // Profile page functionality
-  async navigateToBannerEditor() {
-    await this.page.getByRole("button", { name: "Banner Editor" }).click();
-    await this.page.waitForURL("**/admin");
-  }
-
-  // Banner page functionality
-  async createAdminBanner(title: string, description: string, startDate: Date) {
-    const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 1);
-    const formattedEndDate = this.formatDate(endDate);
-    const formattedStartDate = this.formatDate(startDate);
-
+  async createAdminBanner(
+    title: string,
+    description: string,
+    startDate: Date,
+    endDate: Date
+  ) {
     await this.page.getByPlaceholder("New banner title").fill(title);
     await this.page
       .getByPlaceholder("New banner description")
       .fill(description);
-    await this.page.getByLabel("Start date").fill(formattedStartDate);
-    await this.page.getByLabel("End date").fill(formattedEndDate);
-    await this.page.getByRole("button", { name: "Create banner" }).click();
-    await this.page.waitForResponse(
-      (response) =>
-        response.status() == 201 && response.request().method() === "POST"
-    );
+    await this.page.getByLabel("Start date").fill(formatDate(startDate));
+    await this.page.getByLabel("End date").fill(formatDate(endDate));
 
-    await this.waitForRequest("/banners", "GET");
+    const postResponse = this.waitForResponse("/banners", "POST", 201);
+    const getResponse = this.waitForResponse("/banners", "GET", 200);
+
+    await this.page.getByRole("button", { name: "Create banner" }).click();
+    await Promise.all([postResponse, getResponse]);
     // Sometimes the spinner is behind the network requests, this check makes the tests more reliable
     const loadingButton = this.page.getByRole("button", { name: "Loading..." });
     if (await loadingButton.isVisible({ timeout: 1000 }).catch(() => false)) {
@@ -172,35 +130,23 @@ export class AdminPage {
     }
   }
 
-  async deleteAdminBanner(title: string) {
-    // Find the specific banner container that contains the title
-    const bannerContainer = this.page.locator(".css-j7qwjs").filter({
-      has: this.page.locator(".chakra-alert__title", { hasText: title }),
+  async deleteAdminBanner(bannerTitle: string) {
+    const bannerContainer = this.page.locator(".chakra-collapse").filter({
+      has: this.page.getByRole("heading", { name: bannerTitle }),
     });
-
-    // Click the delete button for this specific banner
+    await bannerContainer.waitFor({ state: "visible" });
     const deleteButton = bannerContainer.getByRole("button", {
       name: "Delete banner",
     });
+    const deleteResponse = this.waitForResponse("/banners", "DELETE", 200);
+    const getResponse = this.waitForResponse("/banners", "GET", 200);
+    await deleteButton.click({ trial: true });
     await deleteButton.click();
-
-    await this.page.waitForResponse(
-      (response) =>
-        response.status() == 200 && response.request().method() === "DELETE"
-    );
-    // Wait for banners to reload and admin-view loading to disappear
-    await this.waitForRequest("/banners", "GET");
+    await Promise.all([deleteResponse, getResponse]);
+    await this.waitForBannerAdminViewToLoad();
   }
 
-  async waitForRequest(path: string, requestType: string) {
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes(path) &&
-        response.request().method() === requestType &&
-        response.status() == 200
-    );
-
-    // Sometimes the loader still displays after the network request completes
+  async waitForBannerAdminViewToLoad() {
     const adminViewLoadingElement = this.page
       .getByTestId("admin-view")
       .locator("div")
@@ -212,26 +158,8 @@ export class AdminPage {
     }
   }
 
-  async deleteExistingBanners() {
-    await this.waitForRequest("/banners", "GET");
-    let banners = await getBanners();
-
-    while (banners.length > 0) {
-      const bannerCollapse = this.page.locator(".chakra-collapse");
-      const firstDeleteButton = bannerCollapse
-        .getByRole("button", { name: "Delete banner" })
-        .first();
-      await firstDeleteButton.click();
-      await this.waitForRequest("/banners", "DELETE");
-
-      banners = await getBanners();
-    }
-  }
-
-  private formatDate(date: Date): string {
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month}/${day}/${year}`;
+  async getReportRow(programName: string) {
+    const table = this.page.getByRole("table");
+    return table.getByRole("row").filter({ hasText: programName });
   }
 }

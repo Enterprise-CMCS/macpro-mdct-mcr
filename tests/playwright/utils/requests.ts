@@ -1,20 +1,7 @@
 import { request } from "@playwright/test";
-import { adminUserAuth } from "./consts";
+import { adminUserAuth, stateUserAuth } from "./consts";
 import * as aws4 from "aws4";
 import { Banner } from "./types";
-
-/**
- * Determines if the API URL requires SigV4 signing.
- * @returns needsSigning - boolean indicating whether SigV4 signing is needed
- */
-function needsSigV4Signing(): boolean {
-  /*
-   * This is the same check we use in deployment/local/util.ts to determine if we're running against LocalStack.
-   * When running against LocalStack, we do not need to sign requests.
-   */
-  const needsSigning = process.env.CDK_DEFAULT_ACCOUNT !== "000000000000";
-  return needsSigning;
-}
 
 /**
  * Signs headers using AWS SigV4.
@@ -57,7 +44,13 @@ function signHeadersAws4(
     sessionToken: process.env.AWS_SESSION_TOKEN,
   });
 
-  return signedRequest.headers as Record<string, string>;
+  // Convert all header values to strings for Playwright compatibility
+  const stringHeaders: Record<string, string> = {};
+  for (const [key, value] of Object.entries(signedRequest.headers || {})) {
+    stringHeaders[key] = String(value);
+  }
+
+  return stringHeaders;
 }
 
 /**
@@ -65,31 +58,62 @@ function signHeadersAws4(
  * @param method - HTTP method (e.g., "GET", "POST")
  * @param endpoint - API endpoint path
  * @param body - Optional request body for POST/PUT requests
+ * @param storageStatePath - Optional storage state path to extract ID token from
  * @returns The generated headers as a record of key-value pairs.
  */
 function generateRequestHeaders(
   method?: string,
   endpoint?: string,
-  body?: string
+  body?: string,
+  storageStatePath?: string
 ): Record<string, string> {
   const now = new Date();
   const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, "");
+  let idToken = process.env.ID_TOKEN || "";
+
+  // If a different storage state is provided, try to read the ID token from it
+  if (storageStatePath) {
+    const fs = require("fs");
+    const path = require("path");
+    try {
+      const storagePath = path.resolve(storageStatePath);
+      const storageData = JSON.parse(fs.readFileSync(storagePath, "utf8"));
+      // Extract ID token from localStorage in the storage state
+      const localStorage = storageData.origins?.[0]?.localStorage || [];
+
+      // Look specifically for the Cognito ID token with the exact key pattern
+      const idTokenItem = localStorage.find((item: any) =>
+        item.name.endsWith(".idToken")
+      );
+
+      if (idTokenItem) {
+        idToken = idTokenItem.value;
+      }
+    } catch (e) {
+      console.warn(`Could not read ID token from storage state: ${e}`);
+    }
+  }
 
   const baseHeaders = {
     Accept: "*/*",
     "Accept-Language": "en-US,en;q=0.9",
     Origin: process.env.ORIGIN || "",
     Referer: process.env.HREF || "",
-    "x-api-key": process.env.ID_TOKEN || "",
+    "x-api-key": idToken,
     "x-amz-security-token": process.env.AWS_SESSION_TOKEN || "",
     "x-amz-date": amzDate,
   };
 
-  if (!needsSigV4Signing() || !method || !endpoint) {
+  // When running against LocalStack, we do not need to sign requests
+  const isLocalStack = new URL(process.env.API_URL || "").host.includes(
+    "localstack"
+  );
+
+  if (isLocalStack) {
     return baseHeaders;
-  } else {
-    return signHeadersAws4(baseHeaders, endpoint, method, body);
   }
+
+  return signHeadersAws4(baseHeaders, endpoint || "", method, body);
 }
 
 /**
@@ -97,21 +121,38 @@ function generateRequestHeaders(
  * @param method - HTTP method (e.g., "GET", "POST")
  * @param path - API endpoint path
  * @param body - Optional request body for POST/PUT requests
+ * @param storageStatePath - Optional storage state path (defaults to adminUserAuth)
  * @returns The response from the API request.
  */
 async function authenticatedRequest(
   method: "GET" | "POST" | "PUT" | "DELETE",
   path: string,
-  body?: any
+  body?: any,
+  storageStatePath?: string
 ): Promise<any> {
   const endpoint = process.env.API_URL + path;
-  const headers = generateRequestHeaders(method, endpoint, body);
+
+  const bodyString =
+    (method === "POST" || method === "PUT") && body
+      ? JSON.stringify(body)
+      : undefined;
+
+  const headers = generateRequestHeaders(
+    method,
+    endpoint,
+    bodyString,
+    storageStatePath
+  );
 
   const apiContext = await request.newContext({
-    storageState: adminUserAuth,
+    storageState: storageStatePath || adminUserAuth,
     extraHTTPHeaders: headers,
   });
-  const requestOptions: any = { headers };
+
+  const requestOptions: any = {
+    headers,
+    ...(bodyString !== undefined && { data: bodyString }),
+  };
 
   let response;
   switch (method) {
@@ -141,12 +182,85 @@ async function authenticatedRequest(
     );
   }
 
-  const responseData = await response.json();
+  const responseData = method === "DELETE" ? null : await response.json();
   await apiContext.dispose();
   return responseData;
 }
 
+/**
+ *
+ * Fetches all banners from the API
+ * @returns an array of banners
+ */
 export async function getBanners(): Promise<Banner[]> {
   const banners = await authenticatedRequest("GET", "/banners");
   return banners as Banner[];
+}
+
+export async function postBanner(
+  banner: Omit<Banner, "key" | "createdAt" | "lastAltered">
+): Promise<void> {
+  await authenticatedRequest("POST", "/banners", banner);
+}
+
+/**
+ *
+ * Deletes a banner by its ID
+ * @param bannerId
+ */
+async function deleteBanner(bannerId: string): Promise<void> {
+  await authenticatedRequest("DELETE", `/banners/${bannerId}`);
+}
+
+/**
+ * Deletes all existing banners from the API
+ */
+export async function deleteAllBanners(): Promise<void> {
+  const banners = await getBanners();
+  for (const banner of banners) {
+    await deleteBanner(banner.key);
+  }
+}
+
+export async function postMCPARReport(
+  reportData: any,
+  stateAbbreviation: string
+): Promise<void> {
+  await authenticatedRequest(
+    "POST",
+    `/reports/MCPAR/${stateAbbreviation}`,
+    reportData,
+    stateUserAuth
+  );
+}
+
+export async function getAllReportsForState(
+  stateAbbreviation: string
+): Promise<any[]> {
+  const reports = await authenticatedRequest(
+    "GET",
+    `/reports/MCPAR/${stateAbbreviation}`
+  );
+  return reports as any[];
+}
+
+export async function archiveReport(
+  stateAbbreviation: string,
+  reportId: string
+): Promise<void> {
+  await authenticatedRequest(
+    "PUT",
+    `/reports/archive/MCPAR/${stateAbbreviation}/${reportId}`
+  );
+}
+
+export async function archiveAllReportsForState(
+  stateAbbreviation: string
+): Promise<void> {
+  const allReports = await getAllReportsForState(stateAbbreviation);
+  const reportsToArchive = allReports.filter((report) => !report.archived);
+
+  for (const report of reportsToArchive) {
+    await archiveReport(stateAbbreviation, report.id);
+  }
 }

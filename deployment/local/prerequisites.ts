@@ -4,10 +4,10 @@ import {
   App,
   SecretValue,
   Stack,
-  StackProps,
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_secretsmanager as secretsmanager,
+  type StackProps,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 

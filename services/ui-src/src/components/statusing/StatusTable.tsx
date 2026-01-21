@@ -123,8 +123,8 @@ const TableRow = ({ page, depth }: RowProps) => {
               ? "1.5rem"
               : "spacer1"
             : isMobile
-            ? "1rem"
-            : "spacer1"
+              ? "1rem"
+              : "spacer1"
         }
       >
         <StatusIcon

@@ -1,8 +1,7 @@
 {
   "name": "ui-src",
-  "description": "",
   "version": "1.0.0",
-  "packageManager": "yarn@4.12.0",
+  "description": "",
   "license": "CC0-1.0",
   "scripts": {
     "start": "vite",
@@ -39,7 +38,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.54.2",
     "react-icons": "^4.12.0",
-    "react-router": "7.9.5",
+    "react-router": "7.12.0",
     "react-uuid": "^1.0.3",
     "sass": "^1.83.4",
     "yup": "^0.32.11",
@@ -79,55 +78,6 @@
     "json5": "2.2.3",
     "proxy-agent": "^6.3.0"
   },
-  "jest": {
-    "coverageReporters": [
-      "json",
-      [
-        "lcov",
-        {
-          "projectRoot": "../../"
-        }
-      ],
-      "text",
-      "text-summary"
-    ],
-    "collectCoverageFrom": [
-      "src/components/**/*.{ts,tsx}",
-      "!src/components/index.ts*",
-      "src/routes/**/*.{ts,tsx}",
-      "!src/routes/index.tsx",
-      "!src/types/index.ts*",
-      "src/utils/**/*.{ts,tsx}",
-      "!src/utils/testing/*",
-      "!src/utils/index.ts*",
-      "!src/utils/**/index.ts*"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ],
-    "transform": {
-      "\\.[jt]sx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
-    ],
-    "verbose": true,
-    "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
-      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts"
-    },
-    "setupFiles": [
-      "jest-launchdarkly-mock"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/utils/testing/setupJest.tsx"
-    ],
-    "globals": {
-      "_env_": {}
-    },
-    "testEnvironment": "<rootDir>/src/utils/testing/testEnv.js"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -139,5 +89,55 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/components/**/*.{ts,tsx}",
+      "!src/components/index.ts*",
+      "src/routes/**/*.{ts,tsx}",
+      "!src/routes/index.tsx",
+      "!src/types/index.ts*",
+      "src/utils/**/*.{ts,tsx}",
+      "!src/utils/testing/*",
+      "!src/utils/index.ts*",
+      "!src/utils/**/index.ts*"
+    ],
+    "coverageReporters": [
+      "json",
+      [
+        "lcov",
+        {
+          "projectRoot": "../../"
+        }
+      ],
+      "text",
+      "text-summary"
+    ],
+    "globals": {
+      "_env_": {}
+    },
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|webp|svg|mp4|webm|wav|mp3|m4a)$": "<rootDir>/src/utils/testing/mockAsset.ts",
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "jest-launchdarkly-mock"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/utils/testing/setupJest.tsx"
+    ],
+    "testEnvironment": "<rootDir>/src/utils/testing/testEnv.js",
+    "transform": {
+      "\\.[jt]sx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
+    ],
+    "verbose": true
+  },
+  "packageManager": "yarn@4.12.0"
 }

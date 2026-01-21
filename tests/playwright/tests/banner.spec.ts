@@ -1,11 +1,14 @@
 import { expect, test } from "./fixtures/base";
+import { deleteAllBanners, postBanner } from "../utils/requests";
+import { bannerToDelete, bannerToCreate } from "../utils/consts";
+import { formatDate } from "../utils/date-helpers";
 
 test.describe("admin user banner page", () => {
   test.beforeEach(async ({ adminPage }) => {
-    await adminPage.goto("/admin");
+    await deleteAllBanners();
+    await adminPage.page.goto("/admin");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForRequest("/banners", "GET");
-    await adminPage.deleteExistingBanners();
+    await adminPage.waitForResponse("/banners", "GET", 200);
   });
 
   test("Should see the correct banner page as an admin user", async ({
@@ -19,50 +22,49 @@ test.describe("admin user banner page", () => {
   test("Should be able to create banner as an admin user", async ({
     adminPage,
   }) => {
-    const startDate = generateRandomDate();
     await adminPage.createAdminBanner(
-      "Create Banner Test",
-      "Create Banner Description",
-      startDate
+      bannerToCreate.title,
+      bannerToCreate.description,
+      bannerToCreate.startDate,
+      bannerToCreate.endDate
     );
-    const formattedStartDate = formatDate(startDate);
-    const bannerSection = adminPage.page
-      .locator("text=Current Banner(s)")
-      .locator("..");
     await expect(
-      bannerSection.getByText("Create Banner Test", { exact: true })
-    ).toBeVisible();
-    await expect(
-      bannerSection.getByText("Create Banner Description", {
+      adminPage.currentBannersSection.getByText(bannerToCreate.title, {
         exact: true,
       })
     ).toBeVisible();
     await expect(
-      bannerSection.getByText(formattedStartDate, { exact: true })
+      adminPage.currentBannersSection.getByText(bannerToCreate.description, {
+        exact: true,
+      })
     ).toBeVisible();
     await expect(
-      bannerSection.getByRole("button", { name: "Delete banner" })
+      adminPage.currentBannersSection.getByText(
+        formatDate(bannerToCreate.startDate),
+        { exact: true }
+      )
+    ).toBeVisible();
+    await expect(
+      adminPage.currentBannersSection.getByRole("button", {
+        name: "Delete banner",
+      })
     ).toBeVisible();
   });
 
   test("Should be able to delete banner as an admin user", async ({
     adminPage,
   }) => {
-    const startDate = generateRandomDate();
-    await adminPage.createAdminBanner(
-      "Delete Banner Test",
-      "Delete Banner Description",
-      startDate
-    );
-    await adminPage.deleteAdminBanner("Delete Banner Test");
-    const bannerSection = adminPage.page
-      .locator("text=Current Banner(s)")
-      .locator("..");
+    await postBanner(bannerToDelete);
+    await adminPage.page.reload();
+    await adminPage.waitForResponse("/banners", "GET", 200);
+    await adminPage.deleteAdminBanner(bannerToDelete.title);
     await expect(
-      bannerSection.getByText("Delete Banner Test", { exact: true })
+      adminPage.currentBannersSection.getByText(bannerToDelete.title, {
+        exact: true,
+      })
     ).not.toBeVisible();
     await expect(
-      bannerSection.getByText("Delete Banner Description", {
+      adminPage.currentBannersSection.getByText(bannerToDelete.description, {
         exact: true,
       })
     ).not.toBeVisible();
@@ -71,8 +73,8 @@ test.describe("admin user banner page", () => {
   test("Should not be able to edit a banner as a state user", async ({
     statePage,
   }) => {
-    await statePage.goto("/admin");
-    await statePage.redirectPage("/profile");
+    await statePage.page.goto("/admin");
+    await statePage.page.waitForURL("/profile");
     await expect(
       statePage.page.getByRole("heading", { name: "My Account" })
     ).toBeVisible();
@@ -81,17 +83,3 @@ test.describe("admin user banner page", () => {
     ).not.toBeVisible();
   });
 });
-
-function generateRandomDate() {
-  const randomDaysFromNow = Math.floor(Math.random() * 90) + 1;
-  const randomDate = new Date();
-  randomDate.setDate(randomDate.getDate() + randomDaysFromNow);
-  return randomDate;
-}
-
-function formatDate(date: Date): string {
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  const year = date.getFullYear();
-  return `${month}/${day}/${year}`;
-}

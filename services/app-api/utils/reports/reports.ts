@@ -44,12 +44,16 @@ export async function copyFieldDataFromSource(
   const rootFieldsToCopy = new Set(
     fieldsToCopy.root.filter((f: string) => allowableFieldIds.includes(f))
   );
+  const entitiesToCopy = Object.keys(formTemplate.entities);
 
   for (const [rootKey, rootValue] of Object.entries(sourceFieldData)) {
     if (rootFieldsToCopy.has(rootKey)) {
       // If this is a root field, copy it directly
       validatedFieldData[rootKey] = rootValue;
-    } else if (Array.isArray(fieldsToCopy[rootKey])) {
+    } else if (
+      Array.isArray(fieldsToCopy[rootKey]) &&
+      entitiesToCopy.includes(rootKey)
+    ) {
       // If this is an entity array, copy each entity
       const entityFieldsToCopy = new Set<string>(
         fieldsToCopy[rootKey].filter((f: string) =>
@@ -92,6 +96,8 @@ export function makePCCMModifications(fieldData: any) {
       value: "Primary Care Case Management (PCCM) Entity",
     },
   ];
+  // delete Program Type other text in case of copyover
+  delete fieldData["program_type-otherText"];
 
   return fieldData;
 }
