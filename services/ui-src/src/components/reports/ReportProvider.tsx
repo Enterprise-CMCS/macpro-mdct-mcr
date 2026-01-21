@@ -177,10 +177,8 @@ export const ReportProvider = ({ children }: Props) => {
   }, [reportsByState]);
 
   useEffect(() => {
-    const flatRoutes = report?.formTemplate.flatRoutes ?? [];
     const isReportPage =
-      pathname.includes("export") ||
-      flatRoutes.some((route) => route.path === pathname);
+      pathname.includes("/export/") || pathname.includes("/report/");
 
     setIsReportPage(isReportPage);
   }, [pathname, report?.formTemplate.flatRoutes]);

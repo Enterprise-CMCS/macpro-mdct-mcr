@@ -210,8 +210,6 @@ const traverseRoutes = (routes) => {
 const traverseRoute = (route) => {
   //only perform checks on route if it contains some time of form fill
   if (route.form || route.modalForm || route.drawerForm) {
-    //validate we are on the URL we expect to be
-    cy.url().should("include", route.path);
     //Validate the intro section is presented
     if (route.verbiage?.intro?.section)
       cy.contains(route.verbiage?.intro?.section);

@@ -22,7 +22,6 @@ export const MobileDashboardTable = ({
   enterSelectedReport,
   archiveReport,
   archiving,
-  entering,
   releaseReport,
   releasing,
   isStateLevelUser,
@@ -88,7 +87,6 @@ export const MobileDashboardTable = ({
               reportType={reportType}
               reportId={reportId}
               isStateLevelUser={isStateLevelUser}
-              entering={entering}
               enterSelectedReport={enterSelectedReport}
             />
           </Box>

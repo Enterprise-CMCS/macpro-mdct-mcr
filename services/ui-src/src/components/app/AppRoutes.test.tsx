@@ -8,6 +8,7 @@ import { UserProvider, useStore } from "utils";
 import {
   mockAdminUserStore,
   mockBannerStore,
+  mockMcparReport,
   mockMcparReportContext,
   mockMcparReportStore,
   mockMlrReportStore,
@@ -19,6 +20,13 @@ import notFoundVerbiage from "verbiage/pages/not-found";
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+
+const mockGetReport = jest.fn();
+jest.mock("utils/api/requestMethods/report", () => ({
+  getReport: mockGetReport,
+}));
+
+mockMcparReportContext.fetchReport.mockReturnValue(mockMcparReportStore.report);
 
 const appRoutesComponent = (history: any, isReportPage: boolean = false) => (
   <ReportContext.Provider
@@ -169,10 +177,19 @@ describe("<AppRoutes />", () => {
       expect(screen.getByRole("main").id).toBe("main-content");
     });
 
-    test("container should be div element for report page", () => {
+    test("container should be div element for report page", async () => {
+      mockGetReport.mockReturnValueOnce(mockMcparReport);
+      mockedUseStore.mockReturnValue({
+        ...mockStateUserStore,
+        ...mockBannerStore,
+        ...mockMcparReportStore,
+      });
       history = createMemoryHistory();
-      history.push("/mock/mock-route-1");
-      render(appRoutesComponent(history, true));
+      history.push("/report/MCPAR/MN/mockReportId/mock-route-1");
+
+      await act(async () => {
+        await render(appRoutesComponent(history, true));
+      });
       expect(screen.getByTestId("main-content").tagName).toBe("DIV");
       expect(screen.getByRole("main").id).toBe("report-content");
     });
