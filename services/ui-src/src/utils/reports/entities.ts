@@ -29,6 +29,9 @@ const getCheckboxValues = (
   customLabel?: string
 ) => {
   return entity?.[label]?.map((method: AnyObject) => {
+    if (label === "measure_activities") {
+      return ` ${method.value}`;
+    }
     if (method.value === "Custom method") {
       return `Custom method - ${entity?.[`${label}-otherText`]}`;
     }

@@ -17,6 +17,7 @@ export const NewTopQualityMeasuresSection = ({
     }
     return "No, it uses neither CMIT or CBE";
   };
+
   return (
     <>
       <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
@@ -58,7 +59,7 @@ export const NewTopQualityMeasuresSection = ({
           printVersion ? "D2.VII.5 " : ""
         }Activities the quality measure is used in`}
       </Text>
-      <Text sx={sx.subtext}>{formattedEntityData.activities}</Text>
+      <Text sx={sx.subtext}>{formattedEntityData.activities?.toString()}</Text>
     </>
   );
 };
