@@ -360,6 +360,9 @@ export const filterFormTemplateRoutes = (
   routesToRemove: string[],
   entitiesToRemove: string[]
 ) => {
+  const emptyParentRoute = (route: ReportRoute) =>
+    route.children && route.children.length === 0;
+
   const filterRoutesByName = (
     routes: ReportRoute[],
     routesToRemove: string[]
@@ -371,7 +374,8 @@ export const filterFormTemplateRoutes = (
         }
         return route;
       })
-      .filter((route) => !routesToRemove.includes(route.name));
+      .filter((route) => !routesToRemove.includes(route.name))
+      .filter((route) => !emptyParentRoute(route));
   };
 
   const filterEntitiesByName = (
@@ -384,7 +388,10 @@ export const filterFormTemplateRoutes = (
   };
 
   const reportTemplate = structuredClone(originalReportTemplate);
-  filterRoutesByName(reportTemplate.routes, routesToRemove);
+  reportTemplate.routes = filterRoutesByName(
+    reportTemplate.routes,
+    routesToRemove
+  );
   filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
   return reportTemplate;
 };

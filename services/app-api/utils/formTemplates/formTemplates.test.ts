@@ -508,3 +508,60 @@ describe("errors", () => {
     });
   });
 });
+
+describe("filterFormTemplateRoutes()", () => {
+  test("filters routes and entities", () => {
+    const mockReportTemplate = {
+      ...mockReportJson,
+      entities: {
+        mockEntity1: {
+          required: true,
+        },
+        mockEntity2: {
+          required: true,
+        },
+      },
+    };
+    const filteredTemplate = filterFormTemplateRoutes(
+      mockReportTemplate,
+      ["mock-route-3"],
+      ["mockEntity2"]
+    );
+
+    expect(filteredTemplate.routes.length).toEqual(
+      mockReportTemplate.routes.length - 1
+    );
+    expect(filteredTemplate.entities).toEqual({
+      mockEntity1: {
+        required: true,
+      },
+    });
+  });
+
+  test("filters parent route if all children removed", () => {
+    const mockReportTemplate = {
+      ...mockReportJson,
+      entities: {
+        mockEntity1: {
+          required: true,
+        },
+      },
+    };
+
+    const parentRouteName = "mock-route-2";
+    const childRoutes = ["mock-route-2a", "mock-route-2b"];
+
+    const filteredTemplate = filterFormTemplateRoutes(
+      mockReportTemplate,
+      childRoutes,
+      [""]
+    );
+
+    expect(filteredTemplate.routes.length).toEqual(
+      mockReportTemplate.routes.length - 1
+    );
+    expect(
+      filteredTemplate.routes.find((route) => route.name === parentRouteName)
+    ).toBeUndefined();
+  });
+});
