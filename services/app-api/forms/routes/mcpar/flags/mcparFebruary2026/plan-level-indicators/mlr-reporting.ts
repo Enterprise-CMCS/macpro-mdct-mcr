@@ -6,15 +6,15 @@ import {
   ValidationType,
 } from "../../../../../../utils/types";
 
-export const financialPerformanceRoute: DrawerFormRoute = {
-  name: "II: Financial Performance",
-  path: "/mcpar/plan-level-indicators/financial-performance",
+export const mlrReportingRoute: DrawerFormRoute = {
+  name: "II: MLR Reporting",
+  path: "/mcpar/plan-level-indicators/mlr-reporting",
   pageType: PageTypes.DRAWER,
   entityType: EntityType.PLANS,
   verbiage: {
     intro: {
       section: "Section D: Plan-Level Indicators",
-      subsection: "Topic II. Financial Performance",
+      subsection: "Topic II: Medical Loss Ratio (MLR) Reporting",
       spreadsheet: "D1_Plan_Set",
     },
     dashboardTitle: "Report financial performance for each plan",
@@ -48,7 +48,7 @@ export const financialPerformanceRoute: DrawerFormRoute = {
         validation: ValidationType.RADIO,
         props: {
           label: "D1.II.1 MLR Data Received",
-          hint: "Has the state received the final MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
+          hint: "Has the state received the MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
           choices: [
             {
               id: "xY7zW9vU3tS1rQ5pO8nM2k",

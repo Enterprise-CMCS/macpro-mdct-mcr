@@ -5,14 +5,14 @@ import {
   ValidationType,
 } from "../../../../../../utils/types";
 
-export const mlrRoute: FormRoute = {
-  name: "II: MLR",
-  path: "/mcpar/program-level-indicators/mlr",
+export const mlrReportingRoute: FormRoute = {
+  name: "II: MLR Reporting",
+  path: "/mcpar/program-level-indicators/mlr-reporting",
   pageType: PageTypes.STANDARD,
   verbiage: {
     intro: {
       section: "Section C: Program-Level Indicators",
-      subsection: "Topic II: MLR",
+      subsection: "Topic II: Medical Loss Ratio (MLR) Reporting",
       spreadsheet: "C1_Program_Set",
     },
   },
@@ -34,7 +34,7 @@ export const mlrRoute: FormRoute = {
         validation: ValidationType.DATE,
         props: {
           label: "C1.II.2 Most Recent MLR Reporting Period",
-          hint: "Please report the beginning date of that report.",
+          hint: "Please report the beginning date of that MLR reporting period.",
           timetype: "startDate",
         },
       },
@@ -46,7 +46,7 @@ export const mlrRoute: FormRoute = {
           dependentFieldName: "program_mlrReportingPeriodStartDate",
         },
         props: {
-          hint: "Please report the end date of that report.",
+          hint: "Please report the end date of that MLR reporting period.",
           timetype: "endDate",
         },
       },
