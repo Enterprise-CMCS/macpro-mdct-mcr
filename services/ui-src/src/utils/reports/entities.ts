@@ -14,7 +14,6 @@ import {
   translate,
 } from "utils";
 import { getFormattedPlanData } from "./entities.plans";
-import { useFlags } from "launchdarkly-react-client-sdk";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -127,9 +126,9 @@ export const getFormattedEntityData = (
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
-  // LaunchDarkly
-  const newQualityMeasuresSectionEnabled =
-    useFlags()?.newQualityMeasuresSectionEnabled;
+  // Check which template version is being used based on data
+  const isLegacyTemplate =
+    entityType === EntityType.QUALITY_MEASURES && entity?.measure_name;
 
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
@@ -181,7 +180,7 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      if (newQualityMeasuresSectionEnabled) {
+      if (isLegacyTemplate) {
         const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
         const noCbe =
           entity?.measure_identifier?.[0].value ===

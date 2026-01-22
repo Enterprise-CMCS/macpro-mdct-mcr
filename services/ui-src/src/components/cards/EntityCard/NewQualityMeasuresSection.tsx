@@ -142,7 +142,6 @@ interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
   sx: SxObject;
-  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 interface TopProps extends BaseProps {

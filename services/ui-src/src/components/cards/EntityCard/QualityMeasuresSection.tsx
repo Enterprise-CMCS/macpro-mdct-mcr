@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
-// types
-import { AnyObject, SxObject } from "types";
+// components
 import {
   NewBottomQualityMeasuresSection,
   NewTopQualityMeasuresSection,
 } from "./NewQualityMeasuresSection";
+// types
+import { AnyObject, SxObject } from "types";
 
 // Helper to detect which template version the data uses based on data storage structure
 const detectTemplateVersion = (data: FormattedEntityData): "legacy" | "new" => {
@@ -221,6 +222,7 @@ interface FormattedEntityData {
   activities?: string;
   measureResults?: AnyObject[];
 }
+
 interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
