@@ -707,11 +707,14 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
 };
 
 const createQualityMeasure = (planIds: string[]) => {
-  const measureResults = planIds.reduce((results, planId) => {
-    results[`qualityMeasure_plan_measureResults_${planId}`] =
-      faker.lorem.sentence();
-    return results;
-  }, {} as Record<string, string>);
+  const measureResults = planIds.reduce(
+    (results, planId) => {
+      results[`qualityMeasure_plan_measureResults_${planId}`] =
+        faker.lorem.sentence();
+      return results;
+    },
+    {} as Record<string, string>
+  );
 
   return {
     id: crypto.randomUUID(),

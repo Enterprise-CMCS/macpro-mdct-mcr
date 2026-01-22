@@ -1,5 +1,5 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-import type { Argv } from "yargs";
+import { type Argv } from "yargs";
 import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { project, region } from "../lib/consts.ts";
 import { getCloudFormationStackOutputValues } from "../lib/utils.ts";

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import "source-map-support/register.js";
-import type { StackProps } from "aws-cdk-lib";
 import {
   App,
   SecretValue,
@@ -8,6 +7,7 @@ import {
   aws_ec2 as ec2,
   aws_iam as iam,
   aws_secretsmanager as secretsmanager,
+  type StackProps,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 

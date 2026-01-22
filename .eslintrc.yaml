@@ -20,8 +20,7 @@ extends:
 
 rules:
   no-const-assign: error
-  no-duplicate-imports: off
-  "@typescript-eslint/no-duplicate-imports": error
+  no-duplicate-imports: error
   no-unreachable: error
   no-unused-vars: off
   "@typescript-eslint/no-unused-vars":

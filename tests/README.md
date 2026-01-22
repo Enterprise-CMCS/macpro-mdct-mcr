@@ -18,17 +18,20 @@
 `cypress.config.js` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
 
 ## Writing tests
+
 - JavaScript
   - uses extension `*.cy.js` located in `e2e` directory
 
 Relevant Documentation
+
 - [Cypress Documentation](https://docs.cypress.io/)
 
 ## Running tests
-To run cypress tests locally you will go to the root of the project and you'll need an upadated .env with variables for the state user and admin user passwords. To accomplish this ther are multiple options. 
 
-1. If you have a 1Password account and 1Password CLI installed locally you can run 
-`./run update-env` to pull values from 1Password and create an updated .env
+To run cypress tests locally you will go to the root of the project and you'll need an upadated .env with variables for the state user and admin user passwords. To accomplish this ther are multiple options.
+
+1. If you have a 1Password account and 1Password CLI installed locally you can run
+   `./run update-env` to pull values from 1Password and create an updated .env
 
 2. If you do not have a 1Password account you can copy the contents of the `.env.tpl` file to a `.env` file at the top level of the repo and reach out to the team for appropriate values to be populated by hand.
 

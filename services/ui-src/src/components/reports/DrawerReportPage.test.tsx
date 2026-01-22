@@ -534,16 +534,14 @@ describe("<DrawerReportPage />", () => {
         expect(customTitleField).toBeVisible();
         await act(async () => {
           await userEvent.type(customTitleField, "New analysis method");
-          const customDescriptionField = await screen.getByLabelText(
-            "description"
-          );
+          const customDescriptionField =
+            await screen.getByLabelText("description");
           await userEvent.type(
             customDescriptionField,
             "New analysis description"
           );
-          const customFrequencyRadioButton = await screen.getByLabelText(
-            "Weekly"
-          );
+          const customFrequencyRadioButton =
+            await screen.getByLabelText("Weekly");
           await userEvent.click(customFrequencyRadioButton);
           const saveCustomMethod = screen.getByText("Save & close");
           await userEvent.click(saveCustomMethod);

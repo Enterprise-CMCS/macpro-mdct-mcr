@@ -111,8 +111,7 @@ export interface EntityDetailsMultiformShape {
   verbiage?: EntityDetailsMultiformVerbiage;
 }
 
-export interface EntityDetailsTableVerbiage
-  extends EntityDetailsMultiformVerbiage {
+export interface EntityDetailsTableVerbiage extends EntityDetailsMultiformVerbiage {
   totals?: {
     exceptions?: string;
     nonCompliant?: string;
@@ -219,8 +218,7 @@ export interface DrawerReportPageVerbiage extends ReportPageVerbiage {
   missingPlansAndIlosMessage?: CustomHtmlElement[];
 }
 
-export interface ModalDrawerReportPageVerbiage
-  extends DrawerReportPageVerbiage {
+export interface ModalDrawerReportPageVerbiage extends DrawerReportPageVerbiage {
   addEntityButtonText: string;
   missingReportingPeriodMessage: string;
   editEntityButtonText: string;
