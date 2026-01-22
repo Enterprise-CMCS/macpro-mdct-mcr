@@ -163,7 +163,7 @@ function removeIrrelevantData(s3FieldData, s3FormTemplate) {
   }
 
   // remove copied program type other text since pccm report auto-selects the PCCM option
-  if (s3FieldData["program_type-otherText"]) {
+  if ("program_type-otherText" in s3FieldData) {
     delete s3FieldData["program_type-otherText"];
     needsToBeUpdated = true;
   }
