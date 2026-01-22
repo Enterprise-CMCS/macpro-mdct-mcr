@@ -1,7 +1,6 @@
 // components
 import { Box, Heading } from "@chakra-ui/react";
 import { Alert } from "components";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // types
 import { AlertTypes, CustomHtmlElement, ReportPageVerbiage } from "types";
 // utils
@@ -19,9 +18,11 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
   const introContent = infoHeader && infoHeader.content;
 
-  // LaunchDarkly
-  const newQualityMeasuresSectionEnabled =
-    useFlags()?.newQualityMeasuresSectionEnabled;
+  // Check which template version is being used based on verbiage contents
+  const isNewQualityMeasuresSection = Object.hasOwn(
+    verbiage as Object,
+    "enterReportText"
+  );
   const isQualityMeasuresResultsPage = introContent === "Measures and results";
 
   const introHeaderRender = (infoHeader: any, introContent: any) => {
@@ -55,14 +56,13 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
                 : parseCustomHtml(sectionInfo)}
             </Box>
             <Box sx={sx.instructions}>
-              {newQualityMeasuresSectionEnabled &&
-                isQualityMeasuresResultsPage && (
-                  <>
-                    {parseCustomHtml(
-                      accordion.MCPAR.formIntro.intro as CustomHtmlElement[]
-                    )}
-                  </>
-                )}
+              {isNewQualityMeasuresSection && isQualityMeasuresResultsPage && (
+                <>
+                  {parseCustomHtml(
+                    accordion.MCPAR.formIntro.intro as CustomHtmlElement[]
+                  )}
+                </>
+              )}
             </Box>
           </>
         )}

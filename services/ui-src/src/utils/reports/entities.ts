@@ -261,7 +261,7 @@ export const getAddEditDrawerText = (
       }
       break;
     case EntityType.QUALITY_MEASURES:
-      if (formattedEntityData.perPlanResponses?.[0].response) {
+      if (formattedEntityData.perPlanResponses?.[0]?.response) {
         addEditDrawerText = "Edit";
       }
       break;
