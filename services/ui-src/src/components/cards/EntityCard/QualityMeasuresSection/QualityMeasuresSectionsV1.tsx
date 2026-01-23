@@ -1,227 +1,116 @@
 import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // components
-import {
-  TopQualityMeasuresSectionV2,
-  BottomQualityMeasuresSectionV2,
-} from "./QualityMeasuresSectionsV2";
+import { FormattedEntityData } from "./QualityMeasuresSection";
 // types
-import { AnyObject, SxObject } from "types";
+import { SxObject } from "types";
 
-// Helper to detect which template version the data uses based on data storage structure
-const detectTemplateVersion = (data: FormattedEntityData): "V1" | "V2" => {
-  // Legacy template stores plan-level data in perPlanResponses array
-  if (data.perPlanResponses !== undefined) {
-    return "V1";
-  }
-  // New template stores plan-level data in measureResults array
-  if (data.measureResults !== undefined) {
-    return "V2";
-  }
-  // Default to new if ambiguous (for future reports)
-  return "V2";
-};
-
-const TopQualityMeasuresSectionV1 = ({
+export const TopQualityMeasuresSectionV1 = ({
   formattedEntityData,
   printVersion,
   isPDF,
   sx,
-  useLegacyTemplate,
 }: TopProps) => {
   return (
     <>
-      {useLegacyTemplate ? (
-        <>
-          <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-            {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
-              formattedEntityData.name
-            }`}
-          </Heading>
+      <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
+        {`${printVersion ? "D2.VII.1 Measure Name: " : ""}${
+          formattedEntityData.name
+        }`}
+      </Heading>
+      <Text sx={sx.subtitle}>
+        {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
+      </Text>
+      <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
+      <Grid sx={sx.grid}>
+        <GridItem>
           <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.2 " : ""}Measure Domain`}
+            {`${
+              printVersion ? "D2.VII.3 " : ""
+            }National Quality Forum (NQF) number`}
           </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.domain}</Text>
-          <Grid sx={sx.grid}>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${
-                  printVersion ? "D2.VII.3 " : ""
-                }National Quality Forum (NQF) number`}
-              </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {printVersion
-                  ? "D2.VII.4 Measure Reporting and D2.VII.5 Programs"
-                  : "Measure Reporting and Programs"}
-              </Text>
-              <Text sx={sx.subtext}>
-                {formattedEntityData.reportingRateType}
-              </Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
-              </Text>
-              <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
-            </GridItem>
-            <GridItem>
-              <Text sx={sx.subtitle}>
-                {printVersion
-                  ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
-                  : "Measure Reporting Period"}
-              </Text>
-              {formattedEntityData.reportingPeriod ? (
-                <Text sx={sx.subtext}>
-                  {formattedEntityData.reportingPeriod}
-                </Text>
-              ) : (
-                <Text
-                  sx={sx.unfinishedMessage}
-                  className={printVersion ? "pdf-color" : ""}
-                >
-                  Not answered
-                </Text>
-              )}
-            </GridItem>
-          </Grid>
+          <Text sx={sx.subtext}>{formattedEntityData.nqfNumber}</Text>
+        </GridItem>
+        <GridItem>
           <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
+            {printVersion
+              ? "D2.VII.4 Measure Reporting and D2.VII.5 Programs"
+              : "Measure Reporting and Programs"}
           </Text>
-          <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
-        </>
-      ) : (
-        <>
-          <TopQualityMeasuresSectionV2
-            formattedEntityData={formattedEntityData}
-            printVersion={printVersion}
-            sx={sx}
-          />
-        </>
-      )}
+          <Text sx={sx.subtext}>{formattedEntityData.reportingRateType}</Text>
+        </GridItem>
+        <GridItem>
+          <Text sx={sx.subtitle}>
+            {`${printVersion ? "D2.VII.6 " : ""}Measure Set`}
+          </Text>
+          <Text sx={sx.subtext}>{formattedEntityData.set}</Text>
+        </GridItem>
+        <GridItem>
+          <Text sx={sx.subtitle}>
+            {printVersion
+              ? "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range"
+              : "Measure Reporting Period"}
+          </Text>
+          {formattedEntityData.reportingPeriod ? (
+            <Text sx={sx.subtext}>{formattedEntityData.reportingPeriod}</Text>
+          ) : (
+            <Text
+              sx={sx.unfinishedMessage}
+              className={printVersion ? "pdf-color" : ""}
+            >
+              Not answered
+            </Text>
+          )}
+        </GridItem>
+      </Grid>
+      <Text sx={sx.subtitle}>
+        {`${printVersion ? "D2.VII.8 " : ""}Measure Description`}
+      </Text>
+      <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
     </>
   );
 };
 
-const BottomQualityMeasuresSectionV1 = ({
+export const BottomQualityMeasuresSectionV1 = ({
   formattedEntityData,
   printVersion,
   notAnswered,
   verbiage,
   sx,
-  useLegacyTemplate,
 }: BottomProps) => {
   return (
     <>
-      {useLegacyTemplate ? (
-        <>
-          <Text sx={sx.resultsHeader}>Measure results</Text>
-          {formattedEntityData?.isPartiallyComplete && (
-            <Text sx={sx.missingResponseMessage}>
-              {verbiage?.entityMissingResponseMessage ||
-                (printVersion && notAnswered)}
-            </Text>
-          )}
-          {formattedEntityData?.perPlanResponses?.map((plan) => (
-            <Box
-              key={plan.name + plan.response}
-              sx={sx.highlightContainer}
-              className={!plan.response ? "error" : ""}
-            >
-              <Flex>
-                <Box sx={sx.highlightSection}>
-                  <Text sx={sx.subtitle}>{plan.name}</Text>
+      <Text sx={sx.resultsHeader}>Measure results</Text>
+      {formattedEntityData?.isPartiallyComplete && (
+        <Text sx={sx.missingResponseMessage}>
+          {verbiage?.entityMissingResponseMessage ||
+            (printVersion && notAnswered)}
+        </Text>
+      )}
+      {formattedEntityData?.perPlanResponses?.map((plan) => (
+        <Box
+          key={plan.name + plan.response}
+          sx={sx.highlightContainer}
+          className={!plan.response ? "error" : ""}
+        >
+          <Flex>
+            <Box sx={sx.highlightSection}>
+              <Text sx={sx.subtitle}>{plan.name}</Text>
 
-                  {printVersion && !plan.response ? (
-                    notAnswered
-                  ) : (
-                    <Text sx={sx.subtext}>
-                      {plan.response || verbiage?.entityEmptyResponseMessage}
-                    </Text>
-                  )}
-                </Box>
-              </Flex>
+              {printVersion && !plan.response ? (
+                notAnswered
+              ) : (
+                <Text sx={sx.subtext}>
+                  {plan.response || verbiage?.entityEmptyResponseMessage}
+                </Text>
+              )}
             </Box>
-          ))}
-        </>
-      ) : (
-        <>
-          <BottomQualityMeasuresSectionV2
-            formattedEntityData={formattedEntityData}
-            verbiage={verbiage}
-            printVersion={printVersion}
-            sx={sx}
-          />
-        </>
-      )}
+          </Flex>
+        </Box>
+      ))}
     </>
   );
 };
-
-export const QualityMeasuresSectionV1 = ({
-  formattedEntityData,
-  printVersion,
-  notAnswered,
-  verbiage,
-  sx,
-  isPDF,
-  topSection,
-  bottomSection,
-}: Props) => {
-  // Detect which template version to use based on data structure
-  const templateVersion = detectTemplateVersion(formattedEntityData);
-  const useLegacyTemplate = templateVersion === "V1";
-
-  return (
-    <>
-      {topSection && (
-        <TopQualityMeasuresSectionV1
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          isPDF={isPDF}
-          useLegacyTemplate={useLegacyTemplate}
-          sx={sx}
-        />
-      )}
-      {bottomSection && (
-        <BottomQualityMeasuresSectionV1
-          formattedEntityData={formattedEntityData}
-          printVersion={printVersion}
-          isPDF={isPDF}
-          notAnswered={notAnswered}
-          verbiage={verbiage}
-          useLegacyTemplate={useLegacyTemplate}
-          sx={sx}
-        />
-      )}
-    </>
-  );
-};
-
-interface FormattedEntityData {
-  isPartiallyComplete?: boolean;
-  perPlanResponses?: {
-    name: string;
-    response: string;
-  }[];
-  set?: string;
-  name?: string;
-  domain?: string;
-  description?: string;
-  nqfNumber?: string;
-  reportingRateType?: string;
-  reportingPeriod?: string;
-  // New template fields
-  cmitNumber?: string;
-  cbeNumber?: string;
-  identifierUrl?: string;
-  identifierDomain?: string;
-  dataVersion?: string;
-  activities?: string;
-  measureResults?: AnyObject[];
-}
 
 interface BaseProps {
   formattedEntityData: FormattedEntityData;
@@ -241,9 +130,4 @@ interface BottomProps extends BaseProps {
     entityMissingResponseMessage?: string;
     entityEmptyResponseMessage?: string;
   };
-}
-
-interface Props extends TopProps, BottomProps {
-  topSection?: boolean;
-  bottomSection?: boolean;
 }

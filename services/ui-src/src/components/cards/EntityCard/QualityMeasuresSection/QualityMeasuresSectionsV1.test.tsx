@@ -1,131 +1,66 @@
 import { render, screen } from "@testing-library/react";
-import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionsV1";
 import {
-  mockNotAnswered,
-  mockQualityMeasuresData,
-} from "utils/testing/mockEntities";
+  TopQualityMeasuresSectionV1,
+  BottomQualityMeasuresSectionV1,
+} from "./QualityMeasuresSectionsV1";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const defaultProps = {
   formattedEntityData: {
-    perPlanResponses: [],
+    name: "Mock Measure Name",
+    domain: "Mock Measure Domain",
+    nqfNumber: "12345",
+    reportingRateType: "Mock Reporting Rate Type",
+    set: "Mock Measure Set",
+    reportingPeriod: "Mock Reporting Period",
+    description: "Mock Description",
+    perPlanResponses: [
+      {
+        name: "mock-plan-1",
+        response: "mock-response-1",
+      },
+      {
+        name: "mock-plan-2",
+        response: "mock-response-2",
+      },
+    ],
   },
-  printVersion: false,
-  notAnswered: mockNotAnswered,
+  printVersion: true,
+  isPdf: true,
   sx: {},
-  topSection: true,
-  bottomSection: true,
 };
 
-describe("QualityMeasuresSectionV1", () => {
-  test("renders custom missing response message when provided", () => {
-    render(
-      <QualityMeasuresSectionV1
-        {...defaultProps}
-        formattedEntityData={{ isPartiallyComplete: true }}
-        verbiage={{ entityMissingResponseMessage: "Custom missing message" }}
-      />
-    );
-
-    expect(screen.getByText("Custom missing message")).toBeInTheDocument();
+describe("TopQualityMeasuresSectionV1", () => {
+  test("Renders measure details correctly", () => {
+    render(<TopQualityMeasuresSectionV1 {...defaultProps} />);
+    [
+      "D2.VII.1 Measure Name: Mock Measure Name",
+      "D2.VII.2 Measure Domain",
+      "Mock Measure Domain",
+      "D2.VII.3 National Quality Forum (NQF) number",
+      "12345",
+      "D2.VII.4 Measure Reporting and D2.VII.5 Programs",
+      "Mock Reporting Rate Type",
+      "D2.VII.6 Measure Set",
+      "Mock Measure Set",
+      "D2.VII.7a Reporting Period and D2.VII.7b Reporting period: Date range",
+      "Mock Reporting Period",
+      "D2.VII.8 Measure Description",
+      "Mock Description",
+    ].forEach((text) => {
+      expect(screen.getByText(text)).toBeVisible();
+    });
   });
 
-  test("renders plan responses correctly with empty responses marked with error class", () => {
-    const data = {
-      perPlanResponses: [
-        { name: "Plan A", response: "Response A" },
-        { name: "Plan B", response: "" },
-        { name: "Plan C", response: "Response C" },
-      ],
-    };
+  testA11yAct(<TopQualityMeasuresSectionV1 {...defaultProps} />);
+});
 
-    render(
-      <QualityMeasuresSectionV1 {...defaultProps} formattedEntityData={data} />
-    );
-
-    expect(screen.getByText("Plan A")).toBeInTheDocument();
-    expect(screen.getByText("Plan B")).toBeInTheDocument();
-    expect(screen.getByText("Plan C")).toBeInTheDocument();
-    expect(screen.getByText("Response A")).toBeInTheDocument();
-    expect(screen.getByText("Response C")).toBeInTheDocument();
-
-    const emptyResponses = screen.getAllByText("", { exact: true });
-    expect(emptyResponses.length).toBeGreaterThanOrEqual(1);
-
-    // 'error' class is on plan with empty response
-    const errorContainers = document.querySelectorAll(".error");
-    expect(errorContainers.length).toBe(1);
+describe("BottomQualityMeasuresSectionV2", () => {
+  test("Renders correctly if plan is not reporting measure results", () => {
+    render(<BottomQualityMeasuresSectionV1 {...defaultProps} />);
+    expect(screen.getByText("Measure results")).toBeVisible();
+    expect(screen.getByText("mock-plan-1")).toBeVisible();
   });
 
-  test("renders entityEmptyResponseMessage when response is empty and printVersion is false", () => {
-    const data = {
-      perPlanResponses: [{ name: "Plan A", response: "" }],
-    };
-
-    render(
-      <QualityMeasuresSectionV1
-        {...defaultProps}
-        formattedEntityData={data}
-        verbiage={{ entityEmptyResponseMessage: "No response provided" }}
-      />
-    );
-
-    expect(screen.getByText("No response provided")).toBeInTheDocument();
-  });
-
-  test("shows notAnswered placeholder when printVersion is true and response is missing", () => {
-    const data = {
-      perPlanResponses: [
-        { name: "Plan A", response: "" },
-        { name: "Plan B", response: "Some response" },
-      ],
-      ...mockQualityMeasuresData,
-    };
-
-    render(
-      <QualityMeasuresSectionV1
-        {...defaultProps}
-        formattedEntityData={data}
-        printVersion={true}
-        notAnswered={mockNotAnswered}
-      />
-    );
-
-    expect(screen.getByText("Not answered")).toBeInTheDocument();
-    expect(screen.getByText("Some response")).toBeInTheDocument();
-  });
-
-  test("renders nothing when missing response message and printVersion is false", () => {
-    const data = {
-      perPlanResponses: [
-        { name: "Plan A", response: "" },
-        { name: "Plan B", response: "Some response" },
-      ],
-      ...mockQualityMeasuresData,
-    };
-    render(
-      <QualityMeasuresSectionV1 {...defaultProps} formattedEntityData={data} />
-    );
-
-    expect(screen.queryByText("Not answered")).not.toBeInTheDocument();
-  });
-
-  test("renders notAnswered fallback when partially complete and no custom message", () => {
-    render(
-      <QualityMeasuresSectionV1
-        {...defaultProps}
-        formattedEntityData={{
-          isPartiallyComplete: true,
-          perPlanResponses: [],
-          ...mockQualityMeasuresData,
-        }}
-        printVersion={true}
-        verbiage={{}}
-      />
-    );
-
-    expect(screen.getByText("Not answered")).toBeInTheDocument();
-  });
-
-  testA11yAct(<QualityMeasuresSectionV1 {...defaultProps} />);
+  testA11yAct(<BottomQualityMeasuresSectionV1 {...defaultProps} />);
 });
