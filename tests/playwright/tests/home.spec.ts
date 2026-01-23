@@ -3,9 +3,9 @@ import { checkAccessibilityAcrossViewports } from "../utils/a11y";
 
 test.describe("state user home page", () => {
   test.beforeEach(async ({ statePage }) => {
-    await statePage.goto("/");
+    await statePage.page.goto("/");
     await statePage.checkAndReauthenticate();
-    await statePage.waitForBannersToLoad();
+    await statePage.waitForResponse("/banners", "GET", 200);
   });
 
   test("Should see the correct home page as a state user", async ({
@@ -35,9 +35,9 @@ test.describe("state user home page", () => {
 
 test.describe("admin user home page", () => {
   test.beforeEach(async ({ adminPage }) => {
-    await adminPage.goto("/");
+    await adminPage.page.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForRequest("/banners", "GET");
+    await adminPage.waitForResponse("/banners", "GET", 200);
   });
 
   test("Should see the correct home page as an admin user", async ({

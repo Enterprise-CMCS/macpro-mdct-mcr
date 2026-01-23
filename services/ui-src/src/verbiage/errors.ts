@@ -48,6 +48,7 @@ export const validationErrors = {
   INVALID_URL: "Response must be a valid hyperlink/URL",
   INVALID_URL_OR_NR: 'Response must be a valid hyperlink/URL or "NR"',
   INVALID_DATE: "Response must be a valid date",
+  INVALID_DATE_MONTH_YEAR: "Response must be in the format MM/YYYY",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
