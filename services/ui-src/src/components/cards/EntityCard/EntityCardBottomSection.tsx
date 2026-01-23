@@ -1,7 +1,7 @@
 // components
 import { Text } from "@chakra-ui/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
-import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionV1";
+import { QualityMeasuresSectionV1 } from "./QualityMeasuresSection/QualityMeasuresSectionsV1";
 import { SanctionsSection } from "./SanctionsSection";
 import { StandardsSection } from "./StandardsSection";
 // types

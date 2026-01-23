@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import {
   TopQualityMeasuresSectionV2,
   BottomQualityMeasuresSectionV2,
-} from "./QualityMeasuresSectionV2";
+} from "./QualityMeasuresSectionsV2";
 import { testA11yAct } from "utils/testing/commonTests";
 
 const defaultProps = {

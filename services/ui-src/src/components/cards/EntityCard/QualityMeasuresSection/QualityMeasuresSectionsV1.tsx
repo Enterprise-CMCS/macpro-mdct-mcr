@@ -4,22 +4,22 @@ import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 import {
   TopQualityMeasuresSectionV2,
   BottomQualityMeasuresSectionV2,
-} from "./QualityMeasuresSectionV2";
+} from "./QualityMeasuresSectionsV2";
 // types
 import { AnyObject, SxObject } from "types";
 
 // Helper to detect which template version the data uses based on data storage structure
-const detectTemplateVersion = (data: FormattedEntityData): "legacy" | "new" => {
+const detectTemplateVersion = (data: FormattedEntityData): "V1" | "V2" => {
   // Legacy template stores plan-level data in perPlanResponses array
   if (data.perPlanResponses !== undefined) {
-    return "legacy";
+    return "V1";
   }
   // New template stores plan-level data in measureResults array
   if (data.measureResults !== undefined) {
-    return "new";
+    return "V2";
   }
   // Default to new if ambiguous (for future reports)
-  return "new";
+  return "V2";
 };
 
 const TopQualityMeasuresSectionV1 = ({
@@ -172,7 +172,7 @@ export const QualityMeasuresSectionV1 = ({
 }: Props) => {
   // Detect which template version to use based on data structure
   const templateVersion = detectTemplateVersion(formattedEntityData);
-  const useLegacyTemplate = templateVersion === "legacy";
+  const useLegacyTemplate = templateVersion === "V1";
 
   return (
     <>

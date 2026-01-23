@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionV1";
+import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionsV1";
 import {
   mockNotAnswered,
   mockQualityMeasuresData,
