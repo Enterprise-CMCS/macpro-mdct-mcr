@@ -1,5 +1,6 @@
 import { toZonedTime, fromZonedTime } from "date-fns-tz";
 import { DateShape, TimeShape } from "types";
+import { dateMonthYearFormatRegex } from "utils/validation/schemas";
 
 export const midnight: TimeShape = { hour: 0, minute: 0, second: 0 };
 export const oneSecondToMidnight: TimeShape = {
@@ -117,6 +118,16 @@ export const checkDateCompleteness = (date: string) => {
   const year = parseInt(date.split("/")?.[2]);
   const dateIsComplete = month && day && year.toString().length === 4;
   return dateIsComplete ? { year, month, day } : null;
+};
+
+export const checkDateMonthYearCompleteness = (date: string) => {
+  const dateNumber = date.replaceAll("/", "");
+  if (dateNumber.match(dateMonthYearFormatRegex)) {
+    const month = dateNumber.substring(0, 2);
+    const year = dateNumber.substring(2);
+    return { month, year };
+  }
+  return;
 };
 
 export const convertDatetimeStringToNumber = (

@@ -203,6 +203,28 @@ const dateSchema = () =>
       );
     });
 
+export const dateMonthYear = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateMonthYearFormatRegex, error.INVALID_DATE)
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      if (!value) return false;
+      let month, year;
+      if (value.includes("/")) {
+        [month, year] = value.split("/");
+      } else {
+        month = value.substring(0, 2);
+        year = value.substring(2);
+      }
+      month = Number(month);
+      year = Number(year);
+
+      const monthIndex = month - 1;
+      const date = new Date(year, monthIndex, 1); // use arbitrary day 1 so we can validate month and year
+
+      return date.getMonth() === monthIndex && date.getFullYear() === year;
+    });
+
 export const date = () => dateSchema().required(error.REQUIRED_GENERIC);
 export const dateOptional = () => dateSchema().notRequired().nullable();
 
@@ -303,3 +325,4 @@ export const nested = (
 // REGEX
 export const dateFormatRegex =
   /^$|^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
+export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
