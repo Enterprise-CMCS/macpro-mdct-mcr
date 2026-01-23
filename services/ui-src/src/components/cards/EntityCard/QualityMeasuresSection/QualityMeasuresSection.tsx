@@ -35,7 +35,6 @@ export const QualityMeasuresSection = ({
 }: Props) => {
   // Detect which template version to use based on data structure
   const templateVersion = detectTemplateVersion(formattedEntityData);
-  //   const templateVersion = templateVersion === "V1";
 
   const topQualityMeasureSections = {
     V1: TopQualityMeasuresSectionV1,
