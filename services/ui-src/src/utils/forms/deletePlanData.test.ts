@@ -53,7 +53,7 @@ const patientAccessApiFields = [
   "plan_urlForPatientResourcesForProviderAccessAndPayerToPayerApi",
 ];
 
-const mockPlanLevelIndicators = [
+export const mockPlanLevelIndicators = [
   {
     name: "D: Plan-Level Indicators",
     path: "/mcpar/plan-level-indicators",

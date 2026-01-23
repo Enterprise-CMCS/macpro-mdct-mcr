@@ -98,6 +98,12 @@ select.ds-c-field {
   scrollbar-width: none; /* Firefox */
 }
 
+// FORM BREAK
+.form-section-break {
+  margin: 2rem 0;
+  border-color: var(--mdct-colors-gray_lighter);
+}
+
 // HINT TEXT
 
 .ds-c-hint {

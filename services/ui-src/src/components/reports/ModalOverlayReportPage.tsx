@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 // components
-import { Box, Button, Heading, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
   AddEditEntityModal,
   DeleteEntityModal,
@@ -18,6 +18,7 @@ import {
   EntityShape,
   isFieldElement,
   ModalOverlayReportPageShape,
+  ReportShape,
   ReportStatus,
 } from "types";
 // utils
@@ -29,6 +30,8 @@ import {
   useBreakpoint,
   useStore,
   resetClearProp,
+  routeChecker,
+  getMcparEntityStatus,
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -39,7 +42,7 @@ export const ModalOverlayReportPage = ({
   validateOnRender,
 }: Props) => {
   // Route Information
-  const { entityType, verbiage, modalForm, overlayForm } = route;
+  const { drawerForm, entityType, modalForm, overlayForm, verbiage } = route;
 
   // Context Information
   const { isMobile } = useBreakpoint();
@@ -54,14 +57,38 @@ export const ModalOverlayReportPage = ({
   // state management
   const { userIsAdmin, userIsReadOnly, userIsEndUser, full_name, state } =
     useStore().user ?? {};
-  const { report } = useStore();
+  const { report = {} as ReportShape } = useStore();
+
+  const reportType = (report.reportType ||
+    "MLR") as keyof typeof accordionVerbiage;
+  const accordionReport = accordionVerbiage[reportType];
 
   // Determine whether form is locked or unlocked based on user and route
   const isAdminUserType = userIsAdmin || userIsReadOnly;
-  const isLocked = report?.locked || isAdminUserType;
+  const isLocked = report.locked || isAdminUserType;
+
+  const reportFieldDataEntities = report.fieldData?.[entityType] || [];
+  let statusOverride: Function = () => undefined;
+
+  const isMeasuresAndResultsPage = routeChecker.isMeasuresAndResultsPage(route);
+
+  // check for plans in MCPAR
+  if (isMeasuresAndResultsPage) {
+    statusOverride = (entity: EntityShape) =>
+      getMcparEntityStatus(entity, report, entityType, route);
+  }
+
+  function isOpenDisabled(
+    toCheck: boolean,
+    entity: EntityShape,
+    plans: EntityShape[] = []
+  ) {
+    if (!toCheck) return false;
+    // Pre-populated quality measure is created before plans, but has no rates
+    return !entity.measure_rates || (entity.measure_rates && plans.length == 0);
+  }
 
   // Display Variables
-  const reportFieldDataEntities = report?.fieldData[entityType] || [];
   const dashTitle = `${verbiage.dashboardTitle} ${reportFieldDataEntities.length}`;
   const tableHeaders = () => {
     if (isMobile)
@@ -116,6 +143,7 @@ export const ModalOverlayReportPage = ({
 
   // Open/Close overlay action methods
   const openEntityDetailsOverlay = (entity: EntityShape) => {
+    window.scrollTo(0, 0);
     setEntering(true);
     setCurrentEntity(entity);
     setIsEntityDetailsOpen(true);
@@ -123,6 +151,7 @@ export const ModalOverlayReportPage = ({
   };
 
   const closeEntityDetailsOverlay = () => {
+    window.scrollTo(0, 0);
     setCurrentEntity(undefined);
     setIsEntityDetailsOpen(false);
     setSidebarHidden(false);
@@ -133,12 +162,12 @@ export const ModalOverlayReportPage = ({
     if (userIsEndUser) {
       setSubmitting(true);
       const reportKeys = {
-        reportType: report?.reportType,
-        state: state,
-        id: report?.id,
+        reportType,
+        state,
+        id: report.id,
       };
-      const currentEntities = [...(report?.fieldData[entityType] || [])];
-      const selectedEntityIndex = report?.fieldData[entityType].findIndex(
+      const currentEntities = [...(report.fieldData[entityType] || [])];
+      const selectedEntityIndex = report.fieldData[entityType].findIndex(
         (entity: EntityShape) => entity.id === currentEntity?.id
       );
       const filteredFormData = filterFormData(
@@ -181,18 +210,31 @@ export const ModalOverlayReportPage = ({
     setSidebarHidden(false);
   };
 
+  const AddEntityButton = () => (
+    <Button
+      sx={sx.addEntityButton}
+      disabled={isLocked}
+      onClick={() => openAddEditEntityModal()}
+    >
+      {verbiage.addEntityButtonText}
+    </Button>
+  );
+
   return (
     <Box>
-      {overlayForm && isEntityDetailsOpen && currentEntity ? (
+      {isEntityDetailsOpen && currentEntity ? (
         <EntityProvider>
           <EntityDetailsOverlay
             closeEntityDetailsOverlay={closeEntityDetailsOverlay}
+            disabled={!userIsEndUser}
+            drawerForm={drawerForm}
+            entities={report.fieldData[entityType]}
             entityType={entityType}
-            entities={report?.fieldData[entityType]}
             form={overlayForm}
             onSubmit={onSubmit}
+            report={report}
+            route={route}
             selectedEntity={currentEntity}
-            disabled={!userIsEndUser}
             setEntering={setEntering}
             submitting={submitting}
             validateOnRender={validateOnRender}
@@ -202,42 +244,42 @@ export const ModalOverlayReportPage = ({
         <Box sx={sx.content}>
           <ReportPageIntro
             text={verbiage.intro}
-            accordion={accordionVerbiage.MLR.formIntro}
-            reportType={report?.reportType}
+            accordion={accordionReport.formIntro}
+            reportType={reportType}
           />
 
-          <Box sx={sx.dashboardBox}>
-            <Heading as="h3" sx={sx.dashboardTitle}>
-              {dashTitle}
-            </Heading>
+          <Box>
             {reportFieldDataEntities.length === 0 ? (
-              <>
-                <Box sx={sx.tableSeparator} />
-                <Box sx={sx.emptyDashboard}>{verbiage.emptyDashboardText}</Box>
-              </>
+              <Text>{verbiage.emptyDashboardText}</Text>
             ) : (
-              <Table sx={sx.table} content={tableHeaders()}>
-                {reportFieldDataEntities.map((entity: EntityShape) => (
-                  <EntityRow
-                    key={entity.id}
-                    entity={entity}
-                    verbiage={verbiage}
-                    locked={isLocked}
-                    entering={entering}
-                    openAddEditEntityModal={openAddEditEntityModal}
-                    openDeleteEntityModal={openDeleteEntityModal}
-                    openOverlayOrDrawer={openEntityDetailsOverlay}
-                  />
-                ))}
-              </Table>
+              <>
+                <AddEntityButton />
+                <Heading as="h3" sx={sx.dashboardTitle}>
+                  {dashTitle}
+                </Heading>
+                <Table sx={sx.table} content={tableHeaders()}>
+                  {reportFieldDataEntities.map((entity: EntityShape) => (
+                    <EntityRow
+                      key={entity.id}
+                      entity={entity}
+                      override={statusOverride(entity)}
+                      verbiage={verbiage}
+                      locked={isLocked}
+                      entering={entering}
+                      openAddEditEntityModal={openAddEditEntityModal}
+                      openDeleteEntityModal={openDeleteEntityModal}
+                      openOverlayOrDrawer={openEntityDetailsOverlay}
+                      openDisabled={isOpenDisabled(
+                        isMeasuresAndResultsPage,
+                        entity,
+                        report.fieldData?.plans
+                      )}
+                    />
+                  ))}
+                </Table>
+              </>
             )}
-            <Button
-              sx={sx.addEntityButton}
-              disabled={isLocked}
-              onClick={() => openAddEditEntityModal()}
-            >
-              {verbiage.addEntityButtonText}
-            </Button>
+            <AddEntityButton />
           </Box>
 
           <AddEditEntityModal
@@ -280,9 +322,6 @@ const sx = {
       width: "100%",
     },
   },
-  dashboardBox: {
-    textAlign: "center",
-  },
   dashboardTitle: {
     fontSize: "md",
     fontWeight: "bold",
@@ -292,25 +331,20 @@ const sx = {
       paddingBottom: "0",
     },
   },
-  emptyDashboard: {
-    paddingTop: "spacer2",
-  },
-  tableSeparator: {
-    borderTop: "1px solid",
-    borderColor: "gray_light",
-    paddingBottom: "spacer2",
-    marginTop: "1.25rem",
-  },
   table: {
     tableLayout: "fixed",
     br: {
       marginBottom: "spacer_half",
     },
     th: {
+      fontSize: "md",
+      fontWeight: "bold",
+      lineHeight: "130%",
+      color: "gray",
       paddingLeft: "spacer2",
       paddingRight: "0",
       borderBottom: "1px solid",
-      borderColor: "gray_light",
+      borderColor: "gray_lighter",
       ".mobile &": {
         border: "none",
       },
@@ -323,8 +357,8 @@ const sx = {
     },
   },
   addEntityButton: {
-    marginTop: "spacer4",
-    marginBottom: "spacer4",
+    marginTop: "spacer3",
+    marginBottom: "spacer3",
     ".tablet &, .mobile &": {
       wordBreak: "break-word",
       whiteSpace: "break-spaces",

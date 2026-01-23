@@ -6,33 +6,27 @@ export const SectionHeader = ({
   content,
   divider,
   hint,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  autosave,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validateOnRender,
-  ...props
 }: SectionHeaderProps) => {
   const sx = {
-    hr: {
-      marginTop: "spacer4",
-      paddingBottom: "spacer2",
-      borderColor: "gray_lighter",
-    },
     h3: {
-      padding: divider === "bottom" ? "2rem 0 1rem 0" : "2rem 0 2rem 0",
+      marginTop: "spacer4",
+      paddingY: "spacer2",
+      borderTop: divider === "top" ? "1px" : "0",
+      borderBottom: divider === "bottom" ? "1px" : "0",
+      borderColor: "gray_lighter",
     },
     hintText: {
       fontSize: "sm",
-      color: "gray",
-      paddingTop: "spacer2",
+      color: "gray_dark",
+      marginBottom: "spacer2",
     },
   };
   return (
-    <Box sx={sx} {...props}>
-      {divider === "top" && <hr></hr>}
-      <Heading size="md">{content}</Heading>
+    <Box sx={sx}>
+      <Heading as="h3" size="md">
+        {content}
+      </Heading>
       {hint && <Text sx={sx.hintText}>{parseCustomHtml(hint)}</Text>}
-      {divider === "bottom" && <hr></hr>}
     </Box>
   );
 };
@@ -41,17 +35,16 @@ interface SectionHeaderProps {
   content: string;
   divider: "top" | "bottom" | "none";
   hint?: string;
-  [key: string]: any;
 }
 
+export const SectionDivider = () => {
+  return <hr className="form-section-break" />;
+};
+
 export const SectionContent = ({ content }: SectionContentProps) => {
-  const sx = {
-    paddingTop: "spacer1",
-  };
-  return <Text sx={sx}>{content}</Text>;
+  return <Text>{content}</Text>;
 };
 
 interface SectionContentProps {
   content: string;
-  [key: string]: any;
 }

@@ -12,7 +12,7 @@ import {
   ErrorAlert,
   SortableNaaarStandardsTable,
 } from "components";
-import { DrawerReportPageEntityRows } from "./DrawerReportEntityRows";
+import { DrawerReportPageEntityRows } from "./DrawerReportPageEntityRows";
 // constants
 import {
   DEFAULT_ANALYSIS_METHODS,
@@ -39,6 +39,7 @@ import {
   getEntriesToClear,
   getForm,
   parseCustomHtml,
+  routeChecker,
   setClearedEntriesToDefaultValue,
   translate,
   useStore,
@@ -76,15 +77,17 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const providerTypeSelected = report?.fieldData?.providerTypes?.length > 0;
 
   // check if there are ILOS and associated plans
-  const isMcparReport = route.path.includes("mcpar");
-  const isAnalysisMethodsPage = route.path.includes("analysis-methods");
-  const reportingOnIlos = route.path === "/mcpar/plan-level-indicators/ilos";
-  const ilos = report?.fieldData?.["ilos"];
+  const isMcparReport = routeChecker.isMcpar(route);
+  const isAnalysisMethodsPage = routeChecker.isAnalysisMethodsPage(route);
+  const reportingOnIlos = routeChecker.isIlosPage(route);
+  const ilos = report?.fieldData?.ilos;
   const hasIlos = ilos?.length > 0;
-  const plans = report?.fieldData?.["plans"];
+  const plans = report?.fieldData?.plans;
   const hasPlans = plans?.length > 0;
-  const isReportingOnStandards =
-    route.path === "/naaar/program-level-access-and-network-adequacy-standards";
+  const isReportingOnStandards = routeChecker.isStandardsPage(route);
+
+  // Show complete/incomplete text only on analysis methods page
+  const showStatusText = isAnalysisMethodsPage;
 
   const atLeastOneRequiredAnalysisMethodIsUtilized = analysisMethods.some(
     (analysisMethod: AnyObject) =>
@@ -166,10 +169,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   }, [selectedEntity]);
 
   const onChange = (e: InputChangeEvent) => {
-    if (route.path === "/mcpar/plan-level-indicators/prior-authorization") {
+    if (routeChecker.isPriorAuthorizationPage(route)) {
       setPriorAuthDisabled(e.target.value !== "Yes");
     }
-    if (route.path === "/mcpar/plan-level-indicators/patient-access-api") {
+    if (routeChecker.isPatientAccessApiPage(route)) {
       setPatientAccessDisabled(e.target.value !== "Yes");
     }
   };
@@ -386,12 +389,13 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               </Box>
             ) : (
               <DrawerReportPageEntityRows
-                route={route}
                 entities={entities}
-                openRowDrawer={openRowDrawer}
                 openDeleteEntityModal={openDeleteEntityModal}
-                priorAuthDisabled={priorAuthDisabled}
+                openRowDrawer={openRowDrawer}
                 patientAccessDisabled={patientAccessDisabled}
+                priorAuthDisabled={priorAuthDisabled}
+                route={route}
+                showStatusText={showStatusText}
               />
             )}
             {canAddEntities && hasPlans && (

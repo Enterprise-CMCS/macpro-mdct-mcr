@@ -12,7 +12,7 @@ import {
 } from "types";
 // utils
 import {
-  getEntityDetailsMLR,
+  getProgramInfo,
   getEntityStatus,
   getReportVerbiage,
   mapNaaarStandardsData,
@@ -84,10 +84,30 @@ export function renderModalOverlayTableBody(
 ) {
   const reportType = report.reportType;
   switch (reportType) {
+    case ReportType.MCPAR:
+      return entities.map((entity, idx) => {
+        const { measure_name } = entity;
+        return (
+          <Tr key={idx}>
+            <Td>
+              <Text sx={sx.tableIndex}>{idx + 1}</Text>
+            </Td>
+            {["placeholder"].map((value) => (
+              <Td key={`${value}-${idx}`}>
+                <Text>{measure_name}</Text>
+              </Td>
+            ))}
+          </Tr>
+        );
+      });
     case ReportType.MLR:
       return entities.map((entity, idx) => {
-        const { report_programName, mlrEligibilityGroup, reportingPeriod } =
-          getEntityDetailsMLR(entity);
+        const [
+          reportPlanName,
+          reportProgramName,
+          eligibilityGroup,
+          reportingPeriod,
+        ] = getProgramInfo(entity);
         const entityComplete = getEntityStatus(entity, report, entityType);
 
         return (
@@ -100,9 +120,9 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
-                {entity.report_planName ?? "Not entered"} <br />
-                {report_programName} <br />
-                {mlrEligibilityGroup} <br />
+                {reportPlanName ?? "Not entered"} <br />
+                {reportProgramName} <br />
+                {eligibilityGroup} <br />
                 {reportingPeriod}
               </Text>
             </Td>

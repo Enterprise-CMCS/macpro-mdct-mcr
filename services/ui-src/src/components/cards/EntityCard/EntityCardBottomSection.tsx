@@ -10,8 +10,8 @@ import { AnyObject, EntityType } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
-  printVersion,
   verbiage,
+  printVersion,
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>

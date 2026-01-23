@@ -12,7 +12,7 @@ import {
   ReportType,
 } from "types";
 // utils
-import { assertExhaustive, getEntityDetailsMLR, useStore } from "utils";
+import { assertExhaustive, getProgramInfo, useStore } from "utils";
 
 export const ExportedEntityDetailsOverlaySection = ({
   section,
@@ -88,23 +88,11 @@ export function getEntityTableComponents(
   formSections: (FormField | FormLayoutElement)[][]
 ) {
   return entities?.map((entity, idx) => {
-    const {
-      report_planName,
-      report_programName,
-      mlrEligibilityGroup,
-      reportingPeriod,
-    } = getEntityDetailsMLR(entity);
-
     const entityHeading = `${idx + 1}. ${
       section.verbiage.intro.subsection
     } for:`;
 
-    const programInfo = [
-      report_planName,
-      report_programName,
-      mlrEligibilityGroup,
-      reportingPeriod,
-    ];
+    const programInfo = getProgramInfo(entity);
 
     const formatProgramInfo = (index: number, field: string) => {
       return <p key={index}>{field}</p>;
@@ -120,9 +108,10 @@ export function getEntityTableComponents(
         </Box>
         {formSections.map((fields, idx) => {
           const filteredFields = fields.filter(
-            (field) => field.type !== "sectionContent"
+            (field) =>
+              field.type !== "sectionContent" && field.type !== "sectionDivider"
           );
-          const header = filteredFields[0];
+          const header = filteredFields[0] || {};
           return (
             <Fragment key={`tableContainer-${idx}`}>
               {header.type === "sectionHeader" && (
@@ -163,7 +152,10 @@ export function renderEntityDetailTables(
       const formSections = getFormSections(section.overlayForm?.fields ?? []);
       return getEntityTableComponents(entities, section, formSections);
     }
-    case ReportType.MCPAR:
+    case ReportType.MCPAR: {
+      const formSections = getFormSections(section.overlayForm?.fields ?? []);
+      return getEntityTableComponents(entities, section, formSections);
+    }
     case ReportType.NAAAR:
       throw new Error(
         `The entity detail table for report type '${reportType}' have not been implemented.`

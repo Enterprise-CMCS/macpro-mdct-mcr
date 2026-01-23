@@ -116,27 +116,29 @@ export const QualityMeasuresSection = ({
   isPDF,
   topSection,
   bottomSection,
-}: Props) => (
-  <>
-    {topSection && (
-      <TopQualityMeasuresSection
-        formattedEntityData={formattedEntityData}
-        printVersion={printVersion}
-        isPDF={isPDF}
-        sx={sx}
-      />
-    )}
-    {bottomSection && (
-      <BottomQualityMeasuresSection
-        formattedEntityData={formattedEntityData}
-        printVersion={printVersion}
-        notAnswered={notAnswered}
-        verbiage={verbiage}
-        sx={sx}
-      />
-    )}
-  </>
-);
+}: Props) => {
+  return (
+    <>
+      {topSection && (
+        <TopQualityMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={printVersion}
+          isPDF={isPDF}
+          sx={sx}
+        />
+      )}
+      {bottomSection && (
+        <BottomQualityMeasuresSection
+          formattedEntityData={formattedEntityData}
+          printVersion={printVersion}
+          notAnswered={notAnswered}
+          verbiage={verbiage}
+          sx={sx}
+        />
+      )}
+    </>
+  );
+};
 
 interface FormattedEntityData {
   isPartiallyComplete?: boolean;

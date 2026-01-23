@@ -1,11 +1,15 @@
 import { faker } from "@faker-js/faker";
 import { suppressionText } from "../../../services/app-api/utils/constants/constants";
 import {
-  Choice,
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
+import {
+  mcparQualityMeasuresList,
+  Measure,
+  MeasureList,
+} from "../../../services/app-api/utils/data/mcparQualityMeasuresList";
 import { dateFormat, numberFloat, numberInt, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
@@ -173,14 +177,14 @@ export const newMcparPCCM = (
 
 export const fillMcpar = (
   flags: { [key: string]: true },
-  programIsPCCM?: Choice[]
+  options?: { [key: string]: any }
 ): SeedFillReportShape => {
   const numberOfExamples = 3;
   const planIds = Array.from({ length: numberOfExamples }, () =>
     crypto.randomUUID()
   );
 
-  if (programIsPCCM?.[0].value === "Yes") {
+  if (options?.programIsPCCM?.[0].value === "Yes") {
     return fillMcparPCCM(planIds);
   }
 
@@ -205,8 +209,73 @@ export const fillMcpar = (
 
   const sanctions = planIds.map((planId) => createSanction(planId));
 
-  if (Object.keys(flags).length > 0) {
-    // Add data mods by flag
+  let flaggedData = {};
+
+  // Add data mods by flag
+  if (flags.newQualityMeasuresSectionEnabled) {
+    const plansExemptFromQualityMeasures = [createPlanExemption(plans[0])];
+    let newQualityMeasures = Array.from(
+      { length: numberOfExamples },
+      (_, index) => createNewQualityMeasure(index)
+    );
+
+    // Check for pre-determined measures to use
+    const measuresByStateAndProgram: Measure[] = (
+      mcparQualityMeasuresList as MeasureList
+    )?.[options?.state as keyof MeasureList]?.[options?.programName];
+
+    if (measuresByStateAndProgram) {
+      newQualityMeasures = measuresByStateAndProgram.map((measure, index) =>
+        createNewQualityMeasure(index, measure)
+      );
+    }
+
+    const plansWithMeasures = plans.map((plan) => {
+      const measures = newQualityMeasures.reduce<Record<string, any>>(
+        (newMeasures, measure) => {
+          const measureId = measure.id;
+          const rateId = measure.measure_rates[0].id;
+
+          newMeasures[measureId] = {
+            measure_dataCollectionMethod: [
+              {
+                key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+                value: "Administrative",
+              },
+            ],
+            measure_isNotReportingReason: [
+              {
+                key: "measure_isNotReportingReason-aKM1awPXFkBfWwesiwKk0p",
+                value:
+                  "No, the eligible population does not meet the required measure sample size",
+              },
+            ],
+            "measure_isNotReportingReason-otherText": "",
+            measure_isReporting: [
+              {
+                key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
+                value: "Not reporting",
+              },
+            ],
+            [`measure_rateResults-${rateId}`]: numberInt(),
+          };
+
+          return newMeasures;
+        },
+        {}
+      );
+
+      return {
+        measures,
+        ...plan,
+      };
+    });
+
+    flaggedData = {
+      plans: plansWithMeasures,
+      plansExemptFromQualityMeasures,
+      qualityMeasures: newQualityMeasures,
+    };
   }
 
   return {
@@ -426,6 +495,7 @@ export const fillMcpar = (
       plans,
       qualityMeasures,
       sanctions,
+      ...flaggedData,
     },
   };
 };
@@ -524,6 +594,11 @@ const createBssEntity = () => ({
       value: "State Government Entity",
     },
   ],
+});
+
+const createPlanExemption = (plan: any) => ({
+  key: `plansExemptFromQualityMeasures-${plan.id}`,
+  value: plan.name,
 });
 
 const createPlanPCCM = (planId: string) => ({
@@ -744,6 +819,76 @@ const createQualityMeasure = (planIds: string[]) => {
       {
         key: "qualityMeasure_set-tjSQLCDhgEy7H3VrhtUKxw",
         value: "Medicaid Child Core Set",
+      },
+    ],
+  };
+};
+
+const createNewQualityMeasure = (index: number, measure?: Measure) => {
+  const measureIdentifiers = [
+    {
+      measure_identifier: [
+        {
+          key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A",
+          value: "Yes",
+        },
+      ],
+      measure_identifierCmit: numberInt(),
+    },
+    {
+      measure_identifier: [
+        {
+          key: "measure_identifier-eqVgpF8hmsma9ibcvwVqCb",
+          value: "Consensus Based Entity (CBE) number",
+        },
+      ],
+      measure_identifierCbe: numberInt(),
+    },
+    {
+      measure_identifier: [
+        {
+          key: "measure_identifier-hcsq9mTy5wWhxUPtgkQWwB",
+          value: "No, it uses neither CMIT or CBE",
+        },
+      ],
+      measure_identifierDefinition: faker.lorem.sentence(),
+      measure_identifierUrl: faker.internet.url(),
+      measure_identifierDomain: [
+        {
+          key: "measure_identifierDomain-3fj5mLIKvGHC8Obt7YnVYp",
+          value: "Primary care access and preventative care",
+        },
+      ],
+    },
+  ];
+
+  return {
+    id: crypto.randomUUID(),
+    measure_name: measure?.measure_name || faker.animal.bird(),
+    ...measureIdentifiers[index],
+    measure_dataVersion: [
+      {
+        key: "measure_dataVersion-GLnFjfEWVnsNJdWMswHwxk",
+        value: "Preliminary",
+      },
+    ],
+    measure_activities: [
+      {
+        key: "measure_activities-SMRcwYNpSvLf1YTLslsoCP",
+        value:
+          "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)",
+      },
+    ],
+    measure_dataCollectionMethod: [
+      {
+        key: "measure_dataCollectionMethod-bkD4uguEEiRjo5GyoCVNMi",
+        value: "Administrative",
+      },
+    ],
+    measure_rates: [
+      {
+        id: crypto.randomUUID(),
+        name: faker.animal.bear(),
       },
     ],
   };

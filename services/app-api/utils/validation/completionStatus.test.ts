@@ -1,3 +1,4 @@
+import { measuresAndResultsRoute } from "../../forms/routes/mcpar/flags/newQualityMeasuresSectionEnabled/plan-level-indicators/quality-measures/measures-and-results";
 // import as star so we can spy on functions
 import * as completionStatus from "./completionStatus";
 // types
@@ -22,6 +23,7 @@ const {
   calculateCompletionStatus,
   calculateEntityCompletion,
   calculateFormCompletion,
+  calculateMeasureCompletion,
   calculateRouteCompletion,
   calculateRoutesCompletion,
   getNestedFields,
@@ -365,6 +367,58 @@ describe("Completion Status Tests", () => {
     });
   });
 
+  describe("calculateMeasureCompletion()", () => {
+    const mockMeasureId = "mock-measure-1";
+    const mockPlan = {
+      id: "mock-plan-1",
+      name: "Mock plan 1",
+    };
+    const mockForm = measuresAndResultsRoute.drawerForm;
+    test("returns false for plan with no measure data", () => {
+      const result = calculateMeasureCompletion(
+        mockMeasureId,
+        mockForm,
+        mockPlan
+      );
+      expect(result).toBe(false);
+    });
+
+    test("returns true if not reporting on plan", () => {
+      const mockNotReportingPlan = {
+        ...mockPlan,
+        measures: {
+          [mockMeasureId]: {
+            measure_isReporting: [{}],
+            measure_isNotReportingReason: [{}],
+          },
+        },
+      };
+      const result = calculateMeasureCompletion(
+        mockMeasureId,
+        mockForm,
+        mockNotReportingPlan
+      );
+      expect(result).toBe(true);
+    });
+
+    test("returns true if contains all fields", () => {
+      const mockCompletePlan = {
+        ...mockPlan,
+        measures: {
+          [mockMeasureId]: {
+            measure_dataCollectionMethod: [{}],
+          },
+        },
+      };
+      const result = calculateMeasureCompletion(
+        mockMeasureId,
+        mockForm,
+        mockCompletePlan
+      );
+      expect(result).toBe(true);
+    });
+  });
+
   describe("calculateRouteCompletion()", () => {
     const formCompletionSpy = jest.spyOn(
       completionStatus,
@@ -658,7 +712,7 @@ describe("Completion Status Tests", () => {
     });
 
     describe("case: modal overlay", () => {
-      test("returns undefined if no modalForm and no overlayForm present", async () => {
+      test("returns false if no modalForm and no overlayForm present", async () => {
         const result = await calculateRouteCompletion(
           {
             name: "modal overlay page with no forms",
@@ -669,7 +723,9 @@ describe("Completion Status Tests", () => {
           {},
           {}
         );
-        expect(result).toEqual(undefined);
+        expect(result).toEqual({
+          "/modal_overlay": false,
+        });
       });
 
       test("returns true if entity complete", async () => {
@@ -695,6 +751,55 @@ describe("Completion Status Tests", () => {
         );
         expect(result).toEqual({
           [mockModalOverlayReportPageJson.path]: false,
+        });
+      });
+
+      const qualityMeasuresRoute = {
+        name: "Measures and results",
+        path: "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
+        pageType: "modalOverlay",
+        entityType: EntityType.QUALITY_MEASURES,
+        verbiage: measuresAndResultsRoute.verbiage,
+        drawerForm: measuresAndResultsRoute.drawerForm,
+        modalForm: measuresAndResultsRoute.modalForm,
+      };
+      const measureCompletionSpy = jest.spyOn(
+        completionStatus,
+        "calculateMeasureCompletion"
+      );
+      test("returns false for incomplete quality measures route", async () => {
+        const result = await calculateRouteCompletion(
+          qualityMeasuresRoute,
+          {},
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [qualityMeasuresRoute.path]: false,
+        });
+      });
+
+      test("returns true for complete quality measures route", async () => {
+        measureCompletionSpy.mockReturnValue(true);
+        const result = await calculateRouteCompletion(
+          qualityMeasuresRoute,
+          {
+            qualityMeasures: [
+              {
+                id: "mock-qm-1",
+              },
+            ],
+            plans: [
+              {
+                id: "mock-plan-1",
+              },
+            ],
+          },
+          {},
+          {}
+        );
+        expect(result).toEqual({
+          [qualityMeasuresRoute.path]: true,
         });
       });
     });

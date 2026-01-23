@@ -130,13 +130,6 @@ describe("<ExportedEntityDetailsOverlaySection />", () => {
       ).toThrow(Error);
       expect(() =>
         renderEntityDetailTables(
-          ReportType.MCPAR,
-          [],
-          mockModalOverlayReportPageWithOverlayJson
-        )
-      ).toThrow(Error);
-      expect(() =>
-        renderEntityDetailTables(
           "Foo" as ReportType,
           [],
           mockModalOverlayReportPageWithOverlayJson

@@ -1,5 +1,7 @@
 // types
 import { AnyObject } from "types";
+// utils
+import { routeChecker } from "utils";
 
 export const getFieldsToFilter = (
   planLevelIndicators: AnyObject,
@@ -10,8 +12,7 @@ export const getFieldsToFilter = (
     case "plan_priorAuthorizationReporting": {
       // get prior authorization field ids from form template
       const priorAuthorizationRoute = planLevelIndicators?.[0].children?.filter(
-        (child: any) =>
-          child.path === "/mcpar/plan-level-indicators/prior-authorization"
+        (child: any) => routeChecker.isPriorAuthorizationPage(child)
       );
       fields = priorAuthorizationRoute?.[0].drawerForm.fields.map(
         (field: any) => {
@@ -23,8 +24,7 @@ export const getFieldsToFilter = (
     case "plan_patientAccessApiReporting": {
       // get patient access api field ids from form template
       const patientAccessApiRoute = planLevelIndicators?.[0].children?.filter(
-        (child: any) =>
-          child.path === "/mcpar/plan-level-indicators/patient-access-api"
+        (child: any) => routeChecker.isPatientAccessApiPage(child)
       );
       fields = patientAccessApiRoute?.[0].drawerForm.fields.map(
         (field: any) => {
