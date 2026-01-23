@@ -3,7 +3,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 // types
 import { AnyObject, SxObject } from "types";
 
-export const NewTopQualityMeasuresSection = ({
+export const TopQualityMeasuresSectionV2 = ({
   formattedEntityData,
   printVersion,
   isPDF,
@@ -18,12 +18,14 @@ export const NewTopQualityMeasuresSection = ({
     return "No, it uses neither CMIT or CBE";
   };
 
+  const getPrintText = (printText: string, mainText?: string) => {
+    return printVersion ? `${printText} ${mainText}` : mainText;
+  };
+
   return (
     <>
       <Heading as={isPDF ? "p" : "h4"} sx={sx.heading}>
-        {`${printVersion ? "D2.VII.2 Measure Name: " : ""}${
-          formattedEntityData.name
-        }`}
+        {getPrintText("D2.VII.2 Measure Name:", formattedEntityData.name)}
       </Heading>
       <Text sx={sx.subtitle}>
         {`${
@@ -64,7 +66,7 @@ export const NewTopQualityMeasuresSection = ({
   );
 };
 
-export const NewBottomQualityMeasuresSection = ({
+export const BottomQualityMeasuresSectionV2 = ({
   formattedEntityData,
   printVersion,
   notAnswered,

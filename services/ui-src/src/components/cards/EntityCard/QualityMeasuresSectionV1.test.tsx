@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { QualityMeasuresSection } from "./QualityMeasuresSection";
+import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionV1";
 import {
   mockNotAnswered,
   mockQualityMeasuresData,
@@ -17,10 +17,10 @@ const defaultProps = {
   bottomSection: true,
 };
 
-describe("QualityMeasuresSection", () => {
+describe("QualityMeasuresSectionV1", () => {
   test("renders custom missing response message when provided", () => {
     render(
-      <QualityMeasuresSection
+      <QualityMeasuresSectionV1
         {...defaultProps}
         formattedEntityData={{ isPartiallyComplete: true }}
         verbiage={{ entityMissingResponseMessage: "Custom missing message" }}
@@ -40,7 +40,7 @@ describe("QualityMeasuresSection", () => {
     };
 
     render(
-      <QualityMeasuresSection {...defaultProps} formattedEntityData={data} />
+      <QualityMeasuresSectionV1 {...defaultProps} formattedEntityData={data} />
     );
 
     expect(screen.getByText("Plan A")).toBeInTheDocument();
@@ -63,7 +63,7 @@ describe("QualityMeasuresSection", () => {
     };
 
     render(
-      <QualityMeasuresSection
+      <QualityMeasuresSectionV1
         {...defaultProps}
         formattedEntityData={data}
         verbiage={{ entityEmptyResponseMessage: "No response provided" }}
@@ -83,7 +83,7 @@ describe("QualityMeasuresSection", () => {
     };
 
     render(
-      <QualityMeasuresSection
+      <QualityMeasuresSectionV1
         {...defaultProps}
         formattedEntityData={data}
         printVersion={true}
@@ -104,7 +104,7 @@ describe("QualityMeasuresSection", () => {
       ...mockQualityMeasuresData,
     };
     render(
-      <QualityMeasuresSection {...defaultProps} formattedEntityData={data} />
+      <QualityMeasuresSectionV1 {...defaultProps} formattedEntityData={data} />
     );
 
     expect(screen.queryByText("Not answered")).not.toBeInTheDocument();
@@ -112,7 +112,7 @@ describe("QualityMeasuresSection", () => {
 
   test("renders notAnswered fallback when partially complete and no custom message", () => {
     render(
-      <QualityMeasuresSection
+      <QualityMeasuresSectionV1
         {...defaultProps}
         formattedEntityData={{
           isPartiallyComplete: true,
@@ -127,5 +127,5 @@ describe("QualityMeasuresSection", () => {
     expect(screen.getByText("Not answered")).toBeInTheDocument();
   });
 
-  testA11yAct(<QualityMeasuresSection {...defaultProps} />);
+  testA11yAct(<QualityMeasuresSectionV1 {...defaultProps} />);
 });

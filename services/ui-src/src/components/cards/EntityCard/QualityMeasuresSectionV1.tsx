@@ -2,9 +2,9 @@ import { ReactNode } from "react";
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
 // components
 import {
-  NewBottomQualityMeasuresSection,
-  NewTopQualityMeasuresSection,
-} from "./NewQualityMeasuresSection";
+  TopQualityMeasuresSectionV2,
+  BottomQualityMeasuresSectionV2,
+} from "./QualityMeasuresSectionV2";
 // types
 import { AnyObject, SxObject } from "types";
 
@@ -22,7 +22,7 @@ const detectTemplateVersion = (data: FormattedEntityData): "legacy" | "new" => {
   return "new";
 };
 
-const TopQualityMeasuresSection = ({
+const TopQualityMeasuresSectionV1 = ({
   formattedEntityData,
   printVersion,
   isPDF,
@@ -94,7 +94,7 @@ const TopQualityMeasuresSection = ({
         </>
       ) : (
         <>
-          <NewTopQualityMeasuresSection
+          <TopQualityMeasuresSectionV2
             formattedEntityData={formattedEntityData}
             printVersion={printVersion}
             sx={sx}
@@ -105,7 +105,7 @@ const TopQualityMeasuresSection = ({
   );
 };
 
-const BottomQualityMeasuresSection = ({
+const BottomQualityMeasuresSectionV1 = ({
   formattedEntityData,
   printVersion,
   notAnswered,
@@ -148,7 +148,7 @@ const BottomQualityMeasuresSection = ({
         </>
       ) : (
         <>
-          <NewBottomQualityMeasuresSection
+          <BottomQualityMeasuresSectionV2
             formattedEntityData={formattedEntityData}
             verbiage={verbiage}
             printVersion={printVersion}
@@ -160,7 +160,7 @@ const BottomQualityMeasuresSection = ({
   );
 };
 
-export const QualityMeasuresSection = ({
+export const QualityMeasuresSectionV1 = ({
   formattedEntityData,
   printVersion,
   notAnswered,
@@ -177,7 +177,7 @@ export const QualityMeasuresSection = ({
   return (
     <>
       {topSection && (
-        <TopQualityMeasuresSection
+        <TopQualityMeasuresSectionV1
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           isPDF={isPDF}
@@ -186,7 +186,7 @@ export const QualityMeasuresSection = ({
         />
       )}
       {bottomSection && (
-        <BottomQualityMeasuresSection
+        <BottomQualityMeasuresSectionV1
           formattedEntityData={formattedEntityData}
           printVersion={printVersion}
           isPDF={isPDF}

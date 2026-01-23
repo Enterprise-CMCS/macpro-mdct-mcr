@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
 import { SanctionsSection } from "./SanctionsSection";
-import { QualityMeasuresSection } from "./QualityMeasuresSection";
+import { QualityMeasuresSectionV1 } from "./QualityMeasuresSectionV1";
 import { StandardsSection } from "./StandardsSection";
 import { PlansSection } from "./PlansSection";
 // types
@@ -45,7 +45,7 @@ export const EntityCardTopSection = ({
       );
     case EntityType.QUALITY_MEASURES:
       return (
-        <QualityMeasuresSection
+        <QualityMeasuresSectionV1
           formattedEntityData={formattedEntityData}
           printVersion={!!printVersion}
           sx={sx}
