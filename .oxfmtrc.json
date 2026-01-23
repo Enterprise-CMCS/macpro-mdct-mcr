@@ -1,6 +1,7 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["code.json"],
+  "ignorePatterns": ["code.json", "**/.github/PULL_REQUEST_TEMPLATE.md"],
   "trailingComma": "es5",
   "printWidth": 80
 }
