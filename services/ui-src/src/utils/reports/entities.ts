@@ -90,7 +90,7 @@ export const getMeasureResults = (
 ) => {
   return plans?.map((plan: AnyObject) => {
     const measureIsNotReporting =
-      plan.measures[entityId!]?.[`measure_isReporting`]?.[0].value ===
+      plan.measures[entityId!][`measure_isReporting`]?.[0].value ===
       "Not reporting";
     if (measureIsNotReporting) {
       return {
@@ -127,8 +127,8 @@ export const getFormattedEntityData = (
   reportFieldData?: AnyObject
 ) => {
   // Check which template version is being used based on data
-  const isLegacyTemplate =
-    entityType === EntityType.QUALITY_MEASURES && entity?.measure_name;
+  const isLegacyTemplate: boolean =
+    entityType === EntityType.QUALITY_MEASURES && entity?.measure_name && false;
 
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
