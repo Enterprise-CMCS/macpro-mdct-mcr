@@ -73,9 +73,6 @@ jobs:
       - name: List orphaned resources created by CI pipeline
         run: pushd .github && ./auditAccount.sh ci_inactive resources.json
 
-      - name: List resources created by Cloudformation but not from CI pipeline
-        run: pushd .github && ./auditAccount.sh cf_other resources.json
-
       - name: List untagged resources
         run: pushd .github && ./auditAccount.sh untagged resources.json
 
@@ -97,13 +94,25 @@ jobs:
           pushd macpro-mdct-tools/scripts
           ./scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
-          REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | head -n1 || true)
-          if [ -n "$REPORT_FILE" ]; then
+          set +e
+
+          REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | grep -v -- '-delete-commands\.txt$' | head -n1 || true)
+          if [ -n "${REPORT_FILE:-}" ]; then
             echo "Found unmanaged resources report: $REPORT_FILE"
-            cp "$REPORT_FILE" .github/reports/
+            cp "$REPORT_FILE" .github/reports/ || echo "Warning: Failed to copy report file"
           else
             echo "No unmanaged resources report generated."
           fi
+
+          DELETE_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*-delete-commands.txt 2>/dev/null | head -n1 || true)
+          if [ -n "${DELETE_FILE:-}" ]; then
+            echo "Found unmanaged resources delete commands: $DELETE_FILE"
+            cp "$DELETE_FILE" .github/reports/ || echo "Warning: Failed to copy delete commands file"
+          else
+            echo "No delete commands file generated (likely no unmanaged deletables found)."
+          fi
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Assemble CSV files
         run: |
@@ -113,9 +122,6 @@ jobs:
           CI_INACTIVE="$(./auditAccount.sh ci_inactive resources.json)"
           [[ $(jq -r 'length' <<< "${CI_INACTIVE}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_INACTIVE}" > reports/ci_inactive.csv || :
-          CF_OTHER="$(./auditAccount.sh cf_other resources.json)"
-          [[ $(jq -r 'length' <<< "${CF_OTHER}") -gt 0 ]] && jq -r '(.[0]
-            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CF_OTHER}" > reports/cf_other.csv || :
           UNTAGGED="$(./auditAccount.sh untagged resources.json)"
           [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv || :

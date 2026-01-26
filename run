@@ -34,7 +34,6 @@ corepack enable 2>/dev/null || true
 # Parse arguments
 UPDATE_ENV=false
 LOCAL=false
-QUIET=false
 ARGS=()
 
 for arg in "$@"; do
@@ -45,14 +44,9 @@ for arg in "$@"; do
         local)
             LOCAL=true
         ;;
-        -q|--quiet)
-            QUIET=true
-        ;;
     esac
     ARGS+=("$arg")
 done
-
-log() { [ "$QUIET" = false ] && echo "$@"; }
 
 if [ "$UPDATE_ENV" = true ]; then
     require_cmd op "Install 1Password CLI: 'brew install --cask 1password-cli'"
@@ -64,20 +58,23 @@ if [ "$LOCAL" = true ]; then
     require_cmd localstack "On macOS, install with 'brew install localstack/tap/localstack-cli'"
 
     if ! colima status 2>&1 | grep -q "colima is running" ; then
-        log "colima installed but not running. We'll start it up for you now."
+        echo "colima installed but not running. We'll start it up for you now."
         colima start --cpu 4 --memory 10
     fi
 
     if ! localstack status | grep -q "running" ; then
-        log "localstack is installed but not running. We'll start it up for you now."
+        echo "localstack is installed but not running. We'll start it up for you now."
         localstack start > /dev/null 2>&1 &
     fi
 fi
 
-yarn install --immutable >/dev/null 2>&1 || {
+IMMUTABLE_FLAG=""
+[ -n "${CI:-}" ] && IMMUTABLE_FLAG="--immutable"
+
+yarn install $IMMUTABLE_FLAG >/dev/null 2>&1 || {
 echo "Dependency install failed (root)" >&2; exit 1; }
 pushd cli >/dev/null
-yarn install --immutable >/dev/null 2>&1 || {
+yarn install $IMMUTABLE_FLAG >/dev/null 2>&1 || {
 echo "Dependency install failed (cli)" >&2; popd >/dev/null; exit 1; }
 popd >/dev/null
 
