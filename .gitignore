@@ -16,7 +16,6 @@ tests_output
 tests/cypress/videos
 tests/cypress/screenshots
 tests/cypress/downloads
-.vscode/
 *._S3rver_cors.xml
 tests/test-results/
 tests/playwright-report/
