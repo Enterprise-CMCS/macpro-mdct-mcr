@@ -1,3 +1,4 @@
 {
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
   "oxc.path.oxfmt": "node_modules/oxfmt/bin/oxfmt"
 }
