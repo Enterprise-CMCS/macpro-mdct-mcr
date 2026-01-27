@@ -89,19 +89,8 @@ export const getMeasureResults = (
   measureRates?: AnyObject[]
 ) => {
   return plans?.map((plan: AnyObject) => {
-    const measureIsNotReporting =
-      plan.measures[entityId!][`measure_isReporting`]?.[0].value ===
-      "Not reporting";
-    if (measureIsNotReporting) {
-      return {
-        planName: plan.name,
-        notReporting: true,
-        notReportingReason: otherSpecify(
-          plan.measures[entityId!]?.[`measure_isNotReportingReason`][0].value,
-          plan.measures[entityId!]?.[`measure_isNotReportingReason-otherText`]
-        ),
-      };
-    } else {
+    // check if user has entered measure results
+    if (Object.hasOwn(plan, "measures")) {
       const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
         return {
           rate: rate.name,
@@ -112,12 +101,14 @@ export const getMeasureResults = (
       return {
         planName: plan.name,
         dataCollectionMethod: otherSpecify(
-          plan.measures[entityId!]?.[`measure_dataCollectionMethod`][0].value,
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod`]?.[0]
+            ?.value,
           plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
         ),
         rateResults: resultsPerPlan,
       };
     }
+    return [];
   });
 };
 
@@ -127,8 +118,14 @@ export const getFormattedEntityData = (
   reportFieldData?: AnyObject
 ) => {
   // Check which template version is being used based on data
-  const isLegacyTemplate: boolean =
-    entityType === EntityType.QUALITY_MEASURES && entity?.measure_name && false;
+  let isLegacyTemplate: boolean = true;
+  if (entityType === EntityType.QUALITY_MEASURES && entity)
+    if (
+      entityType === EntityType.QUALITY_MEASURES &&
+      Object.hasOwn(entity, "measure_name")
+    ) {
+      isLegacyTemplate = false;
+    }
 
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
@@ -180,7 +177,7 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      if (isLegacyTemplate) {
+      if (!isLegacyTemplate) {
         const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
         const noCbe =
           entity?.measure_identifier?.[0].value ===

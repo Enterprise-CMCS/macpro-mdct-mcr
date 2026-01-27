@@ -105,7 +105,7 @@ export const BottomQualityMeasuresSectionV2 = ({
               ) : (
                 <Text sx={sx.subtext}>{result.dataCollectionMethod}</Text>
               )}
-              {result.rateResults.map((rate: AnyObject) => (
+              {result.rateResults?.map((rate: AnyObject) => (
                 <Box key={rate.rate}>
                   <Text sx={sx.subtitle}>{rate.rate}</Text>
                   {!rate.rateResult ? (
