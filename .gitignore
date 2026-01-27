@@ -27,3 +27,4 @@ cdk.context.json
 !.qlty/qlty.toml
 **/.yarn/*
 services/ui-src/public/env-config.ts
+.vscode/settings.json
