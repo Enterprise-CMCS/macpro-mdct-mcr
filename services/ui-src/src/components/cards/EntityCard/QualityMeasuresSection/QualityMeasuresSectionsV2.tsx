@@ -28,38 +28,36 @@ export const TopQualityMeasuresSectionV2 = ({
         {getPrintText("D2.VII.2 Measure Name:", formattedEntityData.name)}
       </Heading>
       <Text sx={sx.subtitle}>
-        {`${
-          printVersion ? "D2.VII.3 " : ""
-        }Measure identification number or definition`}
+        {getPrintText(
+          "D2.VII.3 ",
+          "Measure identification number or definition"
+        )}
       </Text>
       <Text sx={sx.subtext}>{getMeasureIdentifier()}</Text>
       {formattedEntityData.description && (
         <Box>
           <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.3c " : ""}How is this measure defined?`}
+            {getPrintText("D2.VII.3c ", "How is this measure defined?")}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.description}</Text>
           <Text sx={sx.subtitle}>
-            {`${
-              printVersion ? "D2.VII.3d " : ""
-            }Link to the measure specification (optional)`}
+            {getPrintText(
+              "D2.VII.3d ",
+              "Link to the measure specification (optional)"
+            )}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.identifierUrl}</Text>
           <Text sx={sx.subtitle}>
-            {`${printVersion ? "D2.VII.3e " : ""}Measure domain`}
+            {getPrintText("D2.VII.3e ", "Measure domain")}
           </Text>
           <Text sx={sx.subtext}>{formattedEntityData.identifierDomain}</Text>
         </Box>
       )}
-      <Text sx={sx.subtitle}>
-        {`${printVersion ? "D2.VII.4 " : ""}Data version`}
-      </Text>
+      <Text sx={sx.subtitle}>{getPrintText("D2.VII.4 ", "Data version")}</Text>
       <Text sx={sx.subtext}>{formattedEntityData.dataVersion}</Text>
 
       <Text sx={sx.subtitle}>
-        {`${
-          printVersion ? "D2.VII.5 " : ""
-        }Activities the quality measure is used in`}
+        {getPrintText("D2.VII.5", "Activities the quality measure is used in")}
       </Text>
       <Text sx={sx.subtext}>{formattedEntityData.activities?.toString()}</Text>
     </>

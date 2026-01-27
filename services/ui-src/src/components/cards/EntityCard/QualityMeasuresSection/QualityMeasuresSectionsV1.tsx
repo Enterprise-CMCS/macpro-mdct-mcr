@@ -116,7 +116,6 @@ interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
   sx: SxObject;
-  useLegacyTemplate?: boolean;
 }
 
 interface TopProps extends BaseProps {

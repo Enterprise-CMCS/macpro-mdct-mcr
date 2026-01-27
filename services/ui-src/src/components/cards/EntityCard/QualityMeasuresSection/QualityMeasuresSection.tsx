@@ -49,16 +49,15 @@ export const QualityMeasuresSection = ({
   const TopQualityMeasuresSection = ({
     formattedEntityData,
     printVersion,
+    isPDF,
     sx,
   }: TopProps) => {
-    const TopSection =
-      topQualityMeasureSections[
-        templateVersion as keyof typeof topQualityMeasureSections
-      ];
+    const TopSection = topQualityMeasureSections[templateVersion];
     return (
       <TopSection
         formattedEntityData={formattedEntityData}
         printVersion={printVersion}
+        isPDF={isPDF}
         sx={sx}
       />
     );
@@ -71,10 +70,7 @@ export const QualityMeasuresSection = ({
     verbiage,
     sx,
   }: BottomProps) => {
-    const BottomSection =
-      bottomQualityMeasureSections[
-        templateVersion as keyof typeof bottomQualityMeasureSections
-      ];
+    const BottomSection = bottomQualityMeasureSections[templateVersion];
     return (
       <BottomSection
         formattedEntityData={formattedEntityData}
@@ -137,7 +133,6 @@ interface BaseProps {
   formattedEntityData: FormattedEntityData;
   printVersion: boolean;
   sx: SxObject;
-  useLegacyTemplate?: boolean;
 }
 
 interface TopProps extends BaseProps {

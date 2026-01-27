@@ -57,8 +57,8 @@ describe("TopQualityMeasuresSectionV2", () => {
 describe("BottomQualityMeasuresSectionV2", () => {
   test("Renders correctly if plan is not reporting measure results", () => {
     render(<BottomQualityMeasuresSectionV2 {...defaultProps} />);
-    expect(screen.getByText("D2.VII.7 Measure results")).toBeInTheDocument();
-    expect(screen.getByText("Not reporting:")).toBeInTheDocument();
+    expect(screen.getByText("D2.VII.7 Measure results")).toBeVisible();
+    expect(screen.getByText("Not reporting:")).toBeVisible();
   });
 
   testA11yAct(<BottomQualityMeasuresSectionV2 {...defaultProps} />);

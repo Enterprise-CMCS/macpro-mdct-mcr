@@ -18,6 +18,31 @@ const defaultProps = {
 };
 
 describe("QualityMeasuresSection", () => {
+  test("renders heading as <p> when isPDF is true", () => {
+    const { container } = render(
+      <QualityMeasuresSection
+        {...defaultProps}
+        formattedEntityData={{ name: "PDF Heading" }}
+        isPDF={true}
+      />
+    );
+
+    const heading = container.querySelector("p");
+    expect(heading).toHaveTextContent("PDF Heading");
+  });
+
+  test("renders heading as <h4> when isPDF is false", () => {
+    const { container } = render(
+      <QualityMeasuresSection
+        {...defaultProps}
+        formattedEntityData={{ name: "H4 Heading" }}
+        isPDF={false}
+      />
+    );
+
+    const heading = container.querySelector("h4");
+    expect(heading).toHaveTextContent("H4 Heading");
+  });
   test("renders custom missing response message when provided", () => {
     render(
       <QualityMeasuresSection
