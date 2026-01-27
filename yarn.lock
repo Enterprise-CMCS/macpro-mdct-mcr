@@ -172,55 +172,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/client-cloudfront@npm:^3.946.0":
-  version: 3.946.0
-  resolution: "@aws-sdk/client-cloudfront@npm:3.946.0"
-  dependencies:
-    "@aws-crypto/sha256-browser": "npm:5.2.0"
-    "@aws-crypto/sha256-js": "npm:5.2.0"
-    "@aws-sdk/core": "npm:3.946.0"
-    "@aws-sdk/credential-provider-node": "npm:3.946.0"
-    "@aws-sdk/middleware-host-header": "npm:3.936.0"
-    "@aws-sdk/middleware-logger": "npm:3.936.0"
-    "@aws-sdk/middleware-recursion-detection": "npm:3.936.0"
-    "@aws-sdk/middleware-user-agent": "npm:3.946.0"
-    "@aws-sdk/region-config-resolver": "npm:3.936.0"
-    "@aws-sdk/types": "npm:3.936.0"
-    "@aws-sdk/util-endpoints": "npm:3.936.0"
-    "@aws-sdk/util-user-agent-browser": "npm:3.936.0"
-    "@aws-sdk/util-user-agent-node": "npm:3.946.0"
-    "@smithy/config-resolver": "npm:^4.4.3"
-    "@smithy/core": "npm:^3.18.7"
-    "@smithy/fetch-http-handler": "npm:^5.3.6"
-    "@smithy/hash-node": "npm:^4.2.5"
-    "@smithy/invalid-dependency": "npm:^4.2.5"
-    "@smithy/middleware-content-length": "npm:^4.2.5"
-    "@smithy/middleware-endpoint": "npm:^4.3.14"
-    "@smithy/middleware-retry": "npm:^4.4.14"
-    "@smithy/middleware-serde": "npm:^4.2.6"
-    "@smithy/middleware-stack": "npm:^4.2.5"
-    "@smithy/node-config-provider": "npm:^4.3.5"
-    "@smithy/node-http-handler": "npm:^4.4.5"
-    "@smithy/protocol-http": "npm:^5.3.5"
-    "@smithy/smithy-client": "npm:^4.9.10"
-    "@smithy/types": "npm:^4.9.0"
-    "@smithy/url-parser": "npm:^4.2.5"
-    "@smithy/util-base64": "npm:^4.3.0"
-    "@smithy/util-body-length-browser": "npm:^4.2.0"
-    "@smithy/util-body-length-node": "npm:^4.2.1"
-    "@smithy/util-defaults-mode-browser": "npm:^4.3.13"
-    "@smithy/util-defaults-mode-node": "npm:^4.2.16"
-    "@smithy/util-endpoints": "npm:^3.2.5"
-    "@smithy/util-middleware": "npm:^4.2.5"
-    "@smithy/util-retry": "npm:^4.2.5"
-    "@smithy/util-stream": "npm:^4.5.6"
-    "@smithy/util-utf8": "npm:^4.2.0"
-    "@smithy/util-waiter": "npm:^4.2.5"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/819e1343669e6714147315dfd95d12273010431f525358cdbd2606f0c116491342ef5255f8723215a1d7221f8bb45149c89cf84fbcda113d399cabf6cb380814
-  languageName: node
-  linkType: hard
-
 "@aws-sdk/client-lambda@npm:^3.946.0":
   version: 3.946.0
   resolution: "@aws-sdk/client-lambda@npm:3.946.0"
@@ -5991,7 +5942,6 @@ __metadata:
   resolution: "mdct-mcr@workspace:."
   dependencies:
     "@aws-sdk/client-cloudformation": "npm:^3.946.0"
-    "@aws-sdk/client-cloudfront": "npm:^3.946.0"
     "@aws-sdk/client-lambda": "npm:^3.946.0"
     "@aws-sdk/client-s3": "npm:^3.946.0"
     "@aws-sdk/client-secrets-manager": "npm:^3.946.0"
