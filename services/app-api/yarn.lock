@@ -2498,12 +2498,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20":
-  version: 20.19.25
-  resolution: "@types/node@npm:20.19.25"
+"@types/node@npm:^22.19.0":
+  version: 22.19.7
+  resolution: "@types/node@npm:22.19.7"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/992f18cb03264e8dc2fd3cb64f428ee4997cb6d928dad68bf4b752eacac73062697ce7ce6a0e71a6d15af510814397a20597a72332dfec638e02fb3a382ad014
+  checksum: 10c0/0a4b13fd51306a72393f145693063e074be1bf884bdc642c879436d2c053ac9d573cc0a0d69867f60b14d3f1b9d03317e8ec0e4377f7527cb645e7b2a5d34045
   languageName: node
   linkType: hard
 
@@ -2673,11 +2673,9 @@ __metadata:
     "@types/jsdom": "npm:^21.1.7"
     "@types/jwt-encode": "npm:^1.0.3"
     "@types/md5": "npm:^2.3.5"
-    "@types/node": "npm:^20"
+    "@types/node": "npm:^22.19.0"
     "@types/prompts": "npm:^2.4.9"
-    aws-jwt-verify: "npm:^5.0.0"
     aws-sdk-client-mock: "npm:^3.1.0"
-    cross-spawn: "npm:^7.0.6"
     date-fns: "npm:^4.1.0"
     date-fns-tz: "npm:^3.2.0"
     dompurify: "npm:^3.2.4"
@@ -2687,9 +2685,6 @@ __metadata:
     jwt-encode: "npm:^1.0.1"
     kafkajs: "npm:^2.2.4"
     ksuid: "npm:^3.0.0"
-    micromatch: "npm:^4.0.8"
-    nanoid: "npm:^3.3.8"
-    path-to-regexp: "npm:^6.3.0"
     prompts: "npm:^2.4.2"
     ts-jest: "npm:^28.0.8"
     ts-node: "npm:^10.9.2"
@@ -2718,13 +2713,6 @@ __metadata:
   version: 0.4.0
   resolution: "asynckit@npm:0.4.0"
   checksum: 10c0/d73e2ddf20c4eb9337e1b3df1a0f6159481050a5de457c55b14ea2e5cb6d90bb69e004c9af54737a5ee0917fcf2c9e25de67777bbe58261847846066ba75bc9d
-  languageName: node
-  linkType: hard
-
-"aws-jwt-verify@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "aws-jwt-verify@npm:5.0.0"
-  checksum: 10c0/39f82be5d1397d8ad4a6835a18448f0782e7a2adbbe4e03103a81de2777776c9a2c1eb921e2276fd75e92e239242ae667409671420a306959f7844004cd262d4
   languageName: node
   linkType: hard
 
@@ -3067,7 +3055,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.3, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.3":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -4562,7 +4550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.4, micromatch@npm:^4.0.8":
+"micromatch@npm:^4.0.4":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
   dependencies:
@@ -4709,15 +4697,6 @@ __metadata:
   version: 0.2.1
   resolution: "nanoclone@npm:0.2.1"
   checksum: 10c0/760b569ea841c9678fdf8d763c6d7bb093f0889150087f82d86c536a318b302939c82ce35cdaec999d0f687789d0d79d0f3f75a272d7a98dfac7a067c0b47053
-  languageName: node
-  linkType: hard
-
-"nanoid@npm:^3.3.8":
-  version: 3.3.8
-  resolution: "nanoid@npm:3.3.8"
-  bin:
-    nanoid: bin/nanoid.cjs
-  checksum: 10c0/4b1bb29f6cfebf3be3bc4ad1f1296fb0a10a3043a79f34fbffe75d1621b4318319211cd420549459018ea3592f0d2f159247a6f874911d6d26eaaadda2478120
   languageName: node
   linkType: hard
 
@@ -4941,7 +4920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^6.2.1, path-to-regexp@npm:^6.3.0":
+"path-to-regexp@npm:^6.2.1":
   version: 6.3.0
   resolution: "path-to-regexp@npm:6.3.0"
   checksum: 10c0/73b67f4638b41cde56254e6354e46ae3a2ebc08279583f6af3d96fe4664fc75788f74ed0d18ca44fa4a98491b69434f9eee73b97bb5314bd1b5adb700f5c18d6

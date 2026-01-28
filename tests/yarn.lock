@@ -640,7 +640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-spawn@npm:^7.0.0, cross-spawn@npm:^7.0.6":
+"cross-spawn@npm:^7.0.0":
   version: 7.0.6
   resolution: "cross-spawn@npm:7.0.6"
   dependencies:
@@ -672,7 +672,6 @@ __metadata:
     aws4: "npm:^1.13.2"
     axe-core: "npm:^4.10.2"
     concurrently: "npm:^8.2.2"
-    cross-spawn: "npm:^7.0.6"
     cypress: "npm:^14.2.0"
     cypress-axe: "npm:^1.6.0"
     dotenv: "npm:^16.4.7"
