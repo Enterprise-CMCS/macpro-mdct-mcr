@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@aws-sdk/client-cloudformation": "^3.946.0",
-    "@aws-sdk/client-cloudfront": "^3.946.0",
     "@aws-sdk/client-lambda": "^3.946.0",
     "@aws-sdk/client-s3": "^3.946.0",
     "@aws-sdk/client-secrets-manager": "^3.946.0",
@@ -44,7 +43,7 @@
     "@octokit/rest": "^22.0.0",
     "@types/dotenv": "^8.2.0",
     "@types/flat": "^5.0.5",
-    "@types/node": "^22.18.13",
+    "@types/node": "^22.19.0",
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "5.18.0",
     "@typescript-eslint/parser": "5.18.0",

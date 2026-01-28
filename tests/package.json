@@ -15,7 +15,6 @@
     "test:e2e-stable-ui": "playwright test --ui --grep-invert \"@flaky\""
   },
   "dependencies": {
-    "cross-spawn": "^7.0.6",
     "ws": "^7.5.10"
   },
   "devDependencies": {
