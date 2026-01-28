@@ -3,6 +3,7 @@ import {
   entityWasUpdated,
   getAddEditDrawerText,
   getFormattedEntityData,
+  getMeasureResults,
 } from "./entities";
 // types
 import { EntityType } from "types";
@@ -15,7 +16,10 @@ import {
   mockReportFieldData,
   mockModalDrawerReportPageVerbiage,
   mockQualityMeasuresEntity,
+  mockQualityMeasuresEntityV2,
   mockCompletedQualityMeasuresFormattedEntityData,
+  mockPlanEntities,
+  mockMeasureResults,
 } from "utils/testing/setupJest";
 import { RATE_ID_PREFIX } from "utils/forms/qualityMeasures";
 
@@ -144,6 +148,17 @@ describe("utils/reports/entities", () => {
         mockReportFieldData
       );
       expect(entityData).toEqual({});
+    });
+  });
+
+  describe("getMeasureResults()", () => {
+    test("returns correct measure results", () => {
+      const result = getMeasureResults(
+        mockQualityMeasuresEntityV2.id,
+        mockPlanEntities,
+        mockQualityMeasuresEntityV2.measure_rates
+      );
+      expect(result).toEqual(mockMeasureResults);
     });
   });
 

@@ -85,20 +85,8 @@ export function renderModalOverlayTableBody(
   const reportType = report.reportType;
   switch (reportType) {
     case ReportType.MCPAR:
-      return entities.map((entity, idx) => {
-        const { measure_name } = entity;
-        return (
-          <Tr key={idx}>
-            <Td>
-              <Text sx={sx.tableIndex}>{idx + 1}</Text>
-            </Td>
-            {["placeholder"].map((value) => (
-              <Td key={`${value}-${idx}`}>
-                <Text>{measure_name}</Text>
-              </Td>
-            ))}
-          </Tr>
-        );
+      return entities.map((entity) => {
+        <Box>{entity.name}</Box>;
       });
     case ReportType.MLR:
       return entities.map((entity, idx) => {

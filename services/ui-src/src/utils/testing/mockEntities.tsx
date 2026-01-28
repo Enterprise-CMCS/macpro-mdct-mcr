@@ -122,6 +122,67 @@ export const mockCompletedQualityMeasuresFormattedEntityData = {
   set: "Mock Set",
 };
 
+export const mockQualityMeasuresEntityV2 = {
+  id: "mock-id-12345",
+  measure_activities: [
+    {
+      key: "measure_activities-123",
+      value: "Mock value",
+    },
+  ],
+  measure_dataVersion: [
+    {
+      key: "measure_dataVersion-123",
+      value: "Mock value",
+    },
+  ],
+  measure_identifier: [
+    {
+      key: "measure_identifier-123",
+      value: "Yes",
+    },
+  ],
+  measure_identifierCmit: "123",
+  measure_name: "Mock name",
+  measure_rates: [
+    {
+      id: "mock-id",
+      name: "mock-rate",
+    },
+  ],
+};
+
+export const mockPlanEntities = [
+  {
+    id: "mock-id",
+    name: "mock-plan-name",
+    measures: {
+      "mock-id-12345": {
+        measure_dataCollectionMethod: [
+          {
+            key: "measure_dataCollectionMethod-mock-id-12345",
+            value: "Mock value",
+          },
+        ],
+        "measure_rateResults-mock-id": "12345",
+      },
+    },
+  },
+];
+
+export const mockMeasureResults = [
+  {
+    planName: "mock-plan-name",
+    dataCollectionMethod: "Mock value",
+    rateResults: [
+      {
+        rate: "mock-rate",
+        rateResult: "12345",
+      },
+    ],
+  },
+];
+
 export const mockSanctionsEntity = {
   id: "mock-id",
   sanction_interventionType: [{ value: "MCPAR" }],

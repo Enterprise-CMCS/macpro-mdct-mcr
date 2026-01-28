@@ -2,9 +2,11 @@
 import { Box, Heading } from "@chakra-ui/react";
 import { Alert } from "components";
 // types
-import { AlertTypes, ReportPageVerbiage } from "types";
+import { AlertTypes, CustomHtmlElement, ReportPageVerbiage } from "types";
 // utils
 import { parseCustomHtml } from "utils";
+// verbiage
+import accordion from "verbiage/pages/accordion";
 
 export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
   const sectionSubHeader = verbiage?.intro?.subsection || heading;
@@ -13,15 +15,24 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
     : verbiage?.intro?.info;
   const sectionAlert = verbiage?.intro.alert;
 
-  const introHeaderRender = () => {
-    const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
+  const infoHeader: any = verbiage?.intro?.info && verbiage?.intro?.info[0];
+  const introContent = infoHeader && infoHeader.content;
+
+  // Check which template version is being used based on verbiage contents
+  const isNewQualityMeasuresSection = Object.hasOwn(
+    verbiage as Object,
+    "enterReportText"
+  );
+  const isQualityMeasuresResultsPage = introContent === "Measures and results";
+
+  const introHeaderRender = (infoHeader: any, introContent: any) => {
     const introType = infoHeader && infoHeader.type;
-    const introContent = infoHeader && infoHeader.content;
 
     const hideSectionIntroHeader =
       introType === "heading" &&
       introContent !== "Appeals Overview" &&
-      introContent !== "Network Adequacy";
+      introContent !== "Network Adequacy" &&
+      introContent !== "New plan exemption";
 
     return !hideSectionIntroHeader && sectionSubHeader;
   };
@@ -30,7 +41,7 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
     <>
       {sectionSubHeader ? (
         <Heading as="h3" sx={sx.heading.h3}>
-          {introHeaderRender()}
+          {introHeaderRender(infoHeader, introContent)}
         </Heading>
       ) : null}
       <Box data-testid="exportedSectionHeading" sx={sx.container}>
@@ -38,11 +49,22 @@ export const ExportedSectionHeading = ({ heading, verbiage }: Props) => {
           <Alert status={AlertTypes.WARN} description={sectionAlert} />
         )}
         {sectionInfo && (
-          <Box sx={sx.info}>
-            {typeof sectionInfo === "string"
-              ? sectionInfo
-              : parseCustomHtml(sectionInfo)}
-          </Box>
+          <>
+            <Box sx={sx.info}>
+              {typeof sectionInfo === "string"
+                ? sectionInfo
+                : parseCustomHtml(sectionInfo)}
+            </Box>
+            <Box sx={sx.instructions}>
+              {isNewQualityMeasuresSection && isQualityMeasuresResultsPage && (
+                <>
+                  {parseCustomHtml(
+                    accordion.MCPAR.formIntro.intro as CustomHtmlElement[]
+                  )}
+                </>
+              )}
+            </Box>
+          </>
         )}
       </Box>
     </>
@@ -92,6 +114,23 @@ const sx = {
     h4: {
       fontSize: "lg",
       paddingTop: "spacer2",
+    },
+  },
+  instructions: {
+    color: "gray",
+    p: {
+      ":nth-of-type(odd)": {
+        margin: "1.25rem auto",
+      },
+    },
+    a: {
+      color: "gray",
+      textDecoration: "none",
+      cursor: "text",
+      "&:hover": {
+        color: "gray",
+        textDecoration: "none",
+      },
     },
   },
 };

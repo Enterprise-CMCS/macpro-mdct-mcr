@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Text } from "@chakra-ui/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
 import { SanctionsSection } from "./SanctionsSection";
-import { QualityMeasuresSection } from "./QualityMeasuresSection";
+import { QualityMeasuresSection } from "./QualityMeasuresSection/QualityMeasuresSection";
 import { StandardsSection } from "./StandardsSection";
 import { PlansSection } from "./PlansSection";
 // types

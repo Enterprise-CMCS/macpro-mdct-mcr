@@ -30,6 +30,7 @@ export const EntityCard = ({
   ...props
 }: Props) => {
   const { report } = useStore();
+
   let entityStarted = false;
   let entityCompleted = false;
   const reportingPeriodCompletedOrOptional =

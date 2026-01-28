@@ -79,6 +79,11 @@ export const renderDataCell = (
       : undefined;
     return renderDynamicDataCell(fieldResponseData);
   }
+  // handle generated checkbox
+  if (formField.id === "plansExemptFromQualityMeasures") {
+    const fieldResponseData = allResponseData["plansExemptFromQualityMeasures"];
+    return renderGeneratedCheckboxCell(fieldResponseData);
+  }
   // render standard data cell (just field response data)
   const fieldResponseData = allResponseData[formField.id];
   return renderResponseData(
@@ -242,6 +247,22 @@ export const renderDynamicDataCell = (fieldResponseData: AnyObject) => {
   );
 };
 
+export const renderGeneratedCheckboxCell = (fieldResponseData: AnyObject) => {
+  const { exportVerbiage } = getReportVerbiage();
+  if (!fieldResponseData || fieldResponseData.length === 0) {
+    return (
+      <Text sx={sx.noResponseOptional}>
+        {exportVerbiage.missingEntry.noResponseOptional}
+      </Text>
+    );
+  }
+  return fieldResponseData.map((response: AnyObject) => (
+    <Text key={response.key} sx={sx.dynamicItem}>
+      {response.value}
+    </Text>
+  ));
+};
+
 export const renderResponseData = (
   formField: FormField,
   fieldResponseData: any,
@@ -257,6 +278,10 @@ export const renderResponseData = (
     ? fieldResponseData?.length
     : fieldResponseData;
 
+  // check if optional
+  const validationType = formField.validation.toString();
+  const isOptional = validationType.includes("Optional") || formField?.groupId;
+
   const missingEntryVerbiage = notApplicable
     ? exportVerbiage.missingEntry.notApplicable
     : exportVerbiage.missingEntry.noResponse;
@@ -264,6 +289,13 @@ export const renderResponseData = (
   const missingEntryStyle = notApplicable ? sx.notApplicable : sx.noResponse;
 
   if (!hasResponse) {
+    if (isOptional) {
+      return (
+        <Text sx={sx.noResponseOptional}>
+          {exportVerbiage.missingEntry.noResponseOptional}
+        </Text>
+      );
+    }
     const isIlos = formField.id === "plan_ilosOfferedByPlan";
     return (
       !isIlos && <Text sx={missingEntryStyle}>{missingEntryVerbiage}</Text>

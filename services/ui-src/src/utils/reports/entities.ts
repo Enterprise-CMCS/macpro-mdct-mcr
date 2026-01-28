@@ -28,6 +28,9 @@ const getCheckboxValues = (
   customLabel?: string
 ) => {
   return entity?.[label]?.map((method: AnyObject) => {
+    if (label === "measure_activities") {
+      return ` ${method.value}`;
+    }
     if (method.value === "Custom method") {
       return `Custom method - ${entity?.[`${label}-otherText`]}`;
     }
@@ -79,11 +82,51 @@ export const getPlanValues = (
   }));
 };
 
+// returns an array of { rateName: string, rateResult: string } or undefined
+export const getMeasureResults = (
+  entityId?: string,
+  plans?: AnyObject,
+  measureRates?: AnyObject[]
+) => {
+  return plans?.map((plan: AnyObject) => {
+    // check if user has entered measure results
+    if (Object.hasOwn(plan, "measures")) {
+      const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+        return {
+          rate: rate.name,
+          rateResult:
+            plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
+        };
+      });
+      return {
+        planName: plan.name,
+        dataCollectionMethod: otherSpecify(
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod`]?.[0]
+            ?.value,
+          plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
+        ),
+        rateResults: resultsPerPlan,
+      };
+    }
+    return [];
+  });
+};
+
 export const getFormattedEntityData = (
   entityType: EntityType,
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
+  // Check which template version is being used based on data
+  let isLegacyTemplate: boolean = true;
+  if (entityType === EntityType.QUALITY_MEASURES && entity)
+    if (
+      entityType === EntityType.QUALITY_MEASURES &&
+      Object.hasOwn(entity, "measure_name")
+    ) {
+      isLegacyTemplate = false;
+    }
+
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return {
@@ -133,26 +176,56 @@ export const getFormattedEntityData = (
           "sanction_correctiveActionPlan"
         ),
       };
-    case EntityType.QUALITY_MEASURES: {
-      const exemptedPlanIds = (
-        reportFieldData?.plansExemptFromQualityMeasures || []
-      ).map((exemption: EntityShape) => exemption.key);
+    case EntityType.QUALITY_MEASURES:
+      if (!isLegacyTemplate) {
+        const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
+        const noCbe =
+          entity?.measure_identifier?.[0].value ===
+          "No, it has a Consensus Based Entity (CBE) number";
+        const neitherCmitOrCbe =
+          entity?.measure_identifier?.[0].value ===
+          "No, it uses neither CMIT or CBE";
+        return {
+          id: entity?.id,
+          name: entity?.measure_name,
+          identifierType: getRadioValue(entity, "measure_identifier"),
+          cmitNumber: yesCmit && entity?.measure_identifierCmit,
+          cbeNumber: noCbe && entity?.measure_identifierCbe,
+          description: neitherCmitOrCbe && entity?.measure_identifierDefinition,
+          identifierDomain:
+            neitherCmitOrCbe &&
+            getCheckboxValues(entity, "measure_identifierDomain"),
+          identifierUrl:
+            (neitherCmitOrCbe && entity?.measure_identifierUrl) ||
+            "Not answered, optional",
+          dataVersion: getRadioValue(entity, "measure_dataVersion"),
+          activities: getCheckboxValues(entity, "measure_activities"),
+          measureResults: getMeasureResults(
+            entity?.id,
+            reportFieldData?.["plans"],
+            entity?.measure_rates
+          ),
+        };
+      } else {
+        const exemptedPlanIds = (
+          reportFieldData?.plansExemptFromQualityMeasures || []
+        ).map((exemption: EntityShape) => exemption.key);
 
-      return {
-        domain: getRadioValue(entity, "qualityMeasure_domain"),
-        name: entity?.qualityMeasure_name,
-        nqfNumber: entity?.qualityMeasure_nqfNumber,
-        reportingRateType: getReportingRateType(entity),
-        set: getRadioValue(entity, "qualityMeasure_set"),
-        reportingPeriod: getReportingPeriod(entity),
-        description: entity?.qualityMeasure_description,
-        perPlanResponses: getPlanValues(
-          entity,
-          reportFieldData?.plans,
-          exemptedPlanIds
-        ),
-      };
-    }
+        return {
+          domain: getRadioValue(entity, "qualityMeasure_domain"),
+          name: entity?.qualityMeasure_name,
+          nqfNumber: entity?.qualityMeasure_nqfNumber,
+          reportingRateType: getReportingRateType(entity),
+          set: getRadioValue(entity, "qualityMeasure_set"),
+          reportingPeriod: getReportingPeriod(entity),
+          description: entity?.qualityMeasure_description,
+          perPlanResponses: getPlanValues(
+            entity,
+            reportFieldData?.plans,
+            exemptedPlanIds
+          ),
+        };
+      }
     case EntityType.PLANS: {
       if (!entity) return {};
       const data = getFormattedPlanData(entity);
@@ -185,7 +258,7 @@ export const getAddEditDrawerText = (
       }
       break;
     case EntityType.QUALITY_MEASURES:
-      if (formattedEntityData.perPlanResponses?.[0].response) {
+      if (formattedEntityData.perPlanResponses?.[0]?.response) {
         addEditDrawerText = "Edit";
       }
       break;
