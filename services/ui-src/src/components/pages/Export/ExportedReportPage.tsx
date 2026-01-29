@@ -24,7 +24,6 @@ export const ExportedReportPage = () => {
   const routesToRender = report?.formTemplate.routes.filter(
     (route: ReportRoute) => route
   );
-
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
 
