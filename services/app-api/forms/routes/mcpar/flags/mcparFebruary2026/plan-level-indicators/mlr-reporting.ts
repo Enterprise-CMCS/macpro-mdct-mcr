@@ -73,6 +73,23 @@ export const mlrReportingRoute: DrawerFormRoute = {
                       {
                         id: "pQ8rS0tU2vW4xY6zA8bC0d",
                         label: "No",
+                        children: [
+                          {
+                            id: "agvm79QjeMahTuwFAeP5LEOC",
+                            type: ReportFormFieldType.DATE_MONTH_YEAR,
+                            validation: {
+                              type: ValidationType.DATE_MONTH_YEAR,
+                              nested: true,
+                              parentFieldName: "plan_mlrDataValidated",
+                              parentOptionId: "pQ8rS0tU2vW4xY6zA8bC0d",
+                            },
+                            props: {
+                              label:
+                                "D1.II.1b Projected Date for Validation of MLR Data for This Reporting Period",
+                              hint: "When does the state anticipate completing validation for this plan?",
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -82,6 +99,23 @@ export const mlrReportingRoute: DrawerFormRoute = {
             {
               id: "eF2gH4iJ6kL8mN0oP2qR4s",
               label: "No",
+              children: [
+                {
+                  id: "6Mtk0HNtmiqcgNyAhkT9dlRH",
+                  type: ReportFormFieldType.DATE_MONTH_YEAR,
+                  validation: {
+                    type: ValidationType.DATE_MONTH_YEAR,
+                    nested: true,
+                    parentFieldName: "plan_mlrDataReceived",
+                    parentOptionId: "eF2gH4iJ6kL8mN0oP2qR4s",
+                  },
+                  props: {
+                    label:
+                      "D1.II.1c Projected Date for Receipt of MLR Data for This Reporting Period",
+                    hint: "When does the state anticipate receiving MLR data for this reporting period from this plan?",
+                  },
+                },
+              ],
             },
           ],
         },
