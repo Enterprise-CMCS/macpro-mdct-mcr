@@ -28,9 +28,6 @@ const getCheckboxValues = (
   customLabel?: string
 ) => {
   return entity?.[label]?.map((method: AnyObject) => {
-    if (label === "measure_activities") {
-      return ` ${method.value}`;
-    }
     if (method.value === "Custom method") {
       return `Custom method - ${entity?.[`${label}-otherText`]}`;
     }
@@ -86,29 +83,55 @@ export const getPlanValues = (
 export const getMeasureResults = (
   entityId?: string,
   plans?: AnyObject,
-  measureRates?: AnyObject[]
+  measureRates?: AnyObject[],
+  exemptedPlanIds?: string[]
 ) => {
   return plans?.map((plan: AnyObject) => {
-    // check if user has entered measure results
-    if (Object.hasOwn(plan, "measures")) {
-      const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+    const result = {
+      planName: plan.name,
+    };
+    // check if plan is exempt from reporting
+    if (exemptedPlanIds?.indexOf(plan.id) === -1) {
+      // check if user has entered measure results
+      if (Object.hasOwn(plan, "measures")) {
+        const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+          return {
+            rate: rate.name,
+            rateResult:
+              plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
+          };
+        });
+        if (
+          plan.measures[entityId!] &&
+          Object.hasOwn(
+            plan.measures[entityId!],
+            "measure_isNotReportingReason"
+          )
+        ) {
+          return {
+            ...result,
+            notReporting: true,
+            notReportingReason:
+              plan.measures[entityId!]?.[`measure_isNotReportingReason`],
+          };
+        }
         return {
-          rate: rate.name,
-          rateResult:
-            plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
+          ...result,
+          dataCollectionMethod: otherSpecify(
+            plan.measures[entityId!]?.[`measure_dataCollectionMethod`]?.[0]
+              ?.value,
+            plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
+          ),
+          rateResults: resultsPerPlan,
         };
-      });
+      }
+    } else {
       return {
-        planName: plan.name,
-        dataCollectionMethod: otherSpecify(
-          plan.measures[entityId!]?.[`measure_dataCollectionMethod`]?.[0]
-            ?.value,
-          plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
-        ),
-        rateResults: resultsPerPlan,
+        ...result,
+        exempt: true,
       };
     }
-    return [];
+    return result;
   });
 };
 
@@ -178,6 +201,11 @@ export const getFormattedEntityData = (
       };
     case EntityType.QUALITY_MEASURES:
       if (!isLegacyTemplate) {
+        const exemptedPlanIds = (
+          reportFieldData?.plansExemptFromQualityMeasures || []
+        ).map((exemption: EntityShape) => {
+          return exemption.key.replace("plansExemptFromQualityMeasures-", "");
+        });
         const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
         const noCbe =
           entity?.measure_identifier?.[0].value ===
@@ -203,7 +231,8 @@ export const getFormattedEntityData = (
           measureResults: getMeasureResults(
             entity?.id,
             reportFieldData?.["plans"],
-            entity?.measure_rates
+            entity?.measure_rates,
+            exemptedPlanIds
           ),
         };
       } else {
