@@ -45,8 +45,6 @@
     "@types/flat": "^5.0.5",
     "@types/node": "^22.19.0",
     "@types/yargs": "^17.0.33",
-    "@typescript-eslint/eslint-plugin": "5.18.0",
-    "@typescript-eslint/parser": "5.18.0",
     "amazon-user-pool-srp-client": "^1.0.4",
     "aws-cdk": "^2.1029.0",
     "aws-cdk-local": "^2.19.2",
