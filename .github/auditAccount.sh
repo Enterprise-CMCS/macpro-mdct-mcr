@@ -5,12 +5,12 @@ git fetch --all > /dev/null
 
 #Parse inputs
 case ${1-} in
-  "ci_inactive"|"cf_other"|"untagged"|"orphaned_topics")
+  "ci_inactive"|"untagged"|"orphaned_topics")
     OP=${1-}
     ;;
   *)
     echo "Error:  unknown operation"
-    echo "Usage: ${0} [ci_inactive|cf_other|untagged|orphaned_topics] [resource_tagging_response|null]" && exit 1
+    echo "Usage: ${0} [ci_inactive|untagged|orphaned_topics] [resource_tagging_response|null]" && exit 1
     ;;
 esac
 
@@ -30,11 +30,11 @@ fi
 
 #Create array of objects with the branch name and the interpolated branch name (for bot created branches)
 get_branches () {
- local RAW_BRANCHES=$(git for-each-ref --format='%(refname)' refs/remotes/origin | sed 's|^.\+\/||g')
+ local RAW_BRANCHES=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin | sed 's|^origin/||')
  local BRANCHES=()
  for B in $RAW_BRANCHES; do
    [ "${B}" == "HEAD" ] && continue
-   IBRANCH=$(./setBranchName.sh ${B})
+   IBRANCH=$(./setBranchName.ts ${B})
    BRANCHES+=($(echo '{"BRANCH":"'${B}'","IBRANCH":"'${IBRANCH}'"}'))
  done
 
@@ -61,22 +61,6 @@ ci_inactive () {
   jq -r '[.[] | select(.BRANCH == null)] | del(.[].BRANCH) | sort_by(.STAGE)' <<< $(get_composite_ci "${1}")
 }
 
-#Produce report for resources that have tags but were not created by the ci pipeline
-#Excludes CMS-Cloud, CMS-OIT, and AWS Backup resources (managed by other teams)
-cf_other () {
-  jq -r '[.ResourceTagMappingList[] | select((.Tags? | length) > 0) | del(select(.Tags[].Key=="STAGE")) // empty |
-         {
-           InferredId: .Tags[] | select(.Key=="aws:cloudformation:stack-name" or .Key=="cms-cloud-service" or .Key=="Name").Value,
-           ResourceARN: .ResourceARN
-         }]
-         | [.[] | select(
-             (.InferredId | test("^(cms-cloud|CMS-Cloud|cms-oit|CMS-OIT|cmscloud|NASH|nucleus|opensearch|flowlogs|logging|continuous-diagnostics)"; "i") | not) and
-             (.InferredId | test("Backup"; "i") | not) and
-             (.ResourceARN | test("backup|tenable|guardduty"; "i") | not)
-           )]
-         | sort' <<< "${1}"
-}
-
 #Produce report for resources that are untagged (some are still created by the ci pipeline)
 #Excludes CMS-Cloud, CMS-OIT, GuardDuty, Tenable, and other non-project resources
 untagged () {
@@ -89,7 +73,7 @@ untagged () {
 
 #Create array of objects with the topic name and parsed topic namespace
 get_topics () {
-  local RAW_TOPICS="$(./run list-topics --stage main -q | jq -r '.[]')"
+  local RAW_TOPICS="$(./run list-topics --stage main | jq -r '.[]')"
   local TOPICS=()
   for T in $RAW_TOPICS; do
     STAGE=$(echo "${T}" | sed 's/--/ /g' | cut -f3 -d' ')

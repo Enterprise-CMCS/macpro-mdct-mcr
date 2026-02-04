@@ -16,7 +16,6 @@ tests_output
 tests/cypress/videos
 tests/cypress/screenshots
 tests/cypress/downloads
-.vscode/
 *._S3rver_cors.xml
 tests/test-results/
 tests/playwright-report/
@@ -28,3 +27,4 @@ cdk.context.json
 !.qlty/qlty.toml
 **/.yarn/*
 services/ui-src/public/env-config.ts
+.vscode/settings.json
