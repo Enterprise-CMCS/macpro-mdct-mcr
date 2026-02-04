@@ -130,6 +130,7 @@ export const ReviewSubmitPage = () => {
 const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   const { report } = useStore();
+  // oxlint-disable-next-line no-unsafe-optional-chaining
   const reportType = (report?.reportType as ReportType).toLowerCase();
   const isSubmitted = report?.status === "Submitted";
   return (

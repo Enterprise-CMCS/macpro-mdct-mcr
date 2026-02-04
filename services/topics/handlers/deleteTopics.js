@@ -1,5 +1,5 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
-/* eslint-disable no-console */
+/* oxlint-disable no-console */
 import { deleteTopics } from "../libs/topics-lib.js";
 
 /**

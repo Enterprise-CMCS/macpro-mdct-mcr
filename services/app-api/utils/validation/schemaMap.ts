@@ -289,6 +289,7 @@ export const nested = (
     is: (value: any[]) =>
       // look for parentOptionId in checked Choices
       value?.find((option: any) => option.key === parentOptionId),
+    // oxlint-disable-next-line no-thenable
     then: () => fieldSchema(), // returns standard field schema (required)
     otherwise: () => baseSchema, // returns not-required Yup base schema
   });
