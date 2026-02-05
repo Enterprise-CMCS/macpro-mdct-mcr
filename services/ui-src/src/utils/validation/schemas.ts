@@ -295,14 +295,11 @@ export const nested = (
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-  return baseSchema.when(parentFieldName, {
-    is: (value: Choice[]) =>
-      // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
-    // oxlint-disable-next-line no-thenable
-    then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => baseSchema, // returns not-required Yup base schema
-  });
+  return baseSchema.when(parentFieldName, (value: Choice[]) =>
+    value?.find((option: Choice) => option.key.endsWith(parentOptionId))
+      ? fieldSchema()
+      : baseSchema
+  );
 };
 
 // REGEX
