@@ -1,4 +1,3 @@
-/* eslint-disable multiline-comment-style */
 import { Construct } from "constructs";
 import {
   aws_certificatemanager as acm,

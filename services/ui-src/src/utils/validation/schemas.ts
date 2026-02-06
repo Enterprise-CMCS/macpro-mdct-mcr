@@ -290,18 +290,19 @@ export const nested = (
   const fieldTypeMap = {
     array: array(),
     string: string(),
-    object: object(),
     date: date(),
+    object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-  return baseSchema.when(parentFieldName, {
-    is: (value: Choice[]) =>
+  return baseSchema.when(
+    parentFieldName,
+    (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
-    then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => baseSchema, // returns not-required Yup base schema
-  });
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId))
+        ? fieldSchema() // returns standard field schema (required)
+        : baseSchema // returns not-required Yup base schema
+  );
 };
 
 // REGEX

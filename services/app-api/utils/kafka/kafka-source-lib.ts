@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import s3Lib from "../s3/s3-lib";
 import { Kafka, Producer } from "kafkajs";

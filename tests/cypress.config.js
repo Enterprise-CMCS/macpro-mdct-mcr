@@ -23,17 +23,14 @@ module.exports = defineConfig({
     async setupNodeEvents(on, config) {
       on("task", {
         log(message) {
-          // eslint-disable-next-line no-console
           console.log(message);
           return null;
         },
         table(message) {
-          // eslint-disable-next-line no-console
           console.table(message);
           return null;
         },
       });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       on("before:browser:launch", (browser = {}, launchOptions) => {
         prepareAudit(launchOptions);
       });

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import path from "path";
 
 const fs = require("fs").promises;

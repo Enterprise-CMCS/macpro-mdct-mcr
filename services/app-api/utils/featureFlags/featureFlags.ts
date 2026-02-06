@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import * as LD from "@launchdarkly/node-server-sdk";
 
 export const getLaunchDarklyClient = async () => {

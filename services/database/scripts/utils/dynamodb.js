@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DynamoDBDocumentClient,

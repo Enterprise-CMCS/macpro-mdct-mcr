@@ -7,7 +7,7 @@ import {
 const client = new SecretsManagerClient({ region: "us-east-1" });
 
 export async function getSecret(secretId: string) {
-  console.log("getting secret:", secretId); // eslint-disable-line no-console
+  console.log("getting secret:", secretId);
   const command = new GetSecretValueCommand({ SecretId: secretId });
   const data = await client.send(command);
   return data.SecretString;
