@@ -2,7 +2,6 @@ import React, { ReactElement } from "react";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 // components
-import { Link as RouterLink } from "react-router";
 import {
   Heading,
   Link,
@@ -14,10 +13,11 @@ import {
 // types
 import { CustomHtmlElement } from "types";
 import uuid from "react-uuid";
+import { InternalLink } from "./InternalLink";
 
 const customElementMap: any = {
   externalLink: Link,
-  internalLink: RouterLink,
+  internalLink: InternalLink,
   text: Text,
   heading: Heading,
   html: React.Fragment,
