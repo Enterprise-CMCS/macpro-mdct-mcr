@@ -23,12 +23,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Checkout macpro-mdct-tools repository
-        uses: actions/checkout@v5
-        with:
-          repository: Enterprise-CMCS/macpro-mdct-tools
-          path: macpro-mdct-tools
-
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
@@ -67,36 +61,27 @@ jobs:
         env:
           PROJECT: ${{ vars.APP_NAME_LOWER }}
 
-      - name: Collect resources from account
-        run: pushd .github && aws resourcegroupstaggingapi get-resources > resources.json
-
-      - name: List orphaned resources created by CI pipeline
-        run: pushd .github && ./auditAccount.sh ci_inactive resources.json
-
-      - name: List untagged resources
-        run: pushd .github && ./auditAccount.sh untagged resources.json
-
       - name: List orphaned topics
         run: pushd .github && ./auditAccount.sh orphaned_topics
 
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
 
-      - name: Install macpro-mdct-tools dependencies
+      - name: Install scan resources dependencies
         run: |
-          pushd macpro-mdct-tools/scripts
+          pushd .github/scanResources
           yarn install --immutable
           popd
 
       - name: Run unmanaged resources scan
         run: |
           set -euo pipefail
-          pushd macpro-mdct-tools/scripts
+          pushd .github/scanResources
           ./scanResources.ts || { echo "scanResources.ts failed"; exit 1; }
           popd
           set +e
 
-          REPORT_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*.txt 2>/dev/null | grep -v -- '-delete-commands\.txt$' | head -n1 || true)
+          REPORT_FILE=$(ls .github/scanResources/unmanaged-resources-*.txt 2>/dev/null | grep -v -- '-delete-commands\.txt$' | head -n1 || true)
           if [ -n "${REPORT_FILE:-}" ]; then
             echo "Found unmanaged resources report: $REPORT_FILE"
             cp "$REPORT_FILE" .github/reports/ || echo "Warning: Failed to copy report file"
@@ -104,7 +89,7 @@ jobs:
             echo "No unmanaged resources report generated."
           fi
 
-          DELETE_FILE=$(ls macpro-mdct-tools/scripts/unmanaged-resources-*-delete-commands.txt 2>/dev/null | head -n1 || true)
+          DELETE_FILE=$(ls .github/scanResources/unmanaged-resources-*-delete-commands.txt 2>/dev/null | head -n1 || true)
           if [ -n "${DELETE_FILE:-}" ]; then
             echo "Found unmanaged resources delete commands: $DELETE_FILE"
             cp "$DELETE_FILE" .github/reports/ || echo "Warning: Failed to copy delete commands file"
@@ -119,12 +104,6 @@ jobs:
           #!/bin/bash
           pushd .github
           echo "Reports with no entries will be omitted"
-          CI_INACTIVE="$(./auditAccount.sh ci_inactive resources.json)"
-          [[ $(jq -r 'length' <<< "${CI_INACTIVE}") -gt 0 ]] && jq -r '(.[0]
-            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${CI_INACTIVE}" > reports/ci_inactive.csv || :
-          UNTAGGED="$(./auditAccount.sh untagged resources.json)"
-          [[ $(jq -r 'length' <<< "${UNTAGGED}") -gt 0 ]] && jq -r '(.[0]
-            | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${UNTAGGED}" > reports/untagged.csv || :
           TOPICS="$(./auditAccount.sh orphaned_topics)"
           [[ $(jq -r 'length' <<< "${TOPICS}") -gt 0 ]] && jq -r '(.[0]
             | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' <<< "${TOPICS}" > reports/orphaned_topics.csv || :
