@@ -17,7 +17,11 @@ const newReportInputArray = [
   { name: "reportingPeriodEndDate", type: "text", value: "07/14/2026" },
   { name: "combinedData", type: "singleCheckbox", value: "true" },
   { name: "programIsPCCM", type: "radio", value: "No" },
-  { name: "naaarSubmissionForThisProgram", type: "radio", value: "No" },
+  {
+    name: "naaarSubmissionForThisProgram",
+    type: "radio",
+    value: "No (Excel submission)",
+  },
 ];
 
 before(() => {
