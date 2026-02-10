@@ -87,7 +87,7 @@ export const mockDynamoDataCompleted: MCPARReportMetadata = {
   naaarSubmissionForThisProgram: [
     {
       key: "naaarSubmissionForThisProgram-mockId",
-      value: "No",
+      value: "No (Excel submission)",
     },
   ],
   lastAlteredBy: "Thelonious States",
@@ -193,7 +193,7 @@ export const mockMcparReport = {
     naaarSubmissionForThisProgram: [
       {
         key: "naaarSubmissionForThisProgram-mockId",
-        value: "No",
+        value: "No (Excel submission)",
       },
     ],
     lastAlteredBy: "Thelonious States",

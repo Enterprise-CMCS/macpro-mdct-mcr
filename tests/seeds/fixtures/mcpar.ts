@@ -38,7 +38,7 @@ export const newMcpar = (
       },
       {
         key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
-        value: "No",
+        value: "No (Excel submission)",
       },
     ],
     newOrExistingProgram: [

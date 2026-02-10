@@ -17,8 +17,8 @@ export const financialPerformanceRoute: DrawerFormRoute = {
       subsection: "Topic II. Financial Performance",
       spreadsheet: "D1_Plan_Set",
     },
-    dashboardTitle: "Report financial performance for each plan",
-    drawerTitle: "Report financial performance for {{name}}",
+    dashboardTitle: "Enter MLR reporting information for each plan",
+    drawerTitle: "Enter MLR reporting information for {{name}}",
     missingEntityMessage: [
       {
         type: "p",

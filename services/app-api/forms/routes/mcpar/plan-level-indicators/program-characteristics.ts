@@ -96,7 +96,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
             {
               type: "span",
               content:
-                "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?",
+                "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in risk-based managed care?",
               props: {
                 className: "fake-paragraph-break",
               },
@@ -111,7 +111,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
             {
               type: "span",
               content:
-                "Denominator: Statewide Medicaid managed care enrollment (B.I.2)",
+                "Denominator: Statewide Medicaid risk-based managed care enrollment (B.I.2)",
               props: {
                 className: "fake-list-item",
               },
