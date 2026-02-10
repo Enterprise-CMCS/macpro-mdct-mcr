@@ -1162,7 +1162,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.III.5 Incentives for encounter data quality",
-                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with “N/A” if the plan does not use incentives to award encounter data quality."
+                  "hint": "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with N/A if the program does not use incentives to reward encounter data quality."
                 }
               },
               {
@@ -2249,7 +2249,7 @@
                   "hint": [
                     {
                       "type": "span",
-                      "content": "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in any type of managed care?",
+                      "content": "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in risk-based managed care?",
                       "props": {
                         "className": "fake-paragraph-break"
                       }
@@ -2263,7 +2263,7 @@
                     },
                     {
                       "type": "span",
-                      "content": "Denominator: Statewide Medicaid managed care enrollment (B.I.2)",
+                      "content": "Denominator: Statewide Medicaid risk-based managed care enrollment (B.I.2)",
                       "props": {
                         "className": "fake-list-item"
                       }
@@ -2295,8 +2295,8 @@
               "subsection": "Topic II: Medical Loss Ratio (MLR) Reporting",
               "spreadsheet": "D1_Plan_Set"
             },
-            "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for {{name}}",
+            "dashboardTitle": "Enter MLR reporting information for each plan",
+            "drawerTitle": "Enter MLR reporting information for {{name}}",
             "missingEntityMessage": [
               {
                 "type": "p",
