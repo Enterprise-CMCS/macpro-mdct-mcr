@@ -62,7 +62,6 @@ Cypress.Commands.add("authenticate", (userType, userCredentials) => {
     let credentials = {};
 
     if (userType && userCredentials) {
-      /* eslint-disable-next-line no-console */
       console.warn(
         "If userType and userCredentials are both provided, userType is ignored and provided userCredentials are used."
       );

@@ -38,7 +38,7 @@ export const newMcpar = (
       },
       {
         key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
-        value: "No",
+        value: "No (Excel submission)",
       },
     ],
     newOrExistingProgram: [
@@ -714,7 +714,7 @@ const createPlan = (
   if (flags.mcparFebruary2026) {
     // Removed fields
     const {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
+      /* oxlint-disable no-unused-vars */
       program_networkAdequacyChallenges,
       program_networkAdequacyGapResponseEfforts,
       plan_medicalLossRatioPercentage,
@@ -723,7 +723,7 @@ const createPlan = (
       plan_medicalLossRatioReportingPeriodEndDate,
       plan_medicalLossRatioReportingPeriodStartDate,
       plan_populationSpecificMedicalLossRatioDescription,
-      /* eslint-enable @typescript-eslint/no-unused-vars */
+      /* oxlint-enable no-unused-vars */
       ...rest
     } = data;
 

@@ -9,8 +9,8 @@ import { sanitizeObject } from "../utils/sanitize/sanitize";
 import { APIGatewayProxyEvent } from "../utils/types";
 
 type LambdaFunction = (
-  event: APIGatewayProxyEvent, // eslint-disable-line no-unused-vars
-  context: any // eslint-disable-line no-unused-vars
+  event: APIGatewayProxyEvent,
+  context: any
 ) => Promise<HttpResponse>;
 
 export default function handler(lambda: LambdaFunction) {

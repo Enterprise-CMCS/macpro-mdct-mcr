@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import prompts, { Choice, PromptObject } from "prompts";
 import { createdLog, expandedLog } from "./helpers";
 import { backToMenu, generateChoices } from "./options";

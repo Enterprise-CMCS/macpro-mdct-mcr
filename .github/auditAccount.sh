@@ -5,12 +5,12 @@ git fetch --all > /dev/null
 
 #Parse inputs
 case ${1-} in
-  "ci_inactive"|"untagged"|"orphaned_topics")
+  "orphaned_topics")
     OP=${1-}
     ;;
   *)
     echo "Error:  unknown operation"
-    echo "Usage: ${0} [ci_inactive|untagged|orphaned_topics] [resource_tagging_response|null]" && exit 1
+    echo "Usage: ${0} [orphaned_topics] [resource_tagging_response|null]" && exit 1
     ;;
 esac
 
@@ -51,24 +51,9 @@ get_composite_ci () {
           | select(.Key=="STAGE").Value, "ResourceARN":.ResourceARN}]' <<< $(echo ${BRANCHES}${RESOURCES})
 }
 
-#Produce report for active stacks created by the ci pipeline (has a corresponding branch)
-ci_active () {
-  jq -r '[.[] | select(.BRANCH != null)] | sort_by(.STAGE)' <<< $(get_composite_ci "${1}")
-}
-
 #Produce report for active stacks created by the ci pipeline (does NOT have a corresponding branch)
 ci_inactive () {
   jq -r '[.[] | select(.BRANCH == null)] | del(.[].BRANCH) | sort_by(.STAGE)' <<< $(get_composite_ci "${1}")
-}
-
-#Produce report for resources that are untagged (some are still created by the ci pipeline)
-#Excludes CMS-Cloud, CMS-OIT, GuardDuty, Tenable, and other non-project resources
-untagged () {
-  jq -r '[{ResourceARN:.ResourceTagMappingList[] | select((.Tags? | length) < 1).ResourceARN}]
-         | [.[] | select(
-             .ResourceARN | test("cms-cloud|CMS-Cloud|tenable|Tenable|guardduty|GuardDuty|DO-NOT-DELETE|SSMExplorer|billing-alerts|health-events"; "i") | not
-           )]
-         | sort' <<< "${1}"
 }
 
 #Create array of objects with the topic name and parsed topic namespace

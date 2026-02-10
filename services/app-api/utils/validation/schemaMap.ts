@@ -9,6 +9,8 @@ import {
 } from "yup";
 // constants
 import { suppressionText } from "../constants/constants";
+// types
+import { Choice } from "../types";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -285,13 +287,14 @@ export const nested = (
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-  return baseSchema.when(parentFieldName, {
-    is: (value: any[]) =>
-      // look for parentOptionId in checked Choices
-      value?.find((option: any) => option.key === parentOptionId),
-    then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => baseSchema, // returns not-required Yup base schema
-  });
+  return baseSchema.when(
+    parentFieldName,
+    (value: Choice[]) =>
+      // look for parentOptionId in checked choices
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId))
+        ? fieldSchema() // returns standard field schema (required)
+        : baseSchema // returns not-required Yup base schema
+  );
 };
 
 // OBJECT ARRAY

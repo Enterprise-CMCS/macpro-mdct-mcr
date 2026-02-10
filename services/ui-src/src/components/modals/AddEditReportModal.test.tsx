@@ -251,9 +251,9 @@ describe("<AddEditProgramModal />", () => {
         if (!isPccmNo.disabled) {
           await userEvent.click(isPccmNo);
         }
-        const naaarSubmissionNo = screen.getAllByLabelText(
-          "No"
-        )[1] as HTMLInputElement;
+        const naaarSubmissionNo = screen.getByLabelText(
+          "No (Excel submission)"
+        ) as HTMLInputElement;
         await userEvent.click(naaarSubmissionNo);
         const submitButton = screen.getByRole("button", { name: "Save" });
         await userEvent.click(submitButton);

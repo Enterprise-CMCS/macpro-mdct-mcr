@@ -67,16 +67,11 @@ export const createReport = handler(async (event, _context) => {
     );
   const isPccm = unvalidatedMetadata?.programIsPCCM?.[0]?.value === "Yes";
 
-  // eslint-disable-next-line no-useless-catch
-  try {
-    ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
-      reportBucket,
-      reportType,
-      { hasNaaarSubmission, isPccm }
-    ));
-  } catch (e) {
-    throw e;
-  }
+  ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
+    reportBucket,
+    reportType,
+    { hasNaaarSubmission, isPccm }
+  ));
 
   // Return MISSING_DATA error if missing unvalidated data or validators.
   if (!unvalidatedFieldData || !formTemplate.validationJson) {

@@ -6,10 +6,6 @@ export const SectionHeader = ({
   content,
   divider,
   hint,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  autosave,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validateOnRender,
   ...props
 }: SectionHeaderProps) => {
   const sx = {

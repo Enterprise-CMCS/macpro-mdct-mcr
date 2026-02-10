@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
  * Local:
  *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/fix-malformed-mlr-data.js
