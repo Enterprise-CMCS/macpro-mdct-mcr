@@ -91,12 +91,12 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
         type: ReportFormFieldType.NUMBER_SUPPRESSIBLE,
         validation: ValidationType.NUMBER_SUPPRESSIBLE,
         props: {
-          label: "D1.I.3 Plan share of any Medicaid managed care",
+          label: "D1.I.3 Plan share of risk-based Medicaid managed care",
           hint: [
             {
               type: "span",
               content:
-                "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in risk-based managed care?",
+                "What is the plan enrollment (regardless of program) as a percentage of total Medicaid enrollment in risk-based managed care?",
               props: {
                 className: "fake-paragraph-break",
               },
