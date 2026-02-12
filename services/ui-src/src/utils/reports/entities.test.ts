@@ -156,7 +156,8 @@ describe("utils/reports/entities", () => {
       const result = getMeasureResults(
         mockQualityMeasuresEntityV2.id,
         mockPlanEntities,
-        mockQualityMeasuresEntityV2.measure_rates
+        mockQualityMeasuresEntityV2.measure_rates,
+        []
       );
       expect(result).toEqual(mockMeasureResults);
     });
