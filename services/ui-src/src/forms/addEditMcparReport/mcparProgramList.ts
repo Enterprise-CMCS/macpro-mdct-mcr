@@ -13,17 +13,6 @@ export const mcparProgramList: ProgramList = {
       label: "Alabama Integrated Care Network (ICN)",
     },
   ],
-  // Arkansas
-  AR: [
-    {
-      id: "v3YFWjfOyS69iESjUzy5jsxD",
-      label: "Provider Led Arkansas Shared Savings Entity (PASSE)",
-    },
-    {
-      id: "zaAyFy8QjFIjkpVtQs7LNCVl",
-      label: "Healthy Smiles",
-    },
-  ],
   // Arizona
   AZ: [
     {
@@ -36,18 +25,29 @@ export const mcparProgramList: ProgramList = {
         "AHCCS Complete Care Regional Behavioral Health Agreements (AHCCS ACC-RHBA)",
     },
     {
-      id: "wRaU5JxD4eMYHH5hjYFwDzXR",
-      label:
-        "Arizona Long-Term Care System Elderly and Physically Disabled (ALTCS-EPD)",
-    },
-    {
       id: "ToObVfoavqbE69TPSICPmcJI",
       label:
         "Arizona Long-Term Care System Developmentally Disabled (ALTCS-DD)",
     },
     {
+      id: "wRaU5JxD4eMYHH5hjYFwDzXR",
+      label:
+        "Arizona Long-Term Care System Elderly and Physically Disabled (ALTCS-EPD)",
+    },
+    {
       id: "b92Tk23BTj5XbwA9L6Fvh7BC",
       label: "Comprehensive Health Plan (CHP)",
+    },
+  ],
+  // Arkansas
+  AR: [
+    {
+      id: "zaAyFy8QjFIjkpVtQs7LNCVl",
+      label: "Healthy Smiles",
+    },
+    {
+      id: "v3YFWjfOyS69iESjUzy5jsxD",
+      label: "Provider Led Arkansas Shared Savings Entity (PASSE)",
     },
   ],
   // Alaska
@@ -55,24 +55,28 @@ export const mcparProgramList: ProgramList = {
   // California
   CA: [
     {
-      id: "rVCN7urNI7SkpzeFlujE8TZn",
-      label: "Dental Managed Care",
-    },
-    {
       id: "Fd2dPtWxBXfBaamNJxr2sjrO",
       label: "AIDS Healthcare Foundation",
+    },
+    {
+      id: "PXQ7xGVIZW84eNab6LPgPnKe",
+      label: "Dental Managed Care / Los Angeles",
+    },
+    {
+      id: "FW8bSde3cTHUlhIIZqInQRnL",
+      label: "Dental Managed Care / Sacramento",
     },
     {
       id: "M2E1tIoBn385OMRwaMkzYQZz",
       label: "Drug MediCal - Organized Delivery System",
     },
     {
-      id: "hQrSN2BhHAC9U9yqXH4RXLGn",
-      label: "Medi-Cal Specialty Mental Health Services (SMHS)",
-    },
-    {
       id: "MjfEADVBox5Aotq2idjeft6M",
       label: "Medi-Cal Managed Care program (MCMC)",
+    },
+    {
+      id: "hQrSN2BhHAC9U9yqXH4RXLGn",
+      label: "Medi-Cal Specialty Mental Health Services (SMHS)",
     },
   ],
   // Colorado
@@ -94,6 +98,10 @@ export const mcparProgramList: ProgramList = {
       id: "IfwD2YzbQH2aUwZsD1pesohn",
       label: "Delaware State Health Plan/Delaware State Health Plan Plus",
     },
+    {
+      id: "Gh7U89bg2uYEQ33nmKrTXyFK",
+      label: "Non-Emergency Transportation",
+    },
   ],
   // Washington, DC
   DC: [
@@ -110,40 +118,44 @@ export const mcparProgramList: ProgramList = {
       id: "MJxbwotStcthpiEg4Byc5KmI",
       label: "District of Columbia Healthy Families Program (DCHFP)",
     },
+    {
+      id: "ymxLbicxB4heUHt3s8dZQT2Z",
+      label: "Non-Emergency Medical Transportation",
+    },
   ],
   // Florida
   FL: [
     {
-      id: "IMkTJD7S5MsQhy9oRXcJlHsP",
-      label: "Managed Medical Assistance Program (MMA)",
-    },
-    {
-      id: "uYmxR8xpnsAjFmZiwbLHiuhJ",
-      label: "LTC Plus",
+      id: "zBNITS4ZCnacayCXlSoNHhuW",
+      label: "Statewide Medicaid Managed Care - Dental",
     },
     {
       id: "5eIQYBClSAZXOM74ypcyBhfh",
       label: "Comprehensive Plans",
     },
     {
-      id: "y5updONWf7Eue5S74w4J3Uga",
-      label: "MMA+Specialty",
-    },
-    {
-      id: "BnnZfHERqOBz5NwUgX5urR3X",
-      label: "MMA+CIDD or LTC Services",
-    },
-    {
-      id: "OBsaQ4HRtlkfjbnTcM705Lzs",
-      label: "Adult Dental and Kid Dental",
+      id: "MilDmDjguVXAHQc12BkdIXWA",
+      label: "FIDE D-SNP",
     },
     {
       id: "joBTvwsoDk96IdRR8uWjSjM8",
       label: "HIDE D-SNP",
     },
     {
-      id: "MilDmDjguVXAHQc12BkdIXWA",
-      label: "FIDE D-SNP",
+      id: "uYmxR8xpnsAjFmZiwbLHiuhJ",
+      label: "LTC Plus",
+    },
+    {
+      id: "ohYU7kGAPf0EvJ77VPKbug2u",
+      label: "Statewide Medicaid Managed Care - MMA",
+    },
+    {
+      id: "m8k0Pn3iMcnceKx9ywtR49GT",
+      label: "MMA+CIDD or LTC Services",
+    },
+    {
+      id: "WMycWlo2NUhLg1YQYXU2baFb",
+      label: "MMA+Specialty",
     },
     {
       id: "GtPVr3OIOsuwly2q6jRZsGU2",
@@ -161,65 +173,69 @@ export const mcparProgramList: ProgramList = {
       label: "Georgia Families 360",
     },
     {
-      id: "EoikrSmwtoquDRTUv4C8V9Ak",
-      label: "Planning 4 Healthy Babies (P4HB)",
-    },
-    {
       id: "jjUAdivEbz7rbobt6Bna3jH0",
       label: "Pathways to Coverage",
+    },
+    {
+      id: "EoikrSmwtoquDRTUv4C8V9Ak",
+      label: "Planning 4 Healthy Babies (P4HB)",
     },
   ],
   // Hawaii
   HI: [
     {
-      id: "dnKjBFbMv3SeGFtx9Y8GMhTe",
-      label: "Hawaii's QUEST Integration",
-    },
-    {
       id: "vQvw65gYnWNE9geVRBt9aPgF",
       label: "Community Care Services (CCS)",
+    },
+    {
+      id: "dnKjBFbMv3SeGFtx9Y8GMhTe",
+      label: "Hawaii's QUEST Integration",
     },
   ],
   // Idaho
   ID: [
     {
-      id: "gHBsWBrgn1AFataQthoaYmnm",
-      label: "Medicare Medicaid Coordinated Plan (MMCP)",
+      id: "xcPLN8yGw6aAkqK4VTUFJHYy",
+      label: "Idaho Behavioral Health Plan (IBHP)",
     },
     {
       id: "DTDaMxL8OXHgLg9gLRRN02gX",
       label: "Idaho Medicaid Plus (IMP)",
     },
     {
-      id: "xcPLN8yGw6aAkqK4VTUFJHYy",
-      label: "Idaho Behavioral Health Plan (IBHP)",
-    },
-    {
       id: "5BA11vA9v6QDT0j3q3g0DEfb",
       label: "Idaho Smiles",
+    },
+    {
+      id: "gHBsWBrgn1AFataQthoaYmnm",
+      label: "Medicare Medicaid Coordinated Plan (MMCP)",
     },
   ],
   // Illinois
   IL: [
     {
+      id: "idFtht8UrPUBs6zmqS2qcMzR",
+      label: "D-SNP",
+    },
+    {
+      id: "QHiAzhakjk39nWpuzyTu8WCL",
+      label: "FIDE-SNP",
+    },
+    {
       id: "WBEu2ygvmGslPecHo9AGonCv",
       label: "HealthChoice Illinois (HCI)",
     },
     {
-      id: "fKn31H2YY88dGwTyfrXqHEcm",
-      label: "Medicare-Medicaid Alignment Initiative (MMAI)",
-    },
-    {
-      id: "idFtht8UrPUBs6zmqS2qcMzR",
-      label: "D-SNP",
+      id: "7QUNQjo7aXWtDDBvfFiBficc",
+      label: "Illinois Immigrant Adult",
     },
     {
       id: "JHaGbU34zw8lJUYpB4BvSfWz",
       label: "Illinois Immigrant Children",
     },
     {
-      id: "7QUNQjo7aXWtDDBvfFiBficc",
-      label: "Illinois Immigrant Adult",
+      id: "fKn31H2YY88dGwTyfrXqHEcm",
+      label: "Medicare-Medicaid Alignment Initiative (MMAI)",
     },
   ],
   // Indiana
@@ -244,12 +260,16 @@ export const mcparProgramList: ProgramList = {
   // Iowa
   IA: [
     {
-      id: "JYMLHctuTITLQSYINNPhDbaO",
-      label: "Health Link",
+      id: "dSr4lSQE0a3eY70H2MEiwKaq",
+      label: "CHIP Hawki - Dental",
     },
     {
       id: "AIRheUY1geIqiumKruePsmJK",
       label: "Dental Wellness Plan",
+    },
+    {
+      id: "JYMLHctuTITLQSYINNPhDbaO",
+      label: "Health Link",
     },
   ],
   // Kansas
@@ -273,20 +293,20 @@ export const mcparProgramList: ProgramList = {
   // Louisiana
   LA: [
     {
-      id: "AyJwP3j6AajNBQ2SfXx2pI9D",
-      label: "Healthy Louisiana",
+      id: "MM0zZ54gkSGd4QCEm4pPQETq",
+      label: "Behavioral Health Only (BHO)",
     },
     {
       id: "bNWq7iTImJo7fdpWxFdGX0EB",
       label: "Dental Benefit Program (DBP)",
     },
     {
-      id: "eNURfrWCAVqJsKD8GHBgBnJ7",
-      label: "Healthy Louisiana Coordinated System of Care Program (CSoC)",
+      id: "AyJwP3j6AajNBQ2SfXx2pI9D",
+      label: "Healthy Louisiana",
     },
     {
-      id: "MM0zZ54gkSGd4QCEm4pPQETq",
-      label: "Behavioral Health Only (BHO)",
+      id: "eNURfrWCAVqJsKD8GHBgBnJ7",
+      label: "Healthy Louisiana Coordinated System of Care Program (CSoC)",
     },
   ],
   // Maine
@@ -305,12 +325,16 @@ export const mcparProgramList: ProgramList = {
       label: "Accountable Care Organization Partnership Plan (ACPP)",
     },
     {
-      id: "Lxw9iYNsQ5msQrzCo9YPYFg0",
-      label: "Senior Care Options (SCO)",
+      id: "LN5GnpvjjiZShKAH3WF7FDYn",
+      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership (MBHP))",
     },
     {
       id: "LlIehwl4PaaWTGKYtRuFtpa8",
       label: "MCO Program",
+    },
+    {
+      id: "NeHtD99KiHVS2ZUWnUqfwBtO",
+      label: "One Care",
     },
     {
       id: "fIhvUbnPlwMi6h4Y0Mkb7WXX",
@@ -318,28 +342,12 @@ export const mcparProgramList: ProgramList = {
         "Primary Care Accountable Care Organization (Primary Care ACO or PCACO)",
     },
     {
-      id: "LN5GnpvjjiZShKAH3WF7FDYn",
-      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership [MBHP])",
-    },
-    {
-      id: "NeHtD99KiHVS2ZUWnUqfwBtO",
-      label: "One Care",
+      id: "Lxw9iYNsQ5msQrzCo9YPYFg0",
+      label: "Senior Care Options (SCO)",
     },
   ],
   // Michigan
   MI: [
-    {
-      id: "rKP1AuYdyVplrfjL771Q6CMb",
-      label: "Healthy Kids Dental (HKD)",
-    },
-    {
-      id: "I8Y6rQy4CjpVF7F7Lc3QzVEA",
-      label: "MI Choice",
-    },
-    {
-      id: "lH6nmhqusWyOMPyGao7mmhAB",
-      label: "Managed Specialty Services & Supports",
-    },
     {
       id: "020MTjgJZbMDf3uM3XHa6Zlb",
       label: "Comprehensive Health Care Program (CHCP)",
@@ -349,15 +357,39 @@ export const mcparProgramList: ProgramList = {
       label: "Health Link",
     },
     {
+      id: "rKP1AuYdyVplrfjL771Q6CMb",
+      label: "Healthy Kids Dental (HKD)",
+    },
+    {
       id: "KopyRwO9cM5ajuq8qeoi2tTA",
       label: "Healthy Michigan Plan (HMP)",
+    },
+    {
+      id: "lH6nmhqusWyOMPyGao7mmhAB",
+      label: "Managed Specialty Services & Supports",
+    },
+    {
+      id: "I8Y6rQy4CjpVF7F7Lc3QzVEA",
+      label: "MI Choice",
+    },
+    {
+      id: "IfYoUlSSVyKeQUBhjLBYURwO",
+      label: "MI Coordinated Health",
     },
   ],
   // Minnesotta
   MN: [
     {
+      id: "axtdsWz0pbF76hqgUOTThs7C",
+      label: "Minnesota Senior Care Plus (MSC+)",
+    },
+    {
       id: "g3YiOeqUorkj8RKxZiGqdF1h",
       label: "Minnesota Senior Health Options (MSHO)",
+    },
+    {
+      id: "YdKa3xY2iqdVAsQfHd7O5g6Y",
+      label: "MinnesotaCare",
     },
     {
       id: "Kvaa1JvEIoT1Vl15InEUjIOy",
@@ -366,14 +398,6 @@ export const mcparProgramList: ProgramList = {
     {
       id: "i6sIFm9OSGx8aOokpsZRrK2C",
       label: "Special Needs Basic Care (SNBC)",
-    },
-    {
-      id: "axtdsWz0pbF76hqgUOTThs7C",
-      label: "Minnesota Senior Care Plus (MSC+)",
-    },
-    {
-      id: "YdKa3xY2iqdVAsQfHd7O5g6Y",
-      label: "MinnesotaCare",
     },
   ],
   // Mississippi
@@ -404,12 +428,12 @@ export const mcparProgramList: ProgramList = {
       label: "Heritage Health",
     },
     {
-      id: "HLIEvPjm8smRb4qZNTGHQ2lE",
-      label: "Substance Use Disorder Program",
-    },
-    {
       id: "cr3LVfku8XlI5No4OyntQnu0",
       label: "Nesbraska Dental Benefit Program",
+    },
+    {
+      id: "HLIEvPjm8smRb4qZNTGHQ2lE",
+      label: "Substance Use Disorder Program",
     },
   ],
   // Nevada
@@ -426,12 +450,12 @@ export const mcparProgramList: ProgramList = {
   // New Hampshire
   NH: [
     {
-      id: "trskQUyjE3a2uvYhxBenjPvl",
-      label: "Medicaid Care Management (MCM)",
-    },
-    {
       id: "OotA1OCKTrbmyA6eZUJ1DGqj",
       label: "MCM-Dental Services",
+    },
+    {
+      id: "trskQUyjE3a2uvYhxBenjPvl",
+      label: "Medicaid Care Management (MCM)",
     },
   ],
   // New Jersey
@@ -441,12 +465,12 @@ export const mcparProgramList: ProgramList = {
       label: "FIDE-SNP-Duals",
     },
     {
-      id: "8w3Kx3PmRyYrL7kDJJXX78II",
-      label: "NJ Family Care MLTSS",
-    },
-    {
       id: "9m5aU8E4zOp7l3hL0XVHRlXy",
       label: "NJ Family Care Acute Care",
+    },
+    {
+      id: "8w3Kx3PmRyYrL7kDJJXX78II",
+      label: "NJ Family Care MLTSS",
     },
   ],
   // New Mexico
@@ -463,8 +487,21 @@ export const mcparProgramList: ProgramList = {
   // New York
   NY: [
     {
+      id: "btP5SZ1TjTJC7gnufnfldf4h",
+      label: "Children’s Health Insurance Program",
+    },
+    {
+      id: "MY9YSHhax4MxreBkKcx0vyci",
+      label:
+        "Fully Integrated Duals Advantage for Individuals with Intellectual & Developmental Disabilities (FIDA-IDD)",
+    },
+    {
       id: "h7q2albvzTsRrhRlQxn61eH6",
       label: "Health and Recovery Plan (HARP)",
+    },
+    {
+      id: "DXphgy0JLdIo0Tquc5wOLBwB",
+      label: "HIV Special Needs Plan (HIV SNP)",
     },
     {
       id: "VtDtt5Oi1aL0C83I8J1L0k7K",
@@ -475,25 +512,25 @@ export const mcparProgramList: ProgramList = {
       label: "Medicaid Advantage Plus (MAP)",
     },
     {
-      id: "DXphgy0JLdIo0Tquc5wOLBwB",
-      label: "HIV Special Needs Plan (HIV SNP)",
-    },
-    {
-      id: "MY9YSHhax4MxreBkKcx0vyci",
-      label:
-        "Fully Integrated Duals Advantage for Individuals with Intellectual & Developmental Disabilities (FIDA-IDD)",
-    },
-    {
       id: "PoUqzdCA7hzGx2kKOCHEPMQn",
       label: "Mainstream Managed Care (MMC)",
-    },
-    {
-      id: "btP5SZ1TjTJC7gnufnfldf4h",
-      label: "Children’s Health Insurance Program",
     },
   ],
   // North Carolina
   NC: [
+    {
+      id: "El1xMZNZVCEsgfz7kJ3Yyuzh",
+      label:
+        "Behavioral Health Prepaid Inpatient Health Plan (PIHP) Waiver Program",
+    },
+    {
+      id: "hdWxSgcjxFcA34W5YnrGO4JE",
+      label: "BH I/DD Tailored Plan",
+    },
+    {
+      id: "8kA79qrv6bXyRzixAGNFaKKT",
+      label: "Children and Families Speciality Plan",
+    },
     {
       id: "kANrY8P11CnhhemLZigpWors",
       label: "Community Care of North Carolina (CCNC)",
@@ -509,15 +546,6 @@ export const mcparProgramList: ProgramList = {
     {
       id: "lh3WCIxBQOtenlb6YBSt3T5G",
       label: "Standard Plan",
-    },
-    {
-      id: "hdWxSgcjxFcA34W5YnrGO4JE",
-      label: "BH I/DD Tailored Plan",
-    },
-    {
-      id: "El1xMZNZVCEsgfz7kJ3Yyuzh",
-      label:
-        "Behavioral Health Prepaid Inpatient Health Plan (PIHP) Waiver Program",
     },
   ],
   // North Dakota
@@ -553,12 +581,12 @@ export const mcparProgramList: ProgramList = {
       label: "SoonerSelect Children's Specialty Program (CSP)",
     },
     {
-      id: "p9Z49lliZnUnkYzxsKjEnFlA",
-      label: "SoonerSelect Medical",
-    },
-    {
       id: "xXGZkdQpblavQztQwUE8kS86",
       label: "SoonerCare Dental",
+    },
+    {
+      id: "p9Z49lliZnUnkYzxsKjEnFlA",
+      label: "SoonerSelect Medical",
     },
   ],
   // Oregon
@@ -571,8 +599,8 @@ export const mcparProgramList: ProgramList = {
   // Pennsylvania
   PA: [
     {
-      id: "FfRFqER02jgFaK9lEcWiHzFb",
-      label: "Physical Health HealthChoices (PH-HC)",
+      id: "l0xMakS2qBpApIjIvolMtvbd",
+      label: "Adult Community Autism Program (ACAP)",
     },
     {
       id: "5QOSrEpZfJJeuPJU9vrinMjW",
@@ -583,8 +611,8 @@ export const mcparProgramList: ProgramList = {
       label: "Community HealthChoices (CHC)",
     },
     {
-      id: "l0xMakS2qBpApIjIvolMtvbd",
-      label: "Adult Community Autism Program (ACAP)",
+      id: "FfRFqER02jgFaK9lEcWiHzFb",
+      label: "Physical Health HealthChoices (PH-HC)",
     },
   ],
   // Puerto Rico
@@ -601,16 +629,16 @@ export const mcparProgramList: ProgramList = {
   // Rhode Island
   RI: [
     {
-      id: "TU3Zhb1IuZud7l0UUYg8vUrI",
-      label: "RIteCare MCO",
-    },
-    {
-      id: "Xk1M34EhUSO1BblZC8ii1qNF",
-      label: "RIteSmiles",
-    },
-    {
       id: "XtLKxy0BCUkuJMwUOb7UaOw8",
       label: "Rhode Island Integrated Care Initiative",
+    },
+    {
+      id: "9WMVt9pSOBw5Rq0FCwxpECB4",
+      label: "Medicaid Managed Care Program (Rhode Island)",
+    },
+    {
+      id: "ms06psoxFdf1OsNZlFAG9YSW",
+      label: "RIteSmiles Program (Rhode Island)",
     },
   ],
   // South Carolina
@@ -629,36 +657,24 @@ export const mcparProgramList: ProgramList = {
   // Tennessee
   TN: [
     {
-      id: "RJIvS7tBNKYmEPN2lmMjxSXn",
-      label: "TennCare",
+      id: "mPtbliMlZ938gISzXR8in70S",
+      label: "CoverKids Program",
     },
     {
-      id: "jbggcYz5el7obt3Zbw5Jp0t8",
-      label: "TennCare Select",
+      id: "RJIvS7tBNKYmEPN2lmMjxSXn",
+      label: "TennCare",
     },
     {
       id: "1ilx3KpB5wRPKBUZLAneuqjf",
       label: "TennCare Dental",
     },
     {
-      id: "mPtbliMlZ938gISzXR8in70S",
-      label: "CoverKids Program",
+      id: "jbggcYz5el7obt3Zbw5Jp0t8",
+      label: "TennCare Select",
     },
   ],
   // Texas
   TX: [
-    {
-      id: "PtkXLdtfms2k93IqQkwORg2r",
-      label: "STAR Health",
-    },
-    {
-      id: "iRHocpaY5XvnVxZHH31J4ZWC",
-      label: "STAR Kids",
-    },
-    {
-      id: "BEbOycQSMxiLxoH3QoXIEA2g",
-      label: "STAR",
-    },
     {
       id: "PTO3vZY3dpGCV3TYgK3GmagR",
       label: "Dental (Children's Medicaid Dental Services)",
@@ -668,6 +684,18 @@ export const mcparProgramList: ProgramList = {
       label: "Dual Demonstration Program",
     },
     {
+      id: "BEbOycQSMxiLxoH3QoXIEA2g",
+      label: "STAR",
+    },
+    {
+      id: "PtkXLdtfms2k93IqQkwORg2r",
+      label: "STAR Health",
+    },
+    {
+      id: "iRHocpaY5XvnVxZHH31J4ZWC",
+      label: "STAR Kids",
+    },
+    {
       id: "rjAHRGiCmEUGK8H5A7YLoCud",
       label: "STAR+PLUS",
     },
@@ -675,8 +703,16 @@ export const mcparProgramList: ProgramList = {
   // Utah
   UT: [
     {
-      id: "dMY7YePxerwyDIBcZNqRSzwo",
-      label: "Utah Healthy Outcomes for Medical Excellence (HOME)",
+      id: "pdN2QyTjLfIe9v1IthAFwYuq",
+      label: "Choice of Health Care Delivery",
+    },
+    {
+      id: "gcjMLYynI01RN8zeSiwKgpPc",
+      label: "Utah Medicaid ACO",
+    },
+    {
+      id: "jaZumlm1FLxLo1lrTXpqKcaT",
+      label: "UT CHIP Dental",
     },
     {
       id: "ajJfzN52qZ9n18yrYMpAJPXJ",
@@ -687,16 +723,12 @@ export const mcparProgramList: ProgramList = {
       label: "UT Prepaid Mental Health Plan",
     },
     {
+      id: "dMY7YePxerwyDIBcZNqRSzwo",
+      label: "Utah Healthy Outcomes for Medical Excellence (HOME)",
+    },
+    {
       id: "of1IqqdUitWpL8B6fP9h49Fi",
       label: "Utah Medicaid Integrated Counties (UMIC)",
-    },
-    {
-      id: "PYeSbQy8wz26GQUukofUjFoS",
-      label: "UT ACO",
-    },
-    {
-      id: "pdN2QyTjLfIe9v1IthAFwYuq",
-      label: "Choice of Health Care Delivery",
     },
   ],
   // Vermont
@@ -720,20 +752,21 @@ export const mcparProgramList: ProgramList = {
   // Washington
   WA: [
     {
-      id: "i0qV5Y7MpOtHHfarqqZNEaVI",
-      label: "Apple Health Integrated Managed Care (IMC)",
+      id: "Y9GsfTQGkKyyCu1sresub7gp",
+      label:
+        "Apple Health Expansion Emergency Managed Care for Non-Citizen Adults",
     },
     {
       id: "gojlp1XdVf14cGqHVj7JFrsZ",
       label: "Apple Health Integrated Foster Care (IFC)",
     },
     {
-      id: "F5NiWADoBRlwatzj375oMwGq",
-      label: "Behavioral Health Only Services (BHSO)",
+      id: "i0qV5Y7MpOtHHfarqqZNEaVI",
+      label: "Apple Health Integrated Managed Care (IMC)",
     },
     {
-      id: "oNHGIPy36qp16qiWozkouG0c",
-      label: "Washington State Integrated Community Mental Health Program",
+      id: "F5NiWADoBRlwatzj375oMwGq",
+      label: "Behavioral Health Only Services (BHSO)",
     },
   ],
   // West Virginia
@@ -754,6 +787,10 @@ export const mcparProgramList: ProgramList = {
       label: "BadgerCare Plus (BCP)",
     },
     {
+      id: "UQWdTmmkEJbHFGZqrsaIrtYr",
+      label: "Care 4 Kids",
+    },
+    {
       id: "jRU1SSVvTWgOiNgBsteRou0K",
       label: "Family Care",
     },
@@ -764,10 +801,6 @@ export const mcparProgramList: ProgramList = {
     {
       id: "pKMy2Ws5IT2iInUxfBd1e1LB",
       label: "SSI Managed Care (SSI)",
-    },
-    {
-      id: "UQWdTmmkEJbHFGZqrsaIrtYr",
-      label: "Care 4 Kids",
     },
     {
       id: "mzGvJmaG5Przlu0CfpfTxDYk",
