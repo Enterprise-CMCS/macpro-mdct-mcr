@@ -15,7 +15,6 @@
     "test:e2e-stable-ui": "playwright test --ui --grep-invert \"@flaky\""
   },
   "dependencies": {
-    "cross-spawn": "^7.0.6",
     "ws": "^7.5.10"
   },
   "devDependencies": {
@@ -26,7 +25,7 @@
     "aws4": "^1.13.2",
     "axe-core": "^4.10.2",
     "concurrently": "^8.2.2",
-    "cypress": "^14.2.0",
+    "cypress": "^15.10.0",
     "cypress-axe": "^1.6.0",
     "dotenv": "^16.4.7",
     "playwright-core": "^1.57.0"

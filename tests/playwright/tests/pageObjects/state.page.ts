@@ -5,34 +5,11 @@ import {
   stateUserAuth,
   stateUserHeading,
 } from "../../utils/consts";
+import { BasePage } from "./base.page";
 
-export class StatePage {
-  readonly page: Page;
-
+export class StatePage extends BasePage {
   constructor(page: Page) {
-    this.page = page;
-  }
-
-  // Common navigation and utility methods
-  async goto(url?: string) {
-    if (url) {
-      await this.page.goto(url);
-    } else {
-      await this.page.goto("/");
-    }
-  }
-
-  async redirectPage(url: string) {
-    await this.page.waitForURL(url);
-  }
-
-  async waitForBannersToLoad() {
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/banners") &&
-        response.request().method() === "GET" &&
-        response.status() === 200
-    );
+    super(page);
   }
 
   // There is an intermitten issue in deployed envs where auth tokens appear to expire early
@@ -60,7 +37,6 @@ export class StatePage {
     }
   }
 
-  // Header/Navigation functionality
   async manageAccount() {
     await this.page.getByRole("button", { name: "My Account" }).click();
     await this.page.getByRole("menu").isVisible();
@@ -71,88 +47,80 @@ export class StatePage {
     await this.page.getByRole("link", { name: "Get Help" }).click();
   }
 
-  async logOut() {
-    await this.page.getByRole("button", { name: "My Account" }).click();
-    await this.page.getByRole("menu").isVisible();
-    await this.page.getByRole("menuitem", { name: "Log Out" }).click();
-    await this.page.waitForResponse((response) => response.ok());
-  }
-
-  // Home page functionality
   async goToMCPAR() {
-    await this.page.getByRole("button", { name: "Enter MCPAR online" }).click();
+    const bannersResponse = this.waitForResponse("/banners", "GET", 200);
+    const reportsResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await this.page.goto("/mcpar");
+    await Promise.all([bannersResponse, reportsResponse]);
   }
 
-  async goToMLR() {
-    await this.page.getByRole("button", { name: "Enter MLR online" }).click();
-  }
-
-  async goToNAAAR() {
-    await this.page.getByRole("button", { name: "Enter NAAAR online" }).click();
-  }
-
-  // MCPAR Get Started page functionality
-  async enterMCPARFromGetStarted() {
-    await this.page.getByRole("button", { name: "Enter MCPAR online" }).click();
-  }
-
-  // MCPAR Dashboard functionality
-  async createMCPAR(programName: string) {
-    const addCopyButton = this.page.getByRole("button", {
-      name: "Add / copy a MCPAR",
-    });
-    await addCopyButton.isVisible();
-    await addCopyButton.click();
-
+  async createMCPAR(
+    programName: string,
+    startDate: string,
+    endDate: string,
+    chipExclusion: boolean,
+    pccmEntity: boolean,
+    submitNAAAR: boolean,
+    naaarSubmissionDate?: string
+  ) {
+    await this.page.getByRole("button", { name: "Add / Copy a MCPAR" }).click();
     const modal = this.page.getByRole("dialog");
-    await modal.isVisible();
     await modal
       .getByRole("heading", { name: "Add / Copy a MCPAR" })
-      .isVisible();
-
-    const programNameInput = modal.getByLabel("Program name (for new MCPAR)");
-    await programNameInput.fill(programName);
+      .waitFor({ state: "visible" });
+    await modal
+      .locator('select[name="existingProgramNameSelection"]')
+      .selectOption(programName);
     await modal
       .getByLabel("A.5a Reporting period (i.e. contract period) start date")
-      .fill("10/10/2024");
+      .fill(startDate);
     await modal
       .getByLabel("A.5b Reporting period (i.e. contract period) end date")
-      .fill("12/10/2024");
-    await modal.getByLabel("Exclusion of CHIP from MCPAR").click();
-    await modal.getByLabel("No").click();
+      .fill(endDate);
+    if (chipExclusion) {
+      await modal.locator('input[name="combinedData"]').click();
+    }
 
-    const saveButton = modal.getByRole("button", { name: "Save" });
-    await saveButton.click();
+    if (pccmEntity) {
+      await modal.getByRole("radio", { name: "Yes", exact: true }).click();
+    } else {
+      await modal.getByRole("radio", { name: "No", exact: true }).click();
+    }
 
-    await modal.isHidden();
-    const table = this.page.getByRole("table");
-    await table.isVisible();
+    if (submitNAAAR) {
+      await modal.getByRole("radio", { name: "Yes, I submitted it" }).click();
+      await modal
+        .locator('input[name="naaarSubmissionDateForThisProgram"]')
+        .fill(naaarSubmissionDate || "");
+    } else {
+      await modal.getByRole("radio", { name: "No" }).click();
+    }
+
+    const postResponse = this.waitForResponse("/reports/MCPAR/", "POST", 201);
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([postResponse, getResponse]);
+
+    await modal.waitFor({ state: "hidden" });
   }
 
-  async updateMCPAR(programName: string, updatedProgramName: string) {
+  async updateMCPAR(programName: string, newProgramName: string) {
     const row = this.page.getByRole("row", { name: programName });
-    const editProgramButton = row.getByRole("button").first();
-    await editProgramButton.isVisible();
-    await editProgramButton.click();
-
+    row.getByRole("button").first().click();
     const modal = this.page.getByRole("dialog");
-    await modal.isVisible();
-    await modal.getByRole("heading", { name: "Edit Program" }).isVisible();
+    await modal.waitFor({ state: "visible" });
+    await modal
+      .getByRole("heading", { name: "Edit Program" })
+      .waitFor({ state: "visible" });
+    await modal.getByRole("radio", { name: "Add new program" }).click();
+    await modal.getByLabel("Specify new program name").fill(newProgramName);
 
-    const programNameInput = modal.getByLabel("Program name (for new MCPAR)");
-    await programNameInput.fill(updatedProgramName);
+    const putResponse = this.waitForResponse("/reports/MCPAR/", "PUT", 200);
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
 
-    const saveButton = modal.getByRole("button", { name: "Save" });
-    await saveButton.click();
-
-    await modal.isHidden();
-    const table = this.page.getByRole("table");
-    await table.isVisible();
-  }
-
-  // Profile page functionality
-  async navigateToBannerEditor() {
-    await this.page.getByRole("button", { name: "Banner Editor" }).click();
-    await this.page.waitForURL("**/admin");
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([putResponse, getResponse]);
   }
 }

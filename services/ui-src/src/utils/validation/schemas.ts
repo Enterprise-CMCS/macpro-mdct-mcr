@@ -189,6 +189,28 @@ export const date = () =>
       return result;
     });
 
+export const dateMonthYear = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateMonthYearFormatRegex, error.INVALID_DATE_MONTH_YEAR)
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      if (!value) return false;
+      let month, year;
+      if (value.includes("/")) {
+        [month, year] = value.split("/");
+      } else {
+        month = value.substring(0, 2);
+        year = value.substring(2);
+      }
+      month = Number(month);
+      year = Number(year);
+
+      const monthIndex = month - 1;
+      const date = new Date(year, monthIndex, 1); // use arbitrary day 1 so we can validate month and year
+
+      return date.getMonth() === monthIndex && date.getFullYear() === year;
+    });
+
 export const dateOptional = () =>
   string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
 
@@ -268,22 +290,25 @@ export const nested = (
   const fieldTypeMap = {
     array: array(),
     string: string(),
-    object: object(),
     date: date(),
+    object: object(),
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-  return baseSchema.when(parentFieldName, {
-    is: (value: Choice[]) =>
+  return baseSchema.when(
+    parentFieldName,
+    (value: Choice[]) =>
       // look for parentOptionId in checked choices
-      value?.find((option: Choice) => option.key.endsWith(parentOptionId)),
-    then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => baseSchema, // returns not-required Yup base schema
-  });
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId))
+        ? fieldSchema() // returns standard field schema (required)
+        : baseSchema // returns not-required Yup base schema
+  );
 };
 
 // REGEX
 const datePattern =
   "((0[1-9]|1[0-2])\\/(0[1-9]|1\\d|2\\d|3[01])\\/(19|20)\\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|3[01])(19|20)\\d{2})";
+const dateMonthYearPattern = "(\\d{2}\\/\\d{4}|\\d{6})";
 export const dateFormatRegex = new RegExp(`^${datePattern}$`);
+export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);

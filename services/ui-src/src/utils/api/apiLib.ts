@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import {
   del as ampDel,
   get as ampGet,

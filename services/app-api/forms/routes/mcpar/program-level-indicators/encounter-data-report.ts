@@ -154,7 +154,7 @@ export const encounterDataReportRoute: FormRoute = {
         validation: ValidationType.TEXT,
         props: {
           label: "C1.III.5 Incentives for encounter data quality",
-          hint: "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with “N/A” if the plan does not use incentives to award encounter data quality.",
+          hint: "Describe the types of incentives that may be awarded to managed care plans for encounter data quality. Reply with N/A if the program does not use incentives to reward encounter data quality.",
         },
       },
       {

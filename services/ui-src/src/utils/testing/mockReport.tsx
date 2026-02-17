@@ -496,7 +496,7 @@ export const mockMcparReport = {
   naaarSubmissionForThisProgram: [
     {
       key: "naaarSubmissionForThisProgram-mockId",
-      value: "No",
+      value: "No (Excel submission)",
     },
   ],
   submittedOnDate: Date.now(),

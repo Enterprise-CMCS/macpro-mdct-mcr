@@ -1,7 +1,9 @@
 import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
+import mcparFebruary2026 from "../../../../services/app-api/forms/routes/mcpar/flags/mcparFebruary2026.json";
 
 const flaggedForms = {
   // flagName: jsonFilePath
+  mcparFebruary2026,
 };
 
 function getRoutesByFlag(flags) {
@@ -87,7 +89,9 @@ function fillOutMCPAR(routes, flags) {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
-  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check(
+    "No (Excel submission)"
+  );
   cy.get("button[type=submit]").contains("Save").click();
 
   cy.wait(2000);
@@ -127,7 +131,9 @@ function fillOutPartialMCPAR(routes, flags) {
   );
   cy.get('input[name="combinedData"]').check();
   cy.get('input[name="programIsPCCM"]').check("No");
-  cy.get('input[name="naaarSubmissionForThisProgram"]').check("No");
+  cy.get('input[name="naaarSubmissionForThisProgram"]').check(
+    "No (Excel submission)"
+  );
   cy.get("button[type=submit]").contains("Save").click();
 
   //Find our new program and open it

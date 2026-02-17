@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
  * Local:
  *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/fix-copyover-data-leak.js
@@ -163,7 +162,7 @@ function removeIrrelevantData(s3FieldData, s3FormTemplate) {
   }
 
   // remove copied program type other text since pccm report auto-selects the PCCM option
-  if (s3FieldData["program_type-otherText"]) {
+  if ("program_type-otherText" in s3FieldData) {
     delete s3FieldData["program_type-otherText"];
     needsToBeUpdated = true;
   }

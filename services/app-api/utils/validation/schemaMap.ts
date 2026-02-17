@@ -9,6 +9,8 @@ import {
 } from "yup";
 // constants
 import { suppressionText } from "../constants/constants";
+// types
+import { Choice } from "../types";
 
 const error = {
   REQUIRED_GENERIC: "A response is required",
@@ -182,6 +184,28 @@ export const date = () =>
     test: (value) => !!value?.match(dateFormatRegex) || value?.trim() === "",
   });
 
+export const dateMonthYear = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .matches(dateMonthYearFormatRegex, error.INVALID_DATE)
+    .test("is-valid-date", error.INVALID_DATE, (value) => {
+      if (!value) return false;
+      let month, year;
+      if (value.includes("/")) {
+        [month, year] = value.split("/");
+      } else {
+        month = value.substring(0, 2);
+        year = value.substring(2);
+      }
+      month = Number(month);
+      year = Number(year);
+
+      const monthIndex = month - 1;
+      const date = new Date(year, monthIndex, 1); // use arbitrary day 1 so we can validate month and year
+
+      return date.getMonth() === monthIndex && date.getFullYear() === year;
+    });
+
 export const dateOptional = () => date();
 export const endDate = (startDateField: string) =>
   date().test(
@@ -263,13 +287,14 @@ export const nested = (
   };
   const fieldType: keyof typeof fieldTypeMap = fieldSchema().type;
   const baseSchema: any = fieldTypeMap[fieldType];
-  return baseSchema.when(parentFieldName, {
-    is: (value: any[]) =>
-      // look for parentOptionId in checked Choices
-      value?.find((option: any) => option.key === parentOptionId),
-    then: () => fieldSchema(), // returns standard field schema (required)
-    otherwise: () => baseSchema, // returns not-required Yup base schema
-  });
+  return baseSchema.when(
+    parentFieldName,
+    (value: Choice[]) =>
+      // look for parentOptionId in checked choices
+      value?.find((option: Choice) => option.key.endsWith(parentOptionId))
+        ? fieldSchema() // returns standard field schema (required)
+        : baseSchema // returns not-required Yup base schema
+  );
 };
 
 // OBJECT ARRAY
@@ -278,6 +303,7 @@ export const objectArray = () => array().of(mixed());
 // REGEX
 export const dateFormatRegex =
   /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
+export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
 
 // SCHEMA MAP
 export const schemaMap: any = {
@@ -286,6 +312,7 @@ export const schemaMap: any = {
   checkboxOptional: checkboxOptional(),
   checkboxSingle: checkboxSingle(),
   date: date(),
+  dateMonthYear: dateMonthYear(),
   dateOptional: dateOptional(),
   futureDate: futureDate(),
   dropdown: dropdown(),

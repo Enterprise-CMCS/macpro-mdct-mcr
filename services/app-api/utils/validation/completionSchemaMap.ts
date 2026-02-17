@@ -15,6 +15,7 @@ export const completionSchemaMap: any = {
   url: schema.url(),
   urlOptional: schema.urlOptional(),
   date: schema.date(),
+  dateMonthYear: schema.dateMonthYear(),
   dateOptional: schema.dateOptional(),
   dropdown: schema.dropdown(),
   dropdownOptional: schema.dropdownOptional(),
