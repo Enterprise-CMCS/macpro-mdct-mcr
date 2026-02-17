@@ -326,7 +326,7 @@ export const naaarProgramList: ProgramList = {
     },
     {
       id: "2FQtLw51lMmkSZ6gPz2BLxQM",
-      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership [MBHP])",
+      label: "BH/SUD PIHP (Massachusetts Behavioral Health Partnership (MBHP))",
     },
     {
       id: "xHq2ITRHRmBa1GSt4v4ccaat",
