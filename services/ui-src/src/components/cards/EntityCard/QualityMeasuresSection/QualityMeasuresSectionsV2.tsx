@@ -92,7 +92,7 @@ export const BottomQualityMeasuresSectionV2 = ({
                 </Box>
               ) : (
                 <Box>
-                  <Text sx={sx.subtitle}>D2.VII.8 Data collection method</Text>
+                  <Text sx={sx.subtitle}>D2.VII.7 Data collection method</Text>
                   {!result.dataCollectionMethod ? (
                     <Text sx={sx.notAnswered}>Not answered</Text>
                   ) : (
