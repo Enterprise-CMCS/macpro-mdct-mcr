@@ -3921,7 +3921,7 @@
                     "type": "checkbox",
                     "validation": "checkboxOptional",
                     "props": {
-                      "label": "D2.VII.1 Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
+                      "label": "Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
                       "choices": [
                         {
                           "id": "generatedCheckbox",
@@ -3998,7 +3998,7 @@
                         },
                         {
                           "type": "span",
-                          "content": "? If measurement varied from CMIT or Consensus Based Entity (CBE) specifications, answer “No, it uses neither CMIT or CBE”."
+                          "content": "? If measurement varied from CMIT or Consensus Based Entity (CBE) specifications, answer “No, it uses neither CMIT or CBE”. If “No, it has a Consensus Based Entity (CBE) number”, go to D2.VII.2b. If “No, it has a Consensus Based Entity (CBE) number”, go to D2.VII.2c."
                         }
                       ],
                       "choices": [
@@ -4016,7 +4016,7 @@
                                 "parentOptionId": "lIqRkso1nUidNG1Gh7Ll0A"
                               },
                               "props": {
-                                "label": "CMIT number"
+                                "label": "D2.VII.2a CMIT number"
                               }
                             }
                           ]
@@ -4035,7 +4035,7 @@
                                 "parentOptionId": "eqVgpF8hmsma9ibcvwVqCb"
                               },
                               "props": {
-                                "label": "Consensus Based Entity (CBE) number"
+                                "label": "D2.VII.2b Consensus Based Entity (CBE) number"
                               }
                             }
                           ]
@@ -4054,8 +4054,8 @@
                                 "parentOptionId": "hcsq9mTy5wWhxUPtgkQWwB"
                               },
                               "props": {
-                                "label": "How is this measure defined?",
-                                "hint": "If this measure has been modified from an existing CMIT or CBE measure, note the CMIT or CBE number and briefly describe the modifications. Otherwise, provide a link to the measure specification. If a link is not available, describe the numerator and denominator and exclusion criteria for each."
+                                "label": "D2.VII.2c How is this measure defined?",
+                                "hint": "If this measure has neither a CMIT nor CBE number, provide a link to the specification (if available). If not available, provide a measure definition (i.e., describe how the numerator and denominator, as well as exclusion criteria for each, are defined). If this measure has been modified from an existing CMIT or CBE specification, briefly describe the modification."
                               }
                             }
                           ]
@@ -4103,16 +4103,16 @@
                           "label": "External Quality Review (EQR) (as defined at 42 CFR 438.450-364)"
                         },
                         {
-                          "id": "LnCoLFFJScpYddtIoar7ZZ",
-                          "label": "Quality Rating System (QRS) (either the state’s own QRS, or as defined at 42 CFR 438.500-535)"
+                          "id": "VNQnzSeAoexrk8lsaOSyZTSG",
+                          "label": "Plan Report Cards [such as the state’s Medicaid and CHIP Quality Rating System (QRS) (as defined at 42 CFR 438 Subpart G)]"
                         },
                         {
-                          "id": "8RGsv8Wmj0gvQm2UxTTD4g",
-                          "label": "Plan Withholds (as defined at 42 CFR 438.6(b))"
+                          "id": "9xOPIS3K69pdNdmIWab4RLCV",
+                          "label": "Plan Withhold Arrangements (as defined at 42 CFR 438.6(b))"
                         },
                         {
-                          "id": "D4V9Zi6Sk6Z7T5jroDE7Pa",
-                          "label": "Plan Incentives (as defined at 42 CFR 438.6(b))"
+                          "id": "lMHlZN8F1teQ5wy6t6a2IDBt",
+                          "label": "Plan Incentive Arrangements (as defined at 42 CFR 438.6(b))"
                         },
                         {
                           "id": "yypoD2k1sqPLumyHKl3wfg",
@@ -4120,7 +4120,7 @@
                         },
                         {
                           "id": "SD9JuRdGwpaD0S9yPYc90H",
-                          "label": "In Lieu of Service (ILOS)"
+                          "label": "In Lieu of Service or Setting (ILOS; as defined at 42 CFR §§ 438.3(e)(2) and 438.16)"
                         },
                         {
                           "id": "6c1JMtXyc3riXxf2xHbdVI",
@@ -4151,7 +4151,7 @@
                     "props": {
                       "divider": "none",
                       "content": "Naming of rates",
-                      "hint": "If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.2 in the field below for D2.VII.7. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guidance: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name, title, or brief description for the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
+                      "hint": "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guide: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
                     }
                   },
                   {
@@ -4159,7 +4159,7 @@
                     "type": "dynamic",
                     "validation": "dynamic",
                     "props": {
-                      "label": "D2.VII.7 Name rate",
+                      "label": "D2.VII.5 Name rate",
                       "hint": "Enter the name of this performance rate you are reporting for the measure."
                     }
                   }
@@ -4173,7 +4173,7 @@
                     "type": "checkbox",
                     "validation": "checkboxOptional",
                     "props": {
-                      "label": "D2.VII.7 Are you reporting results for this measure?",
+                      "label": "D2.VII.6 Are you reporting results for this measure?",
                       "hint": "Are you reporting results for this measure for this reporting period?",
                       "choices": [
                         {
@@ -4232,7 +4232,7 @@
                     "type": "radio",
                     "validation": "radioOptional",
                     "props": {
-                      "label": "D2.VII.8 Data collection method",
+                      "label": "D2.VII.7 Data collection method",
                       "hint": "What data collection method did the plan use for this measure? (see technical guide for definitions).",
                       "choices": [
                         {

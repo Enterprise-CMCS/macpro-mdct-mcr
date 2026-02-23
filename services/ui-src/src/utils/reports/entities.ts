@@ -219,7 +219,7 @@ export const getFormattedEntityData = (
         const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
         const noCbe =
           entity?.measure_identifier?.[0].value ===
-          "No, it has a Consensus Based Entity (CBE) number";
+          "D2.VII.2b No, it has a Consensus Based Entity (CBE) number";
         const neitherCmitOrCbe =
           entity?.measure_identifier?.[0].value ===
           "No, it uses neither CMIT or CBE";

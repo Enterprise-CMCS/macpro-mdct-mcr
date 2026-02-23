@@ -55,7 +55,7 @@ export const newPlanExemptionRoute: FormRoute = {
         validation: ValidationType.CHECKBOX_OPTIONAL,
         props: {
           label:
-            "D2.VII.1 Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
+            "Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
           choices: [
             {
               id: "generatedCheckbox",
