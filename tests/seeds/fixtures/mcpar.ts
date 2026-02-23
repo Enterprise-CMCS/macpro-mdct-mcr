@@ -197,9 +197,7 @@ export const fillMcpar = (
     name: faker.animal.dog(),
   }));
 
-  const plans = planIds.map((planId, index) =>
-    createPlan(planId, ilos[index], flags)
-  );
+  const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
 
   const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
     createQualityMeasure(planIds)
@@ -537,11 +535,7 @@ const createPlanPCCM = (planId: string) => ({
   plan_parentOrganization: faker.lorem.sentence(),
 });
 
-const createPlan = (
-  planId: string,
-  ilos: { id: string; name: string },
-  flags: { [key: string]: true }
-) => {
+const createPlan = (planId: string, ilos: { id: string; name: string }) => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -710,27 +704,6 @@ const createPlan = (
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
-
-  if (flags.mcparFebruary2026) {
-    // Removed fields
-    const {
-      /* oxlint-disable no-unused-vars */
-      program_networkAdequacyChallenges,
-      program_networkAdequacyGapResponseEfforts,
-      plan_medicalLossRatioPercentage,
-      plan_medicalLossRatioPercentageAggregationLevel,
-      plan_medicalLossRatioReportingPeriod,
-      plan_medicalLossRatioReportingPeriodEndDate,
-      plan_medicalLossRatioReportingPeriodStartDate,
-      plan_populationSpecificMedicalLossRatioDescription,
-      /* oxlint-enable no-unused-vars */
-      ...rest
-    } = data;
-
-    data = {
-      ...rest,
-    } as any;
-  }
 
   return data;
 };
