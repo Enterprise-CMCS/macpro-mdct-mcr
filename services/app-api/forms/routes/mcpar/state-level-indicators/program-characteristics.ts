@@ -35,8 +35,8 @@ export const programCharacteristicsRoute: FormRoute = {
         type: ReportFormFieldType.NUMBER,
         validation: ValidationType.NUMBER,
         props: {
-          label: "B.I.2 Statewide Medicaid managed care enrollment",
-          hint: "Enter the average number of individuals enrolled in any type of Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all managed care programs and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
+          label: "B.I.2 Statewide Medicaid risk-based managed care enrollment",
+          hint: "Enter the average number of individuals enrolled in risk-based Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all MCOs and at-risk PIHPs and PAHPs only, and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
           mask: "comma-separated",
           decimalPlacesToRoundTo: 0,
         },

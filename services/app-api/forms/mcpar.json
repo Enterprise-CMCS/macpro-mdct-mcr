@@ -254,26 +254,12 @@
                   "children": [
                     {
                       "type": "html",
-                      "content": "This section must be completed if any ILOSs <em>other than short term stays in an Institution for Mental Diseases (IMD)</em> are authorized for this managed care program. <strong>Enter the name of each ILOS offered as it is identified in the managed care plan contract(s).</strong> "
-                    },
-                    {
-                      "type": "externalLink",
-                      "content": "Guidance on In Lieu of Services on Medicaid.gov",
-                      "props": {
-                        "href": "https://www.medicaid.gov/medicaid/managed-care/guidance/lieu-of-services-and-settings/index.html",
-                        "target": "_blank",
-                        "aria-label": "Guidance on ILOS on Medicaid.gov."
-                      }
-                    },
-                    {
-                      "type": "html",
-                      "content": "."
+                      "content": "This section must be completed if any in lieu of services or settings (ILOSs) <em>other than short term stays in an Institution for Mental Diseases (IMD)</em> are authorized for this managed care program. <strong>Enter the name of each ILOS offered as it is identified in the managed care plan contract(s).</strong> (See 42 CFR 438.3(e)(2) and 438.16)."
                     }
                   ]
                 }
               ],
-              "spreadsheet": "A_Program_Info",
-              "alert": "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>"
+              "spreadsheet": "A_Program_Info"
             }
           },
           "form": {
@@ -326,8 +312,8 @@
                 "type": "number",
                 "validation": "number",
                 "props": {
-                  "label": "B.I.2 Statewide Medicaid managed care enrollment",
-                  "hint": "Enter the average number of individuals enrolled in any type of Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all managed care programs and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
+                  "label": "B.I.2 Statewide Medicaid risk-based managed care enrollment",
+                  "hint": "Enter the average number of individuals enrolled in risk-based Medicaid managed care per month during the reporting year (i.e., average member months).</br>Include all MCOs and at-risk PIHPs and PAHPs only, and count each person only once, even if they are enrolled in multiple managed care programs or plans.",
                   "mask": "comma-separated",
                   "decimalPlacesToRoundTo": 0
                 }
@@ -949,6 +935,88 @@
           }
         },
         {
+          "name": "II: MLR Reporting",
+          "path": "/mcpar/program-level-indicators/mlr-reporting",
+          "pageType": "standard",
+          "verbiage": {
+            "intro": {
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic II: Medical Loss Ratio (MLR) Reporting",
+              "spreadsheet": "C1_Program_Set"
+            }
+          },
+          "form": {
+            "id": "cmlr",
+            "fields": [
+              {
+                "id": "program_mlrSubmissionDate",
+                "type": "date",
+                "validation": "date",
+                "props": {
+                  "label": "C1.II.1 Submission Date of Most Recent MLR Report",
+                  "hint": "When is the last date the state submitted the MLR Summary Report in the Medicaid Data Collection Tool (MDCT) MLR Portal for this program?"
+                }
+              },
+              {
+                "id": "program_mlrReportingPeriodStartDate",
+                "type": "date",
+                "validation": "date",
+                "props": {
+                  "label": "C1.II.2 Most Recent MLR Reporting Period",
+                  "hint": "Please report the beginning date of that MLR reporting period.",
+                  "timetype": "startDate"
+                }
+              },
+              {
+                "id": "program_mlrReportingPeriodEndDate",
+                "type": "date",
+                "validation": {
+                  "type": "endDate",
+                  "dependentFieldName": "program_mlrReportingPeriodStartDate"
+                },
+                "props": {
+                  "hint": "Please report the end date of that MLR reporting period.",
+                  "timetype": "endDate"
+                }
+              },
+              {
+                "id": "program_mlrValidationCompletion",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "C1.II.3 MLR Validation Completion",
+                  "hint": "Has the state completed the validation of plan MLR data for the current MCPAR reporting period by the submission date of this report for all plans? (See detailed reporting in Section D1.II by plan.)",
+                  "choices": [
+                    {
+                      "id": "kL9mNpQr2sT4uVwX5yZ0aB",
+                      "label": "Yes"
+                    },
+                    {
+                      "id": "cD3eF6gH7iJ8kL9mNpQr2s",
+                      "label": "No",
+                      "children": [
+                        {
+                          "id": "program_mlrAnticipatedValidationDate",
+                          "type": "dateMonthYear",
+                          "validation": {
+                            "type": "dateMonthYear",
+                            "nested": true,
+                            "parentFieldName": "program_mlrValidationCompletion"
+                          },
+                          "props": {
+                            "label": "C1.II.3a Anticipated Validation Date",
+                            "hint": "When does the state anticipate doing so?"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
           "name": "III: Encounter Data Report",
           "path": "/mcpar/program-level-indicators/encounter-data-report",
           "pageType": "standard",
@@ -1166,48 +1234,6 @@
           "name": "V: Availability & Accessibility",
           "path": "/mcpar/program-level-indicators/availability-and-accessibility",
           "children": [
-            {
-              "name": "Network Adequacy",
-              "path": "/mcpar/program-level-indicators/availability-and-accessibility/network-adequacy",
-              "pageType": "standard",
-              "verbiage": {
-                "intro": {
-                  "section": "Section C: Program-Level Indicators",
-                  "subsection": "Topic V. Availability, Accessibility and Network Adequacy",
-                  "spreadsheet": "C1_Program_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Network Adequacy"
-                    }
-                  ]
-                }
-              },
-              "form": {
-                "id": "cna",
-                "fields": [
-                  {
-                    "id": "program_networkAdequacyChallenges",
-                    "type": "textarea",
-                    "validation": "text",
-                    "props": {
-                      "label": "C1.V.1 Gaps/challenges in network adequacy",
-                      "hint": "What are the state’s biggest challenges? Describe any challenges MCPs have maintaining adequate networks and meeting access standards. If the state and MCPs did not encounter any challenges, please enter “No challenges were encountered” as your response. “N/A” is not an acceptable response."
-                    }
-                  },
-                  {
-                    "id": "program_networkAdequacyGapResponseEfforts",
-                    "type": "textarea",
-                    "validation": "text",
-                    "props": {
-                      "label": "C1.V.2 State response to gaps in network adequacy",
-                      "hint": "How does the state work with MCPs to address gaps in network adequacy?"
-                    }
-                  }
-                ]
-              }
-            },
             {
               "name": "Access Measures",
               "path": "/mcpar/program-level-indicators/availability-and-accessibility/access-measures",
@@ -1692,7 +1718,7 @@
                 "validation": "text",
                 "props": {
                   "label": "C1.IX.3 BSS LTSS program data",
-                  "hint": "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4)."
+                  "hint": "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4). If the program does not offer LTSS, enter “N/A”."
                 }
               },
               {
@@ -2804,7 +2830,7 @@
                     "validation": "number",
                     "props": {
                       "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee’s right to request out-of-network care",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO). If not applicable, enter “N/A.”",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
