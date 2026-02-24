@@ -42,31 +42,35 @@ export class AdminPage extends BasePage {
     }
   }
 
-  async navigateToReportDashboard(stateAbbreviation: string) {
+  async navigateToReportDashboard(
+    stateAbbreviation: string,
+    reportType: "MCPAR" | "MLR" | "NAAAR"
+  ) {
     await this.page.goto("/");
     await this.page
       .getByLabel(
         "List of states, including District of Columbia and Puerto Rico"
       )
       .selectOption(stateAbbreviation);
+
     await this.page
       .getByRole("radio", {
-        name: "Managed Care Program Annual Report (MCPAR)",
+        name: new RegExp(reportType),
       })
       .click();
 
-    const reportsResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+    const reportsResponse = this.waitForResponse(
+      `/reports/${reportType}/`,
+      "GET",
+      200
+    );
 
     await this.page
       .getByRole("button", { name: "Go to Report Dashboard" })
       .click();
     await reportsResponse;
     // There are times the loading spinner remains after the network request completes
-    await this.page
-      .locator("div")
-      .filter({ hasText: /^Loading\.\.\.$/ })
-      .nth(1)
-      .waitFor({ state: "hidden" });
+    await this.waitForLoadingSpinner();
   }
 
   async archiveMCPAR(programName: string) {

@@ -38,6 +38,22 @@ export const mnMcparPrograms = [
   "MinnesotaCare",
 ];
 
+export const mnMlrProgramTypes = [
+  "Comprehensive MCO",
+  "PIHP",
+  "PAHP",
+  "Behaviorial Health",
+  "Dental",
+  "MLTSS",
+];
+
+export const mnMlrEligibilityGroups = [
+  "All Populations",
+  "Standalone CHIP",
+  "Group VIII Expansion Adult Only",
+  "Other, specify",
+];
+
 export const a11yViewports = {
   mobile: { width: 560, height: 800 },
   tablet: { width: 880, height: 1000 },

@@ -2,6 +2,7 @@ import { request } from "@playwright/test";
 import { adminUserAuth, stateUserAuth } from "./consts";
 import * as aws4 from "aws4";
 import { Banner } from "./types";
+import mlrReportPut from "../data/mlrReportPut.json";
 
 /**
  * Signs headers using AWS SigV4.
@@ -222,45 +223,126 @@ export async function deleteAllBanners(): Promise<void> {
   }
 }
 
-export async function postMCPARReport(
+export async function postReport(
+  reportType: string,
   reportData: any,
   stateAbbreviation: string
-): Promise<void> {
-  await authenticatedRequest(
+): Promise<any> {
+  return await authenticatedRequest(
     "POST",
-    `/reports/MCPAR/${stateAbbreviation}`,
+    `/reports/${reportType}/${stateAbbreviation}`,
     reportData,
     stateUserAuth
   );
 }
 
-export async function getAllReportsForState(
-  stateAbbreviation: string
-): Promise<any[]> {
-  const reports = await authenticatedRequest(
-    "GET",
-    `/reports/MCPAR/${stateAbbreviation}`
-  );
-  return reports as any[];
+/**
+ * Creates an MLR report with a generated unique program name and posts it to the API
+ * @param reportData - The MLR report data to post
+ * @param stateAbbreviation - The state abbreviation for the report
+ * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
+ * @returns The generated program name
+ */
+export async function postMlrWithGeneratedProgramName(
+  reportData: any,
+  stateAbbreviation: string,
+  namePrefix: string = "AutomationSubmission"
+): Promise<string> {
+  const programName = `${namePrefix}${new Date().toISOString()}`;
+  reportData.metadata.programName = programName;
+  await postReport("MLR", reportData, stateAbbreviation);
+  return programName;
 }
 
-export async function archiveReport(
+/**
+ * Creates and archives an MLR report with a generated unique program name
+ * @param reportData - The MLR report data to post
+ * @param stateAbbreviation - The state abbreviation for the report
+ * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
+ * @returns The generated program name
+ */
+export async function postAndArchiveMlrWithGeneratedProgramName(
+  reportData: any,
+  stateAbbreviation: string,
+  namePrefix: string = "AutomationSubmission"
+): Promise<string> {
+  const programName = `${namePrefix}${new Date().toISOString()}`;
+  reportData.metadata.programName = programName;
+  const response = await postReport("MLR", reportData, stateAbbreviation);
+  await archiveReport("MLR", stateAbbreviation, response.id);
+  return programName;
+}
+
+/**
+ * Updates a report by its ID
+ * @param reportType - the report type for example MCR, MLR or NAAAR
+ * @param reportData - the request body for updating the report
+ * @param stateAbbreviation - The state abbreviation for the report
+ * @param reportId - The ID of the report to update
+ */
+export async function putReport(
+  reportType: string,
+  reportData: any,
   stateAbbreviation: string,
   reportId: string
 ): Promise<void> {
   await authenticatedRequest(
     "PUT",
-    `/reports/archive/MCPAR/${stateAbbreviation}/${reportId}`
+    `/reports/${reportType}/${stateAbbreviation}/${reportId}`,
+    reportData,
+    stateUserAuth
+  );
+}
+
+/**
+ * Creates an MLR report with a generated unique program name, posts it, and then modifies it with a PUT request to set it to "In progress" status
+ * @param reportData - The MLR report data to post
+ * @param stateAbbreviation - The state abbreviation for the report
+ * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
+ * @returns The generated program name
+ */
+export async function postModifiedMlrWithGeneratedProgramName(
+  reportData: any,
+  stateAbbreviation: string,
+  namePrefix: string = "AutomationSubmission"
+): Promise<string> {
+  const programName = `${namePrefix}${new Date().toISOString()}`;
+  reportData.metadata.programName = programName;
+  const response = await postReport("MLR", reportData, stateAbbreviation);
+  await putReport("MLR", mlrReportPut, stateAbbreviation, response.id);
+  return programName;
+}
+
+export async function getAllReportsForState(
+  reportType: string,
+  stateAbbreviation: string
+): Promise<any[]> {
+  const reports = await authenticatedRequest(
+    "GET",
+    `/reports/${reportType}/${stateAbbreviation}`
+  );
+  return reports as any[];
+}
+
+export async function archiveReport(
+  reportType: string,
+  stateAbbreviation: string,
+  reportId: string
+): Promise<void> {
+  await authenticatedRequest(
+    "PUT",
+    `/reports/archive/${reportType}/${stateAbbreviation}/${reportId}`
   );
 }
 
 export async function archiveAllReportsForState(
+  reportType: string,
   stateAbbreviation: string
 ): Promise<void> {
-  const allReports = await getAllReportsForState(stateAbbreviation);
+  const allReports = await getAllReportsForState(reportType, stateAbbreviation);
   const reportsToArchive = allReports.filter((report) => !report.archived);
 
   for (const report of reportsToArchive) {
-    await archiveReport(stateAbbreviation, report.id);
+    await archiveReport(reportType, stateAbbreviation, report.id);
   }
 }

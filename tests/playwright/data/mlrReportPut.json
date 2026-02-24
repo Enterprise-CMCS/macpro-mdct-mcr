@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "status": "In progress",
+    "lastAlteredBy": "Thelonious States"
+  },
+  "fieldData": {
+    "contactName": "TestContact",
+    "contactPhoneNumber": "1234567890",
+    "contactEmailAddress": "test@test.com",
+    "contactJobTitle": "TestTitle",
+    "stateName": "Minnesota",
+    "stateAgencyName": "TestAgency",
+    "versionControl": [
+      {
+        "key": "versionControl-KFCd3rfEu3eT4UFskUhDtx",
+        "value": "No, this is an initial submission"
+      }
+    ],
+    "program": [
+      {
+        "id": "7716333-ca35-e4bc-58aa-4f2884bc3705",
+        "report_planName": "TestPlanName",
+        "report_programName": "TestProgramName",
+        "report_programType": [
+          {
+            "key": "report_programType-G4inXZJWYFsDZYGk75cW7L",
+            "value": "Comprehensive MCO"
+          }
+        ],
+        "report_eligibilityGroup": [
+          {
+            "key": "report_eligibilityGroup-cRi6qE4T5c6BjbGUsiiEof",
+            "value": "All Populations"
+          }
+        ],
+        "report_reportingPeriodStartDate": "01/01/2027",
+        "report_reportingPeriodEndDate": "01/02/2027",
+        "report_reportingPeriodDiscrepancy": [
+          {
+            "key": "report_reportingPeriodDiscrepancy-2NI2UTNqhvrJLvEv8SORD7vIPRI",
+            "value": "No"
+          }
+        ],
+        "report_incurredClaims": "",
+        "report_healthCareQualityImprovementActivities": "",
+        "report_mlrNumerator": "1000.00",
+        "report_mlrDenominator": "1000.00",
+        "report_requiredMemberMonths": "6",
+        "report_adjustedMlrPercentage": "1.00",
+        "report_contractIncludesMlrRemittanceRequirement": [
+          {
+            "key": "report_contractIncludesMlrRemittanceRequirement-UL4dAeyyvCFAXttxZioacR",
+            "value": "No"
+          }
+        ]
+      }
+    ]
+  }
+}
