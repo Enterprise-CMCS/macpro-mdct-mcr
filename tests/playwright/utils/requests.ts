@@ -222,45 +222,70 @@ export async function deleteAllBanners(): Promise<void> {
   }
 }
 
-export async function postMCPARReport(
+export async function postReport(
+  reportType: string,
   reportData: any,
   stateAbbreviation: string
+): Promise<any> {
+  return await authenticatedRequest(
+    "POST",
+    `/reports/${reportType}/${stateAbbreviation}`,
+    reportData,
+    stateUserAuth
+  );
+}
+
+/**
+ * Updates a report by its ID
+ * @param reportType - the report type for example MCR, MLR or NAAAR
+ * @param reportData - the request body for updating the report
+ * @param stateAbbreviation - The state abbreviation for the report
+ * @param reportId - The ID of the report to update
+ */
+export async function putReport(
+  reportType: string,
+  reportData: any,
+  stateAbbreviation: string,
+  reportId: string
 ): Promise<void> {
   await authenticatedRequest(
-    "POST",
-    `/reports/MCPAR/${stateAbbreviation}`,
+    "PUT",
+    `/reports/${reportType}/${stateAbbreviation}/${reportId}`,
     reportData,
     stateUserAuth
   );
 }
 
 export async function getAllReportsForState(
+  reportType: string,
   stateAbbreviation: string
 ): Promise<any[]> {
   const reports = await authenticatedRequest(
     "GET",
-    `/reports/MCPAR/${stateAbbreviation}`
+    `/reports/${reportType}/${stateAbbreviation}`
   );
   return reports as any[];
 }
 
 export async function archiveReport(
+  reportType: string,
   stateAbbreviation: string,
   reportId: string
 ): Promise<void> {
   await authenticatedRequest(
     "PUT",
-    `/reports/archive/MCPAR/${stateAbbreviation}/${reportId}`
+    `/reports/archive/${reportType}/${stateAbbreviation}/${reportId}`
   );
 }
 
 export async function archiveAllReportsForState(
+  reportType: string,
   stateAbbreviation: string
 ): Promise<void> {
-  const allReports = await getAllReportsForState(stateAbbreviation);
+  const allReports = await getAllReportsForState(reportType, stateAbbreviation);
   const reportsToArchive = allReports.filter((report) => !report.archived);
 
   for (const report of reportsToArchive) {
-    await archiveReport(stateAbbreviation, report.id);
+    await archiveReport(reportType, stateAbbreviation, report.id);
   }
 }

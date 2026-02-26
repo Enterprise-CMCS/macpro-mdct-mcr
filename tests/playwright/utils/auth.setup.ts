@@ -124,16 +124,22 @@ async function authenticateWithUI(
   const loginButton = page.getByRole("button", { name: "Log In with Cognito" });
   await emailInput.fill(username);
   await passwordInput.fill(password);
+
+  const bannersResponse = page.waitForResponse(
+    (response) =>
+      response.url().includes("/banners") && response.status() === 200
+  );
+
   await loginButton.click();
+
   if (isAdmin) {
     await interceptIdentityRequest(page);
     await storeAuthTokens(page);
   }
+
   await page.waitForURL("/");
-  await page.waitForResponse(
-    (response) =>
-      response.url().includes("/banners") && response.status() === 200
-  );
+  await bannersResponse;
+
   await page
     .getByRole("heading", {
       name: expectedHeading,
