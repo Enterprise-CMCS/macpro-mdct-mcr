@@ -2,13 +2,9 @@ import { test as base, BrowserContext } from "@playwright/test";
 import { adminUserAuth, stateUserAuth } from "../../utils/consts";
 import { AdminPage } from "../pageObjects/admin.page";
 import { StatePage } from "../pageObjects/state.page";
-import {
-  postMlrWithGeneratedProgramName,
-  postAndArchiveMlrWithGeneratedProgramName,
-  postModifiedMlrWithGeneratedProgramName,
-} from "../../utils/requests";
+import { postReport, archiveReport, putReport } from "../../utils/requests";
+import { newMlr, fillMlr } from "../../../seeds/fixtures";
 import { stateAbbreviation } from "../../utils";
-import mlrReport from "../../data/mlrReport.json";
 
 type CustomFixtures = {
   stateContext: BrowserContext;
@@ -52,31 +48,29 @@ export const test = base.extend<CustomFixtures>({
   },
 
   // Playwright has a requirement that all fixture functions in the object passed to base.extend must use object destructuring for their first argument
+  // For more info: https://playwright.dev/docs/test-fixtures#accessing-built-in-fixtures
   // eslint-disable-next-line no-empty-pattern
   mlrProgramName: async ({}, use) => {
-    const programName = await postMlrWithGeneratedProgramName(
-      mlrReport,
-      stateAbbreviation
-    );
-    await use(programName);
+    const reportData = newMlr({}, stateAbbreviation);
+    await postReport("MLR", reportData, stateAbbreviation);
+    await use(reportData.metadata.programName);
   },
 
   // eslint-disable-next-line no-empty-pattern
   archivedMlrProgramName: async ({}, use) => {
-    const programName = await postAndArchiveMlrWithGeneratedProgramName(
-      mlrReport,
-      stateAbbreviation
-    );
-    await use(programName);
+    const reportData = newMlr({}, stateAbbreviation);
+    const response = await postReport("MLR", reportData, stateAbbreviation);
+    await archiveReport("MLR", stateAbbreviation, response.id);
+    await use(reportData.metadata.programName);
   },
 
   // eslint-disable-next-line no-empty-pattern
   inProgressMlrProgramName: async ({}, use) => {
-    const programName = await postModifiedMlrWithGeneratedProgramName(
-      mlrReport,
-      stateAbbreviation
-    );
-    await use(programName);
+    const reportData = newMlr({}, stateAbbreviation);
+    const response = await postReport("MLR", reportData, stateAbbreviation);
+    const mlrReportPut = fillMlr({});
+    await putReport("MLR", mlrReportPut, stateAbbreviation, response.id);
+    await use(reportData.metadata.programName);
   },
 });
 

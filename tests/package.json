@@ -20,6 +20,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@cypress-audit/pa11y": "^1.4.2",
+    "@faker-js/faker": "^10.3.0",
     "@playwright/test": "^1.56.1",
     "@types/aws4": "^1.11.6",
     "aws4": "^1.13.2",

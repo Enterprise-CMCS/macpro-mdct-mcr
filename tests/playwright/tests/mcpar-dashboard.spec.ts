@@ -7,6 +7,7 @@ import {
   archiveReport,
 } from "../utils/requests";
 import mcparReport from "../data/mcparReport.json";
+import { faker } from "@faker-js/faker";
 
 test.describe("MCPAR Dashboard Page", () => {
   test.describe("State Users", () => {
@@ -20,12 +21,24 @@ test.describe("MCPAR Dashboard Page", () => {
     }) => {
       await statePage.createMCPAR(
         mnMcparPrograms[0],
-        "10/10/2024",
-        "12/10/2024",
+        faker.date.recent().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+        faker.date.soon().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
         false,
         true,
         true,
-        "01/01/2024"
+        faker.date.future().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        })
       );
       const table = statePage.page.getByRole("table");
       const reportRow = table
@@ -39,9 +52,10 @@ test.describe("MCPAR Dashboard Page", () => {
     test("should be able to edit a program", async ({ statePage }) => {
       await postReport("MCPAR", mcparReport, stateAbbreviation);
       await statePage.page.reload();
+      const newProgramName = `UpdatedProgramName${new Date().toISOString()}`;
       await statePage.updateMCPAR(
         mcparReport.metadata.programName,
-        "New Program Name"
+        newProgramName
       );
       const table = statePage.page.getByRole("table");
       const originalRow = table
@@ -49,7 +63,7 @@ test.describe("MCPAR Dashboard Page", () => {
         .filter({ hasText: mcparReport.metadata.programName });
       const updatedRow = table
         .getByRole("row")
-        .filter({ hasText: "New Program Name" });
+        .filter({ hasText: newProgramName });
       await expect(originalRow).toBeHidden();
       await expect(updatedRow).toBeVisible();
     });
@@ -85,8 +99,7 @@ test.describe("MCPAR Dashboard Page", () => {
     test("should not be able to submit an incomplete form", async ({
       statePage,
     }) => {
-      mcparReport.metadata.programName =
-        "ProgramToSubmit" + new Date().getTime();
+      mcparReport.metadata.programName = `ProgramToSubmit${new Date().toISOString()}`;
       await postReport("MCPAR", mcparReport, stateAbbreviation);
       await statePage.page.reload();
       const table = statePage.page.getByRole("table");
@@ -111,8 +124,7 @@ test.describe("MCPAR Dashboard Page", () => {
 
   test.describe("Admin Users", () => {
     test("should be able to archive a report", async ({ adminPage }) => {
-      mcparReport.metadata.programName =
-        "ProgramToArchive" + new Date().getTime();
+      mcparReport.metadata.programName = `ProgramToArchive${new Date().toISOString()}`;
       await postReport("MCPAR", mcparReport, stateAbbreviation);
       await adminPage.navigateToReportDashboard(stateAbbreviation, "MCPAR");
       await adminPage.archiveMCPAR(mcparReport.metadata.programName);
@@ -126,8 +138,7 @@ test.describe("MCPAR Dashboard Page", () => {
     });
 
     test("should be able to unarchive a report", async ({ adminPage }) => {
-      mcparReport.metadata.programName =
-        "ProgramToUnarchive" + new Date().getTime();
+      mcparReport.metadata.programName = `ProgramToUnarchive${new Date().toISOString()}`;
       await postReport("MCPAR", mcparReport, stateAbbreviation);
       const reportsAfterCreate = await getAllReportsForState(
         "MCPAR",

@@ -2,6 +2,7 @@ import { expect, test } from "./fixtures/base";
 import { archiveAllReportsForState } from "../utils/requests";
 import { stateAbbreviation } from "../utils";
 import { mnMlrEligibilityGroups, mnMlrProgramTypes } from "../utils/consts";
+import { faker } from "@faker-js/faker";
 
 test.describe("MLR Dashboard Page", () => {
   test.describe("State Users", () => {
@@ -61,27 +62,35 @@ test.describe("MLR Dashboard Page", () => {
     }) => {
       await statePage.goToMlrReportSubmissionForm(mlrProgramName);
       await statePage.fillOutMLRPrimaryContactInfo(
-        "Test Contact",
-        "555-555-5555",
-        "test@example.com",
-        "Program Director",
-        "Test State Agency"
+        faker.person.fullName(),
+        faker.phone.number(),
+        faker.internet.email(),
+        faker.person.jobTitle(),
+        faker.company.name()
       );
       await statePage.addMLRProgramReportInfo(
         "TestPlan",
         "TestProgram",
         mnMlrProgramTypes[0],
         mnMlrEligibilityGroups[0],
-        "01/01/2024",
-        "12/31/2024",
+        faker.date.recent().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+        faker.date.soon().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
         "No"
       );
       await statePage.enterMLRForPlan(
         "TestPlan",
-        "100",
-        "80",
-        "10",
-        "10",
+        faker.number.int({ min: 1, max: 20000 }).toString(),
+        faker.number.int({ min: 1, max: 20000 }).toString(),
+        faker.number.int({ min: 1, max: 12 }).toString(),
+        faker.number.int({ min: 1, max: 90 }).toString(),
         "No"
       );
       const getResponseAfterContinue = statePage.waitForResponse(
@@ -115,6 +124,7 @@ test.describe("MLR Dashboard Page", () => {
       adminPage,
     }) => {
       // Arrange - Create a submitted report
+      await statePage.goToMLR();
       await statePage.goToMlrReportSubmissionForm(inProgressMlrProgramName);
       await statePage.page.getByText("Review & Submit").click();
       await statePage.submitMlrReport();

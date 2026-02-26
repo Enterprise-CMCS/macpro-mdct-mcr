@@ -19,7 +19,7 @@ export const newMlr = (
       lastAlteredBy: faker.person.fullName(),
       locked: false,
       previousRevisions: [],
-      programName: faker.book.series(),
+      programName: `${faker.commerce.productName()} ${new Date().toISOString()}`,
       reportType: ReportType.MLR,
       status: ReportStatus.NOT_STARTED,
       submissionCount: 0,

@@ -2,7 +2,6 @@ import { request } from "@playwright/test";
 import { adminUserAuth, stateUserAuth } from "./consts";
 import * as aws4 from "aws4";
 import { Banner } from "./types";
-import mlrReportPut from "../data/mlrReportPut.json";
 
 /**
  * Signs headers using AWS SigV4.
@@ -237,43 +236,6 @@ export async function postReport(
 }
 
 /**
- * Creates an MLR report with a generated unique program name and posts it to the API
- * @param reportData - The MLR report data to post
- * @param stateAbbreviation - The state abbreviation for the report
- * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
- * @returns The generated program name
- */
-export async function postMlrWithGeneratedProgramName(
-  reportData: any,
-  stateAbbreviation: string,
-  namePrefix: string = "AutomationSubmission"
-): Promise<string> {
-  const programName = `${namePrefix}${new Date().toISOString()}`;
-  reportData.metadata.programName = programName;
-  await postReport("MLR", reportData, stateAbbreviation);
-  return programName;
-}
-
-/**
- * Creates and archives an MLR report with a generated unique program name
- * @param reportData - The MLR report data to post
- * @param stateAbbreviation - The state abbreviation for the report
- * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
- * @returns The generated program name
- */
-export async function postAndArchiveMlrWithGeneratedProgramName(
-  reportData: any,
-  stateAbbreviation: string,
-  namePrefix: string = "AutomationSubmission"
-): Promise<string> {
-  const programName = `${namePrefix}${new Date().toISOString()}`;
-  reportData.metadata.programName = programName;
-  const response = await postReport("MLR", reportData, stateAbbreviation);
-  await archiveReport("MLR", stateAbbreviation, response.id);
-  return programName;
-}
-
-/**
  * Updates a report by its ID
  * @param reportType - the report type for example MCR, MLR or NAAAR
  * @param reportData - the request body for updating the report
@@ -292,25 +254,6 @@ export async function putReport(
     reportData,
     stateUserAuth
   );
-}
-
-/**
- * Creates an MLR report with a generated unique program name, posts it, and then modifies it with a PUT request to set it to "In progress" status
- * @param reportData - The MLR report data to post
- * @param stateAbbreviation - The state abbreviation for the report
- * @param namePrefix - Optional prefix for the program name (defaults to "AutomationSubmission")
- * @returns The generated program name
- */
-export async function postModifiedMlrWithGeneratedProgramName(
-  reportData: any,
-  stateAbbreviation: string,
-  namePrefix: string = "AutomationSubmission"
-): Promise<string> {
-  const programName = `${namePrefix}${new Date().toISOString()}`;
-  reportData.metadata.programName = programName;
-  const response = await postReport("MLR", reportData, stateAbbreviation);
-  await putReport("MLR", mlrReportPut, stateAbbreviation, response.id);
-  return programName;
 }
 
 export async function getAllReportsForState(

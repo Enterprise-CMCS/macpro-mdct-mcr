@@ -55,7 +55,7 @@ export class AdminPage extends BasePage {
 
     await this.page
       .getByRole("radio", {
-        name: new RegExp(reportType),
+        name: new RegExp(`\\(${reportType}\\)$`),
       })
       .click();
 

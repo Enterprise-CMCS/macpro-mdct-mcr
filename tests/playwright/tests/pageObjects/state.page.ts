@@ -214,7 +214,7 @@ export class StatePage extends BasePage {
     eligibilityGroup: string,
     reportingPeriodStartDate: string,
     reportingPeriodEndDate: string,
-    reportingPeriodDiscrepancy: string
+    reportingPeriodDiscrepancy: "Yes" | "No"
   ) {
     await this.page
       .getByRole("button", { name: "Add program reporting information" })
@@ -260,7 +260,7 @@ export class StatePage extends BasePage {
     mlrDenominator: string,
     memberMonths: string,
     adjustedMlrPercentage: string,
-    contractIncludesRemittance: string
+    contractIncludesRemittance: "Yes" | "No"
   ) {
     await this.page
       .getByRole("button", { name: `Enter MLR ${planName}` })
@@ -298,10 +298,25 @@ export class StatePage extends BasePage {
 
   async submitMlrReport() {
     await this.page.getByRole("button", { name: "Submit MLR" }).click();
-    const postResponseAfterSubmit = this.waitForResponse(
-      "/reports/submit/MLR",
-      "POST",
-      200
+    const postResponseAfterSubmit = this.page.waitForResponse(
+      async (response) => {
+        const isTarget =
+          response.url().includes("/reports/submit/MLR") &&
+          response.request().method() === "POST";
+        if (isTarget) {
+          if (response.status() === 409) {
+            const body = await response.text();
+            console.error("MLR submission failed: 409 Conflict", {
+              url: response.url(),
+              status: response.status(),
+              body,
+            });
+            throw new Error("MLR submission failed: 409 Conflict");
+          }
+          return response.status() === 200;
+        }
+        return false;
+      }
     );
     const getResponseAfterSubmit = this.waitForResponse(
       "/reports/MLR/",
