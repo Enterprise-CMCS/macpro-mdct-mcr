@@ -1,5 +1,5 @@
 import { ParentRoute } from "../../../../utils/types";
-import { mlrReportingRoute } from "../program-level-indicators/mlr-reporting";
+import { mlrReportingRoute } from "./mlr-reporting";
 import { appealsStateFairHearingsAndGrievancesRoute } from "./appeals-state-fair-hearings-and-grievances";
 import { encounterDataReportRoute } from "./encounter-data-report";
 import { ilosRoute } from "./ilos";
