@@ -2285,146 +2285,80 @@
           }
         },
         {
-          "name": "II: Financial Performance",
-          "path": "/mcpar/plan-level-indicators/financial-performance",
-          "pageType": "drawer",
-          "entityType": "plans",
+          "name": "II: MLR Reporting",
+          "path": "/mcpar/program-level-indicators/mlr-reporting",
+          "pageType": "standard",
           "verbiage": {
             "intro": {
-              "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic II. Financial Performance",
-              "spreadsheet": "D1_Plan_Set"
-            },
-            "dashboardTitle": "Enter MLR reporting information for each plan",
-            "drawerTitle": "Enter MLR reporting information for {{name}}",
-            "missingEntityMessage": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7."
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
-                  }
-                ]
-              }
-            ]
+              "section": "Section C: Program-Level Indicators",
+              "subsection": "Topic II: Medical Loss Ratio (MLR) Reporting",
+              "spreadsheet": "C1_Program_Set"
+            }
           },
-          "drawerForm": {
-            "id": "dfp",
+          "form": {
+            "id": "cmlr",
             "fields": [
               {
-                "id": "plan_medicalLossRatioPercentage",
-                "type": "number",
-                "validation": "number",
+                "id": "program_mlrSubmissionDate",
+                "type": "date",
+                "validation": "date",
                 "props": {
-                  "label": "D1.II.1a Medical Loss Ratio (MLR)",
-                  "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR. Write MLR as a percentage: for example, write 92% rather than 0.92.",
-                  "mask": "percentage",
-                  "decimalPlacesToRoundTo": 2
+                  "label": "C1.II.1 Submission Date of Most Recent MLR Report",
+                  "hint": "When is the last date the state submitted the MLR Summary Report in the Medicaid Data Collection Tool (MDCT) MLR Portal for this program?"
                 }
               },
               {
-                "id": "plan_medicalLossRatioPercentageAggregationLevel",
+                "id": "program_mlrReportingPeriodStartDate",
+                "type": "date",
+                "validation": "date",
+                "props": {
+                  "label": "C1.II.2 Most Recent MLR Reporting Period",
+                  "hint": "Please report the beginning date of that MLR reporting period.",
+                  "timetype": "startDate"
+                }
+              },
+              {
+                "id": "program_mlrReportingPeriodEndDate",
+                "type": "date",
+                "validation": {
+                  "type": "endDate",
+                  "dependentFieldName": "program_mlrReportingPeriodStartDate"
+                },
+                "props": {
+                  "hint": "Please report the end date of that MLR reporting period.",
+                  "timetype": "endDate"
+                }
+              },
+              {
+                "id": "program_mlrValidationCompletion",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "D1.II.1b Level of aggregation",
-                  "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
+                  "label": "C1.II.3 MLR Validation Completion",
+                  "hint": "Has the state completed the validation of plan MLR data for the current MCPAR reporting period by the submission date of this report for all plans? (See detailed reporting in Section D1.II by plan.)",
                   "choices": [
                     {
-                      "id": "BSfARaemtUmbuMnZC11pog",
-                      "label": "Program-specific statewide"
+                      "id": "kL9mNpQr2sT4uVwX5yZ0aB",
+                      "label": "Yes"
                     },
                     {
-                      "id": "Sk684CJrvE6vAefOKX6flA",
-                      "label": "Program-specific regional"
-                    },
-                    {
-                      "id": "LRDviCXq5ESAYi3UhGhMBw",
-                      "label": "Statewide all programs & populations"
-                    },
-                    {
-                      "id": "OQ0onGPAMUqDZgIxAjR3aQ",
-                      "label": "Regional all programs & populations"
-                    },
-                    {
-                      "id": "ou7IxaZKnEeGLuqBSehl9g",
-                      "label": "Other, specify",
+                      "id": "cD3eF6gH7iJ8kL9mNpQr2s",
+                      "label": "No",
                       "children": [
                         {
-                          "id": "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-                          "type": "textarea",
+                          "id": "program_mlrAnticipatedValidationDate",
+                          "type": "dateMonthYear",
                           "validation": {
-                            "type": "text",
+                            "type": "dateMonthYear",
                             "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel"
+                            "parentFieldName": "program_mlrValidationCompletion"
+                          },
+                          "props": {
+                            "label": "C1.II.3a Anticipated Validation Date",
+                            "hint": "When does the state anticipate doing so?"
                           }
                         }
                       ]
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "plan_populationSpecificMedicalLossRatioDescription",
-                "type": "textarea",
-                "validation": "text",
-                "props": {
-                  "label": "D1.II.2 Population specific MLR description",
-                  "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter “N/A” if not applicable.</br>See glossary for the regulatory definition of MLR."
-                }
-              },
-              {
-                "id": "plan_medicalLossRatioReportingPeriod",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "D1.II.3 MLR reporting period discrepancies",
-                  "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
-                  "choices": [
-                    {
-                      "id": "UgEFak34A0e1hJaHXtXbrw",
-                      "label": "Yes",
-                      "children": [
-                        {
-                          "id": "plan_medicalLossRatioReportingPeriodStartDate",
-                          "type": "date",
-                          "validation": {
-                            "type": "date",
-                            "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioReportingPeriod"
-                          },
-                          "props": {
-                            "hint": "Enter the start date.",
-                            "timetype": "startDate"
-                          }
-                        },
-                        {
-                          "id": "plan_medicalLossRatioReportingPeriodEndDate",
-                          "type": "date",
-                          "validation": {
-                            "type": "endDate",
-                            "dependentFieldName": "plan_medicalLossRatioReportingPeriodStartDate",
-                            "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioReportingPeriod"
-                          },
-                          "props": {
-                            "hint": "Enter the end date.",
-                            "timetype": "endDate"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "id": "Jt8dUZQO60OpeGvhe6KaOA",
-                      "label": "No"
                     }
                   ]
                 }
@@ -4697,7 +4631,6 @@
               "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic XI: ILOS",
               "spreadsheet": "D4_Plan_ILOS",
-              "alert": "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>",
               "info": [
                 {
                   "type": "p",

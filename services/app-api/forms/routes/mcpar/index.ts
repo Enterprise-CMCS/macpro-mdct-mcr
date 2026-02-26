@@ -9,7 +9,6 @@ import { programLevelIndicatorsRoute } from "./program-level-indicators";
 import { reviewAndSubmitRoute } from "./review-and-submit";
 import { stateLevelIndicatorsRoute } from "./state-level-indicators";
 
-// Use with LaunchDarkly flag: mcparFebruary2026
 export const mcparReportJson: ReportJsonFile = {
   type: ReportType.MCPAR,
   name: "MCPAR Report Submission Form",
