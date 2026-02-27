@@ -28,7 +28,6 @@ exclude_patterns:
   - "**/node_modules/"
   - ".github/"
   - ".images/"
-  - "cypress/"
   - "plugins/"
   - "services/.sechub/"
   - "services/app-api/db/"

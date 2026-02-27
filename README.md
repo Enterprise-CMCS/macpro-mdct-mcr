@@ -128,7 +128,7 @@ yarn test --watch
 
 ### Integration Testing
 
-We use Cypress for integration tests. See additional info [here in the Cypress readme](./tests/cypress/README.md)
+We use Playwright for integration (end-to-end) tests. See additional info [here in the Playwright readme](./tests/README.md).
 
 ### Accessibility Testing
 
@@ -136,7 +136,7 @@ We use [axe](https://www.deque.com/axe/) and [pa11y](https://github.com/pa11y/pa
 
 Unit tests can use [jest-axe](https://github.com/nickcolley/jest-axe), [pa11y](https://github.com/pa11y/pa11y), and [HTML Code Sniffer](https://squizlabs.github.io/HTML_CodeSniffer/).
 
-Integration tests can use [cypress-axe](https://github.com/component-driven/cypress-axe) and [cypress-audit/pa11y](https://mfrachet.github.io/cypress-audit/guides/pa11y/installation.html).
+Integration tests can use [@axe-core/playwright](https://github.com/axe-core/axe-playwright) for accessibility checks within Playwright tests.
 
 ### oxfmt
 
@@ -178,7 +178,7 @@ yarn oxlint --deny-warnings
 
 On a push to the repository or opening a pull request the [deploy.yml](https://github.com/Enterprise-CMCS/macpro-mdct-mcr/blob/main/.github/workflows/deploy.yml) file runs. This script sets up and does a number of things. For a simple push it's mostly checking code coverage.
 
-Upon opening a pull request into the main branch the scripts will also trigger a Cypress E2E and an A11y step to ensure that the code quality is still passing the End-to-End and accessibility tests.
+Upon opening a pull request into the main branch, the scripts will also trigger a Playwright E2E and an accessibility (A11y) step to ensure that the code quality is still passing the End-to-End and accessibility tests.
 
 ## Deployments
 

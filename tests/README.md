@@ -1,55 +1,52 @@
-# Cypress Testing
+# Playwright Testing
 
-[Cypress](https://www.cypress.io/features) is an open source testing tool.
+[Playwright](https://playwright.dev/) is an open source end-to-end testing tool for web applications.
 
 ## Getting Started
 
-1. The `scripts` section defines 2 jobs:
-   - `yarn test`
-     - runs two parallel processes:
-       1. `yarn start`, which is a wrapper to `./run local`, and runs the local application
-       1. `yarn cypress`, which opens cypress using chrome against the local instance
-   - `yarn test:ci`
-     - to be run in pipelines/actions
-     - runs cypress headless against the branch-specific instance of the application (eg. )
+1. The `scripts` section defines jobs for Playwright:
+   - `yarn test:e2e`
+     - Runs the Playwright test suite against your local application.
+   - `yarn test:e2e-ui`
+     - Opens the Playwright UI for running and debugging tests interactively.
+   - `yarn test:e2e-stable`
+     - Runs only stable Playwright tests (excluding those marked as @flaky, @regression, or @a11y).
+   - `yarn test:e2e-stable-ui`
+     - Opens the Playwright UI for running only stable tests interactively.
 
 ## Configuration
 
-`cypress.config.js` may use any of [these](https://docs.cypress.io/guides/references/configuration#Global) config options.
+Playwright is configured via `playwright.config.ts`. See the [Playwright configuration docs](https://playwright.dev/docs/test-configuration) for available options.
 
 ## Writing tests
 
-- JavaScript
-  - uses extension `*.cy.js` located in `e2e` directory
+- Tests are written in TypeScript or JavaScript and are located in the `tests/playwright/tests/` directory.
+- Test files use the `.spec.ts` or `.spec.js` extension.
 
 Relevant Documentation
 
-- [Cypress Documentation](https://docs.cypress.io/)
+- [Playwright Documentation](https://playwright.dev/docs/intro)
 
 ## Running tests
 
-To run cypress tests locally you will go to the root of the project and you'll need an upadated .env with variables for the state user and admin user passwords. To accomplish this ther are multiple options.
+To run Playwright tests locally:
 
-1. If you have a 1Password account and 1Password CLI installed locally you can run
-   `./run update-env` to pull values from 1Password and create an updated .env
+1. Ensure you have an up-to-date `.env` file with required variables (such as state user and admin user passwords). You can:
 
-2. If you do not have a 1Password account you can copy the contents of the `.env.tpl` file to a `.env` file at the top level of the repo and reach out to the team for appropriate values to be populated by hand.
+- Run `./run update-env` if you have 1Password CLI set up, to pull values and create an updated `.env`.
+- Or, copy `.env.tpl` to `.env` and fill in the values manually.
 
-When you have an updated `.env` file can run tests from the top level of the repo using the `yarn test` command.
+2. From the tests directory of the project, run:
 
-If you run into errors after trying to run the cypress test command:
--try running `yarn` at the root of the project
--run `nvm use` along with the current version that the project is on
--cd into tests/cypress and run `yarn`.
+- `yarn test:e2e` to execute all Playwright tests.
 
-_These variables are included in GitHub secrets for CI stages._
+If you encounter errors:
 
-## Cypress CLI
+- Run `yarn` at the root of the project to install dependencies.
+- Run `nvm use` to ensure you are using the correct Node version.
 
-The [cypress cli](https://docs.cypress.io/guides/guides/command-line) comes with a number of options/flags/behaviors built into it, which allow it to target browsers, configure parallelization, and so on.
+_Environment variables are included in GitHub secrets for CI stages._
 
-## Create New Branches and PRs for Tests
+## Playwright CLI
 
-When writing Cypress tests for an existing branch, create a new branch and write the tests there. For example, if the branch that needs tests is called `branch1`, create a new branch called `branch1-test`.
-
-When the tests have been written, create a new PR for `branch1-test` and set its base to `branch1`. Submit this PR for review.
+The [Playwright CLI](https://playwright.dev/docs/test-cli) provides commands for running tests, generating reports, debugging, and more. See the documentation for available options and usage.

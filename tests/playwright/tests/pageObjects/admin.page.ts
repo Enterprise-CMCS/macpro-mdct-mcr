@@ -83,11 +83,7 @@ export class AdminPage extends BasePage {
     );
     const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
 
-    await reportRow
-      .getByRole("button", {
-        name: new RegExp(`Archive ${programName}.*report`),
-      })
-      .click();
+    await reportRow.getByRole("button", { name: /Archive/ }).click();
     await Promise.all([putResponse, getResponse]);
   }
 
@@ -101,11 +97,7 @@ export class AdminPage extends BasePage {
     );
     const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
 
-    await reportRow
-      .getByRole("button", {
-        name: new RegExp(`Unarchive ${programName}.*report`),
-      })
-      .click();
+    await reportRow.getByRole("button", { name: /Unarchive/ }).click();
     await Promise.all([putResponse, getResponse]);
   }
 
