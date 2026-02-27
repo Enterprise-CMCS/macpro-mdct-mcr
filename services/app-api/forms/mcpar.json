@@ -2286,76 +2286,108 @@
         },
         {
           "name": "II: MLR Reporting",
-          "path": "/mcpar/program-level-indicators/mlr-reporting",
-          "pageType": "standard",
+          "path": "/mcpar/plan-level-indicators/mlr-reporting",
+          "pageType": "drawer",
+          "entityType": "plans",
           "verbiage": {
             "intro": {
-              "section": "Section C: Program-Level Indicators",
+              "section": "Section D: Plan-Level Indicators",
               "subsection": "Topic II: Medical Loss Ratio (MLR) Reporting",
-              "spreadsheet": "C1_Program_Set"
-            }
+              "spreadsheet": "D1_Plan_Set"
+            },
+            "dashboardTitle": "Enter MLR reporting information for each plan",
+            "drawerTitle": "Enter MLR reporting information for {{name}}",
+            "missingEntityMessage": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "type": "html",
+                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7."
+                  },
+                  {
+                    "type": "internalLink",
+                    "content": "Add Plans",
+                    "props": {
+                      "to": "/mcpar/program-information/add-plans"
+                    }
+                  }
+                ]
+              }
+            ]
           },
-          "form": {
-            "id": "cmlr",
+          "drawerForm": {
+            "id": "dfp",
             "fields": [
               {
-                "id": "program_mlrSubmissionDate",
-                "type": "date",
-                "validation": "date",
-                "props": {
-                  "label": "C1.II.1 Submission Date of Most Recent MLR Report",
-                  "hint": "When is the last date the state submitted the MLR Summary Report in the Medicaid Data Collection Tool (MDCT) MLR Portal for this program?"
-                }
-              },
-              {
-                "id": "program_mlrReportingPeriodStartDate",
-                "type": "date",
-                "validation": "date",
-                "props": {
-                  "label": "C1.II.2 Most Recent MLR Reporting Period",
-                  "hint": "Please report the beginning date of that MLR reporting period.",
-                  "timetype": "startDate"
-                }
-              },
-              {
-                "id": "program_mlrReportingPeriodEndDate",
-                "type": "date",
-                "validation": {
-                  "type": "endDate",
-                  "dependentFieldName": "program_mlrReportingPeriodStartDate"
-                },
-                "props": {
-                  "hint": "Please report the end date of that MLR reporting period.",
-                  "timetype": "endDate"
-                }
-              },
-              {
-                "id": "program_mlrValidationCompletion",
+                "id": "plan_mlrDataReceived",
                 "type": "radio",
                 "validation": "radio",
                 "props": {
-                  "label": "C1.II.3 MLR Validation Completion",
-                  "hint": "Has the state completed the validation of plan MLR data for the current MCPAR reporting period by the submission date of this report for all plans? (See detailed reporting in Section D1.II by plan.)",
+                  "label": "D1.II.1 MLR Data Received",
+                  "hint": "Has the state received the MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
                   "choices": [
                     {
-                      "id": "kL9mNpQr2sT4uVwX5yZ0aB",
-                      "label": "Yes"
+                      "id": "xY7zW9vU3tS1rQ5pO8nM2k",
+                      "label": "Yes",
+                      "children": [
+                        {
+                          "id": "plan_mlrDataValidated",
+                          "type": "radio",
+                          "validation": {
+                            "type": "radio",
+                            "nested": true,
+                            "parentFieldName": "plan_mlrDataReceived"
+                          },
+                          "props": {
+                            "label": "D1.II.1a MLR Data Validated",
+                            "hint": "Has the state validated the final MLR data specified at 42 CFR 438.8(k) from this plan for the current MCPAR reporting period as of the submission date of this MCPAR report?",
+                            "choices": [
+                              {
+                                "id": "aB4cD6eF8gH0iJ2kL4mN6o",
+                                "label": "Yes"
+                              },
+                              {
+                                "id": "pQ8rS0tU2vW4xY6zA8bC0d",
+                                "label": "No",
+                                "children": [
+                                  {
+                                    "id": "agvm79QjeMahTuwFAeP5LEOC",
+                                    "type": "dateMonthYear",
+                                    "validation": {
+                                      "type": "dateMonthYear",
+                                      "nested": true,
+                                      "parentFieldName": "plan_mlrDataValidated",
+                                      "parentOptionId": "pQ8rS0tU2vW4xY6zA8bC0d"
+                                    },
+                                    "props": {
+                                      "label": "D1.II.1b Projected Date for Validation of MLR Data for This Reporting Period",
+                                      "hint": "When does the state anticipate completing validation for this plan?"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
                     },
                     {
-                      "id": "cD3eF6gH7iJ8kL9mNpQr2s",
+                      "id": "eF2gH4iJ6kL8mN0oP2qR4s",
                       "label": "No",
                       "children": [
                         {
-                          "id": "program_mlrAnticipatedValidationDate",
+                          "id": "6Mtk0HNtmiqcgNyAhkT9dlRH",
                           "type": "dateMonthYear",
                           "validation": {
                             "type": "dateMonthYear",
                             "nested": true,
-                            "parentFieldName": "program_mlrValidationCompletion"
+                            "parentFieldName": "plan_mlrDataReceived",
+                            "parentOptionId": "eF2gH4iJ6kL8mN0oP2qR4s"
                           },
                           "props": {
-                            "label": "C1.II.3a Anticipated Validation Date",
-                            "hint": "When does the state anticipate doing so?"
+                            "label": "D1.II.1c Projected Date for Receipt of MLR Data for This Reporting Period",
+                            "hint": "When does the state anticipate receiving MLR data for this reporting period from this plan?"
                           }
                         }
                       ]
