@@ -1,0 +1,120 @@
+name: Regression Tests
+
+on:
+  schedule:
+    # Every Monday at 8 AM UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: regression-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+  actions: read
+
+env:
+  PROJECT: ${{ vars.APP_NAME_LOWER }}
+
+jobs:
+  deploy:
+    name: Deploy Regression Environment
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Enable Corepack
+        run: corepack enable
+      - uses: actions/cache@v4
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
+      - name: Set regression environment name
+        run: |
+          echo "PATH=$(pwd)/node_modules/.bin/:$PATH" >> $GITHUB_ENV
+          REGRESSION_ENV="regression-$(date +%Y%m%d-%H%M%S)"
+          echo "branch_name=${REGRESSION_ENV}" >> $GITHUB_ENV
+      - name: Install packages
+        run: ./run install
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+      - name: Deploy regression environment
+        run: ./run deploy --stage $branch_name
+      - id: endpoint
+        run: |
+          APPLICATION_ENDPOINT=$(./scripts/output.ts ${{ env.PROJECT }}-$branch_name CloudFrontUrl)
+          echo "application_endpoint=$APPLICATION_ENDPOINT" >> $GITHUB_OUTPUT
+          echo "## Regression Environment Endpoint" >> $GITHUB_STEP_SUMMARY
+          echo "<$APPLICATION_ENDPOINT>" >> $GITHUB_STEP_SUMMARY
+    outputs:
+      application_endpoint: ${{ steps.endpoint.outputs.application_endpoint }}
+      stage_name: ${{ env.branch_name }}
+
+  regression-tests:
+    name: Playwright Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: deploy
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Run Playwright tests
+        run: |
+          yarn install
+          yarn playwright install
+          yarn playwright test --reporter=github,html
+        working-directory: tests
+        env:
+          BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
+          SEED_ADMIN_USER_EMAIL: ${{ secrets.SEED_ADMIN_USER_EMAIL }}
+          SEED_ADMIN_USER_PASSWORD: ${{ secrets.SEED_ADMIN_USER_PASSWORD }}
+          SEED_STATE_USER_EMAIL: ${{ secrets.SEED_STATE_USER_EMAIL }}
+          SEED_STATE_USER_PASSWORD: ${{ secrets.SEED_STATE_USER_PASSWORD }}
+      - name: Upload playwright results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regression-playwright-html-report-${{ github.run_number }}
+          path: tests/playwright-report
+          retention-days: 30
+
+  destroy:
+    name: Destroy Regression Environment
+    if: always()
+    needs: [deploy, regression-tests]
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Configure AWS credentials for GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+      - name: Destroy regression environment
+        run: ./run destroy --stage ${{ needs.deploy.outputs.stage_name }} --verify false
+        env:
+          PROJECT: ${{ vars.APP_NAME_LOWER }}

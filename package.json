@@ -24,6 +24,8 @@
     "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
     "test:e2e-ui": "cd tests && yarn run test:e2e-ui",
+    "test:e2e-stable": "cd tests && yarn run test:e2e-stable",
+    "test:e2e-stable-ui": "cd tests && yarn run test:e2e-stable-ui",
     "cdk": "cdk"
   },
   "dependencies": {

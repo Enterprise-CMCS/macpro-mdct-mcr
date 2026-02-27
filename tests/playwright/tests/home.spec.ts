@@ -22,7 +22,7 @@ test.describe("state user home page", () => {
     ).toBeVisible();
   });
 
-  test("Is accessible on all device types for state user", async ({
+  test("Is accessible on all device types for state user @a11y", async ({
     statePage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(
@@ -50,7 +50,7 @@ test.describe("admin user home page", () => {
     ).toBeVisible();
   });
 
-  test("Is accessible on all device types for admin user", async ({
+  test("Is accessible on all device types for admin user @a11y", async ({
     adminPage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(
@@ -62,7 +62,7 @@ test.describe("admin user home page", () => {
 });
 
 test.describe("not logged in home page", () => {
-  test("Is accessible when not logged in", async ({ browser }) => {
+  test("Is accessible when not logged in @a11y", async ({ browser }) => {
     const userContext = await browser.newContext({
       storageState: {
         cookies: [],

@@ -11,8 +11,8 @@
     "test:ci": "yarn cypress install && yarn cypress run --browser chrome --headless",
     "test:e2e": "playwright test",
     "test:e2e-ui": "playwright test --ui",
-    "test:e2e-stable": "playwright test --grep-invert \"@flaky\"",
-    "test:e2e-stable-ui": "playwright test --ui --grep-invert \"@flaky\""
+    "test:e2e-stable": "playwright test --grep-invert \"@flaky|@regression|@a11y\"",
+    "test:e2e-stable-ui": "playwright test --ui --grep-invert \"@flaky|@regression|@a11y\""
   },
   "dependencies": {
     "ws": "^7.5.10"
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
     "@cypress-audit/pa11y": "^1.4.2",
+    "@faker-js/faker": "^10.3.0",
     "@playwright/test": "^1.56.1",
     "@types/aws4": "^1.11.6",
     "aws4": "^1.13.2",

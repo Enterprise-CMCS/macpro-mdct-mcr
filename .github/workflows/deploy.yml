@@ -115,7 +115,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           yarn playwright install --with-deps chromium
-          yarn playwright test --grep-invert "@flaky" --reporter=github,html
+          yarn playwright test --grep-invert "@flaky|@regression|@a11y" --reporter=github,html
         working-directory: tests
         env:
           BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}

@@ -1,9 +1,7 @@
 import mcparReportJson from "../../../../services/app-api/forms/mcpar.json";
-import mcparFebruary2026 from "../../../../services/app-api/forms/routes/mcpar/flags/mcparFebruary2026.json";
 
 const flaggedForms = {
   // flagName: jsonFilePath
-  mcparFebruary2026,
 };
 
 function getRoutesByFlag(flags) {

@@ -16,8 +16,6 @@ export const ilosRoute: DrawerFormRoute = {
       section: "Section D: Plan-Level Indicators",
       subsection: "Topic XI: ILOS",
       spreadsheet: "D4_Plan_ILOS",
-      alert:
-        "<b>Beginning December 2025, this section must be completed by states that authorize ILOS. Submission of this data before December 2025 is optional.</b>",
       info: [
         {
           type: "p",
