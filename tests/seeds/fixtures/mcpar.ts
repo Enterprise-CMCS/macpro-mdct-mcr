@@ -72,7 +72,7 @@ export const newMcpar = (
 
   // PCCM
   const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
-  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -81,7 +81,9 @@ export const newMcpar = (
     existingPrograms[randomIndex(existingPrograms.length)].label;
 
   // Check for new program name
-  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const programName = isNewProgram
+    ? generatedProgramName
+    : `${existingProgramName}${new Date().toISOString()}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
@@ -116,6 +118,7 @@ export const newMcpar = (
       reportingPeriodStartDate,
       status: ReportStatus.NOT_STARTED,
       submissionCount: 0,
+      isComplete: false,
     },
     fieldData: {
       programName,

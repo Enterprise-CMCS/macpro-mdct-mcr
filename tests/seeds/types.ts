@@ -25,6 +25,7 @@ export type SeedReportMetadataShape = Omit<
   combinedData?: boolean;
   reportingPeriodEndDate?: number;
   reportingPeriodStartDate?: number;
+  isComplete?: boolean;
 };
 
 export type SeedFillReportMetadataShape = Omit<
