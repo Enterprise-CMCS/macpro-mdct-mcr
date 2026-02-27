@@ -43,7 +43,7 @@ export const bssRoute: FormRoute = {
         validation: ValidationType.TEXT,
         props: {
           label: "C1.IX.3 BSS LTSS program data",
-          hint: "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4).",
+          hint: "How do BSS entities assist the state with identifying, remediating, and resolving systemic issues based on a review of LTSS program data such as grievances and appeals or critical incident data? Refer to 42 CFR 438.71(d)(4). If the program does not offer LTSS, enter “N/A”.",
         },
       },
       {
