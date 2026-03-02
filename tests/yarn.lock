@@ -104,6 +104,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"amazon-user-pool-srp-client@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "amazon-user-pool-srp-client@npm:1.0.4"
+  dependencies:
+    sjcl-aws: "npm:^1.0.8"
+  checksum: 10c0/438fec3b4b4e963b33e44c5188025f8b068c83676694b8b98b7bb95382621997ae170eb5abfa175792dea68842e015d6a077c88fc86530f7b6cd29473407bab4
+  languageName: node
+  linkType: hard
+
 "ansi-regex@npm:^5.0.1":
   version: 5.0.1
   resolution: "ansi-regex@npm:5.0.1"
@@ -269,6 +278,7 @@ __metadata:
     "@faker-js/faker": "npm:^10.3.0"
     "@playwright/test": "npm:^1.56.1"
     "@types/aws4": "npm:^1.11.6"
+    amazon-user-pool-srp-client: "npm:^1.0.4"
     aws4: "npm:^1.13.2"
     axe-core: "npm:^4.10.2"
     concurrently: "npm:^8.2.2"
@@ -729,6 +739,13 @@ __metadata:
   version: 1.8.3
   resolution: "shell-quote@npm:1.8.3"
   checksum: 10c0/bee87c34e1e986cfb4c30846b8e6327d18874f10b535699866f368ade11ea4ee45433d97bf5eada22c4320c27df79c3a6a7eb1bf3ecfc47f2c997d9e5e2672fd
+  languageName: node
+  linkType: hard
+
+"sjcl-aws@npm:^1.0.8":
+  version: 1.0.8
+  resolution: "sjcl-aws@npm:1.0.8"
+  checksum: 10c0/ded6e38bfb2de5724938261d25c4572c3720b863deca7a07ec52c427178211b02f81b199cd82aee0f3f1b82fbd3b7782471534f5c64b36a891d26605b0ee70b7
   languageName: node
   linkType: hard
 
