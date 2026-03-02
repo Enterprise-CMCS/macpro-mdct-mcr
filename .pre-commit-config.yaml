@@ -27,8 +27,6 @@ repos:
           - ^services/app-api/utils/constants/copyover.ts
           - --exclude-files
           - services/uploads/src/test.json
-          - --exclude-files
-          - tests/cypress/cypress.json
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.0.272
     hooks:

@@ -21,7 +21,6 @@
     "build:json": "cd services/app-api && yarn run build:json",
     "db:seed": "cd services/app-api && yarn run db:seed",
     "test": "cd tests && npm test && cd -",
-    "test:ci": "cd tests && yarn run test:ci",
     "test:e2e": "cd tests && yarn run test:e2e",
     "test:e2e-ui": "cd tests && yarn run test:e2e-ui",
     "test:e2e-stable": "cd tests && yarn run test:e2e-stable",

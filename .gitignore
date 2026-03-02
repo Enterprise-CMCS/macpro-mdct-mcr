@@ -13,9 +13,6 @@ services/uploads/local_buckets
 tests_output
 *.log
 !launchdarkly-flags.log
-tests/cypress/videos
-tests/cypress/screenshots
-tests/cypress/downloads
 *._S3rver_cors.xml
 tests/test-results/
 tests/playwright-report/

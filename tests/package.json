@@ -1,5 +1,5 @@
 {
-  "name": "cypress-tests",
+  "name": "e2e-tests",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -7,8 +7,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cd ../ && ./run local && cd -",
-    "test": "concurrently --kill-others \"yarn start\" \"yarn cypress open\"",
-    "test:ci": "yarn cypress install && yarn cypress run --browser chrome --headless",
+    "test": "concurrently --kill-others \"yarn start\" \"yarn test:e2e-ui\"",
     "test:e2e": "playwright test",
     "test:e2e-ui": "playwright test --ui",
     "test:e2e-stable": "playwright test --grep-invert \"@flaky|@regression|@a11y\"",
@@ -19,15 +18,12 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
-    "@cypress-audit/pa11y": "^1.4.2",
     "@faker-js/faker": "^10.3.0",
     "@playwright/test": "^1.56.1",
     "@types/aws4": "^1.11.6",
     "aws4": "^1.13.2",
     "axe-core": "^4.10.2",
     "concurrently": "^8.2.2",
-    "cypress": "^15.10.0",
-    "cypress-axe": "^1.6.0",
     "dotenv": "^16.4.7",
     "playwright-core": "^1.57.0"
   },

@@ -1,9 +1,12 @@
+// Playwright has a requirement that all fixture functions in the object passed to base.extend must use object destructuring for their first argument
+// For more info: https://playwright.dev/docs/test-fixtures#accessing-built-in-fixtures
+/* eslint-disable no-empty-pattern */
 import { test as base, BrowserContext } from "@playwright/test";
-import { adminUserAuth, stateUserAuth } from "../../utils/consts";
+import { adminUserAuth, stateName, stateUserAuth } from "../../utils/consts";
 import { AdminPage } from "../pageObjects/admin.page";
 import { StatePage } from "../pageObjects/state.page";
 import { postReport, archiveReport, putReport } from "../../utils/requests";
-import { newMlr, fillMlr } from "../../../seeds/fixtures";
+import { newMlr, fillMlr, newMcpar } from "../../../seeds/fixtures";
 import { stateAbbreviation } from "../../utils";
 
 type CustomFixtures = {
@@ -14,6 +17,8 @@ type CustomFixtures = {
   mlrProgramName: string;
   archivedMlrProgramName: string;
   inProgressMlrProgramName: string;
+  mcparProgramName: string;
+  archivedMcparProgramName: string;
 };
 
 export const test = base.extend<CustomFixtures>({
@@ -47,16 +52,12 @@ export const test = base.extend<CustomFixtures>({
     await page.close();
   },
 
-  // Playwright has a requirement that all fixture functions in the object passed to base.extend must use object destructuring for their first argument
-  // For more info: https://playwright.dev/docs/test-fixtures#accessing-built-in-fixtures
-  // eslint-disable-next-line no-empty-pattern
   mlrProgramName: async ({}, use) => {
     const reportData = newMlr({}, stateAbbreviation);
     await postReport("MLR", reportData, stateAbbreviation);
     await use(reportData.metadata.programName);
   },
 
-  // eslint-disable-next-line no-empty-pattern
   archivedMlrProgramName: async ({}, use) => {
     const reportData = newMlr({}, stateAbbreviation);
     const response = await postReport("MLR", reportData, stateAbbreviation);
@@ -64,12 +65,24 @@ export const test = base.extend<CustomFixtures>({
     await use(reportData.metadata.programName);
   },
 
-  // eslint-disable-next-line no-empty-pattern
   inProgressMlrProgramName: async ({}, use) => {
     const reportData = newMlr({}, stateAbbreviation);
     const response = await postReport("MLR", reportData, stateAbbreviation);
     const mlrReportPut = fillMlr({});
     await putReport("MLR", mlrReportPut, stateAbbreviation, response.id);
+    await use(reportData.metadata.programName);
+  },
+
+  mcparProgramName: async ({}, use) => {
+    const reportData = newMcpar({}, stateName, stateAbbreviation);
+    await postReport("MCPAR", reportData, stateAbbreviation);
+    await use(reportData.metadata.programName);
+  },
+
+  archivedMcparProgramName: async ({}, use) => {
+    const reportData = newMcpar({}, stateName, stateAbbreviation);
+    const response = await postReport("MCPAR", reportData, stateAbbreviation);
+    await archiveReport("MCPAR", stateAbbreviation, response.id);
     await use(reportData.metadata.programName);
   },
 });
