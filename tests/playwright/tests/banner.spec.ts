@@ -6,9 +6,10 @@ import { formatDate } from "../utils/date-helpers";
 test.describe("admin user banner page", () => {
   test.beforeEach(async ({ adminPage }) => {
     await deleteAllBanners();
+    const getBannerResponse = adminPage.waitForResponse("/banners", "GET", 200);
     await adminPage.page.goto("/admin");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForResponse("/banners", "GET", 200);
+    await getBannerResponse;
   });
 
   test("Should see the correct banner page as an admin user", async ({
