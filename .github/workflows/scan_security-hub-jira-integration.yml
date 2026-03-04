@@ -38,7 +38,7 @@ jobs:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
       - name: Sync Security Hub and Jira
-        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.0.9
+        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2.2
         with:
           jira-username: "mdct_github_service_account"
           jira-token: ${{ secrets.JIRA_ENT_USER_TOKEN }}
