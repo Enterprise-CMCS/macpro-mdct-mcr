@@ -26,4 +26,12 @@ export class BasePage {
       throw error;
     }
   }
+
+  async waitForLoadingSpinner() {
+    await this.page
+      .locator("div")
+      .filter({ hasText: /^Loading\.\.\.$/ })
+      .nth(1)
+      .waitFor({ state: "hidden" });
+  }
 }

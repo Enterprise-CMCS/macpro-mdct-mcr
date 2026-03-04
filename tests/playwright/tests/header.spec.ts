@@ -3,9 +3,10 @@ import { test, expect } from "./fixtures/base";
 
 test.describe("Header tests - State user", () => {
   test.beforeEach(async ({ statePage }) => {
+    const bannersResponse = statePage.waitForResponse("/banners", "GET", 200);
     await statePage.page.goto("/");
     await statePage.checkAndReauthenticate();
-    await statePage.waitForResponse("/banners", "GET", 200);
+    await bannersResponse;
   });
 
   test("MCR logo link should navigate to /", async ({ statePage }) => {
@@ -41,9 +42,10 @@ test.describe("Header tests - State user", () => {
 
 test.describe("Header tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
+    const bannersResponse = adminPage.waitForResponse("/banners", "GET", 200);
     await adminPage.page.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForResponse("/banners", "GET", 200);
+    await bannersResponse;
   });
 
   test("MCR logo link should navigate to /", async ({ adminPage }) => {

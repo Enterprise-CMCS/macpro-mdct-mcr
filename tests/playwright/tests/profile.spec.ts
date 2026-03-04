@@ -18,7 +18,7 @@ test.describe("Admin profile", () => {
     ).toBeVisible();
   });
 
-  test("Is accessible on all device types for admin user", async ({
+  test("Is accessible on all device types for admin user @a11y", async ({
     adminPage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(
@@ -46,7 +46,7 @@ test.describe("State user profile", () => {
     ).not.toBeVisible();
   });
 
-  test("Is accessible on all device types for state user", async ({
+  test("Is accessible on all device types for state user @a11y", async ({
     statePage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(
