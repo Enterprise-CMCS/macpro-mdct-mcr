@@ -379,9 +379,11 @@ export const EntityDetailsMultiformOverlay = ({
                   id={formObject.form.id}
                   onChange={handleChange}
                   onSubmit={(data: AnyObject) => handleSubmit(data)}
-                  ref={(el) =>
-                    (formRefs.current[index] = el as HTMLFormElement)
-                  }
+                  ref={(el) => {
+                    if (el) {
+                      formRefs.current[index] = el;
+                    }
+                  }}
                   validateOnRender={validateOnRender || false}
                 />
               </Box>
