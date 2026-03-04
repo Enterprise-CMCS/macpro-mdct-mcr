@@ -14,7 +14,7 @@ jobs:
   prchecks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
@@ -32,14 +32,12 @@ jobs:
       - name: run unit tests
         run: ./scripts/test-unit.ts
       - name: publish test coverage to qlty
-        uses: qltysh/qlty-action/coverage@v1
+        uses: qltysh/qlty-action/coverage@v2
         with:
           oidc: true
           files: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info
             ${{github.workspace}}/services/ui-src/coverage/lcov.info
-        env:
-          CODE_CLIMATE_ID: ${{ secrets.CODE_CLIMATE_ID }}
   assignAuthor:
     if: github.event.pull_request.user.type != 'Bot' && github.event.action == 'opened'
     runs-on: ubuntu-latest
