@@ -1,0 +1,34 @@
+# This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
+name: Publish main Code Coverage
+
+# In order for main's coverage to reflect on QLTY's dashboard or badges, it must tied to a branch push, not pr
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write # Required for OIDC
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Enable Corepack
+        run: corepack enable
+      - name: run unit tests
+        run: ./scripts/test-unit.ts
+      - name: publish test coverage to qlty
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          oidc: true
+          files: |
+            ${{github.workspace}}/services/app-api/coverage/lcov.info
+            ${{github.workspace}}/services/ui-src/coverage/lcov.info

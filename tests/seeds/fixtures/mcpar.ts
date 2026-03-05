@@ -72,7 +72,7 @@ export const newMcpar = (
 
   // PCCM
   const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
-  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -81,7 +81,9 @@ export const newMcpar = (
     existingPrograms[randomIndex(existingPrograms.length)].label;
 
   // Check for new program name
-  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const programName = isNewProgram
+    ? generatedProgramName
+    : `${existingProgramName}${new Date().toISOString()}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
@@ -116,6 +118,7 @@ export const newMcpar = (
       reportingPeriodStartDate,
       status: ReportStatus.NOT_STARTED,
       submissionCount: 0,
+      isComplete: false,
     },
     fieldData: {
       programName,
@@ -197,9 +200,7 @@ export const fillMcpar = (
     name: faker.animal.dog(),
   }));
 
-  const plans = planIds.map((planId, index) =>
-    createPlan(planId, ilos[index], flags)
-  );
+  const plans = planIds.map((planId, index) => createPlan(planId, ilos[index]));
 
   const qualityMeasures = Array.from({ length: numberOfExamples }, () =>
     createQualityMeasure(planIds)
@@ -309,8 +310,6 @@ export const fillMcpar = (
           value: "Yes",
         },
       ],
-      program_networkAdequacyChallenges: faker.lorem.sentence(),
-      program_networkAdequacyGapResponseEfforts: faker.lorem.sentence(),
       program_prohibitedAffiliationDisclosure: [
         {
           key: "program_prohibitedAffiliationDisclosure-7emiYPcs60GzXxKS5Pc9bg",
@@ -537,11 +536,7 @@ const createPlanPCCM = (planId: string) => ({
   plan_parentOrganization: faker.lorem.sentence(),
 });
 
-const createPlan = (
-  planId: string,
-  ilos: { id: string; name: string },
-  flags: { [key: string]: true }
-) => {
+const createPlan = (planId: string, ilos: { id: string; name: string }) => {
   const newReportingPeriodStartDate = faker.date.soon({ days: 10 });
   const newReportingPeriodEndDate = faker.date.future({
     refDate: newReportingPeriodStartDate,
@@ -588,25 +583,6 @@ const createPlan = (
     plan_medicaidEnrollmentSharePercentage: suppressionText,
     plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
     plan_parentOrganization: faker.lorem.sentence(),
-    plan_medicalLossRatioPercentage: numberFloat(),
-    plan_medicalLossRatioPercentageAggregationLevel: [
-      {
-        key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-        value: "Program-specific statewide",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriod: [
-      {
-        key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-        value: "Yes",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-      newReportingPeriodEndDate
-    ),
-    plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-      newReportingPeriodStartDate
-    ),
     plan_mfcuProgramIntegrityReferrals: numberInt(),
     plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
     plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
@@ -628,7 +604,6 @@ const createPlan = (
     plan_percentageOfStandardPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
       numberFloat(),
-    plan_populationSpecificMedicalLossRatioDescription: numberInt(),
     plan_programIntegrityReferralPath: [
       {
         key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -710,27 +685,6 @@ const createPlan = (
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
-
-  if (flags.mcparFebruary2026) {
-    // Removed fields
-    const {
-      /* oxlint-disable no-unused-vars */
-      program_networkAdequacyChallenges,
-      program_networkAdequacyGapResponseEfforts,
-      plan_medicalLossRatioPercentage,
-      plan_medicalLossRatioPercentageAggregationLevel,
-      plan_medicalLossRatioReportingPeriod,
-      plan_medicalLossRatioReportingPeriodEndDate,
-      plan_medicalLossRatioReportingPeriodStartDate,
-      plan_populationSpecificMedicalLossRatioDescription,
-      /* oxlint-enable no-unused-vars */
-      ...rest
-    } = data;
-
-    data = {
-      ...rest,
-    } as any;
-  }
 
   return data;
 };

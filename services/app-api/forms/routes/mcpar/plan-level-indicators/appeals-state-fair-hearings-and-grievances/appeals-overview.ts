@@ -358,7 +358,7 @@ export const appealsOverviewRoute: DrawerFormRoute = {
         props: {
           label:
             "D1.IV.6f Resolved appeals related to plan denial of an enrollee’s right to request out-of-network care",
-          hint: "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO).",
+          hint: "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO). If not applicable, enter “N/A.”",
           mask: "comma-separated",
           decimalPlacesToRoundTo: 0,
         },

@@ -7,9 +7,9 @@
     "build:cli": "tsc"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.985.0",
-    "@aws-sdk/client-lambda": "^3.985.0",
-    "@aws-sdk/client-sts": "^3.985.0",
+    "@aws-sdk/client-cloudformation": "^3.994.0",
+    "@aws-sdk/client-lambda": "^3.994.0",
+    "@aws-sdk/client-sts": "^3.994.0",
     "dotenv": "^17.2.3",
     "yargs": "^18.0.0"
   },
