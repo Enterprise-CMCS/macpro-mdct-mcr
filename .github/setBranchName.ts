@@ -10,7 +10,7 @@ if (githubRefName.startsWith("dependabot/")) {
   console.log("x" + hash.substring(0, 10));
 } else if (githubRefName.startsWith("snyk-")) {
   const parts = githubRefName.split("-");
-  const lastPart = parts[parts.length - 1];
+  const lastPart = parts.at(-1);
   console.log("s" + lastPart.substring(0, 10));
 } else {
   console.log(githubRefName);

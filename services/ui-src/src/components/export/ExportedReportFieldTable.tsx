@@ -91,7 +91,8 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(renderMissingEntityVerbiage() || "")}
         </Box>
-      ) : entityType === EntityType.BSS_ENTITIES && !hasBss ? (
+      ) : // oxlint-disable-next-line no-nested-ternary
+      entityType === EntityType.BSS_ENTITIES && !hasBss ? (
         // if there are no BSS entities added, render the appropriate verbiage
         <Box sx={sx.missingEntityMessage} data-testid="missingEntityMessage">
           {parseCustomHtml(

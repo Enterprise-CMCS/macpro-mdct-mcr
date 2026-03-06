@@ -327,13 +327,13 @@ export const EntityDetailsMultiformOverlay = ({
       const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
-        case "Status": {
+        case "Status":
           if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return <EntityStatusIcon isComplete={isComplete} />;
           }
           return <></>;
-        }
-        case "Action": {
+
+        case "Action":
           return (
             <Button
               disabled={!hasDetailsEnabled}
@@ -344,7 +344,7 @@ export const EntityDetailsMultiformOverlay = ({
               {isComplete ? "Edit" : "Enter"}
             </Button>
           );
-        }
+
         default:
           return (
             <>

@@ -97,7 +97,7 @@ describe("<AdminBannerProvider />", () => {
     });
     test("Shows error if fetchBanner throws error", async () => {
       mockAPI.getBanners.mockImplementation(() => {
-        throw new Error();
+        throw new Error("Some error message");
       });
       await act(async () => {
         await render(testComponent);

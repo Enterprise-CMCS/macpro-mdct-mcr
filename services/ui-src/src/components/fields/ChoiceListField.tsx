@@ -158,14 +158,12 @@ export const ChoiceListField = ({
               }
               break;
             case "date":
-              if (child.props?.disabled) {
-                break;
-              } else {
+              if (!child.props?.disabled) {
                 child.props = { ...child.props, clear: true };
                 form.setValue(child.id, "");
                 form.unregister(child.id);
-                break;
               }
+              break;
             default:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, "");
