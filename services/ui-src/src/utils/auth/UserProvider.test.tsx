@@ -143,7 +143,7 @@ describe("<UserProvider />", () => {
       const spy = jest.spyOn(console, "log");
 
       mockLogoutUser.mockImplementation(() => {
-        throw new Error();
+        throw new Error("Some error message");
       });
 
       await act(async () => {

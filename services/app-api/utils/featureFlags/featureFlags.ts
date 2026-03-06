@@ -22,8 +22,8 @@ export const getLaunchDarklyClient = async () => {
     });
     await client.waitForInitialization({ timeout: 60 });
     return client;
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return fallback;
   }
 };

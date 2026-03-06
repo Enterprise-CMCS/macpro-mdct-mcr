@@ -26,10 +26,10 @@ export const SortableNaaarStandardsTable = ({
   ) => {
     const { entity } = originalRowData;
     switch (headKey) {
-      case "standardType": {
+      case "standardType":
         return <Text sx={sx.bold}>{value}</Text>;
-      }
-      case "edit": {
+
+      case "edit":
         return (
           <Button
             variant="link"
@@ -41,8 +41,8 @@ export const SortableNaaarStandardsTable = ({
             Edit
           </Button>
         );
-      }
-      case "delete": {
+
+      case "delete":
         return (
           <Button
             sx={sx.deleteButton}
@@ -57,7 +57,7 @@ export const SortableNaaarStandardsTable = ({
             />
           </Button>
         );
-      }
+
       default:
         return value;
     }

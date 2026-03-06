@@ -115,9 +115,7 @@ const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,
     test: (value) => {
-      return typeof value !== "undefined"
-        ? validNumberRegex.test(value)
-        : false;
+      return value === undefined ? false : validNumberRegex.test(value);
     },
   });
 
@@ -146,8 +144,8 @@ export const ratio = () =>
       // Double check and make sure that a ratio contains numbers on both sides
       if (
         ratio.length != 2 ||
-        ratio[0].trim().length == 0 ||
-        ratio[1].trim().length == 0
+        ratio[0].trim().length === 0 ||
+        ratio[1].trim().length === 0
       ) {
         return false;
       }

@@ -66,7 +66,11 @@ export const newMcpar = (
     : undefined;
   const naaarSubmissionForThisProgram = [
     enums.naaarSubmission[
-      hasNaaarSubmission ? 0 : hasExpectedNaaarSubmission ? 1 : 2
+      hasNaaarSubmission
+        ? 0 // oxlint-disable-next-line no-nested-ternary
+        : hasExpectedNaaarSubmission
+          ? 1
+          : 2
     ],
   ];
 

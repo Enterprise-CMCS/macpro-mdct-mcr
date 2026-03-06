@@ -48,10 +48,10 @@ const getObject = async (params) => {
 };
 
 const list = async (params) => {
-  let contents = [];
+  const contents = [];
 
   for await (let page of paginateListObjectsV2({ client: s3Client }, params)) {
-    contents = contents.concat(page.Contents ?? []);
+    contents.push(...(page.Contents ?? []));
   }
 
   return contents;
