@@ -7,15 +7,17 @@ jest.mock("@chakra-ui/react", () => {
 
   return {
     ...actual,
-    Modal: ({ isOpen, children }: any) => (isOpen ? <div role="dialog">{children}</div> : null),
+    Modal: ({ isOpen, children }: any) =>
+      isOpen ? <div role="dialog">{children}</div> : null,
     ModalOverlay: Div,
     ModalContent: Div,
     ModalHeader: Div,
     ModalBody: Div,
     ModalFooter: Div,
-    ModalCloseButton: ({ "aria-label": ariaLabel = "Close", ...props }: any) => (
-      <button type="button" aria-label={ariaLabel} {...props} />
-    ),
+    ModalCloseButton: ({
+      "aria-label": ariaLabel = "Close",
+      ...props
+    }: any) => <button type="button" aria-label={ariaLabel} {...props} />,
   };
 });
 // components
