@@ -2,7 +2,14 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 // this script is only ever run by pre-commit to validate commit messages
 import { readFileSync } from "fs";
-const commitMsgFile = process.argv[2];
+import path from "path";
+const filename = process.argv[2];
+// Prevent path traversal
+const commitMsgFile = path.resolve(process.cwd(), filename);
+if (!commitMsgFile.startsWith(process.cwd() + path.sep)) {
+  console.error("❌ Invalid commit path");
+  process.exit(1);
+}
 const commitMsg = readFileSync(commitMsgFile, "utf-8");
 console.log(`Validating commit message: ${commitMsg}`);
 

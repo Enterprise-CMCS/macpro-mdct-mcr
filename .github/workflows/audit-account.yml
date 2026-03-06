@@ -42,11 +42,12 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
-      - name: Cache Node modules
+      - name: Cache Node modules and Cypress folder
         uses: actions/cache@v4
         with:
           path: |
             **/node_modules
+            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
 
       - name: Set path
