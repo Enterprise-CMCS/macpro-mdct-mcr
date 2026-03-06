@@ -4,7 +4,7 @@ jest.mock("../../forms/routes/mcpar/flags", () => ({
   mockFlag,
 }));
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import {
   compileValidationJsonFromRoutes,
   filterByFlag,
@@ -389,11 +389,11 @@ describe("Test form contents", () => {
   };
 
   const flattenRoutes = (routes: ReportRoute[]) => {
-    let flatRoutes: ReportRoute[] = [];
+    const flatRoutes: ReportRoute[] = [];
     for (let route of routes) {
       flatRoutes.push(route);
       if (route.children) {
-        flatRoutes = flatRoutes.concat(flattenRoutes(route.children));
+        flatRoutes.push(...flattenRoutes(route.children));
       }
     }
     return flatRoutes;

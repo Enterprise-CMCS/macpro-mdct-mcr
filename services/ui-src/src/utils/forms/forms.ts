@@ -155,7 +155,7 @@ export const createRepeatedFields = (
     if (currentField.repeat) {
       // if so, get entities for which the field is to be repeated
       const entities = reportFieldData?.[currentField.repeat];
-      if (entities && entities.length) {
+      if (entities && entities.length > 0) {
         // for each entity, create and return a new field with entity-linked id
         return entities?.map((entity: AnyObject) => {
           const newField = {

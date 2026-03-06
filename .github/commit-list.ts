@@ -4,7 +4,7 @@ function cleanMessage(msg: string) {
   // Remove PR number
   m = m.replace(/\(#\d+\)$/, "");
   // Remove CMDCT tickets and any []:- surrounding it
-  m = m.replace(/[\[\(]?cmdct[ -]?\d+[\])]?[ ]?[:-]?/gi, "");
+  m = m.replaceAll(/[\[\(]?cmdct[ -]?\d+[\])]?[ ]?[:-]?/gi, "");
   // Remove leading/trailing whitespaces
   m = m.trim();
   // Capitalize first letter
@@ -65,8 +65,8 @@ async function fetchPrBody({ octokit, owner, prNumber, repo }: any) {
     });
 
     return data.body || "";
-  } catch (err: any) {
-    console.error(`Error fetching PR ${prNumber}:`, err.message);
+  } catch (error: any) {
+    console.error(`Error fetching PR ${prNumber}:`, error.message);
     return "";
   }
 }
@@ -101,5 +101,5 @@ export async function commitList({ commits, octokit, owner, repo }: any) {
     lines.push(line);
   }
 
-  return lines.reverse().join("\n");
+  return lines.toReversed().join("\n");
 }

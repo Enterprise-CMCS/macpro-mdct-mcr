@@ -1,7 +1,5 @@
 // components
 import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
-// types
-import { ReportRoute } from "types";
 // utils
 import { getReportVerbiage, useStore } from "utils";
 // assets
@@ -13,16 +11,14 @@ export const ExportedReportBanner = () => {
   const { exportVerbiage } = getReportVerbiage(report?.reportType);
   const { reportBanner } = exportVerbiage;
 
-  const routesToRender = report?.formTemplate.routes.filter(
-    (route: ReportRoute) => route
-  );
+  const routesToRender = report?.formTemplate.routes.filter(Boolean);
 
   const onClickHandler = () => {
     window?.print();
   };
 
   // check if the PDF is displaying an error message
-  const errorDisplay = window.document.getElementById("error-text");
+  const errorDisplay = window.document.querySelector("#error-text");
 
   return (
     <>

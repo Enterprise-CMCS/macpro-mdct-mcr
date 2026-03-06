@@ -127,7 +127,7 @@ export const autosaveFieldData = async ({
   );
 
   // if there are fields to save, create and send payload
-  if (fieldsToSave.length) {
+  if (fieldsToSave.length > 0) {
     const reportKeys = { reportType, id, state };
     let dataToWrite = {
       metadata: { status: ReportStatus.IN_PROGRESS, lastAlteredBy: userName },

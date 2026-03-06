@@ -42,7 +42,6 @@ export const getReportVerbiage = (reportType?: string): AnyObject => {
       return mlrVerbiage;
     case ReportType.NAAAR:
       return naaarVerbiage;
-    case ReportType.MCPAR:
     default:
       return mcparVerbiage;
   }

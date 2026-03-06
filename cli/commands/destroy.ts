@@ -11,8 +11,8 @@ import { createInterface } from "node:readline/promises";
 import { delete_topics } from "./delete-topics.ts";
 
 const confirmDestroyCommand = async (stack: string) => {
-  const orange = "\x1b[38;5;208m";
-  const reset = "\x1b[0m";
+  const orange = "\u001B[38;5;208m";
+  const reset = "\u001B[0m";
 
   const readline = createInterface({
     input: process.stdin,
@@ -78,8 +78,7 @@ export const destroy = {
     const stackName = `${project}-${stage}`;
 
     if (stage === "production") {
-      console.log("Error: Destruction of production stages is not allowed.");
-      process.exit(1);
+      throw new Error("Destruction of production stages is not allowed.");
     }
 
     if (verify) await confirmDestroyCommand(stackName);
