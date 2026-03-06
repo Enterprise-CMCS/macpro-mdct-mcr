@@ -523,7 +523,9 @@ describe("<DynamicField />", () => {
       const confirmDeleteButton = screen.getByRole("button", {
         name: "Yes, delete plan",
       });
-      await userEvent.click(confirmDeleteButton);
+      await act(async () => {
+        await userEvent.click(confirmDeleteButton);
+      });
 
       const updateArg = mockUpdateReport.mock.calls[0][1];
       const updatedMethods = updateArg.fieldData.analysisMethods;
