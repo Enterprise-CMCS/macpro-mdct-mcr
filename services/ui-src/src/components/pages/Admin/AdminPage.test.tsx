@@ -41,7 +41,7 @@ describe("<AdminPage />", () => {
         await render(adminView(mockBannerMethods));
       });
       const deleteButton = screen.getByText(deleteButtonText);
-      await waitFor(async () => {
+      await act(async () => {
         await userEvent.click(deleteButton);
         expect(mockBannerMethods.deleteAdminBanner).toHaveBeenCalled();
       });

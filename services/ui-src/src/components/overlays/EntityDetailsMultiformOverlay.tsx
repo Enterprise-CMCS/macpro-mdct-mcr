@@ -275,18 +275,12 @@ export const EntityDetailsMultiformOverlay = ({
       // Combine into one submission
       const data = { ...formData, ...enteredData };
       setFormData(data);
-      setFormCount(formCount + 1);
+      setFormCount((currentCount) => currentCount + 1);
     };
 
     const submitForms = (event: FormEvent) => {
       event.preventDefault();
-
-      formRefs.current.forEach((form, index) => {
-        // Stagger form submission
-        setTimeout(() => {
-          form.requestSubmit();
-        }, 100 * index);
-      });
+      formRefs.current.forEach((form) => form.requestSubmit());
     };
 
     const Intro = ({
