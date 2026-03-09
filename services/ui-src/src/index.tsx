@@ -54,7 +54,7 @@ const ldClientId = config.REACT_APP_LD_SDK_CLIENT;
     deferInitialization: false,
   });
 
-  const container = document.querySelector("#root");
+  const container = document.getElementById("root");
   const root = createRoot(container!);
 
   root.render(

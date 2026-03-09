@@ -5,7 +5,7 @@ export const ScrollToTopComponent = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const appWrapper = document.querySelector("#app-wrapper")! as HTMLElement;
+    const appWrapper = document.getElementById("app-wrapper")!;
     appWrapper?.focus();
     window.scrollTo(0, 0);
   }, [pathname]);

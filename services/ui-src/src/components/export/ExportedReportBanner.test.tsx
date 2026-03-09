@@ -74,7 +74,7 @@ describe("<ExportedReportBanner />", () => {
       ...mockMlrReportStore,
     });
     render(errorComponent);
-    const errorDisplay = window.document.querySelector("#error-text");
+    const errorDisplay = window.document.getElementById("error-text");
     expect(errorDisplay).toBeInTheDocument();
 
     render(reportBanner);

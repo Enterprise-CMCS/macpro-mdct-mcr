@@ -18,7 +18,7 @@ export const ExportedReportBanner = () => {
   };
 
   // check if the PDF is displaying an error message
-  const errorDisplay = window.document.querySelector("#error-text");
+  const errorDisplay = window.document.getElementById("error-text");
 
   return (
     <>

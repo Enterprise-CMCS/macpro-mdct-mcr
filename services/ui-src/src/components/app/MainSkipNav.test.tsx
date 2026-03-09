@@ -39,7 +39,7 @@ describe("<MainSkipNav />", () => {
   test("should be visible and focusable", async () => {
     mockUseLocation.mockReturnValue({ pathname: "/home" });
     render(mainSkipNavOutsideReport);
-    const skipNav = document.querySelector("#skip-nav-main")! as HTMLElement;
+    const skipNav = document.getElementById("skip-nav-main")!;
     skipNav.focus();
 
     const skipNavLink = screen.getByText("Skip to main content");
@@ -50,7 +50,7 @@ describe("<MainSkipNav />", () => {
   test("should skip to report content when on a report page", async () => {
     mockUseLocation.mockReturnValue({ pathname: "/report-page" });
     render(mainSkipNavInsideReport);
-    const skipNav = document.querySelector("#skip-nav-main")! as HTMLElement;
+    const skipNav = document.getElementById("skip-nav-main")!;
     skipNav.focus();
 
     const skipNavLink = screen.getByText("Skip to report sidebar");
@@ -61,7 +61,7 @@ describe("<MainSkipNav />", () => {
   test("should skip to main content when on an export page", async () => {
     mockUseLocation.mockReturnValue({ pathname: "/export" });
     render(mainSkipNavInsideReport);
-    const skipNav = document.querySelector("#skip-nav-main")! as HTMLElement;
+    const skipNav = document.getElementById("skip-nav-main")!;
     skipNav.focus();
 
     const skipNavLink = screen.getByText("Skip to main content");
