@@ -153,8 +153,8 @@ export const ratio = () =>
         if (
           !ratio ||
           ratio.length != 2 ||
-          ratio[0].trim().length == 0 ||
-          ratio[1].trim().length == 0
+          ratio[0].trim().length === 0 ||
+          ratio[1].trim().length === 0
         ) {
           return false;
         }

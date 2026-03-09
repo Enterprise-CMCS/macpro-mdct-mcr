@@ -111,7 +111,7 @@ export interface CustomHtmlElement {
   props?: AnyObject;
 }
 
-export const enum TemplateKeys {
+export enum TemplateKeys {
   MCPAR = "templates/mcpar-reporting-template.xlsx",
   MLR = "templates/mlr-reporting-template.xlsx",
   NAAAR = "templates/naaar-reporting-template.xlsx",

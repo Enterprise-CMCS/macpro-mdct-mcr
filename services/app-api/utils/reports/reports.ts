@@ -38,9 +38,12 @@ export async function copyFieldDataFromSource(
   }
 
   // All fields in the current form template are valid. Additionally, entities have IDs and names that should be copied.
-  const allowableFieldIds = getPossibleFieldsFromFormTemplate(
-    formTemplate
-  ).concat("id", "name", "isRequired");
+  const allowableFieldIds = [
+    ...getPossibleFieldsFromFormTemplate(formTemplate),
+    "id",
+    "name",
+    "isRequired",
+  ];
   const rootFieldsToCopy = new Set(
     fieldsToCopy.root.filter((f: string) => allowableFieldIds.includes(f))
   );

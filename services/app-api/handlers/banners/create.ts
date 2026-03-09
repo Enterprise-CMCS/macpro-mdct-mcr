@@ -1,6 +1,6 @@
 import * as yup from "yup";
 import handler from "../handler-lib";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 // utils
 import dynamoDb from "../../utils/dynamo/dynamodb-lib";
 import { hasPermissions } from "../../utils/auth/authorization";
