@@ -280,7 +280,13 @@ export const EntityDetailsMultiformOverlay = ({
 
     const submitForms = (event: FormEvent) => {
       event.preventDefault();
-      formRefs.current.forEach((form) => form.requestSubmit());
+
+      formRefs.current.forEach((form, index) => {
+        // Stagger form submission
+        setTimeout(() => {
+          form.requestSubmit();
+        }, 100 * index);
+      });
     };
 
     const Intro = ({
