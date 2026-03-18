@@ -44,7 +44,7 @@ repos:
         pass_filenames: false
       - id: oxlint
         name: oxlint
-        entry: npx oxlint --deny-warnings
+        entry: npx oxlint@1.43.0 --deny-warnings
         language: system
         pass_filenames: false
       - id: branch-name-validation
