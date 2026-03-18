@@ -28,7 +28,7 @@ describe("<ReportPageIntro />", () => {
     render(<ReportPageIntro text={text} accordion={verbiage} />);
     expect(InstructionsAccordion).toHaveBeenCalledWith(
       expect.objectContaining({ verbiage }),
-      {}
+      undefined
     );
   });
 

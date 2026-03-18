@@ -1,7 +1,6 @@
-/* eslint-disable no-console */
-import path from "path";
+import path from "node:path";
 
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 const FORMS_DIR = path.resolve("forms");
 const ROUTES_DIR = path.resolve(FORMS_DIR, "routes");
 
@@ -80,10 +79,6 @@ export const buildJson = async () => {
   }
 };
 
-/* istanbul ignore next */
 if (require.main === module) {
-  buildJson().catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+  buildJson();
 }

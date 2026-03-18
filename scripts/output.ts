@@ -16,4 +16,4 @@ const response = await client.send(command);
 
 const stack = response.Stacks?.[0];
 const output = stack?.Outputs?.find((o) => o.OutputKey === outputKey);
-console.log(output!.OutputValue); // eslint-disable-line no-console
+console.log(output!.OutputValue);

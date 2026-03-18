@@ -1,5 +1,6 @@
 import { toZonedTime, fromZonedTime } from "date-fns-tz";
 import { DateShape, TimeShape } from "types";
+import { dateMonthYearFormatRegex } from "utils/validation/schemas";
 
 export const midnight: TimeShape = { hour: 0, minute: 0, second: 0 };
 export const oneSecondToMidnight: TimeShape = {
@@ -33,7 +34,7 @@ export const getLocalHourMinuteTime = () => {
     localTime.lastIndexOf(":")
   );
   const twelveHourIndicator = localTime.includes("AM") ? "am" : "pm";
-  return localTimeHourMinute.concat(twelveHourIndicator);
+  return `${localTimeHourMinute}${twelveHourIndicator}`;
 };
 
 /*
@@ -119,6 +120,16 @@ export const checkDateCompleteness = (date: string) => {
   return dateIsComplete ? { year, month, day } : null;
 };
 
+export const checkDateMonthYearCompleteness = (date: string) => {
+  const dateNumber = date.replaceAll("/", "");
+  if (dateMonthYearFormatRegex.test(dateNumber)) {
+    const month = dateNumber.substring(0, 2);
+    const year = dateNumber.substring(2);
+    return { month, year };
+  }
+  return;
+};
+
 export const convertDatetimeStringToNumber = (
   date: string,
   timeType: string | undefined
@@ -136,7 +147,7 @@ export const checkDateRangeStatus = (
   startDate: number,
   endDate: number
 ): boolean => {
-  const currentTime = new Date().valueOf();
+  const currentTime = Date.now();
   return currentTime >= startDate && currentTime <= endDate;
 };
 

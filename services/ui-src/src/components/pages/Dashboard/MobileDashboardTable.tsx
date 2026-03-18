@@ -52,9 +52,8 @@ export const MobileDashboardTable = ({
           <Box sx={sx.labelGroup}>
             <Text sx={sx.label}>Plan type</Text>
             <Text>
-              {report["planTypeIncludedInProgram-otherText"]
-                ? report["planTypeIncludedInProgram-otherText"]
-                : report.planTypeIncludedInProgram?.[0].value}
+              {report["planTypeIncludedInProgram-otherText"] ??
+                report.planTypeIncludedInProgram?.[0].value}
             </Text>
           </Box>
         )}

@@ -54,6 +54,7 @@ export const formModifications = (
   ) {
     accordion = accordionVerbiage.MCPAR.formIntro;
     formJson = addPlanChoices(route.form, fieldData.plans);
+    // eslint-disable-next-line unicorn/explicit-length-check
     showError = !fieldData.plans || fieldData.plans.length < 1;
   }
 

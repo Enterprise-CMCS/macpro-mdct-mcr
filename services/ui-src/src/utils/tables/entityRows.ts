@@ -216,7 +216,7 @@ export const getCompleteText = ({
     const frequencyText = otherSpecify(frequency[0].value, frequencyOtherText);
     const utilizedPlans = plans
       .map((plan: EntityShape) => plan.value)
-      .sort()
+      .toSorted()
       .join(", ");
 
     return `${frequencyText}: ${utilizedPlans}`;

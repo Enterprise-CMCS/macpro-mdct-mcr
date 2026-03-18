@@ -142,7 +142,7 @@
         "choices": [
           {
             "id": "Oidjp5sYMuMEmkVYjNxZ5aDV",
-            "label": "Yes, I submitted it",
+            "label": "Yes, I submitted it in MDCT",
             "children": [
               {
                 "id": "naaarSubmissionDateForThisProgram",
@@ -162,7 +162,7 @@
           },
           {
             "id": "Z9Ysnff8zxb1IVjxQgoG9ndW",
-            "label": "Yes, I plan on submitting it",
+            "label": "Yes, I plan on submitting it in MDCT",
             "children": [
               {
                 "id": "naaarExpectedSubmissionDateForThisProgram",
@@ -182,7 +182,7 @@
           },
           {
             "id": "yG8AlzEtPXPnE7rvek6Q1xIk",
-            "label": "No"
+            "label": "No (Excel submission)"
           }
         ]
       }

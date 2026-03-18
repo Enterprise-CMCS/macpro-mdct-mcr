@@ -3,9 +3,10 @@ import { test, expect } from "./fixtures/base";
 
 test.describe("Header tests - State user", () => {
   test.beforeEach(async ({ statePage }) => {
-    await statePage.goto("/");
+    const bannersResponse = statePage.waitForResponse("/banners", "GET", 200);
+    await statePage.page.goto("/");
     await statePage.checkAndReauthenticate();
-    await statePage.waitForBannersToLoad();
+    await bannersResponse;
   });
 
   test("MCR logo link should navigate to /", async ({ statePage }) => {
@@ -41,9 +42,10 @@ test.describe("Header tests - State user", () => {
 
 test.describe("Header tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
-    await adminPage.goto("/");
+    const bannersResponse = adminPage.waitForResponse("/banners", "GET", 200);
+    await adminPage.page.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForRequest("/banners", "GET");
+    await bannersResponse;
   });
 
   test("MCR logo link should navigate to /", async ({ adminPage }) => {
@@ -63,14 +65,18 @@ test.describe("Header tests - Admin user", () => {
   test("Manage account link should navigate to /profile", async ({
     adminPage,
   }) => {
-    await adminPage.manageAccount();
+    await adminPage.page.getByRole("button", { name: "My Account" }).click();
+    await adminPage.page.getByRole("menu").isVisible();
+    await adminPage.page
+      .getByRole("menuitem", { name: "Manage Account" })
+      .click();
     await expect(
       adminPage.page.getByRole("heading", { name: "My Account" })
     ).toBeVisible();
   });
 
   test("Get help link navigate to /help", async ({ adminPage }) => {
-    await adminPage.getHelp();
+    await adminPage.page.getByRole("link", { name: "Get Help" }).click();
     await expect(
       adminPage.page.getByRole("heading", { name: "How can we help you?" })
     ).toBeVisible();

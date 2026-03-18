@@ -4,7 +4,7 @@ jest.mock("../../forms/routes/mcpar/flags", () => ({
   mockFlag,
 }));
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import {
   compileValidationJsonFromRoutes,
   filterByFlag,
@@ -389,11 +389,11 @@ describe("Test form contents", () => {
   };
 
   const flattenRoutes = (routes: ReportRoute[]) => {
-    let flatRoutes: ReportRoute[] = [];
+    const flatRoutes: ReportRoute[] = [];
     for (let route of routes) {
       flatRoutes.push(route);
       if (route.children) {
-        flatRoutes = flatRoutes.concat(flattenRoutes(route.children));
+        flatRoutes.push(...flattenRoutes(route.children));
       }
     }
     return flatRoutes;
@@ -506,5 +506,62 @@ describe("errors", () => {
         "Update PCCM logic!"
       );
     });
+  });
+});
+
+describe("filterFormTemplateRoutes()", () => {
+  test("filters routes and entities", () => {
+    const mockReportTemplate = {
+      ...mockReportJson,
+      entities: {
+        mockEntity1: {
+          required: true,
+        },
+        mockEntity2: {
+          required: true,
+        },
+      },
+    };
+    const filteredTemplate = filterFormTemplateRoutes(
+      mockReportTemplate,
+      ["mock-route-3"],
+      ["mockEntity2"]
+    );
+
+    expect(filteredTemplate.routes.length).toEqual(
+      mockReportTemplate.routes.length - 1
+    );
+    expect(filteredTemplate.entities).toEqual({
+      mockEntity1: {
+        required: true,
+      },
+    });
+  });
+
+  test("filters parent route if all children removed", () => {
+    const mockReportTemplate = {
+      ...mockReportJson,
+      entities: {
+        mockEntity1: {
+          required: true,
+        },
+      },
+    };
+
+    const parentRouteName = "mock-route-2";
+    const childRoutes = ["mock-route-2a", "mock-route-2b"];
+
+    const filteredTemplate = filterFormTemplateRoutes(
+      mockReportTemplate,
+      childRoutes,
+      [""]
+    );
+
+    expect(filteredTemplate.routes.length).toEqual(
+      mockReportTemplate.routes.length - 1
+    );
+    expect(
+      filteredTemplate.routes.find((route) => route.name === parentRouteName)
+    ).toBeUndefined();
   });
 });

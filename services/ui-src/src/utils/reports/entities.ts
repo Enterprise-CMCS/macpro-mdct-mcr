@@ -152,13 +152,12 @@ export const getFormattedEntityData = (
 ) => {
   // Check which template version is being used based on data
   let isLegacyTemplate: boolean = true;
-  if (entityType === EntityType.QUALITY_MEASURES && entity)
-    if (
-      entityType === EntityType.QUALITY_MEASURES &&
-      Object.hasOwn(entity, "measure_name")
-    ) {
-      isLegacyTemplate = false;
-    }
+  if (
+    entityType === EntityType.QUALITY_MEASURES &&
+    entity &&
+    Object.hasOwn(entity, "measure_name")
+  )
+    isLegacyTemplate = false;
 
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:

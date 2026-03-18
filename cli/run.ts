@@ -12,12 +12,6 @@ import { deleteTopics } from "./commands/delete-topics.ts";
 import { listTopics } from "./commands/list-topics.ts";
 
 await yargs(process.argv.slice(2))
-  .option("quiet", {
-    alias: "q",
-    type: "boolean",
-    global: true,
-    describe: "Suppress framework noise; only emit raw command output",
-  })
   .middleware(async (argv) => {
     if (argv._.length > 0) {
       await installDeps();

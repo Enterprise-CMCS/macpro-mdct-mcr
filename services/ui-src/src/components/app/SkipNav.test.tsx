@@ -11,7 +11,7 @@ const skipNavComponent = (
 describe("<SkipNav />", () => {
   test("SkipNav is visible and focusable", async () => {
     render(skipNavComponent);
-    const skipNav = document.getElementById("skip-nav-test")!;
+    const skipNav = document.querySelector("#skip-nav-test")! as HTMLElement;
     skipNav.focus();
 
     const skipNavLink = screen.getByText("Test text");

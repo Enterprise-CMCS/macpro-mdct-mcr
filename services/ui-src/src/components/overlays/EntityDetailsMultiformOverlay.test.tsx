@@ -173,7 +173,6 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         expect(enterButton).toBeDisabled();
       });
     }
-    await submitChildForm();
   });
 
   test("renders child form", async () => {

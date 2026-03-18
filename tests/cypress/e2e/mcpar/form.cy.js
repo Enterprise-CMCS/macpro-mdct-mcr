@@ -258,9 +258,7 @@ const processField = (field) => {
   //only try to fill it out if it's enabled
   if (!field.props?.disabled) {
     //Validation method shifts around based on field type
-    const validationType = field.validation?.type
-      ? field.validation?.type
-      : field.validation;
+    const validationType = field.validation?.type ?? field.validation;
     switch (field.type) {
       case "text":
       case "textarea":

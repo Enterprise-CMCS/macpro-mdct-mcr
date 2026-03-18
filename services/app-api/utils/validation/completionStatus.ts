@@ -122,15 +122,11 @@ export const calculateFormCompletion = async (
           dataForObject
         );
         nestedFields?.forEach((nestedField: string) => {
-          fieldsToBeValidated[nestedField] = dataForObject[nestedField]
-            ? dataForObject[nestedField]
-            : null;
+          fieldsToBeValidated[nestedField] = dataForObject[nestedField] ?? null;
         });
       }
 
-      fieldsToBeValidated[formField.id] = dataForObject[formField.id]
-        ? dataForObject[formField.id]
-        : null;
+      fieldsToBeValidated[formField.id] = dataForObject[formField.id] ?? null;
     }
   }
   // Validate all fields en masse, passing flag that uses required validation schema
@@ -378,7 +374,7 @@ export const calculateRoutesCompletion = async (
   formTemplate: AnyObject,
   validationJson: AnyObject
 ) => {
-  let completionDict: CompletionData = {};
+  const completionDict: CompletionData = {};
   // Iterate over each route
   for (const route of routes || []) {
     // Determine the status of each child in the route
@@ -389,7 +385,7 @@ export const calculateRoutesCompletion = async (
       formTemplate
     );
     // Add completion status to parent dictionary
-    completionDict = { ...completionDict, ...routeCompletionDict };
+    Object.assign(completionDict, routeCompletionDict);
   }
   return completionDict;
 };

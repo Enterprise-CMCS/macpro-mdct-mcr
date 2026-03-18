@@ -115,25 +115,16 @@ export function renderModalOverlayTableBody(
               </Text>
             </Td>
             <Td>
-              <Text>
-                {entity.report_programType[0].value
-                  ? entity.report_programType[0].value
-                  : "Not entered"}
-              </Text>
+              <Text>{entity.report_programType[0].value ?? "Not entered"}</Text>
             </Td>
             <Td>
               <Text>
-                {entity["report_reportingPeriodDiscrepancyExplanation"]
-                  ? entity["report_reportingPeriodDiscrepancyExplanation"]
-                  : "N/A"}
+                {entity["report_reportingPeriodDiscrepancyExplanation"] ||
+                  "N/A"}
               </Text>
             </Td>
             <Td>
-              <Text>
-                {entity.report_miscellaneousNotes
-                  ? entity.report_miscellaneousNotes
-                  : "N/A"}
-              </Text>
+              <Text>{entity.report_miscellaneousNotes ?? "N/A"}</Text>
             </Td>
           </Tr>
         );

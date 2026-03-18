@@ -46,8 +46,7 @@ export const DropdownField = ({
   validateOnRender,
   sxOverride,
   styleAsOptional,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  clear,
+  clear: _clear, // clear is not a valid prop for select element, so we omit it from ...props
   ...props
 }: Props) => {
   const { updateReport } = useContext(ReportContext);

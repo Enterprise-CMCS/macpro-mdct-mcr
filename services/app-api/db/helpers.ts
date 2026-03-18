@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export const createdLog = (obj: any, action: string, type: string): void => {
   const { id, key, programName, submissionName, title, Item } = obj;
   if (id || key || Item) {

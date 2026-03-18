@@ -21,9 +21,8 @@ import { assertExhaustive, getReportVerbiage, useStore } from "utils";
 
 export const ExportedReportPage = () => {
   const { report } = useStore();
-  const routesToRender = report?.formTemplate.routes.filter(
-    (route: ReportRoute) => route
-  );
+  const routesToRender = report?.formTemplate.routes.filter(Boolean);
+
   const reportType = (report?.reportType ||
     localStorage.getItem("selectedReportType")) as ReportType;
 

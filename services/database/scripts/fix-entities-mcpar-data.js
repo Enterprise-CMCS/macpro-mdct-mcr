@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
  * Local:
  *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/fix-entities-mcpar-data.js {{state}} {{fieldDataId}}
@@ -25,11 +24,11 @@ async function handler() {
       statusCode: 200,
       body: "All done!",
     };
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
     };
   }
 }

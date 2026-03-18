@@ -383,7 +383,7 @@ export const checkLinkTypes = (formField: FormField) => {
 export const parseFormFieldInfo = (formFieldProps?: AnyObject) => {
   if (
     formFieldProps === undefined ||
-    Object.values(formFieldProps).every((x) => typeof x === "undefined")
+    Object.values(formFieldProps).every((x) => x === undefined)
   )
     return {};
   const labelArray = formFieldProps?.label?.split(" ");

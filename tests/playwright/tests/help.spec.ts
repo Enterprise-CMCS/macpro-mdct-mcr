@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures/base";
 import { checkAccessibilityAcrossViewports } from "../utils/a11y";
 
-test("Is accessible on all device types for state user", async ({
+test("Is accessible on all device types for state user @a11y", async ({
   statePage,
 }) => {
   const accessibilityResults = await checkAccessibilityAcrossViewports(
@@ -11,7 +11,7 @@ test("Is accessible on all device types for state user", async ({
   expect(accessibilityResults).toEqual([]);
 });
 
-test("Is accessible on all device types for admin user", async ({
+test("Is accessible on all device types for admin user @a11y", async ({
   adminPage,
 }) => {
   const accessibilityResults = await checkAccessibilityAcrossViewports(
