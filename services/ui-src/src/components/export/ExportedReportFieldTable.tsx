@@ -17,7 +17,7 @@ import {
   EntityType,
 } from "types";
 // utils
-import { parseCustomHtml, useStore } from "utils";
+import { parseCustomHtml, routeChecker, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/mcpar/mcpar-export";
 
@@ -39,8 +39,8 @@ export const ExportedReportFieldTable = ({ section }: Props) => {
   if (
     pageType === "drawer" &&
     section.form &&
-    (section.path === "/mcpar/plan-level-indicators/prior-authorization" ||
-      section.path === "/mcpar/plan-level-indicators/patient-access-api")
+    (routeChecker.isPriorAuthorizationPage(section) ||
+      routeChecker.isPatientAccessApiPage(section))
   ) {
     for (let i = 0; i < section.form.fields.length; i++) {
       renderNotReportingFields(section.form.fields[i]);

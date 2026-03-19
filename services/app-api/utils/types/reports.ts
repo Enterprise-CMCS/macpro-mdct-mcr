@@ -91,13 +91,13 @@ export interface ModalDrawerReportPageShape extends ReportPageShapeBase {
 }
 
 export interface ModalOverlayReportPageShape extends ReportPageShapeBase {
+  addEntityDrawerForm?: never;
+  drawerForm?: FormJson;
   entityType: EntityType;
-  verbiage: ModalOverlayReportPageVerbiage;
+  form?: never;
   modalForm: FormJson;
   overlayForm?: FormJson;
-  drawerForm?: never;
-  addEntityDrawerForm?: never;
-  form?: never;
+  verbiage: ModalOverlayReportPageVerbiage;
 }
 
 export interface EntityDetailsMultiformShape {
@@ -204,6 +204,7 @@ export interface ModalOverlayReportPageVerbiage extends ReportPageVerbiage {
   tableHeader: string;
   addEditModalHint: string;
   emptyDashboardText: string;
+  drawerTitle?: string;
 }
 
 export interface OverlayReportPageVerbiage extends ReportPageVerbiage {
@@ -268,6 +269,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   naaarExpectedSubmissionDateForThisProgram?: string;
+  newQualityMeasuresSectionEnabled?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

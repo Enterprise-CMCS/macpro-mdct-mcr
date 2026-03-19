@@ -1,7 +1,7 @@
 // constants
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
-import { EntityShape } from "types";
+import { EntityShape, ReportShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -325,4 +325,19 @@ export const getFormattedPlanData = (plan: EntityShape) => {
     return getFormattedExceptionsData(plan);
   }
   return;
+};
+
+export const getPlansNotExemptFromQualityMeasures = (
+  report: ReportShape
+): EntityShape[] => {
+  const plans = report.fieldData?.plans || [];
+  const exemptPlans = report.fieldData?.plansExemptFromQualityMeasures || [];
+
+  const exemptedPlanIds = exemptPlans.map((exemption: EntityShape) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return plans.filter(
+    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
+  );
 };

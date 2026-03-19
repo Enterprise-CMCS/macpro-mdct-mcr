@@ -32,6 +32,7 @@ import {
 // utils
 import {
   SectionContent,
+  SectionDivider,
   SectionHeader,
 } from "components/forms/FormLayoutElements";
 import {
@@ -65,6 +66,7 @@ export const formFieldFactory = (
     textarea: TextAreaField,
     sectionHeader: SectionHeader,
     sectionContent: SectionContent,
+    sectionDivider: SectionDivider,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
@@ -299,7 +301,7 @@ export const getForm = (params: getFormParams) => {
     ilos,
     reportingOnIlos = false,
   } = params;
-  const { drawerForm } = route;
+  const { drawerForm = {} as FormJson } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];

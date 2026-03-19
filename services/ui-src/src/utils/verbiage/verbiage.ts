@@ -10,6 +10,8 @@ import MlrExportVerbiage from "verbiage/pages/mlr/mlr-export";
 import NaaarExportVerbiage from "verbiage/pages/naaar/naaar-export";
 // get started verbiage
 import McparGetStartedVerbiage from "verbiage/pages/mcpar/mcpar-get-started";
+// quality measures verbiage
+import McparQualityMeasuresVerbiage from "verbiage/pages/mcpar/mcpar-quality-measures";
 // review and submit verbiage
 import McparReviewAndSubmitVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MlrReviewAndSubmitVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
@@ -18,6 +20,7 @@ import NaaarReviewAndSubmitVerbiage from "verbiage/pages/naaar/naaar-review-and-
 const mcparVerbiage = {
   dashboardVerbiage: McparDashboardVerbiage,
   getStartedVerbiage: McparGetStartedVerbiage,
+  qualityMeasuresVerbiage: McparQualityMeasuresVerbiage,
   exportVerbiage: McparExportVerbiage,
   reviewAndSubmitVerbiage: McparReviewAndSubmitVerbiage,
 };

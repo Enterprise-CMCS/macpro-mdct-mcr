@@ -1,3 +1,2 @@
 // flagged routes
-// oxlint-disable-next-line require-module-specifiers
-export {};
+export { mcparReportJson as newQualityMeasuresSectionEnabled } from "./newQualityMeasuresSectionEnabled/index";

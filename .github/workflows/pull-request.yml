@@ -26,9 +26,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - name: Configure pre-commit to skip irrelevant checks
-        run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,typescript-check-cdk,no-commit-to-branch" >> $GITHUB_ENV
-      - uses: pre-commit/action@v3.0.1
       - name: run unit tests
         run: ./scripts/test-unit.ts
       - name: publish test coverage to qlty
@@ -38,6 +35,10 @@ jobs:
           files: |
             ${{github.workspace}}/services/app-api/coverage/lcov.info
             ${{github.workspace}}/services/ui-src/coverage/lcov.info
+      - name: Configure pre-commit to skip irrelevant checks
+        run: echo "SKIP=typescript-check-cli,typescript-check-api,typescript-check-ui,typescript-check-cdk,no-commit-to-branch" >> $GITHUB_ENV
+      - uses: pre-commit/action@v3.0.1
+
   assignAuthor:
     if: github.event.pull_request.user.type != 'Bot' && github.event.action == 'opened'
     runs-on: ubuntu-latest
