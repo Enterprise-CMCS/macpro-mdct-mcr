@@ -47,6 +47,11 @@ repos:
         entry: yarn oxlint --deny-warnings
         language: system
         pass_filenames: false
+      - id: oxlint
+        name: oxlint
+        entry: npx oxlint --deny-warnings
+        language: system
+        pass_filenames: false
       - id: branch-name-validation
         name: branch-name-validation
         entry: .github/branchNameValidation.ts
