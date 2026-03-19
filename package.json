@@ -40,10 +40,10 @@
     "cdk": "cdk"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.985.0",
-    "@aws-sdk/client-lambda": "^3.985.0",
-    "@aws-sdk/client-s3": "^3.985.0",
-    "@aws-sdk/client-secrets-manager": "^3.985.0",
+    "@aws-sdk/client-cloudformation": "~3.1012.0",
+    "@aws-sdk/client-lambda": "~3.1012.0",
+    "@aws-sdk/client-s3": "~3.1012.0",
+    "@aws-sdk/client-secrets-manager": "~3.1012.0",
     "@launchdarkly/node-server-sdk": "^9.10.5",
     "aws-cdk-lib": "^2.214.0",
     "constructs": "^10.4.2",
