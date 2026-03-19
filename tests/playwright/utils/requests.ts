@@ -68,13 +68,13 @@ function generateRequestHeaders(
   storageStatePath?: string
 ): Record<string, string> {
   const now = new Date();
-  const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, "");
+  const amzDate = now.toISOString().replaceAll(/[:-]|\.\d{3}/g, "");
   let idToken = process.env.ID_TOKEN || "";
 
   // If a different storage state is provided, try to read the ID token from it
   if (storageStatePath) {
-    const fs = require("fs");
-    const path = require("path");
+    const fs = require("node:fs");
+    const path = require("node:path");
     try {
       const storagePath = path.resolve(storageStatePath);
       const storageData = JSON.parse(fs.readFileSync(storagePath, "utf8"));
@@ -89,8 +89,8 @@ function generateRequestHeaders(
       if (idTokenItem) {
         idToken = idTokenItem.value;
       }
-    } catch (e) {
-      console.warn(`Could not read ID token from storage state: ${e}`);
+    } catch (error) {
+      console.warn(`Could not read ID token from storage state: ${error}`);
     }
   }
 

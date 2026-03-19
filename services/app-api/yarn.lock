@@ -2335,12 +2335,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dompurify@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@types/dompurify@npm:2.4.0"
+"@types/dompurify@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@types/dompurify@npm:3.2.0"
   dependencies:
-    "@types/trusted-types": "npm:*"
-  checksum: 10c0/a20c4288a067811e097f0b92a0cae927a9c49c0d5de36fea66b85fcc5c8db63a22ac47df37f324e426a01e8ab99ae28ea04260301350bda194850617a26931d6
+    dompurify: "npm:*"
+  checksum: 10c0/e83fec586ffbb1b43f7c8479f2a99c223814d240db912d53fb126aaeea52a4091deceeb75632b5d76004d88ef0fbf444984887b121dece6fa69f4172ed4b2b07
   languageName: node
   linkType: hard
 
@@ -2485,7 +2485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/trusted-types@npm:*, @types/trusted-types@npm:^2.0.7":
+"@types/trusted-types@npm:^2.0.7":
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
   checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
@@ -2599,7 +2599,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.985.0"
     "@aws-sdk/lib-dynamodb": "npm:^3.985.0"
     "@aws-sdk/util-dynamodb": "npm:^3.985.0"
-    "@types/dompurify": "npm:^2.4.0"
+    "@types/dompurify": "npm:^3.2.0"
     "@types/jest": "npm:^27.5.2"
     "@types/jsdom": "npm:^21.1.7"
     "@types/jwt-encode": "npm:^1.0.3"
@@ -3133,15 +3133,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.2.4":
-  version: 3.2.4
-  resolution: "dompurify@npm:3.2.4"
+"dompurify@npm:*, dompurify@npm:^3.2.4":
+  version: 3.3.3
+  resolution: "dompurify@npm:3.3.3"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10c0/6be56810fb7ad2776155c8fc2967af5056783c030094362c7d0cf1ad13f2129cf922d8eefab528a34bdebfb98e2f44b306a983ab93aefb9d6f24c18a3d027a05
+  checksum: 10c0/097c14a21a3f6cb95beded9ecd255f7c3512c42767b048390c747b0fe35736f6a71e02320fc50a9ac2be645834b463e4760915d595d502a56452daf339d0ea9c
   languageName: node
   linkType: hard
 
@@ -5373,15 +5373,15 @@ __metadata:
   linkType: hard
 
 "tar@npm:^7.5.2":
-  version: 7.5.9
-  resolution: "tar@npm:7.5.9"
+  version: 7.5.11
+  resolution: "tar@npm:7.5.11"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10c0/e870beb1b2477135ca2abe86b2d18f7b35d0a4e3a37bbc523d3b8f7adca268dfab543f26528a431d569897f8c53a7cac745cdfbc4411c2f89aeeacc652b81b0a
+  checksum: 10c0/b6bb420550ef50ef23356018155e956cd83282c97b6128d8d5cfe5740c57582d806a244b2ef0bf686a74ce526babe8b8b9061527623e935e850008d86d838929
   languageName: node
   linkType: hard
 

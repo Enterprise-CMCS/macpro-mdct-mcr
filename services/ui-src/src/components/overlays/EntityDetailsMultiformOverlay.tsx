@@ -275,7 +275,7 @@ export const EntityDetailsMultiformOverlay = ({
       // Combine into one submission
       const data = { ...formData, ...enteredData };
       setFormData(data);
-      setFormCount(formCount + 1);
+      setFormCount((currentCount) => currentCount + 1);
     };
 
     const submitForms = (event: FormEvent) => {
@@ -327,13 +327,13 @@ export const EntityDetailsMultiformOverlay = ({
       const is438206Form = formId === "planCompliance438206";
 
       switch (headerName) {
-        case "Status": {
+        case "Status":
           if (hasDetailsEnabled && (is438206Form || !isComplete)) {
             return <EntityStatusIcon isComplete={isComplete} />;
           }
           return <></>;
-        }
-        case "Action": {
+
+        case "Action":
           return (
             <Button
               disabled={!hasDetailsEnabled}
@@ -344,7 +344,7 @@ export const EntityDetailsMultiformOverlay = ({
               {isComplete ? "Edit" : "Enter"}
             </Button>
           );
-        }
+
         default:
           return (
             <>
@@ -379,9 +379,11 @@ export const EntityDetailsMultiformOverlay = ({
                   id={formObject.form.id}
                   onChange={handleChange}
                   onSubmit={(data: AnyObject) => handleSubmit(data)}
-                  ref={(el) =>
-                    (formRefs.current[index] = el as HTMLFormElement)
-                  }
+                  ref={(el) => {
+                    if (el) {
+                      formRefs.current[index] = el;
+                    }
+                  }}
                   validateOnRender={validateOnRender || false}
                 />
               </Box>

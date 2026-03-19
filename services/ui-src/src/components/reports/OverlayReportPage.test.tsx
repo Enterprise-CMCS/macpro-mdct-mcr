@@ -504,9 +504,7 @@ describe("<OverlayReportPage />", () => {
       });
 
       test("show nothing if bad details", async () => {
-        const badDetails = { ...mockOverlayReportPageJson };
-        // @ts-expect-error: There's a safeguard in the UI so this won't happen, but need to cover it in test
-        badDetails.details = {};
+        const badDetails = { ...mockOverlayReportPageJson, details: {} };
 
         await act(async () => {
           render(overlayReportPageComponent(badDetails));

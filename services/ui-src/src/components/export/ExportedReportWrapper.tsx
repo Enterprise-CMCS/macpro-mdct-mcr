@@ -54,12 +54,21 @@ export const ExportedReportWrapper = ({ section }: Props) => {
     case PageTypes.MODAL_OVERLAY:
       return (
         <>
-          <ExportedModalOverlayReportSection
-            section={section as ModalOverlayReportPageShape}
-          />
-          <ExportedEntityDetailsOverlaySection
-            section={section as ModalOverlayReportPageShape}
-          />
+          {/* quality measures uses the card pattern from the modal overlay component */}
+          {section.entityType === EntityType.QUALITY_MEASURES ? (
+            <ExportedModalDrawerReportSection
+              section={section as ModalDrawerReportPageShape}
+            />
+          ) : (
+            <>
+              <ExportedModalOverlayReportSection
+                section={section as ModalOverlayReportPageShape}
+              />
+              <ExportedEntityDetailsOverlaySection
+                section={section as ModalOverlayReportPageShape}
+              />
+            </>
+          )}
         </>
       );
     case PageTypes.PLAN_OVERLAY:

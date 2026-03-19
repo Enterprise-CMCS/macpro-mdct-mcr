@@ -53,7 +53,7 @@ describe("utils/api/apiLib", () => {
       const spy = jest.spyOn(console, "log");
 
       mockSession.mockImplementation(() => {
-        throw new Error();
+        throw new Error("Some error message");
       });
 
       await getRequestHeaders();

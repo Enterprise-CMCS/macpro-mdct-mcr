@@ -3,7 +3,7 @@ import dynamodbLib from "../dynamo/dynamodb-lib";
 import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
 import { logger } from "../debugging/debug-lib";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 // types
 import {
   AnyObject,
@@ -139,9 +139,9 @@ export async function getOrCreateFormTemplate(
         ContentType: "application/json",
         Bucket: reportBucket,
       });
-    } catch (err) {
-      logger.error(err, "Error uploading new form template to S3");
-      throw err;
+    } catch (error) {
+      logger.error(error, "Error uploading new form template to S3");
+      throw error;
     }
 
     const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
@@ -162,12 +162,12 @@ export async function getOrCreateFormTemplate(
         TableName: process.env.FormTemplateVersionsTable!,
         Item: newFormTemplateVersionItem,
       });
-    } catch (err) {
+    } catch (error) {
       logger.error(
-        err,
+        error,
         "Error writing a new form template version to DynamoDB."
       );
-      throw err;
+      throw error;
     }
 
     return {

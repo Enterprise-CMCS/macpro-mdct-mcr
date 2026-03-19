@@ -119,9 +119,11 @@ export const SortableTable = ({
                       <Box
                         as="span"
                         id={`${tableInstanceId}-header-${header.id}`}
-                        ref={(el: HTMLElement | null) =>
-                          (headerRefs.current[header.id] = el as HTMLElement)
-                        }
+                        ref={(el: HTMLSpanElement | null) => {
+                          if (el) {
+                            headerRefs.current[header.id] = el;
+                          }
+                        }}
                       >
                         {flexRender(
                           header.column.columnDef.header,

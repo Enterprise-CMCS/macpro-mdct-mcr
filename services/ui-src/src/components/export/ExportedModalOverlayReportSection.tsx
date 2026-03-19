@@ -12,7 +12,7 @@ import {
 } from "types";
 // utils
 import {
-  getEntityDetailsMLR,
+  getProgramInfo,
   getEntityStatus,
   getReportVerbiage,
   mapNaaarStandardsData,
@@ -84,10 +84,18 @@ export function renderModalOverlayTableBody(
 ) {
   const reportType = report.reportType;
   switch (reportType) {
+    case ReportType.MCPAR:
+      return entities.map((entity) => {
+        <Box>{entity.name}</Box>;
+      });
     case ReportType.MLR:
       return entities.map((entity, idx) => {
-        const { report_programName, mlrEligibilityGroup, reportingPeriod } =
-          getEntityDetailsMLR(entity);
+        const [
+          reportPlanName,
+          reportProgramName,
+          eligibilityGroup,
+          reportingPeriod,
+        ] = getProgramInfo(entity);
         const entityComplete = getEntityStatus(entity, report, entityType);
 
         return (
@@ -100,32 +108,23 @@ export function renderModalOverlayTableBody(
             </Td>
             <Td>
               <Text sx={sx.entityList}>
-                {entity.report_planName ?? "Not entered"} <br />
-                {report_programName} <br />
-                {mlrEligibilityGroup} <br />
+                {reportPlanName ?? "Not entered"} <br />
+                {reportProgramName} <br />
+                {eligibilityGroup} <br />
                 {reportingPeriod}
               </Text>
             </Td>
             <Td>
-              <Text>
-                {entity.report_programType[0].value
-                  ? entity.report_programType[0].value
-                  : "Not entered"}
-              </Text>
+              <Text>{entity.report_programType[0].value ?? "Not entered"}</Text>
             </Td>
             <Td>
               <Text>
-                {entity["report_reportingPeriodDiscrepancyExplanation"]
-                  ? entity["report_reportingPeriodDiscrepancyExplanation"]
-                  : "N/A"}
+                {entity["report_reportingPeriodDiscrepancyExplanation"] ||
+                  "N/A"}
               </Text>
             </Td>
             <Td>
-              <Text>
-                {entity.report_miscellaneousNotes
-                  ? entity.report_miscellaneousNotes
-                  : "N/A"}
-              </Text>
+              <Text>{entity.report_miscellaneousNotes ?? "N/A"}</Text>
             </Td>
           </Tr>
         );
