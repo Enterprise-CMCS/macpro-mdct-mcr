@@ -11,6 +11,5 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.985.0"
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

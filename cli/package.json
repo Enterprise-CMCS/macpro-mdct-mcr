@@ -18,6 +18,5 @@
     "@types/yargs": "^17.0.35",
     "typescript": "^5.9.3"
   },
-  "packageManager": "yarn@4.12.0",
   "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there"
 }

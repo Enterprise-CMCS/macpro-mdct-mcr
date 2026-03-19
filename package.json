@@ -1,6 +1,7 @@
 {
   "name": "mdct-mcr",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "bugs": {
@@ -15,6 +16,17 @@
   "directories": {
     "test": "tests"
   },
+  "workspaces": [
+    "cli",
+    "deployment",
+    "services/app-api",
+    "services/database",
+    "services/topics",
+    "services/ui",
+    "services/ui-auth",
+    "services/ui-src",
+    "tests"
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -58,10 +70,6 @@
     "typescript": "^5.9.3",
     "util": "^0.12.5",
     "yargs": "^17.7.2"
-  },
-  "resolutions": {
-    "json5": "2.2.3",
-    "proxy-agent": "^6.3.0"
   },
   "packageManager": "yarn@4.12.0"
 }
