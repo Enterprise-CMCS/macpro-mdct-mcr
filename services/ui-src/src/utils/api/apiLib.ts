@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import {
   del as ampDel,
   get as ampGet,
@@ -84,9 +82,9 @@ export async function apiRequest<T>(
     }
 
     return (await body.json()) as unknown as T;
-  } catch (e: any) {
-    const info = `Request Failed - ${path} - ${e.response?.body}`;
-    console.log(e);
+  } catch (error: any) {
+    const info = `Request Failed - ${path} - ${error.response?.body}`;
+    console.log(error);
     console.log(info);
     throw new Error(info);
   }

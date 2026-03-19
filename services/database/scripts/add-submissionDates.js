@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
  * Local:
  *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/add-submissionDates.js {{reportType}}
@@ -42,11 +41,11 @@ async function handler() {
       statusCode: 200,
       body: "All done!",
     };
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
     };
   }
 }
@@ -144,7 +143,7 @@ async function transformDbItems(reports) {
 // Key is fieldData/state/uuid.json format, extract uuid
 function getKeyId(key) {
   const keyParts = key.split("/");
-  const keyId = keyParts[keyParts.length - 1].split(".")[0];
+  const keyId = keyParts.at(-1).split(".")[0];
   return keyId;
 }
 

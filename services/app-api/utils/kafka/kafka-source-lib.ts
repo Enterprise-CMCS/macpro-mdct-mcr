@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import s3Lib from "../s3/s3-lib";
 import { Kafka, Producer } from "kafkajs";
@@ -60,9 +59,7 @@ class KafkaSourceLib {
     }
     // Setup vars
     this.stage = process.env.STAGE ?? "";
-    this.topicNamespace = process.env.topicNamespace
-      ? process.env.topicNamespace
-      : "";
+    this.topicNamespace = process.env.topicNamespace!;
     this.topicPrefix = topicPrefix;
     this.version = version;
     this.tables = tables;

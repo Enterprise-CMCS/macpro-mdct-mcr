@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /*
  * Local:
  *   DYNAMODB_URL="http://localhost:4566" S3_LOCAL_ENDPOINT="http://localhost:4566" node services/database/scripts/sync-kafka-2024.js
@@ -37,11 +36,11 @@ async function handler() {
       statusCode: 200,
       body: "All done!",
     };
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return {
       statusCode: 500,
-      body: err.message,
+      body: error.message,
     };
   }
 }
@@ -70,7 +69,7 @@ function filterData(items) {
 async function transform(items) {
   // Touch sync field only
   const transformed = items.map((item) => {
-    const corrected = { ...item, ...{ lastSynced: dbSyncTime } };
+    const corrected = { ...item, lastSynced: dbSyncTime };
     return corrected;
   });
 

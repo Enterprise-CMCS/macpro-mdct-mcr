@@ -114,12 +114,11 @@ export const AddEditEntityModal = ({
         heading: selectedEntity?.id
           ? verbiage.addEditModalEditTitle
           : verbiage.addEditModalAddTitle,
-        subheading: verbiage.addEditModalHint
-          ? verbiage.addEditModalHint
-          : undefined,
+        subheading: verbiage.addEditModalHint ?? undefined,
         actionButtonText: submitting ? (
           <Spinner size="md" />
-        ) : report?.locked ? (
+        ) : // oxlint-disable-next-line no-nested-ternary
+        report?.locked ? (
           "Close"
         ) : (
           "Save"

@@ -101,7 +101,7 @@ export const releaseReport = handler(async (event) => {
   const newFieldDataId = KSUID.randomSync().string;
 
   const previousRevisions = Array.isArray(metadata.previousRevisions)
-    ? metadata.previousRevisions.concat([metadata.fieldDataId])
+    ? [...metadata.previousRevisions, metadata.fieldDataId]
     : [metadata.fieldDataId];
 
   const reportBucket = reportBuckets[reportType as keyof typeof reportBuckets];

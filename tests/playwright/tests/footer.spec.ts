@@ -2,9 +2,9 @@ import { test, expect } from "./fixtures/base";
 
 test.describe("Global footer tests - State user", () => {
   test.beforeEach(async ({ statePage }) => {
-    await statePage.goto("/");
+    await statePage.page.goto("/");
     await statePage.checkAndReauthenticate();
-    await statePage.waitForBannersToLoad();
+    await statePage.waitForResponse("/banners", "GET", 200);
   });
 
   test("Footer help link navigates to /help", async ({ statePage }) => {
@@ -28,9 +28,9 @@ test.describe("Global footer tests - State user", () => {
 
 test.describe("Global footer tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
-    await adminPage.goto("/");
+    await adminPage.page.goto("/");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForRequest("/banners", "GET");
+    await adminPage.waitForResponse("/banners", "GET", 200);
   });
 
   test("Footer help link navigates to /help", async ({ adminPage }) => {

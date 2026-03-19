@@ -11,6 +11,7 @@ import {
   TextField,
   TextAreaField,
   ChoiceField,
+  MonthYearField,
 } from "components";
 // constants
 import { suppressionText } from "../../constants";
@@ -55,6 +56,7 @@ export const formFieldFactory = (
     checkboxSingle: ChoiceField,
     checkbox: CheckboxField,
     date: DateField,
+    dateMonthYear: MonthYearField,
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
@@ -155,7 +157,7 @@ export const createRepeatedFields = (
     if (currentField.repeat) {
       // if so, get entities for which the field is to be repeated
       const entities = reportFieldData?.[currentField.repeat];
-      if (entities && entities.length) {
+      if (entities && entities.length > 0) {
         // for each entity, create and return a new field with entity-linked id
         return entities?.map((entity: AnyObject) => {
           const newField = {

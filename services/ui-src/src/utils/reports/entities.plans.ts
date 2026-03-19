@@ -109,7 +109,7 @@ const findEntityDataByKey = (
   if (!dataKey) return;
 
   if (Array.isArray(entity[dataKey])) {
-    if (entity[dataKey].length < 1) return;
+    if (entity[dataKey].length === 0) return;
     return entity[dataKey]?.[0]?.value;
   }
   if (entity[dataKey] === "") return;
@@ -221,7 +221,7 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
   analysisMethodKeys.forEach(
     ({ method, filterKey }: { method: string; filterKey: string }) => {
       const methodIndex = analysisMethodsUsed.indexOf(method);
-      if (methodIndex < 0) return;
+      if (methodIndex === -1) return;
 
       const displayInfo = getAnalysisMethodData(method, filterKey, plan);
 

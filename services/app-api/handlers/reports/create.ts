@@ -70,15 +70,15 @@ export const createReport = handler(async (event, _context) => {
   const newQualityMeasuresSectionEnabled =
     unvalidatedMetadata?.newQualityMeasuresSectionEnabled === true;
 
-  // eslint-disable-next-line no-useless-catch
+  /* eslint-disable no-useless-catch */
   try {
     ({ formTemplate, formTemplateVersion } = await getOrCreateFormTemplate(
       reportBucket,
       reportType,
       { hasNaaarSubmission, isPccm, newQualityMeasuresSectionEnabled }
     ));
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    throw error;
   }
 
   // Return MISSING_DATA error if missing unvalidated data or validators.

@@ -3,9 +3,11 @@ import { checkAccessibilityAcrossViewports } from "../utils/a11y";
 
 test.describe("Admin profile", () => {
   test.beforeEach(async ({ adminPage }) => {
-    await adminPage.goto("/profile");
+    const bannersResponse = adminPage.waitForResponse("/banners", "GET", 200);
+
+    await adminPage.page.goto("/profile");
     await adminPage.checkAndReauthenticate();
-    await adminPage.waitForRequest("/banners", "GET");
+    await bannersResponse;
   });
 
   test("admin profile should have banner edit button", async ({
@@ -16,7 +18,7 @@ test.describe("Admin profile", () => {
     ).toBeVisible();
   });
 
-  test("Is accessible on all device types for admin user", async ({
+  test("Is accessible on all device types for admin user @a11y", async ({
     adminPage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(
@@ -29,9 +31,11 @@ test.describe("Admin profile", () => {
 
 test.describe("State user profile", () => {
   test.beforeEach(async ({ statePage }) => {
-    await statePage.goto("/profile");
+    const bannersResponse = statePage.waitForResponse("/banners", "GET", 200);
+
+    await statePage.page.goto("/profile");
     await statePage.checkAndReauthenticate();
-    await statePage.waitForBannersToLoad();
+    await bannersResponse;
   });
 
   test("state user profile should not have banner edit button", async ({
@@ -42,7 +46,7 @@ test.describe("State user profile", () => {
     ).not.toBeVisible();
   });
 
-  test("Is accessible on all device types for state user", async ({
+  test("Is accessible on all device types for state user @a11y", async ({
     statePage,
   }) => {
     const accessibilityResults = await checkAccessibilityAcrossViewports(

@@ -9,10 +9,10 @@ const COGNITO_CLIENT = new CognitoIdentityProviderClient({
   apiVersion: "2016-04-19",
   region: "us-east-1",
   logger: {
-    debug: console.debug, // eslint-disable-line no-console
-    info: console.info, // eslint-disable-line no-console
-    warn: console.warn, // eslint-disable-line no-console
-    error: console.error, // eslint-disable-line no-console
+    debug: console.debug,
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
   },
 });
 

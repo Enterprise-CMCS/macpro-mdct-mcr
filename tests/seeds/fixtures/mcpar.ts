@@ -42,7 +42,7 @@ export const newMcpar = (
       },
       {
         key: "naaarSubmissionForThisProgram-yG8AlzEtPXPnE7rvek6Q1xIk",
-        value: "No",
+        value: "No (Excel submission)",
       },
     ],
     newOrExistingProgram: [
@@ -70,13 +70,17 @@ export const newMcpar = (
     : undefined;
   const naaarSubmissionForThisProgram = [
     enums.naaarSubmission[
-      hasNaaarSubmission ? 0 : hasExpectedNaaarSubmission ? 1 : 2
+      hasNaaarSubmission
+        ? 0 // oxlint-disable-next-line no-nested-ternary
+        : hasExpectedNaaarSubmission
+          ? 1
+          : 2
     ],
   ];
 
   // PCCM
   const programIsPCCM = [enums.programIsPCCM[isPccm ? 0 : 1]];
-  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}`;
+  const generatedProgramName = `${isPccm ? "PCCM: " : ""}${faker.book.title()}${new Date().toISOString()}`;
 
   // Pick an existing program name
   const existingPrograms =
@@ -85,7 +89,9 @@ export const newMcpar = (
     existingPrograms[randomIndex(existingPrograms.length)].label;
 
   // Check for new program name
-  const programName = isNewProgram ? generatedProgramName : existingProgramName;
+  const programName = isNewProgram
+    ? generatedProgramName
+    : `${existingProgramName}${new Date().toISOString()}`;
   const existingProgramNameSelection = isNewProgram
     ? undefined
     : { value: existingProgramName, label: "existingProgramNameSelection" };
@@ -120,6 +126,7 @@ export const newMcpar = (
       reportingPeriodStartDate,
       status: ReportStatus.NOT_STARTED,
       submissionCount: 0,
+      isComplete: false,
     },
     fieldData: {
       programName,
@@ -376,8 +383,6 @@ export const fillMcpar = (
           value: "Yes",
         },
       ],
-      program_networkAdequacyChallenges: faker.lorem.sentence(),
-      program_networkAdequacyGapResponseEfforts: faker.lorem.sentence(),
       program_prohibitedAffiliationDisclosure: [
         {
           key: "program_prohibitedAffiliationDisclosure-7emiYPcs60GzXxKS5Pc9bg",
@@ -616,7 +621,7 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     refDate: newReportingPeriodStartDate,
   });
 
-  return {
+  let data = {
     id: planId,
     name: faker.animal.cat(),
     plan_activeAppeals: numberInt(),
@@ -657,25 +662,6 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_medicaidEnrollmentSharePercentage: suppressionText,
     plan_medicaidManagedCareEnrollmentSharePercentage: suppressionText,
     plan_parentOrganization: faker.lorem.sentence(),
-    plan_medicalLossRatioPercentage: numberFloat(),
-    plan_medicalLossRatioPercentageAggregationLevel: [
-      {
-        key: "plan_medicalLossRatioPercentageAggregationLevel-BSfARaemtUmbuMnZC11pog",
-        value: "Program-specific statewide",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriod: [
-      {
-        key: "plan_medicalLossRatioReportingPeriod-UgEFak34A0e1hJaHXtXbrw",
-        value: "Yes",
-      },
-    ],
-    plan_medicalLossRatioReportingPeriodEndDate: dateFormat.format(
-      newReportingPeriodEndDate
-    ),
-    plan_medicalLossRatioReportingPeriodStartDate: dateFormat.format(
-      newReportingPeriodStartDate
-    ),
     plan_mfcuProgramIntegrityReferrals: numberInt(),
     plan_numberOfUniqueBeneficiariesWithAtLeastOneDataTransfer: numberInt(),
     plan_numberOfUniqueBeneficiariesWithMultipleDataTransfers: numberInt(),
@@ -697,7 +683,6 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     plan_percentageOfStandardPriorAuthorizationRequestsDenied: numberFloat(),
     plan_percentageOfTotalPriorAuthorizationRequestsApprovedWithExtendedTimeframe:
       numberFloat(),
-    plan_populationSpecificMedicalLossRatioDescription: numberInt(),
     plan_programIntegrityReferralPath: [
       {
         key: "plan_programIntegrityReferralPath-1LOghpdQOkaOd76btMJ8qA",
@@ -779,6 +764,8 @@ const createPlan = (planId: string, ilos: { id: string; name: string }) => {
     program_encounterDataSubmissionTimelinessStandardDefinition:
       faker.lorem.sentence(),
   };
+
+  return data;
 };
 
 const createQualityMeasure = (planIds: string[]) => {

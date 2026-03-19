@@ -381,7 +381,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
               <Box sx={sx.missingEntityMessage}>
                 {parseCustomHtml(verbiage.missingPlansAndIlosMessage || "")}
               </Box>
-            ) : (isMcparReport && !reportingOnIlos && !hasPlans) ||
+            ) : // oxlint-disable-next-line no-nested-ternary
+            (isMcparReport && !reportingOnIlos && !hasPlans) ||
               !entities?.length ? (
               // if not reporting on ILOS, but missing entities, display this message
               <Box sx={sx.missingEntityMessage}>

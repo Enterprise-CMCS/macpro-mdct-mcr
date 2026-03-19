@@ -53,7 +53,7 @@ describe("<ExportedReportPage />", () => {
 
     test("getNaaarSubmissionDate returns the correct date", async () => {
       const result = getNaaarSubmissionDate(mockMcparReportStore.report!);
-      expect(result).toBe("No");
+      expect(result).toBe("No (Excel submission)");
     });
 
     test("Does the export page have the correct title for MLR reports", () => {

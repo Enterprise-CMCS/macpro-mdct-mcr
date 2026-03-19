@@ -70,7 +70,7 @@ export const renderFieldTableBody = (
   const tableRows: ReactElement[] = [];
   // recursively renders field rows
   const renderFieldRow = (formField: FormField | FormLayoutElement) => {
-    const validationType = isFieldElement(formField)
+    const validationType = isFieldElement(formField) // oxlint-disable-next-line no-nested-ternary
       ? typeof formField.validation === "object"
         ? formField.validation.type
         : formField.validation
@@ -107,11 +107,10 @@ export const renderFieldTableBody = (
           entity[formField.id] &&
           Array.isArray(entity[formField.id]) &&
           entity[formField.id].length > 0 &&
-          entity[formField.id][0].key?.endsWith(choice.id)
+          entity[formField.id][0].key?.endsWith(choice.id) &&
+          choice.children
         ) {
-          if (choice.children) {
-            choice.children.forEach((c) => renderFieldRow(c));
-          }
+          choice.children.forEach((c) => renderFieldRow(c));
         }
       });
     }

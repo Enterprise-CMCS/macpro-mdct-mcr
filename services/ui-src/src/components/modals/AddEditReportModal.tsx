@@ -75,7 +75,7 @@ export const AddEditReportModal = ({
     );
     // if yoyCopyField is in form && (not creating new report || no reports eligible for copy)
     if (
-      yoyCopyFieldIndex > -1 &&
+      yoyCopyFieldIndex !== -1 &&
       (selectedReport?.id || !copyEligibleReportsByState?.length)
     ) {
       customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;

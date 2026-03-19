@@ -147,7 +147,7 @@ export const applyMask = (
     : convertToThousandsSeparatedString;
 
   // currency field defaults to 2, all other fields default to undefined
-  if (typeof fixedDecimalPlaces === "undefined" && maskName === "currency") {
+  if (fixedDecimalPlaces === undefined && maskName === "currency") {
     fixedDecimalPlaces = 2;
   }
 

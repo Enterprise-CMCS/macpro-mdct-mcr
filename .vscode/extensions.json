@@ -1,0 +1,9 @@
+{
+  "comment": "This file is managed by macpro-mdct-core so if you'd like to change it let's do it there",
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "vitest.explorer",
+    "firsttris.vscode-jest-runner",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

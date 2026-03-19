@@ -3,7 +3,7 @@ import dynamodbLib from "../dynamo/dynamodb-lib";
 import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
 import { logger } from "../debugging/debug-lib";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 // types
 import {
   AnyObject,
@@ -139,9 +139,9 @@ export async function getOrCreateFormTemplate(
         ContentType: "application/json",
         Bucket: reportBucket,
       });
-    } catch (err) {
-      logger.error(err, "Error uploading new form template to S3");
-      throw err;
+    } catch (error) {
+      logger.error(error, "Error uploading new form template to S3");
+      throw error;
     }
 
     const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
@@ -162,12 +162,12 @@ export async function getOrCreateFormTemplate(
         TableName: process.env.FormTemplateVersionsTable!,
         Item: newFormTemplateVersionItem,
       });
-    } catch (err) {
+    } catch (error) {
       logger.error(
-        err,
+        error,
         "Error writing a new form template version to DynamoDB."
       );
-      throw err;
+      throw error;
     }
 
     return {
@@ -360,6 +360,9 @@ export const filterFormTemplateRoutes = (
   routesToRemove: string[],
   entitiesToRemove: string[]
 ) => {
+  const emptyParentRoute = (route: ReportRoute) =>
+    route.children && route.children.length === 0;
+
   const filterRoutesByName = (
     routes: ReportRoute[],
     routesToRemove: string[]
@@ -371,7 +374,8 @@ export const filterFormTemplateRoutes = (
         }
         return route;
       })
-      .filter((route) => !routesToRemove.includes(route.name));
+      .filter((route) => !routesToRemove.includes(route.name))
+      .filter((route) => !emptyParentRoute(route));
   };
 
   const filterEntitiesByName = (
@@ -384,7 +388,10 @@ export const filterFormTemplateRoutes = (
   };
 
   const reportTemplate = structuredClone(originalReportTemplate);
-  filterRoutesByName(reportTemplate.routes, routesToRemove);
+  reportTemplate.routes = filterRoutesByName(
+    reportTemplate.routes,
+    routesToRemove
+  );
   filterEntitiesByName(reportTemplate.entities, entitiesToRemove);
   return reportTemplate;
 };

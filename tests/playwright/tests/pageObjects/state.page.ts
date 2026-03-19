@@ -5,34 +5,11 @@ import {
   stateUserAuth,
   stateUserHeading,
 } from "../../utils/consts";
+import { BasePage } from "./base.page";
 
-export class StatePage {
-  readonly page: Page;
-
+export class StatePage extends BasePage {
   constructor(page: Page) {
-    this.page = page;
-  }
-
-  // Common navigation and utility methods
-  async goto(url?: string) {
-    if (url) {
-      await this.page.goto(url);
-    } else {
-      await this.page.goto("/");
-    }
-  }
-
-  async redirectPage(url: string) {
-    await this.page.waitForURL(url);
-  }
-
-  async waitForBannersToLoad() {
-    await this.page.waitForResponse(
-      (response) =>
-        response.url().includes("/banners") &&
-        response.request().method() === "GET" &&
-        response.status() === 200
-    );
+    super(page);
   }
 
   // There is an intermitten issue in deployed envs where auth tokens appear to expire early
@@ -60,7 +37,6 @@ export class StatePage {
     }
   }
 
-  // Header/Navigation functionality
   async manageAccount() {
     await this.page.getByRole("button", { name: "My Account" }).click();
     await this.page.getByRole("menu").isVisible();
@@ -71,88 +47,283 @@ export class StatePage {
     await this.page.getByRole("link", { name: "Get Help" }).click();
   }
 
-  async logOut() {
-    await this.page.getByRole("button", { name: "My Account" }).click();
-    await this.page.getByRole("menu").isVisible();
-    await this.page.getByRole("menuitem", { name: "Log Out" }).click();
-    await this.page.waitForResponse((response) => response.ok());
-  }
-
-  // Home page functionality
   async goToMCPAR() {
-    await this.page.getByRole("button", { name: "Enter MCPAR online" }).click();
+    const bannersResponse = this.waitForResponse("/banners", "GET", 200);
+    const reportsResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await this.page.goto("/mcpar");
+    await Promise.all([bannersResponse, reportsResponse]);
   }
 
   async goToMLR() {
-    await this.page.getByRole("button", { name: "Enter MLR online" }).click();
+    const bannersResponse = this.waitForResponse("/banners", "GET", 200);
+    const reportsResponse = this.waitForResponse("/reports/MLR/", "GET", 200);
+
+    await this.page.goto("/mlr");
+    await Promise.all([bannersResponse, reportsResponse]);
   }
 
-  async goToNAAAR() {
-    await this.page.getByRole("button", { name: "Enter NAAAR online" }).click();
-  }
-
-  // MCPAR Get Started page functionality
-  async enterMCPARFromGetStarted() {
-    await this.page.getByRole("button", { name: "Enter MCPAR online" }).click();
-  }
-
-  // MCPAR Dashboard functionality
-  async createMCPAR(programName: string) {
-    const addCopyButton = this.page.getByRole("button", {
-      name: "Add / copy a MCPAR",
-    });
-    await addCopyButton.isVisible();
-    await addCopyButton.click();
-
+  async createMCPAR(
+    programName: string,
+    startDate: string,
+    endDate: string,
+    chipExclusion: boolean,
+    pccmEntity: boolean,
+    submitNAAAR: boolean,
+    naaarSubmissionDate?: string
+  ) {
+    await this.page.getByRole("button", { name: "Add / Copy a MCPAR" }).click();
     const modal = this.page.getByRole("dialog");
-    await modal.isVisible();
     await modal
       .getByRole("heading", { name: "Add / Copy a MCPAR" })
-      .isVisible();
-
-    const programNameInput = modal.getByLabel("Program name (for new MCPAR)");
-    await programNameInput.fill(programName);
+      .waitFor({ state: "visible" });
+    await modal
+      .locator('select[name="existingProgramNameSelection"]')
+      .selectOption(programName);
     await modal
       .getByLabel("A.5a Reporting period (i.e. contract period) start date")
-      .fill("10/10/2024");
+      .fill(startDate);
     await modal
       .getByLabel("A.5b Reporting period (i.e. contract period) end date")
-      .fill("12/10/2024");
-    await modal.getByLabel("Exclusion of CHIP from MCPAR").click();
-    await modal.getByLabel("No").click();
+      .fill(endDate);
+    if (chipExclusion) {
+      await modal.locator('input[name="combinedData"]').click();
+    }
 
-    const saveButton = modal.getByRole("button", { name: "Save" });
-    await saveButton.click();
+    if (pccmEntity) {
+      await modal.getByRole("radio", { name: "Yes", exact: true }).click();
+    } else {
+      await modal.getByRole("radio", { name: "No", exact: true }).click();
+    }
 
-    await modal.isHidden();
-    const table = this.page.getByRole("table");
-    await table.isVisible();
+    if (submitNAAAR) {
+      await modal.getByRole("radio", { name: "Yes, I submitted it" }).click();
+      await modal
+        .locator('input[name="naaarSubmissionDateForThisProgram"]')
+        .fill(naaarSubmissionDate || "");
+    } else {
+      await modal.getByRole("radio", { name: "No" }).click();
+    }
+
+    const postResponse = this.waitForResponse("/reports/MCPAR/", "POST", 201);
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
+
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([postResponse, getResponse]);
+
+    await modal.waitFor({ state: "hidden" });
   }
 
-  async updateMCPAR(programName: string, updatedProgramName: string) {
+  async updateMCPAR(programName: string, newProgramName: string) {
     const row = this.page.getByRole("row", { name: programName });
-    const editProgramButton = row.getByRole("button").first();
-    await editProgramButton.isVisible();
-    await editProgramButton.click();
-
+    row.getByRole("button").first().click();
     const modal = this.page.getByRole("dialog");
-    await modal.isVisible();
-    await modal.getByRole("heading", { name: "Edit Program" }).isVisible();
+    await modal.waitFor({ state: "visible" });
+    await modal
+      .getByRole("heading", { name: "Edit Program" })
+      .waitFor({ state: "visible" });
+    await modal.getByRole("radio", { name: "Add new program" }).click();
+    await modal.getByLabel("Specify new program name").fill(newProgramName);
 
-    const programNameInput = modal.getByLabel("Program name (for new MCPAR)");
-    await programNameInput.fill(updatedProgramName);
+    const putResponse = this.waitForResponse("/reports/MCPAR/", "PUT", 200);
+    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
 
-    const saveButton = modal.getByRole("button", { name: "Save" });
-    await saveButton.click();
-
-    await modal.isHidden();
-    const table = this.page.getByRole("table");
-    await table.isVisible();
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([putResponse, getResponse]);
   }
 
-  // Profile page functionality
-  async navigateToBannerEditor() {
-    await this.page.getByRole("button", { name: "Banner Editor" }).click();
-    await this.page.waitForURL("**/admin");
+  async addNewMLRSubmission(programName: string) {
+    await this.page
+      .getByRole("button", { name: "Add new MLR submission" })
+      .click();
+    const modal = this.page.getByRole("dialog");
+    await modal
+      .getByRole("heading", { name: "Add new MLR submission" })
+      .waitFor({ state: "visible" });
+    await modal.locator('input[name="programName"]').fill(programName);
+
+    const postResponse = this.waitForResponse("/reports/MLR/", "POST", 201);
+    const getResponse = this.waitForResponse("/reports/MLR/", "GET", 200);
+
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([postResponse, getResponse]);
+    await this.page
+      .getByRole("dialog", { name: "Add new MLR submission" })
+      .waitFor({ state: "hidden" });
+  }
+
+  async editMLRSubmissionName(
+    originalProgramName: string,
+    newProgramName: string
+  ) {
+    const row = this.page.getByRole("row", { name: originalProgramName });
+    row
+      .getByRole("button", {
+        name: `Edit ${originalProgramName} report submission set-up information`,
+      })
+      .click();
+    const modal = this.page.getByRole("dialog");
+    await modal.waitFor({ state: "visible" });
+    await modal.locator('input[name="programName"]').clear();
+    await modal.locator('input[name="programName"]').fill(newProgramName);
+
+    const putResponse = this.waitForResponse("/reports/MLR/", "PUT", 200);
+    const getResponse = this.waitForResponse("/reports/MLR/", "GET", 200);
+
+    await modal.getByRole("button", { name: "Save" }).click();
+    await Promise.all([putResponse, getResponse]);
+  }
+
+  async reloadMLRPage() {
+    const bannersResponse = this.waitForResponse("/banners", "GET", 200);
+    const reportsResponse = this.waitForResponse("/reports/MLR/", "GET", 200);
+    await this.page.reload();
+    await Promise.all([bannersResponse, reportsResponse]);
+    await this.waitForLoadingSpinner();
+  }
+
+  async fillOutMLRPrimaryContactInfo(
+    contactName: string,
+    contactPhoneNumber: string,
+    contactEmailAddress: string,
+    contactJobTitle: string,
+    stateAgencyName: string
+  ) {
+    await this.page.locator('input[name="contactName"]').fill(contactName);
+    await this.page
+      .locator('input[name="contactPhoneNumber"]')
+      .fill(contactPhoneNumber);
+    await this.page
+      .locator('input[name="contactEmailAddress"]')
+      .fill(contactEmailAddress);
+    await this.page
+      .locator('input[name="contactJobTitle"]')
+      .fill(contactJobTitle);
+    await this.page
+      .locator('input[name="stateAgencyName"]')
+      .fill(stateAgencyName);
+    const putResponse = this.waitForResponse("/reports/MLR/", "PUT", 200);
+    await this.page.getByRole("button", { name: "Continue" }).click();
+    await putResponse;
+  }
+
+  async addMLRProgramReportInfo(
+    planName: string,
+    programName: string,
+    programType: string,
+    eligibilityGroup: string,
+    reportingPeriodStartDate: string,
+    reportingPeriodEndDate: string,
+    reportingPeriodDiscrepancy: "Yes" | "No"
+  ) {
+    await this.page
+      .getByRole("button", { name: "Add program reporting information" })
+      .click();
+    const modal = this.page.getByRole("dialog", {
+      name: "Add program reporting",
+    });
+    await modal.waitFor({ state: "visible" });
+    await modal.locator('input[name="report_planName"]').fill(planName);
+    await modal
+      .locator('textarea[name="report_programName"]')
+      .fill(programName);
+    await modal
+      .locator(`input[name="report_programType"][value="${programType}"]`)
+      .check();
+    await modal
+      .locator(
+        `input[name="report_eligibilityGroup"][value="${eligibilityGroup}"]`
+      )
+      .check();
+    await modal
+      .locator('input[name="report_reportingPeriodStartDate"]')
+      .fill(reportingPeriodStartDate);
+    await modal
+      .locator('input[name="report_reportingPeriodEndDate"]')
+      .fill(reportingPeriodEndDate);
+    await modal
+      .locator(
+        `input[name="report_reportingPeriodDiscrepancy"][value="${reportingPeriodDiscrepancy}"]`
+      )
+      .check();
+    const putResponse = this.waitForResponse("/reports/MLR/", "PUT", 200);
+    Promise.all([
+      modal.getByRole("button", { name: "Save" }).click(),
+      putResponse,
+      modal.waitFor({ state: "hidden" }),
+    ]);
+  }
+
+  async enterMLRForPlan(
+    planName: string,
+    mlrNumerator: string,
+    mlrDenominator: string,
+    memberMonths: string,
+    adjustedMlrPercentage: string,
+    contractIncludesRemittance: "Yes" | "No"
+  ) {
+    await this.page
+      .getByRole("button", { name: `Enter MLR ${planName}` })
+      .click();
+    await this.page
+      .locator('input[name="report_mlrNumerator"]')
+      .fill(mlrNumerator);
+    await this.page
+      .locator('input[name="report_mlrDenominator"]')
+      .fill(mlrDenominator);
+    await this.page
+      .locator('input[name="report_requiredMemberMonths"]')
+      .fill(memberMonths);
+    await this.page
+      .locator('input[name="report_adjustedMlrPercentage"]')
+      .fill(adjustedMlrPercentage);
+    await this.page
+      .locator(
+        `input[name="report_contractIncludesMlrRemittanceRequirement"][value="${contractIncludesRemittance}"]`
+      )
+      .check();
+    await this.page.getByRole("button", { name: "Save & return" }).click();
+  }
+
+  async goToMlrReportSubmissionForm(mlrProgramName: string) {
+    await this.reloadMLRPage();
+    await this.page
+      .getByRole("row", { name: new RegExp(mlrProgramName) })
+      .getByRole("button", {
+        name: `Edit ${mlrProgramName} report`,
+        exact: true,
+      })
+      .click();
+  }
+
+  async submitMlrReport() {
+    await this.page.getByRole("button", { name: "Submit MLR" }).click();
+    const postResponseAfterSubmit = this.page.waitForResponse(
+      async (response) => {
+        const isTarget =
+          response.url().includes("/reports/submit/MLR") &&
+          response.request().method() === "POST";
+        if (isTarget) {
+          if (response.status() === 409) {
+            const body = await response.text();
+            console.error("MLR submission failed: 409 Conflict", {
+              url: response.url(),
+              status: response.status(),
+              body,
+            });
+            throw new Error("MLR submission failed: 409 Conflict");
+          }
+          return response.status() === 200;
+        }
+        return false;
+      }
+    );
+    const getResponseAfterSubmit = this.waitForResponse(
+      "/reports/MLR/",
+      "GET",
+      200
+    );
+    await this.page.getByTestId("modal-submit-button").click();
+    await Promise.all([postResponseAfterSubmit, getResponseAfterSubmit]);
   }
 }

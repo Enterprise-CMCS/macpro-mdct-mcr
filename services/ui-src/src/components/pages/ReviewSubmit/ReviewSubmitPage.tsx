@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Alert, Modal, ReportContext, StatusTable } from "components";
 // types
-import { AlertTypes, AnyObject, ReportStatus, ReportType } from "types";
+import { AlertTypes, AnyObject, ReportStatus } from "types";
 // utils
 import {
   getReportVerbiage,
@@ -130,7 +130,7 @@ export const ReviewSubmitPage = () => {
 const PrintButton = ({ reviewVerbiage }: { reviewVerbiage: AnyObject }) => {
   const { print } = reviewVerbiage;
   const { report } = useStore();
-  const reportType = (report?.reportType as ReportType).toLowerCase();
+  const reportType = report?.reportType?.toLowerCase();
   const isSubmitted = report?.status === "Submitted";
   return (
     <Button
