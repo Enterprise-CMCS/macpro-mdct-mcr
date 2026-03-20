@@ -20,7 +20,7 @@
     "@hookform/resolvers": "^2.9.11",
     "@tanstack/react-table": "^8.20.6",
     "@vitejs/plugin-react": "^5.0.3",
-    "aws-amplify": "^6.16.2",
+    "aws-amplify": "~6.16.2",
     "core-js": "^3.41.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
@@ -68,12 +68,6 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.11",
     "vite-tsconfig-paths": "^5.1.4"
-  },
-  "resolutions": {
-    "@types/react": "^19.2.13",
-    "@types/react-dom": "^19.2.3",
-    "json5": "2.2.3",
-    "proxy-agent": "^6.3.0"
   },
   "browserslist": {
     "production": [
@@ -135,6 +129,5 @@
       "/node_modules/(?!(@hookform/resolvers|date-fns|date-fns-tz))"
     ],
     "verbose": true
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }
