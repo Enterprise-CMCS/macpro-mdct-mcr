@@ -75,7 +75,7 @@ export const mockPlanLevelIndicators = [
               },
             },
             {
-              id: "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization",
+              id: "plan_urlForListOfAllItemsAndServicesSubjectToPriorAuthorization", // pragma: allowlist secret
               type: "text",
               validation: "text",
               props: {
