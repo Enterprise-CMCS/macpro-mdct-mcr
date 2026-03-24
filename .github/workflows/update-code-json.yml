@@ -17,12 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository (full history)
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version-file: ".nvmrc"
 
@@ -30,14 +30,14 @@ jobs:
         run: corepack enable
 
       - name: Setup Go
-        uses: actions/setup-go@v6.0.0
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
 
       - name: Install SCC
         run: go install github.com/boyter/scc/v3@v3.5.0
 
       - name: Update code.json
         id: update-codejson
-        uses: DSACMS/automated-codejson-generator@main
+        uses: DSACMS/automated-codejson-generator@d21e2a27d6db670dab565cde14980bbbd7d7c6b4 # main
         with:
           BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +45,7 @@ jobs:
       - name: Get GitHub App token
         if: steps.update-codejson.outputs.method_used == 'pull_request'
         id: app-token
-        uses: tibdex/github-app-token@v2
+        uses: tibdex/github-app-token@3beb63f4bd073e61482598c45c71c1019b59b73a # v2
         with:
           app_id: ${{ secrets.GH_APP_ID }}
           private_key: ${{ secrets.GH_APP_PRIVATE_KEY }}
