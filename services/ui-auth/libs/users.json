@@ -1,5 +1,138 @@
 [
   {
+    "username": "Admin.Auto@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "Admin.Auto@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Admin"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Automated"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-bor"
+      }
+    ]
+  },
+  {
+    "username": "Internal.Auto@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "Internal.Auto@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Internal"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Automated"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-internal-user"
+      }
+    ]
+  },
+  {
+    "username": "HelpDesk.Auto@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "HelpDesk.Auto@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "HelpDesk"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Automated"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-help-desk"
+      }
+    ]
+  },
+  {
+    "username": "TN.StateUser.Auto@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "TN.StateUser.Auto@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "TN.StateUser"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Automated"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-state-user"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "TN"
+      }
+    ]
+  },
+  {
+    "username": "TN.Approver.Auto@test.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "TN.Approver.Auto@test.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "TN.Approver"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Automated"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:cms_roles",
+        "Value": "mdctmcr-approver"
+      },
+      {
+        "Name": "custom:cms_state",
+        "Value": "TN"
+      }
+    ]
+  },
+  {
     "username": "adminuser@test.com",
     "attributes": [
       {
