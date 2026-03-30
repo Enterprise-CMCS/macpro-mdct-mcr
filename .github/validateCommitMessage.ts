@@ -10,7 +10,10 @@ if (!commitMsgFile.startsWith(process.cwd() + path.sep)) {
   console.error("❌ Invalid commit path");
   process.exit(1);
 }
-const commitMsg = readFileSync(commitMsgFile, "utf8");
+const commitMsg = readFileSync(commitMsgFile, "utf8")
+  .split("\n")
+  .filter((line: string) => !line.trim().startsWith("#"))
+  .join("\n");
 console.log(`Validating commit message: ${commitMsg}`);
 
 if (!commitMsg.startsWith("Merge") && commitMsg.includes("cmdct-")) {
