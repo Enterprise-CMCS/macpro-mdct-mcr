@@ -8,7 +8,7 @@ import { seedData } from "../lib/seedData.ts";
 const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).trim();
     return output.includes("running");
@@ -20,7 +20,7 @@ const isColimaRunning = () => {
 const isLocalStackRunning = () => {
   try {
     return execSync("localstack status", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).includes("running");
   } catch {

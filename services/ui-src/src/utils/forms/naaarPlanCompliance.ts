@@ -165,7 +165,7 @@ export const addStandardId = (
       } else if (needsStandardId(value)) {
         const option = value.includes("-") ? value.split("-").pop() : undefined;
         obj[key] = [standardPrefix, standardId, option]
-          .filter((f) => f)
+          .filter(Boolean)
           .join("-");
       }
     });

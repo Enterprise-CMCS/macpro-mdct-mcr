@@ -17,7 +17,7 @@ export class AdminPage extends BasePage {
     return this.page.locator("text=Current Banner(s)").locator("..");
   }
 
-  // There is an intermitten issue in deployed envs where auth tokens appear to expire early
+  // There is an intermittent issue in deployed envs where auth tokens appear to expire early
   async checkAndReauthenticate() {
     const emailInput = this.page.getByRole("textbox", { name: "email" });
     const passwordInput = this.page.getByRole("textbox", { name: "password" });

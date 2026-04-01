@@ -19,7 +19,7 @@ export const SaveReturnButton = ({
   const handlers =
     // prevent submit for admin or read-only user
     !userIsEndUser
-      ? { onClick: disabledOnClick }
+      ? { onClick: disabledOnClick } // oxlint-disable-next-line no-nested-ternary
       : onClick
         ? { onClick }
         : { form: formId! };

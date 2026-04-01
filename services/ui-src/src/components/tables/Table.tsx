@@ -53,7 +53,7 @@ export const Table = ({
                       <VisuallyHidden>
                         {sanitizeAndParseHtml(headerCell.hiddenName)}
                       </VisuallyHidden>
-                      {headerCell?.name ? headerCell.name : null}
+                      {headerCell?.name ?? null}
                     </>
                   ) : (
                     sanitizeAndParseHtml(headerCell)

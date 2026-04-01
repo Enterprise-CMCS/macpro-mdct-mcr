@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { QualityMeasuresSection } from "./QualityMeasuresSection";
 import {
@@ -44,7 +43,6 @@ describe("QualityMeasuresSection", () => {
     const heading = container.querySelector("h4");
     expect(heading).toHaveTextContent("H4 Heading");
   });
-
   test("renders custom missing response message when provided", () => {
     render(
       <QualityMeasuresSection

@@ -1,6 +1,7 @@
 {
   "name": "mdct-mcr",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "homepage": "https://github.com/Enterprise-CMCS/macpro-mdct-mcr#readme",
   "bugs": {
@@ -15,6 +16,17 @@
   "directories": {
     "test": "tests"
   },
+  "workspaces": [
+    "cli",
+    "deployment",
+    "services/app-api",
+    "services/database",
+    "services/topics",
+    "services/ui",
+    "services/ui-auth",
+    "services/ui-src",
+    "tests"
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -28,13 +40,13 @@
     "cdk": "cdk"
   },
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.985.0",
-    "@aws-sdk/client-lambda": "^3.985.0",
-    "@aws-sdk/client-s3": "^3.985.0",
-    "@aws-sdk/client-secrets-manager": "^3.985.0",
+    "@aws-sdk/client-cloudformation": "~3.1012.0",
+    "@aws-sdk/client-lambda": "~3.1012.0",
+    "@aws-sdk/client-s3": "~3.1012.0",
+    "@aws-sdk/client-secrets-manager": "~3.1012.0",
     "@launchdarkly/node-server-sdk": "^9.10.5",
-    "aws-cdk-lib": "^2.214.0",
-    "constructs": "^10.4.2",
+    "aws-cdk-lib": "~2.243.0",
+    "constructs": "~10.5.0",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21"
   },
@@ -47,8 +59,8 @@
     "@types/node": "^22.19.0",
     "@types/yargs": "^17.0.33",
     "amazon-user-pool-srp-client": "^1.0.4",
-    "aws-cdk": "^2.1029.0",
-    "aws-cdk-local": "^2.19.2",
+    "aws-cdk": "~2.1112.0",
+    "aws-cdk-local": "~2.19.2",
     "dotenv": "^16.6.1",
     "esbuild": "^0.27.0",
     "jest-environment-jsdom": "^29.7.0",
@@ -58,10 +70,6 @@
     "typescript": "^5.9.3",
     "util": "^0.12.5",
     "yargs": "^17.7.2"
-  },
-  "resolutions": {
-    "json5": "2.2.3",
-    "proxy-agent": "^6.3.0"
   },
   "packageManager": "yarn@4.12.0"
 }

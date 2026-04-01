@@ -155,23 +155,17 @@ async function apiGatewayLogGroups(getArray: (k: string) => string[]) {
 
 function generateDeleteCommands() {
   const deleteScriptFile = outputFile.replace(".txt", "-delete-commands.txt");
-  const commands: string[] = [];
-
-  commands.push("# AWS CLI commands to delete unmanaged resources");
-  commands.push("# Generated: " + new Date().toISOString());
-  commands.push("");
-  commands.push("⚠️  IMPORTANT SAFETY WARNINGS:");
-  commands.push(
-    "1. MANUALLY VERIFY each resource before running its delete command"
-  );
-  commands.push(
-    "2. Run commands INDIVIDUALLY, one at a time - DO NOT run all at once"
-  );
-  commands.push(
-    "3. Confirm each resource is truly unmanaged and safe to delete"
-  );
-  commands.push("4. Remove the '#' prefix from each command before executing");
-  commands.push("");
+  const commands: string[] = [
+    "# AWS CLI commands to delete unmanaged resources",
+    "# Generated: " + new Date().toISOString(),
+    "",
+    "⚠️  IMPORTANT SAFETY WARNINGS:",
+    "1. MANUALLY VERIFY each resource before running its delete command",
+    "2. Run commands INDIVIDUALLY, one at a time - DO NOT run all at once",
+    "3. Confirm each resource is truly unmanaged and safe to delete",
+    "4. Remove the '#' prefix from each command before executing",
+    "",
+  ];
 
   for (const [resourceType, { resources, generator }] of Object.entries(
     unmanagedResources
@@ -203,8 +197,8 @@ async function main() {
   console.log(`Writing scan results to ${outputFile}`);
 
   const deleteFailedStacks = await cloudFormation.getDeleteFailedStacks();
+  log("CloudFormation Stacks in DELETE_FAILED State");
   if (deleteFailedStacks.length > 0) {
-    log("CloudFormation Stacks in DELETE_FAILED State");
     log(`Found ${deleteFailedStacks.length} stack(s) in DELETE_FAILED state:`);
     for (const stackName of deleteFailedStacks) {
       log(`❌ ${stackName}`);
@@ -217,7 +211,6 @@ async function main() {
       generator: cloudFormation.generateDeleteCommands,
     };
   } else {
-    log("CloudFormation Stacks in DELETE_FAILED State");
     log("✅ No stacks in DELETE_FAILED state.\n");
   }
 
@@ -277,8 +270,8 @@ async function main() {
         excludeExact: orphanedStackExactCounts,
         deleteGenerator: cloudFormation.generateDeleteCommands,
       });
-    } catch (e: any) {
-      log(`⚠️ Failed to check orphaned stacks: ${e?.message || e}\n`);
+    } catch (error: any) {
+      log(`⚠️ Failed to check orphaned stacks: ${error?.message || error}\n`);
     }
   }
 

@@ -1,7 +1,7 @@
 import { DEFAULT_ANALYSIS_METHODS } from "../../constants";
 import { EntityType, ReportStatus } from "types";
 import { mockErrorMessage } from "./mockBanner";
-import { mockQualityMeasuresEntity, mockSanctionsEntity } from "./mockEntities";
+import { mockSanctionsEntity } from "./mockEntities";
 
 import {
   mockStandardReportPageJson,
@@ -253,6 +253,30 @@ export const mockReportFieldData = {
       "accessMeasure_standardType-otherText": "",
     },
   ],
+  qualityMeasures: [
+    {
+      id: "mock-qm-cmit",
+      measure_name: "mock-qm-cmit",
+      measure_identifier: [
+        {
+          key: "measure_identifier-lIqRkso1nUidNG1Gh7Ll0A", // pragma: allowlist secret
+          value: "Yes",
+        },
+      ],
+      measure_identifierCmit: "1234",
+    },
+    {
+      id: "mock-qm-cbe",
+      measure_name: "mock-qm-cbe",
+      measure_identifier: [
+        {
+          key: "measure_identifier-eqVgpF8hmsma9ibcvwVqCb",
+          value: "No, it has a Consensus Based Entity (CBE) number",
+        },
+      ],
+      measure_identifierCbe: "4321",
+    },
+  ],
   sanctions: [
     {
       ...mockSanctionsEntity,
@@ -267,18 +291,6 @@ export const mockReportFieldData = {
         label: "sanction_planName",
         value: "mock-plan-id-2",
       },
-    },
-  ],
-  qualityMeasures: [
-    {
-      ...mockQualityMeasuresEntity,
-      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
-    },
-    {
-      ...mockQualityMeasuresEntity,
-      "qualityMeasure_plan_measureResults_mock-plan-id-1": "mock-response-1",
-      "qualityMeasure_plan_measureResults_mock-plan-id-2": "mock-response-2",
     },
   ],
 };

@@ -10,9 +10,12 @@ import {
   FormField,
   PageTypes,
   ReportRoute,
+  EntityShape,
+  FormLayoutElement,
 } from "../types";
 // utils
 import { validateFieldData } from "./completionValidation";
+import { isFieldElement } from "../formTemplates/formTemplates";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
@@ -119,15 +122,11 @@ export const calculateFormCompletion = async (
           dataForObject
         );
         nestedFields?.forEach((nestedField: string) => {
-          fieldsToBeValidated[nestedField] = dataForObject[nestedField]
-            ? dataForObject[nestedField]
-            : null;
+          fieldsToBeValidated[nestedField] = dataForObject[nestedField] ?? null;
         });
       }
 
-      fieldsToBeValidated[formField.id] = dataForObject[formField.id]
-        ? dataForObject[formField.id]
-        : null;
+      fieldsToBeValidated[formField.id] = dataForObject[formField.id] ?? null;
     }
   }
   // Validate all fields en masse, passing flag that uses required validation schema
@@ -167,6 +166,34 @@ export const calculateEntityCompletion = async (
     }
   }
   return areAllFormsComplete;
+};
+
+export const calculateMeasureCompletion = (
+  measureId: string,
+  form: FormJson,
+  plan: EntityShape
+) => {
+  const calculateEntityCompletion = (
+    fields: (FormField | FormLayoutElement)[],
+    entityData: EntityShape
+  ) => {
+    return fields
+      ?.filter(isFieldElement)
+      .every((field) => field.id in entityData);
+  };
+
+  const planMeasureData = plan.measures?.[measureId];
+  if (!planMeasureData) return false;
+
+  const isNotReporting = planMeasureData.measure_isReporting?.length > 0;
+  const hasReasons = planMeasureData.measure_isNotReportingReason?.length > 0;
+  if (isNotReporting && hasReasons) return true;
+
+  const requiredFields = form.fields
+    ?.filter(isFieldElement)
+    .filter((field) => field.id !== "measure_isReporting");
+
+  return calculateEntityCompletion(requiredFields, planMeasureData);
 };
 
 export const calculateRouteCompletion = async (
@@ -274,18 +301,41 @@ export const calculateRouteCompletion = async (
         ),
       };
       break;
-    case PageTypes.MODAL_OVERLAY:
-      if (!route.modalForm || !route.overlayForm) break;
-      routeCompletion = {
-        [route.path]: await calculateEntityCompletion(
+    case PageTypes.MODAL_OVERLAY: {
+      let isComplete = false;
+      if (route.modalForm && route.overlayForm) {
+        isComplete = await calculateEntityCompletion(
           [route.modalForm, route.overlayForm],
           route.entityType,
           fieldData,
           validationJson,
           formTemplate
-        ),
-      };
+        );
+      }
+      if (
+        route.path ===
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results" &&
+        route.drawerForm
+      ) {
+        const qualityMeasures = fieldData.qualityMeasures || [];
+        const plans = fieldData.plans || [];
+
+        if (qualityMeasures.length > 0 && plans.length > 0) {
+          isComplete = qualityMeasures.every((measure: EntityShape) =>
+            plans.every((plan: EntityShape) =>
+              calculateMeasureCompletion(
+                measure.id,
+                route.drawerForm as FormJson,
+                plan
+              )
+            )
+          );
+        }
+      }
+
+      routeCompletion = { [route.path]: isComplete };
       break;
+    }
     case PageTypes.PLAN_OVERLAY: {
       let isComplete = false;
 
@@ -324,7 +374,7 @@ export const calculateRoutesCompletion = async (
   formTemplate: AnyObject,
   validationJson: AnyObject
 ) => {
-  let completionDict: CompletionData = {};
+  const completionDict: CompletionData = {};
   // Iterate over each route
   for (const route of routes || []) {
     // Determine the status of each child in the route
@@ -335,7 +385,7 @@ export const calculateRoutesCompletion = async (
       formTemplate
     );
     // Add completion status to parent dictionary
-    completionDict = { ...completionDict, ...routeCompletionDict };
+    Object.assign(completionDict, routeCompletionDict);
   }
   return completionDict;
 };

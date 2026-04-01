@@ -12,7 +12,6 @@ execSync(yarnCommand, { stdio: "inherit" });
 for (const service of ["ui-src", "app-api"]) {
   const originalDir = cwd();
   chdir(`services/${service}`);
-  execSync(yarnCommand, { stdio: "inherit" });
   execSync("yarn run coverage", { stdio: "inherit" });
   chdir(originalDir);
 }

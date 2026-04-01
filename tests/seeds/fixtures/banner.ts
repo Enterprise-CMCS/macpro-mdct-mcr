@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { faker } from "@faker-js/faker";
 import { SeedBannerShape } from "../types";
 

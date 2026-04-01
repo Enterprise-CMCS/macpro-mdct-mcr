@@ -6,8 +6,15 @@ import {
   ModalDrawerReportPageVerbiage,
 } from "types";
 // utils
-import { compareText, maskResponseData, otherSpecify, translate } from "utils";
+import {
+  compareText,
+  maskResponseData,
+  otherSpecify,
+  RATE_ID_PREFIX,
+  translate,
+} from "utils";
 import { getFormattedPlanData } from "./entities.plans";
+import uuid from "react-uuid";
 
 const getRadioValue = (entity: EntityShape | undefined, label: string) => {
   return otherSpecify(
@@ -57,17 +64,101 @@ const getReportingPeriod = (entity: EntityShape | undefined) => {
 };
 
 // returns an array of { planName: string, response: string } or undefined
-export const getPlanValues = (entity?: EntityShape, plans?: AnyObject[]) =>
-  plans?.map((plan: AnyObject) => ({
+export const getPlanValues = (
+  entity?: EntityShape,
+  plans: AnyObject[] = [],
+  exemptedPlanIds: string[] = []
+) => {
+  const filteredPlans = plans.filter(
+    (plan: AnyObject) =>
+      !exemptedPlanIds.includes(`plansExemptFromQualityMeasures-${plan.id}`)
+  );
+
+  return filteredPlans.map((plan: AnyObject) => ({
     name: plan.name,
     response: entity?.[`qualityMeasure_plan_measureResults_${plan.id}`],
   }));
+};
+
+// returns an array of { rateName: string, rateResult: string } or undefined
+export const getMeasureResults = (
+  entityId?: string,
+  plans?: AnyObject,
+  measureRates?: AnyObject[],
+  exemptedPlanIds?: string[]
+) => {
+  return plans?.map((plan: AnyObject) => {
+    const result = {
+      planName: plan.name,
+    };
+    // check if plan is exempt from reporting
+    if (exemptedPlanIds?.indexOf(plan.id) === -1) {
+      // check if user has entered measure results
+      if (Object.hasOwn(plan, "measures")) {
+        const resultsPerPlan = measureRates?.map((rate: AnyObject) => {
+          return {
+            rate: rate.name,
+            rateResult:
+              plan.measures[entityId!]?.[`measure_rateResults-${rate.id}`],
+          };
+        });
+        if (
+          plan.measures[entityId!] &&
+          Object.hasOwn(
+            plan.measures[entityId!],
+            "measure_isNotReportingReason"
+          )
+        ) {
+          const notReportingReason = otherSpecify(
+            plan.measures[entityId!]?.[`measure_isNotReportingReason`]?.[0]
+              ?.value,
+            plan.measures[entityId!]?.[`measure_isNotReportingReason-otherText`]
+          );
+          return {
+            ...result,
+            notReporting: true,
+            notReportingReason: [
+              {
+                key: `measure_isNotReportingReason-${uuid()}`,
+                value: notReportingReason,
+              },
+            ],
+          };
+        }
+        return {
+          ...result,
+          dataCollectionMethod: otherSpecify(
+            plan.measures[entityId!]?.[`measure_dataCollectionMethod`]?.[0]
+              ?.value,
+            plan.measures[entityId!]?.[`measure_dataCollectionMethod-otherText`]
+          ),
+          rateResults: resultsPerPlan,
+        };
+      }
+    } else {
+      return {
+        ...result,
+        exempt: true,
+      };
+    }
+    return result;
+  });
+};
 
 export const getFormattedEntityData = (
   entityType: EntityType,
   entity?: EntityShape,
   reportFieldData?: AnyObject
 ) => {
+  // Check which template version is being used based on data
+  let isLegacyTemplate: boolean = true;
+  if (
+    entityType === EntityType.QUALITY_MEASURES &&
+    entity &&
+    Object.hasOwn(entity, "measure_name")
+  )
+    isLegacyTemplate = false;
+
   switch (entityType) {
     case EntityType.ACCESS_MEASURES:
       return {
@@ -118,16 +209,61 @@ export const getFormattedEntityData = (
         ),
       };
     case EntityType.QUALITY_MEASURES:
-      return {
-        domain: getRadioValue(entity, "qualityMeasure_domain"),
-        name: entity?.qualityMeasure_name,
-        nqfNumber: entity?.qualityMeasure_nqfNumber,
-        reportingRateType: getReportingRateType(entity),
-        set: getRadioValue(entity, "qualityMeasure_set"),
-        reportingPeriod: getReportingPeriod(entity),
-        description: entity?.qualityMeasure_description,
-        perPlanResponses: getPlanValues(entity, reportFieldData?.plans),
-      };
+      if (!isLegacyTemplate) {
+        const exemptedPlanIds = (
+          reportFieldData?.plansExemptFromQualityMeasures || []
+        ).map((exemption: EntityShape) => {
+          return exemption.key.replace("plansExemptFromQualityMeasures-", "");
+        });
+        const yesCmit = entity?.measure_identifier?.[0].value === "Yes";
+        const noCbe =
+          entity?.measure_identifier?.[0].value ===
+          "D2.VII.2b No, it has a Consensus Based Entity (CBE) number";
+        const neitherCmitOrCbe =
+          entity?.measure_identifier?.[0].value ===
+          "No, it uses neither CMIT or CBE";
+        return {
+          id: entity?.id,
+          name: entity?.measure_name,
+          identifierType: getRadioValue(entity, "measure_identifier"),
+          cmitNumber: yesCmit && entity?.measure_identifierCmit,
+          cbeNumber: noCbe && entity?.measure_identifierCbe,
+          description: neitherCmitOrCbe && entity?.measure_identifierDefinition,
+          identifierDomain:
+            neitherCmitOrCbe &&
+            getCheckboxValues(entity, "measure_identifierDomain"),
+          identifierUrl:
+            (neitherCmitOrCbe && entity?.measure_identifierUrl) ||
+            "Not answered, optional",
+          dataVersion: getRadioValue(entity, "measure_dataVersion"),
+          activities: getCheckboxValues(entity, "measure_activities"),
+          measureResults: getMeasureResults(
+            entity?.id,
+            reportFieldData?.["plans"],
+            entity?.measure_rates,
+            exemptedPlanIds
+          ),
+        };
+      } else {
+        const exemptedPlanIds = (
+          reportFieldData?.plansExemptFromQualityMeasures || []
+        ).map((exemption: EntityShape) => exemption.key);
+
+        return {
+          domain: getRadioValue(entity, "qualityMeasure_domain"),
+          name: entity?.qualityMeasure_name,
+          nqfNumber: entity?.qualityMeasure_nqfNumber,
+          reportingRateType: getReportingRateType(entity),
+          set: getRadioValue(entity, "qualityMeasure_set"),
+          reportingPeriod: getReportingPeriod(entity),
+          description: entity?.qualityMeasure_description,
+          perPlanResponses: getPlanValues(
+            entity,
+            reportFieldData?.plans,
+            exemptedPlanIds
+          ),
+        };
+      }
     case EntityType.PLANS: {
       if (!entity) return {};
       const data = getFormattedPlanData(entity);
@@ -160,7 +296,7 @@ export const getAddEditDrawerText = (
       }
       break;
     case EntityType.QUALITY_MEASURES:
-      if (formattedEntityData.perPlanResponses?.[0].response) {
+      if (formattedEntityData.perPlanResponses?.[0]?.response) {
         addEditDrawerText = "Edit";
       }
       break;
@@ -173,4 +309,58 @@ export const getAddEditDrawerText = (
       break;
   }
   return translate(verbiage.drawerTitle, { action: addEditDrawerText });
+};
+
+const filterRateDataFromPlans = (
+  measureRates: EntityShape[],
+  plans: EntityShape[],
+  measureId: string
+) => {
+  const measureRateIds = measureRates.map((rate: EntityShape) => rate.id);
+
+  for (const plan of plans) {
+    const planMeasureData = plan?.measures?.[measureId];
+    if (!planMeasureData) continue;
+    const planRateIds = Object.keys(planMeasureData).filter((fieldId) =>
+      fieldId.startsWith(RATE_ID_PREFIX)
+    );
+    const rateIdsToDelete = planRateIds.filter(
+      (id) => !measureRateIds.includes(id.split(RATE_ID_PREFIX)[1])
+    );
+    rateIdsToDelete.forEach((rateId: string) => {
+      delete planMeasureData[rateId];
+    });
+  }
+};
+
+const qualityMeasuresDataModifications = (
+  selectedEntity: EntityShape,
+  plans: EntityShape[],
+  fieldData: AnyObject
+) => {
+  // filter plan rates after changes to quality measures
+  const measureRates = selectedEntity?.measure_rates;
+
+  // if measure rates exist, must be quality measures
+  if (measureRates?.length > 0 && plans?.length > 0) {
+    filterRateDataFromPlans(measureRates, plans, selectedEntity.id);
+    fieldData[EntityType.PLANS] = plans;
+  }
+};
+
+export const addEditEntityModifications = (
+  entityType: EntityType,
+  updatedEntities: EntityShape[],
+  selectedEntity: EntityShape,
+  plans: EntityShape[]
+) => {
+  const fieldData: AnyObject = {
+    [entityType]: updatedEntities,
+  };
+
+  if (entityType === EntityType.QUALITY_MEASURES) {
+    qualityMeasuresDataModifications(selectedEntity, plans, fieldData);
+  }
+
+  return fieldData;
 };
