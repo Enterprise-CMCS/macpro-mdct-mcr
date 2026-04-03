@@ -182,8 +182,8 @@ describe("<MobileDashboardTable />", () => {
         await userEvent.click(enterReportButton);
       });
       await waitFor(async () => {
-        expect(mockUseNavigate).toBeCalledTimes(1);
-        expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
+        expect(mockUseNavigate).toHaveBeenCalledTimes(1);
+        expect(mockUseNavigate).toHaveBeenCalledWith("/mock/mock-route-1");
       });
     });
 
@@ -423,7 +423,7 @@ describe("<MobileDashboardTable />", () => {
       mockedUseStore.mockReturnValue(mockNoUserStore);
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(mockUseNavigate).toBeCalledWith("/");
+        expect(mockUseNavigate).toHaveBeenCalledWith("/");
       });
     });
   });

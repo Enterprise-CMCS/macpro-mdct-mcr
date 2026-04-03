@@ -12,6 +12,6 @@ describe("<BackButton />", () => {
     await act(async () => {
       await userEvent.click(button);
     });
-    expect(mockOnClick).toBeCalled();
+    expect(mockOnClick).toHaveBeenCalled();
   });
 });

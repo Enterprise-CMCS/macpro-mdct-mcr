@@ -480,7 +480,7 @@ describe("Test createReport API method", () => {
     const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
-    expect(copyFieldDataSpy).toBeCalled();
+    expect(copyFieldDataSpy).toHaveBeenCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData.plans).toBeDefined();
     expect(body.fieldData.plans.length).toBe(1);
@@ -498,7 +498,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(creationEventInvalidState, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(copyFieldDataSpy).not.toBeCalled();
+    expect(copyFieldDataSpy).not.toHaveBeenCalled();
   });
 
   test("Test that a non-existent report type returns a 400", async () => {
@@ -506,7 +506,7 @@ describe("Test createReport API method", () => {
     const res = await createReport(creationEventMlrReport, null);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.BadRequest);
-    expect(copyFieldDataSpy).not.toBeCalled();
+    expect(copyFieldDataSpy).not.toHaveBeenCalled();
   });
 
   test("Test invalid fields removed when creating report with copyFieldDataSourceId", async () => {
@@ -524,7 +524,7 @@ describe("Test createReport API method", () => {
     const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
-    expect(copyFieldDataSpy).toBeCalled();
+    expect(copyFieldDataSpy).toHaveBeenCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
     expect(body.fieldData.plans).toBeDefined();
@@ -551,7 +551,7 @@ describe("Test createReport API method", () => {
     const body = JSON.parse(res.body!);
     expect(consoleSpy.debug).toHaveBeenCalled();
     expect(res.statusCode).toBe(StatusCodes.Created);
-    expect(copyFieldDataSpy).toBeCalled();
+    expect(copyFieldDataSpy).toHaveBeenCalled();
     expect(body.fieldDataId).not.toEqual("mockReportFieldData");
     expect(body.fieldData).toMatchObject({ stateName: "Alabama" });
     expect(body.fieldData.plans).toBeUndefined();

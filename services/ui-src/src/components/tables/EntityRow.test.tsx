@@ -112,7 +112,7 @@ describe("<EntityRow />", () => {
         await userEvent.click(addReportButton);
       });
       await waitFor(() => {
-        expect(openAddEditEntityModal).toBeCalledTimes(1);
+        expect(openAddEditEntityModal).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -126,7 +126,7 @@ describe("<EntityRow />", () => {
         await userEvent.click(enterDetailsButton);
       });
       await waitFor(() => {
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -140,7 +140,7 @@ describe("<EntityRow />", () => {
         await userEvent.click(deleteButton);
       });
       await waitFor(() => {
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -195,7 +195,7 @@ describe("<EntityRow />", () => {
         await userEvent.click(editButton);
       });
       await waitFor(() => {
-        expect(openAddEditEntityModal).toBeCalledTimes(1);
+        expect(openAddEditEntityModal).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -282,7 +282,7 @@ describe("<EntityRow />", () => {
         await userEvent.click(enterButton);
       });
       await waitFor(() => {
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 

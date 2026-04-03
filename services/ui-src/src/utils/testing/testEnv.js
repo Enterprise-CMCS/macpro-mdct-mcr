@@ -5,6 +5,10 @@ class FixedJSDOMEnvironment extends JSDOMEnvironment {
   constructor(...args) {
     super(...args);
     this.global.TextEncoder = TextEncoder;
+    // Expose JSDOM's reconfigure so tests can change window.location.origin,
+    // which is non-configurable and cannot be mocked with Object.defineProperty.
+    this.global.reconfigureJsdomLocation = (url) =>
+      this.dom.reconfigure({ url });
   }
 }
 

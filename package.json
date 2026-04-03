@@ -45,7 +45,7 @@
     "@aws-sdk/client-s3": "~3.1012.0",
     "@aws-sdk/client-secrets-manager": "~3.1012.0",
     "@launchdarkly/node-server-sdk": "^9.10.5",
-    "aws-cdk-lib": "~2.243.0",
+    "aws-cdk-lib": "~2.247.0",
     "constructs": "~10.5.0",
     "jsdom": "^26.1.0",
     "source-map-support": "^0.5.21"
@@ -63,13 +63,19 @@
     "aws-cdk-local": "~2.19.2",
     "dotenv": "^16.6.1",
     "esbuild": "^0.27.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^30.3.0",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.41.0",
-    "tsx": "^4.20.5",
+    "tsx": "4.21.0",
     "typescript": "^5.9.3",
     "util": "^0.12.5",
     "yargs": "^17.7.2"
+  },
+  "resolutions": {
+    "fast-xml-parser": "5.5.7",
+    "minimatch": "10.2.4",
+    "picomatch": "4.0.4",
+    "yaml": "1.10.3"
   },
   "packageManager": "yarn@4.12.0"
 }
