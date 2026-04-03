@@ -4,6 +4,7 @@ import {
   FormProvider,
   SubmitErrorHandler,
   useForm,
+  useWatch,
 } from "react-hook-form";
 import { useLocation } from "react-router";
 import { object as yupSchema } from "yup";
@@ -25,6 +26,11 @@ import {
   formFieldFactory,
   hydrateFormFields,
   mapValidationTypesToSchema,
+  NOT_REPORTING_FIELD_ID,
+  NOT_REPORTING_REASON_FIELD_ID,
+  applyDisableAfterField,
+  hasSelectedOption,
+  isNotReportingSelected,
   sortFormErrors,
   useStore,
 } from "utils";
@@ -72,6 +78,34 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     ...(options as AnyObject),
   });
 
+  // Only subscribe to the Not Reporting fields if this form actually contains the trigger.
+  // This avoids unnecessary re-renders for unrelated forms.
+  const hasNotReportingTriggerField: boolean = fields.some(
+    (field: FormField | FormLayoutElement) =>
+      isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
+  );
+
+  const notReportingSelection = useWatch({
+    control: form.control,
+    name: NOT_REPORTING_FIELD_ID,
+    disabled: !hasNotReportingTriggerField,
+    defaultValue: [],
+  });
+  const notReportingReasonSelection = useWatch({
+    control: form.control,
+    name: NOT_REPORTING_REASON_FIELD_ID,
+    disabled: !hasNotReportingTriggerField,
+    defaultValue: [],
+  });
+
+  const notReportingChosen = isNotReportingSelected(notReportingSelection);
+  const notReportingReasonChosen = hasSelectedOption(
+    notReportingReasonSelection
+  );
+  const disableFieldsAfterNotReporting =
+    notReportingChosen && notReportingReasonChosen;
+  const notReportingDisabledReasonId = `${id}-not-reporting-disabled-reason`;
+
   // will run if any validation errors exist on form submission
   const onErrorHandler: SubmitErrorHandler<FieldValues> = (
     errors: AnyObject
@@ -89,6 +123,30 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   // hydrate and create form fields using formFieldFactory
   const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
+
+    // If the user indicates they're not reporting and provides a reason,
+    // disable every subsequent top-level field.
+    if (hasNotReportingTriggerField) {
+      applyDisableAfterField(fieldsToRender, {
+        triggerFieldId: NOT_REPORTING_FIELD_ID,
+        disableAfter: disableFieldsAfterNotReporting,
+        disabledReasonId: notReportingDisabledReasonId,
+      });
+
+      // Render a single disabled-reason message under the Not reporting field.
+      const notReportingField = fieldsToRender.find(
+        (field) => isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
+      ) as FormField | undefined;
+      if (notReportingField) {
+        notReportingField.props ??= {};
+        notReportingField.props.disabledStateMessageId =
+          notReportingDisabledReasonId;
+        notReportingField.props.disabledStateMessage =
+          "Fields disabled because Not Reporting is selected";
+        notReportingField.props.showDisabledStateMessage =
+          disableFieldsAfterNotReporting;
+      }
+    }
 
     return formFieldFactory(fieldsToRender, {
       disabled: !!fieldInputDisabled,

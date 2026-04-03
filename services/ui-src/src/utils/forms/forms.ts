@@ -383,3 +383,87 @@ export const cleanSuppressed = (enteredData: AnyObject) => {
 
   return enteredData;
 };
+
+// NOT REPORTING HELPERS (MCPAR Quality Measures)
+
+export const NOT_REPORTING_OPTION_ID = "37sMoqg5MNOb17KDCpTO1w";
+export const NOT_REPORTING_FIELD_ID = "measure_isReporting";
+export const NOT_REPORTING_REASON_FIELD_ID = "measure_isNotReportingReason";
+
+export const mergeAriaDescribedBy = (
+  toAdd: string,
+  existing?: string
+): string | undefined => {
+  const existingStr = existing ? existing.trim() : "";
+  const existingIds = existingStr ? existingStr.split(/\s+/) : [];
+  const ids = new Set([...existingIds, toAdd]);
+  const merged = [...ids].join(" ");
+  return merged.length > 0 ? merged : undefined;
+};
+
+export const isNotReportingSelected = (value: Choice[]): boolean => {
+  return value.some((opt: Choice) => {
+    const key = opt.key;
+    return (
+      key === NOT_REPORTING_OPTION_ID || key.endsWith(NOT_REPORTING_OPTION_ID)
+    );
+  });
+};
+
+export const hasSelectedOption = (value: Choice[]): boolean => {
+  return value.length > 0;
+};
+
+export const applyDisableAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  params: {
+    triggerFieldId: string;
+    disableAfter: boolean;
+    disabledReasonId: string;
+  }
+) => {
+  const { triggerFieldId, disableAfter, disabledReasonId } = params;
+  const metaKey = "__notReportingDisableMeta";
+
+  const triggerIndex = fields.findIndex(
+    (field) => isFieldElement(field) && field.id === triggerFieldId
+  );
+  if (triggerIndex === -1) return;
+
+  for (let i = triggerIndex + 1; i < fields.length; i++) {
+    const field = fields[i];
+    if (!isFieldElement(field)) continue;
+
+    field.props ??= {};
+    const props = field.props as AnyObject;
+
+    const meta = (field as AnyObject)[metaKey];
+
+    if (disableAfter) {
+      if (!meta) {
+        (field as AnyObject)[metaKey] = {
+          originalDisabled:
+            typeof props.disabled === "boolean" ? props.disabled : undefined,
+          originalAriaDescribedBy:
+            typeof props["aria-describedby"] === "string"
+              ? (props["aria-describedby"] as string)
+              : undefined,
+        };
+      }
+
+      props.disabled = true;
+      props["aria-describedby"] = mergeAriaDescribedBy(
+        disabledReasonId,
+        props["aria-describedby"]
+      );
+    } else if (meta) {
+      props.disabled = meta.originalDisabled;
+      props["aria-describedby"] = meta.originalAriaDescribedBy;
+      delete (field as AnyObject)[metaKey];
+
+      if (props.disabled === undefined) delete props.disabled;
+      if (props["aria-describedby"] === undefined)
+        delete props["aria-describedby"];
+    }
+  }
+};
