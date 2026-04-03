@@ -26,112 +26,14 @@ import {
   formFieldFactory,
   hydrateFormFields,
   mapValidationTypesToSchema,
+  NOT_REPORTING_FIELD_ID,
+  NOT_REPORTING_REASON_FIELD_ID,
+  applyDisableAfterField,
+  hasSelectedOption,
+  isNotReportingSelected,
   sortFormErrors,
   useStore,
 } from "utils";
-
-const NOT_REPORTING_OPTION_ID = "37sMoqg5MNOb17KDCpTO1w";
-const NOT_REPORTING_FIELD_ID = "measure_isReporting";
-const NOT_REPORTING_REASON_FIELD_ID = "measure_isNotReportingReason";
-
-const mergeAriaDescribedBy = (
-  toAdd: string,
-  existing?: string
-): string | undefined => {
-  /*
-   * Our fields may already have an aria-describedby attribute with one or more IDs.
-   * We want to merge in the new ID without creating duplicates and while preserving
-   * any existing IDs. This function takes the existing aria-describedby value and
-   * the new ID to add, and returns a merged string of IDs.
-   */
-  const existingStr = typeof existing === "string" ? existing.trim() : "";
-  const existingIds = existingStr ? existingStr.split(/\s+/) : [];
-  const ids = new Set([...existingIds, toAdd]);
-  const merged = [...ids].join(" ").trim();
-  return merged.length > 0 ? merged : undefined;
-};
-
-const isNotReportingSelected = (value: unknown): boolean => {
-  if (!Array.isArray(value)) return false;
-  return value.some((opt: any) => {
-    const key = opt?.key;
-    if (typeof key !== "string") return false;
-    return (
-      key === NOT_REPORTING_OPTION_ID || key.endsWith(NOT_REPORTING_OPTION_ID)
-    );
-  });
-};
-
-const hasSelectedOption = (value: unknown): boolean => {
-  if (!Array.isArray(value)) return false;
-  return value.length > 0;
-};
-
-const applyDisableAfterField = (
-  fields: (FormField | FormLayoutElement)[],
-  params: {
-    triggerFieldId: string;
-    disableAfter: boolean;
-    disabledReasonId: string;
-  }
-) => {
-  console.log("Applying disable after field with params:", params);
-  console.log("Fields before applying disable:", fields);
-  const { triggerFieldId, disableAfter, disabledReasonId } = params;
-  const metaKey = "__notReportingDisableMeta";
-
-  const triggerIndex = fields.findIndex(
-    (field) => isFieldElement(field) && field.id === triggerFieldId
-  );
-  console.log("Trigger field index:", triggerIndex);
-  if (triggerIndex === -1) return;
-
-  for (let i = triggerIndex + 1; i < fields.length; i++) {
-    const field = fields[i];
-    if (!isFieldElement(field)) continue;
-
-    field.props ??= {};
-    const props: any = field.props;
-
-    /*
-     * Meta refers to information that will be stored directly on the field object
-     * to help keep track of the original disabled state and aria-describedby
-     * before we've modified them.
-     */
-    const meta: any = (field as any)[metaKey];
-
-    if (disableAfter) {
-      // Capture original disabled state and aria-describedby in meta if not already captured
-      if (!meta) {
-        (field as any)[metaKey] = {
-          originalDisabled: props.disabled,
-          originalAriaDescribedBy: props["aria-describedby"],
-        };
-      }
-      // Apply disabled state and merge aria-describedby with the disabled reason ID
-      props.disabled = true;
-      props["aria-describedby"] = mergeAriaDescribedBy(
-        disabledReasonId,
-        props["aria-describedby"]
-      );
-    } else if (meta) {
-      /*
-       * Restore original disabled state and aria-describedby from meta because if disableAfter
-       * is false and we've previously disabled the field, we want to revert to the original state
-       */
-      props.disabled = meta.originalDisabled;
-      props["aria-describedby"] = meta.originalAriaDescribedBy;
-      delete (field as any)[metaKey];
-      if (props.disabled === undefined) delete props.disabled;
-      if (props["aria-describedby"] === undefined)
-        delete props["aria-describedby"];
-      console.log(
-        "Cleaned up meta from field:",
-        JSON.parse(JSON.stringify(field))
-      );
-    }
-  }
-};
 
 export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   {
@@ -176,13 +78,24 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     ...(options as AnyObject),
   });
 
+  // Only subscribe to the Not Reporting fields if this form actually contains the trigger.
+  // This avoids unnecessary re-renders for unrelated forms.
+  const hasNotReportingTriggerField: boolean = fields.some(
+    (field: FormField | FormLayoutElement) =>
+      isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
+  );
+
   const notReportingSelection = useWatch({
     control: form.control,
     name: NOT_REPORTING_FIELD_ID,
+    disabled: !hasNotReportingTriggerField,
+    defaultValue: [],
   });
   const notReportingReasonSelection = useWatch({
     control: form.control,
     name: NOT_REPORTING_REASON_FIELD_ID,
+    disabled: !hasNotReportingTriggerField,
+    defaultValue: [],
   });
 
   const notReportingChosen = isNotReportingSelected(notReportingSelection);
@@ -213,24 +126,26 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
 
     // If the user indicates they're not reporting and provides a reason,
     // disable every subsequent top-level field.
-    applyDisableAfterField(fieldsToRender, {
-      triggerFieldId: NOT_REPORTING_FIELD_ID,
-      disableAfter: disableFieldsAfterNotReporting,
-      disabledReasonId: notReportingDisabledReasonId,
-    });
+    if (hasNotReportingTriggerField) {
+      applyDisableAfterField(fieldsToRender, {
+        triggerFieldId: NOT_REPORTING_FIELD_ID,
+        disableAfter: disableFieldsAfterNotReporting,
+        disabledReasonId: notReportingDisabledReasonId,
+      });
 
-    // Render a single disabled-reason message under the Not reporting field.
-    const notReportingField = fieldsToRender.find(
-      (field) => isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
-    ) as FormField | undefined;
-    if (notReportingField) {
-      notReportingField.props ??= {};
-      notReportingField.props.disabledStateMessageId =
-        notReportingDisabledReasonId;
-      notReportingField.props.disabledStateMessage =
-        "Fields disabled because Not Reporting is selected";
-      notReportingField.props.showDisabledStateMessage =
-        disableFieldsAfterNotReporting;
+      // Render a single disabled-reason message under the Not reporting field.
+      const notReportingField = fieldsToRender.find(
+        (field) => isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
+      ) as FormField | undefined;
+      if (notReportingField) {
+        notReportingField.props ??= {};
+        notReportingField.props.disabledStateMessageId =
+          notReportingDisabledReasonId;
+        notReportingField.props.disabledStateMessage =
+          "Fields disabled because Not Reporting is selected";
+        notReportingField.props.showDisabledStateMessage =
+          disableFieldsAfterNotReporting;
+      }
     }
 
     return formFieldFactory(fieldsToRender, {

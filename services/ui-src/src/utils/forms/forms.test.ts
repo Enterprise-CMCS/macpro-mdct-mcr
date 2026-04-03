@@ -1,13 +1,18 @@
 import {
+  NOT_REPORTING_FIELD_ID,
   cleanSuppressed,
   createRepeatedFields,
   defineProgramName,
   filterFormData,
   flattenFormFields,
   formFieldFactory,
+  applyDisableAfterField,
+  hasSelectedOption,
   getEntriesToClear,
   hydrateFormFields,
   initializeChoiceListFields,
+  isNotReportingSelected,
+  mergeAriaDescribedBy,
   resetClearProp,
   setClearedEntriesToDefaultValue,
   sortFormErrors,
@@ -430,6 +435,131 @@ describe("utils/forms", () => {
 
       const result = cleanSuppressed(enteredData);
       expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe("Not reporting helpers", () => {
+    describe("mergeAriaDescribedBy()", () => {
+      it("adds an id when no existing aria-describedby", () => {
+        expect(mergeAriaDescribedBy("new-id")).toBe("new-id");
+      });
+
+      it("merges ids and avoids duplicates", () => {
+        expect(mergeAriaDescribedBy("b", "a b")).toBe("a b");
+        expect(mergeAriaDescribedBy("c", "a b")).toBe("a b c");
+      });
+    });
+
+    describe("isNotReportingSelected()", () => {
+      it("returns true when option key matches or endsWith trigger id", () => {
+        expect(
+          isNotReportingSelected([
+            { key: "37sMoqg5MNOb17KDCpTO1w", value: "Not reporting" },
+          ])
+        ).toBe(true);
+        expect(
+          isNotReportingSelected([
+            {
+              key: "measure_isReporting-37sMoqg5MNOb17KDCpTO1w",
+              value: "Not reporting",
+            },
+          ])
+        ).toBe(true);
+      });
+
+      it("returns false when trigger id not present", () => {
+        expect(
+          isNotReportingSelected([{ key: "some-other-id", value: "X" }])
+        ).toBe(false);
+        expect(isNotReportingSelected([])).toBe(false);
+      });
+    });
+
+    describe("hasSelectedOption()", () => {
+      it("returns true only for non-empty arrays", () => {
+        expect(hasSelectedOption([])).toBe(false);
+        expect(hasSelectedOption([{ key: "k", value: "v" }])).toBe(true);
+      });
+    });
+
+    describe("applyDisableAfterField()", () => {
+      it("does nothing if trigger field is not present", () => {
+        const fields: any[] = [
+          {
+            id: "some-other-field",
+            type: "text",
+            validation: "text",
+            props: { label: "X" },
+          },
+        ];
+
+        applyDisableAfterField(fields as any, {
+          triggerFieldId: NOT_REPORTING_FIELD_ID,
+          disableAfter: true,
+          disabledReasonId: "reason-id",
+        });
+
+        expect(fields[0].props.disabled).toBeUndefined();
+        expect(fields[0].props["aria-describedby"]).toBeUndefined();
+      });
+
+      it("disables subsequent field elements and restores original state", () => {
+        const fields: any[] = [
+          {
+            id: NOT_REPORTING_FIELD_ID,
+            type: "checkbox",
+            validation: "checkboxOptional",
+            props: { label: "Trigger" },
+          },
+          {
+            id: "layout-1",
+            type: "sectionHeader",
+            props: { content: "Layout" },
+          },
+          {
+            id: "after-1",
+            type: "text",
+            validation: "text",
+            props: {
+              label: "After 1",
+              "aria-describedby": "existing",
+            },
+          },
+          {
+            id: "after-2",
+            type: "text",
+            validation: "text",
+            props: { label: "After 2", disabled: false },
+          },
+        ];
+
+        applyDisableAfterField(fields as any, {
+          triggerFieldId: NOT_REPORTING_FIELD_ID,
+          disableAfter: true,
+          disabledReasonId: "reason-id",
+        });
+
+        // layout element should be untouched
+        expect(fields[1].props.disabled).toBeUndefined();
+
+        // subsequent fields should be disabled + described
+        expect(fields[2].props.disabled).toBe(true);
+        expect(fields[2].props["aria-describedby"]).toBe("existing reason-id");
+        expect(fields[3].props.disabled).toBe(true);
+        expect(fields[3].props["aria-describedby"]).toBe("reason-id");
+
+        // restore
+        applyDisableAfterField(fields as any, {
+          triggerFieldId: NOT_REPORTING_FIELD_ID,
+          disableAfter: false,
+          disabledReasonId: "reason-id",
+        });
+
+        expect(fields[2].props.disabled).toBeUndefined();
+        expect(fields[2].props["aria-describedby"]).toBe("existing");
+        expect(fields[3].props.disabled).toBe(false);
+        expect(fields[3].props["aria-describedby"]).toBeUndefined();
+      });
     });
   });
 });
