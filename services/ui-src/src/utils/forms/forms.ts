@@ -394,7 +394,7 @@ export const mergeAriaDescribedBy = (
   toAdd: string,
   existing?: string
 ): string | undefined => {
-  const existingStr = typeof existing === "string" ? existing.trim() : "";
+  const existingStr = existing ? existing.trim() : "";
   const existingIds = existingStr ? existingStr.split(/\s+/) : [];
   const ids = new Set([...existingIds, toAdd]);
   const merged = [...ids].join(" ");
@@ -435,15 +435,19 @@ export const applyDisableAfterField = (
     if (!isFieldElement(field)) continue;
 
     field.props ??= {};
-    const props: any = field.props;
+    const props = field.props as AnyObject;
 
-    const meta: any = (field as any)[metaKey];
+    const meta = (field as AnyObject)[metaKey];
 
     if (disableAfter) {
       if (!meta) {
-        (field as any)[metaKey] = {
-          originalDisabled: props.disabled,
-          originalAriaDescribedBy: props["aria-describedby"],
+        (field as AnyObject)[metaKey] = {
+          originalDisabled:
+            typeof props.disabled === "boolean" ? props.disabled : undefined,
+          originalAriaDescribedBy:
+            typeof props["aria-describedby"] === "string"
+              ? (props["aria-describedby"] as string)
+              : undefined,
         };
       }
 
@@ -455,7 +459,7 @@ export const applyDisableAfterField = (
     } else if (meta) {
       props.disabled = meta.originalDisabled;
       props["aria-describedby"] = meta.originalAriaDescribedBy;
-      delete (field as any)[metaKey];
+      delete (field as AnyObject)[metaKey];
 
       if (props.disabled === undefined) delete props.disabled;
       if (props["aria-describedby"] === undefined)
