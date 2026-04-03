@@ -2,7 +2,7 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import { FieldValues, useFormContext, UseFormReturn } from "react-hook-form";
 // components
 import { ChoiceList as CmsdsChoiceList } from "@cmsgov/design-system";
-import { Box, SystemStyleObject } from "@chakra-ui/react";
+import { Box, SystemStyleObject, Text } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // types
 import {
@@ -35,6 +35,9 @@ export const ChoiceListField = ({
   sxOverride,
   styleAsOptional,
   clear,
+  disabledStateMessage,
+  disabledStateMessageId,
+  showDisabledStateMessage,
   ...props
 }: Props) => {
   const defaultValue: Choice[] = [];
@@ -316,6 +319,12 @@ export const ChoiceListField = ({
         onComponentBlur={onComponentBlurHandler}
         {...props}
       />
+
+      {showDisabledStateMessage && disabledStateMessageId && (
+        <Text id={disabledStateMessageId} sx={sx.disabledStateMessage}>
+          {disabledStateMessage}
+        </Text>
+      )}
     </Box>
   );
 };
@@ -332,6 +341,9 @@ interface Props {
   sxOverride?: SystemStyleObject;
   styleAsOptional?: boolean;
   clear?: boolean;
+  disabledStateMessage?: string;
+  disabledStateMessageId?: string;
+  showDisabledStateMessage?: boolean;
   [key: string]: any;
 }
 
@@ -342,6 +354,12 @@ const sx = {
   },
   ".ds-c-choice[type='checkbox']:checked:disabled::before": {
     boxShadow: "inset 0 0 4em 1em #A6A6A6;",
+  },
+
+  disabledStateMessage: {
+    marginTop: "spacer1",
+    fontSize: "sm",
+    color: "gray",
   },
 };
 

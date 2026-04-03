@@ -125,4 +125,115 @@ describe("<Form />", () => {
   });
 
   testA11yAct(formComponent);
+
+  test("Selecting Not reporting + reason disables subsequent fields and wires aria-describedby", async () => {
+    mockedUseStore.mockReturnValue({
+      ...mockStateUserStore,
+      ...mockMcparReportStore,
+      report: {
+        ...(mockMcparReportStore as any).report,
+        status: ReportStatus.NOT_STARTED,
+      },
+    } as any);
+
+    const notReportingForm = {
+      id: "not-reporting-form",
+      fields: [
+        {
+          id: "measure_isReporting",
+          type: "checkbox",
+          validation: "checkboxOptional",
+          props: {
+            label: "D2.VII.6 Are you reporting results for this measure?",
+            choices: [
+              {
+                id: "37sMoqg5MNOb17KDCpTO1w",
+                label: "Not reporting",
+                children: [
+                  {
+                    id: "measure_isNotReportingReason",
+                    type: "radio",
+                    validation: {
+                      type: "radio",
+                      nested: true,
+                      parentFieldName: "measure_isReporting",
+                      parentOptionId: "37sMoqg5MNOb17KDCpTO1w",
+                    },
+                    props: {
+                      label: "Reason",
+                      choices: [
+                        { id: "reason1", label: "Reason 1" },
+                        { id: "reason2", label: "Reason 2" },
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          id: "after_field",
+          type: "dropdown",
+          validation: "dropdown",
+          props: {
+            label: "After field",
+            options: [
+              { label: "Option A", value: "A" },
+              { label: "Option B", value: "B" },
+            ],
+          },
+        },
+      ],
+    } as any;
+
+    render(
+      <RouterWrappedComponent>
+        <Form
+          id={notReportingForm.id}
+          formJson={notReportingForm}
+          onSubmit={mockOnSubmit}
+          validateOnRender={false}
+          dontReset={false}
+        />
+      </RouterWrappedComponent>
+    );
+
+    const afterField = screen.getByLabelText(
+      "After field"
+    ) as HTMLSelectElement;
+    expect(afterField).toBeEnabled();
+
+    // Select Not reporting (child reason appears)
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText("Not reporting"));
+    });
+    expect(afterField).toBeEnabled();
+
+    // Select a reason; now subsequent fields should disable
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText("Reason 1"));
+    });
+
+    const disabledReasonId = `${notReportingForm.id}-not-reporting-disabled-reason`;
+    expect(
+      screen.getByText("Fields disabled because Not Reporting is selected")
+    ).toBeVisible();
+    expect(afterField).toBeDisabled();
+    expect(afterField.getAttribute("aria-describedby")).toContain(
+      disabledReasonId
+    );
+
+    // Child reason should NOT be disabled
+    expect(screen.getByLabelText("Reason 1")).toBeEnabled();
+
+    // Uncheck Not reporting; subsequent fields should enable again and message should disappear
+    await act(async () => {
+      await userEvent.click(screen.getByLabelText("Not reporting"));
+    });
+    expect(afterField).toBeEnabled();
+    expect(
+      screen.queryByText("Fields disabled because Not Reporting is selected")
+    ).toBeNull();
+  });
 });
