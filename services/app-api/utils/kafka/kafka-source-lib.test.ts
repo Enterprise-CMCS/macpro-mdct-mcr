@@ -168,7 +168,7 @@ describe("Test Kafka Lib", () => {
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
   test("Processes bucket events", async () => {
@@ -178,14 +178,14 @@ describe("Test Kafka Lib", () => {
     await sourceLib.handler(s3Event);
     expect(consoleSpy.log).toHaveBeenCalled();
     expect(s3GetSpy).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
   test("Handles events without versions", async () => {
     const sourceLib = new KafkaSourceLib("mcr", null, [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(1);
+    expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
   test("Does not pass through events from unrelated tables or buckets", async () => {
@@ -201,7 +201,7 @@ describe("Test Kafka Lib", () => {
     await sourceLib.handler(s3Event);
     await sourceLib.handler(dynamoEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).toHaveBeenCalledTimes(0);
   });
 
   test("Ignores items with bad keys or missing events", async () => {
@@ -209,7 +209,7 @@ describe("Test Kafka Lib", () => {
     await sourceLib.handler(s3IgnoredEvent);
     await sourceLib.handler({});
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledTimes(0);
+    expect(mockSendBatch).toHaveBeenCalledTimes(0);
   });
 
   test("Handles dynamo events with no OldImage", async () => {
@@ -230,7 +230,7 @@ describe("Test Kafka Lib", () => {
     const sourceLib = new KafkaSourceLib("mcr", "v0", [table], []);
     await sourceLib.handler(dynamoInsertEvent);
     expect(consoleSpy.log).toHaveBeenCalled();
-    expect(mockSendBatch).toBeCalledWith({
+    expect(mockSendBatch).toHaveBeenCalledWith({
       topicMessages: [
         {
           messages: [

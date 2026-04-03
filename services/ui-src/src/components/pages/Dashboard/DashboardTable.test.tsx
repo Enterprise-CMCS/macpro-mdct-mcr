@@ -239,19 +239,17 @@ describe("<DashboardTable />", () => {
         expect(mockMcparReportContext.setReportSelection).toHaveBeenCalledTimes(
           1
         );
-        expect(mockUseNavigate).toBeCalledTimes(1);
-        expect(mockUseNavigate).toBeCalledWith("/mock/mock-route-1");
+        expect(mockUseNavigate).toHaveBeenCalledTimes(1);
+        expect(mockUseNavigate).toHaveBeenCalledWith("/mock/mock-route-1");
       });
     });
 
     test("Clicking 'Add a Program' button opens the AddEditReportModal", async () => {
-      Object.defineProperty(window, "location", {
-        configurable: true,
-        enumerable: true,
-        value: {
-          pathname: "/mcpar",
-        },
-      });
+      const setWindowOrigin = (origin: string) => {
+        (window as any).reconfigureJsdomLocation(`http://${origin}/`);
+      };
+      setWindowOrigin("localhost/mcpar");
+
       render(dashboardViewWithReports);
       const addReportButton = screen.getByText(mcparVerbiage.body.callToAction);
       expect(addReportButton).toBeVisible();
@@ -511,7 +509,7 @@ describe("<DashboardTable />", () => {
       mockedUseStore.mockReturnValue(mockNoUserStore);
       render(dashboardViewWithReports);
       await waitFor(() => {
-        expect(mockUseNavigate).toBeCalledWith("/");
+        expect(mockUseNavigate).toHaveBeenCalledWith("/");
       });
     });
   });

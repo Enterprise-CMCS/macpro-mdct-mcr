@@ -180,7 +180,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editEntityButton);
         });
-        await expect(openAddEditEntityModal).toBeCalledTimes(1);
+        await expect(openAddEditEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the delete modal on remove click", async () => {
@@ -188,7 +188,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on edit-details click", async () => {
@@ -196,7 +196,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -229,7 +229,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on enter-details click", async () => {
@@ -239,7 +239,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(enterDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -343,7 +343,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editEntityButton);
         });
-        await expect(openAddEditEntityModal).toBeCalledTimes(1);
+        await expect(openAddEditEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the delete modal on remove click", async () => {
@@ -351,7 +351,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on edit-details click", async () => {
@@ -359,7 +359,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -377,7 +377,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on enter-details click", async () => {
@@ -387,7 +387,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(enterDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -467,7 +467,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editEntityButton);
         });
-        await expect(openAddEditEntityModal).toBeCalledTimes(1);
+        await expect(openAddEditEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the delete modal on remove click", async () => {
@@ -475,7 +475,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on edit-details click", async () => {
@@ -483,7 +483,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(editDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -501,7 +501,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(removeButton);
         });
-        expect(openDeleteEntityModal).toBeCalledTimes(1);
+        expect(openDeleteEntityModal).toHaveBeenCalledTimes(1);
       });
 
       test("EntityCard opens the drawer on enter-details click", async () => {
@@ -511,7 +511,7 @@ describe("<EntityCard />", () => {
         await act(async () => {
           await userEvent.click(enterDetailsButton);
         });
-        expect(mockOpenDrawer).toBeCalledTimes(1);
+        expect(mockOpenDrawer).toHaveBeenCalledTimes(1);
       });
     });
 

@@ -49,7 +49,7 @@ describe("<SortableNaaarStandardsTable />", () => {
     await act(async () => {
       await userEvent.click(editButton);
     });
-    expect(mockOpenRowDrawer).toBeCalledTimes(1);
+    expect(mockOpenRowDrawer).toHaveBeenCalledTimes(1);
   });
 
   test("SortableNaaarStandardsTable opens the delete modal on click", async () => {
@@ -59,7 +59,7 @@ describe("<SortableNaaarStandardsTable />", () => {
     await act(async () => {
       await userEvent.click(deleteButton);
     });
-    expect(mockOpenDeleteEntityModal).toBeCalledTimes(1);
+    expect(mockOpenDeleteEntityModal).toHaveBeenCalledTimes(1);
   });
 
   testA11yAct(sortableTableComponent);
