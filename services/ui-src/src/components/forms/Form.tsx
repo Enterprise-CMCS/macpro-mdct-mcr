@@ -137,11 +137,12 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     // If the user indicates they're not reporting and provides a reason,
     // disable every subsequent top-level field.
     if (hasNotReportingTriggerField) {
-      applyDisableAfterField(fieldsToRender, {
-        triggerFieldId: NOT_REPORTING_FIELD_ID,
-        disableAfter: disableFieldsAfterNotReporting,
-        disabledReasonId: notReportingDisabledReasonId,
-      });
+      applyDisableAfterField(
+        fieldsToRender,
+        NOT_REPORTING_FIELD_ID,
+        disableFieldsAfterNotReporting,
+        notReportingDisabledReasonId
+      );
 
       // Render a single disabled-reason message under the Not reporting field.
       const notReportingMessageField = fieldsToRender.find(

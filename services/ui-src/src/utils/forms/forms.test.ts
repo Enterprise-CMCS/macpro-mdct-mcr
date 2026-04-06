@@ -493,12 +493,12 @@ describe("utils/forms", () => {
           },
         ];
 
-        applyDisableAfterField(fields as any, {
-          triggerFieldId: NOT_REPORTING_FIELD_ID,
-          disableAfter: true,
-          disabledReasonId: "reason-id",
-        });
-
+        applyDisableAfterField(
+          fields as any,
+          NOT_REPORTING_FIELD_ID,
+          true,
+          "reason-id"
+        );
         expect(fields[0].props.disabled).toBeUndefined();
         expect(fields[0].props["aria-describedby"]).toBeUndefined();
       });
@@ -533,11 +533,12 @@ describe("utils/forms", () => {
           },
         ];
 
-        applyDisableAfterField(fields as any, {
-          triggerFieldId: NOT_REPORTING_FIELD_ID,
-          disableAfter: true,
-          disabledReasonId: "reason-id",
-        });
+        applyDisableAfterField(
+          fields as any,
+          NOT_REPORTING_FIELD_ID,
+          true,
+          "reason-id"
+        );
 
         // layout element should be untouched
         expect(fields[1].props.disabled).toBeUndefined();
@@ -548,12 +549,13 @@ describe("utils/forms", () => {
         expect(fields[3].props.disabled).toBe(true);
         expect(fields[3].props["aria-describedby"]).toBe("reason-id");
 
-        // restore
-        applyDisableAfterField(fields as any, {
-          triggerFieldId: NOT_REPORTING_FIELD_ID,
-          disableAfter: false,
-          disabledReasonId: "reason-id",
-        });
+        // restore original state
+        applyDisableAfterField(
+          fields as any,
+          NOT_REPORTING_FIELD_ID,
+          false,
+          "reason-id"
+        );
 
         expect(fields[2].props.disabled).toBeUndefined();
         expect(fields[2].props["aria-describedby"]).toBe("existing");
