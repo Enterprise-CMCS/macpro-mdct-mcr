@@ -4,7 +4,6 @@ import { checkAccessibilityAcrossViewports } from "../utils/a11y";
 test.describe("state user home page", () => {
   test.beforeEach(async ({ statePage }) => {
     await statePage.page.goto("/");
-    await statePage.checkAndReauthenticate();
     await statePage.waitForResponse("/banners", "GET", 200);
   });
 
@@ -36,7 +35,6 @@ test.describe("state user home page", () => {
 test.describe("admin user home page", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.page.goto("/");
-    await adminPage.checkAndReauthenticate();
     await adminPage.waitForResponse("/banners", "GET", 200);
   });
 

@@ -1,13 +1,7 @@
 import { expect, test } from "./fixtures/base";
-import { mnMcparPrograms, stateAbbreviation, stateName } from "../utils";
-import {
-  archiveAllReportsForState,
-  postReport,
-  getAllReportsForState,
-  archiveReport,
-} from "../utils/requests";
+import { tnMcparPrograms, stateAbbreviation } from "../utils";
+import { archiveAllReportsForState } from "../utils/requests";
 import { faker } from "@faker-js/faker";
-import { newMcpar } from "../../seeds/fixtures";
 
 test.describe("MCPAR Dashboard Page", () => {
   test.describe("State Users", () => {
@@ -20,7 +14,7 @@ test.describe("MCPAR Dashboard Page", () => {
     }) => {
       await statePage.goToMCPAR();
       await statePage.createMCPAR(
-        mnMcparPrograms[0],
+        tnMcparPrograms[0],
         faker.date.recent().toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
@@ -43,9 +37,9 @@ test.describe("MCPAR Dashboard Page", () => {
       const table = statePage.page.getByRole("table");
       const reportRow = table
         .getByRole("row")
-        .filter({ hasText: mnMcparPrograms[0] });
+        .filter({ hasText: tnMcparPrograms[0] });
       await expect(reportRow).toBeVisible();
-      await expect(reportRow.getByText(mnMcparPrograms[0])).toBeVisible();
+      await expect(reportRow.getByText(tnMcparPrograms[0])).toBeVisible();
       await expect(reportRow.getByText("Not started")).toBeVisible();
     });
 
@@ -67,34 +61,17 @@ test.describe("MCPAR Dashboard Page", () => {
       await expect(updatedRow).toBeVisible();
     });
 
-    test("should not see archived reports", async ({ statePage }) => {
+    test("should not see archived reports", async ({
+      archivedMcparProgramName,
+      statePage,
+    }) => {
       await statePage.goToMCPAR();
-      const allReports = await getAllReportsForState(
-        "MCPAR",
-        stateAbbreviation
-      );
-      const archivedReports = allReports.filter((report) => report.archived);
-
-      if (archivedReports.length === 0) {
-        // No archived reports exist, create and archive one
-        const reportData = newMcpar({}, stateName, stateAbbreviation);
-        await postReport("MCPAR", reportData, stateAbbreviation);
-        const reportsAfterCreate = await getAllReportsForState(
-          "MCPAR",
-          stateAbbreviation
-        );
-        const newReport = reportsAfterCreate.find(
-          (r) => r.programName === reportData.metadata.programName
-        );
-        await archiveReport("MCPAR", stateAbbreviation, newReport.id);
-      }
-
-      await statePage.page.reload();
-      await statePage.waitForResponse("/reports/MCPAR/", "GET", 200);
+      // await statePage.waitForResponse("/reports/MCPAR/", "GET", 200);
       const table = statePage.page.getByRole("table");
       const tbody = table.locator("tbody");
       const rows = tbody.getByRole("row");
-      await expect(rows).toHaveCount(0);
+      const archivedRow = rows.filter({ hasText: archivedMcparProgramName });
+      await expect(archivedRow).toHaveCount(0);
     });
 
     test("should not be able to submit an incomplete form", async ({
