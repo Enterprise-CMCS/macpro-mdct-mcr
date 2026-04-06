@@ -210,7 +210,7 @@ describe("<Form />", () => {
     });
     expect(afterField).toBeEnabled();
 
-    // Select a reason; now subsequent fields should disable
+    // Select a reason so subsequent fields disable
     await act(async () => {
       await userEvent.click(screen.getByLabelText("Reason 1"));
     });
@@ -227,7 +227,7 @@ describe("<Form />", () => {
     // Child reason should NOT be disabled
     expect(screen.getByLabelText("Reason 1")).toBeEnabled();
 
-    // Uncheck Not reporting; subsequent fields should enable again and message should disappear
+    // Uncheck Not reporting so subsequent fields enable again with the message disappearing
     await act(async () => {
       await userEvent.click(screen.getByLabelText("Not reporting"));
     });

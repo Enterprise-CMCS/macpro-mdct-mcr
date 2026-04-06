@@ -124,6 +124,16 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
   const renderFormFields = (fields: (FormField | FormLayoutElement)[]) => {
     const fieldsToRender = hydrateFormFields(fields, formData);
 
+    /*
+     * The following if statement is in response to this ticket: CMDCT-5446
+     * While this likely should be done by adding a special "disabled"
+     * property to each field in the form JSON, this was a quicker fix to
+     * implement the necessary logic without needing to update and watch
+     * across multiple files for the new property. If this logic needs to
+     * be applied to more forms in the future, it would likely be worth
+     * refactoring to add a new property to the form JSON.
+     */
+
     // If the user indicates they're not reporting and provides a reason,
     // disable every subsequent top-level field.
     if (hasNotReportingTriggerField) {
@@ -134,16 +144,16 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
       });
 
       // Render a single disabled-reason message under the Not reporting field.
-      const notReportingField = fieldsToRender.find(
+      const notReportingMessageField = fieldsToRender.find(
         (field) => isFieldElement(field) && field.id === NOT_REPORTING_FIELD_ID
       ) as FormField | undefined;
-      if (notReportingField) {
-        notReportingField.props ??= {};
-        notReportingField.props.disabledStateMessageId =
+      if (notReportingMessageField) {
+        notReportingMessageField.props ??= {};
+        notReportingMessageField.props.disabledStateMessageId =
           notReportingDisabledReasonId;
-        notReportingField.props.disabledStateMessage =
+        notReportingMessageField.props.disabledStateMessage =
           "Fields disabled because Not Reporting is selected";
-        notReportingField.props.showDisabledStateMessage =
+        notReportingMessageField.props.showDisabledStateMessage =
           disableFieldsAfterNotReporting;
       }
     }

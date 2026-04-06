@@ -385,11 +385,17 @@ export const cleanSuppressed = (enteredData: AnyObject) => {
 };
 
 // NOT REPORTING HELPERS (MCPAR Quality Measures)
-
 export const NOT_REPORTING_OPTION_ID = "37sMoqg5MNOb17KDCpTO1w";
 export const NOT_REPORTING_FIELD_ID = "measure_isReporting";
 export const NOT_REPORTING_REASON_FIELD_ID = "measure_isNotReportingReason";
 
+/*
+ * This function merges the id of the disabled reason message to
+ * the existing aria-describedby attribute on fields. If there is already
+ * an aria-describedby value, the new id will be added to it, separated by a space.
+ * If not, the aria-describedby attribute will be created with the new id as
+ * its value.
+ */
 export const mergeAriaDescribedBy = (
   toAdd: string,
   existing?: string
@@ -425,6 +431,10 @@ export const applyDisableAfterField = (
   const { triggerFieldId, disableAfter, disabledReasonId } = params;
   const metaKey = "__notReportingDisableMeta";
 
+  /*
+   * Find the index of the trigger field (The Not Reporting checkbox)
+   * in the fields array so that we know where to start disabling subsequent fields.
+   */
   const triggerIndex = fields.findIndex(
     (field) => isFieldElement(field) && field.id === triggerFieldId
   );
@@ -440,6 +450,11 @@ export const applyDisableAfterField = (
     const meta = (field as AnyObject)[metaKey];
 
     if (disableAfter) {
+      /*
+       * The meta object stores the original disabled state and aria-describedby
+       * value of the field before we modify them, so that we can restore them
+       * properly when re-enabling the field.
+       */
       if (!meta) {
         (field as AnyObject)[metaKey] = {
           originalDisabled:
