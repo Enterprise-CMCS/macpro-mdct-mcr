@@ -82,10 +82,12 @@ jobs:
         working-directory: tests
         env:
           BASE_URL: ${{ needs.deploy.outputs.application_endpoint }}
-          TEST_ADMIN_USER_EMAIL: ${{ secrets.SEED_ADMIN_USER_EMAIL }}
-          TEST_ADMIN_USER_PASSWORD: ${{ secrets.SEED_ADMIN_USER_PASSWORD }}
-          TEST_STATE_USER_EMAIL: ${{ secrets.SEED_STATE_USER_EMAIL }}
-          TEST_STATE_USER_PASSWORD: ${{ secrets.SEED_STATE_USER_PASSWORD }}
+          TEST_ADMIN_USER_EMAIL: ${{ secrets.TEST_ADMIN_USER_EMAIL }}
+          TEST_ADMIN_USER_PASSWORD: ${{ secrets.TEST_ADMIN_USER_PASSWORD }}
+          TEST_STATE_USER_EMAIL: ${{ secrets.TEST_STATE_USER_EMAIL }}
+          TEST_STATE_USER_PASSWORD: ${{ secrets.TEST_STATE_USER_PASSWORD }}
+          TEST_STATE: ${{ secrets.TEST_STATE }}
+          TEST_STATE_NAME: ${{ secrets.TEST_STATE_NAME }}
       - name: Upload playwright results
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()

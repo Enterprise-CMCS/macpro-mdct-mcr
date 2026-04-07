@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures/base";
 import { archiveAllReportsForState } from "../utils/requests";
 import { stateAbbreviation } from "../utils";
-import { mnMlrEligibilityGroups, mnMlrProgramTypes } from "../utils/consts";
+import { mlrEligibilityGroups, mlrProgramTypes } from "../utils/consts";
 import { faker } from "@faker-js/faker";
 
 test.describe("MLR Dashboard Page", () => {
@@ -71,8 +71,8 @@ test.describe("MLR Dashboard Page", () => {
       await statePage.addMLRProgramReportInfo(
         "TestPlan",
         "TestProgram",
-        mnMlrProgramTypes[0],
-        mnMlrEligibilityGroups[0],
+        mlrProgramTypes[0],
+        mlrEligibilityGroups[0],
         faker.date.recent().toLocaleDateString("en-US", {
           year: "numeric",
           month: "2-digit",
@@ -135,18 +135,11 @@ test.describe("MLR Dashboard Page", () => {
       const unlockButton = reportRow.getByRole("button", {
         name: new RegExp(`Unlock ${inProgressMlrProgramName}`),
       });
-      const putResponseAfterUnlock = adminPage.waitForResponse(
-        "/reports/release/MLR/",
-        "PUT",
-        200
-      );
-      const getResponseAfterUnlock = adminPage.waitForResponse(
-        "/reports/MLR/",
-        "GET",
-        200
-      );
-      await unlockButton.click();
-      await Promise.all([putResponseAfterUnlock, getResponseAfterUnlock]);
+      await Promise.all([
+        adminPage.waitForResponse("/reports/release/MLR/", "PUT", 200),
+        adminPage.waitForResponse("/reports/MLR/", "GET", 200),
+        unlockButton.click(),
+      ]);
 
       // Assert - Verify the report is unlocked and in revision
       await expect(reportRow.getByText("In revision")).toBeVisible();

@@ -7,8 +7,8 @@ export const stateUser = process.env.TEST_STATE_USER_EMAIL!;
 export const statePassword = process.env.TEST_STATE_USER_PASSWORD!; // pragma: allowlist secret
 export const stateUserHeading = "Managed Care Reporting Portal";
 
-export const stateAbbreviation = process.env.TEST_STATE || "MN";
-export const stateName = process.env.TEST_STATE_NAME || "Minnesota";
+export const stateAbbreviation = process.env.TEST_STATE || "TN";
+export const stateName = process.env.TEST_STATE_NAME || "Tennessee";
 
 export const currentYear: number = new Date().getFullYear();
 export const currentDate: Date = new Date();
@@ -30,24 +30,23 @@ export const a11yTags = [
   "best-practice",
 ];
 
-export const mnMcparPrograms = [
-  "Minnesota Senior Health Options (MSHO)",
-  "PMAP",
-  "Special Needs Basic Care (SNBC)",
-  "Minnesota Senior Care Plus (MSC+)",
-  "MinnesotaCare",
+export const tnMcparPrograms = [
+  "CoverKids Program",
+  "TennCare",
+  "TennCare Dental",
+  "TennCare Select",
 ];
 
-export const mnMlrProgramTypes = [
+export const mlrProgramTypes = [
   "Comprehensive MCO",
   "PIHP",
   "PAHP",
-  "Behaviorial Health",
+  "Behavioral Health",
   "Dental",
   "MLTSS",
 ];
 
-export const mnMlrEligibilityGroups = [
+export const mlrEligibilityGroups = [
   "All Populations",
   "Standalone CHIP",
   "Group VIII Expansion Adult Only",
