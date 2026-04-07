@@ -13,6 +13,7 @@ import {
   initializeChoiceListFields,
   isNotReportingSelected,
   mergeAriaDescribedBy,
+  removeAddedAriaDescribedBy,
   resetClearProp,
   setClearedEntriesToDefaultValue,
   sortFormErrors,
@@ -450,6 +451,22 @@ describe("utils/forms", () => {
       });
     });
 
+    describe("removeAddedAriaDescribedBy()", () => {
+      it("returns undefined when no existing aria-describedby", () => {
+        expect(removeAddedAriaDescribedBy("x")).toBeUndefined();
+      });
+
+      it("removes the id and returns undefined when it was the only reason", () => {
+        expect(removeAddedAriaDescribedBy("reason-id", "reason-id")).toBe(
+          undefined
+        );
+      });
+
+      it("removes the id", () => {
+        expect(removeAddedAriaDescribedBy("reason", "reason a b")).toBe("a b");
+      });
+    });
+
     describe("isNotReportingSelected()", () => {
       it("returns true when option key matches or endsWith trigger id", () => {
         expect(
@@ -559,7 +576,7 @@ describe("utils/forms", () => {
 
         expect(fields[2].props.disabled).toBeUndefined();
         expect(fields[2].props["aria-describedby"]).toBe("existing");
-        expect(fields[3].props.disabled).toBe(false);
+        expect(fields[3].props.disabled).toBeUndefined();
         expect(fields[3].props["aria-describedby"]).toBeUndefined();
       });
     });

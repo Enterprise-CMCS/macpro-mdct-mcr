@@ -407,6 +407,17 @@ export const mergeAriaDescribedBy = (
   return merged.length > 0 ? merged : undefined;
 };
 
+export const removeAddedAriaDescribedBy = (
+  toRemove: string,
+  existing?: string
+): string | undefined => {
+  if (!existing) return undefined;
+  const existingIds = existing.trim().split(/\s+/);
+  const filteredIds = existingIds.filter((id) => id !== toRemove);
+  const merged = filteredIds.join(" ");
+  return merged.length > 0 ? merged : undefined;
+};
+
 export const isNotReportingSelected = (value: Choice[]): boolean => {
   return value.some((opt: Choice) => {
     const key = opt.key;
@@ -421,28 +432,9 @@ export const hasSelectedOption = (value: Choice[]): boolean => {
 };
 
 const applyNotReportingDisabledState = (
-  field: FormField,
   props: AnyObject,
-  metaKey: string,
   disabledReasonId: string
 ) => {
-  /*
-   * The meta object stores the original disabled state and aria-describedby
-   * value of the field before we modify them, so that we can restore them
-   * properly when re-enabling the field.
-   */
-  const meta = (field as AnyObject)[metaKey];
-  if (!meta) {
-    (field as AnyObject)[metaKey] = {
-      originalDisabled:
-        typeof props.disabled === "boolean" ? props.disabled : undefined,
-      originalAriaDescribedBy:
-        typeof props["aria-describedby"] === "string"
-          ? (props["aria-describedby"] as string)
-          : undefined,
-    };
-  }
-
   // Apply the actual disabled behavior.
   props.disabled = true;
   props["aria-describedby"] = mergeAriaDescribedBy(
@@ -452,19 +444,15 @@ const applyNotReportingDisabledState = (
 };
 
 const restoreNotReportingDisabledState = (
-  field: FormField,
   props: AnyObject,
-  metaKey: string
+  disabledReasonId: string
 ) => {
-  const meta = (field as AnyObject)[metaKey];
-  if (!meta) return;
-
-  props.disabled = meta.originalDisabled;
-  props["aria-describedby"] = meta.originalAriaDescribedBy;
-  delete (field as AnyObject)[metaKey];
-
-  // If a prop was originally unset, delete it to avoid leaking undefined.
-  if (props.disabled === undefined) delete props.disabled;
+  //Remove the disabled state and the disabled reason from the aria-describedby attribute
+  delete props.disabled;
+  props["aria-describedby"] = removeAddedAriaDescribedBy(
+    disabledReasonId,
+    props["aria-describedby"]
+  );
   if (props["aria-describedby"] === undefined) delete props["aria-describedby"];
 };
 
@@ -474,8 +462,6 @@ export const applyDisableAfterField = (
   disableAfter: boolean,
   disabledReasonId: string
 ) => {
-  const metaKey = "__notReportingDisableMeta";
-
   /*
    * Find the index of the trigger field (The Not Reporting checkbox)
    * in the fields array so that we know where to start disabling subsequent fields.
@@ -493,9 +479,9 @@ export const applyDisableAfterField = (
     const props = field.props as AnyObject;
 
     if (disableAfter) {
-      applyNotReportingDisabledState(field, props, metaKey, disabledReasonId);
+      applyNotReportingDisabledState(props, disabledReasonId);
     } else {
-      restoreNotReportingDisabledState(field, props, metaKey);
+      restoreNotReportingDisabledState(props, disabledReasonId);
     }
   }
 };
