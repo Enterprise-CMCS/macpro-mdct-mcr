@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 // components
 import { Form } from "components";
@@ -204,6 +204,12 @@ describe("<Form />", () => {
     ) as HTMLSelectElement;
     expect(afterField).toBeEnabled();
 
+    // User enters a value in a subsequent field first.
+    await act(async () => {
+      await userEvent.selectOptions(afterField, "B");
+    });
+    expect(afterField.value).toBe("B");
+
     // Select Not reporting (child reason appears)
     await act(async () => {
       await userEvent.click(screen.getByLabelText("Not reporting"));
@@ -215,12 +221,24 @@ describe("<Form />", () => {
       await userEvent.click(screen.getByLabelText("Reason 1"));
     });
 
+    // Subsequent fields should be cleared when disabled.
+    // The Form forces a remount of the field subtree, so re-query the element.
+    await waitFor(() => {
+      const currentAfterField = screen.getByLabelText(
+        "After field"
+      ) as HTMLSelectElement;
+      expect(currentAfterField.value).toBe("");
+    });
+
     const disabledReasonId = `${notReportingForm.id}-not-reporting-disabled-reason`;
     expect(
       screen.getByText("Fields disabled because Not Reporting is selected")
     ).toBeVisible();
-    expect(afterField).toBeDisabled();
-    expect(afterField.getAttribute("aria-describedby")).toContain(
+    const currentAfterField = screen.getByLabelText(
+      "After field"
+    ) as HTMLSelectElement;
+    expect(currentAfterField).toBeDisabled();
+    expect(currentAfterField.getAttribute("aria-describedby")).toContain(
       disabledReasonId
     );
 
@@ -231,7 +249,9 @@ describe("<Form />", () => {
     await act(async () => {
       await userEvent.click(screen.getByLabelText("Not reporting"));
     });
-    expect(afterField).toBeEnabled();
+    expect(
+      screen.getByLabelText("After field") as HTMLSelectElement
+    ).toBeEnabled();
     expect(
       screen.queryByText("Fields disabled because Not Reporting is selected")
     ).toBeNull();

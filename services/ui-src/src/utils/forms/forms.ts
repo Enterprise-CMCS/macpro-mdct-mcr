@@ -485,3 +485,78 @@ export const applyDisableAfterField = (
     }
   }
 };
+
+// NOT REPORTING CLEAR HELPERS
+export const getClearedValueForField = (field: FormField): any => {
+  switch (field.type) {
+    // Choice lists store arrays of { key, value } selections.
+    case "radio":
+    case "checkbox":
+      return [];
+
+    // Single checkbox stores a boolean.
+    case "checkboxSingle":
+      return false;
+
+    // Dropdown stores an object with a .value (and optional .label).
+    case "dropdown":
+      return { label: "", value: "" };
+
+    // Dynamic stores an array of entities.
+    case "dynamic":
+      return [];
+
+    // Most other fields store strings.
+    default:
+      return "";
+  }
+};
+
+const collectDescendantFieldsFromChoices = (
+  field: FormField,
+  out: FormField[]
+): void => {
+  const choices = field.props?.choices as FieldChoice[] | undefined;
+  if (!choices) return;
+
+  for (const choice of choices) {
+    const children = choice.children as FormField[] | undefined;
+    if (!children) continue;
+
+    for (const child of children) {
+      out.push(child);
+      collectDescendantFieldsFromChoices(child, out);
+    }
+  }
+};
+
+export const getFieldElementsAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  triggerFieldId: string
+): FormField[] => {
+  const triggerIndex = fields.findIndex(
+    (field) => isFieldElement(field) && field.id === triggerFieldId
+  );
+  if (triggerIndex === -1) return [];
+
+  const out: FormField[] = [];
+  for (let i = triggerIndex + 1; i < fields.length; i++) {
+    const field = fields[i];
+    if (!isFieldElement(field)) continue;
+
+    out.push(field);
+    collectDescendantFieldsFromChoices(field, out);
+  }
+  return out;
+};
+
+export const applyClearedHydrationAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  triggerFieldId: string
+): void => {
+  const fieldsToClear = getFieldElementsAfterField(fields, triggerFieldId);
+  for (const field of fieldsToClear) {
+    field.props ??= {};
+    (field.props as AnyObject).hydrate = getClearedValueForField(field);
+  }
+};

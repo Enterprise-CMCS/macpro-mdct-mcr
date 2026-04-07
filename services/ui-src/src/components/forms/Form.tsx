@@ -1,4 +1,10 @@
-import { forwardRef, ReactNode, useLayoutEffect } from "react";
+import {
+  forwardRef,
+  ReactNode,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   FieldValues,
   FormProvider,
@@ -29,6 +35,9 @@ import {
   NOT_REPORTING_FIELD_ID,
   NOT_REPORTING_REASON_FIELD_ID,
   applyDisableAfterField,
+  applyClearedHydrationAfterField,
+  getClearedValueForField,
+  getFieldElementsAfterField,
   hasSelectedOption,
   isNotReportingSelected,
   sortFormErrors,
@@ -106,6 +115,44 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     notReportingChosen && notReportingReasonChosen;
   const notReportingDisabledReasonId = `${id}-not-reporting-disabled-reason`;
 
+  // Used to force an update of the fields so that it reflects cleared values
+  // immediately.
+  const [notReportingClearEpoch, setNotReportingClearEpoch] = useState(0);
+  const prevDisableFieldsAfterNotReporting = useRef<boolean>(false);
+
+  useLayoutEffect(() => {
+    if (!hasNotReportingTriggerField) return;
+
+    // Only clear on the transition to "disabled".
+    if (
+      disableFieldsAfterNotReporting &&
+      !prevDisableFieldsAfterNotReporting.current
+    ) {
+      const fieldsToClear = getFieldElementsAfterField(
+        fields,
+        NOT_REPORTING_FIELD_ID
+      );
+
+      for (const field of fieldsToClear) {
+        const fieldName = field.groupId ?? field.id;
+        form.setValue(fieldName, getClearedValueForField(field), {
+          shouldValidate: false,
+          shouldDirty: true,
+        });
+        form.clearErrors(fieldName);
+      }
+
+      setNotReportingClearEpoch((v) => v + 1);
+    }
+
+    prevDisableFieldsAfterNotReporting.current = disableFieldsAfterNotReporting;
+  }, [
+    disableFieldsAfterNotReporting,
+    hasNotReportingTriggerField,
+    fields,
+    form,
+  ]);
+
   // will run if any validation errors exist on form submission
   const onErrorHandler: SubmitErrorHandler<FieldValues> = (
     errors: AnyObject
@@ -143,6 +190,12 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
         disableFieldsAfterNotReporting,
         notReportingDisabledReasonId
       );
+
+      // Prevent cleared/disabled fields from re-hydrating from saved formData while
+      // Not Reporting is active.
+      if (disableFieldsAfterNotReporting) {
+        applyClearedHydrationAfterField(fieldsToRender, NOT_REPORTING_FIELD_ID);
+      }
 
       // Render a single disabled-reason message under the Not reporting field.
       const notReportingMessageField = fieldsToRender.find(
@@ -189,7 +242,9 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
         ref={ref}
         {...props}
       >
-        <Box sx={sx}>{renderFormFields(fields)}</Box>
+        <Box sx={sx} key={`form-fields-${notReportingClearEpoch}`}>
+          {renderFormFields(fields)}
+        </Box>
         {children}
       </form>
     </FormProvider>
