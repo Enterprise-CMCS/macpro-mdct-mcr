@@ -383,3 +383,180 @@ export const cleanSuppressed = (enteredData: AnyObject) => {
 
   return enteredData;
 };
+
+// NOT REPORTING HELPERS (MCPAR Quality Measures)
+export const NOT_REPORTING_OPTION_ID = "37sMoqg5MNOb17KDCpTO1w";
+export const NOT_REPORTING_FIELD_ID = "measure_isReporting";
+export const NOT_REPORTING_REASON_FIELD_ID = "measure_isNotReportingReason";
+
+/*
+ * This function merges the id of the disabled reason message to
+ * the existing aria-describedby attribute on fields. If there is already
+ * an aria-describedby value, the new id will be added to it, separated by a space.
+ * If not, the aria-describedby attribute will be created with the new id as
+ * its value.
+ */
+export const mergeAriaDescribedBy = (
+  toAdd: string,
+  existing?: string
+): string | undefined => {
+  const existingStr = existing ? existing.trim() : "";
+  const existingIds = existingStr ? existingStr.split(/\s+/) : [];
+  const ids = new Set([...existingIds, toAdd]);
+  const merged = [...ids].join(" ");
+  return merged.length > 0 ? merged : undefined;
+};
+
+export const removeAddedAriaDescribedBy = (
+  toRemove: string,
+  existing?: string
+): string | undefined => {
+  if (!existing) return undefined;
+  const existingIds = existing.trim().split(/\s+/);
+  const filteredIds = existingIds.filter((id) => id !== toRemove);
+  const merged = filteredIds.join(" ");
+  return merged.length > 0 ? merged : undefined;
+};
+
+export const isNotReportingSelected = (value: Choice[]): boolean => {
+  return value.some((opt: Choice) => {
+    const key = opt.key;
+    return (
+      key === NOT_REPORTING_OPTION_ID || key.endsWith(NOT_REPORTING_OPTION_ID)
+    );
+  });
+};
+
+export const hasSelectedOption = (value: Choice[]): boolean => {
+  return value.length > 0;
+};
+
+const applyNotReportingDisabledState = (
+  props: AnyObject,
+  disabledReasonId: string
+) => {
+  // Apply the actual disabled behavior.
+  props.disabled = true;
+  props["aria-describedby"] = mergeAriaDescribedBy(
+    disabledReasonId,
+    props["aria-describedby"]
+  );
+};
+
+const restoreNotReportingDisabledState = (
+  props: AnyObject,
+  disabledReasonId: string
+) => {
+  //Remove the disabled state and the disabled reason from the aria-describedby attribute
+  delete props.disabled;
+  props["aria-describedby"] = removeAddedAriaDescribedBy(
+    disabledReasonId,
+    props["aria-describedby"]
+  );
+  if (props["aria-describedby"] === undefined) delete props["aria-describedby"];
+};
+
+export const applyDisableAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  triggerFieldId: string,
+  disableAfter: boolean,
+  disabledReasonId: string
+) => {
+  /*
+   * Find the index of the trigger field (The Not Reporting checkbox)
+   * in the fields array so that we know where to start disabling subsequent fields.
+   */
+  const triggerIndex = fields.findIndex(
+    (field) => isFieldElement(field) && field.id === triggerFieldId
+  );
+  if (triggerIndex === -1) return;
+
+  for (let i = triggerIndex + 1; i < fields.length; i++) {
+    const field = fields[i];
+    if (!isFieldElement(field)) continue;
+
+    field.props ??= {};
+    const props = field.props as AnyObject;
+
+    if (disableAfter) {
+      applyNotReportingDisabledState(props, disabledReasonId);
+    } else {
+      restoreNotReportingDisabledState(props, disabledReasonId);
+    }
+  }
+};
+
+// NOT REPORTING CLEAR HELPERS
+export const getClearedValueForField = (field: FormField): any => {
+  switch (field.type) {
+    // Choice lists store arrays of { key, value } selections.
+    case "radio":
+    case "checkbox":
+      return [];
+
+    // Single checkbox stores a boolean.
+    case "checkboxSingle":
+      return false;
+
+    // Dropdown stores an object with a .value (and optional .label).
+    case "dropdown":
+      return { label: "", value: "" };
+
+    // Dynamic stores an array of entities.
+    case "dynamic":
+      return [];
+
+    // Most other fields store strings.
+    default:
+      return "";
+  }
+};
+
+const collectDescendantFieldsFromChoices = (
+  field: FormField,
+  out: FormField[]
+): void => {
+  const choices = field.props?.choices as FieldChoice[] | undefined;
+  if (!choices) return;
+
+  for (const choice of choices) {
+    const children = choice.children as FormField[] | undefined;
+    if (!children) continue;
+
+    for (const child of children) {
+      out.push(child);
+      collectDescendantFieldsFromChoices(child, out);
+    }
+  }
+};
+
+export const getFieldElementsAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  triggerFieldId: string
+): FormField[] => {
+  const triggerIndex = fields.findIndex(
+    (field) => isFieldElement(field) && field.id === triggerFieldId
+  );
+  if (triggerIndex === -1) return [];
+
+  const out: FormField[] = [];
+  for (let i = triggerIndex + 1; i < fields.length; i++) {
+    const field = fields[i];
+    if (!isFieldElement(field)) continue;
+
+    out.push(field);
+    collectDescendantFieldsFromChoices(field, out);
+  }
+  return out;
+};
+
+export const applyClearedHydrationAfterField = (
+  fields: (FormField | FormLayoutElement)[],
+  triggerFieldId: string
+): void => {
+  const fieldsToClear = getFieldElementsAfterField(fields, triggerFieldId);
+  for (const field of fieldsToClear) {
+    field.props ??= {};
+    (field.props as AnyObject).hydrate = getClearedValueForField(field);
+  }
+};
