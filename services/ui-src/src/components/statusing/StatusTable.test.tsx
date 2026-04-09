@@ -257,7 +257,7 @@ describe("<StatusTable />", () => {
               status={false}
             />
           );
-        }).toThrowError(
+        }).toThrow(
           "Statusing icons for 'invalidReportType' have not been implemented."
         );
 

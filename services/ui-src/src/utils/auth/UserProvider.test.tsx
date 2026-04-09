@@ -58,21 +58,10 @@ const testComponent = (
 );
 
 // HELPERS
-const originalLocationDescriptor: any = Object.getOwnPropertyDescriptor(
-  global,
-  "location"
-);
-
-const setWindowOrigin = (windowOrigin: string) => {
-  global.window = Object.create(window);
-  Object.defineProperty(window, "location", {
-    value: {
-      assign: jest.fn(),
-      origin: windowOrigin,
-      pathname: "/",
-    },
-    writable: true,
-  });
+// window.location is non-configurable in JSDOM, so we use the reconfigure
+// helper exposed by the custom test environment to change the URL.
+const setWindowOrigin = (origin: string) => {
+  (window as any).reconfigureJsdomLocation(`http://${origin}/`);
 };
 
 // TESTS
@@ -80,10 +69,6 @@ const setWindowOrigin = (windowOrigin: string) => {
 describe("<UserProvider />", () => {
   beforeAll(() => {
     setWindowOrigin("localhost");
-  });
-
-  afterAll(() => {
-    Object.defineProperty(global, "location", originalLocationDescriptor);
   });
 
   describe("Test UserProvider", () => {

@@ -591,7 +591,7 @@ describe("<DynamicField />", () => {
       });
       expect(firstDynamicField.value).toBe("Plans");
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockUpdateReport).lastCalledWith(
+      expect(mockUpdateReport).toHaveBeenLastCalledWith(
         { reportType: "MCPAR", id: "mock-report-id", state: "MN" },
         {
           fieldData: {
@@ -609,7 +609,7 @@ describe("<DynamicField />", () => {
         await userEvent.tab();
       });
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockUpdateReport).lastCalledWith(
+      expect(mockUpdateReport).toHaveBeenLastCalledWith(
         { reportType: "MCPAR", id: "mock-report-id", state: "MN" },
         {
           fieldData: {
@@ -643,7 +643,7 @@ describe("<DynamicField />", () => {
       expect(appendButton).toBeVisible();
       expect(firstDynamicField.value).toBe("123");
       expect(mockUpdateReport).toHaveBeenCalledTimes(1);
-      expect(mockUpdateReport).lastCalledWith(
+      expect(mockUpdateReport).toHaveBeenLastCalledWith(
         { reportType: "MCPAR", id: "mock-report-id", state: "MN" },
         {
           fieldData: {

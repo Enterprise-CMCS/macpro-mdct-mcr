@@ -63,7 +63,7 @@ describe("<EntityDetailsFormOverlay />", () => {
       await userEvent.click(submitButton);
     });
 
-    expect(mockOnSubmit).toBeCalled();
+    expect(mockOnSubmit).toHaveBeenCalled();
   });
 
   test("closes overlay", async () => {
@@ -75,7 +75,7 @@ describe("<EntityDetailsFormOverlay />", () => {
       await userEvent.click(closeButton);
     });
 
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+    expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
   });
 
   test("disables submit button", async () => {
@@ -88,7 +88,7 @@ describe("<EntityDetailsFormOverlay />", () => {
       await userEvent.click(closeButton);
     });
 
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+    expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
     expect(submitButton).toBeNull();
   });
 
