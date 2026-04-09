@@ -66,7 +66,7 @@
     "pa11y": "^9.0.0",
     "pa11y-runner-htmlcs": "^2.0.1",
     "typescript": "^5.9.3",
-    "vite": "8.0.3",
+    "vite": "8.0.5",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "resolutions": {
