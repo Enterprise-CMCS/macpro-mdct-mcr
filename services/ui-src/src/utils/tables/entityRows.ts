@@ -50,6 +50,8 @@ export const buildDrawerReportPageEntityRows = ({
     const isCustomEntity =
       canAddEntities && !getDefaultAnalysisMethodIds().includes(entity.id);
 
+    const qualityMeasures = report.fieldData?.qualityMeasures;
+
     const isEntityCompleted = calculateIsEntityCompleted({
       addEntityForm,
       entity,
@@ -58,6 +60,7 @@ export const buildDrawerReportPageEntityRows = ({
       reportingOnIlos,
       isMeasuresAndResultsPage,
       measureId,
+      qualityMeasures,
     });
 
     const enterButton = getButtonProps({
@@ -111,19 +114,32 @@ export const calculateIsEntityCompleted = ({
   reportingOnIlos,
   isMeasuresAndResultsPage,
   measureId,
+  qualityMeasures,
 }: CalculateEntityCompletionProps) => {
   const calculateMeasureCompletion = () => {
     if (!measureId) return false;
     const planMeasureData = entity?.measures?.[measureId];
-    const isNotReporting = planMeasureData?.measure_isReporting?.length > 0;
-    const hasReasons =
-      planMeasureData?.measure_isNotReportingReason?.length > 0;
-    if (isNotReporting && hasReasons) return true;
+    if (!planMeasureData) return false;
 
-    const requiredFields = form.fields
-      ?.filter(isFieldElement)
-      .filter((field) => field.id !== "measure_isReporting");
-    return calculateEntityCompletion(requiredFields, planMeasureData);
+    const reporting = planMeasureData.measure_isReporting?.length > 0;
+    const notReportingReasons =
+      planMeasureData.measure_isNotReportingReason?.length > 0;
+    if (reporting && notReportingReasons) return true;
+
+    const dataMethod = planMeasureData.measure_dataCollectionMethod?.length > 0;
+
+    const qualityMeasureData = qualityMeasures?.find(
+      (qm: any) => qm.id === measureId
+    );
+
+    const ratesAreAnswered = qualityMeasureData?.measure_rates.every(
+      (rate: any) => {
+        const rateResult = planMeasureData[`measure_rateResults-${rate.id}`];
+        return rateResult && rateResult !== "";
+      }
+    );
+
+    return dataMethod && ratesAreAnswered;
   };
 
   const calculateEntityCompletion = (
@@ -357,6 +373,7 @@ interface CalculateEntityCompletionProps {
   reportingOnIlos?: boolean;
   isMeasuresAndResultsPage?: boolean;
   measureId?: string;
+  qualityMeasures?: EntityShape;
 }
 
 interface GetCompleteTextProps {
