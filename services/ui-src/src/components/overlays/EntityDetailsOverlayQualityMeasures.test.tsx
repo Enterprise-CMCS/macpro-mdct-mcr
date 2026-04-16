@@ -7,7 +7,6 @@ import { ReportContext } from "components";
 import { DrawerReportPageShape, ModalOverlayReportPageShape } from "types";
 // utils
 import {
-  mockDrawerForm,
   mockEntityStore,
   mockMcparReport,
   mockMcparReportContext,
@@ -18,6 +17,50 @@ import {
 import { useStore } from "utils";
 // verbiage
 import overlayVerbiage from "verbiage/pages/overlays";
+
+const mockQualityMeasuresDrawerForm = {
+  id: "mock-quality-measures-drawer-form",
+  fields: [
+    {
+      id: "measure_isReporting",
+      type: "radio",
+      validation: "radio",
+      props: {
+        label: "Are you reporting results for this measure?",
+        choices: [
+          {
+            id: "xvBx2RGFpvmUf2Wk5bLe9u",
+            label: "Yes",
+            children: [
+              {
+                id: "measure_dataCollectionMethod",
+                type: "radio",
+                validation: "radio",
+                props: {
+                  label: "Data collection method",
+                  choices: [
+                    {
+                      id: "mock-administrative",
+                      label: "Administrative",
+                    },
+                    {
+                      id: "mock-hybrid",
+                      label: "Hybrid",
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          {
+            id: "mock-no",
+            label: "No",
+          },
+        ],
+      },
+    },
+  ],
+};
 
 const mockCloseEntityDetailsOverlay = jest.fn();
 
@@ -81,7 +124,7 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
   test("should have drawer form with rates and be able to submit", async () => {
     const mockDrawerFormRoute = {
       ...mockModalOverlayReportPageJson,
-      drawerForm: mockDrawerForm,
+      drawerForm: mockQualityMeasuresDrawerForm,
     };
     render(entityDetailsOverlayQualityMeasuresComponent(mockDrawerFormRoute));
 
@@ -99,18 +142,30 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
 
     // fill out drawer form
     expect(screen.getByRole("form")).toBeVisible();
-    const mockDrawerField = screen.getByRole("textbox", {
-      name: "mock drawer text field",
+    const reportingYesButton = screen.getByRole("radio", {
+      name: "Yes",
     });
-    expect(mockDrawerField).toBeVisible();
+    expect(reportingYesButton).toBeVisible();
     await act(async () => {
-      await userEvent.type(mockDrawerField, "test");
+      await userEvent.click(reportingYesButton);
     });
 
     // verify rate field gets appended
-    expect(
-      screen.getByRole("textbox", { name: "mock rate 1 results" })
-    ).toBeVisible();
+    const dataCollectionMethodField = screen.getByRole("radio", {
+      name: "Administrative",
+    });
+    expect(dataCollectionMethodField).toBeVisible();
+    await act(async () => {
+      await userEvent.click(dataCollectionMethodField);
+    });
+
+    const rateField = screen.getByRole("textbox", {
+      name: "mock rate 1 results",
+    });
+    expect(rateField).toBeVisible();
+    await act(async () => {
+      await userEvent.type(rateField, "123");
+    });
 
     // close drawer
     const closeDrawerButton = screen.getByRole("button", {

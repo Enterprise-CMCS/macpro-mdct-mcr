@@ -373,7 +373,7 @@ interface CalculateEntityCompletionProps {
   reportingOnIlos?: boolean;
   isMeasuresAndResultsPage?: boolean;
   measureId?: string;
-  qualityMeasures?: EntityShape;
+  qualityMeasures?: EntityShape[];
 }
 
 interface GetCompleteTextProps {

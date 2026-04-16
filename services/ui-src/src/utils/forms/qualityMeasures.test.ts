@@ -3,8 +3,30 @@ import {
   createRateField,
   RATE_ID_PREFIX,
 } from "./qualityMeasures";
-// utils
-import { mockDrawerForm } from "utils/testing/setupJest";
+
+const mockQualityMeasureDrawerForm = {
+  id: "mock-drawer-form-id",
+  fields: [
+    {
+      id: "measure_isReporting",
+      type: "radio",
+      validation: "radio",
+      props: {
+        choices: [
+          {
+            id: "xvBx2RGFpvmUf2Wk5bLe9u",
+            label: "Yes",
+            children: [],
+          },
+          {
+            id: "mock-no-choice",
+            label: "No",
+          },
+        ],
+      },
+    },
+  ],
+};
 
 const mockMeasure = {
   id: "mock-measure-1",
@@ -20,16 +42,21 @@ const mockMeasure = {
 describe("qualityMeasures utils", () => {
   describe("addRatesToForm()", () => {
     test("adds rate field", () => {
-      expect(mockDrawerForm.fields.length).toBe(1);
-      const modifiedForm = addRatesToForm(mockDrawerForm, mockMeasure);
-      expect(modifiedForm.fields.length).toBe(2);
-      expect(modifiedForm.fields[0]).toEqual(mockDrawerForm.fields[0]);
-      expect(modifiedForm.fields[1]).toEqual(
+      const modifiedForm = addRatesToForm(
+        mockQualityMeasureDrawerForm as any,
+        mockMeasure
+      );
+
+      expect(modifiedForm.fields).toHaveLength(1);
+      expect(
+        mockQualityMeasureDrawerForm.fields[0].props.choices[0].children
+      ).toEqual([]);
+      expect(modifiedForm.fields[0].props?.choices[0].children).toEqual([
         createRateField(
           mockMeasure.measure_rates[0].id,
           mockMeasure.measure_rates[0].name
-        )
-      );
+        ),
+      ]);
     });
   });
 
@@ -41,7 +68,7 @@ describe("qualityMeasures utils", () => {
       );
       expect(rateField.id).toEqual(`${RATE_ID_PREFIX}mock-rate-1`);
       expect(rateField.type).toEqual("number");
-      expect(rateField.validation).toEqual("numberOptional");
+      expect(rateField.validation).toEqual("number");
       expect(rateField.props.label).toEqual("mock rate 1 results");
     });
   });
