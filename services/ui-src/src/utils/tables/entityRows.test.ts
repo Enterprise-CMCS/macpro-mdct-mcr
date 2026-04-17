@@ -27,6 +27,8 @@ import {
   mockModalDrawerReportPageJson,
   mockModalOverlayReportPageJson,
   mockNaaarAnalysisMethodsPageJson,
+  mockPlanEntities,
+  mockQualityMeasuresEntityV2,
 } from "utils/testing/setupJest";
 
 describe("buildDrawerReportPageEntityRows()", () => {
@@ -201,6 +203,8 @@ describe("calculateIsEntityCompleted()", () => {
       },
     ],
   };
+  const completeMeasureEntity = mockPlanEntities[0];
+  const qualityMeasures = [mockQualityMeasuresEntityV2];
 
   const baseCalculateIsEntityCompletedProps = {
     addEntityForm: mockDrawerForm,
@@ -209,6 +213,7 @@ describe("calculateIsEntityCompleted()", () => {
     isCustomEntity: false,
     reportingOnIlos: false,
     isMeasuresAndResultsPage: false,
+    qualityMeasures,
   };
 
   test("returns true for complete entity", () => {
@@ -268,8 +273,9 @@ describe("calculateIsEntityCompleted()", () => {
   test("returns true for measure and results when complete", () => {
     const props = {
       ...baseCalculateIsEntityCompletedProps,
+      entity: completeMeasureEntity,
       isMeasuresAndResultsPage: true,
-      measureId: "mock-measure-id-1",
+      measureId: mockQualityMeasuresEntityV2.id,
     };
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(true);
@@ -279,11 +285,11 @@ describe("calculateIsEntityCompleted()", () => {
     const props = {
       ...baseCalculateIsEntityCompletedProps,
       isMeasuresAndResultsPage: true,
-      measureId: "mock-measure-id-1",
+      measureId: mockQualityMeasuresEntityV2.id,
       entity: {
         id: "test-measure-plan-1",
         measures: {
-          "mock-measure-id-1": {
+          [mockQualityMeasuresEntityV2.id]: {
             measure_isReporting: [
               {
                 label: "Not reporting",
@@ -307,7 +313,7 @@ describe("calculateIsEntityCompleted()", () => {
       ...baseCalculateIsEntityCompletedProps,
       entity: incompleteEntity,
       isMeasuresAndResultsPage: true,
-      measureId: "mock-measure-id-1",
+      measureId: mockQualityMeasuresEntityV2.id,
     };
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(false);
