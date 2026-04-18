@@ -9,6 +9,7 @@ export const reset = {
   handler: async () => {
     await updateEnvFiles();
 
+    await runCommand("Stop localstack", ["localstack", "stop"], ".");
     await runCommand("Stop colima", ["colima", "stop"], ".");
     await runCommand("Delete colima", ["colima", "delete", "--force"], ".");
   },
