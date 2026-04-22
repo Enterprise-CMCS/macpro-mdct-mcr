@@ -43,7 +43,7 @@ export default {
         {
           type: "p",
           content:
-            "Include the measures that the state uses to evaluate plan performance. This may include, but is not limited to:",
+            "Where a measure steward asks only for the total rate, report the total rate. If a measure steward specifies multiple rates for the same measure (e.g., rates for different age groups, etc.) follow the decision tree located in Figure 1 in the technical guidance to determine which rates to report. The state should not report all possible rates for the measure in the MCPAR. Include the measures that the state uses to evaluate plan performance. This may include, but is not limited to:",
         },
         {
           type: "ol",
@@ -59,7 +59,7 @@ export default {
             {
               type: "li",
               content:
-                "Plan measures used for pay-for-performance and evaluation (e.g., state directed payment, ILOS, plan incentives and withholds)",
+                "Plan measures used for pay-for-performance and evaluation (e.g., state directed payment, ILOSs, plan incentives and withholds)",
             },
             {
               type: "li",
@@ -70,7 +70,7 @@ export default {
         {
           type: "p",
           content:
-            "Where a measure steward asks only for the total rate, report the total rate. If a measure steward specifies multiple rates for the same measure (e.g., rates for different age groups, etc.) follow the decision tree located in Figure 1 in the technical guidance to determine which rates to report. The state should not report all possible rates for the measure in the MCPAR.",
+            "Where a measure steward asks only for the total rate, report the total rate. If a measure steward specifies multiple rates for the same measure (e.g., rates for different age groups, etc.) follow the decision tree located in Figure 1 in the Technical Guide to determine which rates to report. The state should not report all possible rates for the measure in the MCPAR.",
         },
       ],
       text: "",
