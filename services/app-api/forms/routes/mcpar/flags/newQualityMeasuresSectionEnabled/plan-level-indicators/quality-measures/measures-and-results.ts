@@ -73,7 +73,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
             {
               type: "span",
               content:
-                "? If no, indicate whether it has a Consensus Based Entity (CBE) number or whether it uses neither CMIT nor CBE. If measurement varied from CMIT or CBE specifications, answer “No, it uses neither CMIT nor CBE”.",
+                "? If no, indicate whether it has a Consensus Based Entity (CBE) number or whether it uses neither CMIT nor CBE. If measurement varied from CMIT or CBE specifications, answer “No, it uses neither CMIT nor CBE”.",
             },
           ],
           choices: [
@@ -234,7 +234,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           divider: "none",
           content: "Naming of rates",
-          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
+          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
         },
       },
       {
