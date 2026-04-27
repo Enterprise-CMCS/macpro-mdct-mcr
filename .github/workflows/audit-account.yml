@@ -16,7 +16,6 @@ permissions:
 
 jobs:
   audit:
-    name: Audit
     environment: dev
     runs-on: ubuntu-latest
     steps:
@@ -42,12 +41,11 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
-      - name: Cache Node modules and Cypress folder
+      - name: Cache Node modules folder
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             **/node_modules
-            ~/.cache/Cypress
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', 'plugins/**') }}
 
       - name: Set path
@@ -66,12 +64,6 @@ jobs:
 
       - name: Create reports dir
         run: pushd .github && mkdir -p reports
-
-      - name: Install scan resources dependencies
-        run: |
-          pushd .github/scanResources
-          yarn install --immutable
-          popd
 
       - name: Run unmanaged resources scan
         run: |

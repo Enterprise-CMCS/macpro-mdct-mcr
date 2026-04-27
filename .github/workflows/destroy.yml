@@ -9,10 +9,6 @@ on:
         description: "Name of the environment to destroy:"
         required: true
 
-concurrency:
-  # Same group as deploy.yml to prevent simultaneous deploy/destroy
-  group: ${{ inputs.environment || github.event.ref }}
-
 permissions:
   actions: read
   contents: read
@@ -21,7 +17,7 @@ permissions:
 jobs:
   destroy:
     name: Destroy
-    if: (inputs.environment || github.event.ref_type == 'branch') && !contains('skipci', github.event.ref)
+    if: (inputs.environment || github.event.ref_type == 'branch') && !contains(github.event.ref, 'skipci')
     environment: dev
     runs-on: ubuntu-latest
     steps:
