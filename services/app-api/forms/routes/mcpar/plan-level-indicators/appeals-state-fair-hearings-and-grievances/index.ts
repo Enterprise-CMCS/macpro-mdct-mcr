@@ -1,6 +1,6 @@
 import { ParentRoute } from "../../../../../utils/types";
 import { appealsByServiceRoute } from "./appeals-by-service";
-import { appealsByReasonRoute } from "./appeals-by-reason";
+import { appealsByReasonRoute } from "../../flags/newQualityMeasuresSectionEnabled/plan-level-indicators/appeals-by-reason";
 import { appealsOverviewRoute } from "./appeals-overview";
 import { grievancesByReasonRoute } from "./grievances-by-reason";
 import { grievancesByServiceRoute } from "./grievances-by-service";

@@ -4,7 +4,7 @@ import {
   PageTypes,
   ReportFormFieldType,
   ValidationType,
-} from "../../../../../utils/types";
+} from "../../../../../../utils/types";
 
 export const appealsByReasonRoute: DrawerFormRoute = {
   name: "Appeals by Reason",
