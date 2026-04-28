@@ -93,7 +93,7 @@ export const numberOrSuppressed = () =>
         const isSuppressed = value.trim().toLowerCase() === "suppressed";
         return isSuppressed || checkStandardNumberInputAgainstRegexes(value);
       },
-      message: error.INVALID_NUMBER,
+      message: error.INVALID_NUMBER_OR_SUPPRESSED,
     });
 
 export const numberOrSuppressedOrNaNr = () =>
