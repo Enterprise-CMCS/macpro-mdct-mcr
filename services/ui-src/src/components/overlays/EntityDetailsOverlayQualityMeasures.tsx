@@ -81,6 +81,7 @@ export const EntityDetailsOverlayQualityMeasures = ({
       plan?.measures?.[selectedMeasure.id] ?? {
         measure_isReporting: [
           {
+            // pragma: allowlist secret
             key: "measure_isReporting-xvBx2RGFpvmUf2Wk5bLe9u",
             value: "Yes, I am reporting",
           },
