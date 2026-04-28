@@ -110,6 +110,21 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     }
   }, [location?.pathname]);
 
+  const formSx =
+    id === "dabr"
+      ? {
+          ...sx,
+          ".ds-c-label:not(.question-field), .ds-c-field__label:not(.question-field)":
+            {
+              marginTop: "0 !important",
+              marginBottom: "0.125rem !important",
+            },
+          ".ds-c-field": {
+            margin: "0 0 0.125rem !important",
+          },
+        }
+      : sx;
+
   return (
     <FormProvider {...form}>
       <form
@@ -120,7 +135,7 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
         ref={ref}
         {...props}
       >
-        <Box sx={sx}>{renderFormFields(fields)}</Box>
+        <Box sx={formSx}>{renderFormFields(fields)}</Box>
         {children}
       </form>
     </FormProvider>

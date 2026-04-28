@@ -56,6 +56,10 @@ export const validationErrors = {
   INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number, "N/A" or "NR"',
   INVALID_RATIO: "Response must be a valid ratio",
+  INVALID_NUMBER_OR_SUPPRESSED:
+    'Response must be a valid number or "Suppressed"',
+  INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR:
+    'Response must be a valid number, "Suppressed", "N/A", or "NR"',
 };
 
 export const reportErrors = {

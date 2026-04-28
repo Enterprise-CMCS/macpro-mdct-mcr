@@ -34,6 +34,7 @@ import {
   SectionContent,
   SectionDivider,
   SectionHeader,
+  Question,
 } from "components/forms/FormLayoutElements";
 import {
   generateAddEntityDrawerItemFields,
@@ -60,7 +61,10 @@ export const formFieldFactory = (
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
+    numberOrSuppressed: NumberField,
+    numberOrSuppressedOrNaNr: NumberField,
     numberSuppressible: NumberSuppressibleField,
+    question: Question,
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,

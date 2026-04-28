@@ -37,6 +37,9 @@ export enum ReportFormFieldType {
   DYNAMIC = "dynamic",
   NUMBER = "number",
   NUMBER_SUPPRESSIBLE = "numberSuppressible",
+  NUMBER_OR_SUPPRESSED_OR_NA_NR = "numberOrSuppressedOrNaNr",
+  NUMBER_OR_SUPPRESSED = "numberOrSuppressed",
+  QUESTION = "question",
   RADIO = "radio",
   SECTION_CONTENT = "sectionContent",
   SECTION_DIVIDER = "sectionDivider",
@@ -87,6 +90,7 @@ export interface ReportFormFieldProps {
   mask?: string;
   options?: string;
   styleAsOptional?: boolean;
+  sxOverride?: any;
   timetype?: string;
 }
 

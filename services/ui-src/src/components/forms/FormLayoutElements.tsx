@@ -48,3 +48,26 @@ export const SectionContent = ({ content }: SectionContentProps) => {
 interface SectionContentProps {
   content: string;
 }
+
+export const Question = ({ content, hint }: QuestionProps) => {
+  const sx = {
+    wrapper: {
+      marginTop: "1.5rem",
+    },
+  };
+
+  return (
+    <Box
+      sx={sx.wrapper}
+      className="question-field ds-c-label ds-c-field__label"
+    >
+      <Text>{parseCustomHtml(content)}</Text>
+      {hint && <Text className="ds-c-hint">{parseCustomHtml(hint)}</Text>}
+    </Box>
+  );
+};
+
+interface QuestionProps {
+  content: string;
+  hint?: string;
+}
