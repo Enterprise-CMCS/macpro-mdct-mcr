@@ -19,6 +19,7 @@
   "workspaces": [
     "cli",
     "deployment",
+    ".github/scanResources",
     "services/app-api",
     "services/database",
     "services/topics",
