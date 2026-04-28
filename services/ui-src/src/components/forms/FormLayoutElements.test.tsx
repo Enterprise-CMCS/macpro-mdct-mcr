@@ -53,7 +53,7 @@ describe("<SectionContent />", () => {
 describe("<Question />", () => {
   test("Component should render question content and hint text", () => {
     const { getByText } = render(questionComponent);
-    expect(getByText("D1.IV.6a Prompt")).toBeVisible();
+    expect(getByText("D1.IV.6a Question")).toBeVisible();
     expect(getByText("Helpful hint text")).toBeVisible();
   });
 
