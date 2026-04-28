@@ -284,6 +284,7 @@ export function isFieldElement(
     "sectionHeader",
     "sectionContent",
     "sectionDivider",
+    "question",
   ];
   return !formLayoutElementTypes.includes(field.type);
 }
