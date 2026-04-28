@@ -72,7 +72,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
         },
       },
       {
-        id: "D1.IV.6aPrompt",
+        id: "plan_resolvedPreServiceAuthorizationDenialAppeals",
         type: ReportFormFieldType.QUESTION,
         props: {
           content:

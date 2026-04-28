@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react";
 // components
 import {
+  Question,
   SectionContent,
   SectionDivider,
   SectionHeader,
@@ -17,6 +18,9 @@ const sectionHeaderComponent = (divider: "top" | "bottom" | "none") => (
 );
 
 const sectionContentComponent = <SectionContent content={"Foo"} />;
+const questionComponent = (
+  <Question content="D1.IV.6a Question" hint="Helpful hint text" />
+);
 
 describe("<SectionHeader />", () => {
   test("Section header renders header and hint text", () => {
@@ -44,4 +48,14 @@ describe("<SectionContent />", () => {
   });
 
   testA11yAct(sectionContentComponent);
+});
+
+describe("<Question />", () => {
+  test("Component should render question content and hint text", () => {
+    const { getByText } = render(questionComponent);
+    expect(getByText("D1.IV.6a Prompt")).toBeVisible();
+    expect(getByText("Helpful hint text")).toBeVisible();
+  });
+
+  testA11yAct(questionComponent);
 });

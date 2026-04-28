@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals";
 import {
   checkbox,
   checkboxOneOptional,
@@ -20,6 +21,7 @@ import {
   numberNotLessThanZeroOptional,
   numberOptional,
   numberOrSuppressed,
+  numberOrSuppressedOrNaNr,
   numberSuppressible,
   radio,
   radioOptional,
@@ -227,6 +229,21 @@ describe("Completion schemas", () => {
     "numberOrSuppressed() $description -> $expected",
     ({ value, expected }) => {
       expect(numberOrSuppressed().isValidSync(value)).toBe(expected);
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...accept(notApplicableValues),
+    ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
+    ...reject(["Suppressed for data privacy purposes"]),
+  ])(
+    "numberOrSuppressedOrNaNr() $description -> $expected",
+    ({ value, expected }) => {
+      expect(numberOrSuppressedOrNaNr().isValidSync(value)).toBe(expected);
     }
   );
 
