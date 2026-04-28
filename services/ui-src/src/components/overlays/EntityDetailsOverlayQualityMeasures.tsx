@@ -73,7 +73,20 @@ export const EntityDetailsOverlayQualityMeasures = ({
     );
     setDrawerForm(drawerFormWithRates);
     setSelectedPlan(plan);
-    setPlanMeasureData(plan?.measures?.[selectedMeasure.id]);
+
+    // If this plan has no existing data for the selected measure, pre-select
+    // "Yes, I am reporting" on the drawer form so users don't have to manually
+    // check it.
+    setPlanMeasureData(
+      plan?.measures?.[selectedMeasure.id] ?? {
+        measure_isReporting: [
+          {
+            key: "measure_isReporting-xvBx2RGFpvmUf2Wk5bLe9u",
+            value: "Yes, I am reporting",
+          },
+        ],
+      }
+    );
     onOpen();
   };
 
