@@ -1,6 +1,5 @@
 import { ParentRoute } from "../../../../../utils/types";
 import { appealsByServiceRoute } from "./appeals-by-service";
-import { appealsByReasonRoute } from "../../flags/newQualityMeasuresSectionEnabled/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-reason";
 import { appealsOverviewRoute } from "./appeals-overview";
 import { grievancesByReasonRoute } from "./grievances-by-reason";
 import { grievancesByServiceRoute } from "./grievances-by-service";
@@ -13,7 +12,6 @@ export const appealsStateFairHearingsAndGrievancesRoute: ParentRoute = {
   children: [
     appealsOverviewRoute,
     appealsByServiceRoute,
-    appealsByReasonRoute,
     stateFairHearingsRoute,
     grievancesOverviewRoute,
     grievancesByServiceRoute,
