@@ -1,5 +1,5 @@
 import { ParentRoute } from "../../../../../../utils/types";
-import { appealsStateFairHearingsAndGrievancesRoute } from "../../../plan-level-indicators/appeals-state-fair-hearings-and-grievances";
+import { appealsStateFairHearingsAndGrievancesRoute } from "./appeals-state-fair-hearings-and-grievances";
 import { encounterDataReportRoute } from "../../../plan-level-indicators/encounter-data-report";
 import { financialPerformanceRoute } from "../plan-level-indicators/financial-performance";
 import { ilosRoute } from "../../../plan-level-indicators/ilos";
