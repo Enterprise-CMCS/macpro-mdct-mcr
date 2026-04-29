@@ -110,21 +110,6 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
     }
   }, [location?.pathname]);
 
-  const formSx =
-    id === "dabr"
-      ? {
-          ...sx,
-          ".ds-c-label:not(.question-field), .ds-c-field__label:not(.question-field)":
-            {
-              marginTop: "0 !important",
-              marginBottom: "0.125rem !important",
-            },
-          ".ds-c-field": {
-            margin: "0 0 0.125rem !important",
-          },
-        }
-      : sx;
-
   return (
     <FormProvider {...form}>
       <form
@@ -135,7 +120,9 @@ export const Form = forwardRef<HTMLFormElement, Props>(function Form(
         ref={ref}
         {...props}
       >
-        <Box sx={formSx}>{renderFormFields(fields)}</Box>
+        <Box sx={sx} className={id === "dabr" ? "dabr" : undefined}>
+          {renderFormFields(fields)}
+        </Box>{" "}
         {children}
       </form>
     </FormProvider>
@@ -232,5 +219,16 @@ const sx = {
   },
   ".numbered::before": {
     content: 'counter(item) "."',
+  },
+  "&.dabr": {
+    ".ds-c-label:not(.question-field), .ds-c-field__label:not(.question-field)":
+      {
+        marginTop: 0,
+        marginBottom: "0.125rem",
+      },
+    ".ds-c-field": {
+      margin: "0 0 0.125rem",
+      maxWidth: "15rem",
+    },
   },
 };

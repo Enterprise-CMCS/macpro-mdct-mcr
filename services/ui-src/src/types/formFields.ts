@@ -176,11 +176,11 @@ export function isFieldElement(
    * This function is duplicated in app-api/utils/formTemplates/formTemplates.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = [
-    "sectionHeader",
-    "sectionContent",
-    "sectionDivider",
-    "question",
+  const formLayoutElementTypes: string[] = [
+    ReportFormFieldType.SECTION_HEADER,
+    ReportFormFieldType.SECTION_CONTENT,
+    ReportFormFieldType.SECTION_DIVIDER,
+    ReportFormFieldType.QUESTION,
   ];
   return !formLayoutElementTypes.includes(field.type);
 }
@@ -209,4 +209,23 @@ export interface PlanQuestion {
 export interface PlanData {
   heading: string;
   questions: PlanQuestion[];
+}
+
+export enum ReportFormFieldType {
+  CHECKBOX = "checkbox",
+  DATE = "date",
+  DATE_MONTH_YEAR = "dateMonthYear",
+  DROPDOWN = "dropdown",
+  DYNAMIC = "dynamic",
+  NUMBER = "number",
+  NUMBER_SUPPRESSIBLE = "numberSuppressible",
+  NUMBER_OR_SUPPRESSED_OR_NA_NR = "numberOrSuppressedOrNaNr",
+  NUMBER_OR_SUPPRESSED = "numberOrSuppressed",
+  QUESTION = "question",
+  RADIO = "radio",
+  SECTION_CONTENT = "sectionContent",
+  SECTION_DIVIDER = "sectionDivider",
+  SECTION_HEADER = "sectionHeader",
+  TEXT = "text",
+  TEXTAREA = "textarea",
 }

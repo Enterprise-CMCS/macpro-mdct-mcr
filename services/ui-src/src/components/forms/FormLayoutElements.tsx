@@ -52,7 +52,7 @@ interface SectionContentProps {
 export const Question = ({ content, hint }: QuestionProps) => {
   const sx = {
     wrapper: {
-      marginTop: "1.5rem",
+      marginTop: "spacer3",
     },
   };
 
