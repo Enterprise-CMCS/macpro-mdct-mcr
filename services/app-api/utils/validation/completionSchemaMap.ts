@@ -5,6 +5,8 @@ export const completionSchemaMap: any = {
   textOptional: schema.textOptional(),
   number: schema.number(),
   numberOptional: schema.numberOptional(),
+  numberOrSuppressed: schema.numberOrSuppressed(),
+  numberOrSuppressedOrNaNr: schema.numberOrSuppressedOrNaNr(),
   numberNotLessThanOne: schema.numberNotLessThanOne(),
   numberNotLessThanZero: schema.numberNotLessThanZero(),
   numberSuppressible: schema.numberSuppressible(),

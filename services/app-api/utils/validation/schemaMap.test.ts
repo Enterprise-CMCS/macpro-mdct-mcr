@@ -8,6 +8,7 @@ import {
   validNumber,
   numberNotLessThanOne,
   numberNotLessThanZero,
+  numberOrSuppressed,
   numberSuppressible,
   futureDate,
 } from "./schemaMap";
@@ -165,5 +166,20 @@ describe("Schemas", () => {
     testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
     testTextSchema(numberSuppressible(), [suppressionText], true);
     testTextSchema(numberSuppressible(), ["badText", undefined], false);
+  });
+
+  test("Test numberOrSuppressed schema", () => {
+    testValidNumber(numberOrSuppressed(), goodValidNumberTestCases, true);
+    testValidNumber(numberOrSuppressed(), badValidNumberTestCases, false);
+    testTextSchema(
+      numberOrSuppressed(),
+      ["suppressed", "Suppressed", " SUPPRESSED "],
+      true
+    );
+    testTextSchema(
+      numberOrSuppressed(),
+      [suppressionText, "badText", undefined],
+      false
+    );
   });
 });

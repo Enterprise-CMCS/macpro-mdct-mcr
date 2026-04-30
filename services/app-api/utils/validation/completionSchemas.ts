@@ -25,6 +25,10 @@ export const error = {
   INVALID_NUMBER: "Response must be a valid number",
   INVALID_NUMBER_OR_NA: 'Response must be a valid number, "N/A" or "NR"',
   INVALID_RATIO: "Response must be a valid ratio",
+  INVALID_NUMBER_OR_SUPPRESSED:
+    'Response must be a valid number or "Suppressed"',
+  INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR:
+    'Response must be a valid number, "Suppressed", "N/A", or "NR"',
 };
 
 // TEXT
@@ -118,6 +122,31 @@ export const numberSuppressible = () =>
           : false;
       },
       message: error.INVALID_NUMBER,
+    });
+
+export const numberOrSuppressed = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        return isSuppressed || validNumberRegex.test(value);
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED,
+    });
+
+export const numberOrSuppressedOrNaNr = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        const isValidNAValue = validNAValues.includes(value);
+        return isSuppressed || isValidNAValue || validNumberRegex.test(value);
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR,
     });
 
 const validNumberSchema = () =>

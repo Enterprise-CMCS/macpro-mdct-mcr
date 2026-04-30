@@ -14,6 +14,7 @@ import {
   ModalOverlayReportPageShape,
   ReportJson,
   ReportJsonFile,
+  ReportFormFieldType,
   ReportRoute,
   ReportType,
 } from "../types";
@@ -280,10 +281,11 @@ export function isFieldElement(
    * This function is duplicated in ui-src/src/types/formFields.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = [
-    "sectionHeader",
-    "sectionContent",
-    "sectionDivider",
+  const formLayoutElementTypes: string[] = [
+    ReportFormFieldType.SECTION_HEADER,
+    ReportFormFieldType.SECTION_CONTENT,
+    ReportFormFieldType.SECTION_DIVIDER,
+    ReportFormFieldType.QUESTION,
   ];
   return !formLayoutElementTypes.includes(field.type);
 }
