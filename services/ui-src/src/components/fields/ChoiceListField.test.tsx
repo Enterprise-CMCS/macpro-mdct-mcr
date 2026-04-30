@@ -168,6 +168,24 @@ describe("<ChoiceListField />", () => {
       expect(screen.getByText("Choice 4")).toBeVisible();
       expect(screen.getByText("Choice 5")).toBeVisible();
     });
+
+    test("Nested child fields without their own label receive an accessible name derived from the choice and parent question labels", () => {
+      mockGetValues(undefined);
+      render(RadioComponentWithNestedChildren);
+
+      // Reveal the nested children
+      const thirdRadioOption = screen.getByLabelText("Choice 3");
+      fireEvent.click(thirdRadioOption);
+
+      // The nested "Choice 3-otherText" text input has no label of its own, so
+      // it should receive an aria-label combining the choice label and the
+      // parent question label so it has a unique accessible name.
+      const nestedInput = document.getElementById("Choice 3-otherText");
+      expect(nestedInput).toHaveAttribute(
+        "aria-label",
+        "Choice 3: Radio example"
+      );
+    });
   });
 
   describe("Test Choicelist Hydration", () => {
