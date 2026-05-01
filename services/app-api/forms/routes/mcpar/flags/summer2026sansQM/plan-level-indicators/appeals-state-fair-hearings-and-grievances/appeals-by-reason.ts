@@ -8,7 +8,7 @@ import {
 
 export const appealsByReasonRoute: DrawerFormRoute = {
   name: "Appeals by Reason",
-  path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-reason",
+  path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-reason",
   pageType: PageTypes.DRAWER,
   entityType: EntityType.PLANS,
   verbiage: {
