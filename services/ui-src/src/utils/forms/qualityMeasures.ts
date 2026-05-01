@@ -6,7 +6,12 @@ export const RATE_ID_PREFIX = "measure_rateResults-";
 export const createRateField = (id: string, name: string) => ({
   id: `${RATE_ID_PREFIX}${id}`,
   type: "number",
-  validation: "number",
+  validation: {
+    type: "number",
+    nested: true,
+    parentFieldName: "measure_isReporting",
+    parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
+  },
   props: {
     label: `${name} results`,
     hint: "If you are reporting results for this performance rate for this reporting period, enter a number. Enter “NR” if you are suppressing data for data privacy purposes. Enter “N/A” for all other reasons.",

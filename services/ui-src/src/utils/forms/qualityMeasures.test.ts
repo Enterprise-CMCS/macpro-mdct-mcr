@@ -68,7 +68,12 @@ describe("qualityMeasures utils", () => {
       );
       expect(rateField.id).toEqual(`${RATE_ID_PREFIX}mock-rate-1`);
       expect(rateField.type).toEqual("number");
-      expect(rateField.validation).toEqual("number");
+      expect(rateField.validation).toEqual({
+        type: "number",
+        nested: true,
+        parentFieldName: "measure_isReporting",
+        parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
+      });
       expect(rateField.props.label).toEqual("mock rate 1 results");
     });
   });

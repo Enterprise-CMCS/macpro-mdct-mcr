@@ -180,4 +180,24 @@ describe("<EntityDetailsOverlayQualityMeasures />", () => {
       expect(mockMcparReportContext.updateReport).toHaveBeenCalledTimes(1);
     });
   });
+
+  test("should pre-select 'Yes, I am reporting' when opening the drawer for a plan with no existing measure data", async () => {
+    const mockDrawerFormRoute = {
+      ...mockModalOverlayReportPageJson,
+      drawerForm: mockQualityMeasuresDrawerForm,
+    };
+    render(entityDetailsOverlayQualityMeasuresComponent(mockDrawerFormRoute));
+
+    const openDrawerButton = screen.getByRole("button", {
+      name: "Enter mock-plan-name-2",
+    });
+
+    await act(async () => {
+      await userEvent.click(openDrawerButton);
+    });
+    const reportingYesButton = screen.getByRole("radio", {
+      name: "Yes",
+    });
+    expect(reportingYesButton).toBeChecked();
+  });
 });
