@@ -29,6 +29,7 @@ import {
   notFound,
   ok,
 } from "../../utils/responses/response-lib";
+import { cleanupOtherTextFields } from "../../utils/reports/reports";
 // types
 import { isState, ReportJson, UserRoles } from "../../utils/types";
 
@@ -165,10 +166,10 @@ export const updateReport = handler(async (event, context) => {
   }
 
   // Post validated field data to s3 bucket
-  const fieldData = {
+  const fieldData = cleanupOtherTextFields({
     ...existingFieldData,
     ...validatedFieldData,
-  };
+  });
 
   const updateFieldDataParams = {
     Bucket: reportBucket,
