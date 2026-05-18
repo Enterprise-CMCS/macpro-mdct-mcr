@@ -137,3 +137,13 @@ export function populateQualityMeasures(
   }
   return fieldData;
 }
+
+export function cleanupOtherTextFields(fieldData: AnyObject): AnyObject {
+  const fieldDataCopy = { ...fieldData };
+  for (const key of Object.keys(fieldDataCopy)) {
+    if (key.endsWith("-otherText") && fieldDataCopy[key] === "") {
+      delete fieldDataCopy[key];
+    }
+  }
+  return fieldDataCopy;
+}
