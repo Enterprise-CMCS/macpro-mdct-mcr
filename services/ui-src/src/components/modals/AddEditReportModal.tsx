@@ -52,6 +52,7 @@ export const AddEditReportModal = ({
   const naaarProgramList = useFlags()?.naaarProgramList;
   const newQualityMeasuresSectionEnabled =
     useFlags()?.newQualityMeasuresSectionEnabled;
+  const summer2026sansQM = useFlags()?.summer2026sansQM;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -171,6 +172,7 @@ export const AddEditReportModal = ({
         naaarSubmissionDateForThisProgram,
         naaarExpectedSubmissionDateForThisProgram,
         newQualityMeasuresSectionEnabled,
+        summer2026sansQM,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

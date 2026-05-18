@@ -322,6 +322,7 @@ export interface MCPARReportMetadata extends ReportMetadata {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   newQualityMeasuresSectionEnabled?: boolean;
+  summer2026sansQM?: boolean;
 }
 
 export interface NAAARReportMetadata extends ReportMetadata {

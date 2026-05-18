@@ -45,6 +45,8 @@ export const local = {
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
+    process.env.AWS_ENDPOINT_URL_S3 =
+      "http://s3.localhost.localstack.cloud:4566";
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(

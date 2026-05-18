@@ -1,10 +1,4 @@
 import { Page } from "@playwright/test";
-import {
-  adminPassword,
-  adminUser,
-  adminUserAuth,
-  adminUserHeading,
-} from "../../utils/consts";
 import { formatDate } from "../../utils/date-helpers";
 import { BasePage } from "./base.page";
 
@@ -15,31 +9,6 @@ export class AdminPage extends BasePage {
 
   get currentBannersSection() {
     return this.page.locator("text=Current Banner(s)").locator("..");
-  }
-
-  // There is an intermittent issue in deployed envs where auth tokens appear to expire early
-  async checkAndReauthenticate() {
-    const emailInput = this.page.getByRole("textbox", { name: "email" });
-    const passwordInput = this.page.getByRole("textbox", { name: "password" });
-    const loginButton = this.page.getByRole("button", {
-      name: "Log In with Cognito",
-    });
-    if (await loginButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-      await emailInput.fill(adminUser);
-      await passwordInput.fill(adminPassword);
-      await loginButton.click();
-      await this.page.waitForURL("/");
-      await this.page.waitForResponse(
-        (response) =>
-          response.url().includes("/banners") && response.status() === 200
-      );
-      await this.page
-        .getByRole("heading", {
-          name: adminUserHeading,
-        })
-        .isVisible();
-      await this.page.context().storageState({ path: adminUserAuth });
-    }
   }
 
   async navigateToReportDashboard(
@@ -59,46 +28,29 @@ export class AdminPage extends BasePage {
       })
       .click();
 
-    const reportsResponse = this.waitForResponse(
-      `/reports/${reportType}/`,
-      "GET",
-      200
-    );
-
-    await this.page
-      .getByRole("button", { name: "Go to Report Dashboard" })
-      .click();
-    await reportsResponse;
-    // There are times the loading spinner remains after the network request completes
-    await this.waitForLoadingSpinner();
+    await Promise.all([
+      this.waitForResponse(`/reports/${reportType}/`, "GET", 200),
+      this.page.getByRole("button", { name: "Go to Report Dashboard" }).click(),
+      this.waitForLoadingSpinner(),
+    ]);
   }
 
   async archiveMCPAR(programName: string) {
     const reportRow = await this.getReportRow(programName);
-
-    const putResponse = this.waitForResponse(
-      "/reports/archive/MCPAR/",
-      "PUT",
-      200
-    );
-    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
-
-    await reportRow.getByRole("button", { name: /Archive/ }).click();
-    await Promise.all([putResponse, getResponse]);
+    await Promise.all([
+      this.waitForResponse("/reports/archive/MCPAR/", "PUT", 200),
+      this.waitForResponse("/reports/MCPAR/", "GET", 200),
+      reportRow.getByRole("button", { name: /Archive/ }).click(),
+    ]);
   }
 
   async unarchiveMCPAR(programName: string) {
     const reportRow = await this.getReportRow(programName);
-
-    const putResponse = this.waitForResponse(
-      "/reports/archive/MCPAR/",
-      "PUT",
-      200
-    );
-    const getResponse = this.waitForResponse("/reports/MCPAR/", "GET", 200);
-
-    await reportRow.getByRole("button", { name: /Unarchive/ }).click();
-    await Promise.all([putResponse, getResponse]);
+    await Promise.all([
+      this.waitForResponse("/reports/archive/MCPAR/", "PUT", 200),
+      this.waitForResponse("/reports/MCPAR/", "GET", 200),
+      reportRow.getByRole("button", { name: /Unarchive/ }).click(),
+    ]);
   }
 
   async createAdminBanner(
@@ -113,12 +65,11 @@ export class AdminPage extends BasePage {
       .fill(description);
     await this.page.getByLabel("Start date").fill(formatDate(startDate));
     await this.page.getByLabel("End date").fill(formatDate(endDate));
-
-    const postResponse = this.waitForResponse("/banners", "POST", 201);
-    const getResponse = this.waitForResponse("/banners", "GET", 200);
-
-    await this.page.getByRole("button", { name: "Create banner" }).click();
-    await Promise.all([postResponse, getResponse]);
+    await Promise.all([
+      this.waitForResponse("/banners", "POST", 201),
+      this.waitForResponse("/banners", "GET", 200),
+      this.page.getByRole("button", { name: "Create banner" }).click(),
+    ]);
     // Sometimes the spinner is behind the network requests, this check makes the tests more reliable
     const loadingButton = this.page.getByRole("button", { name: "Loading..." });
     if (await loadingButton.isVisible({ timeout: 1000 }).catch(() => false)) {
@@ -134,11 +85,12 @@ export class AdminPage extends BasePage {
     const deleteButton = bannerContainer.getByRole("button", {
       name: "Delete banner",
     });
-    const deleteResponse = this.waitForResponse("/banners", "DELETE", 200);
-    const getResponse = this.waitForResponse("/banners", "GET", 200);
     await deleteButton.click({ trial: true });
-    await deleteButton.click();
-    await Promise.all([deleteResponse, getResponse]);
+    await Promise.all([
+      this.waitForResponse("/banners", "DELETE", 200),
+      this.waitForResponse("/banners", "GET", 200),
+      deleteButton.click(),
+    ]);
     await this.waitForBannerAdminViewToLoad();
   }
 

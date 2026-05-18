@@ -84,6 +84,35 @@ export const numberSuppressible = () =>
       message: error.INVALID_NUMBER,
     });
 
+export const numberOrSuppressed = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        return isSuppressed || checkStandardNumberInputAgainstRegexes(value);
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED,
+    });
+
+export const numberOrSuppressedOrNaNr = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        const isValidNAValue = validNAValues.includes(value);
+        return (
+          isSuppressed ||
+          isValidNAValue ||
+          checkStandardNumberInputAgainstRegexes(value)
+        );
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR,
+    });
+
 const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,

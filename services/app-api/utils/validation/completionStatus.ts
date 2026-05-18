@@ -11,11 +11,9 @@ import {
   PageTypes,
   ReportRoute,
   EntityShape,
-  FormLayoutElement,
 } from "../types";
 // utils
 import { validateFieldData } from "./completionValidation";
-import { isFieldElement } from "../formTemplates/formTemplates";
 
 export const isComplete = (completionStatus: CompletionData): Boolean => {
   const flatten = (obj: AnyObject, out: AnyObject) => {
@@ -170,30 +168,25 @@ export const calculateEntityCompletion = async (
 
 export const calculateMeasureCompletion = (
   measureId: string,
-  form: FormJson,
-  plan: EntityShape
+  plan: EntityShape,
+  measureRates: AnyObject
 ) => {
-  const calculateEntityCompletion = (
-    fields: (FormField | FormLayoutElement)[],
-    entityData: EntityShape
-  ) => {
-    return fields
-      ?.filter(isFieldElement)
-      .every((field) => field.id in entityData);
-  };
-
   const planMeasureData = plan.measures?.[measureId];
   if (!planMeasureData) return false;
 
-  const isNotReporting = planMeasureData.measure_isReporting?.length > 0;
-  const hasReasons = planMeasureData.measure_isNotReportingReason?.length > 0;
-  if (isNotReporting && hasReasons) return true;
+  const reporting = planMeasureData.measure_isReporting?.length > 0;
+  const notReportingReasons =
+    planMeasureData.measure_isNotReportingReason?.length > 0;
+  if (reporting && notReportingReasons) return true;
 
-  const requiredFields = form.fields
-    ?.filter(isFieldElement)
-    .filter((field) => field.id !== "measure_isReporting");
+  const dataMethod = planMeasureData.measure_dataCollectionMethod?.length > 0;
 
-  return calculateEntityCompletion(requiredFields, planMeasureData);
+  const ratesAreAnswered = measureRates.every((rate: any) => {
+    const rateResult = planMeasureData[`measure_rateResults-${rate.id}`];
+    return rateResult && rateResult !== "";
+  });
+
+  return dataMethod && ratesAreAnswered;
 };
 
 export const calculateRouteCompletion = async (
@@ -325,8 +318,8 @@ export const calculateRouteCompletion = async (
             plans.every((plan: EntityShape) =>
               calculateMeasureCompletion(
                 measure.id,
-                route.drawerForm as FormJson,
-                plan
+                plan,
+                measure?.measure_rates
               )
             )
           );

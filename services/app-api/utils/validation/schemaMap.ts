@@ -111,6 +111,18 @@ export const numberSuppressible = () =>
       message: error.INVALID_NUMBER,
     });
 
+export const numberOrSuppressed = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        return isSuppressed || validNumberRegex.test(value);
+      },
+      message: error.INVALID_NUMBER,
+    });
+
 const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,
@@ -326,6 +338,7 @@ export const schemaMap: any = {
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
+  numberOrSuppressed: numberOrSuppressed(),
   numberOptional: numberOptional(),
   numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),

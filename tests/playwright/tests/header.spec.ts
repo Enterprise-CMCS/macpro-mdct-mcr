@@ -5,7 +5,6 @@ test.describe("Header tests - State user", () => {
   test.beforeEach(async ({ statePage }) => {
     const bannersResponse = statePage.waitForResponse("/banners", "GET", 200);
     await statePage.page.goto("/");
-    await statePage.checkAndReauthenticate();
     await bannersResponse;
   });
 
@@ -44,7 +43,6 @@ test.describe("Header tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
     const bannersResponse = adminPage.waitForResponse("/banners", "GET", 200);
     await adminPage.page.goto("/");
-    await adminPage.checkAndReauthenticate();
     await bannersResponse;
   });
 

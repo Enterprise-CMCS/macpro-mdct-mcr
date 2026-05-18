@@ -8,12 +8,12 @@ LD_SDK_KEY=op://mdct_devs/mcr_secrets/LD_SDK_KEY_DEV
 REACT_APP_LD_SDK_CLIENT=op://mdct_devs/mcr_secrets/REACT_APP_LD_SDK_CLIENT
 
 # needed for playwright e2e tests
-TEST_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_EMAIL
-TEST_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_PASSWORD # pragma: allowlist secret
-TEST_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_STATE_USER_EMAIL
-TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/SEED_STATE_USER_PASSWORD # pragma: allowlist secret
-TEST_STATE=op://mdct_devs/mcr_secrets/SEED_STATE
-TEST_STATE_NAME=op://mdct_devs/mcr_secrets/SEED_STATE_NAME
+TEST_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/TEST_ADMIN_USER_EMAIL
+TEST_ADMIN_USER_PASSWORD=op://mdct_devs/mcr_secrets/TEST_ADMIN_USER_PASSWORD # pragma: allowlist secret
+TEST_STATE_USER_EMAIL=op://mdct_devs/mcr_secrets/TEST_STATE_USER_EMAIL
+TEST_STATE_USER_PASSWORD=op://mdct_devs/mcr_secrets/TEST_STATE_USER_PASSWORD # pragma: allowlist secret
+TEST_STATE=op://mdct_devs/mcr_secrets/TEST_STATE
+TEST_STATE_NAME=op://mdct_devs/mcr_secrets/TEST_STATE_NAME
 
 # db:seed
 SEED_ADMIN_USER_EMAIL=op://mdct_devs/mcr_secrets/SEED_ADMIN_USER_EMAIL

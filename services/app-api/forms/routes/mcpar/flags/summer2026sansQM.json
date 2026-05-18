@@ -2285,154 +2285,6 @@
           }
         },
         {
-          "name": "II: Financial Performance",
-          "path": "/mcpar/plan-level-indicators/financial-performance",
-          "pageType": "drawer",
-          "entityType": "plans",
-          "verbiage": {
-            "intro": {
-              "section": "Section D: Plan-Level Indicators",
-              "subsection": "Topic II. Financial Performance",
-              "spreadsheet": "D1_Plan_Set"
-            },
-            "dashboardTitle": "Report financial performance for each plan",
-            "drawerTitle": "Report financial performance for {{name}}",
-            "missingEntityMessage": [
-              {
-                "type": "p",
-                "children": [
-                  {
-                    "type": "html",
-                    "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                  },
-                  {
-                    "type": "internalLink",
-                    "content": "Add Plans",
-                    "props": {
-                      "to": "/mcpar/program-information/add-plans"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "drawerForm": {
-            "id": "dfp",
-            "fields": [
-              {
-                "id": "plan_medicalLossRatioPercentage",
-                "type": "number",
-                "validation": "number",
-                "props": {
-                  "label": "D1.II.1a Medical Loss Ratio (MLR)",
-                  "hint": "What is the MLR percentage? Per 42 CFR 438.66(e)(2)(i), the Managed Care Program Annual Report must provide information on the Financial performance of each MCO, PIHP, and PAHP, including MLR experience.</br>If MLR data are not available for this reporting period due to data lags, enter the MLR calculated for the most recently available reporting period and indicate the reporting period in item D1.II.3 below. See Glossary in Excel Workbook for the regulatory definition of MLR. Write MLR as a percentage: for example, write 92% rather than 0.92.",
-                  "mask": "percentage",
-                  "decimalPlacesToRoundTo": 2
-                }
-              },
-              {
-                "id": "plan_medicalLossRatioPercentageAggregationLevel",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "D1.II.1b Level of aggregation",
-                  "hint": "What is the aggregation level that best describes the MLR being reported in the previous indicator? Select one.</br>As permitted under 42 CFR 438.8(i), states are allowed to aggregate data for reporting purposes across programs and populations.",
-                  "choices": [
-                    {
-                      "id": "BSfARaemtUmbuMnZC11pog",
-                      "label": "Program-specific statewide"
-                    },
-                    {
-                      "id": "Sk684CJrvE6vAefOKX6flA",
-                      "label": "Program-specific regional"
-                    },
-                    {
-                      "id": "LRDviCXq5ESAYi3UhGhMBw",
-                      "label": "Statewide all programs & populations"
-                    },
-                    {
-                      "id": "OQ0onGPAMUqDZgIxAjR3aQ",
-                      "label": "Regional all programs & populations"
-                    },
-                    {
-                      "id": "ou7IxaZKnEeGLuqBSehl9g",
-                      "label": "Other, specify",
-                      "children": [
-                        {
-                          "id": "plan_medicalLossRatioPercentageAggregationLevel-otherText",
-                          "type": "textarea",
-                          "validation": {
-                            "type": "text",
-                            "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioPercentageAggregationLevel"
-                          }
-                        }
-                      ]
-                    }
-                  ]
-                }
-              },
-              {
-                "id": "plan_populationSpecificMedicalLossRatioDescription",
-                "type": "textarea",
-                "validation": "text",
-                "props": {
-                  "label": "D1.II.2 Population specific MLR description",
-                  "hint": "Does the state require plans to submit separate MLR calculations for specific populations served within this program, for example, MLTSS or Group VIII expansion enrollees? If so, describe the populations here. Enter “N/A” if not applicable.</br>See glossary for the regulatory definition of MLR."
-                }
-              },
-              {
-                "id": "plan_medicalLossRatioReportingPeriod",
-                "type": "radio",
-                "validation": "radio",
-                "props": {
-                  "label": "D1.II.3 MLR reporting period discrepancies",
-                  "hint": "Does the data reported in item D1.II.1a cover a different time period than the MCPAR report?",
-                  "choices": [
-                    {
-                      "id": "UgEFak34A0e1hJaHXtXbrw",
-                      "label": "Yes",
-                      "children": [
-                        {
-                          "id": "plan_medicalLossRatioReportingPeriodStartDate",
-                          "type": "date",
-                          "validation": {
-                            "type": "date",
-                            "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioReportingPeriod"
-                          },
-                          "props": {
-                            "hint": "Enter the start date.",
-                            "timetype": "startDate"
-                          }
-                        },
-                        {
-                          "id": "plan_medicalLossRatioReportingPeriodEndDate",
-                          "type": "date",
-                          "validation": {
-                            "type": "endDate",
-                            "dependentFieldName": "plan_medicalLossRatioReportingPeriodStartDate",
-                            "nested": true,
-                            "parentFieldName": "plan_medicalLossRatioReportingPeriod"
-                          },
-                          "props": {
-                            "hint": "Enter the end date.",
-                            "timetype": "endDate"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "id": "Jt8dUZQO60OpeGvhe6KaOA",
-                      "label": "No"
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
           "name": "III: Encounter Data Report",
           "path": "/mcpar/plan-level-indicators/encounter-data-report",
           "pageType": "drawer",
@@ -2500,7 +2352,7 @@
           }
         },
         {
-          "name": "IV: Appeals, State Fair Hearings & Grievances",
+          "name": "IV: Appeals, State Fair Hearings, and Grievances",
           "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
           "children": [
             {
@@ -2738,7 +2590,56 @@
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
-                  },
+                  }
+                ]
+              }
+            },
+            {
+              "name": "Appeals by Reason",
+              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/appeals-by-reason",
+              "pageType": "drawer",
+              "entityType": "plans",
+              "verbiage": {
+                "intro": {
+                  "section": "Section D: Plan-Level Indicators",
+                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
+                  "spreadsheet": "D1_Plan_Set",
+                  "info": [
+                    {
+                      "type": "heading",
+                      "as": "h4",
+                      "content": "Appeals by Reason"
+                    },
+                    {
+                      "type": "p",
+                      "content": "Number of appeals resolved during the reporting period related to various services. Note: A single appeal may be related to multiple service types and may therefore be counted in multiple categories."
+                    }
+                  ]
+                },
+                "dashboardTitle": "Report on appeals by reason for each plan",
+                "drawerTitle": "Report appeals by reason for {{name}}",
+                "missingEntityMessage": [
+                  {
+                    "type": "p",
+                    "children": [
+                      {
+                        "type": "html",
+                        "content": "This program is missing plans. You won't be able to complete this section until you've added all the plans that participate in this program in section A.7. "
+                      },
+                      {
+                        "type": "internalLink",
+                        "content": "Add Plans",
+                        "props": {
+                          "to": "/mcpar/program-information/add-plans"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "drawerForm": {
+                "id": "dabr",
+                "fields": [
                   {
                     "id": "D1.IV.6Header",
                     "type": "sectionHeader",
@@ -2756,1138 +2657,266 @@
                   },
                   {
                     "id": "plan_resolvedPreServiceAuthorizationDenialAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of authorization for a service not yet rendered or limited authorization of a service.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
+                      "content": "D1.IV.6a Resolved appeals related to denial of authorization or limited authorization of a service",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of authorization for a service not yet rendered or limited authorization of a service. (Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c)."
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPreServiceAuthorizationDenialAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPreServiceAuthorizationDenialAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPreServiceAuthorizationDenialAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6b Resolved appeals related to reduction, suspension, or termination of a previously authorized service",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s reduction, suspension, or termination of a previously authorized service.",
+                      "content": "D1.IV.6b Resolved appeals related to reduction, suspension, or termination of a previously authorized service",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's reduction, suspension, or termination of a previously authorized service."
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedReductionSuspensionTerminationOfPreviouslyAuthorizedServiceAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedPostServiceAuthorizationDenialAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6c Resolved appeals related to payment denial",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial, in whole or in part, of payment for a service that was already rendered.",
+                      "content": "D1.IV.6c Resolved appeals related to payment denial",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial, in whole or in part, of payment for a service that was already rendered."
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPostServiceAuthorizationDenialAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPostServiceAuthorizationDenialAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedPostServiceAuthorizationDenialAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedServiceTimelinessAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6d Resolved appeals related to service timeliness",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s failure to provide services in a timely manner (as defined by the state).",
+                      "content": "D1.IV.6d Resolved appeals related to service timeliness",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to provide services in a timely manner (as defined by the state)."
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedServiceTimelinessAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedServiceTimelinessAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedServiceTimelinessAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedUntimelyResponseAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6e Resolved appeals related to lack of timely plan response to an appeal or grievance",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals.",
+                      "content": "D1.IV.6e Resolved appeals related to lack of timely plan response to an appeal or grievance",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's failure to act within the timeframes provided at 42 CFR §438.408(b)(1) and (2) regarding the standard resolution of grievances and appeals."
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedUntimelyResponseAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedUntimelyResponseAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedUntimelyResponseAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedRightToRequestOutOfNetworkCareDenialAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6f Resolved appeals related to plan denial of an enrollee’s right to request out-of-network care",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO). If not applicable, enter “N/A.”",
+                      "content": "D1.IV.6f Resolved appeals related to plan denial of an enrollee's right to request out-of-network care",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to exercise their right, under 42 CFR §438.52(b)(2)(ii), to obtain services outside the network (only applicable to residents of rural areas with only one MCO). If not applicable, enter “N/A.”"
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsFavorable",
+                    "type": "numberOrSuppressedOrNaNr",
+                    "validation": "numberOrSuppressedOrNaNr",
+                    "props": {
+                      "label": "Favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressedOrNaNr",
+                    "validation": "numberOrSuppressedOrNaNr",
+                    "props": {
+                      "label": "Partially favorable to the enrollee",
+                      "mask": "comma-separated",
+                      "decimalPlacesToRoundTo": 0
+                    }
+                  },
+                  {
+                    "id": "plan_resolvedRightToRequestOutOfNetworkCareDenialAppealsDenied",
+                    "type": "numberOrSuppressedOrNaNr",
+                    "validation": "numberOrSuppressedOrNaNr",
+                    "props": {
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
                     "id": "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "type": "question",
                     "props": {
-                      "label": "D1.IV.6g Resolved appeals related to denial of an enrollee’s request to dispute financial liability",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request to dispute a financial liability.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
+                      "content": "D1.IV.6g Resolved appeals related to denial of an enrollee's request to dispute financial liability",
+                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to the plan's denial of an enrollee's request to dispute a financial liability."
                     }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Appeals by Service",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/appeals-by-service",
-              "pageType": "drawer",
-              "entityType": "plans",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Appeals by Service"
-                    },
-                    {
-                      "type": "p",
-                      "content": "Number of appeals resolved during the reporting period related to various services. Note: A single appeal may be related to multiple service types and may therefore be counted in multiple categories."
-                    }
-                  ]
-                },
-                "dashboardTitle": "Report on appeals by service for each plan",
-                "drawerTitle": "Report appeals by service for {{name}}",
-                "missingEntityMessage": [
+                  },
                   {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "drawerForm": {
-                "id": "dabs",
-                "fields": [
-                  {
-                    "id": "plan_resolvedGeneralInpatientServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "id": "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
                     "props": {
-                      "label": "D1.IV.7a Resolved appeals related to general inpatient services",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Do not include appeals related to inpatient behavioral health services – those should be included in indicator D1.IV.7c. If the managed care plan does not cover general inpatient services, enter “N/A”.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
+                      "label": "Favorable to the enrollee",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
-                    "id": "plan_resolvedGeneralOutpatientServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "id": "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsPartiallyFavorable",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
                     "props": {
-                      "label": "D1.IV.7b Resolved appeals related to general outpatient services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Please do not include appeals related to outpatient behavioral health services – those should be included in indicator D1.IV.7d. If the managed care plan does not cover general outpatient services, enter “N/A”.",
+                      "label": "Partially favorable to the enrollee",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
                   },
                   {
-                    "id": "plan_resolvedInpatientBehavioralHealthServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
+                    "id": "plan_resolvedRequestToDisputeFinancialLiabilityDenialAppealsDenied",
+                    "type": "numberOrSuppressed",
+                    "validation": "numberOrSuppressed",
                     "props": {
-                      "label": "D1.IV.7c Resolved appeals related to inpatient behavioral health services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover inpatient behavioral health services, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedOutpatientBehavioralHealthServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7d Resolved appeals related to outpatient behavioral health services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover outpatient behavioral health services, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedCoveredOutpatientPrescriptionDrugAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7e Resolved appeals related to covered outpatient prescription drugs",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover outpatient prescription drugs, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedSnfServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7f Resolved appeals related to skilled nursing facility (SNF) services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover skilled nursing services, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedLtssServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7g Resolved appeals related to long-term services and supports (LTSS)",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of appeals resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover LTSS services, enter “N/A”.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "(Appeals related to denial of payment for a service already rendered should be counted in indicator D1.IV.6c).",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedDentalServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7h Resolved appeals related to dental services",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover dental services, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedNemtAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7i Resolved appeals related to non-emergency medical transportation (NEMT)",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover NEMT, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedDmeAndSuppliesAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7k: Resolved appeals related to durable medical equipment (DME) & supplies",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to DME and/or supplies. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedHomeHealthAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7l: Resolved appeals related to home health / hospice",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to home health and/or hospice. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedEmergencyServicesAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7m: Resolved appeals related to emergency services / emergency department",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to emergency services and/or provided in the emergency department. Do not include appeals related to emergency outpatient behavioral health – those should be included in indicator D1.IV.7d. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedTherapiesAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7n: Resolved appeals related to therapies",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to speech language pathology services or occupational, physical, or respiratory therapy services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedOtherServiceAppeals",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.7o Resolved appeals related to other service types",
-                      "hint": "Enter the total number of appeals resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.7a-n paid primarily by Medicaid, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "State Fair Hearings",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/state-fair-hearings",
-              "pageType": "drawer",
-              "entityType": "plans",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "State Fair Hearings"
-                    }
-                  ]
-                },
-                "dashboardTitle": "Report state fair hearings and external medical reviews for each plan",
-                "drawerTitle": "Report state fair hearings and external medical reviews for {{name}}",
-                "missingEntityMessage": [
-                  {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "drawerForm": {
-                "id": "dsfh",
-                "fields": [
-                  {
-                    "id": "plan_stateFairHearingRequestsFiled",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.8a State Fair Hearing requests",
-                      "hint": "Enter the total number of State Fair Hearing requests resolved during the reporting year with the plan that issued an adverse benefit determination.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_stateFairHearingRequestsWithFavorableDecision",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.8b State Fair Hearings resulting in a favorable decision for the enrollee",
-                      "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were partially or fully favorable to the enrollee.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_stateFairHearingRequestsWithAdverseDecision",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.8c State Fair Hearings resulting in an adverse decision for the enrollee",
-                      "hint": "Enter the total number of State Fair Hearing decisions rendered during the reporting year that were adverse for the enrollee.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_stateFairHearingRequestsRetracted",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.8d State Fair Hearings retracted prior to reaching a decision",
-                      "hint": "Enter the total number of State Fair Hearing decisions retracted (by the enrollee or the representative who filed a State Fair Hearing request on behalf of the enrollee) during the reporting year prior to reaching a decision.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_stateFairHearingRequestsWithExternalMedicalReviewWithFavorableDecision",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.9a External Medical Reviews resulting in a favorable decision for the enrollee",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were partially or fully favorable to the enrollee. If your state does not offer an external medical review process, enter “N/A”.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_stateFairHearingRequestsWithExternalMedicalReviewWithAdverseDecision",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.9b External Medical Reviews resulting in an adverse decision for the enrollee",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "If your state does offer an external medical review process, enter the total number of external medical review decisions rendered during the reporting year that were adverse to the enrollee. If your state does not offer an external medical review process, enter “N/A”.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "External medical review is defined and described at 42 CFR §438.402(c)(i)(B).",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Grievances Overview",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances/grievances-overview",
-              "pageType": "drawer",
-              "entityType": "plans",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Grievances Overview"
-                    }
-                  ]
-                },
-                "dashboardTitle": "Report on grievances for each plan",
-                "drawerTitle": "Report on grievances for {{name}}",
-                "missingEntityMessage": [
-                  {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "drawerForm": {
-                "id": "dgo",
-                "fields": [
-                  {
-                    "id": "plan_resolvedGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.10 Grievances resolved",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "A grievance is “resolved” when it has reached completion and been closed by the plan.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_activeGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.11 Active grievances",
-                      "hint": "Enter the total number of grievances still pending or in process (not yet resolved) as of the end of the reporting year.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_ltssUserFieldGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.12 Grievances filed on behalf of LTSS users",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances filed during the reporting year by or on behalf of LTSS users.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "An LTSS user is an enrollee who received at least one LTSS service at any point during the reporting year (regardless of whether the enrollee was actively receiving LTSS at the time that the grievance was filed). If this does not apply, enter N/A.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_ltssUserFiledCriticalIncidentsWhenPreviouslyFiledGrievance",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.13 Number of critical incidents filed during the reporting period by (or on behalf of) an LTSS user who previously filed a grievance",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "For managed care plans that cover LTSS, enter the number of critical incidents filed within the reporting year by (or on behalf of) LTSS users who previously filed grievances in the reporting year. The grievance and critical incident do not have to have been “related” to the same issue - they only need to have been filed by (or on behalf of) the same enrollee. Neither the critical incident nor the grievance need to have been filed in relation to delivery of LTSS - they may have been filed for any reason, related to any service received (or desired) by an LTSS user.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "If the managed care plan does not cover LTSS, the state should enter “N/A” in this field. Additionally, if the state already submitted this data for the reporting year via the CMS readiness review appeal and grievance report (because the managed care program or plan were new or serving new populations during the reporting year), and the readiness review tool was submitted for at least 6 months of the reporting year, the state can enter “N/A” in this field.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "To calculate this number, states or managed care plans should first identify the LTSS users for whom critical incidents were filed during the reporting year, then determine whether those enrollees had filed a grievance during the reporting year, and whether the filing of the grievance preceded the filing of the critical incident.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_timyleResolvedGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.14 Number of grievances for which timely resolution was provided",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the number of grievances for which timely resolution was provided by plan during the reporting year.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "See 42 CFR §438.408(b)(1) for requirements related to the timely resolution of grievances.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Grievances by Service",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-service",
-              "pageType": "drawer",
-              "entityType": "plans",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Grievances by Service"
-                    },
-                    {
-                      "type": "p",
-                      "content": "Report the number of grievances resolved by plan during the reporting period by service."
-                    }
-                  ]
-                },
-                "dashboardTitle": "Report on grievances by service for each plan",
-                "drawerTitle": "Report on grievances by service for {{name}}",
-                "drawerInfo": [
-                  {
-                    "type": "p",
-                    "content": "A single grievance may be related to multiple service types and may therefore be counted in multiple categories."
-                  }
-                ],
-                "missingEntityMessage": [
-                  {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "drawerForm": {
-                "id": "dgbs",
-                "fields": [
-                  {
-                    "id": "plan_resolvedGeneralInpatientServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15a Resolved grievances related to general inpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general inpatient care, including diagnostic and laboratory services. Do not include grievances related to inpatient behavioral health services — those should be included in indicator D1.IV.15c. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedGeneralOutpatientServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15b Resolved grievances related to general outpatient services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to general outpatient care not specifically listed in this section (e.g., primary and preventive services, specialist care, diagnostic and lab testing). Do not include grievances related to outpatient behavioral health services - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedInpatientBehavioralHealthServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15c Resolved grievances related to inpatient behavioral health services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to inpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedOutpatientBehavioralHealthServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15d Resolved grievances related to outpatient behavioral health services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient mental health and/or substance use services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedCoveredOutpatientPrescriptionDrugGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15e Resolved grievances related to coverage of outpatient prescription drugs",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to outpatient prescription drugs covered by the managed care plan. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedSnfServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15f Resolved grievances related to skilled nursing facility (SNF) services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to SNF services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedLtssServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15g Resolved grievances related to long-term services and supports (LTSS)",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to institutional LTSS or LTSS provided through home and community-based (HCBS) services, including personal care and self-directed services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedDentalServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15h Resolved grievances related to dental services",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to dental services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedNemtGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15i Resolved grievances related to non-emergency medical transportation (NEMT)",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to NEMT. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedDmeGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15k Resolved grievances related to durable medical equipment (DME) & supplies",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to DME and/or supplies. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedHomeHealthGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15l Resolved grievances related to home health / hospice",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to home health and/or hospice. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedEmergencyServicesGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15m Resolved grievances related to emergency services / emergency department",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to emergency services and/or provided in the emergency department. Do not include grievances related to emergency outpatient behavioral health - those should be included in indicator D1.IV.15d. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedTherapyGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15n Resolved grievances related to therapies",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to speech language pathology services or occupational, physical, or respiratory therapy services. If the managed care plan does not cover this type of service, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedOtherServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.15o Resolved grievances related to other service types",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were related to services that do not fit into one of the categories listed above. If the managed care plan does not cover services other than those in items D1.IV.15a-n paid primarily by Medicaid, enter “N/A”.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Grievances by Reason",
-              "path": "/mcpar/plan-level-indicators/appeals-state-fair-hearings-grievances/grievances-by-reason",
-              "pageType": "drawer",
-              "entityType": "plans",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic IV. Appeals, State Fair Hearings & Grievances",
-                  "spreadsheet": "D1_Plan_Set",
-                  "info": [
-                    {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Grievances by Reason"
-                    },
-                    {
-                      "type": "p",
-                      "content": "Report the number of grievances resolved by plan during the reporting period by reason."
-                    }
-                  ]
-                },
-                "dashboardTitle": "Report on grievances by reason for each plan",
-                "drawerTitle": "Report on grievances by reason for {{name}}",
-                "drawerInfo": [
-                  {
-                    "type": "p",
-                    "content": "A single grievance may be related to multiple reasons and may therefore be counted in multiple categories."
-                  }
-                ],
-                "missingEntityMessage": [
-                  {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "drawerForm": {
-                "id": "dgbr",
-                "fields": [
-                  {
-                    "id": "plan_resolvedCustomerServiceGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16a Resolved grievances related to plan or provider customer service",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider customer service.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Customer service grievances include complaints about interactions with the plan’s Member Services department, provider offices or facilities, plan marketing agents, or any other plan or provider representatives.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedCareCaseManagementGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16b Resolved grievances related to plan or provider care management/case management",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan or provider care management/case management.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Care management/case management grievances include complaints about the timeliness of an assessment or complaints about the plan or provider care or case management process.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedAccessToCareGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16c Resolved grievances related to network adequacy or access to care/services from plan or provider",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to access to care.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Access to care grievances include complaints about difficulties finding qualified in-network providers, excessive travel or wait times, or other access issues.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedQualityOfCareGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16d Resolved grievances related to quality of care",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to quality of care.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Quality of care grievances include complaints about the effectiveness, efficiency, equity, patient-centeredness, safety, and/or acceptability of care provided by a provider or the plan.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedPlanCommunicationGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16e Resolved grievances related to plan communications",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to plan communications.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Plan communication grievances include grievances related to the clarity or accuracy of enrollee materials or other plan communications or to an enrollee’s access to or the accessibility of enrollee materials or plan communications.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedPaymentBillingGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16f Resolved grievances related to payment or billing issues",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed for a reason related to payment or billing issues.",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedSuspectedFraudGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16g Resolved grievances related to suspected fraud",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to suspected fraud.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Suspected fraud grievances include suspected cases of financial/payment fraud perpetuated by a provider, payer, or other entity. Note: grievances reported in this row should only include grievances submitted to the managed care plan, not grievances submitted to another entity, such as a state Ombudsman or Office of the Inspector General.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedAbuseNeglectExploitationGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16h Resolved grievances related to abuse, neglect or exploitation",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to abuse, neglect or exploitation.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Abuse/neglect/exploitation grievances include cases involving potential or actual patient harm.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedUntimelyResponseGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16i Resolved grievances related to lack of timely plan response to a prior authorization/service authorization or appeal (including requests to expedite or extend appeals)",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed due to a lack of timely plan response to a service authorization or appeal request (including requests to expedite or extend appeals).",
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedDenialOfExpeditedAppealGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16j Resolved grievances related to plan denial of expedited appeal",
-                      "hint": [
-                        {
-                          "type": "span",
-                          "content": "Enter the total number of grievances resolved by the plan during the reporting year that were related to the plan’s denial of an enrollee’s request for an expedited appeal.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        },
-                        {
-                          "type": "span",
-                          "content": "Per 42 CFR §438.408(b)(3), states must establish a timeframe for timely resolution of expedited appeals that is no longer than 72 hours after the MCO, PIHP or PAHP receives the appeal. If a plan denies a request for an expedited appeal, the enrollee or their representative have the right to file a grievance.",
-                          "props": {
-                            "className": "fake-paragraph-break"
-                          }
-                        }
-                      ],
-                      "mask": "comma-separated",
-                      "decimalPlacesToRoundTo": 0
-                    }
-                  },
-                  {
-                    "id": "plan_resolvedOtherGrievances",
-                    "type": "number",
-                    "validation": "number",
-                    "props": {
-                      "label": "D1.IV.16k Resolved grievances filed for other reasons",
-                      "hint": "Enter the total number of grievances resolved by the plan during the reporting year that were filed for a reason other than the reasons listed above.",
+                      "label": "Denied",
                       "mask": "comma-separated",
                       "decimalPlacesToRoundTo": 0
                     }
@@ -3900,417 +2929,267 @@
         {
           "name": "VII: Quality Measures",
           "path": "/mcpar/plan-level-indicators/quality-measures",
-          "children": [
-            {
-              "name": "New plan exemption",
-              "path": "/mcpar/plan-level-indicators/quality-measures/new-plan-exemption",
-              "pageType": "standard",
-              "entityType": "qualityMeasures",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic VII: Quality & Performance Measures",
-                  "spreadsheet": "D2_Program_QualityMeasures",
-                  "alert": "<b>Please be aware checking a plan in this list will clear any entered quality measures data for that plan.</b>",
-                  "info": [
+          "pageType": "modalDrawer",
+          "entityType": "qualityMeasures",
+          "verbiage": {
+            "intro": {
+              "section": "Section D: Plan-Level Indicators",
+              "subsection": "Topic VII: Quality & Performance Measures",
+              "spreadsheet": "D2_Plan_Measures",
+              "info": [
+                {
+                  "type": "p",
+                  "content": "Report on individual measures in each of the following eight domains: (1) Primary care access and preventive care, (2) Maternal and perinatal health, (3) Care of acute and chronic conditions, (4) Behavioral health care, (5) Dental and oral health services, (6) Health plan enrollee experience of care, (7) Long-term services and supports, and (8) Other. For composite measures, be sure to include each individual sub-measure component."
+                }
+              ]
+            },
+            "dashboardTitle": "Quality & performance measure total count:",
+            "countEntitiesInTitle": true,
+            "addEntityButtonText": "Add quality & performance measure",
+            "missingReportingPeriodMessage": "Add the Measure Reporting Period for this quality and performance measure by editing the measure.",
+            "editEntityButtonText": "Edit measure",
+            "addEditModalAddTitle": "Add a quality & performance measure",
+            "addEditModalEditTitle": "Edit quality & performance measure",
+            "addEditModalMessage": "Complete the remaining indicators for this measure by saving the measure and selecting “Enter measure results”.",
+            "deleteEntityButtonAltText": "Delete quality & performance measure",
+            "deleteModalTitle": "Delete quality measure?",
+            "deleteModalConfirmButtonText": "Yes, delete measure",
+            "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
+            "entityMissingResponseMessage": "Missing measure results for one or more plans.",
+            "entityEmptyResponseMessage": "Error: no results entered",
+            "entityUnfinishedMessage": "Add the plan-level details for this quality and performance measure by entering measure results.",
+            "enterEntityDetailsButtonText": "Enter measure results",
+            "editEntityDetailsButtonText": "Edit measure results",
+            "drawerEyebrowTitle": "D2.VII.9a and D2.VII.9b",
+            "drawerTitle": "{{action}} plan-level measure results",
+            "drawerNoFormMessage": "No plans added. To enter measure results, add all plans in A: Program Information - Add plans."
+          },
+          "modalForm": {
+            "id": "dqm-modal",
+            "fields": [
+              {
+                "id": "qualityMeasure_domain",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.1 Measure domain",
+                  "hint": "Select domain or add your own as needed.",
+                  "choices": [
                     {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "New plan exemption"
-                    }
-                  ]
-                },
-                "missingEntityMessage": [
-                  {
-                    "type": "p",
-                    "children": [
-                      {
-                        "type": "html",
-                        "content": "This program is missing plans. You won’t be able to complete this section until you’ve added all the plans that participate in this program in section A.7. "
-                      },
-                      {
-                        "type": "internalLink",
-                        "content": "Add Plans",
-                        "props": {
-                          "to": "/mcpar/program-information/add-plans"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              "form": {
-                "id": "dqmnpe",
-                "fields": [
-                  {
-                    "id": "plansExemptFromQualityMeasures",
-                    "type": "checkbox",
-                    "validation": "checkboxOptional",
-                    "props": {
-                      "label": "Place a check on any new plans in this program that are not able to provide quality data for the calendar year you are reporting.",
-                      "choices": [
+                      "id": "Y3InqsLp4kSTgAUvTwq0CA",
+                      "label": "Primary care access and preventative care"
+                    },
+                    {
+                      "id": "sS7VRlrnxka189jEhpdNaw",
+                      "label": "Maternal and perinatal health"
+                    },
+                    {
+                      "id": "VkozZc87GUK2TB34Wbx4qQ",
+                      "label": "Care of acute and chronic conditions"
+                    },
+                    {
+                      "id": "6GxkOAbVNkq3Z49YZ3coGQ",
+                      "label": "Behavioral health care"
+                    },
+                    {
+                      "id": "bGXszezpLU2UGa4o9o3grw",
+                      "label": "Dental and oral health services"
+                    },
+                    {
+                      "id": "A3XIBOzO2kiug971jxFoZw",
+                      "label": "Health plan enrollee experience of care"
+                    },
+                    {
+                      "id": "yf7Lo8QK8kOPJqcXYgucMg",
+                      "label": "Long-term services and supports"
+                    },
+                    {
+                      "id": "p7XrgO0am0uYpaks9bBXvg",
+                      "label": "Other, specify",
+                      "children": [
                         {
-                          "id": "generatedCheckbox",
-                          "label": "Plans (generated)"
+                          "id": "qualityMeasure_domain-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_domain"
+                          }
                         }
                       ]
                     }
-                  }
-                ]
-              }
-            },
-            {
-              "name": "Measures and results",
-              "path": "/mcpar/plan-level-indicators/quality-measures/measures-and-results",
-              "pageType": "modalOverlay",
-              "entityType": "qualityMeasures",
-              "verbiage": {
-                "intro": {
-                  "section": "Section D: Plan-Level Indicators",
-                  "subsection": "Topic VII: Quality & Performance Measures",
-                  "spreadsheet": "D2_Program_QualityMeasures",
-                  "info": [
+                  ]
+                }
+              },
+              {
+                "id": "qualityMeasure_name",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.2 Measure name",
+                  "hint": "What is the measure name?"
+                }
+              },
+              {
+                "id": "qualityMeasure_nqfNumber",
+                "type": "text",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.3 National Quality Forum (NQF) number",
+                  "hint": "What is the NQF number?"
+                }
+              },
+              {
+                "id": "qualityMeasure_reportingRateType",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.4 Measure reporting",
+                  "hint": "Is measure reporting program-specific or cross-program? Select one.",
+                  "choices": [
                     {
-                      "type": "heading",
-                      "as": "h4",
-                      "content": "Measures and results"
+                      "id": "lTIN7GiY2Ui2kJYrWzXqVw",
+                      "label": "Program-specific rate"
+                    },
+                    {
+                      "id": "f58wKTe5tUGREFYDPnWRmg",
+                      "label": "Cross-program rate",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_crossProgramReportingRateProgramList",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingRateType"
+                          },
+                          "props": {
+                            "label": "D2.VII.5 Measure reporting: List programs",
+                            "hint": "What are the programs? Separate program names with a comma."
+                          }
+                        }
+                      ]
                     }
                   ]
-                },
-                "dashboardTitle": "Quality & performance measure total count:",
-                "countEntitiesInTitle": true,
-                "tableHeader": "Measure name <br/> Measure ID / definition",
-                "addEntityButtonText": "Add measure",
-                "editEntityButtonText": "Edit measure",
-                "deleteModalTitle": "Delete measure?",
-                "deleteModalConfirmButtonText": "Yes, delete measure",
-                "deleteModalWarning": "You will lose all information entered for this measure. Are you sure you want to proceed?",
-                "enterReportText": "Enter",
-                "addEditModalAddTitle": "Add a quality performance measure",
-                "addEditModalEditTitle": "Edit a quality performance measure",
-                "drawerTitle": "Report measure results for {{plan}}: {{measureName}}"
+                }
               },
-              "modalForm": {
-                "id": "dqmmar-modal",
-                "fields": [
-                  {
-                    "id": "measure_name",
-                    "type": "text",
-                    "validation": "text",
-                    "props": {
-                      "label": "D2.VII.1 Measure name",
-                      "hint": "What is the measure name?"
+              {
+                "id": "qualityMeasure_set",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.6 Measure set",
+                  "hint": "What is the measure set? Select one.",
+                  "choices": [
+                    {
+                      "id": "tjSQLCDhgEy7H3VrhtUKxw",
+                      "label": "Medicaid Child Core Set"
+                    },
+                    {
+                      "id": "XiXT7XWal0eko87XIgLpSg",
+                      "label": "Medicaid Adult Core Set"
+                    },
+                    {
+                      "id": "beUZv1nYf0GA2JnGi5S8SQ",
+                      "label": "State-specific"
+                    },
+                    {
+                      "id": "UFJDtz8jIUanZRXPqAUMCg",
+                      "label": "HEDIS"
+                    },
+                    {
+                      "id": "70AlIcEQgEOofv0fqGqLpA",
+                      "label": "Other, specify",
+                      "children": [
+                        {
+                          "id": "qualityMeasure_set-otherText",
+                          "type": "textarea",
+                          "validation": {
+                            "type": "text",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_set"
+                          }
+                        }
+                      ]
                     }
-                  },
-                  {
-                    "id": "measure_identifier",
-                    "type": "radio",
-                    "validation": "radio",
-                    "props": {
-                      "label": "D2.VII.2 Measure identification number or definition",
-                      "hint": [
+                  ]
+                }
+              },
+              {
+                "id": "qualityMeasure_reportingPeriod",
+                "type": "radio",
+                "validation": "radio",
+                "props": {
+                  "label": "D2.VII.7a Reporting period",
+                  "hint": "Is the reporting period the same as what is requested in this report? Select yes or no.",
+                  "choices": [
+                    {
+                      "id": "XAalDWT7l0qPz676XFGSGQ",
+                      "label": "Yes"
+                    },
+                    {
+                      "id": "keBGGlGpNkqkplwaviRuiA",
+                      "label": "No",
+                      "children": [
                         {
-                          "type": "span",
-                          "content": "Does this measure have a "
-                        },
-                        {
-                          "type": "externalLink",
-                          "content": "CMS Measures Inventory Tool (CMIT) number",
+                          "id": "qualityMeasure_reportingPeriodStartDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "date",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingPeriod"
+                          },
                           "props": {
-                            "href": "https://p4qm.org/measures",
-                            "target": "_blank",
-                            "aria-label": "Measure database (link opens in new tab)"
+                            "label": "D2.VII.7b Reporting period: Date range",
+                            "hint": "What is the reporting period covered by the measure?<br><br>Start date",
+                            "timetype": "startDate"
                           }
                         },
                         {
-                          "type": "span",
-                          "content": "? If no, indicate whether it has a Consensus Based Entity (CBE) number or whether it uses neither CMIT nor CBE. If measurement varied from CMIT or CBE specifications, answer “No, it uses neither CMIT nor CBE”."
-                        }
-                      ],
-                      "choices": [
-                        {
-                          "id": "lIqRkso1nUidNG1Gh7Ll0A",
-                          "label": "Yes",
-                          "children": [
-                            {
-                              "id": "measure_identifierCmit",
-                              "type": "number",
-                              "validation": {
-                                "type": "number",
-                                "nested": true,
-                                "parentFieldName": "measure_identifier",
-                                "parentOptionId": "lIqRkso1nUidNG1Gh7Ll0A"
-                              },
-                              "props": {
-                                "label": "D2.VII.2a CMIT number"
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "id": "eqVgpF8hmsma9ibcvwVqCb",
-                          "label": "No, it has a Consensus Based Entity (CBE) number",
-                          "children": [
-                            {
-                              "id": "measure_identifierCbe",
-                              "type": "number",
-                              "validation": {
-                                "type": "number",
-                                "nested": true,
-                                "parentFieldName": "measure_identifier",
-                                "parentOptionId": "eqVgpF8hmsma9ibcvwVqCb"
-                              },
-                              "props": {
-                                "label": "D2.VII.2b Consensus Based Entity (CBE) number"
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "id": "hcsq9mTy5wWhxUPtgkQWwB",
-                          "label": "No, it uses neither CMIT or CBE",
-                          "children": [
-                            {
-                              "id": "measure_identifierDefinition",
-                              "type": "textarea",
-                              "validation": {
-                                "type": "text",
-                                "nested": true,
-                                "parentFieldName": "measure_identifier",
-                                "parentOptionId": "hcsq9mTy5wWhxUPtgkQWwB"
-                              },
-                              "props": {
-                                "label": "D2.VII.2c How is this measure defined?",
-                                "hint": "If this measure has neither a CMIT nor CBE number, provide a link to the specification (if available). If not available, provide a measure definition (i.e., describe how the numerator and denominator, as well as exclusion criteria for each, are defined). If this measure has been modified from an existing CMIT or CBE specification, briefly describe the modification."
-                              }
-                            }
-                          ]
+                          "id": "qualityMeasure_reportingPeriodEndDate",
+                          "type": "date",
+                          "validation": {
+                            "type": "endDate",
+                            "dependentFieldName": "qualityMeasure_reportingPeriodStartDate",
+                            "nested": true,
+                            "parentFieldName": "qualityMeasure_reportingPeriod"
+                          },
+                          "props": {
+                            "hint": "End date",
+                            "timetype": "endDate"
+                          }
                         }
                       ]
                     }
-                  },
-                  {
-                    "id": "measure_dataVersion",
-                    "type": "radio",
-                    "validation": "radio",
-                    "props": {
-                      "label": "D2.VII.3 Data version",
-                      "hint": "Is this data preliminary or final?",
-                      "choices": [
-                        {
-                          "id": "GLnFjfEWVnsNJdWMswHwxk",
-                          "label": "Preliminary"
-                        },
-                        {
-                          "id": "sK8VJLLx8HokhraqqLcH6k",
-                          "label": "Final"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "measure_activities",
-                    "type": "checkbox",
-                    "validation": "checkbox",
-                    "props": {
-                      "label": "D2.VII.4 Activities the quality measure is used in ",
-                      "hint": "Which pay-for-performance, quality, or evaluation efforts is this measure used in? Select all that apply.",
-                      "choices": [
-                        {
-                          "id": "SMRcwYNpSvLf1YTLslsoCP",
-                          "label": "Quality Assessment and Performance Improvement (QAPI) program (as defined at 42 CFR 438.330)"
-                        },
-                        {
-                          "id": "hUAhCuNQ9FxjJqhX28hJ0f",
-                          "label": "Managed Care Quality Strategy (as defined at 42 CFR 438.340)"
-                        },
-                        {
-                          "id": "OlWKinxF3sh0LBMaABqP9h",
-                          "label": "External Quality Review (EQR) (as defined at 42 CFR 438.450-364)"
-                        },
-                        {
-                          "id": "VNQnzSeAoexrk8lsaOSyZTSG",
-                          "label": "Plan Report Cards [such as the state’s Medicaid and CHIP Quality Rating System (QRS) (as defined at 42 CFR 438 Subpart G)]"
-                        },
-                        {
-                          "id": "9xOPIS3K69pdNdmIWab4RLCV",
-                          "label": "Plan Withhold Arrangements (as defined at 42 CFR 438.6(b))"
-                        },
-                        {
-                          "id": "lMHlZN8F1teQ5wy6t6a2IDBt",
-                          "label": "Plan Incentive Arrangements (as defined at 42 CFR 438.6(b))"
-                        },
-                        {
-                          "id": "yypoD2k1sqPLumyHKl3wfg",
-                          "label": "State Directed Payments (SDPs) (as defined at 42 CFR § 438.6(c)(2)(ii)(C) and (D))"
-                        },
-                        {
-                          "id": "SD9JuRdGwpaD0S9yPYc90H",
-                          "label": "In Lieu of Service or Setting (ILOS; as defined at 42 CFR §§ 438.3(e)(2) and 438.16)"
-                        },
-                        {
-                          "id": "6c1JMtXyc3riXxf2xHbdVI",
-                          "label": "Other, specify",
-                          "children": [
-                            {
-                              "id": "measure_activities-otherText",
-                              "type": "text",
-                              "validation": {
-                                "type": "text",
-                                "nested": true,
-                                "parentFieldName": "measure_activities",
-                                "parentOptionId": "6c1JMtXyc3riXxf2xHbdVI"
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "id": "MFK8OOLrIqSP1pHuG8f0pp",
-                          "label": "None"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "id": "measure_rates_header",
-                    "type": "sectionHeader",
-                    "props": {
-                      "divider": "none",
-                      "content": "Naming of rates",
-                      "hint": "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR."
-                    }
-                  },
-                  {
-                    "id": "measure_rates",
-                    "type": "dynamic",
-                    "validation": "dynamic",
-                    "props": {
-                      "label": "D2.VII.5 Name rate",
-                      "hint": "Enter the name of this performance rate you are reporting for the measure."
-                    }
-                  }
-                ]
+                  ]
+                }
               },
-              "drawerForm": {
-                "id": "dqmmar-drawer",
-                "fields": [
-                  {
-                    "id": "measure_isReporting",
-                    "type": "radio",
-                    "validation": "radio",
-                    "props": {
-                      "label": "D2.VII.6 Are you reporting results for this measure?",
-                      "hint": "Are you reporting results for this measure for this reporting period?",
-                      "choices": [
-                        {
-                          "id": "xvBx2RGFpvmUf2Wk5bLe9u",
-                          "label": "Yes, I am reporting",
-                          "children": [
-                            {
-                              "id": "measure_dataCollectionMethod",
-                              "type": "radio",
-                              "validation": {
-                                "type": "radio",
-                                "nested": true,
-                                "parentFieldName": "measure_isReporting",
-                                "parentOptionId": "xvBx2RGFpvmUf2Wk5bLe9u"
-                              },
-                              "props": {
-                                "label": "D2.VII.7 Data collection method",
-                                "hint": "What data collection method did the plan use for this measure? (see technical guide for definitions).",
-                                "choices": [
-                                  {
-                                    "id": "bkD4uguEEiRjo5GyoCVNMi",
-                                    "label": "Administrative"
-                                  },
-                                  {
-                                    "id": "tL67PrkzTlW7sYbwvLX20u",
-                                    "label": "Electronic clinical data systems (ECDS)"
-                                  },
-                                  {
-                                    "id": "ZMOGJqcMYUpz9kfB5U7WKW",
-                                    "label": "Electronic health record (EHR)"
-                                  },
-                                  {
-                                    "id": "sr81F3S6pBZcmyr4iiBDmR",
-                                    "label": "Hybrid"
-                                  },
-                                  {
-                                    "id": "UaVA7pFl6zfrYIVFaZXkX0",
-                                    "label": "Survey"
-                                  },
-                                  {
-                                    "id": "D3x0tz0657GlrkneNtssdn",
-                                    "label": "Other, specify",
-                                    "children": [
-                                      {
-                                        "id": "measure_dataCollectionMethod-otherText",
-                                        "type": "text",
-                                        "validation": {
-                                          "type": "textOptional",
-                                          "nested": true,
-                                          "parentFieldName": "measure_dataCollectionMethod",
-                                          "parentOptionId": "D3x0tz0657GlrkneNtssdn"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        },
-                        {
-                          "id": "37sMoqg5MNOb17KDCpTO1w",
-                          "label": "Not reporting",
-                          "children": [
-                            {
-                              "id": "measure_isNotReportingReason",
-                              "type": "radio",
-                              "validation": {
-                                "type": "radio",
-                                "nested": true,
-                                "parentFieldName": "measure_isReporting",
-                                "parentOptionId": "37sMoqg5MNOb17KDCpTO1w"
-                              },
-                              "props": {
-                                "choices": [
-                                  {
-                                    "id": "aKM1awPXFkBfWwesiwKk0p",
-                                    "label": "No, the eligible population does not meet the required measure sample size"
-                                  },
-                                  {
-                                    "id": "x37F2dqsuBqjx1BPxQENph",
-                                    "label": "No, this measure does not apply to this plan"
-                                  },
-                                  {
-                                    "id": "ZuunP6hiUTIDNzi86PCHBB",
-                                    "label": "Other, specify",
-                                    "children": [
-                                      {
-                                        "id": "measure_isNotReportingReason-otherText",
-                                        "type": "text",
-                                        "validation": {
-                                          "type": "text",
-                                          "nested": true,
-                                          "parentFieldName": "measure_isNotReportingReason",
-                                          "parentOptionId": "ZuunP6hiUTIDNzi86PCHBB"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  }
-                ]
+              {
+                "id": "qualityMeasure_description",
+                "type": "textarea",
+                "validation": "text",
+                "props": {
+                  "label": "D2.VII.8 Measure description",
+                  "hint": "For measures that are not part of standardized national measure sets (i.e. state-specific measures), states should provide a description of the measure (for example, numerator and denominator)."
+                }
               }
-            }
-          ]
+            ]
+          },
+          "drawerForm": {
+            "id": "dqm-drawer",
+            "fields": [
+              {
+                "id": "qualityMeasure_plan_measureResults",
+                "type": "text",
+                "validation": "text",
+                "repeat": "plans",
+                "props": {
+                  "label": ": Measure Results",
+                  "hint": "What are the measure results or values for this plan? Add free text or enter “N/A” if not applicable."
+                }
+              }
+            ]
+          }
         },
         {
           "name": "VIII: Sanctions",

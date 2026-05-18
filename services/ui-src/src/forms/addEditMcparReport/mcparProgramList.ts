@@ -59,6 +59,10 @@ export const mcparProgramList: ProgramList = {
       label: "AIDS Healthcare Foundation",
     },
     {
+      id: "RY43tRP7f90YgcrsFL0qjCfM",
+      label: "Dental Managed Care",
+    },
+    {
       id: "PXQ7xGVIZW84eNab6LPgPnKe",
       label: "Dental Managed Care / Los Angeles",
     },

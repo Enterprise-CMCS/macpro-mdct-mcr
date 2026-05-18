@@ -98,6 +98,7 @@ export const ChoiceListField = ({
 
   // format choices with nested child fields to render (if any)
   const formatChoices = (choices: FieldChoice[]) => {
+    const parentQuestionLabel = label;
     return choices.map((choice: FieldChoice) => {
       const {
         id,
@@ -126,7 +127,12 @@ export const ChoiceListField = ({
 
       if (children) {
         const isNested = true;
-        const formattedChildren = formFieldFactory(children, {
+        const labeledChildren = applyAccessibleLabelsToChildFields(
+          children,
+          choice.label,
+          parentQuestionLabel
+        );
+        const formattedChildren = formFieldFactory(labeledChildren, {
           disabled: shouldDisableChildFields,
           nested: isNested,
           autosave,
@@ -343,6 +349,39 @@ const sx = {
   ".ds-c-choice[type='checkbox']:checked:disabled::before": {
     boxShadow: "inset 0 0 4em 1em #A6A6A6;",
   },
+};
+
+/*
+ * Ensure that nested child fields rendered under a choice have an
+ * accessible label. This is particularly important for "Other, specify"
+ * textfields. We can generate one by combining the parent choice and
+ * the parent question so multiple "Other, specify" inputs on the
+ * same page each have a unique accessible name.
+ */
+export const applyAccessibleLabelsToChildFields = (
+  children: FormField[],
+  parentChoiceLabel?: string,
+  parentQuestionLabel?: string
+): FormField[] => {
+  return children.map((child) => {
+    const existingProps = child.props ?? {};
+    const hasLabel = !!existingProps.label;
+    const hasAriaLabel =
+      !!existingProps["aria-label"] || !!existingProps.ariaLabel;
+    if (hasLabel || hasAriaLabel || !parentChoiceLabel) {
+      return child;
+    }
+    const ariaLabel = parentQuestionLabel
+      ? `${parentChoiceLabel}: ${parentQuestionLabel}`
+      : parentChoiceLabel;
+    return {
+      ...child,
+      props: {
+        ...existingProps,
+        "aria-label": ariaLabel,
+      },
+    };
+  });
 };
 
 export const getNestedChildFields = (

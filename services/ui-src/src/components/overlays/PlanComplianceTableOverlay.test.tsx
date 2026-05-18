@@ -176,7 +176,7 @@ describe("<PlanComplianceTableOverlay />", () => {
       await userEvent.click(submitButton);
     });
 
-    expect(mockOnSubmit).toBeCalled();
+    expect(mockOnSubmit).toHaveBeenCalled();
   });
 
   test("has non-compliance", async () => {
@@ -218,6 +218,6 @@ describe("<PlanComplianceTableOverlay />", () => {
       await userEvent.click(closeButton);
     });
 
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+    expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
   });
 });

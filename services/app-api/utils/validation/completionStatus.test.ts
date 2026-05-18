@@ -369,16 +369,16 @@ describe("Completion Status Tests", () => {
 
   describe("calculateMeasureCompletion()", () => {
     const mockMeasureId = "mock-measure-1";
+    const mockMeasureRates = [{ id: "mock-rate-1" }];
     const mockPlan = {
       id: "mock-plan-1",
       name: "Mock plan 1",
     };
-    const mockForm = measuresAndResultsRoute.drawerForm;
     test("returns false for plan with no measure data", () => {
       const result = calculateMeasureCompletion(
         mockMeasureId,
-        mockForm,
-        mockPlan
+        mockPlan,
+        mockMeasureRates
       );
       expect(result).toBe(false);
     });
@@ -395,8 +395,8 @@ describe("Completion Status Tests", () => {
       };
       const result = calculateMeasureCompletion(
         mockMeasureId,
-        mockForm,
-        mockNotReportingPlan
+        mockNotReportingPlan,
+        mockMeasureRates
       );
       expect(result).toBe(true);
     });
@@ -407,13 +407,14 @@ describe("Completion Status Tests", () => {
         measures: {
           [mockMeasureId]: {
             measure_dataCollectionMethod: [{}],
+            "measure_rateResults-mock-rate-1": "42",
           },
         },
       };
       const result = calculateMeasureCompletion(
         mockMeasureId,
-        mockForm,
-        mockCompletePlan
+        mockCompletePlan,
+        mockMeasureRates
       );
       expect(result).toBe(true);
     });

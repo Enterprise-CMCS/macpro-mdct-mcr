@@ -73,7 +73,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
             {
               type: "span",
               content:
-                "? If measurement varied from CMIT or Consensus Based Entity (CBE) specifications, answer “No, it uses neither CMIT or CBE”. If “No, it has a Consensus Based Entity (CBE) number”, go to D2.VII.2b. If “No, it has a Consensus Based Entity (CBE) number”, go to D2.VII.2c.",
+                "? If no, indicate whether it has a Consensus Based Entity (CBE) number or whether it uses neither CMIT nor CBE. If measurement varied from CMIT or CBE specifications, answer “No, it uses neither CMIT nor CBE”.",
             },
           ],
           choices: [
@@ -234,7 +234,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           divider: "none",
           content: "Naming of rates",
-          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the MCPAR Technical Guide: Quality Measures for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
+          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
         },
       },
       {
@@ -253,12 +253,70 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
     fields: [
       {
         id: "measure_isReporting",
-        type: ReportFormFieldType.CHECKBOX,
-        validation: ValidationType.CHECKBOX_OPTIONAL,
+        type: ReportFormFieldType.RADIO,
+        validation: ValidationType.RADIO,
         props: {
           label: "D2.VII.6 Are you reporting results for this measure?",
           hint: "Are you reporting results for this measure for this reporting period?",
           choices: [
+            {
+              id: "xvBx2RGFpvmUf2Wk5bLe9u",
+              label: "Yes, I am reporting",
+              children: [
+                {
+                  id: "measure_dataCollectionMethod",
+                  type: ReportFormFieldType.RADIO,
+                  validation: {
+                    type: ValidationType.RADIO,
+                    nested: true,
+                    parentFieldName: "measure_isReporting",
+                    parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
+                  },
+                  props: {
+                    label: "D2.VII.7 Data collection method",
+                    hint: "What data collection method did the plan use for this measure? (see technical guide for definitions).",
+                    choices: [
+                      {
+                        id: "bkD4uguEEiRjo5GyoCVNMi",
+                        label: "Administrative",
+                      },
+                      {
+                        id: "tL67PrkzTlW7sYbwvLX20u",
+                        label: "Electronic clinical data systems (ECDS)",
+                      },
+                      {
+                        id: "ZMOGJqcMYUpz9kfB5U7WKW",
+                        label: "Electronic health record (EHR)",
+                      },
+                      {
+                        id: "sr81F3S6pBZcmyr4iiBDmR",
+                        label: "Hybrid",
+                      },
+                      {
+                        id: "UaVA7pFl6zfrYIVFaZXkX0",
+                        label: "Survey",
+                      },
+                      {
+                        id: "D3x0tz0657GlrkneNtssdn",
+                        label: "Other, specify",
+                        children: [
+                          {
+                            id: "measure_dataCollectionMethod-otherText",
+                            type: ReportFormFieldType.TEXT,
+                            validation: {
+                              type: ValidationType.TEXT_OPTIONAL,
+                              nested: true,
+                              parentFieldName: "measure_dataCollectionMethod",
+                              parentOptionId: "D3x0tz0657GlrkneNtssdn",
+                            },
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
             {
               id: "37sMoqg5MNOb17KDCpTO1w",
               label: "Not reporting",
@@ -300,57 +358,6 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                         ],
                       },
                     ],
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      },
-      {
-        id: "measure_section_divider",
-        type: ReportFormFieldType.SECTION_DIVIDER,
-      },
-      {
-        id: "measure_dataCollectionMethod",
-        type: ReportFormFieldType.RADIO,
-        validation: ValidationType.RADIO_OPTIONAL,
-        props: {
-          label: "D2.VII.7 Data collection method",
-          hint: "What data collection method did the plan use for this measure? (see technical guide for definitions).",
-          choices: [
-            {
-              id: "bkD4uguEEiRjo5GyoCVNMi",
-              label: "Administrative",
-            },
-            {
-              id: "tL67PrkzTlW7sYbwvLX20u",
-              label: "Electronic clinical data systems (ECDS)",
-            },
-            {
-              id: "ZMOGJqcMYUpz9kfB5U7WKW",
-              label: "Electronic health record (EHR)",
-            },
-            {
-              id: "sr81F3S6pBZcmyr4iiBDmR",
-              label: "Hybrid",
-            },
-            {
-              id: "UaVA7pFl6zfrYIVFaZXkX0",
-              label: "Survey",
-            },
-            {
-              id: "D3x0tz0657GlrkneNtssdn",
-              label: "Other, specify",
-              children: [
-                {
-                  id: "measure_dataCollectionMethod-otherText",
-                  type: ReportFormFieldType.TEXT,
-                  validation: {
-                    type: ValidationType.TEXT_OPTIONAL,
-                    nested: true,
-                    parentFieldName: "measure_dataCollectionMethod",
-                    parentOptionId: "D3x0tz0657GlrkneNtssdn",
                   },
                 },
               ],

@@ -2,9 +2,7 @@
 name: Scan and Open Jira Tickets (Snyk)
 
 on:
-  workflow_dispatch: # for testing and manual runs
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
   schedule:
     - cron: "0 6 * * *" # daily at 0600 UTC
 
@@ -13,25 +11,11 @@ permissions:
 
 jobs:
   snyk_run:
-    name: Snyk Run (for PR and push)
+    name: Snyk Run
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - name: Check out repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - name: Install Snyk and Run Snyk test
-        run: npx snyk@1.1303.2 test --all-projects --json > snyk_output.txt || true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-  snyk_nightly_run:
-    name: Snyk Nightly Run (for nightly cron with JIRA)
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule'
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
       - name: Install Snyk and Run Snyk test
         run: npx snyk@1.1303.2 test --all-projects --json > snyk_output.txt || true

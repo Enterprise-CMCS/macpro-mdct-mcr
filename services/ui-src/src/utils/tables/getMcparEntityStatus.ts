@@ -15,12 +15,13 @@ export const getMcparEntityStatus = (
   entityType: EntityType,
   route: ModalOverlayReportPageShape
 ) => {
-  const plans = report?.fieldData?.plans;
-  const planForm = route?.drawerForm;
+  const plans = report.fieldData?.plans;
+  const planForm = route.drawerForm;
   if (entityType !== EntityType.QUALITY_MEASURES || !plans || !planForm)
     return false;
 
   const filteredPlans = getPlansNotExemptFromQualityMeasures(report);
+  const qualityMeasures = report.fieldData?.qualityMeasures;
 
   // If all plans are exempted, return true (nothing to complete)
   if (filteredPlans.length === 0) return true;
@@ -31,6 +32,7 @@ export const getMcparEntityStatus = (
       form: planForm,
       isMeasuresAndResultsPage: true,
       measureId: entity.id,
+      qualityMeasures: qualityMeasures,
     })
   );
 };

@@ -9,6 +9,9 @@ import {
   text,
   textOptional,
   numberSuppressible,
+  numberOrSuppressed,
+  numberOrSuppressedOrNaNr,
+  validNAValues,
   numberNotLessThanZeroOptional,
   futureDate,
   date,
@@ -188,5 +191,34 @@ describe("Schemas", () => {
     testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
     testTextSchema(numberSuppressible(), [suppressionText], true);
     testTextSchema(numberSuppressible(), ["badText", undefined], false);
+  });
+
+  test("Test numberOrSuppressed schema", () => {
+    testTextSchema(
+      numberOrSuppressed(),
+      ["suppressed", "Suppressed", " SUPPRESSED "],
+      true
+    );
+    testValidNumber(numberOrSuppressed(), ["1", "-1", "1,000"], true);
+    testTextSchema(
+      numberOrSuppressed(),
+      [suppressionText, ...validNAValues, "badText", undefined],
+      false
+    );
+  });
+
+  test("Test numberOrSuppressedOrNaNr schema", () => {
+    testTextSchema(
+      numberOrSuppressedOrNaNr(),
+      ["suppressed", "Suppressed", " SUPPRESSED "],
+      true
+    );
+    testValidNumber(numberOrSuppressedOrNaNr(), ["1", "-1", "1,000"], true);
+    testTextSchema(numberOrSuppressedOrNaNr(), validNAValues, true);
+    testTextSchema(
+      numberOrSuppressedOrNaNr(),
+      [suppressionText, "badText", undefined],
+      false
+    );
   });
 });
