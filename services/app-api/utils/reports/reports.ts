@@ -24,7 +24,8 @@ export async function copyFieldDataFromSource(
   formTemplate: any,
   validatedFieldData: AnyObject,
   reportType: ReportType,
-  newQualityMeasuresSectionEnabled?: boolean
+  newQualityMeasuresSectionEnabled?: boolean,
+  summer2026sansQM?: boolean
 ) {
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
   let fieldsToCopy: AnyObject = mcparFieldsToCopy;
@@ -36,6 +37,11 @@ export async function copyFieldDataFromSource(
 
   // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
   if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
+    fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
+  }
+
+  // if summer2026sansQM is true, copy new quality measure fields
+  if (reportType === ReportType.MCPAR && summer2026sansQM) {
     fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
   }
 

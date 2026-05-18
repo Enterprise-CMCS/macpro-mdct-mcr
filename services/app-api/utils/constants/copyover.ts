@@ -108,6 +108,13 @@ export const newQualityMeasureFieldsToCopy = [
   "measure_rates",
 ];
 
+export const summer2026SansQmFieldsToCopy = [
+  "state_timeframesForStandardPriorAuthorizationDecisions",
+  "state_stateTimeframeForStandardPriorAuthorizationDecisions",
+  "state_timeframesForExpeditedPriorAuthorizationDecisions",
+  "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
+];
+
 export const naaarFieldsToCopy = {
   root: [
     "contactName",
