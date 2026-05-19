@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import uuid from "react-uuid";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   DropdownChangeObject,
@@ -62,6 +63,9 @@ export const DropdownField = ({
     selectedEntity,
   } = useStore();
 
+  // LaunchDarkly
+  const summer2026SansQm = useFlags()?.summer2026SansQm;
+
   const reportType = window.location.pathname.replaceAll("/", "");
 
   // get correct program list
@@ -83,12 +87,18 @@ export const DropdownField = ({
         });
       } else {
         dropdownOptions =
-          copyEligibleReportsByState?.map((report: ReportMetadataShape) => ({
-            label: `${report.programName} ${convertDateUtcToEt(
-              report.dueDate
-            )}`,
-            value: report.fieldDataId,
-          })) ?? [];
+          copyEligibleReportsByState?.map((report: ReportMetadataShape) => {
+            const reportDate = summer2026SansQm
+              ? report.submittedOnDate
+              : report.dueDate;
+            const label = reportDate
+              ? `${report.programName} ${convertDateUtcToEt(reportDate)}`
+              : report.programName;
+            return {
+              label,
+              value: report.fieldDataId,
+            };
+          }) ?? [];
       }
     } else if (options === "programList") {
       dropdownOptions = programListJson[state as State].map(
