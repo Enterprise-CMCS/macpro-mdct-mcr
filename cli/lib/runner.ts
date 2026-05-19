@@ -20,7 +20,7 @@ const formattedPrefix = (prefix: string) => {
   }
 
   const color = prefixColors.get(prefix);
-  return `\x1b[38;5;${color}m ${prefix.padStart(maxPrefixLength)}|\x1b[0m`;
+  return `\u001B[38;5;${color}m ${prefix.padStart(maxPrefixLength)}|\u001B[0m`;
 };
 
 export const runCommand = async (

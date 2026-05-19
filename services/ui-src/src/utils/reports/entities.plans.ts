@@ -1,7 +1,7 @@
 // constants
 import { exceptionsStatus, nonComplianceStatus } from "../../constants";
 // types
-import { EntityShape } from "types";
+import { EntityShape, ReportShape } from "types";
 
 const analysisMethodKeys = [
   { method: "Geomapping", filterKey: "_geomappingComplianceFrequency" },
@@ -109,7 +109,7 @@ const findEntityDataByKey = (
   if (!dataKey) return;
 
   if (Array.isArray(entity[dataKey])) {
-    if (entity[dataKey].length < 1) return;
+    if (entity[dataKey].length === 0) return;
     return entity[dataKey]?.[0]?.value;
   }
   if (entity[dataKey] === "") return;
@@ -221,7 +221,7 @@ const getFormattedNonComplianceData = (plan: EntityShape) => {
   analysisMethodKeys.forEach(
     ({ method, filterKey }: { method: string; filterKey: string }) => {
       const methodIndex = analysisMethodsUsed.indexOf(method);
-      if (methodIndex < 0) return;
+      if (methodIndex === -1) return;
 
       const displayInfo = getAnalysisMethodData(method, filterKey, plan);
 
@@ -325,4 +325,19 @@ export const getFormattedPlanData = (plan: EntityShape) => {
     return getFormattedExceptionsData(plan);
   }
   return;
+};
+
+export const getPlansNotExemptFromQualityMeasures = (
+  report: ReportShape
+): EntityShape[] => {
+  const plans = report.fieldData?.plans || [];
+  const exemptPlans = report.fieldData?.plansExemptFromQualityMeasures || [];
+
+  const exemptedPlanIds = exemptPlans.map((exemption: EntityShape) =>
+    exemption.key.replace("plansExemptFromQualityMeasures-", "")
+  );
+
+  return plans.filter(
+    (plan: EntityShape) => !exemptedPlanIds.includes(plan.id)
+  );
 };

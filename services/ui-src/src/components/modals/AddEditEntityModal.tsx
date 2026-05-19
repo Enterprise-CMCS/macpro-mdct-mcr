@@ -14,6 +14,7 @@ import {
 } from "types";
 // utils
 import {
+  addEditEntityModifications,
   entityWasUpdated,
   filterFormData,
   getEntriesToClear,
@@ -46,7 +47,7 @@ export const AddEditEntityModal = ({
       state: report?.state,
       id: report?.id,
     };
-    let dataToWrite = {
+    const dataToWrite: AnyObject = {
       metadata: {
         lastAlteredBy: full_name,
         status: ReportStatus.IN_PROGRESS,
@@ -80,7 +81,14 @@ export const AddEditEntityModal = ({
         entriesToClear
       );
 
-      dataToWrite.fieldData = { [entityType]: updatedEntities };
+      const plans = report?.fieldData?.plans;
+      dataToWrite.fieldData = addEditEntityModifications(
+        entityType,
+        updatedEntities,
+        updatedEntities[selectedEntityIndex],
+        plans
+      );
+
       const shouldSave = entityWasUpdated(
         report?.fieldData?.[entityType][selectedEntityIndex],
         updatedEntities[selectedEntityIndex]
@@ -106,12 +114,11 @@ export const AddEditEntityModal = ({
         heading: selectedEntity?.id
           ? verbiage.addEditModalEditTitle
           : verbiage.addEditModalAddTitle,
-        subheading: verbiage.addEditModalHint
-          ? verbiage.addEditModalHint
-          : undefined,
+        subheading: verbiage.addEditModalHint ?? undefined,
         actionButtonText: submitting ? (
           <Spinner size="md" />
-        ) : report?.locked ? (
+        ) : // oxlint-disable-next-line no-nested-ternary
+        report?.locked ? (
           "Close"
         ) : (
           "Save"
@@ -129,6 +136,7 @@ export const AddEditEntityModal = ({
             ? modalDisclosure.onClose
             : writeEntity
         }
+        autosave={false}
         validateOnRender={false}
         dontReset={true}
       />

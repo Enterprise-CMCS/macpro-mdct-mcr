@@ -10,6 +10,7 @@ import {
   FormField,
   PageTypes,
   ReportRoute,
+  EntityShape,
 } from "../types";
 // utils
 import { validateFieldData } from "./completionValidation";
@@ -119,15 +120,11 @@ export const calculateFormCompletion = async (
           dataForObject
         );
         nestedFields?.forEach((nestedField: string) => {
-          fieldsToBeValidated[nestedField] = dataForObject[nestedField]
-            ? dataForObject[nestedField]
-            : null;
+          fieldsToBeValidated[nestedField] = dataForObject[nestedField] ?? null;
         });
       }
 
-      fieldsToBeValidated[formField.id] = dataForObject[formField.id]
-        ? dataForObject[formField.id]
-        : null;
+      fieldsToBeValidated[formField.id] = dataForObject[formField.id] ?? null;
     }
   }
   // Validate all fields en masse, passing flag that uses required validation schema
@@ -167,6 +164,29 @@ export const calculateEntityCompletion = async (
     }
   }
   return areAllFormsComplete;
+};
+
+export const calculateMeasureCompletion = (
+  measureId: string,
+  plan: EntityShape,
+  measureRates: AnyObject
+) => {
+  const planMeasureData = plan.measures?.[measureId];
+  if (!planMeasureData) return false;
+
+  const reporting = planMeasureData.measure_isReporting?.length > 0;
+  const notReportingReasons =
+    planMeasureData.measure_isNotReportingReason?.length > 0;
+  if (reporting && notReportingReasons) return true;
+
+  const dataMethod = planMeasureData.measure_dataCollectionMethod?.length > 0;
+
+  const ratesAreAnswered = measureRates.every((rate: any) => {
+    const rateResult = planMeasureData[`measure_rateResults-${rate.id}`];
+    return rateResult && rateResult !== "";
+  });
+
+  return dataMethod && ratesAreAnswered;
 };
 
 export const calculateRouteCompletion = async (
@@ -274,18 +294,41 @@ export const calculateRouteCompletion = async (
         ),
       };
       break;
-    case PageTypes.MODAL_OVERLAY:
-      if (!route.modalForm || !route.overlayForm) break;
-      routeCompletion = {
-        [route.path]: await calculateEntityCompletion(
+    case PageTypes.MODAL_OVERLAY: {
+      let isComplete = false;
+      if (route.modalForm && route.overlayForm) {
+        isComplete = await calculateEntityCompletion(
           [route.modalForm, route.overlayForm],
           route.entityType,
           fieldData,
           validationJson,
           formTemplate
-        ),
-      };
+        );
+      }
+      if (
+        route.path ===
+          "/mcpar/plan-level-indicators/quality-measures/measures-and-results" &&
+        route.drawerForm
+      ) {
+        const qualityMeasures = fieldData.qualityMeasures || [];
+        const plans = fieldData.plans || [];
+
+        if (qualityMeasures.length > 0 && plans.length > 0) {
+          isComplete = qualityMeasures.every((measure: EntityShape) =>
+            plans.every((plan: EntityShape) =>
+              calculateMeasureCompletion(
+                measure.id,
+                plan,
+                measure?.measure_rates
+              )
+            )
+          );
+        }
+      }
+
+      routeCompletion = { [route.path]: isComplete };
       break;
+    }
     case PageTypes.PLAN_OVERLAY: {
       let isComplete = false;
 
@@ -324,7 +367,7 @@ export const calculateRoutesCompletion = async (
   formTemplate: AnyObject,
   validationJson: AnyObject
 ) => {
-  let completionDict: CompletionData = {};
+  const completionDict: CompletionData = {};
   // Iterate over each route
   for (const route of routes || []) {
     // Determine the status of each child in the route
@@ -335,7 +378,7 @@ export const calculateRoutesCompletion = async (
       formTemplate
     );
     // Add completion status to parent dictionary
-    completionDict = { ...completionDict, ...routeCompletionDict };
+    Object.assign(completionDict, routeCompletionDict);
   }
   return completionDict;
 };

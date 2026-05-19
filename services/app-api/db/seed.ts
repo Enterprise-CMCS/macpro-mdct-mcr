@@ -166,10 +166,10 @@ const seed = async (): Promise<void> => {
     answer: string | boolean
   ): Promise<void> => {
     switch (prompt.name) {
-      case "exit": {
+      case "exit":
         if (answer === false) seed();
         break;
-      }
+
       default:
         break;
     }
@@ -191,11 +191,11 @@ const seed = async (): Promise<void> => {
       case answer === "getBanners":
         expandedLog(await getBanners());
         break;
-      case answer === "deleteBanners": {
+      case answer === "deleteBanners":
         await deleteBanners();
         console.log("Banners deleted.");
         break;
-      }
+
       // Reports
       case answer.toString().startsWith("createFilled"): {
         const reportType = answer.toString().replace("createFilled", "");
@@ -237,7 +237,7 @@ const seed = async (): Promise<void> => {
         createdLog(await createReport(flags, reportType), "Base", reportType);
         break;
       }
-      case answer === "quickCreateReports": {
+      case answer === "quickCreateReports":
         await Promise.all(
           reportTypes.map(async (reportType) => {
             const baseReportType = reportType.split("-")[0];
@@ -250,7 +250,7 @@ const seed = async (): Promise<void> => {
           })
         );
         break;
-      }
+
       default:
         break;
     }

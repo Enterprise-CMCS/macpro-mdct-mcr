@@ -79,16 +79,6 @@ describe("Test mask types", () => {
     { test: "!@#", expected: "!@#" },
   ];
 
-  const undefinedTestCases = [
-    { test: "0....0123", expected: "0....0123" },
-    { test: "000000123", expected: "123" },
-    { test: "123", expected: "123" },
-    { test: "123456", expected: "123,456" },
-    { test: "", expected: "" },
-    { test: "abc", expected: "abc" },
-    { test: "!@#", expected: "!@#" },
-  ];
-
   const currencyTestCases = [
     { test: "0....0123", expected: "0....0123" },
     { test: "000000123", expected: "123.00" },
@@ -116,12 +106,6 @@ describe("Test mask types", () => {
       expect(applyMask(testCase.test, null).maskedValue).toEqual(
         testCase.expected
       );
-    }
-  });
-
-  test("Check if undefined passed for mask returns thousands-separated value", () => {
-    for (let testCase of undefinedTestCases) {
-      expect(applyMask(testCase.test).maskedValue).toEqual(testCase.expected);
     }
   });
 

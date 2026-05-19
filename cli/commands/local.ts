@@ -8,7 +8,7 @@ import { seedData } from "../lib/seedData.ts";
 const isColimaRunning = () => {
   try {
     const output = execSync("colima status 2>&1", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).trim();
     return output.includes("running");
@@ -20,7 +20,7 @@ const isColimaRunning = () => {
 const isLocalStackRunning = () => {
   try {
     return execSync("localstack status", {
-      encoding: "utf-8",
+      encoding: "utf8",
       stdio: "pipe",
     }).includes("running");
   } catch {
@@ -45,6 +45,8 @@ export const local = {
     process.env.AWS_ACCESS_KEY_ID = "localstack";
     process.env.AWS_SECRET_ACCESS_KEY = "localstack"; // pragma: allowlist secret
     process.env.AWS_ENDPOINT_URL = "http://localhost.localstack.cloud:4566";
+    process.env.AWS_ENDPOINT_URL_S3 =
+      "http://s3.localhost.localstack.cloud:4566";
 
     await runCommand("Clean .cdk", ["rm", "-rf", ".cdk"], ".");
     await runCommand(

@@ -27,6 +27,5 @@
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.7",
     "playwright-core": "^1.57.0"
-  },
-  "packageManager": "yarn@4.12.0"
+  }
 }

@@ -32,7 +32,9 @@ import {
 // utils
 import {
   SectionContent,
+  SectionDivider,
   SectionHeader,
+  Question,
 } from "components/forms/FormLayoutElements";
 import {
   generateAddEntityDrawerItemFields,
@@ -59,12 +61,16 @@ export const formFieldFactory = (
     dropdown: DropdownField,
     dynamic: DynamicField,
     number: NumberField,
+    numberOrSuppressed: NumberField,
+    numberOrSuppressedOrNaNr: NumberField,
     numberSuppressible: NumberSuppressibleField,
+    question: Question,
     radio: RadioField,
     text: TextField,
     textarea: TextAreaField,
     sectionHeader: SectionHeader,
     sectionContent: SectionContent,
+    sectionDivider: SectionDivider,
   };
   fields = initializeChoiceListFields(fields);
   return fields.map((field) => {
@@ -155,7 +161,7 @@ export const createRepeatedFields = (
     if (currentField.repeat) {
       // if so, get entities for which the field is to be repeated
       const entities = reportFieldData?.[currentField.repeat];
-      if (entities && entities.length) {
+      if (entities && entities.length > 0) {
         // for each entity, create and return a new field with entity-linked id
         return entities?.map((entity: AnyObject) => {
           const newField = {
@@ -299,7 +305,7 @@ export const getForm = (params: getFormParams) => {
     ilos,
     reportingOnIlos = false,
   } = params;
-  const { drawerForm } = route;
+  const { drawerForm = {} as FormJson } = route;
   const addEntityDrawerForm = route.addEntityDrawerForm || ({} as FormJson);
   const plans =
     report?.fieldData?.plans?.map((plan: { name: string }) => plan) || [];

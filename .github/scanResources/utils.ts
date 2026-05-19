@@ -1,4 +1,4 @@
-import { createInterface } from "readline";
+import { createInterface } from "node:readline";
 import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 import { IAMClient, ListAccountAliasesCommand } from "@aws-sdk/client-iam";
 
@@ -35,7 +35,7 @@ export async function getAccountIdentifier(): Promise<string> {
     // ignore
   }
 
-  return (alias || accountId || "unknown-account").replace(
+  return (alias || accountId || "unknown-account").replaceAll(
     /[^a-zA-Z0-9-_]/g,
     "_"
   );

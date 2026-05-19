@@ -36,7 +36,6 @@ export const ReportPageIntro = ({
         <Table content={table} sx={{ ...sx.table, ...sxOverride?.table }} />
       )}
       {hint && <Box sx={sx.hintTextBox}>{parseCustomHtml(hint)}</Box>}
-      {accordion && <InstructionsAccordion verbiage={accordion} />}
       {spreadsheet && (
         <Box sx={sx.spreadsheetWidgetBox}>
           <SpreadsheetWidget
@@ -47,6 +46,7 @@ export const ReportPageIntro = ({
       )}
       {showAlert && <Alert status={AlertTypes.WARN} description={alert} />}
       {info && <Box sx={sx.infoTextBox}>{parseCustomHtml(info)}</Box>}
+      {accordion && <InstructionsAccordion verbiage={accordion} />}
     </Box>
   );
 };

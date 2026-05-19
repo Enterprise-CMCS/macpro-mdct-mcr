@@ -38,16 +38,16 @@ export default {
     do {
       const command = new QueryCommand({ ...params, ExclusiveStartKey });
       const result = await client.send(command);
-      items = items.concat(result.Items ?? []);
+      items.push(...(result.Items ?? []));
       ExclusiveStartKey = result.LastEvaluatedKey;
     } while (ExclusiveStartKey);
 
     return items;
   },
   scanAll: async (params: Omit<ScanCommandInput, "ExclusiveStartKey">) => {
-    let items: AnyObject[] = [];
+    const items: AnyObject[] = [];
     for await (const page of paginateScan({ client }, params)) {
-      items = items.concat(page.Items ?? []);
+      items.push(...(page.Items ?? []));
     }
 
     return items;

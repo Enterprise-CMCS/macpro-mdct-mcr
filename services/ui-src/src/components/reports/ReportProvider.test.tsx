@@ -98,7 +98,7 @@ describe("<ReportProvider />", () => {
 
   test("Shows error if fetchReport throws error", async () => {
     mockReportAPI.getReport.mockImplementation(() => {
-      throw new Error();
+      throw new Error("Some error message");
     });
     await act(async () => {
       await render(testComponent);
@@ -124,7 +124,7 @@ describe("<ReportProvider />", () => {
 
   test("Shows error if fetchReportsByState throws error", async () => {
     mockReportAPI.getReportsByState.mockImplementation(() => {
-      throw new Error();
+      throw new Error("Some error message");
     });
     await act(async () => {
       await render(testComponent);
@@ -150,7 +150,7 @@ describe("<ReportProvider />", () => {
 
   test("Shows error if updateReport throws error", async () => {
     mockReportAPI.putReport.mockImplementation(() => {
-      throw new Error();
+      throw new Error("Some error message");
     });
     await act(async () => {
       await render(testComponent);

@@ -72,3 +72,6 @@ export const DEFAULT_ANALYSIS_METHODS = [
 ];
 
 export const suppressionText = "Suppressed for data privacy purposes";
+
+export const uuidRegex =
+  /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/;

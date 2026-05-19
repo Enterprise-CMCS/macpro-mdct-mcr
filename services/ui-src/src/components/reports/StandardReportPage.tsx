@@ -16,7 +16,13 @@ import {
   StandardReportPageShape,
 } from "types";
 // utils
-import { filterFormData, useFindRoute, useStore } from "utils";
+import {
+  filterFormData,
+  formModifications,
+  parseCustomHtml,
+  useFindRoute,
+  useStore,
+} from "utils";
 
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -59,24 +65,37 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     navigate(nextRoute);
   };
 
+  const { accordion, formJson, showError } = formModifications(
+    report?.reportType,
+    route,
+    report?.fieldData
+  );
+
   return (
     <Box>
       {route.verbiage.intro && (
         <ReportPageIntro
+          accordion={accordion}
           text={route.verbiage.intro}
           reportType={report?.reportType}
         />
       )}
-      <Form
-        id={route.form.id}
-        formJson={route.form}
-        onSubmit={onSubmit}
-        onError={onError}
-        formData={report?.fieldData}
-        autosave
-        validateOnRender={validateOnRender || false}
-        dontReset={false}
-      />
+      {showError ? (
+        <Box sx={sx.missingEntity}>
+          {parseCustomHtml(route.verbiage.missingEntityMessage || "")}
+        </Box>
+      ) : (
+        <Form
+          id={route.form.id}
+          formJson={formJson}
+          onSubmit={onSubmit}
+          onError={onError}
+          formData={report?.fieldData}
+          autosave
+          validateOnRender={validateOnRender || false}
+          dontReset={false}
+        />
+      )}
       <ReportPageFooter
         submitting={submitting}
         form={route.form}
@@ -90,3 +109,31 @@ interface Props {
   route: StandardReportPageShape;
   validateOnRender?: boolean;
 }
+
+const sx = {
+  missingEntity: {
+    fontWeight: "bold",
+    marginBottom: "spacer4",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
+  },
+  missingEntityMessage: {
+    paddingTop: "spacer2",
+    fontWeight: "bold",
+    a: {
+      color: "primary",
+      textDecoration: "underline",
+      "&:hover": {
+        color: "primary_darker",
+      },
+    },
+    ol: {
+      paddingLeft: "spacer2",
+    },
+  },
+};

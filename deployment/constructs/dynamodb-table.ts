@@ -45,6 +45,7 @@ export class DynamoDBTable extends Construct {
       pointInTimeRecoverySpecification: {
         pointInTimeRecoveryEnabled: true,
       },
+      deletionProtection: !isDev,
       removalPolicy: isDev ? RemovalPolicy.DESTROY : RemovalPolicy.RETAIN,
     });
 

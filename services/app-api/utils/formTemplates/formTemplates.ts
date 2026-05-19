@@ -3,7 +3,7 @@ import dynamodbLib from "../dynamo/dynamodb-lib";
 import s3Lib, { getFormTemplateKey } from "../s3/s3-lib";
 import KSUID from "ksuid";
 import { logger } from "../debugging/debug-lib";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 // types
 import {
   AnyObject,
@@ -14,6 +14,7 @@ import {
   ModalOverlayReportPageShape,
   ReportJson,
   ReportJsonFile,
+  ReportFormFieldType,
   ReportRoute,
   ReportType,
 } from "../types";
@@ -139,9 +140,9 @@ export async function getOrCreateFormTemplate(
         ContentType: "application/json",
         Bucket: reportBucket,
       });
-    } catch (err) {
-      logger.error(err, "Error uploading new form template to S3");
-      throw err;
+    } catch (error) {
+      logger.error(error, "Error uploading new form template to S3");
+      throw error;
     }
 
     const newestTemplateMetadata = await getNewestTemplateVersion(reportType);
@@ -162,12 +163,12 @@ export async function getOrCreateFormTemplate(
         TableName: process.env.FormTemplateVersionsTable!,
         Item: newFormTemplateVersionItem,
       });
-    } catch (err) {
+    } catch (error) {
       logger.error(
-        err,
+        error,
         "Error writing a new form template version to DynamoDB."
       );
-      throw err;
+      throw error;
     }
 
     return {
@@ -280,10 +281,11 @@ export function isFieldElement(
    * This function is duplicated in ui-src/src/types/formFields.ts
    * If you change it here, change it there!
    */
-  const formLayoutElementTypes = [
-    "sectionHeader",
-    "sectionContent",
-    "sectionDivider",
+  const formLayoutElementTypes: string[] = [
+    ReportFormFieldType.SECTION_HEADER,
+    ReportFormFieldType.SECTION_CONTENT,
+    ReportFormFieldType.SECTION_DIVIDER,
+    ReportFormFieldType.QUESTION,
   ];
   return !formLayoutElementTypes.includes(field.type);
 }

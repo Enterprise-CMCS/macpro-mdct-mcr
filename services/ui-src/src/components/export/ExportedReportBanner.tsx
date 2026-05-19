@@ -1,7 +1,5 @@
 // components
 import { Box, Button, Image, Spinner, Text } from "@chakra-ui/react";
-// types
-import { ReportRoute } from "types";
 // utils
 import { getReportVerbiage, useStore } from "utils";
 // assets
@@ -13,9 +11,7 @@ export const ExportedReportBanner = () => {
   const { exportVerbiage } = getReportVerbiage(report?.reportType);
   const { reportBanner } = exportVerbiage;
 
-  const routesToRender = report?.formTemplate.routes.filter(
-    (route: ReportRoute) => route
-  );
+  const routesToRender = report?.formTemplate.routes.filter(Boolean);
 
   const onClickHandler = () => {
     window?.print();

@@ -6,8 +6,8 @@ import { ReportDrawer } from "components";
 import { closeText, saveAndCloseText } from "../../constants";
 // utils
 import {
+  mockAccessMeasuresEntity,
   mockAdminUserStore,
-  mockCompletedQualityMeasuresEntity,
   mockDrawerForm,
   mockEmptyDrawerForm,
   mockModalDrawerReportPageVerbiage,
@@ -32,7 +32,7 @@ const drawerComponent = (
   <RouterWrappedComponent>
     <ReportDrawer
       verbiage={mockModalDrawerReportPageVerbiage}
-      selectedEntity={mockCompletedQualityMeasuresEntity}
+      selectedEntity={mockAccessMeasuresEntity}
       form={mockDrawerForm}
       onSubmit={mockOnSubmit}
       drawerDisclosure={mockDrawerDisclosure}
@@ -43,7 +43,7 @@ const drawerComponent = (
 const drawerComponentWithoutFormFields = (
   <ReportDrawer
     verbiage={mockModalDrawerReportPageVerbiage}
-    selectedEntity={mockCompletedQualityMeasuresEntity}
+    selectedEntity={mockAccessMeasuresEntity}
     form={mockEmptyDrawerForm}
     onSubmit={mockOnSubmit}
     drawerDisclosure={mockDrawerDisclosure}

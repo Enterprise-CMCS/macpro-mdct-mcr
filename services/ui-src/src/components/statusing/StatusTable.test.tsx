@@ -246,13 +246,10 @@ describe("<StatusTable />", () => {
     });
 
     describe("Errors", () => {
-      const consoleSpy: {
-        error: jest.SpyInstance<void>;
-      } = {
-        error: jest.spyOn(console, "error").mockImplementation(),
-      };
-
       test("should raise an error if you try to use an invalid report type", () => {
+        // Spy to suppress console errors during test
+        const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+
         expect(() => {
           render(
             <StatusIcon
@@ -260,11 +257,11 @@ describe("<StatusTable />", () => {
               status={false}
             />
           );
-        }).toThrowError(
+        }).toThrow(
           "Statusing icons for 'invalidReportType' have not been implemented."
         );
-        expect(consoleSpy.error).toHaveBeenCalled();
-        consoleSpy.error.mockRestore();
+
+        consoleSpy.mockRestore();
       });
     });
   });

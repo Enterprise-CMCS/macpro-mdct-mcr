@@ -1,7 +1,7 @@
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 import { execSync } from "node:child_process";
 
-const updateEnvFiles = () => {
+export const updateEnvFiles = () => {
   execSync("op inject --in-file .env.tpl --out-file .env --force", {
     stdio: "inherit",
   });

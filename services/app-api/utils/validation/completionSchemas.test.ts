@@ -1,3 +1,4 @@
+import { describe, expect, test } from "@jest/globals";
 import {
   checkbox,
   checkboxOneOptional,
@@ -19,6 +20,8 @@ import {
   numberNotLessThanZero,
   numberNotLessThanZeroOptional,
   numberOptional,
+  numberOrSuppressed,
+  numberOrSuppressedOrNaNr,
   numberSuppressible,
   radio,
   radioOptional,
@@ -211,6 +214,36 @@ describe("Completion schemas", () => {
     "numberSuppressible() $description -> $expected",
     ({ value, expected }) => {
       expect(numberSuppressible().isValidSync(value)).toBe(expected);
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...reject(notApplicableValues),
+    ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
+    ...reject(["Suppressed for data privacy purposes"]),
+  ])(
+    "numberOrSuppressed() $description -> $expected",
+    ({ value, expected }) => {
+      expect(numberOrSuppressed().isValidSync(value)).toBe(expected);
+    }
+  );
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(nonNumericValues),
+    ...accept(positiveNumbers),
+    ...accept(negativeNumbers),
+    ...accept(notApplicableValues),
+    ...accept(["suppressed", "Suppressed", " SUPPRESSED "]),
+    ...reject(["Suppressed for data privacy purposes"]),
+  ])(
+    "numberOrSuppressedOrNaNr() $description -> $expected",
+    ({ value, expected }) => {
+      expect(numberOrSuppressedOrNaNr().isValidSync(value)).toBe(expected);
     }
   );
 
@@ -446,7 +479,7 @@ describe("Completion schemas", () => {
 
   test.each([
     { value: undefined, description: "undefined", expected: true },
-    { value: [], description: "empty array", expected: false },
+    { value: [], description: "empty array", expected: true },
     { value: [choice], description: "one selection", expected: true },
     { value: [choice, choice], description: "two selections", expected: true },
   ])("checkboxOptional $description -> $expected", ({ value, expected }) => {

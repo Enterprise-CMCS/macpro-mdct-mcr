@@ -7,8 +7,9 @@ import { EntityButtonGroup } from "./EntityButtonGroup";
 import { AnyObject, EntityShape, EntityType, ReportType } from "types";
 // utils
 import {
-  eligibilityGroup,
   getEntityStatus,
+  getMeasureIdDisplayText,
+  getProgramInfo,
   parseCustomHtml,
   useBreakpoint,
   useStore,
@@ -23,39 +24,37 @@ export const EntityRow = ({
   openOverlayOrDrawer,
   openDeleteEntityModal,
   entering,
-  hasStandards,
+  openDisabled = false,
+  override,
 }: EntityRowProps) => {
   const { isMobile } = useBreakpoint();
   const { report } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
 
-  const { report_programName, report_planName, name } = entity;
-  const reportingPeriod = `${entity.report_reportingPeriodStartDate} to ${entity.report_reportingPeriodEndDate}`;
+  const { name, measure_name } = entity;
   const { reportType } = report || {};
 
   const entityComplete = useMemo(() => {
-    return getEntityStatus(entity, report, entityType);
+    return override ?? getEntityStatus(entity, report, entityType);
   }, [report]);
 
   const entityFields = () => {
-    const fields: string[] =
-      reportType === ReportType.MLR
-        ? [
-            report_planName,
-            report_programName,
-            eligibilityGroup(entity),
-            reportingPeriod,
-          ]
-        : [name];
-    return fields;
+    switch (reportType) {
+      case ReportType.MCPAR:
+        return [measure_name, getMeasureIdDisplayText(entity)];
+      case ReportType.MLR:
+        return getProgramInfo(entity);
+      default:
+        return [name];
+    }
   };
 
   const EntityButtons = () => (
     <EntityButtonGroup
-      deleteDisabled={locked ?? !userIsEndUser}
-      openDisabled={!hasStandards && hasStandards !== undefined}
       entity={entity}
       verbiage={verbiage}
+      deleteDisabled={locked ?? !userIsEndUser}
+      openDisabled={openDisabled}
       openAddEditEntityModal={openAddEditEntityModal}
       openOverlayOrDrawer={openOverlayOrDrawer}
       openDeleteEntityModal={openDeleteEntityModal}
@@ -80,16 +79,15 @@ export const EntityRow = ({
         </ul>
         {!entityComplete && report && (
           <Text sx={sx.errorText}>
-            {reportType === ReportType.MLR &&
-              "Select “Enter MLR” to complete this report."}
-            {reportType === ReportType.NAAAR &&
-              "Select “Enter” to complete response."}
+            {reportType === ReportType.MLR
+              ? "Select “Enter MLR” to complete this report."
+              : "Select “Enter” to complete response."}
           </Text>
         )}
         {isMobile && <EntityButtons />}
       </Td>
       {!isMobile && (
-        <Td>
+        <Td sx={sx.desktopButtonGroup}>
           <EntityButtons />
         </Td>
       )}
@@ -103,10 +101,11 @@ export interface EntityRowProps {
   entityType?: EntityType;
   locked?: boolean;
   entering?: boolean;
-  hasStandards?: boolean;
   openAddEditEntityModal?: Function;
   openDeleteEntityModal?: Function;
+  openDisabled?: boolean;
   openOverlayOrDrawer?: Function;
+  override?: boolean;
 }
 
 const sx = {
@@ -135,8 +134,8 @@ const sx = {
         lineHeight: "130%",
         wordWrap: "break-word",
         whiteSpace: "break-spaces",
-        paddingTop: "0.125rem",
-        paddingBottom: "0.125rem",
+        fontSize: "md",
+        color: "gray_darker",
         "&:first-of-type": {
           fontWeight: "bold",
           fontSize: "lg",
@@ -163,10 +162,13 @@ const sx = {
   },
   errorText: {
     color: "error_dark",
-    fontSize: "sm",
+    fontSize: "xs",
     marginBottom: "0.75rem",
     ".mobile &": {
       fontSize: "xs",
     },
+  },
+  desktopButtonGroup: {
+    paddingInlineStart: 0,
   },
 };

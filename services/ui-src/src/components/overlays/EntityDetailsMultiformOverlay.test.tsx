@@ -120,7 +120,7 @@ async function submitChildForm() {
     await userEvent.click(submitButton);
   });
   await waitFor(() => {
-    expect(mockOnSubmit).toBeCalled();
+    expect(mockOnSubmit).toHaveBeenCalled();
   });
 }
 
@@ -173,7 +173,6 @@ describe("<EntityDetailsMultiformOverlay />", () => {
         expect(enterButton).toBeDisabled();
       });
     }
-    await submitChildForm();
   });
 
   test("renders child form", async () => {
@@ -333,7 +332,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       await userEvent.click(closeButton);
     });
 
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+    expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
   });
 
   test("disables submit button", async () => {
@@ -346,7 +345,7 @@ describe("<EntityDetailsMultiformOverlay />", () => {
       await userEvent.click(closeButton);
     });
 
-    expect(mockCloseEntityDetailsOverlay).toBeCalled();
+    expect(mockCloseEntityDetailsOverlay).toHaveBeenCalled();
     expect(submitButton).toBeNull();
   });
 

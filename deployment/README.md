@@ -12,7 +12,7 @@ To bootstrap an AWS account using our custom template, run the following command
 
 ````bash
 PROJECT=mcr yarn cdk bootstrap aws://<account number>/us-east-1 --template deployment/bootstrap-template.yaml --context stage=bootstrap
-./   ```
+```
 
 Replace `<account number>` with the target AWS account number.
 

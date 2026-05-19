@@ -6,7 +6,6 @@ test.describe("Admin profile", () => {
     const bannersResponse = adminPage.waitForResponse("/banners", "GET", 200);
 
     await adminPage.page.goto("/profile");
-    await adminPage.checkAndReauthenticate();
     await bannersResponse;
   });
 
@@ -34,7 +33,6 @@ test.describe("State user profile", () => {
     const bannersResponse = statePage.waitForResponse("/banners", "GET", 200);
 
     await statePage.page.goto("/profile");
-    await statePage.checkAndReauthenticate();
     await bannersResponse;
   });
 

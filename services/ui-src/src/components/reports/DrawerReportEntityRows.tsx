@@ -44,7 +44,7 @@ export const DrawerReportPageEntityRows = ({
   ) => {
     let disabled = false;
     let style = sx.enterButton;
-    const buttonText = userIsEndUser
+    const buttonText = userIsEndUser // oxlint-disable-next-line no-nested-ternary
       ? isEntityCompleted
         ? "Edit"
         : "Enter"
@@ -127,7 +127,7 @@ export const DrawerReportPageEntityRows = ({
           );
           const utilizedPlans = plans
             .map((entity: AnyObject) => entity.value)
-            .sort()
+            .toSorted()
             .join(", ");
 
           completeText = `${frequency}: ${utilizedPlans}`;

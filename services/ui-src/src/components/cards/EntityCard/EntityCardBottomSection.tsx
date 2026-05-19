@@ -1,7 +1,7 @@
 // components
 import { Text } from "@chakra-ui/react";
 import { AccessMeasuresSection } from "./AccessMeasuresSection";
-import { QualityMeasuresSection } from "./QualityMeasuresSection";
+import { QualityMeasuresSection } from "./QualityMeasuresSection/QualityMeasuresSection";
 import { SanctionsSection } from "./SanctionsSection";
 import { StandardsSection } from "./StandardsSection";
 // types
@@ -10,8 +10,8 @@ import { AnyObject, EntityType } from "types";
 export const EntityCardBottomSection = ({
   entityType,
   formattedEntityData,
-  printVersion,
   verbiage,
+  printVersion,
 }: Props) => {
   const notAnswered = (
     <Text as="span" sx={sx.notAnswered}>
@@ -75,6 +75,10 @@ interface Props {
 }
 
 const sx = {
+  heading: {
+    marginTop: "spacer2",
+    fontSize: "sm",
+  },
   subtitle: {
     marginTop: "spacer2",
     fontSize: "xs",
@@ -83,6 +87,11 @@ const sx = {
   subtext: {
     marginTop: "spacer_half",
     fontSize: "sm",
+  },
+  qualityMeasuresPlanName: {
+    paddingTop: "spacer2",
+    fontSize: "sm",
+    fontWeight: "bold",
   },
   resultsHeader: {
     marginY: "spacer2",

@@ -8,7 +8,7 @@ export interface AnyObject {
   [key: string]: any;
 }
 
-export const enum StatusCodes {
+export enum StatusCodes {
   SUCCESS = 200,
   CREATED = 201,
   BAD_REQUEST = 400,

@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // This file is managed by macpro-mdct-core so if you'd like to change it let's do it there
 // .github/branchNameValidation.ts SOME_BRANCH_NAME
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
 let localBranch = process.argv[2];
 
 if (!localBranch) {
   const currentBranch = execSync("git rev-parse --abbrev-ref HEAD", {
-    encoding: "utf-8",
+    encoding: "utf8",
   }).trim();
   const setBranchNameOutput = execSync(
     `.github/setBranchName.ts "${currentBranch}"`,
-    { encoding: "utf-8" }
+    { encoding: "utf8" }
   ).trim();
   localBranch = setBranchNameOutput;
 }

@@ -7,14 +7,15 @@ import successIcon from "assets/icons/icon_check_circle.png";
 import successIconDark from "assets/icons/icon_check_circle_dark.png";
 
 export const EntityStatusIcon = ({ isComplete, isPdf }: Props) => {
-  const iconSrc = isComplete
+  const iconSrc = isComplete // oxlint-disable-next-line no-nested-ternary
     ? isPdf
       ? successIconDark
-      : successIcon
+      : successIcon // oxlint-disable-next-line no-nested-ternary
     : isPdf
       ? unfinishedIconDark
       : unfinishedIcon;
 
+  // oxlint-disable-next-line no-nested-ternary
   const altText = isPdf ? "" : isComplete ? "complete icon" : "warning icon";
   const pdfLabelText = isComplete ? "Complete" : "Error";
   return (

@@ -3,7 +3,6 @@ import { test, expect } from "./fixtures/base";
 test.describe("Global footer tests - State user", () => {
   test.beforeEach(async ({ statePage }) => {
     await statePage.page.goto("/");
-    await statePage.checkAndReauthenticate();
     await statePage.waitForResponse("/banners", "GET", 200);
   });
 
@@ -29,7 +28,6 @@ test.describe("Global footer tests - State user", () => {
 test.describe("Global footer tests - Admin user", () => {
   test.beforeEach(async ({ adminPage }) => {
     await adminPage.page.goto("/");
-    await adminPage.checkAndReauthenticate();
     await adminPage.waitForResponse("/banners", "GET", 200);
   });
 

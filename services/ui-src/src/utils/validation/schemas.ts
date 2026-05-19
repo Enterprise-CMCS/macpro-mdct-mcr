@@ -84,13 +84,42 @@ export const numberSuppressible = () =>
       message: error.INVALID_NUMBER,
     });
 
+export const numberOrSuppressed = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        return isSuppressed || checkStandardNumberInputAgainstRegexes(value);
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED,
+    });
+
+export const numberOrSuppressedOrNaNr = () =>
+  string()
+    .required(error.REQUIRED_GENERIC)
+    .test({
+      test: (value) => {
+        if (!value) return false;
+        const isSuppressed = value.trim().toLowerCase() === "suppressed";
+        const isValidNAValue = validNAValues.includes(value);
+        return (
+          isSuppressed ||
+          isValidNAValue ||
+          checkStandardNumberInputAgainstRegexes(value)
+        );
+      },
+      message: error.INVALID_NUMBER_OR_SUPPRESSED_OR_NA_NR,
+    });
+
 const validNumberSchema = () =>
   string().test({
     message: error.INVALID_NUMBER,
     test: (value) => {
-      return typeof value !== "undefined"
-        ? checkStandardNumberInputAgainstRegexes(value)
-        : false;
+      return value === undefined
+        ? false
+        : checkStandardNumberInputAgainstRegexes(value);
     },
   });
 
@@ -254,7 +283,11 @@ export const checkboxOneOptional = () =>
     .of(object({ key: text(), value: text() }))
     .notRequired()
     .nullable();
-export const checkboxOptional = () => checkbox().notRequired();
+export const checkboxOptional = () =>
+  array()
+    .of(object({ key: text(), value: text() }))
+    .notRequired()
+    .nullable();
 export const checkboxSingle = () => boolean();
 
 // RADIO
@@ -306,9 +339,8 @@ export const nested = (
 };
 
 // REGEX
-const datePattern =
-  "((0[1-9]|1[0-2])\\/(0[1-9]|1\\d|2\\d|3[01])\\/(19|20)\\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|3[01])(19|20)\\d{2})";
-const dateMonthYearPattern = "(\\d{2}\\/\\d{4}|\\d{6})";
+const datePattern = String.raw`((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})`;
+const dateMonthYearPattern = String.raw`(\d{2}\/\d{4}|\d{6})`;
 export const dateFormatRegex = new RegExp(`^${datePattern}$`);
 export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
 export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);

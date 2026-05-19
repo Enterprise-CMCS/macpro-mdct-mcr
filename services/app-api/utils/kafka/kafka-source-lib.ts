@@ -59,9 +59,7 @@ class KafkaSourceLib {
     }
     // Setup vars
     this.stage = process.env.STAGE ?? "";
-    this.topicNamespace = process.env.topicNamespace
-      ? process.env.topicNamespace
-      : "";
+    this.topicNamespace = process.env.topicNamespace!;
     this.topicPrefix = topicPrefix;
     this.version = version;
     this.tables = tables;

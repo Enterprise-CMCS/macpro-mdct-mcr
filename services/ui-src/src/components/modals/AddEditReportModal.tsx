@@ -48,7 +48,11 @@ export const AddEditReportModal = ({
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  // LaunchDarkly
   const naaarProgramList = useFlags()?.naaarProgramList;
+  const newQualityMeasuresSectionEnabled =
+    useFlags()?.newQualityMeasuresSectionEnabled;
+  const summer2026sansQM = useFlags()?.summer2026sansQM;
 
   // get correct form
   const modalFormJsonMap: any = {
@@ -72,7 +76,7 @@ export const AddEditReportModal = ({
     );
     // if yoyCopyField is in form && (not creating new report || no reports eligible for copy)
     if (
-      yoyCopyFieldIndex > -1 &&
+      yoyCopyFieldIndex !== -1 &&
       (selectedReport?.id || !copyEligibleReportsByState?.length)
     ) {
       customizedModalForm.fields[yoyCopyFieldIndex].props!.disabled = true;
@@ -167,6 +171,8 @@ export const AddEditReportModal = ({
         naaarSubmissionForThisProgram,
         naaarSubmissionDateForThisProgram,
         naaarExpectedSubmissionDateForThisProgram,
+        newQualityMeasuresSectionEnabled,
+        summer2026sansQM,
       },
       fieldData: {
         reportingPeriodStartDate: convertDateUtcToEt(reportingPeriodStartDate),

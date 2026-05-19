@@ -28,7 +28,7 @@ export default {
       if (stringBody) {
         return JSON.parse(stringBody);
       } else {
-        throw new Error();
+        throw new Error("Some error message");
       }
     } catch {
       throw new Error(error.S3_OBJECT_GET_ERROR);

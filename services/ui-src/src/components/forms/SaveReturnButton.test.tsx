@@ -27,7 +27,7 @@ describe("<SaveReturnButton />", () => {
       await act(async () => {
         await userEvent.click(button);
       });
-      expect(mockOnClick).toBeCalled();
+      expect(mockOnClick).toHaveBeenCalled();
     });
 
     test("renders Return button", async () => {
@@ -42,7 +42,7 @@ describe("<SaveReturnButton />", () => {
       await act(async () => {
         await userEvent.click(button);
       });
-      expect(mockDisabledOnClick).toBeCalled();
+      expect(mockDisabledOnClick).toHaveBeenCalled();
     });
 
     test("renders Spinner", async () => {

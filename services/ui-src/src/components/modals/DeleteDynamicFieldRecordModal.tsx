@@ -16,6 +16,7 @@ export const DeleteDynamicFieldRecordModal = ({
     plans: "plan",
     bssEntities: "BSS entity",
     ilos: "In Lieu of Services",
+    measure_rates: "performance rate name",
   };
 
   const isIlos = entityType === EntityType.ILOS;

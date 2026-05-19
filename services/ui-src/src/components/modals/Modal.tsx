@@ -129,15 +129,13 @@ const sx = {
   },
   modalSubheading: {
     marginTop: "spacer1",
-    fontSize: "xl",
-    fontWeight: "bold",
   },
   intro: {
     margin: "0.5rem auto -1rem auto",
   },
   modalCloseContainer: {
     alignItems: "center",
-    justifycontent: "center",
+    justifyContent: "center",
     flexShrink: "0",
     position: "absolute",
     top: "spacer4",

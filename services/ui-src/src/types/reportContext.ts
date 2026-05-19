@@ -46,6 +46,8 @@ export interface ReportMetadataShape extends ReportKeys {
   newProgramName?: string;
   naaarSubmissionDateForThisProgram?: string;
   naaarExpectedSubmissionDateForThisProgram?: string;
+  newQualityMeasuresSectionEnabled?: boolean;
+  summer2026sansQM?: boolean;
 }
 
 export interface ReportShape extends ReportMetadataShape {

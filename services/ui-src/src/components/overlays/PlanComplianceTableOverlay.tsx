@@ -180,21 +180,21 @@ export const PlanComplianceTableOverlay = ({
       const { count, entity } = originalRowData;
 
       switch (headKey) {
-        case "exceptionsNonCompliance": {
+        case "exceptionsNonCompliance":
           return value ? (
             <Text as="span" sx={sx.exceptionsNonCompliance} aria-label={value}>
               {exceptionsNonComplianceStatusDisplay[value]}
             </Text>
           ) : null;
-        }
-        case "standardType": {
+
+        case "standardType":
           return (
             <Text as="span" sx={sx.bold}>
               {value}
             </Text>
           );
-        }
-        case "actions": {
+
+        case "actions":
           return (
             <Button
               variant="outline"
@@ -210,7 +210,7 @@ export const PlanComplianceTableOverlay = ({
                 : "Enter"}
             </Button>
           );
-        }
+
         default:
           return value;
       }

@@ -1,4 +1,4 @@
-import util from "util";
+import util from "node:util";
 import { Logger } from "@smithy/types";
 
 type LogLevel = "trace" | "debug" | "info" | "warn" | "error";

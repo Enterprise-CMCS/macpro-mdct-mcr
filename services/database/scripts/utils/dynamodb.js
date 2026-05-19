@@ -34,12 +34,12 @@ const buildDynamoClient = () => {
 
 const scan = async (scanParams) => {
   let ExclusiveStartKey;
-  let items = [];
+  const items = [];
 
   do {
     const command = new ScanCommand({ ...scanParams, ExclusiveStartKey });
     const result = await dynamoClient.send(command);
-    items = items.concat(result.Items ?? []);
+    items.push(...(result.Items ?? []));
     ExclusiveStartKey = result.LastEvaluatedKey;
   } while (ExclusiveStartKey);
 
@@ -59,8 +59,8 @@ const update = async (tableName, items) => {
       const command = new PutCommand(params);
       await dynamoClient.send(command);
     }
-  } catch (e) {
-    console.log(` -- ERROR UPLOADING ${tableName}\n`, e);
+  } catch (error) {
+    console.log(` -- ERROR UPLOADING ${tableName}\n`, error);
   }
 };
 

@@ -1,14 +1,14 @@
-import path from "path";
+import path from "node:path";
 import { buildJson, buildForReportType } from "./build-json";
 
-jest.mock("fs", () => ({
+jest.mock("node:fs", () => ({
   promises: {
     readdir: jest.fn(),
     writeFile: jest.fn(),
   },
 }));
 
-const fs = require("fs").promises;
+const fs = require("node:fs").promises;
 function mockRequire(filePath: string, exportValue: any) {
   jest.mock(filePath, () => exportValue, { virtual: true });
 }
@@ -134,7 +134,7 @@ describe("utils/routes/build-json", () => {
 
     test("shows error if bad path for report folder", async () => {
       const reportPath = path.resolve("forms/error");
-      fs.readdir.mockRejectedValueOnce(new Error());
+      fs.readdir.mockRejectedValueOnce(new Error("Some error message"));
       await buildForReportType(reportPath);
       expect(consoleSpy.error).toHaveBeenCalled();
     });
@@ -157,7 +157,7 @@ describe("utils/routes/build-json", () => {
       jest.doMock(
         path.join(flagsPath, "error/index.ts"),
         () => {
-          throw new Error();
+          throw new Error("Some error message");
         },
         { virtual: true }
       );

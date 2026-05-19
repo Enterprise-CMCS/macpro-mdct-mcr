@@ -52,7 +52,7 @@ describe("utils/featureFlags", () => {
 
     test("uses fallback client for bad SDK key", async () => {
       (LD.init as jest.Mock).mockImplementation(() => {
-        throw new Error();
+        throw new Error("Some error message");
       });
       await getLaunchDarklyClient();
 

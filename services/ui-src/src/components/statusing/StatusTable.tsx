@@ -57,7 +57,7 @@ export const StatusIcon = ({
   status?: boolean;
 }) => {
   switch (reportType) {
-    case ReportType.MLR: {
+    case ReportType.MLR:
       if (status) {
         return (
           <Flex sx={sx.status}>
@@ -75,9 +75,9 @@ export const StatusIcon = ({
           </Flex>
         );
       }
-    }
+
     case ReportType.NAAAR:
-    case ReportType.MCPAR: {
+    case ReportType.MCPAR:
       if (status || status === undefined) {
         return <></>;
       } else {
@@ -88,7 +88,7 @@ export const StatusIcon = ({
           </Flex>
         );
       }
-    }
+
     default:
       assertExhaustive(reportType);
       throw new Error(
@@ -118,10 +118,10 @@ const TableRow = ({ page, depth }: RowProps) => {
       <Td
         sx={sx.statusColumn}
         pt={
-          depth == 1
+          depth == 1 // oxlint-disable-next-line no-nested-ternary
             ? isMobile
               ? "1.5rem"
-              : "spacer1"
+              : "spacer1" // oxlint-disable-next-line no-nested-ternary
             : isMobile
               ? "1rem"
               : "spacer1"

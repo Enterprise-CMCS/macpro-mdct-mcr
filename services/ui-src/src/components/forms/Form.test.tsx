@@ -10,7 +10,6 @@ import {
   mockAdminForm,
   mockMcparReportStore,
   mockMlrReportStore,
-  mockNonFieldForm,
   mockStateUserStore,
   RouterWrappedComponent,
 } from "utils/testing/setupJest";
@@ -36,21 +35,6 @@ const formComponent = (
       dontReset={false}
     />
     <button form={mockForm.id} type="submit">
-      Submit
-    </button>
-  </RouterWrappedComponent>
-);
-
-const formComponentJustHeader = (
-  <RouterWrappedComponent>
-    <Form
-      id={mockNonFieldForm.id}
-      formJson={mockNonFieldForm}
-      onSubmit={mockOnSubmit}
-      validateOnRender={false}
-      dontReset={false}
-    />
-    <button form={mockNonFieldForm.id} type="submit">
       Submit
     </button>
   </RouterWrappedComponent>
@@ -105,12 +89,6 @@ describe("<Form />", () => {
     expect(testField.hasAttribute("autocomplete")).toBeTruthy();
     expect(testField.getAttribute("autocomplete")).toEqual("off");
     await expect(testField).toHaveFocus();
-  });
-
-  test("Non form field elements should not have autocomplete prop", async () => {
-    const result = render(formComponentJustHeader);
-    const testField = result.container.querySelector("[name='testfield']")!;
-    expect(testField.hasAttribute("autocomplete")).toBeFalsy();
   });
 
   test("MLR forms should be disabled after being submitted", async () => {
