@@ -64,7 +64,7 @@ export const DropdownField = ({
   } = useStore();
 
   // LaunchDarkly
-  const summer2026sansQm = useFlags()?.summer2026sansQm;
+  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   const reportType = window.location.pathname.replaceAll("/", "");
 
@@ -87,12 +87,18 @@ export const DropdownField = ({
         });
       } else {
         dropdownOptions =
-          copyEligibleReportsByState?.map((report: ReportMetadataShape) => ({
-            label: `${report.programName} ${convertDateUtcToEt(
-              summer2026sansQm ? report.submittedOnDate! : report.dueDate
-            )}`,
-            value: report.fieldDataId,
-          })) ?? [];
+          copyEligibleReportsByState?.map((report: ReportMetadataShape) => {
+            const reportDate = summer2026SansQm
+              ? report.submittedOnDate
+              : report.dueDate;
+            const label = reportDate
+              ? `${report.programName} ${convertDateUtcToEt(reportDate)}`
+              : report.programName;
+            return {
+              label,
+              value: report.fieldDataId,
+            };
+          }) ?? [];
       }
     } else if (options === "programList") {
       dropdownOptions = programListJson[state as State].map(
