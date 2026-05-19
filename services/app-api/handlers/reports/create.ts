@@ -131,8 +131,7 @@ export const createReport = handler(async (event, _context) => {
       formTemplate,
       validatedFieldData!,
       reportType,
-      newQualityMeasuresSectionEnabled,
-      summer2026SansQm
+      newQualityMeasuresSectionEnabled
     );
   } else {
     newFieldData = validatedFieldData;

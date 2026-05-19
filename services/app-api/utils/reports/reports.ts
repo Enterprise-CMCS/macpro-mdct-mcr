@@ -3,7 +3,6 @@ import {
   mcparFieldsToCopy,
   naaarFieldsToCopy,
   newQualityMeasureFieldsToCopy,
-  summer2026SansQmFieldsToCopy,
 } from "../constants/copyover";
 import { mcparQualityMeasuresList } from "../data/mcparQualityMeasuresList";
 import { getPossibleFieldsFromFormTemplate } from "../formTemplates/formTemplates";
@@ -25,8 +24,7 @@ export async function copyFieldDataFromSource(
   formTemplate: any,
   validatedFieldData: AnyObject,
   reportType: ReportType,
-  newQualityMeasuresSectionEnabled?: boolean,
-  summer2026SansQm?: boolean
+  newQualityMeasuresSectionEnabled?: boolean
 ) {
   // Year-over-year copy is currently only supported for MCPAR and NAAAR
   let fieldsToCopy: AnyObject = mcparFieldsToCopy;
@@ -39,11 +37,6 @@ export async function copyFieldDataFromSource(
   // if newQualityMeasuresSectionEnabled is true, copy new quality measure fields
   if (reportType === ReportType.MCPAR && newQualityMeasuresSectionEnabled) {
     fieldsToCopy.qualityMeasures = newQualityMeasureFieldsToCopy;
-  }
-
-  // if summer2026SansQm is true, copy new quality measure fields
-  if (reportType === ReportType.MCPAR && summer2026SansQm) {
-    fieldsToCopy.statePriorAuthorization = summer2026SansQmFieldsToCopy;
   }
 
   const sourceFieldData = (await s3Lib.get({
