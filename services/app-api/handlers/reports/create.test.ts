@@ -140,7 +140,7 @@ const mcparQmCreationEvent: APIGatewayProxyEvent = {
       fieldDataId: "mockReportFieldData",
       formTemplateId: "mockReportJson",
       newQualityMeasuresSectionEnabled: false,
-      summer2026sansQm: true,
+      summer2026SansQm: true,
     },
   }),
 };
