@@ -15,10 +15,6 @@ export const mcparFieldsToCopy = {
     "state_providerTerminationReportingMonitoringMetricsDescription",
     "state_ownershipControlDisclosureWebsite",
     "state_ownershipControlDisclosureWebsiteLink",
-    "state_timeframesForStandardPriorAuthorizationDecisions",
-    "state_stateTimeframeForStandardPriorAuthorizationDecisions",
-    "state_timeframesForExpeditedPriorAuthorizationDecisions",
-    "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
     "program_contractTitle",
     "program_type",
     "program_type-otherText",
@@ -91,6 +87,12 @@ export const mcparFieldsToCopy = {
     "bssEntity_entityType-otherText",
     "bssEntity_entityRole",
     "bssEntity_entityRole-otherText",
+  ],
+  statePriorAuthorization: [
+    "state_timeframesForStandardPriorAuthorizationDecisions",
+    "state_stateTimeframeForStandardPriorAuthorizationDecisions",
+    "state_timeframesForExpeditedPriorAuthorizationDecisions",
+    "state_stateTimeframeForExpeditedPriorAuthorizationDecisions",
   ],
   // sanctions are never copied from year to year.
 };
