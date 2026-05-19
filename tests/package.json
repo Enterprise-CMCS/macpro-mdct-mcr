@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "amazon-user-pool-srp-client": "^1.0.4",
-    "ws": "^7.5.10"
+    "ws": "^8.20.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.1",
