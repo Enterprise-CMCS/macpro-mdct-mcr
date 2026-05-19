@@ -64,7 +64,7 @@ export const DropdownField = ({
   } = useStore();
 
   // LaunchDarkly
-  const summer2026sansQM = useFlags()?.summer2026sansQM;
+  const summer2026sansQm = useFlags()?.summer2026sansQm;
 
   const reportType = window.location.pathname.replaceAll("/", "");
 
@@ -89,7 +89,7 @@ export const DropdownField = ({
         dropdownOptions =
           copyEligibleReportsByState?.map((report: ReportMetadataShape) => ({
             label: `${report.programName} ${convertDateUtcToEt(
-              summer2026sansQM ? report.submittedOnDate! : report.dueDate
+              summer2026sansQm ? report.submittedOnDate! : report.dueDate
             )}`,
             value: report.fieldDataId,
           })) ?? [];
