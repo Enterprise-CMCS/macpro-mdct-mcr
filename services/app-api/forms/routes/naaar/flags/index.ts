@@ -1,2 +1,3 @@
 // flagged routes
-export { naaarReportJson as naaarProgramList } from "./naaarProgramList/index";
+// oxlint-disable-next-line require-module-specifiers
+export {};
