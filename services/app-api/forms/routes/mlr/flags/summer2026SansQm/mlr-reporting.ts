@@ -632,6 +632,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                       "4.6.1.a Federal Share of remittance/overpayment dollar amount owed by MCO, PIHP, or PAHP",
                     hint: "Enter the Federal Share of the remittance/overpayment amount reported in 4.6.1.",
                     mask: "currency",
+                    styleAsOptional: true,
                   },
                 },
                 {
@@ -648,6 +649,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     label:
                       "4.6.1.b Date state notified MCO, PIHP, or PAHP of remittance/overpayment",
                     hint: "Enter the date the state notified the MCO, PIHP or PAHP that an overpayment was identified due to a remittance collected.",
+                    styleAsOptional: true,
                   },
                 },
                 {
@@ -665,6 +667,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                       "4.6.1.c Remittance/overpayment dollar amount State received from MCO, PIHP, or PAHP",
                     hint: "Enter the total dollar amount collected from the MCO, PIHP or PAHP.",
                     mask: "currency",
+                    styleAsOptional: true,
                   },
                 },
                 {
@@ -681,6 +684,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     label:
                       "4.6.1.d Date state received remittance/overpayment from MCO, PHIP, or PAHP",
                     hint: "Enter the date the state received the total dollar amount owed from the MCO, PIHP or PAHP.",
+                    styleAsOptional: true,
                   },
                 },
                 {
@@ -698,6 +702,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                       "4.6.1.e Federal share of remittance/overpayment returned to CMS",
                     hint: "Enter the total dollar amount returned to CMS.",
                     mask: "currency",
+                    styleAsOptional: true,
                   },
                 },
                 {
@@ -714,6 +719,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     label:
                       "4.6.1.f Date the Federal Share of remittance/overpayment returned to CMS",
                     hint: "Enter the date the state returned the federal share of the remittance/overpayment on the CMS-64.",
+                    styleAsOptional: true,
                   },
                 },
                 {
