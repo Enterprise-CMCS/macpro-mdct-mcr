@@ -1,4 +1,4 @@
-/** *
+/**
  * If there are feature flags, export the report JSON as the flag name,
  * matching how it is named in LaunchDarkly.
  *
