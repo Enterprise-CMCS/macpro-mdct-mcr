@@ -71,7 +71,7 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
           validation: ValidationType.RADIO,
           props: {
             label: "II.A.1 Provider type covered by standard",
-            hint: "Enter the provider type the standard applies to. If you wish to further specify the provider type, select the core type most suitable and then add the more specific provider type under “Additional specialty details”, which will appear as an optional text field after the provider type is selected. Do not use this section to indicate populations associated with this provider type (e.g., adult, pediatric, LTSS); these details should be entered in the dedicated population fields below.",
+            hint: "Enter the provider type the standard applies to. To further specify the provider type, select the core type most suitable and then add the more specific provider types under “Additional specialty details”, which will appear as a text field after the provider type is selected. For Primary care, Specialist, and OB/GYN provider types, fields for additional details are required and cannot be left blank.<br><br>Do not use this section to indicate populations associated with this provider type (e.g., adult, pediatric, LTSS); these details should be entered in the dedicated population fields below.",
             choices: [
               {
                 id: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
@@ -81,15 +81,15 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
                     id: "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
                     type: ReportFormFieldType.TEXT,
                     validation: {
-                      type: ValidationType.TEXT_OPTIONAL,
+                      type: ValidationType.TEXT,
                       nested: true,
                       parentFieldName: "standard_coreProviderType",
                       parentOptionId:
                         "standard_coreProviderType-UZK4hxPVnuYGcIgNzYFHCk",
                     },
                     props: {
-                      label: "II.A.2 Primary care specialty details (optional)",
-                      hint: "e.g., nurse practitioner",
+                      label: "II.A.2 Primary care specialty details (required)",
+                      hint: "Include the licensed practitioners authorized to serve as primary care providers in this Medicaid managed care program (e.g., family physician, nurse practitioner, physician assistant) that are covered by this standard.",
                     },
                   },
                 ],
@@ -102,15 +102,15 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
                     id: "standard_coreProviderType-uITThePQiXntwGGViPTD62",
                     type: ReportFormFieldType.TEXT,
                     validation: {
-                      type: ValidationType.TEXT_OPTIONAL,
+                      type: ValidationType.TEXT,
                       nested: true,
                       parentFieldName: "standard_coreProviderType",
                       parentOptionId:
                         "standard_coreProviderType-uITThePQiXntwGGViPTD62",
                     },
                     props: {
-                      label: "II.A.2 Specialty details (optional)",
-                      hint: "Include all specialties (except for Mental health) within this category, e.g., cardiologist, endocrinologist.",
+                      label: "II.A.2 Specialty details (required)",
+                      hint: "Include all specialties (except for Mental health) within this category, e.g., cardiology, endocrinology.",
                     },
                   },
                 ],
@@ -165,14 +165,15 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
                     id: "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                     type: ReportFormFieldType.TEXT,
                     validation: {
-                      type: ValidationType.TEXT_OPTIONAL,
+                      type: ValidationType.TEXT,
                       nested: true,
                       parentFieldName: "standard_coreProviderType",
                       parentOptionId:
                         "standard_coreProviderType-kV7553HIWXekySIFLiMXLW",
                     },
                     props: {
-                      label: "II.A.2 OB/GYN specialty details (optional)",
+                      label: "II.A.2 OB/GYN specialty details (required)",
+                      hint: "Include the licensed practitioners authorized to provide obstetric and gynecological care (e.g., OB/GYN physician, certified nurse midwife) that are covered by this standard.",
                     },
                   },
                 ],
