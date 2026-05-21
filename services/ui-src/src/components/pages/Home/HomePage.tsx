@@ -23,7 +23,7 @@ export const HomePage = () => {
     if (bannerData) {
       bannerActivity = checkDateRangeStatus(
         bannerData.startDate,
-        bannerData.endDate,
+        bannerData.endDate
       );
     }
     setBannerActive(bannerActivity);

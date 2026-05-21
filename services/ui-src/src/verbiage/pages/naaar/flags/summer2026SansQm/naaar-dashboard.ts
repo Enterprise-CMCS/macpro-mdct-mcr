@@ -21,7 +21,7 @@ export default {
           },
           {
             type: "html",
-            content: "for more information.",
+            content: " for more information. ",
           },
           {
             type: "externalLink",
@@ -55,7 +55,7 @@ export default {
           },
           {
             type: "html",
-            content: "for more information.",
+            content: " for more information. ",
           },
           {
             type: "externalLink",
