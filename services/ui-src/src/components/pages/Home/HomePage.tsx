@@ -11,17 +11,19 @@ import {
 import { checkDateRangeStatus, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
+  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   useEffect(() => {
     let bannerActivity = false;
     if (bannerData) {
       bannerActivity = checkDateRangeStatus(
         bannerData.startDate,
-        bannerData.endDate
+        bannerData.endDate,
       );
     }
     setBannerActive(bannerActivity);
@@ -29,6 +31,9 @@ export const HomePage = () => {
 
   const showBanner = !!bannerData?.key && bannerActive;
   const { intro, cards } = verbiage;
+  const naaarCard = summer2026SansQm
+    ? cards.NAAAR_summer2026SansQm
+    : cards.NAAAR;
 
   return (
     <>
@@ -63,7 +68,7 @@ export const HomePage = () => {
             />
             <TemplateCard
               templateName="NAAAR"
-              verbiage={cards.NAAAR}
+              verbiage={naaarCard}
               cardprops={sx.card}
             />
           </>

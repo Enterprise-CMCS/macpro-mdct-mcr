@@ -94,6 +94,29 @@ export default {
         ],
       },
     },
+    NAAAR_summer2026SansQm: {
+      title: "Network Adequacy and Access Assurances Report (NAAAR)",
+      body: {
+        available:
+          "The requirement for states to submit this information to CMS began for all contracts with rating periods starting on or after July 1, 2018. In June 2022, CMS published a standard reporting template in Excel. As of July 30, 2025, states will be able to submit the NAAAR using the MDCT MCR web portal. The Excel template has been updated to correspond with the webform and will continue to be accepted for official reporting. However, for all rating periods starting on or after July 9, 2025, states will be required to complete the NAAAR in MDCT MCR.",
+        unavailable:
+          "The requirement for states to submit this information to CMS began for all contracts with rating periods starting on or after July 1, 2018. In June 2022, CMS published a standard reporting template in Excel. As of July 30, 2025, states will be able to submit the NAAAR using the MDCT MCR web portal. The Excel template has been updated to correspond with the webform and will continue to be accepted for official reporting. However, for all rating periods starting on or after July 9, 2025, states will be required to complete the NAAAR in MDCT MCR.",
+      },
+      downloadText: "Download NAAAR Template",
+      link: {
+        text: "Enter NAAAR online",
+        route: "naaar/",
+      },
+      accordion: {
+        buttonLabel: "When must states submit the NAAAR to CMS?",
+        text: "The information required at 42 C.F.R. § 438.207(d)(3) must be submitted to CMS under 3 scenarios:",
+        orderedList: [
+          "When a state enters into a contract with each MCO, PIHP, or PAHP, the NAAAR must be submitted sufficiently in advance to enable CMS to make a determination that the contract entered into as specified at § 438.207(c)(1) is approved under § 438.3(a);",
+          "On an annual basis and no later than 180 calendar days after each rating period;",
+          "When there is a significant change, as defined by the state, in the operations that would affect the adequacy of capacity and services of an MCO, PIHP, or PAHP and with the submission of the associated contract, including a new contract, a renewal, or an amendment, as required at § 438.3(a).",
+        ],
+      },
+    },
   },
   readOnly: {
     header: "View State/Territory Reports",

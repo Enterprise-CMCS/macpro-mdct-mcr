@@ -4,6 +4,7 @@ import { AnyObject, ReportType } from "types";
 import McparDashboardVerbiage from "verbiage/pages/mcpar/mcpar-dashboard";
 import MlrDashboardVerbiage from "verbiage/pages/mlr/mlr-dashboard";
 import NaaarDashboardVerbiage from "verbiage/pages/naaar/naaar-dashboard";
+import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
 // export verbiage
 import McparExportVerbiage from "verbiage/pages/mcpar/mcpar-export";
 import MlrExportVerbiage from "verbiage/pages/mlr/mlr-export";
@@ -16,6 +17,9 @@ import McparQualityMeasuresVerbiage from "verbiage/pages/mcpar/mcpar-quality-mea
 import McparReviewAndSubmitVerbiage from "verbiage/pages/mcpar/mcpar-review-and-submit";
 import MlrReviewAndSubmitVerbiage from "verbiage/pages/mlr/mlr-review-and-submit";
 import NaaarReviewAndSubmitVerbiage from "verbiage/pages/naaar/naaar-review-and-submit";
+import { useFlags } from "launchdarkly-react-client-sdk";
+
+const summer2026SansQm = useFlags()?.summer2026SansQm;
 
 const mcparVerbiage = {
   dashboardVerbiage: McparDashboardVerbiage,
@@ -32,7 +36,9 @@ const mlrVerbiage = {
 };
 
 const naaarVerbiage = {
-  dashboardVerbiage: NaaarDashboardVerbiage,
+  dashboardVerbiage: summer2026SansQm
+    ? Summer2026SansQmNaaarDashboardVerbiage
+    : NaaarDashboardVerbiage,
   exportVerbiage: NaaarExportVerbiage,
   reviewAndSubmitVerbiage: NaaarReviewAndSubmitVerbiage,
 };
