@@ -31,6 +31,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "build:json": "cd services/app-api && yarn run build:json",
     "db:seed": "cd services/app-api && yarn run db:seed",
     "test": "cd tests && npm test && cd -",
     "test:e2e": "cd tests && yarn run test:e2e",
