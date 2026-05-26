@@ -15,7 +15,7 @@ export const programLevelAccessAndNetworkAdequacyStandardsRoute: DrawerFormRoute
     verbiage: {
       intro: {
         subsection: "II. Program-level access and network adequacy standards",
-        info: "Report each network adequacy standard included in managed care program contract for this program as required under 42 C.F.R. § 438.68; select “Add standard” to report each unique standard. 42 § C.F.R. § 438.206 standards will be addressed in section III. Plan compliance.",
+        info: "Report each network adequacy standard included in managed care program contract for this program as required under 42 C.F.R. § 438.68; select “Add standard” to report each unique standard. 42 C.F.R. § 438.206 standards will be addressed in section III. Plan compliance.",
       },
       dashboardTitle: "Standard total count: ",
       countEntitiesInTitle: true,

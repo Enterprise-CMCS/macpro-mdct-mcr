@@ -8,9 +8,9 @@ export const stateAndProgramInformationRoute: ParentRoute = {
   name: "I. State and program information",
   path: "/naaar/state-and-program-information",
   children: [
+    stateInformationAndReportingScenarioRoute,
     addPlansRoute,
     analysisMethodsRoute,
     providerTypeCoverageRoute,
-    stateInformationAndReportingScenarioRoute,
   ],
 };
