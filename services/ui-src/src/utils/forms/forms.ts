@@ -387,3 +387,17 @@ export const cleanSuppressed = (enteredData: AnyObject) => {
 
   return enteredData;
 };
+
+export const isFieldValidationOptional = (
+  formField: FormField | FormLayoutElement
+) => {
+  if (!isFieldElement(formField)) return false;
+  if (!formField.validation) return false;
+
+  const validationType =
+    typeof formField.validation === "object"
+      ? formField.validation.type
+      : formField.validation;
+
+  return validationType.toLowerCase().includes("optional");
+};
