@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import dotenv from "dotenv";
 import {
   CloudFormationClient,
   DescribeStacksCommand,
@@ -31,6 +33,25 @@ const buildUiEnvObject = (
   cfnOutputs: Record<string, string>
 ): Record<string, string> => {
   if (stage === "localstack") {
+    const escapeDoubleQuotes = (value: string) => {
+      return value.replaceAll('"', String.raw`\"`);
+    };
+
+    function checkLocalFlagsFormat(value?: string) {
+      const defaultValue = '{"local": false, "flags": {}}';
+      if (!value) return defaultValue;
+
+      try {
+        const parsed = JSON.parse(value);
+        return JSON.stringify(parsed);
+      } catch {
+        console.error(
+          "Invalid local flags format. Soft failing to empty flags."
+        );
+        return defaultValue;
+      }
+    }
+
     return {
       SKIP_PREFLIGHT_CHECK: "true",
       API_REGION: region,
@@ -46,6 +67,10 @@ const buildUiEnvObject = (
       COGNITO_REDIRECT_SIGNOUT: "http://localhost:3000/postLogout",
       POST_SIGNOUT_REDIRECT: "http://localhost:3000/",
       REACT_APP_LD_SDK_CLIENT: process.env.REACT_APP_LD_SDK_CLIENT!,
+      LD_LOCAL_FLAGS: escapeDoubleQuotes(
+        checkLocalFlagsFormat(process.env.LD_LOCAL_FLAGS)
+      ),
+      LD_SDK_KEY: process.env.LD_SDK_KEY!,
       STAGE: "local",
     };
   }
@@ -68,13 +93,32 @@ const buildUiEnvObject = (
   };
 };
 
-export const runFrontendLocally = async (stage: string) => {
+const buildEnvFiles = async (stage: string) => {
+  dotenv.config({ override: true });
+
   const outputs = await getCloudFormationStackOutputValues(
     `${project}-${stage}`
   );
   const envVars = buildUiEnvObject(stage, outputs);
   await writeLocalUiEnvFile(envVars);
   await writeSeedEnvFile(envVars);
+};
 
+const watchLocalEnv = (stage: string) => {
+  let timeout: NodeJS.Timeout | null = null;
+
+  function updateEnvFiles() {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(async () => {
+      await buildEnvFiles(stage);
+    }, 100);
+  }
+  updateEnvFiles();
+
+  fs.watch(".env", updateEnvFiles);
+};
+
+export const runFrontendLocally = async (stage: string) => {
+  watchLocalEnv(stage);
   runCommand("ui", ["yarn", "start"], "services/ui-src");
 };
