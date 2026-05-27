@@ -2,6 +2,7 @@ import {
   copyFieldDataFromSource,
   makePCCMModifications,
   populateQualityMeasures,
+  cleanupOtherTextFields,
 } from "./reports";
 // utils
 import { mockReportJson } from "../../utils/testing/setupJest";
@@ -235,6 +236,32 @@ describe("reports.ts", () => {
         );
         expect(res).toEqual({ stateName: "Minnesota" });
       });
+    });
+  });
+
+  describe("cleanupOtherTextFields()", () => {
+    test("removes empty otherText fields", () => {
+      const fieldData = {
+        program_type: [{ value: "MCO" }],
+        "program_type-otherText": "",
+        programName: "Test Program",
+      };
+      const result = cleanupOtherTextFields(fieldData);
+      expect(result).toEqual({
+        program_type: [{ value: "MCO" }],
+        programName: "Test Program",
+      });
+      expect(result).not.toHaveProperty("program_type-otherText");
+    });
+
+    test("keeps non-empty otherText fields", () => {
+      const fieldData = {
+        program_type: [{ value: "Other, specify" }],
+        "program_type-otherText": "Custom program type",
+        programName: "Test Program",
+      };
+      const result = cleanupOtherTextFields(fieldData);
+      expect(result).toEqual(fieldData);
     });
   });
 });

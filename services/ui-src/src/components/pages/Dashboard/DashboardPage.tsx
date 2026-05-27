@@ -37,9 +37,11 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
+import { useFlags } from "launchdarkly-react-client-sdk";
 import { States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
+import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -63,6 +65,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     userIsReadOnly,
   } = useStore().user ?? {};
   const { reportsByState } = useStore();
+  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
@@ -76,7 +79,12 @@ export const DashboardPage = ({ reportType }: Props) => {
     undefined
   );
 
-  const { dashboardVerbiage } = getReportVerbiage(reportType);
+  const { dashboardVerbiage: defaultDashboardVerbiage } =
+    getReportVerbiage(reportType);
+  const dashboardVerbiage =
+    reportType === ReportType.NAAAR && summer2026SansQm
+      ? Summer2026SansQmNaaarDashboardVerbiage
+      : defaultDashboardVerbiage;
   const { intro, body } = dashboardVerbiage;
 
   // if an admin or a read-only user has selected a state, retrieve it from local storage

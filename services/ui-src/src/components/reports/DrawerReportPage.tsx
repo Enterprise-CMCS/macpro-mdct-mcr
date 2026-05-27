@@ -50,6 +50,7 @@ import { analysisMethodError } from "verbiage/errors";
 import addIcon from "assets/icons/icon_add_blue.png";
 import addIconWhite from "assets/icons/icon_add.png";
 import addIconSVG from "assets/icons/icon_add_gray.svg";
+import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -61,6 +62,8 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { updateReport } = useContext(ReportContext);
 
+  // flags
+  const summer2026SansQm = useFlags()?.summer2026SansQm;
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report, selectedEntity, setSelectedEntity } = useStore();
@@ -130,15 +133,16 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
   const addEntityForm = getForm({ ...formParams, isCustomEntityForm: true });
 
   // on load, get reporting status from store
-  const reportingOnPriorAuthorization =
-    report?.fieldData?.["plan_priorAuthorizationReporting"]?.[0].value;
-  const reportingOnPatientAccessApi =
-    report?.fieldData?.["plan_patientAccessApiReporting"]?.[0].value;
+  const getDisabledState = (fieldName: string) =>
+    summer2026SansQm
+      ? false
+      : report?.fieldData?.[fieldName]?.[0].value !== "Yes";
+
   const [priorAuthDisabled, setPriorAuthDisabled] = useState<boolean>(
-    reportingOnPriorAuthorization !== "Yes"
+    getDisabledState("plan_priorAuthorizationReporting")
   );
   const [patientAccessDisabled, setPatientAccessDisabled] = useState<boolean>(
-    reportingOnPatientAccessApi !== "Yes"
+    getDisabledState("plan_patientAccessApiReporting")
   );
 
   // delete modal disclosure and methods
