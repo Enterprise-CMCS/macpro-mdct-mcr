@@ -279,7 +279,7 @@ export const renderResponseData = (
     : fieldResponseData;
 
   // check if optional
-  const validationType = formField.validation.toString();
+  const validationType = formField.validation?.toString() ?? "";
   const isOptional = validationType.includes("Optional") || formField?.groupId;
 
   const missingEntryVerbiage = notApplicable
