@@ -9,6 +9,7 @@ import {
   getNestedIlosResponses,
   renderDrawerDataCell,
   renderDataCell,
+  renderOverlayEntityDataCell,
 } from "./export";
 import { mockFormField, mockNestedFormField } from "utils/testing/setupJest";
 // verbiage
@@ -405,5 +406,58 @@ describe("Test renderDefaultFieldResponse", () => {
       "1.10"
     );
     expect(textField.props.children).toBe("$1.10");
+  });
+});
+
+describe("Handles missing validation gracefully", () => {
+  test("renderResponseData does not throw when formField has no validation", () => {
+    const fieldWithoutValidation = {
+      id: "test-field",
+      type: "text",
+      props: { label: "Test" },
+    } as unknown as FormField;
+
+    expect(() =>
+      renderResponseData(fieldWithoutValidation, undefined, {}, "standard")
+    ).not.toThrow();
+  });
+
+  test("renderResponseData shows 'Not answered' when field has no validation and no response", () => {
+    const fieldWithoutValidation = {
+      id: "test-field",
+      type: "text",
+      props: { label: "Test" },
+    } as unknown as FormField;
+
+    const result = renderResponseData(
+      fieldWithoutValidation,
+      undefined,
+      {},
+      "standard"
+    );
+
+    const Component = () => result;
+    const { container } = render(<Component />);
+    expect(container.textContent).toBe("Not answered");
+  });
+
+  test("renderOverlayEntityDataCell shows 'Not answered' when entity is missing and field has no validation", () => {
+    const fieldWithoutValidation = {
+      id: "test-field",
+      type: "text",
+      props: { label: "Test" },
+    } as unknown as FormField;
+
+    const entityResponseData = [{ id: "entity-1", name: "Entity 1" }];
+
+    const result = renderOverlayEntityDataCell(
+      fieldWithoutValidation,
+      entityResponseData,
+      "non-existent-entity"
+    );
+
+    const Component = () => result;
+    const { container } = render(<Component />);
+    expect(container.textContent).toBe("Not answered");
   });
 });
