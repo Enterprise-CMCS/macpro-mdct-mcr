@@ -15,6 +15,7 @@ import {
 import {
   compareText,
   getReportVerbiage,
+  isFieldValidationOptional,
   maskResponseData,
   otherSpecify,
 } from "utils";
@@ -107,12 +108,8 @@ export const renderOverlayEntityDataCell = (
 
   if (!entity || !entity[fieldId]) {
     const { exportVerbiage } = getReportVerbiage();
-    const validationType =
-      typeof formField.validation === "object"
-        ? formField.validation.type
-        : formField.validation;
 
-    if (validationType.includes("Optional") || formField?.groupId) {
+    if (isFieldValidationOptional(formField) || formField?.groupId) {
       return <Text>{exportVerbiage.missingEntry.noResponseOptional}</Text>;
     } else {
       return (
@@ -279,8 +276,7 @@ export const renderResponseData = (
     : fieldResponseData;
 
   // check if optional
-  const validationType = formField.validation.toString();
-  const isOptional = validationType.includes("Optional") || formField?.groupId;
+  const isOptional = isFieldValidationOptional(formField) || formField?.groupId;
 
   const missingEntryVerbiage = notApplicable
     ? exportVerbiage.missingEntry.notApplicable

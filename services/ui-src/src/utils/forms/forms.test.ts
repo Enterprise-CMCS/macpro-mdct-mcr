@@ -8,6 +8,7 @@ import {
   getEntriesToClear,
   hydrateFormFields,
   initializeChoiceListFields,
+  isFieldValidationOptional,
   resetClearProp,
   setClearedEntriesToDefaultValue,
   sortFormErrors,
@@ -509,6 +510,46 @@ describe("Test defineProgramName", () => {
       expect(() =>
         defineProgramName(newOrExistingProgram, existingProgramNameSelection)
       ).toThrow();
+    });
+  });
+
+  describe("isFieldValidationOptional()", () => {
+    it("returns true for a string validation containing 'Optional'", () => {
+      const field = { id: "test", type: "text", validation: "textOptional" };
+      expect(isFieldValidationOptional(field)).toBe(true);
+    });
+
+    it("returns true for an object validation with type containing 'Optional'", () => {
+      const field = {
+        id: "test",
+        type: "text",
+        validation: { type: "textOptional", dependentFieldName: "other" },
+      };
+      expect(isFieldValidationOptional(field)).toBe(true);
+    });
+
+    it("returns false for a required string validation", () => {
+      const field = { id: "test", type: "text", validation: "text" };
+      expect(isFieldValidationOptional(field)).toBe(false);
+    });
+
+    it("returns false for a required object validation", () => {
+      const field = {
+        id: "test",
+        type: "text",
+        validation: { type: "text", dependentFieldName: "other" },
+      };
+      expect(isFieldValidationOptional(field)).toBe(false);
+    });
+
+    it("returns false when validation is undefined", () => {
+      const field = { id: "test", type: "text" } as any;
+      expect(isFieldValidationOptional(field)).toBe(false);
+    });
+
+    it("returns false for a layout element", () => {
+      const field = { id: "test", type: "sectionHeader" };
+      expect(isFieldValidationOptional(field)).toBe(false);
     });
   });
 });
