@@ -1,13 +1,12 @@
 // types
 import { ReportJsonFile, ReportType } from "../../../../../utils/types";
 // routes
-import { planComplianceRoute } from "../../plan-compliance";
+import { planComplianceRoute } from "./plan-compliance";
 import { programLevelAccessAndNetworkAdequacyStandardsRoute } from "./program-level-access-and-network-adequacy-standards";
 import { reviewAndSubmitRoute } from "../../review-and-submit";
-import { stateAndProgramInformationRoute } from "../../state-and-program-information";
+import { stateAndProgramInformationRoute } from "./state-and-program-information";
 
-// Use with LaunchDarkly flag: naaarProgramList
-export const naaarReportJson: ReportJsonFile = {
+export const mlrReportJson: ReportJsonFile = {
   type: ReportType.NAAAR,
   name: "NAAAR Report Submission Form",
   basePath: "/naaar",
