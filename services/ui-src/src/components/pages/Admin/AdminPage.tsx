@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { ComponentClass, useContext, useState } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import {
   Box,
@@ -28,6 +29,8 @@ export const AdminPage = () => {
     useContext(AdminBannerContext);
   const [bannerToDelete, setBannerToDelete] = useState<string>("");
 
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   // state management
   const { allBanners, bannerLoading, bannerErrorMessage, bannerDeleting } =
     useStore();
@@ -48,6 +51,10 @@ export const AdminPage = () => {
     }
     return (
       <React.Fragment key={banner.key}>
+        {/* page title */}
+        <Helmet>
+          <title>{verbiage.title}</title>
+        </Helmet>
         <Flex sx={sx.currentBannerInfo}>
           <Text sx={sx.currentBannerStatus}>
             Status:{" "}

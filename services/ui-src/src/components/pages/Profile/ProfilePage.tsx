@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router";
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Button, Heading, Link, Text } from "@chakra-ui/react";
 import { PageTemplate, Table } from "components";
@@ -9,6 +11,8 @@ import verbiage from "verbiage/pages/profile";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
+
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   const { email, given_name, family_name, userRole, state, userIsAdmin } =
     useStore().user ?? {};
@@ -28,6 +32,10 @@ export const ProfilePage = () => {
 
   return (
     <PageTemplate sx={sx.layout}>
+      {/* page title */}
+      <Helmet>
+        <title>{verbiage.title}</title>
+      </Helmet>
       <Heading as="h1" sx={sx.headerText}>
         {intro.header}
       </Heading>
