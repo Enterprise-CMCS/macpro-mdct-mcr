@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { ComponentClass, useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box } from "@chakra-ui/react";
 import {
@@ -19,12 +20,14 @@ import {
 import {
   filterFormData,
   formModifications,
+  getPageTitle,
   parseCustomHtml,
   useFindRoute,
   useStore,
 } from "utils";
 
 export const StandardReportPage = ({ route, validateOnRender }: Props) => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   const [submitting, setSubmitting] = useState<boolean>(false);
   const { updateReport } = useContext(ReportContext);
   // state management
@@ -73,6 +76,10 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
 
   return (
     <Box>
+      {/* page title */}
+      <Helmet>
+        <title>{report && getPageTitle(report?.reportType, route)}</title>
+      </Helmet>
       {route.verbiage.intro && (
         <ReportPageIntro
           accordion={accordion}

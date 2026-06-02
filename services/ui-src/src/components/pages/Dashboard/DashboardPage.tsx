@@ -1,6 +1,7 @@
 import { ComponentClass, useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -38,7 +39,6 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
 import { States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
