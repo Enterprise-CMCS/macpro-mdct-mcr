@@ -4,7 +4,7 @@ export const getPageTitle = (
   reportType: string,
   route: ReportPageShapeBase
 ) => {
-  const idx = route.name.indexOf(":") + 1;
+  const idx = route.name.search(/[.:]/) + 1;
   const routeName = route.name.substring(idx).trim();
   let pageTitle = routeName;
   switch (reportType) {

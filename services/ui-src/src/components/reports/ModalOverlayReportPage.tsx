@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { ComponentClass, useContext, useState } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Button, Heading, Text, useDisclosure } from "@chakra-ui/react";
 import {
@@ -32,6 +33,7 @@ import {
   resetClearProp,
   routeChecker,
   getMcparEntityStatus,
+  getPageTitle,
 } from "utils";
 // verbiage
 import accordionVerbiage from "verbiage/pages/accordion";
@@ -41,6 +43,8 @@ export const ModalOverlayReportPage = ({
   setSidebarHidden,
   validateOnRender,
 }: Props) => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   // Route Information
   const { drawerForm, entityType, modalForm, overlayForm, verbiage } = route;
 
@@ -224,6 +228,10 @@ export const ModalOverlayReportPage = ({
 
   return (
     <Box>
+      {/* page title */}
+      <Helmet>
+        <title>{report && getPageTitle(report?.reportType, route)}</title>
+      </Helmet>
       {isEntityDetailsOpen && currentEntity ? (
         <EntityProvider>
           <EntityDetailsOverlay
