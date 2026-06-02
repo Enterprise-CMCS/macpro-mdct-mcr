@@ -4,12 +4,11 @@ export const getPageTitle = (
   reportType: string,
   route: ReportPageShapeBase
 ) => {
-  let pageTitle: string = "";
+  const idx = route.name.indexOf(":") + 1;
+  const routeName = route.name.substring(idx).trim();
+  let pageTitle = routeName;
   switch (reportType) {
     case ReportType.MCPAR:
-      const idx = route.name.indexOf(":") + 1;
-      const routeName = route.name.substring(idx).trim();
-      pageTitle = routeName;
       if (route.path.includes("state-level-indicators")) {
         pageTitle = `State-Level ${routeName}`;
       } else if (route.path.includes("program-level-indicators")) {
@@ -33,6 +32,9 @@ export const getPageTitle = (
           pageTitle = `Plan-Level ${routeName}`;
         }
       }
+      break;
+    default:
+      pageTitle = routeName;
   }
   return `${pageTitle} - ${reportType} - MCR`;
 };

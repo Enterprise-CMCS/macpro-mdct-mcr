@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { ComponentClass, useContext, useEffect, useState } from "react";
 import uuid from "react-uuid";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Button, Image, Heading, useDisclosure } from "@chakra-ui/react";
 import {
@@ -38,6 +39,7 @@ import {
   filterStandardsByUtilizedAnalysisMethods,
   getEntriesToClear,
   getForm,
+  getPageTitle,
   parseCustomHtml,
   routeChecker,
   setClearedEntriesToDefaultValue,
@@ -53,6 +55,7 @@ import addIconSVG from "assets/icons/icon_add_gray.svg";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [analysisMethodsError, setAnalysisMethodsError] =
     useState<ErrorVerbiage>();
@@ -337,6 +340,10 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   return (
     <Box sx={sx.tablePage}>
+      {/* page title */}
+      <Helmet>
+        <title>{report && getPageTitle(report?.reportType, route)}</title>
+      </Helmet>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />
       )}
