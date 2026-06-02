@@ -35,6 +35,7 @@ export const getPageTitle = (
       break;
     default:
       pageTitle = routeName;
+      break;
   }
   return `${pageTitle} - ${reportType} - MCR`;
 };
