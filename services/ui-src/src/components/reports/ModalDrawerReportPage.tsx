@@ -40,6 +40,7 @@ import addIcon from "assets/icons/icon_add.png";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report } = useStore();
