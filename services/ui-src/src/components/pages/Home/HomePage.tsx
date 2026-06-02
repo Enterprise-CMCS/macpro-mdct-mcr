@@ -1,5 +1,6 @@
 import { ComponentClass, useEffect } from "react";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
@@ -12,7 +13,6 @@ import {
 import { checkDateRangeStatus, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
-import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
