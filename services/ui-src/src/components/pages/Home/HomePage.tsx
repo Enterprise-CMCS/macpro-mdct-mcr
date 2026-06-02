@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { ComponentClass, useEffect } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Collapse, Heading, Link, Text } from "@chakra-ui/react";
 import {
@@ -14,6 +15,7 @@ import verbiage from "verbiage/pages/home";
 import { useFlags } from "launchdarkly-react-client-sdk";
 
 export const HomePage = () => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   const { bannerData, bannerActive, setBannerActive } = useStore();
   const { userIsEndUser } = useStore().user ?? {};
   const summer2026SansQm = useFlags()?.summer2026SansQm;
@@ -37,6 +39,10 @@ export const HomePage = () => {
 
   return (
     <>
+      {/* page title */}
+      <Helmet>
+        <title>Managed Care Reporting</title>
+      </Helmet>
       <Collapse in={showBanner}>
         <Banner bannerData={bannerData} />
       </Collapse>
