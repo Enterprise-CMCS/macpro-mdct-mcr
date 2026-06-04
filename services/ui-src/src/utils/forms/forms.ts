@@ -13,8 +13,20 @@ import {
   ChoiceField,
   MonthYearField,
 } from "components";
+import {
+  SectionContent,
+  SectionDivider,
+  SectionHeader,
+  Question,
+} from "components/forms/FormLayoutElements";
+import {
+  generateAddEntityDrawerItemFields,
+  generateAnalysisMethodChoices,
+  generateDrawerItemFields,
+} from "./dynamicItemFields";
 // constants
 import { suppressionText } from "../../constants";
+import { mlrProgramList } from "programLists/mlrProgramList";
 // types
 import {
   AnyObject,
@@ -28,19 +40,10 @@ import {
   getFormParams,
   isFieldElement,
   ReportType,
+  State,
 } from "types";
 // utils
-import {
-  SectionContent,
-  SectionDivider,
-  SectionHeader,
-  Question,
-} from "components/forms/FormLayoutElements";
-import {
-  generateAddEntityDrawerItemFields,
-  generateAnalysisMethodChoices,
-  generateDrawerItemFields,
-} from "./dynamicItemFields";
+import { useStore } from "utils";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -123,11 +126,24 @@ export const hydrateFormFields = (
 export const initializeChoiceListFields = (
   fields: (FormField | FormLayoutElement)[]
 ) => {
+  // MLR program list
+  const { report } = useStore();
+  const generateProgramListChoices = () => {
+    const programList = mlrProgramList[report?.state as State];
+    return programList as FieldChoice[];
+  };
+
   const fieldsWithChoices = fields.filter(
     (field: FormField | FormLayoutElement) => field.props?.choices
   );
   fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
+      if (field.id === "report_programName") {
+        field.props = {
+          ...field.props,
+          choices: generateProgramListChoices(),
+        };
+      }
       field?.props?.choices.forEach((choice: FieldChoice) => {
         // set choice value to choice label string
         choice.value = choice.label;
