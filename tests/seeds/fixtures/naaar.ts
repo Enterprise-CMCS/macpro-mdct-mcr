@@ -4,7 +4,7 @@ import {
   ReportType,
 } from "../../../services/app-api/utils/types";
 import { DEFAULT_ANALYSIS_METHODS } from "../../../services/ui-src/src/constants";
-import { naaarProgramList } from "../../../services/ui-src/src/forms/addEditNaaarReport/naaarProgramList";
+import { naaarProgramList } from "../../../services/ui-src/src/programLists/naaarProgramList";
 import { dateFormat, randomIndex } from "../helpers";
 import { SeedFillReportShape, SeedNewReportShape } from "../types";
 
