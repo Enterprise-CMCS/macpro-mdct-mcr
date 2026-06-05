@@ -26,8 +26,6 @@ repos:
           - --exclude-files
           - ^services/ui-src/src/forms/
           - --exclude-files
-          - ^services/ui-src/src/programLists/
-          - --exclude-files
           - ^services/ui-src/src/utils/forms
           - --exclude-files
           - ^tests/cypress/cypress.json
