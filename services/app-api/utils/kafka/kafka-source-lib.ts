@@ -24,6 +24,9 @@ type SourceBucketTopicMapping = {
   s3Prefix: string;
 };
 
+// Kafka rejects messages at 1 MB and above.
+const MAX_KAFKA_S3_PAYLOAD_BYTES = 1_000_000;
+
 let kafka: Kafka;
 let producer: Producer;
 
@@ -184,6 +187,16 @@ class KafkaSourceLib {
 
         // Filter for only the response info
         if (!topicName || !key.includes(".json")) {
+          continue;
+        }
+        const objectSize = Number(s3Record.s3.object.size);
+        if (
+          Number.isFinite(objectSize) &&
+          objectSize >= MAX_KAFKA_S3_PAYLOAD_BYTES
+        ) {
+          console.log(
+            `Skipping Kafka publish for oversized S3 object ${key} (${objectSize} bytes) from bucket ${s3Record.s3.bucket.name}; Kafka/Splunk rejects 1MB+ messages.`
+          );
           continue;
         }
         payload = await this.createS3Payload(record);
