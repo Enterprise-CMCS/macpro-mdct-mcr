@@ -11,12 +11,14 @@ export const DeleteDynamicFieldRecordModal = ({
   entityType,
   modalDisclosure,
 }: Props) => {
+  console.log(selectedRecord, entityType);
   const [deleting, setDeleting] = useState<boolean>(false);
   const fieldTypeMap: any = {
     plans: "plan",
     bssEntities: "BSS entity",
     ilos: "In Lieu of Services",
     measure_rates: "performance rate name",
+    report_otherProgramName: "program name",
   };
 
   const isIlos = entityType === EntityType.ILOS;
