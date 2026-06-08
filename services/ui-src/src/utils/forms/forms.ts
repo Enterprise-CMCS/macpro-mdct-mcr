@@ -44,6 +44,7 @@ import {
 } from "types";
 // utils
 import { useStore } from "utils";
+import uuid from "react-uuid";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -138,10 +139,19 @@ export const initializeChoiceListFields = (
   );
   fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
-      if (field.id === "report_programName") {
+      if (
+        field.id === "report_programName" &&
+        field.props?.choices.length < 1
+      ) {
         field.props = {
           ...field.props,
-          choices: generateProgramListChoices(),
+          choices: [
+            ...generateProgramListChoices(),
+            {
+              id: uuid(),
+              label: "Not listed / Other",
+            },
+          ],
         };
       }
       field?.props?.choices.forEach((choice: FieldChoice) => {
