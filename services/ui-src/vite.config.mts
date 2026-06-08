@@ -4,7 +4,25 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   base: "/",
-  plugins: [react(), tsconfigPaths()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    {
+      name: "watch-env-config",
+      configureServer(server) {
+        const envFile = "services/ui-src/public/env-config.js";
+        server.watcher.add(envFile);
+        server.watcher.on("change", (file) => {
+          if (file.endsWith(envFile)) {
+            console.log("[vite] page reload public/env-config.js");
+            server.ws.send({
+              type: "full-reload",
+            });
+          }
+        });
+      },
+    },
+  ],
   server: {
     open: true,
     port: 3000,
