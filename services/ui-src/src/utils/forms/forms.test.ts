@@ -25,13 +25,19 @@ import {
   mockNestedFormField,
   mockNumberField,
   mockSanctionsEntity,
+  mockStateUserStore,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
 
 const mockedFormFields = [
   { ...mockFormField, id: "mockField1" },
   mockNestedFormField,
   mockNumberField,
 ];
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockStateUserStore);
 
 describe("utils/forms", () => {
   describe("formFieldFactory()", () => {
