@@ -1,6 +1,6 @@
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { parseCustomHtml } from "utils";
+import { labelTextWithOptional, parseCustomHtml } from "utils";
 
 export const SectionHeader = ({
   content,
@@ -49,19 +49,23 @@ interface SectionContentProps {
   content: string;
 }
 
-export const Question = ({ content, hint }: QuestionProps) => {
+export const Question = ({ content, hint, styleAsOptional }: QuestionProps) => {
   const sx = {
     wrapper: {
       marginTop: "spacer3",
     },
   };
 
+  const questionContent = styleAsOptional
+    ? labelTextWithOptional(content)
+    : parseCustomHtml(content);
+
   return (
     <Box
       sx={sx.wrapper}
       className="question-field ds-c-label ds-c-field__label"
     >
-      <Text>{parseCustomHtml(content)}</Text>
+      <Text>{questionContent}</Text>
       {hint && <Text className="ds-c-hint">{parseCustomHtml(hint)}</Text>}
     </Box>
   );
@@ -70,4 +74,5 @@ export const Question = ({ content, hint }: QuestionProps) => {
 interface QuestionProps {
   content: string;
   hint?: string;
+  styleAsOptional?: boolean;
 }

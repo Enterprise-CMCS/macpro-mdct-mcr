@@ -82,19 +82,21 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         },
       },
       {
-        id: "report_otherProgramName_header",
-        type: ReportFormFieldType.SECTION_HEADER,
+        id: "report_otherProgramNameQuestion",
+        type: ReportFormFieldType.QUESTION,
         props: {
-          divider: "none",
           content:
-            "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.</b>",
-          hint: "",
+            "J.a If you don’t see your program listed, please detail the program name as it was during the reporting period.",
+          styleAsOptional: true,
         },
       },
       {
         id: "report_otherProgramName",
         type: ReportFormFieldType.DYNAMIC,
         validation: ValidationType.DYNAMIC_OPTIONAL,
+        props: {
+          label: "",
+        },
       },
       {
         id: "report_programType",
