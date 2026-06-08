@@ -94,9 +94,6 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         id: "report_otherProgramName",
         type: ReportFormFieldType.DYNAMIC,
         validation: ValidationType.DYNAMIC_OPTIONAL,
-        props: {
-          label: "",
-        },
       },
       {
         id: "report_programType",

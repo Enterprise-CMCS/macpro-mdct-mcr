@@ -11,7 +11,6 @@ export const DeleteDynamicFieldRecordModal = ({
   entityType,
   modalDisclosure,
 }: Props) => {
-  console.log(selectedRecord, entityType);
   const [deleting, setDeleting] = useState<boolean>(false);
   const fieldTypeMap: any = {
     plans: "plan",
