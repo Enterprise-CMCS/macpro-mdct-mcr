@@ -90,26 +90,6 @@ const MockForm = (props: any) => {
   );
 };
 
-const MockMlrForm = (props: any) => {
-  const form = useForm({
-    shouldFocusError: false,
-  });
-  return (
-    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
-      <FormProvider {...form}>
-        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
-          <DynamicField
-            name={"report_otherProgramName" as EntityType}
-            label="test-label"
-            hydrate={props.hydrationValue}
-            autosave={props?.autosave}
-          />
-        </form>
-      </FormProvider>
-    </ReportContext.Provider>
-  );
-};
-
 const dynamicFieldComponent = (
   hydrationValue?: any,
   customContext?: any,
@@ -145,6 +125,46 @@ const dynamicIlosFieldComponent = (hydrationValue?: any) => (
   <MockIlosForm hydrationValue={hydrationValue} />
 );
 
+const MockMcparMeasureRatesForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name={"measure_rates" as EntityType}
+            label="test-label"
+            hydrate={props.hydrationValue}
+            autosave={props?.autosave}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
+const MockMlrForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name={"report_otherProgramName" as EntityType}
+            label="test-label"
+            hydrate={props.hydrationValue}
+            autosave={props?.autosave}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
 describe("<DynamicField />", () => {
   describe("Test DynamicField component", () => {
     beforeEach(async () => {
@@ -162,7 +182,15 @@ describe("<DynamicField />", () => {
       expect(inputBoxLabel).toBeVisible();
     });
 
-    test("DynamicField add button verbiage displays correctly", async () => {
+    test("DynamicField add button verbiage displays correctly for MCPAR measure rates", async () => {
+      await act(async () => {
+        await render(<MockMcparMeasureRatesForm />);
+      });
+      const appendButton = screen.getByText("Add another rate");
+      expect(appendButton).toBeVisible();
+    });
+
+    test("DynamicField add button verbiage displays correctly for MLR program names", async () => {
       await act(async () => {
         await render(<MockMlrForm />);
       });
