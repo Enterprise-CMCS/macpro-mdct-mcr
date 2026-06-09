@@ -90,6 +90,26 @@ const MockForm = (props: any) => {
   );
 };
 
+const MockMlrForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name={"report_otherProgramName" as EntityType}
+            label="test-label"
+            hydrate={props.hydrationValue}
+            autosave={props?.autosave}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
 const dynamicFieldComponent = (
   hydrationValue?: any,
   customContext?: any,
@@ -140,6 +160,14 @@ describe("<DynamicField />", () => {
     test("DynamicField is visible", () => {
       const inputBoxLabel = screen.getByText("test-label");
       expect(inputBoxLabel).toBeVisible();
+    });
+
+    test("DynamicField add button verbiage displays correctly", async () => {
+      await act(async () => {
+        await render(<MockMlrForm />);
+      });
+      const appendButton = screen.getByText("Add another program name");
+      expect(appendButton).toBeVisible();
     });
 
     test("DynamicField append button is visible", () => {
