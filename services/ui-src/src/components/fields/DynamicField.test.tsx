@@ -125,7 +125,7 @@ const dynamicIlosFieldComponent = (hydrationValue?: any) => (
   <MockIlosForm hydrationValue={hydrationValue} />
 );
 
-const MockMcparMeasureRatesForm = (props: any) => {
+const MockDynamicForm = (props: any) => {
   const form = useForm({
     shouldFocusError: false,
   });
@@ -134,7 +134,7 @@ const MockMcparMeasureRatesForm = (props: any) => {
       <FormProvider {...form}>
         <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
           <DynamicField
-            name={"measure_rates" as EntityType}
+            name={props.name}
             label="test-label"
             hydrate={props.hydrationValue}
             autosave={props?.autosave}
@@ -145,25 +145,9 @@ const MockMcparMeasureRatesForm = (props: any) => {
   );
 };
 
-const MockMlrForm = (props: any) => {
-  const form = useForm({
-    shouldFocusError: false,
-  });
-  return (
-    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
-      <FormProvider {...form}>
-        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
-          <DynamicField
-            name={"report_otherProgramName" as EntityType}
-            label="test-label"
-            hydrate={props.hydrationValue}
-            autosave={props?.autosave}
-          />
-        </form>
-      </FormProvider>
-    </ReportContext.Provider>
-  );
-};
+const mockDynamicFieldComponent = (name?: any) => (
+  <MockDynamicForm name={name} />
+);
 
 describe("<DynamicField />", () => {
   describe("Test DynamicField component", () => {
@@ -184,7 +168,7 @@ describe("<DynamicField />", () => {
 
     test("DynamicField add button verbiage displays correctly for MCPAR measure rates", async () => {
       await act(async () => {
-        await render(<MockMcparMeasureRatesForm />);
+        await render(mockDynamicFieldComponent("measure_rates" as EntityType));
       });
       const appendButton = screen.getByText("Add another rate");
       expect(appendButton).toBeVisible();
@@ -192,7 +176,9 @@ describe("<DynamicField />", () => {
 
     test("DynamicField add button verbiage displays correctly for MLR program names", async () => {
       await act(async () => {
-        await render(<MockMlrForm />);
+        await render(
+          mockDynamicFieldComponent("report_otherProgramName" as EntityType)
+        );
       });
       const appendButton = screen.getByText("Add another program name");
       expect(appendButton).toBeVisible();
