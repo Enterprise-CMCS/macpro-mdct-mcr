@@ -49,6 +49,7 @@ const mockMlrProgramListFields = [
 
 jest.mock("utils/state/useStore");
 const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockMlrReportStore);
 
 describe("utils/forms", () => {
   describe("formFieldFactory()", () => {
@@ -338,7 +339,6 @@ describe("utils/forms", () => {
     });
 
     it("Correctly generates MLR program list choices", () => {
-      mockedUseStore.mockReturnValue(mockMlrReportStore);
       const result = initializeChoiceListFields(mockMlrProgramListFields);
       const generatedProgramListChoices = result[0].props?.choices;
       expect(generatedProgramListChoices).toHaveLength(3);
