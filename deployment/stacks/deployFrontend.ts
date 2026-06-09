@@ -55,17 +55,40 @@ export function deployFrontend(props: DeployFrontendProps) {
     scope,
     "DeployWebsite",
     {
-      sources: [s3_deployment.Source.asset(buildOutputPath)],
+      sources: [
+        s3_deployment.Source.asset(buildOutputPath, {
+          exclude: ["index.html"],
+        }),
+      ],
       destinationBucket: uiBucket,
       distribution,
       distributionPaths: ["/*"],
       prune: true,
+      exclude: ["index.html"],
       cacheControl: [
         s3_deployment.CacheControl.setPublic(),
         s3_deployment.CacheControl.maxAge(Duration.days(365)),
       ],
     }
   );
+
+  const deployIndex = new s3_deployment.BucketDeployment(scope, "DeployIndex", {
+    sources: [
+      s3_deployment.Source.asset(buildOutputPath, {
+        exclude: ["*", ".*", "!index.html"],
+      }),
+    ],
+    destinationBucket: uiBucket,
+    distribution,
+    distributionPaths: ["/index.html"],
+    prune: false,
+    cacheControl: [
+      s3_deployment.CacheControl.noCache(),
+      s3_deployment.CacheControl.mustRevalidate(),
+    ],
+  });
+
+  deployIndex.node.addDependency(deployWebsite);
 
   const deployTimeConfig = new s3_deployment.DeployTimeSubstitutedFile(
     scope,
