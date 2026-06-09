@@ -4,7 +4,7 @@ import {
   ReportStatus,
   ReportType,
 } from "../../../services/app-api/utils/types";
-import { mcparProgramList } from "../../../services/ui-src/src/forms/addEditMcparReport/mcparProgramList";
+import { mcparProgramList } from "../../../services/ui-src/src/programLists/mcparProgramList";
 import {
   mcparQualityMeasuresList,
   Measure,
