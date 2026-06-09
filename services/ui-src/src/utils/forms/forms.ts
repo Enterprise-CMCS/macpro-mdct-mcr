@@ -140,7 +140,7 @@ export const initializeChoiceListFields = (
   fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
       if (
-        field.id === "report_programName" &&
+        field.id === "report_programNameList" &&
         field.props?.choices.length < 1
       ) {
         field.props = {

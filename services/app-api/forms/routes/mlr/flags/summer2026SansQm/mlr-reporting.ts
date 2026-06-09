@@ -72,7 +72,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         },
       },
       {
-        id: "report_programName",
+        id: "report_programNameList",
         type: ReportFormFieldType.CHECKBOX,
         validation: ValidationType.CHECKBOX,
         props: {
