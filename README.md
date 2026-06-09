@@ -315,7 +315,7 @@ Dropdown and dynamic fields are not currently supported as nested child fields. 
 
 This repository uses 3 webhooks to publish to 3 different channels all in CMS Slack.
 
-- SLACK_WEBHOOK: This pubishes to the `macpro-mdct-mcr-alerts` channel. Alerts published there are for deploy or test failures to the `main`, `val`, or `production` branches.
+- SLACK_WEBHOOK: This publishes to the `macpro-mdct-mcr-alerts` channel. Alerts published there are for deploy or test failures to the `main`, `val`, or `production` branches. It also reports weekly statuses for LaunchDarkly flags in `production`.
 
 - INTEGRATIONS_SLACK_WEBHOOK: This is used to publish new pull requests to the `mdct-integrations-channel`
 
