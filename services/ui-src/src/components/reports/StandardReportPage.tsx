@@ -78,7 +78,7 @@ export const StandardReportPage = ({ route, validateOnRender }: Props) => {
     <Box>
       {/* page title */}
       <Helmet>
-        <title>{report && getPageTitle(report?.reportType, route)}</title>
+        <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {route.verbiage.intro && (
         <ReportPageIntro

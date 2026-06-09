@@ -39,7 +39,7 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
-import { States } from "../../../constants";
+import { APP_TITLE, States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
 import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
@@ -251,7 +251,7 @@ export const DashboardPage = ({ reportType }: Props) => {
     <PageTemplate type="report" sx={sx.layout}>
       {/* page title */}
       <Helmet>
-        <title>{`${reportType} - MCR`}</title>
+        <title>{`${reportType} - ${APP_TITLE}`}</title>
       </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
         <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />

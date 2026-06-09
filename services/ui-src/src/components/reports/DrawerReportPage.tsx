@@ -342,7 +342,7 @@ export const DrawerReportPage = ({ route, validateOnRender }: Props) => {
     <Box sx={sx.tablePage}>
       {/* page title */}
       <Helmet>
-        <title>{report && getPageTitle(report?.reportType, route)}</title>
+        <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {verbiage.intro && (
         <ReportPageIntro text={verbiage.intro} hasIlos={hasIlos} />

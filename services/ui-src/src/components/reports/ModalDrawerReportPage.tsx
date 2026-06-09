@@ -192,7 +192,7 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
     <Box>
       {/* page title */}
       <Helmet>
-        <title>{report && getPageTitle(report?.reportType, route)}</title>
+        <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>

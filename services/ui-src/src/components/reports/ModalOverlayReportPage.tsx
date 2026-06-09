@@ -230,7 +230,7 @@ export const ModalOverlayReportPage = ({
     <Box>
       {/* page title */}
       <Helmet>
-        <title>{report && getPageTitle(report?.reportType, route)}</title>
+        <title>{report && getPageTitle(report.reportType, route)}</title>
       </Helmet>
       {isEntityDetailsOpen && currentEntity ? (
         <EntityProvider>

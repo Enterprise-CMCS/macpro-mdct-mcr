@@ -13,6 +13,7 @@ import {
 import { checkDateRangeStatus, useStore } from "utils";
 // verbiage
 import verbiage from "verbiage/pages/home";
+import { FULL_APP_TITLE } from "../../../constants";
 
 export const HomePage = () => {
   const Helmet = HelmetImport as ComponentClass<HelmetProps>;
@@ -41,7 +42,7 @@ export const HomePage = () => {
     <>
       {/* page title */}
       <Helmet>
-        <title>Managed Care Reporting</title>
+        <title>{FULL_APP_TITLE}</title>
       </Helmet>
       <Collapse in={showBanner}>
         <Banner bannerData={bannerData} />

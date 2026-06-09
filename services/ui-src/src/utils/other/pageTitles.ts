@@ -1,3 +1,4 @@
+import { APP_TITLE } from "../../constants";
 import { ReportPageShapeBase, ReportType } from "types";
 
 export const getPageTitle = (
@@ -37,5 +38,5 @@ export const getPageTitle = (
       pageTitle = routeName;
       break;
   }
-  return `${pageTitle} - ${reportType} - MCR`;
+  return `${pageTitle} - ${reportType} - ${APP_TITLE}`;
 };

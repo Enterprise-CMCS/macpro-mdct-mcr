@@ -24,11 +24,11 @@ const mockStateLevelRoute: ReportPageShapeBase = {
 describe("Test pageTitles", () => {
   test("Test default page title", () => {
     const pageTitle = getPageTitle("MCPAR", mockDefaultRoute);
-    expect(pageTitle).toEqual("Mock route name - MCPAR - MCR");
+    expect(pageTitle).toBe("Mock route name - MCPAR - MCR");
   });
 
   test("Test for State-Level indicators (MCPAR)", () => {
     const pageTitle = getPageTitle("MCPAR", mockStateLevelRoute);
-    expect(pageTitle).toEqual("State-Level Mock route name - MCPAR - MCR");
+    expect(pageTitle).toBe("State-Level Mock route name - MCPAR - MCR");
   });
 });
