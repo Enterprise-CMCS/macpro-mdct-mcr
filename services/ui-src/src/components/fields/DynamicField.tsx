@@ -285,6 +285,16 @@ export const DynamicField = ({
     setSelectedRecord(undefined);
   };
 
+  // get verbiage for "Add" button
+  const getButtonVerbiage = () => {
+    if (name.includes("measure_rates")) {
+      return "Add another rate";
+    } else if (name.includes("report_otherProgramName")) {
+      return "Add another program name";
+    }
+    return "Add a row";
+  };
+
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
@@ -351,7 +361,7 @@ export const DynamicField = ({
           sx={sx.appendButton}
           onClick={appendNewRecord}
         >
-          {name.includes("measure_rates") ? "Add another rate" : "Add a row"}
+          {getButtonVerbiage()}
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -389,7 +399,8 @@ const sx = {
     },
   },
   appendButton: {
-    width: "12.5rem",
+    width: "fit-content",
+    minWidth: "12.5rem",
     height: "2.5rem",
     marginTop: "spacer4",
   },
