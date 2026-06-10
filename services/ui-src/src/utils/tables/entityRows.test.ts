@@ -815,6 +815,29 @@ describe("getProgramInfo()", () => {
     ];
     expect(input).toEqual(expectedResult);
   });
+
+  test('filters out "Not listed / Other" from checkbox list and uses custom names', () => {
+    const entityWithOther = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+        { key: "report_programNameList-other", value: "Not listed / Other" },
+      ],
+      report_otherProgramName: [
+        { id: "123", name: "Other Program Name 1" },
+        { id: "456", name: "Other Program Name 2" },
+      ],
+    };
+    const input = getProgramInfo(entityWithOther);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, Other Program Name 1, Other Program Name 2",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
 });
 
 describe("getMeasureIdentifier()", () => {

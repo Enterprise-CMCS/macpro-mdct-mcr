@@ -300,6 +300,7 @@ export const getProgramInfo = (entity: EntityShape) => {
           return null;
         })
         .filter(Boolean)
+        .filter((value) => value !== "Not listed / Other") // placeholder is replaced by the actual custom value entered by user
         .join(", ");
     }
 
