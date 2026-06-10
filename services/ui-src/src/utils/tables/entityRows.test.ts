@@ -218,7 +218,7 @@ describe("calculateIsEntityCompleted()", () => {
 
   test("returns true for complete entity", () => {
     const input = calculateIsEntityCompleted(
-      baseCalculateIsEntityCompletedProps
+      baseCalculateIsEntityCompletedProps,
     );
     expect(input).toBe(true);
   });
@@ -617,7 +617,7 @@ describe("getCompleteText()", () => {
 describe("getIncompleteText()", () => {
   test("returns text for incomplete", () => {
     expect(getIncompleteText({ isEntityCompleted: false })).toBe(
-      "Select “Enter” to complete response."
+      "Select “Enter” to complete response.",
     );
   });
 
@@ -701,6 +701,116 @@ describe("getProgramInfo()", () => {
       "Mock plan name",
       "Mock program name",
       "Mock eligibility group text",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles array of checkbox objects from report_programNameList", () => {
+    const checkboxEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+        { key: "report_programNameList-chip", value: "CHIP" },
+      ],
+    };
+    const input = getProgramInfo(checkboxEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, CHIP",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles checkbox objects with additional dynamic program names", () => {
+    const checkboxWithAdditionalEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+      ],
+      report_otherProgramName: [
+        { id: "123", name: "Custom Program 1" },
+        { id: "456", name: "Custom Program 2" },
+      ],
+    };
+    const input = getProgramInfo(checkboxWithAdditionalEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, Custom Program 1, Custom Program 2",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles only additional dynamic program names without checkbox selections", () => {
+    const additionalOnlyEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [],
+      report_otherProgramName: [{ id: "789", name: "Additional Program Only" }],
+    };
+    const input = getProgramInfo(additionalOnlyEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Additional Program Only",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles empty arrays gracefully", () => {
+    const emptyArrayEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [],
+      report_otherProgramName: [],
+    };
+    const input = getProgramInfo(emptyArrayEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("prioritizes new fields over old report_programName field", () => {
+    const mixedEntity = {
+      ...baseEntity,
+      report_programName: "Old Program Name",
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+      ],
+    };
+    const input = getProgramInfo(mixedEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("falls back to old report_programName if new fields are empty", () => {
+    const oldFormatEntity = {
+      ...baseEntity,
+      report_programName: "Legacy Program Name",
+      report_programNameList: undefined,
+      report_otherProgramName: undefined,
+    };
+    const input = getProgramInfo(oldFormatEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Legacy Program Name",
+      "Mock eligibility group",
       "01/01/2021 to 01/01/2022",
     ];
     expect(input).toEqual(expectedResult);

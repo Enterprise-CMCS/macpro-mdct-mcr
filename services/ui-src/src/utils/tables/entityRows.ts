@@ -97,7 +97,7 @@ export const buildDrawerReportPageEntityRows = ({
       entityName,
       enterButton,
       hasEntityNameWithDescription: hasEntityNameWithDescription(
-        report.reportType
+        report.reportType,
       ),
       incompleteText,
       isEntityCompleted,
@@ -129,14 +129,14 @@ export const calculateIsEntityCompleted = ({
     const dataMethod = planMeasureData.measure_dataCollectionMethod?.length > 0;
 
     const qualityMeasureData = qualityMeasures?.find(
-      (qm: any) => qm.id === measureId
+      (qm: any) => qm.id === measureId,
     );
 
     const ratesAreAnswered = qualityMeasureData?.measure_rates.every(
       (rate: any) => {
         const rateResult = planMeasureData[`measure_rateResults-${rate.id}`];
         return rateResult && rateResult !== "";
-      }
+      },
     );
 
     return dataMethod && ratesAreAnswered;
@@ -144,7 +144,7 @@ export const calculateIsEntityCompleted = ({
 
   const calculateEntityCompletion = (
     fields: (FormField | FormLayoutElement)[] = form.fields,
-    entityData: EntityShape = entity
+    entityData: EntityShape = entity,
   ) => {
     let formFields = fields;
     if (isCustomEntity && addEntityForm) {
@@ -273,12 +273,56 @@ export const getProgramInfo = (entity: EntityShape) => {
   const {
     report_planName: reportPlanName,
     report_programName: reportProgramName,
+    report_programNameList: reportProgramNameList,
+    report_otherProgramName: reportOtherProgramName,
   } = entity;
 
   const eligibilityGroup = getEligibilityGroup(entity);
   const reportingPeriod = getReportingPeriodText(entity);
 
-  return [reportPlanName, reportProgramName, eligibilityGroup, reportingPeriod];
+  const processProgramNames = (data: any): string => {
+    if (typeof data === "string") {
+      return data;
+    }
+
+    if (Array.isArray(data)) {
+      return data
+        .map((item) => {
+          if (typeof item === "object" && item !== null && "value" in item) {
+            return item.value;
+          }
+          if (typeof item === "object" && item !== null && "name" in item) {
+            return item.name;
+          }
+          if (typeof item === "string") {
+            return item;
+          }
+          return null;
+        })
+        .filter(Boolean)
+        .join(", ");
+    }
+
+    return "";
+  };
+
+  const programNameFromList = processProgramNames(reportProgramNameList);
+  const programNameFromOld = processProgramNames(reportProgramName);
+  const programNameFromOther = processProgramNames(reportOtherProgramName);
+
+  const allProgramNames = [
+    programNameFromList || programNameFromOld,
+    programNameFromOther,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  return [
+    reportPlanName,
+    allProgramNames || reportProgramName || "",
+    eligibilityGroup,
+    reportingPeriod,
+  ];
 };
 
 export const getMeasureIdentifier = (entity: EntityShape) => {
