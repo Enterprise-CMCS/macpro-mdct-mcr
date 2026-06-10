@@ -54,7 +54,7 @@ export const formFieldFactory = (
     nested?: boolean;
     autosave?: boolean;
     validateOnRender?: boolean;
-  }
+  },
 ) => {
   // define form field components
   const fieldToComponentMap: AnyObject = {
@@ -94,7 +94,7 @@ export const formFieldFactory = (
 
 export const hydrateFormFields = (
   formFields: (FormField | FormLayoutElement)[],
-  formData: AnyObject | undefined
+  formData: AnyObject | undefined,
 ) => {
   formFields.forEach((field: FormField | FormLayoutElement) => {
     const fieldFormIndex = formFields.indexOf(field!);
@@ -125,7 +125,7 @@ export const hydrateFormFields = (
 
 // add data to choice fields in preparation for render
 export const initializeChoiceListFields = (
-  fields: (FormField | FormLayoutElement)[]
+  fields: (FormField | FormLayoutElement)[],
 ) => {
   // MLR program list
   const { report } = useStore();
@@ -135,13 +135,13 @@ export const initializeChoiceListFields = (
   };
 
   const fieldsWithChoices = fields.filter(
-    (field: FormField | FormLayoutElement) => field.props?.choices
+    (field: FormField | FormLayoutElement) => field.props?.choices,
   );
   fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
       if (
         field.id === "report_programNameList" &&
-        field.props?.choices.length < 1
+        field.props?.choices.length === 0
       ) {
         field.props = {
           ...field.props,
@@ -180,7 +180,7 @@ export const initializeChoiceListFields = (
 // create repeated fields per entity specified (e.g. one field for each plan)
 export const createRepeatedFields = (
   fields: FormField[],
-  reportFieldData?: AnyObject
+  reportFieldData?: AnyObject,
 ): FormField[] =>
   // for each form field, check if it needs to be repeated
   fields.flatMap((currentField: FormField) => {
@@ -207,14 +207,14 @@ export const createRepeatedFields = (
 // returns user-entered data, filtered to only fields in the current form
 export const filterFormData = (
   enteredData: AnyObject,
-  currentFormFields: FormField[]
+  currentFormFields: FormField[],
 ) => {
   // translate user-entered data to array for filtration
   const enteredDataEntries = Object.entries(enteredData);
   // flatten current form fields and create array of the form's field ids
   const flattenedFormFields = flattenFormFields(currentFormFields);
   const formFieldArray = flattenedFormFields.map(
-    (field: FormField) => field.id
+    (field: FormField) => field.id,
   );
   // filter user-entered data to only fields in the current form
   const userEnteredEntries = enteredDataEntries.filter((fieldData) => {
@@ -227,7 +227,7 @@ export const filterFormData = (
 
 export const getEntriesToClear = (
   enteredData: AnyObject,
-  currentFormFields: FormField[]
+  currentFormFields: FormField[],
 ) => {
   // Get the users entered data
   const enteredDataEntries = Object.entries(enteredData);
@@ -251,7 +251,7 @@ export const getEntriesToClear = (
 
 export const setClearedEntriesToDefaultValue = (
   entity: AnyObject,
-  entriesToClear: string[]
+  entriesToClear: string[],
 ) => {
   entriesToClear.forEach((entry) => {
     if (Array.isArray(entity[entry])) {
@@ -284,7 +284,7 @@ export const flattenFormFields = (formFields: FormField[]): FormField[] => {
 
 export const sortFormErrors = (
   form: AnyObject,
-  errors: AnyObject
+  errors: AnyObject,
 ): string[] => {
   // sort errors into new array
   const sortedErrorArray: string[] = [];
@@ -338,7 +338,7 @@ export const getForm = (params: getFormParams) => {
   const analysisMethodsUsedByPlans = report?.fieldData?.analysisMethods?.filter(
     (analysisMethod: AnyObject) =>
       analysisMethod.analysis_applicable?.[0].value === "Yes" ||
-      analysisMethod.custom_analysis_method_name
+      analysisMethod.custom_analysis_method_name,
   );
   const reportType = report?.reportType;
 
@@ -350,7 +350,7 @@ export const getForm = (params: getFormParams) => {
           ? generateAddEntityDrawerItemFields(
               addEntityDrawerForm,
               plans,
-              EntityType.PLANS
+              EntityType.PLANS,
             )
           : generateDrawerItemFields(drawerForm, plans, EntityType.PLANS);
       }
@@ -363,7 +363,7 @@ export const getForm = (params: getFormParams) => {
         modifiedForm = generateDrawerItemFields(
           drawerForm,
           ilos,
-          EntityType.ILOS
+          EntityType.ILOS,
         );
       }
       break;
@@ -375,25 +375,25 @@ export const getForm = (params: getFormParams) => {
 export const defineProgramName = (
   newOrExistingProgram: Choice[],
   existingProgramNameSelection?: DropdownChoice,
-  newProgramName?: string
+  newProgramName?: string,
 ) => {
   if (!newOrExistingProgram?.[0]?.value)
     throw new Error(
-      "Program name radio field was not selected as an existing or new report"
+      "Program name radio field was not selected as an existing or new report",
     );
 
   switch (newOrExistingProgram[0].value) {
     case "Existing program":
       if (!existingProgramNameSelection?.value)
         throw new Error(
-          "Program name dropdown selection did not have a value. Please double check the field is working properly."
+          "Program name dropdown selection did not have a value. Please double check the field is working properly.",
         );
       return existingProgramNameSelection.value;
     case "Add new program":
       return newProgramName;
     default:
       throw new Error(
-        "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file."
+        "A choice was made in the program name selection field that isn't supported. Please add your choice to this function (defineProgramName) or fix the typo in the addEditModalJson file.",
       );
   }
 };
@@ -415,7 +415,7 @@ export const cleanSuppressed = (enteredData: AnyObject) => {
 };
 
 export const isFieldValidationOptional = (
-  formField: FormField | FormLayoutElement
+  formField: FormField | FormLayoutElement,
 ): boolean => {
   if (!isFieldElement(formField)) return false;
 

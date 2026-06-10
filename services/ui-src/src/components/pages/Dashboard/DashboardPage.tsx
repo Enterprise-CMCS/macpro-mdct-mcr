@@ -1,5 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { ComponentClass, useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
+import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -37,8 +39,7 @@ import {
   useBreakpoint,
   useStore,
 } from "utils";
-import { useFlags } from "launchdarkly-react-client-sdk";
-import { States } from "../../../constants";
+import { APP_TITLE, States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
 import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
@@ -56,6 +57,8 @@ export const DashboardPage = ({ reportType }: Props) => {
     releaseReport,
   } = useContext(ReportContext);
   const navigate = useNavigate();
+
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   // state management
   const {
@@ -246,6 +249,10 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   return (
     <PageTemplate type="report" sx={sx.layout}>
+      {/* page title */}
+      <Helmet>
+        <title>{`${reportType} - ${APP_TITLE}`}</title>
+      </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
         <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
         Return Home

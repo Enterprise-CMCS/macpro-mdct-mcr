@@ -17,7 +17,11 @@ const COGNITO_CLIENT = new CognitoIdentityProviderClient({
 });
 
 export async function createUser(params) {
-  await COGNITO_CLIENT.send(new AdminCreateUserCommand(params));
+  try {
+    await COGNITO_CLIENT.send(new AdminCreateUserCommand(params));
+  } catch {
+    console.log("user already existed.");
+  }
 }
 
 export async function setPassword(params) {

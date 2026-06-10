@@ -1,3 +1,5 @@
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Flex, Heading, Image, Link, Text } from "@chakra-ui/react";
 import { PageTemplate } from "components";
@@ -9,11 +11,16 @@ import verbiage from "verbiage/pages/not-found";
 import warningIcon from "assets/icons/icon_warning.png";
 
 export const NotFoundPage = () => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   const { header, subHeading, emailText, body } = verbiage;
   const { preLinkText, cmsEmail, postLinkText } = emailText;
 
   return (
     <PageTemplate sxOverride={sx.layout}>
+      {/* page title */}
+      <Helmet>
+        <title>{verbiage.title}</title>
+      </Helmet>
       <Flex sx={sx.heading}>
         <Image src={warningIcon} alt="warning icon" sx={sx.warningIcon} />
         <Heading as="h1" sx={sx.headerText}>

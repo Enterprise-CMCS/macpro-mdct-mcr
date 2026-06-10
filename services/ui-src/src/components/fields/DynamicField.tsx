@@ -24,6 +24,7 @@ import {
   autosaveFieldData,
   filterStandardsAfterPlanDeletion,
   getAutosaveFields,
+  labelTextWithOptional,
   useStore,
 } from "utils";
 // assets
@@ -32,6 +33,8 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 export const DynamicField = ({
   name,
   label,
+  dynamicLabel,
+  styleAsOptional,
   isRequired,
   autosave = true,
   ...props
@@ -322,7 +325,12 @@ export const DynamicField = ({
     form?.formState?.errors?.[name];
 
   return (
-    <Box>
+    <Box as="fieldset" sx={sx.fieldset}>
+      {dynamicLabel && (
+        <Box as="legend" className="ds-c-label" sx={sx.legend}>
+          {styleAsOptional ? labelTextWithOptional(dynamicLabel) : dynamicLabel}
+        </Box>
+      )}
       {displayValues.map((field: EntityShape, index: number) => {
         return (
           <Flex key={field.id} sx={sx.dynamicField}>
@@ -380,12 +388,20 @@ export const DynamicField = ({
 interface Props {
   name: EntityType;
   label: string;
+  dynamicLabel?: string;
+  styleAsOptional?: boolean;
   isRequired?: boolean;
   autosave?: boolean;
   [key: string]: any;
 }
 
 const sx = {
+  fieldset: {
+    marginTop: "spacer3",
+  },
+  legend: {
+    fontSize: "md",
+  },
   removeBox: {
     marginBottom: "0.625rem",
     marginLeft: "0.625rem",

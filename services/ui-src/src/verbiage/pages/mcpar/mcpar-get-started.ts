@@ -1,4 +1,5 @@
 export default {
+  title: "Before you begin - MCPAR - MCR",
   intro: {
     header: "Before you begin the MCPAR online form",
   },
