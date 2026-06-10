@@ -141,7 +141,7 @@ export const initializeChoiceListFields = (
     if (isFieldElement(field)) {
       if (
         field.id === "report_programNameList" &&
-        field.props?.choices.length < 1
+        field.props?.choices.length === 0
       ) {
         field.props = {
           ...field.props,
