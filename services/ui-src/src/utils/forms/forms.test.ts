@@ -16,22 +16,40 @@ import {
 // constants
 import { suppressionText } from "../../constants";
 // types
-import { Choice, FormField } from "types";
+import { Choice, FormField, ReportFormFieldType } from "types";
 // utils
 import {
   mockDateField,
   mockDrawerFormField,
   mockFormField,
+  mockMlrReportStore,
   mockNestedFormField,
   mockNumberField,
   mockSanctionsEntity,
 } from "utils/testing/setupJest";
+import { useStore } from "utils";
 
 const mockedFormFields = [
   { ...mockFormField, id: "mockField1" },
   mockNestedFormField,
   mockNumberField,
 ];
+
+const mockMlrProgramListFields = [
+  {
+    id: "report_programNameList",
+    type: ReportFormFieldType.CHECKBOX,
+    validation: ReportFormFieldType.CHECKBOX,
+    props: {
+      label: "mock-label",
+      choices: [],
+    },
+  },
+];
+
+jest.mock("utils/state/useStore");
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+mockedUseStore.mockReturnValue(mockMlrReportStore);
 
 describe("utils/forms", () => {
   describe("formFieldFactory()", () => {
@@ -318,6 +336,13 @@ describe("utils/forms", () => {
         },
       ];
       expect(result).toEqual(expectedResult);
+    });
+
+    it("Correctly generates MLR program list choices", () => {
+      const result = initializeChoiceListFields(mockMlrProgramListFields);
+      const generatedProgramListChoices = result[0].props?.choices;
+      expect(generatedProgramListChoices).toHaveLength(3);
+      expect(generatedProgramListChoices[2].value).toBe("Not listed / Other");
     });
   });
 

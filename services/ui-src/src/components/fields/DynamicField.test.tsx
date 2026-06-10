@@ -125,6 +125,30 @@ const dynamicIlosFieldComponent = (hydrationValue?: any) => (
   <MockIlosForm hydrationValue={hydrationValue} />
 );
 
+const MockDynamicForm = (props: any) => {
+  const form = useForm({
+    shouldFocusError: false,
+  });
+  return (
+    <ReportContext.Provider value={props?.customContext ?? mockedReportContext}>
+      <FormProvider {...form}>
+        <form id="uniqueId" onSubmit={form.handleSubmit(jest.fn())}>
+          <DynamicField
+            name={props.name}
+            label="test-label"
+            hydrate={props.hydrationValue}
+            autosave={props?.autosave}
+          />
+        </form>
+      </FormProvider>
+    </ReportContext.Provider>
+  );
+};
+
+const mockDynamicFieldComponent = (name?: any) => (
+  <MockDynamicForm name={name} />
+);
+
 describe("<DynamicField />", () => {
   describe("Test DynamicField component", () => {
     beforeEach(async () => {
@@ -140,6 +164,24 @@ describe("<DynamicField />", () => {
     test("DynamicField is visible", () => {
       const inputBoxLabel = screen.getByText("test-label");
       expect(inputBoxLabel).toBeVisible();
+    });
+
+    test("DynamicField add button verbiage displays correctly for MCPAR measure rates", async () => {
+      await act(async () => {
+        await render(mockDynamicFieldComponent("measure_rates" as EntityType));
+      });
+      const appendButton = screen.getByText("Add another rate");
+      expect(appendButton).toBeVisible();
+    });
+
+    test("DynamicField add button verbiage displays correctly for MLR program names", async () => {
+      await act(async () => {
+        await render(
+          mockDynamicFieldComponent("report_otherProgramName" as EntityType)
+        );
+      });
+      const appendButton = screen.getByText("Add another program name");
+      expect(appendButton).toBeVisible();
     });
 
     test("DynamicField append button is visible", () => {
