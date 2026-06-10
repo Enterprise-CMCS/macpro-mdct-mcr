@@ -86,6 +86,7 @@ export interface ReportFormFieldProps {
   divider?: string;
   hint?: any;
   isRequired?: boolean;
+  dynamicLabel?: string;
   label?: string;
   mask?: string;
   options?: string;
