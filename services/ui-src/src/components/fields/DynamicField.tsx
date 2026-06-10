@@ -323,9 +323,6 @@ export const DynamicField = ({
 
   return (
     <Box as="fieldset" sx={sx.fieldset}>
-      <Box as="legend" className="ds-c-label" sx={sx.legend}>
-        {label}
-      </Box>
       {displayValues.map((field: EntityShape, index: number) => {
         return (
           <Flex key={field.id} sx={sx.dynamicField}>
@@ -391,9 +388,6 @@ interface Props {
 const sx = {
   fieldset: {
     marginTop: "spacer3",
-  },
-  legend: {
-    fontSize: "md",
   },
   removeBox: {
     marginBottom: "0.625rem",
