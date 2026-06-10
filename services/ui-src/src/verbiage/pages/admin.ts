@@ -1,4 +1,5 @@
 export default {
+  title: "Admin - MCR",
   intro: {
     header: "Banner Admin",
     body: [

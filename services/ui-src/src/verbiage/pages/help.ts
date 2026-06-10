@@ -1,4 +1,5 @@
 export default {
+  title: "How can we help you? - MCR",
   intro: {
     header: "How can we help you?",
     body: "Question or feedback? Please email us and we will respond as soon as possible. You can also review our frequently asked questions below.",

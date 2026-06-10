@@ -1,6 +1,10 @@
 // HOST DOMAIN
 export const PRODUCTION_HOST_DOMAIN = "mdctmcr.cms.gov";
 
+// REPORT
+export const APP_TITLE = "MCR";
+export const FULL_APP_TITLE = "Managed Care Reporting";
+
 // FIELDS
 export const dropdownDefaultOptionText = "- Select an option -";
 export const dropdownNoReports = "No reports eligible for copy";

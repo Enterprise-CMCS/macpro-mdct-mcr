@@ -1,4 +1,5 @@
 export default {
+  title: "Page not found - MCR",
   header: "Page not found",
   subHeading:
     "Sorry, the page you're looking for couldn't be found. It's possible that this page has moved, or the address may have been typed incorrectly.",

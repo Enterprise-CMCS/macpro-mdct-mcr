@@ -1,4 +1,5 @@
 export default {
+  title: "Review & Submit - MCPAR - MCR",
   print: {
     printPageUrl: "/mcpar/export",
     printButtonText: "Review PDF",
