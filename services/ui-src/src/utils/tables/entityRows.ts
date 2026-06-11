@@ -289,31 +289,26 @@ export const getProgramInfo = (entity: EntityShape) => {
       return data;
     }
 
-    if (typeof data === "string") {
-      return data;
-    }
-
     if (!Array.isArray(data)) {
       return "";
     }
 
-    if (Array.isArray(data)) {
-      return data
-        .map((item) => {
-          if (typeof item === "object" && item !== null && "value" in item) {
-            return item.value;
-          }
-          if (typeof item === "object" && item !== null && "name" in item) {
-            return item.name;
-          }
-          return null;
-        })
-        .filter(Boolean)
-        .filter((value) => value !== "Not listed / Other") // placeholder is replaced by the actual custom value entered by user
-        .join(", ");
-    }
-
-    return "";
+    return data
+      .map((item) => {
+        if (typeof item === "string") {
+          return item;
+        }
+        if (typeof item === "object" && item !== null && "value" in item) {
+          return item.value;
+        }
+        if (typeof item === "object" && item !== null && "name" in item) {
+          return item.name;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .filter((value) => value !== "Not listed / Other") // placeholder is replaced by the actual custom value entered by user
+      .join(", ");
   };
 
   const programNameFromList = processProgramNames(reportProgramNameList);
