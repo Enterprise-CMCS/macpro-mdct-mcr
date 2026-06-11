@@ -378,3 +378,9 @@ export interface NaaarMetadataHeaders extends BaseMetadataHeaders {
   reportingPeriodStartDate: string;
   reportingPeriodEndDate: string;
 }
+
+export interface DynamicFieldShape {
+  id: string;
+  name: string;
+  [key: string]: string;
+}

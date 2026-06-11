@@ -1,7 +1,9 @@
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
 import {
+  Choice,
   DrawerReportPageShape,
+  DynamicFieldShape,
   EntityShape,
   FormField,
   FormJson,
@@ -280,9 +282,19 @@ export const getProgramInfo = (entity: EntityShape) => {
   const eligibilityGroup = getEligibilityGroup(entity);
   const reportingPeriod = getReportingPeriodText(entity);
 
-  const processProgramNames = (data: any): string => {
+  const processProgramNames = (
+    data: string | Choice[] | DynamicFieldShape[]
+  ): string => {
     if (typeof data === "string") {
       return data;
+    }
+
+    if (typeof data === "string") {
+      return data;
+    }
+
+    if (!Array.isArray(data)) {
+      return "";
     }
 
     if (Array.isArray(data)) {
@@ -293,9 +305,6 @@ export const getProgramInfo = (entity: EntityShape) => {
           }
           if (typeof item === "object" && item !== null && "name" in item) {
             return item.name;
-          }
-          if (typeof item === "string") {
-            return item;
           }
           return null;
         })
