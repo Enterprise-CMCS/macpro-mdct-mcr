@@ -13,8 +13,8 @@ import { Box, SystemStyleObject } from "@chakra-ui/react";
 import { ReportContext, EntityContext } from "components";
 // constants
 import { dropdownDefaultOptionText, dropdownNoReports } from "../../constants";
-import { mcparProgramList } from "forms/addEditMcparReport/mcparProgramList";
-import { naaarProgramList } from "forms/addEditNaaarReport/naaarProgramList";
+import { mcparProgramList } from "programLists/mcparProgramList";
+import { naaarProgramList } from "programLists/naaarProgramList";
 // types
 import {
   AnyObject,

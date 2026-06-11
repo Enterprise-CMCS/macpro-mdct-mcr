@@ -29,6 +29,7 @@ interface CreateApiComponentsProps {
   mlrFormBucket: s3.IBucket;
   naaarFormBucket: s3.IBucket;
   launchDarklyServer: string;
+  launchDarklyLocalFlags?: string;
 }
 
 export function createApiComponents(props: CreateApiComponentsProps) {
@@ -45,6 +46,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     mlrFormBucket,
     naaarFormBucket,
     launchDarklyServer,
+    launchDarklyLocalFlags = '{"local": false, "flags": {}}',
   } = props;
 
   const service = "app-api";
@@ -118,6 +120,7 @@ export function createApiComponents(props: CreateApiComponentsProps) {
     brokerString,
     STAGE: stage,
     launchDarklyServer,
+    launchDarklyLocalFlags,
     MCPAR_FORM_BUCKET: mcparFormBucket.bucketName,
     MLR_FORM_BUCKET: mlrFormBucket.bucketName,
     NAAAR_FORM_BUCKET: naaarFormBucket.bucketName,

@@ -181,6 +181,21 @@ describe("Test Kafka Lib", () => {
     expect(mockSendBatch).toHaveBeenCalledTimes(1);
   });
 
+  test("Skips oversized bucket events before sending to Kafka", async () => {
+    const s3GetSpy = jest.spyOn(s3Lib, "get");
+    const sourceLib = new KafkaSourceLib("mcr", "v0", [table], [bucket]);
+    const event = structuredClone(s3Event) as any;
+    event.Records[0].s3.object.size = 1_000_000;
+
+    await sourceLib.handler(event);
+
+    expect(consoleSpy.log).toHaveBeenCalledWith(
+      expect.stringContaining("Skipping Kafka publish for oversized S3 object")
+    );
+    expect(s3GetSpy).not.toHaveBeenCalled();
+    expect(mockSendBatch).not.toHaveBeenCalled();
+  });
+
   test("Handles events without versions", async () => {
     const sourceLib = new KafkaSourceLib("mcr", null, [table], [bucket]);
     await sourceLib.handler(dynamoEvent);
