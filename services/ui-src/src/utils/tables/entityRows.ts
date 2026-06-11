@@ -97,7 +97,7 @@ export const buildDrawerReportPageEntityRows = ({
       entityName,
       enterButton,
       hasEntityNameWithDescription: hasEntityNameWithDescription(
-        report.reportType,
+        report.reportType
       ),
       incompleteText,
       isEntityCompleted,
@@ -129,14 +129,14 @@ export const calculateIsEntityCompleted = ({
     const dataMethod = planMeasureData.measure_dataCollectionMethod?.length > 0;
 
     const qualityMeasureData = qualityMeasures?.find(
-      (qm: any) => qm.id === measureId,
+      (qm: any) => qm.id === measureId
     );
 
     const ratesAreAnswered = qualityMeasureData?.measure_rates.every(
       (rate: any) => {
         const rateResult = planMeasureData[`measure_rateResults-${rate.id}`];
         return rateResult && rateResult !== "";
-      },
+      }
     );
 
     return dataMethod && ratesAreAnswered;
@@ -144,7 +144,7 @@ export const calculateIsEntityCompleted = ({
 
   const calculateEntityCompletion = (
     fields: (FormField | FormLayoutElement)[] = form.fields,
-    entityData: EntityShape = entity,
+    entityData: EntityShape = entity
   ) => {
     let formFields = fields;
     if (isCustomEntity && addEntityForm) {

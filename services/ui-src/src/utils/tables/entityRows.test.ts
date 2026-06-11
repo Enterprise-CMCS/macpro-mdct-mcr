@@ -218,7 +218,7 @@ describe("calculateIsEntityCompleted()", () => {
 
   test("returns true for complete entity", () => {
     const input = calculateIsEntityCompleted(
-      baseCalculateIsEntityCompletedProps,
+      baseCalculateIsEntityCompletedProps
     );
     expect(input).toBe(true);
   });
@@ -617,7 +617,7 @@ describe("getCompleteText()", () => {
 describe("getIncompleteText()", () => {
   test("returns text for incomplete", () => {
     expect(getIncompleteText({ isEntityCompleted: false })).toBe(
-      "Select “Enter” to complete response.",
+      "Select “Enter” to complete response."
     );
   });
 
