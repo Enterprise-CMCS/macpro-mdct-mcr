@@ -318,6 +318,17 @@ describe("calculateIsEntityCompleted()", () => {
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(false);
   });
+
+  test("returns false for measure and results when measureId is not provided", () => {
+    const props = {
+      ...baseCalculateIsEntityCompletedProps,
+      entity: incompleteEntity,
+      isMeasuresAndResultsPage: true,
+      measureId: undefined,
+    };
+    const input = calculateIsEntityCompleted(props);
+    expect(input).toBe(false);
+  });
 });
 
 describe("getButtonProps()", () => {
@@ -838,6 +849,29 @@ describe("getProgramInfo()", () => {
     ];
     expect(input).toEqual(expectedResult);
   });
+
+  test("handles array with strings and filters out invalid items", () => {
+    const mixedArrayEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "id1", value: "Medicaid" },
+        "CHIP",
+        { id: "id2", name: "Custom Program" },
+        { invalidFormat: "should be filtered" },
+        null,
+        undefined,
+      ],
+    };
+    const input = getProgramInfo(mixedArrayEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, CHIP, Custom Program",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
 });
 
 describe("getMeasureIdentifier()", () => {
@@ -1012,6 +1046,15 @@ describe("getMeasureValues()", () => {
       measure_activities: undefined,
     };
     const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual([]);
+  });
+
+  test("returns empty array when value is undefined", () => {
+    const entity = {
+      id: "mock-report",
+      someOtherField: undefined,
+    };
+    const input = getMeasureValues(entity, "someOtherField");
     expect(input).toEqual([]);
   });
 });
