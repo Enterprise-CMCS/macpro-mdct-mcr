@@ -62,7 +62,7 @@
     "aws-cdk": "~2.1112.0",
     "aws-cdk-local": "~2.19.2",
     "dotenv": "^16.6.1",
-    "esbuild": "^0.27.0",
+    "esbuild": "^0.28.1",
     "jest-environment-jsdom": "^30.3.0",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.41.0",
