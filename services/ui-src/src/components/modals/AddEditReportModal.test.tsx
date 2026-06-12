@@ -98,6 +98,8 @@ const mockSelectedMcparReport = {
 const mockSelectedNaaarReport = {
   ...mockNaaarReport,
   fieldData: {
+    newProgramName: mockNaaarReport.programName,
+    newOrExistingProgram: mockNaaarReport.newOrExistingProgram,
     programName: mockNaaarReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
       mockNaaarReport.reportingPeriodEndDate
