@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { ComponentClass, useContext, useEffect, useState } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box } from "@chakra-ui/react";
 import {
@@ -24,6 +25,7 @@ import {
 // utils
 import {
   entityWasUpdated,
+  getPageTitle,
   isPlanComplete,
   parseCustomHtml,
   translateVerbiage,
@@ -36,6 +38,8 @@ export const OverlayReportPage = ({
   setSidebarHidden,
   validateOnRender,
 }: Props) => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   // Route Information
   const { verbiage, entityType, details } = route;
 
@@ -118,6 +122,10 @@ export const OverlayReportPage = ({
 
     return (
       <Box sx={sx.content}>
+        {/* page title */}
+        <Helmet>
+          <title>{report && getPageTitle(report.reportType, route)}</title>
+        </Helmet>
         {route.verbiage.intro && (
           <ReportPageIntro
             text={route.verbiage.intro}

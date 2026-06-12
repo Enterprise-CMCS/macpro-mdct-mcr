@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { ComponentClass, useContext, useState } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Button, Heading, Image, useDisclosure } from "@chakra-ui/react";
 import {
@@ -32,11 +33,14 @@ import {
   resetClearProp,
   parseCustomHtml,
   getAddEditDrawerText,
+  getPageTitle,
 } from "utils";
 // assets
 import addIcon from "assets/icons/icon_add.png";
 
 export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   // state management
   const { full_name, state, userIsEndUser } = useStore().user ?? {};
   const { report } = useStore();
@@ -186,6 +190,10 @@ export const ModalDrawerReportPage = ({ route, validateOnRender }: Props) => {
 
   return (
     <Box>
+      {/* page title */}
+      <Helmet>
+        <title>{report && getPageTitle(report.reportType, route)}</title>
+      </Helmet>
       {verbiage.intro && <ReportPageIntro text={verbiage.intro} />}
       <Box>
         {!checkForPlans() ? (

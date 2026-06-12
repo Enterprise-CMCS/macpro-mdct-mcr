@@ -1,0 +1,46 @@
+name: Production Feature Flag Status
+
+on:
+  schedule:
+    # Every Monday at 7 AM UTC
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+env:
+  PROJECT: ${{ vars.APP_NAME_UPPER }}
+
+jobs:
+  feature-flag-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          sparse-checkout: |
+            .github/feature-flag-status.ts
+            .nvmrc
+          sparse-checkout-cone-mode: false
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: ".nvmrc"
+      - name: Create temporary package.json
+        run: echo '{"type":"module"}' > package.json
+      - name: Install LaunchDarkly SDK
+        run: npm install @launchdarkly/node-server-sdk
+      - name: Create status report
+        run: |
+          echo "status<<EOF" >> $GITHUB_ENV
+          ./.github/feature-flag-status.ts >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        env:
+          LD_SDK_KEY_PROD: ${{ secrets.LD_SDK_KEY_PROD }}
+      - name: Slack notification
+        if: env.hasKey == 'true'
+        uses: rtCamp/action-slack-notify@e31e87e03dd19038e411e38ae27cbad084a90661 # v2
+        env:
+          hasKey: ${{ secrets.LD_SDK_KEY_PROD != '' }}
+          MSG_MINIMAL: true
+          SLACK_MESSAGE: ${{ env.status }}
+          SLACK_TITLE: ":launchdarkly: ${{ env.PROJECT }} Production Feature Flags"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

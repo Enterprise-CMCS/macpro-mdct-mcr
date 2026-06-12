@@ -1,4 +1,6 @@
 import { Link as RouterLink, useNavigate } from "react-router";
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import {
   Box,
@@ -25,6 +27,7 @@ import NavigationSectionsSubmissionImage from "assets/other/nav_sections_review_
 
 export const ReportGetStartedPage = ({ reportType }: Props) => {
   const navigate = useNavigate();
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
 
   const { intro, body, pageLink } = mcparGetStartedVerbiage;
 
@@ -32,6 +35,10 @@ export const ReportGetStartedPage = ({ reportType }: Props) => {
 
   return (
     <Box>
+      {/* page title */}
+      <Helmet>
+        <title>{mcparGetStartedVerbiage.title}</title>
+      </Helmet>
       <Link as={RouterLink} to="/" sx={sx.returnLink}>
         <Image src={arrowLeftIcon} alt="Arrow left" className="returnIcon" />
         Return Home
