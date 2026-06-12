@@ -12,7 +12,6 @@ import {
 import mcparFormJson from "forms/addEditMcparReport/addEditMcparReport.json";
 import mlrFormJson from "forms/addEditMlrReport/addEditMlrReport.json";
 import naaarFormJson from "forms/addEditNaaarReport/addEditNaaarReport.json";
-import naaarFormJsonWithProgramList from "forms/addEditNaaarReport/addEditNaaarReportWithProgramList.json";
 // types
 import {
   AnyObject,
@@ -49,7 +48,6 @@ export const AddEditReportModal = ({
   const [submitting, setSubmitting] = useState<boolean>(false);
 
   // LaunchDarkly
-  const naaarProgramList = useFlags()?.naaarProgramList;
   const newQualityMeasuresSectionEnabled =
     useFlags()?.newQualityMeasuresSectionEnabled;
   const summer2026SansQm = useFlags()?.summer2026SansQm;
@@ -58,7 +56,7 @@ export const AddEditReportModal = ({
   const modalFormJsonMap: any = {
     MCPAR: mcparFormJson,
     MLR: mlrFormJson,
-    NAAAR: naaarProgramList ? naaarFormJsonWithProgramList : naaarFormJson,
+    NAAAR: naaarFormJson,
   };
 
   const modalFormJson = modalFormJsonMap[reportType]!;
@@ -220,13 +218,11 @@ export const AddEditReportModal = ({
       formData["existingProgramNameSuggestion"] || "";
     const newProgramName = formData["newProgramName"] || "";
 
-    const programName = naaarProgramList
-      ? defineProgramName(
-          newOrExistingProgram,
-          existingProgramNameSelection,
-          newProgramName
-        )
-      : formData["programName"];
+    const programName = defineProgramName(
+      newOrExistingProgram,
+      existingProgramNameSelection,
+      newProgramName
+    );
     const copyFieldDataSourceId = formData["copyFieldDataSourceId"];
     const dueDate = calculateDueDate(formData["reportingPeriodEndDate"]);
     const reportingPeriodStartDate = convertDateEtToUtc(
