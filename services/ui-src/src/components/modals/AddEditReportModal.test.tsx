@@ -98,6 +98,8 @@ const mockSelectedMcparReport = {
 const mockSelectedNaaarReport = {
   ...mockNaaarReport,
   fieldData: {
+    newProgramName: mockNaaarReport.programName,
+    newOrExistingProgram: mockNaaarReport.newOrExistingProgram,
     programName: mockNaaarReport.programName,
     reportingPeriodEndDate: convertDateUtcToEt(
       mockNaaarReport.reportingPeriodEndDate
@@ -404,8 +406,13 @@ describe("<AddEditProgramModal />", () => {
     });
 
     const fillForm = async (form: any) => {
-      const programNameField = form.querySelector("[name='programName']")!;
+      const isNewProgram = screen.getByLabelText(
+        "Add new program"
+      ) as HTMLInputElement;
       await act(async () => {
+        await userEvent.click(isNewProgram);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const programNameField = form.querySelector("[name='newProgramName']")!;
         await userEvent.type(programNameField, "fake program name");
         const startDateField = form.querySelector(
           "[name='reportingPeriodStartDate']"
@@ -449,8 +456,14 @@ describe("<AddEditProgramModal />", () => {
       // yoy copy field is disabled
       expect(copyFieldDataSourceId).toHaveProperty("disabled", true);
 
+      const newOrExistingProgram = form.querySelectorAll(
+        "[name='newOrExistingProgram']"
+      )!;
+
+      expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
+
       // hydrated values are in the modal
-      const programNameField = form.querySelector("[name='programName']")!;
+      const programNameField = form.querySelector("[name='newProgramName']")!;
       const startDateField = form.querySelector(
         "[name='reportingPeriodStartDate']"
       )!;
