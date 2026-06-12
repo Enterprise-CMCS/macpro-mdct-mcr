@@ -341,7 +341,7 @@ describe("<ModalOverlayReportPage />", () => {
     });
 
     // TODO: update test once MLR program name rendering is handled properly
-    test.skip("should be unable to click the delete button as an Admin", async () => {
+    test("should be unable to click the delete button as an Admin", async () => {
       mockedUseStore.mockReturnValue({
         ...mockAdminUserStore,
         ...mockMlrEntityStartedStore,

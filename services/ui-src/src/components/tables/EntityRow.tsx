@@ -63,6 +63,8 @@ export const EntityRow = ({
     />
   );
 
+  console.log("fields", entityFields());
+
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
@@ -72,10 +74,9 @@ export const EntityRow = ({
         {isMobile && (
           <Text sx={sx.rowHeader}>{parseCustomHtml(verbiage.tableHeader)}</Text>
         )}
-        {/* TODO: Update rendering */}
         <ul>
           {entityFields().map((field, index) => (
-            <li key={index}>{reportType !== ReportType.MLR && field}</li>
+            <li key={index}>{field}</li>
           ))}
         </ul>
         {!entityComplete && report && (
