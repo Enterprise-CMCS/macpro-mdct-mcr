@@ -24,6 +24,7 @@ import {
   autosaveFieldData,
   filterStandardsAfterPlanDeletion,
   getAutosaveFields,
+  labelTextWithOptional,
   useStore,
 } from "utils";
 // assets
@@ -32,6 +33,8 @@ import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
 export const DynamicField = ({
   name,
   label,
+  dynamicLabel,
+  styleAsOptional,
   isRequired,
   autosave = true,
   ...props
@@ -285,6 +288,16 @@ export const DynamicField = ({
     setSelectedRecord(undefined);
   };
 
+  // get verbiage for "Add" button
+  const getButtonVerbiage = () => {
+    if (name.includes("measure_rates")) {
+      return "Add another rate";
+    } else if (name.includes("report_otherProgramName")) {
+      return "Add another program name";
+    }
+    return "Add a row";
+  };
+
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
@@ -312,7 +325,12 @@ export const DynamicField = ({
     form?.formState?.errors?.[name];
 
   return (
-    <Box>
+    <Box as="fieldset" sx={sx.fieldset}>
+      {dynamicLabel && (
+        <Box as="legend" className="ds-c-label" sx={sx.legend}>
+          {styleAsOptional ? labelTextWithOptional(dynamicLabel) : dynamicLabel}
+        </Box>
+      )}
       {displayValues.map((field: EntityShape, index: number) => {
         return (
           <Flex key={field.id} sx={sx.dynamicField}>
@@ -351,7 +369,7 @@ export const DynamicField = ({
           sx={sx.appendButton}
           onClick={appendNewRecord}
         >
-          {name.includes("measure_rates") ? "Add another rate" : "Add a row"}
+          {getButtonVerbiage()}
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -370,12 +388,20 @@ export const DynamicField = ({
 interface Props {
   name: EntityType;
   label: string;
+  dynamicLabel?: string;
+  styleAsOptional?: boolean;
   isRequired?: boolean;
   autosave?: boolean;
   [key: string]: any;
 }
 
 const sx = {
+  fieldset: {
+    marginTop: "spacer3",
+  },
+  legend: {
+    fontSize: "md",
+  },
   removeBox: {
     marginBottom: "0.625rem",
     marginLeft: "0.625rem",
@@ -389,7 +415,8 @@ const sx = {
     },
   },
   appendButton: {
-    width: "12.5rem",
+    width: "fit-content",
+    minWidth: "12.5rem",
     height: "2.5rem",
     marginTop: "spacer4",
   },

@@ -1,7 +1,9 @@
 // constants
 import { getDefaultAnalysisMethodIds } from "../../constants";
 import {
+  Choice,
   DrawerReportPageShape,
+  DynamicFieldShape,
   EntityShape,
   FormField,
   FormJson,
@@ -273,12 +275,59 @@ export const getProgramInfo = (entity: EntityShape) => {
   const {
     report_planName: reportPlanName,
     report_programName: reportProgramName,
+    report_programNameList: reportProgramNameList,
+    report_otherProgramName: reportOtherProgramName,
   } = entity;
 
   const eligibilityGroup = getEligibilityGroup(entity);
   const reportingPeriod = getReportingPeriodText(entity);
 
-  return [reportPlanName, reportProgramName, eligibilityGroup, reportingPeriod];
+  const processProgramNames = (
+    data: string | Choice[] | DynamicFieldShape[]
+  ): string => {
+    if (typeof data === "string") {
+      return data;
+    }
+
+    if (!Array.isArray(data)) {
+      return "";
+    }
+
+    return data
+      .map((item) => {
+        if (typeof item === "string") {
+          return item;
+        }
+        if (typeof item === "object" && item !== null && "value" in item) {
+          return item.value;
+        }
+        if (typeof item === "object" && item !== null && "name" in item) {
+          return item.name;
+        }
+        return null;
+      })
+      .filter(Boolean)
+      .filter((value) => value !== "Not listed / Other") // placeholder is replaced by the actual custom value entered by user
+      .join(", ");
+  };
+
+  const programNameFromList = processProgramNames(reportProgramNameList);
+  const programNameFromOld = processProgramNames(reportProgramName);
+  const programNameFromOther = processProgramNames(reportOtherProgramName);
+
+  const allProgramNames = [
+    programNameFromList || programNameFromOld,
+    programNameFromOther,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  return [
+    reportPlanName,
+    allProgramNames || reportProgramName || "",
+    eligibilityGroup,
+    reportingPeriod,
+  ];
 };
 
 export const getMeasureIdentifier = (entity: EntityShape) => {

@@ -1,4 +1,5 @@
 export default {
+  title: "Review & Submit - NAAAR - MCR",
   print: {
     printPageUrl: "/naaar/export",
     printButtonText: "Review PDF",

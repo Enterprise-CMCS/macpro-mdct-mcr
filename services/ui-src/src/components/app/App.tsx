@@ -23,6 +23,7 @@ import {
   makeMediaQueryClasses,
   useStore,
 } from "utils";
+import { FULL_APP_TITLE } from "../../constants";
 
 export const App = () => {
   const mqClasses = makeMediaQueryClasses();
@@ -65,7 +66,7 @@ export const App = () => {
         <main>
           <Container sx={sx.appContainer}>
             <Heading as="h1" size="xl" sx={sx.loginHeading}>
-              Managed Care Reporting
+              {FULL_APP_TITLE}
             </Heading>
           </Container>
           <Container sx={sx.loginContainer} data-testid="login-container">

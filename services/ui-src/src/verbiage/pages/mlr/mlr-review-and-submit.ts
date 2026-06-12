@@ -1,4 +1,5 @@
 export default {
+  title: "Review & Submit - MLR - MCR",
   print: {
     printPageUrl: "/mlr/export",
     printButtonText: "Review PDF",

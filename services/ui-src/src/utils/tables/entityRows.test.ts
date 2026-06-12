@@ -318,6 +318,17 @@ describe("calculateIsEntityCompleted()", () => {
     const input = calculateIsEntityCompleted(props);
     expect(input).toBe(false);
   });
+
+  test("returns false for measure and results when measureId is not provided", () => {
+    const props = {
+      ...baseCalculateIsEntityCompletedProps,
+      entity: incompleteEntity,
+      isMeasuresAndResultsPage: true,
+      measureId: undefined,
+    };
+    const input = calculateIsEntityCompleted(props);
+    expect(input).toBe(false);
+  });
 });
 
 describe("getButtonProps()", () => {
@@ -705,6 +716,162 @@ describe("getProgramInfo()", () => {
     ];
     expect(input).toEqual(expectedResult);
   });
+
+  test("handles array of checkbox objects from report_programNameList", () => {
+    const checkboxEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+        { key: "report_programNameList-chip", value: "CHIP" },
+      ],
+    };
+    const input = getProgramInfo(checkboxEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, CHIP",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles checkbox objects with additional dynamic program names", () => {
+    const checkboxWithAdditionalEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+      ],
+      report_otherProgramName: [
+        { id: "123", name: "Custom Program 1" },
+        { id: "456", name: "Custom Program 2" },
+      ],
+    };
+    const input = getProgramInfo(checkboxWithAdditionalEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, Custom Program 1, Custom Program 2",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles only additional dynamic program names without checkbox selections", () => {
+    const additionalOnlyEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [],
+      report_otherProgramName: [{ id: "789", name: "Additional Program Only" }],
+    };
+    const input = getProgramInfo(additionalOnlyEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Additional Program Only",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles empty arrays gracefully", () => {
+    const emptyArrayEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [],
+      report_otherProgramName: [],
+    };
+    const input = getProgramInfo(emptyArrayEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("prioritizes new fields over old report_programName field", () => {
+    const mixedEntity = {
+      ...baseEntity,
+      report_programName: "Old Program Name",
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+      ],
+    };
+    const input = getProgramInfo(mixedEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("falls back to old report_programName if new fields are empty", () => {
+    const oldFormatEntity = {
+      ...baseEntity,
+      report_programName: "Legacy Program Name",
+      report_programNameList: undefined,
+      report_otherProgramName: undefined,
+    };
+    const input = getProgramInfo(oldFormatEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Legacy Program Name",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test('filters out "Not listed / Other" from checkbox list and uses custom names', () => {
+    const entityWithOther = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "report_programNameList-medicaid", value: "Medicaid" },
+        { key: "report_programNameList-other", value: "Not listed / Other" },
+      ],
+      report_otherProgramName: [
+        { id: "123", name: "Other Program Name 1" },
+        { id: "456", name: "Other Program Name 2" },
+      ],
+    };
+    const input = getProgramInfo(entityWithOther);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, Other Program Name 1, Other Program Name 2",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
+
+  test("handles array with strings and filters out invalid items", () => {
+    const mixedArrayEntity = {
+      ...baseEntity,
+      report_programName: undefined,
+      report_programNameList: [
+        { key: "id1", value: "Medicaid" },
+        "CHIP",
+        { id: "id2", name: "Custom Program" },
+        { invalidFormat: "should be filtered" },
+        null,
+        undefined,
+      ],
+    };
+    const input = getProgramInfo(mixedArrayEntity);
+    const expectedResult: string[] = [
+      "Mock plan name",
+      "Medicaid, CHIP, Custom Program",
+      "Mock eligibility group",
+      "01/01/2021 to 01/01/2022",
+    ];
+    expect(input).toEqual(expectedResult);
+  });
 });
 
 describe("getMeasureIdentifier()", () => {
@@ -879,6 +1046,15 @@ describe("getMeasureValues()", () => {
       measure_activities: undefined,
     };
     const input = getMeasureValues(entity, "measure_activities");
+    expect(input).toEqual([]);
+  });
+
+  test("returns empty array when value is undefined", () => {
+    const entity = {
+      id: "mock-report",
+      someOtherField: undefined,
+    };
+    const input = getMeasureValues(entity, "someOtherField");
     expect(input).toEqual([]);
   });
 });

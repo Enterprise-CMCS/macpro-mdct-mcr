@@ -1,10 +1,12 @@
 import React, {
+  ComponentClass,
   MouseEventHandler,
   useContext,
   useEffect,
   useState,
 } from "react";
 import { Link as RouterLink } from "react-router";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import {
   Box,
@@ -31,6 +33,8 @@ import iconSearchDefault from "assets/icons/icon_search_blue.png";
 import iconSearchSubmitted from "assets/icons/icon_search_white.png";
 
 export const ReviewSubmitPage = () => {
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
+
   const { fetchReport, submitReport } = useContext(ReportContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -92,6 +96,10 @@ export const ReviewSubmitPage = () => {
 
   return (
     <>
+      {/* page title */}
+      <Helmet>
+        <title>{reviewAndSubmitVerbiage.title}</title>
+      </Helmet>
       {(hasError || report?.status === ReportStatus.NOT_STARTED) && (
         <Box sx={sx.alert}>
           <Alert

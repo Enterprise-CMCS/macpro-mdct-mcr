@@ -1,3 +1,5 @@
+import { ComponentClass } from "react";
+import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
 // components
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { EmailCard, FaqAccordion, PageTemplate } from "components";
@@ -8,8 +10,13 @@ import verbiage from "verbiage/pages/help";
 
 export const HelpPage = () => {
   const { intro, cards, accordionItems } = verbiage;
+  const Helmet = HelmetImport as ComponentClass<HelmetProps>;
   return (
     <PageTemplate>
+      {/* page title */}
+      <Helmet>
+        <title>{verbiage.title}</title>
+      </Helmet>
       <Box sx={sx.leadTextBox}>
         <Heading as="h1" sx={sx.headerText}>
           {intro.header}
