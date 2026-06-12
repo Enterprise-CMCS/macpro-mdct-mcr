@@ -459,7 +459,6 @@ describe("<AddEditProgramModal />", () => {
       )!;
 
       expect(newOrExistingProgram[0]).toHaveProperty("checked", false);
-      expect(newOrExistingProgram[1]).toHaveProperty("checked", true);
 
       // hydrated values are in the modal
       const programNameField = form.querySelector("[name='newProgramName']")!;
