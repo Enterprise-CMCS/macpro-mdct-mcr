@@ -127,27 +127,23 @@ export const hydrateFormFields = (
 export const initializeChoiceListFields = (
   fields: (FormField | FormLayoutElement)[]
 ) => {
-  // MLR program list
-  // Use getState() instead of the hook to avoid Rules of Hooks violation in recursive calls
-  const { report } = useStore.getState();
-  const generateProgramListChoices = () => {
-    const programList = mlrProgramList[report?.state as State];
-    return programList as FieldChoice[];
-  };
-
   const fieldsWithChoices = fields.filter(
     (field: FormField | FormLayoutElement) => field.props?.choices
   );
   fieldsWithChoices.forEach((field: FormField | FormLayoutElement) => {
     if (isFieldElement(field)) {
+      // MLR program list - only access store when needed
       if (
         field.id === "report_programNameList" &&
         field.props?.choices.length === 0
       ) {
+        // Use getState() instead of the hook to avoid Rules of Hooks violation in recursive calls
+        const { report } = useStore.getState();
+        const programList = report ? mlrProgramList[report.state as State] : [];
         field.props = {
           ...field.props,
           choices: [
-            ...generateProgramListChoices(),
+            ...(programList as FieldChoice[]),
             {
               id: uuid(),
               label: "Not listed / Other",
