@@ -128,7 +128,8 @@ export const initializeChoiceListFields = (
   fields: (FormField | FormLayoutElement)[]
 ) => {
   // MLR program list
-  const { report } = useStore();
+  // Use getState() instead of the hook to avoid Rules of Hooks violation in recursive calls
+  const { report } = useStore.getState();
   const generateProgramListChoices = () => {
     const programList = mlrProgramList[report?.state as State];
     return programList as FieldChoice[];
