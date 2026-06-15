@@ -240,6 +240,9 @@ const sx = {
   },
   link: {
     margin: "0.5rem 0",
+    "&:focus-visible, &:visited:focus-visible": {
+      color: "gray_lighter",
+    },
     ".desktop &": {
       "&:first-of-type": {
         paddingRight: "spacer1",
