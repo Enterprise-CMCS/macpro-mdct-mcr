@@ -257,7 +257,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         validation: ValidationType.RADIO,
         props: {
           label: "D2.VII.6 Are you reporting results for this measure?",
-          hint: "Are you reporting results for this measure for this reporting period?",
+          hint: "If the plan is unable to report for this measure for this reporting period, select “Not reporting” below and provide a justification.",
           choices: [
             {
               id: "xvBx2RGFpvmUf2Wk5bLe9u",
