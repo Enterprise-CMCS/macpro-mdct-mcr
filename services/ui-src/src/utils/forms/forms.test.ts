@@ -48,8 +48,11 @@ const mockMlrProgramListFields = [
 ];
 
 jest.mock("utils/state/useStore");
-const mockedUseStore = useStore as jest.MockedFunction<typeof useStore>;
+const mockedUseStore = useStore as jest.MockedFunction<typeof useStore> & {
+  getState: jest.Mock;
+};
 mockedUseStore.mockReturnValue(mockMlrReportStore);
+mockedUseStore.getState = jest.fn().mockReturnValue(mockMlrReportStore);
 
 describe("utils/forms", () => {
   describe("formFieldFactory()", () => {
