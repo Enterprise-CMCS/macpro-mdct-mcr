@@ -34,14 +34,14 @@
     "react-error-boundary": "^3.1.4",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.54.2",
-    "react-router": "7.15.0",
+    "react-router": "7.15.1",
     "react-uuid": "^1.0.3",
     "sass": "^1.83.4",
     "yup": "^0.32.11",
     "zustand": "^4.5.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
+    "@babel/core": "^8.0.0",
     "@babel/plugin-transform-react-jsx": "^7.28.6",
     "@babel/preset-env": "^7.29.2",
     "@babel/preset-typescript": "^7.28.5",
