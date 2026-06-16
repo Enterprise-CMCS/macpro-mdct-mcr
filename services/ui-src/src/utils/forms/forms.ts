@@ -26,7 +26,10 @@ import {
 } from "./dynamicItemFields";
 // constants
 import { suppressionText } from "../../constants";
-import { mlrProgramList } from "programLists/mlrProgramList";
+import {
+  mlrProgramList,
+  notListedOtherProgramChoice,
+} from "programLists/mlrProgramList";
 // types
 import {
   AnyObject,
@@ -44,7 +47,6 @@ import {
 } from "types";
 // utils
 import { useStore } from "utils";
-import uuid from "react-uuid";
 
 // return created elements from provided fields
 export const formFieldFactory = (
@@ -144,10 +146,7 @@ export const initializeChoiceListFields = (
           ...field.props,
           choices: [
             ...(programList as FieldChoice[]),
-            {
-              id: uuid(),
-              label: "Not listed / Other",
-            },
+            notListedOtherProgramChoice,
           ],
         };
       }
