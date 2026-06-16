@@ -16,6 +16,8 @@ import {
   futureDate,
   date,
   dateMonthYear,
+  dynamic,
+  dynamicOptional,
 } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
@@ -220,5 +222,25 @@ describe("Schemas", () => {
       [suppressionText, "badText", undefined],
       false
     );
+  });
+
+  describe("dynamic", () => {
+    test("returns true for text validation", () => {
+      testSchema(dynamic(), [[{ id: "mockId", name: "text" }]], true);
+    });
+
+    test("returns false for empty text", () => {
+      testSchema(dynamic(), [], false);
+    });
+  });
+
+  describe("dynamicOptional", () => {
+    test("returns true for text validation", () => {
+      testSchema(dynamicOptional(), [[{ id: "mockId", name: "text" }]], true);
+    });
+
+    test("returns true for empty text", () => {
+      testSchema(dynamicOptional(), [], true);
+    });
   });
 });

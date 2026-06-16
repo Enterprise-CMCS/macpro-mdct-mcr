@@ -63,8 +63,6 @@ export const EntityRow = ({
     />
   );
 
-  console.log("fields", entityFields());
-
   return (
     <Tr sx={sx.content}>
       <Td sx={sx.statusIcon}>
