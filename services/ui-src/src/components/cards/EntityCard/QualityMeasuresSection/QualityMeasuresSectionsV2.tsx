@@ -63,7 +63,7 @@ export const BottomQualityMeasuresSectionV2 = ({
   return (
     <>
       <Heading as={"p"} sx={sx.heading}>
-        D2.VII.7 Measure results
+        D2.VII.8 Measure results
       </Heading>
       {formattedEntityData?.isPartiallyComplete && (
         <Text sx={sx.missingResponseMessage}>
@@ -92,7 +92,7 @@ export const BottomQualityMeasuresSectionV2 = ({
                 </Box>
               ) : (
                 <Box>
-                  <Text sx={sx.subtitle}>D2.VII.7 Data collection method</Text>
+                  <Text sx={sx.subtitle}>D2.VII.8 Data collection method</Text>
                   {!result.dataCollectionMethod ? (
                     <Text sx={sx.notAnswered}>Not answered</Text>
                   ) : (

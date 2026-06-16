@@ -67,11 +67,6 @@ export default {
             },
           ],
         },
-        {
-          type: "p",
-          content:
-            "Where a measure steward asks only for the total rate, report the total rate. If a measure steward specifies multiple rates for the same measure (e.g., rates for different age groups, etc.) follow the decision tree located in Figure 1 in the Technical Guide to determine which rates to report. The state should not report all possible rates for the measure in the MCPAR.",
-        },
       ],
       text: "",
     },
