@@ -311,8 +311,7 @@ export const dynamic = () =>
   dynamicSchema()
     .min(1, error.REQUIRED_GENERIC)
     .required(error.REQUIRED_GENERIC);
-export const dynamicOptional = () =>
-  dynamicSchema().min(0).notRequired().nullable();
+export const dynamicOptional = () => array().notRequired().nullable();
 
 // NESTED
 export const nested = (
