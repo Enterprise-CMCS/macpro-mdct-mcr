@@ -311,7 +311,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                   },
                   props: {
                     label: "D2.VII.8 Data collection method",
-                    hint: "What data collection method did the plan use for this measure? (see technical guide for definitions).",
+                    hint: "What data collection method did the plan use for this measure? (see Technical Guide for definitions).",
                     choices: [
                       {
                         id: "bkD4uguEEiRjo5GyoCVNMi",
