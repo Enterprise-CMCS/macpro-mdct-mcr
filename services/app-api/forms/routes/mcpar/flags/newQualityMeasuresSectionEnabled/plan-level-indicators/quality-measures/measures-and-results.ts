@@ -139,11 +139,48 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         },
       },
       {
+        id: "measure_deviationFromMeasurementYearReporting",
+        type: ReportFormFieldType.RADIO,
+        validation: ValidationType.RADIO,
+        props: {
+          label: "D2.VII.3 Deviation from measurement year reporting",
+          hint: "If the state is reporting for a period other than the required measurement year, select “yes.”",
+          choices: [
+            {
+              id: "idw5lcMLX9yrn17I2X3ck6iw",
+              label: "Yes",
+              children: [
+                {
+                  id: "measure_deviationFromMeasurementYearReportingTimePeriodAndJustification",
+                  type: ReportFormFieldType.TEXTAREA,
+                  validation: {
+                    type: ValidationType.TEXT,
+                    nested: true,
+                    parentFieldName:
+                      "measure_deviationFromMeasurementYearReporting",
+                    parentOptionId: "idw5lcMLX9yrn17I2X3ck6iw",
+                  },
+                  props: {
+                    label:
+                      "D2.VII.3a Deviation from measurement year reporting: Time period and justification",
+                    hint: "If yes, specify the time period and provide a justification for why the state is unable to report for the required measurement year.",
+                  },
+                },
+              ],
+            },
+            {
+              id: "wofO4LITUFsEBlkSEDBN3bgG",
+              label: "No",
+            },
+          ],
+        },
+      },
+      {
         id: "measure_dataVersion",
         type: ReportFormFieldType.RADIO,
         validation: ValidationType.RADIO,
         props: {
-          label: "D2.VII.3 Data version",
+          label: "D2.VII.4 Data version",
           hint: "Is this data preliminary or final?",
           choices: [
             {
@@ -162,7 +199,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         type: ReportFormFieldType.CHECKBOX,
         validation: ValidationType.CHECKBOX,
         props: {
-          label: "D2.VII.4 Activities the quality measure is used in ",
+          label: "D2.VII.5 Activities the quality measure is used in ",
           hint: "Which pay-for-performance, quality, or evaluation efforts is this measure used in? Select all that apply.",
           choices: [
             {
@@ -234,7 +271,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         props: {
           divider: "none",
           content: "Naming of rates",
-          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.5. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
+          hint: "Enter the name(s) of the performance rate(s) you are reporting for the measure. If there is a total rate specified for this measure, copy the “Measure name” used in D2.VII.1 in the field below for D2.VII.6. If there are multiple rates specified for this measure, refer to the Technical Guide for more information and examples. For each rate the state is reporting for this measure, enter the name of the rate used by the measure steward. As noted in the instructions, the state should not report all possible rates for the measure in the MCPAR.",
         },
       },
       {
@@ -242,7 +279,7 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         type: ReportFormFieldType.DYNAMIC,
         validation: ValidationType.DYNAMIC,
         props: {
-          label: "D2.VII.5 Name rate",
+          label: "D2.VII.6 Name rate",
           hint: "Enter the name of this performance rate you are reporting for the measure.",
         },
       },
@@ -256,8 +293,8 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
         type: ReportFormFieldType.RADIO,
         validation: ValidationType.RADIO,
         props: {
-          label: "D2.VII.6 Are you reporting results for this measure?",
-          hint: "Are you reporting results for this measure for this reporting period?",
+          label: "D2.VII.7 Are you reporting results for this measure?",
+          hint: "If the plan is unable to report for this measure for this reporting period, select “Not reporting” below and provide a justification.",
           choices: [
             {
               id: "xvBx2RGFpvmUf2Wk5bLe9u",
@@ -273,8 +310,8 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                     parentOptionId: "xvBx2RGFpvmUf2Wk5bLe9u",
                   },
                   props: {
-                    label: "D2.VII.7 Data collection method",
-                    hint: "What data collection method did the plan use for this measure? (see technical guide for definitions).",
+                    label: "D2.VII.8 Data collection method",
+                    hint: "What data collection method did the plan use for this measure? (see Technical Guide for definitions).",
                     choices: [
                       {
                         id: "bkD4uguEEiRjo5GyoCVNMi",
@@ -332,6 +369,11 @@ export const measuresAndResultsRoute: ModalDrawerRoute = {
                   },
                   props: {
                     choices: [
+                      {
+                        id: "4mpexAVC1SZCXxNdDFgLV1gl",
+                        label:
+                          "No, the plan was not operational long enough to meet the measure requirements",
+                      },
                       {
                         id: "aKM1awPXFkBfWwesiwKk0p",
                         label:
