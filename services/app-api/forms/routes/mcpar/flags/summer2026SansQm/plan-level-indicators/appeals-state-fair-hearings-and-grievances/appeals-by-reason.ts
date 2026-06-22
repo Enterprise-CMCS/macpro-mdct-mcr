@@ -30,7 +30,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
       ],
     },
     dashboardTitle: "Report on appeals by reason for each plan",
-    drawerTitle: "Report appeals by reason for {{name}}",
+    drawerTitle: "Report resolved appeals by reason and outcome for {{name}}",
     missingEntityMessage: [
       {
         type: "p",
@@ -60,7 +60,7 @@ export const appealsByReasonRoute: DrawerFormRoute = {
         props: {
           divider: "top",
           content:
-            "Number of appeals due to the following reasons resolved during the reporting period:",
+            "Number of resolved appeals due to the following reasons by outcome during the reporting period:",
         },
       },
       {
