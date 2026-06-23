@@ -1,12 +1,12 @@
 import {
+  DrawerFormRoute,
   EntityType,
-  FormDrawerFormRoute,
   PageTypes,
   ReportFormFieldType,
   ValidationType,
 } from "../../../../utils/types";
 
-export const patientAccessApiRoute: FormDrawerFormRoute = {
+export const patientAccessApiRoute: DrawerFormRoute = {
   name: "XIV: Patient Access API Usage",
   path: "/mcpar/plan-level-indicators/patient-access-api",
   pageType: PageTypes.DRAWER,
@@ -16,8 +16,6 @@ export const patientAccessApiRoute: FormDrawerFormRoute = {
       section: "Section D: Plan-Level Indicators",
       subsection: "Topic XIV. Patient Access API Usage",
       spreadsheet: "D1_Plan_Set",
-      alert:
-        "<b>Beginning June 2026, Indicators D1.XIV.1-2 must be completed. Submission of this data before June 2026 is optional; if you choose not to respond prior to June 2026, select “Not reporting data”.</b>",
     },
     dashboardTitle:
       "Report on Patient Access API (Application Programming Interface) Usage for each plan",
@@ -43,30 +41,6 @@ export const patientAccessApiRoute: FormDrawerFormRoute = {
       },
     ],
   },
-  form: {
-    id: "paa",
-    fields: [
-      {
-        id: "plan_patientAccessApiReporting",
-        type: ReportFormFieldType.RADIO,
-        validation: ValidationType.RADIO,
-        props: {
-          label: "Are you reporting data prior to June 2026?",
-          hint: "If “Yes”, please complete the following questions under each plan.",
-          choices: [
-            {
-              id: "qVOMziq3iRhgmBMAxX35qtQn",
-              label: "Not reporting data",
-            },
-            {
-              id: "taijmIVhoXueygYHFhrx6FrI",
-              label: "Yes",
-            },
-          ],
-        },
-      },
-    ],
-  },
   drawerForm: {
     id: "dpaa",
     fields: [
@@ -77,7 +51,7 @@ export const patientAccessApiRoute: FormDrawerFormRoute = {
         props: {
           label:
             "D1.XIV.1 Number of unique beneficiaries with at least one data transfer",
-          hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred via the Patient Access API to a health application designated by the beneficiary. Provide program-specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+          hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred via the Patient Access API to a health application designated by the beneficiary. Provide program-specific numbers.",
         },
       },
       {
@@ -87,7 +61,7 @@ export const patientAccessApiRoute: FormDrawerFormRoute = {
         props: {
           label:
             "D1.XIV.2 Number of unique beneficiaries with multiple data transfers",
-          hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+          hint: "For the previous calendar year, indicate the total number of unique beneficiaries covered by the plan in this program whose data were transferred more than once via the Patient Access API to a health application designated by the beneficiary. Provide program specific numbers.",
         },
       },
       {
