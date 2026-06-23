@@ -12,8 +12,8 @@ export const appealsStateFairHearingsAndGrievancesRoute: ParentRoute = {
   path: "/mcpar/plan-level-indicators/appeals-state-fair-hearings-and-grievances",
   children: [
     appealsOverviewRoute,
-    appealsByServiceRoute,
     appealsByReasonRoute,
+    appealsByServiceRoute,
     stateFairHearingsRoute,
     grievancesOverviewRoute,
     grievancesByServiceRoute,
