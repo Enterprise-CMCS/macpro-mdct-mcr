@@ -1,7 +1,6 @@
 import { ComponentClass, useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router";
 import { Helmet as HelmetImport, HelmetProps } from "react-helmet";
-import { useFlags } from "launchdarkly-react-client-sdk";
 // components
 import {
   Box,
@@ -42,7 +41,6 @@ import {
 import { APP_TITLE, States } from "../../../constants";
 // verbiage
 import accordion from "verbiage/pages/accordion";
-import Summer2026SansQmNaaarDashboardVerbiage from "verbiage/pages/naaar/flags/summer2026SansQm/naaar-dashboard";
 // assets
 import arrowLeftIcon from "assets/icons/icon_arrow_left_blue.png";
 
@@ -68,7 +66,6 @@ export const DashboardPage = ({ reportType }: Props) => {
     userIsReadOnly,
   } = useStore().user ?? {};
   const { reportsByState } = useStore();
-  const summer2026SansQm = useFlags()?.summer2026SansQm;
 
   const { isTablet, isMobile } = useBreakpoint();
   const [reportsToDisplay, setReportsToDisplay] = useState<
@@ -84,10 +81,7 @@ export const DashboardPage = ({ reportType }: Props) => {
 
   const { dashboardVerbiage: defaultDashboardVerbiage } =
     getReportVerbiage(reportType);
-  const dashboardVerbiage =
-    reportType === ReportType.NAAAR && summer2026SansQm
-      ? Summer2026SansQmNaaarDashboardVerbiage
-      : defaultDashboardVerbiage;
+  const dashboardVerbiage = defaultDashboardVerbiage;
   const { intro, body } = dashboardVerbiage;
 
   // if an admin or a read-only user has selected a state, retrieve it from local storage
