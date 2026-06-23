@@ -157,7 +157,7 @@ export const planComplianceRoute: MultiformRoute = {
         },
         verbiage: {
           heading: "A. Assurance of plan compliance for 438.68",
-          hint: "III.A.1 Indicate whether the state assures that the plan complies with the state's standards, as required at § 42 C.F.R. § 438.68 (i.e., the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
+          hint: "III.A.1 Indicate whether the state assures that the plan complies with the state’s standards, as required at § 42 C.F.R. § 438.68 (i.e., the standards previously entered by the state) based on each analysis the state conducted for the plan during the reporting period.",
           intro: {
             section: "",
           },

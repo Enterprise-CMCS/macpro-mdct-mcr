@@ -148,7 +148,7 @@ export const mockPlanLevelIndicators = [
               props: {
                 label:
                   "D1.XIII.8 Percentage of standard prior authorization requests approved after appeal",
-                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the percentage that were approved after appeal. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the percentage that were approved after appeal. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                 mask: "percentage",
                 decimalPlacesToRoundTo: 2,
               },
@@ -160,7 +160,7 @@ export const mockPlanLevelIndicators = [
               props: {
                 label:
                   "D1.XIII.9 Average time to decision for standard prior authorizations",
-                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the average number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the average number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                 decimalPlacesToRoundTo: 2,
               },
             },
@@ -171,7 +171,7 @@ export const mockPlanLevelIndicators = [
               props: {
                 label:
                   "D1.XIII.10 Median time to decision on standard prior authorizations",
-                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the median number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                hint: "Of the total standard prior authorization requests, as reported in D1.XIII.3, enter the median number of days that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                 decimalPlacesToRoundTo: 2,
               },
             },
@@ -194,7 +194,7 @@ export const mockPlanLevelIndicators = [
               props: {
                 label:
                   "D1.XIII.12 Percentage of expedited prior authorization requests that were denied",
-                hint: "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                hint: "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the percentage that were denied. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                 mask: "percentage",
                 decimalPlacesToRoundTo: 2,
               },
@@ -206,7 +206,7 @@ export const mockPlanLevelIndicators = [
               props: {
                 label:
                   "D1.XIII.13 Average time to decision for expedited prior authorizations",
-                hint: "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the average number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
+                hint: "Of the total expedited prior authorization requests, as reported in D1.XIII.4, enter the average number of hours that elapsed between submission of request and decision by the plan. If you choose not to respond prior to June 2026, enter “NR” for not reporting.",
                 decimalPlacesToRoundTo: 2,
               },
             },

@@ -17,7 +17,7 @@ export const addPlansRoute: FormRoute = {
         {
           type: "p",
           content:
-            "Enter the name of each plan that participates in the program for which the state is reporting data. If the state is submitting this form because it's entering into a contract with a plan or because there's a significant change in a plan's operations, include only the name of the applicable plan.",
+            "Enter the name of each plan that participates in the program for which the state is reporting data. If the state is submitting this form because it’s entering into a contract with a plan or because there’s a significant change in a plan’s operations, include only the name of the applicable plan.",
         },
         {
           type: "p",

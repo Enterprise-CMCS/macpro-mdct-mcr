@@ -246,7 +246,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   },
                   props: {
                     label: "P.2 Explanation of reporting period discrepancy",
-                    hint: "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year.",
+                    hint: "Include a qualitative response. Examples may include: implementation of a new program, a plan exiting the market, or re-alignment of the reporting period from calendar year to a state fiscal year.",
                   },
                 },
               ],

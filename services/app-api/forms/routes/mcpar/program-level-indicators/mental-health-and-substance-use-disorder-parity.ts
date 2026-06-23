@@ -146,17 +146,17 @@ export const mentalHealthAndSubstanceUseDisorderParityRoute: FormRoute = {
                                 {
                                   id: "AQ0h7WeZm1nJ8Crr1BeOCCy0",
                                   label:
-                                    "Changes in quantitative treatment limits (QTLs), (limits on the scope or duration of benefits that are represented numerically, such as day limits or visit limits)",
+                                    "Changes in quantitative treatment limits (QTLs), (limits on the scope or duration of benefits that are represented numerically, such as day limits or visit limits)",
                                 },
                                 {
                                   id: "KDjEgzfwI8WRVvS6cAwa27mH",
                                   label:
-                                    "Changes in non-quantitative treatment limits (NQTLs), (which otherwise limit the scope or duration of benefits, e.g., utilization management, network admission standards)",
+                                    "Changes in non-quantitative treatment limits (NQTLs), (which otherwise limit the scope or duration of benefits, e.g., utilization management, network admission standards)",
                                 },
                                 {
                                   id: "3jrOpqW0YtFPDAgGcf7Ar9FS",
                                   label:
-                                    "Addition of a new managed care plan (MCP) providing services to MCO enrollees",
+                                    "Addition of a new managed care plan (MCP) providing services to MCO enrollees",
                                 },
                                 {
                                   id: "tsdVnIPFc9RitXWFNHC5MTP0",

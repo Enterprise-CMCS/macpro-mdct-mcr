@@ -79,10 +79,9 @@ export const DashboardPage = ({ reportType }: Props) => {
     undefined
   );
 
-  const { dashboardVerbiage: defaultDashboardVerbiage } =
-    getReportVerbiage(reportType);
-  const dashboardVerbiage = defaultDashboardVerbiage;
-  const { intro, body } = dashboardVerbiage;
+  const {
+    dashboardVerbiage: { intro, body },
+  } = getReportVerbiage(reportType);
 
   // if an admin or a read-only user has selected a state, retrieve it from local storage
   const selectedState = localStorage.getItem("selectedState") || undefined;

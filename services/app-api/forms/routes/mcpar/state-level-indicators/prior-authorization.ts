@@ -34,7 +34,7 @@ export const priorAuthorizationRoute: FormRoute = {
         props: {
           label:
             "B.XIII.1a Timeframes for standard prior authorization decisions",
-          hint: "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee's condition requires and within state-established timeframes. For rating periods that start before January 1, 2026, a state's time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state's time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
+          hint: "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and within state-established timeframes. For rating periods that start before January 1, 2026, a state’s time frame may not exceed 14 calendar days after receiving the request. For rating periods that start on or after January 1, 2026, a state’s time frame may not exceed 7 calendar days after receiving the request. Does the state set timeframes shorter than these maximum timeframes for standard prior authorization requests?",
           choices: [
             {
               id: "2mwADFxQVwjgYKMq5rEMPF8nryi",
@@ -56,8 +56,8 @@ export const priorAuthorizationRoute: FormRoute = {
                   },
                   props: {
                     label:
-                      "B.XIII.1b State's timeframe for standard prior authorization decisions",
-                    hint: "Indicate the state's maximum timeframe, as number of days, for plans to provide notice of their decisions on standard prior authorization requests.",
+                      "B.XIII.1b State’s timeframe for standard prior authorization decisions",
+                    hint: "Indicate the state’s maximum timeframe, as number of days, for plans to provide notice of their decisions on standard prior authorization requests.",
                   },
                 },
               ],
@@ -72,7 +72,7 @@ export const priorAuthorizationRoute: FormRoute = {
         props: {
           label:
             "B.XIII.2a Timeframes for expedited prior authorization decisions",
-          hint: "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee's condition requires and no later than 72 hours after receipt of the request for service. Does the state set timeframes shorter than the maximum timeframe for expedited prior authorization requests?",
+          hint: "Plans must provide notice of their decisions on prior authorization requests as expeditiously as the enrollee’s condition requires and no later than 72 hours after receipt of the request for service. Does the state set timeframes shorter than the maximum timeframe for expedited prior authorization requests?",
           choices: [
             {
               id: "2nAidGQyKBhG1gxK1SuXbBjJh0V",
@@ -94,8 +94,8 @@ export const priorAuthorizationRoute: FormRoute = {
                   },
                   props: {
                     label:
-                      "B.XIII.2b State's timeframe for expedited prior authorization decisions",
-                    hint: "Indicate the state's maximum timeframe, as number of hours, for plans to provide notice of their decisions on expedited prior authorization requests.",
+                      "B.XIII.2b State’s timeframe for expedited prior authorization decisions",
+                    hint: "Indicate the state’s maximum timeframe, as number of hours, for plans to provide notice of their decisions on expedited prior authorization requests.",
                   },
                 },
               ],
