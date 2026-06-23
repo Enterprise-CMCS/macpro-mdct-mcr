@@ -126,7 +126,7 @@ export const programCharacteristicsRoute: DrawerFormRoute = {
         validation: ValidationType.TEXT,
         props: {
           label:
-            "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",
+            "D1.I.4: Parent Organization: The name of the parent entity that controls the Medicaid Managed Care Plan.",
           hint: "If the managed care plan is owned or controlled by a separate entity (parent), report the name of that entity. If the managed care plan is not controlled by a separate entity, please report the managed care plan name in this field.",
         },
       },
