@@ -29,12 +29,14 @@ import {
 } from "utils";
 // assets
 import cancelIcon from "assets/icons/icon_cancel_x_circle.png";
+import addIcon from "assets/icons/icon_add_blue.png";
 
 export const DynamicField = ({
   name,
   label,
   dynamicLabel,
   styleAsOptional,
+  nested,
   isRequired,
   autosave = true,
   ...props
@@ -325,7 +327,7 @@ export const DynamicField = ({
     form?.formState?.errors?.[name];
 
   return (
-    <Box as="fieldset" sx={sx.fieldset}>
+    <Box as="fieldset" sx={nested ? sx.nestedFieldset : sx.fieldset}>
       {dynamicLabel && (
         <Box as="legend" className="ds-c-label" sx={sx.legend}>
           {styleAsOptional ? labelTextWithOptional(dynamicLabel) : dynamicLabel}
@@ -370,6 +372,7 @@ export const DynamicField = ({
           onClick={appendNewRecord}
         >
           {getButtonVerbiage()}
+          <Image sx={sx.addImage} src={addIcon} alt={getButtonVerbiage()} />
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
@@ -389,6 +392,7 @@ interface Props {
   name: EntityType;
   label: string;
   dynamicLabel?: string;
+  nested?: boolean;
   styleAsOptional?: boolean;
   isRequired?: boolean;
   autosave?: boolean;
@@ -398,6 +402,12 @@ interface Props {
 const sx = {
   fieldset: {
     marginTop: "spacer3",
+  },
+  nestedFieldset: {
+    margin: "1.25rem 0 0 1rem",
+    borderInlineStart: "4px solid",
+    borderColor: "primary",
+    paddingLeft: "1rem",
   },
   legend: {
     fontSize: "md",
@@ -410,6 +420,15 @@ const sx = {
     maxWidth: "none",
     width: "1.5rem",
     height: "1.5rem",
+    _hover: {
+      filter: svgFilters.primary_darker,
+    },
+  },
+  addImage: {
+    maxWidth: "none",
+    width: "1rem",
+    height: "1rem",
+    marginLeft: "spacer1",
     _hover: {
       filter: svgFilters.primary_darker,
     },
