@@ -171,7 +171,9 @@ export const ChoiceListField = ({
               }
               break;
             case "dynamic":
-              // TODO: clear any dynamic fields
+              child.props = { ...child.props, clear: true };
+              form.setValue(child.id, []);
+              form.unregister(child.id);
               break;
             default:
               child.props = { ...child.props, clear: true };

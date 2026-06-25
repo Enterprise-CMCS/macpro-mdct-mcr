@@ -39,6 +39,7 @@ export const DynamicField = ({
   nested,
   isRequired,
   autosave = true,
+  clear,
   ...props
 }: Props) => {
   // state management
@@ -303,6 +304,11 @@ export const DynamicField = ({
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
+    if (clear) {
+      form.setValue(name, [], { shouldValidate: true });
+      appendNewRecord();
+      return;
+    }
     if (hydrationValue?.length) {
       // guard against autosave refresh error where user can change input values while save operation is still in progress (https://bit.ly/3kiE2eE)
       const newInputAdded = displayValues?.length > hydrationValue?.length;
@@ -396,6 +402,7 @@ interface Props {
   styleAsOptional?: boolean;
   isRequired?: boolean;
   autosave?: boolean;
+  clear?: boolean;
   [key: string]: any;
 }
 
