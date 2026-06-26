@@ -14,6 +14,7 @@ import {
   email,
   emailOptional,
   endDate,
+  futureDate,
   nested,
   number,
   numberNotLessThanOne,
@@ -399,6 +400,15 @@ describe("Completion schemas", () => {
       myEndDate: value,
     };
     expect(schema.isValidSync(obj)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(invalidDates),
+    ...reject(pastDates),
+    ...accept(futureDates),
+  ])("futureDate() $description -> $expected", ({ value, expected }) => {
+    expect(futureDate().isValidSync(value)).toBe(expected);
   });
 
   test.each([
