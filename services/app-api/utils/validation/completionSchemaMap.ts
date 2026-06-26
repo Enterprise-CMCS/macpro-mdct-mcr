@@ -23,6 +23,7 @@ export const completionSchemaMap: any = {
   numberOrSuppressed: schema.numberOrSuppressed(),
   numberOrSuppressedOrNaNr: schema.numberOrSuppressedOrNaNr(),
   numberSuppressible: schema.numberSuppressible(),
+  pastDate: schema.pastDate(),
   radio: schema.radio(),
   radioOptional: schema.radioOptional(),
   ratio: schema.ratio(),
