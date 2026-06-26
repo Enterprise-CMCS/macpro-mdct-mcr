@@ -204,7 +204,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
       {
         id: "report_reportingPeriodStartDate",
         type: ReportFormFieldType.DATE,
-        validation: ValidationType.DATE,
+        validation: ValidationType.FUTURE_DATE,
         props: {
           label: "N. MLR reporting period start date",
           hint: "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period.",
