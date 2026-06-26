@@ -21,6 +21,7 @@ export enum ValidationType {
   NUMBER_OR_SUPPRESSED_OR_NA_NR = "numberOrSuppressedOrNaNr",
   NUMBER_SUPPRESSIBLE = "numberSuppressible",
   PAST_DATE = "pastDate",
+  PAST_END_DATE = "pastEndDate",
   RADIO = "radio",
   RADIO_OPTIONAL = "radioOptional",
   TEXT = "text",

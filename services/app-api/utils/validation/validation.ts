@@ -1,9 +1,9 @@
 import * as yup from "yup";
 import { error } from "../constants/constants";
 // types
-import { AnyObject } from "../types";
+import { AnyObject, ValidationType } from "../types";
 // utils
-import { nested, endDate, schemaMap } from "./schemaMap";
+import { nested, endDate, schemaMap, pastDate } from "./schemaMap";
 
 // compare payload data against validation schema
 export const validateData = async (
@@ -56,8 +56,10 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       else if (fieldValidation.nested) {
         validationSchema[key] = makeNestedFieldSchema(fieldValidation);
         // else if not nested, make and set other dependent field types
-      } else if (fieldValidation.type === "endDate") {
+      } else if (fieldValidation.type === ValidationType.END_DATE) {
         validationSchema[key] = makeEndDateFieldSchema(fieldValidation);
+      } else if (fieldValidation.type === ValidationType.PAST_END_DATE) {
+        validationSchema[key] = makePastEndDateFieldSchema(fieldValidation);
       }
     }
   );
@@ -70,10 +72,17 @@ export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
   return endDate(dependentFieldName);
 };
 
+export const makePastEndDateFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  // eslint-disable-next-line prefer-spread
+  return makeEndDateFieldSchema(fieldValidationObject).concat(pastDate());
+};
+
 // return created nested field schema
 export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
   const { type, parentFieldName, parentOptionId } = fieldValidationObject;
-  if (fieldValidationObject.type === "endDate") {
+  if (type === ValidationType.END_DATE) {
     return nested(
       () => makeEndDateFieldSchema(fieldValidationObject),
       parentFieldName,

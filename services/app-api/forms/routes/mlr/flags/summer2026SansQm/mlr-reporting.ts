@@ -214,7 +214,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         id: "report_reportingPeriodEndDate",
         type: ReportFormFieldType.DATE,
         validation: {
-          type: ValidationType.END_DATE,
+          type: ValidationType.PAST_END_DATE,
           dependentFieldName: "report_reportingPeriodStartDate",
         },
         props: {
