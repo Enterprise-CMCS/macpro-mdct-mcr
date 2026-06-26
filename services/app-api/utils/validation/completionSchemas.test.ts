@@ -24,6 +24,7 @@ import {
   numberOrSuppressed,
   numberOrSuppressedOrNaNr,
   numberSuppressible,
+  pastDate,
   radio,
   radioOptional,
   ratio,
@@ -409,6 +410,15 @@ describe("Completion schemas", () => {
     ...accept(futureDates),
   ])("futureDate() $description -> $expected", ({ value, expected }) => {
     expect(futureDate().isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...reject(emptyResponses),
+    ...reject(invalidDates),
+    ...accept(pastDates),
+    ...reject(futureDates),
+  ])("pastDate() $description -> $expected", ({ value, expected }) => {
+    expect(pastDate().isValidSync(value)).toBe(expected);
   });
 
   test.each([

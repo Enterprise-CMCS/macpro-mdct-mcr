@@ -51,6 +51,7 @@ export const validationErrors = {
   INVALID_DATE_MONTH_YEAR: "Response must be in the format MM/YYYY",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
+  INVALID_PAST_DATE: "Response must be before today's date",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
   INVALID_NUMBER: "Response must be a valid number",

@@ -95,6 +95,15 @@ export const badFutureDateTestCases = [
   dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() - 1))), //Yesterdays Date
 ];
 
+export const goodPastDateTestCases = [
+  dateTimeFormat.format(new Date(new Date().setDate(new Date().getDate() - 1))), //Yesterdays Date
+];
+
+export const badPastDateTestCases = [
+  ...badFutureDateTestCases.slice(0, -1),
+  ...goodFutureDateTestCases,
+];
+
 export const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
 export const badValidNumberTestCases = ["N/A", "number", "foo"];
 

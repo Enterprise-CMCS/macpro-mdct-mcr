@@ -21,6 +21,7 @@ export const error = {
   INVALID_DATE: "Response must be a valid date",
   INVALID_END_DATE: "End date can't be before start date",
   INVALID_FUTURE_DATE: "Response must be today's date or in the future",
+  INVALID_PAST_DATE: "Response must be before today's date",
   NUMBER_LESS_THAN_ZERO: "Response must be greater than or equal to zero",
   NUMBER_LESS_THAN_ONE: "Response must be greater than or equal to one",
   INVALID_NUMBER: "Response must be a valid number",
@@ -279,6 +280,18 @@ export const futureDate = () =>
       todaysDate.setDate(todaysDate.getDate() - 1);
       const inputtedDate = new Date(dateString!);
       return inputtedDate >= todaysDate;
+    }
+  );
+
+export const pastDate = () =>
+  date().test(
+    "is-before-current-date",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
     }
   );
 

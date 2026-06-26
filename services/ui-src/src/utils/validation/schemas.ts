@@ -267,6 +267,18 @@ export const futureDate = () =>
     }
   );
 
+export const pastDate = () =>
+  date().test(
+    "is-before-current-date",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);

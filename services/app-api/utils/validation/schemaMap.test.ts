@@ -1,16 +1,17 @@
 import { MixedSchema } from "yup/lib/mixed";
 import {
-  number,
-  ratio,
   date,
+  futureDate,
   isEndDateAfterStartDate,
   nested,
-  validNumber,
+  number,
   numberNotLessThanOne,
   numberNotLessThanZero,
   numberOrSuppressed,
   numberSuppressible,
-  futureDate,
+  pastDate,
+  ratio,
+  validNumber,
 } from "./schemaMap";
 // oxlint-disable-next-line require-module-specifiers
 import {} from "./validation";
@@ -21,11 +22,13 @@ import {
   badDateTestCases,
   badFutureDateTestCases,
   badNumberTestCases,
+  badPastDateTestCases,
   badRatioTestCases,
   badValidNumberTestCases,
   goodDateTestCases,
   goodFutureDateTestCases,
   goodNumberTestCases,
+  goodPastDateTestCases,
   goodPositiveNumberTestCases,
   goodRatioTestCases,
   goodValidNumberTestCases,
@@ -141,6 +144,11 @@ describe("Schemas", () => {
   test("Test futureDate schema", () => {
     testDate(futureDate(), goodFutureDateTestCases, true);
     testDate(futureDate(), badFutureDateTestCases, false);
+  });
+
+  test("Test pastDate schema", () => {
+    testDate(pastDate(), goodPastDateTestCases, true);
+    testDate(pastDate(), badPastDateTestCases, false);
   });
 
   test("Evaluate End Date Schema using date scheme", () => {

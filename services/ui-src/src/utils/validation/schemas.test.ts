@@ -18,6 +18,7 @@ import {
   dateMonthYear,
   dynamic,
   dynamicOptional,
+  pastDate,
 } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
@@ -40,6 +41,8 @@ import {
   goodValidNumberTestCases,
   negativeNumberTestCases,
   zeroTest,
+  goodPastDateTestCases,
+  badPastDateTestCases,
 } from "utils/testing/mockSchemaValidation";
 
 describe("Schemas", () => {
@@ -161,6 +164,11 @@ describe("Schemas", () => {
   test("Test futureDate schema", () => {
     testDate(futureDate(), goodFutureDateTestCases, true);
     testDate(futureDate(), badFutureDateTestCases, false);
+  });
+
+  test("Test pastDate schema", () => {
+    testDate(pastDate(), goodPastDateTestCases, true);
+    testDate(pastDate(), badPastDateTestCases, false);
   });
 
   test("Test validDate schema", () => {
