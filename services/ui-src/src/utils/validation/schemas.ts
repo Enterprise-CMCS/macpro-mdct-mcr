@@ -282,6 +282,8 @@ export const pastDate = () =>
 // DROPDOWN
 export const dropdown = () =>
   object({ label: text(), value: text() }).required(error.REQUIRED_GENERIC);
+export const dropdownOptional = () =>
+  object({ label: textOptional(), value: textOptional() }).notRequired();
 
 // CHECKBOX
 export const checkbox = () =>
