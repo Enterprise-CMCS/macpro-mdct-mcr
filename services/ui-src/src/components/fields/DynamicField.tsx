@@ -411,10 +411,11 @@ const sx = {
     marginTop: "spacer3",
   },
   nestedFieldset: {
-    margin: "1.25rem 0 0 1rem",
+    marginLeft: "spacer2",
+    marginTop: "1.25rem",
+    paddingLeft: "spacer2",
     borderInlineStart: "4px solid",
     borderColor: "primary",
-    paddingLeft: "1rem",
   },
   legend: {
     fontSize: "md",

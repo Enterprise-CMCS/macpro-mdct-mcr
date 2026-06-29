@@ -12,6 +12,7 @@ import {
   FieldChoice,
   FormField,
   InputChangeEvent,
+  ReportFormFieldType,
 } from "types";
 // utils
 import {
@@ -151,8 +152,8 @@ export const ChoiceListField = ({
       if (choice.children) {
         choice.children.forEach((child: FormField) => {
           switch (child.type) {
-            case "radio":
-            case "checkbox":
+            case ReportFormFieldType.RADIO:
+            case ReportFormFieldType.CHECKBOX:
               if (child.props?.choices) {
                 child.props.choices.forEach((choice: FieldChoice) => {
                   choice.checked = false;
@@ -163,14 +164,14 @@ export const ChoiceListField = ({
                 clearUncheckedNestedFields(child.props.choices);
               }
               break;
-            case "date":
+            case ReportFormFieldType.DATE:
               if (!child.props?.disabled) {
                 child.props = { ...child.props, clear: true };
                 form.setValue(child.id, "");
                 form.unregister(child.id);
               }
               break;
-            case "dynamic":
+            case ReportFormFieldType.DYNAMIC:
               child.props = { ...child.props, clear: true };
               form.setValue(child.id, []);
               form.unregister(child.id);
