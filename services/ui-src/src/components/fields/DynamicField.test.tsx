@@ -83,6 +83,7 @@ const MockForm = (props: any) => {
             label="test-label"
             hydrate={props.hydrationValue}
             autosave={props?.autosave}
+            clear={props?.clear}
           />
         </form>
       </FormProvider>
@@ -93,11 +94,13 @@ const MockForm = (props: any) => {
 const dynamicFieldComponent = (
   hydrationValue?: any,
   customContext?: any,
+  clear?: any,
   autosave = true
 ) => (
   <MockForm
     hydrationValue={hydrationValue}
     customContext={customContext}
+    clear={clear}
     autosave={autosave}
   />
 );
@@ -138,6 +141,7 @@ const MockDynamicForm = (props: any) => {
             label="test-label"
             hydrate={props.hydrationValue}
             autosave={props?.autosave}
+            clear={props?.clear}
           />
         </form>
       </FormProvider>
@@ -730,6 +734,14 @@ describe("<DynamicField />", () => {
       const inputBoxLabelAfter = screen.getAllByText("test-label");
       expect(inputBoxLabelAfter).toHaveLength(1);
     });
+  });
+
+  test("Hydrates dynamic fields on clear", async () => {
+    await act(async () => {
+      await render(dynamicFieldComponent(mockHydrationPlan, undefined, true));
+    });
+    const inputBoxLabel = screen.getAllByText("test-label");
+    expect(inputBoxLabel).toHaveLength(1);
   });
 
   testA11yAct(dynamicFieldComponent());
