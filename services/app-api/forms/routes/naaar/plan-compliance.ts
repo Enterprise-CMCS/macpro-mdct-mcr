@@ -541,7 +541,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.1a - Q1 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -553,7 +553,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.1b - Q2 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -565,7 +565,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.1c - Q3 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -577,7 +577,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.1d - Q4 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                   ],
@@ -720,7 +720,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.1e - Annual (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -899,7 +899,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.5a - Q1 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -911,7 +911,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.5b - Q2 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -923,7 +923,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.5c - Q3 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
@@ -935,7 +935,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.5d - Q4 (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                   ],
@@ -1001,7 +1001,7 @@ export const planComplianceRoute: MultiformRoute = {
                                                         label:
                                                           "III.D.5e - Annual (optional)",
                                                         mask: "percentage",
-                                                        decimalPlacesToRoundTo: 0,
+                                                        decimalPlacesToRoundTo: 2,
                                                       },
                                                     },
                                                     {
