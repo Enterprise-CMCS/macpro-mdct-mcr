@@ -227,6 +227,12 @@ MCR pipes updates from fieldData and the report object tables to BigMac for down
 - `services/app-api/handlers/kafka/post/postKafkaData.ts` - Add the bucket and table names into the appropriate arrays. They will be parsed with their event types accordingly.
 - `services/topics/createTopics.js` - Declare the new topic names. Both the stream name for the bucket and table should be added here.
 
+### Test State (ZZ)
+
+`ZZ` is a fake state that exists **in every environment, including production**. It is used for testing and exists in the Cognito user pool (e.g. `stateuserZZ@test.com`) and in the program lists for every report type (MCPAR, MLR, NAAAR). It does not represent a real state and **its data is not real data**. Always filter out `state = "ZZ"` (and `stateuserZZ@test.com`) before reporting on or analyzing production data.
+
+**`ZZ` must never flow to Data Connect.** Any report data, submissions, or other records associated with the `ZZ` state are test artifacts and must be excluded from downstream analytics consumers. As new integrations are added (for example, email notifications), they **must filter out `ZZ`** so that test data never leaks into real-world systems or metrics.
+
 ## Architecture
 
 ![Architecture Diagram](./.images/architecture.svg?raw=true)
