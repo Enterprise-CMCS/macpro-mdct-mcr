@@ -738,7 +738,7 @@ describe("<DynamicField />", () => {
     });
   });
 
-  test("Hydrates dynamic fields on clear", async () => {
+  test("Clear existing values and show 1 empty row if clear is true", async () => {
     await act(async () => {
       await render(dynamicFieldComponent(mockHydrationPlan, undefined, true));
     });
