@@ -714,7 +714,9 @@ describe("<DynamicField />", () => {
     });
 
     test("Does not autosave but still performs display operations when autosave disabled", async () => {
-      render(dynamicFieldComponent(mockHydrationPlans, undefined, false));
+      render(
+        dynamicFieldComponent(mockHydrationPlans, undefined, false, false)
+      );
       const inputBoxLabel = screen.getAllByText("test-label");
       expect(inputBoxLabel).toHaveLength(2);
       // click delete
