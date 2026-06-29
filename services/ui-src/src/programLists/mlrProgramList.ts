@@ -818,6 +818,13 @@ export const mlrProgramList: ProgramList = {
       label: "Wyoming Medicaid's Care Management Entity (CME)",
     },
   ],
+  // ZZ (test state)
+  ZZ: [
+    {
+      id: "Yx4Bn8RpUmKd2WqL7vTzAc5H",
+      label: "ZZ Test State Program",
+    },
+  ],
 };
 
 export const notListedOtherProgramChoice = {

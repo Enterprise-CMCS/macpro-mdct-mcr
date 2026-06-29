@@ -123,4 +123,6 @@ export const mcparQualityMeasuresList: MeasureList = {
   WI: {},
   // Wyoming
   WY: {},
+  // Test State
+  ZZ: {},
 };
