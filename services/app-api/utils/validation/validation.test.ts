@@ -32,6 +32,13 @@ const mockPastDateValidationType = {
   },
 };
 
+const mockReportingPeriodDateValidationType = (
+  key: string,
+  value?: string
+) => ({
+  [key]: value,
+});
+
 const mockNestedDependentValidationType = {
   key: {
     type: ValidationType.END_DATE,
@@ -95,6 +102,31 @@ describe("Test mapValidationTypesToSchema", () => {
           "mock-parent-field-name",
           "mock-parent-option-name"
         ),
+      })
+    );
+  });
+
+  test("Returns passed-in validation for report_reportingPeriodStartDate", () => {
+    const result = mapValidationTypesToSchema(
+      mockReportingPeriodDateValidationType(
+        "report_reportingPeriodStartDate",
+        ValidationType.DATE
+      )
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        report_reportingPeriodStartDate: schema.date(),
+      })
+    );
+  });
+
+  test("Returns dateOptional validation for legacy report_reportingPeriodStartDate", () => {
+    const result = mapValidationTypesToSchema(
+      mockReportingPeriodDateValidationType("report_reportingPeriodStartDate")
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        report_reportingPeriodStartDate: schema.dateOptional(),
       })
     );
   });

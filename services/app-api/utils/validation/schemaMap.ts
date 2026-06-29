@@ -217,7 +217,9 @@ export const dateMonthYear = () =>
       return date.getMonth() === monthIndex && date.getFullYear() === year;
     });
 
-export const dateOptional = () => date();
+export const dateOptional = () =>
+  string().matches(optionalDateFormatRegex, error.INVALID_DATE).notRequired();
+
 export const endDate = (startDateField: string) =>
   date().test(
     "is-after-start-date",
@@ -227,6 +229,20 @@ export const endDate = (startDateField: string) =>
         context.parent[startDateField],
         endDateString as string
       );
+    }
+  );
+
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
     }
   );
 
@@ -250,6 +266,20 @@ export const pastDate = () =>
       const todaysDate = new Date();
       todaysDate.setDate(todaysDate.getDate() - 1);
       const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
       return inputtedDate < todaysDate;
     }
   );
@@ -328,9 +358,11 @@ export const nested = (
 export const objectArray = () => array().of(mixed());
 
 // REGEX
-export const dateFormatRegex =
-  /^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})|\s$/;
-export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
+const datePattern = String.raw`((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})`;
+const dateMonthYearPattern = String.raw`(\d{2}\/\d{4}|\d{6})`;
+export const dateFormatRegex = new RegExp(`^${datePattern}$`);
+export const dateMonthYearFormatRegex = new RegExp(`^${dateMonthYearPattern}$`);
+export const optionalDateFormatRegex = new RegExp(`^(${datePattern})?$`);
 
 // SCHEMA MAP
 export const schemaMap: any = {
@@ -356,6 +388,7 @@ export const schemaMap: any = {
   numberSuppressible: numberSuppressible(),
   objectArray: objectArray(),
   pastDate: pastDate(),
+  pastDateOptional: pastDateOptional(),
   radio: radio(),
   radioOptional: radioOptional(),
   ratio: ratio(),

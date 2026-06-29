@@ -24,6 +24,7 @@ export const schemaMap: any = {
   numberOrSuppressedOrNaNr: schema.numberOrSuppressedOrNaNr(),
   numberSuppressible: schema.numberSuppressible(),
   pastDate: schema.pastDate(),
+  pastDateOptional: schema.pastDateOptional(),
   radio: schema.radio(),
   radioOptional: schema.radioOptional(),
   ratio: schema.ratio(),

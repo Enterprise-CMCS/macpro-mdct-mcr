@@ -255,6 +255,20 @@ export const endDate = (startDateField: string) =>
     }
   );
 
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
+    }
+  );
+
 export const futureDate = () =>
   date().test(
     "is-after-current-date",
@@ -275,6 +289,20 @@ export const pastDate = () =>
       const todaysDate = new Date();
       todaysDate.setDate(todaysDate.getDate() - 1);
       const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
       return inputtedDate < todaysDate;
     }
   );

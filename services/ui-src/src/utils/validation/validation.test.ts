@@ -29,13 +29,12 @@ const mockPastDateValidationType = {
   },
 };
 
-const mockReportingPeriodStateDateValidationType = {
-  report_reportingPeriodStartDate: ValidationType.DATE,
-};
-
-const mockReportingPeriodStateDateUndefinedValidationType = {
-  report_reportingPeriodStartDate: undefined,
-};
+const mockReportingPeriodDateValidationType = (
+  key: string,
+  value?: string
+) => ({
+  [key]: value,
+});
 
 const mockNestedDependentValidationType = {
   key: {
@@ -106,7 +105,10 @@ describe("Test mapValidationTypesToSchema", () => {
 
   test("Returns passed-in validation for report_reportingPeriodStartDate", () => {
     const result = mapValidationTypesToSchema(
-      mockReportingPeriodStateDateValidationType
+      mockReportingPeriodDateValidationType(
+        "report_reportingPeriodStartDate",
+        ValidationType.DATE
+      )
     );
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
@@ -114,9 +116,10 @@ describe("Test mapValidationTypesToSchema", () => {
       })
     );
   });
+
   test("Returns dateOptional validation for legacy report_reportingPeriodStartDate", () => {
     const result = mapValidationTypesToSchema(
-      mockReportingPeriodStateDateUndefinedValidationType
+      mockReportingPeriodDateValidationType("report_reportingPeriodStartDate")
     );
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
