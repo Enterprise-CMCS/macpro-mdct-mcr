@@ -116,3 +116,10 @@ export const badValidNumberTestCases = ["N/A", "number", "foo"];
 export const goodRequiredTextTestCases = ["a", " a ", ".", "string"];
 export const goodOptionalTextTestCases = ["", ...goodRequiredTextTestCases];
 export const badRequiredTextTestCases = ["", "   ", undefined];
+
+export const goodDropdownOptionalTestCases = [
+  { label: "Option 1", value: "option1" },
+  { label: "", value: "" },
+  { label: undefined, value: undefined },
+];
+export const badDropdownOptionalTestCases = ["Not an object", []];

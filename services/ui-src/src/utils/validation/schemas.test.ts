@@ -1,48 +1,51 @@
 import { MixedSchema } from "yup/lib/mixed";
 import {
-  dateOptional,
-  number,
-  ratio,
-  validNumber,
-  numberNotLessThanOne,
-  numberNotLessThanZero,
-  text,
-  textOptional,
-  numberSuppressible,
-  numberOrSuppressed,
-  numberOrSuppressedOrNaNr,
-  validNAValues,
-  numberNotLessThanZeroOptional,
-  futureDate,
   date,
   dateMonthYear,
+  dateOptional,
+  dropdownOptional,
   dynamic,
   dynamicOptional,
+  futureDate,
+  number,
+  numberNotLessThanOne,
+  numberNotLessThanZero,
+  numberNotLessThanZeroOptional,
+  numberOrSuppressed,
+  numberOrSuppressedOrNaNr,
+  numberSuppressible,
   pastDate,
+  ratio,
+  text,
+  textOptional,
+  validNAValues,
+  validNumber,
 } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
 import {
   badDateOptionalTestCases,
+  badDropdownOptionalTestCases,
   badFutureDateTestCases,
-  badValidDateTestCases,
   badNumberTestCases,
+  badPastDateTestCases,
   badRatioTestCases,
   badRequiredTextTestCases,
+  badValidDateTestCases,
   badValidNumberTestCases,
   goodDateOptionalTestCases,
+  goodDropdownOptionalTestCases,
   goodFutureDateTestCases,
-  goodValidDateTestCases,
   goodNumberTestCases,
   goodOptionalTextTestCases,
+  goodPastDateTestCases,
   goodPositiveNumberTestCases,
   goodRatioTestCases,
   goodRequiredTextTestCases,
+  goodValidDateTestCases,
   goodValidNumberTestCases,
   negativeNumberTestCases,
   zeroTest,
-  goodPastDateTestCases,
-  badPastDateTestCases,
 } from "utils/testing/mockSchemaValidation";
 
 describe("Schemas", () => {
@@ -249,6 +252,16 @@ describe("Schemas", () => {
 
     test("returns true for empty text", () => {
       testSchema(dynamicOptional(), [], true);
+    });
+  });
+
+  describe("dropdownOptional", () => {
+    test("returns true", () => {
+      testSchema(dropdownOptional(), goodDropdownOptionalTestCases, true);
+    });
+
+    test("returns false", () => {
+      testSchema(dropdownOptional(), badDropdownOptionalTestCases, false);
     });
   });
 });
