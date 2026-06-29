@@ -104,7 +104,7 @@ describe("Test mapValidationTypesToSchema", () => {
     );
   });
 
-  test("Returns date validation for report_reportingPeriodStartDate", () => {
+  test("Returns passed-in validation for report_reportingPeriodStartDate", () => {
     const result = mapValidationTypesToSchema(
       mockReportingPeriodStateDateValidationType
     );

@@ -14,7 +14,7 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
        * Legacy: These MLR form fields were created initially without validation
        * because they are auto-populated. To keep the form fields standard, they
        * now have validation but older forms will fail because fieldValidation is
-       * undefined. Setting validation manually here.
+       * undefined. Setting validation manually here if it's missing.
        */
       if (
         [
