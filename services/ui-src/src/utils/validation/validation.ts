@@ -40,7 +40,7 @@ export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
 export const makePastEndDateFieldSchema = (
   fieldValidationObject: AnyObject
 ) => {
-  // eslint-disable-next-line prefer-spread
+  // oxlint-disable-next-line unicorn/prefer-spread
   return makeEndDateFieldSchema(fieldValidationObject).concat(pastDate());
 };
 
