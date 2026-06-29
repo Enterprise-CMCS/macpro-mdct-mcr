@@ -831,6 +831,7 @@ export const notListedOtherProgramChoice = {
         type: ValidationType.DYNAMIC,
         nested: true,
         parentFieldName: "report_programNameList",
+        parentOptionId: "6m3NoHsr5qoHrZ2WnkgHfXj7",
       },
       props: {
         dynamicLabel:
