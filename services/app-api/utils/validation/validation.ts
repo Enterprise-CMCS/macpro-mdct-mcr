@@ -45,6 +45,23 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
   Object.entries(fieldValidationTypes).forEach(
     (fieldValidationType: [string, string | AnyObject]) => {
       const [key, fieldValidation] = fieldValidationType;
+      /**
+       * Legacy: These MLR form fields were created initially without validation
+       * because they are auto-populated. To keep the form fields standard, they
+       * now have validation but older forms will fail because fieldValidation is
+       * undefined. Setting validation manually here if it's missing.
+       */
+      if (
+        [
+          "report_reportingPeriodStartDate",
+          "report_reportingPeriodEndDate",
+        ].includes(key) &&
+        !fieldValidation
+      ) {
+        validationSchema[key] = schemaMap[ValidationType.DATE_OPTIONAL];
+        return;
+      }
+
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];

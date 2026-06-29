@@ -9,6 +9,7 @@ export const schemaMap: any = {
   dateMonthYear: schema.dateMonthYear(),
   dateOptional: schema.dateOptional(),
   dropdown: schema.dropdown(),
+  dropdownOptional: schema.dropdownOptional(),
   dynamic: schema.dynamic(),
   dynamicOptional: schema.dynamicOptional(),
   email: schema.email(),

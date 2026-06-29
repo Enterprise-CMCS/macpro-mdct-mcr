@@ -245,7 +245,7 @@ export const futureDate = () =>
 export const pastDate = () =>
   date().test(
     "is-before-current-date",
-    error.INVALID_FUTURE_DATE,
+    error.INVALID_PAST_DATE,
     (dateString) => {
       const todaysDate = new Date();
       todaysDate.setDate(todaysDate.getDate() - 1);
