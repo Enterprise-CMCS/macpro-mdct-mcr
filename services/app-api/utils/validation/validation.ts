@@ -5,6 +5,40 @@ import { AnyObject, ValidationType } from "../types";
 // utils
 import { endDate, endDateOptional, nested, schemaMap } from "./schemaMap";
 
+// return created endDate schema
+const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
+  const { dependentFieldName } = fieldValidationObject;
+  return endDate(dependentFieldName);
+};
+
+const makeEndDateOptionalFieldSchema = (fieldValidationObject: AnyObject) => {
+  const { dependentFieldName } = fieldValidationObject;
+  return endDateOptional(dependentFieldName);
+};
+
+const makePastEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDate
+  );
+};
+
+const makePastEndDateOptionalFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDateOptional
+  );
+};
+
+const dependentSchemas: AnyObject = {
+  [ValidationType.END_DATE]: makeEndDateFieldSchema,
+  [ValidationType.END_DATE_OPTIONAL]: makeEndDateOptionalFieldSchema,
+  [ValidationType.PAST_END_DATE]: makePastEndDateFieldSchema,
+  [ValidationType.PAST_END_DATE_OPTIONAL]: makePastEndDateOptionalFieldSchema,
+};
+
 // compare payload data against validation schema
 export const validateData = async (
   validationSchema: AnyObject,
@@ -78,14 +112,6 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       }
 
       // if not nested, make and set other dependent field types
-      const dependentSchemas: AnyObject = {
-        [ValidationType.END_DATE]: makeEndDateFieldSchema,
-        [ValidationType.END_DATE_OPTIONAL]: makeEndDateOptionalFieldSchema,
-        [ValidationType.PAST_END_DATE]: makePastEndDateFieldSchema,
-        [ValidationType.PAST_END_DATE_OPTIONAL]:
-          makePastEndDateOptionalFieldSchema,
-      };
-
       const getSchema = dependentSchemas[fieldValidation.type];
       if (getSchema) {
         validationSchema[key] = getSchema(fieldValidation);
@@ -95,43 +121,13 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
   return validationSchema;
 };
 
-// return created endDate schema
-export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
-  const { dependentFieldName } = fieldValidationObject;
-  return endDate(dependentFieldName);
-};
-
-export const makeEndDateOptionalFieldSchema = (
-  fieldValidationObject: AnyObject
-) => {
-  const { dependentFieldName } = fieldValidationObject;
-  return endDateOptional(dependentFieldName);
-};
-
-export const makePastEndDateFieldSchema = (
-  fieldValidationObject: AnyObject
-) => {
-  // oxlint-disable-next-line unicorn/prefer-spread
-  return makeEndDateFieldSchema(fieldValidationObject).concat(
-    schemaMap.pastDate
-  );
-};
-
-export const makePastEndDateOptionalFieldSchema = (
-  fieldValidationObject: AnyObject
-) => {
-  // oxlint-disable-next-line unicorn/prefer-spread
-  return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
-    schemaMap.pastDateOptional
-  );
-};
-
 // return created nested field schema
 export const makeNestedFieldSchema = (fieldValidationObject: AnyObject) => {
   const { type, parentFieldName, parentOptionId } = fieldValidationObject;
-  if (type === ValidationType.END_DATE) {
+  const getSchema = dependentSchemas[type];
+  if (getSchema) {
     return nested(
-      () => makeEndDateFieldSchema(fieldValidationObject),
+      () => getSchema(fieldValidationObject),
       parentFieldName,
       parentOptionId
     );
