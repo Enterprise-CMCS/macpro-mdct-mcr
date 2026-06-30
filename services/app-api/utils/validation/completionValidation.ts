@@ -85,7 +85,7 @@ export const makePastEndDateFieldSchema = (
 ) => {
   // oxlint-disable-next-line unicorn/prefer-spread
   return makeEndDateFieldSchema(fieldValidationObject).concat(
-    schemaMap.pastDate()
+    schemaMap.pastDate
   );
 };
 
@@ -94,7 +94,7 @@ export const makePastEndDateOptionalFieldSchema = (
 ) => {
   // oxlint-disable-next-line unicorn/prefer-spread
   return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
-    schemaMap.pastDateOptional()
+    schemaMap.pastDateOptional
   );
 };
 

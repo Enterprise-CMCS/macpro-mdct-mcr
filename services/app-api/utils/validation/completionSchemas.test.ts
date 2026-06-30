@@ -2,6 +2,7 @@ import { describe, expect, test } from "@jest/globals";
 import {
   completionSchemaMap as schemaMap,
   endDate,
+  endDateOptional,
   nested,
 } from "./completionSchemas";
 import * as yup from "yup";
@@ -377,6 +378,24 @@ describe("Completion schemas", () => {
   });
 
   test.each([
+    ...accept(emptyResponses),
+    ...reject(invalidDates),
+    { value: "10/23/2024", description: "day before", expected: false },
+    { value: "10/24/2024", description: "day of", expected: true },
+    { value: "10/25/2024", description: "day after", expected: true },
+  ])("endDateOptional $description -> $expected", ({ value, expected }) => {
+    const schema = yup.object().shape({
+      myStartDate: schemaMap.date,
+      myEndDate: endDateOptional("myStartDate"),
+    });
+    const obj = {
+      myStartDate: "10/24/2024",
+      myEndDate: value,
+    };
+    expect(schema.isValidSync(obj)).toBe(expected);
+  });
+
+  test.each([
     ...reject(emptyResponses),
     ...reject(invalidDates),
     ...reject(pastDates),
@@ -392,6 +411,15 @@ describe("Completion schemas", () => {
     ...reject(futureDates),
   ])("pastDate() $description -> $expected", ({ value, expected }) => {
     expect(schemaMap.pastDate.isValidSync(value)).toBe(expected);
+  });
+
+  test.each([
+    ...accept(emptyResponses),
+    ...reject(invalidDates),
+    ...accept(pastDates),
+    ...reject(futureDates),
+  ])("pastDateOptional() $description -> $expected", ({ value, expected }) => {
+    expect(schemaMap.pastDateOptional.isValidSync(value)).toBe(expected);
   });
 
   test.each([

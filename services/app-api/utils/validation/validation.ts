@@ -3,14 +3,7 @@ import { error } from "../constants/constants";
 // types
 import { AnyObject, ValidationType } from "../types";
 // utils
-import {
-  endDate,
-  endDateOptional,
-  nested,
-  pastDate,
-  pastDateOptional,
-  schemaMap,
-} from "./schemaMap";
+import { endDate, endDateOptional, nested, schemaMap } from "./schemaMap";
 
 // compare payload data against validation schema
 export const validateData = async (
@@ -119,7 +112,9 @@ export const makePastEndDateFieldSchema = (
   fieldValidationObject: AnyObject
 ) => {
   // oxlint-disable-next-line unicorn/prefer-spread
-  return makeEndDateFieldSchema(fieldValidationObject).concat(pastDate());
+  return makeEndDateFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDate
+  );
 };
 
 export const makePastEndDateOptionalFieldSchema = (
@@ -127,7 +122,7 @@ export const makePastEndDateOptionalFieldSchema = (
 ) => {
   // oxlint-disable-next-line unicorn/prefer-spread
   return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
-    pastDateOptional()
+    schemaMap.pastDateOptional
   );
 };
 
