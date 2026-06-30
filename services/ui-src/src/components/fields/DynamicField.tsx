@@ -304,6 +304,12 @@ export const DynamicField = ({
   // set initial value to form field value or hydration value
   const hydrationValue = props?.hydrate;
   useEffect(() => {
+    const currentValues = form.getValues(name);
+    if (currentValues?.length) {
+      setDisplayValues(currentValues);
+      return;
+    }
+    // Parent option was just (un)checked: start fresh with one empty row.
     if (clear) {
       form.setValue(name, [], { shouldValidate: true });
       appendNewRecord();
