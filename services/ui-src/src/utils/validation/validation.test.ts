@@ -15,19 +15,12 @@ const mockNestedValidationType = {
   },
 };
 
-const mockDependentValidationType = {
+const mockDependentValidationType = (type: string) => ({
   key: {
-    type: ValidationType.END_DATE,
+    type,
     dependentFieldName: "mock-dependent-field-name",
   },
-};
-
-const mockPastDateValidationType = {
-  key: {
-    type: ValidationType.PAST_END_DATE,
-    dependentFieldName: "mock-dependent-field-name",
-  },
-};
+});
 
 const mockReportingPeriodDateValidationType = (
   key: string,
@@ -68,7 +61,9 @@ describe("Test mapValidationTypesToSchema", () => {
   });
 
   test("Returns dependent validation schema if passed dependent validation type", () => {
-    const result = mapValidationTypesToSchema(mockDependentValidationType);
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.END_DATE)
+    );
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
         key: schema.endDate("mock-dependent-field-name"),
@@ -76,14 +71,41 @@ describe("Test mapValidationTypesToSchema", () => {
     );
   });
 
+  test("Returns optional dependent validation schema if passed dependent validation type", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.END_DATE_OPTIONAL)
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        key: schema.endDateOptional("mock-dependent-field-name"),
+      })
+    );
+  });
+
   test("Returns dependent validation before past date schema", () => {
-    const result = mapValidationTypesToSchema(mockPastDateValidationType);
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.PAST_END_DATE)
+    );
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
         // oxlint-disable-next-line unicorn/prefer-spread
         key: schema
           .endDate("mock-dependent-field-name")
           .concat(schema.pastDate()),
+      })
+    );
+  });
+
+  test("Returns dependent validation before past date optional schema", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.PAST_END_DATE_OPTIONAL)
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        // oxlint-disable-next-line unicorn/prefer-spread
+        key: schema
+          .endDateOptional("mock-dependent-field-name")
+          .concat(schema.pastDateOptional()),
       })
     );
   });
