@@ -773,7 +773,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
                   },
                   props: {
@@ -790,7 +790,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
                   },
                   props: {

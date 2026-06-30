@@ -109,6 +109,10 @@ export const badPastDateTestCases = [
   ...goodFutureDateTestCases,
 ];
 
+export const goodPastDateOptionalTestCases = ["", ...goodPastDateTestCases];
+
+export const badPastDateOptionalTestCases = badPastDateTestCases.slice(1);
+
 export const goodValidNumberTestCases = [1, "1", "100000", "1,000,000"];
 
 export const badValidNumberTestCases = ["N/A", "number", "foo"];

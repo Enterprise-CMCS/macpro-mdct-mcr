@@ -1,26 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import {
-  date,
-  dateMonthYear,
-  dateOptional,
-  dropdownOptional,
-  dynamic,
-  dynamicOptional,
-  futureDate,
-  number,
-  numberNotLessThanOne,
-  numberNotLessThanZero,
-  numberNotLessThanZeroOptional,
-  numberOrSuppressed,
-  numberOrSuppressedOrNaNr,
-  numberSuppressible,
-  pastDate,
-  ratio,
-  text,
-  textOptional,
-  validNAValues,
-  validNumber,
-} from "./schemas";
+import { schemaMap, validNAValues } from "./schemas";
 // constants
 import { suppressionText } from "../../constants";
 import {
@@ -28,6 +7,7 @@ import {
   badDropdownOptionalTestCases,
   badFutureDateTestCases,
   badNumberTestCases,
+  badPastDateOptionalTestCases,
   badPastDateTestCases,
   badRatioTestCases,
   badRequiredTextTestCases,
@@ -38,6 +18,7 @@ import {
   goodFutureDateTestCases,
   goodNumberTestCases,
   goodOptionalTextTestCases,
+  goodPastDateOptionalTestCases,
   goodPastDateTestCases,
   goodPositiveNumberTestCases,
   goodRatioTestCases,
@@ -97,124 +78,157 @@ describe("Schemas", () => {
   };
 
   test("Evaluate Number Schema using number scheme", () => {
-    testNumberSchema(number(), goodNumberTestCases, true);
-    testNumberSchema(number(), badNumberTestCases, false);
+    testNumberSchema(schemaMap.number, goodNumberTestCases, true);
+    testNumberSchema(schemaMap.number, badNumberTestCases, false);
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
-    testNumberSchema(ratio(), goodRatioTestCases, true);
-    testNumberSchema(ratio(), badRatioTestCases, false);
+    testNumberSchema(schemaMap.ratio, goodRatioTestCases, true);
+    testNumberSchema(schemaMap.ratio, badRatioTestCases, false);
   });
 
   // testing numberNotLessThanOne scheme
   test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
-    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanOne,
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(schemaMap.numberNotLessThanOne, badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+    testNumberSchema(schemaMap.numberNotLessThanOne, zeroTest, false);
   });
 
   test("Test negative values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanOne,
+      negativeNumberTestCases,
+      false
+    );
   });
 
   // testing numberNotLessThanZero scheme
   test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
     testNumberSchema(
-      numberNotLessThanZero(),
+      schemaMap.numberNotLessThanZero,
       goodPositiveNumberTestCases,
       true
     );
-    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanZero,
+      badNumberTestCases,
+      false
+    );
   });
 
   test("Test zero values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+    testNumberSchema(schemaMap.numberNotLessThanZero, zeroTest, true);
   });
 
   test("Test negative values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanZero,
+      negativeNumberTestCases,
+      false
+    );
   });
 
   // testing numberNotLessThanZeroOptional scheme
   test("Evaluate Number Schema using numberNotLessThanZeroOptional scheme", () => {
     testNumberSchema(
-      numberNotLessThanZero(),
+      schemaMap.numberNotLessThanZero,
       goodPositiveNumberTestCases,
       true
     );
   });
 
   test("Test zero values using numberNotLessThanZeroOptional scheme", () => {
-    testNumberSchema(numberNotLessThanZeroOptional(), zeroTest, true);
+    testNumberSchema(schemaMap.numberNotLessThanZeroOptional, zeroTest, true);
   });
 
   test("Test negative values using numberNotLessThanZeroOptional scheme", () => {
     testNumberSchema(
-      numberNotLessThanZeroOptional(),
+      schemaMap.numberNotLessThanZeroOptional,
       negativeNumberTestCases,
       false
     );
   });
 
   test("Test dateOptional schema", () => {
-    testDate(dateOptional(), goodDateOptionalTestCases, true);
-    testDate(dateOptional(), badDateOptionalTestCases, false);
+    testDate(schemaMap.dateOptional, goodDateOptionalTestCases, true);
+    testDate(schemaMap.dateOptional, badDateOptionalTestCases, false);
   });
 
   test("Test futureDate schema", () => {
-    testDate(futureDate(), goodFutureDateTestCases, true);
-    testDate(futureDate(), badFutureDateTestCases, false);
+    testDate(schemaMap.futureDate, goodFutureDateTestCases, true);
+    testDate(schemaMap.futureDate, badFutureDateTestCases, false);
   });
 
   test("Test pastDate schema", () => {
-    testDate(pastDate(), goodPastDateTestCases, true);
-    testDate(pastDate(), badPastDateTestCases, false);
+    testDate(schemaMap.pastDate, goodPastDateTestCases, true);
+    testDate(schemaMap.pastDate, badPastDateTestCases, false);
+  });
+
+  test("Test pastDateOptional schema", () => {
+    testDate(schemaMap.pastDateOptional, goodPastDateOptionalTestCases, true);
+    testDate(schemaMap.pastDateOptional, badPastDateOptionalTestCases, false);
   });
 
   test("Test validDate schema", () => {
-    testDate(date(), goodValidDateTestCases, true);
-    testDate(date(), badValidDateTestCases, false);
+    testDate(schemaMap.date, goodValidDateTestCases, true);
+    testDate(schemaMap.date, badValidDateTestCases, false);
   });
 
   test("Test dateMonthYear schema", () => {
-    testDate(dateMonthYear(), ["052022", "05/2022", "01/2030"], true);
-    testDate(dateMonthYear(), [...goodValidDateTestCases, "13/2022"], false);
+    testDate(schemaMap.dateMonthYear, ["052022", "05/2022", "01/2030"], true);
+    testDate(
+      schemaMap.dateMonthYear,
+      [...goodValidDateTestCases, "13/2022"],
+      false
+    );
   });
 
   test("Test validNumber schema", () => {
-    testValidNumber(validNumber(), goodValidNumberTestCases, true);
-    testValidNumber(validNumber(), badValidNumberTestCases, false);
+    testValidNumber(schemaMap.validNumber, goodValidNumberTestCases, true);
+    testValidNumber(schemaMap.validNumber, badValidNumberTestCases, false);
   });
 
   test("Test text schema", () => {
-    testTextSchema(text(), goodRequiredTextTestCases, true);
-    testTextSchema(text(), badRequiredTextTestCases, false);
+    testTextSchema(schemaMap.text, goodRequiredTextTestCases, true);
+    testTextSchema(schemaMap.text, badRequiredTextTestCases, false);
   });
 
   test("Test textOptional schema", () => {
-    testTextSchema(textOptional(), goodOptionalTextTestCases, true);
-    testTextSchema(textOptional(), ["   "], false);
+    testTextSchema(schemaMap.textOptional, goodOptionalTextTestCases, true);
+    testTextSchema(schemaMap.textOptional, ["   "], false);
   });
 
   test("Test numberSuppressible schema", () => {
-    testValidNumber(numberSuppressible(), goodValidNumberTestCases, true);
-    testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
-    testTextSchema(numberSuppressible(), [suppressionText], true);
-    testTextSchema(numberSuppressible(), ["badText", undefined], false);
+    testValidNumber(
+      schemaMap.numberSuppressible,
+      goodValidNumberTestCases,
+      true
+    );
+    testValidNumber(
+      schemaMap.numberSuppressible,
+      badValidNumberTestCases,
+      false
+    );
+    testTextSchema(schemaMap.numberSuppressible, [suppressionText], true);
+    testTextSchema(schemaMap.numberSuppressible, ["badText", undefined], false);
   });
 
   test("Test numberOrSuppressed schema", () => {
     testTextSchema(
-      numberOrSuppressed(),
+      schemaMap.numberOrSuppressed,
       ["suppressed", "Suppressed", " SUPPRESSED "],
       true
     );
-    testValidNumber(numberOrSuppressed(), ["1", "-1", "1,000"], true);
+    testValidNumber(schemaMap.numberOrSuppressed, ["1", "-1", "1,000"], true);
     testTextSchema(
-      numberOrSuppressed(),
+      schemaMap.numberOrSuppressed,
       [suppressionText, ...validNAValues, "badText", undefined],
       false
     );
@@ -222,14 +236,18 @@ describe("Schemas", () => {
 
   test("Test numberOrSuppressedOrNaNr schema", () => {
     testTextSchema(
-      numberOrSuppressedOrNaNr(),
+      schemaMap.numberOrSuppressedOrNaNr,
       ["suppressed", "Suppressed", " SUPPRESSED "],
       true
     );
-    testValidNumber(numberOrSuppressedOrNaNr(), ["1", "-1", "1,000"], true);
-    testTextSchema(numberOrSuppressedOrNaNr(), validNAValues, true);
+    testValidNumber(
+      schemaMap.numberOrSuppressedOrNaNr,
+      ["1", "-1", "1,000"],
+      true
+    );
+    testTextSchema(schemaMap.numberOrSuppressedOrNaNr, validNAValues, true);
     testTextSchema(
-      numberOrSuppressedOrNaNr(),
+      schemaMap.numberOrSuppressedOrNaNr,
       [suppressionText, "badText", undefined],
       false
     );
@@ -237,31 +255,43 @@ describe("Schemas", () => {
 
   describe("dynamic", () => {
     test("returns true for text validation", () => {
-      testSchema(dynamic(), [[{ id: "mockId", name: "text" }]], true);
+      testSchema(schemaMap.dynamic, [[{ id: "mockId", name: "text" }]], true);
     });
 
     test("returns false for empty text", () => {
-      testSchema(dynamic(), [], false);
+      testSchema(schemaMap.dynamic, [], false);
     });
   });
 
   describe("dynamicOptional", () => {
     test("returns true for text validation", () => {
-      testSchema(dynamicOptional(), [[{ id: "mockId", name: "text" }]], true);
+      testSchema(
+        schemaMap.dynamicOptional,
+        [[{ id: "mockId", name: "text" }]],
+        true
+      );
     });
 
     test("returns true for empty text", () => {
-      testSchema(dynamicOptional(), [], true);
+      testSchema(schemaMap.dynamicOptional, [], true);
     });
   });
 
   describe("dropdownOptional", () => {
     test("returns true", () => {
-      testSchema(dropdownOptional(), goodDropdownOptionalTestCases, true);
+      testSchema(
+        schemaMap.dropdownOptional,
+        goodDropdownOptionalTestCases,
+        true
+      );
     });
 
     test("returns false", () => {
-      testSchema(dropdownOptional(), badDropdownOptionalTestCases, false);
+      testSchema(
+        schemaMap.dropdownOptional,
+        badDropdownOptionalTestCases,
+        false
+      );
     });
   });
 });
