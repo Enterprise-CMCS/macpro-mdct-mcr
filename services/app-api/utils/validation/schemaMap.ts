@@ -382,6 +382,7 @@ export const schemaMap: any = {
   futureDate: futureDate(),
   number: number(),
   numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZero: numberNotLessThanZero(),
   numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
   numberOptional: numberOptional(),
   numberOrSuppressed: numberOrSuppressed(),
@@ -396,4 +397,6 @@ export const schemaMap: any = {
   textOptional: textOptional(),
   url: url(),
   urlOptional: urlOptional(),
+  validNumber: validNumber(),
+  validNumberOptional: validNumberOptional(),
 };

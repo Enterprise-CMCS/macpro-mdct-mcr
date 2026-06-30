@@ -264,9 +264,25 @@ export const endDate = (startDateField: string) =>
     "is-after-start-date",
     error.INVALID_END_DATE,
     (endDateString, context) => {
+      if (!endDateString) return false;
+
       const startDateString = context.parent[startDateField];
       const startDate = new Date(startDateString);
-      const endDate = new Date(endDateString!);
+      const endDate = new Date(endDateString);
+      return endDate >= startDate;
+    }
+  );
+
+export const endDateOptional = (startDateField: string) =>
+  dateOptional().test(
+    "is-after-start-date-optional",
+    error.INVALID_END_DATE,
+    (endDateString, context) => {
+      if (!endDateString) return true;
+
+      const startDateString = context.parent[startDateField];
+      const startDate = new Date(startDateString);
+      const endDate = new Date(endDateString);
       return endDate >= startDate;
     }
   );
@@ -291,6 +307,20 @@ export const pastDate = () =>
       const todaysDate = new Date();
       todaysDate.setDate(todaysDate.getDate() - 1);
       const inputtedDate = new Date(dateString!);
+      return inputtedDate < todaysDate;
+    }
+  );
+
+export const pastDateOptional = () =>
+  dateOptional().test(
+    "is-before-current-date-optional",
+    error.INVALID_PAST_DATE,
+    (dateString) => {
+      if (!dateString) return true;
+
+      const todaysDate = new Date();
+      todaysDate.setDate(todaysDate.getDate() - 1);
+      const inputtedDate = new Date(dateString);
       return inputtedDate < todaysDate;
     }
   );
@@ -386,3 +416,39 @@ export const nested = (
 export const dateFormatRegex =
   /^$|^((0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2})|((0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3[01])(19|20)\d{2})$/;
 export const dateMonthYearFormatRegex = /^(\d{2}\/\d{4}|\d{6})$/;
+
+export const completionSchemaMap: any = {
+  checkbox: checkbox(),
+  checkboxOneOptional: checkboxOneOptional(),
+  checkboxOptional: checkboxOptional(),
+  checkboxSingle: checkboxSingle(),
+  date: date(),
+  dateMonthYear: dateMonthYear(),
+  dateOptional: dateOptional(),
+  dropdown: dropdown(),
+  dropdownOptional: dropdownOptional(),
+  dynamic: dynamic(),
+  dynamicOptional: dynamicOptional(),
+  email: email(),
+  emailOptional: emailOptional(),
+  futureDate: futureDate(),
+  number: number(),
+  numberNotLessThanOne: numberNotLessThanOne(),
+  numberNotLessThanZero: numberNotLessThanZero(),
+  numberNotLessThanZeroOptional: numberNotLessThanZeroOptional(),
+  numberOptional: numberOptional(),
+  numberOrSuppressed: numberOrSuppressed(),
+  numberOrSuppressedOrNaNr: numberOrSuppressedOrNaNr(),
+  numberSuppressible: numberSuppressible(),
+  pastDate: pastDate(),
+  pastDateOptional: pastDateOptional(),
+  radio: radio(),
+  radioOptional: radioOptional(),
+  ratio: ratio(),
+  text: text(),
+  textOptional: textOptional(),
+  url: url(),
+  urlOptional: urlOptional(),
+  validNumber: validNumber(),
+  validNumberOptional: validNumberOptional(),
+};

@@ -1,11 +1,11 @@
 import {
-  nested,
   endDate,
+  endDateOptional,
+  nested,
   pastDate,
   pastDateOptional,
-  endDateOptional,
+  schemaMap,
 } from "./schemas";
-import { schemaMap } from "./schemaMap";
 import { AnyObject } from "types";
 import { ValidationType } from "types/validations";
 
@@ -51,6 +51,7 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
       // if not nested, make and set other dependent field types
       const dependentSchemas: AnyObject = {
         [ValidationType.END_DATE]: makeEndDateFieldSchema,
+        [ValidationType.END_DATE_OPTIONAL]: makeEndDateOptionalFieldSchema,
         [ValidationType.PAST_END_DATE]: makePastEndDateFieldSchema,
         [ValidationType.PAST_END_DATE_OPTIONAL]:
           makePastEndDateOptionalFieldSchema,

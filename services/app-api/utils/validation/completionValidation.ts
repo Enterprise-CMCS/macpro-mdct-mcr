@@ -1,10 +1,14 @@
 import * as yup from "yup";
 import { error } from "../constants/constants";
 // types
-import { AnyObject } from "../types";
+import { AnyObject, ValidationType } from "../types";
 // utils
-import { nested, endDate } from "./completionSchemas";
-import { completionSchemaMap as schemaMap } from "./completionSchemaMap";
+import {
+  completionSchemaMap as schemaMap,
+  endDate,
+  endDateOptional,
+  nested,
+} from "./completionSchemas";
 
 // map field validation types to validation schema
 export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
@@ -13,19 +17,50 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
   Object.entries(fieldValidationTypes).forEach(
     (fieldValidationType: [string, string | AnyObject]) => {
       const [key, fieldValidation] = fieldValidationType;
+      /**
+       * Legacy: These MLR form fields were created initially without validation
+       * because they are auto-populated. To keep the form fields standard, they
+       * now have validation but older forms will fail because fieldValidation is
+       * undefined. Setting validation manually here if it's missing.
+       */
+      if (
+        [
+          "report_reportingPeriodStartDate",
+          "report_reportingPeriodEndDate",
+        ].includes(key) &&
+        !fieldValidation
+      ) {
+        validationSchema[key] = schemaMap[ValidationType.DATE_OPTIONAL];
+        return;
+      }
+
       // if standard validation type, set corresponding schema from map
       if (typeof fieldValidation === "string") {
         const correspondingSchema = schemaMap[fieldValidation];
         if (correspondingSchema) {
           validationSchema[key] = correspondingSchema;
         }
+        return;
       }
-      // else if nested validation type, make and set nested schema
-      else if (fieldValidation.nested) {
+
+      // if nested validation type, make and set nested schema
+      if (fieldValidation.nested) {
         validationSchema[key] = makeNestedFieldSchema(fieldValidation);
-        // else if not nested, make and set other dependent field types
-      } else if (fieldValidation.type === "endDate") {
-        validationSchema[key] = makeEndDateFieldSchema(fieldValidation);
+        return;
+      }
+
+      // if not nested, make and set other dependent field types
+      const dependentSchemas: AnyObject = {
+        [ValidationType.END_DATE]: makeEndDateFieldSchema,
+        [ValidationType.END_DATE_OPTIONAL]: makeEndDateOptionalFieldSchema,
+        [ValidationType.PAST_END_DATE]: makePastEndDateFieldSchema,
+        [ValidationType.PAST_END_DATE_OPTIONAL]:
+          makePastEndDateOptionalFieldSchema,
+      };
+
+      const getSchema = dependentSchemas[fieldValidation.type];
+      if (getSchema) {
+        validationSchema[key] = getSchema(fieldValidation);
       }
     }
   );
@@ -36,6 +71,31 @@ export const mapValidationTypesToSchema = (fieldValidationTypes: AnyObject) => {
 export const makeEndDateFieldSchema = (fieldValidationObject: AnyObject) => {
   const { dependentFieldName } = fieldValidationObject;
   return endDate(dependentFieldName);
+};
+
+export const makeEndDateOptionalFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  const { dependentFieldName } = fieldValidationObject;
+  return endDateOptional(dependentFieldName);
+};
+
+export const makePastEndDateFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDate()
+  );
+};
+
+export const makePastEndDateOptionalFieldSchema = (
+  fieldValidationObject: AnyObject
+) => {
+  // oxlint-disable-next-line unicorn/prefer-spread
+  return makeEndDateOptionalFieldSchema(fieldValidationObject).concat(
+    schemaMap.pastDateOptional()
+  );
 };
 
 // return created nested field schema

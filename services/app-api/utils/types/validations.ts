@@ -12,6 +12,7 @@ export enum ValidationType {
   EMAIL = "email",
   EMAIL_OPTIONAL = "emailOptional",
   END_DATE = "endDate",
+  END_DATE_OPTIONAL = "endDateOptional",
   FUTURE_DATE = "futureDate",
   NUMBER = "number",
   NUMBER_NOT_LESS_THAN_ONE = "numberNotLessThanOne",
