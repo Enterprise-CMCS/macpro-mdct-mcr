@@ -210,6 +210,7 @@ class KafkaSourceLib {
         );
         if (!topicName) continue;
         if (record.dynamodb?.Keys?.state?.S === "ZZ") {
+          console.log("Skipping records for test state 'ZZ'");
           continue;
         }
         payload = this.createDynamoPayload(record);
