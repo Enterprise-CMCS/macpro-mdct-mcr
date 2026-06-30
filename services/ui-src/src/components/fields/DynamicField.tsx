@@ -376,10 +376,9 @@ export const DynamicField = ({
           variant="outline"
           sx={sx.appendButton}
           onClick={appendNewRecord}
-          aria-hidden
         >
           {getButtonVerbiage()}
-          <Image sx={sx.addImage} src={addIcon} alt={""} />
+          <Image sx={sx.addImage} src={addIcon} alt={""} aria-hidden />
         </Button>
       )}
       <DeleteDynamicFieldRecordModal
