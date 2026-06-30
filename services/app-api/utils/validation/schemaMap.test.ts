@@ -1,20 +1,5 @@
 import { MixedSchema } from "yup/lib/mixed";
-import {
-  date,
-  futureDate,
-  isEndDateAfterStartDate,
-  nested,
-  number,
-  numberNotLessThanOne,
-  numberNotLessThanZero,
-  numberOrSuppressed,
-  numberSuppressible,
-  pastDate,
-  ratio,
-  validNumber,
-} from "./schemaMap";
-// oxlint-disable-next-line require-module-specifiers
-import {} from "./validation";
+import { isEndDateAfterStartDate, nested, schemaMap } from "./schemaMap";
 // constants
 import { suppressionText } from "../constants/constants";
 // utils
@@ -23,12 +8,14 @@ import {
   badFutureDateTestCases,
   badNumberTestCases,
   badPastDateTestCases,
+  badPastDateOptionalTestCases,
   badRatioTestCases,
   badValidNumberTestCases,
   goodDateTestCases,
   goodFutureDateTestCases,
   goodNumberTestCases,
   goodPastDateTestCases,
+  goodPastDateOptionalTestCases,
   goodPositiveNumberTestCases,
   goodRatioTestCases,
   goodValidNumberTestCases,
@@ -95,60 +82,81 @@ describe("Schemas", () => {
   };
 
   test("Evaluate Number Schema using number scheme", () => {
-    testNumberSchema(number(), goodNumberTestCases, true);
-    testNumberSchema(number(), badNumberTestCases, false);
+    testNumberSchema(schemaMap.number, goodNumberTestCases, true);
+    testNumberSchema(schemaMap.number, badNumberTestCases, false);
   });
 
   // testing numberNotLessThanOne scheme
   test("Evaluate Number Schema using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), goodPositiveNumberTestCases, true);
-    testNumberSchema(numberNotLessThanOne(), badNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanOne,
+      goodPositiveNumberTestCases,
+      true
+    );
+    testNumberSchema(schemaMap.numberNotLessThanOne, badNumberTestCases, false);
   });
 
   test("Test zero values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), zeroTest, false);
+    testNumberSchema(schemaMap.numberNotLessThanOne, zeroTest, false);
   });
 
   test("Test negative values using numberNotLessThanOne scheme", () => {
-    testNumberSchema(numberNotLessThanOne(), negativeNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanOne,
+      negativeNumberTestCases,
+      false
+    );
   });
 
   // testing numberNotLessThanZero scheme
   test("Evaluate Number Schema using numberNotLessThanZero scheme", () => {
     testNumberSchema(
-      numberNotLessThanZero(),
+      schemaMap.numberNotLessThanZero,
       goodPositiveNumberTestCases,
       true
     );
-    testNumberSchema(numberNotLessThanZero(), badNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanZero,
+      badNumberTestCases,
+      false
+    );
   });
 
   test("Test zero values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), zeroTest, true);
+    testNumberSchema(schemaMap.numberNotLessThanZero, zeroTest, true);
   });
 
   test("Test negative values using numberNotLessThanZero scheme", () => {
-    testNumberSchema(numberNotLessThanZero(), negativeNumberTestCases, false);
+    testNumberSchema(
+      schemaMap.numberNotLessThanZero,
+      negativeNumberTestCases,
+      false
+    );
   });
 
   test("Evaluate Number Schema using ratio scheme", () => {
-    testNumberSchema(ratio(), goodRatioTestCases, true);
-    testNumberSchema(ratio(), badRatioTestCases, false);
+    testNumberSchema(schemaMap.ratio, goodRatioTestCases, true);
+    testNumberSchema(schemaMap.ratio, badRatioTestCases, false);
   });
 
   test("Evaluate Date Schema using date scheme", () => {
-    testDate(date(), goodDateTestCases, true);
-    testDate(date(), badDateTestCases, false);
+    testDate(schemaMap.date, goodDateTestCases, true);
+    testDate(schemaMap.date, badDateTestCases, false);
   });
 
   test("Test futureDate schema", () => {
-    testDate(futureDate(), goodFutureDateTestCases, true);
-    testDate(futureDate(), badFutureDateTestCases, false);
+    testDate(schemaMap.futureDate, goodFutureDateTestCases, true);
+    testDate(schemaMap.futureDate, badFutureDateTestCases, false);
   });
 
   test("Test pastDate schema", () => {
-    testDate(pastDate(), goodPastDateTestCases, true);
-    testDate(pastDate(), badPastDateTestCases, false);
+    testDate(schemaMap.pastDate, goodPastDateTestCases, true);
+    testDate(schemaMap.pastDate, badPastDateTestCases, false);
+  });
+
+  test("Test pastDateOptional schema", () => {
+    testDate(schemaMap.pastDateOptional, goodPastDateOptionalTestCases, true);
+    testDate(schemaMap.pastDateOptional, badPastDateOptionalTestCases, false);
   });
 
   test("Evaluate End Date Schema using date scheme", () => {
@@ -165,27 +173,43 @@ describe("Schemas", () => {
   });
 
   test("Test validNumber schema", () => {
-    testValidNumber(validNumber(), goodValidNumberTestCases, true);
-    testValidNumber(validNumber(), badValidNumberTestCases, false);
+    testValidNumber(schemaMap.validNumber, goodValidNumberTestCases, true);
+    testValidNumber(schemaMap.validNumber, badValidNumberTestCases, false);
   });
 
   test("Test numberSuppressible schema", () => {
-    testValidNumber(numberSuppressible(), goodValidNumberTestCases, true);
-    testValidNumber(numberSuppressible(), badValidNumberTestCases, false);
-    testTextSchema(numberSuppressible(), [suppressionText], true);
-    testTextSchema(numberSuppressible(), ["badText", undefined], false);
+    testValidNumber(
+      schemaMap.numberSuppressible,
+      goodValidNumberTestCases,
+      true
+    );
+    testValidNumber(
+      schemaMap.numberSuppressible,
+      badValidNumberTestCases,
+      false
+    );
+    testTextSchema(schemaMap.numberSuppressible, [suppressionText], true);
+    testTextSchema(schemaMap.numberSuppressible, ["badText", undefined], false);
   });
 
   test("Test numberOrSuppressed schema", () => {
-    testValidNumber(numberOrSuppressed(), goodValidNumberTestCases, true);
-    testValidNumber(numberOrSuppressed(), badValidNumberTestCases, false);
+    testValidNumber(
+      schemaMap.numberOrSuppressed,
+      goodValidNumberTestCases,
+      true
+    );
+    testValidNumber(
+      schemaMap.numberOrSuppressed,
+      badValidNumberTestCases,
+      false
+    );
     testTextSchema(
-      numberOrSuppressed(),
+      schemaMap.numberOrSuppressed,
       ["suppressed", "Suppressed", " SUPPRESSED "],
       true
     );
     testTextSchema(
-      numberOrSuppressed(),
+      schemaMap.numberOrSuppressed,
       [suppressionText, "badText", undefined],
       false
     );
