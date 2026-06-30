@@ -231,7 +231,7 @@ MCR pipes updates from fieldData and the report object tables to BigMac for down
 
 `ZZ` is a fake state that exists **in every environment, including production**. It is used for testing and exists in the Cognito user pool (e.g. `stateuserZZ@test.com`) and in the program lists for every report type (MCPAR, MLR, NAAAR). It does not represent a real state and **its data is not real data**. Always filter out `state = "ZZ"` (and `stateuserZZ@test.com`) before reporting on or analyzing production data.
 
-**`ZZ` must never flow to Data Connect.** Any report data, submissions, or other records associated with the `ZZ` state are test artifacts and must be excluded from downstream analytics consumers. As new integrations are added (for example, email notifications), they **must filter out `ZZ`** so that test data never leaks into real-world systems or metrics.
+**`ZZ` must never flow to Data Connect.** Any report data, submissions, or other records associated with the `ZZ` state are test artifacts and must be excluded from downstream analytics consumers. As new integrations are added (for example, email notifications), they **must filter out `ZZ`** so that test data never leaks into real-world systems or metrics. See kafka-source-lib.ts for the reference filter.
 
 ## Architecture
 
