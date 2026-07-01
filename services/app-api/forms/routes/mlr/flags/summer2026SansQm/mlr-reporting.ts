@@ -194,7 +194,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
       {
         id: "report_reportingPeriodStartDate",
         type: ReportFormFieldType.DATE,
-        validation: ValidationType.DATE,
+        validation: ValidationType.PAST_DATE,
         props: {
           label: "N. MLR reporting period start date",
           hint: "Enter the start date of the MLR reporting period. <br/> The MLR reporting period should be a period of 12 months consistent with the rating period. The MLR reporting period must not exceed 12 months. <br/> Note: The remittance reporting period may differ from the MLR reporting period.",
@@ -204,7 +204,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
         id: "report_reportingPeriodEndDate",
         type: ReportFormFieldType.DATE,
         validation: {
-          type: ValidationType.END_DATE,
+          type: ValidationType.PAST_END_DATE,
           dependentFieldName: "report_reportingPeriodStartDate",
         },
         props: {
@@ -639,7 +639,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateStateNotifiedMcoPihpOrPahpOfRemittance",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -674,7 +674,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateStateReceivedRemittanceFromMcoPhipOrPahp",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -709,7 +709,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                   id: "report_dateFederalShareOfRemittanceReturnedToCms",
                   type: ReportFormFieldType.DATE,
                   validation: {
-                    type: ValidationType.DATE_OPTIONAL,
+                    type: ValidationType.PAST_DATE_OPTIONAL,
                     nested: true,
                     parentFieldName:
                       "report_contractIncludesMlrRemittanceRequirement",
@@ -759,6 +759,13 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                 {
                   id: "report_reportingPeriodStartDate",
                   type: ReportFormFieldType.DATE,
+                  validation: {
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    type: ValidationType.PAST_DATE_OPTIONAL,
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
                   props: {
                     label: "N. MLR reporting period start date",
                     hint: "Auto-populates from program reporting information.",
@@ -769,6 +776,13 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                 {
                   id: "report_reportingPeriodEndDate",
                   type: ReportFormFieldType.DATE,
+                  validation: {
+                    nested: true,
+                    parentFieldName:
+                      "report_contractIncludesMlrRemittanceRequirement",
+                    type: ValidationType.PAST_DATE_OPTIONAL,
+                    parentOptionId: "7FP4jcg4jK7Ssqp3cCW5vQ",
+                  },
                   props: {
                     label: "O. MLR reporting period end date",
                     hint: "Auto-populates from program reporting information.",
@@ -804,7 +818,7 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                             id: "report_remittancePeriodStartDate",
                             type: ReportFormFieldType.DATE,
                             validation: {
-                              type: ValidationType.DATE_OPTIONAL,
+                              type: ValidationType.PAST_DATE_OPTIONAL,
                               nested: true,
                               parentFieldName:
                                 "report_isRemittancePeriodSameAsMlrReportingPeriod",
@@ -820,7 +834,9 @@ export const mlrReportingRoute: ModalOverlayRoute = {
                             id: "report_remittancePeriodEndDate",
                             type: ReportFormFieldType.DATE,
                             validation: {
-                              type: ValidationType.DATE_OPTIONAL,
+                              type: ValidationType.PAST_END_DATE_OPTIONAL,
+                              dependentFieldName:
+                                "report_remittancePeriodStartDate",
                               nested: true,
                               parentFieldName:
                                 "report_isRemittancePeriodSameAsMlrReportingPeriod",

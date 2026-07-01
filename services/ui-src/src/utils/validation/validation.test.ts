@@ -1,29 +1,37 @@
 import { mapValidationTypesToSchema } from "./validation";
 import * as schema from "./schemas";
+import { ValidationType } from "types/validations";
 
 const mockStandardValidationType = {
-  key: "text",
+  key: ValidationType.TEXT,
 };
 
 const mockNestedValidationType = {
   key: {
-    type: "text",
+    type: ValidationType.TEXT,
     nested: true,
     parentFieldName: "mock-parent-field-name",
     parentOptionId: "mock-parent-option-name",
   },
 };
 
-const mockDependentValidationType = {
+const mockDependentValidationType = (type: string) => ({
   key: {
-    type: "endDate",
+    type,
     dependentFieldName: "mock-dependent-field-name",
   },
-};
+});
+
+const mockReportingPeriodDateValidationType = (
+  key: string,
+  value?: string
+) => ({
+  [key]: value,
+});
 
 const mockNestedDependentValidationType = {
   key: {
-    type: "endDate",
+    type: ValidationType.END_DATE,
     dependentFieldName: "mock-dependent-field-name",
     nested: true,
     parentFieldName: "mock-parent-field-name",
@@ -32,14 +40,14 @@ const mockNestedDependentValidationType = {
 };
 
 describe("Test mapValidationTypesToSchema", () => {
-  it("Returns standard validation schema if passed standard validation type", () => {
+  test("Returns standard validation schema if passed standard validation type", () => {
     const result = mapValidationTypesToSchema(mockStandardValidationType);
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({ key: schema.text() })
     );
   });
 
-  it("Returns nested validation schema if passed nested validation type", () => {
+  test("Returns nested validation schema if passed nested validation type", () => {
     const result = mapValidationTypesToSchema(mockNestedValidationType);
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
@@ -52,8 +60,10 @@ describe("Test mapValidationTypesToSchema", () => {
     );
   });
 
-  it("Returns dependent validation schema if passed dependent validation type", () => {
-    const result = mapValidationTypesToSchema(mockDependentValidationType);
+  test("Returns dependent validation schema if passed dependent validation type", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.END_DATE)
+    );
     expect(JSON.stringify(result)).toEqual(
       JSON.stringify({
         key: schema.endDate("mock-dependent-field-name"),
@@ -61,7 +71,46 @@ describe("Test mapValidationTypesToSchema", () => {
     );
   });
 
-  it("Returns nested dependent validation schema if passed nested dependent validation type", () => {
+  test("Returns optional dependent validation schema if passed dependent validation type", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.END_DATE_OPTIONAL)
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        key: schema.endDateOptional("mock-dependent-field-name"),
+      })
+    );
+  });
+
+  test("Returns dependent validation before past date schema", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.PAST_END_DATE)
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        // oxlint-disable-next-line unicorn/prefer-spread
+        key: schema
+          .endDate("mock-dependent-field-name")
+          .concat(schema.pastDate()),
+      })
+    );
+  });
+
+  test("Returns dependent validation before past date optional schema", () => {
+    const result = mapValidationTypesToSchema(
+      mockDependentValidationType(ValidationType.PAST_END_DATE_OPTIONAL)
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        // oxlint-disable-next-line unicorn/prefer-spread
+        key: schema
+          .endDateOptional("mock-dependent-field-name")
+          .concat(schema.pastDateOptional()),
+      })
+    );
+  });
+
+  test("Returns nested dependent validation schema if passed nested dependent validation type", () => {
     const result = mapValidationTypesToSchema(
       mockNestedDependentValidationType
     );
@@ -72,6 +121,31 @@ describe("Test mapValidationTypesToSchema", () => {
           "mock-parent-field-name",
           "mock-parent-option-name"
         ),
+      })
+    );
+  });
+
+  test("Returns passed-in validation for report_reportingPeriodStartDate", () => {
+    const result = mapValidationTypesToSchema(
+      mockReportingPeriodDateValidationType(
+        "report_reportingPeriodStartDate",
+        ValidationType.DATE
+      )
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        report_reportingPeriodStartDate: schema.date(),
+      })
+    );
+  });
+
+  test("Returns dateOptional validation for legacy report_reportingPeriodStartDate", () => {
+    const result = mapValidationTypesToSchema(
+      mockReportingPeriodDateValidationType("report_reportingPeriodStartDate")
+    );
+    expect(JSON.stringify(result)).toEqual(
+      JSON.stringify({
+        report_reportingPeriodStartDate: schema.dateOptional(),
       })
     );
   });
