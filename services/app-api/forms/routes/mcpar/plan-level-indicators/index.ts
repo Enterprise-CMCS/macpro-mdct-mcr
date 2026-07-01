@@ -1,5 +1,6 @@
 import { ParentRoute } from "../../../../utils/types";
 import { appealsStateFairHearingsAndGrievancesRoute } from "./appeals-state-fair-hearings-and-grievances";
+import { mlrReportingRoute } from "./mlr-reporting";
 import { encounterDataReportRoute } from "./encounter-data-report";
 import { ilosRoute } from "./ilos";
 import { patientAccessApiRoute } from "./patient-access-api";
@@ -14,6 +15,7 @@ export const planLevelIndicatorsRoute: ParentRoute = {
   path: "/mcpar/plan-level-indicators",
   children: [
     programCharacteristicsRoute,
+    mlrReportingRoute,
     encounterDataReportRoute,
     appealsStateFairHearingsAndGrievancesRoute,
     qualityMeasuresRoute,
